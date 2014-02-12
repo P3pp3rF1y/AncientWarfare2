@@ -1,9 +1,11 @@
 package net.shadowmage.ancientwarfare.core;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.network.TestPacket;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -15,6 +17,8 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
 @Mod
 (
@@ -70,6 +74,11 @@ public void onLogin(PlayerEvent.PlayerLoggedInEvent evt)
   AWLog.logDebug(msg);
   AWLog.log(msg);
   AWLog.logError(msg);
+   
+  if(!evt.player.worldObj.isRemote)
+    {
+    NetworkHandler.sendToPlayer((EntityPlayerMP)evt.player, new TestPacket());
+    }
   }
 
 
