@@ -3,3 +3,5 @@
 /runtime
 /logs
 /.gradle
+/eclipse
+/.settings
