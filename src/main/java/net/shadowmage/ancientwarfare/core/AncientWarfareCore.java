@@ -2,11 +2,9 @@ package net.shadowmage.ancientwarfare.core;
 
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxy;
-
-import org.apache.logging.log4j.core.Logger;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -47,7 +45,8 @@ public void preInit(FMLPreInitializationEvent evt)
   {
   config = new Configuration(evt.getSuggestedConfigurationFile());
   log = evt.getModLog();
-  NetworkHandler.INSTANCE.registerChannel();
+  Statics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
+  NetworkHandler.INSTANCE.registerNetwork();
   FMLCommonHandler.instance().bus().register(this);
   }
 

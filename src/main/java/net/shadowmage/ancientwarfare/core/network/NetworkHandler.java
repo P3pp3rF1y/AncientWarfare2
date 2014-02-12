@@ -15,7 +15,7 @@ public static final NetworkHandler INSTANCE = new NetworkHandler();
 private SimpleNetworkWrapper wrap;
 
 
-public void registerChannel()
+public void registerNetwork()
   {
   wrap = NetworkRegistry.INSTANCE.newSimpleChannel("AWCORE");
   }
