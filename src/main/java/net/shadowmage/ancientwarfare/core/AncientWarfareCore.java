@@ -1,11 +1,13 @@
 package net.shadowmage.ancientwarfare.core;
 
 import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxy;
 
 import org.apache.logging.log4j.core.Logger;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -13,11 +15,13 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 @Mod
 (
-name = "@NAME@",
-modid = "@MODID@",
+name = "Ancient Warfare Core",
+modid = "ancientwarfare",
 version = "@VERSION@"
 )
 
@@ -44,6 +48,7 @@ public void preInit(FMLPreInitializationEvent evt)
   config = new Configuration(evt.getSuggestedConfigurationFile());
   log = evt.getModLog();
   NetworkHandler.INSTANCE.registerChannel();
+  FMLCommonHandler.instance().bus().register(this);
   }
 
 @EventHandler
@@ -56,6 +61,16 @@ public void preInit(FMLInitializationEvent evt)
 public void preInit(FMLPostInitializationEvent evt)
   {
   
+  }
+
+@SubscribeEvent
+public void onLogin(PlayerEvent.PlayerLoggedInEvent evt)
+  {
+  String msg = "player logged in...";
+  System.out.println(msg);
+  AWLog.logDebug(msg);
+  AWLog.log(msg);
+  AWLog.logError(msg);
   }
 
 

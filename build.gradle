@@ -44,8 +44,6 @@ task updateVersion(type:Copy){
   }
   into 'build/sources/java'
   filter(ReplaceTokens, tokens: [VERSION: project.version])
-  filter(ReplaceTokens, tokens: [NAME: "Ancient Warfare"])
-  filter(ReplaceTokens, tokens: [MODID: "ancientwarfare"])
 }
 
 compileJava.dependsOn updateVersion
