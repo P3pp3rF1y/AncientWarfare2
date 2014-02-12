@@ -1,0 +1,48 @@
+****************************
+ Powered By MCP:            
+ http://mcp.ocean-labs.de/  
+ Searge, ProfMobius, Fesh0r,
+ R4wk, ZeuX, IngisKahn      
+ MCP Data version : unknown
+****************************
+Download http://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.2-10.12.0.1027/forge-1.7.2-10.12.0.1027-userdev.jar
+:extractUserDev
+:getAssetsIndex
+:getAssets
+:copyAssets
+:extractNatives
+:genSrgs
+:downloadMcpTools
+:downloadClient
+:downloadServer
+:mergeJars
+Adding cpw/mods/fml/relauncher/SideOnly.class
+Adding cpw/mods/fml/relauncher/Side.class
+:deobfuscateJar
+Applying SpecialSource...
+Applying Exceptor...
+Injecting source info...
+:decompile
+:doFmlPatches
+:addFmlSources
+:remapJar
+:doForgePatches
+:addForgeJavadoc
+:extractForgeSrc
+:recompForgewarning: [options] bootstrap class path not set in conjunction with -source 1.6
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+1 warning
+
+:repackForge
+:setupDecompWorkspace
+:eclipseClasspath
+:eclipseJdt
+:eclipseProject
+:eclipse
+
+BUILD SUCCESSFUL
+
+Total time: 3 mins 59.047 secs
