@@ -1,17 +1,34 @@
 package net.shadowmage.ancientwarfare.core.network;
 
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.network.play.client.C17PacketCustomPayload;
-import net.minecraft.network.play.server.S3FPacketCustomPayload;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class TestPacket extends FMLProxyPacket
+public class TestPacket extends PacketBase
 {
 
 public TestPacket()
   {
-  super(Unpooled.buffer(), "AWCORE");
+  
+  }
+
+@Override
+protected void writeToStream(ByteBuf data)
+  {
+  // TODO Auto-generated method stub
+  
+  }
+
+@Override
+protected void readFromStream(ByteBuf data)
+  {
+  // TODO Auto-generated method stub
+  
+  }
+
+@Override
+protected void execute()
+  {
+  AWLog.logDebug("executing test packet");
   }
 
 

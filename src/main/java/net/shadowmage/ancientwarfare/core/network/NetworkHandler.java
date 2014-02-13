@@ -4,40 +4,37 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
 
 public class NetworkHandler
 {
 
+public static final String CHANNELNAME = "AWCORE";
 public static final NetworkHandler INSTANCE = new NetworkHandler();
 
 FMLEventChannel channel;
 
 public void registerNetwork()
   {
-  channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("AWCORE");
+  channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
   channel.register(new PacketHandler());
+  PacketBase.registerPacketType(0, TestPacket.class);
   }
 
-public static void sendToServer(IMessage pkt)
+public static void sendToServer(PacketBase pkt)
   {
   }
 
-public static void sendToPlayer(EntityPlayerMP player, FMLProxyPacket pkt)
+public static void sendToPlayer(EntityPlayerMP player, PacketBase pkt)
   {
-  INSTANCE.channel.sendTo(pkt, player);
+  INSTANCE.channel.sendTo(pkt.getFMLPacket(), player);
   }
 
-public static void sendToAllPlayers(IMessage pkt)
+public static void sendToAllPlayers(PacketBase pkt)
   {
   }
 
-public static void sendToAllNear(World world, int x, int y, int z, double range, IMessage pkt)
+public static void sendToAllNear(World world, int x, int y, int z, double range, PacketBase pkt)
   {
   }
 
