@@ -68,7 +68,6 @@ public void preInit(FMLPostInitializationEvent evt)
 public void onLogin(PlayerEvent.PlayerLoggedInEvent evt)
   {
   String msg = "player logged in...";
-  System.out.println(msg);
   AWLog.logDebug(msg);
   AWLog.log(msg);
   AWLog.logError(msg);

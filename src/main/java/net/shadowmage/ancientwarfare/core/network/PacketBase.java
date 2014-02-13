@@ -23,8 +23,6 @@ public static void registerPacketType(int typeNum, Class <? extends PacketBase> 
   packetIDs.put(packetClz, typeNum);
   }
 
-protected Side side;
-
 public PacketBase()
   {  
   }
@@ -60,7 +58,6 @@ protected static PacketBase readHeaderFromStream(ByteBuf data)
 
 protected abstract void writeToStream(ByteBuf data);
 protected abstract void readFromStream(ByteBuf data);
-
 protected abstract void execute();
 
 public static PacketBase readPacket(ByteBuf data)
