@@ -50,6 +50,7 @@ public void preInit(FMLPreInitializationEvent evt)
   Statics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
   NetworkHandler.INSTANCE.registerNetwork();
   FMLCommonHandler.instance().bus().register(this);
+  proxy.registerClient();
   }
 
 @EventHandler
