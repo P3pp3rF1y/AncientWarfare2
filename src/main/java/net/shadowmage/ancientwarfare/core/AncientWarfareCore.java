@@ -33,7 +33,7 @@ public static AncientWarfareCore instance;
 
 @SidedProxy
 (
-clientSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy",
+clientSide = "net.shadowmage.ancientwarfare.core.proxy.ClientProxy",
 serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy"
 )
 public static CommonProxy proxy;
@@ -53,15 +53,15 @@ public void preInit(FMLPreInitializationEvent evt)
   }
 
 @EventHandler
-public void preInit(FMLInitializationEvent evt)
+public void init(FMLInitializationEvent evt)
   {
   
   }
 
 @EventHandler
-public void preInit(FMLPostInitializationEvent evt)
+public void postInit(FMLPostInitializationEvent evt)
   {
-  
+  config.save();
   }
 
 @SubscribeEvent
