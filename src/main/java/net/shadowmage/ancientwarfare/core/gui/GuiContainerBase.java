@@ -62,6 +62,7 @@ protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
   if(tooltipStack!=null)
     {
     super.renderToolTip(tooltipStack, tooltipX, tooltipY);
+    tooltipStack = null;
     }
   }
 
@@ -77,6 +78,9 @@ public void handlePacketData(Object data)
   
   }
 
+/**
+ * deferred to allow proper render-order, and draw the tooltip on top of everything else
+ */
 @Override
 protected void renderToolTip(ItemStack stack, int x, int y)
   {
