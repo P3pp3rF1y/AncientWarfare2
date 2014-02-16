@@ -17,6 +17,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 @Mod
 (
@@ -71,12 +72,13 @@ public void onLogin(PlayerEvent.PlayerLoggedInEvent evt)
   String msg = "player logged in...";
   AWLog.logDebug(msg);
   AWLog.log(msg);
-  AWLog.logError(msg);
-   
+  AWLog.logError(msg);   
   if(!evt.player.worldObj.isRemote)
     {
     NetworkHandler.sendToPlayer((EntityPlayerMP)evt.player, new TestPacket());
+    FMLNetworkHandler.openGui(evt.player, this, 0, evt.player.worldObj, 0, 0, 0);
     }
+  
   }
 
 

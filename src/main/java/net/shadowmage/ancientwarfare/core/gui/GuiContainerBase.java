@@ -14,9 +14,10 @@ import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
 
-public class GuiContainerBase extends GuiContainer implements IContainerGuiCallback
+public abstract class GuiContainerBase extends GuiContainer implements IContainerGuiCallback
 {
 
+private boolean initDone = false;
 private boolean shouldUpdate = false;
 private List<GuiElement> elements = new ArrayList<GuiElement>();
 
@@ -77,6 +78,11 @@ public void handleKeyboardInput()
 public void initGui()
   {
   super.initGui();
+  if(!initDone)
+    {
+    initElements();
+    initDone = true;
+    }
   this.setupElements();
   for(GuiElement element : this.elements)
     {
@@ -135,7 +141,9 @@ public void refreshGui()
  * sub-classes should implement this method to setup/change any elements that need adjusting when the gui is initialized<br>
  * any elements that are positioned outside of the gui-window space will need their positions updated by calling element.updateRenderPosition(guiLeft, guiTop)
  */
-public void setupElements(){}
+public abstract void setupElements();
+
+public abstract void initElements();
 
 /**
  * sub-classes should override this method to handle any expected packet data

@@ -1,16 +1,23 @@
 package net.shadowmage.ancientwarfare.core.network;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.GuiTest;
 import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
-public class NetworkHandler
+public class NetworkHandler implements IGuiHandler
 {
 
 public static final String CHANNELNAME = "AWCORE";
 public static final NetworkHandler INSTANCE = new NetworkHandler();
+
+public static final int GUI_TEST = 0;
 
 private FMLEventChannel channel;
 
@@ -19,6 +26,7 @@ public final void registerNetwork()
   channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
   channel.register(new PacketHandler());
   PacketBase.registerPacketType(0, TestPacket.class);
+  NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
   }
 
 public final static void sendToServer(PacketBase pkt)
@@ -39,6 +47,32 @@ public final static void sendToAllPlayers(PacketBase pkt)
 public final static void sendToAllNear(World world, int x, int y, int z, double range, PacketBase pkt)
   {
   INSTANCE.channel.sendToAllAround(pkt.getFMLPacket(), new TargetPoint(world.provider.dimensionId, x, y, z, range));
+  }
+
+@Override
+public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+  {
+  switch(ID)
+  {
+  case GUI_TEST:
+    {
+    return new ContainerBase(player, x, y, z);
+    }  
+  }
+  return null;
+  }
+
+@Override
+public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+  {
+  switch(ID)
+  {
+  case GUI_TEST:
+    {
+    return new GuiTest(new ContainerBase(player, x, y, z));
+    }  
+  }
+  return null;
   }
 
 }

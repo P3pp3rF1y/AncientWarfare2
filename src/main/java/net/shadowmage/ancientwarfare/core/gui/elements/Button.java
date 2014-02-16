@@ -13,10 +13,13 @@ public class Button extends GuiElement
 int width;
 int height;
 String text;
+int textX;
+int textY;
 
 public Button(int topLeftX, int topLeftY, int width, int height, String text)
   {
   super(topLeftX, topLeftY);
+  this.mouseInterface = true;
   this.width = width;
   this.height = height;
   this.text = text;
@@ -43,8 +46,7 @@ public boolean isMouseOverElement(int mouseX, int mouseY)
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
-  // TODO Auto-generated method stub
-  
+  // TODO Auto-generated method stub  
   }
 
 }

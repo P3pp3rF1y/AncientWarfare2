@@ -13,6 +13,11 @@ public static final int MOUSE_WHEEL = 8;
 public final int type;
 private GuiElement element;
 
+public GuiElement getElement()
+  {
+  return element;
+  }
+
 public ActionListener(int type)
   {
   this.type = type;
