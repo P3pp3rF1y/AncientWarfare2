@@ -58,7 +58,7 @@ public void handleMouseInput()
   boolean state = Mouse.getEventButtonState();
   int wheel = Mouse.getEventDWheel();
   
-  int type = button >= 0 ? (state ? ActionListener.MOUSE_DOWN : ActionListener.MOUSE_UP) : ActionListener.MOUSE_WHEEL; 
+  int type = button >= 0 ? (state ? ActionListener.MOUSE_DOWN : ActionListener.MOUSE_UP) : wheel!=0 ? ActionListener.MOUSE_WHEEL : ActionListener.MOUSE_MOVED; 
   ActivationEvent evt = new ActivationEvent(type, button, state, x, y, wheel);
   for(GuiElement element : this.elements)
     {
@@ -120,16 +120,18 @@ protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
 @Override
 public void drawScreen(int par1, int par2, float par3)
   {
-  super.drawScreen(par1, par2, par3);  
+  super.drawScreen(par1, par2, par3);
+  GL11.glDisable(GL11.GL_LIGHTING);
   for(GuiElement element : elements)
     {
     element.render(par1, par2, par3);
-    }
+    }  
   if(tooltipStack!=null)
     {
     super.renderToolTip(tooltipStack, tooltipX, tooltipY);
     tooltipStack = null;
     }
+  GL11.glEnable(GL11.GL_LIGHTING);
   }
 
 /**
@@ -185,17 +187,18 @@ public class ActivationEvent
  * 4=Mouse Down <br>  
  * 8=Mouse Wheel 
  */
-int type;
-int key;
-boolean keyEvent;
-int mButton;
-boolean state;
-char ch;
-int mx;
-int my;
-int mw;//mousewheel delta movement
+public final int type;
+public int key;
+public boolean keyEvent;
+public int mButton;
+public boolean state;
+public char ch;
+public int mx;
+public int my;
+public int mw;//mousewheel delta movement
 private ActivationEvent(int type, int button, boolean state, int mx, int my, int mw)
   {
+  this.type = type;
   this.mButton = button;
   this.state = state;
   this.mx = mx;

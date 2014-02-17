@@ -9,6 +9,7 @@ public static final int KEY_DOWN = 1;
 public static final int MOUSE_UP = 2;
 public static final int MOUSE_DOWN = 4;
 public static final int MOUSE_WHEEL = 8;
+public static final int MOUSE_MOVED = 16;
 
 public final int type;
 private GuiElement element;

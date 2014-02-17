@@ -49,15 +49,16 @@ public boolean isMouseOverElement(int mouseX, int mouseY)
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
-  Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
-   
-  int textureSize = 256;
-  int startX = 0;
-  int startY = enabled ? isMouseOverElement(mouseX, mouseY) ? 80 : 40 : 0;
-  int usedWidth = 256;
-  int usedHeight = 40;  
-  renderQuarteredTexture(textureSize, textureSize, startX, startY, usedWidth, usedHeight, renderX, renderY, width, height);
-  
+  if(visible)
+    {
+    Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);   
+    int textureSize = 256;
+    int startX = 0;
+    int startY = enabled ? isMouseOverElement(mouseX, mouseY) ? 80 : 40 : 0;
+    int usedWidth = 256;
+    int usedHeight = 40;  
+    renderQuarteredTexture(textureSize, textureSize, startX, startY, usedWidth, usedHeight, renderX, renderY, width, height);    
+    }  
   }
 
 }
