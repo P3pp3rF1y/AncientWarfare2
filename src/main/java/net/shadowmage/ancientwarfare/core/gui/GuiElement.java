@@ -55,7 +55,6 @@ public GuiElement(int topLeftX, int topLeftY)
   this.topLeftY = topLeftY;
   this.enabled = true;
   this.visible = true;
-  this.selected = true;
   }
 
 public GuiElement(int topLeftX, int topLeftY, int width, int height)
@@ -71,7 +70,7 @@ public GuiElement(int topLeftX, int topLeftY, int width, int height)
  * @param guiLeft
  * @param guiTop
  */
-public final void updateRenderPosition(int guiLeft, int guiTop)
+public void updateRenderPosition(int guiLeft, int guiTop)
   {
   renderX = topLeftX + guiLeft;
   renderY = topLeftY + guiTop;
@@ -109,6 +108,12 @@ public final void handleMouseInput(ActivationEvent evt)
  * called from GUI to process keyboard interface
  * all functionality should be implemented via ActionListeners
  * including default functionality.
+ * 
+ * will only fire events if this element is currently selected.
+ * selection is currently handled manually -- 
+ * must call element.setSelected() and element.clearSelected()
+ * currently multiple elements may be selected concurrently and all
+ * will receive the keyboard input events
  * @param key
  */
 public final void handleKeyboardInput(ActivationEvent evt)
@@ -139,13 +144,11 @@ public final void addNewListener(Listener listener)
   {
   listener.setElement(this);
   this.actionListeners.add(listener);
-  int mouseTypes = Listener.MOUSE_DOWN | Listener.MOUSE_MOVED | Listener.MOUSE_UP | Listener.MOUSE_WHEEL;
-  int keyTypes = Listener.KEY_DOWN | Listener.KEY_UP;
-  if((listener.type & mouseTypes)!=0)
+  if((listener.type & Listener.MOUSE_TYPES)!=0)
     {
     this.mouseInterface = true;
     }
-  if((listener.type & keyTypes)!=0)
+  if((listener.type & Listener.KEY_TYPES)!=0)
     {
     this.keyboardInterface = true;
     }
