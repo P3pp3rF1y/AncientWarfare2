@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -39,6 +40,11 @@ public GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, Strin
     this.backgroundTextureName = backgroundTexture;
     this.backgroundTexture = new ResourceLocation(Statics.coreModID, "textures/gui/"+backgroundTextureName);    
     }
+  }
+
+protected void addGuiElement(GuiElement element)
+  {
+  this.elements.add(element);
   }
 
 @Override
@@ -106,8 +112,8 @@ protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
   {
   if(backgroundTexture!=null)
     {
-    //TODO render background
     Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTexture);
+    this.renderQuarteredTexture(256, 256, 0, 0, 256, 256, width/2 - xSize/2, height/2 - ySize/2, xSize, ySize);
     }
   }
 
@@ -206,4 +212,79 @@ private ActivationEvent(int type, int key, char character, boolean state)
   this.state = state;
   }
 }
+
+
+/**
+ * @param tw texture width
+ * @param th texture height
+ * @param pu pixel start U
+ * @param pv pixel start V
+ * @param uw pixel U width (width of used tex in pixels)
+ * @param vh pixel V height (height of used tex in pixels)
+ * @param rx render position x
+ * @param ry render position y
+ * @param rw render height
+ * @param rh rende width
+ */
+protected void renderQuarteredTexture(int tw, int th, int pu, int pv, int uw, int vh, int rx, int ry, int rw, int rh)
+  {
+  float perX = 1.f / (float)tw;
+  float perY = 1.f / (float)th;
+  float htw = (float)uw * 0.5f * perX;
+  float hth = (float)vh * 0.5f * perY;
+  float hrw = (float)rw * 0.5f;
+  float hrh = (float)rh * 0.5f;
+  
+  float u1, v1;  
+  u1 = (float)pu * perX;
+  v1 = (float)pv * perY;
+  
+  //draw top-left quadrant
+  GL11.glBegin(GL11.GL_QUADS);
+  GL11.glTexCoord2f(u1, v1);
+  GL11.glVertex3f(rx, ry, 0);  
+  GL11.glTexCoord2f(u1, v1+hth);
+  GL11.glVertex3f(rx, ry+hrh, 0);  
+  GL11.glTexCoord2f(u1+htw, v1+hth);
+  GL11.glVertex3f(rx+hrw, ry+hrh, 0);  
+  GL11.glTexCoord2f(u1+htw, v1);
+  GL11.glVertex3f(rx+hrw, ry, 0);    
+  GL11.glEnd();
+  
+  //draw top-right quadrant
+  GL11.glBegin(GL11.GL_QUADS);
+  GL11.glTexCoord2f(u1+htw, v1);
+  GL11.glVertex3f(rx+hrw, ry, 0);  
+  GL11.glTexCoord2f(u1+htw, v1+hth);
+  GL11.glVertex3f(rx+hrw, ry+hrh, 0);  
+  GL11.glTexCoord2f(u1+htw+htw, v1+hth);
+  GL11.glVertex3f(rx+hrw+hrw, ry+hrh, 0);  
+  GL11.glTexCoord2f(u1+htw+htw, v1);
+  GL11.glVertex3f(rx+hrw+hrw, ry, 0);    
+  GL11.glEnd();
+  
+  //draw bottom-left quadrant
+  GL11.glBegin(GL11.GL_QUADS);
+  GL11.glTexCoord2f(u1, v1+hth);
+  GL11.glVertex3f(rx, ry+hrh, 0);  
+  GL11.glTexCoord2f(u1, v1+hth+hth);
+  GL11.glVertex3f(rx, ry+hrh+hrh, 0);  
+  GL11.glTexCoord2f(u1+htw, v1+hth+hth);
+  GL11.glVertex3f(rx+hrw, ry+hrh+hrh, 0);  
+  GL11.glTexCoord2f(u1+htw, v1+hth);
+  GL11.glVertex3f(rx+hrw, ry+hrh, 0); 
+  GL11.glEnd();
+  
+  //draw bottom-right quadrant
+  GL11.glBegin(GL11.GL_QUADS);
+  GL11.glTexCoord2f(u1+htw, v1+hth);
+  GL11.glVertex3f(rx+hrw, ry+hrh, 0);
+  GL11.glTexCoord2f(u1+htw, v1+hth+hth);
+  GL11.glVertex3f(rx+hrw, ry+hrh+hrh, 0);
+  GL11.glTexCoord2f(u1+htw+htw, v1+hth+hth);
+  GL11.glVertex3f(rx+hrw+hrw, ry+hrh+hrh, 0);
+  GL11.glTexCoord2f(u1+htw+htw, v1+hth);
+  GL11.glVertex3f(rx+hrw+hrw, ry+hrh, 0);    
+  GL11.glEnd();
+  }
 }
