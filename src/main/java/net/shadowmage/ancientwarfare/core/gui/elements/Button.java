@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.gui.ActionListener;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.GuiElement;
 
@@ -25,12 +25,12 @@ public Button(int topLeftX, int topLeftY, int width, int height, String text)
   this.width = width;
   this.height = height;
   this.text = text;
-  this.addNewListener(new ActionListener(ActionListener.MOUSE_UP)
+  this.addNewListener(new Listener(Listener.MOUSE_UP)
     {      
     @Override
-    public boolean onActivationEvent(ActivationEvent evt)
+    public boolean onEvent(ActivationEvent evt)
       {
-      if(enabled && visible)
+      if(enabled && visible && isMouseOverElement(evt.mx, evt.my))
         {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));        
         }

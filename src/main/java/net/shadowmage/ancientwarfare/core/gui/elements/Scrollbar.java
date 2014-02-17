@@ -7,9 +7,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.gui.ActionListener;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
+import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
 
 public class Scrollbar extends GuiElement
 {
@@ -24,39 +25,45 @@ int viewSize;
 float viewPercent;
 
 int handleTopMax;//the min that handleTop can move to
-
 int handleTop;//the top of the handle, relative to renderY+borderSize
 int handleWidth;
 int handleHeight;
 
+boolean pressed;//is the mouse pressed down while not over the handle?
 boolean dragging;//is the mouse pressed down while over the handle?
 int lastMouseY;
 
-public Scrollbar(int topLeftX, int topLeftY, int width, int height)
+/**
+ * callback interface for when the view port represented by this scrollbar should be updated
+ * called anytime the handle position is changed or the view-size changes
+ */
+private IScrollableCallback parent;
+
+public Scrollbar(int topLeftX, int topLeftY, int width, int height, IScrollableCallback parentCaller)
   {
   super(topLeftX, topLeftY);
   this.mouseInterface = true;
   this.width = width;
   this.height = height;
+  
   this.viewSize = height - borderSize * 2;
+  
   this.handleTop = 0;
   this.handleHeight = viewSize;
   this.handleWidth = width - borderSize * 2;
-  this.addNewListener(new ActionListener(ActionListener.MOUSE_MOVED)
+   
+  this.setAreaSize(height);
+  
+  this.parent = parentCaller;
+  this.addNewListener(new Listener(Listener.MOUSE_MOVED)
     {
     @Override
-    public boolean onActivationEvent(ActivationEvent evt)
+    public boolean onEvent(ActivationEvent evt)
       {
-//      AWLog.logDebug("mouse moved event on scrollbar");
-      if(!Mouse.isButtonDown(0))
-        {
-        dragging = false;
-        }
       if(dragging)
         {
         int dy = evt.my - lastMouseY;
-        AWLog.logDebug("dragging==true dy: "+dy);
-        handleTop+=dy;
+        handleTop += dy;
         lastMouseY = evt.my;
         updateHandlePosition();
         }
@@ -64,40 +71,68 @@ public Scrollbar(int topLeftX, int topLeftY, int width, int height)
       }
     });
   
-  this.addNewListener(new ActionListener(ActionListener.MOUSE_DOWN)
+  this.addNewListener(new Listener(Listener.MOUSE_DOWN)
     {
     @Override
-    public boolean onActivationEvent(ActivationEvent evt)
+    public boolean onEvent(ActivationEvent evt)
       {
-      AWLog.logDebug("mouse down event on scrollbar");
+      dragging = false;
+      pressed = false;
       lastMouseY = evt.my;
-      dragging = true;
-      return true;
-      }
-    });
-  
-  this.addNewListener(new ActionListener(ActionListener.MOUSE_UP)
-    {      
-    @Override
-    public boolean onActivationEvent(ActivationEvent evt)
-      {
-      if(enabled && visible)
+      if(isMouseOverHandle(evt.mx, evt.my))
         {
-        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));        
+        dragging = true;
+        }  
+      else if(isMouseOverElement(evt.mx, evt.my))
+        {
+        pressed = true;
         }
       return true;
       }
     });
+  
+  this.addNewListener(new Listener(Listener.MOUSE_UP)
+    {
+    @Override
+    public boolean onEvent(ActivationEvent evt)
+      {
+      if(enabled && visible && pressed && isMouseOverElement(evt.mx, evt.my) && !isMouseOverHandle(evt.mx, evt.my))
+        {
+        if(evt.my < renderY + borderSize + handleTop)
+          {
+          handleTop -= handleHeight;      
+          }
+        else
+          {
+          handleTop += handleHeight;
+          }
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+        updateHandlePosition();    
+        }  
+      dragging = false;
+      pressed = false;
+      return true;
+      }
+    }); 
   }
 
+protected boolean isMouseOverHandle(int mouseX, int mouseY)
+  {
+  return mouseX >= renderX + borderSize && mouseX < renderX + width - borderSize && mouseY >= renderY + borderSize +handleTop && mouseY < renderY + borderSize + handleTop + handleHeight;  
+  }
+
+/**
+ * should be called from the instantiating GUI to update the viewed set Height, in pixels.
+ * E.G. if you add 10 elements of 12 pixels high each with 0 padding, you would setAreaSize(120)
+ * the input size may be less than the height of the element, in which case it will view the full
+ * set
+ * @param size
+ */
 public void setAreaSize(int size)
   {
   this.totalAreaSize = size;
   this.viewPercent = (float)((float) viewSize / (float)totalAreaSize);
-  AWLog.logDebug("totalSize: "+totalAreaSize);
-  AWLog.logDebug("viewSize: "+viewSize);
-  AWLog.logDebug("view percent: "+viewPercent);
-  
+  if(this.viewPercent>1.f){this.viewPercent = 1.f;}
   this.updateHandlePosition();
   }
 
@@ -110,21 +145,15 @@ public boolean isMouseOverElement(int mouseX, int mouseY)
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
-  if(!isMouseOverElement(mouseX, mouseY))
+  if(visible)
     {
-    GL11.glColor4f(.8f, .8f, .8f, 1.f);
+    Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
+    renderQuarteredTexture(256, 256, 80, 120, 40, 128, renderX, renderY, width, height);  
+    renderQuarteredTexture(256, 256, 120, 120, 32, 128, renderX+borderSize, renderY+borderSize+handleTop, handleWidth, handleHeight);    
     }
-  else
-    {
-    GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-    }
-  Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
-  renderQuarteredTexture(256, 256, 80, 120, 40, 128, renderX, renderY, width, height);  
-  renderQuarteredTexture(256, 256, 120, 120, 32, 128, renderX+borderSize, renderY+borderSize+handleTop, handleWidth, handleHeight);
-  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
   }
 
-public void updateHandlePosition()
+protected void updateHandlePosition()
   {
   this.handleHeight = (int)((float)viewSize * (float)viewPercent);
   this.handleTopMax = viewSize - handleHeight;;
@@ -135,9 +164,12 @@ public void updateHandlePosition()
   if(this.handleTop<0)
     {
     this.handleTop = 0;
+    }  
+  if(this.parent!=null)
+    {
+    int val = (int) ((float)handleTop * (1.f / viewPercent));
+    this.parent.onScrolled(val);
     }
-  AWLog.logDebug("handle height: "+handleHeight);
-  AWLog.logDebug("handle top: "+handleTop);
   }
 
 }

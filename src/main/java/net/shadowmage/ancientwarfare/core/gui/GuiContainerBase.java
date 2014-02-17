@@ -58,7 +58,7 @@ public void handleMouseInput()
   boolean state = Mouse.getEventButtonState();
   int wheel = Mouse.getEventDWheel();
   
-  int type = button >= 0 ? (state ? ActionListener.MOUSE_DOWN : ActionListener.MOUSE_UP) : wheel!=0 ? ActionListener.MOUSE_WHEEL : ActionListener.MOUSE_MOVED; 
+  int type = button >= 0 ? (state ? Listener.MOUSE_DOWN : Listener.MOUSE_UP) : wheel!=0 ? Listener.MOUSE_WHEEL : Listener.MOUSE_MOVED; 
   ActivationEvent evt = new ActivationEvent(type, button, state, x, y, wheel);
   for(GuiElement element : this.elements)
     {
@@ -73,7 +73,7 @@ public void handleKeyboardInput()
   
   int key = Keyboard.getEventKey();
   boolean state = Keyboard.getEventKeyState();
-  ActivationEvent evt = new ActivationEvent(state ? ActionListener.KEY_DOWN : ActionListener.KEY_UP, key, Keyboard.getEventCharacter(), state);
+  ActivationEvent evt = new ActivationEvent(state ? Listener.KEY_DOWN : Listener.KEY_UP, key, Keyboard.getEventCharacter(), state);
   for(GuiElement element : this.elements)
     {
     element.handleKeyboardInput(evt);

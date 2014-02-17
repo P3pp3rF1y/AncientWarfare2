@@ -20,7 +20,7 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 public abstract class GuiElement
 {
 
-private List<ActionListener> actionListeners = new ArrayList<ActionListener>();
+private List<Listener> actionListeners = new ArrayList<Listener>();
 
 protected boolean mouseInterface;
 protected boolean keyboardInterface;
@@ -79,14 +79,14 @@ public final void updateRenderPosition(int guiLeft, int guiTop)
  */
 public final void handleMouseInput(ActivationEvent evt)
   {
-  if(mouseInterface && visible && enabled && !actionListeners.isEmpty() && isMouseOverElement(evt.mx, evt.my))
+  if(mouseInterface && visible && enabled && !actionListeners.isEmpty())
     {
-    for(ActionListener o : this.actionListeners)
+    for(Listener o : this.actionListeners)
       {
       //   bitwise check of types, if it returns !=0 at least 1 type bit was shared, so should execute
       if((o.type & evt.type)!=0)
         {
-        if(!o.onActivationEvent(evt))
+        if(!o.onEvent(evt))
           {
           break;
           }
@@ -105,12 +105,12 @@ public final void handleKeyboardInput(ActivationEvent evt)
   {
   if(keyboardInterface && visible && enabled && selected && !actionListeners.isEmpty())
     {
-    for(ActionListener o : this.actionListeners)
+    for(Listener o : this.actionListeners)
       {
       //   bitwise check of types, if it returns !=0 at least 1 type bit was shared, so should execute
       if((o.type & evt.type)!=0)
         {
-        if(!o.onActivationEvent(evt))
+        if(!o.onEvent(evt))
           {
           break;
           }
@@ -119,7 +119,7 @@ public final void handleKeyboardInput(ActivationEvent evt)
     }
   }
 
-public final void addNewListener(ActionListener listener)
+public final void addNewListener(Listener listener)
   {
   listener.setElement(this);
   this.actionListeners.add(listener);

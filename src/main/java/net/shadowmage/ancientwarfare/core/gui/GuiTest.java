@@ -26,7 +26,7 @@ public void initElements()
 //  testButton = new Button(10, 10, 60, 20, "TestButton");
 //  this.addGuiElement(testButton);
   
-  Scrollbar bar = new Scrollbar(30, 30, 20, 100);
+  Scrollbar bar = new Scrollbar(30, 30, 20, 100, null);
   this.addGuiElement(bar);
   bar.setAreaSize(200);
   }

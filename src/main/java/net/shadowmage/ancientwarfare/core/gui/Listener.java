@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.core.gui;
 
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 
-public abstract class ActionListener
+public abstract class Listener
 {
 public static final int KEY_UP = 0;
 public static final int KEY_DOWN = 1;
@@ -19,7 +19,7 @@ public GuiElement getElement()
   return element;
   }
 
-public ActionListener(int type)
+public Listener(int type)
   {
   this.type = type;
   }
@@ -29,6 +29,6 @@ public void setElement(GuiElement element)
   this.element = element;
   }
 
-public abstract boolean onActivationEvent(ActivationEvent evt);
+public abstract boolean onEvent(ActivationEvent evt);
 
 }
