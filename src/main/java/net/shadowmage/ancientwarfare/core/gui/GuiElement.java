@@ -35,6 +35,9 @@ private int topLeftY;
 protected int renderX;
 protected int renderY;
 
+protected int width;
+protected int height;
+
 protected static ResourceLocation backgroundTextureLocation;
 protected static ResourceLocation widgetTexture1;
 protected static ResourceLocation widgetTexture2;
@@ -53,6 +56,13 @@ public GuiElement(int topLeftX, int topLeftY)
   this.enabled = true;
   this.visible = true;
   this.selected = true;
+  }
+
+public GuiElement(int topLeftX, int topLeftY, int width, int height)
+  {
+  this(topLeftX, topLeftY);
+  this.width = width;
+  this.height = height;
   }
 
 /**
@@ -119,13 +129,32 @@ public final void handleKeyboardInput(ActivationEvent evt)
     }
   }
 
+/**
+ * add a new event listener to this element
+ * if the element is not set to receive those event types
+ * --auto-flag the element to receive those events
+ * @param listener the new listener to add
+ */
 public final void addNewListener(Listener listener)
   {
   listener.setElement(this);
   this.actionListeners.add(listener);
+  int mouseTypes = Listener.MOUSE_DOWN | Listener.MOUSE_MOVED | Listener.MOUSE_UP | Listener.MOUSE_WHEEL;
+  int keyTypes = Listener.KEY_DOWN | Listener.KEY_UP;
+  if((listener.type & mouseTypes)!=0)
+    {
+    this.mouseInterface = true;
+    }
+  if((listener.type & keyTypes)!=0)
+    {
+    this.keyboardInterface = true;
+    }
   }
 
-public abstract boolean isMouseOverElement(int mouseX, int mouseY);
+public final boolean isMouseOverElement(int mouseX, int mouseY)
+  {
+  return mouseX >= renderX && mouseX < renderX + width && mouseY >= renderY && mouseY < renderY + height;
+  }
 
 public abstract void render(int mouseX, int mouseY, float partialTick);//called from gui to draw this element
 

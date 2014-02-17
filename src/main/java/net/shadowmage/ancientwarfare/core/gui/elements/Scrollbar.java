@@ -17,9 +17,6 @@ public class Scrollbar extends GuiElement
 
 static final int borderSize = 4;//the border around the scroll bar and handle
 
-int width;
-int height;
-
 int totalAreaSize;
 int viewSize;
 float viewPercent;
@@ -41,11 +38,8 @@ private IScrollableCallback parent;
 
 public Scrollbar(int topLeftX, int topLeftY, int width, int height, IScrollableCallback parentCaller)
   {
-  super(topLeftX, topLeftY);
-  this.mouseInterface = true;
-  this.width = width;
-  this.height = height;
-  
+  super(topLeftX, topLeftY, width, height);
+    
   this.viewSize = height - borderSize * 2;
   
   this.handleTop = 0;
@@ -134,12 +128,6 @@ public void setAreaSize(int size)
   this.viewPercent = (float)((float) viewSize / (float)totalAreaSize);
   if(this.viewPercent>1.f){this.viewPercent = 1.f;}
   this.updateHandlePosition();
-  }
-
-@Override
-public boolean isMouseOverElement(int mouseX, int mouseY)
-  {
-  return mouseX >= renderX && mouseX < renderX + width && mouseY >= renderY && mouseY < renderY + height;
   }
 
 @Override

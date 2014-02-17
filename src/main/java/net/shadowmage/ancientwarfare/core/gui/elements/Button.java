@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
@@ -12,16 +13,14 @@ import net.shadowmage.ancientwarfare.core.gui.GuiElement;
 public class Button extends GuiElement
 {
 
-int width;
-int height;
+FontRenderer fr;
 String text;
 int textX;
 int textY;
 
 public Button(int topLeftX, int topLeftY, int width, int height, String text)
   {
-  super(topLeftX, topLeftY);
-  this.mouseInterface = true;
+  super(topLeftX, topLeftY, width, height);
   this.width = width;
   this.height = height;
   this.text = text;
@@ -38,12 +37,10 @@ public Button(int topLeftX, int topLeftY, int width, int height, String text)
       }
     });
   
-  }
-
-@Override
-public boolean isMouseOverElement(int mouseX, int mouseY)
-  {
-  return mouseX >= renderX && mouseX < renderX + width && mouseY >= renderY && mouseY < renderY + height;
+  fr = Minecraft.getMinecraft().fontRenderer;
+  int tw = fr.getStringWidth(text);
+  textX = (width - tw)/2;
+  textY = (height - 8)/2; 
   }
 
 @Override
@@ -55,9 +52,12 @@ public void render(int mouseX, int mouseY, float partialTick)
     int textureSize = 256;
     int startX = 0;
     int startY = enabled ? isMouseOverElement(mouseX, mouseY) ? 80 : 40 : 0;
+    int textColor = startY==80 ? 0xa0a0a0ff : 0xffffffff;//grey or white
     int usedWidth = 256;
     int usedHeight = 40;  
-    renderQuarteredTexture(textureSize, textureSize, startX, startY, usedWidth, usedHeight, renderX, renderY, width, height);    
+    renderQuarteredTexture(textureSize, textureSize, startX, startY, usedWidth, usedHeight, renderX, renderY, width, height);
+    fr.drawStringWithShadow(text, renderX+textX, renderY+textY, textColor);
+    GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     }  
   }
 
