@@ -124,6 +124,11 @@ protected void resetViewport()
 public void updateRenderPosition(int guiLeft, int guiTop)
   {
   super.updateRenderPosition(guiLeft, guiTop);
+  updateElementPositions();
+  }
+
+protected void updateElementPositions()
+  {
   for(GuiElement element : this.elements)
     {
     element.updateRenderPosition(0, 0);

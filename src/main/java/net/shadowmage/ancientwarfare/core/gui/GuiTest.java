@@ -48,8 +48,9 @@ public void initElements()
   
   tab.addGuiElement("Test1", new Button(10, 10, 24, 16, "test"));
   
-  Checkbox box = new Checkbox(100, 50, 12, 12, "TestBox");
-  this.addGuiElement(box);
+  Checkbox box = new Checkbox(10, 10, 16, 16, "TestBox");
+  tab.addGuiElement("Test2", box);
+//  this.addGuiElement(box);
   }
 
 }

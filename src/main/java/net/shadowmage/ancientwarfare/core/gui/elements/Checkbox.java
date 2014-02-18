@@ -32,6 +32,13 @@ public class Checkbox extends GuiElement
 private boolean checked = false;
 String label;
 
+/** 
+ * @param topLeftX
+ * @param topLeftY
+ * @param width
+ * @param height
+ * @param label (optional -- use null for none)
+ */
 public Checkbox(int topLeftX, int topLeftY, int width, int height, String label)
   {
   super(topLeftX, topLeftY, width, height);

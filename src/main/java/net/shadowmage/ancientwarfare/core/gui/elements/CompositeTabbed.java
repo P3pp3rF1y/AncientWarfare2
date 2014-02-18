@@ -163,6 +163,10 @@ public void onTabSelected(Tab tab)
     }
   tab.setSelected(true);
   this.currentTab = tab;
+  for(GuiElement element : this.tabElements.get(currentTab))
+    {
+    element.updateRenderPosition(0, hasTopTabs? 13 : 0);
+    }
   }
 
 @Override
@@ -193,9 +197,8 @@ public void render(int mouseX, int mouseY, float partialTick)
   }
 
 @Override
-public void updateRenderPosition(int guiLeft, int guiTop)
+protected void updateElementPositions()
   {
-  super.updateRenderPosition(guiLeft, guiTop);
   for(GuiElement element : this.tabElements.get(currentTab))
     {
     element.updateRenderPosition(0, hasTopTabs? 13 : 0);
