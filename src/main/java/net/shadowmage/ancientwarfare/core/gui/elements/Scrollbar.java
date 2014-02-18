@@ -30,6 +30,8 @@ boolean pressed;//is the mouse pressed down while not over the handle?
 boolean dragging;//is the mouse pressed down while over the handle?
 int lastMouseY;
 
+int topIndex;
+
 /**
  * callback interface for when the view port represented by this scrollbar should be updated
  * called anytime the handle position is changed or the view-size changes
@@ -112,7 +114,7 @@ public Scrollbar(int topLeftX, int topLeftY, int width, int height, IScrollableC
 
 protected boolean isMouseOverHandle(int mouseX, int mouseY)
   {
-  return mouseX >= renderX + borderSize && mouseX < renderX + width - borderSize && mouseY >= renderY + borderSize +handleTop && mouseY < renderY + borderSize + handleTop + handleHeight;  
+  return mouseX >= renderX + borderSize && mouseX < renderX + getWidth() - borderSize && mouseY >= renderY + borderSize +handleTop && mouseY < renderY + borderSize + handleTop + handleHeight;  
   }
 
 /**
@@ -126,7 +128,10 @@ public void setAreaSize(int size)
   {
   this.totalAreaSize = size;
   this.viewPercent = (float)((float) viewSize / (float)totalAreaSize);
-  if(this.viewPercent>1.f){this.viewPercent = 1.f;}
+  if(this.viewPercent>1.f)
+    {
+    this.viewPercent = 1.f;
+    }  
   this.updateHandlePosition();
   }
 
@@ -136,7 +141,7 @@ public void render(int mouseX, int mouseY, float partialTick)
   if(visible)
     {
     Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
-    renderQuarteredTexture(256, 256, 80, 120, 40, 128, renderX, renderY, width, height);  
+    renderQuarteredTexture(256, 256, 80, 120, 40, 128, renderX, renderY, getWidth(), height);  
     renderQuarteredTexture(256, 256, 120, 120, 32, 128, renderX+borderSize, renderY+borderSize+handleTop, handleWidth, handleHeight);    
     }
   }
@@ -155,9 +160,14 @@ protected void updateHandlePosition()
     }  
   if(this.parent!=null)
     {
-    int val = (int) ((float)handleTop * (1.f / viewPercent));
-    this.parent.onScrolled(val);
+    topIndex = (int) ((float)handleTop * (1.f / viewPercent));
+    this.parent.onScrolled(topIndex);
     }
+  }
+
+public int getTopIndex()
+  {
+  return topIndex;
   }
 
 }

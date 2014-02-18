@@ -27,7 +27,7 @@ protected boolean keyboardInterface;
 
 protected boolean enabled;
 protected boolean visible;
-protected boolean selected;//isFocused -- for text-input lines / etc
+private boolean selected;//isFocused -- for text-input lines / etc
 
 private int topLeftX;
 private int topLeftY;
@@ -35,7 +35,7 @@ private int topLeftY;
 protected int renderX;
 protected int renderY;
 
-protected int width;
+private int width;
 protected int height;
 
 protected static ResourceLocation backgroundTextureLocation;
@@ -118,7 +118,7 @@ public final void handleMouseInput(ActivationEvent evt)
  */
 public final void handleKeyboardInput(ActivationEvent evt)
   {
-  if(keyboardInterface && visible && enabled && selected && !actionListeners.isEmpty())
+  if(keyboardInterface && visible && enabled && selected() && !actionListeners.isEmpty())
     {
     for(Listener o : this.actionListeners)
       {
@@ -212,6 +212,26 @@ protected void renderTexturedQuad(float x1, float y1, float x2, float y2, float 
   GL11.glTexCoord2f(u2, v1);
   GL11.glVertex2f(x2, y1);
   GL11.glEnd();
+  }
+
+public boolean selected()
+  {
+    return selected;
+  }
+
+public void setSelected(boolean selected)
+  {
+    this.selected = selected;
+  }
+
+public int getWidth()
+  {
+    return width;
+  }
+
+public void setWidth(int width)
+  {
+    this.width = width;
   }
 
 }

@@ -2,7 +2,10 @@ package net.shadowmage.ancientwarfare.core.gui;
 
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeTabbed;
 import net.shadowmage.ancientwarfare.core.gui.elements.Scrollbar;
+import net.shadowmage.ancientwarfare.core.gui.elements.Tab;
 
 public class GuiTest extends GuiContainerBase
 {
@@ -29,6 +32,20 @@ public void initElements()
   Scrollbar bar = new Scrollbar(30, 30, 20, 100, null);
   this.addGuiElement(bar);
   bar.setAreaSize(200);
+  
+  CompositeScrolled com = new CompositeScrolled(50, 50, 50, 50);  
+  this.addGuiElement(com);
+  com.setAreaSize(200);  
+  com.addGuiElement(new Button(5, 5, 100, 20, "TestButton2"));
+  
+  CompositeTabbed tab = new CompositeTabbed(50, 100, 100, 100);  
+  tab.addTab("Test1", true);
+  tab.addTab("Test2", true);
+  tab.addTab("Test3", false);
+  tab.addTab("Test4", false);
+  this.addGuiElement(tab);
+  
+  tab.addGuiElement("Test1", new Button(10, 10, 24, 16, "test"));
   }
 
 }

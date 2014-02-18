@@ -16,7 +16,7 @@ public Label(int topLeftX, int topLeftY, String text)
   this.text = text;
   this.height = 8;
   fr = Minecraft.getMinecraft().fontRenderer;
-  this.width = fr.getStringWidth(text);
+  this.setWidth(fr.getStringWidth(text));
   }
 
 @Override
