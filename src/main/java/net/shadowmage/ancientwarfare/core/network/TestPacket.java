@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.core.network;
 
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import io.netty.buffer.ByteBuf;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class TestPacket extends PacketBase
 {

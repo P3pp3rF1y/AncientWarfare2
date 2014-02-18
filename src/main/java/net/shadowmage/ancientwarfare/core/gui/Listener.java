@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 
 public abstract class Listener
 {

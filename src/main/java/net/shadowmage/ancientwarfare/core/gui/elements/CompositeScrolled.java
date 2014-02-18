@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
-import net.shadowmage.ancientwarfare.core.gui.GuiElement;
 import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
 
 public class CompositeScrolled extends Composite implements IScrollableCallback

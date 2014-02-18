@@ -3,9 +3,8 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.gui.GuiElement;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
 
 /**
  * Simple checkbox w/ label;<br><br>

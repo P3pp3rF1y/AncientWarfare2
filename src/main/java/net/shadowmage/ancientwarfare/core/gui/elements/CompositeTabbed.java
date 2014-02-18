@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.core.gui.GuiElement;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITabCallback;
 
 /**
@@ -87,7 +86,7 @@ public void addTab(String tabName, boolean top)
     {
     if(t.top == top)
       {
-      w += t.getWidth();      
+      w += t.width;      
       }
     }
   Tab t = new Tab(w, top ? 0 : height - 16, top, tabName, this);
@@ -194,7 +193,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     height-=13;
     }
   if(hasBottomTabs){height-=13;}
-  this.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, topY, getWidth(), height);
+  this.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, topY, width, height);
   setViewport();
   for(GuiElement element : this.tabs.values())
     {

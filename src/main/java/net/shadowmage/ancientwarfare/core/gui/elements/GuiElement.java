@@ -1,13 +1,13 @@
-package net.shadowmage.ancientwarfare.core.gui;
+package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
+
+import org.lwjgl.opengl.GL11;
 
 /**
  * base GUI Element class
@@ -27,10 +27,10 @@ protected boolean keyboardInterface;
 
 protected boolean enabled;
 protected boolean visible;
-private boolean selected;//isFocused -- for text-input lines / etc
+protected boolean selected;//isFocused -- for text-input lines / etc
 
-private int topLeftX;
-private int topLeftY;
+protected int topLeftX;
+protected int topLeftY;
 
 protected int renderX;
 protected int renderY;
@@ -216,22 +216,12 @@ protected void renderTexturedQuad(float x1, float y1, float x2, float y2, float 
 
 public boolean selected()
   {
-    return selected;
+  return selected;
   }
 
 public void setSelected(boolean selected)
   {
-    this.selected = selected;
-  }
-
-public int getWidth()
-  {
-    return width;
-  }
-
-public void setWidth(int width)
-  {
-    this.width = width;
+  this.selected = selected;
   }
 
 }

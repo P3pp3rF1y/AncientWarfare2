@@ -4,8 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.gui.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITabCallback;
@@ -27,7 +25,7 @@ public Tab(int topLeftX, int topLeftY, boolean top, String label, ITabCallback p
   {
   super(topLeftX, topLeftY);
   fr = Minecraft.getMinecraft().fontRenderer;
-  this.setWidth(fr.getStringWidth(label)+6);
+  this.width = fr.getStringWidth(label)+6;
   this.label = label;
   this.height = 14;
   this.parent = parentCaller;
@@ -37,7 +35,6 @@ public Tab(int topLeftX, int topLeftY, boolean top, String label, ITabCallback p
     @Override
     public boolean onEvent(ActivationEvent evt)
       {
-      AWLog.logDebug("tab click event...");
       if(visible && enabled && !selected() && isMouseOverElement(evt.mx, evt.my))
         {
         setSelected(true);
@@ -58,7 +55,7 @@ public void render(int mouseX, int mouseY, float partialTick)
   if(visible)
     {
     int y = 162;
-    if(selected())
+    if(selected)
       {
       y = 138;
       }
@@ -67,7 +64,7 @@ public void render(int mouseX, int mouseY, float partialTick)
       y += 48;
       }
     Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
-    renderQuarteredTexture(256, 256, 152, y, 104, 24, renderX, renderY, getWidth(), 16);    
+    renderQuarteredTexture(256, 256, 152, y, 104, 24, renderX, renderY, width, 16);    
     fr.drawStringWithShadow(label, renderX+3, renderY+4, 0xffffffff);
     }
   }

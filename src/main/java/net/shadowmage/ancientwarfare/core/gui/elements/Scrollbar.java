@@ -1,15 +1,10 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
-import net.shadowmage.ancientwarfare.core.gui.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
 
 public class Scrollbar extends GuiElement
@@ -114,7 +109,7 @@ public Scrollbar(int topLeftX, int topLeftY, int width, int height, IScrollableC
 
 protected boolean isMouseOverHandle(int mouseX, int mouseY)
   {
-  return mouseX >= renderX + borderSize && mouseX < renderX + getWidth() - borderSize && mouseY >= renderY + borderSize +handleTop && mouseY < renderY + borderSize + handleTop + handleHeight;  
+  return mouseX >= renderX + borderSize && mouseX < renderX + width - borderSize && mouseY >= renderY + borderSize +handleTop && mouseY < renderY + borderSize + handleTop + handleHeight;  
   }
 
 /**
@@ -141,7 +136,7 @@ public void render(int mouseX, int mouseY, float partialTick)
   if(visible)
     {
     Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
-    renderQuarteredTexture(256, 256, 80, 120, 40, 128, renderX, renderY, getWidth(), height);  
+    renderQuarteredTexture(256, 256, 80, 120, 40, 128, renderX, renderY, width, height);  
     renderQuarteredTexture(256, 256, 120, 120, 32, 128, renderX+borderSize, renderY+borderSize+handleTop, handleWidth, handleHeight);    
     }
   }

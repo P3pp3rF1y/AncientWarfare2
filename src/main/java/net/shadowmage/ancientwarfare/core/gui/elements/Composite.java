@@ -3,15 +3,14 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.shadowmage.ancientwarfare.core.gui.GuiElement;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
+
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+
 
 /**
  * base class for gui elements that contain other elements
@@ -89,10 +88,14 @@ public void render(int mouseX, int mouseY, float partialTick)
     mouseY = Integer.MIN_VALUE;
     }  
   Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
-  this.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, getWidth(), height);  
+  this.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, width, height);  
   setViewport();
   for(GuiElement element : this.elements)
     {
+    if(element.renderY > height || element.renderY + element.height <0)
+      {
+      continue;
+      }
     element.render(mouseX, mouseY, partialTick);
     }    
   resetViewport();
@@ -109,7 +112,7 @@ protected void setViewport()
   GL11.glPushMatrix();
   ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
   int guiScale = scaledRes.getScaleFactor();
-  float w = this.getWidth() * guiScale;
+  float w = this.width * guiScale;
   float h = height * guiScale;
   float x = renderX*guiScale;  
   float y = Display.getHeight() - h - renderY*guiScale;  

@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.shadowmage.ancientwarfare.core.gui.GuiElement;
 
 public class Label extends GuiElement
 {
@@ -16,7 +15,7 @@ public Label(int topLeftX, int topLeftY, String text)
   this.text = text;
   this.height = 8;
   fr = Minecraft.getMinecraft().fontRenderer;
-  this.setWidth(fr.getStringWidth(text));
+  this.width = fr.getStringWidth(text);
   }
 
 @Override

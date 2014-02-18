@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.core.gui.GuiElement;
 
 public class ProgressBar extends GuiElement
 {

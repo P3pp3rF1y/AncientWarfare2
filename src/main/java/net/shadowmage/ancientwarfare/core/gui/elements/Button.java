@@ -1,14 +1,13 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
-import net.shadowmage.ancientwarfare.core.gui.GuiElement;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
+
+import org.lwjgl.opengl.GL11;
 
 public class Button extends GuiElement
 {
@@ -20,9 +19,7 @@ int textY;
 
 public Button(int topLeftX, int topLeftY, int width, int height, String text)
   {
-  super(topLeftX, topLeftY, width, height);
-  this.setWidth(width);
-  this.height = height;
+  super(topLeftX, topLeftY, width, height);  
   this.text = text;
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {      

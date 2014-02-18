@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.core.config;
 
-import org.apache.logging.log4j.Level;
-
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+
+import org.apache.logging.log4j.Level;
 
 public class AWLog
 {
