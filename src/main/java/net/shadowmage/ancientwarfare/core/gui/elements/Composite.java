@@ -50,19 +50,22 @@ protected void addDefaultListeners()
         }
       else if((evt.type & Listener.MOUSE_TYPES) != 0)
         {
-        /**
-         * adjust mouse event position for relative to composite
-         */
-        int x = evt.mx;
-        int y = evt.my;
-        evt.mx-=renderX;
-        evt.my-=renderY;
-        for(GuiElement element : elements)
+        if(isMouseOverElement(evt.mx, evt.my))
           {
-          element.handleMouseInput(evt);
+          /**
+           * adjust mouse event position for relative to composite
+           */
+          int x = evt.mx;
+          int y = evt.my;
+          evt.mx-=renderX;
+          evt.my-=renderY;
+          for(GuiElement element : elements)
+            {
+            element.handleMouseInput(evt);
+            }
+          evt.mx = x;
+          evt.my = y;
           }
-        evt.mx = x;
-        evt.my = y;
         }
       return true;
       }
@@ -75,10 +78,18 @@ public void render(int mouseX, int mouseY, float partialTick)
   /**
    * adjust mouse input position for relative to composite
    */
-  mouseX-=renderX;
-  mouseY-=renderY;
+  if(isMouseOverElement(mouseX, mouseY))
+    {
+    mouseX-=renderX;
+    mouseY-=renderY;
+    }
+  else
+    {
+    mouseX = Integer.MIN_VALUE;
+    mouseY = Integer.MIN_VALUE;
+    }  
   Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
-  this.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, getWidth(), height);
+  this.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, getWidth(), height);  
   setViewport();
   for(GuiElement element : this.elements)
     {

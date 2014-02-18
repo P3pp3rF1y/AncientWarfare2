@@ -54,23 +54,26 @@ protected void addDefaultListeners()
         }
       else if((evt.type & Listener.MOUSE_TYPES) != 0)
         {
-        /**
-         * adjust mouse event position for relative to composite
-         */
-        int x = evt.mx;
-        int y = evt.my;
-        evt.mx-=renderX;
-        evt.my-=renderY;         
-        for(GuiElement element : tabElements.get(currentTab))
+        if(isMouseOverElement(evt.mx, evt.my))
           {
-          element.handleMouseInput(evt);
+          /**
+           * adjust mouse event position for relative to composite
+           */
+          int x = evt.mx;
+          int y = evt.my;
+          evt.mx-=renderX;
+          evt.my-=renderY;         
+          for(GuiElement element : tabElements.get(currentTab))
+            {
+            element.handleMouseInput(evt);
+            }
+          for(GuiElement element : elements)
+            {
+            element.handleMouseInput(evt);
+            }
+          evt.mx = x;
+          evt.my = y;
           }
-        for(GuiElement element : elements)
-          {
-          element.handleMouseInput(evt);
-          }
-        evt.mx = x;
-        evt.my = y;
         }
       return true;
       }
@@ -89,14 +92,14 @@ public void addTab(String tabName, boolean top)
     }
   Tab t = new Tab(w, top ? 0 : height - 16, top, tabName, this);
   this.tabs.put(tabName, t); 
+  this.elements.add(t);
+  this.tabElements.put(t, new ArrayList<GuiElement>());
   if(currentTab==null)
     {
     this.onTabSelected(t);
     }
   if(top){this.hasTopTabs = true;}
   else{this.hasBottomTabs = true;}
-  this.elements.add(t);
-  this.tabElements.put(t, new ArrayList<GuiElement>());
   }
 
 @Override
@@ -157,12 +160,12 @@ public void setActiveTab(String tabName)
 @Override
 public void onTabSelected(Tab tab)
   {
+  this.currentTab = tab;
   for(GuiElement t : this.tabs.values())
     {
     t.setSelected(false);
     }
   tab.setSelected(true);
-  this.currentTab = tab;
   for(GuiElement element : this.tabElements.get(currentTab))
     {
     element.updateRenderPosition(0, hasTopTabs? 13 : 0);
@@ -172,8 +175,16 @@ public void onTabSelected(Tab tab)
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
-  mouseX-=renderX;
-  mouseY-=renderY;
+  if(isMouseOverElement(mouseX, mouseY))
+    {
+    mouseX-=renderX;
+    mouseY-=renderY;
+    }
+  else
+    {
+    mouseX = Integer.MIN_VALUE;
+    mouseY = Integer.MIN_VALUE;
+    } 
   Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
   int topY = renderY;
   int height = this.height;
@@ -199,6 +210,10 @@ public void render(int mouseX, int mouseY, float partialTick)
 @Override
 protected void updateElementPositions()
   {
+  for(GuiElement element : this.elements)
+    {
+    element.updateRenderPosition(0, 0);
+    }
   for(GuiElement element : this.tabElements.get(currentTab))
     {
     element.updateRenderPosition(0, hasTopTabs? 13 : 0);

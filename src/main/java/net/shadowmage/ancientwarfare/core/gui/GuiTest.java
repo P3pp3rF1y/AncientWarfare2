@@ -5,8 +5,8 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeTabbed;
+import net.shadowmage.ancientwarfare.core.gui.elements.ProgressBar;
 import net.shadowmage.ancientwarfare.core.gui.elements.Scrollbar;
-import net.shadowmage.ancientwarfare.core.gui.elements.Tab;
 
 public class GuiTest extends GuiContainerBase
 {
@@ -51,6 +51,10 @@ public void initElements()
   Checkbox box = new Checkbox(10, 10, 16, 16, "TestBox");
   tab.addGuiElement("Test2", box);
 //  this.addGuiElement(box);
+  
+  ProgressBar bar1 = new ProgressBar(100, 50, 120, 20);
+  bar1.setProgress(.5f);
+  this.addGuiElement(bar1);
   }
 
 }
