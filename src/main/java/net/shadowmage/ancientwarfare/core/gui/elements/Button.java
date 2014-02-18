@@ -55,7 +55,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     int textColor = startY==80 ? 0xa0a0a0ff : 0xffffffff;//grey or white
     int usedWidth = 256;
     int usedHeight = 40;  
-    renderQuarteredTexture(textureSize, textureSize, startX, startY, usedWidth, usedHeight, renderX, renderY, getWidth(), height);
+    renderQuarteredTexture(textureSize, textureSize, startX, startY, usedWidth, usedHeight, renderX, renderY, width, height);
     fr.drawStringWithShadow(text, renderX+textX, renderY+textY, textColor);
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     }  

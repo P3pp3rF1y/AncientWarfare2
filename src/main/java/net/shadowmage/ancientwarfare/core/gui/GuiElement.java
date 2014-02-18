@@ -35,7 +35,7 @@ private int topLeftY;
 protected int renderX;
 protected int renderY;
 
-private int width;
+protected int width;
 protected int height;
 
 protected static ResourceLocation backgroundTextureLocation;

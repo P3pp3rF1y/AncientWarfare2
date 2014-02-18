@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.gui;
 
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeTabbed;
 import net.shadowmage.ancientwarfare.core.gui.elements.Scrollbar;
@@ -46,6 +47,9 @@ public void initElements()
   this.addGuiElement(tab);
   
   tab.addGuiElement("Test1", new Button(10, 10, 24, 16, "test"));
+  
+  Checkbox box = new Checkbox(100, 50, 12, 12, "TestBox");
+  this.addGuiElement(box);
   }
 
 }
