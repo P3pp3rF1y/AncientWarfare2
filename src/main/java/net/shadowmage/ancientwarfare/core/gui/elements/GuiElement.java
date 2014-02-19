@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 
@@ -118,7 +119,7 @@ public final void handleMouseInput(ActivationEvent evt)
  */
 public final void handleKeyboardInput(ActivationEvent evt)
   {
-  if(keyboardInterface && visible && enabled && selected() && !actionListeners.isEmpty())
+  if(keyboardInterface && visible && enabled && !actionListeners.isEmpty())
     {
     for(Listener o : this.actionListeners)
       {

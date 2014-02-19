@@ -68,6 +68,14 @@ protected void addDefaultListeners()
           }
         else
           {
+          if(evt.type==Listener.MOUSE_UP)
+            {
+            for(GuiElement element : elements)
+              {
+              element.setSelected(false);
+              }
+            }
+          //handle mouse leaving window, cancel scrollbar interaction
           scrollbar.dragging = false;
           scrollbar.pressed = false;
           }

@@ -28,6 +28,8 @@ public Composite(int topLeftX, int topLeftY, int width, int height)
   {
   super(topLeftX, topLeftY, width, height); 
   addDefaultListeners();
+  this.keyboardInterface = true;
+  this.mouseInterface = true;
   }
 
 /**
@@ -64,6 +66,13 @@ protected void addDefaultListeners()
             }
           evt.mx = x;
           evt.my = y;
+          }
+        else if(evt.type==Listener.MOUSE_UP)
+          {
+          for(GuiElement element : elements)
+            {
+            element.setSelected(false);
+            }
           }
         }
       return true;

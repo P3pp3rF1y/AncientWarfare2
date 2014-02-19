@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeTabbed;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.ProgressBar;
+import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 
 public class GuiTest extends GuiContainerBase
 {
@@ -50,6 +51,11 @@ public void initElements()
   
   ItemSlot slot = new ItemSlot(0, 50, new ItemStack(Items.stick));
   this.addGuiElement(slot);
+  
+  Text text = new Text(0, 30, 150, "TestText");
+  tab.addGuiElement(text);
+//  this.addGuiElement(text);
+//  text.setSelected(true);
   }
 
 }

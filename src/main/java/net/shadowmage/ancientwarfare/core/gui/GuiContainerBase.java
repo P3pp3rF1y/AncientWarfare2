@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
@@ -70,8 +71,7 @@ public void handleMouseInput()
 @Override
 public void handleKeyboardInput()
   {
-  super.handleKeyboardInput();
-  
+  super.handleKeyboardInput();  
   int key = Keyboard.getEventKey();
   boolean state = Keyboard.getEventKeyState();
   ActivationEvent evt = new ActivationEvent(state ? Listener.KEY_DOWN : Listener.KEY_UP, key, Keyboard.getEventCharacter(), state);

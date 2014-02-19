@@ -5,12 +5,12 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 
 public abstract class Listener
 {
-public static final int KEY_UP = 0;
-public static final int KEY_DOWN = 1;
-public static final int MOUSE_UP = 2;
-public static final int MOUSE_DOWN = 4;
-public static final int MOUSE_WHEEL = 8;
-public static final int MOUSE_MOVED = 16;
+public static final int KEY_UP = 1;
+public static final int KEY_DOWN = 2;
+public static final int MOUSE_UP = 4;
+public static final int MOUSE_DOWN = 8;
+public static final int MOUSE_WHEEL = 16;
+public static final int MOUSE_MOVED = 32;
 
 public static final int KEY_TYPES = 0 + 1;
 public static final int MOUSE_TYPES = 2 + 4 + 8 + 16;

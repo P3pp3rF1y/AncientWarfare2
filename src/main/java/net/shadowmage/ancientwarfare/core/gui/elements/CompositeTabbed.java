@@ -73,6 +73,13 @@ protected void addDefaultListeners()
           evt.mx = x;
           evt.my = y;
           }
+        else if(evt.type==Listener.MOUSE_UP)
+          {
+          for(GuiElement element : tabElements.get(currentTab))
+            {
+            element.setSelected(false);
+            }
+          }
         }
       return true;
       }
