@@ -49,7 +49,7 @@ public void initElements()
   bar1.setProgress(.5f);
   this.addGuiElement(bar1);
   
-  ItemSlot slot = new ItemSlot(0, 50, new ItemStack(Items.stick));
+  ItemSlot slot = new ItemSlot(0, 50, new ItemStack(Items.stick), this);
   this.addGuiElement(slot);
   
   Text text = new Text(0, 30, 150, "TestText");

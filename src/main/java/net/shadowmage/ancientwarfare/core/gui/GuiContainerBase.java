@@ -12,12 +12,13 @@ import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
+import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-public abstract class GuiContainerBase extends GuiContainer implements IContainerGuiCallback
+public abstract class GuiContainerBase extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer
 {
 
 private boolean initDone = false;
@@ -42,6 +43,16 @@ public GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, Strin
     this.backgroundTextureName = backgroundTexture;
     this.backgroundTexture = new ResourceLocation(Statics.coreModID, "textures/gui/"+backgroundTextureName);    
     }
+  }
+
+@Override
+public void handleTooltipRender(ItemStack stack)
+  {
+  int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+  int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+  this.tooltipStack = stack;
+  this.tooltipX = x;
+  this.tooltipY = y;
   }
 
 protected void addGuiElement(GuiElement element)

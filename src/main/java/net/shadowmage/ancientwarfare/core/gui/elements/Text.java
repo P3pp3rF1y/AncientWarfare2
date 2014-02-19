@@ -102,7 +102,6 @@ public void render(int mouseX, int mouseY, float partialTick)
     }
 
   GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.f);
-//  GL11.glEnable(GL11.GL_LIGHTING);
   }
 
 }
