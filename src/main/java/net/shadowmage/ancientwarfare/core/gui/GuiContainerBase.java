@@ -86,6 +86,7 @@ public void handleKeyboardInput()
   int key = Keyboard.getEventKey();
   boolean state = Keyboard.getEventKeyState();
   ActivationEvent evt = new ActivationEvent(state ? Listener.KEY_DOWN : Listener.KEY_UP, key, Keyboard.getEventCharacter(), state);
+  char ch = Keyboard.getEventCharacter();
   for(GuiElement element : this.elements)
     {
     element.handleKeyboardInput(evt);

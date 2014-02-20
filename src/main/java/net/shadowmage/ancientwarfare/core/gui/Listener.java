@@ -12,8 +12,8 @@ public static final int MOUSE_DOWN = 8;
 public static final int MOUSE_WHEEL = 16;
 public static final int MOUSE_MOVED = 32;
 
-public static final int KEY_TYPES = 0 + 1;
-public static final int MOUSE_TYPES = 2 + 4 + 8 + 16;
+public static final int KEY_TYPES = KEY_UP + KEY_DOWN;
+public static final int MOUSE_TYPES = MOUSE_UP + MOUSE_DOWN + MOUSE_WHEEL + MOUSE_MOVED;
 public static final int ALL_EVENTS = 0xffffffff;
 
 public final int type;

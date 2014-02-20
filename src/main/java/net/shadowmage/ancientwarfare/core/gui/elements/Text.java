@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
@@ -20,13 +21,21 @@ public class Text extends GuiElement
 String text;
 int cursorIndex;
 FontRenderer fr;
+boolean charInput;
+boolean numInput;
+boolean charSymbolInput;
+boolean numSymbolInput;
 
 public Text(int topLeftX, int topLeftY, int width, String defaultText)
   {
   super(topLeftX, topLeftY, width, 12);
   fr = Minecraft.getMinecraft().fontRenderer;
   this.text = defaultText;
-  
+  this.addDefaultListeners();
+  }
+
+protected void addDefaultListeners()
+  {  
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
@@ -35,6 +44,7 @@ public Text(int topLeftX, int topLeftY, int width, String defaultText)
       if(enabled && visible && isMouseOverElement(evt.mx, evt.my))
         {
         setSelected(true);
+        cursorIndex = text.length();
         }
       else
         {
@@ -43,7 +53,8 @@ public Text(int topLeftX, int topLeftY, int width, String defaultText)
       return true;
       }
     });
-  this.addNewListener(new Listener(Listener.KEY_UP)
+  
+  this.addNewListener(new Listener(Listener.KEY_DOWN)
     {
     @Override
     public boolean onEvent(ActivationEvent evt)
@@ -55,14 +66,147 @@ public Text(int topLeftX, int topLeftY, int width, String defaultText)
       return true;
       }
     });
-  this.keyboardInterface = true;
-  this.mouseInterface = true;
   }
 
 protected void handleKeyInput(int keyCode, char ch)
   {
-  
+  boolean handled = false;
+  switch(keyCode)
+  {
+  case Keyboard.KEY_LEFT:
+    {
+    handled = true;
+    cursorIndex--;
+    if(cursorIndex<0)
+      {
+      cursorIndex = 0;
+      }
+    }
+    break;
+  case Keyboard.KEY_RIGHT:
+    {
+    handled = true;
+    cursorIndex++;
+    if(cursorIndex > text.length())
+      {
+      cursorIndex = text.length();
+      }
+    }
+    break;
+  case Keyboard.KEY_RETURN:
+    {
+    handled = true;
+    //TODO figure out a good callback mechanism for on-return pressed??
+    }
+    break;
+  case Keyboard.KEY_BACK:
+    {
+    handled = true;
+    handleBackspaceAction();
+    }
+    break;
+  case Keyboard.KEY_DELETE:
+    {
+    handled = true;
+    handleDeleteAction();
+    }
+    break;
+  case Keyboard.KEY_HOME:
+    {
+    handled = true;
+    cursorIndex = 0;
+    }
+    break;
+  case Keyboard.KEY_END:
+    {
+    handled = true;
+    cursorIndex = text.length();
+    }
+    break;
+  }  
+  if(!handled)
+    {
+    handleCharacter(ch);
+    }
   }
+
+protected void handleDeleteAction()
+  {
+  if(cursorIndex < text.length())
+    {
+    String newText = "";
+    for(int i = 0; i< text.length(); i++)
+      {
+      if(i==cursorIndex)
+        {
+        continue;
+        }
+      newText = newText + text.charAt(i);
+      }
+    text = newText;
+    }
+  }
+
+protected void handleBackspaceAction()
+  {
+  if(cursorIndex>0)
+    {
+    String newText = "";
+    for(int i = 0; i < text.length(); i++)
+      {
+      if(i==cursorIndex-1)
+        {
+        continue;
+        }
+      newText = newText + text.charAt(i);
+      }
+    text = newText;
+    cursorIndex--;
+    }
+  }
+
+protected void handleCharacter(char ch)
+  {  
+  boolean allowed = false;
+  for(char ch1 : allowedChars)
+    {
+    if(ch1==ch)
+      {
+      allowed = true;
+      break;
+      }
+    }
+  if(allowed)//is allowed character
+    {
+    String newText = "";
+    for(int i = 0; i <= text.length(); i++)
+      {
+      if(i==cursorIndex)
+        {
+        newText = newText + ch;
+        }
+      if(i<text.length())
+        {
+        newText = newText + text.charAt(i);        
+        }
+      }
+    text = newText;
+    cursorIndex++;
+    }
+  }
+
+protected char[] allowedChars = new char[]
+      {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+       'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+       };
+
+protected char[] allowedCharSymbols = new char[]
+      {' ', '!','#','$','%','^','&','*','(',')','_','-','+','=',
+       '{','}','[',']',':', ';','"','\'',',','<','.', '>', '/', '?'};
+
+protected char[] allowedNums = new char[]{'1','2','3','4','5','6','7','8','9','0'};
+protected char[] allowedNumSymbols = new char[]{'.','-'};
+
 
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
@@ -94,7 +238,7 @@ public void render(int mouseX, int mouseY, float partialTick)
   if(selected)
     {
     int w = 0;
-    for(int i = 0; i < cursorIndex - 1; i++)
+    for(int i = 0; i < cursorIndex; i++)
       {
       w+=fr.getCharWidth(text.charAt(i));
       }
@@ -102,6 +246,32 @@ public void render(int mouseX, int mouseY, float partialTick)
     }
 
   GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.f);
+  }
+
+public void setText(String text)
+  {
+  String in = text;
+  text = "";
+  for(int i = 0; i < in.length(); i++)
+    {
+    if(isAllowedCharacter(in.charAt(i)))
+      {
+      text = text + in.charAt(i);
+      }
+    }
+  this.text = text;
+  }
+
+protected boolean isAllowedCharacter(char ch)
+  {
+  for(char ch1 : allowedChars)
+    {
+    if(ch==ch1)
+      {
+      return true;
+      }
+    }
+  return false;
   }
 
 }

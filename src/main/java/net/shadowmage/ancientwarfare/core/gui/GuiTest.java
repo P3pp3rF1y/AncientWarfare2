@@ -52,10 +52,12 @@ public void initElements()
   ItemSlot slot = new ItemSlot(0, 50, new ItemStack(Items.stick), this);
   this.addGuiElement(slot);
   
-  Text text = new Text(0, 30, 150, "TestText");
+  Text text = new Text(0, 25, 150, "TestText");
   tab.addGuiElement(text);
-//  this.addGuiElement(text);
-//  text.setSelected(true);
+  
+  net.shadowmage.ancientwarfare.core.gui.elements.Number num = new net.shadowmage.ancientwarfare.core.gui.elements.Number(0, 38, 150, 0.f).setIntegerValue();
+  num.setValue(1);
+  tab.addGuiElement(num);
   }
 
 }
