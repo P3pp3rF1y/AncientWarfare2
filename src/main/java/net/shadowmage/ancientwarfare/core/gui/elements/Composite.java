@@ -121,30 +121,16 @@ public void addGuiElement(GuiElement element)
 protected void setViewport()
   {    
   Minecraft mc = Minecraft.getMinecraft();
-  GL11.glPushMatrix();
   ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
   int guiScale = scaledRes.getScaleFactor();
-//  float w = this.width * guiScale;
-//  float h = height * guiScale;
-//  float x = renderX*guiScale;  
-//  float y = Display.getHeight() - h - renderY*guiScale;  
-//  float scaleY = (float)mc.displayHeight / h;  
-//  float scaleX = (float)mc.displayWidth / w;    
-//  GL11.glViewport((int)x, (int)y, (int)w, (int)h);  
-//  GL11.glScalef(scaleX, scaleY, 1);
-//  GL11.glTranslatef(renderX, renderY, 0);
-  GL11.glEnable(GL11.GL_SCISSOR_TEST);
-  
+  GL11.glEnable(GL11.GL_SCISSOR_TEST);  
   
   GL11.glScissor(renderX*guiScale, mc.displayHeight - renderY*guiScale - height*guiScale, width*guiScale, height*guiScale);
   }
 
 protected void resetViewport()
   {
-  GL11.glPopMatrix();
   GL11.glDisable(GL11.GL_SCISSOR_TEST);
-//  Minecraft mc = Minecraft.getMinecraft();
-//  GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
   }
 
 /**

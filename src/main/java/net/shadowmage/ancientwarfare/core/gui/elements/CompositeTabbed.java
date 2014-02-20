@@ -54,14 +54,7 @@ protected void addDefaultListeners()
       else if((evt.type & Listener.MOUSE_TYPES) != 0)
         {
         if(isMouseOverElement(evt.mx, evt.my))
-          {
-          /**
-           * adjust mouse event position for relative to composite
-           */
-          int x = evt.mx;
-          int y = evt.my;
-          evt.mx-=renderX;
-          evt.my-=renderY;         
+          {        
           for(GuiElement element : tabElements.get(currentTab))
             {
             element.handleMouseInput(evt);
@@ -70,8 +63,6 @@ protected void addDefaultListeners()
             {
             element.handleMouseInput(evt);
             }
-          evt.mx = x;
-          evt.my = y;
           }
         else if(evt.type==Listener.MOUSE_UP)
           {
@@ -181,16 +172,11 @@ public void onTabSelected(Tab tab)
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
-  if(isMouseOverElement(mouseX, mouseY))
-    {
-    mouseX-=renderX;
-    mouseY-=renderY;
-    }
-  else
+  if(!isMouseOverElement(mouseX, mouseY))
     {
     mouseX = Integer.MIN_VALUE;
     mouseY = Integer.MIN_VALUE;
-    } 
+    }
   Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
   int topY = renderY;
   int height = this.height;
@@ -213,17 +199,14 @@ public void render(int mouseX, int mouseY, float partialTick)
   resetViewport();
   }
 
-//@Override
-//protected void updateElementPositions()
-//  {
-//  for(GuiElement element : this.elements)
-//    {
-//    element.updateRenderPosition(0, 0);
-//    }
-//  for(GuiElement element : this.tabElements.get(currentTab))
-//    {
-//    element.updateRenderPosition(0, hasTopTabs? 13 : 0);
-//    }
-//  }
+@Override
+protected void updateElementPositions(int guiLeft, int guiTop)
+  {
+  super.updateElementPositions(guiLeft, guiTop);
+  for(GuiElement element : this.tabElements.get(currentTab))
+    {
+    element.updateRenderPosition(renderX, renderY + (hasTopTabs? 13 : 0));
+    }
+  }
 
 }
