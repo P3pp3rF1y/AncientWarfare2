@@ -213,17 +213,17 @@ public void render(int mouseX, int mouseY, float partialTick)
   resetViewport();
   }
 
-@Override
-protected void updateElementPositions()
-  {
-  for(GuiElement element : this.elements)
-    {
-    element.updateRenderPosition(0, 0);
-    }
-  for(GuiElement element : this.tabElements.get(currentTab))
-    {
-    element.updateRenderPosition(0, hasTopTabs? 13 : 0);
-    }
-  }
+//@Override
+//protected void updateElementPositions()
+//  {
+//  for(GuiElement element : this.elements)
+//    {
+//    element.updateRenderPosition(0, 0);
+//    }
+//  for(GuiElement element : this.tabElements.get(currentTab))
+//    {
+//    element.updateRenderPosition(0, hasTopTabs? 13 : 0);
+//    }
+//  }
 
 }

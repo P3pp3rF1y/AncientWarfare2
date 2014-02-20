@@ -24,7 +24,7 @@ public void onScrolled(int newTop)
   for(GuiElement element : this.elements)
     {
     if(element==this.scrollbar){continue;}
-    element.updateRenderPosition(0, -currentTop);
+    element.updateRenderPosition(renderX, renderY-currentTop);
     }
   }
 
@@ -57,8 +57,8 @@ protected void addDefaultListeners()
            */
           int x = evt.mx;
           int y = evt.my;
-          evt.mx-=renderX;
-          evt.my-=renderY;
+//          evt.mx-=renderX;
+//          evt.my-=renderY;
           for(GuiElement element : elements)
             {
             element.handleMouseInput(evt);

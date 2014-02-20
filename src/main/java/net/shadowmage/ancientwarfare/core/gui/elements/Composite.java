@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 
@@ -51,6 +52,7 @@ protected void addDefaultListeners()
         }
       else if((evt.type & Listener.MOUSE_TYPES) != 0)
         {
+        AWLog.logDebug("sending mouse event to elements...");
         if(isMouseOverElement(evt.mx, evt.my))
           {
           /**
@@ -58,8 +60,8 @@ protected void addDefaultListeners()
            */
           int x = evt.mx;
           int y = evt.my;
-          evt.mx-=renderX;
-          evt.my-=renderY;
+//          evt.mx-=renderX;
+//          evt.my-=renderY;
           for(GuiElement element : elements)
             {
             element.handleMouseInput(evt);
@@ -86,25 +88,26 @@ public void render(int mouseX, int mouseY, float partialTick)
   /**
    * adjust mouse input position for relative to composite
    */
-  if(isMouseOverElement(mouseX, mouseY))
-    {
-    mouseX-=renderX;
-    mouseY-=renderY;
-    }
-  else
+  if(!isMouseOverElement(mouseX, mouseY))
     {
     mouseX = Integer.MIN_VALUE;
     mouseY = Integer.MIN_VALUE;
-    }  
-  Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
-  this.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, width, height);  
+//    mouseX-=renderX;
+//    mouseY-=renderY;
+    }
+  else
+    {
+    }    
   setViewport();
+  Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
+  this.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, width, height);
+//  GL11.glTranslatef(renderX, renderY, 0);
   for(GuiElement element : this.elements)
     {
-    if(element.renderY > height || element.renderY + element.height <0)
-      {
-      continue;
-      }
+//    if(element.renderY > height || element.renderY + element.height <0)
+//      {
+//      continue;
+//      }
     element.render(mouseX, mouseY, partialTick);
     }    
   resetViewport();
@@ -116,26 +119,32 @@ public void addGuiElement(GuiElement element)
   }
 
 protected void setViewport()
-  {
+  {    
   Minecraft mc = Minecraft.getMinecraft();
   GL11.glPushMatrix();
   ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
   int guiScale = scaledRes.getScaleFactor();
-  float w = this.width * guiScale;
-  float h = height * guiScale;
-  float x = renderX*guiScale;  
-  float y = Display.getHeight() - h - renderY*guiScale;  
-  float scaleY = (float)mc.displayHeight / h;  
-  float scaleX = (float)mc.displayWidth / w;    
-  GL11.glViewport((int)x, (int)y, (int)w, (int)h);  
-  GL11.glScalef(scaleX, scaleY, 1);
+//  float w = this.width * guiScale;
+//  float h = height * guiScale;
+//  float x = renderX*guiScale;  
+//  float y = Display.getHeight() - h - renderY*guiScale;  
+//  float scaleY = (float)mc.displayHeight / h;  
+//  float scaleX = (float)mc.displayWidth / w;    
+//  GL11.glViewport((int)x, (int)y, (int)w, (int)h);  
+//  GL11.glScalef(scaleX, scaleY, 1);
+//  GL11.glTranslatef(renderX, renderY, 0);
+  GL11.glEnable(GL11.GL_SCISSOR_TEST);
+  
+  
+  GL11.glScissor(renderX*guiScale, mc.displayHeight - renderY*guiScale - height*guiScale, width*guiScale, height*guiScale);
   }
 
 protected void resetViewport()
   {
   GL11.glPopMatrix();
-  Minecraft mc = Minecraft.getMinecraft();
-  GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
+  GL11.glDisable(GL11.GL_SCISSOR_TEST);
+//  Minecraft mc = Minecraft.getMinecraft();
+//  GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
   }
 
 /**
@@ -147,14 +156,14 @@ protected void resetViewport()
 public void updateRenderPosition(int guiLeft, int guiTop)
   {
   super.updateRenderPosition(guiLeft, guiTop);
-  updateElementPositions();
+  updateElementPositions(guiLeft, guiTop);
   }
 
-protected void updateElementPositions()
+protected void updateElementPositions(int guiLeft, int guiTop)
   {
   for(GuiElement element : this.elements)
     {
-    element.updateRenderPosition(0, 0);
+    element.updateRenderPosition(renderX, renderY);
     }
   }
 
