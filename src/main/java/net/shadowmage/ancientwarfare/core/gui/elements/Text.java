@@ -31,6 +31,7 @@ public Text(int topLeftX, int topLeftY, int width, String defaultText)
   super(topLeftX, topLeftY, width, 12);
   fr = Minecraft.getMinecraft().fontRenderer;
   this.text = defaultText;
+  this.cursorIndex = text.length();
   this.addDefaultListeners();
   }
 
@@ -260,6 +261,7 @@ public void setText(String text)
       }
     }
   this.text = text;
+  this.cursorIndex = text.length();
   }
 
 protected boolean isAllowedCharacter(char ch)

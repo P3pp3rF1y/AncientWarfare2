@@ -11,6 +11,7 @@ boolean allowNeg;
 boolean integerValue;
 float value;
 int decimalPlaces = 2;
+float incrementAmount = 1.f;
 
 public NumberInput(int topLeftX, int topLeftY, int width, float defaultText)
   {
@@ -28,8 +29,15 @@ public NumberInput setIntegerValue()
   {
   this.integerValue = true;
   this.decimalPlaces = 0;
+  this.incrementAmount = 1.f;
   this.allowDecimal = false;
   this.setText(text);  
+  return this;
+  }
+
+public NumberInput setIncrementAmount(float amount)
+  {
+  this.incrementAmount = amount;
   return this;
   }
 
@@ -77,11 +85,11 @@ protected void addDefaultListeners()
         int d = evt.mw;
         if(d<0)
           {
-          setValue(value-1);
+          setValue(value-incrementAmount);
           }
         else if(d>0)
           {
-          setValue(value+1);
+          setValue(value+incrementAmount);
           }
         }
       return true;
@@ -106,6 +114,10 @@ public void setText(String text)
 
 public NumberInput setValue(float val)
   {
+  if(!allowNeg && val<0)
+    {
+    val = 0.f;
+    }
   this.text = String.format("%."+decimalPlaces+"f", val);  
   this.value = val;
   return this;

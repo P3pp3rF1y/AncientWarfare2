@@ -1,15 +1,9 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.CompositeTabbed;
-import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
-import net.shadowmage.ancientwarfare.core.gui.elements.ProgressBar;
-import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 
 public class GuiTest extends GuiContainerBase
 {
@@ -30,10 +24,10 @@ public void initElements()
   {
   CompositeScrolled com = new CompositeScrolled(0, 0, 200, 200);  
   this.addGuiElement(com);
-  com.setAreaSize(200);  
+  com.setAreaSize(400);  
   com.addGuiElement(new Button(5, 5, 100, 20, "TestButton"));
   
-  CompositeScrolled com2 = new CompositeScrolled(175, 10, 50, 50);  
+  CompositeScrolled com2 = new CompositeScrolled(10, 10, 50, 50);  
   com.addGuiElement(com2);
   com2.setAreaSize(200);  
   com2.addGuiElement(new Button(5, 5, 100, 20, "TestButton2"));
@@ -62,9 +56,9 @@ public void initElements()
 //  Text text = new Text(0, 25, 150, "TestText");
 //  tab.addGuiElement(text);
 //  
-//  net.shadowmage.ancientwarfare.core.gui.elements.Number num = new net.shadowmage.ancientwarfare.core.gui.elements.Number(0, 38, 150, 0.f).setIntegerValue();
-//  num.setValue(1);
-//  tab.addGuiElement(num);
+  NumberInput num = new NumberInput(0, 100, 150, 0.f).setIntegerValue();
+  num.setValue(1);
+  com.addGuiElement(num);
   }
 
 }
