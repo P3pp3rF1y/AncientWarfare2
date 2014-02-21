@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -9,7 +10,6 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 
@@ -23,6 +23,7 @@ import org.lwjgl.opengl.GL11;
 public class Composite extends GuiElement
 {
 
+private static LinkedList<Viewport> viewportStack = new LinkedList<Viewport>();
 protected List<GuiElement> elements = new ArrayList<GuiElement>();
 
 public Composite(int topLeftX, int topLeftY, int width, int height)
@@ -85,15 +86,10 @@ protected void addDefaultListeners()
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
-  /**
-   * adjust mouse input position for relative to composite
-   */
   if(!isMouseOverElement(mouseX, mouseY))
     {
     mouseX = Integer.MIN_VALUE;
     mouseY = Integer.MIN_VALUE;
-//    mouseX-=renderX;
-//    mouseY-=renderY;
     }
   else
     {
@@ -101,13 +97,8 @@ public void render(int mouseX, int mouseY, float partialTick)
   setViewport();
   Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
   this.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, width, height);
-//  GL11.glTranslatef(renderX, renderY, 0);
   for(GuiElement element : this.elements)
     {
-//    if(element.renderY > height || element.renderY + element.height <0)
-//      {
-//      continue;
-//      }
     element.render(mouseX, mouseY, partialTick);
     }    
   resetViewport();
@@ -120,17 +111,61 @@ public void addGuiElement(GuiElement element)
 
 protected void setViewport()
   {    
+  int x, y, w, h;
+  int tlx, tly, brx, bry;
+  x = renderX;
+  y = renderY;
+  w = width;
+  h = height;
+  tlx = x;
+  tly = y;
+  brx = x + w;
+  bry = y + h;
+  
+  Viewport p = viewportStack.peek();
+  if(p!=null)
+    {
+    if(tlx<p.x){tlx = p.x;}
+    if(brx>p.x+p.w){brx = p.x + p.w;}
+    if(tly<p.y){tly = p.y;}
+    if(bry>p.y+p.h){bry = p.y+p.h;}    
+    }
+  x = tlx;
+  y = tly;
+  w = brx - tlx;
+  h = bry - tly;
+  
   Minecraft mc = Minecraft.getMinecraft();
   ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
   int guiScale = scaledRes.getScaleFactor();
   GL11.glEnable(GL11.GL_SCISSOR_TEST);  
   
-  GL11.glScissor(renderX*guiScale, mc.displayHeight - renderY*guiScale - height*guiScale, width*guiScale, height*guiScale);
+  GL11.glScissor(x*guiScale, mc.displayHeight - y*guiScale - h*guiScale, w*guiScale, h*guiScale);
+  
+  viewportStack.push(new Viewport(x, y, w, h));
   }
 
 protected void resetViewport()
-  {
-  GL11.glDisable(GL11.GL_SCISSOR_TEST);
+  {  
+  Viewport p = viewportStack.poll();
+  if(p==null)
+    {
+    GL11.glDisable(GL11.GL_SCISSOR_TEST);
+    }
+  p = viewportStack.peek();
+  if(p!=null)
+    {
+    Minecraft mc = Minecraft.getMinecraft();
+    ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+    int guiScale = scaledRes.getScaleFactor();
+    GL11.glEnable(GL11.GL_SCISSOR_TEST);  
+    
+    GL11.glScissor(p.x*guiScale, mc.displayHeight - p.y*guiScale - p.h*guiScale, p.w*guiScale, p.h*guiScale);    
+    }
+  else
+    {
+    GL11.glDisable(GL11.GL_SCISSOR_TEST);    
+    }
   }
 
 /**
@@ -142,15 +177,33 @@ protected void resetViewport()
 public void updateRenderPosition(int guiLeft, int guiTop)
   {
   super.updateRenderPosition(guiLeft, guiTop);
-  updateElementPositions(guiLeft, guiTop);
+  updateElementPositions();
   }
 
-protected void updateElementPositions(int guiLeft, int guiTop)
+protected void updateElementPositions()
   {
   for(GuiElement element : this.elements)
     {
     element.updateRenderPosition(renderX, renderY);
     }
   }
+
+/**
+ * class used to represent a currently drawable portion of the screen.
+ * Used in a stack for figuring out what composites may draw where
+ * @author John
+ *
+ */
+private class Viewport
+{
+int x, y, w, h;
+private Viewport(int x, int y, int w, int h)
+  {
+  this.x = x;
+  this.y = y;
+  this.h = h;
+  this.w = w;
+  }
+}
 
 }

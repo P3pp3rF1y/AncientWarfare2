@@ -33,7 +33,7 @@ public void initElements()
   com.setAreaSize(200);  
   com.addGuiElement(new Button(5, 5, 100, 20, "TestButton"));
   
-  CompositeScrolled com2 = new CompositeScrolled(10, 10, 50, 50);  
+  CompositeScrolled com2 = new CompositeScrolled(175, 10, 50, 50);  
   com.addGuiElement(com2);
   com2.setAreaSize(200);  
   com2.addGuiElement(new Button(5, 5, 100, 20, "TestButton2"));

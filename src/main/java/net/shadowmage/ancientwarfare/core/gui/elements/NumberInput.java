@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 
-public class Number extends Text
+public class NumberInput extends Text
 {
 
 boolean allowDecimal = true;
@@ -12,19 +12,19 @@ boolean integerValue;
 float value;
 int decimalPlaces = 2;
 
-public Number(int topLeftX, int topLeftY, int width, float defaultText)
+public NumberInput(int topLeftX, int topLeftY, int width, float defaultText)
   {
   super(topLeftX, topLeftY, width, String.format("%.2f", defaultText));
   this.value = defaultText;
   }
 
-public Number setAllowNegative()
+public NumberInput setAllowNegative()
   {
   this.allowNeg = true;
   return this;
   }
 
-public Number setIntegerValue()
+public NumberInput setIntegerValue()
   {
   this.integerValue = true;
   this.decimalPlaces = 0;
@@ -66,6 +66,27 @@ protected void addDefaultListeners()
       return true;
       }
     });
+  
+  this.addNewListener(new Listener(Listener.MOUSE_WHEEL)
+    {
+    @Override
+    public boolean onEvent(ActivationEvent evt)
+      {
+      if(isMouseOverElement(evt.mx, evt.my))
+        {
+        int d = evt.mw;
+        if(d<0)
+          {
+          setValue(value-1);
+          }
+        else if(d>0)
+          {
+          setValue(value+1);
+          }
+        }
+      return true;
+      }
+    });
   }
 
 @Override
@@ -74,19 +95,19 @@ public void setText(String text)
   try
     {
     Float fl = Float.parseFloat(text);
-    this.text = String.format("%."+decimalPlaces+"f", fl);
-    this.value = fl;
+    setValue(fl);    
     }
   catch(NumberFormatException e)
     {
     this.text = "0";
+    this.value = 0.f;
     }
   }
 
-public Number setValue(float val)
+public NumberInput setValue(float val)
   {
+  this.text = String.format("%."+decimalPlaces+"f", val);  
   this.value = val;
-  this.setText(String.valueOf(val));
   return this;
   }
 

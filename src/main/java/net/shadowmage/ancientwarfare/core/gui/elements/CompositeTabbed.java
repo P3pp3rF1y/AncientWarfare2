@@ -125,7 +125,7 @@ public void removeGuiElement(String tabName, GuiElement element)
   {
   if(!tabs.containsKey(tabName))
     {
-    throw new IllegalArgumentException("cannot add elements to a null tab, you must create the tab first");
+    throw new IllegalArgumentException("cannot remove elements from a null tab, you must create the tab first");
     }
   this.tabElements.get(tabs.get(tabName)).remove(element);
   }
@@ -200,9 +200,9 @@ public void render(int mouseX, int mouseY, float partialTick)
   }
 
 @Override
-protected void updateElementPositions(int guiLeft, int guiTop)
+protected void updateElementPositions()
   {
-  super.updateElementPositions(guiLeft, guiTop);
+  super.updateElementPositions();
   for(GuiElement element : this.tabElements.get(currentTab))
     {
     element.updateRenderPosition(renderX, renderY + (hasTopTabs? 13 : 0));
