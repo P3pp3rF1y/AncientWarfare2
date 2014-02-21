@@ -4,6 +4,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.gui.elements.TexturedRectangle;
 
 public class GuiTest extends GuiContainerBase
 {
@@ -59,6 +60,9 @@ public void initElements()
   NumberInput num = new NumberInput(0, 100, 150, 0.f).setIntegerValue();
   num.setValue(1);
   com.addGuiElement(num);
+  
+  TexturedRectangle t = new TexturedRectangle(100, 100, 100, 100, "gui/guiButtons1.png", 256, 256, 40, 40, 40, 40);
+  com.addGuiElement(t);
   }
 
 }
