@@ -25,9 +25,10 @@ public ItemSlotInventoried(int topLeftX, int topLeftY, IInventory inv, int slot,
     @Override
     public boolean onEvent(ActivationEvent evt)
       {
-      if(visible && enabled && isMouseOverElement(evt.mx, evt.my) && containerCallback!=null)
+      if(visible && enabled && containerCallback!=null && isMouseOverElement(evt.mx, evt.my) )
         {        
-        containerCallback.onSlotClicked(inventory, slotIndex);
+        containerCallback.onSlotClicked(inventory, slotIndex, evt.mButton);  
+        item = inventory.getStackInSlot(slotIndex);      
         }
       return true;
       }
