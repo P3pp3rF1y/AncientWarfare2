@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 public class TexturedRectangle extends GuiElement
 {
@@ -36,7 +37,7 @@ public void render(int mouseX, int mouseY, float partialTick)
   if(visible)
     {
     Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-    renderTexturedQuad(renderX, renderY, renderX+width, renderY+height, u1, v1, u2, v2);    
+    RenderTools.renderTexturedQuad(renderX, renderY, renderX+width, renderY+height, u1, v1, u2, v2);    
     }
   }
 

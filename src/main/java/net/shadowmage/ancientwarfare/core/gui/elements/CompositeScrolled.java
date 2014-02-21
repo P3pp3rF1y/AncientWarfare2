@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
+import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 public class CompositeScrolled extends Composite implements IScrollableCallback
 {
@@ -50,7 +51,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     } 
   setViewport();
   Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
-  this.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, width, height);
+  RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, width, height);
   for(GuiElement element : this.elements)
     {
     if(element.renderY > renderY + height || element.renderY + element.height < renderY)

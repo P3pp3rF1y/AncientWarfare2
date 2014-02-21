@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
+import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 public class Scrollbar extends GuiElement
 {
@@ -136,8 +137,8 @@ public void render(int mouseX, int mouseY, float partialTick)
   if(visible)
     {
     Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
-    renderQuarteredTexture(256, 256, 80, 120, 40, 128, renderX, renderY, width, height);  
-    renderQuarteredTexture(256, 256, 120, 120, 32, 128, renderX+borderSize, renderY+borderSize+handleTop, handleWidth, handleHeight);    
+    RenderTools.renderQuarteredTexture(256, 256, 80, 120, 40, 128, renderX, renderY, width, height);  
+    RenderTools.renderQuarteredTexture(256, 256, 120, 120, 32, 128, renderX+borderSize, renderY+borderSize+handleTop, handleWidth, handleHeight);    
     }
   }
 

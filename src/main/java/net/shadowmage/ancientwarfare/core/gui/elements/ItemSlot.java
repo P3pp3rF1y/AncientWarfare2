@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
+import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 /**
  * basic item-slot gui element
@@ -44,7 +45,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     {
     Minecraft mc = Minecraft.getMinecraft();    
     mc.renderEngine.bindTexture(widgetTexture1);
-    renderQuarteredTexture(256, 256, 152, 120, 18, 18, renderX, renderY, width, height);
+    RenderTools.renderQuarteredTexture(256, 256, 152, 120, 18, 18, renderX, renderY, width, height);
 
     GL11.glDisable(GL11.GL_DEPTH_TEST);
     if(this.item!=null)

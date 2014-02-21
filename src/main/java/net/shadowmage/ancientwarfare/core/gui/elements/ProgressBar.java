@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
+import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 public class ProgressBar extends GuiElement
 {
@@ -24,7 +25,7 @@ public void render(int mouseX, int mouseY, float partialTick)
   if(visible)
     {
     Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture2);
-    this.renderQuarteredTexture(256, 256, 0, 0, 256, 40, renderX, renderY, width, height);
+    RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 40, renderX, renderY, width, height);
     
     
     int width = this.width - 6;
@@ -36,7 +37,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     width = (int)((float)width * progress);
     Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
     //152, 234
-    this.renderQuarteredTexture(256, 256, 152, y, 104, 10, renderX+3, renderY+3, width, height-6);
+    RenderTools.renderQuarteredTexture(256, 256, 152, y, 104, 10, renderX+3, renderY+3, width, height-6);
     }
   }
 

@@ -5,6 +5,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 /**
  * Simple checkbox w/ label;<br><br>
@@ -66,7 +67,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
     int y = enabled ? isMouseOverElement(mouseX, mouseY) ? 200 : 160 : 120;
     int x = checked ? 40 : 0;
-    renderQuarteredTexture(256, 256, x, y, 40, 40, renderX, renderY, width, height);    
+    RenderTools.renderQuarteredTexture(256, 256, x, y, 40, 40, renderX, renderY, width, height);    
     
     if(label!=null)
       {

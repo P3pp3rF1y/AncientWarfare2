@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITabCallback;
+import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 /**
  * tab element for use by CompositeTabbed.  Only has minimal self function
@@ -64,7 +65,7 @@ public void render(int mouseX, int mouseY, float partialTick)
       y += 48;
       }
     Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
-    renderQuarteredTexture(256, 256, 152, y, 104, 24, renderX, renderY, width, 16);    
+    RenderTools.renderQuarteredTexture(256, 256, 152, y, 104, 24, renderX, renderY, width, 16);    
     fr.drawStringWithShadow(label, renderX+3, renderY+4, 0xffffffff);
     }
   }
