@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -12,7 +13,7 @@ import io.netty.buffer.ByteBufOutputStream;
 public class PacketGui extends PacketBase
 {
 
-NBTTagCompound dataTag;
+public NBTTagCompound dataTag;
 
 public PacketGui()
   {
@@ -52,6 +53,7 @@ protected void readFromStream(ByteBuf data)
 @Override
 protected void execute()
   {
+  AWLog.logDebug("executing gui packet");
   if(player.openContainer instanceof ContainerBase)
     {
     ((ContainerBase)player.openContainer).onPacketData(dataTag);

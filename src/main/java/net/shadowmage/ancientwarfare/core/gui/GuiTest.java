@@ -1,17 +1,20 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTest;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlotInventoried;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.gui.elements.TexturedRectangle;
 
 public class GuiTest extends GuiContainerBase
 {
-
+ContainerTest container;
 public GuiTest(ContainerBase par1Container)
   {
   super(par1Container, 256, 240, "guiBackgroundLarge.png");
+  this.container = (ContainerTest)par1Container;
   }
 
 @Override
@@ -28,12 +31,13 @@ public void initElements()
   com.setAreaSize(400);  
   com.addGuiElement(new Button(5, 5, 100, 20, "TestButton"));
   
-  CompositeScrolled com2 = new CompositeScrolled(10, 10, 50, 50);  
-  com.addGuiElement(com2);
-  com2.setAreaSize(200);  
-  com2.addGuiElement(new Button(5, 5, 100, 20, "TestButton2"));
+//  CompositeScrolled com2 = new CompositeScrolled(10, 10, 50, 50);  
+//  com.addGuiElement(com2);
+//  com2.setAreaSize(200);  
+//  com2.addGuiElement(new Button(5, 5, 100, 20, "TestButton2"));
   
-  
+  ItemSlotInventoried slot = new ItemSlotInventoried(5, 5, container.inventory, 0, (ContainerBase)this.inventorySlots, this);
+  com.addGuiElement(slot);
   
 //  CompositeTabbed tab = new CompositeTabbed(50, 0, 100, 100);  
 //  tab.addTab("Test1", true);
@@ -57,12 +61,12 @@ public void initElements()
 //  Text text = new Text(0, 25, 150, "TestText");
 //  tab.addGuiElement(text);
 //  
-  NumberInput num = new NumberInput(0, 100, 150, 0.f).setIntegerValue();
-  num.setValue(1);
-  com.addGuiElement(num);
-  
-  TexturedRectangle t = new TexturedRectangle(100, 100, 100, 100, "gui/guiButtons1.png", 256, 256, 40, 40, 40, 40);
-  com.addGuiElement(t);
+//  NumberInput num = new NumberInput(0, 100, 150, 0.f).setIntegerValue();
+//  num.setValue(1);
+//  com.addGuiElement(num);
+//  
+//  TexturedRectangle t = new TexturedRectangle(100, 100, 100, 100, "gui/guiButtons1.png", 256, 256, 40, 40, 40, 40);
+//  com.addGuiElement(t);
   }
 
 }

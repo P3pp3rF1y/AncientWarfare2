@@ -5,9 +5,13 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
+import net.shadowmage.ancientwarfare.core.interfaces.ISlotClickCallback;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.network.PacketGui;
 
-public class ContainerBase extends Container
+public class ContainerBase extends Container implements ISlotClickCallback
 {
 
 EntityPlayer player;
@@ -42,6 +46,7 @@ protected final void sendDataToGui(NBTTagCompound data)
  */
 public final void onPacketData(NBTTagCompound data)
   {
+  AWLog.logDebug("receiving gui packet to container...");
   if(data.hasKey("slot"))
     {
     data = data.getCompoundTag("slot");
@@ -77,6 +82,7 @@ public boolean canInteractWith(EntityPlayer var1)
   return true;
   }
 
+@Override
 public final void onSlotClicked(IInventory inventory, int slotIndex, int button)
   {  
   ItemStack cursorStack = player.inventory.getItemStack();
@@ -113,21 +119,50 @@ public final void onSlotClicked(IInventory inventory, int slotIndex, int button)
           }
         }
       }
+    else//swap stacks from slot and cursor
+      {
+      ItemStack stack = player.inventory.getItemStack();
+      ItemStack stack1 = inventory.getStackInSlot(slotIndex);
+      player.inventory.setItemStack(stack1);
+      inventory.setInventorySlotContents(slotIndex, stack);
+      }
     }
   else//right click
     {
     
-    }
-  
+    }  
   if(player.worldObj.isRemote)
     {
-    //send packet to server w/ changes
-    //really only needs a ref to the inventory (? how?), and the slot clicked
+    PacketGui packet = new PacketGui();
+    NBTTagCompound tag = new NBTTagCompound();
+    packet.dataTag = tag;    
+    NBTTagCompound dataTag = new NBTTagCompound();
+
+    dataTag.setInteger("inventory", getInventoryNumber(inventory));
+    dataTag.setInteger("slotIndex", slotIndex);
+    dataTag.setInteger("button", button);
+     
+    tag.setTag("slot", dataTag);    
+    NetworkHandler.sendToServer(packet);
     }
   else
     {
     this.detectAndSendChanges();
     }
+  }
+
+protected int getInventoryNumber(IInventory inventory)
+  {
+  int index = 0;
+  for(IInventory inv : this.inventories)
+    {
+    if(inv==inventory)
+      {
+      return index;
+      }
+    index++;
+    }
+  return 0;
   }
 
 }

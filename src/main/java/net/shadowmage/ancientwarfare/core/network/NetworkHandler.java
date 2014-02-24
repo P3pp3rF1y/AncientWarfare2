@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTest;
 import net.shadowmage.ancientwarfare.core.gui.GuiTest;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -26,6 +26,7 @@ public final void registerNetwork()
   channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
   channel.register(new PacketHandler());
   PacketBase.registerPacketType(0, TestPacket.class);
+  PacketBase.registerPacketType(1, PacketGui.class);
   NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
   }
 
@@ -56,7 +57,7 @@ public Object getServerGuiElement(int ID, EntityPlayer player, World world, int 
   {
   case GUI_TEST:
     {
-    return new ContainerBase(player, x, y, z);
+    return new ContainerTest(player, x, y, z);
     }  
   }
   return null;
@@ -69,7 +70,7 @@ public Object getClientGuiElement(int ID, EntityPlayer player, World world, int 
   {
   case GUI_TEST:
     {
-    return new GuiTest(new ContainerBase(player, x, y, z));
+    return new GuiTest(new ContainerTest(player, x, y, z));
     }  
   }
   return null;
