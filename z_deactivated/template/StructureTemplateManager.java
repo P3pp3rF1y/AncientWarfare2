@@ -18,7 +18,7 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package shadowmage.ancient_structures.common.manager;
+package net.shadowmage.ancientwarfare.structure.template;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,10 +26,7 @@ import java.util.HashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import shadowmage.ancient_framework.common.config.AWLog;
-import shadowmage.ancient_structures.common.network.Packet06StructureData;
-import shadowmage.ancient_structures.common.template.StructureTemplate;
-import shadowmage.ancient_structures.common.template.StructureTemplateClient;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class StructureTemplateManager
 {

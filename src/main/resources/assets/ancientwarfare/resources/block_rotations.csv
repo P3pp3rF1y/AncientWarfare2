@@ -1,0 +1,8 @@
+#block-rotations file
+# lines beginning with # denote comments
+# format is:
+#block_name,block_id,r0,r1,r2....r15
+#block_name = name
+#block_id = the pre 1.7 blockID for the block
+#r0...r15 = the destination meta to rotate to when rotated 90' clockwise -- rX being the input meta -- the value being the rotated meta
+

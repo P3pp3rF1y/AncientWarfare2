@@ -1,0 +1,13 @@
+#block-items file
+# lines beginning with # denote comments
+# format is:
+#block_name,block_id,block_meta,item_name,item_id,item_damage
+#block_name = name
+#block_meta = the meta having an item assigned to it -1 for all
+#item_name = the name of the item being assigned to block/meta combo -- null for forced-no-item
+#item_damage = the item damage for the item-stack for the block/meta combo
+#any block without an item assigned will use the default itemblock for item-stacks
+water,-1,water_bucket,0
+flowing_water,-1,water_bucket,0
+lava,-1,lava_bucket,0
+flowing_lava,-1,lava_bucket,0

@@ -18,7 +18,7 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package shadowmage.ancient_structures.common.manager;
+package net.shadowmage.ancientwarfare.structure.template;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,13 +31,11 @@ import java.util.Set;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import shadowmage.ancient_framework.common.gamedata.AWGameData;
-import shadowmage.ancient_framework.common.utils.BlockPosition;
-import shadowmage.ancient_structures.common.config.AWStructureStatics;
-import shadowmage.ancient_structures.common.template.StructureTemplate;
-import shadowmage.ancient_structures.common.template.build.validation.StructureValidator;
-import shadowmage.ancient_structures.common.world_gen.StructureEntry;
-import shadowmage.ancient_structures.common.world_gen.StructureMap;
+import net.shadowmage.ancientwarfare.core.gamedata.GameData;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
+import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
+import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
 
 public class WorldGenStructureManager
 {
@@ -107,7 +105,7 @@ public StructureTemplate selectTemplateForGeneration(World world, Random rng, in
   searchCache.clear();
   trimmedPotentialStructures.clear();
   distancesFound.clear();
-  StructureMap map = AWGameData.get(world, "AWStructureMap", StructureMap.class);
+  StructureMap map = GameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
   if(map==null){return null;}
   int foundValue, chunkDistance;
   float foundDistance, mx, mz;

@@ -18,13 +18,12 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package shadowmage.ancient_structures.common.manager;
+package net.shadowmage.ancientwarfare.structure.template;
 
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import shadowmage.ancient_structures.common.utils.BlockInfo;
 
 public class BlockDataManager
 {
