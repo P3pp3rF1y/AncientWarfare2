@@ -1,9 +1,8 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraftforge.client.IItemRenderer;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ISlotClickCallback;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 

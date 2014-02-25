@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
-
-import org.lwjgl.opengl.GL11;
 
 /**
  * base GUI Element class

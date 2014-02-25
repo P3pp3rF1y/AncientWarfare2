@@ -1,10 +1,12 @@
 package net.shadowmage.ancientwarfare.core;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerTest;
+import net.shadowmage.ancientwarfare.core.gamedata.GameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.TestPacket;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxy;
@@ -53,6 +55,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.INSTANCE.registerNetwork();
   NetworkHandler.INSTANCE.registerContainer(0, ContainerTest.class);
   FMLCommonHandler.instance().bus().register(this);
+  MinecraftForge.EVENT_BUS.register(GameData.INSTANCE);
   proxy.registerClient();
   }
 
@@ -77,8 +80,7 @@ public void onLogin(PlayerEvent.PlayerLoggedInEvent evt)
     {
     NetworkHandler.sendToPlayer((EntityPlayerMP)evt.player, new TestPacket());
     FMLNetworkHandler.openGui(evt.player, this, NetworkHandler.GUI_TEST, evt.player.worldObj, 0, 0, 0);
-    }
-  
+    }  
   }
 
 

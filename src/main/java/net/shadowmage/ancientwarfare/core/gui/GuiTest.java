@@ -5,8 +5,6 @@ import net.shadowmage.ancientwarfare.core.container.ContainerTest;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlotInventoried;
-import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
-import net.shadowmage.ancientwarfare.core.gui.elements.TexturedRectangle;
 
 public class GuiTest extends GuiContainerBase
 {
