@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import java.util.HashMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +20,21 @@ import net.minecraft.item.ItemStack;
  */
 public class BlockDataManager
 {
+
+private HashMap<Integer, String> blockIDToName;
+private HashMap<Integer, String> itemIDToName;
+private HashMap<Integer, Block> blockIDToBlock;
+private HashMap<Integer, Item> itemIDToItem;
+private HashMap<String, Block> blockNameToBlock;
+private HashMap<String, Item> itemNameToItem;
+private HashMap<String, Integer> blockNameToID;
+private HashMap<String, Integer> itemNameToID;
+private HashMap<Block, Integer> blockToID;
+private HashMap<Block, String> blockToName;
+private HashMap<Item, Integer> itemToID;
+private HashMap<Item, String> itemToName;
+
+private HashMap<Block, BlockRotationMap> blockInfoMap = new HashMap<Block, BlockRotationMap>();
 
 public BlockDataManager()
   {
@@ -130,13 +147,36 @@ public String getNameItemForID(int id){return null;}//TODO
 public int getIDForItemName(String name){return 0;}//TODO
 
 /**
- * return a size-1 item-stack for the input block, null if no item mapping / forced null mapping<br>
+ * return a proper sized item-stack for the input block, null if no item mapping / forced null mapping<br>
+ * Returns a _new_ stack for each call of the method.<br>
  * Use the returned stack to copy, alter stack-size, etc.<br>
- * Returns a _new_ stack for each call of the method, no cached values
+ * returned stack-size is dependent upon how many input items are needed for that block
+ * usually 1, but can be 2 for double-slabs
  * @param block
  * @param size
  * @return
  */
 public ItemStack getInventoryStackForBlock(Block block, int size){return null;}//TODO
+
+private class BlockRotationMap
+{
+
+}
+
+private class BlockInfo
+{
+boolean singleItem = false;
+boolean noItem = false;
+/**
+ * item-stack map, by block-meta.  if singleItem==true, will use index[0] instead of whatever is passed in
+ */
+ItemStack[] metaStacks = new ItemStack[16];
+byte[] rotations;
+
+public int getRotatedMeta(int meta)
+  {
+  return rotations[meta];
+  }
+}
 
 }
