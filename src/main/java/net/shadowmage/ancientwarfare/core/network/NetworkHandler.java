@@ -8,15 +8,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import net.shadowmage.ancientwarfare.core.container.ContainerTest;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.GuiTest;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
-public class NetworkHandler implements IGuiHandler
+public final class NetworkHandler implements IGuiHandler
 {
 
 public static final String CHANNELNAME = "AWCORE";
@@ -32,10 +30,15 @@ private HashMap<Integer, Class<? extends GuiContainerBase>> guiClasses = new Has
 public final void registerNetwork()
   {
   channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
-  channel.register(new PacketHandler());
+  channel.register(new PacketHandlerServer());
   PacketBase.registerPacketType(0, TestPacket.class);
   PacketBase.registerPacketType(1, PacketGui.class);
   NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
+  }
+
+public final static void registerClientHandler(Object o)
+  {
+  INSTANCE.channel.register(o);
   }
 
 public final static void sendToServer(PacketBase pkt)
@@ -59,7 +62,7 @@ public final static void sendToAllNear(World world, int x, int y, int z, double 
   }
 
 @Override
-public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+public final Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
   {
   ContainerBase container = null;
   Class<? extends ContainerBase> clz = containerClasses.get(ID);
@@ -98,7 +101,7 @@ public Object getServerGuiElement(int ID, EntityPlayer player, World world, int 
   }
 
 @Override
-public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+public final Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
   {
   GuiContainerBase gui = null;  
   Class<? extends GuiContainerBase> clz = this.guiClasses.get(ID);
@@ -137,12 +140,12 @@ public Object getClientGuiElement(int ID, EntityPlayer player, World world, int 
   return gui;
   }
 
-public void registerContainer(int id, Class <? extends ContainerBase> containerClazz)
+public final void registerContainer(int id, Class <? extends ContainerBase> containerClazz)
   {
   this.containerClasses.put(id, containerClazz);
   }
 
-public void registerGui(int id, Class <? extends GuiContainerBase> guiClazz)
+public final void registerGui(int id, Class <? extends GuiContainerBase> guiClazz)
   {
   this.guiClasses.put(id, guiClazz);
   }

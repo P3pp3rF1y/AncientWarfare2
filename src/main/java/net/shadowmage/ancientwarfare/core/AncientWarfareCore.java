@@ -73,12 +73,10 @@ public void onLogin(PlayerEvent.PlayerLoggedInEvent evt)
   {
   String msg = "player logged in...";
   AWLog.logDebug(msg);
-  AWLog.log(msg);
-  AWLog.logError(msg);   
   if(!evt.player.worldObj.isRemote)
     {
     NetworkHandler.sendToPlayer((EntityPlayerMP)evt.player, new TestPacket());
-    FMLNetworkHandler.openGui(evt.player, this, 0, evt.player.worldObj, 0, 0, 0);
+    FMLNetworkHandler.openGui(evt.player, this, NetworkHandler.GUI_TEST, evt.player.worldObj, 0, 0, 0);
     }
   
   }
