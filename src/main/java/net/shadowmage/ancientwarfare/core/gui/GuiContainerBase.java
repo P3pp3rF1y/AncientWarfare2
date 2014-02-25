@@ -24,6 +24,7 @@ import org.lwjgl.opengl.GL11;
 public abstract class GuiContainerBase extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer, ISlotClickCallback
 {
 
+private float partialRenderTick = 0.f;
 private boolean initDone = false;
 private boolean shouldUpdate = false;
 private List<GuiElement> elements = new ArrayList<GuiElement>();
@@ -136,17 +137,25 @@ protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
 @Override
 public void drawScreen(int par1, int par2, float par3)
   {
-  super.drawScreen(par1, par2, par3);
-  GL11.glDisable(GL11.GL_LIGHTING);
-  for(GuiElement element : elements)
-    {
-    element.render(par1, par2, par3);
-    }  
+  this.partialRenderTick = par3;
+  super.drawScreen(par1, par2, par3);  
   if(tooltipStack!=null)
     {
     super.renderToolTip(tooltipStack, tooltipX, tooltipY);
     tooltipStack = null;
     }
+  }
+
+protected void drawGuiContainerForegroundLayer(int par1, int par2)
+  {
+  GL11.glDisable(GL11.GL_LIGHTING);
+  GL11.glPushMatrix();
+  GL11.glTranslatef(-guiLeft, -guiTop, 0);
+  for(GuiElement element : elements)
+    {
+    element.render(par1, par2, partialRenderTick);
+    }   
+  GL11.glPopMatrix();
   GL11.glEnable(GL11.GL_LIGHTING);
   }
 

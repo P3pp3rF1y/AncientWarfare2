@@ -78,7 +78,6 @@ public void render(int mouseX, int mouseY, float partialTick)
       GL11.glEnd();      
       GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
       GL11.glDisable(GL11.GL_BLEND);
-      GL11.glEnable(GL11.GL_LIGHTING);
       GL11.glEnable(GL11.GL_TEXTURE_2D);
       if(this.item!=null && this.render!=null)
         {
@@ -86,6 +85,7 @@ public void render(int mouseX, int mouseY, float partialTick)
         }      
       }
     GL11.glEnable(GL11.GL_DEPTH_TEST);
+    GL11.glDisable(GL11.GL_LIGHTING);
     }  
   }
 
