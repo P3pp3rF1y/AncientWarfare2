@@ -45,7 +45,7 @@ public <T extends WorldSavedData> T getData(String name, World world, Class <T> 
       e.printStackTrace();
       }
     }
-  return null;
+  return data;
   }
 
 }

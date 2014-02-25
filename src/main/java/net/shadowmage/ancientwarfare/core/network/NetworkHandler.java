@@ -1,10 +1,15 @@
 package net.shadowmage.ancientwarfare.core.network;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerTest;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiTest;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -20,6 +25,9 @@ public static final NetworkHandler INSTANCE = new NetworkHandler();
 public static final int GUI_TEST = 0;
 
 private FMLEventChannel channel;
+
+private HashMap<Integer, Class<? extends ContainerBase>> containerClasses = new HashMap<Integer, Class<? extends ContainerBase>>();
+private HashMap<Integer, Class<? extends GuiContainerBase>> guiClasses = new HashMap<Integer, Class<? extends GuiContainerBase>>();
 
 public final void registerNetwork()
   {
@@ -53,27 +61,90 @@ public final static void sendToAllNear(World world, int x, int y, int z, double 
 @Override
 public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
   {
-  switch(ID)
-  {
-  case GUI_TEST:
+  ContainerBase container = null;
+  Class<? extends ContainerBase> clz = containerClasses.get(ID);
+  if(clz!=null)
     {
-    return new ContainerTest(player, x, y, z);
-    }  
-  }
-  return null;
+    try
+      {
+      container = clz.getConstructor(EntityPlayer.class, int.class, int.class, int.class).newInstance(player, x, y, z);
+      }
+    catch (InstantiationException e)
+      {
+      e.printStackTrace();
+      } 
+    catch (IllegalAccessException e)
+      {
+      e.printStackTrace();
+      } 
+    catch (IllegalArgumentException e)
+      {
+      e.printStackTrace();
+      } 
+    catch (InvocationTargetException e)
+      {
+      e.printStackTrace();
+      } 
+    catch (NoSuchMethodException e)
+      {
+      e.printStackTrace();
+      } 
+    catch (SecurityException e)
+      {
+      e.printStackTrace();
+      }
+    }
+  return container;  
   }
 
 @Override
 public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
   {
-  switch(ID)
-  {
-  case GUI_TEST:
+  GuiContainerBase gui = null;  
+  Class<? extends GuiContainerBase> clz = this.guiClasses.get(ID);
+  if(clz!=null)
     {
-    return new GuiTest(new ContainerTest(player, x, y, z));
-    }  
+    ContainerBase container = (ContainerBase) getServerGuiElement(ID, player, world, x, y, z);
+    try
+      {
+      gui = clz.getConstructor(ContainerBase.class).newInstance(container);
+      } 
+    catch (InstantiationException e)
+      {
+      e.printStackTrace();
+      } 
+    catch (IllegalAccessException e)
+      {
+      e.printStackTrace();
+      } 
+    catch (IllegalArgumentException e)
+      {
+      e.printStackTrace();
+      } 
+    catch (InvocationTargetException e)
+      {
+      e.printStackTrace();
+      } 
+    catch (NoSuchMethodException e)
+      {
+      e.printStackTrace();
+      } 
+    catch (SecurityException e)
+      {
+      e.printStackTrace();
+      }
+    }
+  return gui;
   }
-  return null;
+
+public void registerContainer(int id, Class <? extends ContainerBase> containerClazz)
+  {
+  this.containerClasses.put(id, containerClazz);
+  }
+
+public void registerGui(int id, Class <? extends GuiContainerBase> guiClazz)
+  {
+  this.guiClasses.put(id, guiClazz);
   }
 
 }

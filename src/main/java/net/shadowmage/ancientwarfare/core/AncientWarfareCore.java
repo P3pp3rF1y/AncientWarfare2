@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.container.ContainerTest;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.TestPacket;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxy;
@@ -50,6 +51,7 @@ public void preInit(FMLPreInitializationEvent evt)
   log = evt.getModLog();
   Statics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
   NetworkHandler.INSTANCE.registerNetwork();
+  NetworkHandler.INSTANCE.registerContainer(0, ContainerTest.class);
   FMLCommonHandler.instance().bus().register(this);
   proxy.registerClient();
   }
