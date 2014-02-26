@@ -146,6 +146,7 @@ public static void writeTagToStream(NBTTagCompound tag, ByteArrayDataOutput data
 
 
 /************************************************************ NBT STREAM READ ********************************************************************************/
+
 /**
  * Reads a compressed NBTTagCompound from the InputStream
  */
@@ -191,6 +192,7 @@ public static NBTTagCompound readTagFromStream(ByteArrayDataInput data)
     }
   return new NBTTagCompound();
   }
+
 
 /************************************************************ NBT PROXY HANDLING ********************************************************************************/
 
@@ -285,7 +287,6 @@ abstract void parseFromLines(List<String> lines);
 abstract void createFromNBT(NBTBase nbt);
 }
 
-
 private static class TagInt extends TagBase
 {
 int data;
@@ -320,7 +321,6 @@ void createFromNBT(NBTBase nbt)
   this.data = ((NBTTagInt)nbt).func_150287_d();
   }
 }
-
 
 private static class TagDouble extends TagBase
 {
@@ -357,7 +357,6 @@ void createFromNBT(NBTBase nbt)
   }
 }
 
-
 private static class TagFloat extends TagBase
 {
 float data;
@@ -392,7 +391,6 @@ void createFromNBT(NBTBase nbt)
   this.data = ((NBTTagFloat)nbt).func_150288_h();
   }
 }
-
 
 private static class TagByte extends TagBase
 {
@@ -429,7 +427,6 @@ void createFromNBT(NBTBase nbt)
   }
 }
 
-
 private static class TagShort extends TagBase
 {
 short data;
@@ -464,7 +461,6 @@ void createFromNBT(NBTBase nbt)
   this.data = ((NBTTagShort)nbt).func_150289_e();
   }
 }
-
 
 private static class TagString extends TagBase
 {
@@ -501,7 +497,6 @@ void createFromNBT(NBTBase nbt)
   }
 }
 
-
 private static class TagByteArray extends TagBase
 {
 byte[] data;
@@ -536,7 +531,6 @@ void createFromNBT(NBTBase nbt)
   this.data = ((NBTTagByteArray)nbt).func_150292_c();
   }
 }
-
 
 private static class TagLong extends TagBase
 {
@@ -573,7 +567,6 @@ void createFromNBT(NBTBase nbt)
   }
 }
 
-
 private static class TagIntArray extends TagBase
 {
 int[] data;
@@ -608,7 +601,6 @@ void createFromNBT(NBTBase nbt)
   this.data = ((NBTTagIntArray)nbt).func_150302_c();
   }
 }
-
 
 private static class TagList extends TagBase
 {
