@@ -74,15 +74,27 @@ public class NBTTools
  * @param lines
  * @return
  */
-public static NBTTagCompound parseCompoundTag(List<String> lines)
+public static NBTTagCompound readNBTFrom(List<String> lines)
   {
   return parseNBTFromLines(lines);
   }
 
 /************************************************************ NBT STRING WRITE ********************************************************************************/
 /**
+ * deprecated in favor of {@link #getLinesFor(NBTTagCompound)}
+ * @param tag
+ * @param lines
+ */
+@Deprecated
+public static void writeNBTToLines(NBTTagCompound tag, List<String> lines)
+  {
+  List<String> lines1 = getLinesFor(tag);
+  lines.addAll(lines1);
+  }
+
+/**
  * returns a list of strings containing all of the information from the input compound tag.<br>
- * The list may be read back through {@link #parseCompoundTag(List)}
+ * The list may be read back through {@link #readNBTFrom(List)}
  * @param tag
  * @return
  */
