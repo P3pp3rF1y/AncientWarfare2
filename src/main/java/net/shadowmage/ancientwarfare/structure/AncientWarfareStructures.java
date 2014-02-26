@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -54,11 +55,16 @@ public static Configuration config;
 
 public static org.apache.logging.log4j.Logger log;
 
+public static AWStructureStatics statics;
+
 @EventHandler
 public void preInit(FMLPreInitializationEvent evt)
   {
   config = new Configuration(evt.getSuggestedConfigurationFile());
   log = AncientWarfareCore.log;
+  statics = new AWStructureStatics(config);
+  statics.load();
+  
   FMLCommonHandler.instance().bus().register(this);
       
   String path = evt.getModConfigurationDirectory().getAbsolutePath();

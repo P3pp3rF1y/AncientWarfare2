@@ -23,10 +23,16 @@ package net.shadowmage.ancientwarfare.structure.config;
 import java.io.File;
 import java.util.logging.Logger;
 
+import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 
 public class AWStructureStatics extends ModConfiguration
 {
+
+public AWStructureStatics(Configuration config)
+  {
+  super(config);
+  }
 
 public static String templateExtension = "aws";
 public static boolean enableVillageGen = true;
@@ -39,15 +45,7 @@ public static int spawnProtectionRange = 0;
 
 private static String worldGenCategory = "a_world-gen_settings";
 
-/**
- * @param configFile
- * @param log
- * @param version
- */
-public AWStructureStatics(File configFile, Logger log, String version)
-  {
-  super(configFile, log, version);
-  }
+
 
 @Override
 public void initializeCategories()

@@ -35,32 +35,24 @@ public abstract class ModConfiguration
 {
 
 public Configuration config;
-public Logger logger;
 private boolean debug = false;
 public static boolean updatedVersion = false;
 public static boolean autoExportOnUpdate = false;
 public static boolean shouldExport = false;
 
-public ModConfiguration(File configFile, Logger log, String version)
+public ModConfiguration(Configuration config)
   {
-  this.setConfig(configFile);
-  this.setLogger(log);
-  this.initializeCategories();
-  this.initializeValues();
+  this.config = config;
+  }
+
+public void load()
+  {
+  initializeCategories();
+  initializeValues();
   }
 
 public abstract void initializeCategories();
 public abstract void initializeValues();
-
-private void setConfig(File configFile)
-  {
-  this.config = new Configuration(configFile);
-  }
-
-private void setLogger(Logger log)
-  {
-  logger = log;
-  }
 
 public void setDebug(boolean value)
   {
@@ -70,24 +62,6 @@ public void setDebug(boolean value)
 public Configuration getConfig()
   {
   return this.config;
-  }
-
-public void log(String info)
-  {
-  logger.info(info);
-  }
-
-public void logDebug(String info)
-  {
-  if(debug)
-    {    
-    logger.info(String.valueOf("[DEBUG] "+info));      
-    }
-  }
-
-public void logError(String info)
-  {  
-  logger.severe(info);   
   }
 
 public void saveConfig()
