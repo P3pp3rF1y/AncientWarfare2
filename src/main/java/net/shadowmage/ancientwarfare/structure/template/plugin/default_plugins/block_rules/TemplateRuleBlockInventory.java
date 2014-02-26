@@ -21,8 +21,8 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -37,7 +37,7 @@ public NBTTagCompound tag = new NBTTagCompound();
 public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block, int meta, int turns)
   {
   super(world, x, y, z, block, meta, turns);
-  TileEntity te = world.getBlockTileEntity(x, y, z);
+  TileEntity te = world.getTileEntity(x, y, z);
   if(te instanceof IInventory)
     {
     IInventory inventory = (IInventory)te;
@@ -46,7 +46,7 @@ public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block,
       return;
       }
     ItemStack keyStack = inventory.getStackInSlot(0);    
-    boolean useKey = keyStack!=null && (keyStack.getItem()==Item.ingotGold || keyStack.getItem()==Item.diamond || keyStack.getItem()==Item.emerald);
+    boolean useKey = keyStack!=null && (keyStack.getItem()==Items.gold_ingot || keyStack.getItem()==Items.diamond || keyStack.getItem()==Items.emerald);
     if(useKey)
       {
       for(int i = 1; i < inventory.getSizeInventory(); i++)
@@ -58,7 +58,7 @@ public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block,
           }
         }      
       }
-    this.randomLootLevel = useKey? keyStack.getItem()==Item.ingotGold? 1 : keyStack.getItem()==Item.diamond ? 2 : 3 : 0;
+    this.randomLootLevel = useKey? keyStack.getItem()==Items.gold_ingot? 1 : keyStack.getItem()==Items.diamond ? 2 : 3 : 0;
     }  
   }
 
@@ -71,11 +71,15 @@ public TemplateRuleBlockInventory()
 public void handlePlacement(World world, int turns, int x, int y, int z)
   {
   super.handlePlacement(world, turns, x, y, z);
-  TileEntity te = world.getBlockTileEntity(x, y, z);
+  TileEntity te = world.getTileEntity(x, y, z);
   IInventory inventory = (IInventory)te;
   if(inventory!=null && randomLootLevel>0)
     {
-    LootGenerator.instance().generateLootFor(inventory, inventory.getSizeInventory(), randomLootLevel-1, world.rand);
+    /**
+     * TODO
+     */
+    
+//    LootGenerator.instance().generateLootFor(inventory, inventory.getSizeInventory(), randomLootLevel-1, world.rand);
     }
   else if(te!=null)
     {

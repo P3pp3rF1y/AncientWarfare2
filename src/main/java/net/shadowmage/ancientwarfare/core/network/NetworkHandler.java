@@ -20,6 +20,10 @@ public final class NetworkHandler implements IGuiHandler
 public static final String CHANNELNAME = "AWCORE";
 public static final NetworkHandler INSTANCE = new NetworkHandler();
 
+public static final int PACKET_TEST = 0;
+public static final int PACKET_GUI = 1;
+public static final int PACKET_STRUCTURE = 2;
+
 public static final int GUI_TEST = 0;
 
 private FMLEventChannel channel;

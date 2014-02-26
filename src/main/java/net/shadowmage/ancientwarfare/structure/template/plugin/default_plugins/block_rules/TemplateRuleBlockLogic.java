@@ -33,7 +33,7 @@ public NBTTagCompound tag = new NBTTagCompound();
 public TemplateRuleBlockLogic(World world, int x, int y, int z, Block block, int meta, int turns)
   {
   super(world, x, y, z, block, meta, turns);
-  TileEntity te = world.getBlockTileEntity(x, y, z);
+  TileEntity te = world.getTileEntity(x, y, z);
   te.writeToNBT(tag);  
   }
 
@@ -48,7 +48,7 @@ public void handlePlacement(World world, int turns, int x, int y, int z)
   tag.setInteger("x", x);
   tag.setInteger("y", y);
   tag.setInteger("z", z);
-  TileEntity te = world.getBlockTileEntity(x, y, z);
+  TileEntity te = world.getTileEntity(x, y, z);
   te.readFromNBT(tag);
   world.markBlockForUpdate(x, y, z);
   }

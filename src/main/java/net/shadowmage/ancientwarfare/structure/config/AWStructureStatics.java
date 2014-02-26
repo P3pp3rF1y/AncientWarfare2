@@ -18,12 +18,12 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package shadowmage.ancient_structures.common.config;
+package net.shadowmage.ancientwarfare.structure.config;
 
 import java.io.File;
 import java.util.logging.Logger;
 
-import shadowmage.ancient_framework.common.config.ModConfiguration;
+import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 
 public class AWStructureStatics extends ModConfiguration
 {

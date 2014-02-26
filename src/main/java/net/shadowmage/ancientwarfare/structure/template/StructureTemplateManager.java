@@ -24,9 +24,13 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 
 public class StructureTemplateManager
 {
@@ -54,9 +58,9 @@ public void addTemplate(StructureTemplate template)
   
   NBTTagCompound tag = new NBTTagCompound();
   cl.writeToNBT(tag);    
-  Packet06StructureData pkt = new Packet06StructureData();
+  PacketStructure pkt = new PacketStructure();
   pkt.packetData.setTag("singleStructure", tag);
-  pkt.sendPacketToAllPlayers();
+  NetworkHandler.sendToAllPlayers(pkt);
   }
 
 public void addTemplate(StructureTemplateClient template)
@@ -64,7 +68,7 @@ public void addTemplate(StructureTemplateClient template)
   clientTemplates.put(template.name, template);
   }
 
-public void onPlayerConnect(EntityPlayer player)
+public void onPlayerConnect(EntityPlayerMP player)
   {
   NBTTagList list = new NBTTagList();
   for(StructureTemplateClient cl : clientTemplates.values())
@@ -73,9 +77,9 @@ public void onPlayerConnect(EntityPlayer player)
     cl.writeToNBT(tag);
     list.appendTag(tag);
     }
-  Packet06StructureData pkt = new Packet06StructureData();
+  PacketStructure pkt = new PacketStructure();
   pkt.packetData.setTag("structureList", list);
-  pkt.sendPacketToPlayer(player);
+  NetworkHandler.sendToPlayer(player, pkt);
   }
 
 public void onTemplateData(NBTTagCompound tag)
@@ -87,11 +91,11 @@ public void onTemplateData(NBTTagCompound tag)
     }
   else
     {
-    NBTTagList list = tag.getTagList("structureList");
+    NBTTagList list = tag.getTagList("structureList", Constants.NBT.TAG_COMPOUND);
     NBTTagCompound structureTag;
     for(int i = 0; i < list.tagCount(); i++)
       {
-      structureTag = (NBTTagCompound) list.tagAt(i);
+      structureTag = (NBTTagCompound) list.getCompoundTagAt(i);
       readClientStructure(structureTag);
       }    
     }

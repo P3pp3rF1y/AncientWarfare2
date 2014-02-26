@@ -103,14 +103,14 @@ public StructureTemplate scan(World world, BlockPosition min, BlockPosition max,
         destination.y = scanY - min.y; 
         destination.z = scanZ - min.z;
         BlockTools.rotateInArea(destination, xSize, zSize, turns);
-        scannedBlock = Block.blocksList[world.getBlockId(scanX, scanY, scanZ)];
+        scannedBlock = world.getBlock(scanX, scanY, scanZ);
         if(scannedBlock!=null)
           {   
           pluginId = StructurePluginManager.instance().getPluginNameFor(scannedBlock);
           if(pluginId!=null)
             {
             meta = world.getBlockMetadata(scanX, scanY, scanZ);
-            te = world.getBlockTileEntity(scanX, scanY, scanZ);
+            te = world.getTileEntity(scanX, scanY, scanZ);
             pluginBlockRules = pluginBlockRuleMap.get(pluginId);
             if(pluginBlockRules==null)
               {

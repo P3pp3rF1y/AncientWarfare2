@@ -20,6 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
+import java.util.Iterator;
+
 import net.minecraft.block.Block;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
@@ -36,13 +38,11 @@ public StructurePluginModDefault()
 @Override
 public void addHandledBlocks(StructurePluginManager manager)
   {
-  Block block;
-  for(int i = 256; i < 4096; i++)
+  Iterator<Block> it = Block.blockRegistry.iterator();
+  while(it.hasNext())
     {
-    block = Block.blocksList[i];
-    if(block==null){continue;}
-    manager.registerBlockHandler("modBlockDefault", block, TemplateRuleModBlocks.class);
-    }
+    manager.registerBlockHandler("modBlockDefault", it.next(), TemplateRuleModBlocks.class);
+    }  
   }
 
 @Override

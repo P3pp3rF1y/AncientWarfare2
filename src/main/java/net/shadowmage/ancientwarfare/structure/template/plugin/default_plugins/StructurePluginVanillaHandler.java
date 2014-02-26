@@ -42,6 +42,7 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockDoors;
@@ -66,27 +67,27 @@ public StructurePluginVanillaHandler()
 @Override
 public void addHandledBlocks(StructurePluginManager manager)
   {  
-  specialHandledBlocks.add(Block.doorIron);
-  specialHandledBlocks.add(Block.doorWood);
-  specialHandledBlocks.add(Block.signPost);
-  specialHandledBlocks.add(Block.signWall);
-  specialHandledBlocks.add(Block.mobSpawner);
-  specialHandledBlocks.add(Block.commandBlock);  
-  specialHandledBlocks.add(Block.skull);
-  specialHandledBlocks.add(Block.furnaceBurning);
-  specialHandledBlocks.add(Block.brewingStand);
-  specialHandledBlocks.add(Block.beacon);
-  specialHandledBlocks.add(Block.dispenser);
-  specialHandledBlocks.add(Block.furnaceIdle);
-  specialHandledBlocks.add(Block.chest);
-  specialHandledBlocks.add(Block.dropper);
-  specialHandledBlocks.add(Block.hopperBlock);
-  specialHandledBlocks.add(Block.beacon);
+  specialHandledBlocks.add(Blocks.iron_door);
+  specialHandledBlocks.add(Blocks.wooden_door);
+  specialHandledBlocks.add(Blocks.standing_sign);
+  specialHandledBlocks.add(Blocks.wall_sign);
+  specialHandledBlocks.add(Blocks.mob_spawner);
+  specialHandledBlocks.add(Blocks.command_block);  
+  specialHandledBlocks.add(Blocks.skull);
+  specialHandledBlocks.add(Blocks.lit_furnace);
+  specialHandledBlocks.add(Blocks.brewing_stand);
+  specialHandledBlocks.add(Blocks.beacon);
+  specialHandledBlocks.add(Blocks.dispenser);
+  specialHandledBlocks.add(Blocks.furnace);
+  specialHandledBlocks.add(Blocks.chest);
+  specialHandledBlocks.add(Blocks.dropper);
+  specialHandledBlocks.add(Blocks.hopper);
+  specialHandledBlocks.add(Blocks.beacon);
     
   Block block;
   for(int i = 0; i < 256; i++)
     {
-    block = Block.blocksList[i];
+    block = Block.getBlockById(i);
     if(block!=null && ! specialHandledBlocks.contains(block))
       {
       manager.registerBlockHandler("vanillaBlocks", block, TemplateRuleVanillaBlocks.class);
@@ -94,22 +95,22 @@ public void addHandledBlocks(StructurePluginManager manager)
     } 
   specialHandledBlocks.clear();
   
-  manager.registerBlockHandler("vanillaDoors", Block.doorIron, TemplateRuleBlockDoors.class);
-  manager.registerBlockHandler("vanillaDoors", Block.doorWood, TemplateRuleBlockDoors.class);
-  manager.registerBlockHandler("vanillaSign", Block.signPost, TemplateRuleBlockSign.class);
-  manager.registerBlockHandler("vanillaSign", Block.signWall, TemplateRuleBlockSign.class);
-  manager.registerBlockHandler("vanillaLogic", Block.mobSpawner, TemplateRuleBlockLogic.class);
-  manager.registerBlockHandler("vanillaLogic", Block.commandBlock, TemplateRuleBlockLogic.class);
-  manager.registerBlockHandler("vanillaLogic", Block.brewingStand, TemplateRuleBlockLogic.class);
-  manager.registerBlockHandler("vanillaLogic", Block.beacon, TemplateRuleBlockLogic.class);
-  manager.registerBlockHandler("vanillaLogic", Block.skull, TemplateRuleBlockLogic.class);
-  manager.registerBlockHandler("vanillaLogic", Block.furnaceBurning, TemplateRuleBlockLogic.class);
-  manager.registerBlockHandler("vanillaLogic", Block.furnaceIdle, TemplateRuleBlockLogic.class);
-  manager.registerBlockHandler("vanillaLogic", Block.beacon, TemplateRuleBlockLogic.class);
-  manager.registerBlockHandler("vanillaInventory", Block.dispenser, TemplateRuleBlockInventory.class);
-  manager.registerBlockHandler("vanillaInventory", Block.chest, TemplateRuleBlockInventory.class);
-  manager.registerBlockHandler("vanillaInventory", Block.dropper, TemplateRuleBlockInventory.class);
-  manager.registerBlockHandler("vanillaInventory", Block.hopperBlock, TemplateRuleBlockInventory.class);
+  manager.registerBlockHandler("vanillaDoors", Blocks.iron_door, TemplateRuleBlockDoors.class);
+  manager.registerBlockHandler("vanillaDoors", Blocks.wooden_door, TemplateRuleBlockDoors.class);
+  manager.registerBlockHandler("vanillaSign", Blocks.wall_sign, TemplateRuleBlockSign.class);
+  manager.registerBlockHandler("vanillaSign", Blocks.standing_sign, TemplateRuleBlockSign.class);
+  manager.registerBlockHandler("vanillaLogic", Blocks.mob_spawner, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("vanillaLogic", Blocks.command_block, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("vanillaLogic", Blocks.brewing_stand, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("vanillaLogic", Blocks.beacon, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("vanillaLogic", Blocks.skull, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("vanillaLogic", Blocks.lit_furnace, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("vanillaLogic", Blocks.furnace, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("vanillaLogic", Blocks.beacon, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("vanillaInventory", Blocks.dispenser, TemplateRuleBlockInventory.class);
+  manager.registerBlockHandler("vanillaInventory", Blocks.chest, TemplateRuleBlockInventory.class);
+  manager.registerBlockHandler("vanillaInventory", Blocks.dropper, TemplateRuleBlockInventory.class);
+  manager.registerBlockHandler("vanillaInventory", Blocks.hopper, TemplateRuleBlockInventory.class);
   }
 
 

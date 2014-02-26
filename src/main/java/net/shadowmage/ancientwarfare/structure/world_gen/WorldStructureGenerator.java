@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -34,6 +35,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.gamedata.GameData;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -53,25 +55,25 @@ public static HashSet<String> defaultTargetBlocks = new HashSet<String>();
 static
 {
 
-skippableWorldGenBlocks.add(BlockDataManager.getBlockName(Block.cactus));
-skippableWorldGenBlocks.add(BlockDataManager.getBlockName(Block.vine));
-skippableWorldGenBlocks.add(BlockDataManager.getBlockName(Block.tallGrass));
-skippableWorldGenBlocks.add(BlockDataManager.getBlockName(Block.wood));
-skippableWorldGenBlocks.add(BlockDataManager.getBlockName(Block.plantRed));
-skippableWorldGenBlocks.add(BlockDataManager.getBlockName(Block.plantYellow));
-skippableWorldGenBlocks.add(BlockDataManager.getBlockName(Block.deadBush));
-skippableWorldGenBlocks.add(BlockDataManager.getBlockName(Block.leaves));
-skippableWorldGenBlocks.add(BlockDataManager.getBlockName(Block.snow));
+skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.cactus));
+skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.vine));
+skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.tallgrass));
+skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.planks));
+skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.red_flower));
+skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.yellow_flower));
+skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.deadbush));
+skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.leaves));
+skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.snow));
 
-defaultTargetBlocks.add(BlockDataManager.getBlockName(Block.dirt));
-defaultTargetBlocks.add(BlockDataManager.getBlockName(Block.grass));
-defaultTargetBlocks.add(BlockDataManager.getBlockName(Block.stone));
-defaultTargetBlocks.add(BlockDataManager.getBlockName(Block.sand));
-defaultTargetBlocks.add(BlockDataManager.getBlockName(Block.gravel));
-defaultTargetBlocks.add(BlockDataManager.getBlockName(Block.sandStone));
-defaultTargetBlocks.add(BlockDataManager.getBlockName(Block.blockClay));
-defaultTargetBlocks.add(BlockDataManager.getBlockName(Block.oreIron));
-defaultTargetBlocks.add(BlockDataManager.getBlockName(Block.oreCoal));
+defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.dirt));
+defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.grass));
+defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.stone));
+defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.sand));
+defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.gravel));
+defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.sandstone));
+defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.clay));
+defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.iron_ore));
+defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.coal_ore));
 }
 
 
@@ -138,17 +140,14 @@ private void generateAt(int chunkX, int chunkZ, World world, IChunkProvider chun
   }
 
 public static int getTargetY(World world, int x, int z, boolean skipWater)
-  {
-  int id;
+  {  
   Block block;
   for(int y = world.provider.getActualHeight(); y >0 ; y--)
     {
-    id = world.getBlockId(x, y, z);
-    if(id==0){continue;}
-    block = Block.blocksList[id];
+    block = world.getBlock(x, y, z);
     if(block==null){continue;}
-    if(skippableWorldGenBlocks.contains(BlockDataManager.getBlockName(block))){continue;}
-    if(skipWater && (id==Block.waterMoving.blockID || id==Block.waterStill.blockID)){continue;}
+    if(skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block))){continue;}
+    if(skipWater && (block==Blocks.water || block==Blocks.flowing_water)){continue;}
     return y;
     }
   return -1;

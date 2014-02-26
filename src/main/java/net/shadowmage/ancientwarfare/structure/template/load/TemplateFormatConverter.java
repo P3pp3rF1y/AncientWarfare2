@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityChest;
@@ -72,20 +73,20 @@ private static HashSet<Block> specialHandledBlocks = new HashSet<Block>();//just
 
 static
 {
-specialHandledBlocks.add(Block.signPost);
-specialHandledBlocks.add(Block.signWall);
-specialHandledBlocks.add(Block.doorIron);
-specialHandledBlocks.add(Block.doorWood);
-specialHandledBlocks.add(Block.commandBlock);
-specialHandledBlocks.add(Block.mobSpawner);//noop
-specialHandledBlocks.add(Block.furnaceBurning);
-specialHandledBlocks.add(Block.furnaceIdle);
-specialHandledBlocks.add(Block.skull);
-specialHandledBlocks.add(Block.brewingStand);
-specialHandledBlocks.add(Block.chest);
-specialHandledBlocks.add(Block.dropper);
-specialHandledBlocks.add(Block.dispenser);
-specialHandledBlocks.add(Block.hopperBlock);
+specialHandledBlocks.add(Blocks.standing_sign);
+specialHandledBlocks.add(Blocks.wall_sign);
+specialHandledBlocks.add(Blocks.iron_door);
+specialHandledBlocks.add(Blocks.wooden_door);
+specialHandledBlocks.add(Blocks.command_block);
+specialHandledBlocks.add(Blocks.mob_spawner);//noop
+specialHandledBlocks.add(Blocks.furnace);
+specialHandledBlocks.add(Blocks.lit_furnace);
+specialHandledBlocks.add(Blocks.skull);
+specialHandledBlocks.add(Blocks.brewing_stand);
+specialHandledBlocks.add(Blocks.chest);
+specialHandledBlocks.add(Blocks.dropper);
+specialHandledBlocks.add(Blocks.dispenser);
+specialHandledBlocks.add(Blocks.hopper);
 }
 
 int lineNumber = -1;
@@ -278,7 +279,7 @@ private TemplateRule parseOldBlockRule(List<String> lines)
     else if(line.toLowerCase().startsWith("order=")){buildPass = StringTools.safeParseInt("=", line);} 
     }
   
-  Block block = Block.blocksList[id];
+  Block block = Block.getBlockById(id);
   if(block==null)//skip air block rule (0/null), or non-present blocks
     {    
     return null;
@@ -305,7 +306,7 @@ private TemplateRule parseOldBlockRule(List<String> lines)
 private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPass, int meta, List<String> lines)
   {
   TemplateRuleVanillaBlocks rule = null;
-  if(block==Block.doorWood || block==Block.doorIron)
+  if(block==Blocks.wooden_door || block==Blocks.iron_door)
     {
     rule = new TemplateRuleBlockDoors();
     rule.ruleNumber = number;
@@ -313,17 +314,17 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     rule.meta = meta;
     rule.buildPass = buildPass;
     }//vanilla door rule
-  else if(block==Block.signPost || block==Block.signWall)
+  else if(block==Blocks.standing_sign || block==Blocks.wall_sign)
     {
     rule = new TemplateRuleBlockSign();
     rule.ruleNumber = number;
     rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
-    ((TemplateRuleBlockSign)rule).wall = block == Block.signWall;
+    ((TemplateRuleBlockSign)rule).wall = block == Blocks.wall_sign;
     ((TemplateRuleBlockSign)rule).signContents = new String[]{"","","",""};        
     }//vanilla sign rule
-  else if(block==Block.commandBlock)
+  else if(block==Blocks.command_block)
     {
     NBTTagCompound tag = new NBTTagCompound();
     teCommand.writeToNBT(tag); 
@@ -335,11 +336,11 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     rule.buildPass = buildPass;
     ((TemplateRuleBlockLogic)rule).tag = tag;
     }
-  else if(block==Block.mobSpawner)
+  else if(block==Blocks.mob_spawner)
     {
     //NOOP -- no previous spawner-block handling
     }//vanilla spawner rule
-  else if(block==Block.furnaceBurning || block==Block.furnaceIdle)
+  else if(block==Blocks.lit_furnace || block==Blocks.furnace)
     {
     NBTTagCompound tag = new NBTTagCompound();
     teFurnace.writeToNBT(tag); 
@@ -351,7 +352,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     rule.buildPass = buildPass;
     ((TemplateRuleBlockLogic)rule).tag = tag;
     }
-  else if(block==Block.skull)
+  else if(block==Blocks.skull)
     {
     NBTTagCompound tag = new NBTTagCompound();
     teSkull.writeToNBT(tag); 
@@ -363,7 +364,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     rule.buildPass = buildPass;
     ((TemplateRuleBlockLogic)rule).tag = tag;
     }    
-  else if(block==Block.brewingStand)
+  else if(block==Blocks.brewing_stand)
     {
     NBTTagCompound tag = new NBTTagCompound();
     teBrewingStand.writeToNBT(tag); 
@@ -375,7 +376,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     rule.buildPass = buildPass;
     ((TemplateRuleBlockLogic)rule).tag = tag;
     }
-  else if(block==Block.chest)
+  else if(block==Blocks.chest)
     {
     NBTTagCompound tag = new NBTTagCompound();
     teChest.writeToNBT(tag); 
@@ -388,7 +389,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     ((TemplateRuleBlockInventory)rule).tag = tag;
     ((TemplateRuleBlockInventory)rule).randomLootLevel = 1;
     }//vanilla chests
-  else if(block==Block.dispenser)
+  else if(block==Blocks.dispenser)
     {
     NBTTagCompound tag = new NBTTagCompound();
     teDispenser.writeToNBT(tag); 
@@ -401,7 +402,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     ((TemplateRuleBlockInventory)rule).tag = tag;
     ((TemplateRuleBlockInventory)rule).randomLootLevel = 0;
     }
-  else if(block==Block.dropper)
+  else if(block==Blocks.dropper)
     {
     NBTTagCompound tag = new NBTTagCompound();
     teDropper.writeToNBT(tag); 
@@ -414,7 +415,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     ((TemplateRuleBlockInventory)rule).tag = tag;
     ((TemplateRuleBlockInventory)rule).randomLootLevel = 0;
     }
-  else if(block==Block.hopperBlock)
+  else if(block==Blocks.hopper)
     {
     NBTTagCompound tag = new NBTTagCompound();
     teHopper.writeToNBT(tag); 

@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -36,8 +37,8 @@ public StructureValidatorWater()
 @Override
 public boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template)
   {
-  int id = world.getBlockId(x, y-1, z);
-  return id==Block.waterMoving.blockID || id==Block.waterStill.blockID;
+  Block block = world.getBlock(x, y-1, z);
+  return block==Blocks.water || block==Blocks.flowing_water;
   }
 
 @Override
@@ -58,11 +59,11 @@ public void handleClearAction(World world, int x, int y, int z, StructureTemplat
   {
   if( y < bb.min.y+template.yOffset)
     {
-    world.setBlock(x, y, z, Block.waterStill.blockID);
+    world.setBlock(x, y, z, Blocks.water);
     }
   else
     {
-    world.setBlock(x, y, z, 0);
+    world.setBlock(x, y, z, Blocks.air);
     }
   }
 }

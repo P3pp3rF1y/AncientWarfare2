@@ -33,9 +33,9 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -105,24 +105,24 @@ public void readFromTag(NBTTagCompound tag)
   if(tag.hasKey("biomeList"))
     {
     ArrayList<String> biomes = new ArrayList<String>();
-    NBTTagList biomeList = tag.getTagList("biomeList");
-    NBTTagString biomeTag;
+    NBTTagList biomeList = tag.getTagList("biomeList", Constants.NBT.TAG_STRING);
+    String biomeTag;
     for(int i = 0; i <biomeList.tagCount(); i++)
       {
-      biomeTag = (NBTTagString) biomeList.tagAt(i);      
-      biomes.add(biomeTag.func_150285_a_());
+      biomeTag = biomeList.getStringTagAt(i);      
+      biomes.add(biomeTag);
       }
     this.setBiomeList(biomes);
     }
   if(tag.hasKey("blockList"))
     {
     ArrayList<String> blocks = new ArrayList<String>();
-    NBTTagList blockList = tag.getTagList("blockList");
-    NBTTagString blockTag;
+    NBTTagList blockList = tag.getTagList("blockList", Constants.NBT.TAG_STRING);
+    String blockTag;
     for(int i = 0; i <blockList.tagCount(); i++)
       {
-      blockTag = (NBTTagString) blockList.tagAt(i);      
-      blocks.add(blockTag.func_150285_a_());
+      blockTag = blockList.getStringTagAt(i);      
+      blocks.add(blockTag);
       }
     this.setTargetBlocks(blocks);
     }
@@ -484,16 +484,16 @@ protected void borderLeveling(World world, int x, int z, StructureTemplate templ
     handleClearAction(world, x, y, z, template, bb);
     }
   BiomeGenBase biome = world.getBiomeGenForCoords(x, z);  
-  int fillBlockID = Block.grass.blockID;
-  if(biome!=null && biome.topBlock>=1)
+  Block fillBlock = Blocks.grass;
+  if(biome!=null && biome.topBlock!=null)
     {
-    fillBlockID = biome.topBlock;
+    fillBlock = biome.topBlock;
     }
   int y = bb.min.y + template.yOffset + step - 1;
-  Block block = Block.blocksList[world.getBlockId(x, y, z)];
+  Block block = world.getBlock(x, y, z);
   if(block!=null && block!= Blocks.flowing_water && block!=Blocks.water && !WorldStructureGenerator.skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block)))
     {
-    world.setBlock(x, y, z, fillBlockID);
+    world.setBlock(x, y, z, fillBlock);
     }  
   }
 
@@ -505,15 +505,15 @@ protected void borderFill(World world, int x, int z, StructureTemplate template,
   maxFillY -= step;
   Block block;
   BiomeGenBase biome = world.getBiomeGenForCoords(x, z);  
-  int fillBlockID = Block.grass.blockID;
-  if(biome!=null && biome.topBlock>=1)
+  Block fillBlockID = Blocks.grass;
+  if(biome!=null && biome.topBlock!=null)
     {
     fillBlockID = biome.topBlock;
     }
   for(int y = maxFillY; y>1; y--)
     {
-    block = Block.blocksList[world.getBlockId(x, y, z)];
-    if(block==null || WorldStructureGenerator.skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block)) || (block==Block.waterStill || block==Block.waterMoving))
+    block = world.getBlock(x, y, z);
+    if(block==null || WorldStructureGenerator.skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block)) || (block==Blocks.water || block==Blocks.flowing_water))
       {
       world.setBlock(x, y, z, fillBlockID);
       }
@@ -524,8 +524,8 @@ protected void underFill(World world, int x, int z, StructureTemplate template, 
   {
   int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
   BiomeGenBase biome = world.getBiomeGenForCoords(x, z);  
-  int fillBlockID = Block.grass.blockID;
-  if(biome!=null && biome.topBlock>=1)
+  Block fillBlockID = Blocks.grass;
+  if(biome!=null && biome.topBlock!=null)
     {
     fillBlockID = biome.topBlock;
     }

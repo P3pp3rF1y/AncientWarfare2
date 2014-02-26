@@ -46,19 +46,13 @@ public TemplateRuleEntityLogic(World world, Entity entity, int turns, int x, int
 @Override
 public void handlePlacement(World world, int turns, int x, int y, int z)
   {
-  Entity e = EntityList.createEntityByName(mobID, world);
-  NBTTagList list = tag.getTagList("Pos");
-  if(list.tagCount()>=3)
-    {
-    ((NBTTagDouble)list.tagAt(0)).data = x + BlockTools.rotateFloatX(xOffset, zOffset, turns);
-    ((NBTTagDouble)list.tagAt(1)).data = y;
-    ((NBTTagDouble)list.tagAt(2)).data = z + BlockTools.rotateFloatZ(xOffset, zOffset, turns);
-    e.readFromNBT(tag);
-    }
-  else
-    {
-    e.setPosition(x+0.5d, y, z+0.5d);
-    }
+  Entity e = EntityList.createEntityByName(mobID, world);  
+  NBTTagList list = new NBTTagList();
+  list.appendTag(new NBTTagDouble(x + BlockTools.rotateFloatX(xOffset, zOffset, turns)));
+  list.appendTag(new NBTTagDouble(y));
+  list.appendTag(new NBTTagDouble(z + BlockTools.rotateFloatZ(xOffset, zOffset, turns)));
+  tag.setTag("Pos", list);
+  e.readFromNBT(tag);
   float yaw = (rotation + 90.f * turns)%360.f;
   e.rotationYaw = yaw;
   world.spawnEntityInWorld(e);

@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
@@ -111,14 +112,14 @@ public void preGeneration(World world, int x, int y, int z, int face,  Structure
       {
       for(int by = bb.min.y-1; by>0; by--)
         {        
-        block = Block.blocksList[world.getBlockId(bx, by, bz)];
+        block = world.getBlock(bx, by, bz);
         if(block!=null && validTargetBlocks.contains(BlockDataManager.instance().getNameForBlock(block)))
           {
           break;
           }
         else
           {
-          world.setBlock(bx, by, bz, Block.dirt.blockID);
+          world.setBlock(bx, by, bz, Blocks.dirt);
           }        
         }
       }
@@ -131,11 +132,11 @@ public void handleClearAction(World world, int x, int y, int z, StructureTemplat
   int maxWaterY = bb.min.y+template.yOffset-1;
   if(y <= maxWaterY)
     {
-    world.setBlock(x, y, z, Block.waterStill.blockID);
+    world.setBlock(x, y, z, Blocks.water);
     }
   else
     {
-    world.setBlock(x, y, z, 0);
+    world.setBlock(x, y, z, Blocks.air);
     }
   }
 

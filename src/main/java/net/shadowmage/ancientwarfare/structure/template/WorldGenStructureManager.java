@@ -33,6 +33,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.gamedata.GameData;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
@@ -49,9 +50,9 @@ public static WorldGenStructureManager instance(){return instance;}
 public void loadBiomeList()
   {
   BiomeGenBase biome;
-  for(int i = 0; i < BiomeGenBase.biomeList.length; i++)
+  for(int i = 0; i < BiomeGenBase.getBiomeGenArray().length; i++)
     {
-    biome = BiomeGenBase.biomeList[i];
+    biome = BiomeGenBase.getBiomeGenArray()[i];
     if(biome==null){continue;}
     templatesByBiome.put(biome.biomeName.toLowerCase(), new HashSet<StructureTemplate>());
     }

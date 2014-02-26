@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -49,10 +50,10 @@ public StructureValidatorHarbor()
   validTargetBlocksRear = new HashSet<String>();
   validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks);
   validTargetBlocksSide.addAll(WorldStructureGenerator.defaultTargetBlocks);
-  validTargetBlocksRear.add(BlockDataManager.getBlockName(Block.waterStill));  
-  validTargetBlocksRear.add(BlockDataManager.getBlockName(Block.waterMoving));
-  validTargetBlocksSide.add(BlockDataManager.getBlockName(Block.waterMoving));
-  validTargetBlocksSide.add(BlockDataManager.getBlockName(Block.waterStill));
+  validTargetBlocksRear.add(BlockDataManager.instance().getNameForBlock(Blocks.water));  
+  validTargetBlocksRear.add(BlockDataManager.instance().getNameForBlock(Blocks.flowing_water));
+  validTargetBlocksSide.add(BlockDataManager.instance().getNameForBlock(Blocks.water));
+  validTargetBlocksSide.add(BlockDataManager.instance().getNameForBlock(Blocks.flowing_water));
   }
 
 @Override
@@ -69,7 +70,7 @@ public boolean shouldIncludeForSelection(World world, int x, int y, int z, int f
    * then test back target position to ensure that it has water at same level
    * or at an acceptable level difference
    */
-  Block block = Block.blocksList[world.getBlockId(x, y-1, z)];  
+  Block block = world.getBlock(x, y-1, z);  
   if(block!=null && validTargetBlocks.contains(BlockDataManager.instance().getNameForBlock(block)))
     {
     testMin.reassign(x, y, z);
@@ -79,8 +80,8 @@ public boolean shouldIncludeForSelection(World world, int x, int y, int z, int f
       {
       return false;
       }
-    block = Block.blocksList[world.getBlockId(testMin.x, by, testMin.z)];
-    if(block==Block.waterStill || block==Block.waterMoving)
+    block = world.getBlock(testMin.x, by, testMin.z);
+    if(block==Blocks.water || block==Blocks.flowing_water)
       {
       return true;
       }
@@ -167,11 +168,11 @@ public void handleClearAction(World world, int x, int y, int z, StructureTemplat
   {
   if(y>=bb.min.y+template.yOffset)
     {
-    world.setBlock(x, y, z, 0);    
+    world.setBlock(x, y, z, Blocks.air);    
     }
   else
     {
-    world.setBlock(x, y, z, Block.waterStill.blockID);
+    world.setBlock(x, y, z, Blocks.water);
     }
   }
 

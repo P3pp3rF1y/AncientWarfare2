@@ -24,7 +24,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.List;
 
-import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
@@ -108,7 +108,7 @@ public void preGeneration(World world, int x, int y, int z, int face,  Structure
 @Override
 public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb)
   {
-  world.setBlock(x, y, z, Block.waterStill.blockID);
+  world.setBlock(x, y, z, Blocks.water);
   }
 
 }

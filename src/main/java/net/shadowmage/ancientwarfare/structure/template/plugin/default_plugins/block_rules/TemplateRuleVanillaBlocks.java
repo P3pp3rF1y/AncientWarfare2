@@ -27,9 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.IDPairCount;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
-import net.shadowmage.ancientwarfare.structure.template.BlockInfo;
 import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleBlock;
 
 public class TemplateRuleVanillaBlocks extends TemplateRuleBlock
@@ -53,7 +51,7 @@ public TemplateRuleVanillaBlocks(World world, int x, int y, int z, Block block, 
   super(world, x, y, z, block, meta, turns);
   this.blockName = BlockDataManager.instance().getNameForBlock(block);
   this.meta = BlockDataManager.instance().getRotatedMeta(block, meta, turns);
-  this.buildPass = BlockDataManager.getBlockPriority(block.blockID, meta);
+  this.buildPass = BlockDataManager.instance().getPriorityForBlock(block);
   }
 
 public TemplateRuleVanillaBlocks()
@@ -64,9 +62,9 @@ public TemplateRuleVanillaBlocks()
 @Override
 public void handlePlacement(World world, int turns, int x, int y, int z)
   {
-  Block block = BlockDataManager.getBlockByName(blockName);
+  Block block = BlockDataManager.instance().getBlockForName(blockName);
   int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);  
-  world.setBlock(x, y, z, block.blockID, localMeta, 2);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
+  world.setBlock(x, y, z, block, localMeta, 2);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
   }
   
 @Override
@@ -78,12 +76,9 @@ public boolean shouldReuseRule(World world, Block block, int meta, int turns, Ti
 @Override
 public void addResources(List<ItemStack> resources)
   {
-  Block block = BlockDataManager.getBlockByName(blockName);
-  IDPairCount count = BlockInfo.getInventoryBlock(block.blockID, meta);
-  if(count!=null && count.id>0)
-    {
-    resources.add(new ItemStack(count.id, count.count, count.meta));    
-    }
+  /**
+   * TODO
+   */
   }
 
 @Override
