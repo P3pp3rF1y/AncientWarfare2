@@ -181,7 +181,7 @@ public void registerEntityHandler(String pluginName, Class<?extends Entity> enti
     {
     if(!ruleByID.get(pluginName).equals(ruleClass))
       {
-      Class clz = ruleByID.get(pluginName);
+      Class<? extends TemplateRule> clz = ruleByID.get(pluginName);
       throw new IllegalArgumentException("Attempt to overwrite "+clz+" with "+ruleClass+" by "+pluginName + " for entityClass: "+entityClass);
       }
     }
@@ -197,7 +197,7 @@ public void registerBlockHandler(String pluginName, Block block, Class<? extends
     {
     if(!ruleByID.get(pluginName).equals(ruleClass))
       {
-      Class clz = ruleByID.get(pluginName);
+      Class<? extends TemplateRule> clz = ruleByID.get(pluginName);
       throw new IllegalArgumentException("Attempt to overwrite "+clz+" with "+ruleClass+" by "+pluginName + " for block: "+block);
       }
     }  
