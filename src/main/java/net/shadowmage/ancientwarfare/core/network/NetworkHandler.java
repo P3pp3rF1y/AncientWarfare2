@@ -35,8 +35,8 @@ public final void registerNetwork()
   {
   channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
   channel.register(new PacketHandlerServer());
-  PacketBase.registerPacketType(0, TestPacket.class);
-  PacketBase.registerPacketType(1, PacketGui.class);
+  PacketBase.registerPacketType(PACKET_TEST, TestPacket.class);
+  PacketBase.registerPacketType(PACKET_GUI, PacketGui.class);
   NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
   }
 

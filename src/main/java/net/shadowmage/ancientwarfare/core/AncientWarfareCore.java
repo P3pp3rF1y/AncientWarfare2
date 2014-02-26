@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerTest;
 import net.shadowmage.ancientwarfare.core.gamedata.GameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.TestPacket;
-import net.shadowmage.ancientwarfare.core.proxy.CommonProxy;
+import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -32,7 +32,7 @@ version = "@VERSION@"
 public class AncientWarfareCore 
 {
 
-@Instance
+@Instance(value="ancientwarfare")
 public static AncientWarfareCore instance;
 
 @SidedProxy
@@ -40,7 +40,7 @@ public static AncientWarfareCore instance;
 clientSide = "net.shadowmage.ancientwarfare.core.proxy.ClientProxy",
 serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy"
 )
-public static CommonProxy proxy;
+public static CommonProxyBase proxy;
 
 public static Configuration config;
 
