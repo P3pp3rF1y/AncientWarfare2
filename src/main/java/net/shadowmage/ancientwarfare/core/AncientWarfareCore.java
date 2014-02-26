@@ -56,7 +56,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.INSTANCE.registerContainer(0, ContainerTest.class);
   FMLCommonHandler.instance().bus().register(this);
   MinecraftForge.EVENT_BUS.register(GameData.INSTANCE);
-  proxy.registerClient();  
+  proxy.registerClient();    
   }
 
 @EventHandler

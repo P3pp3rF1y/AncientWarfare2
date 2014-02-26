@@ -21,27 +21,32 @@ import net.minecraft.item.ItemStack;
 public class BlockDataManager
 {
 
-private HashMap<Integer, String> blockIDToName;
-private HashMap<Integer, String> itemIDToName;
-private HashMap<Integer, Block> blockIDToBlock;
-private HashMap<Integer, Item> itemIDToItem;
-private HashMap<String, Block> blockNameToBlock;
-private HashMap<String, Item> itemNameToItem;
-private HashMap<String, Integer> blockNameToID;
-private HashMap<String, Integer> itemNameToID;
-private HashMap<Block, Integer> blockToID;
-private HashMap<Block, String> blockToName;
-private HashMap<Item, Integer> itemToID;
-private HashMap<Item, String> itemToName;
+private HashMap<Integer, String> blockIDToName = new HashMap<Integer, String>();
+private HashMap<Integer, Block> blockIDToBlock = new HashMap<Integer, Block>();
+private HashMap<String, Block> blockNameToBlock = new HashMap<String, Block>();
+private HashMap<String, Integer> blockNameToID = new HashMap<String, Integer>();
+private HashMap<Block, Integer> blockToID = new HashMap<Block, Integer>();
+private HashMap<Block, String> blockToName = new HashMap<Block, String>();
+private HashMap<Integer, String> itemIDToName = new HashMap<Integer, String>();
+private HashMap<Integer, Item> itemIDToItem = new HashMap<Integer, Item>();
+private HashMap<String, Item> itemNameToItem = new HashMap<String, Item>();
+private HashMap<String, Integer> itemNameToID = new HashMap<String, Integer>();
+private HashMap<Item, Integer> itemToID = new HashMap<Item, Integer>();
+private HashMap<Item, String> itemToName = new HashMap<Item, String>();
 
-private HashMap<Block, BlockRotationMap> blockInfoMap = new HashMap<Block, BlockRotationMap>();
+private HashMap<Block, BlockInfo> blockInfoMap = new HashMap<Block, BlockInfo>();
 
-public BlockDataManager()
+public void load()
   {
-
+  /**
+   * TODO
+   * load item and block name/id and id/name maps from disk
+   * load item and block instance to name/id and id/name to instance maps 
+   * load block rotation data
+   * load block priority data
+   * load block item mapping data
+   */  
   }
-
-public void load(){}//TODO
 
 /**
  * return the new meta for the input block after rotating clockwise 90' x the input number of turns
@@ -50,7 +55,20 @@ public void load(){}//TODO
  * @param turns
  * @return
  */
-public int getRotatedMeta(Block block, int meta, int turns){return 0;}//TODO
+public int getRotatedMeta(Block block, int meta, int turns)
+  {
+  BlockInfo info = blockInfoMap.get(block);    
+  if(info!=null)
+    {
+    int rm = meta;
+    for(int i =0; i <turns; i++)
+      {
+      rm = info.getRotatedMeta(rm);
+      }    
+    return rm;
+    }
+  return meta;
+  }
 
 /**
  * return the build-priority for the block<br>
@@ -60,91 +78,183 @@ public int getRotatedMeta(Block block, int meta, int turns){return 0;}//TODO
  * @param block
  * @return
  */
-public int getPriorityForBlock(Block block){return 0;}//TODO
+public int getPriorityForBlock(Block block)
+  {
+  BlockInfo info = blockInfoMap.get(block);
+  if(info!=null)
+    {
+    return info.buildPriority;
+    }
+  return 0;
+  }
 
 /**
  * get the Block for the input 1.6 block-id
  * @param id
  * @return
  */
-public Block getBlockForID(int id){return null;}//TODO
+public Block getBlockForID(int id)
+  {
+  if(blockIDToBlock.containsKey(id))
+    {
+    return blockIDToBlock.get(id);
+    }
+  return null;
+  }
 
 /**
  * get the 1.6 ID for the input Block
  * @param item
  * @return
  */
-public int getIDForBlock(Block block){return 0;}//TODO
+public int getIDForBlock(Block block)
+  {
+  if(blockToID.containsKey(block))
+    {
+    return blockToID.get(block);
+    }
+  return 0;
+  }
 
 /**
  * get the 1.7 name for the input Block
  * @param item
  * @return
  */
-public String getNameForBlock(Block block){return null;}//TODO
+public String getNameForBlock(Block block)
+  {
+  if(blockToName.containsKey(block))
+    {
+    return blockToName.get(block);
+    }
+  return null;
+  }
 
 /**
  * get the Block for the 1.7 name
  * @param name
  * @return
  */
-public Block getBlockForName(String name){return null;}//TODO
+public Block getBlockForName(String name)
+  {
+  if(blockNameToBlock.containsKey(name))
+    {
+    return blockNameToBlock.get(name);
+    }
+  return null;
+  }
 
 /**
  * get the 1.7 name for the 1.6 id
  * @param id
  * @return
  */
-public String getNameBlockForID(int id){return null;}//TODO
+public String getNameBlockForID(int id)
+  {
+  if(blockIDToName.containsKey(id))
+    {
+    return blockIDToName.get(id);
+    }
+  return null;
+  }
 
 /**
  * get the 1.6 ID for the 1.7 name
  * @param name
  * @return
  */
-public int getIDForBlockName(String name){return 0;}//TODO
+public int getIDForBlockName(String name)
+  {
+  if(blockNameToID.containsKey(name))
+    {
+    return blockNameToID.get(name);
+    }
+  return 0;
+  }
 
 /**
  * get the Item for the input 1.6 item-id
  * @param id
  * @return
  */
-public Item getItemForID(int id){return null;}//TODO
+public Item getItemForID(int id)
+  {
+  if(itemIDToItem.containsKey(id))
+    {
+    return itemIDToItem.get(id);
+    }
+  return null;
+  }
 
 /**
  * get the 1.6 ID for the input Item
  * @param item
  * @return
  */
-public int getIDForItem(Item item){return 0;}//TODO
+public int getIDForItem(Item item)
+  {
+  if(itemToID.containsKey(item))
+    {
+    return itemToID.get(item);        
+    }
+  return 0;
+  }
 
 /**
  * get the 1.7 name for the input Item
  * @param item
  * @return
  */
-public String getNameForItem(Item item){return null;}//TODO
+public String getNameForItem(Item item)
+  {
+  if(itemToName.containsKey(item))
+    {
+    return itemToName.get(item);
+    }
+  return null;
+  }
 
 /**
  * get the Item for the 1.7 name
  * @param name
  * @return
  */
-public Item getItemForName(String name){return null;}//TODO
+public Item getItemForName(String name)
+  {
+  if(itemNameToItem.containsKey(name))
+    {
+    return itemNameToItem.get(name);
+    }
+  return null;
+  }
 
 /**
  * get the 1.7 name for the 1.6 id
  * @param id
  * @return
  */
-public String getNameItemForID(int id){return null;}//TODO
+public String getNameItemForID(int id)
+  {
+  if(itemIDToName.containsKey(id))
+    {
+    return itemIDToName.get(id);
+    }
+  return null;
+  }
 
 /**
  * get the 1.6 ID for the 1.7 name
  * @param name
  * @return
  */
-public int getIDForItemName(String name){return 0;}//TODO
+public int getIDForItemName(String name)
+  {
+  if(itemNameToID.containsKey(name))
+    {
+    return itemNameToID.get(name);
+    }
+  return 0;  
+  }
 
 /**
  * return a proper sized item-stack for the input block, null if no item mapping / forced null mapping<br>
@@ -156,12 +266,15 @@ public int getIDForItemName(String name){return 0;}//TODO
  * @param size
  * @return
  */
-public ItemStack getInventoryStackForBlock(Block block, int size){return null;}//TODO
-
-private class BlockRotationMap
-{
-
-}
+public ItemStack getInventoryStackForBlock(Block block, int meta)
+  {
+  BlockInfo info = blockInfoMap.get(block);
+  if(info!=null)
+    {
+    return info.getStackFor(meta);
+    }
+  return null;
+  }
 
 private class BlockInfo
 {
@@ -171,11 +284,30 @@ boolean noItem = false;
  * item-stack map, by block-meta.  if singleItem==true, will use index[0] instead of whatever is passed in
  */
 ItemStack[] metaStacks = new ItemStack[16];
+
 byte[] rotations;
+byte buildPriority = 0;
 
 public int getRotatedMeta(int meta)
   {
   return rotations[meta];
+  }
+
+public ItemStack getStackFor(int meta)
+  {
+  if(noItem)
+    {
+    return null;
+    }
+  else if(singleItem && metaStacks[0]!=null)
+    {
+    return metaStacks[0].copy();
+    }
+  else if(metaStacks[meta]!=null)
+    {
+    return metaStacks[meta].copy();
+    }    
+  return null;
   }
 }
 
