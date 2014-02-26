@@ -31,6 +31,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
@@ -54,7 +55,6 @@ public StructureMap()
 @Override
 public void readFromNBT(NBTTagCompound nbttagcompound)
   {
-  AWLog.logDebug("reading structure map from nbt...");
   NBTTagCompound mapTag = nbttagcompound.getCompoundTag("map");
   map.readFromNBT(mapTag);
   }
@@ -62,7 +62,6 @@ public void readFromNBT(NBTTagCompound nbttagcompound)
 @Override
 public void writeToNBT(NBTTagCompound nbttagcompound)
   {
-  AWLog.logDebug("writing structure map to nbt...");
   NBTTagCompound mapTag = new NBTTagCompound();
   map.writeToNBT(mapTag);
   nbttagcompound.setTag("map", mapTag);
@@ -81,7 +80,6 @@ public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, int 
   int cz = worldZ >> 4;
   StructureEntry entry = new StructureEntry(worldX, worldY, worldZ, face, structure);  
   map.setGeneratedAt(world.provider.dimensionId, cx, cz, entry, structure.getValidationSettings().isUnique());
-//  AWLog.logDebug("marking generated at: "+cx+","+cz);
   this.markDirty();
   }
 
@@ -119,14 +117,14 @@ public void setGeneratedAt(int dimension, int chunkX, int chunkZ, StructureEntry
 
 public void readFromNBT(NBTTagCompound nbttagcompound)
   {
-  NBTTagList uniquesList = nbttagcompound.getTagList("uniques");
-  NBTTagList dimensionList = nbttagcompound.getTagList("dimensions");
+  NBTTagList uniquesList = nbttagcompound.getTagList("uniques", Constants.NBT.TAG_STRING);
+  NBTTagList dimensionList = nbttagcompound.getTagList("dimensions", Constants.NBT.TAG_STRING);
   
   NBTTagCompound dimensionTag;
   int dim;
   for(int i = 0; i < dimensionList.tagCount(); i++)
     {
-    dimensionTag = (NBTTagCompound) dimensionList.tagAt(i);
+    dimensionTag = dimensionList.getCompoundTagAt(i);
     dim = dimensionTag.getInteger("dim");     
     if(!this.mapsByDimension.containsKey(dim))
       {
@@ -135,11 +133,11 @@ public void readFromNBT(NBTTagCompound nbttagcompound)
     this.mapsByDimension.get(dim).readFromNBT(dimensionTag.getCompoundTag("data"));
     }
   
-  NBTTagString uniqueTag;
+  String uniqueTag;
   for(int i = 0; i < uniquesList.tagCount(); i++)
     {
-    uniqueTag = (NBTTagString) uniquesList.tagAt(i);
-    generatedUniques.add(uniqueTag.func_150285_a_());
+    uniqueTag = uniquesList.getStringTagAt(i);
+    generatedUniques.add(uniqueTag);
     }
   }
 
@@ -185,7 +183,6 @@ public Collection<StructureEntry> getEntriesNear(int chunkX, int chunkZ, int chu
     crx+=largestGeneratedX/16;
     crz+=largestGeneratedZ/16;
     }
-//  AWLog.logDebug("checking radius for structures: "+(chunkX-crx)+","+(chunkZ-crz)+"::"+(chunkX+crx)+","+(chunkZ+crz));
   for(int x = chunkX-crx; x<=chunkX+crx; x++)
     {
     if(worldMap.containsKey(x))
@@ -200,7 +197,6 @@ public Collection<StructureEntry> getEntriesNear(int chunkX, int chunkZ, int chu
         }
       }
     }
-//  AWLog.logDebug("found: "+list.size()+" nearby entries");
   return list;
   }
 
@@ -219,13 +215,13 @@ public void setGeneratedAt(int chunkX, int chunkZ, StructureEntry entry)
 
 public void readFromNBT(NBTTagCompound nbttagcompound)
   {
-  NBTTagList entryList = nbttagcompound.getTagList("entries");
+  NBTTagList entryList = nbttagcompound.getTagList("entries", Constants.NBT.TAG_COMPOUND);
   StructureEntry entry;
   NBTTagCompound entryTag;
   int x, z;
   for(int i = 0; i < entryList.tagCount(); i++)
     {
-    entryTag = (NBTTagCompound) entryList.tagAt(i);
+    entryTag = (NBTTagCompound) entryList.getCompoundTagAt(i);
     x = entryTag.getInteger("x");
     z = entryTag.getInteger("z");
     entry = new StructureEntry();
@@ -261,11 +257,4 @@ public void writeToNBT(NBTTagCompound nbttagcompound)
   }
 }//end structure X Map
 
-@Override
-public void handlePacketData(NBTTagCompound data)
-  {
-  /**
-   * NOOP FOR STRUCTURE MAP -- not needed on client-side
-   */
-  }
 }

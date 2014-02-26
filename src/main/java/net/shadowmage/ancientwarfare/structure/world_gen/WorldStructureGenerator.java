@@ -33,7 +33,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.gamedata.GameData;
-import net.shadowmage.ancientwarfare.structure.template.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;

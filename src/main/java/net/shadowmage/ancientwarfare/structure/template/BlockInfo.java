@@ -25,6 +25,7 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.util.IDPairCount;
 
 /**
  * info wrapper for blocks which may be rotated dynamically

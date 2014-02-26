@@ -27,7 +27,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.structure.template.BlockDataManager;
+import net.shadowmage.ancientwarfare.core.util.IDPairCount;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.BlockInfo;
 import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleBlock;
 
@@ -50,8 +51,8 @@ public int buildPass = 0;
 public TemplateRuleVanillaBlocks(World world, int x, int y, int z, Block block, int meta, int turns)
   {
   super(world, x, y, z, block, meta, turns);
-  this.blockName = BlockDataManager.getBlockName(block);
-  this.meta = BlockDataManager.getRotatedMeta(block, meta, turns);
+  this.blockName = BlockDataManager.instance().getNameForBlock(block);
+  this.meta = BlockDataManager.instance().getRotatedMeta(block, meta, turns);
   this.buildPass = BlockDataManager.getBlockPriority(block.blockID, meta);
   }
 
@@ -64,14 +65,14 @@ public TemplateRuleVanillaBlocks()
 public void handlePlacement(World world, int turns, int x, int y, int z)
   {
   Block block = BlockDataManager.getBlockByName(blockName);
-  int localMeta = BlockDataManager.getRotatedMeta(block, this.meta, turns);  
+  int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);  
   world.setBlock(x, y, z, block.blockID, localMeta, 2);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
   }
   
 @Override
 public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z)
   {
-  return block!=null && blockName.equals(BlockDataManager.getBlockName(block)) && BlockDataManager.getRotatedMeta(block, meta, turns) == this.meta;
+  return block!=null && blockName.equals(BlockDataManager.instance().getNameForBlock(block)) && BlockDataManager.instance().getRotatedMeta(block, meta, turns) == this.meta;
   }
 
 @Override

@@ -27,7 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.structure.template.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleBlock;
 
 public class TemplateRuleModBlocks extends TemplateRuleBlock

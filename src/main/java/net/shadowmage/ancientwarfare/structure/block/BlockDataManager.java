@@ -36,6 +36,10 @@ private HashMap<Item, String> itemToName = new HashMap<Item, String>();
 
 private HashMap<Block, BlockInfo> blockInfoMap = new HashMap<Block, BlockInfo>();
 
+private BlockDataManager(){}
+private static BlockDataManager instance = new BlockDataManager(){};
+public static BlockDataManager instance(){return instance;}
+
 public void load()
   {
   /**

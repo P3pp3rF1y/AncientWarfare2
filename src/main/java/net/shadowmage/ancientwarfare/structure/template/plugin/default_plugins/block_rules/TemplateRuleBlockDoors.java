@@ -22,7 +22,7 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.structure.template.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks
 {
@@ -40,7 +40,7 @@ public TemplateRuleBlockDoors()
 public void handlePlacement(World world, int turns, int x, int y, int z)
   {
   Block block = BlockDataManager.getBlockByName(blockName);
-  int localMeta = BlockDataManager.getRotatedMeta(block, this.meta, turns); 
+  int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns); 
   if(world.getBlockId(x, y-1, z)!=block.blockID)//this is the bottom door block, call placeDoor from our block...
     {
     world.setBlock(x, y, z, block.blockID, meta, 0);    

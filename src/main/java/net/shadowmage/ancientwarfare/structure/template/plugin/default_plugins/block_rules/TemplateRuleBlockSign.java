@@ -25,7 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.structure.template.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks
 {
@@ -64,7 +64,7 @@ public void handlePlacement(World world, int turns, int x, int y, int z)
     }
   else
     {
-    meta = BlockDataManager.getRotatedMeta(block, this.meta, turns);
+    meta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);
     }
   world.setBlock(x, y, z, block.blockID, meta, 2);
   TileEntitySign te = (TileEntitySign) world.getBlockTileEntity(x, y, z);
@@ -86,7 +86,7 @@ public boolean shouldReuseRule(World world, Block block, int meta, int turns, Ti
       return false;
       }
     }
-  return ((block==Block.signPost && !this.wall && (meta+4*turns%16)==this.meta)||(block==Block.signWall && this.wall && BlockDataManager.getRotatedMeta(block, meta, turns)==this.meta));
+  return ((block==Block.signPost && !this.wall && (meta+4*turns%16)==this.meta)||(block==Block.signWall && this.wall && BlockDataManager.instance().getRotatedMeta(block, meta, turns)==this.meta));
   }
 
 @Override

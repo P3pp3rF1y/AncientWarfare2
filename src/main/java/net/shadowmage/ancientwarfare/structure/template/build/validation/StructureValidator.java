@@ -38,7 +38,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.template.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
@@ -417,15 +417,15 @@ protected boolean validateBlockType(World world, int x, int y, int z, Set<String
     {
     return false;
     }
-  Block block = Block.blocksList[world.getBlockId(x, y, z)];
+  Block block = world.getBlock(x, y, z);
   if(block==null)
     {   
     AWLog.logDebug("rejected for non-matching block: air" + " at: "+x+","+y+","+z);
     return false;
     }
-  if(!validBlocks.contains(BlockDataManager.getBlockName(block)))
+  if(!validBlocks.contains(BlockDataManager.instance().getNameForBlock(block)))
     {
-    AWLog.logDebug("rejected for non-matching block: "+BlockDataManager.getBlockName(block) + " at: "+x+","+y+","+z);
+    AWLog.logDebug("rejected for non-matching block: "+BlockDataManager.instance().getNameForBlock(block) + " at: "+x+","+y+","+z);
     return false;
     }
   return true;  
@@ -491,7 +491,7 @@ protected void borderLeveling(World world, int x, int z, StructureTemplate templ
     }
   int y = bb.min.y + template.yOffset + step - 1;
   Block block = Block.blocksList[world.getBlockId(x, y, z)];
-  if(block!=null && block!= Blocks.flowing_water && block!=Blocks.water && !WorldStructureGenerator.skippableWorldGenBlocks.contains(BlockDataManager.getBlockName(block)))
+  if(block!=null && block!= Blocks.flowing_water && block!=Blocks.water && !WorldStructureGenerator.skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block)))
     {
     world.setBlock(x, y, z, fillBlockID);
     }  
@@ -513,7 +513,7 @@ protected void borderFill(World world, int x, int z, StructureTemplate template,
   for(int y = maxFillY; y>1; y--)
     {
     block = Block.blocksList[world.getBlockId(x, y, z)];
-    if(block==null || WorldStructureGenerator.skippableWorldGenBlocks.contains(BlockDataManager.getBlockName(block)) || (block==Block.waterStill || block==Block.waterMoving))
+    if(block==null || WorldStructureGenerator.skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block)) || (block==Block.waterStill || block==Block.waterMoving))
       {
       world.setBlock(x, y, z, fillBlockID);
       }

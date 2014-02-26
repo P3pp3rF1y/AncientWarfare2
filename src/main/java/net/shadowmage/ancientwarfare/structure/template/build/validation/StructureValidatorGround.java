@@ -22,7 +22,7 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.structure.template.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
@@ -38,7 +38,7 @@ public StructureValidatorGround()
 public boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template)
   {
   Block block = Block.blocksList[world.getBlockId(x, y-1, z)];
-  if(block==null || !validTargetBlocks.contains(BlockDataManager.getBlockName(block))){return false;}
+  if(block==null || !validTargetBlocks.contains(BlockDataManager.instance().getNameForBlock(block))){return false;}
   return true;
   }
 

@@ -38,7 +38,7 @@ import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.template.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockDoors;
@@ -295,7 +295,7 @@ private TemplateRule parseOldBlockRule(List<String> lines)
     {
     TemplateRuleVanillaBlocks rule = new TemplateRuleVanillaBlocks();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     return rule;
@@ -309,7 +309,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     {
     rule = new TemplateRuleBlockDoors();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     }//vanilla door rule
@@ -317,7 +317,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     {
     rule = new TemplateRuleBlockSign();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     ((TemplateRuleBlockSign)rule).wall = block == Block.signWall;
@@ -330,7 +330,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
 
     rule = new TemplateRuleBlockLogic();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     ((TemplateRuleBlockLogic)rule).tag = tag;
@@ -346,7 +346,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
 
     rule = new TemplateRuleBlockLogic();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     ((TemplateRuleBlockLogic)rule).tag = tag;
@@ -358,7 +358,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
 
     rule = new TemplateRuleBlockLogic();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     ((TemplateRuleBlockLogic)rule).tag = tag;
@@ -370,7 +370,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
 
     rule = new TemplateRuleBlockLogic();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     ((TemplateRuleBlockLogic)rule).tag = tag;
@@ -382,7 +382,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
 
     rule = new TemplateRuleBlockInventory();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     ((TemplateRuleBlockInventory)rule).tag = tag;
@@ -395,7 +395,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
 
     rule = new TemplateRuleBlockInventory();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     ((TemplateRuleBlockInventory)rule).tag = tag;
@@ -408,7 +408,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
 
     rule = new TemplateRuleBlockInventory();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     ((TemplateRuleBlockInventory)rule).tag = tag;
@@ -421,7 +421,7 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
 
     rule = new TemplateRuleBlockInventory();
     rule.ruleNumber = number;
-    rule.blockName = BlockDataManager.getBlockName(block);
+    rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
     ((TemplateRuleBlockInventory)rule).tag = tag;
@@ -434,7 +434,7 @@ private TemplateRule parseModBlock(Block block, int number, int buildPass, int m
   {
   TemplateRuleModBlocks rule = new TemplateRuleModBlocks();
   rule.ruleNumber = number;
-  rule.blockName = BlockDataManager.getBlockName(block);
+  rule.blockName = BlockDataManager.instance().getNameForBlock(block);
   rule.meta = meta;
   return rule;
   }

@@ -26,7 +26,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.structure.template.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
@@ -70,7 +70,7 @@ public boolean shouldIncludeForSelection(World world, int x, int y, int z, int f
    * or at an acceptable level difference
    */
   Block block = Block.blocksList[world.getBlockId(x, y-1, z)];  
-  if(block!=null && validTargetBlocks.contains(BlockDataManager.getBlockName(block)))
+  if(block!=null && validTargetBlocks.contains(BlockDataManager.instance().getNameForBlock(block)))
     {
     testMin.reassign(x, y, z);
     testMin.moveForward(face, template.zOffset);
