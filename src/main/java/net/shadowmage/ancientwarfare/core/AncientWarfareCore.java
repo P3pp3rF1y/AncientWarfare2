@@ -1,6 +1,11 @@
 package net.shadowmage.ancientwarfare.core;
 
+import java.io.File;
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -56,7 +61,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.INSTANCE.registerContainer(0, ContainerTest.class);
   FMLCommonHandler.instance().bus().register(this);
   MinecraftForge.EVENT_BUS.register(GameData.INSTANCE);
-  proxy.registerClient();    
+  proxy.registerClient();
   }
 
 @EventHandler
@@ -82,7 +87,5 @@ public void onLogin(PlayerEvent.PlayerLoggedInEvent evt)
     FMLNetworkHandler.openGui(evt.player, this, NetworkHandler.GUI_TEST, evt.player.worldObj, 0, 0, 0);
     }  
   }
-
-
 
 }

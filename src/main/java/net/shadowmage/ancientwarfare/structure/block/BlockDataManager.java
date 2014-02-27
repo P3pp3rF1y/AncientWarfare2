@@ -28,7 +28,7 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 public class BlockDataManager
 {
 
-private static String resourcePath = "/assets/ancientwarfare/resources/";
+private static final String resourcePath = "/assets/ancientwarfare/resources/";
 
 private HashMap<Integer, String> blockIDToName = new HashMap<Integer, String>();
 private HashMap<Integer, Block> blockIDToBlock = new HashMap<Integer, Block>();
