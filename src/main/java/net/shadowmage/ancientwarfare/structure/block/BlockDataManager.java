@@ -50,6 +50,9 @@ private BlockDataManager(){}
 private static BlockDataManager instance = new BlockDataManager(){};
 public static BlockDataManager instance(){return instance;}
 
+/**
+ * must be called during pre-init to load block info for templates to use
+ */
 public void load()
   {
   loadBlockNamesAndIDs(getCSVLines(resourcePath+"block_name_id.csv"));
@@ -448,7 +451,7 @@ public ItemStack getInventoryStackForBlock(Block block, int meta)
     {
     return info.getStackFor(block, meta);
     }
-  return null;
+  return new ItemStack(block, 1, meta);
   }
 
 private class BlockInfo
