@@ -53,16 +53,10 @@ public static BlockDataManager instance(){return instance;}
 public void load()
   {
   loadBlockNamesAndIDs(getCSVLines(resourcePath+"block_name_id.csv"));
+  loadItemNamesAndIDs(getCSVLines(resourcePath+"item_name_id.csv"));
   loadBlockRotations(getCSVLines(resourcePath+"block_rotations.csv"));
-  
-  /**
-   * TODO
-   * load item and block name/id and id/name maps from disk
-   * load item and block instance to name/id and id/name to instance maps 
-   * load block rotation data
-   * load block priority data
-   * load block item mapping data
-   */  
+  loadBlockPriorities(getCSVLines(resourcePath+"block_priorities.csv"));
+  loadBlockItems(getCSVLines(resourcePath+"block_items.csv"));
   }
 
 /**
@@ -113,11 +107,109 @@ private void loadBlockRotations(List<String> lines)
     info = blockInfoMap.get(block);
     if(info==null)
       {
-      info = new BlockInfo();      
+      info = new BlockInfo();   
+      blockInfoMap.put(block, info);   
       }
     info.rotations = rotations;   
     
-    blockInfoMap.put(block, info);
+    }
+  }
+
+private void loadBlockItems(List<String> lines)
+  {
+  String[] bits;  
+  
+  BlockInfo info;
+
+  Block block;
+  String blockName;
+  int blockMeta; 
+  
+  Item item;
+  String itemName;
+  int itemDamage;
+  int itemQuantity;
+  
+  for(String line : lines)
+    {
+    bits = line.split(",", -1);
+    blockName = bits[0];
+    block = blockNameToBlock.get(blockName);
+    info = blockInfoMap.get(block);
+    if(info==null)
+      {
+      info = new BlockInfo();   
+      blockInfoMap.put(block, info);   
+      }
+    blockMeta = StringTools.safeParseInt(bits[1]);
+    itemName = bits[2];
+    itemDamage = StringTools.safeParseInt(bits[3]);
+    itemQuantity = StringTools.safeParseInt(bits[4]);
+    if(blockMeta==-1)
+      {
+      blockMeta=0;
+      info.singleItem = true;
+      }
+    if(itemName.equals("null"))
+      {
+      info.noItem = true;
+      }
+    else
+      {
+      item = itemNameToItem.get(itemName);      
+      info.metaStacks[blockMeta] = new ItemStack(item, itemDamage, itemQuantity);
+      }
+    }
+  }
+
+private void loadBlockPriorities(List<String> lines)
+  {
+  String[] bits;  
+  
+  BlockInfo info;
+
+  Block block;
+  String blockName;
+  int priority;
+  
+  for(String line : lines)
+    {
+    bits = line.split(",", -1);
+    blockName = bits[0];
+    priority = StringTools.safeParseInt(bits[1]);
+    block = blockNameToBlock.get(blockName);
+    info = blockInfoMap.get(block);
+    
+    if(info==null)
+      {
+      info = new BlockInfo();   
+      blockInfoMap.put(block, info);   
+      }
+    info.buildPriority = (byte)priority;
+    }
+  }
+
+private void loadItemNamesAndIDs(List<String> lines)
+  {
+  String[] bits;
+  
+  Item item;
+  String name;
+  int id;
+  
+  for(String line : lines)
+    {
+    bits = line.split(",",-1);
+    name = bits[0];
+    id = StringTools.safeParseInt(bits[1]);
+    item = Item.getItemById(id);
+    
+    itemIDToItem.put(id, item);
+    itemIDToName.put(id, name);
+    itemNameToID.put(name, id);
+    itemNameToItem.put(name, item);
+    itemToID.put(item, id);
+    itemToName.put(item, name);    
     }
   }
 
@@ -385,8 +477,8 @@ public ItemStack getStackFor(int meta)
 }
 
 /**
- * CLOSES STREAM AFTER READ
- * @param is
+ * 
+ * @param path to file, incl. filename + extension, running-dir relative
  * @return
  * @throws IOException
  */
