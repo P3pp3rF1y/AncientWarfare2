@@ -1,10 +1,17 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 /**
  * Block data manager
@@ -21,12 +28,15 @@ import net.minecraft.item.ItemStack;
 public class BlockDataManager
 {
 
+private static String resourcePath = "/assets/ancientwarfare/resources/";
+
 private HashMap<Integer, String> blockIDToName = new HashMap<Integer, String>();
 private HashMap<Integer, Block> blockIDToBlock = new HashMap<Integer, Block>();
 private HashMap<String, Block> blockNameToBlock = new HashMap<String, Block>();
 private HashMap<String, Integer> blockNameToID = new HashMap<String, Integer>();
 private HashMap<Block, Integer> blockToID = new HashMap<Block, Integer>();
 private HashMap<Block, String> blockToName = new HashMap<Block, String>();
+
 private HashMap<Integer, String> itemIDToName = new HashMap<Integer, String>();
 private HashMap<Integer, Item> itemIDToItem = new HashMap<Integer, Item>();
 private HashMap<String, Item> itemNameToItem = new HashMap<String, Item>();
@@ -42,6 +52,9 @@ public static BlockDataManager instance(){return instance;}
 
 public void load()
   {
+  loadBlockNamesAndIDs(getCSVLines(resourcePath+"block_name_id.csv"));
+  loadBlockRotations(getCSVLines(resourcePath+"block_rotations.csv"));
+  
   /**
    * TODO
    * load item and block name/id and id/name maps from disk
@@ -50,6 +63,62 @@ public void load()
    * load block priority data
    * load block item mapping data
    */  
+  }
+
+/**
+ * for 1.6, will need to rewrite to load from Block.blocksList[] by block-ID read from file
+ * @param lines
+ */
+private void loadBlockNamesAndIDs(List<String> lines)
+  {
+  String[] bits;
+  
+  Block block;
+  String name;
+  int id;
+  
+  for(String line : lines)
+    {
+    bits = line.split(",",-1);
+    name = bits[0];
+    id = StringTools.safeParseInt(bits[1]);    
+    block = Block.getBlockFromName(name);
+    
+    blockIDToBlock.put(id, block);
+    blockIDToName.put(id, name);
+    blockNameToBlock.put(name, block);
+    blockNameToID.put(name, id);
+    blockToID.put(block, id);
+    blockToName.put(block, name);
+    }
+  }
+
+private void loadBlockRotations(List<String> lines)
+  {
+  String[] bits;  
+  Block block;
+  String name;
+  byte[] rotations;
+  BlockInfo info;
+  for(String line : lines)
+    {
+    bits = line.split(",",-1);
+    name = bits[0];
+    block = blockNameToBlock.get(name);
+    rotations = new byte[16];
+    for(int i = 0; i<16; i++)
+      {
+      rotations[i] = StringTools.safeParseByte(bits[i+1]);
+      }
+    info = blockInfoMap.get(block);
+    if(info==null)
+      {
+      info = new BlockInfo();      
+      }
+    info.rotations = rotations;   
+    
+    blockInfoMap.put(block, info);
+    }
   }
 
 /**
@@ -314,5 +383,40 @@ public ItemStack getStackFor(int meta)
   return null;
   }
 }
+
+/**
+ * CLOSES STREAM AFTER READ
+ * @param is
+ * @return
+ * @throws IOException
+ */
+private static List<String> getCSVLines(String path)
+  {
+  InputStream is = BlockDataManager.class.getResourceAsStream(path);
+  ArrayList<String> lines = new ArrayList<String>();
+  BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+  String line;
+  try
+    {
+    while((line = reader.readLine())!=null)
+      {
+      if(line.startsWith("#")){continue;}
+      lines.add(line);
+      }
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }  
+  try
+    {
+    is.close();
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
+  return lines;
+  }
 
 }
