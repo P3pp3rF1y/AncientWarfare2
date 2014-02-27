@@ -122,6 +122,7 @@ private void loadBlockItems(List<String> lines)
   BlockInfo info;
 
   Block block;
+  Block block2;
   String blockName;
   int blockMeta; 
   
@@ -156,8 +157,17 @@ private void loadBlockItems(List<String> lines)
       }
     else
       {
-      item = itemNameToItem.get(itemName);      
-      info.metaStacks[blockMeta] = new ItemStack(item, itemDamage, itemQuantity);
+      info.noItem = false;
+      item = itemNameToItem.get(itemName);   
+      if(item!=null)
+        {
+        info.metaStacks[blockMeta] = new ItemStack(item, itemDamage, itemQuantity);
+        }
+      else
+        {
+        block2 = blockNameToBlock.get(itemName);
+        info.metaStacks[blockMeta] = new ItemStack(block2, itemDamage, itemQuantity);
+        }
       }
     }
   }
@@ -436,7 +446,7 @@ public ItemStack getInventoryStackForBlock(Block block, int meta)
   BlockInfo info = blockInfoMap.get(block);
   if(info!=null)
     {
-    return info.getStackFor(meta);
+    return info.getStackFor(block, meta);
     }
   return null;
   }
@@ -458,7 +468,7 @@ public int getRotatedMeta(int meta)
   return rotations[meta];
   }
 
-public ItemStack getStackFor(int meta)
+public ItemStack getStackFor(Block block, int meta)
   {
   if(noItem)
     {
@@ -471,8 +481,8 @@ public ItemStack getStackFor(int meta)
   else if(metaStacks[meta]!=null)
     {
     return metaStacks[meta].copy();
-    }    
-  return null;
+    }  
+  return new ItemStack(block, 1, meta);
   }
 }
 

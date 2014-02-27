@@ -1,14 +1,39 @@
-#block-items file
-# lines beginning with # denote comments
-# format is:
-#block_name,block_meta,item_name,item_damage
-#block_name = name
-#block_meta = the meta having an item assigned to it -1 for all
-#item_name = the name of the item being assigned to block/meta combo -- null for forced-no-item
-#item_damage = the item damage for the item-stack for the block/meta combo
-#item_qty = the number of item needed to create that block (1 for most, 2 for double-slabs)
-#any block without an item assigned will use the default itemblock for item-stacks
+#block-items file,,,,
+# lines beginning with # denote comments,,,,
+# format is:,,,,
+#block_name,block_meta,item_name,item_damage,
+#block_name = name,,,,
+#block_meta = the meta having an item assigned to it -1 for all,,,,
+#item_name = the name of the item being assigned to block/meta combo -- null for forced-no-item,,,,
+#item_damage = the item damage for the item-stack for the block/meta combo,,,,
+#item_quantity = the number of item needed to create that block (1 for most 2 for double-slabs),,,,
+#any block without an item assigned will use the default itemblock for item-stacks,,,,
+#block_name,block_meta,item_name,item_damage,item_quantity
 water,-1,water_bucket,0,1
 flowing_water,-1,water_bucket,0,1
 lava,-1,lava_bucket,0,1
 flowing_lava,-1,lava_bucket,0,1
+redstone_wire,-1,redstone,0,1
+wheat,-1,wheat_seeds,0,4
+standing_sign,-1,sign,0,1
+wall_sign,-1,sign,0,1
+carrots,-1,carrot,0,1
+potatoes,-1,potato,0,1
+lit_furnace,-1,furnace,0,1
+bed,-1,bed,0,1
+redstone_torch,-1,unlit_redstone_torch,0,1
+unpowered_repeater,-1,repeater,0,1
+powered_repeater,-1,repeater,0,1
+iron_door,-1,iron_door,0,1
+wooden_door,-1,wooden_door,0,1
+lit_redstone_lamp,-1,redstone_lamp,0,1
+cocoa,-1,dye,3,1
+unpowered_comparator,-1,comparator,0,1
+powered_comparator,-1,comparator,0,1
+#rails,,,,
+#cloth,,,,
+#slabs,,,,
+#double slabs,,,,
+#stairs,,,,
+#grass,,,,
+#planks?,,,,
