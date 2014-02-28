@@ -122,8 +122,7 @@ private void loadBlockRotations(List<String> lines)
       info = new BlockInfo();   
       blockInfoMap.put(block, info);   
       }
-    info.rotations = rotations;   
-    
+    info.rotations = rotations;    
     }
   }
 
