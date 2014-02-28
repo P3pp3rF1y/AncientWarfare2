@@ -44,13 +44,13 @@ public static int randomRange = 1000;
 public static int spawnProtectionRange = 0;
 
 private static String worldGenCategory = "a_world-gen_settings";
-
-
+private static String villageGenCategory = "b_village-gen_settings";
 
 @Override
 public void initializeCategories()
   {
   this.config.addCustomCategoryComment(worldGenCategory, "Settings that effect all world-structure-generation.");
+  this.config.addCustomCategoryComment(villageGenCategory, "Settings that effect the generation of villages");
   }
 
 @Override

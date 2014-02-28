@@ -51,8 +51,8 @@ public void load()
   initializeValues();
   }
 
-public abstract void initializeCategories();
-public abstract void initializeValues();
+protected abstract void initializeCategories();
+protected abstract void initializeValues();
 
 public void setDebug(boolean value)
   {
