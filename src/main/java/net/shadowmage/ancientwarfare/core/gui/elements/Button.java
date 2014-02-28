@@ -25,7 +25,7 @@ public Button(int topLeftX, int topLeftY, int width, int height, String text)
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {      
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(enabled && visible && isMouseOverElement(evt.mx, evt.my))
         {

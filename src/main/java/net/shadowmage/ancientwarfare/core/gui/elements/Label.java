@@ -27,4 +27,9 @@ public void render(int mouseX, int mouseY, float partialTick)
     }
   }
 
+public void setText(String text)
+  {
+  this.text = text;
+  }
+
 }

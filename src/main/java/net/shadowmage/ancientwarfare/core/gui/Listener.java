@@ -17,23 +17,12 @@ public static final int MOUSE_TYPES = MOUSE_UP + MOUSE_DOWN + MOUSE_WHEEL + MOUS
 public static final int ALL_EVENTS = 0xffffffff;
 
 public final int type;
-private GuiElement element;
-
-public GuiElement getElement()
-  {
-  return element;
-  }
 
 public Listener(int type)
   {
   this.type = type;
   }
 
-public void setElement(GuiElement element)
-  {
-  this.element = element;
-  }
-
-public abstract boolean onEvent(ActivationEvent evt);
+public abstract boolean onEvent(GuiElement widget, ActivationEvent evt);
 
 }

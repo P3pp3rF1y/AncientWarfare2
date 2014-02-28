@@ -43,7 +43,7 @@ protected void addDefaultListeners()
   this.addNewListener(new Listener(Listener.ALL_EVENTS)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if((evt.type & Listener.KEY_TYPES) != 0)
         {

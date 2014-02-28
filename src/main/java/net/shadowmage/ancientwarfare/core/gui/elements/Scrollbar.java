@@ -50,7 +50,7 @@ public Scrollbar(int topLeftX, int topLeftY, int width, int height, IScrollableC
   this.addNewListener(new Listener(Listener.MOUSE_MOVED)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(dragging)
         {
@@ -66,7 +66,7 @@ public Scrollbar(int topLeftX, int topLeftY, int width, int height, IScrollableC
   this.addNewListener(new Listener(Listener.MOUSE_DOWN)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       dragging = false;
       pressed = false;
@@ -86,7 +86,7 @@ public Scrollbar(int topLeftX, int topLeftY, int width, int height, IScrollableC
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(enabled && visible && pressed && isMouseOverElement(evt.mx, evt.my) && !isMouseOverHandle(evt.mx, evt.my))
         {

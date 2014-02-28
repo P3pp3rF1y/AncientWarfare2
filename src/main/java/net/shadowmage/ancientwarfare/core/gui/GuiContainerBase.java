@@ -171,13 +171,19 @@ public void refreshGui()
   }
 
 /**
+ * Sub-classes should implement this method to add initial gui elements.<br>
+ * Only called a single time, shortly after construction,
+ * but before any rendering or other update methods are called
+ */
+public abstract void initElements();
+
+/**
  * sub-classes should implement this method to setup/change any elements that need adjusting when the gui is initialized<br>
  * any elements that are positioned outside of the gui-window space will need their positions updated by calling element.setPosition(xPos, yPos)
- * as they reference internal position relative to the guiLeft / guiTop values from this gui (which are passed in and updated directly after setupElements() is called)
+ * as they reference internal position relative to the guiLeft / guiTop values from this gui (which are passed in and updated directly after setupElements() is called)<br>
+ * Always called at least once, directly after {@link #initElements()}
  */
 public abstract void setupElements();
-
-public abstract void initElements();
 
 /**
  * sub-classes should override this method to handle any expected packet data

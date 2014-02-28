@@ -66,7 +66,7 @@ protected void write(BufferedWriter out) throws IOException
   {
   out.write("minWaterDepth="+minWaterDepth);
   out.newLine();
-  out.write("minWaterDepth="+maxWaterDepth);
+  out.write("maxWaterDepth="+maxWaterDepth);
   out.newLine(); 
   }
 

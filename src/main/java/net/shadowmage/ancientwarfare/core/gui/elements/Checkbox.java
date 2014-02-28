@@ -46,7 +46,7 @@ public Checkbox(int topLeftX, int topLeftY, int width, int height, String label)
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(visible && enabled && isMouseOverElement(evt.mx, evt.my))
         {
@@ -83,6 +83,16 @@ public void render(int mouseX, int mouseY, float partialTick)
 public void onToggled()
   {
   
+  }
+
+public void setChecked(boolean val)
+  {
+  this.checked = val;
+  }
+
+public boolean checked()
+  {
+  return checked;
   }
 
 }

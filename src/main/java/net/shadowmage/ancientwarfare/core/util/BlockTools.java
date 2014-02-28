@@ -22,7 +22,16 @@
  */
 package net.shadowmage.ancientwarfare.core.util;
 
+import java.util.Iterator;
+import java.util.List;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockTools
@@ -311,94 +320,94 @@ public static BlockPosition getAverageOf(BlockPosition ... positions)
   return new BlockPosition(x,y,z);
   }
 
-///**
-// * will return null if nothing is in range
-// * @param player
-// * @param world
-// * @param offset
-// * @return
-// */
-//public static BlockPosition getBlockClickedOn(EntityPlayer player, World world, boolean offset)
-//  {
-//  float scaleFactor = 1.0F;
-//  float rotPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * scaleFactor;
-//  float rotYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * scaleFactor;
-//  double testX = player.prevPosX + (player.posX - player.prevPosX) * scaleFactor;
-//  double testY = player.prevPosY + (player.posY - player.prevPosY) * scaleFactor + 1.62D - player.yOffset;
-//  double testZ = player.prevPosZ + (player.posZ - player.prevPosZ) * scaleFactor;
-//  Vec3 testVector = Vec3.createVectorHelper(testX, testY, testZ);
-//  float var14 = MathHelper.cos(-rotYaw * 0.017453292F - (float)Math.PI);
-//  float var15 = MathHelper.sin(-rotYaw * 0.017453292F - (float)Math.PI);
-//  float var16 = -MathHelper.cos(-rotPitch * 0.017453292F);
-//  float vectorY = MathHelper.sin(-rotPitch * 0.017453292F);
-//  float vectorX = var15 * var16;
-//  float vectorZ = var14 * var16;
-//  double reachLength = 5.0D;
-//  Vec3 testVectorFar = testVector.addVector(vectorX * reachLength, vectorY * reachLength, vectorZ * reachLength);
-//  MovingObjectPosition testHitPosition = world.clip(testVector, testVectorFar, true);
-//
-//  /**
-//   * if nothing was hit, return null
-//   */
-//  if (testHitPosition == null)
-//    {
-//    return null;
-//    }
-//
-//  Vec3 var25 = player.getLook(scaleFactor);
-//  float var27 = 1.0F;
-//  List entitiesPossiblyHitByVector = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.addCoord(var25.xCoord * reachLength, var25.yCoord * reachLength, var25.zCoord * reachLength).expand(var27, var27, var27));
-//  Iterator entityIterator = entitiesPossiblyHitByVector.iterator();
-//  while (entityIterator.hasNext())
-//    {
-//    Entity testEntity = (Entity)entityIterator.next();
-//    if (testEntity.canBeCollidedWith())
-//      {
-//      float bbExpansionSize = testEntity.getCollisionBorderSize();
-//      AxisAlignedBB entityBB = testEntity.boundingBox.expand(bbExpansionSize, bbExpansionSize, bbExpansionSize);
-//      /**
-//       * if an entity is hit, return its position
-//       */
-//      if (entityBB.isVecInside(testVector))
-//        {
-//        return new BlockPosition(testEntity.posX, testEntity.posY, testEntity.posZ);         
-//        }
-//      }
-//    }
-//  /**
-//   * if no entity was hit, return the position impacted.
-//   */
-//  int var42 = testHitPosition.blockX;
-//  int var43 = testHitPosition.blockY;
-//  int var44 = testHitPosition.blockZ;
-//  /**
-//   * if should offset for side hit (block clicked IN)
-//   */
-//  if(offset)
-//    {
-//    switch (testHitPosition.sideHit)
-//      {
-//      case 0:
-//      --var43;
-//      break;
-//      case 1:
-//      ++var43;
-//      break;
-//      case 2:
-//      --var44;
-//      break;
-//      case 3:
-//      ++var44;
-//      break;
-//      case 4:
-//      --var42;
-//      break;
-//      case 5:
-//      ++var42;
-//      }
-//    }      
-//  return new BlockPosition(var42, var43, var44); 
-//  }
+/**
+ * will return null if nothing is in range
+ * @param player
+ * @param world
+ * @param offset
+ * @return
+ */
+public static BlockPosition getBlockClickedOn(EntityPlayer player, World world, boolean offset)
+  {
+  float scaleFactor = 1.0F;
+  float rotPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * scaleFactor;
+  float rotYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * scaleFactor;
+  double testX = player.prevPosX + (player.posX - player.prevPosX) * scaleFactor;
+  double testY = player.prevPosY + (player.posY - player.prevPosY) * scaleFactor + 1.62D - player.yOffset;
+  double testZ = player.prevPosZ + (player.posZ - player.prevPosZ) * scaleFactor;
+  Vec3 testVector = Vec3.createVectorHelper(testX, testY, testZ);
+  float var14 = MathHelper.cos(-rotYaw * 0.017453292F - (float)Math.PI);
+  float var15 = MathHelper.sin(-rotYaw * 0.017453292F - (float)Math.PI);
+  float var16 = -MathHelper.cos(-rotPitch * 0.017453292F);
+  float vectorY = MathHelper.sin(-rotPitch * 0.017453292F);
+  float vectorX = var15 * var16;
+  float vectorZ = var14 * var16;
+  double reachLength = 5.0D;
+  Vec3 testVectorFar = testVector.addVector(vectorX * reachLength, vectorY * reachLength, vectorZ * reachLength);
+  MovingObjectPosition testHitPosition = world.rayTraceBlocks(testVector, testVectorFar, true);
+
+  /**
+   * if nothing was hit, return null
+   */
+  if (testHitPosition == null)
+    {
+    return null;
+    }
+
+  Vec3 var25 = player.getLook(scaleFactor);
+  float var27 = 1.0F;
+  List entitiesPossiblyHitByVector = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.addCoord(var25.xCoord * reachLength, var25.yCoord * reachLength, var25.zCoord * reachLength).expand(var27, var27, var27));
+  Iterator entityIterator = entitiesPossiblyHitByVector.iterator();
+  while (entityIterator.hasNext())
+    {
+    Entity testEntity = (Entity)entityIterator.next();
+    if (testEntity.canBeCollidedWith())
+      {
+      float bbExpansionSize = testEntity.getCollisionBorderSize();
+      AxisAlignedBB entityBB = testEntity.boundingBox.expand(bbExpansionSize, bbExpansionSize, bbExpansionSize);
+      /**
+       * if an entity is hit, return its position
+       */
+      if (entityBB.isVecInside(testVector))
+        {
+        return new BlockPosition(testEntity.posX, testEntity.posY, testEntity.posZ);         
+        }
+      }
+    }
+  /**
+   * if no entity was hit, return the position impacted.
+   */
+  int var42 = testHitPosition.blockX;
+  int var43 = testHitPosition.blockY;
+  int var44 = testHitPosition.blockZ;
+  /**
+   * if should offset for side hit (block clicked IN)
+   */
+  if(offset)
+    {
+    switch (testHitPosition.sideHit)
+      {
+      case 0:
+      --var43;
+      break;
+      case 1:
+      ++var43;
+      break;
+      case 2:
+      --var44;
+      break;
+      case 3:
+      ++var44;
+      break;
+      case 4:
+      --var42;
+      break;
+      case 5:
+      ++var42;
+      }
+    }      
+  return new BlockPosition(var42, var43, var44); 
+  }
 
 /**
  * checks to see if TEST lies somewhere in the cube bounded by pos1 and pos2

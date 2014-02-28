@@ -47,7 +47,7 @@ protected void addDefaultListeners()
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(enabled && visible && isMouseOverElement(evt.mx, evt.my))
         {
@@ -65,7 +65,7 @@ protected void addDefaultListeners()
   this.addNewListener(new Listener(Listener.KEY_DOWN)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(enabled && visible && selected)
         {
@@ -78,7 +78,7 @@ protected void addDefaultListeners()
   this.addNewListener(new Listener(Listener.MOUSE_WHEEL)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(isMouseOverElement(evt.mx, evt.my))
         {

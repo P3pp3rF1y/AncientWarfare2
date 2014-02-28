@@ -39,7 +39,7 @@ protected void addDefaultListeners()
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(enabled && visible && isMouseOverElement(evt.mx, evt.my))
         {
@@ -57,7 +57,7 @@ protected void addDefaultListeners()
   this.addNewListener(new Listener(Listener.KEY_DOWN)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(enabled && visible && selected)
         {
@@ -96,7 +96,7 @@ protected void handleKeyInput(int keyCode, char ch)
   case Keyboard.KEY_RETURN:
     {
     handled = true;
-    //TODO figure out a good callback mechanism for on-return pressed??
+    onEnterPressed();
     }
     break;
   case Keyboard.KEY_BACK:
@@ -128,6 +128,15 @@ protected void handleKeyInput(int keyCode, char ch)
     {
     handleCharacter(ch);
     }
+  }
+
+/**
+ * Anonymous classes should override this to handle enter-key pressed
+ * inner classes can also override this for default enter-key pressed action
+ */
+protected void onEnterPressed()
+  {
+  
   }
 
 protected void handleDeleteAction()

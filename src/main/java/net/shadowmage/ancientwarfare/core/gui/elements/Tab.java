@@ -34,7 +34,7 @@ public Tab(int topLeftX, int topLeftY, boolean top, String label, ITabCallback p
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     { 
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(visible && enabled && !selected() && isMouseOverElement(evt.mx, evt.my))
         {

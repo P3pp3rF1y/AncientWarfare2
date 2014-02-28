@@ -93,7 +93,7 @@ public final void handleMouseInput(ActivationEvent evt)
       //   bitwise check of types, if it returns !=0 at least 1 type bit was shared, so should execute
       if((o.type & evt.type)!=0)
         {
-        if(!o.onEvent(evt))
+        if(!o.onEvent(this, evt))
           {
           break;
           }
@@ -123,7 +123,7 @@ public final void handleKeyboardInput(ActivationEvent evt)
       //   bitwise check of types, if it returns !=0 at least 1 type bit was shared, so should execute
       if((o.type & evt.type)!=0)
         {
-        if(!o.onEvent(evt))
+        if(!o.onEvent(this, evt))
           {
           break;
           }
@@ -140,7 +140,6 @@ public final void handleKeyboardInput(ActivationEvent evt)
  */
 public final void addNewListener(Listener listener)
   {
-  listener.setElement(this);
   this.actionListeners.add(listener);
   if((listener.type & Listener.MOUSE_TYPES)!=0)
     {

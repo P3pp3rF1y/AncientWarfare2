@@ -22,7 +22,7 @@ public ItemSlotInventoried(int topLeftX, int topLeftY, IInventory inv, int slot,
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
-    public boolean onEvent(ActivationEvent evt)
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(visible && enabled && containerCallback!=null && isMouseOverElement(evt.mx, evt.my) )
         {        
