@@ -1,11 +1,6 @@
 package net.shadowmage.ancientwarfare.core;
 
-import java.io.File;
-import java.io.IOException;
-
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWLog;

@@ -2,10 +2,12 @@ package net.shadowmage.ancientwarfare.structure;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.GameData;
+import net.shadowmage.ancientwarfare.core.item.ItemClickable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -57,6 +59,8 @@ public static org.apache.logging.log4j.Logger log;
 
 public static AWStructureStatics statics;
 
+public static final ItemClickable testItem = new ItemClickable("testItem");
+
 @EventHandler
 public void preInit(FMLPreInitializationEvent evt)
   {
@@ -78,6 +82,8 @@ public void preInit(FMLPreInitializationEvent evt)
   GameRegistry.registerWorldGenerator(WorldStructureGenerator.instance(), 0);
   GameData.INSTANCE.registerSaveData("AWStructureMap", StructureMap.class);
   
+  MinecraftForge.EVENT_BUS.register(testItem);
+  GameRegistry.registerItem(testItem, "testItem");
   proxy.registerClient();    
   }
 
