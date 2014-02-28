@@ -97,6 +97,7 @@ private void loadBlockRotations(List<String> lines)
   String name;
   byte[] rotations;
   BlockInfo info;
+  String rot;
   for(String line : lines)
     {
     bits = line.split(",",-1);
@@ -105,7 +106,15 @@ private void loadBlockRotations(List<String> lines)
     rotations = new byte[16];
     for(int i = 0; i<16; i++)
       {
-      rotations[i] = StringTools.safeParseByte(bits[i+1]);
+      rot = bits[i+1];
+      if(rot.equals("") || rot.isEmpty())
+        {
+        rotations[i] = (byte)i;
+        }      
+      else
+        {
+        rotations[i] = StringTools.safeParseByte(bits[i+1]);
+        }      
       }
     info = blockInfoMap.get(block);
     if(info==null)
