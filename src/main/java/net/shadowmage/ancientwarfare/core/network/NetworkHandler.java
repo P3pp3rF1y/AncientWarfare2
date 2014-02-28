@@ -25,6 +25,7 @@ public static final int PACKET_GUI = 1;
 public static final int PACKET_STRUCTURE = 2;
 
 public static final int GUI_TEST = 0;
+public static final int GUI_SCANNER = 1;
 
 private FMLEventChannel channel;
 
@@ -40,6 +41,10 @@ public final void registerNetwork()
   NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
   }
 
+/**
+ * should be called from core-client-proxy to register client-side packet handler
+ * @param o
+ */
 public final static void registerClientHandler(Object o)
   {
   INSTANCE.channel.register(o);

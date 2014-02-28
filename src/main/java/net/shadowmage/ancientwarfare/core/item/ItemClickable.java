@@ -14,10 +14,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class ItemClickable extends ItemBase
 {
 
+protected boolean hasLeftClick;
+
 public ItemClickable(String localizationKey)
   {
   super(localizationKey);
-  this.setCreativeTab(CreativeTabs.tabMisc);
+  this.setCreativeTab(CreativeTabs.tabMisc);  
   }
 
 @Override
@@ -68,21 +70,9 @@ public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosit
   AWLog.logDebug("item right click (event)... client: "+player.worldObj.isRemote);      
   }
 
-@SubscribeEvent
-public void onItemUse(PlayerInteractEvent evt)
+@Override
+public MovingObjectPosition getMovingObjectPositionFromPlayer( World par1World, EntityPlayer par2EntityPlayer, boolean par3)
   {
-  if(evt.action==Action.LEFT_CLICK_BLOCK)
-    {
-    EntityPlayer player = evt.entityPlayer;
-    ItemStack stack = evt.entityPlayer.inventory.getCurrentItem();
-    
-    if(stack==null || !(stack.getItem() instanceof ItemClickable))
-      {
-      return;
-      }
-    ItemClickable item = (ItemClickable) stack.getItem();
-    item.onLeftClick(stack, player, getMovingObjectPositionFromPlayer(player.worldObj, player, true));
-    evt.setCanceled(true);
-    }
+  return super.getMovingObjectPositionFromPlayer(par1World, par2EntityPlayer,par3);
   }
 }

@@ -8,10 +8,10 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class GameData
+public class AWGameData
 {
 
-public static final GameData INSTANCE = new GameData();
+public static final AWGameData INSTANCE = new AWGameData();
 
 private HashMap<String, Class <? extends WorldSavedData>> dataClasses = new HashMap<String, Class <? extends WorldSavedData>>();
 

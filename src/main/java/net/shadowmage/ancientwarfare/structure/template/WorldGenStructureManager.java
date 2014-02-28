@@ -31,7 +31,7 @@ import java.util.Set;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.shadowmage.ancientwarfare.core.gamedata.GameData;
+import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
@@ -106,7 +106,7 @@ public StructureTemplate selectTemplateForGeneration(World world, Random rng, in
   searchCache.clear();
   trimmedPotentialStructures.clear();
   distancesFound.clear();
-  StructureMap map = GameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
+  StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
   if(map==null){return null;}
   int foundValue, chunkDistance;
   float foundDistance, mx, mz;

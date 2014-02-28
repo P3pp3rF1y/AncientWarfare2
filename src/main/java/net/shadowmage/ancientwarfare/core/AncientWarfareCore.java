@@ -6,7 +6,8 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerTest;
-import net.shadowmage.ancientwarfare.core.gamedata.GameData;
+import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.item.ItemEventHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.TestPacket;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -55,7 +56,8 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.INSTANCE.registerNetwork();
   NetworkHandler.INSTANCE.registerContainer(0, ContainerTest.class);
   FMLCommonHandler.instance().bus().register(this);
-  MinecraftForge.EVENT_BUS.register(GameData.INSTANCE);
+  MinecraftForge.EVENT_BUS.register(AWGameData.INSTANCE);
+  MinecraftForge.EVENT_BUS.register(new ItemEventHandler());
   proxy.registerClient();
   }
 

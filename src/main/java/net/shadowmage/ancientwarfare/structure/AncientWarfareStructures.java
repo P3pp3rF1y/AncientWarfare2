@@ -6,13 +6,16 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.gamedata.GameData;
+import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.item.ItemClickable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
+import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
+import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -59,32 +62,37 @@ public static org.apache.logging.log4j.Logger log;
 
 public static AWStructureStatics statics;
 
-public static final ItemClickable testItem = new ItemClickable("testItem");
 
 @EventHandler
 public void preInit(FMLPreInitializationEvent evt)
   {
-  config = new Configuration(evt.getSuggestedConfigurationFile());
   log = AncientWarfareCore.log;
+  config = new Configuration(evt.getSuggestedConfigurationFile());
   statics = new AWStructureStatics(config);
-  statics.load();
   
+  /**
+   * Forge/FML registry
+   */  
   FMLCommonHandler.instance().bus().register(this);
+  GameRegistry.registerWorldGenerator(WorldStructureGenerator.instance(), 0);
+  
+  /**
+   * internal registry
+   */
+  PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);    
+  AWGameData.INSTANCE.registerSaveData("AWStructureMap", StructureMap.class);
+  NetworkHandler.INSTANCE.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
+  proxy.registerClient();   
       
+  /**
+   * load pre-init
+   */
+  statics.load();
+  AWStructuresItemLoader.load();
+  BlockDataManager.instance().load();
   String path = evt.getModConfigurationDirectory().getAbsolutePath();
   TemplateLoader.instance().initializeAndExportDefaults(path);  
-  BlockDataManager.instance().load();
-  PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);
-  
-//  GUIHandler.instance().registerContainer(Statics.guiStructureBuilderCreative, ContainerCSB.class);
-//  GUIHandler.instance().registerContainer(Statics.guiStructureScannerCreative, ContainerStructureScanner.class);
-//  GUIHandler.instance().registerContainer(Statics.guiSpawnerPlacer, ContainerSpawnerPlacer.class);
-  GameRegistry.registerWorldGenerator(WorldStructureGenerator.instance(), 0);
-  GameData.INSTANCE.registerSaveData("AWStructureMap", StructureMap.class);
-  
-  MinecraftForge.EVENT_BUS.register(testItem);
-  GameRegistry.registerItem(testItem, "testItem");
-  proxy.registerClient();    
+   
   }
 
 @EventHandler

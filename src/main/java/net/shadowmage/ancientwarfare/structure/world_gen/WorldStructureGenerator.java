@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
-import net.shadowmage.ancientwarfare.core.gamedata.GameData;
+import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -132,7 +132,7 @@ private void generateAt(int chunkX, int chunkZ, World world, IChunkProvider chun
     AWLog.logDebug("Template selection took: "+(System.currentTimeMillis()-t1)+" ms.");
     }
   if(template==null){return;} 
-  StructureMap map = GameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
+  StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
   if(attemptStructureGenerationAt(world, x, y, z, face, template, map))
     {
     AWLog.log(String.format("Generated structure: %s at %s, %s, %s", template.name, x, y, z));

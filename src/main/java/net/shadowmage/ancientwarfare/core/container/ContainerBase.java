@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketGui;
 public class ContainerBase extends Container implements ISlotClickCallback
 {
 
-EntityPlayer player;
+protected EntityPlayer player;
 IContainerGuiCallback gui;
 IInventory[] inventories;//sub-classes need to define this member with the proper size, it should NEVER be null
 

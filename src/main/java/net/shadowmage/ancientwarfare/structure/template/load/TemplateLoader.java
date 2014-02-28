@@ -193,14 +193,6 @@ private void copyDefaultStructures(String pathName)
   AWLog.log("Exported "+exportCount+" structures");  
   }
 
-private void createDirectory(File file)
-  {
-  if(!file.exists())
-    {
-    file.mkdirs();
-    }
-  }
-
 private void locateStructureFiles()
   {
   this.recursiveScan(new File(includeDirectory), probableStructureFiles, AWStructureStatics.templateExtension);

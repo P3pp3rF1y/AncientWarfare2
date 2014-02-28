@@ -23,6 +23,8 @@ import org.lwjgl.opengl.GL11;
 public abstract class GuiContainerBase extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer, ISlotClickCallback
 {
 
+protected static final String defaultBackground = "guiBackgroundLarge.png";
+
 private float partialRenderTick = 0.f;
 private boolean initDone = false;
 private boolean shouldUpdate = false;
