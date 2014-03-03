@@ -36,6 +36,7 @@ public GuiStructureValidationSettings(GuiStructureScanner parent)
   {
   super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);
   this.parent = parent;  
+  this.shouldCloseOnVanillaKeys = false;
   }
 
 @Override
@@ -103,6 +104,7 @@ public void initElements()
       {
       if(widget.isMouseOverElement(evt.mx, evt.my))
         {
+        updateValidationSettings();
         Minecraft.getMinecraft().displayGuiScreen(parent);
         }
       return true;
@@ -185,7 +187,9 @@ public void setupElements()
 
 /**
  * finalizes current properties from elements
- * by setting those properties
+ * by setting those properties in parent validation settings
+ * should be called before changing validation type
+ * or before closing gui
  */
 protected void updateValidationSettings()
   {
@@ -212,21 +216,6 @@ protected void updateValidationSettings()
     break;
     }
     }
-  }
-
-/**
- * should be called from 'done' button to flush current settings to parent.validator
- */
-protected void closeGui()
-  {
-  updateValidationSettings();
-  }
-
-@Override
-public void onGuiClosed()
-  {
-  super.onGuiClosed();
-//  Minecraft.getMinecraft().displayGuiScreen(parent);
   }
 
 }

@@ -27,6 +27,7 @@ public GuiStructureScanner(ContainerBase par1Container)
   {
   super(par1Container, 256, 240, defaultBackground);
   validator = validationType.getValidator();
+  this.shouldCloseOnVanillaKeys = false;
   }
 
 @Override
@@ -39,9 +40,33 @@ public void initElements()
   this.addGuiElement(nameInput);
   
   Button button = new Button(256-55-8, 8, 55, 16, "Export");
+  button.addNewListener(new Listener(Listener.MOUSE_UP)
+    {
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(widget.isMouseOverElement(evt.mx, evt.my))
+        {
+        export();
+        }
+      return true;
+      }
+    });
   this.addGuiElement(button);
   
   button = new Button(256-55-8, 8+16, 55, 16, "Cancel");
+  button.addNewListener(new Listener(Listener.MOUSE_UP)
+    {
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(widget.isMouseOverElement(evt.mx, evt.my))
+        {
+        Minecraft.getMinecraft().displayGuiScreen(null);
+        }
+      return true;
+      }
+    });
   this.addGuiElement(button);
   
   int totalHeight = 36;
@@ -94,14 +119,18 @@ public void initElements()
   
   button = new Button(8, totalHeight, 120, 16, "Select Dimensions");
   this.addGuiElement(button);
-  totalHeight+=16;
-  
+  totalHeight+=16;  
   }
 
 @Override
 public void setupElements()
   {
   validationTypeLabel.setText("Current validation type: "+validationType.getName());
+  }
+
+private void export()
+  {
+  
   }
 
 }

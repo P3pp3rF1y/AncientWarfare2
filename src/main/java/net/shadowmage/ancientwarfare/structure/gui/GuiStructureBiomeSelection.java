@@ -26,6 +26,7 @@ public GuiStructureBiomeSelection(GuiStructureScanner parent)
   {
   super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);
   this.parent = parent;  
+  this.shouldCloseOnVanillaKeys = false;
   }
 
 @Override
