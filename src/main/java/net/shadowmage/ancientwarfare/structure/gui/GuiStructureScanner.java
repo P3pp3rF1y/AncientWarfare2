@@ -35,7 +35,7 @@ public void initElements()
   Label label = new Label(8, 8, "Input Name:");
   this.addGuiElement(label);
   
-  nameInput = new Text(8, 8+12, 160, "");
+  nameInput = new Text(8, 8+12, 160, "", this);
   this.addGuiElement(nameInput);
   
   Button button = new Button(256-55-8, 8, 55, 16, "Export");
@@ -73,6 +73,18 @@ public void initElements()
   totalHeight+=16;
   
   button = new Button(8, totalHeight, 120, 16, "Select Biomes");
+  button.addNewListener(new Listener(Listener.MOUSE_UP)
+    {
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(widget.isMouseOverElement(evt.mx, evt.my))
+        {
+        Minecraft.getMinecraft().displayGuiScreen(new GuiStructureBiomeSelection(GuiStructureScanner.this));        
+        }
+      return true;
+      }
+    });
   this.addGuiElement(button);
   totalHeight+=16;
   

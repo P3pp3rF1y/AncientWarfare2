@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -17,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 public class Text extends GuiElement
 {
 
+IWidgetSelection selector;
 String text;
 int cursorIndex;
 FontRenderer fr;
@@ -25,12 +27,13 @@ boolean numInput;
 boolean charSymbolInput;
 boolean numSymbolInput;
 
-public Text(int topLeftX, int topLeftY, int width, String defaultText)
+public Text(int topLeftX, int topLeftY, int width, String defaultText, IWidgetSelection selector)
   {
   super(topLeftX, topLeftY, width, 12);
   fr = Minecraft.getMinecraft().fontRenderer;
   this.text = defaultText;
   this.cursorIndex = text.length();
+  this.selector = selector;
   this.addDefaultListeners();
   }
 
@@ -44,11 +47,16 @@ protected void addDefaultListeners()
       if(enabled && visible && isMouseOverElement(evt.mx, evt.my))
         {
         setSelected(true);
+        selector.onWidgetSelected(Text.this);
         cursorIndex = text.length();
         }
       else
-        {
-        setSelected(false);
+        {  
+        if(selected)
+          {
+          selector.onWidgetDeselected(Text.this);
+          }  
+        setSelected(false);        
         }
       return true;
       }
@@ -121,6 +129,12 @@ protected void handleKeyInput(int keyCode, char ch)
     {
     handled = true;
     cursorIndex = text.length();
+    }
+    break;
+  case Keyboard.KEY_ESCAPE:
+    {
+    this.selected = false;
+    this.selector.onWidgetDeselected(this);
     }
     break;
   }  

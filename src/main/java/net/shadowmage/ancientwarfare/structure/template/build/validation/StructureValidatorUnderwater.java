@@ -44,14 +44,6 @@ public StructureValidatorUnderwater()
   }
 
 @Override
-public void readFromTag(NBTTagCompound tag)
-  {
-  super.readFromTag(tag);
-  minWaterDepth = tag.getInteger("minWaterDepth");
-  maxWaterDepth = tag.getInteger("maxWaterDepth");
-  }
-
-@Override
 protected void readFromLines(List<String> lines)
   {
   for(String line : lines)

@@ -14,17 +14,20 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
 import net.shadowmage.ancientwarfare.core.interfaces.ISlotClickCallback;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
+import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-public abstract class GuiContainerBase extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer, ISlotClickCallback
+public abstract class GuiContainerBase extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer, ISlotClickCallback, IWidgetSelection
 {
 
 protected static final String defaultBackground = "guiBackgroundLarge.png";
 
+private boolean widgetSelected = false;
+protected boolean shouldCloseOnVanillaKeys = true;
 private float partialRenderTick = 0.f;
 private boolean initDone = false;
 private boolean shouldUpdate = false;
@@ -87,10 +90,29 @@ public void handleMouseInput()
 @Override
 public void handleKeyboardInput()
   {
-  super.handleKeyboardInput();  
   int key = Keyboard.getEventKey();
   boolean state = Keyboard.getEventKeyState();
-  ActivationEvent evt = new ActivationEvent(state ? Listener.KEY_DOWN : Listener.KEY_UP, key, Keyboard.getEventCharacter(), state);  
+  char ch = Keyboard.getEventCharacter();
+  
+  if(!widgetSelected && state)
+    {
+    if(key == 87)
+      {
+      this.mc.toggleFullscreen();
+      return;
+      }
+    boolean sendTyped = true;
+    if(!shouldCloseOnVanillaKeys && (key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()))
+      {
+      sendTyped = false;
+      }
+    if(sendTyped)
+      {
+      this.keyTyped(ch, key);      
+      }
+    }
+  
+  ActivationEvent evt = new ActivationEvent(state ? Listener.KEY_DOWN : Listener.KEY_UP, key, ch, state);  
   for(GuiElement element : this.elements)
     {
     element.handleKeyboardInput(evt);
@@ -212,6 +234,18 @@ protected void renderToolTip(ItemStack stack, int x, int y)
   tooltipStack = stack;
   tooltipX = x;
   tooltipY = y;  
+  }
+
+@Override
+public void onWidgetSelected(GuiElement element)
+  {
+  this.widgetSelected = true;
+  }
+
+@Override
+public void onWidgetDeselected(GuiElement element)
+  {
+  this.widgetSelected = false;
   }
 
 /**

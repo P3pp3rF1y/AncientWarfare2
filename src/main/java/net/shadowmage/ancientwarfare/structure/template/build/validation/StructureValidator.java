@@ -129,53 +129,12 @@ protected void write(BufferedWriter writer) throws IOException
  * helper method to read data from tag -- to be overriden by
  * child-classes that have additional validation data set through gui
  */
-public void readFromTag(NBTTagCompound tag)
+public final void readFromTag(NBTTagCompound tag)
   {
   for(StructureValidationProperty prop : this.properties.values())
     {
     prop.readFromNBT(tag);
     }
-//  worldGenEnabled = tag.getBoolean("enableWorldGen");
-//  isUnique = tag.getBoolean("unique");
-//  preserveBlocks = tag.getBoolean("preserveBlocks");
-//  selectionWeight = tag.getInteger("selectionWeight");
-//  clusterValue = tag.getInteger("clusterValue");
-//  minDuplicateDistance = tag.getInteger("minDuplicateDistance");
-//  borderSize = tag.getInteger("borderSize");
-//  maxLeveling = tag.getInteger("maxLeveling");
-//  maxFill = tag.getInteger("maxFill");  
-//  biomeWhiteList = tag.getBoolean("biomeWhiteList");
-//  dimensionWhiteList = tag.getBoolean("dimensionWhiteList");
-//  
-//  if(tag.hasKey("biomeList"))
-//    {
-//    ArrayList<String> biomes = new ArrayList<String>();
-//    NBTTagList biomeList = tag.getTagList("biomeList", Constants.NBT.TAG_STRING);
-//    String biomeTag;
-//    for(int i = 0; i <biomeList.tagCount(); i++)
-//      {
-//      biomeTag = biomeList.getStringTagAt(i);      
-//      biomes.add(biomeTag);
-//      }
-//    this.setBiomeList(biomes);
-//    }
-//  if(tag.hasKey("blockList"))
-//    {
-//    ArrayList<String> blocks = new ArrayList<String>();
-//    NBTTagList blockList = tag.getTagList("blockList", Constants.NBT.TAG_STRING);
-//    String blockTag;
-//    for(int i = 0; i <blockList.tagCount(); i++)
-//      {
-//      blockTag = blockList.getStringTagAt(i);      
-//      blocks.add(blockTag);
-//      }
-//    this.setTargetBlocks(blocks);
-//    }
-//  
-//  if(tag.hasKey("dimensions"))
-//    {
-//    this.acceptedDimensions = tag.getIntArray("dimensions");
-//    }
   }
 
 protected void setDefaultSettings(StructureTemplate template)

@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
 
 public class NumberInput extends Text
 {
@@ -13,9 +14,9 @@ float value;
 int decimalPlaces = 2;
 float incrementAmount = 1.f;
 
-public NumberInput(int topLeftX, int topLeftY, int width, float defaultText)
+public NumberInput(int topLeftX, int topLeftY, int width, float defaultText, IWidgetSelection selector)
   {
-  super(topLeftX, topLeftY, width, String.format("%.2f", defaultText));
+  super(topLeftX, topLeftY, width, String.format("%.2f", defaultText), selector);
   this.value = defaultText;
   }
 
@@ -62,10 +63,15 @@ protected void addDefaultListeners()
       if(enabled && visible && isMouseOverElement(evt.mx, evt.my))
         {
         setSelected(true);
+        selector.onWidgetSelected(NumberInput.this);
         cursorIndex = text.length();
         }
       else
         {
+        if(selected)
+          {
+          selector.onWidgetDeselected(NumberInput.this);
+          }
         setSelected(false);
         }
       return true;

@@ -45,15 +45,6 @@ public StructureValidatorUnderground()
   }
 
 @Override
-public void readFromTag(NBTTagCompound tag)
-  {
-  super.readFromTag(tag);
-  minGenerationDepth = tag.getInteger("minGenDepth");
-  maxGenerationDepth = tag.getInteger("maxGenDepth");
-  minOverfill = tag.getInteger("minOverfill");
-  }
-
-@Override
 protected void readFromLines(List<String> lines)
   {
   for(String line : lines)

@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public enum StructureValidationType
@@ -57,6 +58,9 @@ StructureValidationType(String name, Class<? extends StructureValidator> validat
   properties.add(new StructureValidationProperty("biomeWhiteList", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
   properties.add(new StructureValidationProperty("dimensionWhiteList", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
     
+  properties.add(new StructureValidationProperty("biomeList", StructureValidationProperty.DATA_TYPE_STRING_SET, new HashSet<String>()));
+  properties.add(new StructureValidationProperty("blockList", StructureValidationProperty.DATA_TYPE_STRING_SET, new HashSet<String>()));
+  properties.add(new StructureValidationProperty("dimensionList", StructureValidationProperty.DATA_TYPE_INT_ARRAY, new int[]{}));
   for(StructureValidationProperty prop : props)
     {
     properties.add(prop);

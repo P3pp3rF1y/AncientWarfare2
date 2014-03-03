@@ -44,15 +44,6 @@ public StructureValidatorSky()
   }
 
 @Override
-public void readFromTag(NBTTagCompound tag)
-  {
-  super.readFromTag(tag);
-  minGenerationHeight = tag.getInteger("minGenHeight");
-  maxGenerationHeight = tag.getInteger("maxGenHeight");
-  minFlyingHeight = tag.getInteger("minFlyingHeight");
-  }
-
-@Override
 protected void readFromLines(List<String> lines)
   {
   for(String line : lines)

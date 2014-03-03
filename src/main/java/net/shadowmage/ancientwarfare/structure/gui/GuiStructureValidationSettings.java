@@ -92,38 +92,10 @@ public void initElements()
   buttonToValidationType.put(button, StructureValidationType.HARBOR);
   typeButtons.add(button);
   
-  
-  /**
-   * TODO add done button
-   * TODO add buttons to typeButtons for validation types
-   * add string label on top to say current validation type
-   *  
-   */  
-  
   typeLabel = new Label(8, 8, "");
   addGuiElement(typeLabel);
   
-  }
-
-private void onTypeButtonPressed(Button button)
-  {
-  StructureValidationType type = buttonToValidationType.get(button);
-  if(type==null){return;}//should never happen
-  
-  StructureValidator newValidator = type.getValidator();
-  newValidator.inheritPropertiesFrom(parent.validator);
-  parent.validationType = type;
-  parent.validator = newValidator;
-  this.updateValidationSettings();
-  this.refreshGui();
-  }
-
-private HashMap<GuiElement, String> elementToPropertyName = new HashMap<GuiElement, String>();
-
-@Override
-public void setupElements()
-  {
-  Button button = new Button(256-8-55, 8, 55, 12, "Done");
+  button = new Button(256-8-55, 8, 55, 12, "Done");
   button.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
@@ -137,9 +109,28 @@ public void setupElements()
       }    
     });
   addGuiElement(button);
-  
+  }
 
-  
+private void onTypeButtonPressed(Button button)
+  {
+  StructureValidationType type = buttonToValidationType.get(button);
+  if(type==null){return;}//should never happen
+
+  this.updateValidationSettings();
+  StructureValidator newValidator = type.getValidator();
+  newValidator.inheritPropertiesFrom(parent.validator);
+  parent.validationType = type;
+  parent.validator = newValidator;
+  this.refreshGui();
+  }
+
+private HashMap<GuiElement, String> elementToPropertyName = new HashMap<GuiElement, String>();
+
+@Override
+public void setupElements()
+  {
+  typeLabel.setText("Current Type: "+parent.validationType.getName());
+ 
   int totalHeight = 0;
   area.clearElements();
   elementToPropertyName.clear();
@@ -171,7 +162,7 @@ public void setupElements()
     {
     case StructureValidationProperty.DATA_TYPE_INT:
       {
-      input = new NumberInput(200, totalHeight-1, 32, property.getDataInt());
+      input = new NumberInput(200, totalHeight-1, 32, property.getDataInt(), this);
       elementToPropertyName.put(input, propName); 
       input.setIntegerValue();
       area.addGuiElement(input);
@@ -198,7 +189,6 @@ public void setupElements()
  */
 protected void updateValidationSettings()
   {
-  typeLabel.setText("Current Type: "+parent.validationType.getName());
   StructureValidationProperty property;
   String propName;
   for(GuiElement element : elementToPropertyName.keySet())
