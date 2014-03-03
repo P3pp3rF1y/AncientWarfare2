@@ -114,6 +114,18 @@ public void initElements()
   totalHeight+=16;
   
   button = new Button(8, totalHeight, 120, 16, "Select Targets");
+  button.addNewListener(new Listener(Listener.MOUSE_UP)
+    {
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(widget.isMouseOverElement(evt.mx, evt.my))
+        {
+        Minecraft.getMinecraft().displayGuiScreen(new GuiStructureBlockSelection(GuiStructureScanner.this));        
+        }
+      return true;
+      }
+    });
   this.addGuiElement(button);
   totalHeight+=16;
   
@@ -130,7 +142,7 @@ public void setupElements()
 
 private void export()
   {
-  
+  Minecraft.getMinecraft().displayGuiScreen(new GuiStructureIncorrectName(this));
   }
 
 }
