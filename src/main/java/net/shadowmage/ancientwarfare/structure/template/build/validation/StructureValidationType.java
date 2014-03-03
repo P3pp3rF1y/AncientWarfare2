@@ -26,30 +26,46 @@ import java.util.List;
 public enum StructureValidationType
 {
 GROUND("ground", StructureValidatorGround.class),
-UNDERGROUND("underground", StructureValidatorUnderground.class, new ValidationProperty("minGenDepth", "Min Generation Depth", int.class), new ValidationProperty("maxGenDepth", "Max Generation Depth", int.class), new ValidationProperty("minOverfill", "Min Overfill Depth", int.class)),
-SKY("sky", StructureValidatorSky.class, new ValidationProperty("minGenHeight","Min Generation Height: ", int.class), new ValidationProperty("maxGenHeight","Max Generation Height: ", int.class), new ValidationProperty("minFlyingHeight", "Min Flying Height: ", int.class)),
+UNDERGROUND("underground", StructureValidatorUnderground.class, new StructureValidationProperty("minGenDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxGenDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("minOverfill", StructureValidationProperty.DATA_TYPE_INT, 0)),
+SKY("sky", StructureValidatorSky.class, new StructureValidationProperty("minGenHeight", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxGenHeight", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("minFlyingHeight", StructureValidationProperty.DATA_TYPE_INT, 0)),
 WATER("water", StructureValidatorWater.class),
-UNDERWATER("underwater", StructureValidatorUnderwater.class, new ValidationProperty("minWaterDepth","Min Water Depth: ", int.class), new ValidationProperty("maxWaterDepth","Max Water Depth: ", int.class)),
+UNDERWATER("underwater", StructureValidatorUnderwater.class, new StructureValidationProperty("minWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0)),
 HARBOR("harbor", StructureValidatorHarbor.class), 
-ISLAND("island", StructureValidatorIsland.class, new ValidationProperty("minWaterDepth","Min Water Dpth: ", int.class), new ValidationProperty("maxWaterDepth","Max Water Depth: ", int.class));
+ISLAND("island", StructureValidatorIsland.class, new StructureValidationProperty("minWaterDepth",StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0));
 
 private String name;
 private Class<? extends StructureValidator> validatorClass;
-private List<ValidationProperty> props = new ArrayList<ValidationProperty>();
 
-StructureValidationType(String name, Class<? extends StructureValidator> validatorClass, ValidationProperty...props)
+private List<StructureValidationProperty> properties = new ArrayList<StructureValidationProperty>(); 
+
+StructureValidationType(String name, Class<? extends StructureValidator> validatorClass, StructureValidationProperty...props)
   {
   this.name = name;
   this.validatorClass = validatorClass; 
-  for(ValidationProperty prop : props)
+
+  properties.add(new StructureValidationProperty("enableWorldGen", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+  properties.add(new StructureValidationProperty("unique", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+  properties.add(new StructureValidationProperty("preserveBlocks", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+  
+  properties.add(new StructureValidationProperty("selectionWeight", StructureValidationProperty.DATA_TYPE_INT, 0));
+  properties.add(new StructureValidationProperty("clusterValue", StructureValidationProperty.DATA_TYPE_INT, 0));
+  properties.add(new StructureValidationProperty("minDuplicateDistance", StructureValidationProperty.DATA_TYPE_INT, 0));
+  properties.add(new StructureValidationProperty("borderSize", StructureValidationProperty.DATA_TYPE_INT, 0));
+  properties.add(new StructureValidationProperty("maxLeveling", StructureValidationProperty.DATA_TYPE_INT, 0));
+  properties.add(new StructureValidationProperty("maxFill", StructureValidationProperty.DATA_TYPE_INT, 0));
+  
+  properties.add(new StructureValidationProperty("biomeWhiteList", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+  properties.add(new StructureValidationProperty("dimensionWhiteList", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+    
+  for(StructureValidationProperty prop : props)
     {
-    this.props.add(prop);
+    properties.add(prop);
     }
   }
 
-public List<ValidationProperty> getValidationProperties()
+public List<StructureValidationProperty> getValidationProperties()
   {
-  return this.props;
+  return this.properties;
   }
 
 public String getName()

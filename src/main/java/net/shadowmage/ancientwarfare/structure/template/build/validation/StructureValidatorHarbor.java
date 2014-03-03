@@ -76,7 +76,7 @@ public boolean shouldIncludeForSelection(World world, int x, int y, int z, int f
     testMin.reassign(x, y, z);
     testMin.moveForward(face, template.zOffset);
     int by = WorldStructureGenerator.getTargetY(world, testMin.x, testMin.z, false);
-    if(y - by >maxFill)
+    if(y - by > getMaxFill())
       {
       return false;
       }

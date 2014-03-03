@@ -24,6 +24,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -48,6 +49,9 @@ public abstract class StructureValidator
 {
 
 public final StructureValidationType validationType;
+
+private HashMap<String, StructureValidationProperty> properties = new HashMap<String, StructureValidationProperty>();
+
 private int selectionWeight;
 private int clusterValue;
 private int minDuplicateDistance;
@@ -61,9 +65,11 @@ private Set<String> biomeList;//list of biomes for white/black list.  treated as
 private boolean dimensionWhiteList;//should treat dimension list as white or blacklist?
 private int[] acceptedDimensions;//list of accepted dimensions treated as white/black list from whitelist toggle
 
-int maxLeveling;
-int maxFill;
-int borderSize;
+private int maxLeveling;
+private int maxFill;
+
+
+private int borderSize;
 
 Set<String> validTargetBlocks;//list of accepted blocks which the structure may be built upon or filled over -- 100% of blocks directly below the structure must meet this list
 
@@ -75,6 +81,10 @@ protected StructureValidator(StructureValidationType validationType)
   minDuplicateDistance = 8;
   biomeList = new HashSet<String>();
   validTargetBlocks = new HashSet<String>();
+  for(StructureValidationProperty property : validationType.getValidationProperties())
+    {
+    this.properties.put(property.regName, property);
+    }
   }
 
 protected void readFromLines(List<String> lines)
@@ -350,6 +360,12 @@ public final void setBiomeList(Collection<String> biomes)
   {
   this.biomeList.clear();
   this.biomeList.addAll(biomes);
+  }
+
+
+public int getMaxFill()
+  {
+  return maxFill;
   }
 
 //************************************************ UTILITY METHODS *************************************************//

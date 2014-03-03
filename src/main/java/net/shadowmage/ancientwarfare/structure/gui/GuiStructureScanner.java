@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
+import net.minecraft.client.Minecraft;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -10,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
 public class GuiStructureScanner extends GuiContainerBase
 {
@@ -17,7 +19,9 @@ public class GuiStructureScanner extends GuiContainerBase
 private Text nameInput;
 private Label validationTypeLabel;
 private boolean includeOnExport = true;
+
 private StructureValidationType validationType = StructureValidationType.GROUND;
+private StructureValidator validator;
 
 public GuiStructureScanner(ContainerBase par1Container)
   {
@@ -60,6 +64,15 @@ public void initElements()
   totalHeight+=10;
   
   button = new Button(8, totalHeight, 120, 16, "Setup Validation");
+  button.addNewListener(new Listener(Listener.MOUSE_UP)
+    {
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      Minecraft.getMinecraft().displayGuiScreen(new GuiStructureValidationSettings(GuiStructureScanner.this));
+      return true;
+      }
+    });
   this.addGuiElement(button);
   totalHeight+=16;
   
