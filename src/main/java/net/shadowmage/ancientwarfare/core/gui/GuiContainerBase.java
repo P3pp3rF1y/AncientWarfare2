@@ -94,6 +94,12 @@ public void handleKeyboardInput()
   boolean state = Keyboard.getEventKeyState();
   char ch = Keyboard.getEventCharacter();
   
+  ActivationEvent evt = new ActivationEvent(state ? Listener.KEY_DOWN : Listener.KEY_UP, key, ch, state);  
+  for(GuiElement element : this.elements)
+    {
+    element.handleKeyboardInput(evt);
+    }
+  
   if(!widgetSelected && state)
     {
     if(key == 87)
@@ -112,11 +118,6 @@ public void handleKeyboardInput()
       }
     }
   
-  ActivationEvent evt = new ActivationEvent(state ? Listener.KEY_DOWN : Listener.KEY_UP, key, ch, state);  
-  for(GuiElement element : this.elements)
-    {
-    element.handleKeyboardInput(evt);
-    }
   }
 
 @Override
