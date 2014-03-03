@@ -18,14 +18,15 @@ public class GuiStructureScanner extends GuiContainerBase
 
 private Text nameInput;
 private Label validationTypeLabel;
-private boolean includeOnExport = true;
+private Checkbox includeOnExport;
 
-private StructureValidationType validationType = StructureValidationType.GROUND;
-private StructureValidator validator;
+protected StructureValidationType validationType = StructureValidationType.GROUND;
+protected StructureValidator validator;
 
 public GuiStructureScanner(ContainerBase par1Container)
   {
   super(par1Container, 256, 240, defaultBackground);
+  validator = validationType.getValidator();
   }
 
 @Override
@@ -47,16 +48,8 @@ public void initElements()
   
   Checkbox box = new Checkbox(8, totalHeight, 16, 16, "Include in game Immediately?");
   box.setChecked(true);
-  box.addNewListener(new Listener(Listener.MOUSE_UP)
-    {
-    @Override
-    public boolean onEvent(GuiElement widget, ActivationEvent evt)
-      {
-      includeOnExport = ((Checkbox)widget).checked(); 
-      return true;
-      }
-    });
   this.addGuiElement(box);
+  includeOnExport = box;
   totalHeight+=16+8;
   
   validationTypeLabel = new Label(8, totalHeight, "Current validation type: "+validationType.getName()); 
@@ -69,7 +62,10 @@ public void initElements()
     @Override
     public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
-      Minecraft.getMinecraft().displayGuiScreen(new GuiStructureValidationSettings(GuiStructureScanner.this));
+      if(widget.isMouseOverElement(evt.mx, evt.my))
+        {
+        Minecraft.getMinecraft().displayGuiScreen(new GuiStructureValidationSettings(GuiStructureScanner.this));        
+        }
       return true;
       }
     });

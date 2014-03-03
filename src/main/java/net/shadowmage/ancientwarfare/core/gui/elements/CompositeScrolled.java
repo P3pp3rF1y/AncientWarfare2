@@ -49,9 +49,10 @@ public void render(int mouseX, int mouseY, float partialTick)
     mouseX = Integer.MIN_VALUE;
     mouseY = Integer.MIN_VALUE;
     } 
-  setViewport();
   Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
+  //render background before setting viewport so that it is not cropped
   RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, width, height);
+  setViewport();
   for(GuiElement element : this.elements)
     {
     if(element.renderY > renderY + height || element.renderY + element.height < renderY)
@@ -64,8 +65,9 @@ public void render(int mouseX, int mouseY, float partialTick)
       }
     element.render(mouseX, mouseY, partialTick);
     }   
-  scrollbar.render(mouseX, mouseY, partialTick);
   resetViewport();
+ //render scrollbar after resetting viewport so that it is not cropped
+  scrollbar.render(mouseX, mouseY, partialTick);
   }
 
 @Override

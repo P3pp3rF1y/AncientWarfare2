@@ -1,6 +1,12 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.Constants;
 
 public class StructureValidationProperty
 {
@@ -11,11 +17,8 @@ public static final int DATA_TYPE_BYTE = 2;
 public static final int DATA_TYPE_BOOLEAN = 3;
 public static final int DATA_TYPE_FLOAT = 4;
 public static final int DATA_TYPE_STRING = 5;
-//public static final int DATA_TYPE_INT_ARRAY = 6;
-//public static final int DATA_TYPE_BYTE_ARRAY = 7;
-//public static final int DATA_TYPE_LONG = 8;
-//public static final int DATA_TYPE_SHORT = 9;
-//public static final int DATA_TYPE_DOUBLE = 10;
+public static final int DATA_TYPE_INT_ARRAY = 6;
+public static final int DATA_TYPE_STRING_SET = 7;
 
 String regName;
 int dataType;
@@ -26,6 +29,16 @@ public StructureValidationProperty(String regName, int dataType, Object defaultV
   this.regName = regName;
   this.data = defaultValue;
   this.dataType = dataType;
+  }
+
+public int getDataType()
+  {
+  return dataType;
+  }
+
+public String getRegName()
+  {
+  return regName;
   }
 
 public void setValue(Object value)
@@ -72,6 +85,14 @@ public void setValue(Object value)
       }
     }
   break;  
+  case DATA_TYPE_STRING_SET:
+    {
+    if(Set.class.isAssignableFrom(value.getClass()))
+      {
+      data = value;
+      }
+    }
+  break; 
   }
   this.data = value;
   }
@@ -83,6 +104,15 @@ public int getDataInt()
     return (Integer)data;
     }
   return 0;
+  }
+
+public int[] getDataIntArray()
+  {
+  if(dataType==DATA_TYPE_INT)
+    {
+    return (int[])data;
+    }
+  return new int[]{};
   }
 
 public float getDataFloat()
@@ -112,6 +142,11 @@ public boolean getDataBoolean()
   return false;
   }
 
+public Set<String> getDataStringSet()
+  {
+  return (Set<String>)data;
+  }
+
 public void readFromNBT(NBTTagCompound tag)
   {
   switch(dataType)
@@ -119,6 +154,11 @@ public void readFromNBT(NBTTagCompound tag)
   case DATA_TYPE_INT:
     {
     data = tag.getInteger(regName);
+    }
+  break;
+  case DATA_TYPE_INT_ARRAY:
+    {
+    data = tag.getIntArray(regName);
     }
   break;
   case DATA_TYPE_BYTE:
@@ -139,6 +179,17 @@ public void readFromNBT(NBTTagCompound tag)
   case DATA_TYPE_STRING:
     {
     data = tag.getString(regName);
+    }    
+  break;
+  case DATA_TYPE_STRING_SET:
+    {
+    Set<String> data = new HashSet<String>();
+    NBTTagList names = tag.getTagList(regName, Constants.NBT.TAG_STRING);
+    for(int i = 0; i < names.tagCount(); i++)
+      {
+      data.add(names.getStringTagAt(i));
+      }
+    this.data = data;
     }
   break;
   }
@@ -151,6 +202,11 @@ public void writeToNBT(NBTTagCompound tag)
   case DATA_TYPE_INT:
     {
     tag.setInteger(regName, (Integer)data);
+    }
+  break;
+  case DATA_TYPE_INT_ARRAY:
+    {
+    tag.setIntArray(regName, (int[])data);
     }
   break;
   case DATA_TYPE_BYTE:
@@ -173,12 +229,26 @@ public void writeToNBT(NBTTagCompound tag)
     tag.setString(regName, (String)data);
     }
   break;
+  case DATA_TYPE_STRING_SET:
+    {
+    NBTTagList names = new NBTTagList();
+    Set<String> data = (Set<String>)this.data;
+    for(String name : data)
+      {
+      names.appendTag(new NBTTagString(name));
+      }
+    tag.setTag(regName, names);
+    }
+  break;
   }
   }
 
 public StructureValidationProperty copy()
   {
-  StructureValidationProperty prop = new StructureValidationProperty(regName, dataType, data);
-  return prop;  
+  /**
+   * TODO need to do a switch on data type, return a new object representing data from current object, so there
+   * are no reference collisions when altering the returned property
+   */
+  return new StructureValidationProperty(regName, dataType, data);
   }
 }

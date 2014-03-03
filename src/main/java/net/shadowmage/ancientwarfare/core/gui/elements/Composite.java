@@ -84,6 +84,11 @@ protected void addDefaultListeners()
     });
   }
 
+public void clearElements()
+  {
+  this.elements.clear();
+  }
+
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
@@ -114,10 +119,10 @@ protected void setViewport()
   {    
   int x, y, w, h;
   int tlx, tly, brx, bry;
-  x = renderX;
-  y = renderY;
-  w = width;
-  h = height;
+  x = renderX+3;
+  y = renderY+3;
+  w = width-6;
+  h = height-6;
   tlx = x;
   tly = y;
   brx = x + w;

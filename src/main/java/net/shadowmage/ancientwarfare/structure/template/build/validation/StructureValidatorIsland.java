@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -75,7 +76,7 @@ protected void write(BufferedWriter out) throws IOException
 @Override
 protected void setDefaultSettings(StructureTemplate template)
   {
-  this.validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks);
+//  this.validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks);
   this.minWaterDepth = template.yOffset/2;
   this.maxWaterDepth = template.yOffset;      
   }
@@ -106,6 +107,7 @@ public boolean validatePlacement(World world, int x, int y, int z, int face,  St
 public void preGeneration(World world, int x, int y, int z, int face,  StructureTemplate template, StructureBB bb)
   { 
   Block block;
+  Set<String> validTargetBlocks = getTargetBlocks();
   for(int bx = bb.min.x; bx<=bb.max.x; bx++)
     {
     for(int bz = bb.min.z; bz<=bb.max.z; bz++)

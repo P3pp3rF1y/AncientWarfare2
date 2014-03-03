@@ -20,6 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -39,6 +41,7 @@ public StructureValidatorGround()
 public boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template)
   {
   Block block = world.getBlock(x, y-1, z);
+  Set<String> validTargetBlocks = getTargetBlocks();
   if(block==null || !validTargetBlocks.contains(BlockDataManager.instance().getNameForBlock(block))){return false;}
   return true;
   }

@@ -19,6 +19,16 @@ public NumberInput(int topLeftX, int topLeftY, int width, float defaultText)
   this.value = defaultText;
   }
 
+public int getIntegerValue()
+  {
+  return (int)value;
+  }
+
+public float getFloatValue()
+  {
+  return value;
+  }
+
 public NumberInput setAllowNegative()
   {
   this.allowNeg = true;
