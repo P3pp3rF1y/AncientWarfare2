@@ -298,4 +298,9 @@ protected boolean isAllowedCharacter(char ch)
   return false;
   }
 
+public String getText()
+  {
+  return text;
+  }
+
 }

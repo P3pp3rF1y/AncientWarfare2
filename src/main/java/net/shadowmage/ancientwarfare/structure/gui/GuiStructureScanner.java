@@ -142,7 +142,25 @@ public void setupElements()
 
 private void export()
   {
-  Minecraft.getMinecraft().displayGuiScreen(new GuiStructureIncorrectName(this));
+  String name = nameInput.getText();
+  if(!validateName(name))
+    {
+    Minecraft.getMinecraft().displayGuiScreen(new GuiStructureIncorrectName(this));    
+    }
+  else
+    {
+    /**
+     * TODO export
+     */
+    }
+  }
+
+private boolean validateName(String name)
+  {
+  /**
+   * TODO validate individual chars
+   */
+  return !name.equals("");
   }
 
 }
