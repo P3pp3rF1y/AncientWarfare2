@@ -157,10 +157,21 @@ private void export()
 
 private boolean validateName(String name)
   {
-  /**
-   * TODO validate individual chars
-   */
-  return !name.equals("");
+  if(name.equals("")){return false;}
+  boolean valid = true;
+  for(int i = 0; i < name.length(); i++)
+    {
+    if(!validateChar(name.charAt(i)))
+      {
+      return false;
+      }
+    }
+  return true;
+  }
+
+private boolean validateChar(char ch)
+  {
+  return false;
   }
 
 }
