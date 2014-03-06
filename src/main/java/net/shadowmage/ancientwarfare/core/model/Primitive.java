@@ -127,5 +127,4 @@ public void setCompiled(boolean isCompiled)
 
 public abstract void addUVMapToImage(BufferedImage image);
 
-
 }

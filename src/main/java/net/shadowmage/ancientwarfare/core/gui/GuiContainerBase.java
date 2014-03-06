@@ -68,6 +68,11 @@ public void handleTooltipRender(ItemStack stack)
   this.tooltipY = y;
   }
 
+protected void clearElements()
+  {
+  this.elements.clear();
+  }
+
 protected void addGuiElement(GuiElement element)
   {
   this.elements.add(element);

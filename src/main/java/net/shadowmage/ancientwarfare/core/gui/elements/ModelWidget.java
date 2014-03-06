@@ -3,6 +3,9 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import java.nio.ByteBuffer;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -11,8 +14,10 @@ import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 import net.shadowmage.ancientwarfare.core.model.Primitive;
+import net.shadowmage.ancientwarfare.core.model.PrimitiveBox;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
@@ -59,8 +64,8 @@ public ModelWidget(int topLeftX, int topLeftY, int width, int height)
         if(selectable && downX==evt.mx && downY==evt.my)
           {
           doSelection = true;
-          selectionX = evt.mx;
-          selectionY = evt.my;
+          selectionX = Mouse.getX();
+          selectionY = Mouse.getY();
           }
         dragging = false;
         }
@@ -96,6 +101,8 @@ public ModelWidget(int topLeftX, int topLeftY, int width, int height)
       else
         {
         dragging = false;
+        lastX = evt.mx;
+        lastY = evt.my;
         }
       return true;
       }
@@ -114,7 +121,8 @@ public ModelWidget(int topLeftX, int topLeftY, int width, int height)
     });
   
   viewPosZ = 5;
-  viewPosY = 5;
+  viewPosY = 5; 
+  
   }
 
 private void handleMouseDragged(int mx, int my)
@@ -189,6 +197,21 @@ public void setModel(ModelBaseAW model)
   this.model = model;  
   }
 
+public void initModel()
+  {
+  model = new ModelBaseAW();
+  model.setTextureSize(256, 256);
+  ModelPiece piece = new ModelPiece(model, "part1", 0, 0, 0, 0, 0, 0, null);
+  PrimitiveBox box = new PrimitiveBox(piece);
+  box.setOrigin(0, 0, 0);
+  box.setRotation(0, 0, 0);
+  box.setBounds(-0.5f, 0.f, -0.5f, 1, 1, 1);
+  model.addPiece(piece);
+  piece.addPrimitive(box);
+  selectedPiece = piece;
+  selectedPrimitive = box;
+  }
+
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
@@ -204,17 +227,34 @@ public void render(int mouseX, int mouseY, float partialTick)
       doSelection();
       doSelection = false;
       }  
-    model.renderForEditor(selectedPiece, selectedPrimitive);    
-    }  
+    GL11.glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
+    GL11.glDisable(GL11.GL_DEPTH_TEST);
+    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+    enableModelLighting();
+    /**
+     * TODO bind texture
+     */
+    GL11.glDisable(GL11.GL_TEXTURE_2D);
+    GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+    model.renderForEditor(selectedPiece, selectedPrimitive);
+    GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }    
   
-  GL11.glDisable(GL11.GL_TEXTURE_2D);
-  GL11.glPointSize(10);
-  GL11.glColor4f(1.f, 0.f, 0.f, 1.f);
-  GL11.glBegin(GL11.GL_POINTS);
-  GL11.glVertex3f(0, 0, 0);
-  GL11.glEnd();
   resetViewport();
   GL11.glEnable(GL11.GL_DEPTH_TEST);
+  }
+
+private void enableModelLighting()
+  {
+  EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+  int bright = player.worldObj.getLightBrightnessForSkyBlocks((int)player.posX, (int)player.posY, (int)player.posZ, 0);
+
+  int var11 = bright % 65536;
+  int var12 = bright / 65536;
+  OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var11 / 1.0F, (float)var12 / 1.0F);
+
+  RenderHelper.enableStandardItemLighting();
   }
 
 private void renderGrid()
