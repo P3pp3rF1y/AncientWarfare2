@@ -7,6 +7,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerTest;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+import net.shadowmage.ancientwarfare.modeler.gui.GuiModelEditor;
 
 public class GuiTest extends GuiContainerBase
 {
@@ -89,6 +90,22 @@ public void initElements()
       }
     });
 
+  b = new Button(8, 8+12+2, 55, 12, "ME");
+  com.addGuiElement(b);
+  b.addNewListener(new Listener(Listener.MOUSE_UP)
+    {
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(widget.isMouseOverElement(evt.mx, evt.my))
+        {
+        Minecraft.getMinecraft().displayGuiScreen(new GuiModelEditor(container));
+        }
+      return true;
+      }
+    });
+
+  
   }
 
 }

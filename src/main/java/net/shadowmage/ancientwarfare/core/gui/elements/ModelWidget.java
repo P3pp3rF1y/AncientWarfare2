@@ -26,7 +26,7 @@ private Primitive selectedPrimitive = null;
 private int downX;
 private int downY;
 
-boolean dragging = true;
+boolean dragging = false;
 boolean dragLeft = true;
 private int lastX;
 private int lastY;
@@ -112,10 +112,14 @@ public ModelWidget(int topLeftX, int topLeftY, int width, int height)
       return true;
       }
     });
+  
+  viewPosZ = 5;
+  viewPosY = 5;
   }
 
 private void handleMouseDragged(int mx, int my)
   {
+  AWLog.logDebug("handling mouse dragged...");
   int dx = mx - lastX;
   int dy = my - lastY;
   if(dragLeft)
@@ -189,6 +193,9 @@ public void setModel(ModelBaseAW model)
 public void render(int mouseX, int mouseY, float partialTick)
   {
   setViewport();
+  GL11.glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
+  GL11.glDisable(GL11.GL_DEPTH_TEST);
+  GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
   renderGrid();
   if(model!=null)
     {
@@ -199,7 +206,15 @@ public void render(int mouseX, int mouseY, float partialTick)
       }  
     model.renderForEditor(selectedPiece, selectedPrimitive);    
     }  
+  
+  GL11.glDisable(GL11.GL_TEXTURE_2D);
+  GL11.glPointSize(10);
+  GL11.glColor4f(1.f, 0.f, 0.f, 1.f);
+  GL11.glBegin(GL11.GL_POINTS);
+  GL11.glVertex3f(0, 0, 0);
+  GL11.glEnd();
   resetViewport();
+  GL11.glEnable(GL11.GL_DEPTH_TEST);
   }
 
 private void renderGrid()
