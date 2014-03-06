@@ -297,6 +297,16 @@ private ActivationEvent(int type, int key, char character, boolean state)
   }
 }
 
+
+/**
+ * Push a new scissors-test viewport onto the stack.<br>
+ * If this viewport would extend outside of the currently-set viewport, it
+ * will be truncated to fit inside of the existing viewport
+ * @param x
+ * @param y
+ * @param w
+ * @param h
+ */
 public static void pushViewport(int x, int y, int w, int h)
   {
   int tlx, tly, brx, bry;
@@ -328,6 +338,9 @@ public static void pushViewport(int x, int y, int w, int h)
   viewportStack.push(new Viewport(x, y, w, h));
   }
 
+/**
+ * pop a scissors-test viewport off of the stack
+ */
 public static void popViewport()
   {  
   Viewport p = viewportStack.poll();
