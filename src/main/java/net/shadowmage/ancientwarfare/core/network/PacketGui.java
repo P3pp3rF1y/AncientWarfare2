@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 public class PacketGui extends PacketBase
 {
 
-public NBTTagCompound dataTag;
+public NBTTagCompound packetData;
 
 public PacketGui()
   {
@@ -24,12 +24,12 @@ public PacketGui()
 @Override
 protected void writeToStream(ByteBuf data)
   {
-  if(dataTag!=null)
+  if(packetData!=null)
     {
     ByteBufOutputStream bbos = new ByteBufOutputStream(data);
     try
       {
-      CompressedStreamTools.writeCompressed(dataTag, bbos);
+      CompressedStreamTools.writeCompressed(packetData, bbos);
       } 
     catch (IOException e)
       {
@@ -43,7 +43,7 @@ protected void readFromStream(ByteBuf data)
   {
   try
     {
-    dataTag = CompressedStreamTools.readCompressed(new ByteBufInputStream(data));
+    packetData = CompressedStreamTools.readCompressed(new ByteBufInputStream(data));
     } 
   catch (IOException e)
     {
@@ -57,7 +57,7 @@ protected void execute()
   AWLog.logDebug("executing gui packet");
   if(player.openContainer instanceof ContainerBase)
     {
-    ((ContainerBase)player.openContainer).onPacketData(dataTag);
+    ((ContainerBase)player.openContainer).onPacketData(packetData);
     }
   }
 

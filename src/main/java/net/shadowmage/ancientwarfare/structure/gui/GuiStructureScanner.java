@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -10,6 +11,9 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.network.PacketGui;
+import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
@@ -149,9 +153,16 @@ private void export()
     }
   else
     {
-    /**
-     * TODO export
-     */
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setString("name", name);
+    tag.setBoolean("export", includeOnExport.checked());
+    NBTTagCompound val = new NBTTagCompound();
+    validator.writeToNBT(val);
+    tag.setTag("validation", val);
+    
+    PacketGui pkt = new PacketGui();
+    pkt.packetData = tag;
+    NetworkHandler.sendToServer(pkt);
     }
   }
 

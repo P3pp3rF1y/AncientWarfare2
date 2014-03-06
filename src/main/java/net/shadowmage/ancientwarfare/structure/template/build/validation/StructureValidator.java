@@ -129,11 +129,20 @@ protected void write(BufferedWriter writer) throws IOException
  * helper method to read data from tag -- to be overriden by
  * child-classes that have additional validation data set through gui
  */
-public final void readFromTag(NBTTagCompound tag)
+public final void readFromNBT(NBTTagCompound tag)
   {
   for(StructureValidationProperty prop : this.properties.values())
     {
     prop.readFromNBT(tag);
+    }
+  }
+
+public final void writeToNBT(NBTTagCompound tag)
+  {
+  tag.setString("validationType", this.validationType.getName());
+  for(StructureValidationProperty prop : this.properties.values())
+    {
+    prop.writeToNBT(tag);
     }
   }
 

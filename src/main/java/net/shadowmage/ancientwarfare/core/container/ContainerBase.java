@@ -135,7 +135,7 @@ public final void onSlotClicked(IInventory inventory, int slotIndex, int button)
     {
     PacketGui packet = new PacketGui();
     NBTTagCompound tag = new NBTTagCompound();
-    packet.dataTag = tag;    
+    packet.packetData = tag;    
     NBTTagCompound dataTag = new NBTTagCompound();
 
     dataTag.setInteger("inventory", getInventoryNumber(inventory));

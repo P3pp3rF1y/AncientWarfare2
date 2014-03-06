@@ -35,7 +35,8 @@ public void handlePacketData(NBTTagCompound tag)
     {
     boolean include = tag.getBoolean("export");
     String name = tag.getString("name");
-    ItemStructureScanner.scanStructure(player.worldObj, settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, include, tag);
+    NBTTagCompound validation = tag.getCompoundTag("validation");
+    ItemStructureScanner.scanStructure(player.worldObj, settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, include, validation);
     settings.clearSettings();    
     }
   if(tag.hasKey("reset"))

@@ -162,7 +162,7 @@ public static boolean scanStructure(World world, BlockPosition pos1, BlockPositi
   String validationType = tag.getString("validationType");
   StructureValidationType type = StructureValidationType.getTypeFromName(validationType);
   StructureValidator validator = type.getValidator();
-  validator.readFromTag(tag);  
+  validator.readFromNBT(tag);  
   template.setValidationSettings(validator);
   if(include)
     {
