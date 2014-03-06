@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.structure.template;
 import java.util.Collection;
 import java.util.HashMap;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

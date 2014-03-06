@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.shadowmage.ancientwarfare.core.item.ItemClickable;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class AWStructuresItemLoader
 {

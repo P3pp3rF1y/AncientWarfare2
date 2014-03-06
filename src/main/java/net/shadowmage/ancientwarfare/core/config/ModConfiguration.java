@@ -20,9 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.core.config;
 
-import java.io.File;
-import java.util.logging.Logger;
-
 import net.minecraftforge.common.config.Configuration;
 
 /**
