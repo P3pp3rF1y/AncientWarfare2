@@ -1,9 +1,11 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -25,6 +27,9 @@ public abstract class GuiContainerBase extends GuiContainer implements IContaine
 {
 
 protected static final String defaultBackground = "guiBackgroundLarge.png";
+
+
+private static LinkedList<Viewport> viewportStack = new LinkedList<Viewport>();
 
 private boolean widgetSelected = false;
 protected boolean shouldCloseOnVanillaKeys = true;
@@ -289,6 +294,78 @@ private ActivationEvent(int type, int key, char character, boolean state)
   this.key = key;
   this.ch = character;
   this.state = state;
+  }
+}
+
+public static void pushViewport(int x, int y, int w, int h)
+  {
+  int tlx, tly, brx, bry;
+  tlx = x;
+  tly = y;
+  brx = x + w;
+  bry = y + h;
+  
+  Viewport p = viewportStack.peek();
+  if(p!=null)
+    {
+    if(tlx<p.x){tlx = p.x;}
+    if(brx>p.x+p.w){brx = p.x + p.w;}
+    if(tly<p.y){tly = p.y;}
+    if(bry>p.y+p.h){bry = p.y+p.h;}    
+    }
+  x = tlx;
+  y = tly;
+  w = brx - tlx;
+  h = bry - tly;
+  
+  Minecraft mc = Minecraft.getMinecraft();
+  ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+  int guiScale = scaledRes.getScaleFactor();
+  GL11.glEnable(GL11.GL_SCISSOR_TEST);  
+  
+  GL11.glScissor(x*guiScale, mc.displayHeight - y*guiScale - h*guiScale, w*guiScale, h*guiScale);
+  
+  viewportStack.push(new Viewport(x, y, w, h));
+  }
+
+public static void popViewport()
+  {  
+  Viewport p = viewportStack.poll();
+  if(p==null)
+    {
+    GL11.glDisable(GL11.GL_SCISSOR_TEST);
+    }
+  p = viewportStack.peek();
+  if(p!=null)
+    {
+    Minecraft mc = Minecraft.getMinecraft();
+    ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+    int guiScale = scaledRes.getScaleFactor();
+    GL11.glEnable(GL11.GL_SCISSOR_TEST);  
+    
+    GL11.glScissor(p.x*guiScale, mc.displayHeight - p.y*guiScale - p.h*guiScale, p.w*guiScale, p.h*guiScale);    
+    }
+  else
+    {
+    GL11.glDisable(GL11.GL_SCISSOR_TEST);    
+    }
+  }
+
+/**
+ * class used to represent a currently drawable portion of the screen.
+ * Used in a stack for figuring out what composites may draw where
+ * @author John
+ *
+ */
+private static class Viewport
+{
+int x, y, w, h;
+private Viewport(int x, int y, int w, int h)
+  {
+  this.x = x;
+  this.y = y;
+  this.h = h;
+  this.w = w;
   }
 }
 

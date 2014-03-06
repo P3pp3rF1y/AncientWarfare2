@@ -197,7 +197,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     {
     element.render(mouseX, mouseY, partialTick);
     }
-  resetViewport();
+  popViewport();
   }
 
 @Override

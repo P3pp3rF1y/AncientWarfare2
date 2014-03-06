@@ -65,7 +65,7 @@ public void render(int mouseX, int mouseY, float partialTick)
       }
     element.render(mouseX, mouseY, partialTick);
     }   
-  resetViewport();
+  popViewport();
  //render scrollbar after resetting viewport so that it is not cropped
   scrollbar.render(mouseX, mouseY, partialTick);
   }

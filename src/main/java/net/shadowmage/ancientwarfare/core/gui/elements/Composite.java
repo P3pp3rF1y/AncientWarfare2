@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -24,7 +25,6 @@ import org.lwjgl.opengl.GL11;
 public class Composite extends GuiElement
 {
 
-private static LinkedList<Viewport> viewportStack = new LinkedList<Viewport>();
 protected List<GuiElement> elements = new ArrayList<GuiElement>();
 
 public Composite(int topLeftX, int topLeftY, int width, int height)
@@ -107,7 +107,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     {
     element.render(mouseX, mouseY, partialTick);
     }    
-  resetViewport();
+  popViewport();
   }
 
 public void addGuiElement(GuiElement element)
@@ -118,60 +118,16 @@ public void addGuiElement(GuiElement element)
 protected void setViewport()
   {    
   int x, y, w, h;
-  int tlx, tly, brx, bry;
   x = renderX+3;
   y = renderY+3;
   w = width-6;
-  h = height-6;
-  tlx = x;
-  tly = y;
-  brx = x + w;
-  bry = y + h;
-  
-  Viewport p = viewportStack.peek();
-  if(p!=null)
-    {
-    if(tlx<p.x){tlx = p.x;}
-    if(brx>p.x+p.w){brx = p.x + p.w;}
-    if(tly<p.y){tly = p.y;}
-    if(bry>p.y+p.h){bry = p.y+p.h;}    
-    }
-  x = tlx;
-  y = tly;
-  w = brx - tlx;
-  h = bry - tly;
-  
-  Minecraft mc = Minecraft.getMinecraft();
-  ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-  int guiScale = scaledRes.getScaleFactor();
-  GL11.glEnable(GL11.GL_SCISSOR_TEST);  
-  
-  GL11.glScissor(x*guiScale, mc.displayHeight - y*guiScale - h*guiScale, w*guiScale, h*guiScale);
-  
-  viewportStack.push(new Viewport(x, y, w, h));
+  h = height-6;  
+  GuiContainerBase.pushViewport(x, y, w, h);  
   }
 
-protected void resetViewport()
-  {  
-  Viewport p = viewportStack.poll();
-  if(p==null)
-    {
-    GL11.glDisable(GL11.GL_SCISSOR_TEST);
-    }
-  p = viewportStack.peek();
-  if(p!=null)
-    {
-    Minecraft mc = Minecraft.getMinecraft();
-    ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-    int guiScale = scaledRes.getScaleFactor();
-    GL11.glEnable(GL11.GL_SCISSOR_TEST);  
-    
-    GL11.glScissor(p.x*guiScale, mc.displayHeight - p.y*guiScale - p.h*guiScale, p.w*guiScale, p.h*guiScale);    
-    }
-  else
-    {
-    GL11.glDisable(GL11.GL_SCISSOR_TEST);    
-    }
+protected void popViewport()
+  {
+  GuiContainerBase.popViewport();
   }
 
 /**
@@ -194,22 +150,5 @@ protected void updateElementPositions()
     }
   }
 
-/**
- * class used to represent a currently drawable portion of the screen.
- * Used in a stack for figuring out what composites may draw where
- * @author John
- *
- */
-private class Viewport
-{
-int x, y, w, h;
-private Viewport(int x, int y, int w, int h)
-  {
-  this.x = x;
-  this.y = y;
-  this.h = h;
-  this.w = w;
-  }
-}
 
 }
