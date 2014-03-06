@@ -40,5 +40,19 @@
   "logoFile": "",
   "screenshots": [],
   "dependencies": ["ancientwarfare"]
+},
+{
+  "modid": "ancientwarfaremodeler",
+  "name": "Ancient Warfare Model Editor",
+  "description": "Ancient Warfare Model Editor for Minecraft 1.7+",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "ancientwarfare.wikispaces.com",
+  "updateUrl": "ancientwarfare.wikispaces.com",
+  "authorList": ["shadowmage45"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["ancientwarfare"]
 }
 ]
