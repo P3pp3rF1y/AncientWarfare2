@@ -1,10 +1,14 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
+import net.minecraft.client.Minecraft;
+import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerTest;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlotInventoried;
+import net.shadowmage.ancientwarfare.modeler.gui.GuiFileSelect;
 
 public class GuiTest extends GuiContainerBase
 {
@@ -27,15 +31,15 @@ public void initElements()
   CompositeScrolled com = new CompositeScrolled(0, 0, 200, 200);  
   this.addGuiElement(com);
   com.setAreaSize(400);  
-  com.addGuiElement(new Button(5, 5, 100, 20, "TestButton"));
+//  com.addGuiElement(new Button(5, 5, 100, 20, "TestButton"));
   
 //  CompositeScrolled com2 = new CompositeScrolled(10, 10, 50, 50);  
 //  com.addGuiElement(com2);
 //  com2.setAreaSize(200);  
 //  com2.addGuiElement(new Button(5, 5, 100, 20, "TestButton2"));
   
-  ItemSlotInventoried slot = new ItemSlotInventoried(5, 5, container.inventory, 0, (ContainerBase)this.inventorySlots, this);
-  com.addGuiElement(slot);
+//  ItemSlotInventoried slot = new ItemSlotInventoried(5, 5, container.inventory, 0, (ContainerBase)this.inventorySlots, this);
+//  com.addGuiElement(slot);
   
 //  CompositeTabbed tab = new CompositeTabbed(50, 0, 100, 100);  
 //  tab.addTab("Test1", true);
@@ -65,6 +69,28 @@ public void initElements()
 //  
 //  TexturedRectangle t = new TexturedRectangle(100, 100, 100, 100, "gui/guiButtons1.png", 256, 256, 40, 40, 40, 40);
 //  com.addGuiElement(t);
+  
+  Button b = new Button(8, 8, 55, 12, "FS");
+  com.addGuiElement(b);
+  b.addNewListener(new Listener(Listener.MOUSE_UP)
+    {
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(widget.isMouseOverElement(evt.mx, evt.my))
+        {
+        Minecraft.getMinecraft().displayGuiScreen(new GuiFileSelect(GuiTest.this, Statics.configPath, true)
+          {
+          public void onFileSelected(java.io.File file)
+            {
+            
+            };
+          });
+        }
+      return true;
+      }
+    });
+
   }
 
 }
