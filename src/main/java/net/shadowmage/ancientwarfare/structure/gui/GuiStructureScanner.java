@@ -169,7 +169,6 @@ private void export()
 private boolean validateName(String name)
   {
   if(name.equals("")){return false;}
-  boolean valid = true;
   for(int i = 0; i < name.length(); i++)
     {
     if(!validateChar(name.charAt(i)))
@@ -181,8 +180,8 @@ private boolean validateName(String name)
   }
 
 private boolean validateChar(char ch)
-  {
-  return false;
+  {  
+  return true;//TODO validate chars
   }
 
 }
