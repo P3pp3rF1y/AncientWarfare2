@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 
 import net.minecraft.client.Minecraft;
@@ -22,6 +23,20 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+/**
+ * renders a model into its display area
+ * has optional model-view input for rotation/movement/zoom
+ * has optional piece selection mode, with callback
+ * 
+ * contains all methods necessary to:<br>
+ * load model from disk<br>
+ * save model to disk<br>
+ * load model texture from disk<br>
+ * add / remove / manipulate pieces<br>
+ * add / remove / manipulate primitives<br>
+ * @author John
+ *
+ */
 public class ModelWidget extends GuiElement
 {
 
@@ -418,10 +433,11 @@ public ModelBaseAW getModel()
  */
 public void addNewPrimitive(Primitive p)
   {
-  if(p.parent==this.selectedPiece)
-    {
-    p.parent.addPrimitive(p);
+  if(p.parent!=this.selectedPiece)
+    {    
+    return;    
     }
+  p.parent.addPrimitive(p);
   this.selectedPiece = p.parent;
   this.selectedPrimitive = p;
   this.onSelection(selectedPiece, selectedPrimitive);
@@ -494,6 +510,13 @@ public void copyPiece()
   this.onSelection(selectedPiece, selectedPrimitive);
   }
 
+public void renameCurrentPiece(String name)
+  {
+  /**
+   * TODO
+   */
+  }
+
 public void copyPrimitive()
   {
   /**
@@ -524,6 +547,27 @@ public void swapPrimitiveParent(ModelPiece newParent)
    * TODO
    */
   }
+
+public void loadModel(File file)
+  {
+  
+  }
+
+public void saveModel(File file)
+  {
+  
+  }
+
+public void loadTexture(File file)
+  {
+  
+  }
+
+public void importPieces(File file)
+  {
+  
+  }
+
 
 /**
  * implementations should override to provide a callback for piece selection

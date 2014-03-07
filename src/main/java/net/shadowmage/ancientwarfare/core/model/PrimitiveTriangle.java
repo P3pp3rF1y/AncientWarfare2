@@ -212,6 +212,7 @@ public void setBounds(float x1, float y1, float z1, float x2, float y2, float z2
   this.z1 = z1;
   this.z2 = z2;
   this.z3 = z3;
+  this.recalcUV();
   this.calcNormal();
   this.calcCenter(); 
   this.setCompiled(false);
@@ -264,8 +265,10 @@ private void calcNormal()
  * with u1/v1 being upper-left on the texture, 
  * u2/v2 being right, 
  * and u3/v3 being bottom
+ * 
+ * should be called anytime the triangle bounds are changed
  */
-public void recalcUV()
+protected void recalcUV()
   {  
   //http://www.mathsisfun.com/algebra/trig-solving-sss-triangles.html
   float a = Trig.getDistance(x1, y1, z1, x2, y2, z2) * 16.f;
@@ -382,12 +385,16 @@ public static void plotLine3(int x1, int y1, int x2, int y2, List<Point2i> point
     }
   }
 
-
-public void setCenterx(float cx, float cy)
-  {
-  this.cx = cx;
-  this.cy = cy;
-  }
+///**
+// * should only be called when loading from disk?
+// * @param cx
+// * @param cy
+// */
+//public void setCenterx(float cx, float cy)
+//  {
+//  this.cx = cx;
+//  this.cy = cy;
+//  }
 
 public static class Point2i
 {

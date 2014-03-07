@@ -1,8 +1,13 @@
 package net.shadowmage.ancientwarfare.modeler.gui;
 
+import java.io.File;
+
+import net.minecraft.client.Minecraft;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.GuiFileSelect;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ModelWidget;
@@ -140,9 +145,15 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      /**
-       * TODO open file select GUI -- newFiles==false
-       */
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, Statics.configPath, false)
+        {
+        @Override
+        public void onFileSelected(File file)
+          {
+          modelWidget.loadModel(file);
+          }
+        };
+      Minecraft.getMinecraft().displayGuiScreen(gui);      
       }
     };
   totalHeight+=12;
@@ -153,10 +164,15 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      /**
-       * TODO open file select GUI -- newFiles==true
-       * TODO confirm overwrite on already existing file
-       */
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, Statics.configPath, false)
+        {
+        @Override
+        public void onFileSelected(File file)
+          {
+          modelWidget.saveModel(file);
+          }
+        };
+      Minecraft.getMinecraft().displayGuiScreen(gui); 
       }
     };
   totalHeight+=12;
@@ -167,10 +183,15 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      /**
-       * TODO open file select GUI -- newFiles==false
-       * TODO load model from file, copy/import pieces, verifying naming along the way
-       */
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, Statics.configPath, false)
+        {
+        @Override
+        public void onFileSelected(File file)
+          {
+          modelWidget.importPieces(file);
+          }
+        };
+      Minecraft.getMinecraft().displayGuiScreen(gui);  
       }
     };
   totalHeight+=12;
@@ -181,10 +202,15 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      /**
-       * TODO open file select GUI -- newFiles==false
-       * TODO load returned image as a bufferedimage, pass to textureManager.updateTexture
-       */
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, Statics.configPath, false)
+        {
+        @Override
+        public void onFileSelected(File file)
+          {
+          modelWidget.loadTexture(file);
+          }
+        };
+      Minecraft.getMinecraft().displayGuiScreen(gui);      
       }
     };
   totalHeight+=12;
@@ -249,9 +275,15 @@ private void addPieceElements()
     @Override
     protected void onPressed()
       {
-      /**
-       * TODO open swap parent GUI (select target parent piece)
-       */
+      GuiPieceSelection gui = new GuiPieceSelection(GuiModelEditor.this)
+        {
+        @Override
+        protected void onPieceSelected(ModelPiece piece)
+          {
+          modelWidget.swapPieceParent(piece);
+          }
+        };
+      Minecraft.getMinecraft().displayGuiScreen(gui);
       }
     };
   totalHeight+=12;
@@ -262,9 +294,15 @@ private void addPieceElements()
     @Override
     protected void onPressed()
       {
-      /**
-       * TODO open rename piece GUI
-       */
+      GuiPieceNameInput gui = new GuiPieceNameInput(GuiModelEditor.this)
+        {
+        @Override
+        protected void onNameSelected(String name)
+          {
+          modelWidget.renameCurrentPiece(name);
+          }
+        };
+      Minecraft.getMinecraft().displayGuiScreen(gui);
       }
     };
   totalHeight+=12;
@@ -285,9 +323,15 @@ private int addNewPieceButton(int height)
     @Override
     protected void onPressed()
       {
-      /**
-       * TODO open new piece name select GUI
-       */
+      GuiPieceNameInput gui = new GuiPieceNameInput(GuiModelEditor.this)
+        {
+        @Override
+        protected void onNameSelected(String name)
+          {
+          modelWidget.addNewPiece(name);
+          }
+        };
+      Minecraft.getMinecraft().displayGuiScreen(gui);
       }
     };
   pieceControlArea.addGuiElement(b);
@@ -302,9 +346,15 @@ private int addNewPrimitiveButton(int height)
     @Override
     protected void onPressed()
       {
-      /**
-       * TODO open new primitive creation GUI -- select from box/quad/triangle
-       */
+      GuiPrimitiveSelection gui = new GuiPrimitiveSelection(GuiModelEditor.this)
+        {
+        @Override
+        protected void onPrimitiveCreated(Primitive p)
+          {
+          modelWidget.addNewPrimitive(p);
+          }
+        };
+      Minecraft.getMinecraft().displayGuiScreen(gui);
       }
     };
   primitiveControlArea.addGuiElement(b);
@@ -326,13 +376,7 @@ private void addPrimitiveElements(Primitive prim)
   int w = ((width - xSize)/2)-17;
   int h = 12;
   totalHeight = addNewPrimitiveButton(totalHeight);
-  
-  /**
-   * TODO add buttons for:
-   * delete
-   * copy
-   * swap parent piece
-   */ 
+
   Button b = new Button(3, totalHeight, w, h, "Delete Primitive")
     {
     @Override
@@ -360,28 +404,37 @@ private void addPrimitiveElements(Primitive prim)
     @Override
     protected void onPressed()
       {
-      /**
-       * TODO open piece-selection GUI
-       */
+      GuiPieceSelection gui = new GuiPieceSelection(GuiModelEditor.this)
+        {
+        @Override
+        protected void onPieceSelected(ModelPiece piece)
+          {
+          modelWidget.swapPrimitiveParent(piece);
+          }
+        };
+      Minecraft.getMinecraft().displayGuiScreen(gui);
       }
     };
   totalHeight+=12;
   primitiveControlArea.addGuiElement(b);
-  
-  /**
-   * TODO add x,y,z,rx,ry,rz controls
-   */
+   
   if(prim.getClass()==PrimitiveBox.class)
     {
-    
+    /**
+     * TODO add x,y,z,w,l,h,rx,ry,rz controls
+     */
     }
   else if(prim.getClass()==PrimitiveTriangle.class)
     {
-    
+    /**
+     * TODO add x1,y1,z1,x2,y2,z2,x3,y3,z3,flip controls
+     */
     }
   else if(prim.getClass()==PrimitiveQuad.class)
     {
-    
+    /**
+     * TODO add x,y,z,w,h,rx,ry,rz,flip controls
+     */
     }
   
   primitiveControlArea.setAreaSize(totalHeight);
