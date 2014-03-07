@@ -3,11 +3,10 @@ package net.shadowmage.ancientwarfare.modeler.gui;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ModelWidget;
+import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 import net.shadowmage.ancientwarfare.core.model.Primitive;
 import net.shadowmage.ancientwarfare.core.model.PrimitiveBox;
@@ -16,6 +15,8 @@ import net.shadowmage.ancientwarfare.core.model.PrimitiveTriangle;
 
 public class GuiModelEditor extends GuiContainerBase
 {
+
+static ModelBaseAW model;
 
 ModelWidget modelWidget;
 
@@ -40,9 +41,17 @@ public void initElements()
       handleSelection(piece, primitive);
       }
     };
-  this.addGuiElement(modelWidget);
   modelWidget.setSelectable(true);
-  modelWidget.initModel();
+  if(model!=null)//attempt to use existing client-side model, if it exists
+    {
+    modelWidget.setModel(model);
+    }
+  else
+    {
+    modelWidget.initModel(); 
+    model = modelWidget.getModel();
+    }
+  this.addGuiElement(modelWidget);
   
   pieceControlArea = new CompositeScrolled(-guiLeft, -guiTop, ((width-xSize) / 2), height/2);
   addGuiElement(pieceControlArea);
@@ -78,6 +87,7 @@ public void setupElements()
   partListArea.setSize((width-xSize)/2, height/2);
   
   addFileControls();
+  addPieceList();
     
   ModelPiece piece = getModelPiece();
   if(piece!=null)
@@ -90,12 +100,15 @@ public void setupElements()
       } 
     else
       {
+      primitiveControlArea.setAreaSize(18);
       addNewPrimitiveButton(3);
       }
     } 
   else
     {
     addNewPieceButton(3);
+    pieceControlArea.setAreaSize(18);
+    primitiveControlArea.setAreaSize(18);
     }
   }
 
@@ -113,12 +126,84 @@ protected Primitive getPrimitive()
  * save<br>
  * load<br>
  * import<br>
+ * load texture<br>
  * uv-map<br>
- * new piece<br>
  */
 private void addFileControls()
   {
+  int totalHeight = 3;
+  int w = ((width - xSize)/2)-17;
+  int h = 12;
   
+  Button b = new Button(3, totalHeight, w, h, "Load Model")
+    {
+    @Override
+    protected void onPressed()
+      {
+      /**
+       * TODO open file select GUI -- newFiles==false
+       */
+      }
+    };
+  totalHeight+=12;
+  fileControlArea.addGuiElement(b);
+  
+  b = new Button(3, totalHeight, w, h, "Save Model")
+    {
+    @Override
+    protected void onPressed()
+      {
+      /**
+       * TODO open file select GUI -- newFiles==true
+       * TODO confirm overwrite on already existing file
+       */
+      }
+    };
+  totalHeight+=12;
+  fileControlArea.addGuiElement(b);
+  
+  b = new Button(3, totalHeight, w, h, "Import Pieces")
+    {
+    @Override
+    protected void onPressed()
+      {
+      /**
+       * TODO open file select GUI -- newFiles==false
+       * TODO load model from file, copy/import pieces, verifying naming along the way
+       */
+      }
+    };
+  totalHeight+=12;
+  fileControlArea.addGuiElement(b);
+  
+  b = new Button(3, totalHeight, w, h, "Load Texture")
+    {
+    @Override
+    protected void onPressed()
+      {
+      /**
+       * TODO open file select GUI -- newFiles==false
+       * TODO load returned image as a bufferedimage, pass to textureManager.updateTexture
+       */
+      }
+    };
+  totalHeight+=12;
+  fileControlArea.addGuiElement(b);
+  
+  b = new Button(3, totalHeight, w, h, "U/V Map")
+    {
+    @Override
+    protected void onPressed()
+      {
+      /**
+       * TODO open UV Map editor GUI
+       */
+      }
+    };
+  totalHeight+=12;
+  fileControlArea.addGuiElement(b);
+  
+  fileControlArea.setAreaSize(totalHeight);
   }
 
 /**
@@ -132,7 +217,6 @@ private void addFileControls()
  */
 private void addPieceElements()
   {
-  AWLog.logDebug("adding piece elements..");
   int totalHeight = 3;
   int w = ((width - xSize)/2)-17;
   int h = 12;
@@ -166,7 +250,7 @@ private void addPieceElements()
     protected void onPressed()
       {
       /**
-       * TODO open swap parent GUI
+       * TODO open swap parent GUI (select target parent piece)
        */
       }
     };
@@ -190,6 +274,7 @@ private void addPieceElements()
   * TODO add controls for piece origin -- x, y, z
   * TODO add controls for piece rotation -- x, y, z
   */
+  pieceControlArea.setAreaSize(totalHeight);
   }
 
 private int addNewPieceButton(int height)
@@ -200,7 +285,9 @@ private int addNewPieceButton(int height)
     @Override
     protected void onPressed()
       {
-      modelWidget.addNewPiece();
+      /**
+       * TODO open new piece name select GUI
+       */
       }
     };
   pieceControlArea.addGuiElement(b);
@@ -226,16 +313,64 @@ private int addNewPrimitiveButton(int height)
 
 /**
  * per primitive controls<br>
+ * delete primitive<br>
+ * copy primitive<br>
+ * swap primitive parent<br>
  * primitive origin<br>
  * primitive rotation<br>
  * primitive location (offset from rotation point)<br>
- * delete primitive<br>
- * copy primitive<br>
  */
 private void addPrimitiveElements(Primitive prim)
-  {
+  {  
   int totalHeight = 3;
+  int w = ((width - xSize)/2)-17;
+  int h = 12;
   totalHeight = addNewPrimitiveButton(totalHeight);
+  
+  /**
+   * TODO add buttons for:
+   * delete
+   * copy
+   * swap parent piece
+   */ 
+  Button b = new Button(3, totalHeight, w, h, "Delete Primitive")
+    {
+    @Override
+    protected void onPressed()
+      {
+      modelWidget.deleteSelectedPrimitive();
+      }
+    };
+  totalHeight+=12;
+  primitiveControlArea.addGuiElement(b);
+  
+  b = new Button(3, totalHeight, w, h, "Copy Primitive")
+    {
+    @Override
+    protected void onPressed()
+      {
+      modelWidget.copyPrimitive();
+      }
+    };
+  totalHeight+=12;
+  primitiveControlArea.addGuiElement(b);
+  
+  b = new Button(3, totalHeight, w, h, "Swap Parent")
+    {
+    @Override
+    protected void onPressed()
+      {
+      /**
+       * TODO open piece-selection GUI
+       */
+      }
+    };
+  totalHeight+=12;
+  primitiveControlArea.addGuiElement(b);
+  
+  /**
+   * TODO add x,y,z,rx,ry,rz controls
+   */
   if(prim.getClass()==PrimitiveBox.class)
     {
     
@@ -248,6 +383,8 @@ private void addPrimitiveElements(Primitive prim)
     {
     
     }
+  
+  primitiveControlArea.setAreaSize(totalHeight);
   }
 
 private void addPieceList()

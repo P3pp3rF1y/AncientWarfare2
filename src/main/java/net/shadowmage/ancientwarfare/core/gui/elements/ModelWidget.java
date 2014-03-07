@@ -196,7 +196,9 @@ public void setSelectable(boolean val)
 
 public void setModel(ModelBaseAW model)
   {
-  this.model = model;  
+  this.model = model; 
+  selectedPiece = null;
+  selectedPrimitive = null;
   }
 
 public void initModel()
@@ -231,13 +233,10 @@ public void render(int mouseX, int mouseY, float partialTick)
     GL11.glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
     GL11.glDisable(GL11.GL_DEPTH_TEST);
     GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+    
     renderGrid();
 
-    enableModelLighting();
-    /**
-     * TODO bind texture
-     */
-    
+    enableModelLighting();      
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     
     TextureManager.bindTexture();
@@ -327,10 +326,9 @@ private void setViewport()
    * (we want to ignore any world/etc, as we're rendering over-top of it all anyway)
    */
   GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-  
+
   /**
-   * TODO push scissors viewport
-   * (need to move viewport stack into base gui class)
+   * set the cropped viewport to render to
    */
   GuiContainerBase.pushViewport(renderX, renderY, width, height);
   }
@@ -342,9 +340,6 @@ private void resetViewport()
   GL11.glMatrixMode(GL11.GL_MODELVIEW);
   GL11.glPopMatrix();
   GuiContainerBase.popViewport();
-  /**
-   * TODO pop scissors viewport
-   */
   }
 
 /**
@@ -423,7 +418,13 @@ public ModelBaseAW getModel()
  */
 public void addNewPrimitive(Primitive p)
   {
-  
+  if(p.parent==this.selectedPiece)
+    {
+    p.parent.addPrimitive(p);
+    }
+  this.selectedPiece = p.parent;
+  this.selectedPrimitive = p;
+  this.onSelection(selectedPiece, selectedPrimitive);
   }
 
 /**
@@ -433,9 +434,18 @@ public void addNewPrimitive(Primitive p)
  * sets the current selected piece to the new piece
  * sets the current selected primitive to null
  */
-public void addNewPiece()
+public void addNewPiece(String pieceName)
   {
-  
+  ModelPiece pieceParent = this.selectedPiece==null ? null : this.selectedPiece.getParent();
+  ModelPiece newPiece = new ModelPiece(model, pieceName);
+  if(pieceParent!=null)
+    {
+    pieceParent.addChild(newPiece);
+    } 
+  model.addPiece(newPiece);
+  this.selectedPiece = newPiece;
+  this.selectedPrimitive = null;
+  this.onSelection(selectedPiece, selectedPrimitive);
   }
 
 /**
@@ -443,12 +453,23 @@ public void addNewPiece()
  */
 public void deleteSelectedPiece()
   {
-  
+  if(selectedPiece!=null)
+    {
+    model.removePiece(selectedPiece);
+    }
+  this.selectedPiece = null;
+  this.selectedPrimitive = null;
+  this.onSelection(selectedPiece, selectedPrimitive);
   }
 
 public void deleteSelectedPrimitive()
   {
-  
+  if(this.selectedPrimitive!=null)
+    {
+    this.selectedPrimitive.parent.removePrimitive(selectedPrimitive);
+    }
+  this.selectedPrimitive = null;
+  this.onSelection(selectedPiece, selectedPrimitive);
   }
 
 /**
@@ -459,7 +480,49 @@ public void deleteSelectedPrimitive()
  */
 public void copyPiece()
   {
-  
+  if(selectedPiece!=null)
+    {
+    ModelPiece copy = selectedPiece.copy();
+    if(copy.getParent()!=null)
+      {
+      copy.getParent().addChild(copy);
+      }
+    model.addPiece(copy);
+    selectedPiece = copy;
+    selectedPrimitive = null;
+    }
+  this.onSelection(selectedPiece, selectedPrimitive);
+  }
+
+public void copyPrimitive()
+  {
+  /**
+   * TODO
+   */
+  this.onSelection(selectedPiece, selectedPrimitive);
+  }
+
+/**
+ * swaps the parent of the selectedPiece to the passed in ModelPiece<br>
+ * pass null for a base piece
+ * @param newParent
+ */
+public void swapPieceParent(ModelPiece newParent)
+  {
+  /**
+   * TODO
+   */
+  }
+
+/**
+ * swaps the parent of the selected primitive to the passed in ModelPiece
+ * @param newParent
+ */
+public void swapPrimitiveParent(ModelPiece newParent)
+  {
+  /**
+   * TODO
+   */
   }
 
 /**
@@ -467,7 +530,7 @@ public void copyPiece()
  */
 protected void onSelection(ModelPiece piece, Primitive primitive)
   {
-  
+  //NOOP in base widget, implementation must be provided via anonymous inner-class overrides
   }
 
 }
