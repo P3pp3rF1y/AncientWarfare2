@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 import net.shadowmage.ancientwarfare.core.model.Primitive;
 import net.shadowmage.ancientwarfare.core.model.PrimitiveBox;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.modeler.gui.TextureManager;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -55,6 +56,7 @@ float viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ;
 public ModelWidget(int topLeftX, int topLeftY, int width, int height)
   {
   super(topLeftX, topLeftY, width, height);
+  TextureManager.allocateTexture();
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     public boolean onEvent(GuiElement widget, ActivationEvent evt)
@@ -215,33 +217,36 @@ public void initModel()
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
-  setViewport();
-  GL11.glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
-  GL11.glDisable(GL11.GL_DEPTH_TEST);
-  GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-  renderGrid();
+  setViewport();  
   if(model!=null)
     {
     if(doSelection)
       {
+      GL11.glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
+      GL11.glDisable(GL11.GL_DEPTH_TEST);
+      GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);  
       doSelection();
       doSelection = false;
-      }  
+      }
     GL11.glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
     GL11.glDisable(GL11.GL_DEPTH_TEST);
     GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+    renderGrid();
 
     enableModelLighting();
     /**
      * TODO bind texture
      */
-    GL11.glDisable(GL11.GL_TEXTURE_2D);
+    
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+    
+    TextureManager.bindTexture();
     model.renderForEditor(selectedPiece, selectedPrimitive);
-    GL11.glEnable(GL11.GL_TEXTURE_2D);
+    TextureManager.resetBoundTexture();
     }    
   
   resetViewport();
+  GL11.glDisable(GL11.GL_LIGHTING);
   GL11.glEnable(GL11.GL_DEPTH_TEST);
   }
 
@@ -387,22 +392,74 @@ private void doSelection()
     {
     this.selectedPiece = p.parent;
     }
+  AWLog.logDebug("selection: "+this.selectedPiece + " :: "+this.selectedPrimitive);
   this.onSelection(selectedPiece, selectedPrimitive);
   }
 
 public ModelPiece getSelectedPiece()
   {
-  return null;
+  return selectedPiece;
   }
 
 public Primitive getSelectedPrimitive()
   {
-  return null;
+  return selectedPrimitive;
   }
 
 public ModelBaseAW getModel()
   {
   return model;
+  }
+
+/**
+ * add a new fully defined primitive to the model
+ *  
+ * sets the current selected primitive to the passed in primitive
+ * after adding it to the model / piece
+ * 
+ * will NOT add the primitive or select it if current selected piece==null
+ * OR if the current selected piece != p.parent
+ * @param p
+ */
+public void addNewPrimitive(Primitive p)
+  {
+  
+  }
+
+/**
+ * adds a new model-piece to the model
+ * parent = current piece, or null if no current piece
+ * origin = parent origin, or 0,0,0 if no parent
+ * sets the current selected piece to the new piece
+ * sets the current selected primitive to null
+ */
+public void addNewPiece()
+  {
+  
+  }
+
+/**
+ * delete the selected piece
+ */
+public void deleteSelectedPiece()
+  {
+  
+  }
+
+public void deleteSelectedPrimitive()
+  {
+  
+  }
+
+/**
+ * copies the currently selected piece.
+ * adds it as a child of the current selected piece's parent -- as a sibling of the current piece
+ * sets current selected piece to the new copied peice
+ * copied piece will have an automatically generated piece-name
+ */
+public void copyPiece()
+  {
+  
   }
 
 /**

@@ -68,10 +68,16 @@ public GuiElement(int topLeftX, int topLeftY, int width, int height)
  * @param guiLeft
  * @param guiTop
  */
-public void updateRenderPosition(int guiLeft, int guiTop)
+public void updateGuiPosition(int guiLeft, int guiTop)
   {
   renderX = topLeftX + guiLeft;
   renderY = topLeftY + guiTop;
+  }
+
+public void setRenderPosition(int topLeftX, int topLeftY)
+  {
+  this.topLeftX = topLeftX;
+  this.topLeftY = topLeftY;
   }
 
 /**

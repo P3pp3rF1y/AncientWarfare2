@@ -136,9 +136,9 @@ protected void popViewport()
  * (e.g. scrollbar composite will use scrollbar pos)
  */
 @Override
-public void updateRenderPosition(int guiLeft, int guiTop)
+public void updateGuiPosition(int guiLeft, int guiTop)
   {
-  super.updateRenderPosition(guiLeft, guiTop);
+  super.updateGuiPosition(guiLeft, guiTop);
   updateElementPositions();
   }
 
@@ -146,8 +146,14 @@ protected void updateElementPositions()
   {
   for(GuiElement element : this.elements)
     {
-    element.updateRenderPosition(renderX, renderY);
+    element.updateGuiPosition(renderX, renderY);
     }
+  }
+
+public void setSize(int width, int height)
+  {
+  this.width = width;
+  this.height = height;
   }
 
 

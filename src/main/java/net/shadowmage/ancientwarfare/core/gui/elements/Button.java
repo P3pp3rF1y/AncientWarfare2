@@ -28,8 +28,9 @@ public Button(int topLeftX, int topLeftY, int width, int height, String text)
     public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
       if(enabled && visible && isMouseOverElement(evt.mx, evt.my))
-        {
-        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));        
+        {        
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+        onPressed();
         }
       return true;
       }
@@ -57,6 +58,15 @@ public void render(int mouseX, int mouseY, float partialTick)
     fr.drawStringWithShadow(text, renderX+textX, renderY+textY, textColor);
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     }  
+  }
+
+/**
+ * sub-classes may override this as an on-pressed callback
+ * method is called whenever the 'pressed' sound is played
+ */
+protected void onPressed()
+  {
+  
   }
 
 }

@@ -29,10 +29,10 @@ public void onScrolled(int newTop)
 @Override
 protected void updateElementPositions()
   { 
-  scrollbar.updateRenderPosition(renderX, renderY);
+  scrollbar.updateGuiPosition(renderX, renderY);
   for(GuiElement element : this.elements)
     {
-    element.updateRenderPosition(renderX, renderY-currentTop);
+    element.updateGuiPosition(renderX, renderY-currentTop);
     }
   }
 
@@ -113,5 +113,18 @@ protected void addDefaultListeners()
       }
     });
   }
+
+@Override
+public void setSize(int width, int height)
+  {
+  this.width = width;
+  this.height = height;
+  int h = scrollbar.totalAreaSize;
+  this.elements.remove(scrollbar);
+  scrollbar = new Scrollbar(width-12, 0, 12, height, this);
+  scrollbar.setAreaSize(h);
+  }
+  
+  
 
 }

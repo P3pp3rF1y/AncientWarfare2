@@ -142,7 +142,7 @@ public void initGui()
   this.setupElements();
   for(GuiElement element : this.elements)
     {
-    element.updateRenderPosition(guiLeft, guiTop);
+    element.updateGuiPosition(guiLeft, guiTop);
     }
   }
 

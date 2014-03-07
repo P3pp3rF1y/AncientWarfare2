@@ -166,7 +166,7 @@ public void onTabSelected(Tab tab)
   tab.setSelected(true);
   for(GuiElement element : this.tabElements.get(currentTab))
     {
-    element.updateRenderPosition(0, hasTopTabs? 13 : 0);
+    element.updateGuiPosition(0, hasTopTabs? 13 : 0);
     }
   }
 
@@ -206,7 +206,7 @@ protected void updateElementPositions()
   super.updateElementPositions();
   for(GuiElement element : this.tabElements.get(currentTab))
     {
-    element.updateRenderPosition(renderX, renderY + (hasTopTabs? 13 : 0));
+    element.updateGuiPosition(renderX, renderY + (hasTopTabs? 13 : 0));
     }
   }
 
