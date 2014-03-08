@@ -25,7 +25,7 @@ public void initElements()
   Label label = new Label(8, 8, "Name: ");
   addGuiElement(label);
   
-  input = new Text(8, 60, 180, "", this);
+  input = new Text(60, 8, 180, "", this);
   addGuiElement(input);  
   
   Button button = new Button(8, 24, 55, 12, "Accept")

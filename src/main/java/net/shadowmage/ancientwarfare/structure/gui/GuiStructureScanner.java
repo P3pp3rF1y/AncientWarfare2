@@ -161,6 +161,7 @@ private void export()
     PacketGui pkt = new PacketGui();
     pkt.packetData = tag;
     NetworkHandler.sendToServer(pkt);
+    Minecraft.getMinecraft().displayGuiScreen(null);
     }
   }
 

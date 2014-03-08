@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
@@ -33,6 +34,7 @@ public void handlePacketData(NBTTagCompound tag)
   {
   if(tag.hasKey("export"))
     {
+    AWLog.logDebug("receiving export command");
     boolean include = tag.getBoolean("export");
     String name = tag.getString("name");
     NBTTagCompound validation = tag.getCompoundTag("validation");
