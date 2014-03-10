@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
+import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 import net.shadowmage.ancientwarfare.core.model.Primitive;
 import net.shadowmage.ancientwarfare.core.model.PrimitiveBox;
@@ -40,6 +41,7 @@ import org.lwjgl.util.glu.GLU;
 public class ModelWidget extends GuiElement
 {
 
+ModelLoader loader = new ModelLoader();
 private ModelBaseAW model;
 private ModelPiece selectedPiece = null;
 private Primitive selectedPrimitive = null;
@@ -550,22 +552,30 @@ public void swapPrimitiveParent(ModelPiece newParent)
 
 public void loadModel(File file)
   {
-  
+  ModelBaseAW model = loader.loadModel(file);
+  if(model!=null)
+    {
+    this.model = model;
+    }
   }
 
 public void saveModel(File file)
   {
-  
+  loader.saveModel(model, file);
   }
 
 public void loadTexture(File file)
   {
-  
+  /**
+   * TODO
+   */
   }
 
 public void importPieces(File file)
   {
-  
+  /**
+   * TODO
+   */
   }
 
 
