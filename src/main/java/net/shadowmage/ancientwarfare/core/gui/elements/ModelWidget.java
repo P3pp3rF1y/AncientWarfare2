@@ -573,9 +573,17 @@ public void loadTexture(File file)
 
 public void importPieces(File file)
   {
-  /**
-   * TODO
-   */
+  ModelBaseAW model = loader.loadModel(file);
+  if(model!=null)
+    {
+    /**
+     * TODO validate names to check for duplicates
+     */
+    for(ModelPiece p : model.getBasePieces())
+      {
+      this.model.addPiece(p);
+      }
+    }
   }
 
 
