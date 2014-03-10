@@ -455,7 +455,7 @@ public void addNewPrimitive(Primitive p)
 public void addNewPiece(String pieceName)
   {
   ModelPiece pieceParent = this.selectedPiece==null ? null : this.selectedPiece.getParent();
-  ModelPiece newPiece = new ModelPiece(model, pieceName);
+  ModelPiece newPiece = new ModelPiece(model, pieceName, 0, 0, 0, 0, 0, 0, pieceParent);
   if(pieceParent!=null)
     {
     pieceParent.addChild(newPiece);
@@ -557,6 +557,13 @@ public void loadModel(File file)
     {
     this.model = model;
     }
+  }
+
+public void setSelection(ModelPiece piece, Primitive p)
+  {
+  this.selectedPiece = piece;
+  this.selectedPrimitive = p;
+  this.onSelection(piece, p);
   }
 
 public void saveModel(File file)

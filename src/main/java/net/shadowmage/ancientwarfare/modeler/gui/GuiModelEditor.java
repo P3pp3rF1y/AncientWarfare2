@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.modeler.gui;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
@@ -8,6 +9,8 @@ import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiFileSelect;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
@@ -1393,11 +1396,64 @@ private int addQuadControls(int totalHeight)
   return totalHeight;
   }
 
+
+private HashMap<Label, ModelPiece> pieceMap = new HashMap<Label, ModelPiece>();
+private HashMap<Label, Primitive> primitiveMap = new HashMap<Label, Primitive>();
+
 private void addPieceList()
   {
-  /**
-   * TODO
-   */
+  ArrayList<ModelPiece> pieces = new ArrayList<ModelPiece>();
+  model.getPieces(pieces);
+  
+  
+  int totalHeight = 3;
+  Label label = null;
+  
+  Listener listener = new Listener(Listener.MOUSE_UP)
+    {
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(widget.isMouseOverElement(evt.mx, evt.my))
+        {
+        Label l = (Label)widget;
+        if(pieceMap.containsKey(l))
+          {
+          ModelPiece piece = pieceMap.get(l);
+          modelWidget.setSelection(piece, null);          
+          }
+        else if(primitiveMap.containsKey(l))
+          {
+          Primitive p = primitiveMap.get(l);
+          modelWidget.setSelection(p.parent, p);
+          }
+        }
+      return true;
+      }
+    };
+  
+  String prefix;
+  int partNum = 1;
+  for(ModelPiece piece : pieces)
+    {
+    partNum = 1;
+    label = new Label(3, totalHeight, piece.getName());
+    label.addNewListener(listener);
+    partListArea.addGuiElement(label);
+    pieceMap.put(label, piece);
+    totalHeight+=12;
+    for(Primitive primitive : piece.getPrimitives())
+      {
+      prefix = primitive.getClass()==PrimitiveBox.class ? "BOX" : primitive.getClass()==PrimitiveQuad.class? "QUAD" : "TRI";
+      label = new Label(3, totalHeight, "  "+prefix+":"+partNum);
+      label.addNewListener(listener);
+      partListArea.addGuiElement(label);    
+      primitiveMap.put(label, primitive);
+      totalHeight+=12;
+      partNum++;
+      }
+    }
+  partListArea.setAreaSize(totalHeight);
   }
 
 private void handleSelection(ModelPiece piece, Primitive primitive)
