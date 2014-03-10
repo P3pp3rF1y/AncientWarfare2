@@ -64,6 +64,7 @@ public static AWStructureStatics statics;
 public void preInit(FMLPreInitializationEvent evt)
   {
   log = AncientWarfareCore.log;
+  AWLog.log("Ancient Warfare Structures Pre-Init started"); 
   config = new Configuration(evt.getSuggestedConfigurationFile());
   statics = new AWStructureStatics(config);
   
@@ -89,13 +90,17 @@ public void preInit(FMLPreInitializationEvent evt)
   BlockDataManager.instance().load();
   String path = evt.getModConfigurationDirectory().getAbsolutePath();
   TemplateLoader.instance().initializeAndExportDefaults(path);  
-   
+
+  AWLog.log("Ancient Warfare Structures Pre-Init completed");
   }
 
 @EventHandler
 public void init(FMLInitializationEvent evt)
   {
+  AWLog.log("Ancient Warfare Structures Init started"); 
   
+
+  AWLog.log("Ancient Warfare Structures Init completed");
   }
 
 @EventHandler

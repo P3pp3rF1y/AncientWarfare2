@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
@@ -125,6 +126,7 @@ public void setText(String text)
     {
     this.text = "0";
     this.value = 0.f;
+    this.onValueUpdated(value);
     }
   }
 
@@ -136,6 +138,7 @@ public NumberInput setValue(float val)
     }
   this.text = String.format("%."+decimalPlaces+"f", val);  
   this.value = val;
+  this.onValueUpdated(value);
   return this;
   }
 
@@ -172,5 +175,16 @@ protected void handleCharacter(char ch)
     text = newText;
     cursorIndex++;
     }
+  }
+
+protected void onEnterPressed()
+  {
+  AWLog.logDebug("enter pressed from number Input  value: "+value);
+  this.setText(getText());
+  }
+
+public void onValueUpdated(float value)
+  {
+  
   }
 }

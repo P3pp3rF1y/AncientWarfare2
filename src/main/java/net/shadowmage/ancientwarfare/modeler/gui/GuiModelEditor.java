@@ -1,16 +1,19 @@
 package net.shadowmage.ancientwarfare.modeler.gui;
 
 import java.io.File;
+import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiFileSelect;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.ModelWidget;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 import net.shadowmage.ancientwarfare.core.model.Primitive;
@@ -74,6 +77,7 @@ public void initElements()
 @Override
 public void setupElements()
   {
+  widgetMap.clear();
   pieceControlArea.clearElements();
   primitiveControlArea.clearElements();
   fileControlArea.clearElements();
@@ -308,12 +312,372 @@ private void addPieceElements()
   totalHeight+=12;
   pieceControlArea.addGuiElement(b);
   
- /**
-  * TODO add controls for piece origin -- x, y, z
-  * TODO add controls for piece rotation -- x, y, z
-  */
+  
+  int c0 = 5;//label
+  int c1 = c0+17;//-
+  int c2 = c1+12;//20+12 --input
+  int c3 = 2 + w - 12;//+
+      
+  int w2 = w - 24 - 20;
+  
+  Label label; 
+  NumberInput input;
+  
+  ModelPiece currentPiece = getModelPiece();
+  
+  
+  label = new Label(c0, totalHeight+2, "RX");
+  pieceControlArea.addGuiElement(label);
+  
+  b = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setRotation(piece.rx()-1, piece.ry(), piece.rz());
+        NumberInput input = (NumberInput) widgetMap.get("PRX");
+        input.setValue(piece.rx());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);
+  
+  input = new NumberInput(c2, totalHeight, w2, 0, this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setRotation(value, piece.ry(), piece.rz());        
+        }
+      }
+    };
+  if(currentPiece!=null)
+    {
+    input.setValue(currentPiece.rx());
+    }
+  input.setAllowNegative();
+  pieceControlArea.addGuiElement(input);
+  widgetMap.put("PRX", input);
+    
+  b = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setRotation(piece.rx()+1, piece.ry(), piece.rz());
+        NumberInput input = (NumberInput) widgetMap.get("PRX");
+        input.setValue(piece.rx());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);  
+  
+  totalHeight+=12;
+  
+  
+  label = new Label(c0, totalHeight+2, "RY");
+  pieceControlArea.addGuiElement(label);
+  
+  b = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setRotation(piece.rx(), piece.ry()-1, piece.rz());
+        NumberInput input = (NumberInput) widgetMap.get("PRY");
+        input.setValue(piece.rx());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);
+  
+  input = new NumberInput(c2, totalHeight, w2, 0, this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setRotation(piece.rx(), value, piece.rz());        
+        }
+      }
+    };
+  if(currentPiece!=null)
+    {
+    input.setValue(currentPiece.ry());
+    }
+  input.setAllowNegative();
+  pieceControlArea.addGuiElement(input);
+  widgetMap.put("PRY", input);
+  
+  b = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setRotation(piece.rx(), piece.ry()+1, piece.rz());
+        NumberInput input = (NumberInput) widgetMap.get("PRY");
+        input.setValue(piece.rx());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);  
+  
+  totalHeight+=12;
+  
+  
+  label = new Label(c0, totalHeight+2, "RZ");
+  pieceControlArea.addGuiElement(label);
+  
+  b = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setRotation(piece.rx(), piece.ry(), piece.rz()-1);
+        NumberInput input = (NumberInput) widgetMap.get("PRZ");
+        input.setValue(piece.rz());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);
+  
+  input = new NumberInput(c2, totalHeight, w2, 0, this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setRotation(piece.rx(), piece.ry(), value);        
+        }
+      }
+    };
+  if(currentPiece!=null)
+    {
+    input.setValue(currentPiece.rz());
+    }
+  input.setAllowNegative();
+  pieceControlArea.addGuiElement(input);
+  widgetMap.put("PRZ", input);
+  
+  b = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setRotation(piece.rx(), piece.ry(), piece.rz()+1);
+        NumberInput input = (NumberInput) widgetMap.get("PRZ");
+        input.setValue(piece.rz());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);  
+  
+  totalHeight+=12;
+  
+  
+  label = new Label(c0, totalHeight+2, "X");
+  pieceControlArea.addGuiElement(label);
+  
+  b = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setPosition(piece.x()-1, piece.y(), piece.z());
+        NumberInput input = (NumberInput) widgetMap.get("PX");
+        input.setValue(piece.x());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);
+  
+  input = new NumberInput(c2, totalHeight, w2, 0, this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setPosition(value, piece.y(), piece.z());        
+        }
+      }
+    };
+  if(currentPiece!=null)
+    {
+    input.setValue(currentPiece.x());
+    }
+  input.setAllowNegative();
+  pieceControlArea.addGuiElement(input);
+  widgetMap.put("PX", input);
+  
+  b = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setPosition(piece.x()+1, piece.y(), piece.z());
+        NumberInput input = (NumberInput) widgetMap.get("PX");
+        input.setValue(piece.x());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);  
+  
+  totalHeight+=12;
+  
+  
+  label = new Label(c0, totalHeight+2, "Y");
+  pieceControlArea.addGuiElement(label);
+  
+  b = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setPosition(piece.x(), piece.y()-1, piece.z());
+        NumberInput input = (NumberInput) widgetMap.get("PY");
+        input.setValue(piece.x());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);
+  
+  input = new NumberInput(c2, totalHeight, w2, 0, this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setPosition(piece.x(), value, piece.z());        
+        }
+      }
+    };
+  if(currentPiece!=null)
+    {
+    input.setValue(currentPiece.y());
+    }
+  input.setAllowNegative();
+  pieceControlArea.addGuiElement(input);
+  widgetMap.put("PY", input);
+  
+  b = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setPosition(piece.x(), piece.y()+1, piece.z());
+        NumberInput input = (NumberInput) widgetMap.get("PY");
+        input.setValue(piece.x());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);  
+  
+  totalHeight+=12;
+  
+  
+  label = new Label(c0, totalHeight+2, "Z");
+  pieceControlArea.addGuiElement(label);
+  
+  b = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setPosition(piece.x(), piece.y(), piece.z()-1);
+        NumberInput input = (NumberInput) widgetMap.get("PZ");
+        input.setValue(piece.x());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);
+  
+  input = new NumberInput(c2, totalHeight, w2, 0, this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setPosition(piece.y(), piece.y(), value);        
+        }
+      }
+    };
+  if(currentPiece!=null)
+    {
+    input.setValue(currentPiece.z());
+    }
+  input.setAllowNegative();
+  pieceControlArea.addGuiElement(input);
+  widgetMap.put("PZ", input);
+  
+  b = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {
+      ModelPiece piece = getModelPiece();
+      if(piece!=null)
+        {
+        piece.setPosition(piece.x(), piece.y(), piece.z()+1);
+        NumberInput input = (NumberInput) widgetMap.get("PZ");
+        input.setValue(piece.x());
+        }
+      }
+    };
+  pieceControlArea.addGuiElement(b);  
+  
+  totalHeight+=12;
+  
+  
   pieceControlArea.setAreaSize(totalHeight);
   }
+
+private HashMap<String, GuiElement> widgetMap = new HashMap<String, GuiElement>();
 
 private int addNewPieceButton(int height)
   {
