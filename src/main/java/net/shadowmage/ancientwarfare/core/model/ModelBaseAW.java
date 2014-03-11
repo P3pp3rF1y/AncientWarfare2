@@ -29,9 +29,6 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 public class ModelBaseAW
 {
-//name needs changed to something...else
-
-static float ratio = 0.0625f;//possibly not needed?
 
 int textureWidth;
 int textureHeight;
@@ -90,8 +87,7 @@ public void parseFromLines(List<String> lines)
     else if(line.startsWith("part="))
       {      
       ModelPiece piece = new ModelPiece(this, line.split("=")[1]);
-      addPiece(piece);      
-      AWLog.logDebug("parsed a new piece: "+piece.getName());      
+      addPiece(piece);          
       }
     else if(line.startsWith("box="))
       {
@@ -106,7 +102,6 @@ public void parseFromLines(List<String> lines)
       PrimitiveBox box = new PrimitiveBox(piece);
       box.readFromLine(bits);
       piece.addPrimitive(box);
-      AWLog.logDebug("parsed new box for piece: "+parentName);
       }
     else if(line.toLowerCase().startsWith("quad"))
       {
@@ -121,7 +116,6 @@ public void parseFromLines(List<String> lines)
       PrimitiveQuad box = new PrimitiveQuad(piece);
       box.readFromLine(bits);
       piece.addPrimitive(box);
-      AWLog.logDebug("parsed new quad for piece: "+parentName);
       }
     else if(line.toLowerCase().startsWith("triangle"))
       {
@@ -136,7 +130,6 @@ public void parseFromLines(List<String> lines)
       PrimitiveTriangle box = new PrimitiveTriangle(piece);
       box.readFromLine(bits);
       piece.addPrimitive(box);
-      AWLog.logDebug("parsed new quad for piece: "+parentName);
       }
     }
   }
@@ -158,8 +151,11 @@ public List<String> getModelLines()
  */
 protected void addPrimitive(Primitive primitive)
   {
-  primitive.primitiveNumber = this.nextPrimitiveNumber;
-  this.nextPrimitiveNumber++;
+  if(primitive.primitiveNumber<=0)
+    {
+    primitive.primitiveNumber = this.nextPrimitiveNumber;
+    this.nextPrimitiveNumber++;    
+    }
   primitives.put(primitive.primitiveNumber, primitive);
   }
 

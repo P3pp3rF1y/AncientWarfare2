@@ -21,7 +21,10 @@
 package net.shadowmage.ancientwarfare.modeler.gui;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.nio.IntBuffer;
+
+import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -34,14 +37,15 @@ import org.lwjgl.opengl.GL12;
 public class TextureManager
 {
 
-static int texNum = -1;
-static int prevTexNum = -1;
-private static IntBuffer dataBuffer = BufferUtils.createIntBuffer(1024*2048);
-private static int[] inBuff = new int[256*256];
-private static int[] outBuff = new int[256*256];
-private static int bufferSize = 256*256;
+BufferedImage image;
+int texNum = -1;
+int prevTexNum = -1;
+private IntBuffer dataBuffer = BufferUtils.createIntBuffer(1024*2048);
+private int[] inBuff = new int[256*256];
+private int[] outBuff = new int[256*256];
+private int bufferSize = 256*256;
 
-public static void allocateTexture()
+public void allocateTexture()
   {
   if(texNum<=0)
     {
@@ -61,19 +65,20 @@ public static void allocateTexture()
   resetBoundTexture();
   }
 
-public static void bindTexture()
+public void bindTexture()
   {
   prevTexNum = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
   GL11.glBindTexture(GL11.GL_TEXTURE_2D, texNum);
   }
 
-public static void resetBoundTexture()
+public void resetBoundTexture()
   {
   GL11.glBindTexture(GL11.GL_TEXTURE_2D, prevTexNum);
   }
 
-public static void updateTextureContents(BufferedImage image)
+public void updateTextureContents(BufferedImage image)
   {
+  this.image = image;
   bindTexture();
   if(image!=null)
     {     
@@ -112,7 +117,7 @@ private static void uploadTextureRGBAInts(IntBuffer imagedata, int width, int he
  * @param image to read from
  * @param buffer to fill
  */
-private static void fillImageArray(BufferedImage image, IntBuffer buffer)
+private void fillImageArray(BufferedImage image, IntBuffer buffer)
   {
   int width = image.getWidth();
   int height = image.getHeight();  
@@ -147,7 +152,7 @@ private static int ARGBtoRGBA(int pixel)
   return out;
   }
 
-public static void saveTexture(String fileName)
+public void saveTexture(File file)
   {
   
   }

@@ -31,6 +31,9 @@ static ModelBaseAW model;
 
 //map of elements by name of what they edit -- PRX, BRX, PX, BX, etc..
 private HashMap<String, GuiElement> widgetMap = new HashMap<String, GuiElement>();
+//map of label-element combos, to select pieces through clicking on/in the piece list area
+private HashMap<Label, ModelPiece> pieceMap = new HashMap<Label, ModelPiece>();
+private HashMap<Label, Primitive> primitiveMap = new HashMap<Label, Primitive>();
 
 ModelWidget modelWidget;
 
@@ -233,9 +236,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      /**
-       * TODO open UV Map editor GUI
-       */
+      Minecraft.getMinecraft().displayGuiScreen(new GuiUVEditor(GuiModelEditor.this));
       }
     };
   totalHeight+=12;
@@ -1395,10 +1396,6 @@ private int addQuadControls(int totalHeight)
    */
   return totalHeight;
   }
-
-
-private HashMap<Label, ModelPiece> pieceMap = new HashMap<Label, ModelPiece>();
-private HashMap<Label, Primitive> primitiveMap = new HashMap<Label, Primitive>();
 
 private void addPieceList()
   {

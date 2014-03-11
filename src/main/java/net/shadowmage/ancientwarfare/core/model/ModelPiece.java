@@ -88,6 +88,22 @@ public ModelPiece(ModelBaseAW model, String name, float x, float y, float z, flo
     }
   }
 
+public ModelPiece setParent(ModelPiece parent)
+  {
+  this.model.removePiece(this);
+  if(this.parent!=null)
+    {
+    this.parent.removeChild(this);
+    }
+  this.parent = parent;
+  if(this.parent!=null)
+    {
+    this.parent.addChild(this);
+    }
+  this.model.addPiece(this);
+  return this;
+  }
+
 public ModelPiece copy()
   {
   ModelPiece piece = new ModelPiece(model, pieceName, x, y, z, rx, ry, rz, parent);

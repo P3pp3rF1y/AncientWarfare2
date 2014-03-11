@@ -1,7 +1,11 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+
+import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -35,12 +39,13 @@ import org.lwjgl.util.glu.GLU;
  * load model texture from disk<br>
  * add / remove / manipulate pieces<br>
  * add / remove / manipulate primitives<br>
- * @author John
+ * @author Shadowmage
  *
  */
 public class ModelWidget extends GuiElement
 {
 
+TextureManager textureManager = new TextureManager();
 ModelLoader loader = new ModelLoader();
 private ModelBaseAW model;
 private ModelPiece selectedPiece = null;
@@ -73,7 +78,7 @@ float viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ;
 public ModelWidget(int topLeftX, int topLeftY, int width, int height)
   {
   super(topLeftX, topLeftY, width, height);
-  TextureManager.allocateTexture();
+  textureManager.allocateTexture();
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     public boolean onEvent(GuiElement widget, ActivationEvent evt)
@@ -256,9 +261,9 @@ public void render(int mouseX, int mouseY, float partialTick)
     enableModelLighting();      
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     
-    TextureManager.bindTexture();
+    textureManager.bindTexture();
     model.renderForEditor(selectedPiece, selectedPrimitive);
-    TextureManager.resetBoundTexture();
+    textureManager.resetBoundTexture();
     }    
   
   resetViewport();
@@ -514,16 +519,18 @@ public void copyPiece()
 
 public void renameCurrentPiece(String name)
   {
-  /**
-   * TODO
-   */
+  ModelPiece piece = this.getSelectedPiece();
+  piece.setName(name);
+  this.model.removePiece(piece);
+  this.model.addPiece(piece);
+  this.onSelection(selectedPiece, selectedPrimitive);
   }
 
 public void copyPrimitive()
   {
-  /**
-   * TODO
-   */
+  Primitive p = this.getSelectedPrimitive().copy();
+  this.getSelectedPiece().addPrimitive(p);
+  this.selectedPrimitive = p;  
   this.onSelection(selectedPiece, selectedPrimitive);
   }
 
@@ -534,9 +541,7 @@ public void copyPrimitive()
  */
 public void swapPieceParent(ModelPiece newParent)
   {
-  /**
-   * TODO
-   */
+  this.getSelectedPiece().setParent(newParent);
   }
 
 /**
@@ -545,9 +550,10 @@ public void swapPieceParent(ModelPiece newParent)
  */
 public void swapPrimitiveParent(ModelPiece newParent)
   {
-  /**
-   * TODO
-   */
+  Primitive p = this.getSelectedPrimitive();
+  ModelPiece oldParent = p.parent;
+  oldParent.removePrimitive(p);
+  newParent.addPrimitive(p);
   }
 
 public void loadModel(File file)
@@ -572,10 +578,16 @@ public void saveModel(File file)
   }
 
 public void loadTexture(File file)
-  {
-  /**
-   * TODO
-   */
+  {  
+  try
+    {
+    BufferedImage image = ImageIO.read(file);
+    textureManager.updateTextureContents(image);
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
   }
 
 public void importPieces(File file)
