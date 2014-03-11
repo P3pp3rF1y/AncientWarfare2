@@ -157,4 +157,14 @@ public void saveTexture(File file)
   
   }
 
+@Override
+protected void finalize() throws Throwable
+  {
+  if(texNum>0)
+    {
+    GL11.glDeleteTextures(texNum);    
+    }
+  super.finalize();  
+  }
+
 }
