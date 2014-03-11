@@ -1,6 +1,7 @@
 #Ancient Warfare language file
 
 #items
+itemGroup.tabs.structures=Structures
 item.testItem.name=Test Item
 item.structure_scanner.name=Structure Scanner
 item.structure_builder.name=Structure Builder
@@ -21,6 +22,8 @@ guistrings.include_immediately=Include in game Immediately
 guistrings.validation_type=Current Validation Type
 guistrings.setup_validation=Setup Validation
 guistrings.select_dimensions=Select Dimensions
+guistrings.current_selection=Current Selection
+guistrings.none=None
 
 #structure validation translation stuff
 structure.validation.minGenDepth=Min Generation Depth
