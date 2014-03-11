@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.modeler.gui;
 
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.TexturedRectangleLive;
 
 /**
@@ -16,9 +17,13 @@ GuiModelEditor parent;
 
 TexturedRectangleLive textureRect;
 
+CompositeScrolled primitiveControlArea;
+CompositeScrolled pieceListArea;
+CompositeScrolled infoViewArea;
+
 public GuiUVEditor(GuiModelEditor parent)
   {
-  super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);
+  super((ContainerBase) parent.inventorySlots, 256, 256, defaultBackground);
   this.parent = parent;
   }
 
@@ -26,6 +31,7 @@ public GuiUVEditor(GuiModelEditor parent)
 public void initElements()
   {
   textureRect = new TexturedRectangleLive(0, 0, 256, 256, 256, 256, 0, 0, 256, 256, "editorTexture");
+  this.addGuiElement(textureRect);
   }
 
 @Override

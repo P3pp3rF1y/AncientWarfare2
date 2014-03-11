@@ -87,6 +87,7 @@ public ModelWidget(int topLeftX, int topLeftY, int width, int height, String tex
   {
   super(topLeftX, topLeftY, width, height);
   this.texName = texName;
+  this.customTex = customTex;
   if(!customTex)
     {
     texLoc = new ResourceLocation(Statics.coreModID, texName);

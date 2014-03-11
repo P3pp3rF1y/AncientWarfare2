@@ -29,11 +29,20 @@ import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 public class GuiModelEditor extends GuiContainerBase
 {
 
+//STATIC block allocates a new blank (white) texture for model editor use
+//will reload this same texture next time the editor is opened
 static BufferedImage image;
 public final static String imageName = "editorTexture"; 
 static
 {
 image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+for(int x = 0; x< 256; x++)
+  {
+  for(int y = 0; y< 256; y++)
+    {
+    image.setRGB(x, y, 0xffffffff);
+    }
+  }
 AWTextureManager.instance().loadTexture(imageName, image);
 }
 
@@ -54,6 +63,9 @@ CompositeScrolled primitiveControlArea;
 CompositeScrolled fileControlArea;
 CompositeScrolled partListArea;
 
+Label pieceNameLabel;
+Label primitiveNameLabel;
+
 public GuiModelEditor(ContainerBase par1Container)
   {
   super(par1Container, 256, 240, defaultBackground);
@@ -62,6 +74,7 @@ public GuiModelEditor(ContainerBase par1Container)
 @Override
 public void initElements()
   {
+  
   modelWidget = new ModelWidget(0, 0, 256, 240, imageName, true)
     {
     @Override
@@ -93,6 +106,12 @@ public void initElements()
   
   partListArea = new CompositeScrolled(xSize, -guiTop + height/2, ((width-xSize) / 2), height/2);
   addGuiElement(partListArea);
+  
+  pieceNameLabel = new Label(8, -guiTop, "Piece: No Selection");
+  addGuiElement(pieceNameLabel);
+  
+  primitiveNameLabel = new Label(8, -guiTop + 10, "Primitive: No Selection");
+  addGuiElement(primitiveNameLabel);
   }
 
 @Override
@@ -115,6 +134,12 @@ public void setupElements()
   
   partListArea.setRenderPosition(xSize, -guiTop + height/2);
   partListArea.setSize((width-xSize)/2, height/2);
+  
+  pieceNameLabel.setRenderPosition(8, -guiTop);
+  primitiveNameLabel.setRenderPosition(8, -guiTop+10);
+  
+  pieceNameLabel.setText(getModelPiece()==null? "Piece: No Selection" : "Piece: "+getModelPiece().getName());
+  primitiveNameLabel.setText(getPrimitive()==null? "Primitive: No Selection" : "Primitive: "+getPrimitive().toString());
   
   addFileControls();
   addPieceList();
