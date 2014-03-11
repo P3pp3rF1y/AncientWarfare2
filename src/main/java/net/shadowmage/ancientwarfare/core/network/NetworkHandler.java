@@ -166,7 +166,9 @@ public final void openGui(EntityPlayer player, int id, int x, int y, int z)
   {
   if(player.worldObj.isRemote)
     {
-    //TODO send packet with openGUI command to server so that GUI is opened on both sides
+    PacketGui pkt = new PacketGui();
+    pkt.setOpenGui(id, x, y, z);
+    sendToServer(pkt);
     }
   else
     {

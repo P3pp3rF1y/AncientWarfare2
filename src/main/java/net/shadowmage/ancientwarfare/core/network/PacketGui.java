@@ -21,6 +21,15 @@ public PacketGui()
   
   }
 
+public void setOpenGui(int id, int x, int y, int z)
+  {
+  packetData = new NBTTagCompound();
+  packetData.setInteger("id", id);
+  packetData.setInteger("x", x);
+  packetData.setInteger("y", y);
+  packetData.setInteger("z", z);
+  }
+
 @Override
 protected void writeToStream(ByteBuf data)
   {
@@ -55,7 +64,11 @@ protected void readFromStream(ByteBuf data)
 protected void execute()
   {
   AWLog.logDebug("executing gui packet");
-  if(player.openContainer instanceof ContainerBase)
+  if(packetData.hasKey("openGui"))
+    {
+    NetworkHandler.INSTANCE.openGui(player, packetData.getInteger("id"), packetData.getInteger("x"), packetData.getInteger("y"), packetData.getInteger("z"));
+    }
+  else if(player.openContainer instanceof ContainerBase)
     {
     ((ContainerBase)player.openContainer).onPacketData(packetData);
     }
