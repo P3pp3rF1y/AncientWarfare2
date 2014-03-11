@@ -5,6 +5,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
 import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gui.GuiStructureScanner;
+import net.shadowmage.ancientwarfare.structure.gui.GuiStructureSelection;
 
 public class ClientProxyStructures extends ClientProxyBase
 {
@@ -13,6 +14,7 @@ public class ClientProxyStructures extends ClientProxyBase
 public void registerClient()
   {
   NetworkHandler.INSTANCE.registerGui(NetworkHandler.GUI_SCANNER, GuiStructureScanner.class);
+  NetworkHandler.INSTANCE.registerGui(NetworkHandler.GUI_BUILDER, GuiStructureSelection.class);
   MinecraftForge.EVENT_BUS.register(StructureBoundingBoxRenderer.instance());
   }
 }
