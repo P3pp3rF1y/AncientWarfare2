@@ -39,7 +39,7 @@ public class TextureManager
 
 BufferedImage image;
 int texNum = -1;
-int prevTexNum = -1;
+static int prevTexNum = -1;
 private IntBuffer dataBuffer = BufferUtils.createIntBuffer(1024*2048);
 private int[] inBuff = new int[256*256];
 private int[] outBuff = new int[256*256];
@@ -157,13 +157,22 @@ public void saveTexture(File file)
   
   }
 
-@Override
-protected void finalize() throws Throwable
+public void releaseTexture()
   {
   if(texNum>0)
     {
-    GL11.glDeleteTextures(texNum);    
+    GL11.glDeleteTextures(texNum); 
+    texNum = -1;
     }
+  }
+
+@Override
+protected void finalize() throws Throwable
+  {
+  /**
+   * no clue if this will work, may not be able to release textures from GC thread??
+   */
+  releaseTexture();
   super.finalize();  
   }
 
