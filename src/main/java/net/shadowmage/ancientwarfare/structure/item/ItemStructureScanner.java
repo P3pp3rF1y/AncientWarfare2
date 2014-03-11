@@ -32,6 +32,8 @@ public ItemStructureScanner(String localizationKey)
   {
   super(localizationKey);
   this.hasLeftClick = true;
+  this.setCreativeTab(AWStructuresItemLoader.structureTab);
+  this.setMaxStackSize(1);
   }
 
 @Override

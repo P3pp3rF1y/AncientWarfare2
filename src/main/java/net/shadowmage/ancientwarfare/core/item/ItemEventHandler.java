@@ -22,10 +22,13 @@ public void onItemUse(PlayerInteractEvent evt)
       return;
       }
     ItemClickable item = (ItemClickable) stack.getItem();
-    if(item.hasLeftClick && !player.worldObj.isRemote)
+    if(item.hasLeftClick)
       {
-      item.onLeftClick(stack, player, item.getMovingObjectPositionFromPlayer(player.worldObj, player, true));
-      evt.setCanceled(true);      
+      evt.setCanceled(true);  
+      if(!player.worldObj.isRemote)
+        {
+        item.onLeftClick(stack, player, item.getMovingObjectPositionFromPlayer(player.worldObj, player, true));        
+        }    
       }
     }
   }

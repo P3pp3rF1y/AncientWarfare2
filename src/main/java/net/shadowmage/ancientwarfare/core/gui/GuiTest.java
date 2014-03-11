@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.modeler.gui.GuiModelEditor;
+import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerPlacer;
 
 public class GuiTest extends GuiContainerBase
 {
@@ -99,7 +100,7 @@ public void initElements()
       {
       if(widget.isMouseOverElement(evt.mx, evt.my))
         {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiModelEditor(container));
+        Minecraft.getMinecraft().displayGuiScreen(new GuiSpawnerPlacer(container));
         }
       return true;
       }
