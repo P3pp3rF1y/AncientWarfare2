@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -15,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
@@ -49,11 +52,13 @@ public void initElements()
     @Override
     protected void onPressed()
       {
-      
-      /**
-       * TODO close GUI
-       * send packet to server-side container to set selected name onto item
-       */
+      if(currentSelection!=null)
+        {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("structName", currentSelection.name);
+        sendDataToContainer(tag);
+        Minecraft.getMinecraft().displayGuiScreen(null);
+        }
       }
     });  
   
@@ -65,6 +70,7 @@ public void initElements()
   
   filterInput = new Text(8, 24, 240-16, "", this)
     {
+    //kind of dirty...should possibly implement a real onCharEntered callback for when input actually changes
     @Override
     protected void handleKeyInput(int keyCode, char ch)
       {      
@@ -73,6 +79,10 @@ public void initElements()
       }
     };
   addGuiElement(filterInput);  
+  
+  ContainerStructureSelection cont = (ContainerStructureSelection)inventorySlots;
+  StructureTemplateClient t = StructureTemplateManager.instance().getClientTemplate(cont.structureName);
+  this.setSelection(t);
   }
 
 @Override

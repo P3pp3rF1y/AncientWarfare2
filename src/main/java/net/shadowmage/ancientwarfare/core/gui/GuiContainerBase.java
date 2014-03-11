@@ -9,6 +9,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -17,6 +18,8 @@ import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
 import net.shadowmage.ancientwarfare.core.interfaces.ISlotClickCallback;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 import org.lwjgl.input.Keyboard;
@@ -71,6 +74,17 @@ public void handleTooltipRender(ItemStack stack)
 protected void clearElements()
   {
   this.elements.clear();
+  }
+
+/**
+ * send the input nbt-tag to the server-side container
+ * @param tag
+ */
+protected void sendDataToContainer(NBTTagCompound tag)
+  {
+  PacketGui pkt = new PacketGui();
+  pkt.packetData = tag;
+  NetworkHandler.sendToServer(pkt);
   }
 
 protected void addGuiElement(GuiElement element)
