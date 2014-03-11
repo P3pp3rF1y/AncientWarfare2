@@ -21,8 +21,8 @@ import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 import net.shadowmage.ancientwarfare.core.model.Primitive;
 import net.shadowmage.ancientwarfare.core.model.PrimitiveBox;
+import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 import net.shadowmage.ancientwarfare.core.util.Trig;
-import net.shadowmage.ancientwarfare.modeler.gui.TextureManager;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -45,7 +45,14 @@ import org.lwjgl.util.glu.GLU;
 public class ModelWidget extends GuiElement
 {
 
-TextureManager textureManager = new TextureManager();
+static BufferedImage image;
+final static String imageName = "editorTexture"; 
+static
+{
+image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+AWTextureManager.instance().loadTexture(imageName, image);
+}
+
 ModelLoader loader = new ModelLoader();
 private ModelBaseAW model;
 private ModelPiece selectedPiece = null;
@@ -78,7 +85,7 @@ float viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ;
 public ModelWidget(int topLeftX, int topLeftY, int width, int height)
   {
   super(topLeftX, topLeftY, width, height);
-  textureManager.allocateTexture();
+  
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     public boolean onEvent(GuiElement widget, ActivationEvent evt)
@@ -261,9 +268,8 @@ public void render(int mouseX, int mouseY, float partialTick)
     enableModelLighting();      
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     
-    textureManager.bindTexture();
+    AWTextureManager.instance().bindTexture(imageName);
     model.renderForEditor(selectedPiece, selectedPrimitive);
-    textureManager.resetBoundTexture();
     }    
   
   resetViewport();
@@ -582,7 +588,7 @@ public void loadTexture(File file)
   try
     {
     BufferedImage image = ImageIO.read(file);
-    textureManager.updateTextureContents(image);
+    AWTextureManager.instance().updateTextureContents(imageName, image);
     } 
   catch (IOException e)
     {

@@ -1,21 +1,16 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.imageio.ImageIO;
-
+import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
-import net.shadowmage.ancientwarfare.modeler.gui.TextureManager;
 
 public class TexturedRectangleLive extends GuiElement
 {
 
-TextureManager textureManager;
+String textureName;
 int tx, ty, u, v, uw, vh;
 float u1, v1, u2, v2;
 
-public TexturedRectangleLive(int topLeftX, int topLeftY, int width, int height, int tx, int ty, int u, int v, int uw, int vh)
+public TexturedRectangleLive(int topLeftX, int topLeftY, int width, int height, int tx, int ty, int u, int v, int uw, int vh, String texName)
   {
   super(topLeftX, topLeftY, width, height);
   this.tx = tx;//texture X size
@@ -31,8 +26,7 @@ public TexturedRectangleLive(int topLeftX, int topLeftY, int width, int height, 
   v1 = ((float) v) * perY;
   u2 = (float)(u + uw) * perX;
   v2 = (float)(v + vh) * perY;
-  textureManager = new TextureManager();
-  textureManager.allocateTexture();
+  this.textureName = texName;
   }
 
 @Override
@@ -40,20 +34,9 @@ public void render(int mouseX, int mouseY, float partialTick)
   {
   if(visible)
     {    
-    textureManager.bindTexture();
+    AWTextureManager.instance().bindTexture(textureName);
     RenderTools.renderTexturedQuad(renderX, renderY, renderX+width, renderY+height, u1, v1, u2, v2);
-    textureManager.resetBoundTexture();
     }
-  }
-
-public void saveTexture(File file)
-  {
-  textureManager.saveTexture(file);
-  }
-
-public void updateTexture(BufferedImage image)
-  {
-  textureManager.updateTextureContents(image);
   }
 
 }
