@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -33,16 +34,16 @@ public GuiStructureBiomeSelection(GuiStructureScanner parent)
 public void initElements()
   {
   
-  Label label = new Label(8,8, "Select Biomes: ");
+  Label label = new Label(8,8, StatCollector.translateToLocal("guistrings.select_biomes")+":");
   addGuiElement(label);
   
-  whiteList = new Checkbox(8, 20, 16, 16, "Biome White List?");
+  whiteList = new Checkbox(8, 20, 16, 16, StatCollector.translateToLocal("guistrings.biome_whitelist")+"?");
   addGuiElement(whiteList);
   
   area = new CompositeScrolled(0, 40, 256, 200);
   this.addGuiElement(area);
   
-  Button button = new Button(256-8-55, 8, 55, 12, "Done");
+  Button button = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"));
   button.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override

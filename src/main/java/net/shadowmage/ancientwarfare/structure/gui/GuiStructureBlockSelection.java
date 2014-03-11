@@ -5,6 +5,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -32,10 +33,10 @@ public GuiStructureBlockSelection(GuiStructureScanner parent)
 @Override
 public void initElements()
   {
-  Label label = new Label(8,8, "Select Target Blocks: ");
+  Label label = new Label(8,8, StatCollector.translateToLocal("guistrings.select_blocks")+":");
   addGuiElement(label);
   
-  Button button = new Button(256-8-55, 8, 55, 12, "Done");
+  Button button = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"));
   button.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override

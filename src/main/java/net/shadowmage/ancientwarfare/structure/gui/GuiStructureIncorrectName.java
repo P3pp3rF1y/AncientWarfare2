@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -23,12 +24,12 @@ public GuiStructureIncorrectName(GuiStructureScanner parent)
 @Override
 public void initElements()
   {
-  Label label = new Label(8, 8, "Invalid name specified");
+  Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.invalid_name"));
   addGuiElement(label);
-  label = new Label(8, 18, "Please select a valid name");
+  label = new Label(8, 18, StatCollector.translateToLocal("guistrings.please_select_valid_name"));
   addGuiElement(label);
   
-  Button button = new Button((256-55)/2, 28, 55, 12, "Okay");
+  Button button = new Button((256-55)/2, 28, 55, 12, StatCollector.translateToLocal("guistrings.done"));
   button.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override

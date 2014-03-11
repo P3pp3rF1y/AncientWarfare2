@@ -13,6 +13,7 @@ import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 public final class NetworkHandler implements IGuiHandler
 {
@@ -26,6 +27,8 @@ public static final int PACKET_STRUCTURE = 2;
 
 public static final int GUI_TEST = 0;
 public static final int GUI_SCANNER = 1;
+public static final int GUI_BUILDER = 2;
+public static final int GUI_SPAWNER = 3;
 
 private FMLEventChannel channel;
 
@@ -159,4 +162,15 @@ public final void registerGui(int id, Class <? extends GuiContainerBase> guiClaz
   this.guiClasses.put(id, guiClazz);
   }
 
+public final void openGui(EntityPlayer player, int id, int x, int y, int z)
+  {
+  if(player.worldObj.isRemote)
+    {
+    //TODO send packet with openGUI command to server so that GUI is opened on both sides
+    }
+  else
+    {
+    FMLNetworkHandler.openGui(player, AncientWarfareCore.instance, id, player.worldObj, x, y, z);
+    }
+  }
 }
