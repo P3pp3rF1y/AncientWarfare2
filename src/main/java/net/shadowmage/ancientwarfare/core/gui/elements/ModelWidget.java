@@ -12,7 +12,9 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -23,6 +25,7 @@ import net.shadowmage.ancientwarfare.core.model.Primitive;
 import net.shadowmage.ancientwarfare.core.model.PrimitiveBox;
 import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.modeler.gui.GuiModelEditor;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -45,13 +48,7 @@ import org.lwjgl.util.glu.GLU;
 public class ModelWidget extends GuiElement
 {
 
-static BufferedImage image;
-final static String imageName = "editorTexture"; 
-static
-{
-image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
-AWTextureManager.instance().loadTexture(imageName, image);
-}
+
 
 ModelLoader loader = new ModelLoader();
 private ModelBaseAW model;
@@ -82,10 +79,18 @@ float viewDistance = 5.f;
  */
 float viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ;
 
-public ModelWidget(int topLeftX, int topLeftY, int width, int height)
+String texName;
+boolean customTex;
+ResourceLocation texLoc;
+
+public ModelWidget(int topLeftX, int topLeftY, int width, int height, String texName, boolean customTex)
   {
   super(topLeftX, topLeftY, width, height);
-  
+  this.texName = texName;
+  if(!customTex)
+    {
+    texLoc = new ResourceLocation(Statics.coreModID, texName);
+    }
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     public boolean onEvent(GuiElement widget, ActivationEvent evt)
@@ -154,6 +159,20 @@ public ModelWidget(int topLeftX, int topLeftY, int width, int height)
   viewPosZ = 5;
   viewPosY = 5; 
   
+  }
+
+/**
+ * set the internal image name to be used by this widget.  Texture must already exist in order to function properly
+ * AWTextureManager.loadTexture(name, image) should be called for the texName prior to assigning to a widget.
+ * @param imageName
+ */
+public void setImageName(String imageName)
+  {
+  this.texName = imageName;
+  if(!customTex)
+    {
+    this.texLoc = new ResourceLocation(Statics.coreModID, imageName);
+    }
   }
 
 private void handleMouseDragged(int mx, int my)
@@ -268,7 +287,14 @@ public void render(int mouseX, int mouseY, float partialTick)
     enableModelLighting();      
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     
-    AWTextureManager.instance().bindTexture(imageName);
+    if(customTex)
+      {
+      AWTextureManager.instance().bindTexture(texName);      
+      }
+    else
+      {
+      Minecraft.getMinecraft().renderEngine.bindTexture(texLoc);
+      }
     model.renderForEditor(selectedPiece, selectedPrimitive);
     }    
   
@@ -588,7 +614,7 @@ public void loadTexture(File file)
   try
     {
     BufferedImage image = ImageIO.read(file);
-    AWTextureManager.instance().updateTextureContents(imageName, image);
+    AWTextureManager.instance().updateTextureContents(texName, image);
     } 
   catch (IOException e)
     {

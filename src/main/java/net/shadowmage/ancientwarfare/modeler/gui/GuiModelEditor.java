@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.modeler.gui;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +24,18 @@ import net.shadowmage.ancientwarfare.core.model.Primitive;
 import net.shadowmage.ancientwarfare.core.model.PrimitiveBox;
 import net.shadowmage.ancientwarfare.core.model.PrimitiveQuad;
 import net.shadowmage.ancientwarfare.core.model.PrimitiveTriangle;
+import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 
 public class GuiModelEditor extends GuiContainerBase
 {
+
+static BufferedImage image;
+public final static String imageName = "editorTexture"; 
+static
+{
+image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+AWTextureManager.instance().loadTexture(imageName, image);
+}
 
 static ModelBaseAW model;
 
@@ -52,7 +62,7 @@ public GuiModelEditor(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  modelWidget = new ModelWidget(0, 0, 256, 240)
+  modelWidget = new ModelWidget(0, 0, 256, 240, imageName, true)
     {
     @Override
     protected void onSelection(ModelPiece piece, Primitive primitive)
