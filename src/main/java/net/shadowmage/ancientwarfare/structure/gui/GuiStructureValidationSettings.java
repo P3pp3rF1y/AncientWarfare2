@@ -95,7 +95,7 @@ public void initElements()
   typeLabel = new Label(8, 8, "");
   addGuiElement(typeLabel);
   
-  button = new Button(256-8-55, 8, 55, 12, "Done");
+  button = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"));
   button.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
@@ -130,7 +130,7 @@ private HashMap<GuiElement, String> elementToPropertyName = new HashMap<GuiEleme
 @Override
 public void setupElements()
   {
-  typeLabel.setText("Current Type: "+parent.validationType.getName());
+  typeLabel.setText(StatCollector.translateToLocal("guistrings.validation_type")+": "+parent.validationType.getName());
  
   int totalHeight = 0;
   area.clearElements();

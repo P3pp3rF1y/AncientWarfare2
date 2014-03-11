@@ -1,3 +1,47 @@
 #Ancient Warfare language file
+
+#items
 item.testItem.name=Test Item
-item.structureScanner.name=Structure Scanner
+item.structure_scanner.name=Structure Scanner
+item.structure_builder.name=Structure Builder
+
+#guistrings
+guistrings.no_selection=No Selection
+guistrings.current_structure=Current Structure:
+guistrings.select_biomes=Select Biomes
+guistrings.biome_whitelist=Biome White List
+guistrings.done=Done
+guistrings.cancel=Cancel
+guistrings.select_blocks=Select Target Blocks
+guistrings.invalid_name=Invalid name chosen
+guistrings.please_select_valid_name=Please select a valid name
+guistrings.input_name=Input Name
+guistrings.export=Export
+guistrings.include_immediately=Include in game Immediately
+guistrings.validation_type=Current Validation Type
+guistrings.setup_validation=Setup Validation
+guistrings.select_dimensions=Select Dimensions
+
+#structure validation translation stuff
+structure.validation.minGenDepth=Min Generation Depth
+structure.validation.maxGenDepth=Max Generation Depth
+structure.validation.minOverfill=Min Overfill
+structure.validation.minFlyingHeight=Minimum Flying Height
+structure.validation.maxGenHeight=Max Generation Height
+structure.validation.minGenHeight=Min Generation Height
+structure.validation.minWaterDepth=Min Water Depth
+structure.validation.maxWaterDepth=Max Water Depth
+structure.validation.enableWorldGen=Enable World Gen
+structure.validation.unique=Unique
+structure.validation.preserveBlocks=Preserve Blocks
+structure.validation.selectionWeight=Selection Weight
+structure.validation.clusterValue=Cluster Value
+structure.validation.minDuplicateDistance=Min Duplicate Distance
+structure.validation.borderSize=Border Size
+structure.validation.maxLeveling=Max Leveling
+structure.validation.maxFill=Max Fill
+structure.validation.biomeWhiteList=Biome White List
+structure.validation.dimensionWhiteList=Dimension White List
+structure.validation.biomeList=Biome List
+structure.validation.blockList=Block List
+structure.validation.dimensionList=Dimension List

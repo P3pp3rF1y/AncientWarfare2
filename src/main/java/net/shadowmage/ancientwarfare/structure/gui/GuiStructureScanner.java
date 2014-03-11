@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -35,13 +36,13 @@ public GuiStructureScanner(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  Label label = new Label(8, 8, "Input Name:");
+  Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.input_name")+":");
   this.addGuiElement(label);
   
   nameInput = new Text(8, 8+12, 160, "", this);
   this.addGuiElement(nameInput);
   
-  Button button = new Button(256-55-8, 8, 55, 16, "Export");
+  Button button = new Button(256-55-8, 8, 55, 16, StatCollector.translateToLocal("guistrings.export"));
   button.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
@@ -56,7 +57,7 @@ public void initElements()
     });
   this.addGuiElement(button);
   
-  button = new Button(256-55-8, 8+16, 55, 16, "Cancel");
+  button = new Button(256-55-8, 8+16, 55, 16, StatCollector.translateToLocal("guistrings.cancel"));
   button.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
@@ -73,17 +74,17 @@ public void initElements()
   
   int totalHeight = 36;
   
-  Checkbox box = new Checkbox(8, totalHeight, 16, 16, "Include in game Immediately?");
+  Checkbox box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal("guistrings.include_immediately")+"?");
   box.setChecked(true);
   this.addGuiElement(box);
   includeOnExport = box;
   totalHeight+=16+8;
   
-  validationTypeLabel = new Label(8, totalHeight, "Current validation type: "+validationType.getName()); 
+  validationTypeLabel = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.validation_type")+" "+validationType.getName()); 
   this.addGuiElement(validationTypeLabel);
   totalHeight+=10;
   
-  button = new Button(8, totalHeight, 120, 16, "Setup Validation");
+  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.setup_validation"));
   button.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
@@ -99,7 +100,7 @@ public void initElements()
   this.addGuiElement(button);
   totalHeight+=16;
   
-  button = new Button(8, totalHeight, 120, 16, "Select Biomes");
+  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_biomes"));
   button.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
@@ -115,7 +116,7 @@ public void initElements()
   this.addGuiElement(button);
   totalHeight+=16;
   
-  button = new Button(8, totalHeight, 120, 16, "Select Targets");
+  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_blocks"));
   button.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override
@@ -131,7 +132,7 @@ public void initElements()
   this.addGuiElement(button);
   totalHeight+=16;
   
-  button = new Button(8, totalHeight, 120, 16, "Select Dimensions");
+  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_dimensions"));
   this.addGuiElement(button);
   totalHeight+=16;  
   }
@@ -139,7 +140,7 @@ public void initElements()
 @Override
 public void setupElements()
   {
-  validationTypeLabel.setText("Current validation type: "+validationType.getName());
+  validationTypeLabel.setText(StatCollector.translateToLocal("guistrings.validation_type")+" "+validationType.getName());
   }
 
 private void export()
