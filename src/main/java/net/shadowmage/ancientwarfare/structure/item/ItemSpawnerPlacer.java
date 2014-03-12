@@ -28,6 +28,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.StatCollector;
@@ -58,12 +60,18 @@ public void addInformation(ItemStack stack, EntityPlayer player, List list, bool
     {
     NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
     String mobID = tag.getString("mobID");
+    if(mobID.equals(""))
+      {
+      mobID = "No Selection!!";
+      }
     list.add(mobID);
     }  
   else
     {
     list.add(StatCollector.translateToLocal("guistrings.no_selection"));
     }
+  list.add(EnumChatFormatting.RED + "guistrings.spawner.warning_1");
+  list.add(EnumChatFormatting.RED + "guistrings.spawner.warning_2");
   }
 
 public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosition mophit)
@@ -106,6 +114,12 @@ public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosit
        * TODO output chat message about missing NBT-data on item / no selection
        */
       }
+    }
+  else
+    {
+    /**
+     * TODO output chat message about null hit/ w/e
+     */
     }
   }
 
