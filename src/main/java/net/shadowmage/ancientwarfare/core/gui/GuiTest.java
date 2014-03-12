@@ -100,7 +100,7 @@ public void initElements()
       {
       if(widget.isMouseOverElement(evt.mx, evt.my))
         {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiSpawnerPlacer(container));
+        Minecraft.getMinecraft().displayGuiScreen(new GuiModelEditor(container));
         }
       return true;
       }

@@ -183,6 +183,10 @@ protected void onEnterPressed()
   this.setText(getText());
   }
 
+/**
+ * anonymous classes should implement this for a callback for when value is updated/changed via user input (either manual, mouse,or keyboard)
+ * @param value
+ */
 public void onValueUpdated(float value)
   {
   

@@ -65,7 +65,7 @@ public void initElements()
       {
       if(widget.isMouseOverElement(evt.mx, evt.my))
         {
-        Minecraft.getMinecraft().displayGuiScreen(null);
+        Minecraft.getMinecraft().thePlayer.closeScreen();
         }
       return true;
       }

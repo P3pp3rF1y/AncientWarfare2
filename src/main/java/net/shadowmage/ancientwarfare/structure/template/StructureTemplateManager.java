@@ -26,6 +26,7 @@ import java.util.HashMap;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -55,11 +56,15 @@ public void addTemplate(StructureTemplate template)
   StructureTemplateClient cl = new StructureTemplateClient(template);
   addTemplate(cl);
   
-  NBTTagCompound tag = new NBTTagCompound();
-  cl.writeToNBT(tag);    
-  PacketStructure pkt = new PacketStructure();
-  pkt.packetData.setTag("singleStructure", tag);
-  NetworkHandler.sendToAllPlayers(pkt);
+  MinecraftServer server = MinecraftServer.getServer();
+  if(server!=null && server.isServerRunning())
+    {
+    NBTTagCompound tag = new NBTTagCompound();
+    cl.writeToNBT(tag);    
+    PacketStructure pkt = new PacketStructure();
+    pkt.packetData.setTag("singleStructure", tag);
+    NetworkHandler.sendToAllPlayers(pkt);    
+    }
   }
 
 public void addTemplate(StructureTemplateClient template)

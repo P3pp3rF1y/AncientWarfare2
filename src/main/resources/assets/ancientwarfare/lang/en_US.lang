@@ -1,10 +1,11 @@
 #Ancient Warfare language file
 
 #items
-itemGroup.tabs.structures=Structures
+itemGroup.tabs.structures=Ancient Warfare Structures
 item.testItem.name=Test Item
 item.structure_scanner.name=Structure Scanner
 item.structure_builder.name=Structure Builder
+item.spawner_placer.name=Mob Spawner Placement Tool
 
 #guistrings
 guistrings.no_selection=No Selection
@@ -24,6 +25,15 @@ guistrings.setup_validation=Setup Validation
 guistrings.select_dimensions=Select Dimensions
 guistrings.current_selection=Current Selection
 guistrings.none=None
+guistrings.selected_mob=Selected Mob
+guistrings.spawner.delay=Delay
+guistrings.spawner.min_spawn_delay=Min Spawn Delay
+guistrings.spawner.max_spawn_delay=Max Spawn Delay
+guistrings.spawner.spawn_count=Spawn Count
+guistrings.spawner.max_nearby_entities=Max Nearby Entities
+guistrings.spawner.required_player_range=Req. Player Range
+guistrings.spawner.spawn_range=Spawn Range
+
 
 #structure validation translation stuff
 structure.validation.minGenDepth=Min Generation Depth
