@@ -59,7 +59,7 @@ public void addInformation(ItemStack stack, EntityPlayer player, List list, bool
   if(stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData"))
     {
     NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-    String mobID = tag.getString("mobID");
+    String mobID = tag.getString("EntityId");
     if(mobID.equals(""))
       {
       mobID = "No Selection!!";
@@ -70,8 +70,8 @@ public void addInformation(ItemStack stack, EntityPlayer player, List list, bool
     {
     list.add(StatCollector.translateToLocal("guistrings.no_selection"));
     }
-  list.add(EnumChatFormatting.RED + "guistrings.spawner.warning_1");
-  list.add(EnumChatFormatting.RED + "guistrings.spawner.warning_2");
+  list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("guistrings.spawner.warning_1"));
+  list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("guistrings.spawner.warning_2"));
   }
 
 public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosition mophit)

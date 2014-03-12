@@ -33,6 +33,7 @@ public GuiSpawnerPlacer(ContainerBase par1Container)
   excludedVanillaEntities.add("EnderCrystal");
   excludedVanillaEntities.add("EnderDragon");
   excludedVanillaEntities.add("EyeOfEnderSignal");
+  excludedVanillaEntities.add("FallingSand");
   excludedVanillaEntities.add("Fireball");
   excludedVanillaEntities.add("FireworksRocketEntity");
   excludedVanillaEntities.add("Item");
@@ -58,7 +59,7 @@ public GuiSpawnerPlacer(ContainerBase par1Container)
 //  excludedVanillaEntities.add("MinecartSpawner");
 //  excludedVanillaEntities.add("MinecartTNT");
   
-  //list of entities, need to go through and remove unspawnable ones
+  //list of all vanilla entities
   /**
    * Arrow
 Bat
