@@ -40,16 +40,36 @@ public ContainerSpawnerPlacer(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
   ItemStack stack = player.inventory.getCurrentItem();
-  if(stack==null || stack.getItem()!=AWStructuresItemLoader.spawner || !stack.hasTagCompound()){return;}
-  NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-  entityId = tag.getString("EntityId");
-  delay = tag.getShort("Delay");
-  minSpawnDelay = tag.getShort("MinSpawnDelay");
-  maxSpawnDelay = tag.getShort("MaxSpawnDelay");
-  spawnCount = tag.getShort("SpawnCount");
-  maxNearbyEntities = tag.getShort("MaxNearbyEntities");
-  requiredPlayerRange = tag.getShort("RequiredPlayerRange");
-  spawnRange = tag.getShort("SpawnRange");
+  if(stack==null || stack.getItem()!=AWStructuresItemLoader.spawner)
+    {
+    /**
+     * TODO throw an error, close GUI somehow
+     */
+    return;
+    }
+  if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerData"))
+    {
+    entityId = "Pig";
+    delay = 20;
+    minSpawnDelay = 800;
+    maxSpawnDelay = 800;
+    spawnCount = 4;
+    maxNearbyEntities = 6;
+    requiredPlayerRange = 16;
+    spawnRange = 4;
+    }
+  else
+    {
+    NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
+    entityId = tag.getString("EntityId");
+    delay = tag.getShort("Delay");
+    minSpawnDelay = tag.getShort("MinSpawnDelay");
+    maxSpawnDelay = tag.getShort("MaxSpawnDelay");
+    spawnCount = tag.getShort("SpawnCount");
+    maxNearbyEntities = tag.getShort("MaxNearbyEntities");
+    requiredPlayerRange = tag.getShort("RequiredPlayerRange");
+    spawnRange = tag.getShort("SpawnRange");  
+    }  
   }
 
 @Override
