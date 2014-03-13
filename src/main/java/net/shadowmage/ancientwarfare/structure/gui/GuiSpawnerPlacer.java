@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerPlacer;
 
 public class GuiSpawnerPlacer extends GuiContainerBase
@@ -25,101 +26,11 @@ Label currentSelectionName;
 CompositeScrolled typeSelectionArea;
 CompositeScrolled attributesArea;
 
-Set<String> excludedVanillaEntities = new HashSet<String>();
+private HashMap<Label, Class> labelToClass = new HashMap<Label, Class>();
 
 public GuiSpawnerPlacer(ContainerBase par1Container)
   {
   super(par1Container, 256, 240, defaultBackground);
-  excludedVanillaEntities.add("EnderCrystal");
-  excludedVanillaEntities.add("EnderDragon");
-  excludedVanillaEntities.add("EyeOfEnderSignal");
-  excludedVanillaEntities.add("FallingSand");
-  excludedVanillaEntities.add("Fireball");
-  excludedVanillaEntities.add("FireworksRocketEntity");
-  excludedVanillaEntities.add("Item");
-  excludedVanillaEntities.add("ItemFrame");
-  excludedVanillaEntities.add("LeashKnot");
-  excludedVanillaEntities.add("Mob");
-  excludedVanillaEntities.add("Monster");
-  excludedVanillaEntities.add("Painting");
-  excludedVanillaEntities.add("PrimedTnt");
-  excludedVanillaEntities.add("SmallFireball");
-  excludedVanillaEntities.add("Snowball");
-  excludedVanillaEntities.add("ThrownEnderpearl");
-  excludedVanillaEntities.add("ThrownExpBottle");
-  excludedVanillaEntities.add("ThrownPotion");
-  excludedVanillaEntities.add("WitherBoss");
-  excludedVanillaEntities.add("WitherSkull");
-  excludedVanillaEntities.add("XPOrb");
-//  excludedVanillaEntities.add("Boat");
-//  excludedVanillaEntities.add("MinecartChest");
-//  excludedVanillaEntities.add("MinecartCommandBlock");
-//  excludedVanillaEntities.add("MinecartFurnace");
-//  excludedVanillaEntities.add("MinecartRideable");
-//  excludedVanillaEntities.add("MinecartSpawner");
-//  excludedVanillaEntities.add("MinecartTNT");
-  
-  //list of all vanilla entities
-  /**
-   * Arrow
-Bat
-Blaze
-Boat
-CaveSpider
-Chicken
-Cow
-Creeper
-EnderCrystal
-EnderDragon
-Enderman
-EntityHorse
-EyeOfEnderSignal
-FallingSand
-Fireball
-FireworksRocketEntity
-Ghast
-Giant
-Item
-ItemFrame
-LavaSlime
-LeashKnot
-MinecartChest
-MinecartCommandBlock
-MinecartFurnace
-MinecartHopper
-MinecartRideable
-MinecartSpawner
-MinecartTNT
-Mob
-Monster
-MushroomCow
-Ozelot
-Painting
-Pig
-PigZombie
-PrimedTnt
-Sheep
-Silverfish
-Skeleton
-Slime
-SmallFireball
-Snowball
-SnowMan
-Spider
-Squid
-ThrownEnderpearl
-ThrownExpBottle
-ThrownPotion
-Villager
-VillagerGolem
-Witch
-WitherBoss
-WitherSkull
-Wolf
-XPOrb
-Zombie
-
-   */
   }
 
 @Override
@@ -179,7 +90,7 @@ public void setupElements()
   Label label;
   for(String name : mp.keySet())
     {
-    if(excludedVanillaEntities.contains(name))
+    if(AWStructureStatics.excludedSpawnerEntities.contains(name))
       {
       continue;//skip excluded entities
       }
@@ -304,6 +215,5 @@ private void updateSelectionName(String name)
   currentSelectionName.setText(StatCollector.translateToLocal("guistrings.current_selection") + ": "+name);
   }
 
-private HashMap<Label, Class> labelToClass = new HashMap<Label, Class>();
 
 }
