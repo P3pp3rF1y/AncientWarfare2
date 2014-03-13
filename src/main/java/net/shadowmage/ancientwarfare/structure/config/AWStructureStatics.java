@@ -41,7 +41,7 @@ public static int chunkSearchRadius = 16;
 public static int maxClusterValue = 500;
 public static int randomChance = 75;
 public static int randomRange = 1000;
-public static int spawnProtectionRange = 0;
+public static int spawnProtectionRange = 12;
 public static Set<String> excludedSpawnerEntities = new HashSet<String>();
 
 private static String worldGenCategory = "a_world-gen_settings";

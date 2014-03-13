@@ -69,6 +69,9 @@ public ContainerSpawnerPlacer(EntityPlayer player, int x, int y, int z)
     maxNearbyEntities = tag.getShort("MaxNearbyEntities");
     requiredPlayerRange = tag.getShort("RequiredPlayerRange");
     spawnRange = tag.getShort("SpawnRange");  
+    /**
+     * TODO add input fields for 'custom mob data'
+     */
     }  
   }
 
