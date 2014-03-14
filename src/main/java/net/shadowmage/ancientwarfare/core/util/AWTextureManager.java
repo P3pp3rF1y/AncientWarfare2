@@ -2,8 +2,11 @@ package net.shadowmage.ancientwarfare.core.util;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.HashMap;
+
+import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -62,9 +65,12 @@ public void bindTexture(String name)
 
 public void deleteTexture(String name)
   {
-  /**
-   * TODO
-   */
+  if(textureNames.containsKey(name))
+    {
+    int tex = textureNames.get(name);
+    textures.remove(tex);
+    GL11.glDeleteTextures(tex);
+    }
   }
 
 private static void uploadTextureRGBAInts(IntBuffer imagedata, int width, int height)
@@ -125,6 +131,15 @@ public void updateTextureContents(String texName, BufferedImage image)
     }  
   }
 
+public Texture getTexture(String name)
+  {
+  if(textureNames.containsKey(name))
+    {
+    return textures.get(textureNames.get(name));
+    }
+  return null;
+  }
+
 public class Texture
 {
 
@@ -135,6 +150,11 @@ public Texture(int texNum, BufferedImage image)
   {
   this.texNum = texNum;
   this.image = image;
+  }
+
+public BufferedImage getImage()
+  {
+  return image;
   }
 
 public void updateTexture(BufferedImage image)
@@ -167,9 +187,14 @@ private void uploadImage()
 
 public void saveTexture(File file)
   {
-  /**
-   * TODO
-   */
+  try
+    {
+    ImageIO.write(image, "png", file);
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
   }
 
 public void bindTexture()
