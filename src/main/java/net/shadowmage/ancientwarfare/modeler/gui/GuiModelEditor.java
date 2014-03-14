@@ -1418,9 +1418,446 @@ private int addBoxControls(int totalHeight)
 
 private int addTriangleControls(int totalHeight)
   {
-  /**
-   * TODO add x1,y1,z1,x2,y2,z2,x3,y3,z3,flip controls
-   */
+  int w = ((width - xSize)/2)-17;
+  int c0 = 5;//label
+  int c1 = c0+17;//-
+  int c2 = c1+12;//20+12 --input
+  int c3 = 2 + w - 12;//+      
+  int w2 = w - 24 - 20;//width of the input bar
+  
+  PrimitiveTriangle currentBox = (PrimitiveTriangle)getPrimitive();
+  
+  Label label;
+  Button button;
+  NumberInput input;
+  
+  /************************************* BX *********************************/
+  label = new Label(c0, totalHeight, "X1");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1()-1.f * scaleInput.getFloatValue(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());
+      NumberInput num = (NumberInput)widgetMap.get("X1");
+      num.setValue(box.x1() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1()+1.f * scaleInput.getFloatValue(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());      
+      NumberInput num = (NumberInput)widgetMap.get("X1");
+      num.setValue(box.x1() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.x1() / scaleInput.getFloatValue(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(value * scaleInput.getFloatValue(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("X1", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  /************************************* Y1 *********************************/
+  label = new Label(c0, totalHeight, "Y1");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1()-1.f * scaleInput.getFloatValue(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());
+      NumberInput num = (NumberInput)widgetMap.get("Y1");
+      num.setValue(box.y1() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1()+1.f * scaleInput.getFloatValue(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());      
+      NumberInput num = (NumberInput)widgetMap.get("Y1");
+      num.setValue(box.y1() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.y1() / scaleInput.getFloatValue(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), value * scaleInput.getFloatValue(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("Y1", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+
+  
+  /************************************* Z1 *********************************/
+  label = new Label(c0, totalHeight, "Z1");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1()-1.f * scaleInput.getFloatValue(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());
+      NumberInput num = (NumberInput)widgetMap.get("Z1");
+      num.setValue(box.z1() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1()+1.f * scaleInput.getFloatValue(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());      
+      NumberInput num = (NumberInput)widgetMap.get("Z1");
+      num.setValue(box.z1() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.z1() / scaleInput.getFloatValue(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), value * scaleInput.getFloatValue(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("Z1", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+
+  
+  /************************************* X2 *********************************/
+  label = new Label(c0, totalHeight, "X2");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2()-1.f * scaleInput.getFloatValue(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());
+      NumberInput num = (NumberInput)widgetMap.get("X2");
+      num.setValue(box.x2() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2()+1.f * scaleInput.getFloatValue(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());      
+      NumberInput num = (NumberInput)widgetMap.get("X2");
+      num.setValue(box.x2() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.x2() / scaleInput.getFloatValue(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), value * scaleInput.getFloatValue(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3());
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("X2", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* Y2 *********************************/
+  label = new Label(c0, totalHeight, "Y2");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2()-1.f * scaleInput.getFloatValue(), box.z2(), box.x3(), box.y3(), box.z3());
+      NumberInput num = (NumberInput)widgetMap.get("Y2");
+      num.setValue(box.y2() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2()+1.f * scaleInput.getFloatValue(), box.z2(), box.x3(), box.y3(), box.z3());      
+      NumberInput num = (NumberInput)widgetMap.get("Y2");
+      num.setValue(box.y2() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.y2() / scaleInput.getFloatValue(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), value * scaleInput.getFloatValue(), box.z2(), box.x3(), box.y3(), box.z3());
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("Y2", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* Z2 *********************************/
+  label = new Label(c0, totalHeight, "Z2");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2()-1.f * scaleInput.getFloatValue(), box.x3(), box.y3(), box.z3());
+      NumberInput num = (NumberInput)widgetMap.get("Z2");
+      num.setValue(box.z2() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2()+1.f * scaleInput.getFloatValue(), box.x3(), box.y3(), box.z3());      
+      NumberInput num = (NumberInput)widgetMap.get("Z2");
+      num.setValue(box.z2() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.z2() / scaleInput.getFloatValue(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), value * scaleInput.getFloatValue(), box.x3(), box.y3(), box.z3());
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("Z2", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* X3 *********************************/
+  label = new Label(c0, totalHeight, "X3");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3()-1.f * scaleInput.getFloatValue(), box.y3(), box.z3());
+      NumberInput num = (NumberInput)widgetMap.get("X3");
+      num.setValue(box.x3() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3()+1.f * scaleInput.getFloatValue(), box.y3(), box.z3());      
+      NumberInput num = (NumberInput)widgetMap.get("X3");
+      num.setValue(box.x3() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.x3() / scaleInput.getFloatValue(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), value * scaleInput.getFloatValue(), box.y3(), box.z3());
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("X3", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* Y3 *********************************/
+  label = new Label(c0, totalHeight, "Y3");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3()-1.f * scaleInput.getFloatValue(), box.z3());
+      NumberInput num = (NumberInput)widgetMap.get("Y3");
+      num.setValue(box.y3() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3()+1.f * scaleInput.getFloatValue(), box.z3());      
+      NumberInput num = (NumberInput)widgetMap.get("Y3");
+      num.setValue(box.y3() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.y3() / scaleInput.getFloatValue(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), value * scaleInput.getFloatValue(), box.z3());
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("Y3", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* Z3 *********************************/
+  label = new Label(c0, totalHeight, "Z3");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3()-1.f * scaleInput.getFloatValue());
+      NumberInput num = (NumberInput)widgetMap.get("Z3");
+      num.setValue(box.z3() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), box.z3()+1.f * scaleInput.getFloatValue());      
+      NumberInput num = (NumberInput)widgetMap.get("Z3");
+      num.setValue(box.z3() / scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.z3() / scaleInput.getFloatValue(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.setBounds(box.x1(), box.y1(), box.z1(), box.x2(), box.y2(), box.z2(), box.x3(), box.y3(), value * scaleInput.getFloatValue());
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("Z3", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+
+  /************************************* FLIP *********************************/
+  button = new Button(c0, totalHeight, 55, 12, "FLIP")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)getPrimitive();
+      box.reverseVertexOrder();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  totalHeight+=12;
+  
   return totalHeight;  
   }
 
