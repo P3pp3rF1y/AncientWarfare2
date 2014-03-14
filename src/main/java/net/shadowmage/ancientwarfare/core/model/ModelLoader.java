@@ -125,7 +125,9 @@ private ModelBaseAW parseOldModelLines(List<String> lines)
 public void saveModel(ModelBaseAW model, File file)
   {
   try
-    {    
+    { 
+    String name = file.getName();
+    
     List<String> lines = model.getModelLines();
 
     if(!file.exists())
@@ -140,6 +142,16 @@ public void saveModel(ModelBaseAW model, File file)
       writer.write(line+"\n");
       }
     writer.close();
+    
+    if(!name.endsWith(".mf2"))
+      {
+      if(name.contains("."))
+        {
+        int d = name.indexOf('.');
+        name = name.substring(0, d);
+        }
+      file.renameTo(new File(file.getParent(), name+".m2f"));
+      }
     }
   catch (IOException e)
     {

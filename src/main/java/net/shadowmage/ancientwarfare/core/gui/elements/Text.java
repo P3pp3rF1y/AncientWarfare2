@@ -190,16 +190,7 @@ protected void handleBackspaceAction()
 
 protected void handleCharacter(char ch)
   {  
-  boolean allowed = false;
-  for(char ch1 : allowedChars)
-    {
-    if(ch1==ch)
-      {
-      allowed = true;
-      break;
-      }
-    }
-  if(allowed)//is allowed character
+  if(isAllowedCharacter(ch))//is allowed character
     {
     String newText = "";
     for(int i = 0; i <= text.length(); i++)

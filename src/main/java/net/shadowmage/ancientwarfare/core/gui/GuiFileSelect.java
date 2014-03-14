@@ -29,6 +29,9 @@ String currentPath = "";
 boolean allowNewFiles = false;
 
 CompositeScrolled area;
+/**
+ * TODO allow input to handle '.' char
+ */
 Text input;
 
 public GuiFileSelect(GuiContainerBase parent, String basePath, boolean allowNewFiles)
