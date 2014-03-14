@@ -268,6 +268,7 @@ public void initModel()
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
+  GL11.glEnable(GL11.GL_DEPTH_TEST);
   setViewport();  
   if(model!=null)
     {
@@ -298,6 +299,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     }    
   
   resetViewport();
+  GL11.glDisable(GL11.GL_DEPTH_TEST);//re-disable for rendering of the rest of widgets
   GL11.glDisable(GL11.GL_LIGHTING);
   }
 
