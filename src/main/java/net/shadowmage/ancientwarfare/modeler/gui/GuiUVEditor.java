@@ -103,6 +103,10 @@ public void setupElements()
   primitiveMap.clear();
   pieceMap.clear();
   
+  this.removeGuiElement(textureRect);
+  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, textureXSize, textureYSize, 0, 0, textureXSize, textureYSize, "editorTexture");
+  this.addGuiElement(textureRect);
+  
   addPieceList();
   
   addTextureControls();
@@ -115,13 +119,13 @@ public void setupElements()
 
 private void setTextureXSize(int size)
   {
-  textureYSize = size;
+  textureXSize = size;
   updateTextureSize();
   }
 
 private void setTextureYSize(int size)
   {
-  textureXSize = size;
+  textureYSize = size;
   updateTextureSize();
   }
 
@@ -130,10 +134,7 @@ private void setTextureYSize(int size)
  * subsequently calls updateTexture() to upload the new image to gfx texture
  */
 private void updateTextureSize()
-  {
-  this.removeGuiElement(textureRect);
-  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, textureXSize, textureYSize, 0, 0, textureXSize, textureYSize, "editorTexture");
-  this.addGuiElement(textureRect);
+  {  
   this.image = new BufferedImage(textureXSize, textureYSize, BufferedImage.TYPE_INT_ARGB);
   updateTexture();
   refreshGui();
@@ -146,7 +147,7 @@ private void updateTexture()
   {
   for(int x = 0; x< image.getWidth(); x++)
     {
-    for(int y = 0; y< image.getWidth(); y++)
+    for(int y = 0; y< image.getHeight(); y++)
       {
       image.setRGB(x, y, 0x00ffffff);//clear image to default  white 100% alpha (transparent)
       }
@@ -228,7 +229,7 @@ private void addTextureControls()
   label = new Label(c0, totalHeight, "Y:");
   textureControlArea.addGuiElement(label);
   
-  input = new NumberInput(c2, totalHeight, w2, textureXSize, this)
+  input = new NumberInput(c2, totalHeight, w2, textureYSize, this)
     {
     @Override
     public void onValueUpdated(float value)
