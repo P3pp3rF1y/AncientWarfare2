@@ -274,13 +274,11 @@ public void render(int mouseX, int mouseY, float partialTick)
     if(doSelection)
       {
       GL11.glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
-      GL11.glDisable(GL11.GL_DEPTH_TEST);
       GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);  
       doSelection();
       doSelection = false;
       }
     GL11.glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
-    GL11.glDisable(GL11.GL_DEPTH_TEST);
     GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
     
     renderGrid();
@@ -301,7 +299,6 @@ public void render(int mouseX, int mouseY, float partialTick)
   
   resetViewport();
   GL11.glDisable(GL11.GL_LIGHTING);
-  GL11.glEnable(GL11.GL_DEPTH_TEST);
   }
 
 private void enableModelLighting()
