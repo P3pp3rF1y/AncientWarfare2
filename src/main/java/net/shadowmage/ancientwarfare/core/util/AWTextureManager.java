@@ -108,7 +108,8 @@ private void fillImageArray(BufferedImage image, IntBuffer buffer)
   image.getRGB(0, 0, width, height, inBuff, 0, width);
   for(int y = 0; y < height; y++)
     {
-    row = height-y-1;
+//    row = height-y-1;
+    row = y;
     for(int x = 0; x < width; x++)
       {
       outBuff[row*width + x] = ARGBtoRGBA(inBuff[y*width + x]);
