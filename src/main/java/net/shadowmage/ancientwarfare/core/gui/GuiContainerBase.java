@@ -92,6 +92,11 @@ protected void addGuiElement(GuiElement element)
   this.elements.add(element);
   }
 
+protected void removeGuiElement(GuiElement element)
+  {
+  this.elements.remove(element);
+  }
+
 @Override
 public void handleMouseInput()
   {
