@@ -37,6 +37,10 @@ public Text(int topLeftX, int topLeftY, int width, String defaultText, IWidgetSe
   this.selector = selector;
   this.addDefaultListeners();  
   this.setAllowedChars(allowedChars);
+  for(char ch : allowedNums)
+    {
+    denotedAllowedChars.add(Character.valueOf(ch));
+    }
   
   }
 
