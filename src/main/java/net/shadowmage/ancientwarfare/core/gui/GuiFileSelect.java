@@ -95,6 +95,7 @@ public void initElements()
   addGuiElement(button);
   
   input = new Text(8, 8, 160, "", this);
+  input.addAllowedChar('.');
   addGuiElement(input);
   }
 

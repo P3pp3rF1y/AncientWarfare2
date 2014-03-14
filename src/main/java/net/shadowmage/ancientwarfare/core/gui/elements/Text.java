@@ -1,5 +1,8 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
@@ -22,10 +25,8 @@ IWidgetSelection selector;
 String text;
 int cursorIndex;
 FontRenderer fr;
-boolean charInput;
-boolean numInput;
-boolean charSymbolInput;
-boolean numSymbolInput;
+
+Set<Character> denotedAllowedChars = new HashSet<Character>();
 
 public Text(int topLeftX, int topLeftY, int width, String defaultText, IWidgetSelection selector)
   {
@@ -34,7 +35,9 @@ public Text(int topLeftX, int topLeftY, int width, String defaultText, IWidgetSe
   this.text = defaultText;
   this.cursorIndex = text.length();
   this.selector = selector;
-  this.addDefaultListeners();
+  this.addDefaultListeners();  
+  this.setAllowedChars(allowedChars);
+  
   }
 
 protected void addDefaultListeners()
@@ -74,6 +77,21 @@ protected void addDefaultListeners()
       return true;
       }
     });
+  }
+
+public void setAllowedChars(Set<Character> allowedChars)
+  {
+  this.denotedAllowedChars.clear();
+  this.denotedAllowedChars.addAll(allowedChars);
+  }
+
+public void setAllowedChars(char[] chars)
+  {
+  this.denotedAllowedChars.clear();
+  for(char ch : chars)
+    {
+    this.denotedAllowedChars.add(ch);
+    }
   }
 
 protected void handleKeyInput(int keyCode, char ch)
@@ -277,16 +295,14 @@ public void setText(String text)
   this.cursorIndex = text.length();
   }
 
+public void addAllowedChar(char ch)
+  {
+  denotedAllowedChars.add(Character.valueOf(ch));
+  }
+
 protected boolean isAllowedCharacter(char ch)
   {
-  for(char ch1 : allowedChars)
-    {
-    if(ch==ch1)
-      {
-      return true;
-      }
-    }
-  return false;
+  return denotedAllowedChars.contains(Character.valueOf(ch));
   }
 
 public String getText()

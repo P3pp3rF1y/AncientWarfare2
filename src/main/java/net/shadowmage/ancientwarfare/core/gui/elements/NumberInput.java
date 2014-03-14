@@ -19,6 +19,8 @@ public NumberInput(int topLeftX, int topLeftY, int width, float defaultText, IWi
   {
   super(topLeftX, topLeftY, width, String.format("%.2f", defaultText), selector);
   this.value = defaultText;
+  this.setAllowedChars(allowedNums);
+  
   }
 
 public int getIntegerValue()
@@ -179,7 +181,6 @@ protected void handleCharacter(char ch)
 
 protected void onEnterPressed()
   {
-  AWLog.logDebug("enter pressed from number Input  value: "+value);
   this.setText(getText());
   }
 
