@@ -2,10 +2,12 @@
 
 #items
 itemGroup.tabs.structures=Ancient Warfare Structures
+itemGroup.tabs.editor=Ancient Warfare Model Editor
 item.testItem.name=Test Item
 item.structure_scanner.name=Structure Scanner
 item.structure_builder.name=Structure Builder
 item.spawner_placer.name=Mob Spawner Placement Tool
+item.editor_opener.name=Model Editor
 
 #guistrings
 guistrings.no_selection=No Selection

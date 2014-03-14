@@ -4,6 +4,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
+import net.shadowmage.ancientwarfare.modeler.item.ItemModelEditor;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -11,6 +12,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod
 (
@@ -37,6 +39,7 @@ public static Configuration config;
 
 public static org.apache.logging.log4j.Logger log;
 
+public static ItemModelEditor editorOpener;
 
 @EventHandler
 public void preInit(FMLPreInitializationEvent evt)
@@ -49,6 +52,9 @@ public void preInit(FMLPreInitializationEvent evt)
    * internal registry
    */
   proxy.registerClient();   
+  
+  editorOpener = new ItemModelEditor("editor_opener");
+  GameRegistry.registerItem(editorOpener, "editor_opener");
       
   /**
    * load pre-init
