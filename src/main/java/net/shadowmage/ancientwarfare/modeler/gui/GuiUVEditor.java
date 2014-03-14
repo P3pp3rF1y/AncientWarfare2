@@ -48,6 +48,7 @@ BufferedImage image;
 //map of label-element combos, to select pieces through clicking on/in the piece list area
 private HashMap<Label, ModelPiece> pieceMap = new HashMap<Label, ModelPiece>();
 private HashMap<Label, Primitive> primitiveMap = new HashMap<Label, Primitive>();
+private HashMap<String, GuiElement> widgetMap = new HashMap<String, GuiElement>();
 
 public GuiUVEditor(GuiModelEditor parent)
   {
@@ -102,6 +103,7 @@ public void setupElements()
   
   primitiveMap.clear();
   pieceMap.clear();
+  widgetMap.clear();
   
   this.removeGuiElement(textureRect);
   textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, textureXSize, textureYSize, 0, 0, textureXSize, textureYSize, "editorTexture");
@@ -301,9 +303,136 @@ private void addPrimitiveControls()
 
 private void addBoxControls()
   {
-  /**
-   * TODO
-   */
+  int w = ((width - xSize)/2)-17;
+  int c0 = 5;//label
+  int c1 = c0+17;//-
+  int c2 = c1+12;//20+12 --input
+  int c3 = 2 + w - 12;//+      
+  int w2 = w - 24 - 20;//width of the input bar
+  int totalHeight = 3;  
+  
+  Label label;
+  NumberInput input;
+  Button button;
+  
+
+  PrimitiveBox currentBox = (PrimitiveBox)parent.getPrimitive();
+  
+
+  /************************************* TX *********************************/
+  label = new Label(c0, totalHeight, "TX");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveBox box = (PrimitiveBox)parent.getPrimitive();
+      if(box.tx()>0)
+        {
+        box.setTx(box.tx()-1);
+        NumberInput num = (NumberInput)widgetMap.get("TX");
+        num.setValue(box.tx());
+        updateTexture();
+        refreshGui();
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveBox box = (PrimitiveBox)parent.getPrimitive();
+      if(box.tx()<image.getWidth()-1)
+        {
+        box.setTx(box.tx()+1);
+        NumberInput num = (NumberInput)widgetMap.get("TX");
+        num.setValue(box.tx());  
+        updateTexture();
+        refreshGui();      
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.tx(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveBox box = (PrimitiveBox)parent.getPrimitive();
+      box.setTx(value);
+      updateTexture();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("TX", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* TY *********************************/
+  label = new Label(c0, totalHeight, "TY");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveBox box = (PrimitiveBox)parent.getPrimitive();
+      if(box.ty()>0)
+        {
+        box.setTx(box.ty()-1);
+        NumberInput num = (NumberInput)widgetMap.get("TY");
+        num.setValue(box.ty());
+        updateTexture();
+        refreshGui();
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveBox box = (PrimitiveBox)parent.getPrimitive();
+      if(box.ty()<image.getHeight()-1)
+        {
+        box.setTx(box.ty()+1);
+        NumberInput num = (NumberInput)widgetMap.get("TY");
+        num.setValue(box.ty());  
+        updateTexture();
+        refreshGui();      
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.ty(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveBox box = (PrimitiveBox)parent.getPrimitive();
+      box.setTy(value);
+      updateTexture();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("TY", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;  
   }
 
 private void addTriangleControls()
