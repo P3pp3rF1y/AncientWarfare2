@@ -26,6 +26,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -104,7 +105,7 @@ public StructureTemplate scan(World world, BlockPosition min, BlockPosition max,
         destination.z = scanZ - min.z;
         BlockTools.rotateInArea(destination, xSize, zSize, turns);
         scannedBlock = world.getBlock(scanX, scanY, scanZ);
-        if(scannedBlock!=null)
+        if(scannedBlock!=null && scannedBlock!=Blocks.air)
           {   
           pluginId = StructurePluginManager.instance().getPluginNameFor(scannedBlock);
           if(pluginId!=null)

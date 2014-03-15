@@ -27,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleBlock;
 
@@ -64,7 +65,8 @@ public void handlePlacement(World world, int turns, int x, int y, int z)
   {
   Block block = BlockDataManager.instance().getBlockForName(blockName);
   int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);  
-  world.setBlock(x, y, z, block, localMeta, 2);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
+  world.setBlock(x, y, z, block);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
+  world.setBlockMetadataWithNotify(x, y, z, localMeta, 2);
   }
   
 @Override
