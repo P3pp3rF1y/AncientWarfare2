@@ -437,9 +437,484 @@ private void addBoxControls()
 
 private void addTriangleControls()
   {
-  /**
-   * TODO x1, y1, x2, y2, x3, y3, rotate+, rotate-, flip? 
-   */  
+  int w = ((width - xSize)/2)-17;
+  int c0 = 5;//label
+  int c1 = c0+17;//-
+  int c2 = c1+12;//20+12 --input
+  int c3 = 2 + w - 12;//+      
+  int w2 = w - 24 - 20;//width of the input bar
+  int totalHeight = 3;  
+  
+  Label label;
+  NumberInput input;
+  Button button;
+  
+
+  PrimitiveTriangle currentBox = (PrimitiveTriangle)parent.getPrimitive();
+  
+  /************************************* MOVE-ALL *********************************/
+  label = new Label(c0, totalHeight, "U");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()>0)
+        {
+        box.setUV(box.u1()-1, box.v1(), box.u2()-1, box.v2(), box.u3()-1, box.v3());
+        updateTexture();
+        refreshGui();
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()<image.getWidth()-1)
+        {
+        box.setUV(box.u1()+1, box.v1(), box.u2()+1, box.v2(), box.u3()+1, box.v3());
+        updateTexture();
+        refreshGui();      
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  totalHeight+=12;
+  
+  label = new Label(c0, totalHeight, "V");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()>0)
+        {
+        box.setUV(box.u1(), box.v1()-1, box.u2(), box.v2()-1, box.u3(), box.v3()-1);       
+        updateTexture();
+        refreshGui();
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()<image.getWidth()-1)
+        {
+        box.setUV(box.u1(), box.v1()+1, box.u2(), box.v2()+1, box.u3(), box.v3()+1);
+        updateTexture();
+        refreshGui();      
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  totalHeight+=12;
+  
+  /************************************* U1 *********************************/
+  label = new Label(c0, totalHeight, "U1");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()>0)
+        {
+        box.setUV(box.u1()-1, box.v1(), box.u2(), box.v2(), box.u3(), box.v3());
+        NumberInput num = (NumberInput)widgetMap.get("U1");
+        num.setValue(box.u1());
+        updateTexture();
+        refreshGui();
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()<image.getWidth()-1)
+        {
+        box.setUV(box.u1()+1, box.v1(), box.u2(), box.v2(), box.u3(), box.v3());
+        NumberInput num = (NumberInput)widgetMap.get("U1");
+        num.setValue(box.u1());  
+        updateTexture();
+        refreshGui();      
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.u1(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      box.setUV(value, box.v1(), box.u2(), box.v2(), box.u3(), box.v3());
+      
+      updateTexture();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("U1", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* V1 *********************************/
+  label = new Label(c0, totalHeight, "V1");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()>0)
+        {
+        box.setUV(box.u1(), box.v1()-1, box.u2(), box.v2(), box.u3(), box.v3());
+        NumberInput num = (NumberInput)widgetMap.get("V1");
+        num.setValue(box.v1());
+        updateTexture();
+        refreshGui();
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()<image.getWidth()-1)
+        {
+        box.setUV(box.u1(), box.v1()+1, box.u2(), box.v2(), box.u3(), box.v3());
+        NumberInput num = (NumberInput)widgetMap.get("V1");
+        num.setValue(box.v1());  
+        updateTexture();
+        refreshGui();      
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.v1(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      box.setUV(box.u1(), value, box.u2(), box.v2(), box.u3(), box.v3());
+      
+      updateTexture();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("V1", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* U2 *********************************/
+  label = new Label(c0, totalHeight, "U2");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()>0)
+        {
+        box.setUV(box.u1(), box.v1(), box.u2()-1, box.v2(), box.u3(), box.v3());
+        NumberInput num = (NumberInput)widgetMap.get("U2");
+        num.setValue(box.u2());
+        updateTexture();
+        refreshGui();
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()<image.getWidth()-1)
+        {
+        box.setUV(box.u1(), box.v1(), box.u2()+1, box.v2(), box.u3(), box.v3());
+        NumberInput num = (NumberInput)widgetMap.get("U2");
+        num.setValue(box.u2());  
+        updateTexture();
+        refreshGui();      
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.u2(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      box.setUV(box.u1(), box.v1(), value, box.v2(), box.u3(), box.v3());
+      
+      updateTexture();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("U2", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* V2 *********************************/
+  label = new Label(c0, totalHeight, "V2");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()>0)
+        {
+        box.setUV(box.u1(), box.v1(), box.u2(), box.v2()-1, box.u3(), box.v3());
+        NumberInput num = (NumberInput)widgetMap.get("V2");
+        num.setValue(box.v2());
+        updateTexture();
+        refreshGui();
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()<image.getWidth()-1)
+        {
+        box.setUV(box.u1(), box.v1(), box.u2(), box.v2()+1, box.u3(), box.v3());
+        NumberInput num = (NumberInput)widgetMap.get("V2");
+        num.setValue(box.v2());  
+        updateTexture();
+        refreshGui();      
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.v2(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      box.setUV(box.u1(), box.v1(), box.u2(), value, box.u3(), box.v3());
+      
+      updateTexture();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("V2", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* U3 *********************************/
+  label = new Label(c0, totalHeight, "U3");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()>0)
+        {
+        box.setUV(box.u1(), box.v1(), box.u2(), box.v2(), box.u3()-1, box.v3());
+        NumberInput num = (NumberInput)widgetMap.get("U3");
+        num.setValue(box.u3());
+        updateTexture();
+        refreshGui();
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()<image.getWidth()-1)
+        {
+        box.setUV(box.u1(), box.v1(), box.u2(), box.v2(), box.u3()+1, box.v3());
+        NumberInput num = (NumberInput)widgetMap.get("U3");
+        num.setValue(box.u3());  
+        updateTexture();
+        refreshGui();      
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.u3(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      box.setUV(box.u1(), box.v1(), box.u2(), box.v2(), value, box.v3());
+      
+      updateTexture();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("U3", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* V3 *********************************/
+  label = new Label(c0, totalHeight, "V3");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()>0)
+        {
+        box.setUV(box.u1(), box.v1(), box.u2(), box.v2(), box.u3(), box.v3()-1);
+        NumberInput num = (NumberInput)widgetMap.get("V3");
+        num.setValue(box.v3());
+        updateTexture();
+        refreshGui();
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      if(box.u1()<image.getWidth()-1)
+        {
+        box.setUV(box.u1(), box.v1(), box.u2(), box.v2(), box.u3(), box.v3()+1);
+        NumberInput num = (NumberInput)widgetMap.get("V3");
+        num.setValue(box.v3());  
+        updateTexture();
+        refreshGui();      
+        }
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  input = new NumberInput(c2, totalHeight, w2, currentBox.v3(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      box.setUV(box.u1(), box.v1(), box.u2(), box.v2(), box.u3(), value);
+      
+      updateTexture();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(input);
+  widgetMap.put("V3", input);
+  input.setAllowNegative();
+  
+  totalHeight+=12;
+  
+  
+  /************************************* ROTATE *********************************/
+  label = new Label(c0, totalHeight, "ROT");
+  primitiveControlArea.addGuiElement(label);
+  
+  button = new Button(c1, totalHeight, 12, 12, "-")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      box.rotateTriangleUV(-1);
+      updateTexture();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  button = new Button(c3, totalHeight, 12, 12, "+")
+    {
+    @Override
+    protected void onPressed()
+      {      
+      PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
+      box.rotateTriangleUV(1);
+      updateTexture();
+      refreshGui();
+      }
+    };
+  primitiveControlArea.addGuiElement(button);
+  
+  totalHeight+=12;
+  
+  /************************************* FLIP *********************************/
+  
   }
 
 private void addQuadControls()
