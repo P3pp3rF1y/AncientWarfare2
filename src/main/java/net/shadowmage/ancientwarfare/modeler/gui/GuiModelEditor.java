@@ -33,7 +33,7 @@ public class GuiModelEditor extends GuiContainerBase
 //STATIC block allocates a new blank (white) texture for model editor use
 //will reload this same texture next time the editor is opened
 static BufferedImage image;
-public final static String imageName = "editorTexture"; 
+public final static String textureName = "editorTexture"; 
 static
 {
 image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
@@ -44,7 +44,7 @@ for(int x = 0; x< 256; x++)
     image.setRGB(x, y, 0xffffffff);
     }
   }
-AWTextureManager.instance().loadTexture(imageName, image);
+AWTextureManager.instance().loadTexture(textureName, image);
 }
 
 static ModelBaseAW model;
@@ -67,6 +67,8 @@ CompositeScrolled partListArea;
 Label pieceNameLabel;
 Label primitiveNameLabel;
 
+private boolean useUVTexture;
+
 public GuiModelEditor(ContainerBase par1Container)
   {
   super(par1Container, 256, 240, defaultBackground);
@@ -74,9 +76,8 @@ public GuiModelEditor(ContainerBase par1Container)
 
 @Override
 public void initElements()
-  {
-  
-  modelWidget = new ModelWidget(0, 0, 256, 240, imageName, true)
+  {  
+  modelWidget = new ModelWidget(0, 0, 256, 240)
     {
     @Override
     protected void onSelection(ModelPiece piece, Primitive primitive)
@@ -85,6 +86,7 @@ public void initElements()
       }
     };
   modelWidget.setSelectable(true);
+  modelWidget.setImageName(textureName, true);
   if(model!=null)//attempt to use existing client-side model, if it exists
     {
     modelWidget.setModel(model);
@@ -277,6 +279,20 @@ private void addFileControls()
     };
   totalHeight+=12;
   fileControlArea.addGuiElement(b);
+  
+  
+  b = new Button(3, totalHeight, w, h, "Load U/V Tex")
+    {
+    @Override
+    protected void onPressed()
+      {
+      modelWidget.setImageName(GuiUVEditor.textureName, true);
+      }
+    };
+  totalHeight+=12;
+  fileControlArea.addGuiElement(b);  
+  
+  //editorUVTexture
   
   float val = scaleInput != null? scaleInput.getFloatValue() : 0.0625f;
   scaleInput = new NumberInput(3, totalHeight, w, val, this)

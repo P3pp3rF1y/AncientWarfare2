@@ -48,8 +48,6 @@ import org.lwjgl.util.glu.GLU;
 public class ModelWidget extends GuiElement
 {
 
-
-
 ModelLoader loader = new ModelLoader();
 private ModelBaseAW model;
 private ModelPiece selectedPiece = null;
@@ -79,19 +77,12 @@ float viewDistance = 5.f;
  */
 float viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ;
 
-String texName;
-boolean customTex;
-ResourceLocation texLoc;
+String imageName;
+boolean internalImage;
 
-public ModelWidget(int topLeftX, int topLeftY, int width, int height, String texName, boolean customTex)
+public ModelWidget(int topLeftX, int topLeftY, int width, int height)
   {
-  super(topLeftX, topLeftY, width, height);
-  this.texName = texName;
-  this.customTex = customTex;
-  if(!customTex)
-    {
-    texLoc = new ResourceLocation(Statics.coreModID, texName);
-    }
+  super(topLeftX, topLeftY, width, height); 
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     public boolean onEvent(GuiElement widget, ActivationEvent evt)
@@ -165,15 +156,33 @@ public ModelWidget(int topLeftX, int topLeftY, int width, int height, String tex
 /**
  * set the internal image name to be used by this widget.  Texture must already exist in order to function properly
  * AWTextureManager.loadTexture(name, image) should be called for the texName prior to assigning to a widget.
+ * 
  * @param imageName
+ * @param internal -- is the image an internal memory-only texture, e.g. the UV editor texture?
  */
-public void setImageName(String imageName)
+public void setImageName(String imageName, boolean internal)
   {
-  this.texName = imageName;
-  if(!customTex)
+  this.internalImage = internal;
+  this.imageName = imageName;
+  if(!internal)
     {
-    this.texLoc = new ResourceLocation(Statics.coreModID, imageName);
-    }
+    if(AWTextureManager.instance().getTexture(imageName)==null)
+      {
+      File file = new File(imageName);
+      if(file.exists())
+        {
+        try
+          {
+          BufferedImage image = ImageIO.read(file);
+          AWTextureManager.instance().loadTexture(imageName, image);
+          } 
+        catch (IOException e)
+          {
+          e.printStackTrace();
+          }
+        }
+      }
+    }  
   }
 
 private void handleMouseDragged(int mx, int my)
@@ -287,14 +296,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     enableModelLighting();      
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     
-    if(customTex)
-      {
-      AWTextureManager.instance().bindTexture(texName);      
-      }
-    else
-      {
-      Minecraft.getMinecraft().renderEngine.bindTexture(texLoc);
-      }
+    AWTextureManager.instance().bindTexture(imageName);
     model.renderForEditor(selectedPiece, selectedPrimitive);
     }    
   
@@ -614,7 +616,8 @@ public void loadTexture(File file)
   try
     {
     BufferedImage image = ImageIO.read(file);
-    AWTextureManager.instance().updateTextureContents(texName, image);
+    AWTextureManager.instance().updateTextureContents("editorTexture", image);
+    this.setImageName("editorTexture", true);
     } 
   catch (IOException e)
     {

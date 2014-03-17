@@ -29,6 +29,9 @@ import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 public class GuiUVEditor extends GuiContainerBase
 {
 
+
+public static final String textureName = "editorUVTexture";
+
 GuiModelEditor parent;
 
 TexturedRectangleLive textureRect;
@@ -54,7 +57,8 @@ public GuiUVEditor(GuiModelEditor parent)
   {
   super((ContainerBase) parent.inventorySlots, 256, 256, defaultBackground);
   this.parent = parent;
-  image = AWTextureManager.instance().getTexture("editorTexture").getImage();
+  image = AWTextureManager.instance().getTexture("editorUVTexture").getImage();
+  this.shouldCloseOnVanillaKeys = false; 
   }
 
 @Override
@@ -277,8 +281,11 @@ private void addTextureControls()
 
 private void addFileControls()
   {
-  
+  /**
+   * TODO
+   */
   }
+
 /**
  * add the primitive controls to the primitive control area
  */
