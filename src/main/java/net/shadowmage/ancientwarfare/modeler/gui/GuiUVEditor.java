@@ -120,14 +120,16 @@ public void setupElements()
   }
 
 private void setTextureXSize(int size)
-  {
+  {  
   textureXSize = size;
+  parent.model.setTextureSize(textureXSize, textureYSize);
   updateTextureSize();
   }
 
 private void setTextureYSize(int size)
   {
   textureYSize = size;
+  parent.model.setTextureSize(textureXSize, textureYSize);
   updateTextureSize();
   }
 
