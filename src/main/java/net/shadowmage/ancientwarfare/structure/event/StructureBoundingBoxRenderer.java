@@ -67,10 +67,10 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
     {
     renderScannerBoundingBox(player, stack, evt.partialTicks);
     }  
-//  else if(item==AWStructuresItemLoader.structureBuilderCreative || item==AWStructuresItemLoader.structureGenerator)
-//    {
-//    renderBuildBoundingBox(player, stack, evt.partialTicks);
-//    }
+  else if(item==AWStructuresItemLoader.builder)
+    {
+    renderBuildBoundingBox(player, stack, evt.partialTicks);
+    }
   }
 
 StructureBB bb = new StructureBB(new BlockPosition(), new BlockPosition()){};
