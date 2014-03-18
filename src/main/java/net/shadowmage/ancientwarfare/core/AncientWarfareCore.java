@@ -76,13 +76,13 @@ public void postInit(FMLPostInitializationEvent evt)
 @SubscribeEvent
 public void onLogin(PlayerEvent.PlayerLoggedInEvent evt)
   {
-  String msg = "player logged in...";
-  AWLog.logDebug(msg);
-  if(!evt.player.worldObj.isRemote)
-    {
-    NetworkHandler.sendToPlayer((EntityPlayerMP)evt.player, new TestPacket());
-    FMLNetworkHandler.openGui(evt.player, this, NetworkHandler.GUI_TEST, evt.player.worldObj, 0, 0, 0);
-    }  
+//  String msg = "player logged in...";
+//  AWLog.logDebug(msg);
+//  if(!evt.player.worldObj.isRemote)
+//    {
+//    NetworkHandler.sendToPlayer((EntityPlayerMP)evt.player, new TestPacket());
+//    FMLNetworkHandler.openGui(evt.player, this, NetworkHandler.GUI_TEST, evt.player.worldObj, 0, 0, 0);
+//    }  
   }
 
 }
