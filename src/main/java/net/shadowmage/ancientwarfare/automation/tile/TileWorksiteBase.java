@@ -95,16 +95,19 @@ public final boolean canUpdate()
   return canUpdate;
   }
 
+@Override
 public final boolean hasWorkBounds()
   {
   return bbMin !=null || (bbMin!=null && bbMax!=null);
   }
 
+@Override
 public final BlockPosition getWorkBoundsMin()
   {
   return bbMin;
   }
 
+@Override
 public final BlockPosition getWorkBoundsMax()
   {
   return bbMax;
@@ -182,6 +185,22 @@ public void readFromNBT(NBTTagCompound tag)
 public final Packet getDescriptionPacket()
   {
   NBTTagCompound tag = new NBTTagCompound();
+  if(bbMin!=null)
+    {
+    NBTTagCompound innerTag = new NBTTagCompound();
+    bbMin.writeToNBT(innerTag);
+    tag.setTag("bbMin", innerTag);
+    }
+  if(bbMax!=null)
+    {
+    NBTTagCompound innerTag = new NBTTagCompound();
+    bbMax.writeToNBT(innerTag);
+    tag.setTag("bbMax", innerTag);
+    }
+  if(owningPlayer!=null)
+    {
+    tag.setString("owner", owningPlayer);
+    }
   writeClientData(tag);
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, tag);
   }

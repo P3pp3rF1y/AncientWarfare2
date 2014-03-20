@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
 import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
@@ -14,6 +16,8 @@ public class ClientProxyAutomation extends ClientProxyBase
 @Override
 public void registerClient()
   {
-
+  MinecraftForge.EVENT_BUS.register(WorkBoundingBoxRenderer.instance());
   }
+
+
 }

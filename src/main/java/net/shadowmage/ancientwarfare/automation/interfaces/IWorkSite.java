@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.interfaces;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public interface IWorkSite
 {
@@ -62,6 +63,12 @@ public void removeWorker(IWorker worker);
 public WorkType getWorkType();
 
 public Team getTeam();
+
+public BlockPosition getWorkBoundsMin();
+
+public BlockPosition getWorkBoundsMax();
+
+public boolean hasWorkBounds();
 
 public static enum WorkType
 {

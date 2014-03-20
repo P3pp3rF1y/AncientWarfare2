@@ -17,7 +17,7 @@ public class WorkSiteQuarry extends TileWorksiteBase
 
 boolean doneInitialScan = false;
 boolean finished;
-int currentY;
+int currentY = 0;
 LinkedList<BlockPosition> blocksToRemove = new LinkedList<BlockPosition>();
 
 public WorkSiteQuarry()
@@ -41,7 +41,10 @@ public void updateEntity()
     setWorkBoundsMin(new BlockPosition(xCoord-10, yCoord-1, zCoord-10));
     setWorkBoundsMax(new BlockPosition(xCoord+10, yCoord-1, zCoord+10));
     doneInitialScan = true;
-    currentY = yCoord-1;
+    if(currentY == 0)
+      {
+      currentY = yCoord-1;      
+      }
     scanNextLevel();    
     }
   if(!finished && blocksToRemove.isEmpty())
@@ -82,7 +85,6 @@ private void scanNextLevel()
   AWLog.logDebug("scanning quarry level. nextY: "+(currentY-1));
   if(currentY<=1)
     {
-    AWLog.logDebug("setting finished and exiting scan");
     finished = true;
     return;
     }
@@ -99,16 +101,15 @@ private void scanNextLevel()
           {
           continue;
           }        
-        if(block.getBlockHardness(worldObj, x, currentY, z)<0)//skip unbreakable blocks
+        if(block==null || block.getBlockHardness(worldObj, x, currentY, z)<0)//skip unbreakable blocks
           {         
           continue;
-          }
-        if(worldObj.getBlock(x, currentY, z)==Blocks.bed)
+          }        
         blocksToRemove.add(new BlockPosition(x, currentY, z));
         }
       }
     }  
-  AWLog.logDebug("scanned blocks now contains: "+blocksToRemove.size() + " entries");
+  AWLog.logDebug("scanned quarry level. : "+(currentY) + " found :" +blocksToRemove.size() + " blocks to remove");
   if(blocksToRemove.isEmpty())
     {
     scanNextLevel();
@@ -124,20 +125,22 @@ public WorkType getWorkType()
 @Override
 public void writeClientData(NBTTagCompound tag)
   {
-  // TODO Auto-generated method stub  
+  
   }
 
 @Override
 public void readClientData(NBTTagCompound tag)
   {
-  // TODO Auto-generated method stub  
+  
   }
 
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  currentY = tag.getInteger("currentY");
+  currentY = tag.getInteger("currentY")+1;
+  finished = tag.getBoolean("finished");
+  doneInitialScan = false;
   }
 
 @Override
@@ -145,5 +148,6 @@ public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
   tag.setInteger("currentY", currentY);
+  tag.setBoolean("finished", finished);
   }
 }

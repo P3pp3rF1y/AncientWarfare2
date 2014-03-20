@@ -72,6 +72,7 @@ public void preInit(FMLPreInitializationEvent evt)
   AWLog.log("Ancient Warfare Automation Pre-Init started"); 
   config = new Configuration(evt.getSuggestedConfigurationFile());
   statics = new AWAutomationStatics(config);
+  proxy.registerClient();
   
   /**
    * load pre-init

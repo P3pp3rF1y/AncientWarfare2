@@ -29,6 +29,8 @@ import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 public class AWAutomationStatics extends ModConfiguration
 {
 
+public static boolean renderWorkBounds = true;
+
 public AWAutomationStatics(Configuration config)
   {
   super(config);

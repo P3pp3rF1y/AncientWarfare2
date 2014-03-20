@@ -25,6 +25,7 @@ public TileWorkerTest()
 
 private void setWorkSite(IWorkSite site)
   {
+  AWLog.logDebug("set worksite to: "+site);
   workSite = new WeakReference<IWorkSite>(site);
   if(workSite==null)
     {
@@ -57,6 +58,7 @@ public void updateEntity()
     }  
   if(searchDelay==0 && getWorkSite()==null)
     {
+    AWLog.logDebug("searching for worksite...");
     if(findWorkSite())
       {
       workDelay = 40;
@@ -74,7 +76,12 @@ public void updateEntity()
     }  
   if(workDelay==0 && getWorkSite()!=null)
     {
-    getWorkSite().doWork(this);
+    AWLog.logDebug("attempting work..");
+    if(getWorkSite().hasWork())
+      {
+      AWLog.logDebug("worksite had work, processing doWork");
+      getWorkSite().doWork(this);      
+      }
     workDelay = 40;
     }
   }
