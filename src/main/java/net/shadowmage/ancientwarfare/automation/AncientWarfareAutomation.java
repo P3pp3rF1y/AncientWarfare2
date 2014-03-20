@@ -3,7 +3,9 @@ package net.shadowmage.ancientwarfare.automation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
@@ -75,7 +77,9 @@ public void preInit(FMLPreInitializationEvent evt)
    * load pre-init
    */
   statics.load();
-       
+  
+  AWAutomationBlockLoader.load();
+  AWAutomationItemLoader.load();
 
  
   AWLog.log("Ancient Warfare Automation Pre-Init completed");

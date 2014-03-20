@@ -3,6 +3,7 @@
 #items
 itemGroup.tabs.structures=Ancient Warfare Structures
 itemGroup.tabs.editor=Ancient Warfare Model Editor
+itemGroup.tabs.automation=Ancient Warfare Automation
 item.testItem.name=Test Item
 item.structure_scanner.name=Structure Scanner
 item.structure_builder.name=Structure Builder

@@ -9,4 +9,12 @@ public interface IWorker
 
 public float getWorkEffectiveness();
 
+/**
+ * validates a work-site vs. the workers applicable work-types.
+ * @param site
+ * @return
+ */
+public boolean canWorkAt(IWorkSite site);
+
+public void clearWorkSite();
 }
