@@ -54,7 +54,6 @@ public void preInit(FMLPreInitializationEvent evt)
   log = evt.getModLog();
   Statics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
   NetworkHandler.INSTANCE.registerNetwork();
-  NetworkHandler.INSTANCE.registerContainer(0, ContainerTest.class);
   FMLCommonHandler.instance().bus().register(this);
   MinecraftForge.EVENT_BUS.register(AWGameData.INSTANCE);
   MinecraftForge.EVENT_BUS.register(new ItemEventHandler());

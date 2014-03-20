@@ -54,5 +54,19 @@
   "logoFile": "",
   "screenshots": [],
   "dependencies": ["ancientwarfare"]
+},
+{
+  "modid": "ancientwarfareautomation",
+  "name": "Ancient Warfare Automation",
+  "description": "Ancient Warfare Automation Module for Minecraft 1.7+",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "ancientwarfare.wikispaces.com",
+  "updateUrl": "ancientwarfare.wikispaces.com",
+  "authorList": ["shadowmage45"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["ancientwarfare"]
 }
 ]

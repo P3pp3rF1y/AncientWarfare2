@@ -18,7 +18,6 @@ public class ClientProxy extends ClientProxyBase
 public void registerClient()
   {
   NetworkHandler.registerClientHandler(new PacketHandlerClient());
-  NetworkHandler.INSTANCE.registerGui(0, GuiTest.class);
   FMLCommonHandler.instance().bus().register(InputHandler.instance());
   }
 
