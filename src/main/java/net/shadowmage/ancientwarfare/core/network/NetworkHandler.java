@@ -24,6 +24,7 @@ public static final NetworkHandler INSTANCE = new NetworkHandler();
 public static final int PACKET_TEST = 0;
 public static final int PACKET_GUI = 1;
 public static final int PACKET_STRUCTURE = 2;
+public static final int PACKET_ITEM_KEY_INTERFACE = 3;
 
 public static final int GUI_TEST = 0;
 public static final int GUI_SCANNER = 1;
@@ -41,6 +42,7 @@ public final void registerNetwork()
   channel.register(new PacketHandlerServer());
   PacketBase.registerPacketType(PACKET_TEST, TestPacket.class);
   PacketBase.registerPacketType(PACKET_GUI, PacketGui.class);
+  PacketBase.registerPacketType(PACKET_ITEM_KEY_INTERFACE, PacketItemInteraction.class);
   NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
   }
 

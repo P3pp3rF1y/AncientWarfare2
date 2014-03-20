@@ -24,14 +24,17 @@ import java.util.Iterator;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.automation.item.ItemWorksitePlacer;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -48,10 +51,7 @@ BlockPosition pos2Cache = new BlockPosition();
 @SubscribeEvent
 public void handleRenderLastEvent(RenderWorldLastEvent evt)
   {
-  if(!AWAutomationStatics.renderWorkBounds)
-    {
-    return;
-    }
+
   Minecraft mc = Minecraft.getMinecraft();
   if(mc==null)
     {
@@ -62,6 +62,57 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
     {
     return;
     }
+  if(AWAutomationStatics.renderWorkBounds)
+    {
+    renderWorkBounds(player, evt.partialTicks);
+    }
+  ItemStack stack = player.inventory.getCurrentItem();
+  if(stack!=null && stack.getItem() instanceof ItemWorksitePlacer)
+    {
+    renderWorksiteItemSetupBounds(player, stack, evt.partialTicks);
+    }  
+  }
+
+private void renderWorksiteItemSetupBounds(EntityPlayer player, ItemStack stack, float delta)
+  {
+  if(!stack.hasTagCompound())
+    {
+    stack.setTagCompound(new NBTTagCompound());
+    }
+  
+  BlockPosition min = null;
+  BlockPosition max = null;
+    
+  if(stack.getTagCompound().hasKey("pos1"))
+    {
+    min = new BlockPosition();
+    min.read(stack.getTagCompound().getCompoundTag("pos1"));
+    }
+  else
+    {
+    min = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+    }
+  
+  if(stack.getTagCompound().hasKey("pos2"))
+    {
+    max = new BlockPosition();
+    max.read(stack.getTagCompound().getCompoundTag("pos2"));
+    }
+  else
+    {
+    max = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+    if(max==null && min!=null)
+      {
+      max = min;
+      }
+    }
+
+  if(min==null || max==null){return;}
+  renderBoundingBox(player, BlockTools.getMin(min, max), BlockTools.getMax(min, max).offset(1, 1, 1), delta);
+  }
+
+private void renderWorkBounds(EntityPlayer player, float delta)
+  {
   World world = player.worldObj;
   Iterator<TileEntity> it = world.loadedTileEntityList.iterator();
   TileEntity te;
@@ -82,7 +133,7 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
           max = min;
           }
         pos2Cache.reassign(max.x + 1, max.y + 1, max.z + 1);
-        renderBoundingBox(player, min, pos2Cache, evt.partialTicks);
+        renderBoundingBox(player, min, pos2Cache, delta);
         }            
       }
     }

@@ -112,11 +112,12 @@ public final BlockPosition offsetBy(BlockPosition offsetVector)
   return this;
   }
 
-public final void offset(int x, int y, int z)
+public final BlockPosition offset(int x, int y, int z)
   {
   this.x += x;
   this.y += y;
   this.z += z;
+  return this;
   }
 
 /**
