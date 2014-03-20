@@ -5,7 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteTest;
+import net.shadowmage.ancientwarfare.automation.tile.WorkSiteQuarry;
 
 public class BlockWorksiteTest extends Block
 {
@@ -20,7 +20,7 @@ public BlockWorksiteTest(String regName)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {  
-  return new TileWorksiteTest();
+  return new WorkSiteQuarry();
   }
 
 @Override

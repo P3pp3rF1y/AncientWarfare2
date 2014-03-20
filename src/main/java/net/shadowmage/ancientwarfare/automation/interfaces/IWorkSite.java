@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.interfaces;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.scoreboard.Team;
 
 public interface IWorkSite
 {
@@ -21,15 +22,16 @@ public void doPlayerWork(EntityPlayer player);
 public boolean hasWork();
 
 /**
- * called by a worker to process a single work-unit.
+ * called by a worker to process a single work-unit.  The worker should have called hasWork just
+ * prior to calling doWork
  * @param worker
  */
 public void doWork(IWorker worker);
 
 /**
  * workers will call this before starting to work at a site to make sure that the site can have
- * more workers.  In turn the worksite calls IWorker.canWorkAt() to make sure that the work-site is
- * applicable for the worker.
+ * more workers.  validates with the worker to see if worker can work at this worksite by checking
+ * this.getWorkType() vs worker.getWorkTypes()
  * 
  * @param worker
  * @return
@@ -39,7 +41,7 @@ public boolean canHaveWorker(IWorker worker);
 /**
  * called by a worker prior to him starting work
  * @param worker
- * @return
+ * @return true if worker was already present or successfully added
  */
 public boolean addWorker(IWorker worker);
 
@@ -47,8 +49,29 @@ public boolean addWorker(IWorker worker);
  * called by a worker when he is done working at a site
  * can be called when the worker goes home for the night, is shut down (for blocks/engines),
  * or when the worker stops working due to no more work at the site.
+ * (workers should maintain their own internal designated work-site reference, to know where to return to)
  * @param worker
  */
 public void removeWorker(IWorker worker);
+
+/**
+ * called by workers to validate work-type when IWorker.canWorkAt(IWorkSite) is called
+ * workers should be responsible for maintaining their own list of acceptable work types
+ * @return
+ */
+public WorkType getWorkType();
+
+public Team getTeam();
+
+public static enum WorkType
+{
+MINING,
+FARMING,
+FORESTRY,
+ANIMAL_HUSBANDRY,
+CONSTRUCTION,
+CRAFTING,
+RESEARCH
+}
 
 }

@@ -1,33 +1,18 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
-import java.lang.ref.WeakReference;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
+import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 
-public class TileWorksiteTest extends TileEntity implements IWorkSite
+public class TileWorksiteTest extends TileWorksiteBase
 {
-
-WeakReference<IWorker> workerRef = new WeakReference<IWorker>(null);
 
 int workCount = 100;
 
 public TileWorksiteTest()
   {
   
-  }
-
-protected IWorker getWorker()
-  {
-  return workerRef==null? null : workerRef.get();
-  }
-
-protected void setWorker(IWorker worker)
-  {
-  workerRef = new WeakReference<IWorker>(worker);
   }
 
 @Override
@@ -56,30 +41,21 @@ public void doWork(IWorker worker)
   }
 
 @Override
-public boolean canHaveWorker(IWorker worker)
+public WorkType getWorkType()
   {
-  return worker!=null && worker.canWorkAt(this) && (getWorker()==null || getWorker()==worker);
+  return WorkType.FORESTRY;
   }
 
 @Override
-public boolean addWorker(IWorker worker)
+public void writeClientData(NBTTagCompound tag)
   {
-  AWLog.logDebug("adding worker: "+worker);
-  if(canHaveWorker(worker))
-    {
-    setWorker(worker);
-    return true;
-    }
-  return false;
+  
   }
 
 @Override
-public void removeWorker(IWorker worker)
+public void readClientData(NBTTagCompound tag)
   {
-  if(worker==getWorker())
-    {
-    setWorker(null);
-    }
+  
   }
 
 }
