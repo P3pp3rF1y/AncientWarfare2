@@ -65,11 +65,12 @@ public StructureTemplate parseTemplate(File file)
       }
     catch(TemplateParsingException e1)
       {
-      throw new IllegalArgumentException(e1.getMessage());
+      throw new IllegalArgumentException(e1.getMessage(), e1);
       }   
     catch(Exception e2)
       {
-      throw new IllegalArgumentException("Error parsing template: "+file.getName() +" at line: "+ (lineNumber+1) + " for line: "+templateLines.get(lineNumber));
+      AWLog.logDebug("caught exception while parsing template: "+e2.toString());
+      throw new IllegalArgumentException("Error parsing template: "+file.getName() +" at line: "+ (lineNumber+1) + " for line: "+templateLines.get(lineNumber) + " Exception: "+e2.toString(), e2);
       }
     } 
   catch (FileNotFoundException e)
