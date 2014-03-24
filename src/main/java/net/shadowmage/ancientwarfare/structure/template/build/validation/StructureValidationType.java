@@ -44,6 +44,7 @@ StructureValidationType(String name, Class<? extends StructureValidator> validat
   this.name = name;
   this.validatorClass = validatorClass; 
 
+  properties.add(new StructureValidationProperty("survival", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
   properties.add(new StructureValidationProperty("enableWorldGen", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
   properties.add(new StructureValidationProperty("unique", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
   properties.add(new StructureValidationProperty("preserveBlocks", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));

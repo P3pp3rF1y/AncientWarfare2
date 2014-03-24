@@ -48,6 +48,7 @@ public abstract class StructureValidator
 
 public static final String PROP_WORLD_GEN = "enableWorldGen";
 public static final String PROP_UNIQUE = "unique";
+public static final String PROP_SURVIVAL = "survival";
 public static final String PROP_PRESERVE_BLOCKS = "preserveBlocks";
 public static final String PROP_SELECTION_WEIGHT = "selectionWeight";
 public static final String PROP_CLUSTER_VALUE = "clusterValue";
@@ -64,6 +65,7 @@ public static final String PROP_BLOCK_LIST = "blockList";
 public final StructureValidationType validationType;
 
 private HashMap<String, StructureValidationProperty> properties = new HashMap<String, StructureValidationProperty>();
+private boolean survival;
 
 //private int selectionWeight;
 //private int clusterValue;
@@ -193,7 +195,7 @@ public static final StructureValidator parseValidator(List<String> lines)
   List<String> tagLines = new ArrayList<String>();
   Iterator<String> it = lines.iterator();
   String line;
-  boolean unique = false, worldGen = false, biome = false, dimension = false, blocks = false;
+  boolean unique = false, worldGen = false, biome = false, dimension = false, blocks = false, survival = false;
   int selectionWeight=1, clusterValue=1, duplicate=1, maxLeveling = 0, maxFill = 0, borderSize = 0;
   int[] dimensions = null;
   Set<String> biomes = new HashSet<String>();
@@ -203,9 +205,10 @@ public static final StructureValidator parseValidator(List<String> lines)
     {   
     if(line.toLowerCase().startsWith("type=")){type = StringTools.safeParseString("=", line);}
     else if(line.toLowerCase().startsWith("unique=")){unique = StringTools.safeParseBoolean("=", line);}
+    else if(line.toLowerCase().startsWith("survival=")){survival = StringTools.safeParseBoolean("=", line);}
     else if(line.toLowerCase().startsWith("worldgenenabled=")){worldGen = StringTools.safeParseBoolean("=", line);}
     else if(line.toLowerCase().startsWith("biomewhitelist=")){biome = StringTools.safeParseBoolean("=", line);}
-    else if(line.toLowerCase().startsWith("dimensionwhitelise=")){dimension = StringTools.safeParseBoolean("=", line);}
+    else if(line.toLowerCase().startsWith("dimensionwhitelist=")){dimension = StringTools.safeParseBoolean("=", line);}
     else if(line.toLowerCase().startsWith("preserveblocks=")){blocks = StringTools.safeParseBoolean("=", line);}
     else if(line.toLowerCase().startsWith("dimensionlist=")){dimensions = StringTools.safeParseIntArray("=", line);}
     else if(line.toLowerCase().startsWith("biomelist=")){StringTools.safeParseStringsToSet(biomes, "=", line, true);}
@@ -247,6 +250,7 @@ public static final StructureValidator parseValidator(List<String> lines)
   validator.setProperty(PROP_BIOME_WHITE_LIST, biome);
   validator.setProperty(PROP_BIOME_LIST, biomes);
   validator.setProperty(PROP_WORLD_GEN, worldGen);
+  validator.setProperty(PROP_SURVIVAL, survival);
   validator.setProperty(PROP_UNIQUE, unique);
   validator.setProperty(PROP_PRESERVE_BLOCKS, blocks);
   validator.setProperty(PROP_CLUSTER_VALUE, clusterValue);
@@ -263,6 +267,8 @@ public static final StructureValidator parseValidator(List<String> lines)
 public static final void writeValidator(BufferedWriter out, StructureValidator validator) throws IOException
   {
   out.write("type="+validator.validationType.getName());  
+  out.newLine();
+  out.write("survival="+validator.survival);  
   out.newLine();
   out.write("worldGenEnabled="+validator.isWorldGenEnabled());  
   out.newLine();
@@ -640,6 +646,11 @@ protected void prePlacementBorder(World world, StructureTemplate template, Struc
 public Collection<StructureValidationProperty> getProperties()
   {
   return properties.values();
+  }
+
+public boolean isSurvival()
+  {
+  return survival;
   }
 
 }

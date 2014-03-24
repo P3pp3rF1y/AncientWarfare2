@@ -20,6 +20,10 @@
  */
 package net.shadowmage.ancientwarfare.structure.template;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 
@@ -28,6 +32,8 @@ public class StructureTemplateClient
 
 public final String name;
 public final int xSize, ySize, zSize, xOffset, yOffset, zOffset;
+List<ItemStack> resourceList = new ArrayList<ItemStack>();
+public boolean survival;
 
 public StructureTemplateClient(StructureTemplate template)
   {
@@ -39,6 +45,8 @@ public StructureTemplateClient(StructureTemplate template)
   this.xOffset = template.xOffset;
   this.yOffset = template.yOffset;
   this.zOffset = template.zOffset;  
+  this.survival = template.getValidationSettings().isSurvival();
+  resourceList.addAll(template.getResourceList());
   }
 
 public StructureTemplateClient(String name, int x, int y, int z, int xo, int yo, int zo)

@@ -20,6 +20,11 @@
  */
 package net.shadowmage.ancientwarfare.structure.template;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleEntity;
@@ -42,6 +47,7 @@ public final int xOffset, yOffset, zOffset;
 private TemplateRule[] templateRules;
 private TemplateRuleEntity[] entityRules;
 private short[] templateData;
+List<ItemStack> resourceList;
 
 /**
  * world generation placement validation settings
@@ -122,6 +128,70 @@ public String toString()
   return b.toString();
   }
 
+public List<ItemStack> getResourceList()
+{
+if(resourceList==null)
+  {
+  TemplateRule rule;
+  List<ItemStack> stacks = new ArrayList<ItemStack>();
+  for(int x = 0; x < this.xSize; x++)
+    {
+    for(int y = 0; y < this.ySize; y++)
+      {
+      for(int z = 0; z < this.zSize; z++)
+        {
+        rule = getRuleAt(x, y, z);
+        if(rule!=null)
+          {
+          rule.addResources(stacks);
+          }
+        }
+      }
+    }
+  compactStackList(stacks);
+  resourceList = new ArrayList<ItemStack>();
+  resourceList.addAll(stacks);
+  }
+return resourceList;
+}
 
+private void compactStackList(List<ItemStack> stacks)
+{
+List<ItemStack> out = new ArrayList<ItemStack>();
+Item item;
+int dmg;
+int transfer;
+for(ItemStack inStack : stacks)
+  {
+  item = inStack.getItem();
+  dmg = inStack.getItemDamage();
+  for(ItemStack outStack : out)
+    {
+    if(outStack.stackSize < outStack.getMaxStackSize() && item==outStack.getItem() && dmg==outStack.getItemDamage() && ItemStack.areItemStackTagsEqual(inStack, outStack))
+      {
+      transfer = inStack.stackSize;
+      transfer = transfer + outStack.stackSize > outStack.getMaxStackSize() ? outStack.getMaxStackSize()-outStack.stackSize: transfer;
+      inStack.stackSize-=transfer;
+      outStack.stackSize+=transfer;        
+      if(inStack.stackSize<=0)
+        {
+        break;//break outStack iterator loop, as inStack has been used up
+        }
+      }
+    }        
+  if(inStack.stackSize>0)
+    {
+    out.add(new ItemStack(item, inStack.stackSize, dmg));
+    }
+  }  
+stacks.clear();
+stacks.addAll(out);
+
+//AWLog.logDebug("compacted resource list for structure: "+name);
+//for(ItemStack stack : stacks)
+//  {
+//  AWLog.logDebug(stack.toString());
+//  }
+}
 
 }
