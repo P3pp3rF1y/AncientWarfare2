@@ -41,6 +41,7 @@ guistrings.spawner.warning_2=TEST ALL MOBS / SETTINGS ON AN UNCARED FOR WORLD FI
 
 
 #structure validation translation stuff
+structure.validation.survival=Survival
 structure.validation.minGenDepth=Min Generation Depth
 structure.validation.maxGenDepth=Max Generation Depth
 structure.validation.minOverfill=Min Overfill
