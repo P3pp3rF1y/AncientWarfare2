@@ -25,6 +25,8 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class StructureTemplateClient
@@ -71,11 +73,25 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("xo", xOffset);
   tag.setInteger("yo", yOffset);
   tag.setInteger("zo", zOffset);
+  
+  if(survival)
+    {
+    NBTTagList stackList = new NBTTagList();
+    NBTTagCompound stackTag;
+    for(ItemStack stack : this.resourceList)
+      {
+      stackTag = new NBTTagCompound();
+      stack.writeToNBT(stackTag);
+      stackList.appendTag(stackTag);
+      }
+    tag.setTag("resourceList", stackList);    
+    }
   }
 
 public static StructureTemplateClient readFromNBT(NBTTagCompound tag)
   {	
   String name = tag.getString("name");
+  boolean survival = tag.getBoolean("survival");
   int x = tag.getInteger("x");
   int y = tag.getInteger("y");
   int z = tag.getInteger("z");
@@ -83,7 +99,25 @@ public static StructureTemplateClient readFromNBT(NBTTagCompound tag)
   int yo = tag.getInteger("yo");
   int zo = tag.getInteger("zo");
   AWLog.logDebug("reading client structure name: "+name);
-  return new StructureTemplateClient(name, x, y, z, xo, yo, zo);
+  StructureTemplateClient template =  new StructureTemplateClient(name, x, y, z, xo, yo, zo);
+  template.survival = survival;
+  
+  if(tag.hasKey("resourceList"))
+    {
+    NBTTagList stackList = tag.getTagList("resourceList", Constants.NBT.TAG_COMPOUND);
+    NBTTagCompound stackTag;
+    ItemStack stack;
+    for(int i = 0; i < stackList.tagCount(); i++)
+      {
+      stackTag = (NBTTagCompound) stackList.getCompoundTagAt(i);
+      stack = ItemStack.loadItemStackFromNBT(stackTag);
+      if(stack!=null)
+        {
+        template.resourceList.add(stack);
+        }
+      }
+    }  
+  return template;
   }
 
 
