@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.item.ItemClickable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -39,7 +40,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 
 
-public class ItemStructureBuilder extends ItemClickable
+public class ItemStructureBuilder extends ItemClickable implements IItemKeyInterface
 {
 
 /**
@@ -49,7 +50,7 @@ public ItemStructureBuilder(String itemName)
   {
   super(itemName);  
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
-  this.hasLeftClick = true;
+  this.hasLeftClick = false;
   this.setMaxStackSize(1);  
   }
 
@@ -57,34 +58,7 @@ ItemStructureSettings buildSettings = new ItemStructureSettings();
 
 public void onLeftClick(ItemStack stack, EntityPlayer player, MovingObjectPosition hit)
   {
-  if(player==null || hit==null || player.worldObj.isRemote)
-    {
-    return;
-    }
-  ItemStructureSettings.getSettingsFor(stack, buildSettings);
-  if(buildSettings.hasName())
-    {
-    StructureTemplate template = StructureTemplateManager.instance().getTemplate(buildSettings.name);
-    if(template==null)
-      {
-      /**
-       * TODO add chat message
-       */
-      return;
-      }
-    BlockPosition bpHit = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
-    bpHit.offsetForMCSide(hit.sideHit);
-    AWLog.logDebug("constructing template: "+template);    
-    StructureBuilder builder = new StructureBuilder(player.worldObj, template, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), bpHit.x, bpHit.y, bpHit.z);
-    builder.instantConstruction();
-    }  
-  else
-    {
-    /**
-     * TODO add chat message
-     */
-    }
-  AWLog.logDebug("item left click (event)... client: "+player.worldObj.isRemote);   
+  
   }
 
 @Override
@@ -113,6 +87,37 @@ public void addInformation(ItemStack stack, EntityPlayer player, List list, bool
 public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player)
   {
   return false;
+  }
+
+@Override
+public void onKeyAction(EntityPlayer player, ItemStack stack)
+  {
+  if(player==null || player.worldObj.isRemote)
+    {
+    return;
+    }
+  ItemStructureSettings.getSettingsFor(stack, buildSettings);
+  if(buildSettings.hasName())
+    {
+    StructureTemplate template = StructureTemplateManager.instance().getTemplate(buildSettings.name);
+    if(template==null)
+      {
+      /**
+       * TODO add chat message
+       */
+      return;
+      }
+    BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+    AWLog.logDebug("constructing template: "+template);    
+    StructureBuilder builder = new StructureBuilder(player.worldObj, template, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), bpHit.x, bpHit.y, bpHit.z);
+    builder.instantConstruction();
+    }  
+  else
+    {
+    /**
+     * TODO add chat message
+     */
+    }  
   }
 
 }

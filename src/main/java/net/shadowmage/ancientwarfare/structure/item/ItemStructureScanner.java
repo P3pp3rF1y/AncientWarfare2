@@ -12,6 +12,7 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.item.ItemClickable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -25,13 +26,13 @@ import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
-public class ItemStructureScanner extends ItemClickable
+public class ItemStructureScanner extends ItemClickable implements IItemKeyInterface
 {
 
 public ItemStructureScanner(String localizationKey)
   {
   super(localizationKey);
-  this.hasLeftClick = true;
+  this.hasLeftClick = false;
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setMaxStackSize(1);
   }
@@ -39,44 +40,7 @@ public ItemStructureScanner(String localizationKey)
 @Override
 public void onLeftClick(ItemStack stack, EntityPlayer player, MovingObjectPosition mophit)
   {
-  if(mophit==null || mophit.typeOfHit!=MovingObjectType.BLOCK)
-    {
-    return;
-    }
-  if(!MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(player.getCommandSenderName()))
-    {
-    return;
-    } 
-  BlockPosition hit = new BlockPosition(mophit.blockX, mophit.blockY, mophit.blockZ);
-  if(player.isSneaking())
-    {
-    hit.offsetForMCSide(mophit.sideHit);
-    }
-  ItemStructureSettings.getSettingsFor(stack, scanSettings);
-  if(scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey())
-    {
-    AWLog.logDebug("right click to process");
-//    player.addChatMessage("Right Click to Process");
-    }
-  else if(!scanSettings.hasPos1())
-    {
-    AWLog.logDebug("setting pos1");
-    scanSettings.setPos1(hit.x, hit.y, hit.z);
-//    player.addChatMessage("Setting Scan Position 1 (Step 1/4)");
-    }
-  else if(!scanSettings.hasPos2())
-    {
-    AWLog.logDebug("setting pos2");
-    scanSettings.setPos2(hit.x, hit.y, hit.z);
-//    player.addChatMessage("Setting Scan Position 2 (Step 2/4)");
-    }
-  else if(!scanSettings.hasBuildKey())
-    {
-    AWLog.logDebug("setting build key");
-    scanSettings.setBuildKey(hit.x, hit.y, hit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw));
-//    player.addChatMessage("Setting Scan Build Position and Facing (Step 3/4)");
-    }
-  ItemStructureSettings.setSettingsFor(stack, scanSettings);
+  //NOOP
   }
 
 ItemStructureSettings viewSettings = new ItemStructureSettings();
@@ -171,6 +135,41 @@ public static boolean scanStructure(World world, BlockPosition pos1, BlockPositi
     }
   TemplateExporter.exportTo(template, new File(include ? TemplateLoader.includeDirectory : TemplateLoader.outputDirectory));
   return true;
+  }
+
+@Override
+public void onKeyAction(EntityPlayer player, ItemStack stack)
+  {  
+  if(!MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(player.getCommandSenderName()))
+    {
+    return;
+    }
+  BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+  ItemStructureSettings.getSettingsFor(stack, scanSettings);
+  if(scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey())
+    {
+    AWLog.logDebug("right click to process");
+//    player.addChatMessage("Right Click to Process");
+    }
+  else if(!scanSettings.hasPos1())
+    {
+    AWLog.logDebug("setting pos1");
+    scanSettings.setPos1(hit.x, hit.y, hit.z);
+//    player.addChatMessage("Setting Scan Position 1 (Step 1/4)");
+    }
+  else if(!scanSettings.hasPos2())
+    {
+    AWLog.logDebug("setting pos2");
+    scanSettings.setPos2(hit.x, hit.y, hit.z);
+//    player.addChatMessage("Setting Scan Position 2 (Step 2/4)");
+    }
+  else if(!scanSettings.hasBuildKey())
+    {
+    AWLog.logDebug("setting build key");
+    scanSettings.setBuildKey(hit.x, hit.y, hit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw));
+//    player.addChatMessage("Setting Scan Build Position and Facing (Step 3/4)");
+    }
+  ItemStructureSettings.setSettingsFor(stack, scanSettings);
   }
 
 
