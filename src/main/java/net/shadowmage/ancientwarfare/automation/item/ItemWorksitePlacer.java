@@ -61,6 +61,7 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     return false;
     }
   metadata = BlockIconRotationMap.getBlockMetaForPlacement(player);
+  AWLog.logDebug("placing block with metadata of: "+metadata);
   
   boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
   if(val)

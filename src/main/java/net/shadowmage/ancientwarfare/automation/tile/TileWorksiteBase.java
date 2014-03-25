@@ -167,9 +167,9 @@ public void writeToNBT(NBTTagCompound tag)
     {
     tag.setString("owner", owningPlayer);
     }
-  NBTTagCompound invTag = new NBTTagCompound();
-  inventory.writeToNBT(invTag);
-  tag.setTag("inventory", invTag);
+//  NBTTagCompound invTag = new NBTTagCompound();
+//  inventory.writeToNBT(invTag);
+//  tag.setTag("inventory", invTag);
   }
 
 @Override
@@ -190,10 +190,10 @@ public void readFromNBT(NBTTagCompound tag)
     {
     owningPlayer = tag.getString("owner");
     }
-  if(tag.hasKey("inventory"))
-    {
-    inventory.readFromNBT(tag.getCompoundTag("inventory"));
-    }
+//  if(tag.hasKey("inventory"))
+//    {
+//    inventory.readFromNBT(tag.getCompoundTag("inventory"));
+//    }
   }
 
 @Override

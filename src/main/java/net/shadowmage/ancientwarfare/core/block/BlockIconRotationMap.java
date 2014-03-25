@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIcon;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 /**
@@ -165,7 +166,9 @@ public void registerIcons(IIconRegister reg)
 
 public IIcon getIconFor(int side, int meta)
   {
+//  AWLog.logDebug("getting icon for side: "+side+" meta: "+meta);
   int relativeSide = getRelativeSide(side, meta);
+//  AWLog.logDebug("relative side: "+relativeSide);
   return iconMap.get(relativeSide);
   }
 
