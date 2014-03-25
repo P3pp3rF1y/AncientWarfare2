@@ -6,13 +6,17 @@ import java.util.LinkedList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.automation.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-public class WorkSiteQuarry extends TileWorksiteBase
+public class WorkSiteQuarry extends TileWorksiteBase implements IInventory, ISidedInventory
 {
 
 boolean doneInitialScan = false;
@@ -24,6 +28,19 @@ public WorkSiteQuarry()
   {
   this.maxWorkers = 4;
   canUpdate = true;
+  this.inventory = new InventorySided(27 + 3 + 3);
+  for(int i =0; i <27; i++)
+    {
+    this.inventory.addSidedMapping(0, i, true, true);
+    }
+  for(int i = 27; i<30; i++)
+    {
+    this.inventory.addSidedMapping(1, i, true, true);
+    }
+  for(int i = 30; i < 33; i++)
+    {
+    this.inventory.addSidedMapping(2, i, true, true);
+    }
   }
 
 @Override
@@ -150,4 +167,6 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("currentY", currentY);
   tag.setBoolean("finished", finished);
   }
+
+
 }

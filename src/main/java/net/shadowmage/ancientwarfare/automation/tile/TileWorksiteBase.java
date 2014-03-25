@@ -4,27 +4,33 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import scala.collection.convert.Wrappers.SetWrapper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.automation.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 /**
  * abstract base class for worksite based tile-entities (or at least a template to copy from)
  * 
- * handles the management of worker references and work-bounds.
+ * handles the management of worker references and work-bounds, as well as inventory bridge methods.
+ * 
+ * All implementing classes must initialize the inventory field in their constructor, or things
+ * will go very crashy when the block is accessed in the world.
  *  
  * @author Shadowmage
  *
  */
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite
+public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory
 {
 
 /**
@@ -52,6 +58,8 @@ protected boolean canUpdate;
 private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
 
 String owningPlayer;
+
+InventorySided inventory;
 
 public TileWorksiteBase()
   {
@@ -159,6 +167,9 @@ public void writeToNBT(NBTTagCompound tag)
     {
     tag.setString("owner", owningPlayer);
     }
+  NBTTagCompound invTag = new NBTTagCompound();
+  inventory.writeToNBT(invTag);
+  tag.setTag("inventory", invTag);
   }
 
 @Override
@@ -178,6 +189,10 @@ public void readFromNBT(NBTTagCompound tag)
   if(tag.hasKey("owner"))
     {
     owningPlayer = tag.getString("owner");
+    }
+  if(tag.hasKey("inventory"))
+    {
+    inventory.readFromNBT(tag.getCompoundTag("inventory"));
     }
   }
 
@@ -236,5 +251,95 @@ public final Team getTeam()
 public abstract void writeClientData(NBTTagCompound tag);
 
 public abstract void readClientData(NBTTagCompound tag);
+
+@Override
+public int getSizeInventory()
+  {
+  return inventory.getSizeInventory();
+  }
+
+@Override
+public ItemStack getStackInSlot(int var1)
+  {
+  return inventory.getStackInSlot(var1);
+  }
+
+@Override
+public ItemStack decrStackSize(int var1, int var2)
+  {
+  return inventory.decrStackSize(var1, var2);
+  }
+
+@Override
+public ItemStack getStackInSlotOnClosing(int var1)
+  {
+  return inventory.getStackInSlotOnClosing(var1);
+  }
+
+@Override
+public void setInventorySlotContents(int var1, ItemStack var2)
+  {
+  inventory.setInventorySlotContents(var1, var2);
+  }
+
+@Override
+public String getInventoryName()
+  {
+  return inventory.getInventoryName();
+  }
+
+@Override
+public boolean hasCustomInventoryName()
+  {
+  return inventory.hasCustomInventoryName();
+  }
+
+@Override
+public int getInventoryStackLimit()
+  {
+  return inventory.getInventoryStackLimit();
+  }
+
+@Override
+public boolean isUseableByPlayer(EntityPlayer var1)
+  {
+  return inventory.isUseableByPlayer(var1);
+  }
+
+@Override
+public void openInventory()
+  {
+  inventory.openInventory();
+  }
+
+@Override
+public void closeInventory()
+  {
+  inventory.closeInventory();
+  }
+
+@Override
+public boolean isItemValidForSlot(int var1, ItemStack var2)
+  {
+  return inventory.isItemValidForSlot(var1, var2);
+  }
+
+@Override
+public int[] getAccessibleSlotsFromSide(int var1)
+  {
+  return inventory.getAccessibleSlotsFromSide(var1);
+  }
+
+@Override
+public boolean canInsertItem(int var1, ItemStack var2, int var3)
+  {
+  return inventory.canInsertItem(var1, var2, var3);
+  }
+
+@Override
+public boolean canExtractItem(int var1, ItemStack var2, int var3)
+  {
+  return inventory.canExtractItem(var1, var2, var3);
+  }
 
 }
