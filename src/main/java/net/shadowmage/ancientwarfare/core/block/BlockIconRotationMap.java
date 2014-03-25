@@ -10,7 +10,23 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 /**
- * icon storage class for meta-rotatable blocks
+ * icon storage class for meta-rotatable blocks<br>
+ *<br>
+ * relative side metadata directional map<br>
+ * meta=direction that front of block faces towards (e.g. north==visible when facing south)<br>
+ * 0=south<br>
+ * 1=west<br>
+ * 2=north<br>
+ * 3=east<br>
+ * 4=up:top=south<br>
+ * 5=up:top=west<br>
+ * 6=up:top=north<br>
+ * 7=up:top=east<br>
+ * 8=down:top=south<br>
+ * 9=down:top=west<br>
+ * 10=down:top=north<br>
+ * 11=down:top=east<br>
+ *
  * @author Shadowmage
  */
 public class BlockIconRotationMap
@@ -32,14 +48,6 @@ public static final int RIGHT = 5;
 
 private static final int[][] sideMap = new int[6][16];
 
-/**
-  iconMap.setIconTexture(iconMap.TOP, "ancientwarfare:civic/civicMineQuarryTop");//blank
-  iconMap.setIconTexture(iconMap.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");//chicken
-  iconMap.setIconTexture(iconMap.FRONT, "ancientwarfare:civic/civicMineQuarrySides");
-  iconMap.setIconTexture(iconMap.REAR, "ancientwarfare:civic/civicFarmCocoaSides");
-  iconMap.setIconTexture(iconMap.LEFT, "ancientwarfare:civic/civicFarmNetherSides");
-  iconMap.setIconTexture(iconMap.RIGHT, "ancientwarfare:civic/civicFarmOakSides");  
- */
 static
 {
 // [SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
@@ -75,87 +83,59 @@ sideMap[SOUTH][0] = FRONT;
 sideMap[SOUTH][1] = LEFT;
 sideMap[SOUTH][2] = REAR;
 sideMap[SOUTH][3] = RIGHT;
-sideMap[SOUTH][4] = BOTTOM;
-sideMap[SOUTH][5] = LEFT;
-sideMap[SOUTH][6] = TOP;
-sideMap[SOUTH][7] = RIGHT;
-sideMap[SOUTH][8] = BOTTOM;
-sideMap[SOUTH][9] = RIGHT;
-sideMap[SOUTH][10] = TOP;
-sideMap[SOUTH][11] = LEFT;
+sideMap[SOUTH][4] = TOP;
+sideMap[SOUTH][5] = RIGHT;
+sideMap[SOUTH][6] = BOTTOM;
+sideMap[SOUTH][7] = LEFT;
+sideMap[SOUTH][8] = TOP;
+sideMap[SOUTH][9] = LEFT;
+sideMap[SOUTH][10] = BOTTOM;
+sideMap[SOUTH][11] = RIGHT;
 
 //[SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
 sideMap[NORTH][0] = REAR;
 sideMap[NORTH][1] = RIGHT;
 sideMap[NORTH][2] = FRONT;
 sideMap[NORTH][3] = LEFT;
-sideMap[NORTH][4] = TOP;
-sideMap[NORTH][5] = RIGHT;
-sideMap[NORTH][6] = BOTTOM;
-sideMap[NORTH][7] = LEFT;
-sideMap[NORTH][8] = TOP;
-sideMap[NORTH][9] = LEFT;
-sideMap[NORTH][10] = BOTTOM;
-sideMap[NORTH][11] = RIGHT;
+sideMap[NORTH][4] = BOTTOM;
+sideMap[NORTH][5] = LEFT;
+sideMap[NORTH][6] = TOP;
+sideMap[NORTH][7] = RIGHT;
+sideMap[NORTH][8] = BOTTOM;
+sideMap[NORTH][9] = RIGHT;
+sideMap[NORTH][10] = TOP;
+sideMap[NORTH][11] = LEFT;
 
 //[SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
 sideMap[EAST][0] = LEFT;
 sideMap[EAST][1] = REAR;
 sideMap[EAST][2] = RIGHT;
 sideMap[EAST][3] = FRONT;
-sideMap[EAST][4] = LEFT;
-sideMap[EAST][5] = TOP;
-sideMap[EAST][6] = RIGHT;
-sideMap[EAST][7] = BOTTOM;
-sideMap[EAST][8] = RIGHT;
-sideMap[EAST][9] = TOP;
-sideMap[EAST][10] = LEFT;
-sideMap[EAST][11] = BOTTOM;
+sideMap[EAST][4] = RIGHT;
+sideMap[EAST][5] = BOTTOM;
+sideMap[EAST][6] = LEFT;
+sideMap[EAST][7] = TOP;
+sideMap[EAST][8] = LEFT;
+sideMap[EAST][9] = BOTTOM;
+sideMap[EAST][10] = RIGHT;
+sideMap[EAST][11] = TOP;
 
 //[SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
 sideMap[WEST][0] = RIGHT;
 sideMap[WEST][1] = FRONT;
 sideMap[WEST][2] = LEFT;
 sideMap[WEST][3] = REAR;
-sideMap[WEST][4] = RIGHT;
-sideMap[WEST][5] = BOTTOM;
-sideMap[WEST][6] = LEFT;
-sideMap[WEST][7] = TOP;
-sideMap[WEST][8] = LEFT;
-sideMap[WEST][9] = BOTTOM;
-sideMap[WEST][10] = RIGHT;
-sideMap[WEST][11] = TOP;
+sideMap[WEST][4] = LEFT;
+sideMap[WEST][5] = TOP;
+sideMap[WEST][6] = RIGHT;
+sideMap[WEST][7] = BOTTOM;
+sideMap[WEST][8] = RIGHT;
+sideMap[WEST][9] = TOP;
+sideMap[WEST][10] = LEFT;
+sideMap[WEST][11] = BOTTOM;
 }
 
-/**
- * relative side metadata directional map
- * meta=direction that front of block faces towards (e.g. north==visible when facing south)
- * 0=south
- * 1=west
- * 2=north
- * 3=east
- * 4=up:top=south
- * 5=up:top=west
- * 6=up:top=north
- * 7=up:top=east
- * 8=down:top=south
- * 9=down:top=west
- * 10=down:top=north 
- * 11=down:top=east
- * 
- *   -Y 0
- *  DOWN(0, -1, 0),
-     +Y 1
-    UP(0, 1, 0),
-     -Z 2
-    NORTH(0, 0, -1),
-     +Z 3
-    SOUTH(0, 0, 1),
-    -X 4
-    WEST(-1, 0, 0),
-     +X 5
-    EAST(1, 0, 0),
- */
+
 
 HashMap<Integer, IIcon> iconMap = new HashMap<Integer, IIcon>();
 HashMap<Integer, String> iconTexMap = new HashMap<Integer, String>();
@@ -200,11 +180,11 @@ public static int getBlockMetaForPlacement(EntityPlayer player)
     }
   if(player.rotationPitch<-45)
     {
-    return ((face+2)%4) + (invert? 4 : 8);
+    return face + (invert? 4 : 8);
     }  
   else if(player.rotationPitch>45)
     {
-    return ((face+2)%4) + (invert? 8 : 4);
+    return face + (invert? 8 : 4);
     }
   else
     {
