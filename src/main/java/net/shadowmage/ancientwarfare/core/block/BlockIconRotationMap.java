@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 /**
  * icon storage class for meta-rotatable blocks<br>
+ * does not support animation or swapping of textures during run-time (e.g. furnace lit/unlit)<br> * 
  *<br>
  * relative side metadata directional map<br>
  * meta=direction that front of block faces towards (e.g. north==visible when facing south)<br>
@@ -135,8 +136,6 @@ sideMap[WEST][10] = LEFT;
 sideMap[WEST][11] = BOTTOM;
 }
 
-
-
 HashMap<Integer, IIcon> iconMap = new HashMap<Integer, IIcon>();
 HashMap<Integer, String> iconTexMap = new HashMap<Integer, String>();
 
@@ -159,10 +158,7 @@ public void registerIcons(IIconRegister reg)
 
 public IIcon getIconFor(int side, int meta)
   {
-//  AWLog.logDebug("getting icon for side: "+side+" meta: "+meta);
-  int relativeSide = getRelativeSide(side, meta);
-//  AWLog.logDebug("relative side: "+relativeSide);
-  return iconMap.get(relativeSide);
+  return iconMap.get(getRelativeSide(side, meta));
   }
 
 private static int getRelativeSide(int mcSide, int meta)
