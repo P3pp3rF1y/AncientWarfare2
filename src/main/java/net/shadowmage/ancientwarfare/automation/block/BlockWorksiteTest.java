@@ -15,6 +15,7 @@ public BlockWorksiteTest(String regName)
   super(Material.rock);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
   this.setBlockName(regName);
+  this.setBlockTextureName("ancientwarfare:civic/civicMineQuarrySides");
   }
 
 @Override

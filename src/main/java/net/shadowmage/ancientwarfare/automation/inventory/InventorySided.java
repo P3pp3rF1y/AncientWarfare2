@@ -204,27 +204,26 @@ private void addMapping(int slot, boolean insert, boolean extract)
     SidedAccessibility access = slotMap.get(slot);
     access.insert = insert;
     access.extract = extract;    
-    }
-  
-  int[] slots = new int[slotMap.size()];
-  SidedAccessibility access;
-  for(int i = 0; i < slotMap.size(); i++)
-    {
-    access = slotMap.get(i);
-    slots[i] = access.slot;
-    }
-  accessibleSlots = slots;
+    }  
+  remapSidedIndices();
   }
 
-private void removeMapping(int slot)
+public void removeMapping(int slot)
   {  
   slotMap.remove(slot);  
+  remapSidedIndices();
+  }
+
+private void remapSidedIndices()
+  {
   int[] slots = new int[slotMap.size()];
   SidedAccessibility access;
-  for(int i = 0; i < slotMap.size(); i++)
+  int index = 0;
+  for(Integer i : slotMap.keySet())
     {
     access = slotMap.get(i);
-    slots[i] = access.slot;
+    slots[index] = access.slot;
+    index++;
     }
   accessibleSlots = slots;
   }

@@ -9,8 +9,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class AWAutomationBlockLoader
 {
 
-public static final Block workerTest = new BlockWorkerTest("block.testWorker").setBlockTextureName("ancientwarfare:test_worker");
-public static final Block worksiteTest = new BlockWorksiteTest("block.testWorksite").setBlockTextureName("ancientwarfare:testworksite");
+public static final Block workerTest = new BlockWorkerTest("block.testWorker");
+public static final Block worksiteTest = new BlockWorksiteTest("block.testWorksite");
 
 public static void load()
   {  

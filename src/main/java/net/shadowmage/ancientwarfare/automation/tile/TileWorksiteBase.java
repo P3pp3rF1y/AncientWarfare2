@@ -248,8 +248,18 @@ public final Team getTeam()
   return null;
   }
 
+/**
+ * called when tile is sending an update to client.  implementations should
+ * write any client-side data that needs updating to the tag
+ * @param tag
+ */
 public abstract void writeClientData(NBTTagCompound tag);
 
+/**
+ * called from client-side tile to read client-data from the tag written by
+ * {@link #writeClientData(NBTTagCompound)}
+ * @param tag
+ */
 public abstract void readClientData(NBTTagCompound tag);
 
 @Override
