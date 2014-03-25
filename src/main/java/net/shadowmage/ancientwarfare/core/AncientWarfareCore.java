@@ -1,15 +1,11 @@
 package net.shadowmage.ancientwarfare.core;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
-import net.shadowmage.ancientwarfare.core.container.ContainerTest;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.item.ItemEventHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.network.TestPacket;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -21,7 +17,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 @Mod
 (
@@ -63,7 +58,7 @@ public void preInit(FMLPreInitializationEvent evt)
 @EventHandler
 public void init(FMLInitializationEvent evt)
   {
-  
+ 
   }
 
 @EventHandler
