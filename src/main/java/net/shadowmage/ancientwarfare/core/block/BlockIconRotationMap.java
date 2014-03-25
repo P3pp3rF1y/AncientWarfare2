@@ -3,9 +3,10 @@ package net.shadowmage.ancientwarfare.core.block;
 import java.util.HashMap;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 /**
  * icon storage class for meta-rotatable blocks
@@ -113,7 +114,7 @@ sideMap[EAST][11] = BOTTOM;
 }
 
 /**
- * metadata directional map
+ * relative side metadata directional map
  * meta=direction that front of block faces towards (e.g. north==visible when facing south)
  * 0=north
  * 1=east
@@ -127,6 +128,7 @@ sideMap[EAST][11] = BOTTOM;
  * 9=down:top=east
  * 10=down:top=south 
  * 11=down:top=west
+ * 
  *   -Y 0
  *  DOWN(0, -1, 0),
      +Y 1
@@ -172,6 +174,35 @@ private static int getRelativeSide(int mcSide, int meta)
   return sideMap[mcSide][meta];
   }
 
+public static int getBlockMetaForPlacement(EntityPlayer player)
+  {
+  boolean invert = player.isSneaking();
+  int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
+  if(player.rotationPitch<-45)
+    {
+    return invert? 8 : 4;
+    }  
+  else if(player.rotationPitch>45)
+    {
+    return invert? 4 : 8;
+    }
+  else
+    {
+    switch(face)
+    {
+    case 0://south
+    return invert ? 2 : 0;
+    case 1://west
+    return invert ? 1 : 3;
+    case 2://north
+    return invert ? 0 : 2;
+    case 3://east
+    return invert ? 3 : 1;
+    default:
+    return face;
+    }
+    }
+  }
 
 
 }

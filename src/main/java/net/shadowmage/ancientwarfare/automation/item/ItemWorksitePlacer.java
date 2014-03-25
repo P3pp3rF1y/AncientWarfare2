@@ -6,6 +6,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -59,6 +60,8 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     {
     return false;
     }
+  metadata = BlockIconRotationMap.getBlockMetaForPlacement(player);
+  
   boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
   if(val)
     {
