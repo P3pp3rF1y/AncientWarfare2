@@ -16,7 +16,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.automation.inventory.InventorySided;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 /**

@@ -10,10 +10,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.automation.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class WorkSiteQuarry extends TileWorksiteBase implements IInventory, ISidedInventory

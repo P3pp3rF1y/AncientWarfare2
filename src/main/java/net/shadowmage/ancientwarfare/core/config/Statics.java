@@ -9,4 +9,7 @@ public static final String assetsPath = "";//assets location
 public static final String resourcesPath = "";//internal resources (subfolder of assets)
 public static final String coreModID = "ancientwarfare";
 
+
+public static final boolean fireBlockBreakEvents = false;
+
 }
