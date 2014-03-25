@@ -16,22 +16,30 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 public class BlockIconRotationMap
 {
 
-private static int DOWN = 0;
-private static int UP = 1;
-private static int NORTH = 2;
-private static int SOUTH = 3;
-private static int WEST = 4;
-private static int EAST = 5;
+private static final int DOWN = 0;
+private static final int UP = 1;
+private static final int NORTH = 2;
+private static final int SOUTH = 3;
+private static final int WEST = 4;
+private static final int EAST = 5;
 
-public static int TOP = 0;
-public static int BOTTOM = 1;
-public static int FRONT = 2;
-public static int REAR = 3;
-public static int LEFT = 4;
-public static int RIGHT = 5;
+public static final int TOP = 0;
+public static final int BOTTOM = 1;
+public static final int FRONT = 2;
+public static final int REAR = 3;
+public static final int LEFT = 4;
+public static final int RIGHT = 5;
 
-private static int[][] sideMap = new int[6][16];
+private static final int[][] sideMap = new int[6][16];
 
+/**
+  iconMap.setIconTexture(iconMap.TOP, "ancientwarfare:civic/civicMineQuarryTop");//blank
+  iconMap.setIconTexture(iconMap.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");//chicken
+  iconMap.setIconTexture(iconMap.FRONT, "ancientwarfare:civic/civicMineQuarrySides");
+  iconMap.setIconTexture(iconMap.REAR, "ancientwarfare:civic/civicFarmCocoaSides");
+  iconMap.setIconTexture(iconMap.LEFT, "ancientwarfare:civic/civicFarmNetherSides");
+  iconMap.setIconTexture(iconMap.RIGHT, "ancientwarfare:civic/civicFarmOakSides");  
+ */
 static
 {
 // [SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
@@ -43,10 +51,11 @@ sideMap[DOWN][4] = REAR;
 sideMap[DOWN][5] = REAR;
 sideMap[DOWN][6] = REAR;
 sideMap[DOWN][7] = REAR;
-sideMap[DOWN][8] = TOP;
-sideMap[DOWN][9] = TOP;
-sideMap[DOWN][10] = TOP;
-sideMap[DOWN][11] = TOP;
+sideMap[DOWN][8] = FRONT;
+sideMap[DOWN][9] = FRONT;
+sideMap[DOWN][10] = FRONT;
+sideMap[DOWN][11] = FRONT;
+
 //[SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
 sideMap[UP][0] = TOP;
 sideMap[UP][1] = TOP;
@@ -56,28 +65,16 @@ sideMap[UP][4] = FRONT;
 sideMap[UP][5] = FRONT;
 sideMap[UP][6] = FRONT;
 sideMap[UP][7] = FRONT;
-sideMap[UP][8] = BOTTOM;
-sideMap[UP][9] = BOTTOM;
-sideMap[UP][10] = BOTTOM;
-sideMap[UP][11] = BOTTOM;
+sideMap[UP][8] = REAR;
+sideMap[UP][9] = REAR;
+sideMap[UP][10] = REAR;
+sideMap[UP][11] = REAR;
+
 //[SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
-sideMap[NORTH][0] = FRONT;
-sideMap[NORTH][1] = LEFT;
-sideMap[NORTH][2] = REAR;
-sideMap[NORTH][3] = RIGHT;
-sideMap[NORTH][4] = TOP;
-sideMap[NORTH][5] = RIGHT;
-sideMap[NORTH][6] = BOTTOM;
-sideMap[NORTH][7] = LEFT;
-sideMap[NORTH][8] = TOP;
-sideMap[NORTH][9] = LEFT;
-sideMap[NORTH][10] = BOTTOM;
-sideMap[NORTH][11] = RIGHT;
-//[SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
-sideMap[SOUTH][0] = REAR;
-sideMap[SOUTH][1] = RIGHT;
-sideMap[SOUTH][2] = FRONT;
-sideMap[SOUTH][3] = LEFT;
+sideMap[SOUTH][0] = FRONT;
+sideMap[SOUTH][1] = LEFT;
+sideMap[SOUTH][2] = REAR;
+sideMap[SOUTH][3] = RIGHT;
 sideMap[SOUTH][4] = BOTTOM;
 sideMap[SOUTH][5] = LEFT;
 sideMap[SOUTH][6] = TOP;
@@ -86,24 +83,26 @@ sideMap[SOUTH][8] = BOTTOM;
 sideMap[SOUTH][9] = RIGHT;
 sideMap[SOUTH][10] = TOP;
 sideMap[SOUTH][11] = LEFT;
+
 //[SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
-sideMap[WEST][0] = LEFT;
-sideMap[WEST][1] = REAR;
-sideMap[WEST][2] = RIGHT;
-sideMap[WEST][3] = FRONT;
-sideMap[WEST][4] = RIGHT;
-sideMap[WEST][5] = BOTTOM;
-sideMap[WEST][6] = LEFT;
-sideMap[WEST][7] = TOP;
-sideMap[WEST][8] = LEFT;
-sideMap[WEST][9] = BOTTOM;
-sideMap[WEST][10] = RIGHT;
-sideMap[WEST][11] = TOP;
+sideMap[NORTH][0] = REAR;
+sideMap[NORTH][1] = RIGHT;
+sideMap[NORTH][2] = FRONT;
+sideMap[NORTH][3] = LEFT;
+sideMap[NORTH][4] = TOP;
+sideMap[NORTH][5] = RIGHT;
+sideMap[NORTH][6] = BOTTOM;
+sideMap[NORTH][7] = LEFT;
+sideMap[NORTH][8] = TOP;
+sideMap[NORTH][9] = LEFT;
+sideMap[NORTH][10] = BOTTOM;
+sideMap[NORTH][11] = RIGHT;
+
 //[SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
-sideMap[EAST][0] = RIGHT;
-sideMap[EAST][1] = FRONT;
-sideMap[EAST][2] = LEFT;
-sideMap[EAST][3] = REAR;
+sideMap[EAST][0] = LEFT;
+sideMap[EAST][1] = REAR;
+sideMap[EAST][2] = RIGHT;
+sideMap[EAST][3] = FRONT;
 sideMap[EAST][4] = LEFT;
 sideMap[EAST][5] = TOP;
 sideMap[EAST][6] = RIGHT;
@@ -112,23 +111,37 @@ sideMap[EAST][8] = RIGHT;
 sideMap[EAST][9] = TOP;
 sideMap[EAST][10] = LEFT;
 sideMap[EAST][11] = BOTTOM;
+
+//[SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
+sideMap[WEST][0] = RIGHT;
+sideMap[WEST][1] = FRONT;
+sideMap[WEST][2] = LEFT;
+sideMap[WEST][3] = REAR;
+sideMap[WEST][4] = RIGHT;
+sideMap[WEST][5] = BOTTOM;
+sideMap[WEST][6] = LEFT;
+sideMap[WEST][7] = TOP;
+sideMap[WEST][8] = LEFT;
+sideMap[WEST][9] = BOTTOM;
+sideMap[WEST][10] = RIGHT;
+sideMap[WEST][11] = TOP;
 }
 
 /**
  * relative side metadata directional map
  * meta=direction that front of block faces towards (e.g. north==visible when facing south)
- * 0=north
- * 1=east
- * 2=south
- * 3=west
- * 4=up:top=north
- * 5=up:top=east
- * 6=up:top=south
- * 7=up:top=west
- * 8=down:top=north
- * 9=down:top=east
- * 10=down:top=south 
- * 11=down:top=west
+ * 0=south
+ * 1=west
+ * 2=north
+ * 3=east
+ * 4=up:top=south
+ * 5=up:top=west
+ * 6=up:top=north
+ * 7=up:top=east
+ * 8=down:top=south
+ * 9=down:top=west
+ * 10=down:top=north 
+ * 11=down:top=east
  * 
  *   -Y 0
  *  DOWN(0, -1, 0),
@@ -181,29 +194,21 @@ public static int getBlockMetaForPlacement(EntityPlayer player)
   {
   boolean invert = player.isSneaking();
   int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
+  if(player.isSneaking())
+    {
+    face = (face+2)%4;
+    }
   if(player.rotationPitch<-45)
     {
-    return invert? 8 : 4;
+    return ((face+2)%4) + (invert? 4 : 8);
     }  
   else if(player.rotationPitch>45)
     {
-    return invert? 4 : 8;
+    return ((face+2)%4) + (invert? 8 : 4);
     }
   else
     {
-    switch(face)
-    {
-    case 0://south
-    return invert ? 2 : 0;
-    case 1://west
-    return invert ? 1 : 3;
-    case 2://north
-    return invert ? 0 : 2;
-    case 3://east
-    return invert ? 3 : 1;
-    default:
-    return face;
-    }
+    return (face+2)%4;
     }
   }
 

@@ -24,11 +24,11 @@ public BlockWorksiteTest(String regName)
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
   this.setBlockName(regName);
   iconMap.setIconTexture(iconMap.TOP, "ancientwarfare:civic/civicMineQuarryTop");
-  iconMap.setIconTexture(iconMap.BOTTOM, "ancientwarfare:civic/civicMineQuarryBottom");
+  iconMap.setIconTexture(iconMap.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
   iconMap.setIconTexture(iconMap.FRONT, "ancientwarfare:civic/civicMineQuarrySides");
-  iconMap.setIconTexture(iconMap.REAR, "ancientwarfare:civic/civicMineQuarryBottom");
-  iconMap.setIconTexture(iconMap.LEFT, "ancientwarfare:civic/civicMineQuarryBottom");
-  iconMap.setIconTexture(iconMap.RIGHT, "ancientwarfare:civic/civicMineQuarryBottom");  
+  iconMap.setIconTexture(iconMap.REAR, "ancientwarfare:civic/civicFarmCocoaSides");
+  iconMap.setIconTexture(iconMap.LEFT, "ancientwarfare:civic/civicFarmNetherSides");
+  iconMap.setIconTexture(iconMap.RIGHT, "ancientwarfare:civic/civicFarmOakSides");  
   }
 
 @Override
