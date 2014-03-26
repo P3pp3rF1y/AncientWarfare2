@@ -16,6 +16,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.block.TileInventoryMap;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -57,7 +58,7 @@ protected boolean canUpdate;
 
 private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
 
-String owningPlayer;
+protected String owningPlayer;
 
 InventorySided inventory;
 
@@ -132,7 +133,7 @@ public final void setWorkBoundsMax(BlockPosition max)
   }
 
 public final void setWorkBounds(BlockPosition min, BlockPosition max)
-  {
+  {  
   setWorkBoundsMin(min);
   setWorkBoundsMax(max);
   }

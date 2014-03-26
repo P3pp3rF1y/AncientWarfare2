@@ -11,6 +11,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -27,19 +28,20 @@ public WorkSiteQuarry()
   {
   this.maxWorkers = 4;
   canUpdate = true;
-  this.inventory = new InventorySided(27 + 3 + 3);
+  this.inventory = new InventorySided(27 + 3 + 3, this);
   for(int i =0; i <27; i++)
     {
-    this.inventory.addSidedMapping(0, i, true, true);
+    this.inventory.addSidedMapping(RelativeSide.TOP, i, true, true);
     }
   for(int i = 27; i<30; i++)
     {
-    this.inventory.addSidedMapping(1, i, true, true);
+    this.inventory.addSidedMapping(RelativeSide.LEFT, i, true, true);
+    this.inventory.addSidedMapping(RelativeSide.RIGHT, i, true, true);
     }
   for(int i = 30; i < 33; i++)
     {
-    this.inventory.addSidedMapping(2, i, true, true);
-    }
+    this.inventory.addSidedMapping(RelativeSide.REAR, i, true, true);
+    }  
   }
 
 @Override

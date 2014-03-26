@@ -7,47 +7,67 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.TileInventoryMap;
 
 public class InventorySided implements IInventorySaveable, ISidedInventory
 {
 
-
+TileEntity te;
 private ItemStack[] inventorySlots;
 private boolean isDirty;
 
-private HashMap<Integer, SideAccessibilityMap> accessMap = new HashMap<Integer, SideAccessibilityMap>();
+/**
+ * stores the mapping of base side to inventory side accessed from that side
+ */
+private HashMap<RelativeSide, RelativeSide> sideInventoryAccess = new HashMap<RelativeSide, RelativeSide>();
 
-public InventorySided(int size)
+/**
+ * stores the mapping of base side to accessible slots
+ */
+private HashMap<RelativeSide, SideAccessibilityMap> accessMap = new HashMap<RelativeSide, SideAccessibilityMap>();
+
+public InventorySided(int size, TileEntity te)
   {
+  this.te = te;
   inventorySlots = new ItemStack[size];
   for(int i = 0 ; i < 6; i++)
     {
-    accessMap.put(i, new SideAccessibilityMap(i));
+    accessMap.put(RelativeSide.values()[i], new SideAccessibilityMap(RelativeSide.values()[i]));
+    sideInventoryAccess.put(RelativeSide.values()[i], RelativeSide.values()[i]);
     }
   }
 
-public void addSidedMapping(int side, int slot, boolean insert, boolean extract)
+/**
+ * adds a BASE mapping for the slot/side
+ * @param side
+ * @param slot
+ * @param insert
+ * @param extract
+ */
+public void addSidedMapping(RelativeSide side, int slot, boolean insert, boolean extract)
   {
   accessMap.get(side).addMapping(slot, insert, extract);
   }
 
 @Override
-public int[] getAccessibleSlotsFromSide(int var1)
+public int[] getAccessibleSlotsFromSide(int mcSide)
   {  
-  return accessMap.get(var1).accessibleSlots;
+  return accessMap.get(getAccessSideFor(mcSide, te.getBlockMetadata())).accessibleSlots;
   }
 
 @Override
 public boolean canInsertItem(int var1, ItemStack var2, int var3)
   {  
-  return accessMap.get(var1).canInsert(var2, var3);
+  return accessMap.get(getAccessSideFor(var1, te.getBlockMetadata())).canInsert(var2, var3);
   }
 
 @Override
 public boolean canExtractItem(int var1, ItemStack var2, int var3)
   {
-  return accessMap.get(var1).canExtract(var2, var3);
+  return accessMap.get(getAccessSideFor(var1, te.getBlockMetadata())).canExtract(var2, var3);
   }
 
 @Override
@@ -181,13 +201,31 @@ public boolean isDirty()
   }
 
 
+public RelativeSide getAccessSideFor(int mcSide, int meta)
+  {
+  return sideInventoryAccess.get(RelativeSide.getRelativeSide(mcSide, meta));
+  }
+
+public RelativeSide getAccessSideFor(RelativeSide baseSide)
+  {
+  return sideInventoryAccess.get(baseSide);
+  }
+
+public void setSideMapping(RelativeSide accessSide, RelativeSide inventoryToAccess)
+  {
+  sideInventoryAccess.put(accessSide, inventoryToAccess);
+  }
+
 private class SideAccessibilityMap
 {
-int side;
+/**
+ * the original side mapping for this accessibility map
+ */
+RelativeSide side;
 HashMap<Integer, SidedAccessibility> slotMap = new HashMap<Integer, SidedAccessibility>();
 int[] accessibleSlots;
 
-private SideAccessibilityMap(int side)
+private SideAccessibilityMap(RelativeSide side)
   {
   this.side = side;
   accessibleSlots = new int[]{};

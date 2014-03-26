@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
+import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 
 public class BlockWorksiteTest extends Block
 {
@@ -23,12 +24,12 @@ public BlockWorksiteTest(String regName)
   super(Material.rock);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
   this.setBlockName(regName);
-  iconMap.setIconTexture(iconMap.TOP, "ancientwarfare:civic/civicMineQuarryTop");
-  iconMap.setIconTexture(iconMap.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
-  iconMap.setIconTexture(iconMap.FRONT, "ancientwarfare:civic/civicMineQuarrySides");
-  iconMap.setIconTexture(iconMap.REAR, "ancientwarfare:civic/civicFarmCocoaSides");
-  iconMap.setIconTexture(iconMap.LEFT, "ancientwarfare:civic/civicFarmNetherSides");
-  iconMap.setIconTexture(iconMap.RIGHT, "ancientwarfare:civic/civicFarmOakSides");  
+  iconMap.setIconTexture(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
+  iconMap.setIconTexture(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
+  iconMap.setIconTexture(RelativeSide.FRONT, "ancientwarfare:civic/civicMineQuarrySides");
+  iconMap.setIconTexture(RelativeSide.REAR, "ancientwarfare:civic/civicFarmCocoaSides");
+  iconMap.setIconTexture(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmNetherSides");
+  iconMap.setIconTexture(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmOakSides");  
   }
 
 @Override
