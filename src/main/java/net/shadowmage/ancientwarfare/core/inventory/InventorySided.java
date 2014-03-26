@@ -33,10 +33,12 @@ public InventorySided(int size, TileEntity te)
   {
   this.te = te;
   inventorySlots = new ItemStack[size];
+  RelativeSide side;
   for(int i = 0 ; i < 6; i++)
     {
-    accessMap.put(RelativeSide.values()[i], new SideAccessibilityMap(RelativeSide.values()[i]));
-    sideInventoryAccess.put(RelativeSide.values()[i], RelativeSide.values()[i]);
+    side = RelativeSide.values()[i];
+    accessMap.put(side, new SideAccessibilityMap(side));
+    sideInventoryAccess.put(side, side);
     }
   }
 
@@ -174,6 +176,16 @@ public void readFromNBT(NBTTagCompound tag)
     item = ItemStack.loadItemStackFromNBT(itemTag);
     inventorySlots[slot]=item;
     }
+  int[] sideMap = tag.getIntArray("sideMap");
+  
+  RelativeSide baseSide;
+  RelativeSide mappedSide;
+  for(int i = 0; i < 6; i++)
+    {
+    baseSide = RelativeSide.values()[i];
+    mappedSide = RelativeSide.values()[sideMap[i]];
+    sideInventoryAccess.put(baseSide, mappedSide);
+    }
   }
 
 @Override
@@ -190,8 +202,17 @@ public void writeToNBT(NBTTagCompound tag)
     item.writeToNBT(itemTag);
     itemTag.setShort("slot", (short)i);
     itemList.appendTag(itemTag);
-    }  
+    }
   tag.setTag("itemList", itemList);
+  int[] sideMap = new int[6];
+  
+  RelativeSide baseSide;
+  for(int i = 0; i < 6; i++)
+    {
+    baseSide = RelativeSide.values()[i];
+    sideMap[baseSide.ordinal()] = sideInventoryAccess.get(baseSide).ordinal();
+    } 
+  tag.setIntArray("sideMap", sideMap);
   }
 
 @Override
