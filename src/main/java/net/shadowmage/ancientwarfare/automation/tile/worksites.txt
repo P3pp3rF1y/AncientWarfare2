@@ -1,0 +1,33 @@
+Quarry:
+	Initial Bounds should encompass the top layer of blocks to be quarried.
+		Bounds will be reconfigured on input to include down to y=0;
+	Scanning should be done as:
+		keep ref to current position.
+		when work is done:
+			while nextblock==null
+				nextblock = incrementPosition, check block;
+		initial position will need to be set when the civic is first built.
+			(as status is stored in NBT, should only need called from the builder-item)
+		when scanning for next position, will search top-down at the x,y of the position
+			to make sure there are no interfering blocks placed _above_ the mining area.
+			max Y checked will be the max bounds of the civic.
+		only maintains a single block-position for the 'next' work tick.  should validate that
+			the block needs removed before processing work -- if it is not valid, it should find the next
+			block if available, or process as finished.	
+
+Tree farm:
+	Bounds set as-per normal.
+	Planting blocks need to be set via GUI
+	Will use the tree-walk path-finding method to find all tree blocks attached to a given base block.
+	
+Wheat Farm:	
+	Bounds set as-per normal.
+	Planting blocks need to be set via GUI
+	
+
+All GUIs:
+	Need inventory area for input/access.
+	Main page should also have buttons to swap access-sides for inventories.
+
+Farm GUIs:
+	Will need additional page to configure planting blocks.	
