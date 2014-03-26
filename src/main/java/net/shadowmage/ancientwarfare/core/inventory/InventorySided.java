@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
-import net.shadowmage.ancientwarfare.core.block.TileInventoryMap;
 
 public class InventorySided implements IInventorySaveable, ISidedInventory
 {
