@@ -121,27 +121,8 @@ public final BlockPosition offset(int x, int y, int z)
   }
 
 /**
- * returns the DIFFERENCE between THIS and BASE
- * or the distance and directions needed to travel to
- * get from THIS block to BASE
- * i.e. if THIS x is 800, and base X is 1000, returns 
- * +200. if THIS x is 1000, and base X is 800, returns
- * -200
- * @param base the 
- * @return difference
- */
-public final BlockPosition getOffsetFrom(BlockPosition base)
-  {
-  BlockPosition diff = new BlockPosition();
-  diff.x = base.x - this.x;
-  diff.y = base.y - this.y;
-  diff.z = base.z - this.z;  
-  return diff;
-  }
-
-/**
  * moves the blocks position right by the input amount, relative to the input direction
- * @param facing
+ * @param facing the direction that is 'forward'
  * @param amt
  */
 public final void moveRight(int facing, int amt)
@@ -151,7 +132,7 @@ public final void moveRight(int facing, int amt)
 
 /**
  * moves the blocks position backwards the input amount, relative to the input direction
- * @param facing
+ * @param facing the direction that is 'forward'
  * @param amt
  */
 public final void moveBack(int facing, int amt)
@@ -161,7 +142,7 @@ public final void moveBack(int facing, int amt)
 
 /**
  * moves the blocks position left the input amount, relative to the input direction
- * @param facing
+ * @param facing the direction that is 'forward'
  * @param amt
  */
 public final void moveLeft(int facing, int amt)
@@ -171,7 +152,7 @@ public final void moveLeft(int facing, int amt)
 
 /**
  * moves the blocks position forwards the input amount, relative to the input direction
- * @param facing
+ * @param facing the direction that is 'forward'
  * @param amt
  */
 public final void moveForward(int facing, int amt)
@@ -179,21 +160,29 @@ public final void moveForward(int facing, int amt)
   this.offsetForHorizontalDirection(facing, amt);
   }
 
-//|| 0 = x- || 1 = x+ || 2 = z- || 3 = z+ ||
-public final void offsetForHorizontalDirection(int side)
+/**
+ * 
+ * @param direction MC direction (0=south, 1=west, 2=north, 3=east)
+ */
+public final void offsetForHorizontalDirection(int direction)
   {
-  if(side==0){this.z++;}
-  else if(side==1){this.x--;}
-  else if(side==2){this.z--;}
-  else if(side==3){this.x++;}
+  if(direction==0){this.z++;}
+  else if(direction==1){this.x--;}
+  else if(direction==2){this.z--;}
+  else if(direction==3){this.x++;}
   }
 
-public final void offsetForHorizontalDirection(int side, int amt)
+/**
+ * 
+ * @param direction MC direction (0=south, 1=west, 2=north, 3=east)
+ * @param amt how far to move in the given direction
+ */
+public final void offsetForHorizontalDirection(int direction, int amt)
   {
-  if(side==0){this.z+=amt;}
-  else if(side==1){this.x-=amt;}
-  else if(side==2){this.z-=amt;}
-  else if(side==3){this.x+=amt;}
+  if(direction==0){this.z+=amt;}
+  else if(direction==1){this.x-=amt;}
+  else if(direction==2){this.z-=amt;}
+  else if(direction==3){this.x+=amt;}
   }
 
 public final boolean equals(BlockPosition pos)
@@ -212,9 +201,19 @@ public final String toString()
   return "X:"+this.x+" Y:"+this.y+" Z:"+this.z;
   }
 
-public final void offsetForMCSide(int side)
+/**
+ * offset towards the side clicked on.<br>
+ * 0=down<br>
+ * 1=up<br>
+ * 2=north<br>
+ * 3=south<br>
+ * 4=east<br>
+ * 5=west<br>
+ * @param mcSide
+ */
+public final void offsetForMCSide(int mcSide)
   {
-  switch (side)
+  switch (mcSide)
   {
   case 0:
   --y;
