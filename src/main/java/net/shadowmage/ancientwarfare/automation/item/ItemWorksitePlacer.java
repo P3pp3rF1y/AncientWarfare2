@@ -6,6 +6,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -66,6 +67,11 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
   if(val)
     {
+    TileWorksiteBase worksite = (TileWorksiteBase) world.getTileEntity(x, y, z);
+    BlockPosition p1 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos1"));
+    BlockPosition p2 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos2"));
+    worksite.setOwningPlayer(player.getCommandSenderName());
+    worksite.setWorkBounds(BlockTools.getMin(p1, p2), BlockTools.getMax(p1, p2));
     stack.getTagCompound().removeTag("pos1");
     stack.getTagCompound().removeTag("pos2");
     }
