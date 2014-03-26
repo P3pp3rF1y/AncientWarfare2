@@ -79,9 +79,11 @@ public StructureTemplate scan(World world, BlockPosition min, BlockPosition max,
   key.x = key.x - min.x;
   key.y = key.y - min.y;
   key.z = key.z - min.z; 
+  BlockTools.rotateInArea(key, xSize, zSize, turns); 
     
   short[] templateRuleData = new short[xSize*ySize*zSize];
-  BlockTools.rotateInArea(key, xSize, zSize, turns);      
+  
+  
   HashMap<String, List<TemplateRuleBlock>> pluginBlockRuleMap = new HashMap<String, List<TemplateRuleBlock>>();  
   List<TemplateRule> currentRulesAll = new ArrayList<TemplateRule>();
   Block scannedBlock;
@@ -104,6 +106,7 @@ public StructureTemplate scan(World world, BlockPosition min, BlockPosition max,
         destination.y = scanY - min.y; 
         destination.z = scanZ - min.z;
         BlockTools.rotateInArea(destination, xSize, zSize, turns);
+        
         scannedBlock = world.getBlock(scanX, scanY, scanZ);
         if(scannedBlock!=null && scannedBlock!=Blocks.air)
           {   

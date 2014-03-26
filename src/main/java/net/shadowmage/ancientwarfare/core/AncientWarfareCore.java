@@ -49,7 +49,6 @@ public void preInit(FMLPreInitializationEvent evt)
   log = evt.getModLog();
   Statics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
   NetworkHandler.INSTANCE.registerNetwork();
-  FMLCommonHandler.instance().bus().register(this);
   MinecraftForge.EVENT_BUS.register(AWGameData.INSTANCE);
   MinecraftForge.EVENT_BUS.register(new ItemEventHandler());
   proxy.registerClient();
@@ -65,18 +64,6 @@ public void init(FMLInitializationEvent evt)
 public void postInit(FMLPostInitializationEvent evt)
   {
   config.save();
-  }
-
-@SubscribeEvent
-public void onLogin(PlayerEvent.PlayerLoggedInEvent evt)
-  {
-//  String msg = "player logged in...";
-//  AWLog.logDebug(msg);
-//  if(!evt.player.worldObj.isRemote)
-//    {
-//    NetworkHandler.sendToPlayer((EntityPlayerMP)evt.player, new TestPacket());
-//    FMLNetworkHandler.openGui(evt.player, this, NetworkHandler.GUI_TEST, evt.player.worldObj, 0, 0, 0);
-//    }  
   }
 
 }

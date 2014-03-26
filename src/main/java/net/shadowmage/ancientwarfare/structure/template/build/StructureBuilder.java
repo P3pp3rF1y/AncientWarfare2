@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -68,6 +69,8 @@ public StructureBuilder(World world, StructureTemplate template, int face, int x
     }
   
   bb = new StructureBB(x, y, z, face, template);  
+
+  AWLog.logDebug("created BB for structure: "+bb.min +" :: "+bb.max);
   /**
    * initialize the first target destination so that the structure is ready to start building when called on to build
    */

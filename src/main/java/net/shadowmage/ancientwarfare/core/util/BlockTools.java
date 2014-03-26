@@ -110,117 +110,6 @@ public static float rotateFloatZ(float x, float z, int turns)
   return z;
   }
 
-public static int getCardinalFromSide(ForgeDirection theSide)
-  {
-  int side;
-  switch(theSide.ordinal())
-  {
-  case 2://n
-  side = 2;
-  break;
-  
-  case 3://s
-  side = 0;
-  break;
-  
-  case 4://w
-  side = 3;
-  break;
-  
-  case 5://e
-  side = 1;
-  break;
-  
-  default:
-  side = -1;
-  break;  
-  }    
-  return side;
-  }
-
-public static ForgeDirection getLeft(ForgeDirection a)
-  {
-  switch(a)
-  {
-  case SOUTH:
-  return ForgeDirection.EAST;
-  case WEST:
-  return ForgeDirection.SOUTH;
-  case NORTH:
-  return ForgeDirection.WEST;
-  case EAST:
-  return ForgeDirection.NORTH;
-  case DOWN:
-    break;
-  case UNKNOWN:
-    break;
-  case UP:
-    break;
-  default:
-    break;
-  }
-  return a;
-  }
-
-public static ForgeDirection getRight(ForgeDirection a)
-  {
-  switch(a)
-  {
-  case SOUTH:
-  return ForgeDirection.WEST;
-  case WEST:
-  return ForgeDirection.NORTH;
-  case NORTH:
-  return ForgeDirection.EAST;
-  case EAST:
-  return ForgeDirection.SOUTH;
-    case DOWN:
-      break;
-    case UNKNOWN:
-      break;
-    case UP:
-      break;
-    default:
-      break;
-  }
-  return a;
-  }
-
-public static ForgeDirection rotateRight(ForgeDirection a, int rot)
-  {
-  for(int i = 0; i< rot; i++)
-    {
-    a = getRight(a);
-    }
-  return a;
-  }
-
-public static ForgeDirection getOpposite(ForgeDirection a)
-  {
-  return a.getOpposite();
-  }
-
-public static ForgeDirection getForgeDirectionFromCardinal(int side)
-  {
-  switch(side)
-  {
-  case 2://n
-  return ForgeDirection.NORTH;
-  
-  case 0://s
-  return ForgeDirection.SOUTH;
-  
-  case 3://w
-  return ForgeDirection.EAST;
-  
-  case 1://e
-  return ForgeDirection.WEST;
-  
-  default:
-  return ForgeDirection.UNKNOWN;
-  }    
-  }
-
 public static BlockPosition getAverageOf(BlockPosition ... positions)
   {  
   float x = 0;
@@ -341,6 +230,11 @@ public static BlockPosition rotateAroundOrigin(BlockPosition pos, int turns)
   return pos;
   }
 
+/**
+ * rotate a position around its origin (0,0,0), in 90' clockwise steps
+ * @param pos
+ * @return
+ */
 public static BlockPosition rotateAroundOrigin(BlockPosition pos)
   {
   int x = pos.x;
@@ -429,18 +323,35 @@ public static boolean isPositionWithinBounds(BlockPosition test, BlockPosition p
   return false;
   }
 
+/**
+ * return a new BlockPosition containing the minimum coordinates from the two passed in BlockPositions
+ * @param pos1
+ * @param pos2
+ * @return
+ */
 public static BlockPosition getMin(BlockPosition pos1, BlockPosition pos2)
   {
   BlockPosition pos = new BlockPosition(Trig.getMin(pos1.x, pos2.x), Trig.getMin(pos1.y, pos2.y), Trig.getMin(pos1.z, pos2.z));
   return pos;
   }
 
+/**
+ * return a new BlockPosition containing the maximum coordinates from the two passed in BlockPositions
+ * @param pos1
+ * @param pos2
+ * @return
+ */
 public static BlockPosition getMax(BlockPosition pos1, BlockPosition pos2)
   {
   BlockPosition pos = new BlockPosition(Trig.getMax(pos1.x, pos2.x), Trig.getMax(pos1.y, pos2.y), Trig.getMax(pos1.z, pos2.z));
   return pos;
   }
 
+/**
+ * return an MC directional facing int for a players rotationYaw
+ * @param rotation
+ * @return (0-3) for south, west, north, east respectively
+ */
 public static int getPlayerFacingFromYaw(float rotation)
   {
   double yaw = (double)rotation;
@@ -459,6 +370,15 @@ public static int getPlayerFacingFromYaw(float rotation)
   return facing;
   }
 
+/**
+ * rotates a given block-position in a given area by the number of turns.  Used by templates
+ * to get a relative position.
+ * @param pos
+ * @param xSize
+ * @param zSize
+ * @param turns
+ * @return
+ */
 public static BlockPosition rotateInArea(BlockPosition pos, int xSize, int zSize, int turns)
   {
   int xSize1 = xSize;

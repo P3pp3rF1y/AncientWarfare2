@@ -24,7 +24,7 @@ public ItemWorksitePlacer(Block p_i45328_1_)
 @Override
 public void onKeyAction(EntityPlayer player, ItemStack stack)
   {
-  BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+  BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
   if(hit==null)
     {
     return;

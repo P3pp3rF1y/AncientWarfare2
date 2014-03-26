@@ -27,9 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.item.ItemClickable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -107,8 +104,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
        */
       return;
       }
-    BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
-    AWLog.logDebug("constructing template: "+template);    
+    BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);    
     StructureBuilder builder = new StructureBuilder(player.worldObj, template, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), bpHit.x, bpHit.y, bpHit.z);
     builder.instantConstruction();
     }  

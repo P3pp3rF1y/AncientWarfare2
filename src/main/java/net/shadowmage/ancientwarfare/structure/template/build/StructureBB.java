@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build;
 
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -42,65 +43,26 @@ public StructureBB(int x, int y, int z, int face, int xSize, int ySize, int zSiz
 
 public final StructureBB setFromStructure(int x, int y, int z, int face, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset)
   {
-  int destXSize = xSize;
-  int destZSize = zSize;
-  
-  int turns = ((face+2)%4);
-  int swap;
-  for(int i = 0; i<turns; i++)
-    {
-    swap = destXSize;
-    destXSize = destZSize;
-    destZSize = swap;
-    }
-    
-  /**
-   * here we take the back-left corner in template space
-   */
-  BlockPosition destinationKey = new BlockPosition(0, 0, 0);
-  
-  /**
-   * and we rotate that corner into local space
-   */
-  BlockTools.rotateInArea(destinationKey, xSize, zSize, turns);
-  
-  /**
-   * we are placing destination1 to be the back-let corner of the structure. offset it by the rotated corner to get the correct corner
-   */
-  BlockPosition destination1 = new BlockPosition(x-destinationKey.x, y-destinationKey.y, z-destinationKey.z);
-  
-  /**
-   * next, offset the back-left corner by the structures build-key offsets
-   */
-  destination1.moveLeft(face, xOffset);
-  destination1.moveForward(face, zOffset);
-  destination1.y-=yOffset;
-  
-  /**
-   * copy position to make the front-right corner.
-   */
-  BlockPosition destination2 = new BlockPosition(destination1);
-  
-  /**
-   * offset this position directly by the size of the structure to get the actual front-right corner
-   */
-  destination2.offset(destXSize-1, ySize-1, destZSize-1);            
-  
-  /**
-   * calculate structure bounding box min/max from destination 1 and destination 2
-   */
-  this.min = BlockTools.getMin(destination1, destination2);
-  this.max = BlockTools.getMax(destination1, destination2);
+  int turns = (face+2)%4;  
+  BlockPosition c1 = new BlockPosition(-xOffset, -yOffset, -zOffset);
+  BlockPosition c2 = c1.copy();
+  c2.offset(xSize-1, ySize-1, zSize-1);
+  BlockTools.rotateAroundOrigin(c1, turns);
+  BlockTools.rotateAroundOrigin(c2, turns);
+  c1.offset(x, y, z);
+  c2.offset(x, y, z);  
+  this.min = BlockTools.getMin(c1, c2);
+  this.max = BlockTools.getMax(c1, c2);    
   return this;
   }
 
-public BlockPosition getPositionInTemplate(int x, int y, int z, int face)
-  {
-  BlockPosition pos = new BlockPosition(x-min.x, y-min.y, z-min.z);
-  int turns = ( face + 2 ) % 4;
-  BlockTools.rotateInArea(pos, this.getXSize(), this.getZSize(), turns);  
-  return pos;
-  }
+//public BlockPosition getPositionInTemplate(int x, int y, int z, int face)
+//  {
+//  BlockPosition pos = new BlockPosition(x-min.x, y-min.y, z-min.z);
+//  int turns = ( face + 2 ) % 4;
+//  BlockTools.rotateInArea(pos, this.getXSize(), this.getZSize(), turns);  
+//  return pos;
+//  }
 
 public StructureBB(BlockPosition pos1, BlockPosition pos2)
   {
