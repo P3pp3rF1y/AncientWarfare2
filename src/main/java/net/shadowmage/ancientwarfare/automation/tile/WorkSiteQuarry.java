@@ -42,6 +42,7 @@ public WorkSiteQuarry()
     {
     this.inventory.addSidedMapping(RelativeSide.REAR, i, true, true);
     }  
+ 
   }
 
 @Override

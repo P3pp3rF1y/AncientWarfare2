@@ -11,6 +11,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 
+/**
+ * re-mappable sided inventory.<br>
+ * @author Shadowmage
+ *
+ */
 public class InventorySided implements IInventorySaveable, ISidedInventory
 {
 
@@ -39,6 +44,16 @@ public InventorySided(int size, TileEntity te)
     accessMap.put(side, new SideAccessibilityMap(side));
     sideInventoryAccess.put(side, side);
     }
+  }
+
+/**
+ * remove a slot from being accessible from a specific block side
+ * @param blockSide
+ * @param slot
+ */
+public void removeSideMapping(RelativeSide blockSide, int slot)
+  {
+  accessMap.get(blockSide).removeMapping(slot);
   }
 
 /**
@@ -220,17 +235,37 @@ public boolean isDirty()
   return isDirty;
   }
 
+public int[] getAccessibleSlotsFor(RelativeSide blockSide)
+  {
+  return accessMap.get(sideInventoryAccess.get(blockSide)).accessibleSlots;
+  }
 
+/**
+ * return the inventory side that should be accessed from the input mcSide for input meta
+ * @param mcSide
+ * @param meta
+ * @return
+ */
 public RelativeSide getAccessSideFor(int mcSide, int meta)
   {
   return sideInventoryAccess.get(RelativeSide.getRelativeSide(mcSide, meta));
   }
 
+/**
+ * return the inventory side that should be accessed for the input relative side
+ * @param baseSide
+ * @return
+ */
 public RelativeSide getAccessSideFor(RelativeSide baseSide)
   {
   return sideInventoryAccess.get(baseSide);
   }
 
+/**
+ * set an inventory side mapping.
+ * @param accessSide the side of the block that access will happen from
+ * @param inventoryToAccess the side of the inventory that will be accessed from accessSide
+ */
 public void setSideMapping(RelativeSide accessSide, RelativeSide inventoryToAccess)
   {
   sideInventoryAccess.put(accessSide, inventoryToAccess);
@@ -242,7 +277,15 @@ private class SideAccessibilityMap
  * the original side mapping for this accessibility map
  */
 RelativeSide side;
+
+/**
+ * a map of slot number to accessibility flags (canInsert, canExtract)
+ */
 HashMap<Integer, SidedAccessibility> slotMap = new HashMap<Integer, SidedAccessibility>();
+
+/**
+ * storage array of accessible slot indices
+ */
 int[] accessibleSlots;
 
 private SideAccessibilityMap(RelativeSide side)
