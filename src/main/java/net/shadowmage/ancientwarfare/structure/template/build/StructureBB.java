@@ -43,12 +43,32 @@ public StructureBB(int x, int y, int z, int face, int xSize, int ySize, int zSiz
 
 public final StructureBB setFromStructure(int x, int y, int z, int face, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset)
   {
+  /**
+   * calculate # of turns from default template rotation
+   */
   int turns = (face+2)%4;  
+  
+  /**
+   * since we want back-left corner (relative to facing and block clicked on)
+   * we will start by taking the template offsets
+   */
   BlockPosition c1 = new BlockPosition(-xOffset, -yOffset, -zOffset);
   BlockPosition c2 = c1.copy();
+  /**
+   * c2 is the front-right corner, so it is c1 offset by template size
+   */
   c2.offset(xSize-1, ySize-1, zSize-1);
+  
+  /**
+   * by rotating the template-space offsets around a 0,0,0 origin, we arrive at the local-space
+   * coordinates for those offsets
+   */
   BlockTools.rotateAroundOrigin(c1, turns);
   BlockTools.rotateAroundOrigin(c2, turns);
+  
+  /**
+   * last, offset the corners by the clicked position to translate into world coordinates
+   */
   c1.offset(x, y, z);
   c2.offset(x, y, z);  
   this.min = BlockTools.getMin(c1, c2);
