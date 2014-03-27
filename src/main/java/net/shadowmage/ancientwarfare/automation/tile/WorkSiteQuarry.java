@@ -203,7 +203,7 @@ public boolean onBlockClicked(EntityPlayer player)
   AWLog.logDebug("worksite clicked by : "+player + " client: "+player.worldObj.isRemote);
   if(!player.worldObj.isRemote)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_TEST, xCoord, yCoord, zCoord);
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_INVENTORY, xCoord, yCoord, zCoord);
     return true;
     }
   return false;

@@ -11,7 +11,6 @@ public class PacketHandlerServer
 @SubscribeEvent
 public void onServerPacket(ServerCustomPacketEvent evt)
   {
-  AWLog.logDebug("server packet received");
   PacketBase packet = PacketBase.readPacket(evt.packet.payload());
   packet.setPlayer(((NetHandlerPlayServer)evt.handler).playerEntity);
   packet.execute();

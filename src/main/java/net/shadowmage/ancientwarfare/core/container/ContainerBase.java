@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketGui;
 public class ContainerBase extends Container implements ISlotClickCallback
 {
 
-protected EntityPlayer player;
+public EntityPlayer player;
 IContainerGuiCallback gui;
 IInventory[] inventories;//sub-classes need to define this member with the proper size, it should NEVER be null
 
@@ -80,7 +80,7 @@ protected final void sendDataToGui(NBTTagCompound data)
  */
 public final void onPacketData(NBTTagCompound data)
   {
-  AWLog.logDebug("receiving gui packet to container...");
+  AWLog.logDebug("receiving gui packet to container..."+data);
   if(data.hasKey("slot"))
     {
     data = data.getCompoundTag("slot");
@@ -99,8 +99,14 @@ public final void onPacketData(NBTTagCompound data)
     }
   else
     {
+    AWLog.logDebug("passing packet data to container inner handling method for container: "+this);
     handlePacketData(data);
     }
+  }
+
+public void sendInitData()
+  {
+  
   }
 
 /**
@@ -200,6 +206,14 @@ protected int getInventoryNumber(IInventory inventory)
     index++;
     }
   return 0;
+  }
+
+public void refreshGui()
+  {
+  if(this.gui!=null)
+    {
+    this.gui.refreshGui();
+    }
   }
 
 }

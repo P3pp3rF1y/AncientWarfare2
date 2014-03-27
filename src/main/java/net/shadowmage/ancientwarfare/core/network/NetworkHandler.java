@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import cpw.mods.fml.common.network.FMLEventChannel;
@@ -30,7 +31,8 @@ public static final int GUI_TEST = 0;
 public static final int GUI_SCANNER = 1;
 public static final int GUI_BUILDER = 2;
 public static final int GUI_SPAWNER = 3;
-public static final int GUI_WORKSITE_TEST = 4;
+public static final int GUI_WORKSITE_INVENTORY = 4;
+public static final int GUI_WORKSITE_INVENTORY_SIDE_ADJUST = 5;
 
 private FMLEventChannel channel;
 
@@ -176,6 +178,10 @@ public final void openGui(EntityPlayer player, int id, int x, int y, int z)
   else
     {
     FMLNetworkHandler.openGui(player, AncientWarfareCore.instance, id, player.worldObj, x, y, z);
+    if(player.openContainer instanceof ContainerBase)
+      {
+      ((ContainerBase)player.openContainer).sendInitData();
+      }
     }
   }
 }

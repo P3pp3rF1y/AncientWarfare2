@@ -18,12 +18,13 @@ public NBTTagCompound packetData;
 
 public PacketGui()
   {
-  
+  packetData = new NBTTagCompound();
   }
 
 public void setOpenGui(int id, int x, int y, int z)
   {
   packetData = new NBTTagCompound();
+  packetData.setBoolean("openGui", true);
   packetData.setInteger("id", id);
   packetData.setInteger("x", x);
   packetData.setInteger("y", y);
@@ -63,7 +64,6 @@ protected void readFromStream(ByteBuf data)
 @Override
 protected void execute()
   {
-  AWLog.logDebug("executing gui packet");
   if(packetData.hasKey("openGui"))
     {
     NetworkHandler.INSTANCE.openGui(player, packetData.getInteger("id"), packetData.getInteger("x"), packetData.getInteger("y"), packetData.getInteger("z"));
@@ -71,6 +71,10 @@ protected void execute()
   else if(player.openContainer instanceof ContainerBase)
     {
     ((ContainerBase)player.openContainer).onPacketData(packetData);
+    }
+  else
+    {
+    AWLog.logError("Invalid target found when processing GUI/Container packet : "+player.openContainer + " packet: "+packetData);
     }
   }
 

@@ -62,7 +62,8 @@ public void render(int mouseX, int mouseY, float partialTick)
 
 /**
  * sub-classes may override this as an on-pressed callback
- * method is called whenever the 'pressed' sound is played
+ * method is called whenever the 'pressed' sound is played.
+ * uses built-in click listener for sound to trigger method
  */
 protected void onPressed()
   {

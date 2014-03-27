@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -49,6 +50,8 @@ private int tooltipY;
 private String backgroundTextureName;
 private ResourceLocation backgroundTexture;
 
+protected EntityPlayer player;
+
 public GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, String backgroundTexture)
   {
   super(par1Container);
@@ -60,6 +63,7 @@ public GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, Strin
     this.backgroundTextureName = backgroundTexture;
     this.backgroundTexture = new ResourceLocation(Statics.coreModID, "textures/gui/"+backgroundTextureName);    
     }
+  this.player = ((ContainerBase)par1Container).player;
   }
 
 @Override

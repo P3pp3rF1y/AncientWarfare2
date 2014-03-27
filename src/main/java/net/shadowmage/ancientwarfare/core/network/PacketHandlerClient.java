@@ -11,7 +11,6 @@ public class PacketHandlerClient
 @SubscribeEvent
 public void onClientPacket(ClientCustomPacketEvent evt)
   {
-  AWLog.logDebug("client packet received");
   PacketBase packet = PacketBase.readPacket(evt.packet.payload());
   packet.setPlayer(Minecraft.getMinecraft().thePlayer);
   packet.execute();
