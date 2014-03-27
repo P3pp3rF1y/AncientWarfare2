@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -183,6 +184,11 @@ protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
     Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTexture);
     RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 256, width/2 - xSize/2, height/2 - ySize/2, xSize, ySize);
+    }
+  Minecraft.getMinecraft().renderEngine.bindTexture(GuiElement.widgetTexture1);
+  for(Slot slot : (List<Slot>)this.inventorySlots.inventorySlots)
+    {
+    this.drawTexturedModalRect(slot.xDisplayPosition-1+guiLeft, slot.yDisplayPosition-1+guiTop, 152, 120, 18, 18);
     }
   }
 

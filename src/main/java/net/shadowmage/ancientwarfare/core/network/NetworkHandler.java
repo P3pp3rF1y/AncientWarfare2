@@ -30,6 +30,7 @@ public static final int GUI_TEST = 0;
 public static final int GUI_SCANNER = 1;
 public static final int GUI_BUILDER = 2;
 public static final int GUI_SPAWNER = 3;
+public static final int GUI_WORKSITE_TEST = 4;
 
 private FMLEventChannel channel;
 
@@ -154,14 +155,14 @@ public final Object getClientGuiElement(int ID, EntityPlayer player, World world
   return gui;
   }
 
-public final void registerContainer(int id, Class <? extends ContainerBase> containerClazz)
+public static final void registerContainer(int id, Class <? extends ContainerBase> containerClazz)
   {
-  this.containerClasses.put(id, containerClazz);
+  INSTANCE.containerClasses.put(id, containerClazz);
   }
 
-public final void registerGui(int id, Class <? extends GuiContainerBase> guiClazz)
+public static final void registerGui(int id, Class <? extends GuiContainerBase> guiClazz)
   {
-  this.guiClasses.put(id, guiClazz);
+  INSTANCE.guiClasses.put(id, guiClazz);
   }
 
 public final void openGui(EntityPlayer player, int id, int x, int y, int z)

@@ -3,12 +3,12 @@ package net.shadowmage.ancientwarfare.automation;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTest;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -62,6 +62,7 @@ public void preInit(FMLPreInitializationEvent evt)
   AWAutomationBlockLoader.load();
   AWAutomationItemLoader.load();
 
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_TEST, ContainerWorksiteTest.class);
  
   AWLog.log("Ancient Warfare Automation Pre-Init completed");
   }

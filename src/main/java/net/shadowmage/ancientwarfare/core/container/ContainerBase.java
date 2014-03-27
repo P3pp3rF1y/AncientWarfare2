@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -26,6 +27,39 @@ public ContainerBase(EntityPlayer player, int x, int y, int z)
 public final void setGui(IContainerGuiCallback gui)
   {
   this.gui = gui;
+  }
+
+/**
+ * @param player the player to add hotbar from
+ * @param tx the upper-left X coordinate of the 9x3 inventory block
+ * @param ty the upper-left Y coordinate of the 9x3 inventory block
+ * @param gap the gap size between upper (9x3) and lower(9x1) inventory blocks, in pixels 
+ */
+protected int addPlayerSlots(EntityPlayer player, int tx, int ty, int gap)
+  {
+  int y;
+  int x;
+  int slotNum;
+  int xPos; 
+  int yPos;
+  for (x = 0; x < 9; ++x)//add player hotbar slots
+    {
+    slotNum = x;
+    xPos = tx + x *18;
+    yPos = ty+gap + 3*18;
+    this.addSlotToContainer(new Slot(player.inventory, x, xPos, yPos));
+    }
+  for (y = 0; y < 3; ++y)
+    {
+    for (x = 0; x < 9; ++x)
+      {
+      slotNum = y*9 + x + 9;// +9 is to increment past hotbar slots
+      xPos = tx + x * 18;
+      yPos = ty + y * 18;
+      this.addSlotToContainer(new Slot(player.inventory, slotNum, xPos, yPos));
+      }
+    }
+  return ty + (4*18) + gap + 24;//no clue why I need an extra 24...
   }
 
 /**
@@ -58,7 +92,10 @@ public final void onPacketData(NBTTagCompound data)
     }
   else if(data.hasKey("gui"))
     {
-    
+    if(this.gui!=null)
+      {
+      this.gui.handlePacketData(data.getTag("gui"));
+      }
     }
   else
     {

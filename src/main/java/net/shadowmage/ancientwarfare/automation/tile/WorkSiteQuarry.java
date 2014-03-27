@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,33 +9,41 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.scoreboard.Team;
+import net.minecraft.server.MinecraftServer;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class WorkSiteQuarry extends TileWorksiteBase implements IInventory, ISidedInventory
 {
 
-boolean doneInitialScan = false;
 boolean finished;
-int currentY = 0;
-LinkedList<BlockPosition> blocksToRemove = new LinkedList<BlockPosition>();
+int currentX, currentY, currentZ;//position within bounds that is the 'active' position
+BlockPosition nextPosition = new BlockPosition();
 
 public WorkSiteQuarry()
   {
   this.maxWorkers = 4;
-  canUpdate = true;
+  canUpdate = false;//purely event-driven, no polling
   this.inventory = new InventorySided(27 + 3 + 3, this);
+  this.inventory.addSlotViewMap(RelativeSide.TOP, 8, 8, "guistrings.relativeside.top");
+  this.inventory.addSlotViewMap(RelativeSide.FRONT, 8, (3*18)+12+8, "guistrings.relativeside.front");
   for(int i =0; i <27; i++)
     {
     this.inventory.addSidedMapping(RelativeSide.TOP, i, true, true);
+    this.inventory.addSlotViewMapping(RelativeSide.TOP, i, (i%9)*18, (i/9)*18);
     }
-  for(int i = 27; i<30; i++)
+  for(int i = 27, k = 0; i<30; i++, k++)
     {
     this.inventory.addSidedMapping(RelativeSide.LEFT, i, true, true);
     this.inventory.addSidedMapping(RelativeSide.RIGHT, i, true, true);
+    this.inventory.addSlotViewMapping(RelativeSide.FRONT, i, (k%9)*18, (k/9)*18);
     }
   for(int i = 30; i < 33; i++)
     {
@@ -55,84 +62,97 @@ public void doPlayerWork(EntityPlayer player)
 public void updateEntity()
   {
   if(worldObj.isRemote){return;}
-  if(!doneInitialScan)
-    {
-    setWorkBoundsMin(new BlockPosition(xCoord-10, yCoord-1, zCoord-10));
-    setWorkBoundsMax(new BlockPosition(xCoord+10, yCoord-1, zCoord+10));
-    doneInitialScan = true;
-    if(currentY == 0)
-      {
-      currentY = yCoord-1;      
-      }
-    scanNextLevel();    
-    }
-  if(!finished && blocksToRemove.isEmpty())
-    {
-    scanNextLevel();
-    }
   }
 
 @Override
 public boolean hasWork()
   {
-  return !finished && !blocksToRemove.isEmpty();
+  return !finished;
   }
 
 @Override
 public void doWork(IWorker worker)
   {  
-  BlockPosition target = blocksToRemove.pop();
-  if(target!=null)
+  if(validatePosition()!=currentY)
     {
-    Block block = worldObj.getBlock(target.x, target.y, target.z);
-    
-    ArrayList<ItemStack> drops = block.getDrops(worldObj, target.x, target.y, target.z, worldObj.getBlockMetadata(target.x, target.y, target.z), 0);
-    
-    /**
-     * TODO gather block drops
-     */
-    worldObj.setBlockToAir(target.x, target.y, target.z);
-    }  
-  if(blocksToRemove.isEmpty())
+    scanNextPosition();
+    if(finished){return;}
+    }
+  
+  BlockPosition target = nextPosition;
+  Block block = worldObj.getBlock(target.x, target.y, target.z);  
+  ArrayList<ItemStack> drops = block.getDrops(worldObj, target.x, target.y, target.z, worldObj.getBlockMetadata(target.x, target.y, target.z), 0);
+
+  worldObj.setBlockToAir(target.x, target.y, target.z);
+  
+  
+  scanNextPosition();
+  }
+
+/**
+ * 
+ * @return the Y level of the first block to be mined at currentX / currentZ
+ * -1 for invalid / below currentY (will force increment to next block)
+ */
+private int validatePosition()
+  {
+  for(int y = getWorkBoundsMax().y; y>=currentY; y--)
     {
-    scanNextLevel();
+    if(!worldObj.isAirBlock(currentX, y, currentZ) && canHarvest(worldObj.getBlock(currentX, y, currentZ)))
+      {
+      return y;
+      }
+    }
+  return -1;
+  }
+
+private void incrementPosition()
+  {
+  if(finished){return;}
+  currentX++;
+  if(currentX>getWorkBoundsMax().x)
+    {
+    currentX = getWorkBoundsMin().x;
+    currentZ++;
+    if(currentZ>getWorkBoundsMax().z)
+      {
+      currentZ = getWorkBoundsMin().z;
+      currentY--;
+      if(currentY<0)
+        {
+        this.finished = true;
+        }
+      }
     }
   }
 
-private void scanNextLevel()
+private void scanNextPosition()
   {
-  AWLog.logDebug("scanning quarry level. nextY: "+(currentY-1));
-  if(currentY<=1)
+  if(finished){return;}
+  int validY = -1;
+  while(validY<=0 && !finished)
     {
-    finished = true;
-    return;
+    incrementPosition();
+    validY = validatePosition();
     }
-  currentY--;
-  Block block;
-  for(int x = getWorkBoundsMin().x; x<=getWorkBoundsMax().x; x++)
+  if(!finished)
     {
-    for(int z = getWorkBoundsMin().z; z<=getWorkBoundsMax().z; z++)
-      {
-      if(!worldObj.isAirBlock(x, currentY, z))
-        {
-        block = worldObj.getBlock(x, currentY+1, z);
-        if(block==Blocks.lava || block==Blocks.flowing_lava)
-          {
-          continue;
-          }        
-        if(block==null || block.getBlockHardness(worldObj, x, currentY, z)<0)//skip unbreakable blocks
-          {         
-          continue;
-          }        
-        blocksToRemove.add(new BlockPosition(x, currentY, z));
-        }
-      }
-    }  
-  AWLog.logDebug("scanned quarry level. : "+(currentY) + " found :" +blocksToRemove.size() + " blocks to remove");
-  if(blocksToRemove.isEmpty())
-    {
-    scanNextLevel();
+    nextPosition.reassign(currentX, currentY, currentZ);
     }
+  }
+
+private boolean canHarvest(Block block)
+  {
+  return block!=Blocks.flowing_lava && block!=Blocks.lava && block.getBlockHardness(worldObj, currentX, currentY, currentZ)>=0;
+  }
+
+@Override
+public void initWorkSite()
+  {
+  this.getWorkBoundsMin().y = 1;
+  this.currentY = this.getWorkBoundsMax().y;
+  this.currentX = this.getWorkBoundsMin().x;
+  this.currentZ = this.getWorkBoundsMin().z;
   }
 
 @Override
@@ -156,10 +176,12 @@ public void readClientData(NBTTagCompound tag)
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
-  super.readFromNBT(tag);
-  currentY = tag.getInteger("currentY")+1;
+  super.readFromNBT(tag);  
+  currentY = tag.getInteger("currentY");
+  currentX = tag.getInteger("currentX");
+  currentZ = tag.getInteger("currentZ");  
   finished = tag.getBoolean("finished");
-  doneInitialScan = false;
+  nextPosition.read(tag.getCompoundTag("nextPos"));
   }
 
 @Override
@@ -167,7 +189,24 @@ public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
   tag.setInteger("currentY", currentY);
+  tag.setInteger("currentX", currentX);
+  tag.setInteger("currentZ", currentZ);
   tag.setBoolean("finished", finished);
+  NBTTagCompound posTag = new NBTTagCompound();
+  nextPosition.writeToNBT(posTag);
+  tag.setTag("nextPos", posTag);
+  }
+
+@Override
+public boolean onBlockClicked(EntityPlayer player)
+  {
+  AWLog.logDebug("worksite clicked by : "+player + " client: "+player.worldObj.isRemote);
+  if(!player.worldObj.isRemote)
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_TEST, xCoord, yCoord, zCoord);
+    return true;
+    }
+  return false;
   }
 
 

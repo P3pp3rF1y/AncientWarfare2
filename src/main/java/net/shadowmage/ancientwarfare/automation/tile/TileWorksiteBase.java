@@ -59,7 +59,7 @@ private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorke
 
 protected String owningPlayer;
 
-InventorySided inventory;
+public InventorySided inventory;
 
 public TileWorksiteBase()
   {
@@ -121,6 +121,10 @@ public final BlockPosition getWorkBoundsMax()
   return bbMax;
   }
 
+public abstract void initWorkSite();
+
+public abstract boolean onBlockClicked(EntityPlayer player);
+
 public final void setWorkBoundsMin(BlockPosition min)
   {
   bbMin = min;
@@ -135,6 +139,11 @@ public final void setWorkBounds(BlockPosition min, BlockPosition max)
   {  
   setWorkBoundsMin(min);
   setWorkBoundsMax(max);
+  }
+
+public final Team getOwningPlayerTeam()
+  {
+  return worldObj.getScoreboard().getPlayersTeam(owningPlayer);
   }
 
 public final String getOwningPlayer()
@@ -167,9 +176,12 @@ public void writeToNBT(NBTTagCompound tag)
     {
     tag.setString("owner", owningPlayer);
     }
-//  NBTTagCompound invTag = new NBTTagCompound();
-//  inventory.writeToNBT(invTag);
-//  tag.setTag("inventory", invTag);
+  if(inventory!=null)
+    {
+    NBTTagCompound invTag = new NBTTagCompound();
+    inventory.writeToNBT(invTag);
+    tag.setTag("inventory", invTag);    
+    }
   }
 
 @Override
@@ -190,10 +202,10 @@ public void readFromNBT(NBTTagCompound tag)
     {
     owningPlayer = tag.getString("owner");
     }
-//  if(tag.hasKey("inventory"))
-//    {
-//    inventory.readFromNBT(tag.getCompoundTag("inventory"));
-//    }
+  if(tag.hasKey("inventory") && inventory!=null)
+    {
+    inventory.readFromNBT(tag.getCompoundTag("inventory"));
+    }
   }
 
 @Override

@@ -1,6 +1,9 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -24,12 +27,20 @@ private ItemStack[] inventorySlots;
 private boolean isDirty;
 
 /**
- * stores the mapping of base side to inventory side accessed from that side
+ * stores the view-ability map for this inventory.  Should be set during construction of owning tile.
+ * should not be altered during runtime.  Used by containers to lay out inventory slots dynamically.
+ */
+private HashMap<RelativeSide, SideSlotMap> sideViewableMap = new HashMap<RelativeSide, SideSlotMap>();
+
+/**
+ * stores the mapping of base side to inventory side accessed from that side.  Can change during 
+ * run-time / from gui.  Used by ISidedInventory to determine what side index map to retrieve
  */
 private HashMap<RelativeSide, RelativeSide> sideInventoryAccess = new HashMap<RelativeSide, RelativeSide>();
 
 /**
- * stores the mapping of base side to accessible slots
+ * stores the mapping of base side to accessible slots.  Should be set during construction of owning tile.
+ * should not be altered during runtime.  Used by ISidedInventory to retrieve side index map.
  */
 private HashMap<RelativeSide, SideAccessibilityMap> accessMap = new HashMap<RelativeSide, SideAccessibilityMap>();
 
@@ -43,6 +54,46 @@ public InventorySided(int size, TileEntity te)
     side = RelativeSide.values()[i];
     accessMap.put(side, new SideAccessibilityMap(side));
     sideInventoryAccess.put(side, side);
+    }
+  }
+
+public List<Integer> getSlotNumbersViewedForSide(RelativeSide side)
+  {
+  if(sideViewableMap.containsKey(side))
+    {
+    return sideViewableMap.get(side).slotNumbers;
+    }
+  return Collections.emptyList();
+  }
+
+public SideSlotMap getSlotMapForSide(RelativeSide side)
+  {
+  return sideViewableMap.get(side);
+  }
+
+public List<ViewableSlot> getSlotsViewedForSide(RelativeSide side)
+  {
+  if(sideViewableMap.containsKey(side))
+    {
+    return sideViewableMap.get(side).slots;
+    }
+  return Collections.emptyList();
+  }
+
+public void addSlotViewMap(RelativeSide side, int guiX, int guiY, String label)
+  {
+  sideViewableMap.put(side, new SideSlotMap(side, guiX, guiY, label));
+  }
+
+public void addSlotViewMapping(RelativeSide side, int slot, int viewX, int viewY)
+  {
+  if(sideViewableMap.containsKey(side))
+    {
+    sideViewableMap.get(side).addSlot(slot, viewX, viewY);    
+    }
+  else
+    {
+    throw new IllegalArgumentException("No side has been initialized for : "+side +  " for inventory: "+this);
     }
   }
 
@@ -364,6 +415,47 @@ private SidedAccessibility(int slot, boolean insert, boolean extract)
   }
 }
 
+public class SideSlotMap
+{
+public int guiX, guiY;
+public String label;
+RelativeSide side;
+List<Integer> slotNumbers = new ArrayList<Integer>();
+List<ViewableSlot> slots = new ArrayList<ViewableSlot>();
 
+public SideSlotMap(RelativeSide side, int guiX, int guiY, String label)
+  {
+  this.guiX = guiX;
+  this.guiY = guiY;
+  this.label = label;
+  this.side = side;
+  }
+
+public void addSlot(int slotNumber, int viewX, int viewY)
+  {
+  this.slotNumbers.add(slotNumber);
+  this.slots.add(new ViewableSlot(slotNumber, viewX, viewY));
+  Collections.sort(slotNumbers);
+  }
+
+public List<ViewableSlot> getSlots()
+  {
+  return slots;
+  }
+
+}
+
+public class ViewableSlot
+{
+public int viewX, viewY, slotNumber;
+
+public ViewableSlot(int slotNumber, int viewX, int viewY)
+  {
+  this.viewX = viewX;
+  this.viewY = viewY;
+  this.slotNumber = slotNumber;
+  }
+
+}
 
 }

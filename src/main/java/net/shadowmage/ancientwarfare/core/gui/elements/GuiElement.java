@@ -36,9 +36,9 @@ protected int renderY;
 protected int width;
 protected int height;
 
-protected static ResourceLocation backgroundTextureLocation;
-protected static ResourceLocation widgetTexture1;
-protected static ResourceLocation widgetTexture2;
+public static ResourceLocation backgroundTextureLocation;
+public static ResourceLocation widgetTexture1;
+public static ResourceLocation widgetTexture2;
 
 static
 {
