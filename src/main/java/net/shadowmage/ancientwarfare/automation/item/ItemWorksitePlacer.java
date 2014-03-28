@@ -65,14 +65,16 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   metadata = BlockIconRotationMap.getBlockMetaForPlacement(player);
   
   boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
-  if(val && !world.isRemote)
+  if(val)
     {
     TileWorksiteBase worksite = (TileWorksiteBase) world.getTileEntity(x, y, z);
+    AWLog.logDebug("setting worksite info..."+worksite);
     BlockPosition p1 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos1"));
     BlockPosition p2 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos2"));
     worksite.setOwningPlayer(player.getCommandSenderName());
     worksite.setWorkBounds(BlockTools.getMin(p1, p2), BlockTools.getMax(p1, p2));
     worksite.initWorkSite();
+    worksite.markDirty();
     world.markBlockForUpdate(x, y, z);
     stack.getTagCompound().removeTag("pos1");
     stack.getTagCompound().removeTag("pos2");

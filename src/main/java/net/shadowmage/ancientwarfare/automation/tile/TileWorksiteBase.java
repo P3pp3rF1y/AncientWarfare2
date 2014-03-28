@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -16,6 +17,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -55,6 +57,10 @@ int maxWorkers;
  */
 protected boolean canUpdate;
 
+protected boolean canUserSetBlocks;
+
+private Set<BlockPosition> userTargetBlocks = new HashSet<BlockPosition>();
+
 private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
 
 protected String owningPlayer;
@@ -64,6 +70,25 @@ public InventorySided inventory;
 public TileWorksiteBase()
   {
   
+  }
+
+public boolean hasUserSetTargets()
+  {
+  return canUserSetBlocks;
+  }
+
+public Set<BlockPosition> getUserSetTargets()
+  {
+  return userTargetBlocks;
+  }
+
+public void setUserSetTargets(Set<BlockPosition> targets)
+  {
+  if(canUserSetBlocks)
+    {
+    userTargetBlocks.clear();
+    userTargetBlocks.addAll(targets);
+    }
   }
 
 @Override
@@ -206,6 +231,7 @@ public void readFromNBT(NBTTagCompound tag)
     {
     inventory.readFromNBT(tag.getCompoundTag("inventory"));
     }
+  AWLog.logDebug("read worksite from NBT.  bounds: "+bbMin+"::"+bbMax);
   }
 
 @Override
@@ -247,6 +273,7 @@ public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt
     bbMax = new BlockPosition();
     bbMax.read(tag.getCompoundTag("bbMax"));
     }
+  AWLog.logDebug("read worksite client data min: "+bbMin+" max: "+bbMax);
   readClientData(tag);
   }
 
