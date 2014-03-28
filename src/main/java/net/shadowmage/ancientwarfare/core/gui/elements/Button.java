@@ -13,15 +13,16 @@ import org.lwjgl.opengl.GL11;
 public class Button extends GuiElement
 {
 
-FontRenderer fr;
-String text;
-int textX;
-int textY;
+protected FontRenderer fr;
+protected String text;
+protected int textX;
+protected int textY;
 
 public Button(int topLeftX, int topLeftY, int width, int height, String text)
   {
-  super(topLeftX, topLeftY, width, height);  
-  this.text = text;
+  super(topLeftX, topLeftY, width, height);
+  fr = Minecraft.getMinecraft().fontRenderer;
+  this.setText(text);
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {      
     @Override
@@ -35,11 +36,14 @@ public Button(int topLeftX, int topLeftY, int width, int height, String text)
       return true;
       }
     });
-  
-  fr = Minecraft.getMinecraft().fontRenderer;
+  }
+
+public final void setText(String text)
+  {
+  this.text = text;
   int tw = fr.getStringWidth(text);
   textX = (width - tw)/2;
-  textY = (height - 8)/2; 
+  textY = (height - 8)/2;   
   }
 
 @Override

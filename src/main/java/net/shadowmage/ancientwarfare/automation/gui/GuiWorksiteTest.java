@@ -1,17 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTest;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SideSlotMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
@@ -28,8 +24,9 @@ public void initElements()
   {
   TileWorksiteBase worksite = ((ContainerWorksiteTest)inventorySlots).worksite;
   Label label;
-  for(RelativeSide side : RelativeSide.values())
+  for(InventorySide side : InventorySide.values())
     {
+    if(side==InventorySide.NONE){continue;}
     SideSlotMap slotMap = worksite.inventory.getSlotMapForSide(side);
     if(slotMap==null){continue;}
     label = new Label(slotMap.guiX, slotMap.guiY, StatCollector.translateToLocal(slotMap.label));

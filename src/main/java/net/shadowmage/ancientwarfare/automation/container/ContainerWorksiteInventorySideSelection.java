@@ -11,14 +11,15 @@ import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 
 public class ContainerWorksiteInventorySideSelection extends ContainerBase
 {
 
-public HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<RelativeSide, RelativeSide>();
-TileWorksiteBase worksite;
+public HashMap<RelativeSide, InventorySide> sideMap = new HashMap<RelativeSide, InventorySide>();
+public TileWorksiteBase worksite;
 
 public ContainerWorksiteInventorySideSelection(EntityPlayer player, int x, int y, int z)
   {
@@ -29,7 +30,7 @@ public ContainerWorksiteInventorySideSelection(EntityPlayer player, int x, int y
 @Override
 public void sendInitData()
   {  
-  RelativeSide accessedSide;
+  InventorySide accessedSide;
   
   NBTTagList tagList = new NBTTagList();
   NBTTagCompound inner;    
@@ -39,7 +40,7 @@ public void sendInitData()
     inner = new NBTTagCompound();
     inner.setInteger("baseSide", side.ordinal());
     accessedSide = worksite.inventory.getAccessSideFor(side);
-    inner.setInteger("accessSide", accessedSide==null? -1 : accessedSide.ordinal());
+    inner.setInteger("accessSide", accessedSide.ordinal());
     sideMap.put(side, accessedSide);
     tagList.appendTag(inner);
     } 
@@ -73,7 +74,7 @@ protected void setSettingsToTile()
 
 public void sendSettingsToServer()
   {
-  RelativeSide accessedSide;
+  InventorySide accessedSide;
   
   NBTTagList tagList = new NBTTagList();
   NBTTagCompound inner;    
@@ -83,7 +84,7 @@ public void sendSettingsToServer()
     inner = new NBTTagCompound();
     inner.setInteger("baseSide", side.ordinal());
     accessedSide = sideMap.get(side);
-    inner.setInteger("accessSide", accessedSide==null? -1 : accessedSide.ordinal());
+    inner.setInteger("accessSide", accessedSide.ordinal());
     tagList.appendTag(inner);
     } 
   PacketGui pkt = new PacketGui();
@@ -95,7 +96,7 @@ protected void readSlotMap(NBTTagList list)
   {
   NBTTagCompound tag;
   RelativeSide base;
-  RelativeSide access;
+  InventorySide access;
   int b, a;
   for(int i = 0; i < list.tagCount(); i++)
     {
@@ -103,7 +104,7 @@ protected void readSlotMap(NBTTagList list)
     b = tag.getInteger("baseSide");
     a = tag.getInteger("accessSide");
     base = RelativeSide.values()[b];
-    access = a<0 ? null : RelativeSide.values()[a];
+    access = InventorySide.values()[a];
     sideMap.put(base, access);  
     }
   this.refreshGui();

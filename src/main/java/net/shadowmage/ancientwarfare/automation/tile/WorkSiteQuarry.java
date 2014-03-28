@@ -16,6 +16,7 @@ import net.minecraft.server.MinecraftServer;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -32,18 +33,18 @@ public WorkSiteQuarry()
   this.maxWorkers = 4;
   canUpdate = false;//purely event-driven, no polling
   this.inventory = new InventorySided(27 + 3 + 3, this);
-  this.inventory.addSlotViewMap(RelativeSide.TOP, 8, 8, "guistrings.relativeside.top");
-  this.inventory.addSlotViewMap(RelativeSide.FRONT, 8, (3*18)+12+8, "guistrings.relativeside.front");
+  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.relativeside.top");
+  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.relativeside.front");
   for(int i =0; i <27; i++)
     {
     this.inventory.addSidedMapping(RelativeSide.TOP, i, true, true);
-    this.inventory.addSlotViewMapping(RelativeSide.TOP, i, (i%9)*18, (i/9)*18);
+    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
     }
   for(int i = 27, k = 0; i<30; i++, k++)
     {
     this.inventory.addSidedMapping(RelativeSide.LEFT, i, true, true);
     this.inventory.addSidedMapping(RelativeSide.RIGHT, i, true, true);
-    this.inventory.addSlotViewMapping(RelativeSide.FRONT, i, (k%9)*18, (k/9)*18);
+    this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
     }
   for(int i = 30; i < 33; i++)
     {

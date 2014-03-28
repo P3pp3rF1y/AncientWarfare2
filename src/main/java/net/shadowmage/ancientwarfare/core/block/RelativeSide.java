@@ -23,12 +23,12 @@ package net.shadowmage.ancientwarfare.core.block;
 public enum RelativeSide
 {
 
-TOP,
-BOTTOM,
-FRONT,
-REAR,
-LEFT,
-RIGHT;
+TOP("guistrings.inventory.side.top"),
+BOTTOM("guistrings.inventory.side.bottom"),
+FRONT("guistrings.inventory.side.front"),
+REAR("guistrings.inventory.side.rear"),
+LEFT("guistrings.inventory.side.left"),
+RIGHT("guistrings.inventory.side.right");
 
 private static final int DOWN = 0;
 private static final int UP = 1;
@@ -125,9 +125,39 @@ sideMap[WEST][10] = LEFT;
 sideMap[WEST][11] = BOTTOM;
 }
 
+private final String regName;
+
+RelativeSide(String transKey)
+  {
+  regName = transKey;
+  }
+
+public String getTranslationKey()
+  {
+  return regName;
+  }
+
 public static RelativeSide getRelativeSide(int mcSide, int meta)
   {
   return sideMap[mcSide][meta];
+  }
+
+/**
+ * get the nsew direction to access a relative side from for a given meta
+ * @param side
+ * @param meta
+ * @return
+ */
+public static int getAccessDirection(RelativeSide side, int meta)
+  {
+  for(int i = 0; i < sideMap.length; i++)
+    {
+    if(sideMap[i][meta]==side)
+      {
+      return i;
+      }
+    }
+  return -1;
   }
 
 }

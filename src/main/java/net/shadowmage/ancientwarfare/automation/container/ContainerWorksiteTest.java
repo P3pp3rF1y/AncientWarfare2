@@ -5,6 +5,7 @@ import net.minecraft.inventory.Slot;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SideSlotMap;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.ViewableSlot;
 
@@ -26,8 +27,9 @@ public ContainerWorksiteTest(EntityPlayer player, int x, int y, int z)
 protected int addWorksiteInventorySlots(int topY)
   {  
   int lowestY = topY;
-  for(RelativeSide side : RelativeSide.values())
+  for(InventorySide side : InventorySide.values())
     {
+    if(side==InventorySide.NONE){continue;}
     SideSlotMap slotMap = worksite.inventory.getSlotMapForSide(side);
     if(slotMap==null){continue;}
     for(ViewableSlot slot : slotMap.getSlots())

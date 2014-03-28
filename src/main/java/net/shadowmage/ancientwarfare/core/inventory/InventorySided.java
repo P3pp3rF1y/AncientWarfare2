@@ -30,13 +30,13 @@ private boolean isDirty;
  * stores the view-ability map for this inventory.  Should be set during construction of owning tile.
  * should not be altered during runtime.  Used by containers to lay out inventory slots dynamically.
  */
-private HashMap<RelativeSide, SideSlotMap> sideViewableMap = new HashMap<RelativeSide, SideSlotMap>();
+private HashMap<InventorySide, SideSlotMap> sideViewableMap = new HashMap<InventorySide, SideSlotMap>();
 
 /**
  * stores the mapping of base side to inventory side accessed from that side.  Can change during 
  * run-time / from gui.  Used by ISidedInventory to determine what side index map to retrieve
  */
-private HashMap<RelativeSide, RelativeSide> sideInventoryAccess = new HashMap<RelativeSide, RelativeSide>();
+private HashMap<RelativeSide, InventorySide> sideInventoryAccess = new HashMap<RelativeSide, InventorySide>();
 
 /**
  * stores the mapping of base side to accessible slots.  Should be set during construction of owning tile.
@@ -53,11 +53,28 @@ public InventorySided(int size, TileEntity te)
     {
     side = RelativeSide.values()[i];
     accessMap.put(side, new SideAccessibilityMap(side));
-    sideInventoryAccess.put(side, side);
+    sideInventoryAccess.put(side, InventorySide.values()[i]);
     }
   }
 
-public List<Integer> getSlotNumbersViewedForSide(RelativeSide side)
+public int getAccessDirectionFor(RelativeSide side)
+  {
+  return RelativeSide.getAccessDirection(side, te.getBlockMetadata());
+  }
+
+public int getAccessDirectionFor(InventorySide side)
+  {
+  for(RelativeSide key : sideInventoryAccess.keySet())
+    {
+    if(sideInventoryAccess.get(key)==side)
+      {
+      return getAccessDirectionFor(key);
+      }
+    }
+  return -1;
+  }
+
+public List<Integer> getSlotNumbersViewedForSide(InventorySide side)
   {
   if(sideViewableMap.containsKey(side))
     {
@@ -66,12 +83,12 @@ public List<Integer> getSlotNumbersViewedForSide(RelativeSide side)
   return Collections.emptyList();
   }
 
-public SideSlotMap getSlotMapForSide(RelativeSide side)
+public SideSlotMap getSlotMapForSide(InventorySide side)
   {
   return sideViewableMap.get(side);
   }
 
-public List<ViewableSlot> getSlotsViewedForSide(RelativeSide side)
+public List<ViewableSlot> getSlotsViewedForSide(InventorySide side)
   {
   if(sideViewableMap.containsKey(side))
     {
@@ -80,12 +97,12 @@ public List<ViewableSlot> getSlotsViewedForSide(RelativeSide side)
   return Collections.emptyList();
   }
 
-public void addSlotViewMap(RelativeSide side, int guiX, int guiY, String label)
+public void addSlotViewMap(InventorySide side, int guiX, int guiY, String label)
   {
   sideViewableMap.put(side, new SideSlotMap(side, guiX, guiY, label));
   }
 
-public void addSlotViewMapping(RelativeSide side, int slot, int viewX, int viewY)
+public void addSlotViewMapping(InventorySide side, int slot, int viewX, int viewY)
   {
   if(sideViewableMap.containsKey(side))
     {
@@ -244,11 +261,11 @@ public void readFromNBT(NBTTagCompound tag)
   int[] sideMap = tag.getIntArray("sideMap");
   
   RelativeSide baseSide;
-  RelativeSide mappedSide;
+  InventorySide mappedSide;
   for(int i = 0; i < 6; i++)
     {
     baseSide = RelativeSide.values()[i];
-    mappedSide = RelativeSide.values()[sideMap[i]];
+    mappedSide = InventorySide.values()[sideMap[i]];
     sideInventoryAccess.put(baseSide, mappedSide);
     }
   }
@@ -297,7 +314,7 @@ public int[] getAccessibleSlotsFor(RelativeSide blockSide)
  * @param meta
  * @return
  */
-public RelativeSide getAccessSideFor(int mcSide, int meta)
+public InventorySide getAccessSideFor(int mcSide, int meta)
   {
   return sideInventoryAccess.get(RelativeSide.getRelativeSide(mcSide, meta));
   }
@@ -307,7 +324,7 @@ public RelativeSide getAccessSideFor(int mcSide, int meta)
  * @param baseSide
  * @return
  */
-public RelativeSide getAccessSideFor(RelativeSide baseSide)
+public InventorySide getAccessSideFor(RelativeSide baseSide)
   {
   return sideInventoryAccess.get(baseSide);
   }
@@ -317,7 +334,7 @@ public RelativeSide getAccessSideFor(RelativeSide baseSide)
  * @param accessSide the side of the block that access will happen from
  * @param inventoryToAccess the side of the inventory that will be accessed from accessSide
  */
-public void setSideMapping(RelativeSide accessSide, RelativeSide inventoryToAccess)
+public void setSideMapping(RelativeSide accessSide, InventorySide inventoryToAccess)
   {
   sideInventoryAccess.put(accessSide, inventoryToAccess);
   }
@@ -419,11 +436,11 @@ public class SideSlotMap
 {
 public int guiX, guiY;
 public String label;
-RelativeSide side;
+InventorySide side;
 List<Integer> slotNumbers = new ArrayList<Integer>();
 List<ViewableSlot> slots = new ArrayList<ViewableSlot>();
 
-public SideSlotMap(RelativeSide side, int guiX, int guiY, String label)
+public SideSlotMap(InventorySide side, int guiX, int guiY, String label)
   {
   this.guiX = guiX;
   this.guiY = guiY;

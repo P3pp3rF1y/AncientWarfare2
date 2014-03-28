@@ -40,6 +40,20 @@ guistrings.spawner.warning_1=WARNING!! SOME MOD-MOBS MAY CRASH WHEN PLACED IN SP
 guistrings.spawner.warning_2=TEST ALL MOBS / SETTINGS ON AN UNCARED FOR WORLD FIRST
 guistrings.inventory.player=Player Inventory
 guistrings.inventory.setsides=Inv. Setup
+guistrings.inventory.side.top=Top
+guistrings.inventory.side.bottom=Bottom
+guistrings.inventory.side.front=Front
+guistrings.inventory.side.rear=Rear
+guistrings.inventory.side.left=Left
+guistrings.inventory.side.right=Right
+guistrings.inventory.side.none=None
+guistrings.inventory.direction.down=Down
+guistrings.inventory.direction.up=Up
+guistrings.inventory.direction.north=North
+guistrings.inventory.direction.south=South
+guistrings.inventory.direction.west=West
+guistrings.inventory.direction.east=East
+guistrings.inventory.direction.unknown=Unknown
 
 
 #structure validation translation stuff
