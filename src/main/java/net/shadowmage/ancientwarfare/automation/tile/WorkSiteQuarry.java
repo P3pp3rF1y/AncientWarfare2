@@ -34,9 +34,9 @@ public WorkSiteQuarry()
   this.canUserSetBlocks = true;
   canUpdate = true;//purely event-driven, no polling
   this.inventory = new InventorySided(27 + 3 + 3, this);
-  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.relativeside.top");
-  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.relativeside.front");
-  this.inventory.addSlotViewMap(InventorySide.REAR, 8, (3*18)+18+12+8+12, "guistrings.inventory.relativeside.rear");
+  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
+  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
+  this.inventory.addSlotViewMap(InventorySide.REAR, 8, (3*18)+18+12+8+12, "guistrings.inventory.side.rear");
   for(int i =0; i <27; i++)
     {
     this.inventory.addSidedMapping(RelativeSide.TOP, i, true, true);
