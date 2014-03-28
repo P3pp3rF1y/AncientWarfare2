@@ -34,8 +34,9 @@ public WorkSiteQuarry()
   this.canUserSetBlocks = true;
   canUpdate = true;//purely event-driven, no polling
   this.inventory = new InventorySided(27 + 3 + 3, this);
-  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.relativeside.top");
-  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.relativeside.front");
+  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.relativeside.top");
+  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.relativeside.front");
+  this.inventory.addSlotViewMap(InventorySide.REAR, 8, (3*18)+18+12+8+12, "guistrings.inventory.relativeside.rear");
   for(int i =0; i <27; i++)
     {
     this.inventory.addSidedMapping(RelativeSide.TOP, i, true, true);
@@ -47,9 +48,10 @@ public WorkSiteQuarry()
     this.inventory.addSidedMapping(RelativeSide.RIGHT, i, true, true);
     this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
     }
-  for(int i = 30; i < 33; i++)
+  for(int i = 30, k = 0; i < 33; i++, k++)
     {
     this.inventory.addSidedMapping(RelativeSide.REAR, i, true, true);
+    this.inventory.addSlotViewMapping(InventorySide.REAR, i, (k%9)*18, (k/9)*18);
     }  
  
   }

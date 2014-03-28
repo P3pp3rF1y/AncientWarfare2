@@ -435,6 +435,7 @@ private SidedAccessibility(int slot, boolean insert, boolean extract)
 public class SideSlotMap
 {
 public int guiX, guiY;
+public int slotX, slotY;
 public String label;
 InventorySide side;
 List<Integer> slotNumbers = new ArrayList<Integer>();
@@ -444,6 +445,8 @@ public SideSlotMap(InventorySide side, int guiX, int guiY, String label)
   {
   this.guiX = guiX;
   this.guiY = guiY;
+  this.slotX = guiX;
+  this.slotY = guiY+12;
   this.label = label;
   this.side = side;
   }

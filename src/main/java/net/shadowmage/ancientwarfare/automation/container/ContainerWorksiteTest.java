@@ -34,10 +34,10 @@ protected int addWorksiteInventorySlots(int topY)
     if(slotMap==null){continue;}
     for(ViewableSlot slot : slotMap.getSlots())
       {
-      addSlotToContainer(new Slot(worksite.inventory, slot.slotNumber, slotMap.guiX + slot.viewX, slotMap.guiY+slot.viewY +12));
-      if(slotMap.guiY+slot.viewY + 12 >lowestY)
+      addSlotToContainer(new Slot(worksite.inventory, slot.slotNumber, slotMap.guiX + slot.viewX, slotMap.slotY+slot.viewY));
+      if(slotMap.slotY+slot.viewY>lowestY)
         {
-        lowestY = slotMap.guiY+slot.viewY + 12;
+        lowestY = slotMap.slotY+slot.viewY;
         }
       }    
     }  
