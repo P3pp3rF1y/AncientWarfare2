@@ -21,7 +21,7 @@ import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-public class WorkSiteQuarry extends TileWorksiteBase implements IInventory, ISidedInventory
+public class WorkSiteQuarry extends TileWorksiteBase
 {
 
 boolean finished;
@@ -31,7 +31,8 @@ BlockPosition nextPosition = new BlockPosition();
 public WorkSiteQuarry()
   {
   this.maxWorkers = 4;
-  canUpdate = false;//purely event-driven, no polling
+  this.canUserSetBlocks = true;
+  canUpdate = true;//purely event-driven, no polling
   this.inventory = new InventorySided(27 + 3 + 3, this);
   this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.relativeside.top");
   this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.relativeside.front");
@@ -62,6 +63,7 @@ public void doPlayerWork(EntityPlayer player)
 @Override
 public void updateEntity()
   {
+  super.updateEntity();
   if(worldObj.isRemote){return;}
   }
 
@@ -171,7 +173,7 @@ public void writeClientData(NBTTagCompound tag)
 @Override
 public void readClientData(NBTTagCompound tag)
   {
-  
+  AWLog.logDebug("reading client data for quarry...");
   }
 
 @Override

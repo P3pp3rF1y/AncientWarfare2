@@ -20,9 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.automation.config;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 

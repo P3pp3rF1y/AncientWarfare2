@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class BlockWorksiteTest extends BlockWorksiteBase
 {
@@ -23,6 +24,7 @@ public BlockWorksiteTest(String regName)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {  
+  AWLog.logDebug("returning new quarry tile for...: "+world);
   return new WorkSiteQuarry();
   }
 

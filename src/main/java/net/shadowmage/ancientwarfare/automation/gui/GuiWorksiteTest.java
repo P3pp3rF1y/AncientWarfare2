@@ -34,6 +34,7 @@ public void initElements()
     }
   label = new Label(8, ((ContainerWorksiteTest)inventorySlots).playerSlotsLabelHeight, StatCollector.translateToLocal("guistrings.inventory.player"));
   addGuiElement(label);
+  
   Button button = new Button(8, ((ContainerWorksiteTest)inventorySlots).guiHeight-8-12, 55, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
     {
     @Override
@@ -44,6 +45,20 @@ public void initElements()
       }
     };
   addGuiElement(button);
+  
+  if(worksite.hasUserSetTargets())
+    {
+    button = new Button(178-8-100, ((ContainerWorksiteTest)inventorySlots).guiHeight-8-12, 100, 12, StatCollector.translateToLocal("guistrings.inventory.settargets"))
+      {
+      @Override
+      protected void onPressed()
+        {
+        TileWorksiteBase worksite = ((ContainerWorksiteTest)inventorySlots).worksite;
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_SET_TARGETS, worksite.xCoord, worksite.yCoord, worksite.zCoord);
+        }
+      };
+    addGuiElement(button);
+    }
   }
 
 @Override

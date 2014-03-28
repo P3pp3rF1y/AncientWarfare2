@@ -54,6 +54,7 @@ guistrings.inventory.direction.south=South
 guistrings.inventory.direction.west=West
 guistrings.inventory.direction.east=East
 guistrings.inventory.direction.unknown=Unknown
+guistrings.inventory.settargets=Set Work Targets
 
 
 #structure validation translation stuff
