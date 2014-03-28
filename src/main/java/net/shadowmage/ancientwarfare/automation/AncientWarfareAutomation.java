@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTest;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
@@ -65,6 +66,7 @@ public void preInit(FMLPreInitializationEvent evt)
 
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY, ContainerWorksiteTest.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_SET_TARGETS, ContainerWorksiteBlockSelection.class);
   
   AWLog.log("Ancient Warfare Automation Pre-Init completed");
   }
