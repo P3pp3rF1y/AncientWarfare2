@@ -10,11 +10,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -89,6 +91,20 @@ public void setUserSetTargets(Set<BlockPosition> targets)
     userTargetBlocks.clear();
     userTargetBlocks.addAll(targets);
     }
+  }
+
+public void addUserBlock(BlockPosition pos)
+  {
+  userTargetBlocks.add(pos);
+  if(!this.worldObj.isRemote)
+    {
+    this.markDirty();    
+    }
+  }
+
+public void removeUserBlock(BlockPosition pos)
+  {
+  this.userTargetBlocks.remove(pos);
   }
 
 @Override
@@ -207,6 +223,18 @@ public void writeToNBT(NBTTagCompound tag)
     inventory.writeToNBT(invTag);
     tag.setTag("inventory", invTag);    
     }
+  if(!userTargetBlocks.isEmpty())
+    {
+    NBTTagList list = new NBTTagList();
+    NBTTagCompound posTag;
+    for(BlockPosition pos : userTargetBlocks)
+      {
+      posTag = new NBTTagCompound();
+      pos.writeToNBT(posTag);
+      list.appendTag(posTag);
+      }    
+    tag.setTag("userBlocks", list);
+    }
   }
 
 @Override
@@ -231,7 +259,16 @@ public void readFromNBT(NBTTagCompound tag)
     {
     inventory.readFromNBT(tag.getCompoundTag("inventory"));
     }
-  AWLog.logDebug("read worksite from NBT.  bounds: "+bbMin+"::"+bbMax);
+  if(tag.hasKey("userBlocks"))
+    {
+    NBTTagList list = tag.getTagList("userBlocks", Constants.NBT.TAG_COMPOUND);
+    BlockPosition pos;
+    for(int i = 0; i < list.tagCount(); i++)
+      {
+      pos = new BlockPosition(list.getCompoundTagAt(i));
+      userTargetBlocks.add(pos);
+      }
+    }
   }
 
 @Override
@@ -254,6 +291,18 @@ public final Packet getDescriptionPacket()
     {
     tag.setString("owner", owningPlayer);
     }
+  if(!userTargetBlocks.isEmpty())
+    {
+    NBTTagList list = new NBTTagList();
+    NBTTagCompound posTag;
+    for(BlockPosition pos : userTargetBlocks)
+      {
+      posTag = new NBTTagCompound();
+      pos.writeToNBT(posTag);
+      list.appendTag(posTag);
+      }    
+    tag.setTag("userBlocks", list);
+    }
   writeClientData(tag);
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, tag);
   }
@@ -272,6 +321,16 @@ public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt
     {
     bbMax = new BlockPosition();
     bbMax.read(tag.getCompoundTag("bbMax"));
+    }
+  if(tag.hasKey("userBlocks"))
+    {
+    NBTTagList list = tag.getTagList("userBlocks", Constants.NBT.TAG_COMPOUND);
+    BlockPosition pos;
+    for(int i = 0; i < list.tagCount(); i++)
+      {
+      pos = new BlockPosition(list.getCompoundTagAt(i));
+      userTargetBlocks.add(pos);
+      }
     }
   AWLog.logDebug("read worksite client data min: "+bbMin+" max: "+bbMax);
   readClientData(tag);
