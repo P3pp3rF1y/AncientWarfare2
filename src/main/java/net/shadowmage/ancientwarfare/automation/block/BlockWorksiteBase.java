@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockWorksiteBase extends Block
+public abstract class BlockWorksiteBase extends Block
 {
 
 BlockIconRotationMap iconMap = new BlockIconRotationMap();
