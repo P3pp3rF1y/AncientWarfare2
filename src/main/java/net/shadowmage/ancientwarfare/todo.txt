@@ -1,0 +1,16 @@
+core
+	crafting system
+	research system
+
+structures module
+	plugins / support for other modules
+	survival-mode building / block mapping
+
+automation module
+	worker slots control gui?
+			
+vehicles module
+	everything
+
+npcs module
+	everything
