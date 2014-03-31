@@ -218,7 +218,7 @@ public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2)
 
 public static void dropItemInWorld(World world, ItemStack item, double x, double y, double z)
   {
-  if(item==null || world==null )
+  if(item==null || world==null || world.isRemote)
     {
     return;
     }

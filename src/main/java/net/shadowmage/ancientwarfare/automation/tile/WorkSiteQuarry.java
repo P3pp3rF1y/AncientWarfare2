@@ -91,7 +91,7 @@ public void doWork(IWorker worker)
     stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getAccessDirectionFor(RelativeSide.TOP));
     if(stack!=null)
       {
-      //TODO drop item in world
+      InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
       }
     }  
   worldObj.setBlockToAir(target.x, target.y, target.z); 
