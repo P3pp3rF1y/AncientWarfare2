@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 public class InventorySided implements IInventorySaveable, ISidedInventory
 {
 
+private static int[] emptyIndices = new int[]{};
 TileEntity te;
 private ItemStack[] inventorySlots;
 private boolean isDirty;
@@ -67,9 +69,7 @@ public InventorySided(int size, TileEntity te)
  */
 public int getAccessDirectionFor(RelativeSide side)
   {
-  AWLog.logDebug("returning direction to access side: "+side);
-  int val = RelativeSide.getAccessDirection(side, te.getBlockMetadata());
-  return val;
+  return RelativeSide.getAccessDirection(side, te.getBlockMetadata());
   }
 
 /**
@@ -154,29 +154,22 @@ public void addSidedMapping(InventorySide side, int slot, boolean insert, boolea
 @Override
 public int[] getAccessibleSlotsFromSide(int mcSide)
   {  
-//  InventorySide side = getAccessSideFor(mcSide, te.getBlockMetadata());
-//  AWLog.logDebug("checking for accessible slots for side: "+mcSide); 
-//  AWLog.logDebug("side to access from input side:"+getAccessSideFor(mcSide, te.getBlockMetadata()));
-//  AWLog.logDebug("access map contains: "+accessMap.get(getAccessSideFor(mcSide, te.getBlockMetadata())));
-//  
-//  for(InventorySide side1 : accessMap.keySet())
-//    {
-//    AWLog.logDebug("access map key: "+side1 + " value:"+accessMap.get(side1));
-//    AWLog.logDebug("access values: "+side1 + " value:"+accessMap.get(side1).accessibleSlots);
-//    }
-  return accessMap.get(getAccessSideFor(mcSide, te.getBlockMetadata())).accessibleSlots;
+  InventorySide side = getAccessSideFor(mcSide, te.getBlockMetadata());
+  if(side==InventorySide.NONE){return emptyIndices;}
+  SideAccessibilityMap map = accessMap.get(side);
+  return map.accessibleSlots;
   }
 
 @Override
 public boolean canInsertItem(int var1, ItemStack var2, int var3)
   {  
-  return accessMap.get(getAccessSideFor(var1, te.getBlockMetadata())).canInsert(var2, var3);
+  return accessMap.get(getAccessSideFor(var3, te.getBlockMetadata())).canInsert(var2, var1);
   }
 
 @Override
 public boolean canExtractItem(int var1, ItemStack var2, int var3)
   {
-  return accessMap.get(getAccessSideFor(var1, te.getBlockMetadata())).canExtract(var2, var3);
+  return accessMap.get(getAccessSideFor(var3, te.getBlockMetadata())).canExtract(var2, var1);
   }
 
 @Override
@@ -201,7 +194,11 @@ public ItemStack decrStackSize(int slotIndex, int amount)
     if(amount>slotStack.getMaxStackSize()){amount = slotStack.getMaxStackSize();}
     ItemStack returnStack = slotStack.copy();
     slotStack.stackSize-=amount;
-    returnStack.stackSize = amount;    
+    returnStack.stackSize = amount;  
+    if(slotStack.stackSize<=0)
+      {
+      inventorySlots[slotIndex]=null;
+      }
     return returnStack;
     }
   return null;
@@ -427,6 +424,7 @@ private boolean canInsert(ItemStack stack, int slot)
   SidedAccessibility access = slotMap.get(slot);
   if(access!=null)
     {
+    
     return access.insert;
     }
   return false;
@@ -437,8 +435,10 @@ private boolean canExtract(ItemStack stack, int slot)
   SidedAccessibility access = slotMap.get(slot);
   if(access!=null)
     {
+//    AWLog.logDebug("returning mapped value for can extract from slot: "+slot +" :: "+access.extract);
     return access.extract;
     }
+//  AWLog.logDebug("returning default false for can extract from slot: "+slot);
   return false;
   }
 }

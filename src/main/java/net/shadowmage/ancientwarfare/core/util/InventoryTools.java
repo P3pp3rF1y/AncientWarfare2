@@ -1,10 +1,13 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import java.util.Arrays;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class InventoryTools
 {
@@ -22,7 +25,7 @@ public class InventoryTools
 public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, int side)
   {
   if(side>0 && inventory instanceof ISidedInventory)
-    {
+    {    
     int[] slotIndices = ((ISidedInventory)inventory).getAccessibleSlotsFromSide(side);
     if(slotIndices==null){return null;}
     int index;
@@ -46,7 +49,7 @@ public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, in
         }      
       if(stack.stackSize<=0)//merged stack fully;
         {
-        break;
+        return null;
         }
       }
     if(stack.stackSize>0)
@@ -91,7 +94,7 @@ public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, in
         }      
       if(stack.stackSize<=0)//merged stack fully;
         {
-        break;
+        return null;
         }
       }
     if(stack.stackSize>0)
