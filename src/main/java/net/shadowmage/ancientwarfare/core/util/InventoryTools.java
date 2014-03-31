@@ -1,8 +1,10 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class InventoryTools
 {
@@ -214,5 +216,40 @@ public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2)
   return false;
   }
 
+public static void dropItemInWorld(World world, ItemStack item, double x, double y, double z)
+  {
+  if(item==null || world==null )
+    {
+    return;
+    }
+  EntityItem entityToSpawn;
+  x += world.rand.nextFloat() * 0.6f - 0.3f;
+  y += world.rand.nextFloat() * 0.6f + 1 - 0.3f;
+  z += world.rand.nextFloat() * 0.6f - 0.3f;
+  entityToSpawn = new EntityItem(world, x, y, z, item);
+  entityToSpawn.setPosition(x, y, z);
+  world.spawnEntityInWorld(entityToSpawn);      
+  }
+
+public static void dropInventoryInWorld(World world, IInventory localInventory, double x, double y, double z)
+  {
+  if(world.isRemote)
+    {
+    return;
+    }
+  if (localInventory != null)
+    {
+    ItemStack stack;
+    for(int i = 0; i < localInventory.getSizeInventory(); i++)
+      {      
+      stack = localInventory.getStackInSlotOnClosing(i);      
+      if(stack==null)
+        {
+        continue;
+        }
+      dropItemInWorld(world, stack, x, y, z);      
+      }
+    }
+  }
 
 }
