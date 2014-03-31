@@ -57,7 +57,7 @@ public InventorySided(int size, TileEntity te)
     {
     side = RelativeSide.values()[i];
     invSide = InventorySide.values()[i];
-    accessMap.put(invSide, new SideAccessibilityMap(invSide));
+    accessMap.put(invSide, new SideAccessibilityMap());
     sideInventoryAccess.put(side, InventorySide.values()[i]);
     }
   }
@@ -364,11 +364,6 @@ public void setSideMapping(RelativeSide accessSide, InventorySide inventoryToAcc
 private class SideAccessibilityMap
 {
 /**
- * the inventory side mapping for this accessibility map
- */
-InventorySide side;
-
-/**
  * a map of slot number to accessibility flags (canInsert, canExtract)
  */
 HashMap<Integer, SidedAccessibility> slotMap = new HashMap<Integer, SidedAccessibility>();
@@ -378,9 +373,8 @@ HashMap<Integer, SidedAccessibility> slotMap = new HashMap<Integer, SidedAccessi
  */
 int[] accessibleSlots;
 
-private SideAccessibilityMap(InventorySide side)
+private SideAccessibilityMap()
   {
-  this.side = side;
   accessibleSlots = new int[]{};
   }
 
