@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 /**
  * re-mappable sided inventory.<br>
@@ -42,26 +43,40 @@ private HashMap<RelativeSide, InventorySide> sideInventoryAccess = new HashMap<R
  * stores the mapping of base side to accessible slots.  Should be set during construction of owning tile.
  * should not be altered during runtime.  Used by ISidedInventory to retrieve side index map.
  */
-private HashMap<RelativeSide, SideAccessibilityMap> accessMap = new HashMap<RelativeSide, SideAccessibilityMap>();
+private HashMap<InventorySide, SideAccessibilityMap> accessMap = new HashMap<InventorySide, SideAccessibilityMap>();
 
 public InventorySided(int size, TileEntity te)
   {
   this.te = te;
   inventorySlots = new ItemStack[size];
   RelativeSide side;
+  InventorySide invSide;
   for(int i = 0 ; i < 6; i++)
     {
     side = RelativeSide.values()[i];
-    accessMap.put(side, new SideAccessibilityMap(side));
+    invSide = InventorySide.values()[i];
+    accessMap.put(invSide, new SideAccessibilityMap(invSide));
     sideInventoryAccess.put(side, InventorySide.values()[i]);
     }
   }
 
+/**
+ * return the mcSide that will access the passed in RelativeSide (side of block, e.g. front)
+ * @param side
+ * @return
+ */
 public int getAccessDirectionFor(RelativeSide side)
   {
-  return RelativeSide.getAccessDirection(side, te.getBlockMetadata());
+  AWLog.logDebug("returning direction to access side: "+side);
+  int val = RelativeSide.getAccessDirection(side, te.getBlockMetadata());
+  return val;
   }
 
+/**
+ * return the mcSide that will access the passed in InventorySide (actual internal inventory)
+ * @param side
+ * @return
+ */
 public int getAccessDirectionFor(InventorySide side)
   {
   for(RelativeSide key : sideInventoryAccess.keySet())
@@ -125,13 +140,13 @@ public void removeSideMapping(RelativeSide blockSide, int slot)
   }
 
 /**
- * adds a BASE mapping for the slot/side
+ * adds a BASE mapping for the slot/seide
  * @param side
  * @param slot
  * @param insert
  * @param extract
  */
-public void addSidedMapping(RelativeSide side, int slot, boolean insert, boolean extract)
+public void addSidedMapping(InventorySide side, int slot, boolean insert, boolean extract)
   {
   accessMap.get(side).addMapping(slot, insert, extract);
   }
@@ -139,6 +154,16 @@ public void addSidedMapping(RelativeSide side, int slot, boolean insert, boolean
 @Override
 public int[] getAccessibleSlotsFromSide(int mcSide)
   {  
+//  InventorySide side = getAccessSideFor(mcSide, te.getBlockMetadata());
+//  AWLog.logDebug("checking for accessible slots for side: "+mcSide); 
+//  AWLog.logDebug("side to access from input side:"+getAccessSideFor(mcSide, te.getBlockMetadata()));
+//  AWLog.logDebug("access map contains: "+accessMap.get(getAccessSideFor(mcSide, te.getBlockMetadata())));
+//  
+//  for(InventorySide side1 : accessMap.keySet())
+//    {
+//    AWLog.logDebug("access map key: "+side1 + " value:"+accessMap.get(side1));
+//    AWLog.logDebug("access values: "+side1 + " value:"+accessMap.get(side1).accessibleSlots);
+//    }
   return accessMap.get(getAccessSideFor(mcSide, te.getBlockMetadata())).accessibleSlots;
   }
 
@@ -342,9 +367,9 @@ public void setSideMapping(RelativeSide accessSide, InventorySide inventoryToAcc
 private class SideAccessibilityMap
 {
 /**
- * the original side mapping for this accessibility map
+ * the inventory side mapping for this accessibility map
  */
-RelativeSide side;
+InventorySide side;
 
 /**
  * a map of slot number to accessibility flags (canInsert, canExtract)
@@ -356,7 +381,7 @@ HashMap<Integer, SidedAccessibility> slotMap = new HashMap<Integer, SidedAccessi
  */
 int[] accessibleSlots;
 
-private SideAccessibilityMap(RelativeSide side)
+private SideAccessibilityMap(InventorySide side)
   {
   this.side = side;
   accessibleSlots = new int[]{};
