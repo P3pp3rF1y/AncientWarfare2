@@ -20,9 +20,6 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 public class WorkSiteTreeFarm extends TileWorksiteBase
 {
 
-private List<BlockPosition> targetClearingBlocks = new ArrayList<BlockPosition>();
-private List<BlockPosition> targetPlantingBlocks = new ArrayList<BlockPosition>();
-int scanDelay = AWAutomationStatics.automationForestryScanTicks;
 
 public WorkSiteTreeFarm()
   {
@@ -56,32 +53,6 @@ public void updateEntity()
   {
   super.updateEntity();
   if(worldObj.isRemote){return;}
-  if(scanDelay>0)
-    {
-    scanDelay--;
-    }
-  else if(scanDelay<=0)
-    {
-    scanDelay = AWAutomationStatics.automationForestryScanTicks;
-    scanArea();
-    }
-  }
-
-private void scanArea()
-  {
-  
-  }
-
-private boolean validateBlock(BlockPosition target, boolean plant)
-  {
-  if(!plant)//is clearing
-    {
-    return worldObj.getBlock(target.x, target.y, target.z).getMaterial()==Material.wood;
-    }
-  else//is planting, verify air block
-    {
-    return worldObj.isAirBlock(target.x, target.y, target.z);
-    }
   }
 
 @Override
@@ -93,86 +64,13 @@ public void doPlayerWork(EntityPlayer player)
 @Override
 public boolean hasWork()
   {  
-  return !targetClearingBlocks.isEmpty() || (!targetPlantingBlocks.isEmpty() && hasSapling());
+  return false;
   }
 
 @Override
 public void doWork(IWorker worker)
   {  
-  if(!targetClearingBlocks.isEmpty())//first try to chop/clear, until there is no more to chop
-    {
-    BlockPosition target = findClearingBlock();
-    if(target!=null)
-      {
-      clearBlock(target);
-      }
-    else
-      {
-      scanArea();    
-      }
-    }
-  else if(!targetPlantingBlocks.isEmpty())//then try to plant
-    {
-    if(hasSapling())
-      {
-      BlockPosition target = findPlantingBlock();
-      if(target!=null)
-        {
-        plantBlock(target);
-        }
-      else
-        {
-        scanArea();    
-        }      
-      }
-    }
-  else
-    {
-    scanArea();        
-    }
-  }
 
-private BlockPosition findPlantingBlock()
-  {
-  BlockPosition target;
-  while(!targetPlantingBlocks.isEmpty())
-    {
-    target = targetPlantingBlocks.remove(0);
-    if(validateBlock(target, true))
-      {
-      return target;
-      }
-    }
-  return null;
-  }
-
-private BlockPosition findClearingBlock()
-  {
-  BlockPosition target;
-  while(!targetClearingBlocks.isEmpty())
-    {
-    target = targetClearingBlocks.remove(0);
-    if(validateBlock(target, false))
-      {
-      return target;
-      }
-    }
-  return null;
-  }
-
-private void plantBlock(BlockPosition target)
-  {
-  
-  }
-
-private void clearBlock(BlockPosition target)
-  {
-  
-  }
-
-private boolean hasSapling()
-  {
-  return false;
   }
 
 @Override
@@ -184,7 +82,7 @@ public WorkType getWorkType()
 @Override
 public void initWorkSite()
   {
-  scanArea();
+  
   }
 
 @Override
