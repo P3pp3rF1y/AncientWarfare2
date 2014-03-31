@@ -7,6 +7,7 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.item.ItemEventHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
+import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -51,6 +52,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.INSTANCE.registerNetwork();
   MinecraftForge.EVENT_BUS.register(AWGameData.INSTANCE);
   MinecraftForge.EVENT_BUS.register(new ItemEventHandler());
+  FMLCommonHandler.instance().bus().register(ResearchTracker.instance());
   proxy.registerClient();
   }
 

@@ -35,21 +35,16 @@ public void onKeyInput(KeyInputEvent evt)
   EntityPlayer player = minecraft.thePlayer;
   if(player==null){return;}
   
-
   int key = Keyboard.getEventKey();
   if(key==Keyboard.KEY_Z)
     {
-    AWLog.logDebug("item interaction key pressed");
     ItemStack stack = player.inventory.getCurrentItem();
     if(stack!=null && stack.getItem() instanceof IItemKeyInterface)
       {
-      AWLog.logDebug("interactable item in use, sending use packet");
       PacketItemInteraction pkt = new PacketItemInteraction();
       NetworkHandler.sendToServer(pkt);
       }
-    }
- 
-  
+    }  
   }
 
 }
