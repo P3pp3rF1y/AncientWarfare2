@@ -162,6 +162,7 @@ public void initWorkSite()
   this.currentY = this.getWorkBoundsMax().y;
   this.currentX = this.getWorkBoundsMin().x;
   this.currentZ = this.getWorkBoundsMin().z;
+  this.nextPosition.reassign(currentX, currentY, currentZ);
   }
 
 @Override

@@ -9,10 +9,26 @@ structures module
 automation module
 	worker slots control gui? (no clue how to ref unique NPC cleanly from inside the GUI)
 	add the rest of the types of automation -- farm, etc.
-	They will no longer stop when inventory is full -- they will instead just throw things into the world		
-			
+	They will no longer stop when inventory is full -- they will instead just throw things into the world	
+		or perhaps just have a single overflow slot that if it is full will trigger hasWork()==false
+		--would require the tile to constantly poll this slot, and dump into normal harvest inventory if
+		there were a stack in it.
+	
+	Tree Farm:
+		How to build a tree-harvesting automation block that is event driven and does
+			not need to constantly re-scan its work-area, and does not lose work-ticks to
+			not having work?
+		Need:
+			list of saplings that can be force-grown with bonemeal
+			list of target planting blocks that need saplings planted
+			list of target clearing blocks that are grown trees ready to remove.
+			a way to validate that inventory has a sapling in it before attempting planting
+		
+		
 vehicles module
 	everything
 
 npcs module
 	everything
+	
+	
