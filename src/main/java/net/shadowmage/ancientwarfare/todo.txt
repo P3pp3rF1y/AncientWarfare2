@@ -7,7 +7,9 @@ structures module
 	survival-mode building / block mapping
 
 automation module
-	worker slots control gui?
+	worker slots control gui? (no clue how to ref unique NPC cleanly from inside the GUI)
+	add the rest of the types of automation -- farm, etc.
+	They will no longer stop when inventory is full -- they will instead just throw things into the world		
 			
 vehicles module
 	everything

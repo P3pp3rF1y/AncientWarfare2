@@ -20,6 +20,7 @@ import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteQuarry extends TileWorksiteBase
 {
@@ -39,21 +40,20 @@ public WorkSiteQuarry()
   this.inventory.addSlotViewMap(InventorySide.REAR, 8, (3*18)+18+12+8+12, "guistrings.inventory.side.rear");
   for(int i =0; i <27; i++)
     {
-    this.inventory.addSidedMapping(RelativeSide.TOP, i, true, true);
+    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
     this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
     }
   for(int i = 27, k = 0; i<30; i++, k++)
     {
-    this.inventory.addSidedMapping(RelativeSide.LEFT, i, true, true);
-    this.inventory.addSidedMapping(RelativeSide.RIGHT, i, true, true);
+    this.inventory.addSidedMapping(InventorySide.LEFT, i, true, true);
+    this.inventory.addSidedMapping(InventorySide.RIGHT, i, true, true);
     this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
     }
   for(int i = 30, k = 0; i < 33; i++, k++)
     {
-    this.inventory.addSidedMapping(RelativeSide.REAR, i, true, true);
+    this.inventory.addSidedMapping(InventorySide.REAR, i, true, true);
     this.inventory.addSlotViewMapping(InventorySide.REAR, i, (k%9)*18, (k/9)*18);
-    }  
- 
+    }   
   }
 
 @Override
@@ -82,15 +82,19 @@ public void doWork(IWorker worker)
     {
     scanNextPosition();
     if(finished){return;}
-    }
-  
+    }  
   BlockPosition target = nextPosition;
   Block block = worldObj.getBlock(target.x, target.y, target.z);  
   ArrayList<ItemStack> drops = block.getDrops(worldObj, target.x, target.y, target.z, worldObj.getBlockMetadata(target.x, target.y, target.z), 0);
-
-  worldObj.setBlockToAir(target.x, target.y, target.z);
-  
-  
+  for(ItemStack stack : drops)
+    {
+    stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getAccessDirectionFor(RelativeSide.TOP));
+    if(stack!=null)
+      {
+      //TODO drop item in world
+      }
+    }  
+  worldObj.setBlockToAir(target.x, target.y, target.z); 
   scanNextPosition();
   }
 
@@ -205,7 +209,6 @@ public void writeToNBT(NBTTagCompound tag)
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  AWLog.logDebug("worksite clicked by : "+player + " client: "+player.worldObj.isRemote);
   if(!player.worldObj.isRemote)
     {
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_INVENTORY, xCoord, yCoord, zCoord);
