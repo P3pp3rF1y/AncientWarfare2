@@ -8,7 +8,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.modeler.gui.GuiModelEditor;
-import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerPlacer;
 
 public class GuiTest extends GuiContainerBase
 {

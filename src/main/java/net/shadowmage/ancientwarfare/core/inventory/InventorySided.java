@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +10,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 /**
  * re-mappable sided inventory.<br>
@@ -26,7 +23,7 @@ public class InventorySided implements IInventorySaveable, ISidedInventory
 
 
 private static int[] emptyIndices = new int[]{};
-TileEntity te;
+ISidedTile te;
 private ItemStack[] inventorySlots;
 private SlotItemFilter[] inventorySlotFilters;
 private boolean isDirty;
@@ -49,7 +46,7 @@ private HashMap<RelativeSide, InventorySide> sideInventoryAccess = new HashMap<R
  */
 private HashMap<InventorySide, SideAccessibilityMap> accessMap = new HashMap<InventorySide, SideAccessibilityMap>();
 
-public InventorySided(int size, TileEntity te)
+public InventorySided(int size, ISidedTile te)
   {
   this.te = te;
   inventorySlots = new ItemStack[size];
@@ -82,7 +79,7 @@ public SlotItemFilter getFilterForSlot(int slot)
  */
 public int getAccessDirectionFor(RelativeSide side)
   {
-  return RelativeSide.getAccessDirection(side, te.getBlockMetadata());
+  return RelativeSide.getAccessDirection(side, te.getTileMeta());
   }
 
 /**
@@ -196,7 +193,7 @@ public void addSidedMapping(InventorySide side, int slot, boolean insert, boolea
 @Override
 public int[] getAccessibleSlotsFromSide(int mcSide)
   {  
-  InventorySide side = getAccessSideFor(mcSide, te.getBlockMetadata());
+  InventorySide side = getAccessSideFor(mcSide, te.getTileMeta());
   if(side==InventorySide.NONE){return emptyIndices;}
   SideAccessibilityMap map = accessMap.get(side);
   return map.accessibleSlots;
@@ -205,13 +202,13 @@ public int[] getAccessibleSlotsFromSide(int mcSide)
 @Override
 public boolean canInsertItem(int var1, ItemStack var2, int var3)
   {  
-  return accessMap.get(getAccessSideFor(var3, te.getBlockMetadata())).canInsert(var2, var1);
+  return accessMap.get(getAccessSideFor(var3, te.getTileMeta())).canInsert(var2, var1);
   }
 
 @Override
 public boolean canExtractItem(int var1, ItemStack var2, int var3)
   {
-  return accessMap.get(getAccessSideFor(var3, te.getBlockMetadata())).canExtract(var2, var1);
+  return accessMap.get(getAccessSideFor(var3, te.getTileMeta())).canExtract(var2, var1);
   }
 
 @Override
@@ -282,6 +279,7 @@ public int getInventoryStackLimit()
 public void markDirty()
   {
   this.isDirty = true;
+  this.te.onInventoryChanged();
   }
 
 @Override

@@ -27,7 +27,7 @@ public BlockWorksiteBase(Material p_i45394_1_, String regName)
   this.setBlockName(regName);
   }
 
-public BlockWorksiteBase addIcon(RelativeSide relativeSide, String texName)
+public BlockWorksiteBase setIcon(RelativeSide relativeSide, String texName)
   {
   this.iconMap.setIconTexture(relativeSide, texName);
   return this;

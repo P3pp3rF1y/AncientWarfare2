@@ -1,9 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
-import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SideSlotMap;

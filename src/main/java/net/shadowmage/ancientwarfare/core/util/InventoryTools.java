@@ -1,13 +1,10 @@
 package net.shadowmage.ancientwarfare.core.util;
 
-import java.util.Arrays;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class InventoryTools
 {

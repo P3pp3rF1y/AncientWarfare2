@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
-import net.shadowmage.ancientwarfare.core.gui.GuiTest;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketHandlerClient;

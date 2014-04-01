@@ -12,9 +12,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -25,7 +23,6 @@ import net.shadowmage.ancientwarfare.core.model.Primitive;
 import net.shadowmage.ancientwarfare.core.model.PrimitiveBox;
 import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 import net.shadowmage.ancientwarfare.core.util.Trig;
-import net.shadowmage.ancientwarfare.modeler.gui.GuiModelEditor;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;

@@ -20,7 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build;
 
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;

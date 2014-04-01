@@ -1,18 +1,14 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
-
-import org.lwjgl.opengl.GL11;
 
 
 /**

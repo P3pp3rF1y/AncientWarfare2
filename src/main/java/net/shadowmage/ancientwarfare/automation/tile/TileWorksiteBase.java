@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.inventory.ISidedTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -34,7 +35,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
  * @author Shadowmage
  *
  */
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory
+public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, ISidedTile
 {
 
 /**
@@ -70,6 +71,18 @@ protected String owningPlayer;
 public InventorySided inventory;
 
 public TileWorksiteBase()
+  {
+  
+  }
+
+@Override
+public int getTileMeta()
+  {
+  return getBlockMetadata();
+  }
+
+@Override
+public void onInventoryChanged()
   {
   
   }

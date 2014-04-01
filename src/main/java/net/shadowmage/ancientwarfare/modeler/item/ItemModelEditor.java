@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.modeler.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +10,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.item.ItemClickable;
 import net.shadowmage.ancientwarfare.modeler.gui.GuiModelEditor;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemModelEditor extends ItemClickable
 {

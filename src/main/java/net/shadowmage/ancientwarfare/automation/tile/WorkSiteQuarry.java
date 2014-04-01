@@ -5,14 +5,8 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.scoreboard.Team;
-import net.minecraft.server.MinecraftServer;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -54,6 +48,13 @@ public WorkSiteQuarry()
     this.inventory.addSidedMapping(InventorySide.REAR, i, true, true);
     this.inventory.addSlotViewMapping(InventorySide.REAR, i, (k%9)*18, (k/9)*18);
     }   
+  }
+
+@Override
+public void markDirty()
+  {
+  super.markDirty();
+  AWLog.logDebug("te marked dirty...should rescan inventory..");
   }
 
 @Override
