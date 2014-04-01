@@ -65,6 +65,11 @@ public InventorySided(int size, TileEntity te)
     }
   }
 
+public void addSlotFilter(int slot, SlotItemFilter filter)
+  {
+  inventorySlotFilters[slot]=filter;
+  }
+
 /**
  * return the mcSide that will access the passed in RelativeSide (side of block, e.g. front)
  * @param side

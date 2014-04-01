@@ -29,7 +29,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
  * handles the management of worker references and work-bounds, as well as inventory bridge methods.
  * 
  * All implementing classes must initialize the inventory field in their constructor, or things
- * will go very crashy when the block is accessed in the world.
+ * will go very crashy when the block is placed in the world.
  *  
  * @author Shadowmage
  *
@@ -180,11 +180,6 @@ public final void setWorkBounds(BlockPosition min, BlockPosition max)
   {  
   setWorkBoundsMin(min);
   setWorkBoundsMax(max);
-  }
-
-public final Team getOwningPlayerTeam()
-  {
-  return worldObj.getScoreboard().getPlayersTeam(owningPlayer);
   }
 
 public final String getOwningPlayer()
@@ -338,13 +333,14 @@ public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt
 
 @Override
 public final Team getTeam()
-  {
+  {  
   if(owningPlayer!=null)
     {
     worldObj.getScoreboard().getPlayersTeam(owningPlayer);
     }
   return null;
   }
+
 
 /**
  * called when tile is sending an update to client.  implementations should

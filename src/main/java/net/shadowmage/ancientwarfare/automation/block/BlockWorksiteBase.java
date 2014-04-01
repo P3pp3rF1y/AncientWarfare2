@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
@@ -18,6 +19,7 @@ public abstract class BlockWorksiteBase extends Block
 {
 
 BlockIconRotationMap iconMap = new BlockIconRotationMap();
+
 public BlockWorksiteBase(Material p_i45394_1_, String regName)
   {
   super(p_i45394_1_);
@@ -30,6 +32,13 @@ public BlockWorksiteBase addIcon(RelativeSide relativeSide, String texName)
   this.iconMap.setIconTexture(relativeSide, texName);
   return this;
   }
+
+/**
+ * made into an abstract method so that derived classes must write an implementation
+ * --used to make anonymous classes easier to setup
+ */
+@Override
+public abstract TileEntity createTileEntity(World world, int metadata);
 
 @Override
 public boolean hasTileEntity(int metadata)
@@ -56,7 +65,7 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
   {
   TileWorksiteBase worksite = (TileWorksiteBase) world.getTileEntity(x, y, z);
   Team t = player.getTeam();
-  Team t1 = worksite.getOwningPlayerTeam();
+  Team t1 = worksite.getTeam();
   if(t==t1)
     {
     return worksite.onBlockClicked(player);
