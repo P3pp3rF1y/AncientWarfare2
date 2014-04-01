@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SideSlotMap;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.ViewableSlot;
+import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 
 public class ContainerWorksiteTest extends ContainerBase
 {
@@ -34,7 +35,7 @@ protected int addWorksiteInventorySlots(int topY)
     if(slotMap==null){continue;}
     for(ViewableSlot slot : slotMap.getSlots())
       {
-      addSlotToContainer(new Slot(worksite.inventory, slot.slotNumber, slotMap.guiX + slot.viewX, slotMap.slotY+slot.viewY));
+      addSlotToContainer(new SlotFiltered(worksite.inventory, slot.slotNumber, slotMap.guiX + slot.viewX, slotMap.slotY+slot.viewY, worksite.inventory.getFilterForSlot(slot.slotNumber)));
       if(slotMap.slotY+slot.viewY>lowestY)
         {
         lowestY = slotMap.slotY+slot.viewY;
