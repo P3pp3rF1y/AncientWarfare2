@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
@@ -56,9 +57,15 @@ public void handlePacketData(NBTTagCompound tag)
       set.add(pos);
       }
     worksite.setUserSetTargets(set);
-    player.worldObj.markBlockForUpdate(worksite.xCoord, worksite.yCoord, worksite.zCoord);
     worksite.markDirty();
     }
+  }
+
+public void removeTarget(BlockPosition target)
+  {
+  boolean val = targetBlocks.remove(target);
+  AWLog.logDebug("removed target block: "+target+" actually removed: "+val);
+  
   }
 
 }

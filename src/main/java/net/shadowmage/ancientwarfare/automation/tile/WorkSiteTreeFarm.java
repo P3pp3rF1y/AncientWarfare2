@@ -1,21 +1,33 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.WorldServer;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteTreeFarm extends TileWorksiteBase
 {
@@ -43,10 +55,16 @@ public class WorkSiteTreeFarm extends TileWorksiteBase
  *        
  */
 
-boolean hasBonemeal;
-boolean hasSapling;
+/**
+ * flag should be set to true whenever updating inventory internally (e.g. harvesting blocks) to prevent
+ * unnecessary inventory rescanning.  should be set back to false after blocks are added to inventory
+ */
+private boolean updatingInventory = false;
+private boolean shouldCountResources = true;
+int saplingCount;
+int bonemealCount;
 int workerRescanDelay;
-List<BlockPosition> blocksToChop;
+Set<BlockPosition> blocksToChop;
 List<BlockPosition> blocksToPlant;
 List<BlockPosition> blocksToFertilize;
 
@@ -58,8 +76,9 @@ public WorkSiteTreeFarm()
   this.canUserSetBlocks = true;
   this.canUpdate = true;
   this.maxWorkers = 1;
+  this.shouldSendWorkTargets = true;
   
-  blocksToChop = new ArrayList<BlockPosition>();
+  blocksToChop = new HashSet<BlockPosition>();
   blocksToPlant = new ArrayList<BlockPosition>();
   blocksToFertilize = new ArrayList<BlockPosition>();
   
@@ -114,17 +133,55 @@ public WorkSiteTreeFarm()
   }
 
 @Override
+public void addWorkTargets(List<BlockPosition> targets)
+  {
+  targets.addAll(blocksToChop);
+  targets.addAll(blocksToFertilize);
+  targets.addAll(blocksToPlant);
+  }
+
+@Override
+public void onInventoryChanged()
+  {
+  if(!updatingInventory)
+    {
+    this.shouldCountResources = true;
+    }
+  }
+
+private void countResources()
+  {
+  shouldCountResources = false;
+  saplingCount = 0;
+  bonemealCount = 0;
+  ItemStack stack;
+  for(int i = 27; i < 33; i++)
+    {
+    stack = inventory.getStackInSlot(i);
+    if(stack==null){continue;}
+    if(stack.getItem() instanceof ItemBlock)
+      {
+      ItemBlock item = (ItemBlock) stack.getItem();
+      if(item.field_150939_a instanceof BlockSapling)
+        {
+        saplingCount+=stack.stackSize;
+        }
+      }
+    else if(stack.getItem()==Items.dye && stack.getItemDamage()==15)
+      {
+      bonemealCount+=stack.stackSize;
+      }
+    }
+  AWLog.logDebug("rescanned inventory.  bonemeal: "+bonemealCount+" saplings: "+saplingCount);
+  }
+
+@Override
 public void updateEntity()
   {
   super.updateEntity();
   if(worldObj.isRemote){return;}
-  }
-
-@Override
-public void markDirty()
-  {
-  super.markDirty();
-  AWLog.logDebug("markDirty called in TE");
+  if(workerRescanDelay>0){workerRescanDelay--;}
+  if(shouldCountResources){countResources();}
   }
 
 @Override
@@ -141,16 +198,167 @@ public boolean hasWork()
 
 private boolean hasWorkBlock()
   {
-  if(!blocksToChop.isEmpty()){return true;}
-  else if(!blocksToPlant.isEmpty() && hasSapling){return true;}
-  else if(!blocksToFertilize.isEmpty() && hasBonemeal){return true;}
-  return false;
+  return !blocksToChop.isEmpty() || (!blocksToPlant.isEmpty() && saplingCount>0) || (!blocksToFertilize.isEmpty() && bonemealCount>0);
   }
 
 @Override
 public void doWork(IWorker worker)
   {  
+  AWLog.logDebug("tree farm processing work command..");
+  if(workerRescanDelay<=0 || !hasWorkBlock())
+    {
+    rescan();
+    }
+  else
+    {
+    processWork();
+    }
+  pickupSaplings();
+  }
 
+private void processWork()
+  {
+  AWLog.logDebug("tree farm doing work...");
+  BlockPosition position;
+  if(!blocksToChop.isEmpty())
+    {
+    AWLog.logDebug("chopping block....");
+    Iterator<BlockPosition> it = blocksToChop.iterator();
+    position = it.next();
+    it.remove();
+    updatingInventory = true;
+    List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwningPlayer(), position.x, position.y, position.z, 0);
+    for(ItemStack item : items)
+      {
+      item = InventoryTools.mergeItemStack(inventory, item, inventory.getAccessDirectionFor(InventorySide.TOP));
+      if(item!=null)
+        {
+        //throw into overflow slot
+        }
+      }
+    updatingInventory = false;
+    }
+  else if(saplingCount>0 && !blocksToPlant.isEmpty())
+    {
+    AWLog.logDebug("planting block....");
+    Iterator<BlockPosition> it = blocksToPlant.iterator();
+    position = it.next();
+    it.remove();
+    int sp = saplingCount;
+    updatingInventory = true;
+    ItemStack stack = null;
+    for(int i = 27; i<30; i++)
+      {
+      stack = inventory.decrStackSize(i, 1);
+      if(stack!=null && stack.getItem() instanceof ItemBlock && ((ItemBlock)stack.getItem()).field_150939_a instanceof BlockSapling)
+        {        
+        saplingCount--;
+        break;
+        }
+      else if(stack!=null)
+        {
+        inventory.getStackInSlot(i).stackSize++;
+        }
+      stack = null;
+      } 
+    updatingInventory = false;
+    if(stack!=null && sp!=saplingCount)//e.g. a sapling has been removed
+      {
+      Block block = ((ItemBlock)stack.getItem()).field_150939_a;
+      worldObj.setBlock(position.x, position.y, position.z, block);
+      }
+    }
+  else if(bonemealCount>0 && !blocksToFertilize.isEmpty())
+    {
+    AWLog.logDebug("fertilizing block....");
+    Iterator<BlockPosition> it = blocksToFertilize.iterator();
+    position = it.next();
+    it.remove();
+    updatingInventory = true;
+    ItemStack stack = null;
+    for(int i = 30; i<33; i++)
+      {
+      stack = inventory.decrStackSize(i, 1);
+      if(stack!=null && stack.getItem()==Items.dye&&stack.getItemDamage()==15)
+        {        
+        bonemealCount--;
+        break;
+        }
+      else if(stack!=null)
+        {
+        inventory.getStackInSlot(i).stackSize++;
+        }
+      stack = null;
+      }      
+    updatingInventory = false;  
+    if(stack!=null)
+      {  
+      ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, AncientWarfareCore.proxy.getFakePlayer((WorldServer) worldObj, owningPlayer));
+      if(worldObj.getBlock(position.x, position.y, position.z) instanceof BlockSapling)
+        {
+        blocksToFertilize.add(position);
+        }
+      }
+    }
+  this.markDirty();
+  }
+
+private void pickupSaplings()
+  {
+  
+  }
+
+private void rescan()
+  {
+  AWLog.logDebug("rescanning tree farm");
+  validateChopBlocks();
+  blocksToPlant.clear();
+  blocksToFertilize.clear();
+  workerRescanDelay = AWAutomationStatics.automationForestryScanTicks;//two minutes
+  
+  Block block;
+  for(BlockPosition pos : getUserSetTargets())
+    {
+    if(worldObj.isAirBlock(pos.x, getWorkBoundsMin().y, pos.z))
+      {
+      block = worldObj.getBlock(pos.x, getWorkBoundsMin().y-1, pos.z);
+      if(block==Blocks.dirt || block==Blocks.grass)
+        {
+//        AWLog.logDebug("adding block to plant: "+pos);
+        blocksToPlant.add(pos.copy().reassign(pos.x, getWorkBoundsMin().y, pos.z));
+        }
+      }
+    else
+      {
+      block = worldObj.getBlock(pos.x, getWorkBoundsMin().y, pos.z);
+      if(block instanceof BlockSapling)
+        {
+//        AWLog.logDebug("adding block to fertilize: "+pos);
+        blocksToFertilize.add(pos.copy().reassign(pos.x, getWorkBoundsMin().y, pos.z));
+        }
+      else if(block.getMaterial()==Material.wood)
+        {
+//        AWLog.logDebug("adding block to search for trees: "+pos);
+        addTreeBlocks(pos.copy().reassign(pos.x, getWorkBoundsMin().y, pos.z));
+        }
+      }
+    }
+  if(shouldSendWorkTargets && AWAutomationStatics.sendWorkToClients)
+    {
+    this.markDirty();
+    }
+  }
+
+private void validateChopBlocks()
+  {
+  /**
+   * TODO iterate through blocks to chop and make sure there is still a wood-material based block in that position
+   */
+  }
+
+private void addTreeBlocks(BlockPosition base)
+  {
+  TreeFinder.findAttachedTreeBlocks(worldObj.getBlock(base.x, base.y, base.z), worldObj, base.x, base.y, base.z, blocksToChop);
   }
 
 @Override
@@ -188,4 +396,15 @@ public void readClientData(NBTTagCompound tag)
 
   }
 
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {
+  super.writeToNBT(tag);
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {
+  super.readFromNBT(tag);
+  }
 }

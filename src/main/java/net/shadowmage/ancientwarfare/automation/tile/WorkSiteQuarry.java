@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,10 +52,18 @@ public WorkSiteQuarry()
   }
 
 @Override
-public void markDirty()
+public void addWorkTargets(List<BlockPosition> targets)
   {
-  super.markDirty();
-  AWLog.logDebug("te marked dirty...should rescan inventory..");
+  if(nextPosition!=null)
+    {
+    targets.add(nextPosition);
+    }
+  }
+
+@Override
+public void onInventoryChanged()
+  {
+
   }
 
 @Override

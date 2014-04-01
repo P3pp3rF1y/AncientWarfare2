@@ -84,7 +84,7 @@ protected void onPressed()
     }
   else
     {
-    container.targetBlocks.remove(pos);
+    container.removeTarget(pos);
     }
   container.sendTargetsToServer();
   }

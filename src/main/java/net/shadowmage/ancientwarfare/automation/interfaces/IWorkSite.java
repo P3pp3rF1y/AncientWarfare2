@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.interfaces;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -67,6 +69,15 @@ public Team getTeam();
 public BlockPosition getWorkBoundsMin();
 
 public BlockPosition getWorkBoundsMax();
+
+/**
+ * --CLIENT ONLY
+ * should return a list of targets, must not return null, but may return an empty list
+ * returned list should be in the order that the blocks would be processed, as that is how
+ * they will be rendered
+ * @return
+ */
+public List<BlockPosition> getWorkTargets();
 
 public boolean hasWorkBounds();
 

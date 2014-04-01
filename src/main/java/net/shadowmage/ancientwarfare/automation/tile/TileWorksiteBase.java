@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -17,6 +19,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -62,6 +65,8 @@ protected boolean canUpdate;
 
 protected boolean canUserSetBlocks;
 
+protected boolean shouldSendWorkTargets;
+
 private Set<BlockPosition> userTargetBlocks = new HashSet<BlockPosition>();
 
 private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
@@ -70,21 +75,27 @@ protected String owningPlayer;
 
 public InventorySided inventory;
 
+private ArrayList<BlockPosition> clientWorkTargets = new ArrayList<BlockPosition>();
+
 public TileWorksiteBase()
   {
   
   }
 
 @Override
-public int getTileMeta()
+public void markDirty()
   {
-  return getBlockMetadata();
+  super.markDirty();
+  if(!worldObj.isRemote)
+    {
+    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
   }
 
 @Override
-public void onInventoryChanged()
+public int getTileMeta()
   {
-  
+  return getBlockMetadata();
   }
 
 public boolean hasUserSetTargets()
@@ -103,6 +114,10 @@ public void setUserSetTargets(Set<BlockPosition> targets)
     {
     userTargetBlocks.clear();
     userTargetBlocks.addAll(targets);
+    if(!this.worldObj.isRemote)
+      {
+      this.markDirty();    
+      }
     }
   }
 
@@ -179,6 +194,15 @@ public abstract void initWorkSite();
 
 public abstract boolean onBlockClicked(EntityPlayer player);
 
+/**
+ * subclasses should add any work-targets they want sent to clients to this list.
+ * targets will only be sent to clients if the config option sendWorkToClients==true
+ * can add original/primary reference, no need to copy -- input is not changed or 
+ * cached in any way only used to write out to nbt
+ * @param targets
+ */
+public abstract void addWorkTargets(List<BlockPosition> targets);
+
 public final void setWorkBoundsMin(BlockPosition min)
   {
   bbMin = min;
@@ -243,6 +267,12 @@ public void writeToNBT(NBTTagCompound tag)
       }    
     tag.setTag("userBlocks", list);
     }
+  }
+
+@Override
+public List<BlockPosition> getWorkTargets()
+  {
+  return clientWorkTargets;
   }
 
 @Override
@@ -311,6 +341,23 @@ public final Packet getDescriptionPacket()
       }    
     tag.setTag("userBlocks", list);
     }
+  if(shouldSendWorkTargets && AWAutomationStatics.sendWorkToClients)
+    {
+    ArrayList<BlockPosition> blockList = new ArrayList<BlockPosition>();
+    addWorkTargets(blockList);
+    if(!blockList.isEmpty())
+      {
+      NBTTagList list = new NBTTagList();
+      NBTTagCompound posTag;
+      for(BlockPosition pos : blockList)
+        {
+        posTag = new NBTTagCompound();
+        pos.writeToNBT(posTag);
+        list.appendTag(posTag);
+        }    
+      tag.setTag("workBlocks", list);      
+      }
+    }
   writeClientData(tag);
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, tag);
   }
@@ -332,6 +379,7 @@ public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt
     }
   if(tag.hasKey("userBlocks"))
     {
+    userTargetBlocks.clear();
     NBTTagList list = tag.getTagList("userBlocks", Constants.NBT.TAG_COMPOUND);
     BlockPosition pos;
     for(int i = 0; i < list.tagCount(); i++)
@@ -340,7 +388,17 @@ public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt
       userTargetBlocks.add(pos);
       }
     }
-  AWLog.logDebug("read worksite client data min: "+bbMin+" max: "+bbMax);
+  if(tag.hasKey("workBlocks"))
+    {
+    clientWorkTargets.clear();
+    NBTTagList list = tag.getTagList("workBlocks", Constants.NBT.TAG_COMPOUND);
+    BlockPosition pos;
+    for(int i = 0; i < list.tagCount(); i++)
+      {
+      pos = new BlockPosition(list.getCompoundTagAt(i));
+      clientWorkTargets.add(pos);
+      }
+    }
   readClientData(tag);
   }
 
@@ -353,7 +411,6 @@ public final Team getTeam()
     }
   return null;
   }
-
 
 /**
  * called when tile is sending an update to client.  implementations should
