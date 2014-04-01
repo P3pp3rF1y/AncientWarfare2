@@ -24,9 +24,11 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 public class InventorySided implements IInventorySaveable, ISidedInventory
 {
 
+
 private static int[] emptyIndices = new int[]{};
 TileEntity te;
 private ItemStack[] inventorySlots;
+private SlotItemFilter[] inventorySlotFilters;
 private boolean isDirty;
 
 /**
@@ -51,6 +53,7 @@ public InventorySided(int size, TileEntity te)
   {
   this.te = te;
   inventorySlots = new ItemStack[size];
+  inventorySlotFilters = new SlotItemFilter[size];
   RelativeSide side;
   InventorySide invSide;
   for(int i = 0 ; i < 6; i++)
@@ -149,17 +152,6 @@ public void removeSideMapping(RelativeSide blockSide, int slot)
 public void addSidedMapping(InventorySide side, int slot, boolean insert, boolean extract)
   {
   accessMap.get(side).addMapping(slot, insert, extract);
-  }
-
-/**
- * adds a slot to the mapping for the given inventory side with the given item-filter for insert/extract
- * @param side
- * @param slot
- * @param filter
- */
-public void addSidedMapping(InventorySide side, int slot, SlotItemFilter filter)
-  {
-  accessMap.get(side).addMapping(slot, filter);  
   }
 
 @Override
@@ -274,7 +266,7 @@ public void closeInventory()
 @Override
 public boolean isItemValidForSlot(int var1, ItemStack var2)
   {
-  return true;
+  return inventorySlotFilters[var1]==null? true : inventorySlotFilters[var1].isItemValid(var2);
   }
 
 @Override
@@ -336,13 +328,18 @@ public boolean isDirty()
   return isDirty;
   }
 
+/**
+ * return the array of slot indices that are accessible for a given block relative side
+ * @param blockSide
+ * @return
+ */
 public int[] getAccessibleSlotsFor(RelativeSide blockSide)
   {
   return accessMap.get(sideInventoryAccess.get(blockSide)).accessibleSlots;
   }
 
 /**
- * return the inventory side that should be accessed from the input mcSide for input meta
+ * return the inventory side that will be accessed from the input mcSide for input meta
  * @param mcSide
  * @param meta
  * @return
@@ -353,7 +350,7 @@ public InventorySide getAccessSideFor(int mcSide, int meta)
   }
 
 /**
- * return the inventory side that should be accessed for the input relative side
+ * return the inventory side that will be accessed for the input relative block side
  * @param baseSide
  * @return
  */
@@ -363,7 +360,8 @@ public InventorySide getAccessSideFor(RelativeSide baseSide)
   }
 
 /**
- * set an inventory side mapping.
+ * set an inventory side mapping for block relative side to the inventory side that will be accessed
+ * from that direction
  * @param accessSide the side of the block that access will happen from
  * @param inventoryToAccess the side of the inventory that will be accessed from accessSide
  */
@@ -372,7 +370,7 @@ public void setSideMapping(RelativeSide accessSide, InventorySide inventoryToAcc
   sideInventoryAccess.put(accessSide, inventoryToAccess);
   }
 
-private static class SideAccessibilityMap
+private class SideAccessibilityMap
 {
 /**
  * a map of slot number to accessibility flags (canInsert, canExtract)
@@ -402,13 +400,6 @@ private void addMapping(int slot, boolean insert, boolean extract)
     access.extract = extract;    
     }  
   remapSidedIndices();
-  }
-
-private void addMapping(int slot, SlotItemFilter filter)
-  {  
-  addMapping(slot, false, false);  
-  remapSidedIndices();
-  slotMap.get(slot).addItemFilter(filter);
   }
 
 public void removeMapping(int slot)
@@ -452,12 +443,11 @@ private boolean canExtract(ItemStack stack, int slot)
   }
 }
 
-private static class SidedAccessibility
+private class SidedAccessibility
 {
 int slot;
 boolean insert;
 boolean extract;
-SlotItemFilter filter;
 
 private SidedAccessibility(int slot, boolean insert, boolean extract)
   {
@@ -468,33 +458,18 @@ private SidedAccessibility(int slot, boolean insert, boolean extract)
 
 public boolean canInsert(ItemStack stack)
   {
-  if(filter!=null)
-    {
-    return filter.canInsert(stack);
-    }
-  return insert;
+  return isItemValidForSlot(slot, stack) && insert;
   }
 
 public boolean canExtract(ItemStack stack)
   {
-  if(filter!=null)
-    {
-    return filter.canExtract(stack);
-    }
   return extract;
-  }
-
-public SidedAccessibility addItemFilter(SlotItemFilter filter)
-  {
-  this.filter = filter;
-  return this;
   }
 }
 
 public static abstract class SlotItemFilter
 {
-public abstract boolean canInsert(ItemStack stack);
-public abstract boolean canExtract(ItemStack stack);
+public abstract boolean isItemValid(ItemStack stack);
 }
 
 public static class SideSlotMap
