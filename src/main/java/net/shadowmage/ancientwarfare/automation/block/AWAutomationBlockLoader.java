@@ -20,7 +20,7 @@ public static final BlockWorksiteBase worksiteTest = new BlockWorksiteBase(Mater
   {
   public TileEntity createTileEntity(World world, int metadata) 
     {
-    return new WorkSiteTreeFarm();
+    return new WorkSiteQuarry();
     };
   };
 
