@@ -92,6 +92,11 @@ public int getAccessDirectionFor(InventorySide side)
   return -1;
   }
 
+/**
+ * returns a list of all slot numbers that may be viewed in a gui/container for the given input inventory side
+ * @param side
+ * @return
+ */
 public List<Integer> getSlotNumbersViewedForSide(InventorySide side)
   {
   if(sideViewableMap.containsKey(side))
@@ -101,11 +106,21 @@ public List<Integer> getSlotNumbersViewedForSide(InventorySide side)
   return Collections.emptyList();
   }
 
+/**
+ * returns the slot-viewability map for the given input inventory side
+ * @param side
+ * @return
+ */
 public SideSlotMap getSlotMapForSide(InventorySide side)
   {
   return sideViewableMap.get(side);
   }
 
+/**
+ * returns a list of all viewable slots from the input inventory side
+ * @param side
+ * @return
+ */
 public List<ViewableSlot> getSlotsViewedForSide(InventorySide side)
   {
   if(sideViewableMap.containsKey(side))
@@ -115,11 +130,25 @@ public List<ViewableSlot> getSlotsViewedForSide(InventorySide side)
   return Collections.emptyList();
   }
 
+/**
+ * adds a side-mapping (to add slots to) to the container/gui view for this inventory
+ * @param side
+ * @param guiX
+ * @param guiY
+ * @param label
+ */
 public void addSlotViewMap(InventorySide side, int guiX, int guiY, String label)
   {
   sideViewableMap.put(side, new SideSlotMap(side, guiX, guiY, label));
   }
 
+/**
+ * adds a slot to the container/GUI for this inventory
+ * @param side
+ * @param slot
+ * @param viewX
+ * @param viewY
+ */
 public void addSlotViewMapping(InventorySide side, int slot, int viewX, int viewY)
   {
   if(sideViewableMap.containsKey(side))
@@ -370,6 +399,12 @@ public void setSideMapping(RelativeSide accessSide, InventorySide inventoryToAcc
   sideInventoryAccess.put(accessSide, inventoryToAccess);
   }
 
+/**
+ * class for storage of what slot numbers can be accessed from a given inventory side.  One instance
+ * of class per-side.  Each instance stores a map of what slots may be insert/extracted from.
+ * @author Shadowmage
+ *
+ */
 private class SideAccessibilityMap
 {
 /**
@@ -443,6 +478,11 @@ private boolean canExtract(ItemStack stack, int slot)
   }
 }
 
+/**
+ * class for storage of an individual slots insert/extract flags.
+ * @author Shadowmage
+ *
+ */
 private class SidedAccessibility
 {
 int slot;
@@ -467,11 +507,21 @@ public boolean canExtract(ItemStack stack)
   }
 }
 
+/**
+ * abstract template class for definition of item-slot item-filters.  Used for IInventory.isItemValidForSlot(stack, slot)
+ * @author Shadowmage
+ *
+ */
 public static abstract class SlotItemFilter
 {
 public abstract boolean isItemValid(ItemStack stack);
 }
 
+/**
+ * class for storage of what slots are viewable from a GUI.
+ * @author Shadowmage
+ *
+ */
 public static class SideSlotMap
 {
 public int guiX, guiY;
@@ -505,6 +555,11 @@ public List<ViewableSlot> getSlots()
 
 }
 
+/**
+ * class for storage of information about a single viewable slot from inventory/gui/container
+ * @author Shadowmage
+ *
+ */
 public static class ViewableSlot
 {
 public int viewX, viewY, slotNumber;
