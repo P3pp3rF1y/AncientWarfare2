@@ -491,7 +491,7 @@ public SidedAccessibility addItemFilter(SlotItemFilter filter)
   }
 }
 
-private abstract class SlotItemFilter
+public abstract class SlotItemFilter
 {
 public abstract boolean canInsert(ItemStack stack);
 public abstract boolean canExtract(ItemStack stack);
