@@ -140,7 +140,7 @@ public void removeSideMapping(RelativeSide blockSide, int slot)
   }
 
 /**
- * adds a BASE mapping for the slot/seide
+ * adds a slot to the mapping for the given inventory side with the given insert/extract flags
  * @param side
  * @param slot
  * @param insert
@@ -149,6 +149,17 @@ public void removeSideMapping(RelativeSide blockSide, int slot)
 public void addSidedMapping(InventorySide side, int slot, boolean insert, boolean extract)
   {
   accessMap.get(side).addMapping(slot, insert, extract);
+  }
+
+/**
+ * adds a slot to the mapping for the given inventory side with the given item-filter for insert/extract
+ * @param side
+ * @param slot
+ * @param filter
+ */
+public void addSidedMapping(InventorySide side, int slot, SlotItemFilter filter)
+  {
+  accessMap.get(side).addMapping(slot, filter);  
   }
 
 @Override
@@ -393,6 +404,13 @@ private void addMapping(int slot, boolean insert, boolean extract)
   remapSidedIndices();
   }
 
+private void addMapping(int slot, SlotItemFilter filter)
+  {  
+  addMapping(slot, false, false);  
+  remapSidedIndices();
+  slotMap.get(slot).addItemFilter(filter);
+  }
+
 public void removeMapping(int slot)
   {  
   slotMap.remove(slot);  
@@ -417,9 +435,8 @@ private boolean canInsert(ItemStack stack, int slot)
   {
   SidedAccessibility access = slotMap.get(slot);
   if(access!=null)
-    {
-    
-    return access.insert;
+    {    
+    return access.canInsert(stack);
     }
   return false;
   }
@@ -429,10 +446,8 @@ private boolean canExtract(ItemStack stack, int slot)
   SidedAccessibility access = slotMap.get(slot);
   if(access!=null)
     {
-//    AWLog.logDebug("returning mapped value for can extract from slot: "+slot +" :: "+access.extract);
-    return access.extract;
+    return access.canExtract(stack);
     }
-//  AWLog.logDebug("returning default false for can extract from slot: "+slot);
   return false;
   }
 }
@@ -442,6 +457,7 @@ private class SidedAccessibility
 int slot;
 boolean insert;
 boolean extract;
+SlotItemFilter filter;
 
 private SidedAccessibility(int slot, boolean insert, boolean extract)
   {
@@ -449,6 +465,36 @@ private SidedAccessibility(int slot, boolean insert, boolean extract)
   this.insert = insert;
   this.extract = extract;
   }
+
+public boolean canInsert(ItemStack stack)
+  {
+  if(filter!=null)
+    {
+    return filter.canInsert(stack);
+    }
+  return insert;
+  }
+
+public boolean canExtract(ItemStack stack)
+  {
+  if(filter!=null)
+    {
+    return filter.canExtract(stack);
+    }
+  return extract;
+  }
+
+public SidedAccessibility addItemFilter(SlotItemFilter filter)
+  {
+  this.filter = filter;
+  return this;
+  }
+}
+
+private abstract class SlotItemFilter
+{
+public abstract boolean canInsert(ItemStack stack);
+public abstract boolean canExtract(ItemStack stack);
 }
 
 public class SideSlotMap
