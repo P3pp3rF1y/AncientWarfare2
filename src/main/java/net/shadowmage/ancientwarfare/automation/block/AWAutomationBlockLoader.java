@@ -26,9 +26,11 @@ public static void load()
   GameRegistry.registerBlock(workerTest, "block.testWorker");
   
   GameRegistry.registerBlock(worksiteTest, ItemWorksitePlacer.class, "block.testWorksite");
+  GameRegistry.registerBlock(worksiteTest2, ItemWorksitePlacer.class, "block.testForestry");
   
   GameRegistry.registerTileEntity(TileWorkerTest.class, "tile.testWorker");
   GameRegistry.registerTileEntity(WorkSiteQuarry.class, "tile.worksiteQuarry");
+  GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "tile.worksiteForestry");
   }
 
 }
