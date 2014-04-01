@@ -372,7 +372,7 @@ public void setSideMapping(RelativeSide accessSide, InventorySide inventoryToAcc
   sideInventoryAccess.put(accessSide, inventoryToAccess);
   }
 
-private class SideAccessibilityMap
+private static class SideAccessibilityMap
 {
 /**
  * a map of slot number to accessibility flags (canInsert, canExtract)
@@ -452,7 +452,7 @@ private boolean canExtract(ItemStack stack, int slot)
   }
 }
 
-private class SidedAccessibility
+private static class SidedAccessibility
 {
 int slot;
 boolean insert;
@@ -491,13 +491,13 @@ public SidedAccessibility addItemFilter(SlotItemFilter filter)
   }
 }
 
-public abstract class SlotItemFilter
+public static abstract class SlotItemFilter
 {
 public abstract boolean canInsert(ItemStack stack);
 public abstract boolean canExtract(ItemStack stack);
 }
 
-public class SideSlotMap
+public static class SideSlotMap
 {
 public int guiX, guiY;
 public int slotX, slotY;
@@ -530,7 +530,7 @@ public List<ViewableSlot> getSlots()
 
 }
 
-public class ViewableSlot
+public static class ViewableSlot
 {
 public int viewX, viewY, slotNumber;
 
