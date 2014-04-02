@@ -13,6 +13,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
@@ -187,7 +188,7 @@ protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
   if(backgroundTexture!=null)
     {
     Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTexture);
-    RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 256, width/2 - xSize/2, height/2 - ySize/2, xSize, ySize);
+    RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, width/2 - xSize/2, (height/2) - (ySize/2), xSize, ySize);
     }
   Minecraft.getMinecraft().renderEngine.bindTexture(GuiElement.widgetTexture1);
   for(Slot slot : (List<Slot>)this.inventorySlots.inventorySlots)
