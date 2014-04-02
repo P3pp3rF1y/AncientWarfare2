@@ -16,7 +16,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -208,8 +210,8 @@ public void doWork(IWorker worker)
   if(workerRescanDelay<=0 || !hasWorkBlock())
     {
     rescan();
-    }
-  else
+    }  
+  if(hasWorkBlock())
     {
     processWork();
     }
@@ -241,31 +243,38 @@ private void processWork()
   else if(saplingCount>0 && !blocksToPlant.isEmpty())
     {
     AWLog.logDebug("planting block....");
-    Iterator<BlockPosition> it = blocksToPlant.iterator();
-    position = it.next();
-    it.remove();
-    int sp = saplingCount;
-    updatingInventory = true;
     ItemStack stack = null;
+    int slot = 27;
     for(int i = 27; i<30; i++)
       {
-      stack = inventory.decrStackSize(i, 1);
+      stack = inventory.getStackInSlot(i);
       if(stack!=null && stack.getItem() instanceof ItemBlock && ((ItemBlock)stack.getItem()).field_150939_a instanceof BlockSapling)
         {        
-        saplingCount--;
+        slot = i;
         break;
         }
-      else if(stack!=null)
+      else
         {
-        inventory.getStackInSlot(i).stackSize++;
+        stack = null;        
         }
-      stack = null;
       } 
-    updatingInventory = false;
-    if(stack!=null && sp!=saplingCount)//e.g. a sapling has been removed
+    if(stack!=null)//e.g. a sapling stack is present
       {
-      Block block = ((ItemBlock)stack.getItem()).field_150939_a;
-      worldObj.setBlock(position.x, position.y, position.z, block);
+      updatingInventory = true;
+      Iterator<BlockPosition> it = blocksToPlant.iterator();
+      while(it.hasNext() && (position=it.next())!=null)
+        {
+        it.remove();
+        if(worldObj.isAirBlock(position.x, position.y, position.z))
+          {
+          Block block = ((ItemBlock)stack.getItem()).field_150939_a;
+          worldObj.setBlock(position.x, position.y, position.z, block, stack.getItemDamage(), 3);
+          saplingCount--;
+          inventory.decrStackSize(slot, 1);
+          break;
+          }
+        }      
+      updatingInventory = false;
       }
     }
   else if(bonemealCount>0 && !blocksToFertilize.isEmpty())
@@ -294,9 +303,14 @@ private void processWork()
     if(stack!=null)
       {  
       ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, AncientWarfareCore.proxy.getFakePlayer((WorldServer) worldObj, owningPlayer));
-      if(worldObj.getBlock(position.x, position.y, position.z) instanceof BlockSapling)
+      Block block = worldObj.getBlock(position.x, position.y, position.z);
+      if(block instanceof BlockSapling)
         {
         blocksToFertilize.add(position);
+        }
+      else if(block.getMaterial()==Material.wood)
+        {
+        TreeFinder.findAttachedTreeBlocks(blockType, worldObj, position.x, position.y, position.z, blocksToChop);
         }
       }
     }
@@ -336,10 +350,13 @@ private void rescan()
 //        AWLog.logDebug("adding block to fertilize: "+pos);
         blocksToFertilize.add(pos.copy().reassign(pos.x, getWorkBoundsMin().y, pos.z));
         }
-      else if(block.getMaterial()==Material.wood)
+      else if(block.getMaterial()==Material.wood && !blocksToChop.contains(pos))
         {
-//        AWLog.logDebug("adding block to search for trees: "+pos);
-        addTreeBlocks(pos.copy().reassign(pos.x, getWorkBoundsMin().y, pos.z));
+        BlockPosition p1 = pos.copy().reassign(pos.x, getWorkBoundsMin().y, pos.z);
+        if(!blocksToChop.contains(p1))
+          {
+          addTreeBlocks(p1);          
+          }
         }
       }
     }
@@ -400,11 +417,33 @@ public void readClientData(NBTTagCompound tag)
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
+  if(!blocksToChop.isEmpty())
+    {
+    NBTTagList chopList = new NBTTagList();
+    NBTTagCompound posTag;
+    for(BlockPosition position : blocksToChop)
+      {
+      posTag = new NBTTagCompound();
+      position.writeToNBT(posTag);
+      chopList.appendTag(posTag);
+      }
+    tag.setTag("targetList", chopList);    
+    }
+  tag.setInteger("scanDelay", workerRescanDelay);
   }
 
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
+  if(tag.hasKey("targetList"))
+    {
+    NBTTagList chopList = tag.getTagList("targetList", Constants.NBT.TAG_COMPOUND);
+    for(int i = 0; i < chopList.tagCount(); i++)
+      {
+      blocksToChop.add(new BlockPosition(chopList.getCompoundTagAt(i)));
+      }
+    }
+  workerRescanDelay = tag.getInteger("scanDelay");
   }
 }
