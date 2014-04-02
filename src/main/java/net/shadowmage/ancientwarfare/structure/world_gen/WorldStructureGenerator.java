@@ -129,7 +129,7 @@ private void generateAt(int chunkX, int chunkZ, World world, IChunkProvider chun
   int remainingClusterValue = WorldGenStructureManager.instance().getRemainingValue();//TODO use this to alter the random chance/range values to favor generating in clusters  
   if(Statics.DEBUG)
     {
-    AWLog.logDebug("Template selection took: "+(System.currentTimeMillis()-t1)+" ms.");
+    AWLog.logError("Template selection took: "+(System.currentTimeMillis()-t1)+" ms.");
     }
   if(template==null){return;} 
   StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
@@ -193,14 +193,13 @@ public boolean attemptStructureGenerationAt(World world, int x, int y, int z, in
     {
     if(bb.collidesWith(entry.getBB()))
       {
-      AWLog.logDebug("invalid placement, intersects with other structure");
       return false;
       }
     }  
   generate = template.getValidationSettings().validatePlacement(world, x, y, z, face, template, bb);
   if(Statics.DEBUG)
     {
-    AWLog.logDebug("validation took: "+(System.currentTimeMillis()-t1+" ms"));   
+    AWLog.logError("validation took: "+(System.currentTimeMillis()-t1+" ms"));   
     }
   if(generate)
     {    
@@ -208,7 +207,7 @@ public boolean attemptStructureGenerationAt(World world, int x, int y, int z, in
     generateStructureAt(world, x, y, z, face, template, map, bb);
     if(Statics.DEBUG)
       {
-      AWLog.logDebug("generation took: "+(System.currentTimeMillis()-t2)+" ms");      
+      AWLog.logError("generation took: "+(System.currentTimeMillis()-t2)+" ms");      
       }
     }  
   return generate;

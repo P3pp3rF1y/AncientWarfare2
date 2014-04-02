@@ -18,7 +18,6 @@ private HashMap<String, Class <? extends WorldSavedData>> dataClasses = new Hash
 @SubscribeEvent
 public void onWorldLoad(WorldEvent.Load evt)
   {
-  AWLog.logDebug("loaded world...instatiating save data..");
   World world = evt.world;
   if(world.isRemote){return;}
   for(String name : dataClasses.keySet())

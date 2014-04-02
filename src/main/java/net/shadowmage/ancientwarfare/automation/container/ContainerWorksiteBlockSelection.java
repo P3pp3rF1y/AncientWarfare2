@@ -63,9 +63,7 @@ public void handlePacketData(NBTTagCompound tag)
 
 public void removeTarget(BlockPosition target)
   {
-  boolean val = targetBlocks.remove(target);
-  AWLog.logDebug("removed target block: "+target+" actually removed: "+val);
-  
+  boolean val = targetBlocks.remove(target);  
   }
 
 }

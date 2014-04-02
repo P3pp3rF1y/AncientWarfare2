@@ -60,10 +60,6 @@ protected void renderForDisplayList()
   
  
   GL11.glBegin(GL11.GL_QUADS);
-
-  AWLog.logDebug("tx, ty: "+tx+","+ty);
-  AWLog.logDebug("w,l,h: "+w+","+h);
-//  AWLog.logDebug(String.format("t: %.4f, %.4f, %.4f, %.4f", tx1, ty1, tx2, ty2));
   
   //front side  
   tx1 = (tx + l)*px;  

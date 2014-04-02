@@ -58,7 +58,6 @@ public StructureTemplate parseTemplate(File file)
       {
       templateLines.add(scan.nextLine());
       }
-    AWLog.logDebug("parsing templateLines for: "+file.getAbsolutePath());
     try
       {
       return parseTemplateLines(file, templateLines);
@@ -69,7 +68,7 @@ public StructureTemplate parseTemplate(File file)
       }   
     catch(Exception e2)
       {
-      AWLog.logDebug("caught exception while parsing template: "+e2.toString());
+      AWLog.logError("Caught exception while parsing template: "+e2.toString());
       throw new IllegalArgumentException("Error parsing template: "+file.getName() +" at line: "+ (lineNumber+1) + " for line: "+templateLines.get(lineNumber) + " Exception: "+e2.toString(), e2);
       }
     } 

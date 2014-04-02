@@ -59,12 +59,12 @@ public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world,
 
 public void onLeftClick(ItemStack stack, EntityPlayer player, MovingObjectPosition hit)
   {
-  AWLog.logDebug("item left click (event)... client: "+player.worldObj.isRemote);   
+  
   }
 
 public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosition hit)
   {
-  AWLog.logDebug("item right click (event)... client: "+player.worldObj.isRemote);      
+  
   }
 
 @Override

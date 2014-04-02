@@ -34,7 +34,6 @@ public void handlePacketData(NBTTagCompound tag)
   {
   if(tag.hasKey("export"))
     {
-    AWLog.logDebug("receiving export command");
     boolean include = tag.getBoolean("export");
     String name = tag.getString("name");
     NBTTagCompound validation = tag.getCompoundTag("validation");

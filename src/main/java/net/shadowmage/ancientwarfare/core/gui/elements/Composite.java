@@ -50,7 +50,6 @@ protected void addDefaultListeners()
         }
       else if((evt.type & Listener.MOUSE_TYPES) != 0)
         {
-        AWLog.logDebug("sending mouse event to elements...");
         if(isMouseOverElement(evt.mx, evt.my))
           {
           /**
@@ -58,8 +57,6 @@ protected void addDefaultListeners()
            */
           int x = evt.mx;
           int y = evt.my;
-//          evt.mx-=renderX;
-//          evt.my-=renderY;
           for(GuiElement element : elements)
             {
             element.handleMouseInput(evt);

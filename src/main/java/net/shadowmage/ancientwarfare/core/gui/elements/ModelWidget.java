@@ -184,7 +184,6 @@ public void setImageName(String imageName, boolean internal)
 
 private void handleMouseDragged(int mx, int my)
   {
-  AWLog.logDebug("handling mouse dragged...");
   int dx = mx - lastX;
   int dy = my - lastY;
   if(dragLeft)
@@ -422,10 +421,8 @@ private void doSelection()
   int b = pixelColorsb[2];
 
   GL11.glEnable(GL11.GL_TEXTURE_2D);
-  AWLog.logDebug("colors clicked on: "+r+","+g+","+b);
   int color = (r<<16) | (g<<8) | b;
-  AWLog.logDebug("color out: "+color);
-
+  
   GL11.glClearColor(.2f, .2f, .2f, 1.f);
   GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
   Primitive p = model.getPrimitive(color);
@@ -440,7 +437,6 @@ private void doSelection()
     {
     this.selectedPiece = p.parent;
     }
-  AWLog.logDebug("selection: "+this.selectedPiece + " :: "+this.selectedPrimitive);
   this.onSelection(selectedPiece, selectedPrimitive);
   }
 

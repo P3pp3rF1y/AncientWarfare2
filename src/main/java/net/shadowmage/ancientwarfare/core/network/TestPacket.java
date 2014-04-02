@@ -28,7 +28,7 @@ protected void readFromStream(ByteBuf data)
 @Override
 protected void execute()
   {
-  AWLog.logDebug("executing test packet");
+  
   }
 
 

@@ -178,12 +178,7 @@ private void rescan()
   blocksToHarvest.clear();
   blocksToPlant.clear();
   blocksToFertilize.clear();  
-  /**
-   * scan user-selected block-positions for fully grown crops.
-   * wheat/carrot/potato w/ meta of 7 -- add to harvest
-   * melon/pumpkin w/ meta of 7, check neighbor blocks -- add neighbor to harvest if pumpkin or melon block
-   */
-  
+ 
   Block block;
   for(BlockPosition position : getUserSetTargets())
     {
@@ -379,6 +374,17 @@ private void processWork()
               if(worldObj.getBlockMetadata(position.x, position.y, position.z)<7)
                 {
                 blocksToFertilize.add(position);//TODO possible concurrent access exception?
+                }
+              else
+                {
+                if(block==Blocks.wheat || block==Blocks.carrots || block==Blocks.potatoes)
+                  {
+                  blocksToHarvest.add(position);
+                  }
+//                else if(block==Blocks.pumpkin_stem || block==Blocks.melon_stem)
+//                  {
+//                  //do nothing, as pumpkin/melon don't grow instantly...
+//                  }
                 }
               }
             break;

@@ -141,7 +141,7 @@ public void rotateTriangleUV(float degrees)
   v3 = (float) Math.cos(radianAngle) * length;
   
 
-  AWLog.logDebug(String.format("orig: %.2f, %.2f, %.2f, %.2f, %.2f, %.2f  new: %.2f, %.2f, %.2f, %.2f, %.2f, %.2f", u1(), v1(), u2(), v2(), u3(), v3(), u1, v1, u2, v2, u3, v3));
+//  AWLog.logDebug(String.format("orig: %.2f, %.2f, %.2f, %.2f, %.2f, %.2f  new: %.2f, %.2f, %.2f, %.2f, %.2f, %.2f", u1(), v1(), u2(), v2(), u3(), v3(), u1, v1, u2, v2, u3, v3));
   
   setUV(u1, v1, u2, v2, u3, v3);
   setCompiled(false);

@@ -707,25 +707,9 @@ void parseFromLines(List<String> lines)
   String tagName;
   String line;
   String[] splits;
-  
-  AWLog.logDebug("parsing compound from lines...");
-  for(String l : lines)
-    {
-    AWLog.logDebug(l);
-    }
   while(!lines.isEmpty())
     {
     tagLines = parseNextTag(lines);
-    AWLog.logDebug("remaining lines: ");
-    for(String l : lines)
-      {
-      AWLog.logDebug(l);
-      }
-    AWLog.logDebug("tag lines: ");
-    for(String l : tagLines)
-      {
-      AWLog.logDebug(l);
-      }
     line = tagLines.get(0);//pull the first line, to query for tag-type
     splits = line.split("=",-1);
     tagType = StringTools.safeParseInt(splits[1]);
@@ -734,7 +718,6 @@ void parseFromLines(List<String> lines)
     tag.parseFromLines(tagLines);
     this.tags.put(tagName, tag);
     }
-  AWLog.logDebug("finished parsing compound...");
   }
 @Override
 void createFromNBT(NBTBase nbt)

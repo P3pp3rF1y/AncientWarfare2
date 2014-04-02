@@ -118,8 +118,7 @@ private void handleDirectorySelection(String newPath)
   {
   if(newPath==null)
     {
-    AWLog.logDebug("passed null path..." );
-    new Exception().printStackTrace();
+    new Exception("Null path detected..").printStackTrace();
     return;
     }  
   File file = new File(newPath);  

@@ -267,9 +267,7 @@ public void renderForSelection()
     r = (byte)((primitive.primitiveNumber >> 16) & 0xff);
     g = (byte)((primitive.primitiveNumber >> 8 ) & 0xff);
     b = (byte)((primitive.primitiveNumber >> 0 ) & 0xff);
-    AWLog.logDebug("rendering primitive by color: "+r+","+g+","+b);
     GL11.glColor3b(r, g, b); 
-    AWLog.logDebug("rendering primitive for selection as number: "+primitive.primitiveNumber);
     GL11.glPushMatrix();  
     primitive.render();
     GL11.glPopMatrix();

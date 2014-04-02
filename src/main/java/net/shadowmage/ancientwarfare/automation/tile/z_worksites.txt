@@ -19,11 +19,17 @@ Tree farm:
 	Bounds set as-per normal.
 	Planting blocks need to be set via GUI
 	Will use the tree-walk path-finding method to find all tree blocks attached to a given base block.
+	Uses worker triggered area rescan
 	
-Wheat Farm:	
+Crops Farm:	
 	Bounds set as-per normal.
 	Planting blocks need to be set via GUI
+	Uses worker triggered area rescan
 	
+Mushroom Farm:
+	Bounds set as-per normal.
+	Planting blocks need to be set via GUI
+	Uses worker triggered area rescan
 
 All GUIs:
 	Need inventory area for input/access.

@@ -80,7 +80,6 @@ protected final void sendDataToGui(NBTTagCompound data)
  */
 public final void onPacketData(NBTTagCompound data)
   {
-  AWLog.logDebug("receiving gui packet to container..."+data);
   if(data.hasKey("slot"))
     {
     data = data.getCompoundTag("slot");
@@ -99,7 +98,6 @@ public final void onPacketData(NBTTagCompound data)
     }
   else
     {
-    AWLog.logDebug("passing packet data to container inner handling method for container: "+this);
     handlePacketData(data);
     }
   }

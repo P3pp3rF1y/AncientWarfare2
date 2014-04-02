@@ -64,10 +64,8 @@ public void handlePacketData(NBTTagCompound tag)
 
 protected void setSettingsToTile()
   {
-  AWLog.logDebug("setting side settings to tile..");
   for(RelativeSide side : RelativeSide.values())
     {
-    AWLog.logDebug("setting side mapping of: "+side +" to: "+sideMap.get(side));
     worksite.inventory.setSideMapping(side, sideMap.get(side));
     }
   }

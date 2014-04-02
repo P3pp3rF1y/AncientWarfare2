@@ -21,7 +21,6 @@ public BlockWorkerTest(String regName)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {  
-  AWLog.logDebug("returning new worker test tile entity");
   return new TileWorkerTest();
   }
 

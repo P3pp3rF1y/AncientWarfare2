@@ -152,16 +152,13 @@ public static RelativeSide getRelativeSide(int mcSide, int meta)
  */
 public static int getAccessDirection(RelativeSide side, int meta)
   {
-  AWLog.logDebug("checking access direction for: "+side+","+meta);
   for(int i = 0; i < sideMap.length; i++)
     {
     if(sideMap[i][meta]==side)
       {
-      AWLog.logDebug("returning access direction: "+i);
       return i;
       }
     }
-  AWLog.logDebug("no access direction found, returning default -1");
   return -1;
   }
 

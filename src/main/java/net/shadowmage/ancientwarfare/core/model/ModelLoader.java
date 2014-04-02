@@ -155,7 +155,7 @@ public void saveModel(ModelBaseAW model, File file)
     }
   catch (IOException e)
     {
-    AWLog.logDebug("error exporting model for name: "+file.getName());
+    AWLog.logError("error exporting model for name: "+file.getName());
     e.printStackTrace();
     }
 
