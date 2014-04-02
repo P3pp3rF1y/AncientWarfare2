@@ -47,7 +47,6 @@ private WorkBoundingBoxRenderer(){}
 public static WorkBoundingBoxRenderer instance(){return INSTANCE;}
 
 //cached blockPosition to avoid creating a new object every render tick
-BlockPosition pos1Cache = new BlockPosition();
 BlockPosition pos2Cache = new BlockPosition();
 
 @SubscribeEvent
@@ -140,16 +139,17 @@ private void renderWorkBounds(EntityPlayer player, float delta)
           }
         pos2Cache.reassign(max.x + 1, max.y + 1, max.z + 1);//using cached value so that the reference can be manipulated
         renderBoundingBox(player, min, pos2Cache, delta);
-        } 
+        }      
       workTargets = site.getWorkTargets();
       if(!workTargets.isEmpty())
         {
         targetIndex = 0;
-        colorIncrement = 1.f / (float)workTargets.size();
-        color = 1.f - (float)(colorIncrement * (float)targetIndex);
+        colorIncrement = 1.f / (float)(workTargets.size()*2);        
         for(BlockPosition target : workTargets)
           {
+          color = 1.f - (float)(colorIncrement * (float)targetIndex);
           renderBoundingBox(player, target, pos2Cache.reassign(target.x+1, target.y+1, target.z+1), delta, color, color, color, 0.f);
+          targetIndex++;
           }
         }
       }

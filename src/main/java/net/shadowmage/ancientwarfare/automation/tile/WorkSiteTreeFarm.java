@@ -135,7 +135,7 @@ public WorkSiteTreeFarm()
   }
 
 @Override
-public void addWorkTargets(List<BlockPosition> targets)
+protected void addWorkTargets(List<BlockPosition> targets)
   {
   targets.addAll(blocksToChop);
   targets.addAll(blocksToFertilize);

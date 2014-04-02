@@ -201,7 +201,7 @@ public abstract boolean onBlockClicked(EntityPlayer player);
  * cached in any way only used to write out to nbt
  * @param targets
  */
-public abstract void addWorkTargets(List<BlockPosition> targets);
+protected abstract void addWorkTargets(List<BlockPosition> targets);
 
 public final void setWorkBoundsMin(BlockPosition min)
   {
