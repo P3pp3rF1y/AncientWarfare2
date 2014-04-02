@@ -64,7 +64,7 @@ private static void addNeighborNodes(World world, int x, int y, int z, Block blo
     y1 = y+offset[1];
     z1 = z+offset[2];
     BlockPosition n = new BlockPosition(x1, y1, z1);
-    if(!badNodes.contains(n) && !openList.contains(n) &&!foundNodes.contains(n))
+    if(!badNodes.contains(n) && !openList.contains(n) && !foundNodes.contains(n))
       {
       if(isTree(world, n, blockType))
         {      
