@@ -62,6 +62,27 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     return false;
     }
   
+  BlockPosition pos1 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos1"));
+  BlockPosition pos2 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos2"));
+  BlockPosition min = BlockTools.getMin(pos1, pos2);
+  BlockPosition max = BlockTools.getMax(pos1, pos2);
+  if(x<min.x-1 || z<min.x-1 || y<min.y-1 || x>max.x+1 || z>max.z+1 || y>max.z+1)
+    {
+    /**
+     * TODO output chat message saying block is too far away from work bounds
+     */
+    return false;
+    }
+  else if((x>=min.x && x<=max.x)||(y>=min.y && y<=max.y)||(z>=min.z && z<=max.z))
+    {
+    /**
+     * TODO output chat message saying block cannot be inside work bounds
+     */
+    return false;
+    }
+  /**
+   * TODO validate that block is not inside work bounds of any other nearby worksites
+   */
   metadata = BlockIconRotationMap.getBlockMetaForPlacement(player);
   
   boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
