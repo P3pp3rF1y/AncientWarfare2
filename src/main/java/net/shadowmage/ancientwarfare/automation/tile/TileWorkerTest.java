@@ -23,6 +23,14 @@ public TileWorkerTest()
 
   }
 
+public void onBlockBroken()
+  {
+  if(this.workSite!=null && this.workSite.get()!=null)
+    {
+    this.workSite.get().removeWorker(this);
+    }
+  }
+
 private void setWorkSite(IWorkSite site)
   {
   AWLog.logDebug("set worksite to: "+site);
