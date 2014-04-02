@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksitePlacer;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorkerTest;
+import net.shadowmage.ancientwarfare.automation.tile.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteTreeFarm;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
@@ -16,7 +17,7 @@ public class AWAutomationBlockLoader
 
 public static final Block workerTest = new BlockWorkerTest("block.testWorker");
 
-public static final BlockWorksiteBase worksiteTest = new BlockWorksiteBase(Material.rock,"block.testWorksite")
+public static final BlockWorksiteBase worksiteTest = new BlockWorksiteBase(Material.rock,"block.testQuarry")
   {
   public TileEntity createTileEntity(World world, int metadata) 
     {
@@ -31,6 +32,16 @@ public static final BlockWorksiteBase worksiteTest2 = new BlockWorksiteBase(Mate
     return new WorkSiteTreeFarm();
     };
   };
+  
+public static final BlockWorksiteBase worksiteTest3 = new BlockWorksiteBase(Material.rock, "block.testFarm")
+    {
+    public TileEntity createTileEntity(World world, int metadata) 
+      {
+      return new WorkSiteCropFarm();
+      };
+    };
+    
+    
 
 public static void load()
   {  
@@ -54,6 +65,15 @@ public static void load()
   worksiteTest2.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmJungleSides");
   worksiteTest2.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmSpruceSides");
   worksiteTest2.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmBirchSides");  
+  
+  GameRegistry.registerBlock(worksiteTest3, ItemWorksitePlacer.class, "block.testFarm");
+  GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "tile.worksiteCropFarm");
+  worksiteTest3.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
+  worksiteTest3.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
+  worksiteTest3.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmWheatSides");
+  worksiteTest3.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmMelonSides");
+  worksiteTest3.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmCarrotSides");
+  worksiteTest3.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmPotatoSides");
   }
 
 }

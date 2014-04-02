@@ -28,7 +28,7 @@ public class AWAutomationStatics extends ModConfiguration
 
 public static boolean renderWorkBounds = true;
 public static boolean sendWorkToClients = true;
-public static int automationForestryScanTicks = 200;
+public static int automationWorkerRescanTicks = 200;
 
 public AWAutomationStatics(Configuration config)
   {
