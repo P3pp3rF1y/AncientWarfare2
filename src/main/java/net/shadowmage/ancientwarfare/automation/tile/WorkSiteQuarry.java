@@ -27,8 +27,7 @@ BlockPosition nextPosition = new BlockPosition();
 public WorkSiteQuarry()
   {
   this.maxWorkers = 4;
-  this.canUserSetBlocks = true;
-  canUpdate = true;//purely event-driven, no polling
+  this.canUpdate = true;//purely event-driven, no polling
   this.inventory = new InventorySided(27 + 3 + 3, this);
   this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
   this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
@@ -52,7 +51,7 @@ public WorkSiteQuarry()
   }
 
 @Override
-public void addWorkTargets(List<BlockPosition> targets)
+protected void addWorkTargets(List<BlockPosition> targets)
   {
   if(nextPosition!=null)
     {
@@ -157,6 +156,7 @@ private void scanNextPosition()
   if(!finished)
     {
     nextPosition.reassign(currentX, currentY, currentZ);
+    this.markDirty();
     }
   }
 
@@ -173,6 +173,7 @@ public void initWorkSite()
   this.currentX = this.getWorkBoundsMin().x;
   this.currentZ = this.getWorkBoundsMin().z;
   this.nextPosition.reassign(currentX, currentY, currentZ);
+  this.markDirty();
   }
 
 @Override
