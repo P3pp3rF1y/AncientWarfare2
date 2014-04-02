@@ -172,7 +172,7 @@ public void doPlayerWork(EntityPlayer player)
 @Override
 public boolean hasWork()
   {  
-  return workerRescanDelay<=0 || hasWorkBlock();
+  return canWork() && (workerRescanDelay<=0 || hasWorkBlock());
   }
 
 private boolean hasWorkBlock()
@@ -209,11 +209,7 @@ private void processWork()
     List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwningPlayer(), position.x, position.y, position.z, 0);
     for(ItemStack item : items)
       {
-      item = InventoryTools.mergeItemStack(inventory, item, inventory.getAccessDirectionFor(InventorySide.TOP));
-      if(item!=null)
-        {
-        //throw into overflow slot
-        }
+      addStackToInventory(item, InventorySide.TOP);
       }
     updatingInventory = false;
     }

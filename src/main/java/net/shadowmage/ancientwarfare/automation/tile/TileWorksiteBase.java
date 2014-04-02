@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.tile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -22,10 +23,11 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.ISidedTile;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 /**
  * abstract base class for worksite based tile-entities (or at least a template to copy from)
@@ -76,6 +78,8 @@ protected String owningPlayer;
 public InventorySided inventory;
 
 private ArrayList<BlockPosition> clientWorkTargets = new ArrayList<BlockPosition>();
+
+private ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 
 public TileWorksiteBase()
   {
@@ -190,6 +194,51 @@ public final BlockPosition getWorkBoundsMax()
   return bbMax;
   }
 
+public final void addStackToInventory(ItemStack stack, InventorySide... sides)
+  {
+  for(InventorySide side: sides)
+    {
+    stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getAccessDirectionFor(side));
+    if(stack==null)
+      {
+      break;
+      }
+    }
+  if(stack!=null)
+    {
+    inventoryOverflow.add(stack);  
+    }
+  }
+
+@Override
+public void updateEntity()
+  {
+  super.updateEntity();
+  if(worldObj.isRemote){return;}
+  if(inventoryOverflow.isEmpty()){return;}
+  Iterator<ItemStack> it = inventoryOverflow.iterator();
+  ItemStack stack;
+  List<ItemStack> notMerged = new ArrayList<ItemStack>();
+  while(it.hasNext() && (stack=it.next())!=null)
+    {
+    it.remove();
+    stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getAccessDirectionFor(InventorySide.TOP));
+    if(stack!=null)
+      {
+      notMerged.add(stack);
+      }      
+    }
+  if(!notMerged.isEmpty())
+    {
+    inventoryOverflow.addAll(notMerged);    
+    }
+  }
+
+public boolean canWork()
+  {
+  return inventoryOverflow.isEmpty();
+  }
+
 public abstract void initWorkSite();
 
 public abstract boolean onBlockClicked(EntityPlayer player);
@@ -230,6 +279,12 @@ public final void setOwningPlayer(String name)
   }
 
 @Override
+public List<BlockPosition> getWorkTargets()
+  {
+  return clientWorkTargets;
+  }
+
+@Override
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
@@ -267,13 +322,20 @@ public void writeToNBT(NBTTagCompound tag)
       }    
     tag.setTag("userBlocks", list);
     }
+  if(!inventoryOverflow.isEmpty())
+    {
+    NBTTagList list = new NBTTagList();
+    NBTTagCompound stackTag;
+    for(ItemStack item : inventoryOverflow)
+      {
+      stackTag = new NBTTagCompound();
+      stackTag = item.writeToNBT(stackTag);
+      list.appendTag(stackTag);
+      }
+    tag.setTag("inventoryOverflow", list);
+    }
   }
 
-@Override
-public List<BlockPosition> getWorkTargets()
-  {
-  return clientWorkTargets;
-  }
 
 @Override
 public void readFromNBT(NBTTagCompound tag)
@@ -305,6 +367,21 @@ public void readFromNBT(NBTTagCompound tag)
       {
       pos = new BlockPosition(list.getCompoundTagAt(i));
       userTargetBlocks.add(pos);
+      }
+    }
+  if(tag.hasKey("inventoryOverflow"))
+    {
+    NBTTagList list = tag.getTagList("inventoryOverflow", Constants.NBT.TAG_COMPOUND);
+    NBTTagCompound itemTag;
+    ItemStack stack;
+    for(int i = 0; i < list.tagCount(); i++)
+      {
+      itemTag = list.getCompoundTagAt(i);
+      stack = ItemStack.loadItemStackFromNBT(itemTag);
+      if(stack!=null)
+        {
+        inventoryOverflow.add(stack);
+        }
       }
     }
   }
@@ -357,7 +434,7 @@ public final Packet getDescriptionPacket()
         }    
       tag.setTag("workBlocks", list);      
       }
-    }
+    }  
   writeClientData(tag);
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, tag);
   }

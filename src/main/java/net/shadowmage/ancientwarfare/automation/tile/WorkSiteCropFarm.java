@@ -148,7 +148,7 @@ private void countResources()
 @Override
 public boolean hasWork()
   {  
-  return workerRescanDelay<=0 || hasWorkBlock();
+  return canWork() && (workerRescanDelay<=0 || hasWorkBlock());
   }
 
 private boolean hasWorkBlock()
@@ -279,11 +279,7 @@ private void processWork()
         blockDrops = BlockTools.breakBlock(worldObj, position.x, position.y, position.z, 0);
         for(ItemStack item : blockDrops)
           {
-          item = InventoryTools.mergeItemStack(inventory, item, inventory.getAccessDirectionFor(InventorySide.TOP));
-          if(item!=null)
-            {
-            InventoryTools.dropItemInWorld(worldObj, item, xCoord, yCoord, zCoord);
-            }
+          addStackToInventory(item, InventorySide.TOP);
           }
         break;
         }

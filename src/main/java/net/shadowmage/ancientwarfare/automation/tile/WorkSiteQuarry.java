@@ -81,7 +81,7 @@ public void updateEntity()
 @Override
 public boolean hasWork()
   {
-  return !finished;
+  return canWork() && !finished;
   }
 
 @Override
@@ -97,11 +97,7 @@ public void doWork(IWorker worker)
   ArrayList<ItemStack> drops = block.getDrops(worldObj, target.x, target.y, target.z, worldObj.getBlockMetadata(target.x, target.y, target.z), 0);
   for(ItemStack stack : drops)
     {
-    stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getAccessDirectionFor(RelativeSide.TOP));
-    if(stack!=null)
-      {
-      InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
-      }
+    addStackToInventory(stack, InventorySide.TOP);
     }  
   worldObj.setBlockToAir(target.x, target.y, target.z); 
   scanNextPosition();
