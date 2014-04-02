@@ -35,29 +35,6 @@ public class WorkSiteTreeFarm extends TileWorksiteBase
 {
 
 /**
- * need to find a way to setup the scanning for the tree-farm.
- * problems:
- *    1.) do not want to use constant polling
- *    2.) do not want to use sporadic polling
- *    3.) cannot find an event-driven method without wasting npc-work ticks, or doing massive updates to find work when work is reqeusted and not available (still wastes work ticks)
- *    4.) how to handle other mod-added sapling types?  Does forestry saplings extend vanilla saplings?
- *
- * solutions:
- *    1.) use sporadic polling -- prefer not to, but might be necessary...easiest to implement
- *    2.) allow npcs to waste 1 work tick every x seconds/minutes to trigger a rescan if no work is available
- *        hasWork  = !targets.isEmpty || (targets.isEmpty() && workScanDelay<=0)
- *    3.) --it makes sense to have an NPC do the 'scanning', but limit the frequency of scanning to 1/minute max
- *        to limit how it would effect entities jumping around to do work at multiple sites.
- *
- * other problems:
- *    1.) should allow invalid work-block references?  How to handle -- just do nothing for that work tick, or pull next work-block?
- *        presents problems of needing to occasionally re-validate stored work-target blocks.
- *        Probably should just dump all stored refs when rescanning, let the rescan do the validation, and allow
- *        workers to do no work for a couple ticks occasionally.
- *        
- */
-
-/**
  * flag should be set to true whenever updating inventory internally (e.g. harvesting blocks) to prevent
  * unnecessary inventory rescanning.  should be set back to false after blocks are added to inventory
  */
@@ -281,36 +258,34 @@ private void processWork()
     {
     AWLog.logDebug("fertilizing block....");
     Iterator<BlockPosition> it = blocksToFertilize.iterator();
-    position = it.next();
-    it.remove();
-    updatingInventory = true;
-    ItemStack stack = null;
-    for(int i = 30; i<33; i++)
+    while(it.hasNext() && (position=it.next())!=null)
       {
-      stack = inventory.decrStackSize(i, 1);
-      if(stack!=null && stack.getItem()==Items.dye&&stack.getItemDamage()==15)
-        {        
-        bonemealCount--;
-        break;
-        }
-      else if(stack!=null)
-        {
-        inventory.getStackInSlot(i).stackSize++;
-        }
-      stack = null;
-      }      
-    updatingInventory = false;  
-    if(stack!=null)
-      {  
-      ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, AncientWarfareCore.proxy.getFakePlayer((WorldServer) worldObj, owningPlayer));
+      it.remove();
       Block block = worldObj.getBlock(position.x, position.y, position.z);
       if(block instanceof BlockSapling)
-        {
-        blocksToFertilize.add(position);
-        }
-      else if(block.getMaterial()==Material.wood)
-        {
-        TreeFinder.findAttachedTreeBlocks(blockType, worldObj, position.x, position.y, position.z, blocksToChop);
+        {        
+        ItemStack stack = null;
+        for(int i = 30; i<33; i++)
+          {
+          stack = inventory.getStackInSlot(i);
+          if(stack!=null && stack.getItem()==Items.dye&&stack.getItemDamage()==15)
+            {        
+            bonemealCount--;
+            ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, AncientWarfareCore.proxy.getFakePlayer((WorldServer) worldObj, owningPlayer));
+            if(stack.stackSize<=0){inventory.setInventorySlotContents(i, null);}  
+            block = worldObj.getBlock(position.x, position.y, position.z);
+            if(block instanceof BlockSapling)
+              {
+              blocksToFertilize.add(position);//TODO possible concurrent access exception?
+              }
+            else if(block.getMaterial()==Material.wood)
+              {
+              TreeFinder.findAttachedTreeBlocks(blockType, worldObj, position.x, position.y, position.z, blocksToChop);
+              }
+            break;
+            }
+          } 
+        break;
         }
       }
     }
@@ -328,7 +303,7 @@ private void rescan()
   validateChopBlocks();
   blocksToPlant.clear();
   blocksToFertilize.clear();
-  workerRescanDelay = AWAutomationStatics.automationForestryScanTicks;//two minutes
+  workerRescanDelay = AWAutomationStatics.automationWorkerRescanTicks;//two minutes
   
   Block block;
   for(BlockPosition pos : getUserSetTargets())
@@ -445,5 +420,6 @@ public void readFromNBT(NBTTagCompound tag)
       }
     }
   workerRescanDelay = tag.getInteger("scanDelay");
+  this.shouldCountResources = true;
   }
 }
