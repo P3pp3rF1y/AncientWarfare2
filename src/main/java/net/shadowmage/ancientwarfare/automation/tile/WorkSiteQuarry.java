@@ -72,13 +72,6 @@ public void doPlayerWork(EntityPlayer player)
   }
 
 @Override
-public void updateEntity()
-  {
-  super.updateEntity();
-  if(worldObj.isRemote){return;}
-  }
-
-@Override
 public boolean hasWork()
   {
   return canWork() && !finished;

@@ -38,7 +38,6 @@ public class WorkSiteTreeFarm extends TileWorksiteBase
  * flag should be set to true whenever updating inventory internally (e.g. harvesting blocks) to prevent
  * unnecessary inventory rescanning.  should be set back to false after blocks are added to inventory
  */
-private boolean updatingInventory = false;
 private boolean shouldCountResources = true;
 int saplingCount;
 int bonemealCount;
@@ -122,10 +121,7 @@ protected void addWorkTargets(List<BlockPosition> targets)
 @Override
 public void onInventoryChanged()
   {
-  if(!updatingInventory)
-    {
-    this.shouldCountResources = true;
-    }
+  this.shouldCountResources = true;
   }
 
 private void countResources()
@@ -205,13 +201,11 @@ private void processWork()
     Iterator<BlockPosition> it = blocksToChop.iterator();
     position = it.next();
     it.remove();
-    updatingInventory = true;
     List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwningPlayer(), position.x, position.y, position.z, 0);
     for(ItemStack item : items)
       {
       addStackToInventory(item, InventorySide.TOP);
       }
-    updatingInventory = false;
     }
   else if(saplingCount>0 && !blocksToPlant.isEmpty())
     {
@@ -233,7 +227,6 @@ private void processWork()
       } 
     if(stack!=null)//e.g. a sapling stack is present
       {
-      updatingInventory = true;
       Iterator<BlockPosition> it = blocksToPlant.iterator();
       while(it.hasNext() && (position=it.next())!=null)
         {
@@ -247,7 +240,6 @@ private void processWork()
           break;
           }
         }      
-      updatingInventory = false;
       }
     }
   else if(bonemealCount>0 && !blocksToFertilize.isEmpty())
@@ -273,6 +265,9 @@ private void processWork()
             if(block instanceof BlockSapling)
               {
               blocksToFertilize.add(position);//TODO possible concurrent access exception?
+              //technically, it would be, except by the time it hits this inner block, it is already
+              //done iterating, as it will immediately hit the following break statement, and break
+              //out of the iterating loop before the next element would have been iterated over
               }
             else if(block.getMaterial()==Material.wood)
               {
