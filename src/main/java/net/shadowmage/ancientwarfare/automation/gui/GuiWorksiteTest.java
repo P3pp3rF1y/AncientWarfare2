@@ -16,7 +16,7 @@ public class GuiWorksiteTest extends GuiContainerBase
 
 public GuiWorksiteTest(ContainerBase par1Container)
   {
-  super(par1Container, 178, ((ContainerWorksiteTest)par1Container).guiHeight + 16, defaultBackground);
+  super(par1Container, 178, ((ContainerWorksiteTest)par1Container).guiHeight, defaultBackground);
   }
 
 @Override
