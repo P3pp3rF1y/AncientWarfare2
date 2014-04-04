@@ -336,7 +336,6 @@ public void writeToNBT(NBTTagCompound tag)
     }
   }
 
-
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
