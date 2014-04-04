@@ -72,7 +72,7 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
      */
     return false;
     }
-  else if((x>=min.x && x<=max.x)||(y>=min.y && y<=max.y)||(z>=min.z && z<=max.z))
+  else if((x>=min.x && x<=max.x)&&(y>=min.y && y<=max.y)&&(z>=min.z && z<=max.z))
     {
     AWLog.logDebug("cannot place block within work bounds");
     /**
