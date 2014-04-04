@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksitePlacer;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorkerTest;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteCropFarm;
+import net.shadowmage.ancientwarfare.automation.tile.WorkSiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteTreeFarm;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
@@ -41,7 +42,13 @@ public static final BlockWorksiteBase worksiteTest3 = new BlockWorksiteBase(Mate
       };
     };
     
-    
+public static final BlockWorksiteBase worksiteTest4 = new BlockWorksiteBase(Material.rock, "block.testMushroomFarm")
+  {
+  public TileEntity createTileEntity(World world, int metadata) 
+    {
+    return new WorkSiteMushroomFarm();
+    };
+  };  
 
 public static void load()
   {  
@@ -74,6 +81,15 @@ public static void load()
   worksiteTest3.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmMelonSides");
   worksiteTest3.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmCarrotSides");
   worksiteTest3.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmPotatoSides");
+  
+  GameRegistry.registerBlock(worksiteTest4, ItemWorksitePlacer.class, "block.testMushroomFarm");
+  GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "tile.worksiteMushroomFarm");
+  worksiteTest4.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
+  worksiteTest4.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
+  worksiteTest4.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmNetherSides");
+  worksiteTest4.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmMelonSides");
+  worksiteTest4.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmMushroomRedSides");
+  worksiteTest4.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmMushroomBrownSides");
   }
 
 }
