@@ -83,7 +83,7 @@ BlockPosition pos;
 public WorkSelectionButton(int topLeftX, int topLeftY, int x, int z, boolean include)
   {
   super(topLeftX, topLeftY, 12, 12, include ? "X" : " ");
-  pos = new BlockPosition(x,0,z);
+  pos = new BlockPosition(x, container.worksite.getWorkBoundsMin().y ,z);
   this.include = include;
   }
 
