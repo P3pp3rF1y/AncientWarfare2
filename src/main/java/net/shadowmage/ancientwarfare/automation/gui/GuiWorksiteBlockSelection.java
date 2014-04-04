@@ -49,7 +49,7 @@ public void initElements()
     {
     for(int z = 0; z<zSize; z++)
       {
-      testPos.reassign(x+min.x, 0, z+min.z);
+      testPos.reassign(x+min.x, min.y, z+min.z);
       button = new WorkSelectionButton(tlx + x*12, tly+z*12, x+min.x, z+min.z, container.worksite.getUserSetTargets().contains(testPos));
       addGuiElement(button);      
       }
