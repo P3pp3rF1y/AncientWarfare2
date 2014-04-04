@@ -36,18 +36,16 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
   if(stack.getTagCompound().hasKey("pos2") && stack.getTagCompound().hasKey("pos1"))
     {
     AWLog.logDebug("has pos1 and pos2..should send chat message");
-    //send chat message
+    //TODO send chat message
     }
   else if(stack.getTagCompound().hasKey("pos1"))
     {
-    AWLog.logDebug("has pos1, setting pos2");
     NBTTagCompound tag = new NBTTagCompound();
     hit.writeToNBT(tag);
     stack.getTagCompound().setTag("pos2", tag);
     }
   else
     {
-    AWLog.logDebug("setting pos1");
     NBTTagCompound tag = new NBTTagCompound();
     hit.writeToNBT(tag);
     stack.getTagCompound().setTag("pos1", tag);
@@ -68,6 +66,7 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   BlockPosition max = BlockTools.getMax(pos1, pos2);
   if(x<min.x-1 || z<min.x-1 || y<min.y-1 || x>max.x+1 || z>max.z+1 || y>max.z+1)
     {
+    AWLog.logDebug("too far away from bounds to place block..");
     /**
      * TODO output chat message saying block is too far away from work bounds
      */
@@ -75,6 +74,7 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     }
   else if((x>=min.x && x<=max.x)||(y>=min.y && y<=max.y)||(z>=min.z && z<=max.z))
     {
+    AWLog.logDebug("cannot place block within work bounds");
     /**
      * TODO output chat message saying block cannot be inside work bounds
      */
@@ -89,7 +89,6 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   if(val)
     {
     TileWorksiteBase worksite = (TileWorksiteBase) world.getTileEntity(x, y, z);
-    AWLog.logDebug("setting worksite info..."+worksite);
     BlockPosition p1 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos1"));
     BlockPosition p2 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos2"));
     worksite.setOwningPlayer(player.getCommandSenderName());

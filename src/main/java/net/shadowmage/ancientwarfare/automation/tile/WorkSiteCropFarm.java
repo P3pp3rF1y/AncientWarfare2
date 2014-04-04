@@ -159,7 +159,6 @@ private boolean hasWorkBlock()
 @Override
 public void doWork(IWorker worker)
   {
-  AWLog.logDebug("crop farm processing work command..");
   if(workerRescanDelay<=0 || !hasWorkBlock())
     {
     rescan();
@@ -172,7 +171,6 @@ public void doWork(IWorker worker)
 
 private void rescan()
   {
-  AWLog.logDebug("crop farm rescanning");
   workerRescanDelay = AWAutomationStatics.automationWorkerRescanTicks;
   blocksToTill.clear();
   blocksToHarvest.clear();
@@ -182,8 +180,7 @@ private void rescan()
   Block block;
   for(BlockPosition position : getUserSetTargets())
     {
-    position = position.copy().reassign(position.x, getWorkBoundsMin().y, position.z);
-    AWLog.logDebug("checking block..."+position);
+    position = position.copy();
     block = worldObj.getBlock(position.x, position.y, position.z);
     if(worldObj.isAirBlock(position.x, position.y, position.z))
       {
@@ -250,7 +247,6 @@ private void processWork()
   int meta;
   if(!blocksToTill.isEmpty())
     {
-    AWLog.logDebug("crop farm tilling blocks..");
     it = blocksToTill.iterator();
     while(it.hasNext() && (position=it.next())!=null)
       {
@@ -265,7 +261,6 @@ private void processWork()
     }
   else if(!blocksToHarvest.isEmpty())
     {
-    AWLog.logDebug("crop farm harvesting blocks..");
     List<ItemStack> blockDrops;
     it = blocksToHarvest.iterator();
     while(it.hasNext() && (position=it.next())!=null)
@@ -300,7 +295,6 @@ private void processWork()
     }
   else if(!blocksToPlant.isEmpty() && plantableCount>0)
     {
-    AWLog.logDebug("crop farm planting blocks..");
     it = blocksToPlant.iterator();
     while(it.hasNext() && (position=it.next())!=null)
       {
@@ -341,7 +335,6 @@ private void processWork()
     }
   else if(!blocksToFertilize.isEmpty() && bonemealCount>0)
     {
-    AWLog.logDebug("crop farm fertilizing blocks..");
     it = blocksToFertilize.iterator();
     while(it.hasNext() && (position=it.next())!=null)
       {
@@ -369,7 +362,7 @@ private void processWork()
               {
               if(worldObj.getBlockMetadata(position.x, position.y, position.z)<7)
                 {
-                blocksToFertilize.add(position);//TODO possible concurrent access exception?
+                blocksToFertilize.add(position);
                 }
               else
                 {
@@ -377,10 +370,6 @@ private void processWork()
                   {
                   blocksToHarvest.add(position);
                   }
-//                else if(block==Blocks.pumpkin_stem || block==Blocks.melon_stem)
-//                  {
-//                  //do nothing, as pumpkin/melon don't grow instantly...
-//                  }
                 }
               }
             break;

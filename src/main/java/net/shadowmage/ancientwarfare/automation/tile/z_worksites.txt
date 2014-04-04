@@ -31,6 +31,18 @@ Mushroom Farm:
 	Planting blocks need to be set via GUI
 	Uses worker triggered area rescan
 
+Cactus/Reed farm:
+	Bounds set as-per normal.  
+	Will scan up from the bottom.  
+	Only the bottom block needs be within work bounds.
+	
+Fish/Squid farm:
+	Bounds should encompass top-layer of water.  
+	Counts water blocks from surface downward.  
+	Max catch % is capped (beyond X water blocks, more does not help)
+		^^ still gives higher bonuses for 'ocean' type setups than
+		the previous fish-farms.		
+
 All GUIs:
 	Need inventory area for input/access.
 	Main page should also have buttons to swap access-sides for inventories.

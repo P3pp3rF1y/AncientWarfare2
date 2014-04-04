@@ -234,7 +234,7 @@ public void updateEntity()
     }
   }
 
-public boolean canWork()
+public final boolean canWork()
   {
   return inventoryOverflow.isEmpty();
   }

@@ -98,7 +98,7 @@ public WorkSiteTreeFarm()
     public boolean isItemValid(ItemStack stack)
       {
       if(stack==null){return true;}
-      return stack.getItem() == Items.dye && stack.getItemDamage()==15;//TODO verify item dmg (its either 0 or 15)
+      return stack.getItem() == Items.dye && stack.getItemDamage()==15;
       }
     };
   this.inventory.addSlotViewMap(InventorySide.REAR, 8, (3*18)+18+12+8+12, "guistrings.inventory.side.rear");
@@ -193,11 +193,9 @@ public void doWork(IWorker worker)
 
 private void processWork()
   {
-  AWLog.logDebug("tree farm doing work...");
   BlockPosition position;
   if(!blocksToChop.isEmpty())
     {
-    AWLog.logDebug("chopping block....");
     Iterator<BlockPosition> it = blocksToChop.iterator();
     position = it.next();
     it.remove();
@@ -209,7 +207,6 @@ private void processWork()
     }
   else if(saplingCount>0 && !blocksToPlant.isEmpty())
     {
-    AWLog.logDebug("planting block....");
     ItemStack stack = null;
     int slot = 27;
     for(int i = 27; i<30; i++)
@@ -244,7 +241,6 @@ private void processWork()
     }
   else if(bonemealCount>0 && !blocksToFertilize.isEmpty())
     {
-    AWLog.logDebug("fertilizing block....");
     Iterator<BlockPosition> it = blocksToFertilize.iterator();
     while(it.hasNext() && (position=it.next())!=null)
       {
@@ -264,7 +260,7 @@ private void processWork()
             block = worldObj.getBlock(position.x, position.y, position.z);
             if(block instanceof BlockSapling)
               {
-              blocksToFertilize.add(position);//TODO possible concurrent access exception?
+              blocksToFertilize.add(position);//possible concurrent access exception?
               //technically, it would be, except by the time it hits this inner block, it is already
               //done iterating, as it will immediately hit the following break statement, and break
               //out of the iterating loop before the next element would have been iterated over
@@ -290,7 +286,6 @@ private void pickupSaplings()
 
 private void rescan()
   {
-  AWLog.logDebug("rescanning tree farm");
   validateChopBlocks();
   blocksToPlant.clear();
   blocksToFertilize.clear();
@@ -299,26 +294,24 @@ private void rescan()
   Block block;
   for(BlockPosition pos : getUserSetTargets())
     {
-    if(worldObj.isAirBlock(pos.x, getWorkBoundsMin().y, pos.z))
+    if(worldObj.isAirBlock(pos.x, pos.y, pos.z))
       {
-      block = worldObj.getBlock(pos.x, getWorkBoundsMin().y-1, pos.z);
+      block = worldObj.getBlock(pos.x, pos.y-1, pos.z);
       if(block==Blocks.dirt || block==Blocks.grass)
         {
-//        AWLog.logDebug("adding block to plant: "+pos);
-        blocksToPlant.add(pos.copy().reassign(pos.x, getWorkBoundsMin().y, pos.z));
+        blocksToPlant.add(pos.copy().reassign(pos.x, pos.y, pos.z));
         }
       }
     else
       {
-      block = worldObj.getBlock(pos.x, getWorkBoundsMin().y, pos.z);
+      block = worldObj.getBlock(pos.x, pos.y, pos.z);
       if(block instanceof BlockSapling)
         {
-//        AWLog.logDebug("adding block to fertilize: "+pos);
-        blocksToFertilize.add(pos.copy().reassign(pos.x, getWorkBoundsMin().y, pos.z));
+        blocksToFertilize.add(pos.copy().reassign(pos.x, pos.y, pos.z));
         }
       else if(block.getMaterial()==Material.wood && !blocksToChop.contains(pos))
         {
-        BlockPosition p1 = pos.copy().reassign(pos.x, getWorkBoundsMin().y, pos.z);
+        BlockPosition p1 = pos.copy().reassign(pos.x, pos.y, pos.z);
         if(!blocksToChop.contains(p1))
           {
           addTreeBlocks(p1);          
@@ -334,9 +327,15 @@ private void rescan()
 
 private void validateChopBlocks()
   {
-  /**
-   * TODO iterate through blocks to chop and make sure there is still a wood-material based block in that position
-   */
+  BlockPosition pos;
+  Iterator<BlockPosition> it = this.blocksToChop.iterator();
+  while(it.hasNext() && (pos=it.next())!=null)
+    {
+    if(worldObj.getBlock(pos.x, pos.y, pos.z).getMaterial()!=Material.wood)
+      {
+      it.remove();
+      }
+    }
   }
 
 private void addTreeBlocks(BlockPosition base)
