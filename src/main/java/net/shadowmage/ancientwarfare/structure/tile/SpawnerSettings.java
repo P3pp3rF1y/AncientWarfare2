@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -122,7 +123,14 @@ private void updateNormalMode()
 
 private void spawnEntities()
   {
-  if(maxNearbyMonsters>=0)
+  
+  if(playerRange>0)
+    {
+    EntityPlayer p = worldObj.getClosestPlayer(xCoord+0.5d, yCoord, zCoord+0.5d, playerRange);
+    if(p==null){return;}
+    }
+  
+  if(maxNearbyMonsters>0)
     {
     List<Entity> nearbyEntities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-4, yCoord-4, zCoord-4, xCoord+5, yCoord+5, zCoord+5));
     int nearbyCount = 0;
@@ -155,6 +163,7 @@ private void spawnEntities()
       break;
       }
     }
+  
   if(toSpawn!=null)
     {
     toSpawn.spawnEntities(worldObj, xCoord, yCoord, zCoord);
@@ -163,6 +172,7 @@ private void spawnEntities()
       spawnGroups.remove(toSpawn);
       }
     }
+  
   if(spawnGroups.isEmpty())
     {
     worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
