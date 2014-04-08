@@ -54,12 +54,12 @@ public void readFromNBT(NBTTagCompound tag)
 
 public SpawnerSettings getSettings()
   {
-    return settings;
+  return settings;
   }
 
 public void setSettings(SpawnerSettings settings)
   {
-    this.settings = settings;
+  this.settings = settings;
   }
 
 }

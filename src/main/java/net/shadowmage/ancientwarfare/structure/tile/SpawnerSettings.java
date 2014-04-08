@@ -9,10 +9,12 @@ import com.sun.org.apache.xml.internal.resolver.readers.XCatalogReader;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -112,13 +114,30 @@ private void updateNormalMode()
     }
   if(spawnDelay<=0)
     {
-    spawnDelay = minDelay + worldObj.rand.nextInt(maxDelay-minDelay);
+    int range = maxDelay-minDelay;
+    spawnDelay = minDelay + range<=0 ? 0 : worldObj.rand.nextInt(range);
     spawnEntities();
     }
   }
 
 private void spawnEntities()
   {
+  if(maxNearbyMonsters>=0)
+    {
+    List<Entity> nearbyEntities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-4, yCoord-4, zCoord-4, xCoord+5, yCoord+5, zCoord+5));
+    int nearbyCount = 0;
+    for(Entity e : nearbyEntities)
+      {
+      if(e.getClass()==EntityItem.class){continue;}
+      nearbyCount++;
+      }
+    if(nearbyCount>=maxNearbyMonsters)
+      {
+      AWLog.logDebug("skipping spawning because of too many nearby entities");
+      return;
+      }
+    }
+  
   int totalWeight = 0;
   for(EntitySpawnGroup group : this.spawnGroups)//count total weights
     {
@@ -136,11 +155,13 @@ private void spawnEntities()
       break;
       }
     }
-  if(toSpawn==null){return;}
-  toSpawn.spawnEntities(worldObj, xCoord, yCoord, zCoord);
-  if(toSpawn.shouldRemove())
+  if(toSpawn!=null)
     {
-    spawnGroups.remove(toSpawn);
+    toSpawn.spawnEntities(worldObj, xCoord, yCoord, zCoord);
+    if(toSpawn.shouldRemove())
+      {
+      spawnGroups.remove(toSpawn);
+      }
     }
   if(spawnGroups.isEmpty())
     {
@@ -367,8 +388,17 @@ private final boolean shouldRemove()
   }
 
 private final int getNumToSpawn(Random rand)
-  {
-  int toSpawn = rand.nextInt(maxToSpawn - minToSpawn);
+  {  
+  int randRange = maxToSpawn - minToSpawn;
+  int toSpawn =  0;
+  if(randRange<=0)
+    {
+    toSpawn = minToSpawn;    
+    }
+  else
+    {
+    toSpawn = minToSpawn + rand.nextInt(randRange);
+    }
   if(remainingSpawnCount>=0 && toSpawn>remainingSpawnCount)
     {
     toSpawn = remainingSpawnCount;
