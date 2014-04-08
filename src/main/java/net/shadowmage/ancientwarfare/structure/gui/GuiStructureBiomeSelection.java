@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 public class GuiStructureBiomeSelection extends GuiContainerBase
 {
@@ -91,7 +92,7 @@ public void initElements()
   for(BiomeGenBase biome: BiomeGenBase.getBiomeGenArray())
     {
     if(biome==null){continue;}
-    box = new Checkbox(8, totalHeight, 16, 16, biome.biomeName);
+    box = new Checkbox(8, totalHeight, 16, 16, AWStructureStatics.getBiomeName(biome));
     area.addGuiElement(box);
     elementToBiomeName.put(box, biome.biomeName);
     totalHeight += 16;

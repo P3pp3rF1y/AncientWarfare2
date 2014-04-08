@@ -34,7 +34,7 @@ public ItemSlot(int topLeftX, int topLeftY, ItemStack item, ITooltipRenderer ren
 
 public void setItem(ItemStack item)
   {
-  
+  this.item = item;
   }
 
 @Override
@@ -47,15 +47,17 @@ public void render(int mouseX, int mouseY, float partialTick)
     RenderTools.renderQuarteredTexture(256, 256, 152, 120, 18, 18, renderX, renderY, width, height);
 
     GL11.glDisable(GL11.GL_DEPTH_TEST);
-    if(this.item!=null)
+    if(this.item!=null && this.item.getItem()!=null)
       {
       itemRender.zLevel = 10.0F;
       FontRenderer font = null;
-      if (item != null){font = item.getItem().getFontRenderer(item);}    
+      if (item != null && item.getItem()!=null){font = item.getItem().getFontRenderer(item);}    
       if (font == null){font = Minecraft.getMinecraft().fontRenderer;}
       
+      GL11.glEnable(GL11.GL_LIGHTING);
       itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1);
       itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1, String.valueOf(item.stackSize));
+      GL11.glDisable(GL11.GL_LIGHTING);
       }    
     
     if(isMouseOverElement(mouseX, mouseY))

@@ -48,7 +48,10 @@ public StructureTemplateClient(StructureTemplate template)
   this.yOffset = template.yOffset;
   this.zOffset = template.zOffset;  
   this.survival = template.getValidationSettings().isSurvival();
-  resourceList.addAll(template.getResourceList());
+  if(this.survival)
+    {
+    resourceList.addAll(template.getResourceList());    
+    }
   }
 
 public StructureTemplateClient(String name, int x, int y, int z, int xo, int yo, int zo)

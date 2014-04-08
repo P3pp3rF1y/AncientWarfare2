@@ -38,6 +38,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
@@ -65,28 +66,7 @@ public static final String PROP_BLOCK_LIST = "blockList";
 public final StructureValidationType validationType;
 
 private HashMap<String, StructureValidationProperty> properties = new HashMap<String, StructureValidationProperty>();
-private boolean survival;
-
-//private int selectionWeight;
-//private int clusterValue;
-//private int minDuplicateDistance;
-//private boolean worldGenEnabled;
-//private boolean isUnique;//should this structure generate only once?
-//private boolean preserveBlocks;//should this structure preserve any existing blocks when a rule '0' is encountered?
-//
-//private boolean biomeWhiteList;//should treat biome list as white or blacklist?
-//private Set<String> biomeList;//list of biomes for white/black list.  treated as white/black list from whitelist toggle
-//
-//private boolean dimensionWhiteList;//should treat dimension list as white or blacklist?
-//private int[] acceptedDimensions;//list of accepted dimensions treated as white/black list from whitelist toggle
-//
-//private int maxLeveling;
-//private int maxFill;
-//
-//
-//private int borderSize;
-//
-//Set<String> validTargetBlocks;//list of accepted blocks which the structure may be built upon or filled over -- 100% of blocks directly below the structure must meet this list
+//private boolean survival;
 
 protected StructureValidator(StructureValidationType validationType)
   {
@@ -268,7 +248,7 @@ public static final void writeValidator(BufferedWriter out, StructureValidator v
   {
   out.write("type="+validator.validationType.getName());  
   out.newLine();
-  out.write("survival="+validator.survival);  
+  out.write("survival="+validator.isSurvival());  
   out.newLine();
   out.write("worldGenEnabled="+validator.isWorldGenEnabled());  
   out.newLine();
@@ -553,7 +533,7 @@ protected void borderLeveling(World world, int x, int z, StructureTemplate templ
     }
   int y = bb.min.y + template.yOffset + step - 1;
   Block block = world.getBlock(x, y, z);
-  if(block!=null && block!= Blocks.flowing_water && block!=Blocks.water && !WorldStructureGenerator.skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block)))
+  if(block!=null && block!= Blocks.flowing_water && block!=Blocks.water && !AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block)))
     {
     world.setBlock(x, y, z, fillBlock);
     }  
@@ -575,7 +555,7 @@ protected void borderFill(World world, int x, int z, StructureTemplate template,
   for(int y = maxFillY; y>1; y--)
     {
     block = world.getBlock(x, y, z);
-    if(block==null || WorldStructureGenerator.skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block)) || (block==Blocks.water || block==Blocks.flowing_water))
+    if(block==null || AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block)) || (block==Blocks.water || block==Blocks.flowing_water))
       {
       world.setBlock(x, y, z, fillBlockID);
       }
@@ -650,7 +630,7 @@ public Collection<StructureValidationProperty> getProperties()
 
 public boolean isSurvival()
   {
-  return survival;
+  return properties.get("survival").getDataBoolean();
   }
 
 }

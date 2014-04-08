@@ -48,22 +48,12 @@ public class WorldStructureGenerator implements IWorldGenerator
 private static WorldStructureGenerator instance = new WorldStructureGenerator();
 private WorldStructureGenerator(){}
 public static WorldStructureGenerator instance(){return instance;}
-public static HashSet<String> skippableWorldGenBlocks = new HashSet<String>();
 
 public static HashSet<String> defaultTargetBlocks = new HashSet<String>();
 
 static
 {
 
-skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.cactus));
-skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.vine));
-skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.tallgrass));
-skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.planks));
-skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.red_flower));
-skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.yellow_flower));
-skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.deadbush));
-skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.leaves));
-skippableWorldGenBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.snow));
 
 defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.dirt));
 defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.grass));
@@ -146,7 +136,7 @@ public static int getTargetY(World world, int x, int z, boolean skipWater)
     {
     block = world.getBlock(x, y, z);
     if(block==null){continue;}
-    if(skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block))){continue;}
+    if(AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block))){continue;}
     if(skipWater && (block==Blocks.water || block==Blocks.flowing_water)){continue;}
     return y;
     }
