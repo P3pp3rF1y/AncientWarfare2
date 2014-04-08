@@ -18,7 +18,7 @@ public class AWAutomationBlockLoader
 
 public static final Block workerTest = new BlockWorkerTest("block.testWorker");
 
-public static final BlockWorksiteBase worksiteTest = new BlockWorksiteBase(Material.rock,"block.testQuarry")
+public static final BlockWorksiteBase worksiteTest = new BlockWorksiteBase(Material.rock,"civic_quarry")
   {
   public TileEntity createTileEntity(World world, int metadata) 
     {
@@ -26,7 +26,7 @@ public static final BlockWorksiteBase worksiteTest = new BlockWorksiteBase(Mater
     };
   };
 
-public static final BlockWorksiteBase worksiteTest2 = new BlockWorksiteBase(Material.rock, "block.testForestry")
+public static final BlockWorksiteBase worksiteTest2 = new BlockWorksiteBase(Material.rock, "civic_forestry")
   {
   public TileEntity createTileEntity(World world, int metadata) 
     {
@@ -34,7 +34,7 @@ public static final BlockWorksiteBase worksiteTest2 = new BlockWorksiteBase(Mate
     };
   };
   
-public static final BlockWorksiteBase worksiteTest3 = new BlockWorksiteBase(Material.rock, "block.testFarm")
+public static final BlockWorksiteBase worksiteTest3 = new BlockWorksiteBase(Material.rock, "civic_crop_farm")
     {
     public TileEntity createTileEntity(World world, int metadata) 
       {
@@ -42,7 +42,7 @@ public static final BlockWorksiteBase worksiteTest3 = new BlockWorksiteBase(Mate
       };
     };
     
-public static final BlockWorksiteBase worksiteTest4 = new BlockWorksiteBase(Material.rock, "block.testMushroomFarm")
+public static final BlockWorksiteBase worksiteTest4 = new BlockWorksiteBase(Material.rock, "civic_mushroom_farm")
   {
   public TileEntity createTileEntity(World world, int metadata) 
     {
@@ -55,8 +55,8 @@ public static void load()
   GameRegistry.registerBlock(workerTest, "block.testWorker");
   GameRegistry.registerTileEntity(TileWorkerTest.class, "tile.testWorker");
     
-  GameRegistry.registerBlock(worksiteTest, ItemWorksitePlacer.class, "block.testWorksite");
-  GameRegistry.registerTileEntity(WorkSiteQuarry.class, "tile.worksiteQuarry");
+  GameRegistry.registerBlock(worksiteTest, ItemWorksitePlacer.class, "civic_quarry");
+  GameRegistry.registerTileEntity(WorkSiteQuarry.class, "civic_quarry_tile");
   worksiteTest.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
   worksiteTest.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
   worksiteTest.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicMineQuarrySides");
@@ -64,8 +64,8 @@ public static void load()
   worksiteTest.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmNetherSides");
   worksiteTest.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmOakSides");  
   
-  GameRegistry.registerBlock(worksiteTest2, ItemWorksitePlacer.class, "block.testForestry");
-  GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "tile.worksiteForestry");
+  GameRegistry.registerBlock(worksiteTest2, ItemWorksitePlacer.class, "civic_forestry");
+  GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "civic_forestry_tile");
   worksiteTest2.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
   worksiteTest2.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
   worksiteTest2.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmOakSides");
@@ -73,8 +73,8 @@ public static void load()
   worksiteTest2.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmSpruceSides");
   worksiteTest2.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmBirchSides");  
   
-  GameRegistry.registerBlock(worksiteTest3, ItemWorksitePlacer.class, "block.testFarm");
-  GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "tile.worksiteCropFarm");
+  GameRegistry.registerBlock(worksiteTest3, ItemWorksitePlacer.class, "civic_crop_farm");
+  GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "civic_crop_farm_tile");
   worksiteTest3.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
   worksiteTest3.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
   worksiteTest3.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmWheatSides");
@@ -82,8 +82,8 @@ public static void load()
   worksiteTest3.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmCarrotSides");
   worksiteTest3.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmPotatoSides");
   
-  GameRegistry.registerBlock(worksiteTest4, ItemWorksitePlacer.class, "block.testMushroomFarm");
-  GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "tile.worksiteMushroomFarm");
+  GameRegistry.registerBlock(worksiteTest4, ItemWorksitePlacer.class, "civic_mushroom_farm");
+  GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "civic_mushroom_farm_tile");
   worksiteTest4.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
   worksiteTest4.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
   worksiteTest4.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmNetherSides");

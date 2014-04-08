@@ -24,6 +24,8 @@ GuiStructureScanner parent;
 CompositeScrolled area;
 Checkbox whiteList;
 
+private HashMap<GuiElement, String> elementToBiomeName = new HashMap<GuiElement, String>();
+
 public GuiStructureBiomeSelection(GuiStructureScanner parent)
   {
   super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);
@@ -44,19 +46,14 @@ public void initElements()
   area = new CompositeScrolled(0, 40, 256, 200);
   this.addGuiElement(area);
   
-  Button button = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"));
-  button.addNewListener(new Listener(Listener.MOUSE_UP)
+  Button button = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"))
     {
     @Override
-    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+    protected void onPressed()
       {
-      if(widget.isMouseOverElement(evt.mx, evt.my))
-        {
-        Minecraft.getMinecraft().displayGuiScreen(parent);
-        }
-      return true;
-      }    
-    });
+      Minecraft.getMinecraft().displayGuiScreen(parent);
+      }
+    };
   addGuiElement(button);
   
   int totalHeight = 3;
@@ -94,9 +91,9 @@ public void initElements()
     if(biome==null){continue;}
     box = new Checkbox(8, totalHeight, 16, 16, AWStructureStatics.getBiomeName(biome));
     area.addGuiElement(box);
-    elementToBiomeName.put(box, biome.biomeName);
+    elementToBiomeName.put(box, AWStructureStatics.getBiomeName(biome));
     totalHeight += 16;
-    if(biomeNames.contains(biome.biomeName))
+    if(biomeNames.contains(AWStructureStatics.getBiomeName(biome)))
       {
       box.setChecked(true);
       }
@@ -105,7 +102,6 @@ public void initElements()
   area.setAreaSize(totalHeight);
   }
 
-private HashMap<GuiElement, String> elementToBiomeName = new HashMap<GuiElement, String>();
 
 @Override
 public void setupElements()

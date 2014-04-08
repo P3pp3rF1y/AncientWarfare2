@@ -4,17 +4,24 @@
 itemGroup.tabs.structures=Ancient Warfare Structures
 itemGroup.tabs.editor=Ancient Warfare Model Editor
 itemGroup.tabs.automation=Ancient Warfare Automation
-item.testItem.name=Test Item
 item.structure_scanner.name=Structure Scanner
 item.structure_builder.name=Structure Builder
 item.spawner_placer.name=Mob Spawner Placement Tool
 item.editor_opener.name=Model Editor
+
+#blocks
+tile.advanced_spawner.name=Advanced Monster Spawner
+tile.civic_quarry.name=Quarry
+tile.civic_forestry.name=Tree Farm
+tile.civic_crop_farm.name=Crop Farm
+tile.civic_mushroom_farm.name=Mushroom Farm
 
 #guistrings
 guistrings.no_selection=No Selection
 guistrings.current_structure=Current Structure:
 guistrings.select_biomes=Select Biomes
 guistrings.biome_whitelist=Biome White List
+guistrings.dimension_whitelist=Dimension White List
 guistrings.done=Done
 guistrings.cancel=Cancel
 guistrings.select_blocks=Select Target Blocks

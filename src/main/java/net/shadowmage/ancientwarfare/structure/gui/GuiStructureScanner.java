@@ -57,19 +57,14 @@ public void initElements()
     });
   this.addGuiElement(button);
   
-  button = new Button(256-55-8, 8+16, 55, 16, StatCollector.translateToLocal("guistrings.cancel"));
-  button.addNewListener(new Listener(Listener.MOUSE_UP)
+  button = new Button(256-55-8, 8+16, 55, 16, StatCollector.translateToLocal("guistrings.cancel"))
     {
     @Override
-    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+    protected void onPressed()
       {
-      if(widget.isMouseOverElement(evt.mx, evt.my))
-        {
-        Minecraft.getMinecraft().thePlayer.closeScreen();
-        }
-      return true;
+      Minecraft.getMinecraft().thePlayer.closeScreen();
       }
-    });
+    };
   this.addGuiElement(button);
   
   int totalHeight = 36;
@@ -84,55 +79,47 @@ public void initElements()
   this.addGuiElement(validationTypeLabel);
   totalHeight+=10;
   
-  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.setup_validation"));
-  button.addNewListener(new Listener(Listener.MOUSE_UP)
+  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.setup_validation"))
     {
     @Override
-    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+    protected void onPressed()
       {
-      if(widget.isMouseOverElement(evt.mx, evt.my))
-        {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiStructureValidationSettings(GuiStructureScanner.this));        
-        }
-      return true;
+      Minecraft.getMinecraft().displayGuiScreen(new GuiStructureValidationSettings(GuiStructureScanner.this));
       }
-    });
+    };
   this.addGuiElement(button);
   totalHeight+=16;
   
-  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_biomes"));
-  button.addNewListener(new Listener(Listener.MOUSE_UP)
+  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_biomes"))
     {
     @Override
-    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+    protected void onPressed()
       {
-      if(widget.isMouseOverElement(evt.mx, evt.my))
-        {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiStructureBiomeSelection(GuiStructureScanner.this));        
-        }
-      return true;
+      Minecraft.getMinecraft().displayGuiScreen(new GuiStructureBiomeSelection(GuiStructureScanner.this));
       }
-    });
+    };
   this.addGuiElement(button);
   totalHeight+=16;
   
-  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_blocks"));
-  button.addNewListener(new Listener(Listener.MOUSE_UP)
+  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_blocks"))
     {
     @Override
-    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+    protected void onPressed()
       {
-      if(widget.isMouseOverElement(evt.mx, evt.my))
-        {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiStructureBlockSelection(GuiStructureScanner.this));        
-        }
-      return true;
+      Minecraft.getMinecraft().displayGuiScreen(new GuiStructureBlockSelection(GuiStructureScanner.this));
       }
-    });
+    };
   this.addGuiElement(button);
   totalHeight+=16;
   
-  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_dimensions"));
+  button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_dimensions"))
+    {
+    @Override
+    protected void onPressed()
+      {
+      Minecraft.getMinecraft().displayGuiScreen(new GuiDimensionSelection(GuiStructureScanner.this));
+      }
+    };
   this.addGuiElement(button);
   totalHeight+=16;  
   }
@@ -162,7 +149,7 @@ private void export()
     PacketGui pkt = new PacketGui();
     pkt.packetData = tag;
     NetworkHandler.sendToServer(pkt);
-    Minecraft.getMinecraft().displayGuiScreen(null);
+    Minecraft.getMinecraft().thePlayer.closeScreen();
     }
   }
 
