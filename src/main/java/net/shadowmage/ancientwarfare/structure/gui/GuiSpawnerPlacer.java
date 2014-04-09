@@ -32,6 +32,13 @@ public GuiSpawnerPlacer(ContainerBase par1Container)
   }
 
 @Override
+protected boolean onGuiCloseRequested()
+  {
+  ((ContainerSpawnerPlacer)inventorySlots).sendDataToServer();
+  return true;
+  }
+
+@Override
 public void initElements()
   {
   Button button = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"))
@@ -39,9 +46,7 @@ public void initElements()
     @Override
     protected void onPressed()
       {
-      ((ContainerSpawnerPlacer)inventorySlots).sendDataToServer();
-      Minecraft.getMinecraft().thePlayer.closeScreen();
-      Minecraft.getMinecraft().displayGuiScreen(null);
+      closeGui();
       }
     };  
   addGuiElement(button);

@@ -62,7 +62,7 @@ public void initElements()
     @Override
     protected void onPressed()
       {
-      Minecraft.getMinecraft().thePlayer.closeScreen();
+      closeGui();
       }
     };
   this.addGuiElement(button);
@@ -149,7 +149,7 @@ private void export()
     PacketGui pkt = new PacketGui();
     pkt.packetData = tag;
     NetworkHandler.sendToServer(pkt);
-    Minecraft.getMinecraft().thePlayer.closeScreen();
+    this.closeGui();
     }
   }
 

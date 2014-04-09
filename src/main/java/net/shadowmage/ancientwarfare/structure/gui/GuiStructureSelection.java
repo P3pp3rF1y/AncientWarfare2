@@ -57,7 +57,7 @@ public void initElements()
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("structName", currentSelection.name);
         sendDataToContainer(tag);
-        Minecraft.getMinecraft().thePlayer.closeScreen();
+        closeGui();
         }
       }
     });  
