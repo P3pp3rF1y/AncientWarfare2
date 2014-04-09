@@ -143,16 +143,38 @@ public void handleKeyboardInput()
       return;
       }
     boolean sendTyped = true;
-    if(!shouldCloseOnVanillaKeys && (key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()))
+    if((key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()))
       {
       sendTyped = false;
+      if(shouldCloseOnVanillaKeys)
+        {
+        closeGui();
+        }
       }
     if(sendTyped)
       {
       this.keyTyped(ch, key);      
       }
+    }  
+  }
+
+protected final void closeGui()
+  {
+  if(onGuiCloseRequested())
+    {
+    Minecraft.getMinecraft().thePlayer.closeScreen();    
     }
-  
+  }
+
+/**
+ * over-rideable method for onGuiClosed w/ proper functionality -- (is called before the fucking container disappears)
+ * derived classes can override this to handle custom onClosed functionality (e.g. call container to send data to server/
+ * finalize settings)
+ * @return true if the GUI should closed -- false if another GUI has been opened/the GUI should not closed
+ */
+protected boolean onGuiCloseRequested()
+  {
+  return true;
   }
 
 @Override
