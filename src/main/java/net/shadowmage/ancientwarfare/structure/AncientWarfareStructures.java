@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvanced;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerPlacer;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
@@ -81,9 +82,10 @@ public void preInit(FMLPreInitializationEvent evt)
    */
   PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);    
   AWGameData.INSTANCE.registerSaveData("AWStructureMap", StructureMap.class);
-  NetworkHandler.INSTANCE.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
-  NetworkHandler.INSTANCE.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
-  NetworkHandler.INSTANCE.registerContainer(NetworkHandler.GUI_SPAWNER, ContainerSpawnerPlacer.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER, ContainerSpawnerPlacer.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED, ContainerSpawnerAdvanced.class);
   proxy.registerClient();   
       
   /**

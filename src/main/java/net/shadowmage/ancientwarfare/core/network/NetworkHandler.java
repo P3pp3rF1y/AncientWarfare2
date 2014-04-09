@@ -33,6 +33,7 @@ public static final int GUI_SPAWNER = 3;
 public static final int GUI_WORKSITE_INVENTORY = 4;
 public static final int GUI_WORKSITE_INVENTORY_SIDE_ADJUST = 5;
 public static final int GUI_WORKSITE_SET_TARGETS = 6;
+public static final int GUI_SPAWNER_ADVANCED = 7;
 
 
 private FMLEventChannel channel;
