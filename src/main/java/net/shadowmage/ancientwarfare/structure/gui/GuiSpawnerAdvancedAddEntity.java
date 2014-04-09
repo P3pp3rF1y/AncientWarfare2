@@ -108,7 +108,10 @@ public void setupElements()
   int lineNumber = 0;  
   int totalHeight = 8;
   
-  button = new Button(8, totalHeight, 120, 12, settings.getEntityId())
+  label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.select_entity"));
+  area.addGuiElement(label);
+  
+  button = new Button(100, totalHeight, 120, 12, settings.getEntityId())
     {
     @Override
     protected void onPressed()
