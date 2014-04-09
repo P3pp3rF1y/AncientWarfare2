@@ -200,7 +200,7 @@ public void writeToNBT(NBTTagCompound tag)
     group.writeToNBT(groupTag);
     groupList.appendTag(groupTag);
     }
-  tag.setTag("groupList", groupList);
+  tag.setTag("spawnGroups", groupList);
   }
 
 public void readFromNBT(NBTTagCompound tag)
