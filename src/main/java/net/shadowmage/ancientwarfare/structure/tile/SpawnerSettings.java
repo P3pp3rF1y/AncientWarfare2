@@ -10,6 +10,7 @@ import com.sun.org.apache.xml.internal.resolver.readers.XCatalogReader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -26,6 +27,7 @@ public class SpawnerSettings
 
 List<EntitySpawnGroup> spawnGroups = new ArrayList<EntitySpawnGroup>();
 
+boolean lightSensitive;//TODO add to read/write/spawn mechanics
 boolean respondToRedstone;//should this spawner respond to redstone impulses
 boolean redstoneMode;//false==toggle, true==pulse/tick to spawn
 boolean prevRedstoneState;//used to cache the powered status from last tick, to compare to this tick
@@ -74,6 +76,10 @@ public void onUpdate()
   else
     {
     updateRedstoneModeToggle();
+    }
+  if(spawnGroups.isEmpty())
+    {
+    worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
     }
   }
 
@@ -151,7 +157,7 @@ private void spawnEntities()
     {
     totalWeight+=group.groupWeight;
     }  
-  int rand = worldObj.rand.nextInt(totalWeight);//select an object
+  int rand = totalWeight>0 ? worldObj.rand.nextInt(totalWeight) : 0;//select an object
   int check = 0;
   EntitySpawnGroup toSpawn = null;
   for(EntitySpawnGroup group : this.spawnGroups)//iterate to find selected object
@@ -173,10 +179,7 @@ private void spawnEntities()
       }
     }
   
-  if(spawnGroups.isEmpty())
-    {
-    worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
-    }
+
   }
 
 public void writeToNBT(NBTTagCompound tag)
@@ -205,6 +208,7 @@ public void writeToNBT(NBTTagCompound tag)
 
 public void readFromNBT(NBTTagCompound tag)
   {
+  spawnGroups.clear();
   respondToRedstone = tag.getBoolean("respondToRedstone");
   if(respondToRedstone)
     {
@@ -236,6 +240,88 @@ public List<EntitySpawnGroup> getSpawnGroups()
   return spawnGroups;
   }
 
+public final boolean isLightSensitive()
+  {
+  return lightSensitive;
+  }
+
+public final void setLightSensitive(boolean lightSensitive)
+  {
+  this.lightSensitive = lightSensitive;
+  }
+
+public final boolean isRespondToRedstone()
+  {
+  return respondToRedstone;
+  }
+
+public final void setRespondToRedstone(boolean respondToRedstone)
+  {
+  this.respondToRedstone = respondToRedstone;
+  }
+
+public final boolean getRedstoneMode()
+  {
+  return redstoneMode;
+  }
+
+public final void setRedstoneMode(boolean redstoneMode)
+  {
+  this.redstoneMode = redstoneMode;
+  }
+
+public final int getPlayerRange()
+  {
+  return playerRange;
+  }
+
+public final void setPlayerRange(int playerRange)
+  {
+  this.playerRange = playerRange;
+  }
+
+public final int getMaxDelay()
+  {
+  return maxDelay;
+  }
+
+public final void setMaxDelay(int maxDelay)
+  {
+  this.maxDelay = maxDelay;
+  }
+
+public final int getMinDelay()
+  {
+  return minDelay;
+  }
+
+public final void setMinDelay(int minDelay)
+  {
+  this.minDelay = minDelay;
+  }
+
+public final int getSpawnDelay()
+  {
+  return spawnDelay;
+  }
+
+public final void setSpawnDelay(int spawnDelay)
+  {
+  this.spawnDelay = spawnDelay;
+  }
+
+public final int getMaxNearbyMonsters()
+  {
+  return maxNearbyMonsters;
+  }
+
+public final void setMaxNearbyMonsters(int maxNearbyMonsters)
+  {
+  this.maxNearbyMonsters = maxNearbyMonsters;
+  }
+
+
+
 public static final class EntitySpawnGroup
 {
 private int groupWeight;
@@ -248,7 +334,8 @@ public EntitySpawnGroup()
 
 public void setWeight(int weight)
   {
-  this.groupWeight = weight;
+  if(weight<=0){weight = 1;}
+  this.groupWeight = weight;  
   }
 
 public void addSpawnSetting(EntitySpawnSettings setting)
@@ -316,8 +403,7 @@ public void readFromNBT(NBTTagCompound tag)
 
 public static final class EntitySpawnSettings
 {
-String entityId = "pig";
-Class<?extends Entity> entityClass = EntityPig.class;
+String entityId = "Pig";
 NBTTagCompound customTag;
 int minToSpawn = 1;
 int maxToSpawn = 4;
@@ -354,21 +440,16 @@ public final void readFromNBT(NBTTagCompound tag)
 public final void setEntityToSpawn(String entityId)
   {
   this.entityId = entityId;
-  this.entityClass = (Class<? extends Entity>) EntityList.stringToClassMapping.get(entityId);
-  if(this.entityClass==null)
+  Class<? extends Entity> entityClass = (Class<? extends Entity>) EntityList.stringToClassMapping.get(this.entityId);
+  if( entityClass==null)
     {
-    /**
-     * TODO set to a default entity...probably a zombie
-     */
-    throw new IllegalArgumentException(entityId+" is not a valid entityId");
+    AWLog.logError(entityId+" is not a valid entityId.  Spawner default to Zombie.");
+    this.entityId = "Zombie";
     } 
-  if(AWStructureStatics.excludedSpawnerEntities.contains(entityId))
+  if(AWStructureStatics.excludedSpawnerEntities.contains(this.entityId))
     {
-    /**
-     * TODO make this a less-crashy exception...perhaps just print the stack-trace and continue, defaulting
-     * the mob to something...less crash-prone...
-     */
-    throw new IllegalArgumentException(entityId+" has been set as an invalid entity for spawners!");
+    AWLog.logError(entityId+" has been set as an invalid entity for spawners!  Spawner default to Zombie.");
+    this.entityId = "Zombie";
     }
   }
 
@@ -395,6 +476,31 @@ public final void setSpawnLimitTotal(int total)
 private final boolean shouldRemove()
   {
   return remainingSpawnCount==0;
+  }
+
+public final String getEntityId()
+  {
+  return entityId;
+  }
+
+public final int getSpawnMin()
+  {
+  return minToSpawn;
+  }
+
+public final int getSpawnMax()
+  {
+  return maxToSpawn;
+  }
+
+public final int getSpawnTotal()
+  {
+  return remainingSpawnCount;
+  }
+
+public final NBTTagCompound getCustomTag()
+  {
+  return customTag;
   }
 
 private final int getNumToSpawn(Random rand)
@@ -478,11 +584,38 @@ private final void spawnEntityAt(World world, int x, int y, int z)
   Entity e = EntityList.createEntityByName(entityId, world);
   if(e!=null)
     {
+    if(customTag!=null)
+      {
+      e.readFromNBT(customTag);
+      }
     e.setPosition(x+0.5d, y, z+0.5d);
     world.spawnEntityInWorld(e);
     }
   }
 
 }
+
+
+public static SpawnerSettings getDefaultSettings()
+  {
+  SpawnerSettings settings = new SpawnerSettings();
+  settings.maxDelay = 20*20;
+  settings.minDelay = 10*20;
+  settings.playerRange =  16;
+  settings.respondToRedstone = false;
+  
+  EntitySpawnGroup group = new EntitySpawnGroup();
+  group.groupWeight = 1;
+  settings.addSpawnGroup(group);
+  
+  EntitySpawnSettings entity = new EntitySpawnSettings();
+  entity.setEntityToSpawn("Pig");
+  entity.setSpawnCountMin(2);
+  entity.setSpawnCountMax(4);
+  entity.remainingSpawnCount = -1;
+  group.addSpawnSetting(entity);
+  
+  return settings;
+  }
 
 }
