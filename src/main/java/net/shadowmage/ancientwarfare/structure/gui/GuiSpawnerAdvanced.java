@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -233,6 +234,8 @@ public void setupElements()
     entitySettings = group.getEntitiesToSpawn();
     for(EntitySpawnSettings settings : entitySettings)
       {
+      AWLog.logDebug("adding elements for settings: "+settings);
+      if(settings==null){continue;}
       button = new Button(30, totalHeight, 100, 12, settings.getEntityId())
         {
         @Override
@@ -256,9 +259,9 @@ public void setupElements()
           set.setSpawnCountMin(val);
           }
         };
-      input.setIntegerValue();
       settingsMapByInput.put(input, settings);
       area.addGuiElement(input);
+      input.setIntegerValue();//for some reason, I have to set this _after_ adding to the setting map, or it NPEs on retrieval...a very large WTF
       
       input = new NumberInput(160, totalHeight, 30, settings.getSpawnMax(), this)
         {
@@ -270,9 +273,9 @@ public void setupElements()
           set.setSpawnCountMax(val);
           }
         };
-        input.setIntegerValue();
       settingsMapByInput.put(input, settings);
       area.addGuiElement(input);
+      input.setIntegerValue();
       
       input = new NumberInput(190, totalHeight, 30, settings.getSpawnTotal(), this)
         {
@@ -284,10 +287,10 @@ public void setupElements()
           set.setSpawnLimitTotal(val);
           }
         };
-      input.setIntegerValue();
-      input.setAllowNegative();
       settingsMapByInput.put(input, settings);
       area.addGuiElement(input);
+      input.setIntegerValue();
+      input.setAllowNegative();
 
       button = new Button(220, totalHeight, 12, 12, StatCollector.translateToLocal("guistrings.spawner.remove"))
         {

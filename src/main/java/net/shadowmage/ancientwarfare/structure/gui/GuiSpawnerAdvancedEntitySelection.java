@@ -49,7 +49,7 @@ public void initElements()
   Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.spawner.select_entity"));
   addGuiElement(label);
   
-  Button button = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"))
+  Button button = new Button(xSize-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"))
     {
     @Override
     protected void onPressed()
@@ -78,7 +78,7 @@ public void setupElements()
       {
       continue;//skip excluded entities
       }
-    button = new Button(8, totalHeight, 180, 12, name)
+    button = new Button(8, totalHeight, 256-8-16, 12, name)
       {
       @Override
       protected void onPressed()
