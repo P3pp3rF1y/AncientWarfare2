@@ -124,21 +124,45 @@ public void setupElements()
   
   label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.min"));
   area.addGuiElement(label);
-  input = new NumberInput(120, totalHeight, 30, settings.getSpawnMin(), this);
+  input = new NumberInput(120, totalHeight, 30, settings.getSpawnMin(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      int val = (int)value;
+      settings.setSpawnCountMin(val);
+      }
+    };
   input.setIntegerValue();
   area.addGuiElement(input);  
   totalHeight+=12;
   
   label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.max"));
   area.addGuiElement(label);
-  input = new NumberInput(120, totalHeight, 30, settings.getSpawnMax(), this);
+  input = new NumberInput(120, totalHeight, 30, settings.getSpawnMax(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      int val = (int)value;
+      settings.setSpawnCountMax(val);
+      }
+    };
   input.setIntegerValue();
   area.addGuiElement(input);
   totalHeight+=12;
   
   label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.total"));
   area.addGuiElement(label);
-  input = new NumberInput(120, totalHeight, 30, settings.getSpawnTotal(), this);
+  input = new NumberInput(120, totalHeight, 30, settings.getSpawnTotal(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      int val = (int)value;
+      settings.setSpawnLimitTotal(val);
+      }
+    };
   input.setIntegerValue();
   input.setAllowNegative();
   area.addGuiElement(input);
