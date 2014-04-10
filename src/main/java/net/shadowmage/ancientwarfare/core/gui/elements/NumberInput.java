@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
@@ -44,7 +45,7 @@ public NumberInput setIntegerValue()
   this.decimalPlaces = 0;
   this.incrementAmount = 1.f;
   this.allowDecimal = false;
-  this.setText(text);  
+  this.text = String.format("%."+decimalPlaces+"f", value);  
   return this;
   }
 
