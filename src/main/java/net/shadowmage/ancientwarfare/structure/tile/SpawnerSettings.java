@@ -21,6 +21,8 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.network.PacketSound;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 public class SpawnerSettings
@@ -396,7 +398,6 @@ public final float getBlockHardness()
   return blockHardness;
   }
 
-
 public static final class EntitySpawnGroup
 {
 private int groupWeight;
@@ -613,11 +614,19 @@ private final void decrementSpawnCounter(int numSpawned)
     }
   }
 
+private final void sendSoundPacket(World world, int x, int y, int z)
+  {
+  PacketSound packet = new PacketSound(x+0.5d, y, z+0.5d, "");
+  NetworkHandler.sendToAllNear(world, x, y, z, 60, packet);
+  }
+
 private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord)
   {
+  sendSoundPacket(world, xCoord, yCoord, zCoord);
   int toSpawn = getNumToSpawn(world.rand);
   decrementSpawnCounter(toSpawn);
   AWLog.logDebug("spawning entities... from:"+this + " of entity type: "+entityId +" count: "+toSpawn);
+  
   
   int x, y, z;
   int spawnTry = 0;
@@ -644,9 +653,6 @@ private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord
         break;
         }
       }
-    /**
-     * find a block coordinate to spawn at
-     */
     if(doSpawn)
       {
       spawnEntityAt(world, x, y, z);      
@@ -669,7 +675,5 @@ private final void spawnEntityAt(World world, int x, int y, int z)
   }
 
 }
-
-
 
 }

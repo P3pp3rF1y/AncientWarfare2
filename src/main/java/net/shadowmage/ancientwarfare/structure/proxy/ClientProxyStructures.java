@@ -19,6 +19,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_BUILDER, GuiStructureSelection.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER, GuiSpawnerPlacer.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER_ADVANCED, GuiSpawnerAdvanced.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK, GuiSpawnerAdvanced.class);
   MinecraftForge.EVENT_BUS.register(StructureBoundingBoxRenderer.instance());
   }
 }

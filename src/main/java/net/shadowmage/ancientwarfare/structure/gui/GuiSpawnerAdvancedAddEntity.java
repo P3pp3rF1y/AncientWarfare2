@@ -165,6 +165,7 @@ public void setupElements()
     };
   input.setIntegerValue();
   input.setAllowNegative();
+  input.setValue(settings.getSpawnTotal());
   area.addGuiElement(input);
   totalHeight+=12;
   

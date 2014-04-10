@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
-import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvanced;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedBase;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnSettings;
 
@@ -22,12 +22,13 @@ public class GuiSpawnerAdvanced extends GuiContainerBase
 
 CompositeScrolled area;
 
-ContainerSpawnerAdvanced container;
+ContainerSpawnerAdvancedBase container;
 
 public GuiSpawnerAdvanced(ContainerBase par1Container)
   {
   super(par1Container, 256, 240, defaultBackground);
-  container = (ContainerSpawnerAdvanced)par1Container;
+  container = (ContainerSpawnerAdvancedBase)par1Container;
+  AWLog.logDebug("setting container to: "+container);
   }
 
 @Override
@@ -112,7 +113,7 @@ public void setupElements()
   
   label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.required_player_range"));
   area.addGuiElement(label);
-  input = new NumberInput(180, totalHeight, 50, 0, this)
+  input = new NumberInput(180, totalHeight, 50, container.settings.getPlayerRange(), this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -121,14 +122,13 @@ public void setupElements()
       container.settings.setPlayerRange(val);
       }
     };
-  input.setValue(container.settings.getPlayerRange());
   input.setIntegerValue();  
   area.addGuiElement(input);
   totalHeight+=12;
   
   label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.max_nearby_entities"));
   area.addGuiElement(label);
-  input = new NumberInput(180, totalHeight, 50, 0, this)
+  input = new NumberInput(180, totalHeight, 50, container.settings.getMaxNearbyMonsters(), this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -137,14 +137,13 @@ public void setupElements()
       container.settings.setMaxNearbyMonsters(val);
       }
     };
-  input.setValue(container.settings.getMaxNearbyMonsters());
   input.setIntegerValue();  
   area.addGuiElement(input);
   totalHeight+=12;
   
   label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.min_spawn_delay"));
   area.addGuiElement(label);
-  input = new NumberInput(180, totalHeight, 50, 0, this)
+  input = new NumberInput(180, totalHeight, 50, container.settings.getMinDelay(), this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -153,14 +152,13 @@ public void setupElements()
       container.settings.setMinDelay(val);
       }
     };
-  input.setValue(container.settings.getMinDelay());
   input.setIntegerValue();  
   area.addGuiElement(input);
   totalHeight+=12;
   
   label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.max_spawn_delay"));
   area.addGuiElement(label);
-  input = new NumberInput(180, totalHeight, 50, 0, this)
+  input = new NumberInput(180, totalHeight, 50, container.settings.getMaxDelay(), this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -169,14 +167,13 @@ public void setupElements()
       container.settings.setMaxDelay(val);
       }
     };
-  input.setValue(container.settings.getMaxDelay());
   input.setIntegerValue();  
   area.addGuiElement(input);
   totalHeight+=12;
     
   label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.xp_to_drop"));
   area.addGuiElement(label);
-  input = new NumberInput(180, totalHeight, 50, 0, this)
+  input = new NumberInput(180, totalHeight, 50, container.settings.getXpToDrop(), this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -185,14 +182,13 @@ public void setupElements()
       container.settings.setXpToDrop(val);
       }
     };
-  input.setValue(container.settings.getMaxDelay());
   input.setIntegerValue();  
   area.addGuiElement(input);
   totalHeight+=12;
   
   label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.block_hardness"));
   area.addGuiElement(label);
-  input = new NumberInput(180, totalHeight, 50, 0, this)
+  input = new NumberInput(180, totalHeight, 50, container.settings.getBlockHardness(), this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -200,7 +196,6 @@ public void setupElements()
       container.settings.setBlockHardness(value);
       }
     };
-  input.setValue(container.settings.getMaxDelay());
   area.addGuiElement(input);
   totalHeight+=12;
   
