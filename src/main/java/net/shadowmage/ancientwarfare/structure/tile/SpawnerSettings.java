@@ -17,6 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -128,12 +129,29 @@ private void updateNormalMode()
   }
 
 private void spawnEntities()
-  {
-  
+  {  
   if(playerRange>0)
     {
-    EntityPlayer p = worldObj.getClosestPlayer(xCoord+0.5d, yCoord, zCoord+0.5d, playerRange);
-    if(p==null){return;}
+    if(worldObj.difficultySetting==EnumDifficulty.PEACEFUL)
+      {
+      return;
+      } 
+    List<EntityPlayer> nearbyPlayers = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-playerRange, yCoord-playerRange, zCoord-playerRange, xCoord+playerRange+1, yCoord+playerRange+1, zCoord+playerRange+1));
+    if(nearbyPlayers.isEmpty())
+      {
+      return;
+      }
+    boolean doSpawn = false;
+    for(EntityPlayer player : nearbyPlayers)
+      {
+      if(player.capabilities.isCreativeMode){continue;}//iterate until a single non-creative mode player is found
+      doSpawn = true;
+      break;
+      }
+    if(!doSpawn)
+      {
+      return;
+      }
     }
   
   if(maxNearbyMonsters>0)
