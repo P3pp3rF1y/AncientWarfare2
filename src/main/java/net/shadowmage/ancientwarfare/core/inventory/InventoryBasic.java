@@ -138,7 +138,7 @@ public void writeToNBT(NBTTagCompound tag)
     itemTag.setShort("slot", (short)i);
     itemList.appendTag(itemTag);
     }  
-  tag.setTag("itemList", tag);
+  tag.setTag("itemList", itemList);
   }
 
 @Override

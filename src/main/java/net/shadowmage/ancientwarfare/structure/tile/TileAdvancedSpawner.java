@@ -1,14 +1,22 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class TileAdvancedSpawner extends TileEntity
 {
 
 private SpawnerSettings settings = new SpawnerSettings();
+
+
 
 public TileAdvancedSpawner()
   {
@@ -25,7 +33,7 @@ public boolean canUpdate()
 public void setWorldObj(World world)
   {
   super.setWorldObj(world);
-  getSettings().setWorld(world, xCoord, yCoord, zCoord);
+  settings.setWorld(world, xCoord, yCoord, zCoord);
   }
 
 @Override
@@ -36,21 +44,37 @@ public void updateEntity()
     {
     settings.setWorld(worldObj, xCoord, yCoord, zCoord);
     }
-  getSettings().onUpdate();
+  settings.onUpdate();
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
-  getSettings().writeToNBT(tag);
+  settings.writeToNBT(tag);
   }
 
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  getSettings().readFromNBT(tag);
+  settings.readFromNBT(tag);
+  }
+
+@Override
+public Packet getDescriptionPacket()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  settings.writeToNBT(tag);
+  S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);  
+  return pkt;
+  }
+
+@Override
+public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {
+  settings.readFromNBT(pkt.func_148857_g());
+  super.onDataPacket(net, pkt);
   }
 
 public SpawnerSettings getSettings()
@@ -61,6 +85,7 @@ public SpawnerSettings getSettings()
 public void setSettings(SpawnerSettings settings)
   {
   this.settings = settings;
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
 public float getBlockHardness()
@@ -77,6 +102,14 @@ public void onBlockBroken()
     int j = EntityXPOrb.getXPSplit(xp);
     xp -= j;
     this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.xCoord+0.5d, this.yCoord, this.zCoord+0.5d, j));
+    }
+  InventoryBasic inv = settings.getInventory();
+  ItemStack item;
+  for(int i = 0; i < inv.getSizeInventory(); i++)
+    {
+    item = inv.getStackInSlot(i);
+    if(item == null){continue;}
+    InventoryTools.dropItemInWorld(worldObj, item, xCoord, yCoord, zCoord);
     }
   }
 

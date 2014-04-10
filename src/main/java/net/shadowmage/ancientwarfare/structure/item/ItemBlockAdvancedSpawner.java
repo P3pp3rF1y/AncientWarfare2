@@ -61,10 +61,16 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
   {
   if(!player.worldObj.isRemote)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED, 0, 0, 0);    
+    if(player.isSneaking())
+      {
+      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, 0, 0, 0);      
+      }    
+    else
+      {
+      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED, 0, 0, 0);
+      }
     }
   }
-
 
 SpawnerSettings tooltipSettings = new SpawnerSettings();
 @Override

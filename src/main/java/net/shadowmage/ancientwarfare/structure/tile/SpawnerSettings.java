@@ -5,13 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import com.sun.org.apache.xml.internal.resolver.readers.XCatalogReader;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +17,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketSound;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -29,6 +26,8 @@ public class SpawnerSettings
 {
 
 List<EntitySpawnGroup> spawnGroups = new ArrayList<EntitySpawnGroup>();
+
+private InventoryBasic inventory = new InventoryBasic(9);
 
 boolean respondToRedstone;//should this spawner respond to redstone impulses
 boolean redstoneMode;//false==toggle, true==pulse/tick to spawn
@@ -260,6 +259,10 @@ public void writeToNBT(NBTTagCompound tag)
     groupList.appendTag(groupTag);
     }
   tag.setTag("spawnGroups", groupList);
+  
+  NBTTagCompound invTag = new NBTTagCompound();
+  inventory.writeToNBT(invTag);  
+  tag.setTag("inventory", invTag);
   }
 
 public void readFromNBT(NBTTagCompound tag)
@@ -285,6 +288,10 @@ public void readFromNBT(NBTTagCompound tag)
     group = new EntitySpawnGroup();
     group.readFromNBT(groupList.getCompoundTagAt(i));
     spawnGroups.add(group);
+    }
+  if(tag.hasKey("inventory"))
+    {
+    inventory.readFromNBT(tag.getCompoundTag("inventory"));
     }
   }
 
@@ -396,6 +403,11 @@ public final int getXpToDrop()
 public final float getBlockHardness()
   {
   return blockHardness;
+  }
+
+public final InventoryBasic getInventory()
+  {
+  return inventory;
   }
 
 public static final class EntitySpawnGroup
