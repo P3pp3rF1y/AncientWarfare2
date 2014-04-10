@@ -157,13 +157,13 @@ private void spawnEntities()
     {
     totalWeight+=group.groupWeight;
     }  
-  int rand = totalWeight>0 ? worldObj.rand.nextInt(totalWeight) : 0;//select an object
+  int rand = totalWeight == 0 ? 0 : worldObj.rand.nextInt(totalWeight);//select an object
   int check = 0;
   EntitySpawnGroup toSpawn = null;
   for(EntitySpawnGroup group : this.spawnGroups)//iterate to find selected object
     {
     check+=group.groupWeight;
-    if(rand<=check)//object found, break
+    if(rand<check)//object found, break
       {
       toSpawn = group;
       break;
@@ -541,8 +541,8 @@ private final void decrementSpawnCounter(int numSpawned)
 private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord)
   {
   int toSpawn = getNumToSpawn(world.rand);
-  AWLog.logDebug("spawning entities... from:"+this + " of entity type: "+entityId +" count: "+toSpawn);
   decrementSpawnCounter(toSpawn);
+  AWLog.logDebug("spawning entities... from:"+this + " of entity type: "+entityId +" count: "+toSpawn);
   
   int x = xCoord, y = yCoord+1, z = zCoord;
   int spawnTry = 0;
@@ -554,7 +554,7 @@ private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord
       {
       x = xCoord - 4 + world.rand.nextInt(9);
       z = zCoord - 4 + world.rand.nextInt(9);
-      for(y = yCoord -4; y <= yCoord+4; y++)
+      for(y = yCoord -5; y <= yCoord+4; y++)
         {
         if(world.isAirBlock(x, y, z) && world.isAirBlock(x, y+1, z))
           {
@@ -602,6 +602,7 @@ public static SpawnerSettings getDefaultSettings()
   settings.maxDelay = 20*20;
   settings.minDelay = 10*20;
   settings.playerRange =  16;
+  settings.maxNearbyMonsters = 8;
   settings.respondToRedstone = false;
   
   EntitySpawnGroup group = new EntitySpawnGroup();
