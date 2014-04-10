@@ -544,7 +544,7 @@ private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord
   decrementSpawnCounter(toSpawn);
   AWLog.logDebug("spawning entities... from:"+this + " of entity type: "+entityId +" count: "+toSpawn);
   
-  int x = xCoord, y = yCoord+1, z = zCoord;
+  int x, y, z;
   int spawnTry = 0;
   boolean doSpawn;
   for(int i = 0; i < toSpawn; i++)
