@@ -173,6 +173,37 @@ public void setupElements()
   input.setIntegerValue();  
   area.addGuiElement(input);
   totalHeight+=12;
+    
+  label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.xp_to_drop"));
+  area.addGuiElement(label);
+  input = new NumberInput(180, totalHeight, 50, 0, this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      int val = (int)value;
+      container.settings.setXpToDrop(val);
+      }
+    };
+  input.setValue(container.settings.getMaxDelay());
+  input.setIntegerValue();  
+  area.addGuiElement(input);
+  totalHeight+=12;
+  
+  label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.block_hardness"));
+  area.addGuiElement(label);
+  input = new NumberInput(180, totalHeight, 50, 0, this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      container.settings.setBlockHardness(value);
+      }
+    };
+  input.setValue(container.settings.getMaxDelay());
+  area.addGuiElement(input);
+  totalHeight+=12;
+  
   
   totalHeight+=4;
   

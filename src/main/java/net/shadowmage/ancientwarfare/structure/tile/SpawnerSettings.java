@@ -28,7 +28,6 @@ public class SpawnerSettings
 
 List<EntitySpawnGroup> spawnGroups = new ArrayList<EntitySpawnGroup>();
 
-boolean lightSensitive;//TODO add to read/write/spawn mechanics
 boolean respondToRedstone;//should this spawner respond to redstone impulses
 boolean redstoneMode;//false==toggle, true==pulse/tick to spawn
 boolean prevRedstoneState;//used to cache the powered status from last tick, to compare to this tick
@@ -40,7 +39,14 @@ int minDelay = 20*10;
 
 int spawnDelay = maxDelay;
 
-int maxNearbyMonsters;//TODO use this??
+int maxNearbyMonsters;
+
+boolean lightSensitive;
+
+int xpToDrop;
+
+float blockHardness;
+
 
 /**
  * fields for a 'fake' tile-entity...set from the real tile-entity when it has its 
@@ -54,6 +60,29 @@ int zCoord;
 public SpawnerSettings()
   {
     
+  }
+
+public static SpawnerSettings getDefaultSettings()
+  {
+  SpawnerSettings settings = new SpawnerSettings();
+  settings.maxDelay = 20*20;
+  settings.minDelay = 10*20;
+  settings.playerRange =  16;
+  settings.maxNearbyMonsters = 8;
+  settings.respondToRedstone = false;
+  
+  EntitySpawnGroup group = new EntitySpawnGroup();
+  group.groupWeight = 1;
+  settings.addSpawnGroup(group);
+  
+  EntitySpawnSettings entity = new EntitySpawnSettings();
+  entity.setEntityToSpawn("Pig");
+  entity.setSpawnCountMin(2);
+  entity.setSpawnCountMax(4);
+  entity.remainingSpawnCount = -1;
+  group.addSpawnSetting(entity);
+  
+  return settings;
   }
 
 public void setWorld(World world, int x, int y, int z)
@@ -130,6 +159,13 @@ private void updateNormalMode()
 
 private void spawnEntities()
   {  
+  if(lightSensitive)
+    {
+    if(worldObj.getBlockLightValue(xCoord, yCoord, zCoord)>=8)
+      {
+      return;
+      }
+    }
   if(playerRange>0)
     {
     if(worldObj.difficultySetting==EnumDifficulty.PEACEFUL)
@@ -196,8 +232,6 @@ private void spawnEntities()
       spawnGroups.remove(toSpawn);
       }
     }
-  
-
   }
 
 public void writeToNBT(NBTTagCompound tag)
@@ -213,6 +247,8 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("spawnDelay", spawnDelay);
   tag.setInteger("playerRange", playerRange);
   tag.setInteger("maxNearbyMonsters", maxNearbyMonsters);
+  tag.setInteger("xpToDrop", xpToDrop);
+  tag.setBoolean("lightSensitive", lightSensitive);
   NBTTagList groupList = new NBTTagList();
   NBTTagCompound groupTag;
   for(EntitySpawnGroup group : this.spawnGroups)
@@ -238,6 +274,8 @@ public void readFromNBT(NBTTagCompound tag)
   spawnDelay = tag.getInteger("spawnDelay");
   playerRange = tag.getInteger("playerRange");
   maxNearbyMonsters = tag.getInteger("maxNearbyMonsters");
+  xpToDrop = tag.getInteger("xpToDrop");
+  lightSensitive = tag.getBoolean("lightSensitive");
   NBTTagList groupList = tag.getTagList("spawnGroups", Constants.NBT.TAG_COMPOUND);
   EntitySpawnGroup group;
   for(int i = 0; i < groupList.tagCount(); i++)
@@ -338,6 +376,25 @@ public final void setMaxNearbyMonsters(int maxNearbyMonsters)
   this.maxNearbyMonsters = maxNearbyMonsters;
   }
 
+public final void setXpToDrop(int xp)
+  {
+  this.xpToDrop = xp;
+  }
+
+public final void setBlockHardness(float hardness)
+  {
+  this.blockHardness = hardness;
+  }
+
+public final int getXpToDrop()
+  {
+  return xpToDrop;
+  }
+
+public final float getBlockHardness()
+  {
+  return blockHardness;
+  }
 
 
 public static final class EntitySpawnGroup
@@ -614,27 +671,5 @@ private final void spawnEntityAt(World world, int x, int y, int z)
 }
 
 
-public static SpawnerSettings getDefaultSettings()
-  {
-  SpawnerSettings settings = new SpawnerSettings();
-  settings.maxDelay = 20*20;
-  settings.minDelay = 10*20;
-  settings.playerRange =  16;
-  settings.maxNearbyMonsters = 8;
-  settings.respondToRedstone = false;
-  
-  EntitySpawnGroup group = new EntitySpawnGroup();
-  group.groupWeight = 1;
-  settings.addSpawnGroup(group);
-  
-  EntitySpawnSettings entity = new EntitySpawnSettings();
-  entity.setEntityToSpawn("Pig");
-  entity.setSpawnCountMin(2);
-  entity.setSpawnCountMax(4);
-  entity.remainingSpawnCount = -1;
-  group.addSpawnSetting(entity);
-  
-  return settings;
-  }
 
 }

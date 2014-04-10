@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -60,6 +61,23 @@ public SpawnerSettings getSettings()
 public void setSettings(SpawnerSettings settings)
   {
   this.settings = settings;
+  }
+
+public float getBlockHardness()
+  {
+  return settings.blockHardness;
+  }
+
+public void onBlockBroken()
+  {
+  if(worldObj.isRemote){return;}
+  int xp = settings.getXpToDrop();
+  while (xp > 0)
+    {
+    int j = EntityXPOrb.getXPSplit(xp);
+    xp -= j;
+    this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.xCoord+0.5d, this.yCoord, this.zCoord+0.5d, j));
+    }
   }
 
 }
