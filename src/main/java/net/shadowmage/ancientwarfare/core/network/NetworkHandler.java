@@ -25,6 +25,7 @@ public static final int PACKET_TEST = 0;
 public static final int PACKET_GUI = 1;
 public static final int PACKET_STRUCTURE = 2;
 public static final int PACKET_ITEM_KEY_INTERFACE = 3;
+public static final int PACKET_SOUND = 4;
 
 public static final int GUI_TEST = 0;
 public static final int GUI_SCANNER = 1;
@@ -34,6 +35,7 @@ public static final int GUI_WORKSITE_INVENTORY = 4;
 public static final int GUI_WORKSITE_INVENTORY_SIDE_ADJUST = 5;
 public static final int GUI_WORKSITE_SET_TARGETS = 6;
 public static final int GUI_SPAWNER_ADVANCED = 7;
+public static final int GUI_SPAWNER_ADVANCED_BLOCK = 8;
 
 
 private FMLEventChannel channel;
@@ -48,6 +50,7 @@ public final void registerNetwork()
   PacketBase.registerPacketType(PACKET_TEST, TestPacket.class);
   PacketBase.registerPacketType(PACKET_GUI, PacketGui.class);
   PacketBase.registerPacketType(PACKET_ITEM_KEY_INTERFACE, PacketItemInteraction.class);
+  PacketBase.registerPacketType(PACKET_SOUND, PacketSound.class);
   NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
   }
 
