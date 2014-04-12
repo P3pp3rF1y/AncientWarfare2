@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,12 +22,37 @@ import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 public class BlockAdvancedSpawner extends Block
 {
 
+IIcon transparentIcon;
+
 public BlockAdvancedSpawner(String regName)
   {
   super(Material.rock);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setBlockName(regName);
   this.setBlockTextureName("ancientwarfare:civic/civicMineQuarrySides");
+  }
+
+@Override
+public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
+  {
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof TileAdvancedSpawner)
+    {
+    TileAdvancedSpawner spawner = (TileAdvancedSpawner)te;
+    if(spawner.getSettings().isTransparent())
+      {
+      AWLog.logDebug("returning transparent icon...");
+      return transparentIcon;
+      }
+    }
+  return super.getIcon(world, x, y, z, side);
+  }
+
+@Override
+public void registerBlockIcons(IIconRegister p_149651_1_)
+  {
+  super.registerBlockIcons(p_149651_1_);
+  transparentIcon = p_149651_1_.registerIcon("ancientwarfare:fooToFixThisReference");
   }
 
 @Override
@@ -96,6 +122,22 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
     return false;
     }
   return super.onBlockActivated(world, x, y, z, player, sideHit, hitX, hitY, hitZ);
+  }
+
+@Override
+public boolean onBlockEventReceived(World world, int x, int y, int z, int dataA, int dataB)
+  {
+  AWLog.logDebug("block receiving block event... "+world.isRemote+" "+dataA+","+dataB);
+  if(world.isRemote)
+    {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileAdvancedSpawner)
+      {
+      TileAdvancedSpawner t = (TileAdvancedSpawner)te;
+      t.handleClientEvent(dataA, dataB);
+      }
+    }
+  return true;
   }
 
 }

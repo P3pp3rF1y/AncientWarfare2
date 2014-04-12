@@ -15,12 +15,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketSound;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 
 public class SpawnerSettings
 {
@@ -30,6 +32,7 @@ List<EntitySpawnGroup> spawnGroups = new ArrayList<EntitySpawnGroup>();
 private InventoryBasic inventory = new InventoryBasic(9);
 
 boolean debugMode;
+boolean transparent;
 boolean respondToRedstone;//should this spawner respond to redstone impulses
 boolean redstoneMode;//false==toggle, true==pulse/tick to spawn
 boolean prevRedstoneState;//used to cache the powered status from last tick, to compare to this tick
@@ -47,7 +50,7 @@ boolean lightSensitive;
 
 int xpToDrop;
 
-float blockHardness;
+float blockHardness = 2.f;
 
 
 /**
@@ -110,8 +113,8 @@ public void onUpdate()
     updateRedstoneModeToggle();
     }
   if(spawnGroups.isEmpty())
-    {
-    worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
+    {    
+    worldObj.setBlockToAir(xCoord, yCoord, zCoord);
     }
   }
 
@@ -161,19 +164,31 @@ private void updateNormalMode()
 
 private void spawnEntities()
   {  
+  if(worldObj.difficultySetting==EnumDifficulty.PEACEFUL)
+    {
+    return;
+    } 
   if(lightSensitive)
     {
-    if(worldObj.getBlockLightValue(xCoord, yCoord, zCoord)>=8)
+    int light = worldObj.getFullBlockLightValue(xCoord, yCoord+1, zCoord);
+    
+    int l1 = worldObj.getFullBlockLightValue(xCoord+1, yCoord, zCoord);    
+    if(l1>light){light = l1;}
+    l1 = worldObj.getFullBlockLightValue(xCoord-1, yCoord, zCoord);
+    if(l1>light){light = l1;}
+    l1 = worldObj.getFullBlockLightValue(xCoord, yCoord, zCoord+1);
+    if(l1>light){light = l1;}
+    l1 = worldObj.getFullBlockLightValue(xCoord, yCoord, zCoord-1);
+    if(l1>light){light = l1;}
+        
+    AWLog.logDebug("light value: "+light);
+    if(light>=8)
       {
       return;
       }
     }
   if(playerRange>0)
     {
-    if(worldObj.difficultySetting==EnumDifficulty.PEACEFUL)
-      {
-      return;
-      } 
     List<EntityPlayer> nearbyPlayers = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-playerRange, yCoord-playerRange, zCoord-playerRange, xCoord+playerRange+1, yCoord+playerRange+1, zCoord+playerRange+1));
     if(nearbyPlayers.isEmpty())
       {
@@ -216,6 +231,7 @@ private void spawnEntities()
   int rand = totalWeight == 0 ? 0 : worldObj.rand.nextInt(totalWeight);//select an object
   int check = 0;
   EntitySpawnGroup toSpawn = null;
+  int index = 0;
   for(EntitySpawnGroup group : this.spawnGroups)//iterate to find selected object
     {
     check+=group.groupWeight;
@@ -224,11 +240,12 @@ private void spawnEntities()
       toSpawn = group;
       break;
       }
+    index++;
     }
   
   if(toSpawn!=null)
     {
-    toSpawn.spawnEntities(worldObj, xCoord, yCoord, zCoord);
+    toSpawn.spawnEntities(worldObj, xCoord, yCoord, zCoord, index);
     if(toSpawn.shouldRemove())
       {
       spawnGroups.remove(toSpawn);
@@ -251,6 +268,8 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("maxNearbyMonsters", maxNearbyMonsters);
   tag.setInteger("xpToDrop", xpToDrop);
   tag.setBoolean("lightSensitive", lightSensitive);
+  tag.setBoolean("transparent", transparent);
+  tag.setBoolean("debugMode", debugMode);
   NBTTagList groupList = new NBTTagList();
   NBTTagCompound groupTag;
   for(EntitySpawnGroup group : this.spawnGroups)
@@ -282,6 +301,8 @@ public void readFromNBT(NBTTagCompound tag)
   maxNearbyMonsters = tag.getInteger("maxNearbyMonsters");
   xpToDrop = tag.getInteger("xpToDrop");
   lightSensitive = tag.getBoolean("lightSensitive");
+  transparent = tag.getBoolean("transparent");
+  debugMode = tag.getBoolean("debugMode");
   NBTTagList groupList = tag.getTagList("spawnGroups", Constants.NBT.TAG_COMPOUND);
   EntitySpawnGroup group;
   for(int i = 0; i < groupList.tagCount(); i++)
@@ -421,6 +442,16 @@ public final void setDebugMode(boolean mode)
   debugMode = mode;
   }
 
+public final boolean isTransparent()
+  {
+  return transparent;
+  }
+
+public final void setTransparent(boolean transparent)
+  {
+  this.transparent = transparent;
+  }
+
 public static final class EntitySpawnGroup
 {
 private int groupWeight;
@@ -442,17 +473,28 @@ public void addSpawnSetting(EntitySpawnSettings setting)
   entitiesToSpawn.add(setting);
   }
 
-public void spawnEntities(World world, int x, int y, int z)
+public void spawnEntities(World world, int x, int y, int z, int grpIndex)
   {
   EntitySpawnSettings settings;
   Iterator<EntitySpawnSettings> it = entitiesToSpawn.iterator();
+  int index = 0;
   while(it.hasNext() && (settings = it.next())!=null)
     {
-    settings.spawnEntities(world, x, y, z);
+    settings.spawnEntities(world, x, y, z, grpIndex, index);
     if(settings.shouldRemove())
       {
       it.remove();
       }
+    
+    int a1 = 0;
+    int a2 = grpIndex;
+    int b1 = index;
+    int b2 = settings.remainingSpawnCount;    
+    int a = (a1<<16)|(a2&0x0000ffff);
+    int b = (b1<<16)|(b2&0x0000ffff);
+    AWLog.logDebug("adding block event...");
+    world.addBlockEvent(x, y, z, AWStructuresItemLoader.spawnerBlock, a, b);    
+    index++;
     }
   }
 
@@ -643,13 +685,11 @@ private final void sendSoundPacket(World world, int x, int y, int z)
   NetworkHandler.sendToAllNear(world, x, y, z, 60, packet);
   }
 
-private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord)
+private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord, int grpIndex, int setIndex)
   {
-  sendSoundPacket(world, xCoord, yCoord, zCoord);
+//  sendSoundPacket(world, xCoord, yCoord, zCoord);
   int toSpawn = getNumToSpawn(world.rand);
-  decrementSpawnCounter(toSpawn);
-  AWLog.logDebug("spawning entities... from:"+this + " of entity type: "+entityId +" count: "+toSpawn);
-  
+  decrementSpawnCounter(toSpawn); 
   
   int x, y, z;
   int spawnTry = 0;
@@ -681,6 +721,8 @@ private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord
       spawnEntityAt(world, x, y, z);      
       }
     }
+  
+ 
   }
 
 private final void spawnEntityAt(World world, int x, int y, int z)

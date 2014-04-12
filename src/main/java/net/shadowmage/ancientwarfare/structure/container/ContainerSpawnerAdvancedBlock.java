@@ -24,7 +24,8 @@ public ContainerSpawnerAdvancedBlock(EntityPlayer player, int x, int y, int z)
     }
   else
     {
-    settings = SpawnerSettings.getDefaultSettings();
+    spawner = (TileAdvancedSpawner)te;
+    settings = spawner.getSettings();
     }
   }
 
@@ -35,6 +36,18 @@ public void sendInitData()
     {
     sendSettingsToClient();
     }
+  }
+
+@Override
+public void onContainerClosed(EntityPlayer par1EntityPlayer)
+  {
+  super.onContainerClosed(par1EntityPlayer);
+  }
+
+@Override
+public void sendSettingsToServer()
+  {
+  super.sendSettingsToServer();
   }
 
 private void sendSettingsToClient()
@@ -59,7 +72,8 @@ public void handlePacketData(NBTTagCompound tag)
       }
     else
       {
-      spawner.readFromNBT(tag.getCompoundTag("spawnerSettings"));
+      spawner.getSettings().readFromNBT(tag.getCompoundTag("spawnerSettings"));
+      spawner.markDirty();
       player.worldObj.markBlockForUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
       }
     }

@@ -64,7 +64,7 @@ public void handlePacketData(NBTTagCompound tag)
       }
     else
       {
-      spawner.readFromNBT(tag.getCompoundTag("spawnerSettings"));
+      spawner.readFromNBT(tag);
       player.worldObj.markBlockForUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
       }
     }

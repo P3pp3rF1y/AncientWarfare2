@@ -28,13 +28,12 @@ public GuiSpawnerAdvanced(ContainerBase par1Container)
   {
   super(par1Container, 256, 240, defaultBackground);
   container = (ContainerSpawnerAdvancedBase)par1Container;
-  AWLog.logDebug("setting container to: "+container);
   }
 
 @Override
 protected boolean onGuiCloseRequested()
   {  
-  container.sendSettingsToServer();
+  container.sendSettingsToServer();  
   return true;
   }
 
@@ -106,6 +105,18 @@ public void setupElements()
       }
     };
   box.setChecked(container.settings.getRedstoneMode());
+  area.addGuiElement(box);
+  totalHeight+=16;
+  
+  box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal("guistrings.spawner.transparent"))
+    {
+    @Override
+    public void onToggled()
+      {
+      container.settings.setTransparent(checked());
+      }
+    };
+  box.setChecked(container.settings.isTransparent());
   area.addGuiElement(box);
   totalHeight+=16;
   
@@ -272,7 +283,6 @@ public void setupElements()
     entitySettings = group.getEntitiesToSpawn();
     for(EntitySpawnSettings settings : entitySettings)
       {
-      AWLog.logDebug("adding elements for settings: "+settings);
       if(settings==null){continue;}
       button = new Button(30, totalHeight, 100, 12, settings.getEntityId())
         {
