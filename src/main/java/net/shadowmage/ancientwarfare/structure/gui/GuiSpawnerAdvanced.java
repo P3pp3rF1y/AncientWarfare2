@@ -109,6 +109,18 @@ public void setupElements()
   area.addGuiElement(box);
   totalHeight+=16;
   
+  box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal("guistrings.spawner.debug_mode"))
+    {
+    @Override
+    public void onToggled()
+      {
+      container.settings.setDebugMode(checked());
+      }
+    };
+  box.setChecked(container.settings.isDebugMode());
+  area.addGuiElement(box);
+  totalHeight+=16;
+  
   totalHeight+=4;
   
   label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.required_player_range"));

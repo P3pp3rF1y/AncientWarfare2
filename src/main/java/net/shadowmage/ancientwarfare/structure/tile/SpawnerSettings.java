@@ -29,6 +29,7 @@ List<EntitySpawnGroup> spawnGroups = new ArrayList<EntitySpawnGroup>();
 
 private InventoryBasic inventory = new InventoryBasic(9);
 
+boolean debugMode;
 boolean respondToRedstone;//should this spawner respond to redstone impulses
 boolean redstoneMode;//false==toggle, true==pulse/tick to spawn
 boolean prevRedstoneState;//used to cache the powered status from last tick, to compare to this tick
@@ -181,7 +182,7 @@ private void spawnEntities()
     boolean doSpawn = false;
     for(EntityPlayer player : nearbyPlayers)
       {
-      if(player.capabilities.isCreativeMode){continue;}//iterate until a single non-creative mode player is found
+      if(!debugMode && player.capabilities.isCreativeMode){continue;}//iterate until a single non-creative mode player is found
       doSpawn = true;
       break;
       }
@@ -408,6 +409,16 @@ public final float getBlockHardness()
 public final InventoryBasic getInventory()
   {
   return inventory;
+  }
+
+public final boolean isDebugMode()
+  {
+  return debugMode;
+  }
+
+public final void setDebugMode(boolean mode)
+  {
+  debugMode = mode;
   }
 
 public static final class EntitySpawnGroup
