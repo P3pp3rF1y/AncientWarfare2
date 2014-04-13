@@ -86,12 +86,13 @@ private static void uploadTextureRGBAInts(IntBuffer imagedata, int width, int he
 private static int ARGBtoRGBA(int pixel)
   {
   int out = 0;
-  int a, r, g, b;
-  a = (pixel >> 24) & 0xff;
-  r = (pixel >> 16) & 0xff;
-  g = (pixel >> 8 ) & 0xff;
-  b = (pixel >> 0 ) & 0xff;  
-  out = (a<<0) | (b<<8) | (g<<16) | (r<<24);
+//  int a, r, g, b;
+//  a = (pixel >> 24) & 0xff;
+//  r = (pixel >> 16) & 0xff;
+//  g = (pixel >> 8 ) & 0xff;
+//  b = (pixel >> 0 ) & 0xff;  
+//  out = (a<<0) | (b<<8) | (g<<16) | (r<<24);
+  out = ((pixel&0x00ffffff)<<8) | ((pixel&0xff000000)>>24);
   return out;
   }
 
