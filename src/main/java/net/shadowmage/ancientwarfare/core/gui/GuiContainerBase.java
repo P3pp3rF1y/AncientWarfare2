@@ -13,12 +13,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
-import net.shadowmage.ancientwarfare.core.interfaces.ISlotClickCallback;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -29,7 +27,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-public abstract class GuiContainerBase extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer, ISlotClickCallback, IWidgetSelection
+public abstract class GuiContainerBase extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer, IWidgetSelection
 {
 
 protected static final String defaultBackground = "guiBackgroundLarge.png";
@@ -277,15 +275,6 @@ public abstract void setupElements();
 public void handlePacketData(Object data)
   {
   
-  }
-
-/**
- * TODO implement basic handling of slot-click action for widget-based slots
- */
-@Override
-public void onSlotClicked(IInventory inventory, int slotIndex, int button)
-  {
-  ((ContainerBase)inventorySlots).onSlotClicked(inventory, slotIndex, button);
   }
 
 /**

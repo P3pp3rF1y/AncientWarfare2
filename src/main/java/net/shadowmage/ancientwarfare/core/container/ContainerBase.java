@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -8,16 +9,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
-import net.shadowmage.ancientwarfare.core.interfaces.ISlotClickCallback;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 
-public class ContainerBase extends Container implements ISlotClickCallback
+public class ContainerBase extends Container
 {
 
 public EntityPlayer player;
 IContainerGuiCallback gui;
-IInventory[] inventories;//sub-classes need to define this member with the proper size, it should NEVER be null
 
 public ContainerBase(EntityPlayer player, int x, int y, int z)
   {
@@ -68,9 +67,39 @@ protected int addPlayerSlots(EntityPlayer player, int tx, int ty, int gap)
  */
 protected final void sendDataToGui(NBTTagCompound data)
   {
-  if(gui!=null)
+  if(!player.worldObj.isRemote)
     {
-    gui.handlePacketData(data);
+    PacketGui pkt = new PacketGui();
+    pkt.packetData.setTag("gui", data);
+    NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);    
+    }
+  }
+
+/**
+ * send data from client-container to server container
+ * @param data
+ */
+protected void sendDataToServer(NBTTagCompound data)
+  {
+  if(player.worldObj.isRemote)
+    {
+    PacketGui pkt = new PacketGui();
+    pkt.packetData =  data;
+    NetworkHandler.sendToServer(pkt);    
+    }
+  }
+
+/**
+ * send data from server container to client container
+ * @param data
+ */
+protected void sendDataToClient(NBTTagCompound data)
+  {
+  if(!player.worldObj.isRemote)
+    {
+    PacketGui pkt = new PacketGui();
+    pkt.packetData =  data;
+    NetworkHandler.sendToServer(pkt);    
     }
   }
 
@@ -80,16 +109,7 @@ protected final void sendDataToGui(NBTTagCompound data)
  */
 public final void onPacketData(NBTTagCompound data)
   {
-  if(data.hasKey("slot"))
-    {
-    data = data.getCompoundTag("slot");
-    int slot = data.getInteger("slotIndex");
-    int invNumber = data.getInteger("inventory");
-    int button = data.getInteger("button");
-    IInventory inventory = this.inventories[invNumber];
-    this.onSlotClicked(inventory, slot, button);
-    }
-  else if(data.hasKey("gui"))
+  if(data.hasKey("gui"))
     {
     if(this.gui!=null)
       {
@@ -102,6 +122,11 @@ public final void onPacketData(NBTTagCompound data)
     }
   }
 
+/**
+ * subclasses should override this method to send any data from server to the client-side container.
+ * This method is called immediately after the container has been constructed and set as the active container.
+ * The data is received client-side immediately after the GUI has been constructed, initialized, and opened.
+ */
 public void sendInitData()
   {
   
@@ -121,89 +146,6 @@ public void handlePacketData(NBTTagCompound tag)
 public boolean canInteractWith(EntityPlayer var1)
   {
   return true;
-  }
-
-@Override
-public final void onSlotClicked(IInventory inventory, int slotIndex, int button)
-  {  
-  ItemStack cursorStack = player.inventory.getItemStack();
-  ItemStack inventoryStack = inventory.getStackInSlot(slotIndex);
-  if(button==0)//left click
-    {
-    if(cursorStack==null)//place slot stack on cursor
-      {
-      player.inventory.setItemStack(inventory.getStackInSlot(slotIndex));
-      inventory.setInventorySlotContents(slotIndex, null);
-      }
-    else if(cursorStack!=null && inventoryStack==null)//place cursor stack into slot
-      {
-      player.inventory.setItemStack(null);
-      inventory.setInventorySlotContents(slotIndex, cursorStack);
-      }
-    else if(cursorStack!=null && inventoryStack!=null)//try to merge from cursor into slot
-      {
-      if(    cursorStack.getItem()==inventoryStack.getItem()
-          && cursorStack.getItemDamage()== inventoryStack.getItemDamage()
-          && inventoryStack.stackSize < inventoryStack.getMaxStackSize()
-          && ItemStack.areItemStackTagsEqual(cursorStack, inventoryStack))
-        {
-        int moveMax = inventoryStack.getMaxStackSize() - inventoryStack.stackSize;
-        if(moveMax > cursorStack.stackSize)
-          {
-          moveMax = cursorStack.stackSize;
-          }
-        cursorStack.stackSize-=moveMax;
-        inventoryStack.stackSize+=moveMax;
-        if(cursorStack.stackSize<=0)
-          {
-          player.inventory.setItemStack(null);
-          }
-        }
-      }
-    else//swap stacks from slot and cursor
-      {
-      ItemStack stack = player.inventory.getItemStack();
-      ItemStack stack1 = inventory.getStackInSlot(slotIndex);
-      player.inventory.setItemStack(stack1);
-      inventory.setInventorySlotContents(slotIndex, stack);
-      }
-    }
-  else//right click
-    {
-    
-    }  
-  if(player.worldObj.isRemote)
-    {
-    PacketGui packet = new PacketGui();
-    NBTTagCompound tag = new NBTTagCompound();
-    packet.packetData = tag;    
-    NBTTagCompound dataTag = new NBTTagCompound();
-
-    dataTag.setInteger("inventory", getInventoryNumber(inventory));
-    dataTag.setInteger("slotIndex", slotIndex);
-    dataTag.setInteger("button", button);
-     
-    tag.setTag("slot", dataTag);    
-    NetworkHandler.sendToServer(packet);
-    }
-  else
-    {
-    this.detectAndSendChanges();
-    }
-  }
-
-protected int getInventoryNumber(IInventory inventory)
-  {
-  int index = 0;
-  for(IInventory inv : this.inventories)
-    {
-    if(inv==inventory)
-      {
-      return index;
-      }
-    index++;
-    }
-  return 0;
   }
 
 public void refreshGui()

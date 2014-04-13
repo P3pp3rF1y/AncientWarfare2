@@ -23,12 +23,21 @@ public PacketGui()
 
 public void setOpenGui(int id, int x, int y, int z)
   {
-  packetData = new NBTTagCompound();
   packetData.setBoolean("openGui", true);
   packetData.setInteger("id", id);
   packetData.setInteger("x", x);
   packetData.setInteger("y", y);
   packetData.setInteger("z", z);
+  }
+
+public void setGuiData(NBTTagCompound tag)
+  {
+  packetData.setTag("gui", tag);
+  }
+
+public void setData(NBTTagCompound tag)
+  {
+  this.packetData = tag;
   }
 
 @Override
