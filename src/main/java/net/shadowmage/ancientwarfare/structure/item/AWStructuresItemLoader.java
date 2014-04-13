@@ -21,7 +21,7 @@ public static final CreativeTabs structureTab = new CreativeTabs("tabs.structure
   @SideOnly(Side.CLIENT)
   public Item getTabIconItem()
     {
-    return Items.stick;
+    return scanner;
     }
   };
 

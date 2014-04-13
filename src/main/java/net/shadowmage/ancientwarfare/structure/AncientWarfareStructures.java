@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvance
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerPlacer;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
+import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
@@ -36,6 +37,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod
@@ -79,7 +81,7 @@ public void preInit(FMLPreInitializationEvent evt)
    */  
   FMLCommonHandler.instance().bus().register(this);
   GameRegistry.registerWorldGenerator(WorldStructureGenerator.instance(), 0);
-  
+  EntityRegistry.registerModEntity(EntityGate.class, "aw_gate", 0, this, 250, 200, false);
   /**
    * internal registry
    */
