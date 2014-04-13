@@ -3,8 +3,6 @@ package net.shadowmage.ancientwarfare.structure.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 
 public class ContainerSpawnerAdvanced extends ContainerSpawnerAdvancedBase

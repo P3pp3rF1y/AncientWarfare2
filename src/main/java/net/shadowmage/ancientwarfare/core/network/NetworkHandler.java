@@ -3,9 +3,12 @@ package net.shadowmage.ancientwarfare.core.network;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -78,6 +81,12 @@ public final static void sendToPlayer(EntityPlayerMP player, PacketBase pkt)
 public final static void sendToAllPlayers(PacketBase pkt)
   {
   INSTANCE.channel.sendToAll(pkt.getFMLPacket());
+  }
+
+public final static void sendToAllTracking(Entity e, PacketBase pkt)
+  {
+  WorldServer server = (WorldServer)e.worldObj;
+  server.getEntityTracker().func_151247_a(e, pkt.getFMLPacket());
   }
 
 public final static void sendToAllNear(World world, int x, int y, int z, double range, PacketBase pkt)

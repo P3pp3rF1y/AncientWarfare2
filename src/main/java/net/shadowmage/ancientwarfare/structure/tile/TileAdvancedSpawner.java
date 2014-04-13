@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -9,12 +8,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvanced;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 
 public class TileAdvancedSpawner extends TileEntity
 {

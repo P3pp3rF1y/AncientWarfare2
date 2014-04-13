@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;

@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.network;
 
 import io.netty.buffer.ByteBuf;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 
 public class PacketItemInteraction extends PacketBase

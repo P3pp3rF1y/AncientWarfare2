@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -18,7 +17,6 @@ import net.minecraft.world.WorldServer;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;

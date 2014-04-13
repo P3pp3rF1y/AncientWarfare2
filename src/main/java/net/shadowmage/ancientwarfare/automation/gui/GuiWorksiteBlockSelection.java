@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;

@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 import org.lwjgl.opengl.GL11;

@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.core.gui;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;

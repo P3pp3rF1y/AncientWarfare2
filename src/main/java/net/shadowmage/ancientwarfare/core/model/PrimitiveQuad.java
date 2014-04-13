@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.core.model;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 import org.lwjgl.opengl.GL11;

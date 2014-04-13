@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 /**
  * relative side rotation mapping<br>

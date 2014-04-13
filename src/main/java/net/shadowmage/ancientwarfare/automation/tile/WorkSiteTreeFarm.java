@@ -29,7 +29,6 @@ import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilte
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteTreeFarm extends TileWorksiteBase
 {

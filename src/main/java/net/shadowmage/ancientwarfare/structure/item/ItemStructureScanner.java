@@ -34,6 +34,7 @@ public ItemStructureScanner(String localizationKey)
   this.hasLeftClick = false;
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setMaxStackSize(1);
+  this.setTextureName("ancientwarfare:structure/"+localizationKey);
   }
 
 @Override

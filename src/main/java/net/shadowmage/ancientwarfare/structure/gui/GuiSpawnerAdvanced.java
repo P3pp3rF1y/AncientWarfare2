@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;

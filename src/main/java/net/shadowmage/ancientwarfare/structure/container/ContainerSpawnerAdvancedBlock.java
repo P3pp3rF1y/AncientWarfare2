@@ -6,7 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
-import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase

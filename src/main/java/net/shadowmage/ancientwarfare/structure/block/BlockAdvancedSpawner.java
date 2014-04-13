@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -13,7 +11,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
@@ -29,7 +26,7 @@ public BlockAdvancedSpawner(String regName)
   super(Material.rock);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setBlockName(regName);
-  this.setBlockTextureName("ancientwarfare:civic/civicMineQuarrySides");
+  this.setBlockTextureName("ancientwarfare:spawner/advanced_spawner");
   }
 
 @Override
@@ -41,7 +38,6 @@ public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
     TileAdvancedSpawner spawner = (TileAdvancedSpawner)te;
     if(spawner.getSettings().isTransparent())
       {
-      AWLog.logDebug("returning transparent icon...");
       return transparentIcon;
       }
     }
@@ -49,10 +45,28 @@ public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
   }
 
 @Override
+public int getLightOpacity(IBlockAccess world, int x, int y, int z)
+  {
+  return 0;
+  }
+
+@Override
+public boolean shouldSideBeRendered(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
+  {
+  return true;
+  }
+
+@Override
+public boolean isOpaqueCube()
+  {
+  return false;
+  }
+
+@Override
 public void registerBlockIcons(IIconRegister p_149651_1_)
   {
   super.registerBlockIcons(p_149651_1_);
-  transparentIcon = p_149651_1_.registerIcon("ancientwarfare:fooToFixThisReference");
+  transparentIcon = p_149651_1_.registerIcon("ancientwarfare:spawner/advanced_spawner2");
   }
 
 @Override
@@ -122,22 +136,6 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
     return false;
     }
   return super.onBlockActivated(world, x, y, z, player, sideHit, hitX, hitY, hitZ);
-  }
-
-@Override
-public boolean onBlockEventReceived(World world, int x, int y, int z, int dataA, int dataB)
-  {
-  AWLog.logDebug("block receiving block event... "+world.isRemote+" "+dataA+","+dataB);
-  if(world.isRemote)
-    {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileAdvancedSpawner)
-      {
-      TileAdvancedSpawner t = (TileAdvancedSpawner)te;
-      t.handleClientEvent(dataA, dataB);
-      }
-    }
-  return true;
   }
 
 }

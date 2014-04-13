@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class ItemClickable extends ItemBase
 {

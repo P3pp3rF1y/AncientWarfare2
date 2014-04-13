@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;

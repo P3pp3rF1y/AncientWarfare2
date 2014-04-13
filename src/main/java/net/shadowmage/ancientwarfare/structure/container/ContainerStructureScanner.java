@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;

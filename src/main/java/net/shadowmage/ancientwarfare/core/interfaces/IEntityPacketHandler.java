@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 /**
  * blind entity packet handling
  * should be implemented by any entity that is a target of
@@ -9,6 +11,6 @@ package net.shadowmage.ancientwarfare.core.interfaces;
 public interface IEntityPacketHandler
 {
 
-public void handlePacketData(Object datas);//TODO determine best way to handle data input
+public void handlePacketData(NBTTagCompound tag);
 
 }

@@ -9,13 +9,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteQuarry extends TileWorksiteBase
 {

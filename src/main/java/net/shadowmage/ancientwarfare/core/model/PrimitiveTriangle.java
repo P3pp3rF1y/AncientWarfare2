@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.util.MathHelper;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 

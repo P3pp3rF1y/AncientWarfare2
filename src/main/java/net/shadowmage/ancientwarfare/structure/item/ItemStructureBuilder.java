@@ -49,6 +49,7 @@ public ItemStructureBuilder(String itemName)
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.hasLeftClick = false;
   this.setMaxStackSize(1);  
+  this.setTextureName("ancientwarfare:structure/"+itemName);
   }
 
 ItemStructureSettings buildSettings = new ItemStructureSettings();
