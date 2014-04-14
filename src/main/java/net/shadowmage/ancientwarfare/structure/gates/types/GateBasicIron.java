@@ -33,7 +33,7 @@ public GateBasicIron(int id, String tex)
   {
   super(id, tex);
   this.modelType = 1; 
-  this.displayName = "item.gate.1";
+  this.displayName = "gateBasicIron";
   this.tooltip = "item.gate.1.tooltip";
   this.iconTexture = "gateIronBasic";
   }

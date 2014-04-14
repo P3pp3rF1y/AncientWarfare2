@@ -35,7 +35,7 @@ public class GateSingleIron extends Gate
 public GateSingleIron(int id, String tex)
   {
   super(id, tex);
-  this.displayName = "item.gate.5";
+  this.displayName = "gateSingleIron";
   this.tooltip = "item.gate.5.tooltip";
 //  this.texture = "gateIron1.png";
   this.modelType = 1;

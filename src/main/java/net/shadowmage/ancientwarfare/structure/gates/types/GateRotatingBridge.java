@@ -39,7 +39,7 @@ public class GateRotatingBridge extends Gate
 public GateRotatingBridge(int id, String tex)
   {
   super(id, tex);
-  this.displayName = "item.gate.12";
+  this.displayName = "gateDrawbridge";
   this.tooltip = "item.gate.12.tooltip";
   this.moveSpeed = 1.f;
 //  this.texture = "gateBridgeWood1.png";
@@ -51,7 +51,6 @@ public GateRotatingBridge(int id, String tex)
 public void setCollisionBoundingBox(EntityGate gate)
   {
   if(gate.pos1==null || gate.pos2==null){return;}
-  boolean wideOnXAxis = gate.pos1.x!=gate.pos2.x;  
   BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
   BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
   if(gate.edgePosition<gate.edgeMax)

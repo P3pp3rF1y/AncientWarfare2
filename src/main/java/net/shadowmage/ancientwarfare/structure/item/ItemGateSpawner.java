@@ -109,8 +109,8 @@ public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_15089
 
 @Override
 public String getUnlocalizedName(ItemStack par1ItemStack)
-  {
-  return StatCollector.translateToLocal(Gate.getGateByID(par1ItemStack.getItemDamage()).getDisplayName());
+  {  
+  return "item."+Gate.getGateByID(par1ItemStack.getItemDamage()).getDisplayName();
   }
 
 @Override

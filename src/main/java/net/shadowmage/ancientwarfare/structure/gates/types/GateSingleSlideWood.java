@@ -34,7 +34,7 @@ public class GateSingleSlideWood extends Gate
 public GateSingleSlideWood(int id, String tex)
   {
   super(id, tex);
-  this.displayName = "item.gate.4";
+  this.displayName = "gateSingleWood";
   this.tooltip = "item.gate.4.tooltip";
 //  this.texture = "gateWood1.png";
   this.iconTexture = "gateWoodSingle";

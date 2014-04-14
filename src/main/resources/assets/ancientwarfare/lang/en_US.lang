@@ -124,3 +124,12 @@ structure.validation.dimensionWhiteList=Dimension White List
 structure.validation.biomeList=Biome List
 structure.validation.blockList=Block List
 structure.validation.dimensionList=Dimension List
+
+#gate names
+item.gateBasicWood.name=Wooden Gate (vert. open)
+item.gateBasicIron.name=Iron Gate (vert. open)
+item.gateDoubleIron.name=Iron Gate (split open)
+item.gateDoubleWood.name=Wooden Gate (split open)
+item.gateSingleIron.name=Iron Gate (slide open)
+item.gateSingleWood.name=Wooden Gate (slide open)
+item.gateDrawbridge.name=Drawbridge (rotate open)
