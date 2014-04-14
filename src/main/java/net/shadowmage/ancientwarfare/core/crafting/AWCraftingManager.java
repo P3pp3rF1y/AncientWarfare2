@@ -89,10 +89,10 @@ public RecipeResearched addRecipe(ItemStack par1ItemStack, Object ... par2ArrayO
 
     for (int l = 0; l < characterInputArray.length; ++l)
       {
-      String testChar = characterInputArray[l];
+      String recipeLine = characterInputArray[l];
       ++k;
-      j = testChar.length();
-      recipeCharactersAsSequence = recipeCharactersAsSequence + testChar;
+      j = recipeLine.length();
+      recipeCharactersAsSequence = recipeCharactersAsSequence + recipeLine;
       }
     }
   else

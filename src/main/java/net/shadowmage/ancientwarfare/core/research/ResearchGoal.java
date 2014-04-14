@@ -20,14 +20,31 @@ private static HashMap<String, ResearchGoal> goalsByName = new HashMap<String, R
 
 private static boolean hasInit = false;
 
-int researchId;
-String researchName;
-Set<Integer> dependencies;
+private final int researchId;
+private final String researchName;
+private Set<Integer> dependencies;
+
+/**
+ * set the first time dependencies for this goal are queried.  further queries for full-dependencies
+ * will return this cached set
+ */
+private Set<Integer> resolvedDependencies;
+
 public ResearchGoal(int id, String name)
   {
   researchId = id;
   researchName = name;
   dependencies = new HashSet<Integer>();
+  }
+
+public String getName()
+  {
+  return researchName;
+  }
+
+public int getId()
+  {
+  return researchId;
   }
 
 public ResearchGoal addDependencies(int... deps)
@@ -92,6 +109,16 @@ private static void parseGoalDependencies(List<String> lines)
     } 
   }
 
+public static ResearchGoal getGoal(String name)
+  {
+  return goalsByName.get(name);
+  }
+
+public static ResearchGoal getGoal(int id)
+  {
+  return goalsByID.get(id);
+  }
+
 /**
  * Return a set of ResearchGoals corresponding to the input collection of goal numbers.<br>
  * Invalid goal numbers, or duplicate input numbers, will be ignored.  The returned set will<br>
@@ -121,6 +148,10 @@ public static Set<ResearchGoal> getGoalsFor(Collection<Integer> researchNums)
  */
 public static Set<Integer> resolveDependeciesFor(ResearchGoal goal)
   {
+  if(goal.resolvedDependencies!=null)
+    {
+    return goal.resolvedDependencies;
+    }
   Set<Integer> foundDependencies = new HashSet<Integer>();
   LinkedList<Integer> openList = new LinkedList<Integer>();  
   openList.addAll(goal.dependencies);
@@ -142,6 +173,7 @@ public static Set<Integer> resolveDependeciesFor(ResearchGoal goal)
         }
       }
     }   
+  goal.resolvedDependencies = foundDependencies;
   return foundDependencies;
   }
 
