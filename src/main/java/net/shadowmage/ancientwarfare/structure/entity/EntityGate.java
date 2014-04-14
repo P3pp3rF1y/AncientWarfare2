@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -239,6 +240,7 @@ public boolean interactFirst(EntityPlayer par1EntityPlayer)
     }
   else
     {
+    par1EntityPlayer.addChatMessage(new ChatComponentText("guistrings.gate.use_error"));
 //    par1EntityPlayer.addChatMessage("You cannot open enemy gates!!");
     }
   return false;

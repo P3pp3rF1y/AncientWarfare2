@@ -29,6 +29,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
@@ -79,27 +80,18 @@ public void addInformation(ItemStack stack, EntityPlayer player, List list, bool
     }
   if(tag.hasKey("pos1") && tag.hasKey("pos2"))
     {
-    /**
-     * TODO add guistrings / translation keys
-     */
-    list.add("Right Click: Construct Gate");
-    list.add("(Shift)Right Click: Cancel/clear");
+    list.add(StatCollector.translateToLocal("guistrings.gate.construct"));
+    list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));    
     }
   else if(tag.hasKey("pos1"))
     {
-    /**
-     * TODO add guistrings / translation keys
-     */
-    list.add("Left Click: Set second bound");
-    list.add("(Shift)Right Click: Cancel/clear");    
+    list.add(StatCollector.translateToLocal("guistrings.gate.choose_pos_two"));
+    list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));    
     }
   else
     {
-    /**
-     * TODO add guistrings / translation keys
-     */
-    list.add("Left Click: Set first bound");
-    list.add("(Shift)Right Click: Cancel/clear");
+    list.add(StatCollector.translateToLocal("guistrings.gate.choose_pos_one"));
+    list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));
     }
   }
 
@@ -151,18 +143,12 @@ public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosit
     BlockPosition avg = BlockTools.getAverageOf(pos1, pos2);
     if(player.getDistance(avg.x+0.5d, pos1.y, avg.z+0.5d) > 10)
       {
-      /**
-       * TODO add guistrings / translation keys
-       */
-//      player.addChatMessage("You are too far away to construct that gate, move closer");
+      player.addChatMessage(new ChatComponentText("guistrings.gate.too_far"));
       return;
       }
     if(!canSpawnGate(world, pos1, pos2))
       {
-      /**
-       * TODO add guistrings / translation keys
-       */
-//      player.addChatMessage("There is already a gate in that location!!");
+      player.addChatMessage(new ChatComponentText("guistrings.gate.exists"));
       return;
       }
     EntityGate entity = Gate.constructGate(world, pos1, pos2, Gate.getGateByID(stack.getItemDamage()), facing);
@@ -188,10 +174,7 @@ public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosit
       }
     else
       {
-      /**
-       * TODO add guistrings / translation keys
-       */
-//      player.addChatMessage("Chosen area is not clear!!");
+      player.addChatMessage(new ChatComponentText("guistrings.gate.need_to_clear"));
       }
     }
   }
@@ -242,17 +225,17 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
     if(g.arePointsValidPair(new BlockPosition(tag.getCompoundTag("pos1")), hit))
       {
       tag.setTag("pos2", hit.writeToNBT(new NBTTagCompound()));
-//      player.addChatMessage("Setting second gate bounds position");      
+      player.addChatMessage(new ChatComponentText("guistrings.gate.set_pos_two"));
       }
     else
       {
-//      player.addChatMessage("Invalid second coordinate, please re-select");
+      player.addChatMessage(new ChatComponentText("guistrings.gate.invalid_position"));
       }
     }
   else
     {
     tag.setTag("pos1", hit.writeToNBT(new NBTTagCompound()));
-//    player.addChatMessage("Setting first gate bounds position");
+    player.addChatMessage(new ChatComponentText("guistrings.gate.set_pos_one"));
     }
   stack.setTagInfo("AWGateInfo", tag);
   }
