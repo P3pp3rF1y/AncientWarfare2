@@ -43,16 +43,16 @@ public abstract class Gate implements IGateType
 public static final Gate[] gateTypes = new Gate[16];
 
 
-public static final Gate basicWood = new GateBasicWood(0, "ancientwarfare:textures/model/gate/gateWood1.png");
-public static final Gate basicIron = new GateBasicIron(1, "ancientwarfare:textures/model/gate/gateIron1.png");
+public static final Gate basicWood = new GateBasicWood(0, "ancientwarfare:textures/model/structure/gate/gateWood1.png");
+public static final Gate basicIron = new GateBasicIron(1, "ancientwarfare:textures/model/structure/gate/gateIron1.png");
 
-public static final Gate singleWood = new GateSingleSlideWood(4, "ancientwarfare:textures/model/gate/gateWood1.png");
-public static final Gate singleIron = new GateSingleIron(5, "ancientwarfare:textures/model/gate/gateIron1.png");
+public static final Gate singleWood = new GateSingleSlideWood(4, "ancientwarfare:textures/model/structure/gate/gateWood1.png");
+public static final Gate singleIron = new GateSingleIron(5, "ancientwarfare:textures/model/structure/gate/gateIron1.png");
 
-public static final Gate doubleWood = new GateDoubleSlideWood(8, "ancientwarfare:textures/model/gate/gateWood1.png");
-public static final Gate doubleIron = new GateDoubleIron(9, "ancientwarfare:textures/model/gate/gateIron1.png");
+public static final Gate doubleWood = new GateDoubleSlideWood(8, "ancientwarfare:textures/model/structure/gate/gateWood1.png");
+public static final Gate doubleIron = new GateDoubleIron(9, "ancientwarfare:textures/model/structure/gate/gateIron1.png");
 
-public static final Gate rotatingBridge = new GateRotatingBridge(12, "ancientwarfare:textures/model/gate/gateBridgeWood1.png");
+public static final Gate rotatingBridge = new GateRotatingBridge(12, "ancientwarfare:textures/model/structure/gate/gateBridgeWood1.png");
 
 public static final HashMap<String, Integer> gateIDByName = new HashMap<String, Integer>();
 
