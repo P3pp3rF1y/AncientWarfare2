@@ -11,7 +11,7 @@ public class GuiGateControl extends GuiContainerBase
 
 public GuiGateControl(ContainerBase par1Container)
   {
-  super(par1Container, 256, 240, defaultBackground);
+  super(par1Container, 12+8+8, 55+8+8, defaultBackground);
   }
 
 @Override
