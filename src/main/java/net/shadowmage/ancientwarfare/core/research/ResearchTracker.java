@@ -98,4 +98,9 @@ public void addClientResearch(int research)
   this.clientResearch.add(research);
   }
 
+public boolean hasClientCompleted(int research)
+  {
+  return this.clientResearch.contains(research);
+  }
+
 }
