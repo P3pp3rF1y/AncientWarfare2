@@ -11,6 +11,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 /**
@@ -28,7 +29,6 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 public class BlockDataManager
 {
 
-private static final String resourcePath = "/assets/ancientwarfare/resources/";
 
 private HashMap<Integer, String> blockIDToName = new HashMap<Integer, String>();
 private HashMap<Integer, Block> blockIDToBlock = new HashMap<Integer, Block>();
@@ -55,11 +55,11 @@ public static BlockDataManager instance(){return instance;}
  */
 public void load()
   {
-  loadBlockNamesAndIDs(getCSVLines(resourcePath+"block_name_id.csv"));
-  loadItemNamesAndIDs(getCSVLines(resourcePath+"item_name_id.csv"));
-  loadBlockRotations(getCSVLines(resourcePath+"block_rotations.csv"));
-  loadBlockPriorities(getCSVLines(resourcePath+"block_priorities.csv"));
-  loadBlockItems(getCSVLines(resourcePath+"block_items.csv"));
+  loadBlockNamesAndIDs(StringTools.getResourceLines(Statics.resourcePath+"block_name_id.csv"));
+  loadItemNamesAndIDs(StringTools.getResourceLines(Statics.resourcePath+"item_name_id.csv"));
+  loadBlockRotations(StringTools.getResourceLines(Statics.resourcePath+"block_rotations.csv"));
+  loadBlockPriorities(StringTools.getResourceLines(Statics.resourcePath+"block_priorities.csv"));
+  loadBlockItems(StringTools.getResourceLines(Statics.resourcePath+"block_items.csv"));
   }
 
 /**
@@ -497,39 +497,5 @@ public ItemStack getStackFor(Block block, int meta)
   }
 }
 
-/**
- * 
- * @param path to file, incl. filename + extension, running-dir relative
- * @return
- * @throws IOException
- */
-private static List<String> getCSVLines(String path)
-  {
-  InputStream is = BlockDataManager.class.getResourceAsStream(path);
-  ArrayList<String> lines = new ArrayList<String>();
-  BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-  String line;
-  try
-    {
-    while((line = reader.readLine())!=null)
-      {
-      if(line.startsWith("#")){continue;}
-      lines.add(line);
-      }
-    } 
-  catch (IOException e)
-    {
-    e.printStackTrace();
-    }  
-  try
-    {
-    is.close();
-    } 
-  catch (IOException e)
-    {
-    e.printStackTrace();
-    }
-  return lines;
-  }
 
 }

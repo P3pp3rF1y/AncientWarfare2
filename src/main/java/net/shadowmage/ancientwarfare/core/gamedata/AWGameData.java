@@ -51,11 +51,14 @@ public <T extends WorldSavedData> T getData(String name, World world, Class <T> 
       } 
     catch (InstantiationException e)
       {
+      AWLog.logError("Attempt to load data class: "+clz +" for name: "+name +" failed because class needs a no-param constructor!");
       e.printStackTrace();
+      return null;
       } 
     catch (IllegalAccessException e)
       {
       e.printStackTrace();
+      return null;
       }
     }
   return data;

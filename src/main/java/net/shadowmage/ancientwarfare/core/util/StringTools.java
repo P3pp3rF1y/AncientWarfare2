@@ -20,15 +20,20 @@
  */
 package net.shadowmage.ancientwarfare.core.util;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class StringTools
 {
@@ -231,7 +236,7 @@ public static String[] safeParseStringArray(String regex, String test)
 
 public static String[] parseStringArray(String csv)
   {
-  String[] splits = csv.split(",");
+  String[] splits = csv.split(",",-1);
   return splits;
   }
 
@@ -481,6 +486,42 @@ public static List<String> getLines(byte[] bytes)
     lines.add(scan.nextLine());
     }
   scan.close();
+  return lines;
+  }
+
+/**
+ * Return a list of strings for the input fileName -- used to parse configuration data
+ * from in-jar resource files.
+ * @param path to file, incl. filename + extension, running-dir relative
+ * @return
+ * @throws IOException
+ */
+public static List<String> getResourceLines(String path)
+  {
+  InputStream is = BlockDataManager.class.getResourceAsStream(path);
+  ArrayList<String> lines = new ArrayList<String>();
+  BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+  String line;
+  try
+    {
+    while((line = reader.readLine())!=null)
+      {
+      if(line.startsWith("#")){continue;}
+      lines.add(line);
+      }
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }  
+  try
+    {
+    is.close();
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
   return lines;
   }
 

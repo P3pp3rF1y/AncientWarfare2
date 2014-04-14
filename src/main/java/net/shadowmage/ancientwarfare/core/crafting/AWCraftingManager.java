@@ -5,7 +5,7 @@ public class AWCraftingManager
 
 public AWCraftingManager()
   {
-  // TODO Auto-generated constructor stub
+  
   }
 
 }
