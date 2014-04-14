@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.container.ContainerGateControl;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvanced;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedBlock;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryBlock;
@@ -94,6 +95,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK, ContainerSpawnerAdvancedBlock.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, ContainerSpawnerAdvancedInventoryItem.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY, ContainerSpawnerAdvancedInventoryBlock.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL, ContainerGateControl.class);
   proxy.registerClient();   
       
   /**

@@ -111,13 +111,27 @@ protected void entityInit()
 
 public void repackEntity()
   {
-  if(worldObj.isRemote){return;}
+  if(worldObj.isRemote || isDead){return;}
+  gateType.onGateStartOpen(this);//catch gates that have proxy blocks still in the world
+  gateType.onGateStartClose(this);//
   ItemStack item = Gate.getItemToConstruct(this.gateType.getGlobalID());
   EntityItem entity = new EntityItem(worldObj);
   entity.setEntityItemStack(item);
   entity.setPosition(posX, posY+0.5d, posZ);
   this.worldObj.spawnEntityInWorld(entity);
   this.setDead();
+  }
+
+@Override
+public void setDead()
+  {
+  super.setDead();
+  if(!this.worldObj.isRemote)
+    {
+    //catch gates that have proxy blocks still in the world
+    gateType.onGateStartOpen(this);
+    gateType.onGateStartClose(this);
+    }
   }
 
 protected void setOpeningStatus(byte op)
@@ -200,9 +214,7 @@ public void setPosition(double par1, double par3, double par5)
   {  
   this.posX = par1;
   this.posY = par3;
-  this.posZ = par5;
-  
-//  Config.logDebug(String.format("setting position to: %.2f, %.2f, %.2f", posX, posY, posZ));
+  this.posZ = par5;  
   if(this.gateType!=null)
     {
   	this.gateType.setCollisionBoundingBox(this);  
@@ -227,11 +239,10 @@ public boolean interactFirst(EntityPlayer par1EntityPlayer)
     {
     return false;
     }
-  boolean canInteract = par1EntityPlayer.getTeam()==this.getTeam();//this.teamNum == TeamTracker.instance().getTeamForPlayer(par1EntityPlayer);//!TeamTracker.instance().isHostileTowards(worldObj, pNum, teamNum) && !TeamTracker.instance().isHostileTowards(worldObj, teamNum, pNum);
+  boolean canInteract = par1EntityPlayer.getTeam()==this.getTeam();
   if(par1EntityPlayer.isSneaking() && canInteract)
     {
-    //TODO open gate control GUI
-//    GUIHandler.instance().openGUI(GUIHandler.GATE_CONTROL, par1EntityPlayer, worldObj, this.entityId, 0, 0);
+    NetworkHandler.INSTANCE.openGui(par1EntityPlayer, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
     }
   else if(canInteract)
     {
@@ -241,7 +252,6 @@ public boolean interactFirst(EntityPlayer par1EntityPlayer)
   else
     {
     par1EntityPlayer.addChatMessage(new ChatComponentText("guistrings.gate.use_error"));
-//    par1EntityPlayer.addChatMessage("You cannot open enemy gates!!");
     }
   return false;
   }
@@ -273,7 +283,6 @@ public void onUpdate()
   this.gateType.onUpdate(this);
   float prevEdge = this.edgePosition;
   this.setPosition(posX, posY, posZ);
-//  Config.logDebug(String.format("Gate Pos: %.2f, %.2f, %.2f.  client:%s", posX, posY, posZ, worldObj.isRemote));
   if(this.hurtInvulTicks>0)
     {
     this.hurtInvulTicks--;
@@ -316,13 +325,12 @@ public void onUpdate()
     int largest = xSize > ySize ? xSize : ySize;
     largest = largest > zSize ? largest : zSize;
     largest = (largest/2) + 1;
-    if(worldObj.MAX_ENTITY_RADIUS < largest)
+    if(World.MAX_ENTITY_RADIUS < largest)
       {
-      worldObj.MAX_ENTITY_RADIUS = largest;    
+      World.MAX_ENTITY_RADIUS = largest;    
       }    
     }
   }
-
 
 protected void checkForPowerUpdates()
   {

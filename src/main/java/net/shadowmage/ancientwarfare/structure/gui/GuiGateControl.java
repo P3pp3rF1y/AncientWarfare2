@@ -1,0 +1,40 @@
+package net.shadowmage.ancientwarfare.structure.gui;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+
+public class GuiGateControl extends GuiContainerBase
+{
+
+public GuiGateControl(ContainerBase par1Container)
+  {
+  super(par1Container, 256, 240, defaultBackground);
+  }
+
+@Override
+public void initElements()
+  {
+  Button button = new Button(8,8,55,12, StatCollector.translateToLocal("guistrings.gate.repack"))
+    {
+    @Override
+    protected void onPressed()
+      {
+      NBTTagCompound tag = new NBTTagCompound();
+      tag.setBoolean("repack", true);
+      sendDataToContainer(tag);
+      closeGui();
+      }
+    };
+  addGuiElement(button);
+  }
+
+@Override
+public void setupElements()
+  {
+
+  }
+
+}

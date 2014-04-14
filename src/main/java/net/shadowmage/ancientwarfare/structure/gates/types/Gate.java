@@ -293,7 +293,6 @@ public void onGateFinishOpen(EntityGate gate)
 @Override
 public void onGateStartClose(EntityGate gate)
   {
-  // TODO Auto-generated method stub
   
   }
 
