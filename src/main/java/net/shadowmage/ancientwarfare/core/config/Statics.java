@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.config;
 
+import net.minecraftforge.common.config.Configuration;
+
 public class Statics
 {
 
@@ -12,5 +14,11 @@ public static final String resourcePath = "/assets/ancientwarfare/resources/";
  * TODO add these to main config file
  */
 public static boolean fireBlockBreakEvents = false;
+
+
+public static void loadConfig(Configuration config)
+  {
+  
+  }
 
 }

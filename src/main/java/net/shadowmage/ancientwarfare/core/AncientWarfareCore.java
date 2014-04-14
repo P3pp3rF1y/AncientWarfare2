@@ -48,9 +48,10 @@ public static org.apache.logging.log4j.Logger log;
 public void preInit(FMLPreInitializationEvent evt)
   {
   config = new Configuration(evt.getSuggestedConfigurationFile());
-  log = evt.getModLog();
-  AWLog.log("Ancient Warfare Core Pre-Init Started"); 
+  log = evt.getModLog();  
+  AWLog.log("Ancient Warfare Core Pre-Init Started");  
   Statics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
+  Statics.loadConfig(config);
   NetworkHandler.INSTANCE.registerNetwork();
   MinecraftForge.EVENT_BUS.register(AWGameData.INSTANCE);
   MinecraftForge.EVENT_BUS.register(new ItemEventHandler());

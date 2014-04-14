@@ -78,6 +78,23 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setTag("researchList", researchList);
   }
 
+/**
+ * returns true if the player does not know the input research<br>
+ * and the player already knows all dependencies of the input research
+ * @param playerName
+ * @param research
+ * @return
+ */
+public boolean canPlayerLearn(String playerName, int research)
+  {
+  if(!playerResearchData.containsKey(playerName))
+    {
+    playerResearchData.put(playerName, new HashSet<Integer>());
+    this.markDirty();
+    }
+  return playerResearchData.get(playerName).containsAll(ResearchGoal.resolveDependeciesFor(ResearchGoal.getGoal(research)));
+  }
+
 public Set<Integer> getResearchFor(String playerName)
   {
   if(playerResearchData.containsKey(playerName))

@@ -49,6 +49,19 @@ public boolean hasPlayerCompleted(World world, String player, int research)
 /**
  * SERVER ONLY
  * @param world
+ * @param player
+ * @param research
+ * @return
+ */
+public boolean canPlayerLearn(World world, String player, int research)
+  {
+  if(world.isRemote){return false;}  
+  return getResearchData(world).canPlayerLearn(player, research);
+  }
+
+/**
+ * SERVER ONLY
+ * @param world
  * @param playerName
  * @return
  */
