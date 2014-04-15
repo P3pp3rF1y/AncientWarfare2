@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -67,6 +68,47 @@ public void sendSettingsToServer()
   PacketGui pkt = new PacketGui();
   pkt.packetData.setTag("spawnerSettings", tag);
   NetworkHandler.sendToServer(pkt);
+  }
+
+@Override
+public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
+  {
+  ItemStack slotStackCopy = null;
+  Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
+  if (theSlot != null && theSlot.getHasStack())
+    {
+    ItemStack slotStack = theSlot.getStack();
+    slotStackCopy = slotStack.copy();
+    int storageSlots = 9;  
+    if (slotClickedIndex < 36)//player slots...
+      {      
+      if (!this.mergeItemStack(slotStack, 36, 36+storageSlots, false))//merge into storage inventory
+        {
+        return null;
+        }
+      }
+    else if(slotClickedIndex >=36 &&slotClickedIndex < 36+storageSlots)//storage slots, merge to player inventory
+      {
+      if (!this.mergeItemStack(slotStack, 0, 36, true))//merge into player inventory
+        {
+        return null;
+        }
+      }
+    if (slotStack.stackSize == 0)
+      {
+      theSlot.putStack((ItemStack)null);
+      }
+    else
+      {
+      theSlot.onSlotChanged();
+      }
+    if (slotStack.stackSize == slotStackCopy.stackSize)
+      {
+      return null;
+      }
+    theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+    }
+  return slotStackCopy;
   }
 
 }
