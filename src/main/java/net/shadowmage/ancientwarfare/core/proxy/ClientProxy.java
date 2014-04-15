@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
+import net.shadowmage.ancientwarfare.core.gui.GuiEngineeringStation;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketHandlerClient;
@@ -18,6 +19,7 @@ public void registerClient()
   {
   NetworkHandler.registerClientHandler(new PacketHandlerClient());
   FMLCommonHandler.instance().bus().register(InputHandler.instance());
+  NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);
   }
 
 }

@@ -118,7 +118,8 @@ public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, in
 
 /**
  * Attempts to remove filter * quantity from inventory.  Returns removed item in return stack, or null if
- * no items were removed.
+ * no items were removed.<br>
+ * Will only remove and return up to filter.getMaxStackSize() items, regardless of how many are requested.
  * @param inventory
  * @param side
  * @param toRemove
@@ -126,6 +127,10 @@ public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, in
  */
 public static ItemStack removeItems(IInventory inventory, int side, ItemStack filter, int quantity)
   {  
+  if(quantity>filter.getMaxStackSize())
+    {
+    quantity = filter.getMaxStackSize();
+    }
   ItemStack returnStack = null;
   if(side>0 && inventory instanceof ISidedInventory)
     {
@@ -197,6 +202,85 @@ public static ItemStack removeItems(IInventory inventory, int side, ItemStack fi
       }
     }  
   return returnStack;
+  }
+
+public static int getNumOfSlotsContaining(IInventory inv, int side, ItemStack filter)
+  {
+  if(inv.getSizeInventory()<=0){return 0;}
+  int count = 0;
+  if(side>0 && inv instanceof ISidedInventory)
+    {
+    int[] slotIndices = ((ISidedInventory) inv).getAccessibleSlotsFromSide(side);
+    if(slotIndices==null || slotIndices.length==0){return 0;}
+    ItemStack stack;
+    for(int i = 0; i < slotIndices.length; i++)
+      {
+      stack = inv.getStackInSlot(slotIndices[i]);
+      if(stack==null){continue;}
+      else if(doItemStacksMatch(filter, stack))
+        {
+        count++;
+        }
+      }
+    }
+  else
+    {
+    ItemStack stack;
+    for(int i = 0; i < inv.getSizeInventory(); i++)
+      {
+      stack = inv.getStackInSlot(i);
+      if(stack==null){continue;}
+      else if(doItemStacksMatch(filter, stack))
+        {
+        count ++;
+        }
+      }
+    }
+  return count;
+  }
+
+/**
+ * return the found count of the input item stack (checks item/meta/tag, ignores qty)<br>
+ * if inv is not a sided inventory, or input side < 0, counts from entire inventory<br>
+ * otherwise only returns the item count from the input side
+ * @param inv
+ * @param side
+ * @param filter
+ * @return
+ */
+public static int getCountOf(IInventory inv, int side, ItemStack filter)
+  {
+  if(inv.getSizeInventory()<=0){return 0;}
+  int count = 0;
+  if(side>0 && inv instanceof ISidedInventory)
+    {
+    int[] slotIndices = ((ISidedInventory) inv).getAccessibleSlotsFromSide(side);
+    if(slotIndices==null || slotIndices.length==0){return 0;}
+    ItemStack stack;
+    for(int i = 0; i < slotIndices.length; i++)
+      {
+      stack = inv.getStackInSlot(slotIndices[i]);
+      if(stack==null){continue;}
+      else if(doItemStacksMatch(filter, stack))
+        {
+        count += stack.stackSize;
+        }
+      }
+    }
+  else
+    {
+    ItemStack stack;
+    for(int i = 0; i < inv.getSizeInventory(); i++)
+      {
+      stack = inv.getStackInSlot(i);
+      if(stack==null){continue;}
+      else if(doItemStacksMatch(filter, stack))
+        {
+        count += stack.stackSize;
+        }
+      }
+    }
+  return count;
   }
 
 /**

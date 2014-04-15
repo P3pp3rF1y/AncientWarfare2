@@ -33,7 +33,7 @@ public static final int PACKET_ENTITY = 5;
 public static final int PACKET_RESEARCH_INIT = 6;
 public static final int PACKET_RESEARCH_ADD = 7;
 
-public static final int GUI_TEST = 0;
+public static final int GUI_CRAFTING = 0;
 public static final int GUI_SCANNER = 1;
 public static final int GUI_BUILDER = 2;
 public static final int GUI_SPAWNER = 3;

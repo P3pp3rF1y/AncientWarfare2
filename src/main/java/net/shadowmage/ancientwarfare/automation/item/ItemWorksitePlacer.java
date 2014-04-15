@@ -83,7 +83,7 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   /**
    * TODO validate that block is not inside work bounds of any other nearby worksites
    */
-  metadata = BlockIconRotationMap.getBlockMetaForPlacement(player);
+  metadata = BlockIconRotationMap.getBlockMetaForPlacement(player, true);
   
   boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
   if(val)

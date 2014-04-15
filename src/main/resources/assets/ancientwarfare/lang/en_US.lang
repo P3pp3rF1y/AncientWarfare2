@@ -1,6 +1,7 @@
 #Ancient Warfare language file
 
 #items
+itemGroup.tabs.awcore=Ancient Warfare Core
 itemGroup.tabs.structures=Ancient Warfare Structures
 itemGroup.tabs.editor=Ancient Warfare Model Editor
 itemGroup.tabs.automation=Ancient Warfare Automation

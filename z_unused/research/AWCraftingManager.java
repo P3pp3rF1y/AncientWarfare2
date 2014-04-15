@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
@@ -27,24 +26,54 @@ private AWCraftingManager(){}
  * @param world
  * @return
  */
-public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, String playerName)
+public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, EntityPlayer player)
   {
-  ItemStack item1 = CraftingManager.getInstance().findMatchingRecipe(inventory, world);
-  if(item1!=null)
+  int itemStackCounter = 0;
+  ItemStack itemstack = null;
+  ItemStack itemstack1 = null;
+  int slotIndex;
+
+  for (slotIndex = 0; slotIndex < inventory.getSizeInventory(); ++slotIndex)
     {
-    return item1;
-    }
-  
-  int recipeIndex;  
-  for (recipeIndex = 0; recipeIndex < this.recipes.size(); ++recipeIndex)
-    {
-    RecipeResearched recipe = (RecipeResearched)this.recipes.get(recipeIndex);
-    if (recipe.matches(inventory, world) && recipe.canPlayerCraft(world, playerName))
+    ItemStack itemstack2 = inventory.getStackInSlot(slotIndex);
+    if (itemstack2 != null)
       {
-      return recipe.getCraftingResult(inventory);
+      if (itemStackCounter == 0)
+        {
+        itemstack = itemstack2;
+        }
+      if (itemStackCounter == 1)
+        {
+        itemstack1 = itemstack2;
+        }
+      ++itemStackCounter;
       }
     }
-  return null;
+  if (itemStackCounter == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.stackSize == 1 && itemstack1.stackSize == 1 && itemstack.getItem().isRepairable())
+    {
+    Item item = itemstack.getItem();
+    int j1 = item.getMaxDamage() - itemstack.getItemDamageForDisplay();
+    int k = item.getMaxDamage() - itemstack1.getItemDamageForDisplay();
+    int l = j1 + k + item.getMaxDamage() * 5 / 100;
+    int i1 = item.getMaxDamage() - l;
+    if (i1 < 0)
+      {
+      i1 = 0;
+      }
+    return new ItemStack(itemstack.getItem(), 1, i1);
+    }
+  else
+    {
+    for (slotIndex = 0; slotIndex < this.recipes.size(); ++slotIndex)
+      {
+      RecipeResearched recipe = (RecipeResearched)this.recipes.get(slotIndex);
+      if (recipe.matches(inventory, world) && recipe.canPlayerCraft(player.worldObj, player.getCommandSenderName()))
+        {
+        return recipe.getCraftingResult(inventory);
+        }
+      }
+    return null;
+    }
   }
 
 public RecipeResearched addRecipe(ItemStack par1ItemStack, Object ... par2ArrayOfObj)

@@ -2,9 +2,12 @@ package net.shadowmage.ancientwarfare.core;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.item.ItemEventHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -47,18 +50,48 @@ public static org.apache.logging.log4j.Logger log;
 @EventHandler
 public void preInit(FMLPreInitializationEvent evt)
   {
+  /**
+   * setup config file and logger
+   */
   config = new Configuration(evt.getSuggestedConfigurationFile());
-  log = evt.getModLog();  
-  AWLog.log("Ancient Warfare Core Pre-Init Started");  
+  log = evt.getModLog();
+  
+  AWLog.log("Ancient Warfare Core Pre-Init Started");
+  
   Statics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
   Statics.loadConfig(config);
-  NetworkHandler.INSTANCE.registerNetwork();
+  
+  
+  /**
+   * register server-side network handler and anything that needs loaded on the event busses
+   */
+  NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side  
   MinecraftForge.EVENT_BUS.register(AWGameData.INSTANCE);
   MinecraftForge.EVENT_BUS.register(new ItemEventHandler());
   FMLCommonHandler.instance().bus().register(ResearchTracker.instance());
-  AWGameData.INSTANCE.registerSaveData(ResearchData.name, ResearchData.class);
-  ResearchGoal.initializeResearch();
+   
+  /**
+   * register blocks, items, tile entities, and entities
+   */
+  AWCoreBlockLoader.INSTANCE.load();
+  AWCoreItemLoader.INSTANCE.load();
+  
+  /**
+   * register GUIs, containers, client-side network handler, renderers
+   */
   proxy.registerClient();
+  NetworkHandler.registerContainer(NetworkHandler.GUI_CRAFTING, ContainerEngineeringStation.class);
+  
+  /**
+   * register Saved-data classes for core module
+   */
+  AWGameData.INSTANCE.registerSaveData(ResearchData.name, ResearchData.class);
+  
+  /**
+   * initialize any other core module information
+   */
+  ResearchGoal.initializeResearch();
+  
   AWLog.log("Ancient Warfare Core Pre-Init Completed");
   }
 
@@ -66,6 +99,10 @@ public void preInit(FMLPreInitializationEvent evt)
 public void init(FMLInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Core Init Started");
+  
+  /**
+   * register recipes
+   */
   AWLog.log("Ancient Warfare Core Init Completed");
   }
 

@@ -55,7 +55,7 @@ public IIcon getIconFor(int mcSide, int meta)
   return iconMap.get(RelativeSide.getRelativeSide(mcSide, meta));
   }
 
-public static int getBlockMetaForPlacement(EntityPlayer player)
+public static int getBlockMetaForPlacement(EntityPlayer player, boolean allowVerticalPlacement)
   {
   boolean invert = player.isSneaking();
   int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
@@ -63,11 +63,11 @@ public static int getBlockMetaForPlacement(EntityPlayer player)
     {
     face = (face+2)%4;
     }
-  if(player.rotationPitch<-45)
+  if(allowVerticalPlacement && player.rotationPitch<-45)
     {
     return face + (invert? 4 : 8);
     }  
-  else if(player.rotationPitch>45)
+  else if(allowVerticalPlacement && player.rotationPitch>45)
     {
     return face + (invert? 8 : 4);
     }
