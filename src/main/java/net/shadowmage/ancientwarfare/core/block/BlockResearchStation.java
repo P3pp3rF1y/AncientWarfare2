@@ -13,6 +13,7 @@ public BlockResearchStation(String regName)
   {
   super(Material.rock);
   this.setBlockName(regName);
+  this.setCreativeTab(AWCoreBlockLoader.coreTab);
   }
 
 @Override
