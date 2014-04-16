@@ -96,7 +96,7 @@ protected void sendDataToClient(NBTTagCompound data)
     {
     PacketGui pkt = new PacketGui();
     pkt.packetData =  data;
-    NetworkHandler.sendToServer(pkt);    
+    NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);    
     }
   }
 
