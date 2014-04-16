@@ -5,14 +5,11 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.research.ResearchData;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
-import net.shadowmage.ancientwarfare.core.util.NBTTools;
 
 public class PacketResearchInit extends PacketBase
 {

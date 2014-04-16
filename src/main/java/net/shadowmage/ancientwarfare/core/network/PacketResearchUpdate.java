@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.network;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufOutputStream;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
@@ -10,11 +9,14 @@ public class PacketResearchUpdate extends PacketBase
 
 String playerName;
 int toAdd;
+boolean add, live;
 
-public PacketResearchUpdate(String playerName, int toAdd)
+public PacketResearchUpdate(String playerName, int toAdd, boolean add, boolean live)
   {
   this.playerName = playerName;
   this.toAdd = toAdd;
+  this.add = add;
+  this.live = live;
   }
 
 public PacketResearchUpdate()
@@ -26,6 +28,8 @@ public PacketResearchUpdate()
 protected void writeToStream(ByteBuf data)
   {  
   data.writeInt(toAdd);
+  data.writeBoolean(add);
+  data.writeBoolean(live);
   StringTools.writeString(data, playerName);
   }
 
@@ -33,13 +37,32 @@ protected void writeToStream(ByteBuf data)
 protected void readFromStream(ByteBuf data)
   {
   toAdd = data.readInt();
+  add = data.readBoolean();
+  live = data.readBoolean();
   playerName = StringTools.readString(data);
   }
 
 @Override
 protected void execute()
   {
-  ResearchTracker.instance().addResearch(player.worldObj, playerName, toAdd);
+  if(live)
+    {
+    if(add)
+      {
+      ResearchTracker.instance().addResearch(player.worldObj, playerName, toAdd);
+      }    
+    }
+  else
+    {
+    if(add)
+      {
+      ResearchTracker.instance().addQueuedGoal(player.worldObj, playerName, toAdd);
+      }
+    else
+      {
+      ResearchTracker.instance().removeQueuedGoal(player.worldObj, playerName, toAdd);
+      }
+    }
   }
 
 }

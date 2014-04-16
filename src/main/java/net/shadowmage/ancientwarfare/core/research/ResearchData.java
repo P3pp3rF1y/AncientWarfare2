@@ -221,6 +221,11 @@ private void addQueuedResearch(int num)
   this.queuedResearch.add(num);
   }
 
+private List<Integer> getResearchQueue()
+  {
+  return queuedResearch;
+  }
+
 private void writeToNBT(NBTTagCompound tag)
   {
   tag.setInteger("currentResearch", currentResearch);

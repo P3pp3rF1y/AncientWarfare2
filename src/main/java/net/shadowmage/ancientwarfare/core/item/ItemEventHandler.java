@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ItemEventHandler

@@ -5,7 +5,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 
@@ -28,7 +27,6 @@ public boolean hasTileEntity(int metadata)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {
-  AWLog.logDebug("returning new tile entity....");
   return new TileEngineeringStation();
   }
 
