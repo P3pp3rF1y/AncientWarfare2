@@ -6,6 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -81,6 +82,39 @@ public void onItemCrafted()
 private void onLayoutMatrixChanged(IInventory matrix)
   {
   this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, worldObj, getCrafterName()));
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {
+  super.readFromNBT(tag);
+  InventoryTools.readInventoryFromNBT(bookInventory, tag.getCompoundTag("bookInventory"));
+  InventoryTools.readInventoryFromNBT(extraSlots, tag.getCompoundTag("extraInventory"));
+  InventoryTools.readInventoryFromNBT(result, tag.getCompoundTag("resultInventory"));
+  InventoryTools.readInventoryFromNBT(layoutMatrix, tag.getCompoundTag("layoutMatrix"));
+  }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {
+  super.writeToNBT(tag);
+  
+  NBTTagCompound inventoryTag = new NBTTagCompound();
+  InventoryTools.writeInventoryToNBT(bookInventory, inventoryTag);
+  tag.setTag("bookInventory", inventoryTag);
+  
+  inventoryTag = new NBTTagCompound();
+  InventoryTools.writeInventoryToNBT(extraSlots, inventoryTag);
+  tag.setTag("extraInventory", inventoryTag);
+  
+  inventoryTag = new NBTTagCompound();
+  InventoryTools.writeInventoryToNBT(result, inventoryTag);
+  tag.setTag("resultInventory", inventoryTag);
+  
+  inventoryTag = new NBTTagCompound();
+  InventoryTools.writeInventoryToNBT(layoutMatrix, inventoryTag);
+  tag.setTag("layoutMatrix", inventoryTag);
+  
   }
 
 }
