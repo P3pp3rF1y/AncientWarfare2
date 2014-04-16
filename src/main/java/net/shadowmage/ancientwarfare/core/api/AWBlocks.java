@@ -6,5 +6,6 @@ public class AWBlocks
 {
 
 public static Block engineeringStation;
+public static Block researchStation;
 
 }

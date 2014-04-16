@@ -44,6 +44,7 @@ public static final int GUI_SPAWNER_ADVANCED_BLOCK = 8;
 public static final int GUI_SPAWNER_ADVANCED_INVENTORY = 9;
 public static final int GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY = 10;
 public static final int GUI_GATE_CONTROL = 11;
+public static final int GUI_RESEARCH_STATION = 12;
 
 
 private FMLEventChannel channel;
