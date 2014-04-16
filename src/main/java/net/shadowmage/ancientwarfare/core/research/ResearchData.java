@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.WorldSavedData;
@@ -27,6 +29,15 @@ public ResearchData()
 public ResearchData(String par1Str)
   {
   super(name);
+  }
+
+public void onPlayerLogin(EntityPlayer player)
+  {
+  if(!playerResearchEntries.containsKey(player.getCommandSenderName()))
+    {
+    playerResearchEntries.put(player.getCommandSenderName(), new ResearchEntry());
+    this.markDirty();
+    }
   }
 
 @Override
@@ -65,6 +76,16 @@ public void writeToNBT(NBTTagCompound tag)
     entryList.appendTag(entryTag);
     }  
   tag.setTag("entryList", entryList);  
+  }
+
+public Set<Integer> getResearchableGoals(String playerName)
+  {  
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    ResearchEntry entry = playerResearchEntries.get(playerName);
+    return ResearchGoal.getResearchableGoalsFor(entry.completedResearch, entry.queuedResearch);    
+    }
+  return Collections.emptySet();
   }
 
 /**
@@ -153,6 +174,14 @@ public void addQueuedResearch(String playerName, int goal)
     }
   }
 
+public void removeQueuedResearch(String playerName, int goal)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    playerResearchEntries.get(playerName).removeQueuedResearch(goal);
+    }
+  }
+
 public List<Integer> getQueuedResearch(String playerName)
   {
   if(playerResearchEntries.containsKey(playerName))
@@ -212,13 +241,16 @@ private int getInProgressResearch()
   }
 
 private void addResearch(int num)
-  {
+  {  
   this.completedResearch.add(num);
   }
 
 private void addQueuedResearch(int num)
-  {
-  this.queuedResearch.add(num);
+  {  
+  if(!queuedResearch.contains(Integer.valueOf(num)))
+    {
+    this.queuedResearch.add(num);    
+    }
   }
 
 private List<Integer> getResearchQueue()
@@ -263,6 +295,49 @@ private void readFromNBT(NBTTagCompound tag)
     queuedResearch.add(k);
     }
   }
+
+
+private void removeQueuedResearch(int goal)
+  {
+  Integer goalObject = Integer.valueOf(goal);
+  if(!queuedResearch.contains(goalObject)){return;}
+  
+  List<Integer> goalsToValidate = new ArrayList<Integer>();
+  
+  Iterator<Integer> it = queuedResearch.iterator();
+  Integer exam;
+  boolean found = false;
+  while(it.hasNext() && (exam = it.next())!=null)
+    {
+    if(found)
+      {
+      goalsToValidate.add(exam);
+      it.remove();      
+      }
+    else if(!found && exam.intValue()==goalObject.intValue())
+      {
+      found = true;
+      it.remove();
+      }
+    }
+  
+  Set<Integer> totalResearch = new HashSet<Integer>();
+  totalResearch.addAll(completedResearch);
+  totalResearch.addAll(queuedResearch);
+  
+  ResearchGoal g;
+  for(Integer g1 : goalsToValidate)
+    {
+    g = ResearchGoal.getGoal(g1);
+    if(g==null){continue;}
+    else if(g.canResearch(totalResearch))
+      {
+      totalResearch.add(g1);
+      queuedResearch.add(g1);
+      }
+    }
+  }
+
 }
 
 }

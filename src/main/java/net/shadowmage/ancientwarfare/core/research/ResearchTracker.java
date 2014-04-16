@@ -31,6 +31,7 @@ private ResearchData clientData = new ResearchData();
 @SubscribeEvent
 public void playerLogInEvent(PlayerEvent.PlayerLoggedInEvent evt)
   {
+  getResearchData(evt.player.worldObj).onPlayerLogin(evt.player);
   PacketResearchInit init = new PacketResearchInit(getResearchData(evt.player.worldObj));
   NetworkHandler.sendToPlayer((EntityPlayerMP) evt.player, init);
   }
@@ -102,6 +103,18 @@ public List<Integer> getResearchQueueFor(World world, String playerName)
   return getResearchData(world).getQueuedResearch(playerName);
   }
 
+public Set<Integer> getResearchableGoals(World world, String playerName)
+  {
+  if(world.isRemote)
+    {
+    return clientData.getResearchableGoals(playerName);
+    }
+  else
+    {
+    return getResearchData(world).getResearchableGoals(playerName);
+    }
+  }
+
 /**
  * @param world
  * @return
@@ -147,11 +160,11 @@ public void removeQueuedGoal(World world, String playerName, int goal)
   {
   if(world.isRemote)
     {
-    clientData.getQueuedResearch(playerName).remove(Integer.valueOf(goal));
+    clientData.removeQueuedResearch(playerName, goal);
     }
   else
     {
-    getResearchData(world).getQueuedResearch(playerName).remove(Integer.valueOf(goal));    
+    getResearchData(world).removeQueuedResearch(playerName, goal);
     PacketResearchUpdate pkt = new PacketResearchUpdate(playerName, goal, false, false);
     NetworkHandler.sendToAllPlayers(pkt);
     }

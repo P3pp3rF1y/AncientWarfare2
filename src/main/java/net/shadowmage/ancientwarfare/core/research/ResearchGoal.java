@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.research;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -23,7 +24,7 @@ private static HashMap<String, ResearchGoal> goalsByName = new HashMap<String, R
 
 private final int researchId;
 private final String researchName;
-private Set<Integer> dependencies;
+private Set<Integer> dependencies;//parsed shallow-dependency list
 
 private List<ItemStack> researchResources = new ArrayList<ItemStack>();
 private int researchTime;
@@ -32,7 +33,7 @@ private int researchTime;
  * set the first time dependencies for this goal are queried.  further queries for full-dependencies
  * will return this cached set
  */
-private Set<Integer> resolvedDependencies;
+private Set<Integer> resolvedDependencies;//full dependency list
 
 public ResearchGoal(int id, String name)
   {
@@ -84,6 +85,12 @@ public Set<Integer> getDependencies()
   return dependencies;
   }
 
+public boolean canResearch(Set<Integer> knownResearch)
+  {
+  Set<Integer> fullDependencies = resolveDependeciesFor(this);
+  return knownResearch.containsAll(fullDependencies);
+  }
+
 public static void initializeResearch()
   {
   if(hasInit){return;}
@@ -104,7 +111,6 @@ private static void parseGoalNames(List<String> lines)
     id = StringTools.safeParseInt(split[0]);
     name = split[1];
     goal = new ResearchGoal(id, name);
-    AWLog.logDebug("Loading research goal from disk...id: "+id+" :: "+name);
     goalsByID.put(id, goal);
     goalsByName.put(name, goal);
     } 
@@ -120,7 +126,6 @@ private static void parseGoalDependencies(List<String> lines)
     split = StringTools.parseStringArray(line);
     name = split[0];
     dep = split[1];
-    AWLog.logDebug("parsed dependency for: "+name+" of: "+dep);
     if(goalsByName.containsKey(name) && goalsByName.containsKey(dep))
       {
       goalsByName.get(name).addDependencies(goalsByName.get(dep).researchId);
@@ -161,7 +166,8 @@ public static Set<ResearchGoal> getGoalsFor(Collection<Integer> researchNums)
 /**
  * Return a set of research goal numbers comprising the entire dependency tree for the input
  * research goal.  This dependency set shall contain every direct dependency for the input goal, and
- * any dependencies of those goals (recursive until base).
+ * any dependencies of those goals (recursive until base).  The returned set shall only contain valid,
+ * loaded goal numbers.
  * @param goal
  * @return
  */
@@ -194,6 +200,25 @@ public static Set<Integer> resolveDependeciesFor(ResearchGoal goal)
     }   
   goal.resolvedDependencies = foundDependencies;
   return foundDependencies;
+  }
+
+public static Set<Integer> getResearchableGoalsFor(Collection<Integer> knownResearch, Collection<Integer> queuedResearch)
+  {
+  Set<Integer> totalKnowledge = new HashSet<Integer>();
+  totalKnowledge.addAll(knownResearch);
+  totalKnowledge.addAll(queuedResearch);  
+  Set<Integer> researchableGoals = new HashSet<Integer>();  
+  ResearchGoal goal;
+  for(Integer g : goalsByID.keySet())
+    {
+    if(totalKnowledge.contains(g)){continue;}
+    goal = goalsByID.get(g);
+    if(goal.canResearch(totalKnowledge))
+      {
+      researchableGoals.add(goal.getId());
+      }
+    }  
+  return researchableGoals;
   }
 
 }
