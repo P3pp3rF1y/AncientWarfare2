@@ -1,11 +1,13 @@
 package net.shadowmage.ancientwarfare.core.research;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
@@ -13,7 +15,7 @@ import net.minecraftforge.common.util.Constants;
 public class ResearchData extends WorldSavedData
 {
 
-private HashMap<String, Set<Integer>> playerResearchData = new HashMap<String, Set<Integer>>();
+private HashMap<String, ResearchEntry> playerResearchEntries = new HashMap<String, ResearchEntry>();
 
 public static final String name = "AWResearchData";
 
@@ -30,52 +32,39 @@ public ResearchData(String par1Str)
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
-  NBTTagList researchList = tag.getTagList("researchList", Constants.NBT.TAG_COMPOUND);
-  NBTTagCompound playerEntry;
+  playerResearchEntries.clear();
+  
+  NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
+  
+  ResearchEntry entry;
+  NBTTagCompound entryTag;
   String name;
-  Set<Integer> research;
-  int[] researchData;
-  for(int i = 0; i < researchList.tagCount(); i++)
+  for(int i = 0; i < entryList.tagCount(); i++)
     {
-    playerEntry = researchList.getCompoundTagAt(i);
-    name = playerEntry.getString("playerName");
-    researchData = playerEntry.getIntArray("researchSet");
-    research = new HashSet<Integer>();
-    for(int k = 0; k < researchData.length; k++)
-      {
-      research.add(researchData[k]);
-      }
-    playerResearchData.put(name, research);
-    this.markDirty();
+    entry = new ResearchEntry();
+    entryTag = entryList.getCompoundTagAt(i);
+    name = entryTag.getString("playerName");
+    entry.readFromNBT(entryTag);
+    playerResearchEntries.put(name, entry);
     }
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
-  Set<Integer> research;
-  NBTTagList researchList = new NBTTagList();
-  NBTTagCompound playerEntry;
-  NBTTagIntArray playerResearch;
-  int[] researchData;
-  int index;
-  for(String name : playerResearchData.keySet())
-    {
-    research = playerResearchData.get(name);
-    researchData = new int[research.size()];
-    index = 0;
-    for(Integer researchGoalNumber : research)
-      {
-      researchData[index]=researchGoalNumber;
-      index++;
-      }    
-    playerEntry = new NBTTagCompound();
-    playerEntry.setString("playerName", name);
-    playerResearch = new NBTTagIntArray(researchData);    
-    playerEntry.setTag("researchSet", playerResearch);
-    researchList.appendTag(playerEntry);
-    }
-  tag.setTag("researchList", researchList);
+  NBTTagList entryList = new NBTTagList();
+  ResearchEntry entry;
+  
+  NBTTagCompound entryTag;
+  for(String name : this.playerResearchEntries.keySet())
+    {    
+    entry = this.playerResearchEntries.get(name);
+    entryTag = new NBTTagCompound();
+    entryTag.setString("playerName", name);
+    entry.writeToNBT(entryTag);
+    entryList.appendTag(entryTag);
+    }  
+  tag.setTag("entryList", entryList);  
   }
 
 /**
@@ -87,46 +76,188 @@ public void writeToNBT(NBTTagCompound tag)
  */
 public boolean canPlayerLearn(String playerName, int research)
   {
-  if(!playerResearchData.containsKey(playerName))
+  if(!playerResearchEntries.containsKey(playerName))
     {
-    playerResearchData.put(playerName, new HashSet<Integer>());
-    this.markDirty();
+    return false;
     }
-  return playerResearchData.get(playerName).containsAll(ResearchGoal.resolveDependeciesFor(ResearchGoal.getGoal(research)));
+  return playerResearchEntries.get(playerName).canEnqueu(research);
   }
 
 public Set<Integer> getResearchFor(String playerName)
   {
-  if(playerResearchData.containsKey(playerName))
+  if(playerResearchEntries.containsKey(playerName))
     {
-    return playerResearchData.get(playerName);
+    return playerResearchEntries.get(playerName).completedResearch;
     }
-  else
-    {
-    Set<Integer> research = new HashSet<Integer>();    
-    playerResearchData.put(playerName, research);
-    this.markDirty();
-    return research;
-    }
+  return Collections.emptySet();
   }
 
 public void addResearchTo(String playerName, int research)
   {
-  if(!playerResearchData.containsKey(playerName))
+  if(!playerResearchEntries.containsKey(playerName))
     {
-    playerResearchData.put(playerName, new HashSet<Integer>());
+    playerResearchEntries.put(playerName, new ResearchEntry());
     }
-  playerResearchData.get(playerName).add(research);
+  this.playerResearchEntries.get(playerName).addResearch(research);
   this.markDirty();
   }
 
 public boolean hasPlayerCompletedResearch(String playerName, int research)
   {
-  if(playerResearchData.containsKey(playerName))
+  if(playerResearchEntries.containsKey(playerName))
     {
-    return playerResearchData.get(playerName).contains(research);
+    return playerResearchEntries.get(playerName).knowsResearch(research);
     }
   return false;
   }
+
+public int getInProgressResearch(String playerName)  
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    return playerResearchEntries.get(playerName).getInProgressResearch();
+    }
+  return -1;
+  }
+
+public int getResearchProgress(String playerName)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    return playerResearchEntries.get(playerName).getResearchProgress();
+    }
+  return 0;
+  }
+
+public void setCurrentResearch(String playerName, int goal)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    playerResearchEntries.get(playerName).setCurrentResearch(goal);
+    }
+  }
+
+public void setCurrentResearchProgress(String playerName, int progress)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    playerResearchEntries.get(playerName).setResearchProgress(progress);
+    }
+  }
+
+public void addQueuedResearch(String playerName, int goal)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    playerResearchEntries.get(playerName).addQueuedResearch(goal);
+    }
+  }
+
+public List<Integer> getQueuedResearch(String playerName)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    return playerResearchEntries.get(playerName).queuedResearch;
+    }
+  return Collections.emptyList();
+  }
+
+
+private static final class ResearchEntry
+{
+private int currentResearch = -1;
+private int currentProgress;
+private Set<Integer> completedResearch = new HashSet<Integer>();
+private List<Integer> queuedResearch = new ArrayList<Integer>();
+
+private boolean knowsResearch(int num)
+  {
+  return completedResearch.contains(num);
+  }
+
+private boolean canEnqueu(int num)
+  {
+  if(completedResearch.contains(num) || queuedResearch.contains(num))
+    {
+    return false;
+    }
+  Set<Integer> deps = ResearchGoal.resolveDependeciesFor(ResearchGoal.getGoal(num));
+  Set<Integer> combinedKnowledge = new HashSet<Integer>();
+  combinedKnowledge.addAll(completedResearch);
+  combinedKnowledge.addAll(queuedResearch);
+  return combinedKnowledge.containsAll(deps);
+  }
+
+private void setCurrentResearch(int research)
+  {
+  this.currentResearch = research;
+  }
+
+/**
+ * SERVER-ONLY -- values must be synched through container
+ */
+private void setResearchProgress(int progress)
+  {
+  this.currentProgress = progress;
+  }
+
+private int getResearchProgress()
+  {
+  return currentProgress;
+  }
+
+private int getInProgressResearch()
+  {
+  return this.currentResearch;
+  }
+
+private void addResearch(int num)
+  {
+  this.completedResearch.add(num);
+  }
+
+private void addQueuedResearch(int num)
+  {
+  this.queuedResearch.add(num);
+  }
+
+private void writeToNBT(NBTTagCompound tag)
+  {
+  tag.setInteger("currentResearch", currentResearch);
+  tag.setInteger("currentProgress", currentProgress);
+  int[] completedGoals = new int[completedResearch.size()];
+  int index = 0;
+  for(Integer i : completedResearch)
+    {
+    completedGoals[index] = i;
+    index++;
+    }
+  tag.setIntArray("completedResearch", completedGoals);
+  int[] queuedGoals = new int[queuedResearch.size()];
+  index = 0;
+  for(Integer i : queuedResearch)
+    {
+    queuedGoals[index] = i;
+    index++;
+    }
+  tag.setIntArray("queuedResearch", queuedGoals);
+  }
+
+private void readFromNBT(NBTTagCompound tag)
+  {
+  currentResearch = tag.getInteger("currentResearch");
+  currentProgress = tag.getInteger("currentProgress");
+  int[] in = tag.getIntArray("completedResearch");
+  for(int k : in)
+    {
+    completedResearch.add(k);
+    }
+  in = tag.getIntArray("queuedResearch");
+  for(int k : in)
+    {
+    queuedResearch.add(k);
+    }
+  }
+}
 
 }

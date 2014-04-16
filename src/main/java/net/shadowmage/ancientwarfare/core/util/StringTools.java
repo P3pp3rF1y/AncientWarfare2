@@ -20,6 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.core.util;
 
+import io.netty.buffer.ByteBuf;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -523,6 +525,21 @@ public static List<String> getResourceLines(String path)
     e.printStackTrace();
     }
   return lines;
+  }
+
+public static final void writeString(ByteBuf out, String string)
+  {
+  byte[] nameBytes = string.getBytes();
+  out.writeShort(nameBytes.length);
+  out.writeBytes(nameBytes);
+  }
+
+public static final String readString(ByteBuf in)
+  {
+  short len = in.readShort();
+  byte[] nameBytes = new byte[len];
+  in.readBytes(nameBytes);
+  return new String(nameBytes);
   }
 
 }

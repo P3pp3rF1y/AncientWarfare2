@@ -14,6 +14,7 @@ public class RecipeResearched extends ShapedRecipes
 
 private Set<Integer> neededResearch = new HashSet<Integer>();
 
+
 public RecipeResearched(int par1, int par2, ItemStack[] par3ArrayOfItemStack, ItemStack par4ItemStack)
   {
   super(par1, par2, par3ArrayOfItemStack, par4ItemStack);
@@ -49,32 +50,16 @@ public final RecipeResearched addResearch(int... nums)
 
 public final boolean canPlayerCraft(World world, String playerName)
   {
-  if(world.isRemote)
+  boolean canCraft = true;
+  for(Integer i : this.neededResearch)
     {
-    boolean canCraft = true;
-    for(Integer i : this.neededResearch)
+    if(!ResearchTracker.instance().hasPlayerCompleted(world, playerName, i))
       {
-      if(!ResearchTracker.instance().hasClientCompleted(i))
-        {
-        canCraft = false;
-        break;
-        }
+      canCraft = false;
+      break;
       }
-    return canCraft;
     }
-  else
-    {
-    boolean canCraft = true;
-    for(Integer i : this.neededResearch)
-      {
-      if(!ResearchTracker.instance().hasPlayerCompleted(world, playerName, i))
-        {
-        canCraft = false;
-        break;
-        }
-      }
-    return canCraft;
-    }
+  return canCraft;
   }
 
 }

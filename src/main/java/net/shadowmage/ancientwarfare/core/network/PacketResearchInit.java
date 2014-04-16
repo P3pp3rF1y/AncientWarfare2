@@ -1,20 +1,28 @@
 package net.shadowmage.ancientwarfare.core.network;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.research.ResearchData;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
+import net.shadowmage.ancientwarfare.core.util.NBTTools;
 
 public class PacketResearchInit extends PacketBase
 {
 
-private Set<Integer> research = new HashSet<Integer>();
+NBTTagCompound researchDataTag;
 
-public PacketResearchInit(Set<Integer> research)
+public PacketResearchInit(ResearchData data)
   {
-  research.addAll(research);
+  researchDataTag = new NBTTagCompound();
+  data.writeToNBT(researchDataTag);
   }
 
 public PacketResearchInit()
@@ -25,27 +33,34 @@ public PacketResearchInit()
 @Override
 protected void writeToStream(ByteBuf data)
   {
-  data.writeShort((short)research.size());
-  for(Integer i : research)
+  ByteBufOutputStream bbos = new ByteBufOutputStream(data);
+  try
     {
-    data.writeInt(i);
+    CompressedStreamTools.writeCompressed(researchDataTag, bbos);
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
     }
   }
 
 @Override
 protected void readFromStream(ByteBuf data)
   {
-  short len = data.readShort();
-  for(int i = 0; i < len; i++)
+  try
     {
-    research.add(data.readInt());
+    researchDataTag = CompressedStreamTools.readCompressed(new ByteBufInputStream(data));
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
     }
   }
 
 @Override
 protected void execute()
   {
-  ResearchTracker.instance().onClientResearchReceived(research);
+  ResearchTracker.instance().onClientResearchReceived(researchDataTag);
   }
 
 }

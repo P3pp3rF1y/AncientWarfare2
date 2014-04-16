@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.research;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
@@ -14,14 +16,17 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 public class ResearchGoal
 {
 
+private static boolean hasInit = false;
+
 private static HashMap<Integer, ResearchGoal> goalsByID = new HashMap<Integer, ResearchGoal>();
 private static HashMap<String, ResearchGoal> goalsByName = new HashMap<String, ResearchGoal>();
-
-private static boolean hasInit = false;
 
 private final int researchId;
 private final String researchName;
 private Set<Integer> dependencies;
+
+private List<ItemStack> researchResources = new ArrayList<ItemStack>();
+private int researchTime;
 
 /**
  * set the first time dependencies for this goal are queried.  further queries for full-dependencies
@@ -34,6 +39,21 @@ public ResearchGoal(int id, String name)
   researchId = id;
   researchName = name;
   dependencies = new HashSet<Integer>();
+  }
+
+public void addResource(ItemStack resource)
+  {
+  this.researchResources.add(resource);
+  }
+
+public void setResearchTime(int time)
+  {
+  this.researchTime = time;
+  }
+
+public int getTotalResearchTime()
+  {
+  return researchTime;
   }
 
 public String getName()
