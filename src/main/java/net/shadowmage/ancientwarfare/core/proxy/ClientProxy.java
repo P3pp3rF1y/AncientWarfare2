@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
-import net.shadowmage.ancientwarfare.core.gui.GuiEngineeringStation;
-import net.shadowmage.ancientwarfare.core.gui.GuiResearchStation;
+import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
+import net.shadowmage.ancientwarfare.core.gui.research.GuiResearchStation;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketHandlerClient;
