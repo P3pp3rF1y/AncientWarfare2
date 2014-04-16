@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 /**
  * re-mappable sided inventory.<br>
@@ -309,19 +310,9 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
-  NBTTagList itemList = tag.getTagList("itemList", Constants.NBT.TAG_COMPOUND);  
-  NBTTagCompound itemTag;  
-  ItemStack item;
-  int slot;
-  for(int i = 0; i < itemList.tagCount(); i++)
-    {
-    itemTag = itemList.getCompoundTagAt(i);
-    slot = itemTag.getShort("slot");
-    item = ItemStack.loadItemStackFromNBT(itemTag);
-    inventorySlots[slot]=item;
-    }
-  int[] sideMap = tag.getIntArray("sideMap");
+  InventoryTools.readInventoryFromNBT(this, tag);
   
+  int[] sideMap = tag.getIntArray("sideMap");  
   RelativeSide baseSide;
   InventorySide mappedSide;
   for(int i = 0; i < 6; i++)
@@ -335,19 +326,8 @@ public void readFromNBT(NBTTagCompound tag)
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
-  NBTTagList itemList = new NBTTagList();
-  NBTTagCompound itemTag;  
-  ItemStack item;
-  for(int i = 0; i < inventorySlots.length; i++)
-    {
-    item = inventorySlots[i];
-    if(item==null){continue;}
-    itemTag = new NBTTagCompound();
-    item.writeToNBT(itemTag);
-    itemTag.setShort("slot", (short)i);
-    itemList.appendTag(itemTag);
-    }
-  tag.setTag("itemList", itemList);
+  InventoryTools.writeInventoryToNBT(this, tag);
+    
   int[] sideMap = new int[6];
   
   RelativeSide baseSide;

@@ -4,7 +4,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class InventoryTools
 {
@@ -204,6 +207,13 @@ public static ItemStack removeItems(IInventory inventory, int side, ItemStack fi
   return returnStack;
   }
 
+/**
+ * return a count of how many slots in an inventory contain a certain item stack (any size)
+ * @param inv
+ * @param side
+ * @param filter
+ * @return
+ */
 public static int getNumOfSlotsContaining(IInventory inv, int side, ItemStack filter)
   {
   if(inv.getSizeInventory()<=0){return 0;}
@@ -300,6 +310,14 @@ public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2)
   return false;
   }
 
+/**
+ * drops the input itemstack into the world ad the input position;
+ * @param world
+ * @param item
+ * @param x
+ * @param y
+ * @param z
+ */
 public static void dropItemInWorld(World world, ItemStack item, double x, double y, double z)
   {
   if(item==null || world==null || world.isRemote)
@@ -333,6 +351,52 @@ public static void dropInventoryInWorld(World world, IInventory localInventory, 
         }
       dropItemInWorld(world, stack, x, y, z);      
       }
+    }
+  }
+
+/**
+ * Writes out the input inventory to the input nbt-tag.<br>
+ * The written out inventory is suitable for reading back using
+ * {@link #InventoryTools.readInventoryFromNBT(IInventory, NBTTagCompound)}
+ * @param inventory
+ * @param tag
+ */
+public static void writeInventoryToNBT(IInventory inventory, NBTTagCompound tag)
+  {
+  NBTTagList itemList = new NBTTagList();
+  NBTTagCompound itemTag;  
+  ItemStack item;
+  for(int i = 0; i < inventory.getSizeInventory(); i++)
+    {
+    item = inventory.getStackInSlot(i);
+    if(item==null){continue;}
+    itemTag = new NBTTagCompound();
+    item.writeToNBT(itemTag);
+    itemTag.setShort("slot", (short)i);
+    itemList.appendTag(itemTag);
+    }  
+  tag.setTag("itemList", itemList);
+  }
+
+/**
+ * Reads an inventory contents into the input inventory from the given nbt-tag.<br>
+ * Should only be passed nbt-tags / inventories that have been saved using
+ *  {@link #InventoryTools.writeInventoryToNBT(IInventory, NBTTagCompound)} 
+ * @param inventory
+ * @param tag
+ */
+public static void readInventoryFromNBT(IInventory inventory, NBTTagCompound tag)
+  {
+  NBTTagList itemList = tag.getTagList("itemList", Constants.NBT.TAG_COMPOUND);  
+  NBTTagCompound itemTag;  
+  ItemStack item;
+  int slot;
+  for(int i = 0; i < itemList.tagCount(); i++)
+    {
+    itemTag = itemList.getCompoundTagAt(i);
+    slot = itemTag.getShort("slot");
+    item = ItemStack.loadItemStackFromNBT(itemTag);
+    inventory.setInventorySlotContents(slot, item);
     }
   }
 

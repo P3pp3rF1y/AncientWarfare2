@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class InventoryBasic implements IInventorySaveable
 {
@@ -110,35 +111,13 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
-  NBTTagList itemList = tag.getTagList("itemList", Constants.NBT.TAG_COMPOUND);  
-  NBTTagCompound itemTag;  
-  ItemStack item;
-  int slot;
-  for(int i = 0; i < itemList.tagCount(); i++)
-    {
-    itemTag = itemList.getCompoundTagAt(i);
-    slot = itemTag.getShort("slot");
-    item = ItemStack.loadItemStackFromNBT(itemTag);
-    inventorySlots[slot]=item;
-    }
+  InventoryTools.readInventoryFromNBT(this, tag);
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
-  NBTTagList itemList = new NBTTagList();
-  NBTTagCompound itemTag;  
-  ItemStack item;
-  for(int i = 0; i < inventorySlots.length; i++)
-    {
-    item = inventorySlots[i];
-    if(item==null){continue;}
-    itemTag = new NBTTagCompound();
-    item.writeToNBT(itemTag);
-    itemTag.setShort("slot", (short)i);
-    itemList.appendTag(itemTag);
-    }  
-  tag.setTag("itemList", itemList);
+  InventoryTools.writeInventoryToNBT(this, tag);
   }
 
 @Override
