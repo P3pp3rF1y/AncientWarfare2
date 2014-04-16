@@ -20,8 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.gates.types;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 
 public class GateBasicIron extends Gate
 {

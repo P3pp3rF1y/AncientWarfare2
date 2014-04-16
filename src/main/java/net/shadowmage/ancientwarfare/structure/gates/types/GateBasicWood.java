@@ -20,7 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.gates.types;
 
-import net.minecraft.block.Block;
 
 public class GateBasicWood extends Gate
 {

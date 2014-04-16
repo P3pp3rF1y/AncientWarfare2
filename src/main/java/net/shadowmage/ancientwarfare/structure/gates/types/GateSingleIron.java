@@ -20,8 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.gates.types;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;

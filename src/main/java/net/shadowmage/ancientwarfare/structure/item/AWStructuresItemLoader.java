@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;

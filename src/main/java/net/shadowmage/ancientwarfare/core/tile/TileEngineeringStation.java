@@ -1,8 +1,5 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;

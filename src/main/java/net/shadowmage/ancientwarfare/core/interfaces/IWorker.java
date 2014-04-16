@@ -1,9 +1,9 @@
-package net.shadowmage.ancientwarfare.automation.interfaces;
+package net.shadowmage.ancientwarfare.core.interfaces;
 
 import java.util.EnumSet;
 
 import net.minecraft.scoreboard.Team;
-import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite.WorkType;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 
 /**
  * IWorker interface marks entities and tile-entities that are capable of doing 'work'

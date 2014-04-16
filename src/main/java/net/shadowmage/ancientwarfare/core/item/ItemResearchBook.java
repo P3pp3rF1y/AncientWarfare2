@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.core.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.MovingObjectPosition;
 import net.shadowmage.ancientwarfare.core.api.AWItems;

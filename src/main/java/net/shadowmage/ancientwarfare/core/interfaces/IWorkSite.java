@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.interfaces;
+package net.shadowmage.ancientwarfare.core.interfaces;
 
 import java.util.List;
 

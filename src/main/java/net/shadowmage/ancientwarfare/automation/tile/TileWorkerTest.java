@@ -5,10 +5,10 @@ import java.util.EnumSet;
 
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.automation.interfaces.IWorkSite.WorkType;
-import net.shadowmage.ancientwarfare.automation.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 
 public class TileWorkerTest extends TileEntity implements IWorker
 {

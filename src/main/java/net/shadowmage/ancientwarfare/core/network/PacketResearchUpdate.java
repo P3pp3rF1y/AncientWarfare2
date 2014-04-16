@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.core.network;
 
-import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import io.netty.buffer.ByteBuf;
+import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
 public class PacketResearchUpdate extends PacketBase
 {
