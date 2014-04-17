@@ -142,6 +142,18 @@ public int getProgress(World world, String playerName)
   return getResearchData(world).getResearchProgress(playerName);
   }
 
+public void setProgress(World world, String playerName, int progress)
+  {
+  if(world.isRemote)
+    {
+    clientData.setCurrentResearchProgress(playerName, progress);
+    }
+  else
+    {
+    getResearchData(world).setCurrentResearchProgress(playerName, progress);    
+    }
+  }
+
 public void removeQueuedGoal(World world, String playerName, int goal)
   {
   if(world.isRemote)

@@ -1,7 +1,7 @@
-#goal_id,goal_name
-0,research.test_research1
-1,research.test_research2
-2,research.test_research3
-3,research.test_research4
-4,research.test_research5
-5,research.test_research6
+#goal_id,goal_name,research_time
+0,research.test_research1,200
+1,research.test_research2,200
+2,research.test_research3,200
+3,research.test_research4,200
+4,research.test_research5,200
+5,research.test_research6,200

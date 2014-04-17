@@ -100,6 +100,26 @@ guistrings.gate.choose_pos_one=Press alt-item use to select first position.
 guistrings.gate.choose_pos_two=Press alt-item use to select second position.
 guistrings.gate.constuct=Right-Click: Construct Gate
 guistrings.gate.clear_item=(Sneak)Right-Click: Clear Item
+guistrings.research.current_goal=Current Goal
+guistrings.research.queued_research=Queued Research
+guistrings.research.learnable_research=Learnable Research
+guistrings.research.no_researcher=No Researcher
+guistrings.research.no_research=No Research
+guistrings.research.research_queue=Adjust Research Queue
+guistrings.research.research_time=Research Time
+guistrings.research.resources_needed=Resources Needed
+guistrings.research.input=Input
+guistrings.research.needed=Needed
+guistrings.research.progress=Progress
+guistrings.research.use_adjacent_inventory=Use Adjacent Inventory
+
+#research
+research.test_research1=Test Research 1
+research.test_research2=Test Research 2
+research.test_research3=Test Research 3
+research.test_research4=Test Research 4
+research.test_research5=Test Research 5
+research.test_research6=Test Research 6
 
 #structure validation translation stuff
 structure.validation.survival=Survival

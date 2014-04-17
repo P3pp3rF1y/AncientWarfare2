@@ -32,7 +32,7 @@ protected boolean renderSlotBackground = true;
 
 public ItemSlot(int topLeftX, int topLeftY, ItemStack item, ITooltipRenderer render)
   {
-  super(topLeftX, topLeftY, 18, 18);
+  super(topLeftX-1, topLeftY-1, 18, 18);
   this.item = item;
   this.render = render;
   }
@@ -60,10 +60,15 @@ public ItemSlot setRenderSlotBackground(boolean val)
   return this;
   }
 
+public ItemStack getStack()
+  {
+  return item;
+  }
+
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
-  if(visible && item!=null)
+  if(visible)
     {
     Minecraft mc = Minecraft.getMinecraft();    
     if(renderSlotBackground)

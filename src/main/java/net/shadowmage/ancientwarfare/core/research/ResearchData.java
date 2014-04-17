@@ -139,6 +139,7 @@ public void startResearch(String playerName, int goal)
   if(playerResearchEntries.containsKey(playerName))
     {
     playerResearchEntries.get(playerName).startResearch(goal);
+    this.markDirty();
     }
   }
 
@@ -147,6 +148,7 @@ public void finishResearch(String playerName, int goal)
   if(playerResearchEntries.containsKey(playerName))
     {
     playerResearchEntries.get(playerName).finishResearch(goal);
+    this.markDirty();
     }
   }
 
@@ -155,6 +157,7 @@ public void setCurrentResearchProgress(String playerName, int progress)
   if(playerResearchEntries.containsKey(playerName))
     {
     playerResearchEntries.get(playerName).setResearchProgress(progress);
+    this.markDirty();
     }
   }
 
@@ -171,6 +174,7 @@ public void removeQueuedResearch(String playerName, int goal)
   if(playerResearchEntries.containsKey(playerName))
     {
     playerResearchEntries.get(playerName).removeQueuedResearch(goal);
+    this.markDirty();
     }
   }
 

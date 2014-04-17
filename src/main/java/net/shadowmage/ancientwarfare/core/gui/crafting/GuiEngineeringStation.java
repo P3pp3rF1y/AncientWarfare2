@@ -17,7 +17,7 @@ public GuiEngineeringStation(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  ItemSlot bookSlotIcon = new ItemSlot(7, 7, new ItemStack(AWItems.researchBook), this);
+  ItemSlot bookSlotIcon = new ItemSlot(8, 8, new ItemStack(AWItems.researchBook), this);
   bookSlotIcon.setRenderTooltip(false).setHighlightOnMouseOver(false).setRenderSlotBackground(false);
   addGuiElement(bookSlotIcon);
   }

@@ -2,19 +2,19 @@ package net.shadowmage.ancientwarfare.core.research;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class ResearchGoal
 {
@@ -98,6 +98,27 @@ public boolean canResearch(Set<Integer> knownResearch)
   return knownResearch.containsAll(fullDependencies);
   }
 
+public boolean tryStart(IInventory inventory, int side)
+  {
+  boolean canStart = true;
+  for(ItemStack stack : this.researchResources)
+    {
+    if(InventoryTools.getCountOf(inventory, side, stack)<stack.stackSize)
+      {
+      canStart = false;
+      break;
+      }
+    }
+  if(canStart)
+    {
+    for(ItemStack stack : this.researchResources)
+      {
+      InventoryTools.removeItems(inventory, side, stack, stack.stackSize);
+      }
+    }
+  return canStart;
+  }
+
 public static void initializeResearch()
   {
   if(hasInit){return;}
@@ -111,6 +132,7 @@ private static void parseGoalNames(List<String> lines)
   {
   String[] split;
   int id;
+  int time;
   String name;
   ResearchGoal goal;
   int lineNumber = 1;
@@ -121,9 +143,11 @@ private static void parseGoalNames(List<String> lines)
       split = StringTools.parseStringArray(line);
       id = StringTools.safeParseInt(split[0]);
       name = split[1];
+      time = StringTools.safeParseInt(split[2]);
       goal = new ResearchGoal(id, name);
       goalsByID.put(id, goal);
       goalsByName.put(name, goal);
+      goal.setResearchTime(time);
       lineNumber++;
       }  
     } 

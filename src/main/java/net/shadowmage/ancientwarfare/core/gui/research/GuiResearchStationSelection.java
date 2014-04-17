@@ -97,10 +97,27 @@ private int addQueuedGoal(int totalHeight, int goalNumber, boolean removeButton)
   Label label = new Label(8, totalHeight+1, name);
   queueArea.addGuiElement(label);
   
+  Tooltip selectableGoalTooltip = new Tooltip(200, 75);
+  selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocal("guistrings.research.research_time")+": "+g.getTotalResearchTime()));
+  selectableGoalTooltip.addTooltipElement(new Label(0, 10, StatCollector.translateToLocal("guistrings.research.resources_needed")));
+  int x = 0, y = 0;
+  for(ItemStack stack : g.getResources())
+    {
+    selectableGoalTooltip.addTooltipElement(new ItemSlot(x*18, y*18 + 20, stack, this));
+    x++;
+    if(x > 2)
+      {
+      x = 0;
+      y++;
+      }
+    }
+  label.setTooltip(selectableGoalTooltip);
+  
   if(removeButton)
     {
     GoalButton button = new GoalButton(240-8-12-12, totalHeight, 12, 12, g, false);  
     queueArea.addGuiElement(button);
+    button.setTooltip(selectableGoalTooltip);
     }
   return totalHeight+12;
   }
@@ -116,16 +133,15 @@ private int addSelectableGoal(int totalHeight, int goalNumber)
   GoalButton button = new GoalButton(240-8-12-12, totalHeight, 12, 12, g, true);  
   selectionArea.addGuiElement(button);
   
-  Tooltip selectableGoalTooltip = new Tooltip(200, 75);  
-  selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocal("guistrings.research.resources")));
-  selectableGoalTooltip.addTooltipElement(new Label(0, 10, StatCollector.translateToLocal("guistrings.research.research_time")+": "+g.getTotalResearchTime()));
-  
+  Tooltip selectableGoalTooltip = new Tooltip(200, 75);
+  selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocal("guistrings.research.research_time")+": "+g.getTotalResearchTime()));
+  selectableGoalTooltip.addTooltipElement(new Label(0, 10, StatCollector.translateToLocal("guistrings.research.resources_needed")));
   int x = 0, y = 0;
   for(ItemStack stack : g.getResources())
     {
     selectableGoalTooltip.addTooltipElement(new ItemSlot(x*18, y*18 + 20, stack, this));
     x++;
-    if(x*18 + 18 >200)
+    if(x > 2)
       {
       x = 0;
       y++;

@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 public class ContainerResearchStation extends ContainerBase
 {
 
+public boolean useAdjacentInventory;
 public String researcherName;
 public int currentGoal = -1;
 public int progress = 0;
@@ -29,6 +30,7 @@ public ContainerResearchStation(EntityPlayer player, int x, int y, int z)
   if(!player.worldObj.isRemote)
     {
     researcherName = tile.getCrafterName();
+    useAdjacentInventory = tile.useAdjacentInventory;
     if(researcherName!=null)
       {
       currentGoal = ResearchTracker.instance().getCurrentGoal(player.worldObj, researcherName);
@@ -38,7 +40,7 @@ public ContainerResearchStation(EntityPlayer player, int x, int y, int z)
     }
   
   Slot slot;
-  slot = new Slot(tile.bookInventory, 0, 8, 18+8)
+  slot = new Slot(tile.bookInventory, 0, 8, 18+4)
     {
     @Override
     public boolean isItemValid(ItemStack par1ItemStack)
@@ -48,7 +50,20 @@ public ContainerResearchStation(EntityPlayer player, int x, int y, int z)
     };
   addSlotToContainer(slot);
   
-  int y1 = 8+3*18+8 + 2*18 + 4;
+  int x2, y2, slotNum = 0, yBase = 8+3*18+10+12+4+10;
+  for(int y1 = 0; y1 <3; y1++)
+    {
+    y2 = y1*18 + yBase ;
+    for(int x1 = 0; x1 <3; x1++)
+      {
+      x2 = x1*18 + 8 + 18;//x1*18 + 8 + 3*18;
+      slotNum = y1*3 + x1;
+      slot = new Slot(tile.resourceInventory, slotNum, x2, y2);
+      addSlotToContainer(slot);
+      }
+    }
+  
+  int y1 = 240 - 8 - 4 - 4*18;
   y1 = this.addPlayerSlots(player, 8, y1, 4);
   }
 
@@ -75,6 +90,7 @@ public void sendInitData()
       }
     tag.setIntArray("queuedResearch", queueData);
     }
+  tag.setBoolean("useAdjacentInventory", useAdjacentInventory);
   this.sendDataToClient(tag);
   }
 
@@ -101,6 +117,20 @@ public void handlePacketData(NBTTagCompound tag)
       queuedResearch.add(i);
       }
     }
+  if(this.researcherName==null)
+    {
+    this.queuedResearch.clear();
+    this.progress = 0;
+    this.currentGoal = -1;
+    }
+  if(tag.hasKey("useAdjacentInventory"))
+    {
+    this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
+    if(!player.worldObj.isRemote)
+      {
+      tile.useAdjacentInventory = useAdjacentInventory;      
+      }
+    }
   this.refreshGui();
   }
 
@@ -118,7 +148,7 @@ public void detectAndSendChanges()
    */
   if(name==null && researcherName==null)
     {
-    //noop
+    checkGoal = false;
     }
   else if(name==null && researcherName!=null)
     {
@@ -189,11 +219,23 @@ public void detectAndSendChanges()
       tag.setIntArray("queuedResearch", queueData);
       }
     }
-
+  else
+    {
+    queuedResearch.clear();  
+    }
+  
+  if(tile.useAdjacentInventory!=useAdjacentInventory)
+    {
+    if(tag==null){tag = new NBTTagCompound();}
+    this.useAdjacentInventory = tile.useAdjacentInventory;
+    tag.setBoolean("useAdjacentInventory", useAdjacentInventory);
+    }
+  
   if(tag!=null)
     {
     this.sendDataToClient(tag);
     }
+  tile.doPlayerWork(player);
   }
 
 public void removeSlots()
@@ -216,6 +258,17 @@ public void addSlots()
       s.yDisplayPosition+=10000;
       }
     }
+  }
+
+/**
+ * should be called from client-side to send update packet to server
+ */
+public void toggleUseAdjacentInventory()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setBoolean("useAdjacentInventory", !useAdjacentInventory);
+  useAdjacentInventory = !useAdjacentInventory;
+  this.sendDataToServer(tag);
   }
 
 }
