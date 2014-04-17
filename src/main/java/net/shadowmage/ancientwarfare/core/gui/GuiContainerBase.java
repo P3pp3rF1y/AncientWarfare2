@@ -44,6 +44,8 @@ private boolean shouldUpdate = false;
 private List<GuiElement> elements = new ArrayList<GuiElement>();
 
 private Tooltip elementTooltip;
+private int elementTooltipX;
+private int elementTooltipY;
 
 private ItemStack tooltipStack;
 private int tooltipX;
@@ -76,6 +78,14 @@ public void handleItemStackTooltipRender(ItemStack stack)
   this.tooltipStack = stack;
   this.tooltipX = x;
   this.tooltipY = y;
+  }
+
+@Override
+public void handleElementTooltipRender(Tooltip tooltipObject)
+  {
+  this.elementTooltip = tooltipObject;
+  elementTooltipX = Mouse.getEventX() * this.width / this.mc.displayWidth;
+  elementTooltipY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
   }
 
 protected void clearElements()
@@ -119,8 +129,7 @@ public void handleMouseInput()
   ActivationEvent evt = new ActivationEvent(type, button, state, x, y, wheel);
   for(GuiElement element : this.elements)
     {
-    element.handleMouseInput(evt);
-    
+    element.handleMouseInput(evt);    
     }
   }
 
@@ -233,6 +242,7 @@ public void drawScreen(int par1, int par2, float par3)
     }
   if(elementTooltip!=null)
     {    
+    elementTooltip.renderTooltip(elementTooltipX, elementTooltipY, partialRenderTick);
     elementTooltip = null;
     }
   }
@@ -437,11 +447,5 @@ private Viewport(int x, int y, int w, int h)
   this.w = w;
   }
 }
-
-@Override
-public void handleElementTooltipRender(Tooltip o)
-  {
-  
-  }
 
 }
