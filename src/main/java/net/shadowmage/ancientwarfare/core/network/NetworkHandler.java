@@ -31,6 +31,7 @@ public static final int PACKET_SOUND = 4;
 public static final int PACKET_ENTITY = 5;
 public static final int PACKET_RESEARCH_INIT = 6;
 public static final int PACKET_RESEARCH_ADD = 7;
+public static final int PACKET_RESEARCH_START = 8;
 
 public static final int GUI_CRAFTING = 0;
 public static final int GUI_SCANNER = 1;
@@ -63,6 +64,7 @@ public final void registerNetwork()
   PacketBase.registerPacketType(PACKET_ENTITY, PacketEntity.class);
   PacketBase.registerPacketType(PACKET_RESEARCH_INIT, PacketResearchInit.class);
   PacketBase.registerPacketType(PACKET_RESEARCH_ADD, PacketResearchUpdate.class);
+  PacketBase.registerPacketType(PACKET_RESEARCH_START, PacketResearchStart.class);
   NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
   }
 

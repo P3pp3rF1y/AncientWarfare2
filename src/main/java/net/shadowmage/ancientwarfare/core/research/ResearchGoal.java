@@ -105,15 +105,25 @@ private static void parseGoalNames(List<String> lines)
   int id;
   String name;
   ResearchGoal goal;
-  for(String line : lines)
+  int lineNumber = 1;
+  try
     {
-    split = StringTools.parseStringArray(line);
-    id = StringTools.safeParseInt(split[0]);
-    name = split[1];
-    goal = new ResearchGoal(id, name);
-    goalsByID.put(id, goal);
-    goalsByName.put(name, goal);
+    for(String line : lines)
+      {
+      split = StringTools.parseStringArray(line);
+      id = StringTools.safeParseInt(split[0]);
+      name = split[1];
+      goal = new ResearchGoal(id, name);
+      goalsByID.put(id, goal);
+      goalsByName.put(name, goal);
+      lineNumber++;
+      }  
     } 
+  catch(Exception e)
+    {
+    AWLog.logDebug("Caught error parsing research goal data, line number (ignoring comment lines): "+lineNumber + " line: "+lines.get(lineNumber-1));
+    e.printStackTrace();
+    }
   }
 
 private static void parseGoalDependencies(List<String> lines)
@@ -202,11 +212,15 @@ public static Set<Integer> resolveDependeciesFor(ResearchGoal goal)
   return foundDependencies;
   }
 
-public static Set<Integer> getResearchableGoalsFor(Collection<Integer> knownResearch, Collection<Integer> queuedResearch)
+public static Set<Integer> getResearchableGoalsFor(Collection<Integer> knownResearch, Collection<Integer> queuedResearch, int inProgress)
   {
   Set<Integer> totalKnowledge = new HashSet<Integer>();
   totalKnowledge.addAll(knownResearch);
-  totalKnowledge.addAll(queuedResearch);  
+  totalKnowledge.addAll(queuedResearch);
+  if(inProgress>=0)
+    {
+    totalKnowledge.add(inProgress);    
+    }
   Set<Integer> researchableGoals = new HashSet<Integer>();  
   ResearchGoal goal;
   for(Integer g : goalsByID.keySet())

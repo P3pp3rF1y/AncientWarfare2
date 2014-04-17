@@ -83,25 +83,9 @@ public Set<Integer> getResearchableGoals(String playerName)
   if(playerResearchEntries.containsKey(playerName))
     {
     ResearchEntry entry = playerResearchEntries.get(playerName);
-    return ResearchGoal.getResearchableGoalsFor(entry.completedResearch, entry.queuedResearch);    
+    return ResearchGoal.getResearchableGoalsFor(entry.completedResearch, entry.queuedResearch, entry.currentResearch);    
     }
   return Collections.emptySet();
-  }
-
-/**
- * returns true if the player does not know the input research<br>
- * and the player already knows all dependencies of the input research
- * @param playerName
- * @param research
- * @return
- */
-public boolean canPlayerLearn(String playerName, int research)
-  {
-  if(!playerResearchEntries.containsKey(playerName))
-    {
-    return false;
-    }
-  return playerResearchEntries.get(playerName).canEnqueu(research);
   }
 
 public Set<Integer> getResearchFor(String playerName)
@@ -150,11 +134,19 @@ public int getResearchProgress(String playerName)
   return 0;
   }
 
-public void setCurrentResearch(String playerName, int goal)
+public void startResearch(String playerName, int goal)
   {
   if(playerResearchEntries.containsKey(playerName))
     {
-    playerResearchEntries.get(playerName).setCurrentResearch(goal);
+    playerResearchEntries.get(playerName).startResearch(goal);
+    }
+  }
+
+public void finishResearch(String playerName, int goal)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    playerResearchEntries.get(playerName).finishResearch(goal);
     }
   }
 
@@ -186,7 +178,7 @@ public List<Integer> getQueuedResearch(String playerName)
   {
   if(playerResearchEntries.containsKey(playerName))
     {
-    return playerResearchEntries.get(playerName).queuedResearch;
+    return playerResearchEntries.get(playerName).getResearchQueue();
     }
   return Collections.emptyList();
   }
@@ -204,22 +196,27 @@ private boolean knowsResearch(int num)
   return completedResearch.contains(num);
   }
 
-private boolean canEnqueu(int num)
-  {
-  if(completedResearch.contains(num) || queuedResearch.contains(num))
+public void finishResearch(int goal)
+  {  
+  if(goal==currentResearch)
     {
-    return false;
+    completedResearch.add(goal);
+    currentProgress = 0;
+    currentResearch = -1;
+    if(!queuedResearch.isEmpty())
+      {
+      Integer g = queuedResearch.remove(0);
+      currentResearch = g.intValue();
+      }
     }
-  Set<Integer> deps = ResearchGoal.resolveDependeciesFor(ResearchGoal.getGoal(num));
-  Set<Integer> combinedKnowledge = new HashSet<Integer>();
-  combinedKnowledge.addAll(completedResearch);
-  combinedKnowledge.addAll(queuedResearch);
-  return combinedKnowledge.containsAll(deps);
   }
 
-private void setCurrentResearch(int research)
+public void startResearch(int goal)
   {
-  this.currentResearch = research;
+  if(currentResearch>=0 || !queuedResearch.contains(Integer.valueOf(goal))){return;}
+  queuedResearch.remove(Integer.valueOf(goal));
+  currentResearch = goal;
+  currentProgress = 0;
   }
 
 /**
@@ -324,6 +321,10 @@ private void removeQueuedResearch(int goal)
   Set<Integer> totalResearch = new HashSet<Integer>();
   totalResearch.addAll(completedResearch);
   totalResearch.addAll(queuedResearch);
+  if(currentResearch>=0)
+    {
+    totalResearch.add(currentResearch);    
+    }
   
   ResearchGoal g;
   for(Integer g1 : goalsToValidate)

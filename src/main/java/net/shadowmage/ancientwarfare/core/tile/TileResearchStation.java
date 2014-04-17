@@ -1,15 +1,21 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
+import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
+import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class TileResearchStation extends TileEntity
 {
 
 public InventoryBasic bookInventory = new InventoryBasic(1);
+
+
+int testTimeCount = 0;
 
 public TileResearchStation()
   {
@@ -25,6 +31,39 @@ public boolean canUpdate()
 public String getCrafterName()
   {
   return ItemResearchBook.getResearcherName(bookInventory.getStackInSlot(0));
+  }
+
+@Override
+public void updateEntity()
+  {
+  if(worldObj.isRemote){return;}
+  if(testTimeCount==0 && getCrafterName()!=null)
+    {
+    int goal = ResearchTracker.instance().getCurrentGoal(worldObj, getCrafterName());
+    if(goal==-1)//no selection
+      {
+      List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(worldObj, getCrafterName());
+      if(!queue.isEmpty())
+        {
+        ResearchTracker.instance().startResearch(worldObj, getCrafterName(), queue.get(0));        
+        }
+      }
+    else
+      {
+      ResearchTracker.instance().finishResearch(worldObj, getCrafterName(), goal);
+      List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(worldObj, getCrafterName());
+      if(!queue.isEmpty())
+        {
+        ResearchTracker.instance().startResearch(worldObj, getCrafterName(), queue.get(0));
+        }      
+      }
+    testTimeCount = 80;
+    }
+  
+  if(testTimeCount>0)
+    {
+    testTimeCount--;    
+    }
   }
 
 @Override

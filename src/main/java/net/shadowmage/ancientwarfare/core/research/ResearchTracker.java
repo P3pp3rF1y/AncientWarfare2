@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketResearchInit;
+import net.shadowmage.ancientwarfare.core.network.PacketResearchStart;
 import net.shadowmage.ancientwarfare.core.network.PacketResearchUpdate;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -63,21 +64,6 @@ public boolean hasPlayerCompleted(World world, String player, int research)
     return clientData.hasPlayerCompletedResearch(player, research);
     }
   return getResearchData(world).hasPlayerCompletedResearch(player, research);
-  }
-
-/**
- * @param world
- * @param player
- * @param research
- * @return
- */
-public boolean canPlayerLearn(World world, String player, int research)
-  {
-  if(world.isRemote)
-    {
-    return clientData.canPlayerLearn(player, research);
-    } 
-  return getResearchData(world).canPlayerLearn(player, research);
   }
 
 /**
@@ -180,6 +166,34 @@ public void addQueuedGoal(World world, String playerName, int goal)
     {
     getResearchData(world).addQueuedResearch(playerName, goal);
     PacketResearchUpdate pkt = new PacketResearchUpdate(playerName, goal, true, false);
+    NetworkHandler.sendToAllPlayers(pkt);
+    }
+  }
+
+public void startResearch(World world, String playerName, int goal)
+  {
+  if(world.isRemote)
+    {
+    clientData.startResearch(playerName, goal);
+    }
+  else
+    {
+    getResearchData(world).startResearch(playerName, goal);
+    PacketResearchStart pkt = new PacketResearchStart(playerName, goal, true);
+    NetworkHandler.sendToAllPlayers(pkt);
+    }
+  }
+
+public void finishResearch(World world, String playerName, int goal)
+  {
+  if(world.isRemote)
+    {
+    clientData.finishResearch(playerName, goal);
+    }
+  else
+    {
+    getResearchData(world).finishResearch(playerName, goal);
+    PacketResearchStart pkt = new PacketResearchStart(playerName, goal, false);
     NetworkHandler.sendToAllPlayers(pkt);
     }
   }

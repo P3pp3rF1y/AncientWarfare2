@@ -1,14 +1,10 @@
 package net.shadowmage.ancientwarfare.core.gui.research;
 
-import java.util.HashMap;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketResearchUpdate;
@@ -40,6 +36,12 @@ public void initElements()
   
   selectionArea = new CompositeScrolled(240, 40, 240, 200);
   addGuiElement(selectionArea);
+  
+  Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.research.queued_research"));
+  addGuiElement(label);
+  
+  label = new Label(240+8, 8, StatCollector.translateToLocal("guistrings.research.learnable_research"));
+  addGuiElement(label);
   }
 
 @Override
@@ -49,8 +51,6 @@ public void setupElements()
   queueArea.clearElements();
   int goal;
   goal = parent.container.currentGoal;
-  
-  Button button;
   
   int totalHeight = 8;    
   
@@ -73,7 +73,7 @@ public void setupElements()
     {
     for(Integer g : ResearchTracker.instance().getResearchableGoals(player.worldObj, parent.container.researcherName))
       {
-      addSelectableGoal(totalHeight, g);
+      totalHeight = addSelectableGoal(totalHeight, g);
       }    
     }
   
@@ -84,8 +84,13 @@ private int addQueuedGoal(int totalHeight, int goalNumber, boolean removeButton)
   {
   ResearchGoal g = ResearchGoal.getGoal(goalNumber);
   if(g==null){return totalHeight;}
+  String name = StatCollector.translateToLocal(g.getName());
+  if(!removeButton)
+    {
+    name = name + " (" + StatCollector.translateToLocal("guistrings.research.current_goal") + ")";
+    }
   
-  Label label = new Label(8, totalHeight+1, StatCollector.translateToLocal(g.getName()));
+  Label label = new Label(8, totalHeight+1, name);
   queueArea.addGuiElement(label);
   
   if(removeButton)
