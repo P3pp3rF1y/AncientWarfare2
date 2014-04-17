@@ -27,7 +27,7 @@ CompositeScrolled selectionArea;
 
 public GuiResearchStationSelection(GuiResearchStation parent, int x, int y)
   {
-  super(parent.container, 480, 240, defaultBackground);
+  super(parent.container, 400, 240, defaultBackground);
   this.parent = parent;
   Mouse.setCursorPosition(x, y);
   }
@@ -35,10 +35,10 @@ public GuiResearchStationSelection(GuiResearchStation parent, int x, int y)
 @Override
 public void initElements()
   {  
-  queueArea = new CompositeScrolled(0, 40, 240, 200);
+  queueArea = new CompositeScrolled(0, 40, 200, 200);
   addGuiElement(queueArea);
   
-  selectionArea = new CompositeScrolled(240, 40, 240, 200);
+  selectionArea = new CompositeScrolled(200, 40, 200, 200);
   addGuiElement(selectionArea);
   
   Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.research.queued_research"));
@@ -97,7 +97,7 @@ private int addQueuedGoal(int totalHeight, int goalNumber, boolean removeButton)
   Label label = new Label(8, totalHeight+1, name);
   queueArea.addGuiElement(label);
   
-  Tooltip selectableGoalTooltip = new Tooltip(200, 75);
+  Tooltip selectableGoalTooltip = new Tooltip(110, 75);
   selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocal("guistrings.research.research_time")+": "+g.getTotalResearchTime()));
   selectableGoalTooltip.addTooltipElement(new Label(0, 10, StatCollector.translateToLocal("guistrings.research.resources_needed")));
   int x = 0, y = 0;
@@ -115,7 +115,7 @@ private int addQueuedGoal(int totalHeight, int goalNumber, boolean removeButton)
   
   if(removeButton)
     {
-    GoalButton button = new GoalButton(240-8-12-12, totalHeight, 12, 12, g, false);  
+    GoalButton button = new GoalButton(200-8-12-12, totalHeight, 12, 12, g, false);  
     queueArea.addGuiElement(button);
     button.setTooltip(selectableGoalTooltip);
     }
@@ -130,10 +130,10 @@ private int addSelectableGoal(int totalHeight, int goalNumber)
   Label label = new Label(8, totalHeight+1, StatCollector.translateToLocal(g.getName()));
   selectionArea.addGuiElement(label);
   
-  GoalButton button = new GoalButton(240-8-12-12, totalHeight, 12, 12, g, true);  
+  GoalButton button = new GoalButton(200-8-12-12, totalHeight, 12, 12, g, true);  
   selectionArea.addGuiElement(button);
   
-  Tooltip selectableGoalTooltip = new Tooltip(200, 75);
+  Tooltip selectableGoalTooltip = new Tooltip(110, 75);
   selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocal("guistrings.research.research_time")+": "+g.getTotalResearchTime()));
   selectableGoalTooltip.addTooltipElement(new Label(0, 10, StatCollector.translateToLocal("guistrings.research.resources_needed")));
   int x = 0, y = 0;
