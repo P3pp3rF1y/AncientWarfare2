@@ -18,7 +18,13 @@ public class TileEngineeringStation extends TileEntity
 
 public InventoryCrafting layoutMatrix;
 public InventoryCraftResult result;
-public InventoryBasic bookInventory = new InventoryBasic(1);
+public InventoryBasic bookInventory = new InventoryBasic(1)
+  {
+  public void markDirty()
+    {
+    onLayoutMatrixChanged(layoutMatrix);
+    };
+  };
 public InventoryBasic extraSlots = new InventoryBasic(18);
 
 public TileEngineeringStation()
