@@ -5,11 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.api.AWBlocks;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 
 public class AWCraftingManager
@@ -19,6 +23,16 @@ List<RecipeResearched> recipes = new ArrayList<RecipeResearched>();
 
 public static final AWCraftingManager INSTANCE = new AWCraftingManager();
 private AWCraftingManager(){}
+
+/**
+ * load any recipes for CORE module (research book, engineering station, research station)
+ */
+public void loadRecipes()
+  {
+  CraftingManager.getInstance().addRecipe(new ItemStack(AWItems.researchBook), new Object[]{"ILL", "PPP", "ILL", 'I', Items.iron_ingot, 'L', Items.leather, 'P', Items.paper});
+  CraftingManager.getInstance().addRecipe(new ItemStack(AWBlocks.engineeringStation), new Object[]{"IWI", "IPI", "ICI", 'I', Items.iron_ingot, 'W', Blocks.planks, 'P', Blocks.crafting_table, 'C', Blocks.chest});
+  CraftingManager.getInstance().addRecipe(new ItemStack(AWBlocks.researchStation), new Object[]{"IWI", "GPG", "ICI", 'I', Items.iron_ingot, 'W', Blocks.planks, 'P', Blocks.crafting_table, 'C', Blocks.chest, 'G', Items.gold_ingot});
+  }
 
 /**
  * shameless copy of CraftingManager.findMatchingRecipe, with added param for player

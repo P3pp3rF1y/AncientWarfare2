@@ -76,8 +76,8 @@ public void initElements()
   int x, y;
   for(int i = 0; i < 9; i++)
     {
-    x = (i%3) * 18 + 3*18 + 8 + 2*18;
-    y = (i/3) * 18 + 8+3*18+10+12+4+10;
+    x = (i%3) * 18 + 98;
+    y = (i/3) * 18 + 98;
     layoutSlots[i] = new ItemSlot(x, y, null, this);
     addGuiElement(layoutSlots[i]);
     }  
