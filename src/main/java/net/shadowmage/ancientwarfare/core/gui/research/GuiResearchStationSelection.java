@@ -1,11 +1,15 @@
 package net.shadowmage.ancientwarfare.core.gui.research;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketResearchUpdate;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
@@ -111,6 +115,24 @@ private int addSelectableGoal(int totalHeight, int goalNumber)
   
   GoalButton button = new GoalButton(240-8-12-12, totalHeight, 12, 12, g, true);  
   selectionArea.addGuiElement(button);
+  
+  Tooltip selectableGoalTooltip = new Tooltip(200, 75);  
+  selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocal("guistrings.research.resources")));
+  selectableGoalTooltip.addTooltipElement(new Label(0, 10, StatCollector.translateToLocal("guistrings.research.research_time")+": "+g.getTotalResearchTime()));
+  
+  int x = 0, y = 0;
+  for(ItemStack stack : g.getResources())
+    {
+    selectableGoalTooltip.addTooltipElement(new ItemSlot(x*18, y*18 + 20, stack, this));
+    x++;
+    if(x*18 + 18 >200)
+      {
+      x = 0;
+      y++;
+      }
+    }
+  label.setTooltip(selectableGoalTooltip);
+  button.setTooltip(selectableGoalTooltip);
   return totalHeight+12;
   }
 

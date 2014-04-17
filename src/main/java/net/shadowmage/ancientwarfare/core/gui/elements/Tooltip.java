@@ -15,13 +15,16 @@ import org.lwjgl.opengl.GL12;
 public class Tooltip
 {
 
-private GuiElement owner;
 private List<GuiElement> children = new ArrayList<GuiElement>();
 int width, height;
 
-public Tooltip(GuiElement owner, int width, int height)
+/**
+ * actual size of the tooltip is width+8, height+8 (it draws some borders around the internals)
+ * @param width
+ * @param height
+ */
+public Tooltip(int width, int height)
   {
-  this.owner = owner;
   this.width = width;
   this.height = height;
   }

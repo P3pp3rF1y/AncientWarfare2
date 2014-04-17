@@ -2,12 +2,14 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 /**
  * basic item-slot gui element
@@ -73,6 +75,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     GL11.glDisable(GL11.GL_DEPTH_TEST);
     if(this.item!=null && this.item.getItem()!=null)
       {
+      RenderHelper.enableGUIStandardItemLighting();
       itemRender.zLevel = 10.0F;
       FontRenderer font = null;
       if (item != null && item.getItem()!=null){font = item.getItem().getFontRenderer(item);}    

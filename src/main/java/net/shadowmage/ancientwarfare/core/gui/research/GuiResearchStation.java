@@ -1,16 +1,19 @@
 package net.shadowmage.ancientwarfare.core.gui.research;
 
-import org.lwjgl.input.Mouse;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
+
+import org.lwjgl.input.Mouse;
 
 public class GuiResearchStation extends GuiContainerBase
 {
@@ -76,5 +79,6 @@ public void setupElements()
     }
   researchGoalLabel.setText(name);
   }
+
 
 }

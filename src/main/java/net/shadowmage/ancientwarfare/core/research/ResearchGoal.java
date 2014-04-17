@@ -9,10 +9,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class ResearchGoal
 {
@@ -76,6 +78,11 @@ public ResearchGoal addDependencies(int... deps)
   return this;
   }
 
+public List<ItemStack> getResources()
+  {
+  return researchResources;
+  }
+
 /**
  * return the direct dependencies for this goal -- does not include any sub-dependencies -- see {@link #resolveDependeciesFor(ResearchGoal)}
  * @return
@@ -97,6 +104,7 @@ public static void initializeResearch()
   hasInit = true;
   parseGoalNames(StringTools.getResourceLines(Statics.resourcePath+"research_data.csv")); 
   parseGoalDependencies(StringTools.getResourceLines(Statics.resourcePath+"research_dependencies.csv"));
+  parseGoalResources(StringTools.getResourceLines(Statics.resourcePath+"research_resources.csv"));
   }
 
 private static void parseGoalNames(List<String> lines)
@@ -140,6 +148,30 @@ private static void parseGoalDependencies(List<String> lines)
       {
       goalsByName.get(name).addDependencies(goalsByName.get(dep).researchId);
       }
+    } 
+  }
+
+private static void parseGoalResources(List<String> lines)
+  {
+  String[] split;  
+  String name;
+  String itemName;
+  int meta, qty;
+  Item item;
+  ItemStack stack;
+  for(String line : lines)
+    {
+    split = StringTools.parseStringArray(line);
+    name = split[0];
+    itemName = split[1];
+    meta = StringTools.safeParseInt(split[2]);
+    qty = StringTools.safeParseInt(split[3]);
+    AWLog.logDebug("parsed item resource for research: "+name + " item: "+itemName + " qty: "+qty + " meta: "+meta);
+    if(!goalsByName.containsKey(name)){continue;}
+    item = (Item) Item.itemRegistry.getObject(itemName);    
+    if(item==null){continue;}
+    stack = new ItemStack(item, qty, meta);
+    goalsByName.get(name).addResource(stack);
     } 
   }
 
