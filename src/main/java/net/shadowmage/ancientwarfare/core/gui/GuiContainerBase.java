@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
@@ -42,6 +43,8 @@ private boolean initDone = false;
 private boolean shouldUpdate = false;
 private List<GuiElement> elements = new ArrayList<GuiElement>();
 
+private Tooltip elementTooltip;
+
 private ItemStack tooltipStack;
 private int tooltipX;
 private int tooltipY;
@@ -66,7 +69,7 @@ public GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, Strin
   }
 
 @Override
-public void handleTooltipRender(ItemStack stack)
+public void handleItemStackTooltipRender(ItemStack stack)
   {
   int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
   int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
@@ -117,6 +120,7 @@ public void handleMouseInput()
   for(GuiElement element : this.elements)
     {
     element.handleMouseInput(evt);
+    
     }
   }
 
@@ -227,6 +231,10 @@ public void drawScreen(int par1, int par2, float par3)
     super.renderToolTip(tooltipStack, tooltipX, tooltipY);
     tooltipStack = null;
     }
+  if(elementTooltip!=null)
+    {    
+    elementTooltip = null;
+    }
   }
 
 protected void drawGuiContainerForegroundLayer(int par1, int par2)
@@ -234,9 +242,11 @@ protected void drawGuiContainerForegroundLayer(int par1, int par2)
   GL11.glDisable(GL11.GL_LIGHTING);
   GL11.glPushMatrix();
   GL11.glTranslatef(-guiLeft, -guiTop, 0);
+  long time = System.currentTimeMillis();
   for(GuiElement element : elements)
     {
     element.render(par1, par2, partialRenderTick);
+    element.postRender(par1, par2, partialRenderTick, time, this);
     }   
   GL11.glPopMatrix();
   GL11.glEnable(GL11.GL_LIGHTING);
@@ -427,5 +437,11 @@ private Viewport(int x, int y, int w, int h)
   this.w = w;
   }
 }
+
+@Override
+public void handleElementTooltipRender(Tooltip o)
+  {
+  
+  }
 
 }

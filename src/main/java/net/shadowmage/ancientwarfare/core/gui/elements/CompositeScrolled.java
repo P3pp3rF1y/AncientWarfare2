@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
+import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 public class CompositeScrolled extends Composite implements IScrollableCallback
@@ -68,6 +69,15 @@ public void render(int mouseX, int mouseY, float partialTick)
   popViewport();
  //render scrollbar after resetting viewport so that it is not cropped
   scrollbar.render(mouseX, mouseY, partialTick);
+  }
+
+@Override
+public void postRender(int mouseX, int mouseY, float partialTick, long tick, ITooltipRenderer rend)
+  {
+  for(GuiElement element : this.elements)
+    {
+    element.postRender(mouseX, mouseY, partialTick, tick, rend);
+    }
   }
 
 @Override

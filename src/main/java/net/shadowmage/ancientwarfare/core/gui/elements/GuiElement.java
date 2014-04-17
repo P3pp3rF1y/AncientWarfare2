@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
 /**
  * base GUI Element class
@@ -26,6 +27,9 @@ protected boolean keyboardInterface;
 protected boolean enabled;
 protected boolean visible;
 protected boolean selected;//isFocused -- for text-input lines / etc
+
+protected Tooltip tooltip;
+protected long hoverStart;
 
 protected int topLeftX;
 protected int topLeftY;
@@ -163,6 +167,42 @@ public final boolean isMouseOverElement(int mouseX, int mouseY)
   }
 
 public abstract void render(int mouseX, int mouseY, float partialTick);//called from gui to draw this element
+
+/**
+ * checks for tooltip-rendering for this gui-element.
+ * @param mouseX
+ * @param mouseY
+ * @param partialTick
+ * @param tick
+ * @param rend
+ */
+public void postRender(int mouseX, int mouseY, float partialTick, long tick, ITooltipRenderer rend)
+  {
+  if(tooltip==null)
+    {
+    return;
+    }
+  if(isMouseOverElement(mouseX, mouseY))
+    {
+    if(hoverStart==-1)
+      {
+      hoverStart = tick;
+      }
+    else if(tick-hoverStart>2000)//2 seconds
+      {
+      rend.handleElementTooltipRender(tooltip);
+      }
+    }
+  else
+    {
+    hoverStart = -1;
+    }
+  }
+
+public void setTooltip(Tooltip tip)
+  {
+  this.tooltip = tip;
+  }
 
 public boolean selected()
   {

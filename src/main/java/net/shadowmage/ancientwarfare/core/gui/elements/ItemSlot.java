@@ -112,7 +112,7 @@ public void render(int mouseX, int mouseY, float partialTick)
         }
       if(renderTooltip && this.item!=null && this.render!=null)
         {
-        this.render.handleTooltipRender(item);
+        this.render.handleItemStackTooltipRender(item);
         }      
       }
     GL11.glEnable(GL11.GL_DEPTH_TEST);
