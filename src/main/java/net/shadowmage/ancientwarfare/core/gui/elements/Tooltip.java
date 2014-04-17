@@ -59,7 +59,7 @@ public void renderTooltip(int mouseX, int mouseY, float partialTick)
   disableViewport();
   }
 
-public void addTooltipElement(GuiElement element)
+public final void addTooltipElement(GuiElement element)
   {
   this.children.add(element);
   }
@@ -78,10 +78,9 @@ private void drawBackground(int mouseX, int mouseY)
   this.drawGradientRect(mouseX + this.width + 2, mouseY - 3 + 1, mouseX + this.width + 3, mouseY + this.height + 3 - 1, color2, color3);
   this.drawGradientRect(mouseX - 3, mouseY - 3, mouseX + this.width + 3, mouseY - 3 + 1, color2, color2);
   this.drawGradientRect(mouseX - 3, mouseY + this.height + 2, mouseX + this.width + 3, mouseY + this.height + 3, color3, color3);
-
   }
 
-protected void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
+private void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
   {
   float f = (float)(par5 >> 24 & 255) / 255.0F;
   float f1 = (float)(par5 >> 16 & 255) / 255.0F;
