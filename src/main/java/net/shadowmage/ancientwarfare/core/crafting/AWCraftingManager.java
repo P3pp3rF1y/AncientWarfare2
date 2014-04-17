@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.Statics;
 
 public class AWCraftingManager
 {
@@ -116,6 +117,10 @@ public RecipeResearched addRecipe(ItemStack par1ItemStack, Object ... par2ArrayO
 
   RecipeResearched recipe = new RecipeResearched(j, k, recipeItemArray, par1ItemStack);
   this.recipes.add(recipe);
+  if(!Statics.useResearchSystem)
+    {
+    CraftingManager.getInstance().getRecipeList().add(recipe);
+    }
   return recipe;
   }
 
