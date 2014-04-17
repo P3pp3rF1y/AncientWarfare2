@@ -4,6 +4,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
@@ -56,6 +57,7 @@ public void preInit(FMLPreInitializationEvent evt)
    * setup config file and logger
    */
   config = new Configuration(evt.getSuggestedConfigurationFile());
+  ClientOptions.INSTANCE.setConfig(config);
   log = evt.getModLog();
   
   AWLog.log("Ancient Warfare Core Pre-Init Started");
@@ -103,6 +105,7 @@ public void init(FMLInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Core Init Started");
   AWCraftingManager.INSTANCE.loadRecipes();
+  ClientOptions.INSTANCE.loadClientOptions();
   /**
    * register recipes
    */
