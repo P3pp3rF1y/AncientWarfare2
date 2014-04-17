@@ -203,6 +203,9 @@ public void detectAndSendChanges()
       }
     }
   
+  /**
+   * synch queued research
+   */
   if(researcherName!=null)
     {
     List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(player.worldObj, researcherName);
@@ -224,6 +227,9 @@ public void detectAndSendChanges()
     queuedResearch.clear();  
     }
   
+  /**
+   * synch use-adjacent inventory status
+   */
   if(tile.useAdjacentInventory!=useAdjacentInventory)
     {
     if(tag==null){tag = new NBTTagCompound();}

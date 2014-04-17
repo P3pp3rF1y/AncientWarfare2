@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
@@ -67,8 +68,7 @@ public void readFromNBT(NBTTagCompound tag)
   super.readFromNBT(tag);
   InventoryTools.readInventoryFromNBT(bookInventory, tag.getCompoundTag("bookInventory"));
   InventoryTools.readInventoryFromNBT(resourceInventory, tag.getCompoundTag("resourceInventory"));
-//  InventoryTools.readInventoryFromNBT(result, tag.getCompoundTag("resultInventory"));
-//  InventoryTools.readInventoryFromNBT(layoutMatrix, tag.getCompoundTag("layoutMatrix"));
+  this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
   }
 
 @Override
@@ -84,14 +84,7 @@ public void writeToNBT(NBTTagCompound tag)
   InventoryTools.writeInventoryToNBT(resourceInventory, inventoryTag);
   tag.setTag("resourceInventory", inventoryTag);
   
-//  inventoryTag = new NBTTagCompound();
-//  InventoryTools.writeInventoryToNBT(result, inventoryTag);
-//  tag.setTag("resultInventory", inventoryTag);
-//
-//  inventoryTag = new NBTTagCompound();
-//  InventoryTools.writeInventoryToNBT(layoutMatrix, inventoryTag);
-//  tag.setTag("layoutMatrix", inventoryTag);
-  
+  tag.setBoolean("useAdjacentInventory", useAdjacentInventory);  
   }
 
 @Override
@@ -146,7 +139,7 @@ public boolean hasWork()
 @Override
 public void doWork(IWorker worker)
   {
-  workTick((int)worker.getWorkEffectiveness());
+  workTick((int)(worker.getWorkEffectiveness() * 5.f));
   }
 
 private void workTick(int tickCount)
@@ -186,6 +179,27 @@ private void tryStartNextResearch(String name)
     if(g1.tryStart(resourceInventory, -1))
       {
       ResearchTracker.instance().startResearch(worldObj, getCrafterName(), g);        
+      }
+    else if(useAdjacentInventory)
+      {
+      TileEntity t;
+      boolean started = false;
+      if((t=worldObj.getTileEntity(xCoord-1, yCoord, zCoord)) instanceof IInventory)
+        {
+        started = g1.tryStart((IInventory)t, -1);
+        }
+      if(!started && (t=worldObj.getTileEntity(xCoord+1, yCoord, zCoord)) instanceof IInventory)
+        {
+        started = g1.tryStart((IInventory)t, -1);
+        }
+      if(!started && (t=worldObj.getTileEntity(xCoord, yCoord, zCoord-1)) instanceof IInventory)
+        {
+        started = g1.tryStart((IInventory)t, -1);
+        }
+      if(!started && (t=worldObj.getTileEntity(xCoord, yCoord, zCoord+1)) instanceof IInventory)
+        {
+        started = g1.tryStart((IInventory)t, -1);
+        }
       }
     } 
   startCheckDelay = startCheckDelayMax;
