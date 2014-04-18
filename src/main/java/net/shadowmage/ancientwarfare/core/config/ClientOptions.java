@@ -23,14 +23,14 @@ public void setConfig(Configuration config)
 
 /**
  * registers the client-option, with default value.  actual value will be loaded
- * from config file.
+ * from config file.  Need not be proxied, may be called from main/server thread.
  * @param name
  * @param comment
  * @param value
  */
 public void registerClientOption(String name, String comment, Object value)
   {
-  ClientOption option = new ClientOption(name, value);
+  ClientOption option = new ClientOption(name, value, comment);
   clientOptions.put(name, option);
   }
 
@@ -47,11 +47,11 @@ public void loadClientOptions()
     option = clientOptions.get(name);
     if(option.isBooleanValue())
       {
-      option.setValue(config.get(clientOptionsCategory, name, option.getBooleanValue()).getBoolean(option.getBooleanValue()));
+      option.setValue(config.get(clientOptionsCategory, name, option.getBooleanValue(), option.getComment()).getBoolean(option.getBooleanValue()));
       }
     else if(option.isIntValue())
       {
-      option.setValue(config.get(clientOptionsCategory, name, option.getIntValue()).getInt(option.getIntValue()));
+      option.setValue(config.get(clientOptionsCategory, name, option.getIntValue(), option.getComment()).getInt(option.getIntValue()));
       }
     }
   }
@@ -84,15 +84,17 @@ public ClientOption getClientOption(String name)
   return clientOptions.get(name);
   }
 
-private static final class ClientOption
+public static final class ClientOption
 {
 private String name;
 private Object value;
+private String comment;
 
-private ClientOption(String name, Object value)
+private ClientOption(String name, Object value, String comment)
   {
   this.value = value;
   this.name = name;
+  this.comment = comment;
   }
 
 public boolean getBooleanValue()
@@ -123,6 +125,11 @@ public boolean isBooleanValue()
 public boolean isIntValue()
   {
   return value instanceof Integer;
+  }
+
+public String getComment()
+  {
+  return comment;
   }
 
 }

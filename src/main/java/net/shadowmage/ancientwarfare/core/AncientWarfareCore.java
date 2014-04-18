@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.item.ItemEventHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -64,6 +65,7 @@ public void preInit(FMLPreInitializationEvent evt)
   
   Statics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
   Statics.loadConfig(config);
+  InputHandler.instance().loadConfig(config);
   
   
   /**
