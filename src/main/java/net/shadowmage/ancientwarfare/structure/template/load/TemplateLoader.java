@@ -20,8 +20,10 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.load;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,11 +31,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+
+import javax.imageio.ImageIO;
 
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -126,6 +131,35 @@ private StructureTemplate loadTemplateFromFile(File file)
     }
   }
 
+private void loadStructureImage(String imageName, InputStream is)
+  {
+  try
+    {
+    BufferedImage image = ImageIO.read(is);
+    if(image!=null && image.getWidth()==AWStructureStatics.structureImageWidth && image.getHeight()==AWStructureStatics.structureImageHeight)
+      {
+      StructureTemplateManager.instance().loadTemplateImage(imageName, image);
+      AWLog.logDebug("Loaded potential template image: "+imageName);      
+      }
+    else
+      {
+      AWLog.logError("Attempted to load improper sized template image: "+imageName+ " with dimensions of: "+image.getWidth()+"x"+image.getHeight()+".  Specified width/height is: "+AWStructureStatics.structureImageWidth+"x"+AWStructureStatics.structureImageHeight);
+      }
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
+  try
+    {
+    is.close();
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
+  }
+
 private int loadTemplatesFromZip()
   {
   ZipFile z;
@@ -146,6 +180,15 @@ private int loadTemplatesFromZip()
         {
         entry = zipEntries.nextElement();
         if(entry.isDirectory()){continue;}//TODO how to handle subfolders in a zip-file?
+        if(entry.getName().toLowerCase().endsWith(".png"))
+          {
+          loadStructureImage(entry.getName(), z.getInputStream(entry));
+          continue;
+          }
+        else if(!entry.getName().toLowerCase().startsWith("."+AWStructureStatics.templateExtension))
+          {
+          continue;
+          }
         AWLog.logDebug("loading template: "+entry.getName());
         template = loadTemplateFromZip(entry, z.getInputStream(entry));
         if(template!=null)
@@ -154,6 +197,7 @@ private int loadTemplatesFromZip()
           parsed++;
           }
         }
+      z.close();
       } 
     catch (ZipException e)
       {
@@ -163,7 +207,7 @@ private int loadTemplatesFromZip()
       {
       e.printStackTrace();
       }
-    AWLog.logDebug("parsed : "+parsed+" templates from zip file.");
+    AWLog.logDebug("Parsed total of "+parsed+" template(s) from zip file: "+f.getName());
     totalParsed+=parsed;
     }
   return totalParsed;
@@ -250,6 +294,17 @@ private void recursiveScan(File directory, List<File> fileList, List<File> zipFi
       {
       zipFileList.add(currentFile);
       }
+    else if(isProbableImage(currentFile))
+      {
+      try
+        {
+        loadStructureImage(currentFile.getName(), new FileInputStream(currentFile));
+        } 
+      catch (FileNotFoundException e)
+        {
+        e.printStackTrace();
+        }
+      }
     }
   }
 
@@ -263,7 +318,9 @@ private boolean isProbableZip(File file)
   return file.getName().toLowerCase().endsWith(".zip");
   }
 
-
-
+private boolean isProbableImage(File file)
+  {
+  return file.getName().toLowerCase().endsWith(".png");
+  }
 
 }
