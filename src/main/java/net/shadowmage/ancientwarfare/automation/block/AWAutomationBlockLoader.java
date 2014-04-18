@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksitePlacer;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorkerTest;
+import net.shadowmage.ancientwarfare.automation.tile.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteQuarry;
@@ -49,6 +50,15 @@ public static final BlockWorksiteBase worksiteTest4 = new BlockWorksiteBase(Mate
     return new WorkSiteMushroomFarm();
     };
   };  
+  
+public static final BlockWorksiteBase worksiteTest5 = new BlockWorksiteBase(Material.rock, "civic_animal_farm")
+  {
+  @Override
+  public TileEntity createTileEntity(World world, int metadata)
+    {
+    return new WorkSiteAnimalFarm();
+    }  
+  };
 
 public static void load()
   {  
@@ -90,6 +100,15 @@ public static void load()
   worksiteTest4.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmMelonSides");
   worksiteTest4.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmMushroomRedSides");
   worksiteTest4.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmMushroomBrownSides");
+  
+  GameRegistry.registerBlock(worksiteTest5, ItemWorksitePlacer.class, "civic_animal_farm");
+  GameRegistry.registerTileEntity(WorkSiteAnimalFarm.class, "civic_animal_farm_tile");
+  worksiteTest5.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
+  worksiteTest5.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
+  worksiteTest5.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmNetherSides");
+  worksiteTest5.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmMelonSides");
+  worksiteTest5.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmMushroomRedSides");
+  worksiteTest5.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmMushroomBrownSides");
   }
 
 }

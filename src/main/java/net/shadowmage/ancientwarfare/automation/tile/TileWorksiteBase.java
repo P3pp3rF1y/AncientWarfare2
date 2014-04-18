@@ -102,6 +102,21 @@ public int getTileMeta()
   return getBlockMetadata();
   }
 
+/**
+ * if not null, this string will be used as button name-label for button to open
+ * alt-control GUI for this work-site
+ * @return
+ */
+public String hasAltSetupGui()
+  {
+  return null;
+  }
+
+public void openAltGui()
+  {
+  //noop, must be implemented by individual tiles, if they have an alt-control gui
+  }
+
 public boolean hasUserSetTargets()
   {
   return canUserSetBlocks;

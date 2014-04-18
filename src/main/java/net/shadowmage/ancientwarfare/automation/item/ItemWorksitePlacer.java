@@ -64,9 +64,9 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   BlockPosition pos2 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos2"));
   BlockPosition min = BlockTools.getMin(pos1, pos2);
   BlockPosition max = BlockTools.getMax(pos1, pos2);
-  if(x<min.x-1 || z<min.x-1 || y<min.y-1 || x>max.x+1 || z>max.z+1 || y>max.z+1)
+  if(x<min.x-1 || z<min.z-1 || y<min.y-1 || x>max.x+1 || z>max.z+1 || y>max.y+1)
     {
-    AWLog.logDebug("too far away from bounds to place block..");
+    AWLog.logDebug("too far away from bounds to place block.." + min + " :: "+max);
     /**
      * TODO output chat message saying block is too far away from work bounds
      */
@@ -81,7 +81,7 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     return false;
     }
   /**
-   * TODO validate that block is not inside work bounds of any other nearby worksites
+   * TODO validate that block is not inside work bounds of any other nearby worksites ??
    */
   metadata = BlockIconRotationMap.getBlockMetaForPlacement(player, true);
   
