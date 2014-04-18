@@ -45,56 +45,16 @@ private static TemplateParser instance = new TemplateParser(){};
 public static TemplateParser instance(){return instance;}
 private TemplateFormatConverter converter = new TemplateFormatConverter();
 
-public StructureTemplate parseTemplate(File file)
-  {  
-  FileReader reader = null;
-  Scanner scan = null;
+public StructureTemplate parseTemplate(String fileName, List<String> templateLines)
+  {
   try
     {
-    List<String> templateLines = new ArrayList<String>();
-    reader = new FileReader(file);
-    scan = new Scanner(reader);
-    while(scan.hasNextLine())
-      {
-      templateLines.add(scan.nextLine());
-      }
-    try
-      {
-      return parseTemplateLines(file, templateLines);
-      }
-    catch(TemplateParsingException e1)
-      {
-      throw new IllegalArgumentException(e1.getMessage(), e1);
-      }   
-    catch(Exception e2)
-      {
-      AWLog.logError("Caught exception while parsing template: "+e2.toString());
-      throw new IllegalArgumentException("Error parsing template: "+file.getName() +" at line: "+ (lineNumber+1) + " for line: "+templateLines.get(lineNumber) + " Exception: "+e2.toString(), e2);
-      }
+    return parseTemplateLines(fileName, templateLines);
     } 
-  catch (FileNotFoundException e)
+  catch (TemplateParsingException e)
     {
-    e.printStackTrace();
+    throw new IllegalArgumentException(e.getMessage());
     }
-  finally
-    {
-    if(reader!=null)
-      {
-      try
-        {
-        reader.close();
-        } 
-      catch (IOException e)
-        {
-        e.printStackTrace();
-        }
-      }
-    if(scan!=null)
-      {
-      scan.close();
-      }
-    }
-  return null;
   }
 
 /**
@@ -102,7 +62,7 @@ public StructureTemplate parseTemplate(File file)
  */
 public static int lineNumber = -1;
 
-private StructureTemplate parseTemplateLines(File file, List<String> lines) throws IllegalArgumentException, TemplateParsingException
+private StructureTemplate parseTemplateLines(String fileName, List<String> lines) throws IllegalArgumentException, TemplateParsingException
   {
   lineNumber = -1;
   Iterator<String> it = lines.iterator();
@@ -170,7 +130,7 @@ private StructureTemplate parseTemplateLines(File file, List<String> lines) thro
         {
         if(initData[i]==false)
           {
-          throw new TemplateParsingException("Could not parse template for "+file.getName() +" -- template was missing header or header data.");
+          throw new TemplateParsingException("Could not parse template for "+fileName +" -- template was missing header or header data.");
           }
         }
       templateData = new short[xSize*ySize*zSize];
@@ -180,11 +140,11 @@ private StructureTemplate parseTemplateLines(File file, List<String> lines) thro
       {
       try
         {
-        return converter.convertOldTemplate(file, lines);
+        return converter.convertOldTemplate(fileName, lines);
         }
       catch(Exception e)
         {
-        throw new TemplateParsingException("Error parsing template: "+file.getName() +" at line: "+ (converter.lineNumber+1) + " for line: "+lines.get(converter.lineNumber));
+        throw new TemplateParsingException("Error parsing template: "+fileName +" at line: "+ (converter.lineNumber+1) + " for line: "+lines.get(converter.lineNumber));
         }
       }
     /**

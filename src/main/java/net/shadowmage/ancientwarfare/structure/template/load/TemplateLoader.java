@@ -20,18 +20,25 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.load;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Scanner;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
-
-import com.google.common.io.ByteStreams;
 
 public class TemplateLoader
 {
@@ -39,45 +46,19 @@ public class TemplateLoader
 public static final String defaultTemplateDirectory = "/assets/ancientwarfare/templates/";
 public static String outputDirectory = null;
 public static String includeDirectory = null;
-public static String convertDirectory = null;
 public static String configBaseDirectory = null;
 
-private List<String> defaultExportStructures = new ArrayList<String>();
 private List<File> probableStructureFiles = new ArrayList<File>();
+private List<File> probableZipFiles = new ArrayList<File>();
 
 private TemplateLoader(){}
 private static TemplateLoader instance = new TemplateLoader(){};
 public static TemplateLoader instance(){return instance;}
 
-private void setDefaultStructureNames()
-  {
-  this.defaultExportStructures.add("villageGardenLarge.aws");
-  this.defaultExportStructures.add("villageGardenSmall.aws");
-  this.defaultExportStructures.add("villageHouse1.aws");
-  this.defaultExportStructures.add("villageHouse2.aws");
-  this.defaultExportStructures.add("villageHouseGarden.aws");
-  this.defaultExportStructures.add("villageHouseSmall.aws");
-  this.defaultExportStructures.add("villageHouseSmall2.aws");
-  this.defaultExportStructures.add("villageLibrary.aws");
-  this.defaultExportStructures.add("villageSmith.aws");
-  this.defaultExportStructures.add("villageTorch.aws");
-  this.defaultExportStructures.add("villageWell.aws");
-  this.defaultExportStructures.add("advancedVillageLibrary.aws");
-  this.defaultExportStructures.add("obsidianVault.aws");
-  this.defaultExportStructures.add("banditCamp.aws");
-  this.defaultExportStructures.add("lavaFarm.aws");
-  this.defaultExportStructures.add("fountain1.aws");
-  this.defaultExportStructures.add("logCabin.aws");
-  this.defaultExportStructures.add("fortress1.aws");
-  this.defaultExportStructures.add("fortress2.aws");
-  this.defaultExportStructures.add("tower1.aws");
-  }
-
 public void initializeAndExportDefaults(String path)
   {   
   outputDirectory = path+"/AWConfig/structures/export/";
   includeDirectory = path+"/AWConfig/structures/included/";
-  convertDirectory = path+"/AWConfig/structures/convert/";
   configBaseDirectory = path+"/AWConfig/"; 
 
   /**
@@ -95,29 +76,7 @@ public void initializeAndExportDefaults(String path)
     {
     AWLog.log("Creating default Include Directory");
     existTest.mkdirs();
-    }
-  
-  existTest = new File(convertDirectory);
-  if(!existTest.exists())
-    {
-    AWLog.log("Creating default Convert Directory");
-    existTest.mkdirs();
-    }
-  
-  existTest = new File(configBaseDirectory);
-  if(!existTest.exists())
-    {
-    AWLog.log("Creating AWConfig directory in config/");
-    existTest.mkdirs();
-    }
-     
-  if(AWStructureStatics.shouldExport)
-    {
-    this.setDefaultStructureNames();
-    this.copyDefaultStructures(includeDirectory);
-    AWStructureStatics.shouldExport = false;
-    }
-  this.defaultExportStructures.clear();
+    }       
   }
 
 public void loadTemplates()
@@ -127,78 +86,142 @@ public void loadTemplates()
   int loadedCount = 0;
   for(File f : this.probableStructureFiles)
     {
-    template = TemplateParser.instance().parseTemplate(f);
+    AWLog.logDebug("loading template: "+f.getName());
+    template = loadTemplateFromFile(f);
     if(template!=null)
       { 
       StructureTemplateManager.instance().addTemplate(template);
       loadedCount++;
       }
-    else
-      {
-      AWLog.logError("Could not load template for: "+f.getAbsolutePath() + " error parsing.");
-      }
     }
+  loadedCount+=this.loadTemplatesFromZip();
   AWLog.log("Loaded "+loadedCount+" structure(s).");
   this.probableStructureFiles.clear();
+  this.probableZipFiles.clear();
   }
 
-private void copyDefaultStructures(String pathName)
-  { 
-  InputStream is = null;
-  FileOutputStream os = null;
-  File file = null;
-  AWLog.log("Exporting default structures....");
-  int exportCount = 0;
-  byte[] byteBuffer;
-  for(String fileName : this.defaultExportStructures)
+private StructureTemplate loadTemplateFromFile(File file)
+  {
+  FileReader reader = null;
+  Scanner scan = null;
+  List<String> templateLines = new ArrayList<String>();
+  try
     {
+    reader = new FileReader(file);
+    scan = new Scanner(reader);
+    while(scan.hasNext())
+      {
+      templateLines.add(scan.nextLine());
+      }
+    return TemplateParser.instance().parseTemplate(file.getName(), templateLines);
+    } 
+  catch (FileNotFoundException e)
+    {
+    e.printStackTrace();
+    return null;
+    }
+  finally
+    {
+    if(scan!=null){scan.close();}
+    }
+  }
+
+private int loadTemplatesFromZip()
+  {
+  ZipFile z;
+  ZipEntry entry;
+  Enumeration<? extends ZipEntry> zipEntries;
+  StructureTemplate template;
+  int parsed = 0;
+  int totalParsed = 0;
+  for(File f : this.probableZipFiles)
+    {
+    parsed = 0;
+    AWLog.logDebug("parsing templates from zip file: "+f.getName());
     try
       {
-      is = this.getClass().getResourceAsStream(defaultTemplateDirectory+fileName);
-      if(is==null)
+      z = new ZipFile(f);
+      zipEntries = z.entries();
+      while(zipEntries.hasMoreElements())
         {
-        continue;
+        entry = zipEntries.nextElement();
+        if(entry.isDirectory()){continue;}//TODO how to handle subfolders in a zip-file?
+        AWLog.logDebug("loading template: "+entry.getName());
+        template = loadTemplateFromZip(entry, z.getInputStream(entry));
+        if(template!=null)
+          {
+          StructureTemplateManager.instance().addTemplate(template);
+          parsed++;
+          }
         }
-      
-      String trimmedName = fileName.substring(0, fileName.length()-4);
-      fileName = trimmedName +"."+AWStructureStatics.templateExtension;
-      file = new File(includeDirectory,fileName);
-  
-      if(!file.exists())
-        {
-        AWLog.log("Exporting: "+fileName);
-        file.createNewFile();
-        }
-      else
-        {
-        AWLog.log("Overwriting: "+fileName);
-        }
-  
-      byteBuffer = ByteStreams.toByteArray(is);
-      is.close();
-      if(byteBuffer.length>0)
-        {
-        os = new FileOutputStream(file);        
-        os.write(byteBuffer);
-        os.close();
-        exportCount++;
-        }
-      }
-    catch(Exception e)
+      } 
+    catch (ZipException e)
       {
-      AWLog.logError("Error during export of: "+fileName);
       e.printStackTrace();
-      }    
+      } 
+    catch (IOException e)
+      {
+      e.printStackTrace();
+      }
+    AWLog.logDebug("parsed : "+parsed+" templates from zip file.");
+    totalParsed+=parsed;
     }
-  AWLog.log("Exported "+exportCount+" structures");  
+  return totalParsed;
+  }
+
+private StructureTemplate loadTemplateFromZip(ZipEntry entry, InputStream is)
+  {
+  InputStreamReader isr = new InputStreamReader(is);
+  BufferedReader reader = new BufferedReader(isr);
+  List<String> lines = new ArrayList<String>();
+  String line;
+  StructureTemplate template = null;
+  try
+    {
+    while((line = reader.readLine())!=null)
+      {
+      lines.add(line);
+      }
+    template = TemplateParser.instance().parseTemplate(entry.getName(), lines);
+    } 
+  catch (IOException e1)
+    {
+    e1.printStackTrace();
+    template = null;
+    }  
+  try
+    {
+    reader.close();
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
+  try
+    {
+    isr.close();
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
+  try
+    {
+    is.close();
+    }
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
+  return template;
   }
 
 private void locateStructureFiles()
   {
-  this.recursiveScan(new File(includeDirectory), probableStructureFiles, AWStructureStatics.templateExtension);
+  this.recursiveScan(new File(includeDirectory), probableStructureFiles, probableZipFiles, AWStructureStatics.templateExtension);
   }
 
-private void recursiveScan(File directory, List<File> fileList, String extension)
+private void recursiveScan(File directory, List<File> fileList, List<File> zipFileList, String extension)
   {
   if(directory==null)
     {
@@ -217,11 +240,15 @@ private void recursiveScan(File directory, List<File> fileList, String extension
     currentFile = allFiles[i];
     if(currentFile.isDirectory())
       {
-      recursiveScan(currentFile, fileList, extension);
+      recursiveScan(currentFile, fileList, zipFileList, extension);
       }
     else if(isProbableFile(currentFile, extension))
       {
       fileList.add(currentFile);
+      }
+    else if(isProbableZip(currentFile))
+      {
+      zipFileList.add(currentFile);
       }
     }
   }
@@ -230,6 +257,13 @@ private boolean isProbableFile(File file, String extension)
   {
   return file.getName().toLowerCase().endsWith(extension);
   }
+
+private boolean isProbableZip(File file)
+  {
+  return file.getName().toLowerCase().endsWith(".zip");
+  }
+
+
 
 
 }
