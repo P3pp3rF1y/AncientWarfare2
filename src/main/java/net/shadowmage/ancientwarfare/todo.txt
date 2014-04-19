@@ -2,7 +2,6 @@ core
 	crafting system--needs recipes from other modules
 	research system--needs definitions of research for research tree
 	block and item textures
-	item type for research-notes
 
 structures module
 	plugins / support for other modules

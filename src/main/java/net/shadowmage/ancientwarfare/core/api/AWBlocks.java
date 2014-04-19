@@ -16,4 +16,5 @@ public static Block researchStation;
  */
 public static Block advancedSpawner;
 public static Block gateProxy;
+public static Block draftingStation;
 }

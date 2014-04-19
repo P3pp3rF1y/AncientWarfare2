@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,6 +25,10 @@ public static void load()
   AWBlocks.gateProxy = new BlockGateProxy("gate_proxy");
   GameRegistry.registerBlock(AWBlocks.gateProxy, "gate_proxy");
   GameRegistry.registerTileEntity(TEGateProxy.class, "gate_proxy_tile");
+  
+  AWBlocks.draftingStation = new BlockDraftingStation("drafting_station");
+  GameRegistry.registerBlock(AWBlocks.draftingStation, "drafting_station");
+  GameRegistry.registerTileEntity(TileDraftingStation.class, "drafting_station_tile");
   }
 
 }
