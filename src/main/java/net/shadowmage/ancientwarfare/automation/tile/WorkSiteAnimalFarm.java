@@ -215,25 +215,25 @@ private void rescan()
 
 private void scanForAnimals(List<EntityAnimal> animals, List<EntityPair> targets, int maxCount)
   {
-  EntityAnimal cow1;
-  EntityAnimal cow2;
+  EntityAnimal animal1;
+  EntityAnimal animal2;
   EntityPair breedingPair;
   
   int age;
   
   for(int i = 0; i<animals.size(); i++)
     {
-    cow1 = animals.get(i);
-    age = cow1.getGrowingAge();
-    if(age!=0){continue;}//unbreedable first-target, skip
+    animal1 = animals.get(i);
+    age = animal1.getGrowingAge();
+    if(age!=0 || animal1.isInLove()){continue;}//unbreedable first-target, skip
     while(i+1<animals.size())//loop through remaining animals to find a breeding partner
       {
       i++;
-      cow2 = animals.get(i);
-      age = cow2.getGrowingAge();
-      if(age==0)//found a second breedable animal, add breeding pair, exit to outer loop
+      animal2 = animals.get(i);
+      age = animal2.getGrowingAge();
+      if(age==0 && !animal2.isInLove())//found a second breedable animal, add breeding pair, exit to outer loop
         {
-        breedingPair = new EntityPair(cow1, cow2);
+        breedingPair = new EntityPair(animal1, animal2);
         targets.add(breedingPair);
         break;
         }
