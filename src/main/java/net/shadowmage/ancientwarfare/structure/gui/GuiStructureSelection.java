@@ -119,18 +119,35 @@ public void setupElements()
       }
     };
   
-  Label label = null;
-  int totalHeight = 3;
+  TemplateButton button;    
+  int totalHeight = 8;
+  
   for(StructureTemplateClient template : templates)
     {
-    label = new Label(8, totalHeight, template.name);
-    label.addNewListener(listener);
-    selectionArea.addGuiElement(label);
-    templateMap.put(label, template);
+    button = new TemplateButton(8, totalHeight, template);
+    selectionArea.addGuiElement(button);
     totalHeight+=12;
     }
-  selectionArea.setAreaSize(totalHeight);
+  
+  selectionArea.setAreaSize(totalHeight+8);
   }
+
+
+private class TemplateButton extends Button
+{
+StructureTemplateClient template;
+public TemplateButton(int topLeftX, int topLeftY, StructureTemplateClient template)
+  {
+  super(topLeftX, topLeftY, 232, 12, template.name);
+  this.template = template;
+  }
+
+@Override
+protected void onPressed()
+  {
+  setSelection(template);
+  }
+}
 
 private void setSelection(StructureTemplateClient template)
   {
