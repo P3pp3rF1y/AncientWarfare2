@@ -21,18 +21,18 @@
 package net.shadowmage.ancientwarfare.structure.template;
 
 import java.awt.image.BufferedImage;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
+import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageData;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageList;
 
 public class StructureTemplateManager
@@ -41,9 +41,9 @@ private StructureTemplateManager(){}
 private static StructureTemplateManager instance = new StructureTemplateManager(){};
 public static StructureTemplateManager instance(){return instance;}
 
+private HashMap<String,StructureTemplateClient> clientTemplates = new HashMap<String,StructureTemplateClient>();//server-side client-templates
 private HashMap<String,BufferedImage> templateImages = new HashMap<String,BufferedImage>();//server-side images
 private HashMap<String,StructureTemplate> loadedTemplates = new HashMap<String,StructureTemplate>();
-private HashMap<String,StructureTemplateClient> clientTemplates = new HashMap<String,StructureTemplateClient>();
 
 public void addTemplate(StructureTemplate template)
   {
@@ -58,7 +58,7 @@ public void addTemplate(StructureTemplate template)
     }
   loadedTemplates.put(template.name, template);
   StructureTemplateClient cl = new StructureTemplateClient(template);
-  addTemplate(cl);
+  clientTemplates.put(template.name, cl);
   
   MinecraftServer server = MinecraftServer.getServer();
   if(server!=null && server.isServerRunning())
@@ -69,11 +69,6 @@ public void addTemplate(StructureTemplate template)
     pkt.packetData.setTag("singleStructure", tag);
     NetworkHandler.sendToAllPlayers(pkt);    
     }
-  }
-
-public void addTemplate(StructureTemplateClient template)
-  {
-  clientTemplates.put(template.name, template);
   }
 
 public void onPlayerConnect(EntityPlayerMP player)
@@ -93,57 +88,32 @@ public void onPlayerConnect(EntityPlayerMP player)
   NetworkHandler.sendToPlayer(player, pkt2);
   }
 
-public void onTemplateData(NBTTagCompound tag)
-  {
-  if(tag.hasKey("singleStructure"))
-    {
-    NBTTagCompound structureTag = tag.getCompoundTag("singleStructure");
-    readClientStructure(structureTag);
-    }
-  else
-    {
-    NBTTagList list = tag.getTagList("structureList", Constants.NBT.TAG_COMPOUND);
-    NBTTagCompound structureTag;
-    for(int i = 0; i < list.tagCount(); i++)
-      {
-      structureTag = (NBTTagCompound) list.getCompoundTagAt(i);
-      readClientStructure(structureTag);
-      }    
-    }
-  }
-
-private void readClientStructure(NBTTagCompound tag)
-  {
-  StructureTemplateClient template = StructureTemplateClient.readFromNBT(tag);
-  addTemplate(template);
-  }
-
-public Collection<StructureTemplateClient> getClientStructures()
-  {
-  return clientTemplates.values();
-  }
-
-public StructureTemplateClient getClientTemplate(String name)
-  {
-  return clientTemplates.get(name);
-  }
-
 public StructureTemplate getTemplate(String name)
   {
   return this.loadedTemplates.get(name);
   }
 
-public void loadTemplateImage(String imageName, BufferedImage image)
+public void addTemplateImage(String imageName, BufferedImage image)
   {
+  AWLog.logDebug("Loading server-side template image of: "+imageName);
   this.templateImages.put(imageName, image);
   }
 
-public void onStructureImageNameList(List<String> imageNames)
+public void handleClientImageNameListRequest(EntityPlayer player, List<String> imageNames)
   {
-  AWLog.logDebug("receiving image names list of: "+imageNames);
-  /**
-   * TODO
-   */
+  PacketStructureImageData pkt;
+  for(String imageName : imageNames)
+    {
+    if(!templateImages.containsKey(imageName)){continue;}
+    pkt = new PacketStructureImageData(imageName, templateImages.get(imageName));
+    NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
+    AWLog.logDebug("sending image packet of: "+imageName);
+    }
+  }
+
+public BufferedImage getTemplateImage(String imageName)
+  {
+  return templateImages.get(imageName);
   }
 
 }

@@ -32,8 +32,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -44,6 +47,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
 public class TemplateLoader
 {
@@ -55,6 +59,10 @@ public static String configBaseDirectory = null;
 
 private List<File> probableStructureFiles = new ArrayList<File>();
 private List<File> probableZipFiles = new ArrayList<File>();
+
+private Set<String> loadedStructureNames = new HashSet<String>();
+
+private HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 
 private TemplateLoader(){}
 private static TemplateLoader instance = new TemplateLoader(){};
@@ -96,13 +104,33 @@ public void loadTemplates()
     if(template!=null)
       { 
       StructureTemplateManager.instance().addTemplate(template);
+      loadedStructureNames.add(template.name);
       loadedCount++;
       }
-    }
+    }  
   loadedCount+=this.loadTemplatesFromZip();
   AWLog.log("Loaded "+loadedCount+" structure(s).");
+  this.validateAndLoadImages();
   this.probableStructureFiles.clear();
   this.probableZipFiles.clear();
+  this.images.clear();
+  this.loadedStructureNames.clear();
+  }
+
+private void validateAndLoadImages()
+  {
+  String name;
+  Iterator<String> it = images.keySet().iterator();
+  while(it.hasNext() && (name=it.next())!=null)
+    {
+    if(!loadedStructureNames.contains(name.substring(0, name.length()-4)))
+      {
+      AWLog.logDebug("Skipping loading of image: "+name+" because no corresponding structure was loaded!.");
+      it.remove();
+      continue;
+      }
+    StructureTemplateManager.instance().addTemplateImage(name, images.get(name));
+    }
   }
 
 private StructureTemplate loadTemplateFromFile(File file)
@@ -138,8 +166,7 @@ private void loadStructureImage(String imageName, InputStream is)
     BufferedImage image = ImageIO.read(is);
     if(image!=null && image.getWidth()==AWStructureStatics.structureImageWidth && image.getHeight()==AWStructureStatics.structureImageHeight)
       {
-      StructureTemplateManager.instance().loadTemplateImage(imageName, image);
-      AWLog.logDebug("Loaded potential template image: "+imageName);      
+      images.put(imageName, image);      
       }
     else
       {
@@ -194,6 +221,7 @@ private int loadTemplatesFromZip()
         if(template!=null)
           {
           StructureTemplateManager.instance().addTemplate(template);
+          loadedStructureNames.add(template.name);
           parsed++;
           }
         }

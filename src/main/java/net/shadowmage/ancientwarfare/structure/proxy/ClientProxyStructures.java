@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.proxy;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
@@ -30,6 +32,8 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_GATE_CONTROL, GuiGateControl.class);
   MinecraftForge.EVENT_BUS.register(StructureBoundingBoxRenderer.instance());
   
-  RenderingRegistry.registerEntityRenderingHandler(EntityGate.class, new RenderGateHelper());
+  RenderingRegistry.registerEntityRenderingHandler(EntityGate.class, new RenderGateHelper());  
   }
+
+
 }

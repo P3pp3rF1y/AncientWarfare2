@@ -109,7 +109,7 @@ private void renderBuildBoundingBox(EntityPlayer player, ItemStack stack, float 
   ItemStructureSettings.getSettingsFor(stack, settings);
   if(!settings.hasName()){return;}
   String name = settings.name();
-  StructureTemplateClient structure = StructureTemplateManager.instance().getClientTemplate(name);
+  StructureTemplateClient structure = StructureTemplateManagerClient.instance().getClientTemplate(name);
   if(structure==null){return;}
   BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
   int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);

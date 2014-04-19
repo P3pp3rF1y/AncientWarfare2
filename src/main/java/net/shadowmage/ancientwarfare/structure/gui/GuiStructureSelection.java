@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
 public class GuiStructureSelection extends GuiContainerBase
 {
@@ -80,7 +81,7 @@ public void initElements()
   addGuiElement(filterInput);  
   
   ContainerStructureSelection cont = (ContainerStructureSelection)inventorySlots;
-  StructureTemplateClient t = StructureTemplateManager.instance().getClientTemplate(cont.structureName);
+  StructureTemplateClient t = StructureTemplateManagerClient.instance().getClientTemplate(cont.structureName);
   this.setSelection(t);
   }
 
@@ -91,7 +92,7 @@ public void setupElements()
   templateMap.clear();
   setSelectionName((currentSelection==null? StatCollector.translateToLocal("guistrings.none") : currentSelection.name));  
   
-  Collection<StructureTemplateClient> templatesC = StructureTemplateManager.instance().getClientStructures();
+  Collection<StructureTemplateClient> templatesC = StructureTemplateManagerClient.instance().getClientStructures();
   List<StructureTemplateClient> templates = new ArrayList<StructureTemplateClient>();
   templates.addAll(templatesC);
   sorter.setFilterText(filterInput.getText());  

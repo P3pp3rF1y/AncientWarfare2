@@ -15,6 +15,7 @@ import java.util.List;
 
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
 public class PacketStructureImageList extends PacketBase
 {
@@ -122,7 +123,14 @@ protected void readFromStream(ByteBuf data)
 @Override
 protected void execute()
   {
-  StructureTemplateManager.instance().onStructureImageNameList(imageNames);
+  if(player.worldObj.isRemote)
+    {
+    StructureTemplateManagerClient.instance().handleStructureImageNameList(imageNames);    
+    }
+  else
+    {
+    StructureTemplateManager.instance().handleClientImageNameListRequest(player, imageNames);
+    }
   }
 
 }
