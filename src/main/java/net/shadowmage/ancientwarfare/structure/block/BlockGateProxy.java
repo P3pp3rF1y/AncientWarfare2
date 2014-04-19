@@ -52,6 +52,12 @@ public BlockGateProxy(String regName)
   }
 
 @Override
+public boolean hasTileEntity(int metadata)
+  {
+  return true;
+  }
+
+@Override
 public TileEntity createTileEntity(World world, int metadata)
   {
   return new TEGateProxy();
