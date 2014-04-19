@@ -486,7 +486,7 @@ void parseFromLines(List<String> lines)
   String line = it.next();
   it.remove();
   String data = line.split("\\{", -1)[1];
-  data = data.split("\\}")[0];
+  data = data.split("\\}",-1)[0];
   this.data = data;
   }
 @Override

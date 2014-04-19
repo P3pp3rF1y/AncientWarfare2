@@ -212,7 +212,7 @@ private int loadTemplatesFromZip()
           loadStructureImage(entry.getName(), z.getInputStream(entry));
           continue;
           }
-        else if(!entry.getName().toLowerCase().startsWith("."+AWStructureStatics.templateExtension))
+        else if(!entry.getName().toLowerCase().endsWith("."+AWStructureStatics.templateExtension))
           {
           continue;
           }

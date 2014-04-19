@@ -181,14 +181,23 @@ private StructureTemplate parseTemplateLines(String fileName, List<String> lines
           break;
           }
         }
-      TemplateRule rule = parseRule(groupedLines, "rule");
-      if(rule!=null)
+      try
         {
-        parsedRules.add(rule);
-        if(rule.ruleNumber>highestParsedRule)
+        TemplateRule rule = parseRule(groupedLines, "rule");
+        if(rule!=null)
           {
-          highestParsedRule = rule.ruleNumber;
+          parsedRules.add(rule);
+          if(rule.ruleNumber>highestParsedRule)
+            {
+            highestParsedRule = rule.ruleNumber;
+            }
           }
+        }
+      catch(TemplateParsingException e)
+        {
+        AWLog.logError("Caught exception parsing template rule for structure: "+name);
+        AWLog.logError(e.getMessage());
+//        e.printStackTrace();
         }
       groupedLines.clear();
       } 
@@ -208,10 +217,19 @@ private StructureTemplate parseTemplateLines(String fileName, List<String> lines
           break;
           }
         }
-      TemplateRuleEntity rule = (TemplateRuleEntity) parseRule(groupedLines, "entity");
-      if(rule!=null)
+      try
         {
-        parsedEntities.add(rule);
+        TemplateRuleEntity rule = (TemplateRuleEntity) parseRule(groupedLines, "entity");
+        if(rule!=null)
+          {
+          parsedEntities.add(rule);
+          }        
+        }
+      catch(TemplateParsingException e)
+        {
+        AWLog.logError("Caught exception parsing template rule for structure: "+name);
+        AWLog.logError(e.getMessage());
+//        e.printStackTrace();        
         }
       groupedLines.clear();
       } 
@@ -250,15 +268,17 @@ private StructureTemplate parseTemplateLines(String fileName, List<String> lines
     }
   
   entityRuleArray = new TemplateRuleEntity[parsedEntities.size()];
+  int ruleNumber = 0;
   for(TemplateRuleEntity rule : parsedEntities)
     {
-    entityRuleArray[rule.ruleNumber] = rule;
+    entityRuleArray[ruleNumber] = rule;
+    ruleNumber++;
     }
   
   return constructTemplate(name, xSize, ySize, zSize, xOffset, yOffset, zOffset, templateData, ruleArray, entityRuleArray, validation);  
   }
 
-private TemplateRule parseRule(List<String> templateLines, String ruleType)
+private TemplateRule parseRule(List<String> templateLines, String ruleType) throws TemplateParsingException
   {
   return TemplateRule.getRule(templateLines, ruleType);
   }
@@ -295,7 +315,7 @@ private void parseLayer(List<String> templateLines, int yLayer, int xSize, int y
     }
   }
 
-private static class TemplateParsingException extends Exception
+public static class TemplateParsingException extends Exception
 {
 public TemplateParsingException(String string)
   {

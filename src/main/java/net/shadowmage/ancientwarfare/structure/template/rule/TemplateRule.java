@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.core.util.NBTTools;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
+import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser.TemplateParsingException;
 
 /**
  * base template-rule class.  Plugins should define their own rule classes.
@@ -151,7 +152,7 @@ public final static void writeRuleLines(TemplateRule rule, BufferedWriter out, S
   out.newLine();
   }
 
-public static final TemplateRule getRule(List<String> ruleData, String ruleType)
+public static final TemplateRule getRule(List<String> ruleData, String ruleType) throws TemplateParsingException
   {
   Iterator<String> it = ruleData.iterator();
   String name = null;
@@ -194,11 +195,16 @@ public static final TemplateRule getRule(List<String> ruleData, String ruleType)
   Class<?extends TemplateRule> clz = StructurePluginManager.instance().getRuleByName(name);
   if(name==null || ruleNumber<0 || ruleDataPackage.size()==0 || clz==null)
     {
-    throw new IllegalArgumentException("Not enough data to create template rule.\n"+
+    throw new TemplateParser.TemplateParsingException("Not enough data to create template rule.\n"+
         "name: "+name+"\n"+
         "number:"+ruleNumber+"\n"+
         "ruleDataPackage.size:"+ruleDataPackage.size()+"\n"+
         "ruleClass: "+clz);
+//    throw new IllegalArgumentException("Not enough data to create template rule.\n"+
+//        "name: "+name+"\n"+
+//        "number:"+ruleNumber+"\n"+
+//        "ruleDataPackage.size:"+ruleDataPackage.size()+"\n"+
+//        "ruleClass: "+clz);
     }
   
   try
