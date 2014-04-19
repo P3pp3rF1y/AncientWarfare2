@@ -38,7 +38,7 @@ List<EntityPair> chickensToBreed = new ArrayList<EntityPair>();
 
 int wheatCount;
 int bucketCount;
-boolean hasShears;
+ItemStack shears = null;
 List<EntityPair> cowsToBreed = new ArrayList<EntityPair>();
 List<Integer> cowsToMilk = new ArrayList<Integer>();
 List<EntityPair> sheepToBreed = new ArrayList<EntityPair>();
@@ -132,7 +132,7 @@ private void countResources()
   seedCount = 0;
   wheatCount = 0;
   bucketCount = 0;
-  hasShears = false;
+  shears =null;
   ItemStack stack;
   for(int i = 27; i < 30; i++)
     {
@@ -161,7 +161,7 @@ private void countResources()
       }
     else if(stack.getItem()==Items.shears)
       {
-      hasShears = true;
+      shears = stack;
       }
     }
   }
@@ -338,15 +338,12 @@ private void processWork()
       return;
       }
     }
-  if(hasShears && !sheepToShear.isEmpty())
+  if(shears!=null && !sheepToShear.isEmpty())
     {
     AWLog.logDebug("attempting shearing of sheep..");
     didWork = tryShearing(sheepToShear);
-    if(didWork)
+    if(didWork)      
       {
-      /**
-       * TODO handle wool drops from sheep
-       */
       return;
       }
     }
@@ -396,7 +393,15 @@ private boolean tryMilking(List<Integer> targets)
 
 private boolean tryShearing(List<Integer> targets)
   {
-  return false;
+  if(targets.isEmpty()){return false;}
+  EntitySheep sheep = (EntitySheep) worldObj.getEntityByID(targets.remove(0));
+  if(sheep.getSheared()){return false;}
+  ArrayList<ItemStack> items = sheep.onSheared(shears, worldObj, xCoord, yCoord, zCoord, 0);
+  for(ItemStack item : items)
+    {
+    addStackToInventory(item, InventorySide.TOP);
+    }
+  return true;
   }
 
 private boolean tryCulling(List<Integer> targets)
@@ -463,7 +468,7 @@ private boolean hasAnimalWork()
       || (seedCount>0 && !chickensToBreed.isEmpty())
       || (wheatCount>0 && (!cowsToBreed.isEmpty() || !sheepToBreed.isEmpty()))
       || (bucketCount>0 && !cowsToMilk.isEmpty())
-      || (hasShears && !sheepToShear.isEmpty());
+      || (shears!=null && !sheepToShear.isEmpty());
   }
 
 @Override
