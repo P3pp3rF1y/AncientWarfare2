@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -16,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.core.gui.elements.TexturedRectangle;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -32,6 +34,8 @@ Label selection;
 HashMap<Label, StructureTemplateClient> templateMap = new HashMap<Label, StructureTemplateClient>();
 
 ComparatorStructureTemplateClient sorter;
+
+TexturedRectangle rect;
 
 public GuiStructureSelection(ContainerBase par1Container)
   {
@@ -78,11 +82,16 @@ public void initElements()
       refreshGui();
       }
     };
-  addGuiElement(filterInput);  
+  addGuiElement(filterInput);
+  
+
+  rect = new TexturedRectangle(256, 0, 320, 240, (ResourceLocation)null, 320, 240, 0, 0, 320, 240);
+  addGuiElement(rect);
   
   ContainerStructureSelection cont = (ContainerStructureSelection)inventorySlots;
   StructureTemplateClient t = StructureTemplateManagerClient.instance().getClientTemplate(cont.structureName);
-  this.setSelection(t);
+  this.setSelection(t);  
+
   }
 
 @Override
@@ -128,6 +137,16 @@ private void setSelection(StructureTemplateClient template)
   {
   this.currentSelection = template;
   this.setSelectionName(template==null? StatCollector.translateToLocal("guistrings.none") : template.name);
+  
+  if(template!=null)
+    {
+    ResourceLocation l = StructureTemplateManagerClient.instance().getImageFor(template.name);
+    rect.setTexture(l);
+    }
+  else
+    {
+    rect.setTexture(null);
+    }
   }
 
 public void setSelectionName(String name)
