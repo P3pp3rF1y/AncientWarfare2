@@ -5,6 +5,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;
@@ -39,7 +40,7 @@ protected void addSettingsInventorySlots()
       if(stack!=null && stack.getItem() instanceof ItemBlock)
         {
         ItemBlock block = (ItemBlock)stack.getItem();
-        if(block.field_150939_a==AWStructuresItemLoader.spawnerBlock)
+        if(block.field_150939_a==AWBlocks.advancedSpawner)
           {
           return false;
           }

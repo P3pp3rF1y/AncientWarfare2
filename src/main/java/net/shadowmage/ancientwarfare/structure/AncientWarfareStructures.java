@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlockLoader;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.ContainerGateControl;
@@ -107,7 +108,7 @@ public void preInit(FMLPreInitializationEvent evt)
    */
   statics.load();
   AWStructuresItemLoader.load();
-  BlockDataManager.instance().load();
+  AWStructuresBlockLoader.load();
   String path = evt.getModConfigurationDirectory().getAbsolutePath();
   TemplateLoader.instance().initializeAndExportDefaults(path);  
 
@@ -118,7 +119,7 @@ public void preInit(FMLPreInitializationEvent evt)
 public void init(FMLInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Structures Init started"); 
-  
+  BlockDataManager.instance().load();
 
   AWLog.log("Ancient Warfare Structures Init completed");
   }

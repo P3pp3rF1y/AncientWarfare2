@@ -15,6 +15,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -491,7 +492,7 @@ public void spawnEntities(World world, int x, int y, int z, int grpIndex)
     int a = (a1<<16)|(a2&0x0000ffff);
     int b = (b1<<16)|(b2&0x0000ffff);
     AWLog.logDebug("adding block event...");
-    world.addBlockEvent(x, y, z, AWStructuresItemLoader.spawnerBlock, a, b);    
+    world.addBlockEvent(x, y, z, AWBlocks.advancedSpawner, a, b);    
     index++;
     }
   }

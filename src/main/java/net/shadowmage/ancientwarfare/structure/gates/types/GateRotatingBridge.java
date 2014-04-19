@@ -23,10 +23,10 @@ package net.shadowmage.ancientwarfare.structure.gates.types;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 public class GateRotatingBridge extends Gate
@@ -123,7 +123,7 @@ public boolean canActivate(EntityGate gate, boolean open)
       for(int z = min.z; z<=max.z; z++)
         {
         id = gate.worldObj.getBlock(x, min.y, z);
-        if(!gate.worldObj.isAirBlock(x, min.y, z) && id!=AWStructuresItemLoader.gateProxy)
+        if(!gate.worldObj.isAirBlock(x, min.y, z) && id!=AWBlocks.gateProxy)
           {
           badBlock = true;
           break;
@@ -174,7 +174,7 @@ public void onGateStartOpen(EntityGate gate)
       for(int z = min.z; z<= max.z; z++)
         {        
         id = gate.worldObj.getBlock(x, y, z);
-        if(id==AWStructuresItemLoader.gateProxy)
+        if(id==AWBlocks.gateProxy)
           {
           gate.worldObj.setBlockToAir(x, y, z);
           }
@@ -233,7 +233,7 @@ public void onGateFinishOpen(EntityGate gate)
         id = gate.worldObj.getBlock(x, y, z);
         if(id==Blocks.air)
           {
-          gate.worldObj.setBlock(x, y, z, AWStructuresItemLoader.gateProxy);
+          gate.worldObj.setBlock(x, y, z, AWBlocks.gateProxy);
           TileEntity te = gate.worldObj.getTileEntity(x, y, z);
           if(te!=null && te instanceof TEGateProxy)
             {
@@ -271,7 +271,7 @@ public void onGateStartClose(EntityGate gate)
           continue;
           }
         id = gate.worldObj.getBlock(x, y, z);
-        if(id==AWStructuresItemLoader.gateProxy)
+        if(id==AWBlocks.gateProxy)
           {
           gate.worldObj.setBlockToAir(x, y, z);
           }
@@ -297,7 +297,7 @@ public void onGateFinishClose(EntityGate gate)
         {
         if(gate.worldObj.isAirBlock(x, y, z))
           {
-          gate.worldObj.setBlock(x, y, z, AWStructuresItemLoader.gateProxy);
+          gate.worldObj.setBlock(x, y, z, AWBlocks.gateProxy);
           TileEntity te = gate.worldObj.getTileEntity(x, y, z);
           if(te!=null && te instanceof TEGateProxy)
             {

@@ -30,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
@@ -274,7 +275,7 @@ public void onGateStartOpen(EntityGate gate)
       for(int z = min.z; z<= max.z; z++)
         {
         id = gate.worldObj.getBlock(x, y, z);
-        if(id==AWStructuresItemLoader.gateProxy)
+        if(id==AWBlocks.gateProxy)
           {
           gate.worldObj.setBlockToAir(x, y, z);
           }
@@ -315,7 +316,7 @@ public void onGateFinishClose(EntityGate gate)
         id = gate.worldObj.getBlock(x, y, z);
         if(id==Blocks.air)
           {
-          gate.worldObj.setBlock(x, y, z, AWStructuresItemLoader.gateProxy);
+          gate.worldObj.setBlock(x, y, z, AWBlocks.gateProxy);
           TileEntity te = gate.worldObj.getTileEntity(x, y, z);
           if(te!=null && te instanceof TEGateProxy)
             {
