@@ -118,7 +118,7 @@ private void loadTemplateImage(String imageName)
     File file = new File(pathBase+imageName);
     if(file.exists())
       {    
-      AWLog.logDebug("Loading template image from file");
+      AWLog.logDebug("Loading template image from file: "+imageName);
       Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureFileBased(loc, file));
       clientTemplateImages.put(imageName, loc);    
       }
