@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -126,6 +127,7 @@ protected void placeAir()
 
 protected void placeRule(TemplateRule rule)
   {  
+  if(destination.y<=0){return;}
   if(rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority))
     {
     rule.handlePlacement(world, turns, destination.x, destination.y, destination.z);    

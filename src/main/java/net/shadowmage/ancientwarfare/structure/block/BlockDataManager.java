@@ -2,8 +2,10 @@ package net.shadowmage.ancientwarfare.structure.block;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.config.Statics;
@@ -24,6 +26,8 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 public class BlockDataManager
 {
 
+
+private HashMap<String, Block> blockUnlocalizedNameToBlock = new HashMap<String, Block>();
 
 private HashMap<Integer, String> blockIDToName = new HashMap<Integer, String>();
 private HashMap<Integer, Block> blockIDToBlock = new HashMap<Integer, Block>();
@@ -55,6 +59,15 @@ public void load()
   loadBlockRotations(StringTools.getResourceLines(Statics.resourcePath+"block_rotations.csv"));
   loadBlockPriorities(StringTools.getResourceLines(Statics.resourcePath+"block_priorities.csv"));
   loadBlockItems(StringTools.getResourceLines(Statics.resourcePath+"block_items.csv"));
+  
+  Set keys = Block.blockRegistry.getKeys();
+  Block block;
+  for(Object key : keys)    
+    {
+    block = (Block)Block.blockRegistry.getObject(key);
+    if(block==null){return;}
+    blockUnlocalizedNameToBlock.put(block.getUnlocalizedName(), block);
+    }
   }
 
 /**
@@ -280,7 +293,7 @@ public Block getBlockForID(int id)
     {
     return blockIDToBlock.get(id);
     }
-  return null;
+  return Blocks.air;
   }
 
 /**
@@ -322,7 +335,11 @@ public Block getBlockForName(String name)
     {
     return blockNameToBlock.get(name);
     }
-  return null;
+  else if(blockUnlocalizedNameToBlock.containsKey(name))
+    {
+    return blockUnlocalizedNameToBlock.get(name);
+    }
+  return Blocks.air;
   }
 
 /**

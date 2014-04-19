@@ -42,9 +42,6 @@ public GuiStructureSelection(ContainerBase par1Container)
   super(par1Container, 256, 240, defaultBackground);
   sorter = new ComparatorStructureTemplateClient();
   sorter.setFilterText("");
-  /**
-   * TODO set initial selection name from player.currentItem
-   */
   }
 
 @Override
@@ -66,13 +63,13 @@ public void initElements()
       }
     });  
   
-  selection = new Label(8,8, "");
+  Label label = new Label(8,8, StatCollector.translateToLocal("guistrings.current_selection"));
+  addGuiElement(label);
+  
+  selection = new Label(8, 20, "");
   addGuiElement(selection);
   
-  selectionArea = new CompositeScrolled(0, 40, 256, 200);
-  addGuiElement(selectionArea);
-  
-  filterInput = new Text(8, 24, 240-16, "", this)
+  filterInput = new Text(8, 18+12, 240-16, "", this)
     {
     //kind of dirty...should possibly implement a real onCharEntered callback for when input actually changes
     @Override
@@ -84,8 +81,10 @@ public void initElements()
     };
   addGuiElement(filterInput);
   
-
-  rect = new TexturedRectangle(256, 0, 320, 240, (ResourceLocation)null, 320, 240, 0, 0, 320, 240);
+  selectionArea = new CompositeScrolled(0, 138, 256, 240-138);
+  addGuiElement(selectionArea);
+  
+  rect = new TexturedRectangle(43, 42, 170, 96, (ResourceLocation)null, 512, 288, 0, 0, 512, 288);
   addGuiElement(rect);
   
   ContainerStructureSelection cont = (ContainerStructureSelection)inventorySlots;
@@ -151,8 +150,7 @@ private void setSelection(StructureTemplateClient template)
 
 public void setSelectionName(String name)
   {
-  String text = StatCollector.translateToLocal("guistrings.current_selection")+": "+name;
-  selection.setText(text);
+  selection.setText(name);
   }
 
 }
