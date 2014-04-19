@@ -449,7 +449,7 @@ public void initializeValues()
     alias = entry.getValue().getString();
     try
       {
-      foundClass = AncientWarfareCore.instance.getClass().forName(fqcn);
+      foundClass = Class.forName(fqcn);
       if(foundClass!=null)
         {        
         AWLog.logDebug("mapping alias for class: "+foundClass+"  alias: "+alias);
