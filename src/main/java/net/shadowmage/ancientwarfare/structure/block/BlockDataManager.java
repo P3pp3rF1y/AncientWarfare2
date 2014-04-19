@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.Statics;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
@@ -68,6 +69,9 @@ public void load()
     if(block==null){return;}
     blockUnlocalizedNameToBlock.put(block.getUnlocalizedName(), block);
     }
+  
+  //patches for borked 1.6 names
+  blockUnlocalizedNameToBlock.put("brick", Blocks.brick_block);
   }
 
 /**
@@ -88,7 +92,11 @@ private void loadBlockNamesAndIDs(List<String> lines)
     name = bits[0];
     id = StringTools.safeParseInt(bits[1]);    
     block = Block.getBlockFromName(name);
-    
+    if(block==null)
+      {
+      AWLog.logError("ERROR parsing block name from name mapping: "+name+" id: "+id+" found: "+block);
+      continue;
+      }
     blockIDToBlock.put(id, block);
     blockIDToName.put(id, name);
     blockNameToBlock.put(name, block);
@@ -483,7 +491,7 @@ boolean noItem = false;
  */
 ItemStack[] metaStacks = new ItemStack[16];
 
-byte[] rotations;
+byte[] rotations = new byte[16];
 byte buildPriority = 0;
 
 public int getRotatedMeta(int meta)
