@@ -66,6 +66,26 @@ public boolean hasPlayerCompleted(World world, String player, int research)
   return getResearchData(world).hasPlayerCompletedResearch(player, research);
   }
 
+public boolean addResearchFromNotes(World world, String player, int research)
+  {
+  if(hasPlayerCompleted(world, player, research))
+    {
+    return false;
+    }
+  addResearch(world, player, research);
+  return true;
+  }
+
+public boolean addProgressFromNotes(World world, String player, int research)
+  {
+  if(world.isRemote)
+    {
+    return false;
+    }
+  ResearchGoal goal = ResearchGoal.getGoal(research);
+  return getResearchData(world).addProgress(player, goal.getTotalResearchTime()/4);
+  }
+
 /**
  * @param world
  * @param playerName

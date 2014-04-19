@@ -395,6 +395,7 @@ private boolean tryShearing(List<Integer> targets)
   {
   if(targets.isEmpty()){return false;}
   EntitySheep sheep = (EntitySheep) worldObj.getEntityByID(targets.remove(0));
+  if(sheep==null){return false;}
   if(sheep.getSheared()){return false;}
   ArrayList<ItemStack> items = sheep.onSheared(shears, worldObj, xCoord, yCoord, zCoord, 0);
   for(ItemStack item : items)

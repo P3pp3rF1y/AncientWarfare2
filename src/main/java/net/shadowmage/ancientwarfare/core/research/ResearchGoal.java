@@ -291,4 +291,9 @@ public static Set<Integer> getResearchableGoalsFor(Collection<Integer> knownRese
   return researchableGoals;
   }
 
+public static Collection<ResearchGoal> getResearchGoals()
+  {
+  return goalsByName.values(); 
+  }
+
 }

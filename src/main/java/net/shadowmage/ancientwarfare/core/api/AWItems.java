@@ -6,6 +6,7 @@ public class AWItems
 {
 
 public static Item researchBook;
+public static Item researchNote;
 
 
 }

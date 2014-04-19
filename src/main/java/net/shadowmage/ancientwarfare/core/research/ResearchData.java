@@ -187,6 +187,14 @@ public List<Integer> getQueuedResearch(String playerName)
   return Collections.emptyList();
   }
 
+public boolean addProgress(String playerName, int amount)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    return playerResearchEntries.get(playerName).addProgress(amount);
+    }
+  return false;
+  }
 
 private static final class ResearchEntry
 {
@@ -198,6 +206,20 @@ private List<Integer> queuedResearch = new ArrayList<Integer>();
 private boolean knowsResearch(int num)
   {
   return completedResearch.contains(num);
+  }
+
+public boolean addProgress(int amount)
+  {
+  if(currentResearch>=0)
+    {
+    currentProgress+=amount;
+    if(currentProgress>=ResearchGoal.getGoal(currentResearch).getTotalResearchTime())
+      {
+      finishResearch(currentResearch);
+      }
+    return true;
+    }
+  return false;
   }
 
 public void finishResearch(int goal)
@@ -244,6 +266,15 @@ private int getInProgressResearch()
 private void addResearch(int num)
   {  
   this.completedResearch.add(num);
+  if(this.queuedResearch.contains(Integer.valueOf(num)))
+    {
+    this.queuedResearch.remove(Integer.valueOf(num));
+    }
+  if(this.currentResearch==num)
+    {
+    this.currentResearch = -1;
+    this.currentProgress = 0;
+    }
   }
 
 private void addQueuedResearch(int num)

@@ -40,15 +40,21 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
     }
   else if(stack.getTagCompound().hasKey("pos1"))
     {
+    BlockPosition pos1 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos1"));
+    /**
+     * TODO validate max size -- how to know what max size is...pull from block-instance?
+     */
     NBTTagCompound tag = new NBTTagCompound();
     hit.writeToNBT(tag);
     stack.getTagCompound().setTag("pos2", tag);
+    //TODO send chat message
     }
   else
     {
     NBTTagCompound tag = new NBTTagCompound();
     hit.writeToNBT(tag);
     stack.getTagCompound().setTag("pos1", tag);
+    //TODO send chat message
     }
   }
 
@@ -83,7 +89,7 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   /**
    * TODO validate that block is not inside work bounds of any other nearby worksites ??
    */
-  metadata = BlockIconRotationMap.getBlockMetaForPlacement(player, true);
+  metadata = BlockIconRotationMap.getBlockMetaForPlacement(player, false);
   
   boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
   if(val)

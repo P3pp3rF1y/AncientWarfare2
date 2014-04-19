@@ -100,6 +100,7 @@ guistrings.gate.choose_pos_one=Press alt-item use to select first position.
 guistrings.gate.choose_pos_two=Press alt-item use to select second position.
 guistrings.gate.constuct=Right-Click: Construct Gate
 guistrings.gate.clear_item=(Sneak)Right-Click: Clear Item
+#research guis/items/misc
 guistrings.research.current_goal=Current Goal
 guistrings.research.queued_research=Queued Research
 guistrings.research.learnable_research=Learnable Research
@@ -112,6 +113,12 @@ guistrings.research.input=Input
 guistrings.research.needed=Needed
 guistrings.research.progress=Progress
 guistrings.research.use_adjacent_inventory=Use Adjacent Inventory
+guistrings.research.known_research=Known Research
+guistrings.research.unknown_research=Unknown Research
+guistrings.research.click_to_learn=Right Click To Learn
+guistrings.research.researcher_name=Researcher Name
+guistrings.research.click_to_add_progress=Right Click To Add Progress To Current Research
+
 
 #research
 research.test_research1=Test Research 1
@@ -154,3 +161,4 @@ item.gateDoubleWood.name=Wooden Gate (split open)
 item.gateSingleIron.name=Iron Gate (slide open)
 item.gateSingleWood.name=Wooden Gate (slide open)
 item.gateDrawbridge.name=Drawbridge (rotate open)
+item.research_note.name=Research Note

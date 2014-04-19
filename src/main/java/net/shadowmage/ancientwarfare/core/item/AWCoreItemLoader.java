@@ -13,6 +13,9 @@ public void load()
   {
   AWItems.researchBook = new ItemResearchBook("research_book");
   GameRegistry.registerItem(AWItems.researchBook, "research_book");
+  
+  AWItems.researchNote = new ItemResearchNotes("research_note");
+  GameRegistry.registerItem(AWItems.researchNote, "research_note");
   }
 
 }
