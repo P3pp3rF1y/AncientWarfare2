@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -43,6 +44,7 @@ public static StructureTemplateManager instance(){return instance;}
 
 private HashMap<String,StructureTemplateClient> clientTemplates = new HashMap<String,StructureTemplateClient>();//server-side client-templates
 private HashMap<String,BufferedImage> templateImages = new HashMap<String,BufferedImage>();//server-side images
+private HashMap<String,String> imageMD5s = new HashMap<String,String>();
 private HashMap<String,StructureTemplate> loadedTemplates = new HashMap<String,StructureTemplate>();
 
 public void addTemplate(StructureTemplate template)
@@ -84,7 +86,7 @@ public void onPlayerConnect(EntityPlayerMP player)
   pkt.packetData.setTag("structureList", list);
   NetworkHandler.sendToPlayer(player, pkt);
   
-  PacketStructureImageList pkt2 = new PacketStructureImageList(templateImages.keySet());
+  PacketStructureImageList pkt2 = new PacketStructureImageList(this.imageMD5s);
   NetworkHandler.sendToPlayer(player, pkt2);
   }
 
@@ -93,16 +95,17 @@ public StructureTemplate getTemplate(String name)
   return this.loadedTemplates.get(name);
   }
 
-public void addTemplateImage(String imageName, BufferedImage image)
+public void addTemplateImage(String imageName, BufferedImage image, String md5)
   {
   AWLog.logDebug("Loading server-side template image of: "+imageName);
   this.templateImages.put(imageName, image);
+  this.imageMD5s.put(imageName, md5);
   }
 
-public void handleClientImageNameListRequest(EntityPlayer player, List<String> imageNames)
+public void handleClientImageNameListRequest(EntityPlayer player, Map<String, String> imageNames)
   {
   PacketStructureImageData pkt;
-  for(String imageName : imageNames)
+  for(String imageName : imageNames.keySet())
     {
     if(!templateImages.containsKey(imageName)){continue;}
     pkt = new PacketStructureImageData(imageName, templateImages.get(imageName));
@@ -114,6 +117,11 @@ public void handleClientImageNameListRequest(EntityPlayer player, List<String> i
 public BufferedImage getTemplateImage(String imageName)
   {
   return templateImages.get(imageName);
+  }
+
+public String getImageMD5(String imageName)
+  {
+  return imageMD5s.get(imageName);
   }
 
 }

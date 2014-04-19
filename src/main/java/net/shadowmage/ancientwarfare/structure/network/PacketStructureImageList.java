@@ -9,9 +9,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -20,11 +19,11 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 public class PacketStructureImageList extends PacketBase
 {
 
-List<String> imageNames = new ArrayList<String>();
+Map<String, String> imageNames = new HashMap<String, String>();
 
-public PacketStructureImageList(Collection<String> imageNames)
+public PacketStructureImageList(Map<String, String> imageNames)
   {
-  this.imageNames.addAll(imageNames);
+  this.imageNames.putAll(imageNames);
   }
 
 public PacketStructureImageList()
@@ -39,10 +38,12 @@ protected void writeToStream(ByteBuf data)
   BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(bbos));
   try
     {
-    for(String line : imageNames)
+    for(String line : imageNames.keySet())
       {
       writer.write(line);
       writer.newLine();      
+      writer.write(imageNames.get(line));
+      writer.newLine();
       }
     } 
   catch (IOException e)
@@ -83,11 +84,12 @@ protected void readFromStream(ByteBuf data)
   BufferedReader reader = new BufferedReader(isr);
   
   String line = null;
+  String line2;
   try
     {
-    while((line = reader.readLine())!=null)
+    while((line = reader.readLine())!=null && (line2 = reader.readLine())!=null)
       {
-      imageNames.add(line);
+      imageNames.put(line, line2);
       }
     } 
   catch (IOException e1)
