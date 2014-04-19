@@ -97,7 +97,7 @@ public StructureTemplate getTemplate(String name)
 
 public void addTemplateImage(String imageName, BufferedImage image, String md5)
   {
-  AWLog.logDebug("Loading server-side template image of: "+imageName);
+  AWLog.logDebug("Loading server-side template image of: "+imageName+" with md5 of: "+md5);
   this.templateImages.put(imageName, image);
   this.imageMD5s.put(imageName, md5);
   }

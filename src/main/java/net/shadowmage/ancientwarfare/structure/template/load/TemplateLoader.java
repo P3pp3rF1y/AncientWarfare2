@@ -183,7 +183,6 @@ private void loadStructureImage(String imageName, InputStream is)
         sb.append(String.format("%02x", b&0xff));
         }
       md5 = sb.toString();
-      AWLog.logDebug("parsed md5 of: "+ md5 +" for image: "+imageName);
       imageMD5s.put(imageName, md5);
       }
     else
@@ -221,7 +220,7 @@ private int loadTemplatesFromZip()
   for(File f : this.probableZipFiles)
     {
     parsed = 0;
-    AWLog.logDebug("parsing templates from zip file: "+f.getName());
+    AWLog.logDebug("Parsing templates from zip file: "+f.getName());
     try
       {
       z = new ZipFile(f);
@@ -239,7 +238,7 @@ private int loadTemplatesFromZip()
           {
           continue;
           }
-        AWLog.logDebug("loading template: "+entry.getName());
+        AWLog.logDebug("Loading template ("+f.getName()+"): "+entry.getName());
         template = loadTemplateFromZip(entry, z.getInputStream(entry));
         if(template!=null)
           {
