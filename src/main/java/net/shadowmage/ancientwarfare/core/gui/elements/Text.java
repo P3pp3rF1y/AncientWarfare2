@@ -314,4 +314,23 @@ public String getText()
   return text;
   }
 
+/**
+ * TODO...unfinished
+ * @author Shadowmage
+ *
+ */
+public abstract static class TextValidator
+{
+public abstract boolean isCharValid(char ch);
+}
+
+public static final TextValidator STANDARD_VALIDATOR = new TextValidator()
+  {
+  @Override
+  public boolean isCharValid(char ch)
+    {
+    return false;
+    }
+  };
+
 }
