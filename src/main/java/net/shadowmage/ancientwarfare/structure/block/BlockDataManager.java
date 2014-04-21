@@ -188,12 +188,12 @@ private void loadBlockItems(List<String> lines)
       item = itemNameToItem.get(itemName);   
       if(item!=null)
         {
-        info.metaStacks[blockMeta] = new ItemStack(item, itemDamage, itemQuantity);
+        info.metaStacks[blockMeta] = new ItemStack(item, itemQuantity, itemDamage);
         }
       else
         {
         block2 = blockNameToBlock.get(itemName);
-        info.metaStacks[blockMeta] = new ItemStack(block2, itemDamage, itemQuantity);
+        info.metaStacks[blockMeta] = new ItemStack(block2, itemQuantity, itemDamage);
         }
       }
     }

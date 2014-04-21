@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -78,9 +79,10 @@ public boolean shouldReuseRule(World world, Block block, int meta, int turns, Ti
 @Override
 public void addResources(List<ItemStack> resources)
   {
-  /**
-   * TODO
-   */
+  Block block = BlockDataManager.instance().getBlockForName(blockName);
+  if(block==null || block==Blocks.air){return;}
+  ItemStack item = BlockDataManager.instance().getInventoryStackForBlock(block, meta);
+  if(item!=null){resources.add(item);}
   }
 
 @Override
