@@ -14,6 +14,7 @@ GuiDraftingStation parent;
 public GuiStructureSelectionDraftingStation(GuiDraftingStation parent)
   {
   super((ContainerBase) parent.inventorySlots);
+  this.parent = parent;
   }
 
 @Override

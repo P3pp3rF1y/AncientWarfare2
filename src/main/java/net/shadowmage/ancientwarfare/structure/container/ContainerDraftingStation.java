@@ -7,7 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
@@ -18,7 +20,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase
 public boolean isStarted = false;
 public boolean isFinished =false;
 public int remainingTime;
-public String structureName;//selection name
+public int totalTime;
 public List<ItemStack> neededResources = new ArrayList<ItemStack>();
 
 private TileDraftingStation tile;
@@ -33,6 +35,9 @@ public ContainerDraftingStation(EntityPlayer player, int x, int y, int z)
   isStarted = tile.isStarted();
   isFinished = tile.isFinished();
   remainingTime = tile.getRemainingTime();
+  totalTime = tile.getTotalTime();
+  
+  AWLog.logDebug("set structure name to: "+structureName);
   
   int y2 = 94;
   
@@ -71,14 +76,52 @@ public void sendInitData()
   tag.setBoolean("isStarted", isStarted);
   tag.setBoolean("isFinished", isFinished);
   tag.setInteger("remainingTime", remainingTime);
+  tag.setInteger("totalTime", totalTime);
   if(structureName!=null)
     {
-    tag.setString("structureName", structureName);    
+    tag.setString("structName", structureName);    
     }
-  /**
-   * TODO send initial resource list
-   */
+  tag.setTag("resourceList", getResourceListTag(neededResources));
   this.sendDataToClient(tag);
+  }
+
+private NBTTagList getResourceListTag(List<ItemStack> resources)
+  {
+  NBTTagList list = new NBTTagList();
+  NBTTagCompound tag;
+  for(ItemStack item : resources)
+    {
+    tag = new NBTTagCompound();
+    item.writeToNBT(tag);
+    list.appendTag(tag);
+    }
+  return list;
+  }
+
+private void readResourceList(NBTTagList list, List<ItemStack> resources)
+  {
+  NBTTagCompound tag;
+  ItemStack stack;
+  for(int i = 0; i < list.tagCount(); i++)
+    {
+    tag = list.getCompoundTagAt(i);
+    stack = ItemStack.loadItemStackFromNBT(tag);
+    if(stack!=null){resources.add(stack);}
+    }
+  }
+
+public void handleStopInput()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setBoolean("stop", true);
+  this.sendDataToServer(tag);
+  }
+
+public void handleStartInput()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setBoolean("start", true);
+  this.sendDataToServer(tag);
   }
 
 @Override
@@ -90,26 +133,101 @@ public void handleNameSelection(String name)
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  if(tag.hasKey("structName")){}//TODO handle template selection, pass name to server-side tile
+  if(tag.hasKey("structName"))
+    {
+    if(player.worldObj.isRemote)
+      {
+      this.structureName = tag.getString("structName");
+      AWLog.logDebug("receieved structure name from server: "+structureName);
+      }
+    else
+      {
+      tile.setTemplate(tag.getString("structName"));      
+      }
+    }
+  if(tag.hasKey("clearName")){structureName = null;}
   if(tag.hasKey("isStarted")){isStarted = tag.getBoolean("isStarted");}
   if(tag.hasKey("isFinished")){isFinished = tag.getBoolean("isFinished");}
   if(tag.hasKey("remainingTime")){remainingTime = tag.getInteger("remainingTime");}
-  if(tag.hasKey("neededResources")){}//TODO
-  if(tag.hasKey("structureName")){structureName = tag.getString("structureName");}
+  if(tag.hasKey("totalTime")){totalTime = tag.getInteger("totalTime");}
+  if(tag.hasKey("resourceList"))
+    {
+    neededResources.clear();
+    readResourceList(tag.getTagList("resourceList", Constants.NBT.TAG_COMPOUND), neededResources);
+    }
+  if(tag.hasKey("stop"))
+    {
+    tile.stopCurrentWork();
+    }
+  if(tag.hasKey("start"))
+    {
+    tile.tryStart();
+    }
+  refreshGui();
   }
 
 @Override
 public void detectAndSendChanges()
   {
   super.detectAndSendChanges();
+  String tileName = tile.getCurrentTemplateName();  
+  NBTTagCompound tag = null;
+  if((structureName==null && tileName!=null) || (tileName==null && structureName!=null))
+    {
+    tag = new NBTTagCompound();
+    this.structureName = tileName;
+    if(this.structureName==null)
+      {
+      tag.setBoolean("clearName", true);
+      }
+    else
+      {
+      tag.setString("structName", structureName);
+      }
+    }  
+  else if(structureName!=null && tileName!=null && !structureName.equals(tileName))
+    {
+    structureName = tileName;
+    tag = new NBTTagCompound();
+    tag.setString("structName", structureName);
+    }
   if(tile.isFinished()!=isFinished)
     {
-    
+    if(tag==null){tag = new NBTTagCompound();}
+    isFinished = tile.isFinished();
+    tag.setBoolean("isFinished", isFinished);
     }
   if(tile.isStarted()!=isStarted)
     {
-    
-    }    
+    if(tag==null){tag = new NBTTagCompound();}
+    isStarted = tile.isStarted();
+    tag.setBoolean("isStarted", isStarted);
+    }
+  if(tile.getRemainingTime()!=remainingTime)
+    {
+    if(tag==null){tag = new NBTTagCompound();}
+    remainingTime = tile.getRemainingTime();
+    tag.setInteger("remainingTime", remainingTime);
+    }
+  if(tile.getTotalTime()!=totalTime)
+    {
+    if(tag==null){tag = new NBTTagCompound();}
+    totalTime = tile.getTotalTime();
+    tag.setInteger("totalTime", totalTime);
+    }
+  if(!neededResources.equals(tile.getNeededResources()))
+    {
+    if(tag==null){tag = new NBTTagCompound();}
+    AWLog.logDebug("detecting mismatched resource-lists....sending resource list to client...");
+    neededResources.clear();
+    neededResources.addAll(tile.getNeededResources());
+    NBTTagList list = getResourceListTag(neededResources);
+    tag.setTag("resourceList", list);
+    }
+  if(tag!=null)
+    {
+    sendDataToClient(tag);
+    }
   }
 
 }

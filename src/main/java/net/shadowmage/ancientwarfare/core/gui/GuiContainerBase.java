@@ -209,6 +209,7 @@ public void updateScreen()
   {
   if(this.shouldUpdate)
     {
+    ((ContainerBase)inventorySlots).setGui(this);
     this.initGui();
     this.shouldUpdate = false;
     }

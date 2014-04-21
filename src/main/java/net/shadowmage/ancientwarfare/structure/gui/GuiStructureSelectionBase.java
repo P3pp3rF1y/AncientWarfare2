@@ -59,6 +59,7 @@ public void initElements()
       if(currentSelection!=null)
         {
         container.handleNameSelection(currentSelection.name);
+        container.addSlots();
         closeGui();
         }
       }

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -23,6 +24,7 @@ CompositeScrolled resourceListArea;
 TexturedRectangle rect;
 Button selectButton;
 Button stopButton;
+Button startButton;
 Label selectionLabel;
 
 public GuiDraftingStation(ContainerBase par1Container)
@@ -40,14 +42,37 @@ public void initElements()
   resourceListArea = new CompositeScrolled(176, 96+8, 400-176, 240-96-8);
   addGuiElement(resourceListArea);
   
-  selectButton = new Button(8, 8, 95, 12, StatCollector.translateToLocal("guistrings.structure.select_structure"));
+  selectButton = new Button(8, 8, 95, 12, StatCollector.translateToLocal("guistrings.structure.select_structure"))
+    {
+    @Override
+    protected void onPressed()
+      {
+      container.removeSlots();
+      Minecraft.getMinecraft().displayGuiScreen(new GuiStructureSelectionDraftingStation(GuiDraftingStation.this));
+      }
+    };
   addGuiElement(selectButton);
   
   selectionLabel = new Label(8, 20, container.structureName==null ? StatCollector.translateToLocal("guistrings.structure.no_selection") : container.structureName);
   addGuiElement(selectionLabel);
   
-  stopButton = new Button(8, 32, 55, 12, StatCollector.translateToLocal("guistrings.stop"));  
-  addGuiElement(stopButton);
+  stopButton = new Button(8, 32, 55, 12, StatCollector.translateToLocal("guistrings.stop"))
+    {
+    @Override
+    protected void onPressed()
+      {
+      container.handleStopInput();
+      }
+    };  
+  
+  startButton = new Button(8, 32, 55, 12, StatCollector.translateToLocal("guistrings.start"))
+    {
+    @Override
+    protected void onPressed()
+      {
+      container.handleStartInput();
+      }
+    };  
   
   Label label = new Label(8, 94-16-18-12, StatCollector.translateToLocal("guistrings.output"));
   addGuiElement(label);
@@ -59,6 +84,9 @@ public void initElements()
 @Override
 public void setupElements()
   {
+  removeGuiElement(startButton);
+  removeGuiElement(stopButton);
+  container.setGui(this);
   resourceListArea.clearElements();
   ItemSlot slot;
   int totalHeight = 8;
@@ -71,10 +99,23 @@ public void setupElements()
   resourceListArea.setAreaSize(totalHeight+8);
   
   String name = container.structureName;
-  if(name==null){rect.setTexture(null);}
+  if(name==null)
+    {
+    rect.setTexture(null);
+    selectionLabel.setText(StatCollector.translateToLocal("guistrings.structure.no_selection"));
+    }
   else
     {
     rect.setTexture(StructureTemplateManagerClient.instance().getImageFor(name));
+    selectionLabel.setText(name);
+    }
+  if(container.isStarted)
+    {
+    addGuiElement(stopButton);
+    }
+  else if(container.structureName!=null)
+    {
+    addGuiElement(startButton);
     }
   }
 

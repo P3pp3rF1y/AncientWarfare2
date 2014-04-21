@@ -16,8 +16,6 @@ public GuiStructureSelection(ContainerBase par1Container)
   sorter.setFilterText("");
   }
 
-
-
 @Override
 protected Collection<StructureTemplateClient> getTemplatesForDisplay()
   {
