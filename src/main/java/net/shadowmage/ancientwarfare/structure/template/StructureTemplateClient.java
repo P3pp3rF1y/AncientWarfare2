@@ -27,13 +27,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class StructureTemplateClient
 {
 
 public final String name;
 public final int xSize, ySize, zSize, xOffset, yOffset, zOffset;
-List<ItemStack> resourceList = new ArrayList<ItemStack>();
+public final List<ItemStack> resourceList = new ArrayList<ItemStack>();
 public boolean survival;
 
 public StructureTemplateClient(StructureTemplate template)
@@ -75,7 +76,7 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("yo", yOffset);
   tag.setInteger("zo", zOffset);
   
-  if(survival)
+  if(survival && !resourceList.isEmpty())
     {
     NBTTagList stackList = new NBTTagList();
     NBTTagCompound stackTag;

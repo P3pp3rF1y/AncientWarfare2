@@ -6,10 +6,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 
-public class ContainerStructureSelection extends ContainerBase
+public class ContainerStructureSelection extends ContainerStructureSelectionBase
 {
 
-public String structureName;
 ItemStructureSettings buildSettings = new ItemStructureSettings();
 
 public ContainerStructureSelection(EntityPlayer player, int x, int y, int z)

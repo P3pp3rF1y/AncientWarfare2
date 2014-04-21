@@ -87,7 +87,9 @@ public void render(int mouseX, int mouseY, float partialTick)
       if (font == null){font = Minecraft.getMinecraft().fontRenderer;}
       
       GL11.glEnable(GL11.GL_LIGHTING);
+      GL11.glEnable(GL11.GL_DEPTH_TEST);//fix for chests / tile-renderers improper render stuff
       itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1);
+      GL11.glDisable(GL11.GL_DEPTH_TEST);
       if(renderTooltip)
         {
         itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1, String.valueOf(item.stackSize));        

@@ -27,22 +27,22 @@ public boolean isItemValid(ItemStack par1ItemStack)
   return super.isItemValid(par1ItemStack);
   }
 
-/**
- * Helper method to put a stack in the slot.
- */
-@Override
-public void putStack(ItemStack par1ItemStack)
-  {
-  if(isItemValid(par1ItemStack))
-    {
-    this.inventory.setInventorySlotContents(this.getSlotIndex(), par1ItemStack);
-    this.onSlotChanged();    
-    }
-  else
-    {
-    AWLog.logError("Some nubtard is trying to insert invalid stacks into container slots. stack rejected and deleted!!!: "+par1ItemStack);
-    new Exception().printStackTrace();
-    }
-  }
+///**
+// * Helper method to put a stack in the slot.
+// */
+//@Override
+//public void putStack(ItemStack par1ItemStack)
+//  {
+//  if(isItemValid(par1ItemStack))
+//    {
+//    this.inventory.setInventorySlotContents(this.getSlotIndex(), par1ItemStack);
+//    this.onSlotChanged();    
+//    }
+////  else
+////    {
+////    AWLog.logError("Some nubtard is trying to insert invalid stacks into container slots. stack rejected and deleted!!!: "+par1ItemStack);
+////    new Exception().printStackTrace();
+////    }
+//  }
 
 }

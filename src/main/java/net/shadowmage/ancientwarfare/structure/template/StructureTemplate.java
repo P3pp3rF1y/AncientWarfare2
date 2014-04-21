@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleEntity;
@@ -129,69 +130,65 @@ public String toString()
   }
 
 public List<ItemStack> getResourceList()
-{
-if(resourceList==null)
   {
-  TemplateRule rule;
-  List<ItemStack> stacks = new ArrayList<ItemStack>();
-  for(int x = 0; x < this.xSize; x++)
+  if(resourceList==null)
     {
-    for(int y = 0; y < this.ySize; y++)
+    AWLog.logDebug("creating resource list for template: "+name);
+    TemplateRule rule;
+    List<ItemStack> stacks = new ArrayList<ItemStack>();
+    for(int x = 0; x < this.xSize; x++)
       {
-      for(int z = 0; z < this.zSize; z++)
+      for(int y = 0; y < this.ySize; y++)
         {
-        rule = getRuleAt(x, y, z);
-        if(rule!=null)
+        for(int z = 0; z < this.zSize; z++)
           {
-          rule.addResources(stacks);
+          rule = getRuleAt(x, y, z);
+          if(rule!=null)
+            {
+            rule.addResources(stacks);
+            }
           }
         }
       }
+    compactStackList(stacks);
+    resourceList = new ArrayList<ItemStack>();
+    resourceList.addAll(stacks);
+    AWLog.logDebug("resource list created: "+resourceList);
     }
-  compactStackList(stacks);
-  resourceList = new ArrayList<ItemStack>();
-  resourceList.addAll(stacks);
+  return resourceList;
   }
-return resourceList;
-}
 
 private void compactStackList(List<ItemStack> stacks)
-{
-List<ItemStack> out = new ArrayList<ItemStack>();
-Item item;
-int dmg;
-int transfer;
-for(ItemStack inStack : stacks)
   {
-  item = inStack.getItem();
-  dmg = inStack.getItemDamage();
-  for(ItemStack outStack : out)
+  List<ItemStack> out = new ArrayList<ItemStack>();
+  Item item;
+  int dmg;
+  int transfer;
+  for(ItemStack inStack : stacks)
     {
-    if(outStack.stackSize < outStack.getMaxStackSize() && item==outStack.getItem() && dmg==outStack.getItemDamage() && ItemStack.areItemStackTagsEqual(inStack, outStack))
+    item = inStack.getItem();
+    dmg = inStack.getItemDamage();
+    for(ItemStack outStack : out)
       {
-      transfer = inStack.stackSize;
-      transfer = transfer + outStack.stackSize > outStack.getMaxStackSize() ? outStack.getMaxStackSize()-outStack.stackSize: transfer;
-      inStack.stackSize-=transfer;
-      outStack.stackSize+=transfer;        
-      if(inStack.stackSize<=0)
+      if(outStack.stackSize < outStack.getMaxStackSize() && item==outStack.getItem() && dmg==outStack.getItemDamage() && ItemStack.areItemStackTagsEqual(inStack, outStack))
         {
-        break;//break outStack iterator loop, as inStack has been used up
+        transfer = inStack.stackSize;
+        transfer = transfer + outStack.stackSize > outStack.getMaxStackSize() ? outStack.getMaxStackSize()-outStack.stackSize: transfer;
+        inStack.stackSize-=transfer;
+        outStack.stackSize+=transfer;        
+        if(inStack.stackSize<=0)
+          {
+          break;//break outStack iterator loop, as inStack has been used up
+          }
         }
+      }        
+    if(inStack.stackSize>0)
+      {
+      out.add(new ItemStack(item, inStack.stackSize, dmg));
       }
-    }        
-  if(inStack.stackSize>0)
-    {
-    out.add(new ItemStack(item, inStack.stackSize, dmg));
-    }
-  }  
-stacks.clear();
-stacks.addAll(out);
-
-//AWLog.logDebug("compacted resource list for structure: "+name);
-//for(ItemStack stack : stacks)
-//  {
-//  AWLog.logDebug(stack.toString());
-//  }
-}
+    }  
+  stacks.clear();
+  stacks.addAll(out);  
+  }
 
 }

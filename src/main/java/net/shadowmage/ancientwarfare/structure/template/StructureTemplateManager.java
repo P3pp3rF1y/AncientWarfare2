@@ -22,7 +22,6 @@ package net.shadowmage.ancientwarfare.structure.template;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -97,7 +96,6 @@ public StructureTemplate getTemplate(String name)
 
 public void addTemplateImage(String imageName, BufferedImage image, String md5)
   {
-  AWLog.logDebug("Loading server-side template image of: "+imageName+" with md5 of: "+md5);
   this.templateImages.put(imageName, image);
   this.imageMD5s.put(imageName, md5);
   }
@@ -110,7 +108,6 @@ public void handleClientImageNameListRequest(EntityPlayer player, Map<String, St
     if(!templateImages.containsKey(imageName)){continue;}
     pkt = new PacketStructureImageData(imageName, templateImages.get(imageName));
     NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
-    AWLog.logDebug("sending image packet of: "+imageName);
     }
   }
 

@@ -103,7 +103,7 @@ public void loadTemplates()
   int loadedCount = 0;
   for(File f : this.probableStructureFiles)
     {
-    AWLog.logDebug("loading template: "+f.getName());
+    AWLog.logDebug("Loading template: "+f.getName());
     template = loadTemplateFromFile(f);
     if(template!=null)
       { 
