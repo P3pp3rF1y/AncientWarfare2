@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInven
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTest;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -50,6 +51,7 @@ public static AWAutomationStatics statics;
 @EventHandler
 public void preInit(FMLPreInitializationEvent evt)
   {
+  ModuleStatus.automationLoaded = true;
   log = AncientWarfareCore.log;
   AWLog.log("Ancient Warfare Automation Pre-Init started"); 
   config = new Configuration(evt.getSuggestedConfigurationFile());

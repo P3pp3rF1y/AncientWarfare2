@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.modeler;
 
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.modeler.item.ItemModelEditor;
@@ -45,6 +46,7 @@ public static ItemModelEditor editorOpener;
 public void preInit(FMLPreInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Modeler Pre-Init started"); 
+  ModuleStatus.modelerLoaded = true;
   log = AncientWarfareCore.log;
   config = new Configuration(evt.getSuggestedConfigurationFile());
   

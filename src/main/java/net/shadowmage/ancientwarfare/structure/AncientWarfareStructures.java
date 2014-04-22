@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -76,6 +77,7 @@ public static AWStructureStatics statics;
 @EventHandler
 public void preInit(FMLPreInitializationEvent evt)
   {
+  ModuleStatus.structuresLoaded = true;
   log = AncientWarfareCore.log;
   AWLog.log("Ancient Warfare Structures Pre-Init started"); 
   config = new Configuration(evt.getSuggestedConfigurationFile());
