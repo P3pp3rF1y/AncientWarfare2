@@ -5,7 +5,9 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -108,10 +110,9 @@ private boolean tryFinish()
   {
   if(outputSlot.getStackInSlot(0)==null)
     {
-    AWLog.logDebug("should output item to output slot...");
-    /**
-     * TODO set item in output slot
-     */
+    ItemStack item = new ItemStack(AWBlocks.builderBlock);
+    item.setTagInfo("structureName", new NBTTagString(structureName));
+    outputSlot.setInventorySlotContents(0, item);
     return true;
     }
   return false;

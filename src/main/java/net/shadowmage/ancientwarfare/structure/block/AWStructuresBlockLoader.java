@@ -6,9 +6,11 @@ import net.minecraft.item.Item;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
+import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,6 +31,10 @@ public static void load()
   AWBlocks.draftingStation = new BlockDraftingStation("drafting_station");
   GameRegistry.registerBlock(AWBlocks.draftingStation, "drafting_station");
   GameRegistry.registerTileEntity(TileDraftingStation.class, "drafting_station_tile");
+  
+  AWBlocks.builderBlock = new BlockStructureBuilder("structure_builder_ticked");
+  GameRegistry.registerBlock(AWBlocks.builderBlock, ItemBlockStructureBuilder.class, "structure_builder_ticked");
+  GameRegistry.registerTileEntity(TileStructureBuilder.class, "structure_builder_ticked_tile");
   }
 
 }

@@ -27,10 +27,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
@@ -76,6 +78,10 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
     {
     renderGateBoundingBox(player, stack, evt.partialTicks);
     }
+  else if(item instanceof ItemBlockStructureBuilder)
+    {
+    renderSurvivalBuilderBoundingBox(player, stack, evt.partialTicks);
+    }
   }
 
 StructureBB bb = new StructureBB(new BlockPosition(), new BlockPosition()){};
@@ -108,6 +114,27 @@ private void renderScannerBoundingBox(EntityPlayer player, ItemStack stack, floa
     max.offset(1, 1, 1);
     renderBoundingBox(player, min, max, delta);
     }
+  }
+
+private void renderSurvivalBuilderBoundingBox(EntityPlayer player, ItemStack stack, float delta)
+  {
+  if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("structureName")){return;}
+  String name = stack.getTagCompound().getString("structureName");
+  StructureTemplateClient t = StructureTemplateManagerClient.instance().getClientTemplate(name);
+  if(t==null){return;}
+  BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+  if(hit==null){return;}
+  int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
+  p1.reassign(hit.x, hit.y, hit.z);
+  p2.reassign(hit.x, hit.y, hit.z);
+  p2.offset(1, 1, 1);
+  renderBoundingBox(player, p1, p2, delta);
+  p2.reassign(hit.x, hit.y, hit.z);
+  p2.moveForward(face, t.zSize - 1 - t.zOffset + 1);
+  bb.setFromStructure(p2.x, p2.y, p2.z, face, t.xSize, t.ySize, t.zSize, t.xOffset, t.yOffset, t.zOffset);
+  p2.reassign(bb.max.x, bb.max.y, bb.max.z);
+  p2.offset(1, 1, 1);
+  renderBoundingBox(player, bb.min, p2, delta);
   }
 
 private void renderBuildBoundingBox(EntityPlayer player, ItemStack stack, float delta)

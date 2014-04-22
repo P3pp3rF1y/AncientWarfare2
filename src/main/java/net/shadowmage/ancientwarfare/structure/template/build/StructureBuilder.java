@@ -44,7 +44,7 @@ protected BlockPosition destination;
 
 protected StructureBB bb;
 
-protected boolean isFinished = false;
+private boolean isFinished = false;
 
 public StructureBuilder(World world, StructureTemplate template, int face, int x, int y, int z)
   {
@@ -75,9 +75,15 @@ public StructureBuilder(World world, StructureTemplate template, int face, int x
   incrementDestination();
   }
 
+protected StructureBuilder()
+  {
+  destination = new BlockPosition();
+  buildOrigin = new BlockPosition();
+  }
+
 public void instantConstruction()
   {
-  while(!this.isFinished)
+  while(!this.isFinished())
     {
     this.placeCurrentPosition();
     }
@@ -170,6 +176,11 @@ protected boolean incrementPosition()
       }
     }
   return true;
+  }
+
+public boolean isFinished()
+  {
+  return isFinished;
   }
 
 }

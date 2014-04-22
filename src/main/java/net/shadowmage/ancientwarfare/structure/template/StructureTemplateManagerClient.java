@@ -4,11 +4,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -20,7 +21,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.TextureFileBased;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageList;
@@ -65,6 +65,21 @@ private void readClientStructure(NBTTagCompound tag)
 public Collection<StructureTemplateClient> getClientStructures()
   {
   return clientTemplates.values();
+  }
+
+public List<StructureTemplateClient> getSurvivalStructures()
+  {  
+  List<StructureTemplateClient> clientStructures = new ArrayList<StructureTemplateClient>();
+  for(StructureTemplateClient t : this.clientTemplates.values())
+    {
+    AWLog.logDebug("examining client structure: "+t.name + " survival: "+t.survival);
+    if(t.survival)
+      {            
+      clientStructures.add(t);
+      }
+    }
+  AWLog.logDebug("returning client side structure set of: "+clientStructures);
+  return clientStructures;
   }
 
 public StructureTemplateClient getClientTemplate(String name)

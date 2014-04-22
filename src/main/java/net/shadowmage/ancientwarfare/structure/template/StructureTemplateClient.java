@@ -75,7 +75,7 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("xo", xOffset);
   tag.setInteger("yo", yOffset);
   tag.setInteger("zo", zOffset);
-  
+  tag.setBoolean("survival", survival);
   if(survival && !resourceList.isEmpty())
     {
     NBTTagList stackList = new NBTTagList();
