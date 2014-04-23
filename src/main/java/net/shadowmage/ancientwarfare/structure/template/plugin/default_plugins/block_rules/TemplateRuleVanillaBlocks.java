@@ -85,7 +85,7 @@ public void addResources(List<ItemStack> resources)
   
   ItemStack stack = null;
   stack = BlockDataManager.instance().getInventoryStackForBlock(block, meta);
-  if(stack.getItem()==null)
+  if(stack!=null && stack.getItem()==null)
     {
     throw new IllegalArgumentException("Could not create item for block: "+block+ " (lookup name: "+blockName+") meta: "+meta);
     }

@@ -112,7 +112,7 @@ public String hasAltSetupGui()
   return null;
   }
 
-public void openAltGui()
+public void openAltGui(EntityPlayer player)
   {
   //noop, must be implemented by individual tiles, if they have an alt-control gui
   }

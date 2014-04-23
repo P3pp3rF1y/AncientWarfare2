@@ -1,14 +1,14 @@
 core
 	crafting system--needs recipes from other modules
 	research system--needs definitions of research for research tree
-	block and item textures
+	block and item textures (engineering station, research station, research book, research notes)
 
 structures module
 	plugins / support for other modules
-	survival-mode building / inventory block mapping / drafting station
+	textures for drafting station, survival-mode builder
 
 automation module
-	worker will have 'work sites' list / work-order, denoting which sites to work in what order or priority
+	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority
 	add the rest of the types of automation -- farm, etc.
 	add plugin / support for power systems (mechanical worker block)	
 		

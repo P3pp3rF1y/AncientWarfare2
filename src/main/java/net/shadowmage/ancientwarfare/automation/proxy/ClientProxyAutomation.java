@@ -1,9 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteInventorySideSelection;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTest;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -16,9 +17,10 @@ public class ClientProxyAutomation extends ClientProxyBase
 public void registerClient()
   {
   MinecraftForge.EVENT_BUS.register(WorkBoundingBoxRenderer.instance());
-  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY, GuiWorksiteTest.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY, GuiWorksiteBase.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_SET_TARGETS, GuiWorksiteBlockSelection.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
   registerClientOptions();
   }
 

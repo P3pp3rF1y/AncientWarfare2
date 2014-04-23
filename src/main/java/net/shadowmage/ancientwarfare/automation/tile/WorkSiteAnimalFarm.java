@@ -514,6 +514,12 @@ public void readClientData(NBTTagCompound tag)
   //noop
   }
 
+@Override
+public void openAltGui(EntityPlayer player)
+  {
+  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, xCoord, yCoord, zCoord);
+  }
+
 private static class EntityPair
 {
 
