@@ -36,7 +36,7 @@ public void initElements()
   label = new Label(8, ((ContainerWorksiteBase)inventorySlots).playerSlotsLabelHeight, StatCollector.translateToLocal("guistrings.inventory.player"));
   addGuiElement(label);
   
-  Button button = new Button(8, ((ContainerWorksiteBase)inventorySlots).guiHeight-8-12, 55, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
+  Button button = new Button(8, ySize-8-12-12, 55, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
     {
     @Override
     protected void onPressed()
@@ -49,7 +49,7 @@ public void initElements()
   
   if(worksite.hasUserSetTargets())
     {
-    button = new Button(178-8-100, ((ContainerWorksiteBase)inventorySlots).guiHeight-8-12, 100, 12, StatCollector.translateToLocal("guistrings.inventory.settargets"))
+    button = new Button(178-8-100, ySize-8-12-12, 100, 12, StatCollector.translateToLocal("guistrings.inventory.settargets"))
       {
       @Override
       protected void onPressed()

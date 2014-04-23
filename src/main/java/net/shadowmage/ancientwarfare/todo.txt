@@ -2,15 +2,29 @@ core
 	crafting system--needs recipes from other modules
 	research system--needs definitions of research for research tree
 	block and item textures (engineering station, research station, research book, research notes)
-
+	add IInventory support to research station for resource-input through automation
+	
 structures module
 	plugins / support for other modules
 	textures for drafting station, survival-mode builder
 
 automation module
 	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority
+	finish animal farm alternate control GUI.
+	add any other applicable alternate control GUIs (and corresponding functions in the tiles)
+		crop farm -- optional canTillDirt control
+		crop farm -- controls for crop types, not layout, but by count?		
+		crop farm -- optional replanting of resources
+		tree farm -- optional replanting of trees
+		tree farm -- toggle pickup of apples?
 	add the rest of the types of automation -- farm, etc.
-	add plugin / support for power systems (mechanical worker block)	
+	add plugin / support for power systems (mechanical worker block)
+	add animal farm pickup of eggs
+	add tree farm pickup of sapling drops	
+	mechanical hopper block -- configurable pull / push side (s), and on/off push control
+		with filter list per-side -- needs redstone power to function?
+	auto-crafting table / worksite
+	warehouse / mass storage??
 		
 vehicles module
 	everything
