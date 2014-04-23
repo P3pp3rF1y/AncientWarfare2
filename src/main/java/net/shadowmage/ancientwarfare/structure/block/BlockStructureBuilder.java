@@ -30,4 +30,17 @@ public TileEntity createTileEntity(World world, int metadata)
   return new TileStructureBuilder();
   }
 
+@Override
+public void breakBlock(World world, int x, int y, int z, Block block, int meta)
+  {
+  if(!world.isRemote)
+    {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileStructureBuilder)
+      {
+      ((TileStructureBuilder) te).onBlockBroken();
+      }
+    }
+  }
+
 }

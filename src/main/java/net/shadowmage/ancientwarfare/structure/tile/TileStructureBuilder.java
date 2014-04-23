@@ -7,9 +7,12 @@ import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -62,7 +65,6 @@ public void updateEntity()
     }
   if(workDelay<=0)
     {
-    AWLog.logDebug("processing work for ticked builder...");
     processWork();
     workDelay=20;
     }
@@ -96,45 +98,56 @@ public void setBuilder(StructureBuilderTicked builder)
   this.builder = builder;
   }
 
+public void onBlockBroken()
+  {
+  if(!worldObj.isRemote && !isStarted && builder!=null && builder.getTemplate()!=null)
+    {
+    isStarted = true;//to prevent further drops
+    ItemStack item = new ItemStack(AWBlocks.builderBlock);
+    item.setTagInfo("structureName", new NBTTagString(builder.getTemplate().name));
+    }
+  }
+
 @Override
-public void readFromNBT(NBTTagCompound p_145839_1_)
+public void readFromNBT(NBTTagCompound tag)
   {  
-  super.readFromNBT(p_145839_1_);  
-  if(p_145839_1_.hasKey("builder"))
+  super.readFromNBT(tag);  
+  if(tag.hasKey("builder"))
     {
     builder = new StructureBuilderTicked();    
-    builder.readFromNBT(p_145839_1_.getCompoundTag("builder"));    
+    builder.readFromNBT(tag.getCompoundTag("builder"));    
     }
   else
     {
     this.shouldRemove = true;
     }
+  this.isStarted = tag.getBoolean("started");
   }
 
 @Override
-public void writeToNBT(NBTTagCompound p_145841_1_)
+public void writeToNBT(NBTTagCompound tag)
   {
-  super.writeToNBT(p_145841_1_);
+  super.writeToNBT(tag);
   if(builder!=null)
     {
     NBTTagCompound builderTag = new NBTTagCompound();
     builder.writeToNBT(builderTag);  
-    p_145841_1_.setTag("builder", builderTag);    
+    tag.setTag("builder", builderTag);    
     }
+  tag.setBoolean("started", isStarted);
   }
 
 //*******************************************WORKSITE************************************************//
 @Override
 public boolean hasWork()
   {
-  //TODO
-  return false;
+  return true;
   }
 
 @Override
 public void doWork(IWorker worker)
   {
-  //TODO  
+  processWork();
   }
 
 @Override
