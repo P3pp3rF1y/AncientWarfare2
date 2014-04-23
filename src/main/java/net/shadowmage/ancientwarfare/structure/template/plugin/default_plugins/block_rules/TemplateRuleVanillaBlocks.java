@@ -84,15 +84,11 @@ public void addResources(List<ItemStack> resources)
   if(block==null || block==Blocks.air){return;}
   
   ItemStack stack = null;
-//  Item item = Item.getItemFromBlock(block);
-//  if(item!=null)
-//    {
-//    stack = new ItemStack(item, 1, meta);    
-//    }
-  
   stack = BlockDataManager.instance().getInventoryStackForBlock(block, meta);
-  AWLog.logDebug("constructed stack for block: "+block+" :: "+meta);
-  AWLog.logDebug("stack: "+stack);
+  if(stack.getItem()==null)
+    {
+    throw new IllegalArgumentException("Could not create item for block: "+block+ " (registered name: "+blockName+") meta: "+meta);
+    }
   if(stack!=null){resources.add(stack);}
   }
 
