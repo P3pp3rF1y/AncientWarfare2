@@ -56,6 +56,7 @@ public void preInit(FMLPreInitializationEvent evt)
   proxy.registerClient();   
   
   editorOpener = new ItemModelEditor("editor_opener");
+  editorOpener.setTextureName("ancientwarfare:modeler/editor_opener");
   GameRegistry.registerItem(editorOpener, "editor_opener");
       
   /**
