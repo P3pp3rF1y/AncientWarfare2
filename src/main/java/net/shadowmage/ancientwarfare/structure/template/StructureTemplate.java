@@ -133,7 +133,6 @@ public List<ItemStack> getResourceList()
   {
   if(resourceList==null)
     {
-    AWLog.logDebug("creating resource list for template: "+name);
     TemplateRule rule;
     List<ItemStack> stacks = new ArrayList<ItemStack>();
     for(int x = 0; x < this.xSize; x++)
@@ -153,7 +152,6 @@ public List<ItemStack> getResourceList()
     compactStackList(stacks);
     resourceList = new ArrayList<ItemStack>();
     resourceList.addAll(stacks);
-    AWLog.logDebug("resource list created: "+resourceList);
     }
   return resourceList;
   }
