@@ -180,11 +180,21 @@ private void loadBlockItems(List<String> lines)
       }
     if(itemName.equals("null"))
       {
-      info.noItem = true;
+      if(info.singleItem)
+        {
+        for(int i = 0; i < 16; i++)
+          {
+          info.noItemFlags[i]=true;
+          }
+        }
+      else
+        {
+        info.noItemFlags[blockMeta]=true;
+        }
+      //leave null;
       }
     else
       {
-      info.noItem = false;
       item = itemNameToItem.get(itemName);   
       if(item!=null)
         {
@@ -484,12 +494,14 @@ public ItemStack getInventoryStackForBlock(Block block, int meta)
 
 private class BlockInfo
 {
+
 boolean singleItem = false;
-boolean noItem = false;
+
 /**
  * item-stack map, by block-meta.  if singleItem==true, will use index[0] instead of whatever is passed in
  */
 ItemStack[] metaStacks = new ItemStack[16];
+boolean [] noItemFlags = new boolean[16];//flag will be true for a meta if it should return no item
 
 byte[] rotations = new byte[16];
 byte buildPriority = 0;
@@ -501,19 +513,19 @@ public int getRotatedMeta(int meta)
 
 public ItemStack getStackFor(Block block, int meta)
   {
-  if(noItem)
-    {
-    return null;
-    }
-  else if(singleItem && metaStacks[0]!=null)
+  if(singleItem && metaStacks[0]!=null)
     {
     return metaStacks[0].copy();
+    }
+  else if(noItemFlags[meta])
+    {
+    return null;
     }
   else if(metaStacks[meta]!=null)
     {
     return metaStacks[meta].copy();
     }  
-  return new ItemStack(block, 1, meta);
+  return new ItemStack(Item.getItemFromBlock(block), 1, meta);
   }
 }
 

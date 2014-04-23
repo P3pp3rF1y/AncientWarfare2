@@ -5,7 +5,7 @@ core
 
 structures module
 	plugins / support for other modules
-	survival-mode building / block mapping / drafting station
+	survival-mode building / inventory block mapping / drafting station
 
 automation module
 	worker will have 'work sites' list / work-order, denoting which sites to work in what order or priority

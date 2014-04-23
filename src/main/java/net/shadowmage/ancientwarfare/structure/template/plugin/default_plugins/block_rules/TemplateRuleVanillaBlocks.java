@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -81,8 +82,18 @@ public void addResources(List<ItemStack> resources)
   {
   Block block = BlockDataManager.instance().getBlockForName(blockName);
   if(block==null || block==Blocks.air){return;}
-  ItemStack item = BlockDataManager.instance().getInventoryStackForBlock(block, meta);
-  if(item!=null){resources.add(item);}
+  
+  ItemStack stack = null;
+//  Item item = Item.getItemFromBlock(block);
+//  if(item!=null)
+//    {
+//    stack = new ItemStack(item, 1, meta);    
+//    }
+  
+  stack = BlockDataManager.instance().getInventoryStackForBlock(block, meta);
+  AWLog.logDebug("constructed stack for block: "+block+" :: "+meta);
+  AWLog.logDebug("stack: "+stack);
+  if(stack!=null){resources.add(stack);}
   }
 
 @Override

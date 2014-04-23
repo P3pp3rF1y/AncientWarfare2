@@ -55,8 +55,8 @@ detector_rail,-1,detector_rail,0,1
 rail,-1,rail,0,1
 activator_rail,-1,activator_rail,0,1
 #redstone meta blocks#########################################,,,,
-unlit_redstone_torch,-1,unlit_redstone_torhc,0,1
-redstone_torch,-1,unlit_redstone_torch,0,1
+unlit_redstone_torch,-1,redstone_torch,0,1
+redstone_torch,-1,redstone_torch,0,1
 unpowered_repeater,-1,repeater,0,1
 powered_repeater,-1,repeater,0,1
 iron_door,-1,iron_door,0,1
@@ -72,13 +72,13 @@ dispenser,-1,dispenser,0,1
 lever,-1,lever,0,1
 stone_button,-1,stone_button,0,1
 wooden_button,-1,wooden_button,0,1
-#misc meta blocks#########################################,,,,
 trapdoor,-1,trapdoor,0,1
-torch,-1,torch,0,1
 sticky_piston,-1,sticky_piston,0,1
 piston,-1,piston,0,1
 piston_head,-1,null,0,0
 piston_extension,-1,null,0,0
+#misc meta blocks#########################################,,,,
+torch,-1,torch,0,1
 furnace,-1,furnace,0,1
 lit_furnace,-1,furnace,0,1
 standing_sign,-1,sign,0,1
