@@ -27,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 
 public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks
 {
@@ -68,9 +69,9 @@ public TemplateRuleBlockInventory()
   }
 
 @Override
-public void handlePlacement(World world, int turns, int x, int y, int z)
+public void handlePlacement(World world, int turns, int x, int y, int z, StructureBuilder builder)
   {
-  super.handlePlacement(world, turns, x, y, z);
+  super.handlePlacement(world, turns, x, y, z, builder);
   TileEntity te = world.getTileEntity(x, y, z);
   IInventory inventory = (IInventory)te;
   if(inventory!=null && randomLootLevel>0)

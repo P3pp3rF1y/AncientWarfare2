@@ -28,6 +28,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleBlock;
 
 public class TemplateRuleModBlocks extends TemplateRuleBlock
@@ -55,7 +56,7 @@ public boolean shouldReuseRule(World world, Block block, int meta, int turns, Ti
   }
 
 @Override
-public void handlePlacement(World world, int turns, int x, int y, int z)
+public void handlePlacement(World world, int turns, int x, int y, int z, StructureBuilder builder)
   {
   Block block = BlockDataManager.instance().getBlockForName(blockName);
   world.setBlock(x, y, z, block, meta, 3);

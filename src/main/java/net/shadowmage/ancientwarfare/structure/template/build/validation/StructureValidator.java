@@ -62,6 +62,7 @@ public static final String PROP_DIMENSION_WHITE_LIST = "dimensionWhiteList";
 public static final String PROP_BIOME_LIST = "biomeList";
 public static final String PROP_DIMENSION_LIST = "dimensionList";
 public static final String PROP_BLOCK_LIST = "blockList";
+public static final String PROP_BLOCK_SWAP = "blockSwap";
 
 public final StructureValidationType validationType;
 
@@ -306,6 +307,11 @@ public final void setProperty(String name, Object value)
     {
     throw new IllegalArgumentException("Validation properties does not contain key for: "+name);
     }
+  }
+
+public final boolean isBlockSwap()
+  {
+  return properties.get(PROP_BLOCK_SWAP).getDataBoolean();
   }
 
 public final int getSelectionWeight()

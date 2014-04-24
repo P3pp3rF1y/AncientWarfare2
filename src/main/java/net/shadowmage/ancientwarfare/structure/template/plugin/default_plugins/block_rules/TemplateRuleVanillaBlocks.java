@@ -31,6 +31,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleBlock;
 
 public class TemplateRuleVanillaBlocks extends TemplateRuleBlock
@@ -63,12 +64,11 @@ public TemplateRuleVanillaBlocks()
   }
 
 @Override
-public void handlePlacement(World world, int turns, int x, int y, int z)
+public void handlePlacement(World world, int turns, int x, int y, int z, StructureBuilder builder)
   {
   Block block = BlockDataManager.instance().getBlockForName(blockName);
   int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);  
-  world.setBlock(x, y, z, block);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
-  world.setBlockMetadataWithNotify(x, y, z, localMeta, 2);
+  builder.placeBlock(x, y, z, block, localMeta, buildPass);
   }
   
 @Override

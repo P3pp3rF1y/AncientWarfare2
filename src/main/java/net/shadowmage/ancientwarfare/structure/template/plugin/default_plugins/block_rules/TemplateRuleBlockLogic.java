@@ -24,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 
 public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks
 {
@@ -42,9 +43,9 @@ public TemplateRuleBlockLogic()
   }
 
 @Override
-public void handlePlacement(World world, int turns, int x, int y, int z)
+public void handlePlacement(World world, int turns, int x, int y, int z, StructureBuilder builder)
   {
-  super.handlePlacement(world, turns, x, y, z);
+  super.handlePlacement(world, turns, x, y, z, builder);
   tag.setInteger("x", x);
   tag.setInteger("y", y);
   tag.setInteger("z", z);

@@ -33,6 +33,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.NBTTools;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser.TemplateParsingException;
 
@@ -63,7 +64,7 @@ public TemplateRule()
  * @param y
  * @param z 
  */
-public abstract void handlePlacement(World world, int turns, int x, int y, int z);
+public abstract void handlePlacement(World world, int turns, int x, int y, int z, StructureBuilder builder);
 
 public abstract void parseRuleData(NBTTagCompound tag);
 public abstract void writeRuleData(NBTTagCompound tag);

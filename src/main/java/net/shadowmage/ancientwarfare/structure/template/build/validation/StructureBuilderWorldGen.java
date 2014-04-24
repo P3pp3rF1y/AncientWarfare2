@@ -20,7 +20,14 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
+import cpw.mods.fml.common.eventhandler.Event.Result;
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.BiomeEvent;
+import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID;
+import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockMeta;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 
@@ -38,6 +45,28 @@ protected void placeAir()
     {
     template.getValidationSettings().handleClearAction(world, destination.x, destination.y, destination.z, template, bb);    
     }
+  }
+
+@Override
+public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
+  {
+  if(template.getValidationSettings().isBlockSwap())
+    {
+    BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
+    BiomeEvent.GetVillageBlockID evt1 = new GetVillageBlockID(biome, block, meta);
+    MinecraftForge.EVENT_BUS.post(evt1);
+    if(evt1.getResult()== Result.DENY && evt1.replacement!=block)
+      {
+      block = evt1.replacement;
+      }    
+    BiomeEvent.GetVillageBlockMeta evt2 = new GetVillageBlockMeta(biome, block, meta);
+    MinecraftForge.EVENT_BUS.post(evt2);
+    if(evt2.getResult()==Result.DENY)
+      {
+      meta = evt2.replacement;
+      }    
+    }
+  super.placeBlock(x, y, z, block, meta, priority);
   }
 
 public void instantConstruction()

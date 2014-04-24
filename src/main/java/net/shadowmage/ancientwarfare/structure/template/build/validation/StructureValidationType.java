@@ -62,6 +62,9 @@ StructureValidationType(String name, Class<? extends StructureValidator> validat
   properties.add(new StructureValidationProperty("biomeList", StructureValidationProperty.DATA_TYPE_STRING_SET, new HashSet<String>()));
   properties.add(new StructureValidationProperty("blockList", StructureValidationProperty.DATA_TYPE_STRING_SET, new HashSet<String>()));
   properties.add(new StructureValidationProperty("dimensionList", StructureValidationProperty.DATA_TYPE_INT_ARRAY, new int[]{}));
+  
+  properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_SWAP, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+  
   for(StructureValidationProperty prop : props)
     {
     properties.add(prop);
