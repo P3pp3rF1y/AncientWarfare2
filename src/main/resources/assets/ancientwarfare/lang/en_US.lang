@@ -131,6 +131,7 @@ command.aw.structure.not_found=Template could not be located: %s
 command.aw.structure.file_not_found=File could not be located: %s
 command.aw.structure.template_removed=Template was removed: %s
 command.aw.structure.file_deleted=File was deleted: %s
+command.aw.structure.built=Structure built: %s at: %s,%s,%s
 
 #research
 research.test_research1=Test Research 1

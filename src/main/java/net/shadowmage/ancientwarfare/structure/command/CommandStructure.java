@@ -7,11 +7,11 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 
 public class CommandStructure implements ICommand
@@ -72,7 +72,6 @@ public void processCommand(ICommandSender var1, String[] var2)
       {
       ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.template_removed", name);
       var1.addChatMessage(txt);
-      AWLog.logDebug("template removed successfully...");//TODO send chat message
       if(var2.length>=3)
         {
         boolean shouldDelete = var2[2].toLowerCase().equals("true");
@@ -82,32 +81,60 @@ public void processCommand(ICommandSender var1, String[] var2)
             {
             txt = new ChatComponentTranslation("command.aw.structure.file_deleted", name);
             var1.addChatMessage(txt);
-            AWLog.logDebug("deleted template file of: "+name);
             }
           else
             {
             txt = new ChatComponentTranslation("command.aw.structure.file_not_found", name);
             var1.addChatMessage(txt);
-            AWLog.logDebug("could not locate template file for: "+name+" it is probably not in the root include/ directory");
             }          
           }
         }      
       }
     else//send template not found message
       {
-      AWLog.logDebug("could not find template by name: "+name);
       ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.not_found", name);
       var1.addChatMessage(txt);
       }
     }
   else if(cmd.toLowerCase().equals("build"))
     {
-    if(var2.length<5)
+    if(var2.length<6)
       {
       throw new WrongUsageException(getCommandUsage(var1), new Object[0]);
       }
+    String name = var2[1];
+    String xs = var2[2];
+    String ys = var2[3];
+    String zs = var2[4];
+    String direction = var2[5];
+     
+    int x = CommandBase.parseInt(var1, xs);
+    int y = CommandBase.parseInt(var1, ys);
+    int z = CommandBase.parseInt(var1, zs);
+    int face = 0;
+    String dl = direction.toLowerCase();
+    if(dl.equals("north")){face = 2;}
+    else if(dl.equals("east")){face = 3;}
+    else if(dl.equals("south")){face = 0;}
+    else if(dl.equals("west")){face = 1;}
+    else{face = CommandBase.parseInt(var1, direction);}
+    StructureTemplate template = StructureTemplateManager.instance().getTemplate(name);
+    if(template==null)
+      {
+      ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.not_found", name);
+      var1.addChatMessage(txt);
+      }
+    else
+      {
+      StructureBuilder builder = new StructureBuilder(var1.getEntityWorld(), template, face, x, y, z);
+      builder.instantConstruction();
+      ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.built", name, x,y,z);
+      var1.addChatMessage(txt);
+      }
     }
   }
+
+
 
 private boolean deleteTemplateFile(String name)
   {
