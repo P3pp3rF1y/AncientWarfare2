@@ -9,7 +9,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 /**
  * basic item-slot gui element

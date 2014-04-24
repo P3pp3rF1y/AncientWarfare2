@@ -20,21 +20,32 @@
  */
 package net.shadowmage.ancientwarfare.structure.template;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.api.IStructurePluginLookup;
+import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
+import net.shadowmage.ancientwarfare.structure.api.IStructurePluginRegister;
+import net.shadowmage.ancientwarfare.structure.api.StructurePluginRegistrationEvent;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
+import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVanillaHandler;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleBlock;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleEntity;
 
-public class StructurePluginManager
+public class StructurePluginManager implements IStructurePluginManager, IStructurePluginLookup, IStructurePluginRegister
 {
 
 
@@ -58,9 +69,7 @@ public void loadPlugins()
   vanillaPlugin = new StructurePluginVanillaHandler();
   this.addPlugin(vanillaPlugin);
   
-//  if(AWFramework.loadedAutomation){StructurePluginAutomation.load();}
-//  if(AWFramework.loadedNpcs){StructurePluginNpcs.load();}
-//  if(AWFramework.loadedVehicles){StructurePluginVehicles.load();}
+  MinecraftForge.EVENT_BUS.post(new StructurePluginRegistrationEvent(this));
   
   for(StructureContentPlugin plugin : this.loadedContentPlugins)
     {
@@ -175,7 +184,7 @@ public TemplateRuleEntity getRuleForEntity(World world, Entity entity, int turns
   return null;//TODO
   }
 
-public void registerEntityHandler(String pluginName, Class<?extends Entity> entityClass, Class<? extends TemplateRule> ruleClass)
+public void registerEntityHandler(String pluginName, Class<?extends Entity> entityClass, Class<? extends TemplateRuleEntity> ruleClass)
   {
   if(ruleByID.containsKey(pluginName))
     {
@@ -191,7 +200,7 @@ public void registerEntityHandler(String pluginName, Class<?extends Entity> enti
   pluginByEntity.put(entityClass, pluginName);
   }
 
-public void registerBlockHandler(String pluginName, Block block, Class<? extends TemplateRule> ruleClass)
+public void registerBlockHandler(String pluginName, Block block, Class<? extends TemplateRuleBlock> ruleClass)
   {  
   if(ruleByID.containsKey(pluginName))
     {
@@ -207,4 +216,119 @@ public void registerBlockHandler(String pluginName, Block block, Class<? extends
   pluginByBlock.put(block, pluginName);  
   }
 
+@Override
+public void registerPlugin(StructureContentPlugin plugin)
+  {
+  addPlugin(plugin);  
+  }
+
+public static final TemplateRule getRule(List<String> ruleData, String ruleType) throws TemplateParsingException
+{
+Iterator<String> it = ruleData.iterator();
+String name = null;
+int ruleNumber = -1;
+String line;
+List<String> ruleDataPackage = new ArrayList<String>();
+while(it.hasNext())
+  {
+  TemplateParser.lineNumber++;
+  line = it.next();
+  if(line.startsWith(ruleType+":"))
+    {
+    continue;
+    }
+  if(line.startsWith(":end"+ruleType))
+    {
+    break;
+    }
+  if(line.startsWith("plugin="))
+    {
+    name = StringTools.safeParseString("=", line);
+    }
+  if(line.startsWith("number="))
+    {
+    ruleNumber = StringTools.safeParseInt("=", line);
+    }
+  if(line.startsWith("data:"))
+    {
+    while(it.hasNext())
+      {
+      line = it.next();
+      if(line.startsWith(":enddata"))
+        {
+        break;
+        }
+      ruleDataPackage.add(line);
+      }
+    }
+  }
+Class<?extends TemplateRule> clz = StructurePluginManager.instance().getRuleByName(name);
+if(name==null || ruleNumber<0 || ruleDataPackage.size()==0 || clz==null)
+  {
+  throw new TemplateParser.TemplateParsingException("Not enough data to create template rule.\n"+
+      "name: "+name+"\n"+
+      "number:"+ruleNumber+"\n"+
+      "ruleDataPackage.size:"+ruleDataPackage.size()+"\n"+
+      "ruleClass: "+clz);
+  }
+
+try
+  {    
+  TemplateRule rule = clz.getConstructor().newInstance();    
+  rule.parseRule(ruleNumber, ruleDataPackage);
+  return rule;
+  } 
+catch (InstantiationException e)
+  {
+  e.printStackTrace();
+  } 
+catch (IllegalAccessException e)
+  {
+  e.printStackTrace();
+  } 
+catch (IllegalArgumentException e)
+  {
+  e.printStackTrace();
+  } 
+catch (InvocationTargetException e)
+  {
+  e.printStackTrace();
+  } 
+catch (NoSuchMethodException e)
+  {
+  e.printStackTrace();
+  } 
+catch (SecurityException e)
+  {
+  e.printStackTrace();
+  }
+return null;
+}
+
+public final static void writeRuleLines(TemplateRule rule, BufferedWriter out, String ruleType) throws IOException
+  {
+  if(rule==null)
+    {
+    return;
+    }
+  String id = StructurePluginManager.instance().getPluginNameFor(rule.getClass());
+  if(id==null)
+    {
+    return;
+    }
+  out.write(ruleType+":");
+  out.newLine();
+  out.write("plugin="+id);
+  out.newLine();
+  out.write("number="+rule.ruleNumber);
+  out.newLine();
+  out.write("data:");
+  out.newLine();
+  rule.writeRule(out);
+  out.write(":enddata");
+  out.newLine();
+  out.write(":end"+ruleType);
+  out.newLine();
+  out.newLine();
+  }
 }

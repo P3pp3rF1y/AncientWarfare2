@@ -12,7 +12,6 @@ import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilte
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 
 public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase

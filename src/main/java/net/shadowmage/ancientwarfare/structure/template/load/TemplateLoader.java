@@ -50,7 +50,6 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
 public class TemplateLoader
 {

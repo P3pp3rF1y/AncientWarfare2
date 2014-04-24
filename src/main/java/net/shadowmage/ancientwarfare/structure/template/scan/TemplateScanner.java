@@ -33,11 +33,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleBlock;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleEntity;
 
 public class TemplateScanner
 {

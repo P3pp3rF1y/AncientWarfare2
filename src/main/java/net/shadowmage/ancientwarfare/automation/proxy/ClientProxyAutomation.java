@@ -2,9 +2,9 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalControl;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteInventorySideSelection;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;

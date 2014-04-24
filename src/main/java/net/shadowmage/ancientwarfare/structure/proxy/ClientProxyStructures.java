@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.proxy;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;

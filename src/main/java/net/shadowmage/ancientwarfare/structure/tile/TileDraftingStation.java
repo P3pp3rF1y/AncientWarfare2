@@ -8,7 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;

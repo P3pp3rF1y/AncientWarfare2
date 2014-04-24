@@ -2,8 +2,6 @@ package net.shadowmage.ancientwarfare.core.gui.options;
 
 import java.util.Collection;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -13,6 +11,8 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.input.InputHandler.Keybind;
+
+import org.lwjgl.input.Keyboard;
 
 public class GuiKeybinds extends GuiContainerBase
 {

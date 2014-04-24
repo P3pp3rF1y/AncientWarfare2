@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.core.inventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;
 
 public class SlotFiltered extends Slot

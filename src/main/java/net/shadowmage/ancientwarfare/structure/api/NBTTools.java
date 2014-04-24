@@ -18,7 +18,7 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.shadowmage.ancientwarfare.core.util;
+package net.shadowmage.ancientwarfare.structure.api;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -42,6 +42,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
+//import net.shadowmage.ancientwarfare.core.util.StringTools;
+
+
+
+
+
+
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -49,6 +56,165 @@ import com.google.common.io.ByteArrayDataOutput;
 public class NBTTools
 {
 
+
+public static int safeParseInt(String num)
+  {  
+  try
+    {
+    return Integer.parseInt(num.trim());
+    }
+  catch(NumberFormatException e)
+    {
+    
+    }
+  return 0;
+  }
+
+public static double safeParseDouble(String num)
+  {  
+  try
+    {
+    return Double.parseDouble(num.trim());
+    }
+  catch(NumberFormatException e)
+    {
+    
+    }
+  return 0;
+  }
+
+public static long safeParseLong(String num)
+  {  
+  try
+    {
+    return Long.parseLong(num.trim());
+    }
+  catch(NumberFormatException e)
+    {
+    
+    }
+  return 0;
+  }
+
+public static byte safeParseByte(String num)
+  {
+  try
+    {
+    return Byte.parseByte(num.trim());
+    }
+  catch(NumberFormatException e)
+    {
+    
+    }
+  return 0;
+  }
+
+public static short safeParseShort(String num)
+  {
+  try
+    {
+    return Short.parseShort(num.trim());
+    }
+  catch(NumberFormatException e)
+    {
+    
+    }
+  return 0;
+  }
+
+public static float safeParseFloat(String val)
+  {
+  try
+    {
+    return Float.parseFloat(val.trim());
+    }
+  catch(NumberFormatException e)
+    {
+    return 0;
+    }  
+  }
+
+public static byte[] parseByteArray(String csv)
+  {
+  String[] splits = csv.split(",");
+  byte[] array = new byte[splits.length];
+  for(int i = 0; i< splits.length; i++)
+    {
+    array[i]=Byte.parseByte(splits[i].trim());
+    }
+  return array;
+  }
+
+public static int[] parseIntArray(String csv)
+  {
+  String[] splits = csv.split(",");
+  int[] array = new int[splits.length];
+  for(int i = 0; i< splits.length; i++)
+    {
+    array[i]=Integer.parseInt(splits[i].trim());
+    }
+  return array;
+  }
+
+public static String getCSVStringForArray(float[] values)
+  {
+  String line = "";
+  for(int i = 0; i < values.length; i++)
+    {
+    if(i >=1 )
+      {
+      line = line + ",";
+      }
+    line = line + values[i];    
+    }
+  return line;
+  }
+
+public static String getCSVStringForArray(byte[] values)
+  {
+  String line = "";
+  for(int i = 0; i < values.length; i++)
+    {
+    if(i >=1 )
+      {
+      line = line + ",";
+      }
+    line = line + values[i];    
+    }
+  return line;
+  }
+
+public static String getCSVStringForArray(int[] values)
+  {
+  if(values==null){return "";}
+  String line = "";
+  for(int i = 0; i < values.length; i++)
+    {
+    if(i >=1 )
+      {
+      line = line + ",";
+      }
+    line = line + values[i];    
+    }
+  return line;
+  }
+
+/**
+ * splits test at regex, returns parsed int array from csv value of remaining string
+ * returns size 1 int array if no valid split is found
+ * @param regex
+ * @param test
+ * @return
+ */
+public static int[] safeParseIntArray(String regex, String test)
+  {
+  String[] splits = test.split(regex);
+  if(splits.length>1)
+    {
+    return parseIntArray(splits[1]);
+    }
+  return new int[0];
+  }
 
 /**
 * NBT Tag types, by tagID 
@@ -312,7 +478,7 @@ void parseFromLines(List<String> lines)
   it.remove();
   String data = line.split("\\{", -1)[1];
   data = data.split("\\}")[0];
-  this.data = StringTools.safeParseInt(data);
+  this.data = safeParseInt(data);
   }
 @Override
 void createFromNBT(NBTBase nbt)
@@ -347,7 +513,7 @@ void parseFromLines(List<String> lines)
   it.remove();
   String data = line.split("\\{", -1)[1];
   data = data.split("\\}")[0];
-  this.data = StringTools.safeParseDouble(data);
+  this.data = safeParseDouble(data);
   }
 @Override
 void createFromNBT(NBTBase nbt)
@@ -382,7 +548,7 @@ void parseFromLines(List<String> lines)
   it.remove();
   String data = line.split("\\{", -1)[1];
   data = data.split("\\}")[0];
-  this.data = StringTools.safeParseFloat(data);
+  this.data = safeParseFloat(data);
   }
 @Override
 void createFromNBT(NBTBase nbt)
@@ -417,7 +583,7 @@ void parseFromLines(List<String> lines)
   it.remove();
   String data = line.split("\\{", -1)[1];
   data = data.split("\\}")[0];
-  this.data = StringTools.safeParseByte(data);
+  this.data = safeParseByte(data);
   }
 @Override
 void createFromNBT(NBTBase nbt)
@@ -452,7 +618,7 @@ void parseFromLines(List<String> lines)
   it.remove();
   String data = line.split("\\{", -1)[1];
   data = data.split("\\}")[0];
-  this.data = StringTools.safeParseShort(data);
+  this.data = safeParseShort(data);
   }
 @Override
 void createFromNBT(NBTBase nbt)
@@ -512,7 +678,7 @@ NBTBase getNBT()
 @Override
 void getTagLines(String tagName, List<String> lines)
   {
-  lines.add("TAG=7="+tagName+"{"+StringTools.getCSVStringForArray(data)+"}");
+  lines.add("TAG=7="+tagName+"{"+getCSVStringForArray(data)+"}");
   }
 @Override
 void parseFromLines(List<String> lines)
@@ -522,7 +688,7 @@ void parseFromLines(List<String> lines)
   it.remove();
   String data = line.split("\\{", -1)[1];
   data = data.split("\\}")[0];
-  this.data = StringTools.parseByteArray(data);
+  this.data = parseByteArray(data);
   }
 @Override
 void createFromNBT(NBTBase nbt)
@@ -557,7 +723,7 @@ void parseFromLines(List<String> lines)
   it.remove();
   String data = line.split("\\{", -1)[1];
   data = data.split("\\}")[0];
-  this.data = StringTools.safeParseLong(data);
+  this.data = safeParseLong(data);
   }
 @Override
 void createFromNBT(NBTBase nbt)
@@ -582,7 +748,7 @@ NBTBase getNBT()
 @Override
 void getTagLines(String tagName, List<String> lines)
   {
-  lines.add("TAG=11="+tagName+"{"+StringTools.getCSVStringForArray(data)+"}");
+  lines.add("TAG=11="+tagName+"{"+getCSVStringForArray(data)+"}");
   }
 @Override
 void parseFromLines(List<String> lines)
@@ -592,7 +758,7 @@ void parseFromLines(List<String> lines)
   it.remove();
   String data = line.split("\\{", -1)[1];
   data = data.split("\\}")[0];
-  this.data = StringTools.parseIntArray(data);
+  this.data = parseIntArray(data);
   }
 @Override
 void createFromNBT(NBTBase nbt)
@@ -642,7 +808,7 @@ void parseFromLines(List<String> lines)
     {
     tagLines = parseNextTag(lines);
     line = tagLines.get(0);//pull the first line, to query for tag-type
-    tagType = StringTools.safeParseInt(line.split("=", -1)[1]);
+    tagType = safeParseInt(line.split("=", -1)[1]);
     TagBase tag = getTag(tagType);
     tag.parseFromLines(tagLines);
     this.tags.add(tag);
@@ -711,7 +877,7 @@ void parseFromLines(List<String> lines)
     tagLines = parseNextTag(lines);
     line = tagLines.get(0);//pull the first line, to query for tag-type
     splits = line.split("=",-1);
-    tagType = StringTools.safeParseInt(splits[1]);
+    tagType = safeParseInt(splits[1]);
     tagName = splits[2].split("\\{")[0];
     TagBase tag = getTag(tagType);
     tag.parseFromLines(tagLines);

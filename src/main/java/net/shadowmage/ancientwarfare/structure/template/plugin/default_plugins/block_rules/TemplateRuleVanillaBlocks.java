@@ -24,15 +24,13 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleBlock;
 
 public class TemplateRuleVanillaBlocks extends TemplateRuleBlock
 {
@@ -64,7 +62,7 @@ public TemplateRuleVanillaBlocks()
   }
 
 @Override
-public void handlePlacement(World world, int turns, int x, int y, int z, StructureBuilder builder)
+public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder)
   {
   Block block = BlockDataManager.instance().getBlockForName(blockName);
   int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);  

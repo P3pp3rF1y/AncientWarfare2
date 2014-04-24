@@ -18,40 +18,17 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
+package net.shadowmage.ancientwarfare.structure.api;
 
-import java.util.List;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 
-import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
-import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
-
-public class StructurePluginNpcs extends StructureContentPlugin
+public interface IStructurePluginManager extends IStructurePluginRegister
 {
 
-public StructurePluginNpcs()
-  {
-  
-  }
+public void registerEntityHandler(String pluginName, Class<?extends Entity> entityClass, Class<? extends TemplateRuleEntity> ruleClass);
 
-@Override
-public void addHandledBlocks(IStructurePluginManager manager)
-  {
+public void registerBlockHandler(String pluginName, Block block, Class<? extends TemplateRuleBlock> ruleClass);
 
-  }
-
-@Override
-public void addHandledEntities(IStructurePluginManager manager)
-  {
-
-  }
-
-public static void load()
-  {
-  StructurePluginManager.instance().addPlugin(new StructurePluginNpcs());
-  }
-
-public static TemplateRuleEntity parseNpcRule(List<String> lines){return null;}
 
 }

@@ -20,7 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin;
 
-import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
+import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 
 
 public abstract class StructureContentPlugin
@@ -31,14 +31,14 @@ public abstract class StructureContentPlugin
  * block handlers with the passed in manager
  * @param manager
  */
-public abstract void addHandledBlocks(StructurePluginManager manager);
+public abstract void addHandledBlocks(IStructurePluginManager manager);
 
 /**
  * implementing classes should use this callback to register any 
  * entity handlers with the passed in manager
  * @param manager
  */
-public abstract void addHandledEntities(StructurePluginManager manager);
+public abstract void addHandledEntities(IStructurePluginManager manager);
 
 
 

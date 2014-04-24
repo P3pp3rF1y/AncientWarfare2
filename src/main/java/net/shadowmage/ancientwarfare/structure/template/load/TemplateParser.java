@@ -20,21 +20,17 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.load;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleEntity;
 
 public class TemplateParser
 {
@@ -280,7 +276,7 @@ private StructureTemplate parseTemplateLines(String fileName, List<String> lines
 
 private TemplateRule parseRule(List<String> templateLines, String ruleType) throws TemplateParsingException
   {
-  return TemplateRule.getRule(templateLines, ruleType);
+  return StructurePluginManager.getRule(templateLines, ruleType);
   }
 
 private StructureTemplate constructTemplate(String name, int x, int y, int z, int xo, int yo, int zo, short[] templateData, TemplateRule[] rules, TemplateRuleEntity[] entityRules, StructureValidator validation)

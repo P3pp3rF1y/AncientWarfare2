@@ -18,7 +18,7 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.shadowmage.ancientwarfare.structure.template.rule;
+package net.shadowmage.ancientwarfare.structure.api;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -27,7 +27,6 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 public abstract class TemplateRuleEntity extends TemplateRule
 {
@@ -46,7 +45,7 @@ public TemplateRuleEntity()
 
 public final void writeRule(BufferedWriter out) throws IOException
   {  
-  out.write("position="+StringTools.getCSVStringForArray(new int[]{x,y,z}));
+  out.write("position="+NBTTools.getCSVStringForArray(new int[]{x,y,z}));
   out.newLine();
   super.writeRule(out);
   }
@@ -58,7 +57,7 @@ public final void parseRule(int ruleNumber, List<String> lines)
     {
     if(line.toLowerCase().startsWith("position="))
       {
-      int[] pos = StringTools.safeParseIntArray("=", line);
+      int[] pos = NBTTools.safeParseIntArray("=", line);
       x = pos[0];
       y = pos[1];
       z = pos[2];

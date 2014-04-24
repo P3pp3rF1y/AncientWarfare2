@@ -9,7 +9,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;

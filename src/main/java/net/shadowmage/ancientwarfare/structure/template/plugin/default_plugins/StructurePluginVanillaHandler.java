@@ -44,8 +44,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
-import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
+import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockDoors;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockInventory;
@@ -67,7 +66,7 @@ public StructurePluginVanillaHandler()
   }
 
 @Override
-public void addHandledBlocks(StructurePluginManager manager)
+public void addHandledBlocks(IStructurePluginManager manager)
   {  
   specialHandledBlocks.add(Blocks.iron_door);
   specialHandledBlocks.add(Blocks.wooden_door);
@@ -119,7 +118,7 @@ public void addHandledBlocks(StructurePluginManager manager)
 
 
 @Override
-public void addHandledEntities(StructurePluginManager manager)
+public void addHandledEntities(IStructurePluginManager manager)
   {  
   manager.registerEntityHandler("vanillaEntities", EntityPig.class, TemplateRuleVanillaEntity.class);
   manager.registerEntityHandler("vanillaEntities", EntitySheep.class, TemplateRuleVanillaEntity.class);

@@ -1,9 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;

@@ -18,44 +18,13 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
+package net.shadowmage.ancientwarfare.structure.api;
 
-import java.util.List;
-
-import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
-import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 
-public class StructurePluginAutomation extends StructureContentPlugin
+public interface IStructurePluginRegister
 {
 
-/**
- * 
- */
-public StructurePluginAutomation()
-  {
-  // TODO Auto-generated constructor stub
-  }
+public void registerPlugin(StructureContentPlugin plugin);
 
-@Override
-public void addHandledBlocks(IStructurePluginManager manager)
-  {
-  // TODO Auto-generated method stub
-
-  }
-
-@Override
-public void addHandledEntities(IStructurePluginManager manager)
-  {
-  // TODO Auto-generated method stub
-
-  }
-
-public static void load()
-  {
-  StructurePluginManager.instance().addPlugin(new StructurePluginAutomation());
-  }
-
-public static TemplateRuleBlock parseAutomationRule(List<String> lines){return null;}
 }

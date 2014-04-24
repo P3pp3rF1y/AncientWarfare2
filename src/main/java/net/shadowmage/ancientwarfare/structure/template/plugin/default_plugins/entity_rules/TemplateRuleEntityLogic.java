@@ -27,7 +27,7 @@ import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
 public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity
 {
@@ -45,7 +45,7 @@ public TemplateRuleEntityLogic(World world, Entity entity, int turns, int x, int
   }
 
 @Override
-public void handlePlacement(World world, int turns, int x, int y, int z, StructureBuilder builder)
+public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder)
   {
   Entity e = EntityList.createEntityByName(mobID, world);  
   NBTTagList list = new NBTTagList();

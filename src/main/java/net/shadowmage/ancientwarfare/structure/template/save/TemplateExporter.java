@@ -27,10 +27,11 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRule;
 
 public class TemplateExporter
 {
@@ -66,14 +67,14 @@ public static void exportTo(StructureTemplate template, File directory)
     TemplateRule[] templateRules = template.getTemplateRules();
     for(TemplateRule rule : templateRules)
       {
-      TemplateRule.writeRuleLines(rule, writer, "rule");
+      StructurePluginManager.writeRuleLines(rule, writer, "rule");
       }    
     writer.write("#### ENTITIES ####");
     writer.newLine();
     templateRules = template.getEntityRules();
     for(TemplateRule rule : templateRules)
       {
-      TemplateRule.writeRuleLines(rule, writer, "entity");
+      StructurePluginManager.writeRuleLines(rule, writer, "entity");
       }    
     } 
   catch (IOException e)

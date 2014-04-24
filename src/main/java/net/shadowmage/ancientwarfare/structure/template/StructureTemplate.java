@@ -25,10 +25,9 @@ import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleEntity;
 
 
 

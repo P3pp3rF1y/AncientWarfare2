@@ -18,7 +18,7 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.shadowmage.ancientwarfare.structure.template.rule;
+package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;

@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.core.network;
 
+import io.netty.buffer.ByteBuf;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import io.netty.buffer.ByteBuf;
 
 public class PacketResearchStart extends PacketBase
 {

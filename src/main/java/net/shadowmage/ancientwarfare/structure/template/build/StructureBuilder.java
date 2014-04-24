@@ -27,11 +27,12 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleEntity;
 
-public class StructureBuilder
+public class StructureBuilder implements IStructureBuilder
 {
 
 protected StructureTemplate template;
@@ -119,6 +120,7 @@ protected void placeEntities()
  * @param meta
  * @param priority
  */
+@Override
 public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
   {
   if(priority==0)

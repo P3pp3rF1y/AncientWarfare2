@@ -21,7 +21,6 @@ import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketSound;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 
 public class SpawnerSettings
 {

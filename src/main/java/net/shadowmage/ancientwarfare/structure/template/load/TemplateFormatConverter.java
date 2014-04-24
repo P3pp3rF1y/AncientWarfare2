@@ -39,6 +39,8 @@ import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
@@ -48,8 +50,6 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.b
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockSign;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleModBlocks;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaBlocks;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.template.rule.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 
 

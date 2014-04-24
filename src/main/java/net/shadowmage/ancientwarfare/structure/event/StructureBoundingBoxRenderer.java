@@ -27,7 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;

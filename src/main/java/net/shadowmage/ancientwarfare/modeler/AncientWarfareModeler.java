@@ -4,7 +4,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.modeler.item.ItemModelEditor;
 import net.shadowmage.ancientwarfare.modeler.proxy.CommonProxyModeler;
 import cpw.mods.fml.common.Mod;

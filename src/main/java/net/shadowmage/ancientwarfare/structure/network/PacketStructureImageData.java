@@ -5,15 +5,10 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 import javax.imageio.ImageIO;
 
-import net.minecraft.nbt.CompressedStreamTools;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.util.StringTools;

@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
+import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 
@@ -32,13 +33,13 @@ public StructurePluginVehicles()
   }
 
 @Override
-public void addHandledBlocks(StructurePluginManager manager)
+public void addHandledBlocks(IStructurePluginManager manager)
   {
 
   }
 
 @Override
-public void addHandledEntities(StructurePluginManager manager)
+public void addHandledEntities(IStructurePluginManager manager)
   {
   //manager.registerEntityHandler("ancientWarfareVehicle", EntityVehicle.class, TemplateRuleEntityLogic.class);
   }

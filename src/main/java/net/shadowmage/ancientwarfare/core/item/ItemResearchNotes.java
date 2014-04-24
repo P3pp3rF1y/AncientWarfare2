@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.item;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;

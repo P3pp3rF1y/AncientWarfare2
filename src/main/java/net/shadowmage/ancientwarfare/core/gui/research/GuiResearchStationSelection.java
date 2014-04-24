@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui.research;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
