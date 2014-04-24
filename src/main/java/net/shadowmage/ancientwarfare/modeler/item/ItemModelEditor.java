@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.item.ItemClickable;
+import net.shadowmage.ancientwarfare.modeler.AncientWarfareModeler;
 import net.shadowmage.ancientwarfare.modeler.gui.GuiModelEditor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -37,7 +38,7 @@ public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosit
   {
   if(player.worldObj.isRemote)
     {
-    Minecraft.getMinecraft().displayGuiScreen(new GuiModelEditor(new ContainerBase(player, 0, 0, 0)));
+    AncientWarfareModeler.proxy.openGui(player);
     }
   }
 

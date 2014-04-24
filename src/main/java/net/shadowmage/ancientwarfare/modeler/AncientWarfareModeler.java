@@ -6,6 +6,7 @@ import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.modeler.item.ItemModelEditor;
+import net.shadowmage.ancientwarfare.modeler.proxy.CommonProxyModeler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -32,9 +33,9 @@ public static AncientWarfareModeler instance;
 @SidedProxy
 (
 clientSide = "net.shadowmage.ancientwarfare.modeler.proxy.ClientProxyModeler",
-serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy"
+serverSide = "net.shadowmage.ancientwarfare.modeler.proxy.CommonProxyModeler"
 )
-public static CommonProxyBase proxy;
+public static CommonProxyModeler proxy;
 
 public static Configuration config;
 
@@ -53,7 +54,7 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * internal registry
    */
-  proxy.registerClient();   
+  
   
   editorOpener = new ItemModelEditor("editor_opener");
   editorOpener.setTextureName("ancientwarfare:modeler/editor_opener");

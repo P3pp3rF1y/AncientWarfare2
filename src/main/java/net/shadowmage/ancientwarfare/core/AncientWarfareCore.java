@@ -65,7 +65,6 @@ public void preInit(FMLPreInitializationEvent evt)
   
   Statics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
   Statics.loadConfig(config);
-  InputHandler.instance().loadConfig(config);
   
   
   /**
