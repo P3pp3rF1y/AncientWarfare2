@@ -20,16 +20,19 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID;
 import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockMeta;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class StructureBuilderWorldGen extends StructureBuilder
 {
@@ -73,6 +76,43 @@ public void instantConstruction()
   {
   template.getValidationSettings().preGeneration(world, buildOrigin.x, buildOrigin.y, buildOrigin.z, buildFace, template, bb);
   super.instantConstruction();
+  if(template.getValidationSettings().validationType==StructureValidationType.GROUND)
+    {
+    BiomeGenBase biome = world.getBiomeGenForCoords(buildOrigin.x, buildOrigin.z);
+    if(biome!=null && biome.getEnableSnow())
+      {
+      sprinkleSnow();
+      }
+    }
+  }
+
+private void sprinkleSnow()
+  {
+  Block block;
+  int y = 0;
+  int border = template.getValidationSettings().getBorderSize();
+  BlockPosition p1 = bb.min.copy();
+  BlockPosition p2 = bb.max.copy();
+  p1.offset(-border, 0, -border);
+  p2.offset(border, 0, border);
+  for(int x = p1.x; x <=p2.x; x++)
+    {
+    for(int z = p1.z; z<=p2.z; z++)
+      {
+      y = p2.y;
+      while(y>=p1.y)
+        {
+        block = world.getBlock(x, y, z);
+        if(block!=null && block!=Blocks.air && block.isSideSolid(world, x, y, z, ForgeDirection.UP))
+          {
+          y++;
+          world.setBlock(x, y, z, Blocks.snow_layer);
+          break;
+          }
+        y--;
+        }
+      }
+    }
   }
 
 }
