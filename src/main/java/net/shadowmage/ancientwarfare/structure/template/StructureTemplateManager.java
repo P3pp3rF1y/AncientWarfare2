@@ -62,7 +62,7 @@ public void addTemplate(StructureTemplate template)
   clientTemplates.put(template.name, cl);
   
   MinecraftServer server = MinecraftServer.getServer();
-  if(server!=null && server.isServerRunning())
+  if(server!=null && server.isServerRunning() && server.getConfigurationManager()!=null)
     {
     NBTTagCompound tag = new NBTTagCompound();
     cl.writeToNBT(tag);    
