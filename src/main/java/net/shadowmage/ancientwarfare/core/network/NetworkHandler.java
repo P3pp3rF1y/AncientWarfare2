@@ -34,6 +34,7 @@ public static final int PACKET_RESEARCH_ADD = 7;
 public static final int PACKET_RESEARCH_START = 8;
 public static final int PACKET_STRUCTURE_IMAGE_LIST = 9;
 public static final int PACKET_STRUCTURE_IMAGE_DATA = 10;
+public static final int PACKET_STRUCTURE_REMOVE = 11;
 
 public static final int GUI_CRAFTING = 0;
 public static final int GUI_SCANNER = 1;

@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlockLoader;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
 import net.shadowmage.ancientwarfare.structure.container.ContainerGateControl;
@@ -27,6 +28,7 @@ import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageData;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageList;
+import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
@@ -41,6 +43,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -95,6 +98,7 @@ public void preInit(FMLPreInitializationEvent evt)
   PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);   
   PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_IMAGE_LIST, PacketStructureImageList.class);
   PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_IMAGE_DATA, PacketStructureImageData.class);
+  PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class);
   AWGameData.INSTANCE.registerSaveData("AWStructureMap", StructureMap.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
@@ -148,6 +152,12 @@ public void onLogin(PlayerEvent.PlayerLoggedInEvent evt)
     {
     StructureTemplateManager.instance().onPlayerConnect((EntityPlayerMP) player);
     } 
+  }
+
+@EventHandler
+public void serverStart(FMLServerStartingEvent evt)
+  {
+  evt.registerServerCommand(new CommandStructure());
   }
 
 }

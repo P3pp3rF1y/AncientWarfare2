@@ -125,6 +125,12 @@ guistrings.research.click_to_learn=Right Click To Learn
 guistrings.research.researcher_name=Researcher Name
 guistrings.research.click_to_add_progress=Right Click To Add Progress To Current Research
 
+#commands
+command.aw.structure.usage=foo usage
+command.aw.structure.not_found=Template could not be located: %s
+command.aw.structure.file_not_found=File could not be located: %s
+command.aw.structure.template_removed=Template was removed: %s
+command.aw.structure.file_deleted=File was deleted: %s
 
 #research
 research.test_research1=Test Research 1
@@ -158,6 +164,7 @@ structure.validation.dimensionWhiteList=Dimension White List
 structure.validation.biomeList=Biome List
 structure.validation.blockList=Block List
 structure.validation.dimensionList=Dimension List
+structure.validation.blockSwap=Dynamic Block Reassignment
 
 #gate names
 item.gateBasicWood.name=Wooden Gate (vert. open)

@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageData;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageList;
+import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 
 public class StructureTemplateManager
 {
@@ -87,6 +88,20 @@ public void onPlayerConnect(EntityPlayerMP player)
   
   PacketStructureImageList pkt2 = new PacketStructureImageList(this.imageMD5s);
   NetworkHandler.sendToPlayer(player, pkt2);
+  }
+
+public boolean removeTemplate(String name)
+  {  
+  if(this.loadedTemplates.containsKey(name))
+    {
+    this.loadedTemplates.remove(name);
+    this.imageMD5s.remove(name);
+    this.clientTemplates.remove(name);
+    this.templateImages.remove(name);    
+    NetworkHandler.sendToAllPlayers(new PacketStructureRemove(name));
+    return true;
+    }
+  return false;
   }
 
 public StructureTemplate getTemplate(String name)

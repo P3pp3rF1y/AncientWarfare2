@@ -62,6 +62,13 @@ private void readClientStructure(NBTTagCompound tag)
   addTemplate(template);
   }
 
+public void removeTemplate(String name)
+  {
+  this.clientTemplates.remove(name);
+  this.clientImageMD5s.remove(name);
+  this.clientTemplateImages.remove(name);
+  }
+
 public Collection<StructureTemplateClient> getClientStructures()
   {
   return clientTemplates.values();
@@ -72,13 +79,11 @@ public List<StructureTemplateClient> getSurvivalStructures()
   List<StructureTemplateClient> clientStructures = new ArrayList<StructureTemplateClient>();
   for(StructureTemplateClient t : this.clientTemplates.values())
     {
-    AWLog.logDebug("examining client structure: "+t.name + " survival: "+t.survival);
     if(t.survival)
       {            
       clientStructures.add(t);
       }
     }
-  AWLog.logDebug("returning client side structure set of: "+clientStructures);
   return clientStructures;
   }
 
@@ -99,9 +104,7 @@ public ResourceLocation getImageFor(String templateName)
   }
 
 public void handleStructureImageNameList(Map<String, String> imageMap)
-  {  
-  AWLog.logDebug("receiving image names map of: "+imageMap);
-  
+  {    
   String pathBase = "config/AWConfig/structures/image_cache/";
   File dirBase = new File(pathBase);
   dirBase.mkdirs();
@@ -112,17 +115,14 @@ public void handleStructureImageNameList(Map<String, String> imageMap)
     testFile = new File(pathBase+name);
     if(!clientTemplateImages.containsKey(name) && !testFile.exists())
       {
-      AWLog.logDebug("adding: "+name+ " to needed structure images list");
       neededFiles.put(name, name);
       }
     else if(clientImageMD5s.containsKey(name) && !clientImageMD5s.get(name).equals(imageMap.get(name)))
       {
-      AWLog.logDebug("adding: "+name+ " to needed structure images list for md5 mismatch");
       neededFiles.put(name, name);      
       }
     }  
   
-  AWLog.logDebug("sending needed image list of: "+neededFiles);
   PacketStructureImageList pkt = new PacketStructureImageList(neededFiles);
   NetworkHandler.sendToServer(pkt);
   }
@@ -138,7 +138,6 @@ private void loadTemplateImage(String imageName)
     BufferedImage image = StructureTemplateManager.instance().getTemplateImage(imageName);
     if(image!=null)
       {
-      AWLog.logDebug("Loading template image from server template images cache: "+imageName);
       Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
       String md5 = StructureTemplateManager.instance().getImageMD5(imageName);
       clientTemplateImages.put(imageName, loc);
@@ -156,8 +155,7 @@ private void loadTemplateImage(String imageName)
         Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));      
         md5 = getMD5(file);
         clientImageMD5s.put(imageName, md5);
-        clientTemplateImages.put(imageName, loc);  
-        AWLog.logDebug("Loading template image from file in image_cache: "+imageName);        
+        clientTemplateImages.put(imageName, loc);      
         }  
       else
         {
