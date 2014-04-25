@@ -49,10 +49,10 @@ List<Integer> sheepToShear = new ArrayList<Integer>();
 int workerRescanDelay;
 boolean shouldCountResources;
 
-int maxPigCount = 6;
-int maxCowCount = 6;
-int maxChickenCount = 6;
-int maxSheepCount = 6;
+public int maxPigCount = 6;
+public int maxCowCount = 6;
+public int maxChickenCount = 6;
+public int maxSheepCount = 6;
 
 List<Integer> entitiesToCull = new ArrayList<Integer>();
 
