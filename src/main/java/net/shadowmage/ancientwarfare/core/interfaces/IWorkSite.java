@@ -32,9 +32,7 @@ public boolean hasWork();
 public void doWork(IWorker worker);
 
 /**
- * workers will call this before starting to work at a site to make sure that the site can have
- * more workers.  validates with the worker to see if worker can work at this worksite by checking
- * this.getWorkType() vs worker.getWorkTypes()
+ * should be called DIRECTLY before addWorker to validate that this work-site can accept more workers. 
  * 
  * @param worker
  * @return
@@ -51,8 +49,10 @@ public boolean addWorker(IWorker worker);
 /**
  * called by a worker when he is done working at a site
  * can be called when the worker goes home for the night, is shut down (for blocks/engines),
- * or when the worker stops working due to no more work at the site.
- * (workers should maintain their own internal designated work-site reference, to know where to return to)
+ * or when the worker stops working due to no more work at the site.<br>
+ * Workers should maintain their own internal designated work-site reference, to know where to return to.<br>
+ * Invalid workers that do not remove themselves from the list will clog up the workers list, and make it
+ * so that no new workers can work at the site. 
  * @param worker
  */
 public void removeWorker(IWorker worker);

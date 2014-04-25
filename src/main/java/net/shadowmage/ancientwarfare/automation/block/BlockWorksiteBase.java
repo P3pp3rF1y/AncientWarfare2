@@ -19,6 +19,8 @@ public abstract class BlockWorksiteBase extends Block
 {
 
 BlockIconRotationMap iconMap = new BlockIconRotationMap();
+public int maxWorkSize = 16;
+public int maxWorkSizeVertical = 1;
 
 public BlockWorksiteBase(Material p_i45394_1_, String regName)
   {
@@ -30,6 +32,12 @@ public BlockWorksiteBase(Material p_i45394_1_, String regName)
 public BlockWorksiteBase setIcon(RelativeSide relativeSide, String texName)
   {
   this.iconMap.setIconTexture(relativeSide, texName);
+  return this;
+  }
+
+public BlockWorksiteBase setWorkSize(int size)
+  {
+  this.maxWorkSize = size;
   return this;
   }
 

@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class TileWorkerTest extends TileEntity implements IWorker
 {
@@ -134,6 +135,12 @@ public Team getTeam()
 public EnumSet<WorkType> getWorkTypes()
   {
   return EnumSet.allOf(WorkType.class);
+  }
+
+@Override
+public BlockPosition getPosition()
+  {
+  return new BlockPosition(xCoord,yCoord,zCoord);
   }
 
 }

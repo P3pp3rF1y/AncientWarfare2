@@ -6,6 +6,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.block.BlockWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -41,12 +42,24 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
   else if(stack.getTagCompound().hasKey("pos1"))
     {
     BlockPosition pos1 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos1"));
-    /**
-     * TODO validate max size -- how to know what max size is...pull from block-instance?
-     */
-    NBTTagCompound tag = new NBTTagCompound();
-    hit.writeToNBT(tag);
-    stack.getTagCompound().setTag("pos2", tag);
+    int size = ((BlockWorksiteBase)field_150939_a).maxWorkSize;
+    int ySize = ((BlockWorksiteBase)field_150939_a).maxWorkSizeVertical;
+    BlockPosition min = BlockTools.getMin(pos1, hit);
+    BlockPosition max = BlockTools.getMax(pos1, hit);
+    if(max.y-min.y >= ySize)
+      {
+      //TODO send chat message      
+      }
+    else if(max.x-min.x >= size || max.z-min.z >=size)
+      {
+      //TODO send chat message      
+      }
+    else
+      {
+      NBTTagCompound tag = new NBTTagCompound();
+      hit.writeToNBT(tag);
+      stack.getTagCompound().setTag("pos2", tag);      
+      }
     //TODO send chat message
     }
   else

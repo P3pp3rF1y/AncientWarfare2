@@ -18,10 +18,9 @@ automation module
 		crop farm -- optional replanting of resources
 		tree farm -- optional replanting of trees
 		tree farm -- toggle pickup of apples?
+	add worker view to worksites guis?
 	add the rest of the types of automation -- cocoa/reed/cactus farm, fish/ink farms, etc.
-	add plugin / support for power systems (mechanical worker block)
-	add animal farm pickup of eggs
-	add tree farm pickup of sapling drops	
+	add plugin / support for power systems (mechanical worker block)(need APIs updated first)
 	mechanical hopper block -- configurable pull / push side (s), and on/off push control
 		with filter list per-side -- needs redstone power to function?
 	auto-crafting table / worksite

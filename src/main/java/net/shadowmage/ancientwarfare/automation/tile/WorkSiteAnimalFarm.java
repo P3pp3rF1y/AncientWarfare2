@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.BlockSapling;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -13,6 +14,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -453,6 +455,26 @@ public void doWork(IWorker worker)
   if(hasAnimalWork())
     {
     processWork();
+    }
+  pickupEggs();
+  }
+
+private void pickupEggs()
+  {
+  BlockPosition p1 = getWorkBoundsMin();
+  BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
+  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+  List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, bb);
+  ItemStack stack;
+  for(EntityItem item : items)
+    {
+    stack = item.getEntityItem();
+    if(stack==null){continue;}
+    if(stack.getItem()==Items.egg)
+      {
+      item.setDead();
+      addStackToInventory(stack, InventorySide.TOP);
+      }
     }
   }
 
