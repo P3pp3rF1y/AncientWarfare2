@@ -223,87 +223,87 @@ public void registerPlugin(StructureContentPlugin plugin)
   }
 
 public static final TemplateRule getRule(List<String> ruleData, String ruleType) throws TemplateParsingException
-{
-Iterator<String> it = ruleData.iterator();
-String name = null;
-int ruleNumber = -1;
-String line;
-List<String> ruleDataPackage = new ArrayList<String>();
-while(it.hasNext())
   {
-  TemplateParser.lineNumber++;
-  line = it.next();
-  if(line.startsWith(ruleType+":"))
+  Iterator<String> it = ruleData.iterator();
+  String name = null;
+  int ruleNumber = -1;
+  String line;
+  List<String> ruleDataPackage = new ArrayList<String>();
+  while(it.hasNext())
     {
-    continue;
-    }
-  if(line.startsWith(":end"+ruleType))
-    {
-    break;
-    }
-  if(line.startsWith("plugin="))
-    {
-    name = StringTools.safeParseString("=", line);
-    }
-  if(line.startsWith("number="))
-    {
-    ruleNumber = StringTools.safeParseInt("=", line);
-    }
-  if(line.startsWith("data:"))
-    {
-    while(it.hasNext())
+    TemplateParser.lineNumber++;
+    line = it.next();
+    if(line.startsWith(ruleType+":"))
       {
-      line = it.next();
-      if(line.startsWith(":enddata"))
+      continue;
+      }
+    if(line.startsWith(":end"+ruleType))
+      {
+      break;
+      }
+    if(line.startsWith("plugin="))
+      {
+      name = StringTools.safeParseString("=", line);
+      }
+    if(line.startsWith("number="))
+      {
+      ruleNumber = StringTools.safeParseInt("=", line);
+      }
+    if(line.startsWith("data:"))
+      {
+      while(it.hasNext())
         {
-        break;
+        line = it.next();
+        if(line.startsWith(":enddata"))
+          {
+          break;
+          }
+        ruleDataPackage.add(line);
         }
-      ruleDataPackage.add(line);
       }
     }
+  Class<?extends TemplateRule> clz = StructurePluginManager.instance().getRuleByName(name);
+  if(name==null || ruleNumber<0 || ruleDataPackage.size()==0 || clz==null)
+    {
+    throw new TemplateParser.TemplateParsingException("Not enough data to create template rule.\n"+
+        "name: "+name+"\n"+
+        "number:"+ruleNumber+"\n"+
+        "ruleDataPackage.size:"+ruleDataPackage.size()+"\n"+
+        "ruleClass: "+clz);
+    }
+  
+  try
+    {    
+    TemplateRule rule = clz.getConstructor().newInstance();    
+    rule.parseRule(ruleNumber, ruleDataPackage);
+    return rule;
+    } 
+  catch (InstantiationException e)
+    {
+    e.printStackTrace();
+    } 
+  catch (IllegalAccessException e)
+    {
+    e.printStackTrace();
+    } 
+  catch (IllegalArgumentException e)
+    {
+    e.printStackTrace();
+    } 
+  catch (InvocationTargetException e)
+    {
+    e.printStackTrace();
+    } 
+  catch (NoSuchMethodException e)
+    {
+    e.printStackTrace();
+    } 
+  catch (SecurityException e)
+    {
+    e.printStackTrace();
+    }
+  return null;
   }
-Class<?extends TemplateRule> clz = StructurePluginManager.instance().getRuleByName(name);
-if(name==null || ruleNumber<0 || ruleDataPackage.size()==0 || clz==null)
-  {
-  throw new TemplateParser.TemplateParsingException("Not enough data to create template rule.\n"+
-      "name: "+name+"\n"+
-      "number:"+ruleNumber+"\n"+
-      "ruleDataPackage.size:"+ruleDataPackage.size()+"\n"+
-      "ruleClass: "+clz);
-  }
-
-try
-  {    
-  TemplateRule rule = clz.getConstructor().newInstance();    
-  rule.parseRule(ruleNumber, ruleDataPackage);
-  return rule;
-  } 
-catch (InstantiationException e)
-  {
-  e.printStackTrace();
-  } 
-catch (IllegalAccessException e)
-  {
-  e.printStackTrace();
-  } 
-catch (IllegalArgumentException e)
-  {
-  e.printStackTrace();
-  } 
-catch (InvocationTargetException e)
-  {
-  e.printStackTrace();
-  } 
-catch (NoSuchMethodException e)
-  {
-  e.printStackTrace();
-  } 
-catch (SecurityException e)
-  {
-  e.printStackTrace();
-  }
-return null;
-}
 
 public final static void writeRuleLines(TemplateRule rule, BufferedWriter out, String ruleType) throws IOException
   {

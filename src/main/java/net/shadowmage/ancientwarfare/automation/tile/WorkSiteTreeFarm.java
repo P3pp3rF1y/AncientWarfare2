@@ -9,6 +9,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -44,7 +46,7 @@ int workerRescanDelay;
 Set<BlockPosition> blocksToChop;
 List<BlockPosition> blocksToPlant;
 List<BlockPosition> blocksToFertilize;
-
+int saplingPickupDelay;
 /**
  * 
  */
@@ -156,6 +158,42 @@ public void updateEntity()
   if(worldObj.isRemote){return;}
   if(workerRescanDelay>0){workerRescanDelay--;}
   if(shouldCountResources){countResources();}
+  if(saplingPickupDelay>0)
+    {
+    saplingPickupDelay--;
+    if(saplingPickupDelay==0)
+      {
+      pickupItems();
+      saplingPickupDelay = 200;
+      }
+    }
+  }
+
+private void pickupItems()
+  {
+  BlockPosition p1 = getWorkBoundsMin();
+  BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
+  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+  List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, bb);
+  ItemStack stack;
+  for(EntityItem item : items)
+    {
+    stack = item.getEntityItem();
+    if(stack==null){continue;}
+    if(stack.getItem()==Items.apple)
+      {
+    //pickup item
+      continue;
+      }
+    if(stack.getItem() instanceof ItemBlock)
+      {
+      ItemBlock ib = (ItemBlock)stack.getItem();
+      if(ib.field_150939_a instanceof BlockSapling)
+        {
+        //pickup item 
+        }
+      }
+    }
   }
 
 @Override

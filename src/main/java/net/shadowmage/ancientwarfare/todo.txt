@@ -1,14 +1,16 @@
-core
+core (done for now)
 	crafting system--needs recipes from other modules
 	research system--needs definitions of research for research tree
 	block and item textures (engineering station, research station, research book, research notes)
+
+modeler
+	who knows....
 	
 structures module (done for now)
 	plugins / support for other modules
 	textures for drafting station, survival-mode builder
 
 automation module
-	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority
 	finish animal farm alternate control GUI.
 	add any other applicable alternate control GUIs (and corresponding functions in the tiles)
 		crop farm -- optional canTillDirt control
@@ -16,7 +18,7 @@ automation module
 		crop farm -- optional replanting of resources
 		tree farm -- optional replanting of trees
 		tree farm -- toggle pickup of apples?
-	add the rest of the types of automation -- farm, etc.
+	add the rest of the types of automation -- cocoa/reed/cactus farm, fish/ink farms, etc.
 	add plugin / support for power systems (mechanical worker block)
 	add animal farm pickup of eggs
 	add tree farm pickup of sapling drops	
@@ -29,6 +31,7 @@ vehicles module
 	everything
 
 npcs module
+	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority
 	everything
 	
 	
