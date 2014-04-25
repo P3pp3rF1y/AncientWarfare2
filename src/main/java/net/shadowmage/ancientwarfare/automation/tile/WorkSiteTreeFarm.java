@@ -46,7 +46,6 @@ int workerRescanDelay;
 Set<BlockPosition> blocksToChop;
 List<BlockPosition> blocksToPlant;
 List<BlockPosition> blocksToFertilize;
-int saplingPickupDelay;
 /**
  * 
  */
@@ -158,42 +157,6 @@ public void updateEntity()
   if(worldObj.isRemote){return;}
   if(workerRescanDelay>0){workerRescanDelay--;}
   if(shouldCountResources){countResources();}
-  if(saplingPickupDelay>0)
-    {
-    saplingPickupDelay--;
-    if(saplingPickupDelay==0)
-      {
-      pickupItems();
-      saplingPickupDelay = 200;
-      }
-    }
-  }
-
-private void pickupItems()
-  {
-  BlockPosition p1 = getWorkBoundsMin();
-  BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-  List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, bb);
-  ItemStack stack;
-  for(EntityItem item : items)
-    {
-    stack = item.getEntityItem();
-    if(stack==null){continue;}
-    if(stack.getItem()==Items.apple)
-      {
-    //pickup item
-      continue;
-      }
-    if(stack.getItem() instanceof ItemBlock)
-      {
-      ItemBlock ib = (ItemBlock)stack.getItem();
-      if(ib.field_150939_a instanceof BlockSapling)
-        {
-        //pickup item 
-        }
-      }
-    }
   }
 
 @Override
@@ -318,7 +281,31 @@ private void processWork()
 
 private void pickupSaplings()
   {
-  
+  BlockPosition p1 = getWorkBoundsMin();
+  BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
+  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+  List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, bb);
+  ItemStack stack;
+  for(EntityItem item : items)
+    {
+    stack = item.getEntityItem();
+    if(stack==null){continue;}
+    if(stack.getItem()==Items.apple)
+      {
+      item.setDead();
+      addStackToInventory(stack, InventorySide.TOP);
+      continue;
+      }
+    if(stack.getItem() instanceof ItemBlock)
+      {
+      ItemBlock ib = (ItemBlock)stack.getItem();
+      if(ib.field_150939_a instanceof BlockSapling)
+        {
+        item.setDead();
+        addStackToInventory(stack, InventorySide.FRONT);
+        }
+      }
+    }
   }
 
 private void rescan()
