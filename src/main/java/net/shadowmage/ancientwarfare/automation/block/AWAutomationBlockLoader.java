@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.automation.tile.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteTreeFarm;
+import net.shadowmage.ancientwarfare.automation.tile.WorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -58,6 +59,15 @@ public static final BlockWorksiteBase worksiteAnimalFarm = new BlockWorksiteBase
     {
     return new WorkSiteAnimalFarm();
     }  
+  };
+  
+public static final BlockWorksiteBase worksiteAutoCrafting = new BlockWorksiteBase(Material.rock, "civic_auto_craftin")
+  {
+  @Override
+  public TileEntity createTileEntity(World world, int metadata)
+    {
+    return new WorksiteAutoCrafting();
+    }
   };
 
 public static void load()
