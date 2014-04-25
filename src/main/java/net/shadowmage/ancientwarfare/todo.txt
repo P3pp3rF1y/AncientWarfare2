@@ -2,9 +2,8 @@ core
 	crafting system--needs recipes from other modules
 	research system--needs definitions of research for research tree
 	block and item textures (engineering station, research station, research book, research notes)
-	add IInventory support to research station for resource-input through automation
 	
-structures module
+structures module (done for now)
 	plugins / support for other modules
 	textures for drafting station, survival-mode builder
 

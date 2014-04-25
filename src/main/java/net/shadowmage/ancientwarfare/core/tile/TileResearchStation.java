@@ -7,6 +7,7 @@ import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +20,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileResearchStation extends TileEntity implements IWorkSite
+public class TileResearchStation extends TileEntity implements IWorkSite, IInventory
 {
 
 private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
@@ -243,6 +244,78 @@ public List<BlockPosition> getWorkTargets()
 public boolean hasWorkBounds()
   {
   return false;
+  }
+
+@Override
+public int getSizeInventory()
+  {
+  return resourceInventory.getSizeInventory();
+  }
+
+@Override
+public ItemStack getStackInSlot(int var1)
+  {
+  return resourceInventory.getStackInSlot(var1);
+  }
+
+@Override
+public ItemStack decrStackSize(int var1, int var2)
+  {
+  return resourceInventory.decrStackSize(var1, var2);
+  }
+
+@Override
+public ItemStack getStackInSlotOnClosing(int var1)
+  {
+  return resourceInventory.getStackInSlotOnClosing(var1);
+  }
+
+@Override
+public void setInventorySlotContents(int var1, ItemStack var2)
+  {
+  resourceInventory.setInventorySlotContents(var1, var2);
+  }
+
+@Override
+public String getInventoryName()
+  {
+  return resourceInventory.getInventoryName();
+  }
+
+@Override
+public boolean hasCustomInventoryName()
+  {
+  return resourceInventory.hasCustomInventoryName();
+  }
+
+@Override
+public int getInventoryStackLimit()
+  {
+  return resourceInventory.getInventoryStackLimit();
+  }
+
+@Override
+public boolean isUseableByPlayer(EntityPlayer var1)
+  {
+  return resourceInventory.isUseableByPlayer(var1);
+  }
+
+@Override
+public void openInventory()
+  {
+  resourceInventory.openInventory();
+  }
+
+@Override
+public void closeInventory()
+  {
+  resourceInventory.closeInventory();
+  }
+
+@Override
+public boolean isItemValidForSlot(int var1, ItemStack var2)
+  {
+  return resourceInventory.isItemValidForSlot(var1, var2);
   }
 
 }
