@@ -106,7 +106,10 @@ private void sprinkleSnow()
         if(block!=null && block!=Blocks.air && block.isSideSolid(world, x, y, z, ForgeDirection.UP))
           {
           y++;
-          world.setBlock(x, y, z, Blocks.snow_layer);
+          if(world.isAirBlock(x, y, z))
+            {
+            world.setBlock(x, y, z, Blocks.snow_layer);         
+            }
           break;
           }
         y--;
