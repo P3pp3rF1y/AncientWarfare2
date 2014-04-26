@@ -149,8 +149,6 @@ public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
       }
     world.markBlockForUpdate(x, y, z);       
     }
-  world.setBlock(x, y, z, block);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
-  world.setBlockMetadataWithNotify(x, y, z, meta, 2);
   }
 
 protected void placeCurrentPosition()

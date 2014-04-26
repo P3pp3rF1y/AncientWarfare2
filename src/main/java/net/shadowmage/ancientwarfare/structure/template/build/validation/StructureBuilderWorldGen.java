@@ -62,14 +62,84 @@ public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
       {
       block = evt1.replacement;
       }    
+    else
+      {
+      block = getBiomeSpecificBlock(block, meta, biome);
+      }
     BiomeEvent.GetVillageBlockMeta evt2 = new GetVillageBlockMeta(biome, block, meta);
     MinecraftForge.EVENT_BUS.post(evt2);
     if(evt2.getResult()==Result.DENY)
       {
       meta = evt2.replacement;
       }    
+    else
+      {
+      meta = getBiomeSpecificBlockMetadata(block, meta, biome);
+      }
     }
   super.placeBlock(x, y, z, block, meta, priority);
+  }
+
+
+protected Block getBiomeSpecificBlock(Block par1, int par2, BiomeGenBase biome)
+  {
+  if(biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock==Blocks.sand)
+    {
+    if (par1 == Blocks.log)
+      {
+      return Blocks.sandstone;
+      }
+
+    if (par1 == Blocks.cobblestone)
+      {
+      return Blocks.sandstone;
+      }
+
+    if (par1 == Blocks.planks)
+      {
+      return Blocks.sandstone;
+      }
+
+    if (par1 == Blocks.oak_stairs)
+      {
+      return Blocks.sandstone_stairs;
+      }
+
+    if (par1 == Blocks.stone_stairs)
+      {
+      return Blocks.sandstone_stairs;
+      }
+
+    if (par1 == Blocks.gravel)
+      {
+      return Blocks.sandstone;
+      }
+    }
+
+  return par1;
+  }
+
+/**
+ * Gets the replacement block metadata for the current biome
+ */
+protected int getBiomeSpecificBlockMetadata(Block par1, int par2, BiomeGenBase biome)
+  {
+  if(biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock==Blocks.sand)
+    {
+    if (par1 == Blocks.log)
+      {
+      return 0;
+      }
+    if (par1 == Blocks.cobblestone)
+      {
+      return 0;
+      }
+    if (par1 == Blocks.planks)
+      {
+      return 2;
+      }
+    }
+  return par2;
   }
 
 public void instantConstruction()
@@ -106,7 +176,7 @@ private void sprinkleSnow()
         if(block!=null && block!=Blocks.air && block.isSideSolid(world, x, y, z, ForgeDirection.UP))
           {
           y++;
-          if(world.isAirBlock(x, y, z))
+          if(world.isAirBlock(x, y, z) && world.canBlockSeeTheSky(x, y, z))
             {
             world.setBlock(x, y, z, Blocks.snow_layer);         
             }
