@@ -22,7 +22,7 @@ public ContainerWorksiteBase(EntityPlayer player, int x, int y, int z)
   worksite = (TileWorksiteBase)player.worldObj.getTileEntity(x, y, z);
   playerSlotsLabelHeight = addWorksiteInventorySlots(8);
   guiHeight = this.addPlayerSlots(player, 8, playerSlotsLabelHeight+12, 4);//+12 is for offset for label
-  if(worksite.hasAltSetupGui()!=null)
+  if(worksite.hasAltSetupGui())
     {
     guiHeight+=12;
     }

@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.block;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 
 /**
  * relative side rotation mapping<br>
@@ -159,6 +161,13 @@ public static int getAccessDirection(RelativeSide side, int meta)
       }
     }
   return -1;
+  }
+
+public static ForgeDirection getFacingDirectionFor(RelativeSide side, int meta)
+  {
+  int dir = getAccessDirection(side, meta);
+  ForgeDirection d = ForgeDirection.getOrientation(dir);
+  return d;
   }
 
 }

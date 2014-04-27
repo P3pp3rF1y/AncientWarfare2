@@ -7,6 +7,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnima
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -73,6 +74,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_SET_TARGETS, ContainerWorksiteBlockSelection.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, ContainerWorksiteAnimalControl.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, ContainerWorksiteAutoCrafting.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, ContainerWorksiteFishControl.class);
   AWLog.log("Ancient Warfare Automation Pre-Init completed");
   }
 

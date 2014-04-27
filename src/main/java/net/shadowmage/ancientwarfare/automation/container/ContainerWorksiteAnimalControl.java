@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 public class ContainerWorksiteAnimalControl extends ContainerBase
 {
 
-WorkSiteAnimalFarm worksite;
+public WorkSiteAnimalFarm worksite;
 public int maxPigs;
 public int maxSheep;
 public int maxCows;

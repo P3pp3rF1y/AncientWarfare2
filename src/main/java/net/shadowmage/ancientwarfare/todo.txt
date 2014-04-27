@@ -2,6 +2,7 @@ core (done for now)
 	crafting system--needs recipes from other modules
 	research system--needs definitions of research for research tree
 	block and item textures (engineering station, research station, research book, research notes)
+	lots of containers need shift-click code
 
 modeler
 	who knows....
@@ -9,6 +10,7 @@ modeler
 structures module (done for now)
 	plugins / support for other modules
 	textures for drafting station, survival-mode builder
+	lots of containers need shift-click code
 
 automation module
 	add any other applicable alternate control GUIs (and corresponding functions in the tiles)
@@ -18,16 +20,17 @@ automation module
 		tree farm -- optional replanting of trees
 		tree farm -- toggle pickup of apples?
 		tree farm -- toggles for each sapling type?
-		fish farm -- toggle on / off
 	add IMC-based API to add logs/saplings to forestry farm
 	add config-based method to add logs/saplings to forestry farm
 	add worker view to worksites guis?
-	add the rest of the types of harvesting automation -- cocoa/reed/cactus farm, fish/ink farms, ??.
+	add the rest of the types of harvesting automation -- cocoa/reed/cactus farm, ??.
 	add plugin / support for power systems (mechanical worker block)(need APIs updated first)
 	mechanical hopper block -- configurable pull / push side (s), and on/off push control
 		with filter list per-side -- needs redstone power to function?
 	auto-crafting table / worksite
 	warehouse / mass storage??
+	mailbox system
+	lots of containers need shift-click code
 		
 vehicles module
 	everything

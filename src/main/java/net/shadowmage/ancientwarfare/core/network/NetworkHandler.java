@@ -52,7 +52,7 @@ public static final int GUI_RESEARCH_STATION = 12;
 public static final int GUI_DRAFTING_STATION = 13;
 public static final int GUI_WORKSITE_ANIMAL_CONTROL = 14;
 public static final int GUI_WORKSITE_AUTO_CRAFT = 15;
-
+public static final int GUI_WORKSITE_FISH_CONTROL = 16;
 
 private FMLEventChannel channel;
 

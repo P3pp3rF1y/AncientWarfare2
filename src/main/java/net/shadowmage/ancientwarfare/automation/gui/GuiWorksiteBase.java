@@ -36,7 +36,12 @@ public void initElements()
   label = new Label(8, ((ContainerWorksiteBase)inventorySlots).playerSlotsLabelHeight, StatCollector.translateToLocal("guistrings.inventory.player"));
   addGuiElement(label);
   
-  Button button = new Button(8, ySize-8-12-12, 55, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
+  int invY = ySize-8-12;
+  if(worksite.hasAltSetupGui())
+    {
+    invY-=12;
+    }
+  Button button = new Button(8, invY, 55, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
     {
     @Override
     protected void onPressed()
@@ -49,7 +54,7 @@ public void initElements()
   
   if(worksite.hasUserSetTargets())
     {
-    button = new Button(178-8-100, ySize-8-12-12, 100, 12, StatCollector.translateToLocal("guistrings.inventory.settargets"))
+    button = new Button(178-8-100, invY, 100, 12, StatCollector.translateToLocal("guistrings.inventory.settargets"))
       {
       @Override
       protected void onPressed()
@@ -61,8 +66,7 @@ public void initElements()
     addGuiElement(button);
     }
   
-  String guiName = null;
-  if((guiName = worksite.hasAltSetupGui())!=null)
+  if(worksite.hasAltSetupGui())
     {
     button = new Button(8, ySize-8-12, 95, 12, StatCollector.translateToLocal("guistrings.automation.advanced_setup"))
       {

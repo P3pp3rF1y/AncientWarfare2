@@ -9,13 +9,13 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksitePlacer;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorkerTest;
-import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorksiteAutoCrafting;
+import net.shadowmage.ancientwarfare.automation.tile.WorkSiteFishFarm;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -85,6 +85,15 @@ public static final BlockWorksiteBase worksiteAutoCrafting = new BlockWorksiteBa
     return false;
     }
   };
+  
+public static final BlockWorksiteBase worksiteFishFarm = new BlockWorksiteBase(Material.rock, "civic_fish_farm")
+  {
+  @Override
+  public TileEntity createTileEntity(World world, int metadata)
+    {
+    return new WorkSiteFishFarm();
+    }  
+  };
 
 public static void load()
   {  
@@ -140,6 +149,15 @@ public static void load()
   GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockWorksiteAutoCrafting.class, "civic_auto_crafting");
   GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");
   worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
+  /**
+   * TODO icon map
+   */
+  
+  GameRegistry.registerBlock(worksiteFishFarm, ItemWorksitePlacer.class, "civic_fish_farm");
+  GameRegistry.registerTileEntity(WorkSiteFishFarm.class, "civic_fish_farm_tile");
+  /**
+   * TODO icon map
+   */
   }
 
 }

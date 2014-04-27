@@ -21,6 +21,7 @@ public GuiWorksiteAnimalControl(ContainerBase par1Container)
   {
   super(par1Container, 168, 48+16, defaultBackground);
   container = (ContainerWorksiteAnimalControl)par1Container;
+  worksite = container.worksite;
   }
 
 @Override

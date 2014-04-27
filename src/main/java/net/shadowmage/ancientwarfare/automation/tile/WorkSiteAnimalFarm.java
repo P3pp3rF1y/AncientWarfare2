@@ -439,9 +439,9 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public String hasAltSetupGui()
+public boolean hasAltSetupGui()
   {
-  return "guistrings.automation.animal_control";
+  return true;
   }
 
 @Override

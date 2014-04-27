@@ -102,14 +102,9 @@ public int getTileMeta()
   return getBlockMetadata();
   }
 
-/**
- * if not null, this string will be used as button name-label for button to open
- * alt-control GUI for this work-site
- * @return
- */
-public String hasAltSetupGui()
+public boolean hasAltSetupGui()
   {
-  return null;
+  return false;
   }
 
 public void openAltGui(EntityPlayer player)
