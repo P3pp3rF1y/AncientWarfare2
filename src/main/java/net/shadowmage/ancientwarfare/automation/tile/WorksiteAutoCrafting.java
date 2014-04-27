@@ -433,7 +433,7 @@ public boolean onBlockClicked(EntityPlayer player)
       doPlayerWork(player);
       return true;
       }
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.INSTANCE.GUI_WORKSITE_AUTO_CRAFT, xCoord, yCoord, zCoord);
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, xCoord, yCoord, zCoord);
     }
   return true;
   }
