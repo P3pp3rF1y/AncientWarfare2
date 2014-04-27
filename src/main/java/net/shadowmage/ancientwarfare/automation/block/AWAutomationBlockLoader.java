@@ -2,10 +2,14 @@ package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksitePlacer;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorkerTest;
+import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteMushroomFarm;
@@ -61,12 +65,24 @@ public static final BlockWorksiteBase worksiteAnimalFarm = new BlockWorksiteBase
     }  
   };
   
-public static final BlockWorksiteBase worksiteAutoCrafting = new BlockWorksiteBase(Material.rock, "civic_auto_craftin")
+public static final BlockWorksiteBase worksiteAutoCrafting = new BlockWorksiteBase(Material.rock, "civic_auto_crafting")
   {
   @Override
   public TileEntity createTileEntity(World world, int metadata)
     {
     return new WorksiteAutoCrafting();
+    }
+  @Override
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+    {
+    WorksiteAutoCrafting worksite = (WorksiteAutoCrafting) world.getTileEntity(x, y, z);
+    Team t = player.getTeam();
+    Team t1 = worksite.getTeam();
+    if(t==t1)
+      {
+      return worksite.onBlockClicked(player);
+      }
+    return false;
     }
   };
 
@@ -120,6 +136,10 @@ public static void load()
   worksiteAnimalFarm.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmMelonSides");
   worksiteAnimalFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmMushroomRedSides");
   worksiteAnimalFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmMushroomBrownSides");
+  
+  GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockWorksiteAutoCrafting.class, "civic_auto_crafting");
+  GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");
+  worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
   }
 
 }

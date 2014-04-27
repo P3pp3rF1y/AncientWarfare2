@@ -38,7 +38,11 @@ public ItemStack decrStackSize(int slotIndex, int amount)
     if(amount>slotStack.getMaxStackSize()){amount = slotStack.getMaxStackSize();}
     ItemStack returnStack = slotStack.copy();
     slotStack.stackSize-=amount;
-    returnStack.stackSize = amount;    
+    returnStack.stackSize = amount;  
+    if(slotStack.stackSize<=0)
+      {
+      inventorySlots[slotIndex]=null;
+      }
     return returnStack;
     }
   return null;

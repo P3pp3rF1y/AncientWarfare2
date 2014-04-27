@@ -4,6 +4,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalControl;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
@@ -71,7 +72,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_SET_TARGETS, ContainerWorksiteBlockSelection.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, ContainerWorksiteAnimalControl.class);
-  
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, ContainerWorksiteAutoCrafting.class);
   AWLog.log("Ancient Warfare Automation Pre-Init completed");
   }
 
