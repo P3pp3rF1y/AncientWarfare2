@@ -12,6 +12,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -278,6 +279,49 @@ public List<BlockPosition> getWorkTargets()
 public boolean hasWorkBounds()
   {
   return false;
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {
+  super.readFromNBT(tag);
+  if(tag.hasKey("bookSlot")){this.bookSlot.readFromNBT(tag.getCompoundTag("bookSlot"));}
+  if(tag.hasKey("resourceInventory")){this.resourceInventory.readFromNBT(tag.getCompoundTag("resourceInventory"));}
+  if(tag.hasKey("outputInventory")){this.outputInventory.readFromNBT(tag.getCompoundTag("outputInventory"));}
+  if(tag.hasKey("outputSlot")){this.outputSlot.readFromNBT(tag.getCompoundTag("outputSlot"));}
+  if(tag.hasKey("craftMatrix")){InventoryTools.readInventoryFromNBT(craftMatrix, tag.getCompoundTag("craftMatrix"));}
+  hasResourcesForCraft = tag.getBoolean("hasResourcesForNext");
+  shouldUpdateInventory = tag.getBoolean("shouldUpdateInventory");
+  }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {
+  super.writeToNBT(tag);
+  NBTTagCompound tag1;
+  
+  tag1 = new NBTTagCompound();
+  bookSlot.writeToNBT(tag1);
+  tag.setTag("bookSlot", tag1);
+  
+  tag1 = new NBTTagCompound();
+  resourceInventory.writeToNBT(tag1);
+  tag.setTag("resourceInventory", tag1);
+  
+  tag1 = new NBTTagCompound();
+  outputInventory.writeToNBT(tag1);
+  tag.setTag("outputInventory", tag1);
+  
+  tag1 = new NBTTagCompound();
+  outputSlot.writeToNBT(tag1);
+  tag.setTag("outputSlot", tag1);
+  
+  tag1 = new NBTTagCompound();
+  InventoryTools.writeInventoryToNBT(craftMatrix, tag1);
+  tag.setTag("craftMatrix", tag1);
+  
+  tag.setBoolean("hasResourcesForNext", hasResourcesForCraft);
+  tag.setBoolean("shouldUpdateInventory", shouldUpdateInventory);
   }
 
 /***************************************INVENTORY METHODS************************************************/
