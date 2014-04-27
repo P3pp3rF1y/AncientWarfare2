@@ -30,6 +30,7 @@ automation module
 	auto-crafting table / worksite
 	warehouse / mass storage??
 	mailbox system
+	optional engine to run mechanical worker with coal -- disabled by default in config?
 	lots of containers need shift-click code
 		
 vehicles module

@@ -1,8 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SideSlotMap;
@@ -16,6 +19,10 @@ public TileWorksiteBase worksite;
 public int guiHeight;//used by GUI to dynamically alter gui height depending upon size of worksite inventory
 public int playerSlotsLabelHeight;
 
+int[] sideStartIndices;
+int[] sideEndIndices;
+int totalInventorySize;
+
 public ContainerWorksiteBase(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
@@ -26,6 +33,26 @@ public ContainerWorksiteBase(EntityPlayer player, int x, int y, int z)
     {
     guiHeight+=12;
     }
+  sideEndIndices = new int[6];
+  sideStartIndices = new int[6];
+  InventorySide side;
+  int index = 0;
+  int length = 0;
+  for(int i = 0; i <6 ;i++)
+    {
+    length = 0;
+    side = InventorySide.values()[i];
+    SideSlotMap slotMap = worksite.inventory.getSlotMapForSide(side);    
+    if(slotMap!=null)
+      {      
+      length = slotMap.getSlots().size();
+      }    
+    sideStartIndices[i] = index;
+    sideEndIndices[i] = index + length;
+    AWLog.logDebug("mapping inventory side: "+i+" start: "+sideStartIndices[i]+" end:"+sideEndIndices[i]);
+    index+=length;
+    }
+  totalInventorySize = worksite.getSizeInventory();
   }
 
 protected int addWorksiteInventorySlots(int topY)
@@ -55,6 +82,57 @@ public void handlePacketData(NBTTagCompound tag)
     {
     worksite.openAltGui(player);
     }
+  }
+
+@Override
+public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
+  {
+  ItemStack slotStackCopy = null;
+  Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
+  if (theSlot != null && theSlot.getHasStack())
+    {
+    ItemStack slotStack = theSlot.getStack();
+    slotStackCopy = slotStack.copy();
+    
+    int playerSlotStart = totalInventorySize;    
+ 
+    if(slotClickedIndex<totalInventorySize)//clicked in inventory, merge into player inventory
+      {
+      if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart+36, false))//merge into player inventory
+        {
+        return null;
+        }
+      }
+    else//clicked in player inventory, try to merge from bottom up
+      {
+      int start, end;
+      for(int i = 5; i >=0; i--)
+        {
+        start = sideStartIndices[i];
+        end = sideEndIndices[i]; 
+        if(start==end){continue;}        
+        if (!this.mergeItemStack(slotStack, start, end, false))//merge into storage
+          {
+//          return null;//noop?
+          }
+        if(slotStack.stackSize==0){break;}
+        }
+      }
+    if (slotStack.stackSize == 0)
+      {
+      theSlot.putStack((ItemStack)null);
+      }
+    else
+      {
+      theSlot.onSlotChanged();
+      }
+    if (slotStack.stackSize == slotStackCopy.stackSize)
+      {
+      return null;
+      }
+    theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+    }
+  return slotStackCopy;  
   }
 
 }
