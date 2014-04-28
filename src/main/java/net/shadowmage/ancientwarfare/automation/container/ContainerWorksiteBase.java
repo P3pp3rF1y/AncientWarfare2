@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SideSlotMap;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided.ViewableSlot;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 
@@ -89,6 +90,8 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
   {
   ItemStack slotStackCopy = null;
   Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
+  SlotItemFilter filter;
+  SlotFiltered slot;
   if (theSlot != null && theSlot.getHasStack())
     {
     ItemStack slotStack = theSlot.getStack();
@@ -110,12 +113,16 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
         {
         start = sideStartIndices[i];
         end = sideEndIndices[i]; 
-        if(start==end){continue;}        
-        if (!this.mergeItemStack(slotStack, start, end, false))//merge into storage
+        if(start==end){continue;}
+        slot = (SlotFiltered) inventorySlots.get(start);
+        if(slot.isItemValid(slotStack))
           {
-//          return null;//noop?
+          this.mergeItemStack(slotStack, start, end, false);          
+          }       
+        if(slotStack.stackSize==0)
+          {
+          break;
           }
-        if(slotStack.stackSize==0){break;}
         }
       }
     if (slotStack.stackSize == 0)

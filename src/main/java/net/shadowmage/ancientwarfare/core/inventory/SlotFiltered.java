@@ -26,6 +26,12 @@ public boolean isItemValid(ItemStack par1ItemStack)
   return super.isItemValid(par1ItemStack);
   }
 
+@Override
+public String toString()
+  {
+  return "Filtered slot: "+filter;
+  }
+
 ///**
 // * Helper method to put a stack in the slot.
 // */

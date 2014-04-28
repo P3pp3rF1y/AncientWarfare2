@@ -83,6 +83,11 @@ public WorkSiteAnimalFarm()
         }      
       return false;
       }
+    @Override
+    public String toString()
+      {
+      return "Anon filter -- wheat / seeds / carrot";
+      }
     };
   this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
   for(int i = 27, k = 0; i<30; i++, k++)
@@ -107,6 +112,11 @@ public WorkSiteAnimalFarm()
         return true;
         }      
       return false;
+      }
+    @Override
+    public String toString()
+      {
+      return "Anon filter -- bucker / shears";
       }
     };
   this.inventory.addSlotViewMap(InventorySide.BOTTOM, 8, (4*18)+12+8+12+8, "guistrings.inventory.side.bottom");
