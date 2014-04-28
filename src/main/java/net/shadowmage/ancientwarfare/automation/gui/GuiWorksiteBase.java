@@ -39,8 +39,13 @@ public void initElements()
   label = new Label(8, ((ContainerWorksiteBase)inventorySlots).playerSlotsLabelHeight, StatCollector.translateToLocal("guistrings.inventory.player"));
   addGuiElement(label);
   
-  int invY = ySize-8-12-12;
- 
+  int invY = ySize-8-12;
+  
+  if(worksite.hasAltSetupGui())
+    {
+    invY-=12;
+    }
+  
   Button button = new Button(8, invY, 55, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
     {
     @Override
@@ -80,16 +85,6 @@ public void initElements()
       };
     addGuiElement(button);
     }
-  
-  button = new Button(8+95, ySize-8-12, 66, 12, StatCollector.translateToLocal("guistrings.automation.worker_setup"))
-    {
-    @Override
-    protected void onPressed()
-      {
-      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_WORKER_VIEW, worksite.xCoord, worksite.yCoord, worksite.zCoord);
-      }
-    };
-  addGuiElement(button);
   }
 
 @Override

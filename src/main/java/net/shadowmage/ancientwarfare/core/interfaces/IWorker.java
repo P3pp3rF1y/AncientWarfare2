@@ -33,5 +33,4 @@ public EnumSet<WorkType> getWorkTypes();
 
 public BlockPosition getPosition();
 
-public String getWorkerName();//return a translation key for workers name
 }

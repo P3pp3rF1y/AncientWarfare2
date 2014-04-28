@@ -30,7 +30,10 @@ public ContainerWorksiteBase(EntityPlayer player, int x, int y, int z)
   worksite = (TileWorksiteBase)player.worldObj.getTileEntity(x, y, z);
   playerSlotsLabelHeight = addWorksiteInventorySlots(8);
   guiHeight = this.addPlayerSlots(player, 8, playerSlotsLabelHeight+12, 4);//+12 is for offset for label
-  guiHeight+=12;//adjust for advanced control button / worker-view button
+  if(worksite.hasAltSetupGui())
+    {
+    guiHeight+=12;//adjust for advanced control button / worker-view button
+    }
   sideEndIndices = new int[6];
   sideStartIndices = new int[6];
   InventorySide side;
