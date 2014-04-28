@@ -41,7 +41,7 @@ public void sendInitData()
   tag.setInteger("pigs", maxPigs);
   tag.setInteger("cows", maxCows);
   tag.setInteger("sheep", maxSheep);
-  tag.setInteger("maxChickens", maxChickens);
+  tag.setInteger("chickens", maxChickens);
   sendDataToClient(tag);
   }
 
@@ -75,7 +75,7 @@ public void sendSettingsToServer()
   tag.setInteger("pigs", maxPigs);
   tag.setInteger("cows", maxCows);
   tag.setInteger("sheep", maxSheep);
-  tag.setInteger("maxChickens", maxChickens);
+  tag.setInteger("chickens", maxChickens);
   sendDataToServer(tag);
   }
 

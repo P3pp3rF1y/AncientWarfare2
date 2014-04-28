@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -224,6 +225,12 @@ public List<BlockPosition> getWorkTargets()
 public boolean hasWorkBounds()
   {
   return false;
+  }
+
+@Override
+public Collection<IWorker> getWorkers()
+  {
+  return workers;
   }
 
 }

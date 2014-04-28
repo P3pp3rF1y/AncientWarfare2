@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -482,14 +483,10 @@ public boolean onBlockClicked(EntityPlayer player)
   return true;
   }
 
-public void preItemCrafted()
+@Override
+public Collection<IWorker> getWorkers()
   {
-  
-  }
-
-public void onItemCrafted()
-  {
-  
+  return workers;
   }
 
 }

@@ -25,7 +25,6 @@ automation module
 	add plugin / support for power systems (mechanical worker block)(need APIs updated first)
 	mechanical hopper block -- configurable pull / push side (s), and on/off push control
 		with filter list per-side -- needs redstone power to function?
-	auto-crafting table / worksite
 	warehouse / mass storage??
 	mailbox system
 	optional engine to run mechanical worker with coal -- disabled by default in config?

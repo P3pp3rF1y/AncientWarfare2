@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -292,6 +293,12 @@ public final void setOwningPlayer(String name)
 public List<BlockPosition> getWorkTargets()
   {
   return clientWorkTargets;
+  }
+
+@Override
+public Collection<IWorker> getWorkers()
+  {
+  return workers;
   }
 
 @Override

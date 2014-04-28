@@ -15,15 +15,18 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 public class GuiWorksiteBase extends GuiContainerBase
 {
 
+
+TileWorksiteBase worksite;
+
 public GuiWorksiteBase(ContainerBase par1Container)
   {
   super(par1Container, 178, ((ContainerWorksiteBase)par1Container).guiHeight, defaultBackground);
+  worksite = ((ContainerWorksiteBase)inventorySlots).worksite;
   }
 
 @Override
 public void initElements()
   {
-  TileWorksiteBase worksite = ((ContainerWorksiteBase)inventorySlots).worksite;
   Label label;
   for(InventorySide side : InventorySide.values())
     {
@@ -36,11 +39,8 @@ public void initElements()
   label = new Label(8, ((ContainerWorksiteBase)inventorySlots).playerSlotsLabelHeight, StatCollector.translateToLocal("guistrings.inventory.player"));
   addGuiElement(label);
   
-  int invY = ySize-8-12;
-  if(worksite.hasAltSetupGui())
-    {
-    invY-=12;
-    }
+  int invY = ySize-8-12-12;
+ 
   Button button = new Button(8, invY, 55, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
     {
     @Override
@@ -80,6 +80,16 @@ public void initElements()
       };
     addGuiElement(button);
     }
+  
+  button = new Button(8+95, ySize-8-12, 66, 12, StatCollector.translateToLocal("guistrings.automation.worker_setup"))
+    {
+    @Override
+    protected void onPressed()
+      {
+      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_WORKER_VIEW, worksite.xCoord, worksite.yCoord, worksite.zCoord);
+      }
+    };
+  addGuiElement(button);
   }
 
 @Override

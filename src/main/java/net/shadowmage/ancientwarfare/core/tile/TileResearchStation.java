@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -316,6 +317,12 @@ public void closeInventory()
 public boolean isItemValidForSlot(int var1, ItemStack var2)
   {
   return resourceInventory.isItemValidForSlot(var1, var2);
+  }
+
+@Override
+public Collection<IWorker> getWorkers()
+  {
+  return workers;
   }
 
 }

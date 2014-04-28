@@ -13,11 +13,25 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 public interface IWorker
 {
 
+/**
+ * get worker effectiveness.  base == 1.  higher values are more effective at most work-types
+ * @return
+ */
 public float getWorkEffectiveness();
 
+/**
+ * return the team that this worker belongs to, null for none
+ * @return
+ */
 public Team getTeam();
 
+/**
+ * return an enumSet of the valid work-types for this worker.
+ * @return
+ */
 public EnumSet<WorkType> getWorkTypes();
 
 public BlockPosition getPosition();
+
+public String getWorkerName();//return a translation key for workers name
 }

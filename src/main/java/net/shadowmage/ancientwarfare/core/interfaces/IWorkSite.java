@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -80,6 +81,8 @@ public BlockPosition getWorkBoundsMax();
 public List<BlockPosition> getWorkTargets();
 
 public boolean hasWorkBounds();
+
+public Collection<IWorker> getWorkers();
 
 public static enum WorkType
 {

@@ -143,4 +143,10 @@ public BlockPosition getPosition()
   return new BlockPosition(xCoord,yCoord,zCoord);
   }
 
+@Override
+public String getWorkerName()
+  {
+  return "guistrings.automation.mechanical_worker";
+  }
+
 }
