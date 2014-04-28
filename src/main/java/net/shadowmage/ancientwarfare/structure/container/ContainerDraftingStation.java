@@ -70,6 +70,50 @@ public ContainerDraftingStation(EntityPlayer player, int x, int y, int z)
   }
 
 @Override
+public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
+  {
+  ItemStack slotStackCopy = null;
+  Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
+  if (theSlot != null && theSlot.getHasStack())
+    {
+    ItemStack slotStack = theSlot.getStack();
+    slotStackCopy = slotStack.copy();
+
+    int storageSlotsStart = 0;
+    int storageSlotLen = 27;
+    int playerSlotStart = storageSlotLen;
+    if(slotClickedIndex >= storageSlotsStart && slotClickedIndex < storageSlotsStart + storageSlotLen)//storage slots
+      {
+      if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart+36, false))//merge into player inventory
+        {
+        return null;
+        }
+      }
+    else if(slotClickedIndex >= playerSlotStart && slotClickedIndex < 36 + playerSlotStart)//player slots, merge into storage
+      {
+      if (!this.mergeItemStack(slotStack, storageSlotsStart, storageSlotsStart+9, false))//merge into storage
+        {
+        return null;
+        }
+      }
+    if (slotStack.stackSize == 0)
+      {
+      theSlot.putStack((ItemStack)null);
+      }
+    else
+      {
+      theSlot.onSlotChanged();
+      }
+    if (slotStack.stackSize == slotStackCopy.stackSize)
+      {
+      return null;
+      }
+    theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+    }
+  return slotStackCopy;
+  }
+
+@Override
 public void sendInitData()
   {
   NBTTagCompound tag = new NBTTagCompound();
