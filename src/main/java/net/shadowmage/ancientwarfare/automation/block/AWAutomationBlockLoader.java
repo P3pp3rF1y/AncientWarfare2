@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.automation.tile.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteQuarry;
+import net.shadowmage.ancientwarfare.automation.tile.WorkSiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteFishFarm;
@@ -94,6 +95,15 @@ public static final BlockWorksiteBase worksiteFishFarm = new BlockWorksiteBase(M
     return new WorkSiteFishFarm();
     }  
   };
+  
+public static final BlockWorksiteBase worksiteReedFarm = new BlockWorksiteBase(Material.rock, "civic_reed_farm")
+  {
+  @Override
+  public TileEntity createTileEntity(World world, int metadata)
+    {
+    return new WorkSiteReedFarm();
+    }
+  };
 
 public static void load()
   {  
@@ -155,6 +165,12 @@ public static void load()
   
   GameRegistry.registerBlock(worksiteFishFarm, ItemWorksitePlacer.class, "civic_fish_farm");
   GameRegistry.registerTileEntity(WorkSiteFishFarm.class, "civic_fish_farm_tile");
+  /**
+   * TODO icon map
+   */
+  
+  GameRegistry.registerBlock(worksiteReedFarm, ItemWorksitePlacer.class, "civic_reed_farm");
+  GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "civic_reed_farm_tile");
   /**
    * TODO icon map
    */

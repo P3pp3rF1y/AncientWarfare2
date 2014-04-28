@@ -103,7 +103,10 @@ public WorkSiteCropFarm()
 @Override
 public void doPlayerWork(EntityPlayer player)
   {
-  
+  if(this.hasWork())
+    {
+    this.processWork();
+    }
   }
 
 @Override
