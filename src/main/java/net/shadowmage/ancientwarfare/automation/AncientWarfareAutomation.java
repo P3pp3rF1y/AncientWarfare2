@@ -9,10 +9,12 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
+import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import cpw.mods.fml.common.Mod;
@@ -75,6 +77,8 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, ContainerWorksiteAnimalControl.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, ContainerWorksiteAutoCrafting.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, ContainerWorksiteFishControl.class);
+  
+  AWGameData.INSTANCE.registerSaveData(MailboxData.name, MailboxData.class);
   AWLog.log("Ancient Warfare Automation Pre-Init completed");
   }
 

@@ -28,7 +28,7 @@ automation module
 	warehouse / mass storage??
 	mailbox system
 	optional engine to run mechanical worker with coal -- disabled by default in config?
-	* lots of containers need shift-click code (done for now, until I add more containers)
+	player-work code for most worksites -- how to implement...with wrench item?	
 		
 vehicles module
 	everything
