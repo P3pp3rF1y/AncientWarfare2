@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -61,12 +62,11 @@ public IIcon getIcon(int p_149691_1_, int p_149691_2_)
 @Override
 public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
   {
-  TileMailbox tile = (TileMailbox) world.getTileEntity(x, y, z);
-  tile.checkOutputDirection();
-  /**
-   * TODO
-   */
-  return false;
+  if(!world.isRemote)
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_MAILBOX_INVENTORY, x, y, z);
+    }
+  return true;
   }
 
 }
