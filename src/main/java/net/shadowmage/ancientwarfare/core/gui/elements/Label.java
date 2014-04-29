@@ -29,7 +29,8 @@ public void render(int mouseX, int mouseY, float partialTick)
 
 public void setText(String text)
   {
-  this.text = text;
+  if(text==null){text = "";}
+  this.text = text;  
   }
 
 public String getText()

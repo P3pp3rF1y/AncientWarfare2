@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.container;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -150,6 +152,28 @@ public void refreshGui()
   if(this.gui!=null)
     {
     this.gui.refreshGui();
+    }
+  }
+
+public void removeSlots()
+  {
+  for(Slot s : ((List<Slot>)this.inventorySlots))
+    {
+    if(s.yDisplayPosition>=0)
+      {
+      s.yDisplayPosition-=10000;
+      }
+    }
+  }
+
+public void addSlots()
+  {
+  for(Slot s : ((List<Slot>)this.inventorySlots))
+    {
+    if(s.yDisplayPosition < 0)
+      {
+      s.yDisplayPosition+=10000;
+      }
     }
   }
 

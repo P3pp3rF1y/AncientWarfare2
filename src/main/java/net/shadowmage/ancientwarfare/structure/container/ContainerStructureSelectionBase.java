@@ -24,26 +24,4 @@ public void handleNameSelection(String name)
   sendDataToServer(tag);
   }
 
-public void removeSlots()
-  {
-  for(Slot s : ((List<Slot>)this.inventorySlots))
-    {
-    if(s.yDisplayPosition>=0)
-      {
-      s.yDisplayPosition-=10000;
-      }
-    }
-  }
-
-public void addSlots()
-  {
-  for(Slot s : ((List<Slot>)this.inventorySlots))
-    {
-    if(s.yDisplayPosition < 0)
-      {
-      s.yDisplayPosition+=10000;
-      }
-    }
-  }
-
 }

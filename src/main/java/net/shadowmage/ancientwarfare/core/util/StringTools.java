@@ -542,4 +542,14 @@ public static final String readString(ByteBuf in)
   return new String(nameBytes);
   }
 
+public static final boolean doStringsMatch(String a, String b)
+  {
+  if(a==null && b==null){return true;}
+  else if(a!=null && b==null){return false;}
+  else if(a==null && b!=null){return false;}
+  else
+    {
+    return a.equals(b);
+    }
+  }
 }

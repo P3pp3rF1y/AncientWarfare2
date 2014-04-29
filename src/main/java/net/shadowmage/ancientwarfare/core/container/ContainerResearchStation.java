@@ -294,27 +294,7 @@ public void detectAndSendChanges()
   tile.doPlayerWork(player);
   }
 
-public void removeSlots()
-  {
-  for(Slot s : ((List<Slot>)this.inventorySlots))
-    {
-    if(s.yDisplayPosition>=0)
-      {
-      s.yDisplayPosition-=10000;
-      }
-    }
-  }
 
-public void addSlots()
-  {
-  for(Slot s : ((List<Slot>)this.inventorySlots))
-    {
-    if(s.yDisplayPosition < 0)
-      {
-      s.yDisplayPosition+=10000;
-      }
-    }
-  }
 
 /**
  * should be called from client-side to send update packet to server

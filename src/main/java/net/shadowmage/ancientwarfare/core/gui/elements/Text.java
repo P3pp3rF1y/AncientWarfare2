@@ -32,6 +32,7 @@ public Text(int topLeftX, int topLeftY, int width, String defaultText, IWidgetSe
   {
   super(topLeftX, topLeftY, width, 12);
   fr = Minecraft.getMinecraft().fontRenderer;
+  if(defaultText==null){defaultText="";}
   this.text = defaultText;
   this.cursorIndex = text.length();
   this.selector = selector;
@@ -243,7 +244,6 @@ protected char[] allowedCharSymbols = new char[]
 protected char[] allowedNums = new char[]{'1','2','3','4','5','6','7','8','9','0'};
 protected char[] allowedNumSymbols = new char[]{'.','-'};
 
-
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
@@ -286,6 +286,7 @@ public void render(int mouseX, int mouseY, float partialTick)
 
 public void setText(String text)
   {
+  if(text==null){text = "";}
   String in = text;
   text = "";
   for(int i = 0; i < in.length(); i++)
