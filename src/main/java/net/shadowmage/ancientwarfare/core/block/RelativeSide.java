@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.block;
 
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 
 /**
@@ -58,7 +59,7 @@ private static final int META_DOWN_EAST = 11;
 
 private static final RelativeSide[][] sideMap = new RelativeSide[6][16];
 
-private static final int[][] rotationMap = new int[16][1];
+private static final int[][] rotationMap = new int[16][6];
 
 static
 {
@@ -210,6 +211,27 @@ rotationMap[META_DOWN_SOUTH][SOUTH]=META_DOWN_SOUTH;
 rotationMap[META_DOWN_SOUTH][WEST]=META_NORTH;
 rotationMap[META_DOWN_SOUTH][NORTH]=META_DOWN_SOUTH;
 rotationMap[META_DOWN_SOUTH][EAST]=META_SOUTH;
+
+rotationMap[META_DOWN_WEST][DOWN]=META_DOWN_SOUTH;
+rotationMap[META_DOWN_WEST][UP]=META_DOWN_NORTH;
+rotationMap[META_DOWN_WEST][SOUTH]=META_WEST;
+rotationMap[META_DOWN_WEST][WEST]=META_DOWN_WEST;
+rotationMap[META_DOWN_WEST][NORTH]=META_EAST;
+rotationMap[META_DOWN_WEST][EAST]=META_DOWN_WEST;
+
+rotationMap[META_DOWN_NORTH][DOWN]=META_DOWN_WEST;
+rotationMap[META_DOWN_NORTH][UP]=META_DOWN_EAST;
+rotationMap[META_DOWN_NORTH][SOUTH]=META_DOWN_NORTH;
+rotationMap[META_DOWN_NORTH][WEST]=META_NORTH;
+rotationMap[META_DOWN_NORTH][NORTH]=META_DOWN_NORTH;
+rotationMap[META_DOWN_NORTH][EAST]=META_SOUTH;
+
+rotationMap[META_DOWN_EAST][DOWN]=META_DOWN_NORTH;
+rotationMap[META_DOWN_EAST][UP]=META_DOWN_SOUTH;
+rotationMap[META_DOWN_EAST][SOUTH]=META_WEST;
+rotationMap[META_DOWN_EAST][WEST]=META_DOWN_EAST;
+rotationMap[META_DOWN_EAST][NORTH]=META_EAST;
+rotationMap[META_DOWN_EAST][EAST]=META_DOWN_EAST;
 }
 
 private final String regName;
@@ -271,6 +293,7 @@ public static ForgeDirection getFacingDirectionFor(RelativeSide side, int meta)
 public static int getRotatedMeta(int currentMeta, ForgeDirection rotateAxis, boolean canFaceVertical)
   {
   int returnMeta = rotationMap[currentMeta][rotateAxis.ordinal()];
+  AWLog.logDebug("input meta: "+currentMeta + " rotate axis: "+rotateAxis + " output: "+returnMeta);
 //  if(currentMeta<=3)
 //    {
 //    if(rotateAxis==ForgeDirection.DOWN || rotateAxis==ForgeDirection.UP)//bottom
