@@ -11,6 +11,8 @@ public class AWItems
 public static Item researchBook;
 public static Item researchNote;
 
+public static Item automationHammer;
+
 /**
  * STRUCTURE module
  */

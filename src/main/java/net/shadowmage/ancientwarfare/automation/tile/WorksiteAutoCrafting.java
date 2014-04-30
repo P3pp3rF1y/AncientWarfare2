@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.util.WorkerPlayerWrapper;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -197,10 +198,7 @@ public final boolean canUpdate()
 @Override
 public void doPlayerWork(EntityPlayer player)
   {
-  if(hasWork())
-    {
-    craftItem();
-    }
+  doWork(new WorkerPlayerWrapper(player));
   }
 
 @Override

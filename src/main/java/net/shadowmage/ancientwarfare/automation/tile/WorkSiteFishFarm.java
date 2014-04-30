@@ -41,12 +41,6 @@ public WorkSiteFishFarm()
   }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  processWork();
-  }
-
-@Override
 public void updateEntity()
   {
   if(waterRescanDelay>0)

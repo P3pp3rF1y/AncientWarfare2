@@ -411,15 +411,6 @@ private void countResources()
   }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  if(this.hasWork())
-    {
-    this.processWork();
-    }
-  }
-
-@Override
 public WorkType getWorkType()
   {
   return WorkType.FARMING;

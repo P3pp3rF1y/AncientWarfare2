@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.util.WorkerPlayerWrapper;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
@@ -459,7 +460,6 @@ public void doWork(IWorker worker)
   {
   if(workerRescanDelay<=0 || !hasAnimalWork())
     {
-    AWLog.logDebug("rescanning animal farm..");
     rescan();
     }  
   if(hasAnimalWork())
@@ -514,12 +514,6 @@ public WorkType getWorkType()
 public void onInventoryChanged()
   {
   this.shouldCountResources = true;
-  }
-
-@Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  //noop
   }
 
 @Override

@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.automation.item;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -18,10 +20,12 @@ public static final CreativeTabs automationTab = new CreativeTabs("tabs.automati
     return Items.stick;
     }  
   };
+ 
 
 public static void load()
   {
- 
+  AWItems.automationHammer = new ItemHammer("hammer");
+  GameRegistry.registerItem(AWItems.automationHammer, "hammer");
   }
 
 }

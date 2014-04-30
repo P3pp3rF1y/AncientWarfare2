@@ -160,12 +160,6 @@ public void updateEntity()
   }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  
-  }
-
-@Override
 public boolean hasWork()
   {  
   return canWork() && (workerRescanDelay<=0 || hasWorkBlock());

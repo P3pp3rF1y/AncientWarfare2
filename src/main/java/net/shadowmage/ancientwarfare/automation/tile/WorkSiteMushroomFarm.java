@@ -123,12 +123,6 @@ private void countResources()
   }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  //noop
-  }
-
-@Override
 public boolean hasWork()
   {  
   return canWork() && (workerRescanDelay<=0 || hasWorkBlock());

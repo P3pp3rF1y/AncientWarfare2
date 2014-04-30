@@ -18,8 +18,7 @@ automation module
 	mechanical hopper block -- configurable pull / push side (s), and on/off push control
 		with filter list per-side -- needs redstone power to function?
 	warehouse / mass storage??
-	optional input slot  to run mechanical worker with coal -- disabled by default in config?
-	player-work code for most worksites -- how to implement...with wrench item?	
+	optional input slot  to run mechanical worker with coal -- disabled by default in config?	
 		
 vehicles module
 	everything

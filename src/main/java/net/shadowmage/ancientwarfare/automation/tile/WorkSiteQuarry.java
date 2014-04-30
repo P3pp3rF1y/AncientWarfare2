@@ -64,12 +64,6 @@ public void onInventoryChanged()
   }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  
-  }
-
-@Override
 public boolean hasWork()
   {
   return canWork() && !finished;

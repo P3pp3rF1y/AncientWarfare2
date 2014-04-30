@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.automation.util.WorkerPlayerWrapper;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -153,7 +154,7 @@ public void doWork(IWorker worker)
 @Override
 public void doPlayerWork(EntityPlayer player)
   {
-  //noop
+  doWork(new WorkerPlayerWrapper(player));
   }
 
 @Override

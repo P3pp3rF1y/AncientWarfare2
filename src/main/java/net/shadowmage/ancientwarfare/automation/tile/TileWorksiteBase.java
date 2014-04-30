@@ -22,6 +22,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.automation.util.WorkerPlayerWrapper;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.ISidedTile;
@@ -148,6 +149,12 @@ public void addUserBlock(BlockPosition pos)
 public void removeUserBlock(BlockPosition pos)
   {
   this.userTargetBlocks.remove(pos);
+  }
+
+@Override
+public void doPlayerWork(EntityPlayer player)
+  {
+  doWork(new WorkerPlayerWrapper(player));
   }
 
 @Override
