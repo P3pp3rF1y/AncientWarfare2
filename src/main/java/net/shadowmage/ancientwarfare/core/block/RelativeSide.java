@@ -276,83 +276,13 @@ public static ForgeDirection getFacingDirectionFor(RelativeSide side, int meta)
   return d;
   }
 
-/* facing direction for given meta
-* 0=south<br>
-* 1=west<br>
-* 2=north<br>
-* 3=east<br>
-* 4=up:top=south<br>
-* 5=up:top=west<br>
-* 6=up:top=north<br>
-* 7=up:top=east<br>
-* 8=down:top=south<br>
-* 9=down:top=west<br>
-* 10=down:top=north<br>
-* 11=down:top=east<br>
-*/ 
 public static int getRotatedMeta(int currentMeta, ForgeDirection rotateAxis, boolean canFaceVertical)
   {
-  int returnMeta = rotationMap[currentMeta][rotateAxis.ordinal()];
-  AWLog.logDebug("input meta: "+currentMeta + " rotate axis: "+rotateAxis + " output: "+returnMeta);
-//  if(currentMeta<=3)
-//    {
-//    if(rotateAxis==ForgeDirection.DOWN || rotateAxis==ForgeDirection.UP)//bottom
-//      {
-//      returnMeta = (currentMeta+1)%4;
-//      }
-//    else if(canFaceVertical)
-//      {      
-//      ForgeDirection d = getFacingDirectionFor(RelativeSide.LEFT, currentMeta);
-//      if(rotateAxis==d || rotateAxis==d.getOpposite())
-//        {
-//        
-//        }
-//      else
-//        {
-//        
-//        }
-//      if(rotateAxis!=d && rotateAxis!=d.getOpposite())
-//        {
-//        returnMeta = currentMeta+4;
-//        }      
-//      }    
-//    } 
-//  else if(currentMeta>=4 && currentMeta<=7)
-//    {
-//    if(rotateAxis==ForgeDirection.DOWN || rotateAxis==ForgeDirection.UP)//bottom
-//      {
-//      int t = currentMeta-4;
-//      t = (t+1)%4;
-//      t+=4;
-//      returnMeta = t;
-//      }
-//    else
-//      {
-//      ForgeDirection d = getFacingDirectionFor(RelativeSide.TOP, currentMeta);
-//      if(rotateAxis!=d && rotateAxis!=d.getOpposite())
-//        {
-//        returnMeta = currentMeta+4;        
-//        }
-//      }
-//    }
-//  else if(currentMeta>=8 && currentMeta<=11)
-//    {
-//    if(rotateAxis==ForgeDirection.DOWN || rotateAxis==ForgeDirection.UP)//bottom
-//      {
-//      int t = currentMeta-8;
-//      t = (t+1)%4;
-//      t+=8;
-//      returnMeta = t;
-//      }
-//    else
-//      {
-//      ForgeDirection d = getFacingDirectionFor(RelativeSide.TOP, currentMeta);
-//      if(rotateAxis!=d && rotateAxis!=d.getOpposite())
-//        {
-//        returnMeta = currentMeta%4;        
-//        }
-//      }
-//    }
-  return returnMeta;
+  if(!canFaceVertical && (rotateAxis!=ForgeDirection.UP && rotateAxis!=ForgeDirection.DOWN))
+    {
+    return (currentMeta+1)%4;
+    }
+  return rotationMap[currentMeta][rotateAxis.ordinal()];
   }
+
 }
