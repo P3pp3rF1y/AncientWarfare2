@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions.ClientOption;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -53,15 +54,16 @@ public void initElements()
     o = ClientOptions.INSTANCE.getClientOption(key);
     
     if(o.isBooleanValue())
-      {
+      {      
       box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal(o.getName()))
         {
         @Override
         public void onToggled()
           {
-          optionMap.get(this).setValue(checked());
+          optionMap.get(this).setValue((Boolean)checked());
           }
         };
+      box.setChecked(o.getBooleanValue());
       area.addGuiElement(box);
       optionMap.put(box, o);
       }
