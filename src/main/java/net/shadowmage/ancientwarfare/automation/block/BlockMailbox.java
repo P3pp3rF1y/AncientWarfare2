@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
@@ -67,6 +68,20 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_MAILBOX_INVENTORY, x, y, z);
     }
   return true;
+  }
+
+@Override
+public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
+  {  
+  int meta = worldObj.getBlockMetadata(x, y, z);
+  int newMeta = RelativeSide.getRotatedMeta(meta, axis, false);
+  if(meta!=newMeta)
+    {
+    worldObj.setBlockMetadataWithNotify(x, y, z, newMeta, 3);
+    worldObj.markBlockForUpdate(x, y, z);    
+    return true;
+    }
+  return false;
   }
 
 }

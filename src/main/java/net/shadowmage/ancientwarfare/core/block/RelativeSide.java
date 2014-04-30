@@ -33,13 +33,32 @@ REAR("guistrings.inventory.side.rear"),
 LEFT("guistrings.inventory.side.left"),
 RIGHT("guistrings.inventory.side.right");
 
+/**
+ * 0-5 forge-direction ordinals
+ */
 private static final int DOWN = 0;
 private static final int UP = 1;
 private static final int NORTH = 2;
 private static final int SOUTH = 3;
 private static final int WEST = 4;
 private static final int EAST = 5;
+
+private static final int META_SOUTH = 0;
+private static final int META_WEST = 1;
+private static final int META_NORTH = 2;
+private static final int META_EAST = 3;
+private static final int META_UP_SOUTH = 4;
+private static final int META_UP_WEST = 5;
+private static final int META_UP_NORTH = 6;
+private static final int META_UP_EAST = 7;
+private static final int META_DOWN_SOUTH = 8;
+private static final int META_DOWN_WEST = 9;
+private static final int META_DOWN_NORTH = 10;
+private static final int META_DOWN_EAST = 11;
+
 private static final RelativeSide[][] sideMap = new RelativeSide[6][16];
+
+private static final int[][] rotationMap = new int[16][1];
 
 static
 {
@@ -126,6 +145,71 @@ sideMap[WEST][8] = RIGHT;
 sideMap[WEST][9] = TOP;
 sideMap[WEST][10] = LEFT;
 sideMap[WEST][11] = BOTTOM;
+
+
+//[BLOCK_META][AXIS_CLICKED_ORDINAL]=ROTATED META
+rotationMap[META_SOUTH][DOWN]=META_EAST;
+rotationMap[META_SOUTH][UP]=META_WEST;
+rotationMap[META_SOUTH][SOUTH]=META_SOUTH;
+rotationMap[META_SOUTH][WEST]=META_DOWN_SOUTH;
+rotationMap[META_SOUTH][NORTH]=META_SOUTH;
+rotationMap[META_SOUTH][EAST]=META_UP_NORTH;
+
+rotationMap[META_EAST][DOWN]=META_NORTH;
+rotationMap[META_EAST][UP]=META_SOUTH;
+rotationMap[META_EAST][SOUTH]=META_DOWN_EAST;
+rotationMap[META_EAST][WEST]=META_EAST;
+rotationMap[META_EAST][NORTH]=META_UP_WEST;
+rotationMap[META_EAST][EAST]=META_EAST;
+
+rotationMap[META_NORTH][DOWN]=META_WEST;
+rotationMap[META_NORTH][UP]=META_EAST;
+rotationMap[META_NORTH][SOUTH]=META_NORTH;
+rotationMap[META_NORTH][WEST]=META_UP_SOUTH;
+rotationMap[META_NORTH][NORTH]=META_NORTH;
+rotationMap[META_NORTH][EAST]=META_DOWN_NORTH;
+
+rotationMap[META_WEST][DOWN]=META_SOUTH;
+rotationMap[META_WEST][UP]=META_NORTH;
+rotationMap[META_WEST][SOUTH]=META_UP_EAST;
+rotationMap[META_WEST][WEST]=META_WEST;
+rotationMap[META_WEST][NORTH]=META_DOWN_WEST;
+rotationMap[META_WEST][EAST]=META_WEST;
+
+rotationMap[META_UP_SOUTH][DOWN]=META_UP_EAST;
+rotationMap[META_UP_SOUTH][UP]=META_UP_WEST;
+rotationMap[META_UP_SOUTH][SOUTH]=META_UP_SOUTH;
+rotationMap[META_UP_SOUTH][WEST]=META_SOUTH;
+rotationMap[META_UP_SOUTH][NORTH]=META_UP_SOUTH;
+rotationMap[META_UP_SOUTH][EAST]=META_NORTH;
+
+rotationMap[META_UP_WEST][DOWN]=META_UP_SOUTH;
+rotationMap[META_UP_WEST][UP]=META_UP_NORTH;
+rotationMap[META_UP_WEST][SOUTH]=META_EAST;
+rotationMap[META_UP_WEST][WEST]=META_UP_WEST;
+rotationMap[META_UP_WEST][NORTH]=META_WEST;
+rotationMap[META_UP_WEST][EAST]=META_UP_WEST;
+
+rotationMap[META_UP_NORTH][DOWN]=META_UP_WEST;
+rotationMap[META_UP_NORTH][UP]=META_UP_EAST;
+rotationMap[META_UP_NORTH][SOUTH]=META_UP_NORTH;
+rotationMap[META_UP_NORTH][WEST]=META_SOUTH;
+rotationMap[META_UP_NORTH][NORTH]=META_UP_NORTH;
+rotationMap[META_UP_NORTH][EAST]=META_NORTH;
+
+rotationMap[META_UP_EAST][DOWN]=META_UP_NORTH;
+rotationMap[META_UP_EAST][UP]=META_UP_SOUTH;
+rotationMap[META_UP_EAST][SOUTH]=META_EAST;
+rotationMap[META_UP_EAST][WEST]=META_UP_EAST;
+rotationMap[META_UP_EAST][NORTH]=META_WEST;
+rotationMap[META_UP_EAST][EAST]=META_UP_EAST;
+
+rotationMap[META_DOWN_SOUTH][DOWN]=META_DOWN_EAST;
+rotationMap[META_DOWN_SOUTH][UP]=META_DOWN_WEST;
+rotationMap[META_DOWN_SOUTH][SOUTH]=META_DOWN_SOUTH;
+rotationMap[META_DOWN_SOUTH][WEST]=META_NORTH;
+rotationMap[META_DOWN_SOUTH][NORTH]=META_DOWN_SOUTH;
+rotationMap[META_DOWN_SOUTH][EAST]=META_SOUTH;
 }
 
 private final String regName;
@@ -185,18 +269,67 @@ public static ForgeDirection getFacingDirectionFor(RelativeSide side, int meta)
 * 11=down:top=east<br>
 */ 
 public static int getRotatedMeta(int currentMeta, ForgeDirection rotateAxis, boolean canFaceVertical)
-  {  
-  int returnMeta = currentMeta;
-  if(rotateAxis==ForgeDirection.DOWN || rotateAxis==ForgeDirection.UP)//bottom
-    {
-    int j = (currentMeta+1)%4;
-    int k = currentMeta/4;
-    returnMeta = k*4 + j; 
-    }
-  else if(canFaceVertical)
-    {
-    
-    }
+  {
+  int returnMeta = rotationMap[currentMeta][rotateAxis.ordinal()];
+//  if(currentMeta<=3)
+//    {
+//    if(rotateAxis==ForgeDirection.DOWN || rotateAxis==ForgeDirection.UP)//bottom
+//      {
+//      returnMeta = (currentMeta+1)%4;
+//      }
+//    else if(canFaceVertical)
+//      {      
+//      ForgeDirection d = getFacingDirectionFor(RelativeSide.LEFT, currentMeta);
+//      if(rotateAxis==d || rotateAxis==d.getOpposite())
+//        {
+//        
+//        }
+//      else
+//        {
+//        
+//        }
+//      if(rotateAxis!=d && rotateAxis!=d.getOpposite())
+//        {
+//        returnMeta = currentMeta+4;
+//        }      
+//      }    
+//    } 
+//  else if(currentMeta>=4 && currentMeta<=7)
+//    {
+//    if(rotateAxis==ForgeDirection.DOWN || rotateAxis==ForgeDirection.UP)//bottom
+//      {
+//      int t = currentMeta-4;
+//      t = (t+1)%4;
+//      t+=4;
+//      returnMeta = t;
+//      }
+//    else
+//      {
+//      ForgeDirection d = getFacingDirectionFor(RelativeSide.TOP, currentMeta);
+//      if(rotateAxis!=d && rotateAxis!=d.getOpposite())
+//        {
+//        returnMeta = currentMeta+4;        
+//        }
+//      }
+//    }
+//  else if(currentMeta>=8 && currentMeta<=11)
+//    {
+//    if(rotateAxis==ForgeDirection.DOWN || rotateAxis==ForgeDirection.UP)//bottom
+//      {
+//      int t = currentMeta-8;
+//      t = (t+1)%4;
+//      t+=8;
+//      returnMeta = t;
+//      }
+//    else
+//      {
+//      ForgeDirection d = getFacingDirectionFor(RelativeSide.TOP, currentMeta);
+//      if(rotateAxis!=d && rotateAxis!=d.getOpposite())
+//        {
+//        returnMeta = currentMeta%4;        
+//        }
+//      }
+//    }
   return returnMeta;
   }
 }

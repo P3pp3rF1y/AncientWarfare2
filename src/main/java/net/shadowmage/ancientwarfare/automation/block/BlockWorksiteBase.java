@@ -89,7 +89,6 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
   {  
   int meta = worldObj.getBlockMetadata(x, y, z);
   int newMeta = RelativeSide.getRotatedMeta(meta, axis, false);
-  AWLog.logDebug("rotating block...origin meta: "+meta+" newmeta: "+newMeta);
   if(meta!=newMeta)
     {
     worldObj.setBlockMetadataWithNotify(x, y, z, newMeta, 3);
