@@ -170,4 +170,33 @@ public static ForgeDirection getFacingDirectionFor(RelativeSide side, int meta)
   return d;
   }
 
+/* facing direction for given meta
+* 0=south<br>
+* 1=west<br>
+* 2=north<br>
+* 3=east<br>
+* 4=up:top=south<br>
+* 5=up:top=west<br>
+* 6=up:top=north<br>
+* 7=up:top=east<br>
+* 8=down:top=south<br>
+* 9=down:top=west<br>
+* 10=down:top=north<br>
+* 11=down:top=east<br>
+*/ 
+public static int getRotatedMeta(int currentMeta, ForgeDirection rotateAxis, boolean canFaceVertical)
+  {  
+  int returnMeta = currentMeta;
+  if(rotateAxis==ForgeDirection.DOWN || rotateAxis==ForgeDirection.UP)//bottom
+    {
+    int j = (currentMeta+1)%4;
+    int k = currentMeta/4;
+    returnMeta = k*4 + j; 
+    }
+  else if(canFaceVertical)
+    {
+    
+    }
+  return returnMeta;
+  }
 }

@@ -6,12 +6,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
-import net.shadowmage.ancientwarfare.core.item.ItemClickable;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.modeler.AncientWarfareModeler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemModelEditor extends ItemClickable
+public class ItemModelEditor extends Item implements IItemClickable
 {
 
 public static final CreativeTabs editorTab = new CreativeTabs("tabs.editor")
@@ -26,17 +26,36 @@ public static final CreativeTabs editorTab = new CreativeTabs("tabs.editor")
 
 public ItemModelEditor(String localizationKey)
   {
-  super(localizationKey);
+  this.setUnlocalizedName(localizationKey);
   this.setCreativeTab(editorTab);
   }
 
 @Override
-public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosition hit)
+public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
   {
   if(player.worldObj.isRemote)
     {
     AncientWarfareModeler.proxy.openGui(player);
     }
+  return false;
+  }
+
+@Override
+public void onRightClick(EntityPlayer player, ItemStack stack)
+  {
+  
+  }
+
+@Override
+public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
+@Override
+public void onLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  
   }
 
 }

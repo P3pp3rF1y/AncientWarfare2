@@ -34,14 +34,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.item.ItemClickable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 
-public class ItemGateSpawner extends ItemClickable implements IItemKeyInterface
+public class ItemGateSpawner extends Item implements IItemKeyInterface, IItemClickable
 {
 
 /**
@@ -50,7 +50,7 @@ public class ItemGateSpawner extends ItemClickable implements IItemKeyInterface
  */
 public ItemGateSpawner(String name)
   {
-  super(name);
+  this.setUnlocalizedName(name);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setMaxStackSize(1);
   }
@@ -115,7 +115,7 @@ public String getUnlocalizedName(ItemStack par1ItemStack)
   }
 
 @Override
-public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosition hit)
+public void onRightClick(EntityPlayer player, ItemStack stack)
   {
   World world = player.worldObj;
   if(world.isRemote)
@@ -239,6 +239,24 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
     player.addChatMessage(new ChatComponentTranslation("guistrings.gate.set_pos_one"));
     }
   stack.setTagInfo("AWGateInfo", tag);
+  }
+
+@Override
+public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
+@Override
+public void onLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  
   }
 
 }

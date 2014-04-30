@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -32,11 +33,11 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.item.ItemClickable;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-public class ItemSpawnerPlacer extends ItemClickable
+public class ItemSpawnerPlacer extends Item implements IItemClickable
 {
 
 /**
@@ -44,7 +45,7 @@ public class ItemSpawnerPlacer extends ItemClickable
  */
 public ItemSpawnerPlacer(String itemName)
   {
-  super(itemName);
+  this.setUnlocalizedName(itemName);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setTextureName("ancientwarfare:structure/"+itemName);
   }
@@ -71,12 +72,14 @@ public void addInformation(ItemStack stack, EntityPlayer player, List list, bool
   list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("guistrings.spawner.warning_2"));
   }
 
-public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosition mophit)
+@Override
+public void onRightClick(EntityPlayer player, ItemStack stack)
   {
   if(player==null || player.worldObj==null || player.worldObj.isRemote || stack==null)
     {
     return;
-    }  
+    }
+  MovingObjectPosition mophit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
   if(player.capabilities.isCreativeMode && player.isSneaking())
     {
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
@@ -118,6 +121,23 @@ public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosit
      * TODO output chat message about null hit/ w/e
      */
     }
+  }
+
+@Override
+public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
+@Override
+public void onLeftClick(EntityPlayer player, ItemStack stack)
+  {  
   }
 
 

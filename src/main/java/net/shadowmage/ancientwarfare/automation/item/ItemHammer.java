@@ -4,27 +4,38 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.WorkSiteReedFarm;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.item.ItemClickable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemHammer extends ItemClickable implements IItemKeyInterface
+public class ItemHammer extends Item implements IItemKeyInterface, IItemClickable
 {
 
 public ItemHammer(String regName)
   {
-  super(regName);
+  this.setUnlocalizedName(regName);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
+  }
+
+@Override
+@SideOnly(Side.CLIENT)
+public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+  {
+  boolean mode = false;
+  if(stack.hasTagCompound())
+    {
+    mode = stack.getTagCompound().getBoolean("workMode");      
+    }
+  super.addInformation(stack, par2EntityPlayer, par3List, par4);
   }
 
 @Override
@@ -46,10 +57,10 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
   }
 
 @Override
-public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosition hit)
+public void onRightClick(EntityPlayer player, ItemStack stack)
   {
-  AWLog.logDebug("hammer right click...");
-  if(player.worldObj.isRemote || hit==null){return;}
+  MovingObjectPosition hit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
+  if(hit==null){return;}
   boolean mode = false;
   if(stack.hasTagCompound())
     {
@@ -75,22 +86,30 @@ public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosit
   else
     {
     Block block = player.worldObj.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-    if(block==null){return;}
-    block.rotateBlock(player.worldObj, hit.blockX, hit.blockY, hit.blockZ, ForgeDirection.getOrientation(hit.sideHit));
+    if(block==null){return;}    
     player.addChatMessage(new ChatComponentTranslation("guistrings.automation.rotating_block"));
+    block.rotateBlock(player.worldObj, hit.blockX, hit.blockY, hit.blockZ, ForgeDirection.getOrientation(hit.sideHit));
     }
   }
 
 @Override
-@SideOnly(Side.CLIENT)
-public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
   {
-  boolean mode = false;
-  if(stack.hasTagCompound())
-    {
-    mode = stack.getTagCompound().getBoolean("workMode");      
-    }
-  super.addInformation(stack, par2EntityPlayer, par3List, par4);
+  return false;
+  }
+
+@Override
+public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
+  {
+  MovingObjectPosition hit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
+  if(hit==null){return false;}
+  return true;
+  }
+
+@Override
+public void onLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  
   }
 
 }

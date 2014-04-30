@@ -3,33 +3,28 @@ package net.shadowmage.ancientwarfare.core.item;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemResearchBook extends ItemClickable
+public class ItemResearchBook extends Item implements IItemClickable
 {
 
 public ItemResearchBook(String localizationKey)
   {
-  super(localizationKey);
+  this.setUnlocalizedName(localizationKey);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
   this.setMaxStackSize(1);
   }
 
-@Override
-public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosition hit)
-  {
-  if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("researcherName"))
-    {
-    stack.setTagInfo("researcherName", new NBTTagString(player.getCommandSenderName()));
-    }
-  }
+
 
 @Override
 @SideOnly(Side.CLIENT)
@@ -55,5 +50,34 @@ public static final String getResearcherName(ItemStack stack)
     }
   return null;
   }
+
+@Override
+public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
+@Override
+public void onLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  
+  }
+
+@Override
+public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public void onRightClick(EntityPlayer player, ItemStack stack)
+  {  
+  if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("researcherName"))
+    {
+    stack.setTagInfo("researcherName", new NBTTagString(player.getCommandSenderName()));
+    }
+  }
+
+
 
 }

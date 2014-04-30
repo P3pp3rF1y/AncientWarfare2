@@ -12,17 +12,18 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
-public class ItemResearchNotes extends ItemClickable
+public class ItemResearchNotes extends Item implements IItemClickable
 {
 
 private List<ItemStack> displayCache = null;
 
 public ItemResearchNotes(String localizationKey)
   {
-  super(localizationKey);
+  this.setUnlocalizedName(localizationKey);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
   }
 
@@ -84,7 +85,7 @@ public void getSubItems(Item item, CreativeTabs tab, List list)
   }
 
 @Override
-public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosition hit)
+public void onRightClick(EntityPlayer player, ItemStack stack)
   {
   NBTTagCompound tag = stack.getTagCompound();
   boolean known = false;
@@ -121,6 +122,24 @@ public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosit
         }
       }    
     }
+  }
+
+@Override
+public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
+@Override
+public void onLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  
   }
 
 }

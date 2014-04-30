@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -11,8 +12,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.item.ItemClickable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -25,22 +26,15 @@ import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
-public class ItemStructureScanner extends ItemClickable implements IItemKeyInterface
+public class ItemStructureScanner extends Item implements IItemKeyInterface, IItemClickable
 {
 
 public ItemStructureScanner(String localizationKey)
   {
-  super(localizationKey);
-  this.hasLeftClick = false;
+  this.setUnlocalizedName(localizationKey); 
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setMaxStackSize(1);
   this.setTextureName("ancientwarfare:structure/"+localizationKey);
-  }
-
-@Override
-public void onLeftClick(ItemStack stack, EntityPlayer player, MovingObjectPosition mophit)
-  {
-  //NOOP
   }
 
 ItemStructureSettings viewSettings = new ItemStructureSettings();
@@ -91,7 +85,7 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
 
 ItemStructureSettings scanSettings = new ItemStructureSettings();
 @Override
-public void onRightClick(ItemStack stack, EntityPlayer player, MovingObjectPosition hit)
+public void onRightClick(EntityPlayer player, ItemStack stack)
   {
   ItemStructureSettings.getSettingsFor(stack, scanSettings);
   if(player.isSneaking())
@@ -170,6 +164,26 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
 //    player.addChatMessage("Setting Scan Build Position and Facing (Step 3/4)");
     }
   ItemStructureSettings.setSettingsFor(stack, scanSettings);
+  }
+
+@Override
+public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
+  {
+  // TODO Auto-generated method stub
+  return false;
+  }
+
+@Override
+public void onLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  // TODO Auto-generated method stub
+  
   }
 
 
