@@ -11,23 +11,14 @@ structures module (done for now)
 	textures for drafting station, survival-mode builder
 
 automation module
-	add any other applicable alternate control GUIs (and corresponding functions in the tiles)
-		crop farm -- optional canTillDirt control
-		crop farm -- controls for crop types, not layout, but by count?		
-		crop farm -- optional replanting of resources
-		tree farm -- optional replanting of trees
-		tree farm -- toggle pickup of apples?
-		tree farm -- toggles for each sapling type?
-	add IMC-based API to add logs/saplings to forestry farm
-	add config-based method to add logs/saplings to forestry farm
-	add worker view to worksites guis?
+	add IMC-based API to add logs/saplings to forestry farm??
+	add config-based method to add logs/saplings to forestry farm??
 	add the rest of the types of harvesting automation -- cocoa/reed/cactus farm, ??.
 	add plugin / support for power systems (mechanical worker block)(need APIs updated first)
 	mechanical hopper block -- configurable pull / push side (s), and on/off push control
 		with filter list per-side -- needs redstone power to function?
 	warehouse / mass storage??
-	mailbox system
-	optional engine to run mechanical worker with coal -- disabled by default in config?
+	optional input slot  to run mechanical worker with coal -- disabled by default in config?
 	player-work code for most worksites -- how to implement...with wrench item?	
 		
 vehicles module

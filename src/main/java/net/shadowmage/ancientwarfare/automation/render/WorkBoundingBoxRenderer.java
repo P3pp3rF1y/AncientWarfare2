@@ -33,6 +33,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksitePlacer;
+import net.shadowmage.ancientwarfare.core.config.ClientOptions;
+import net.shadowmage.ancientwarfare.core.config.ClientOptions.ClientOption;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -63,7 +65,7 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
     {
     return;
     }
-  if(AWAutomationStatics.renderWorkBounds)
+  if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_WORK_BOUNDS))
     {
     renderWorkBounds(player, evt.partialTicks);
     }
@@ -139,17 +141,20 @@ private void renderWorkBounds(EntityPlayer player, float delta)
           }
         pos2Cache.reassign(max.x + 1, max.y + 1, max.z + 1);//using cached value so that the reference can be manipulated
         renderBoundingBox(player, min, pos2Cache, delta);
-        }      
-      workTargets = site.getWorkTargets();
-      if(!workTargets.isEmpty())
+        }
+      if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_WORK_POINTS))
         {
-        targetIndex = 0;
-        colorIncrement = 1.f / (float)(workTargets.size()*2);        
-        for(BlockPosition target : workTargets)
+        workTargets = site.getWorkTargets();
+        if(!workTargets.isEmpty())
           {
-          color = 1.f - (float)(colorIncrement * (float)targetIndex);
-          renderBoundingBox(player, target, pos2Cache.reassign(target.x+1, target.y+1, target.z+1), delta, color, color, color, 0.f);
-          targetIndex++;
+          targetIndex = 0;
+          colorIncrement = 1.f / (float)(workTargets.size()*2);        
+          for(BlockPosition target : workTargets)
+            {
+            color = 1.f - (float)(colorIncrement * (float)targetIndex);
+            renderBoundingBox(player, target, pos2Cache.reassign(target.x+1, target.y+1, target.z+1), delta, color, color, color, 0.f);
+            targetIndex++;
+            }
           }
         }
       }

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.gamedata;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 public class MailboxData extends WorldSavedData
@@ -137,6 +140,12 @@ public void removeDeliverableItem(String owner, String name, DeliverableItem ite
   set.removeDeliverableItem(name, item);
   }
 
+public void addMailboxReceiver(String owner, String name, TileMailbox box)
+  {
+  MailboxSet set = owner==null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
+  set.addReceiver(name, box);  
+  }
+
 private final class MailboxSet
 {
 
@@ -233,12 +242,21 @@ private void removeDeliverableItem(String name, DeliverableItem item)
     this.mailboxes.get(name).removeDeliverableItem(item);
     }
   }
+
+private void addReceiver(String name, TileMailbox box)
+  {
+  if(this.mailboxes.containsKey(name))
+    {
+    this.mailboxes.get(name).addReceiver(box);
+    }
+  }
 }
 
 public final class MailboxEntry
 {
 private String mailboxName;
 private List<DeliverableItem> incomingItems = new ArrayList<DeliverableItem>();
+private List<TileMailbox> receivers = new ArrayList<TileMailbox>();
 
 private MailboxEntry(String name)
   {
@@ -246,6 +264,11 @@ private MailboxEntry(String name)
   }
 
 private MailboxEntry(){}//nbt-constructor
+
+private void addReceiver(TileMailbox tile)
+  {
+  this.receivers.add(tile);
+  }
 
 private void removeDeliverableItem(DeliverableItem item)
   {
@@ -320,6 +343,46 @@ private void tick(int length)
     {
     item.tick(length);
     }
+  
+  int dim;
+  int time = 0;
+  int timePerBlock = 10;//set time from config for per-block time
+  int timeForDimension = 100;//set time from config for cross-dimensional items
+  int x, y, z;
+  Iterator<DeliverableItem> it;
+  DeliverableItem item;
+  ItemStack stack;
+  for(TileMailbox box : receivers)
+    {
+    dim = box.getWorldObj().provider.dimensionId;
+    x = box.xCoord;
+    y = box.yCoord;
+    z = box.zCoord;
+    it = this.incomingItems.iterator();
+    while(it.hasNext() && (item=it.next())!=null)
+      {
+      if(dim!=item.originDimension)
+        {
+        time = timeForDimension;
+        }
+      else
+        {
+        float dist = Trig.getDistance(item.x, item.y, item.z, x, y, z);
+        time = (int)(dist * (float)timePerBlock);
+        }
+      if(item.deliveryTime>=time)//find if item is deliverable to this box
+        {
+        stack = item.item;
+        stack = InventoryTools.mergeItemStack(box.inventory, stack, box.inventory.getAccessDirectionFor(InventorySide.BOTTOM));
+        if(stack==null)
+          {
+          it.remove();          
+          }
+        break;
+        }
+      }
+    }
+  receivers.clear();
   }
 
 @Override

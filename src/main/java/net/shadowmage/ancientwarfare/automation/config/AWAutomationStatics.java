@@ -26,9 +26,11 @@ import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 public class AWAutomationStatics extends ModConfiguration
 {
 
-public static boolean renderWorkBounds = true;
 public static boolean sendWorkToClients = true;
+
 public static int automationWorkerRescanTicks = 200;
+public static int mailboxTimePerBlock = 20;
+public static int mailboxTimeForDimension = 1200;
 
 public AWAutomationStatics(Configuration config)
   {

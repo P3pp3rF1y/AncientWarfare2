@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAutoCrafting;
@@ -32,8 +33,8 @@ public void registerClient()
 
 private void registerClientOptions()
   {
-  ClientOptions.INSTANCE.registerClientOption("render_work_bounds", "Should work-bounds be rendered for work-sites.", true);
-  ClientOptions.INSTANCE.registerClientOption("render_work_points", "Should individual work-targets be rendered for work-sites.", true);
+  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_WORK_BOUNDS, "Should work-bounds be rendered for work-sites.", true);
+  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_WORK_POINTS, "Should individual work-targets be rendered for work-sites.", true);
   }
 
 }

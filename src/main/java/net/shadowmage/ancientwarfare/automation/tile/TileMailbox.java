@@ -82,28 +82,12 @@ public void updateEntity()
     
     List<DeliverableItem> items = new ArrayList<DeliverableItem>();
     data.getDeliverableItems(privateBox? owningPlayerName : null, mailboxName, items, worldObj, xCoord, yCoord, zCoord);
-    tryReceiveItems(data, items);
+    data.addMailboxReceiver(privateBox? owningPlayerName : null, mailboxName, this);
     
     if(destinationName!=null)//try to send mail
       {
       trySendItems(data);
       }
-    }  
-  }
-
-private void tryReceiveItems(MailboxData data, List<DeliverableItem> items)
-  {  
-  ItemStack item;
-  String owner = privateBox ? owningPlayerName : null;
-  for(DeliverableItem deliverable : items)
-    {
-    item = deliverable.item;
-    item = InventoryTools.mergeItemStack(inventory, item, inventory.getAccessDirectionFor(InventorySide.TOP));
-    if(item==null)
-      {
-      data.removeDeliverableItem(owner, mailboxName, deliverable);
-      }
-    break;
     }  
   }
 

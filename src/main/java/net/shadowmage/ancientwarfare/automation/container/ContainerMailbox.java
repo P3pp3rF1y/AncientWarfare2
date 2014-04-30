@@ -146,10 +146,7 @@ public void sendInitData()
   
   tag.setBoolean("privateBox", privateBox);
   tag.setBoolean("autoExport", autoExport);  
-  
-  MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, player.worldObj, MailboxData.class);
-  
-  publicBoxNames.addAll(data.getPublicBoxNames());
+    
   NBTTagList nameList = new NBTTagList();
   for(String boxName : publicBoxNames)
     {
@@ -157,7 +154,6 @@ public void sendInitData()
     }    
   tag.setTag("publicBoxNames", nameList);
   
-  privateBoxNames.addAll(data.getPrivateBoxNames(worksite.getOwnerName()));
   nameList = new NBTTagList();
   for(String boxName : privateBoxNames)
     {
@@ -432,7 +428,9 @@ public void handlePrivateBoxToggle(boolean newVal)
 
 public void handleAutoExportToggle(boolean newVal)
   {
-  //TODO
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setBoolean("autoExport", newVal);
+  sendDataToServer(tag);
   }
 
 public void sendSlotChange(RelativeSide base, InventorySide access)

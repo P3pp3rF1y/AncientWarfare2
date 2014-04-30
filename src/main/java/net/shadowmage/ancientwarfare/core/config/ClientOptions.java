@@ -16,6 +16,12 @@ private HashMap<String, ClientOption> clientOptions = new HashMap<String, Client
 
 private static final String clientOptionsCategory = "c_client_options";
 
+/**
+ * automation module client-side options
+ */
+public static final String OPTION_RENDER_WORK_BOUNDS = "render_work_bounds";
+public static final String OPTION_RENDER_WORK_POINTS = "render_work_points";
+
 public void setConfig(Configuration config)
   {
   this.config = config;

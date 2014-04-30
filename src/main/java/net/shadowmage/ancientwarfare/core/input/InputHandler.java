@@ -119,21 +119,7 @@ public void onKeyInput(KeyInputEvent evt)
         k.onKeyReleased();
         }
       }
-    }
-  
-//  if(state && key==Keyboard.KEY_Z)
-//    {
-//    ItemStack stack = player.inventory.getCurrentItem();
-//    if(stack!=null && stack.getItem() instanceof IItemKeyInterface)
-//      {
-//      PacketItemInteraction pkt = new PacketItemInteraction();
-//      NetworkHandler.sendToServer(pkt);
-//      }
-//    }
-//  else if(key==Keyboard.KEY_F7)
-//    {
-//    minecraft.displayGuiScreen(new GuiOptions(new ContainerBase(player, 0, 0, 0)));
-//    }
+    }  
   }
 
 public void registerKeybind(String name, int keyCode)
@@ -158,9 +144,8 @@ public void reassignKeybind(String name, int newKey)
   if(k==null){return;}
   
   config.get(keybinds, name, 0).set(newKey);
-  config.save();
-  
   reassignKeyCode(k, newKey);  
+  config.save();  
   }
 
 private void reassignKeyCode(Keybind k, int newKey)
