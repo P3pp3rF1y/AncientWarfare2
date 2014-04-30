@@ -57,9 +57,9 @@ private static final int META_DOWN_WEST = 9;
 private static final int META_DOWN_NORTH = 10;
 private static final int META_DOWN_EAST = 11;
 
-private static final RelativeSide[][] sideMap = new RelativeSide[6][16];
+private static final RelativeSide[][] sideMap = new RelativeSide[6][16];//[SIDE_VIEWED][BLOCK_META]=LOCAL SIDE ICON
 
-private static final int[][] rotationMap = new int[16][6];
+private static final int[][] rotationMap = new int[16][6];//[BLOCK_META][AXIS_CLICKED_ORDINAL]=ROTATED META
 
 static
 {
