@@ -2,14 +2,13 @@ package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockMailbox;
-import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
+import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
+import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageSmall;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorkerTest;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteCropFarm;
@@ -107,6 +106,8 @@ public static final BlockWorksiteBase worksiteWarehouse = new BlockWorksiteBase(
   
 public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 
+public static final BlockWarehouseStorage warehouseStorage = new BlockWarehouseStorage("warehouse_storage");
+
 public static void load()
   {  
   GameRegistry.registerBlock(workerTest, "block.testWorker");
@@ -177,6 +178,9 @@ public static void load()
   GameRegistry.registerBlock(worksiteWarehouse, ItemBlockWorksite.class, "civic_warehouse");
   GameRegistry.registerTileEntity(WorkSiteWarehouse.class, "civic_warehouse_tile");
   worksiteWarehouse.setWorkVerticalSize(4);
+  
+  GameRegistry.registerBlock(warehouseStorage, "warehouse_storage");
+  GameRegistry.registerTileEntity(TileWarehouseStorageSmall.class, "warehouse_storage_small_tile");
   }
 
 }
