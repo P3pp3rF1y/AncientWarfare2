@@ -4,6 +4,8 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBase;
@@ -81,6 +83,9 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, ContainerWorksiteAutoCrafting.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, ContainerWorksiteFishControl.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_MAILBOX_INVENTORY, ContainerMailbox.class);
+  //warehouse control
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE, ContainerWarehouseStorage.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE_FILTER, ContainerWarehouseStorageFilter.class);
   AWGameData.INSTANCE.registerSaveData(MailboxData.name, MailboxData.class);
   
   FMLCommonHandler.instance().bus().register(new MailboxTicker());

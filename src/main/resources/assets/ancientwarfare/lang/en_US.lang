@@ -106,6 +106,12 @@ guistrings.gate.choose_pos_one=Press alt-item use to select first position.
 guistrings.gate.choose_pos_two=Press alt-item use to select second position.
 guistrings.gate.constuct=Right-Click: Construct Gate
 guistrings.gate.clear_item=(Sneak)Right-Click: Clear Item
+#automation
+guistrings.automation.ignore_damage=Ign. Dmg
+guistrings.automation.ignore_nbt=Ign. NBT
+guistrings.automation.item=Item
+guistrings.automation.new_filter=Add New Filter
+guistrings.automation.filter_setup=Filters
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal
 guistrings.research.queued_research=Queued Research

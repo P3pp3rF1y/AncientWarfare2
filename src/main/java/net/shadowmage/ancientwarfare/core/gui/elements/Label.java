@@ -8,6 +8,7 @@ public class Label extends GuiElement
 
 FontRenderer fr;
 String text;
+boolean renderCentered = false;
 
 public Label(int topLeftX, int topLeftY, String text)
   {
@@ -18,12 +19,26 @@ public Label(int topLeftX, int topLeftY, String text)
   this.width = fr.getStringWidth(text);
   }
 
+public Label setRenderCentered()
+  {
+  this.renderCentered = true;
+  return this;
+  }
+
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
   if(visible)
     {
-    fr.drawStringWithShadow(text, renderX, renderY, 0xffffffff);    
+    if(renderCentered)
+      {
+      int len = fr.getStringWidth(text)/2;
+      fr.drawStringWithShadow(text, renderX-len, renderY, 0xffffffff);      
+      }
+    else
+      {
+      fr.drawStringWithShadow(text, renderX, renderY, 0xffffffff);      
+      }    
     }
   }
 

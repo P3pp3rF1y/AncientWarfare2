@@ -54,6 +54,9 @@ public static final int GUI_WORKSITE_ANIMAL_CONTROL = 14;
 public static final int GUI_WORKSITE_AUTO_CRAFT = 15;
 public static final int GUI_WORKSITE_FISH_CONTROL = 16;
 public static final int GUI_MAILBOX_INVENTORY = 17;
+public static final int GUI_WAREHOUSE_CONTROL = 18;
+public static final int GUI_WAREHOUSE_STORAGE = 19;
+public static final int GUI_WAREHOUSE_STORAGE_FILTER = 20;
 
 private FMLEventChannel channel;
 

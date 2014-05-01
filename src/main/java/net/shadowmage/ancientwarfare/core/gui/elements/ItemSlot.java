@@ -5,6 +5,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
@@ -34,6 +36,21 @@ public ItemSlot(int topLeftX, int topLeftY, ItemStack item, ITooltipRenderer ren
   super(topLeftX-1, topLeftY-1, 18, 18);
   this.item = item;
   this.render = render;
+  
+  Listener listener = new Listener(Listener.MOUSE_DOWN)
+    {
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(widget.isMouseOverElement(evt.mx, evt.my))
+        {
+        ItemStack stack = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
+        onSlotClicked(stack);
+        }
+      return true;
+      }
+    };
+  addNewListener(listener);
   }
 
 public void setItem(ItemStack item)
@@ -127,6 +144,11 @@ public void render(int mouseX, int mouseY, float partialTick)
     GL11.glEnable(GL11.GL_DEPTH_TEST);
     GL11.glDisable(GL11.GL_LIGHTING);
     }  
+  }
+
+public void onSlotClicked(ItemStack stack)
+  {
+  
   }
 
 }

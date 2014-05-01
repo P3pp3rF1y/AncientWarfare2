@@ -104,7 +104,10 @@ public void render(int mouseX, int mouseY, float partialTick)
 
 public void addGuiElement(GuiElement element)
   {
-  this.elements.add(element);
+  if(!this.elements.contains(element))
+    {
+    this.elements.add(element);    
+    }
   }
 
 protected void setViewport()
