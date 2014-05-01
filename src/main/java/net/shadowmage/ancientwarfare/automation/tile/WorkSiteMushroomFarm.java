@@ -196,7 +196,7 @@ private void rescan()
         }
       }
     }
-  this.markDirty();
+  this.markForUpdate();
   AWLog.logDebug("found: "+blocksToPlantMushroom.size()+" mushroom targets and "+blocksToPlantNetherWart.size() +" nether wart targets");
   }
 
@@ -285,7 +285,7 @@ private void processWork()
         }
       }
     }
-  this.markDirty();
+  this.markForUpdate();
   }
 
 @Override

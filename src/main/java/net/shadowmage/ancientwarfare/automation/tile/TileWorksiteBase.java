@@ -93,6 +93,10 @@ public TileWorksiteBase()
 public void markDirty()
   {
   super.markDirty();
+  }
+
+public void markForUpdate()
+  {
   if(!worldObj.isRemote)
     {
     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -133,7 +137,7 @@ public void setUserSetTargets(Set<BlockPosition> targets)
     userTargetBlocks.addAll(targets);
     if(!this.worldObj.isRemote)
       {
-      this.markDirty();    
+      this.markForUpdate();    
       }
     }
   }
@@ -143,7 +147,7 @@ public void addUserBlock(BlockPosition pos)
   userTargetBlocks.add(pos);
   if(!this.worldObj.isRemote)
     {
-    this.markDirty();    
+    this.markForUpdate();    
     }
   }
 

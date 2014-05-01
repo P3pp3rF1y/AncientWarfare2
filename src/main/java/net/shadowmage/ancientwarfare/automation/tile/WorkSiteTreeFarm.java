@@ -269,7 +269,7 @@ private void processWork()
         }
       }
     }
-  this.markDirty();
+  this.markForUpdate();
   }
 
 private void pickupSaplings()
@@ -338,7 +338,7 @@ private void rescan()
     }
   if(shouldSendWorkTargets && AWAutomationStatics.sendWorkToClients)
     {
-    this.markDirty();
+    this.markForUpdate();
     }
   }
 

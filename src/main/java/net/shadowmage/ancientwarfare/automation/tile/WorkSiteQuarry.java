@@ -149,7 +149,7 @@ private void scanNextPosition()
   if(!finished)
     {
     nextPosition.reassign(currentX, currentY, currentZ);
-    this.markDirty();
+    this.markForUpdate();
     }
   }
 
@@ -165,7 +165,7 @@ public void initWorkSite()
   this.currentX = this.getWorkBoundsMin().x;
   this.currentZ = this.getWorkBoundsMin().z;
   this.nextPosition.reassign(currentX, currentY, currentZ);
-  this.markDirty();
+  this.markForUpdate();
   }
 
 @Override

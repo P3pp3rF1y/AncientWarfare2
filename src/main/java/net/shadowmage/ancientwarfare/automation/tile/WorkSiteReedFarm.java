@@ -188,6 +188,7 @@ private void rescan()
         }
       }
     }
+  this.markForUpdate();
   }
 
 private void processWork()
@@ -246,6 +247,7 @@ private void processWork()
         }
       }
     }
+  this.markForUpdate();
   }
 
 private boolean removeItem(Item item)

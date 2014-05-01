@@ -56,7 +56,7 @@ public void handlePacketData(NBTTagCompound tag)
       set.add(pos);
       }
     worksite.setUserSetTargets(set);
-    worksite.markDirty();
+    worksite.markForUpdate();
     }
   }
 

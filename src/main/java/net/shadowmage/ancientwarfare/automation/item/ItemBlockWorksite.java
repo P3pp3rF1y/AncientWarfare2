@@ -120,7 +120,6 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
       {
       ((IOwnable)worksite).setOwnerName(player.getCommandSenderName());
       }
-    worksite.markDirty();
     world.markBlockForUpdate(x, y, z);
     stack.getTagCompound().removeTag("pos1");
     stack.getTagCompound().removeTag("pos2");

@@ -228,7 +228,7 @@ private void rescan()
         }      
       }
     }
-  this.markDirty();
+  this.markForUpdate();
   }
 
 private void processWork()
@@ -371,7 +371,7 @@ private void processWork()
         }
       }
     }
-  this.markDirty();
+  this.markForUpdate();
   }
 
 @Override
