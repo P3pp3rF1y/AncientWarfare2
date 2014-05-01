@@ -7,6 +7,9 @@ import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
@@ -158,6 +161,41 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setString("owner", owningPlayer);
   tag.setTag("pos1", bbMin.writeToNBT(new NBTTagCompound()));
   tag.setTag("pos2", bbMax.writeToNBT(new NBTTagCompound()));
+  }
+
+@Override
+public final Packet getDescriptionPacket()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  if(bbMin!=null)
+    {
+    NBTTagCompound innerTag = new NBTTagCompound();
+    bbMin.writeToNBT(innerTag);
+    tag.setTag("bbMin", innerTag);
+    }
+  if(bbMax!=null)
+    {
+    NBTTagCompound innerTag = new NBTTagCompound();
+    bbMax.writeToNBT(innerTag);
+    tag.setTag("bbMax", innerTag);
+    }
+  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, tag);
+  }
+
+@Override
+public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {
+  NBTTagCompound tag = pkt.func_148857_g();
+  if(tag.hasKey("bbMin"))
+    {
+    bbMin = new BlockPosition();
+    bbMin.read(tag.getCompoundTag("bbMin"));
+    }
+  if(tag.hasKey("bbMax"))
+    {
+    bbMax = new BlockPosition();
+    bbMax.read(tag.getCompoundTag("bbMax"));
+    }
   }
 
 @Override
