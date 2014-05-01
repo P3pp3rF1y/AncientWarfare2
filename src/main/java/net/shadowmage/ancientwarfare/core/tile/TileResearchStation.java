@@ -90,22 +90,12 @@ public void writeToNBT(NBTTagCompound tag)
   }
 
 @Override
-public final boolean canHaveWorker(IWorker worker)
+public final boolean addWorker(IWorker worker)
   {
   if(!worker.getWorkTypes().contains(getWorkType()) || worker.getTeam() != this.getTeam())
     {
     return false;
     }
-  if(workers.contains(worker))
-    {
-    return true;
-    }
-  return workers.size()<maxWorkers;
-  }
-
-@Override
-public final boolean addWorker(IWorker worker)
-  {
   if(workers.size()<maxWorkers || workers.contains(worker))
     {
     workers.add(worker);
@@ -317,12 +307,6 @@ public void closeInventory()
 public boolean isItemValidForSlot(int var1, ItemStack var2)
   {
   return resourceInventory.isItemValidForSlot(var1, var2);
-  }
-
-@Override
-public Collection<IWorker> getWorkers()
-  {
-  return workers;
   }
 
 }

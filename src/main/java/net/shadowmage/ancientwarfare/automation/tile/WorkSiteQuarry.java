@@ -71,7 +71,19 @@ public boolean hasWork()
 
 @Override
 public void doWork(IWorker worker)
-  {  
+  {    
+  processWork();
+  }
+
+private boolean hasDoneInit = false;
+
+private void processWork()
+  {
+  if(!hasDoneInit)
+    {
+    initWorkSite();
+    hasDoneInit = true;
+    }
   if(validatePosition()!=currentY)
     {
     scanNextPosition();
@@ -146,7 +158,6 @@ private boolean canHarvest(Block block)
   return block!=Blocks.flowing_lava && block!=Blocks.lava && block.getBlockHardness(worldObj, currentX, currentY, currentZ)>=0;
   }
 
-@Override
 public void initWorkSite()
   {
   this.getWorkBoundsMin().y = 1;
@@ -184,6 +195,7 @@ public void readFromNBT(NBTTagCompound tag)
   currentZ = tag.getInteger("currentZ");  
   finished = tag.getBoolean("finished");
   nextPosition.read(tag.getCompoundTag("nextPos"));
+  hasDoneInit = tag.getBoolean("init");
   }
 
 @Override
@@ -194,6 +206,7 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("currentX", currentX);
   tag.setInteger("currentZ", currentZ);
   tag.setBoolean("finished", finished);
+  tag.setBoolean("init", hasDoneInit);
   NBTTagCompound posTag = new NBTTagCompound();
   nextPosition.writeToNBT(posTag);
   tag.setTag("nextPos", posTag);
@@ -208,6 +221,12 @@ public boolean onBlockClicked(EntityPlayer player)
     return true;
     }
   return false;
+  }
+
+@Override
+public void doPlayerWork(EntityPlayer player)
+  {
+  processWork();
   }
 
 

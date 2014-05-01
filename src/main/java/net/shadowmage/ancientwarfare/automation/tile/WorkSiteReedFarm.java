@@ -423,12 +423,6 @@ public void onInventoryChanged()
   }
 
 @Override
-public void initWorkSite()
-  {
-  
-  }
-
-@Override
 public boolean onBlockClicked(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
@@ -458,6 +452,19 @@ public void writeClientData(NBTTagCompound tag)
 public void readClientData(NBTTagCompound tag)
   {
 
+  }
+
+@Override
+public void doPlayerWork(EntityPlayer player)
+  {
+  if(workerRescanDelay<=0 || !hasWorkBlock())
+    {
+    rescan();
+    }  
+  if(hasWorkBlock())
+    {
+    processWork();
+    }
   }
 
 }

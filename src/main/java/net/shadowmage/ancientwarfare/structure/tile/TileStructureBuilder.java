@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.automation.util.WorkerPlayerWrapper;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -154,26 +152,16 @@ public void doWork(IWorker worker)
 @Override
 public void doPlayerWork(EntityPlayer player)
   {
-  doWork(new WorkerPlayerWrapper(player));
-  }
-
-@Override
-public final boolean canHaveWorker(IWorker worker)
-  {
-  if(!worker.getWorkTypes().contains(getWorkType()) || worker.getTeam() != this.getTeam())
-    {
-    return false;
-    }
-  if(workers.contains(worker))
-    {
-    return true;
-    }
-  return workers.size()<maxWorkers;
+  processWork();
   }
 
 @Override
 public final boolean addWorker(IWorker worker)
   {
+  if(!worker.getWorkTypes().contains(getWorkType()) || worker.getTeam() != this.getTeam())
+    {
+    return false;
+    }
   if(workers.size()<maxWorkers || workers.contains(worker))
     {
     workers.add(worker);
@@ -226,12 +214,6 @@ public List<BlockPosition> getWorkTargets()
 public boolean hasWorkBounds()
   {
   return false;
-  }
-
-@Override
-public Collection<IWorker> getWorkers()
-  {
-  return workers;
   }
 
 }

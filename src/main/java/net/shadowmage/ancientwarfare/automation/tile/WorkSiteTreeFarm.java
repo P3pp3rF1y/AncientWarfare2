@@ -173,7 +173,6 @@ private boolean hasWorkBlock()
 @Override
 public void doWork(IWorker worker)
   {  
-  AWLog.logDebug("tree farm processing work command..");
   if(workerRescanDelay<=0 || !hasWorkBlock())
     {
     rescan();
@@ -368,12 +367,6 @@ public WorkType getWorkType()
   }
 
 @Override
-public void initWorkSite()
-  {
-  
-  }
-
-@Override
 public boolean onBlockClicked(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
@@ -429,5 +422,19 @@ public void readFromNBT(NBTTagCompound tag)
     }
   workerRescanDelay = tag.getInteger("scanDelay");
   this.shouldCountResources = true;
+  }
+
+@Override
+public void doPlayerWork(EntityPlayer player)
+  {
+  if(workerRescanDelay<=0 || !hasWorkBlock())
+    {
+    rescan();
+    }  
+  if(hasWorkBlock())
+    {
+    processWork();
+    }
+  pickupSaplings();
   }
 }

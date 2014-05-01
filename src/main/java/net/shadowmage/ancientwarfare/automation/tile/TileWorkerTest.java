@@ -35,14 +35,15 @@ public void onBlockBroken()
 private void setWorkSite(IWorkSite site)
   {
   workSite = new WeakReference<IWorkSite>(site);
-  if(workSite==null)
+  if(site==null)
     {
     searchDelay = 40;
     workDelay = -1;
     }
   }
 
-private IWorkSite getWorkSite()
+@Override
+public IWorkSite getWorkSite()
   {
   return workSite==null ? null : workSite.get();
   }
@@ -107,7 +108,7 @@ private boolean findWorkSite()
         if(te instanceof IWorkSite)
           {
           site = (IWorkSite)te;
-          if(site.canHaveWorker(this) && site.addWorker(this))
+          if(site.addWorker(this))
             {
             this.setWorkSite(site);
             return true;
@@ -141,6 +142,12 @@ public EnumSet<WorkType> getWorkTypes()
 public BlockPosition getPosition()
   {
   return new BlockPosition(xCoord,yCoord,zCoord);
+  }
+
+@Override
+public void clearWorkSite()
+  {
+  this.setWorkSite(null);
   }
 
 }

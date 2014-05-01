@@ -33,4 +33,8 @@ public EnumSet<WorkType> getWorkTypes();
 
 public BlockPosition getPosition();
 
+public IWorkSite getWorkSite();
+
+public void clearWorkSite();
+
 }

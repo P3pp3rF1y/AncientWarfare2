@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -17,9 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.util.WorkerPlayerWrapper;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -28,7 +26,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorksiteAutoCrafting extends TileEntity implements IInventory, IWorkSite, ISidedInventory
+public class WorksiteAutoCrafting extends TileEntity implements IInventory, IWorkSite, ISidedInventory, IInteractableTile
 {
 
 public InventoryBasic bookSlot;
@@ -154,22 +152,12 @@ public String getCrafterName()
   }
 
 @Override
-public final boolean canHaveWorker(IWorker worker)
+public final boolean addWorker(IWorker worker)
   {
   if(!worker.getWorkTypes().contains(getWorkType()) || worker.getTeam() != this.getTeam())
     {
     return false;
     }
-  if(workers.contains(worker))
-    {
-    return true;
-    }
-  return workers.size()<maxWorkers;
-  }
-
-@Override
-public final boolean addWorker(IWorker worker)
-  {
   if(workers.size()<maxWorkers || workers.contains(worker))
     {
     workers.add(worker);
@@ -198,7 +186,10 @@ public final boolean canUpdate()
 @Override
 public void doPlayerWork(EntityPlayer player)
   {
-  doWork(new WorkerPlayerWrapper(player));
+  if(hasWork())
+    {
+    craftItem();    
+    }
   }
 
 @Override
@@ -467,6 +458,7 @@ public boolean canExtractItem(int slot, ItemStack var2, int side)
   return false;
   }
 
+@Override
 public boolean onBlockClicked(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
@@ -479,12 +471,6 @@ public boolean onBlockClicked(EntityPlayer player)
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, xCoord, yCoord, zCoord);
     }
   return true;
-  }
-
-@Override
-public Collection<IWorker> getWorkers()
-  {
-  return workers;
   }
 
 }

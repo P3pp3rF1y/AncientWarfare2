@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -22,7 +21,9 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.automation.util.WorkerPlayerWrapper;
+import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.ISidedTile;
@@ -42,7 +43,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
  * @author Shadowmage
  *
  */
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, ISidedTile
+public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, ISidedTile, IInteractableTile, IBoundedTile, IOwnable
 {
 
 /**
@@ -151,29 +152,19 @@ public void removeUserBlock(BlockPosition pos)
   this.userTargetBlocks.remove(pos);
   }
 
-@Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  doWork(new WorkerPlayerWrapper(player));
-  }
+//@Override
+//public void doPlayerWork(EntityPlayer player)
+//  {
+//  doWork(new WorkerPlayerWrapper(player, this));
+//  }
 
 @Override
-public final boolean canHaveWorker(IWorker worker)
+public final boolean addWorker(IWorker worker)
   {
   if(!worker.getWorkTypes().contains(getWorkType()) || worker.getTeam() != this.getTeam())
     {
     return false;
     }
-  if(workers.contains(worker))
-    {
-    return true;
-    }
-  return workers.size()<maxWorkers;
-  }
-
-@Override
-public final boolean addWorker(IWorker worker)
-  {
   if(workers.size()<maxWorkers || workers.contains(worker))
     {
     workers.add(worker);
@@ -257,8 +248,7 @@ public final boolean canWork()
   return inventoryOverflow.isEmpty();
   }
 
-public abstract void initWorkSite();
-
+@Override
 public abstract boolean onBlockClicked(EntityPlayer player);
 
 /**
@@ -270,17 +260,18 @@ public abstract boolean onBlockClicked(EntityPlayer player);
  */
 protected abstract void addWorkTargets(List<BlockPosition> targets);
 
-public final void setWorkBoundsMin(BlockPosition min)
+private final void setWorkBoundsMin(BlockPosition min)
   {
   bbMin = min;
   }
 
-public final void setWorkBoundsMax(BlockPosition max)
+private final void setWorkBoundsMax(BlockPosition max)
   {
   bbMax = max;
   }
 
-public final void setWorkBounds(BlockPosition min, BlockPosition max)
+@Override
+public final void setBounds(BlockPosition min, BlockPosition max)
   {  
   setWorkBoundsMin(min);
   setWorkBoundsMax(max);
@@ -291,7 +282,8 @@ public final String getOwningPlayer()
   return owningPlayer;
   }
 
-public final void setOwningPlayer(String name)
+@Override
+public void setOwnerName(String name)
   {
   this.owningPlayer = name;
   }
@@ -300,12 +292,6 @@ public final void setOwningPlayer(String name)
 public List<BlockPosition> getWorkTargets()
   {
   return clientWorkTargets;
-  }
-
-@Override
-public Collection<IWorker> getWorkers()
-  {
-  return workers;
   }
 
 @Override

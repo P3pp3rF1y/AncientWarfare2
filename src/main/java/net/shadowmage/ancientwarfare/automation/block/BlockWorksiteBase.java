@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,10 +10,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
 import net.shadowmage.ancientwarfare.core.block.RelativeSide;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -44,9 +43,18 @@ public BlockWorksiteBase setWorkSize(int size)
   return this;
   }
 
+public BlockWorksiteBase setWorkVerticalSize(int size)
+  {
+  this.maxWorkSizeVertical = size;
+  return this;
+  }
+
 /**
  * made into an abstract method so that derived classes must write an implementation
  * --used to make anonymous classes easier to setup
+ * returned tiles must implement IWorksite (for team reference) and IInteractableTile (for interaction callback) if they wish to receive onBlockActivated calls<br>
+ * returned tiles must implement IBoundedTile if they want workbounds set from ItemBlockWorksite<br>
+ * returned tiles must implement IOwnable if they want owner-name set from ItemBlockWorksite<br>
  */
 @Override
 public abstract TileEntity createTileEntity(World world, int metadata);
@@ -74,12 +82,15 @@ public IIcon getIcon(int p_149691_1_, int p_149691_2_)
 @Override
 public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
   {
-  TileWorksiteBase worksite = (TileWorksiteBase) world.getTileEntity(x, y, z);
-  Team t = player.getTeam();
-  Team t1 = worksite.getTeam();
-  if(t==t1)
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof IWorkSite && te instanceof IInteractableTile)
     {
-    return worksite.onBlockClicked(player);
+    Team t = player.getTeam();
+    Team t1 = ((IWorkSite)te).getTeam();
+    if(t==t1)
+      {
+      return ((IInteractableTile)te).onBlockClicked(player);
+      }
     }
   return false;
   }

@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.BlockSapling;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -14,13 +13,11 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.util.WorkerPlayerWrapper;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
@@ -517,12 +514,6 @@ public void onInventoryChanged()
   }
 
 @Override
-public void initWorkSite()
-  {
-  //noop
-  }
-
-@Override
 protected void addWorkTargets(List<BlockPosition> targets)
   {
   //noop
@@ -574,5 +565,19 @@ public Entity getEntityB(World world)
   return world.getEntityByID(idB);
   }
 }
+
+@Override
+public void doPlayerWork(EntityPlayer player)
+  {
+  if(workerRescanDelay<=0 || !hasAnimalWork())
+    {
+    rescan();
+    }  
+  if(hasAnimalWork())
+    {
+    processWork();
+    }
+  pickupEggs();
+  }
 
 }

@@ -33,14 +33,6 @@ public boolean hasWork();
 public void doWork(IWorker worker);
 
 /**
- * should be called DIRECTLY before addWorker to validate that this work-site can accept more workers. 
- * 
- * @param worker
- * @return
- */
-public boolean canHaveWorker(IWorker worker);
-
-/**
  * called by a worker prior to him starting work
  * @param worker
  * @return true if worker was already present or successfully added
@@ -81,8 +73,6 @@ public BlockPosition getWorkBoundsMax();
 public List<BlockPosition> getWorkTargets();
 
 public boolean hasWorkBounds();
-
-public Collection<IWorker> getWorkers();
 
 public static enum WorkType
 {

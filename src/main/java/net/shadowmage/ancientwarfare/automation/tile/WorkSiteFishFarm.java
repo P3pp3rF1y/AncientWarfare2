@@ -141,12 +141,7 @@ public WorkType getWorkType()
 @Override
 public void onInventoryChanged()
   {
-  }
-
-@Override
-public void initWorkSite()
-  {
-
+  
   }
 
 @Override
@@ -188,6 +183,12 @@ public boolean hasAltSetupGui()
 public void openAltGui(EntityPlayer player)
   {
   NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_CONTROL, xCoord, yCoord, zCoord);
+  }
+
+@Override
+public void doPlayerWork(EntityPlayer player)
+  {
+  processWork();
   }
 
 }

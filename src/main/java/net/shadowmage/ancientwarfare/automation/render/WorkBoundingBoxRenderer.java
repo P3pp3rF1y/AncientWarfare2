@@ -32,7 +32,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.automation.item.ItemWorksitePlacer;
+import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions.ClientOption;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -70,7 +70,7 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
     renderWorkBounds(player, evt.partialTicks);
     }
   ItemStack stack = player.inventory.getCurrentItem();
-  if(stack!=null && stack.getItem() instanceof ItemWorksitePlacer)
+  if(stack!=null && stack.getItem() instanceof ItemBlockWorksite)
     {
     renderWorksiteItemSetupBounds(player, stack, evt.partialTicks);
     }  
