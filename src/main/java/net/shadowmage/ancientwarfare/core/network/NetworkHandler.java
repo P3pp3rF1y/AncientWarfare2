@@ -57,6 +57,7 @@ public static final int GUI_MAILBOX_INVENTORY = 17;
 public static final int GUI_WAREHOUSE_CONTROL = 18;
 public static final int GUI_WAREHOUSE_STORAGE = 19;
 public static final int GUI_WAREHOUSE_STORAGE_FILTER = 20;
+public static final int GUI_WAREHOUSE_INPUT = 21;
 
 private FMLEventChannel channel;
 

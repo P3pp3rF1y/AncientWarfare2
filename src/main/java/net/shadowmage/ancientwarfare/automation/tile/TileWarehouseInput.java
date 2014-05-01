@@ -3,100 +3,118 @@ package net.shadowmage.ancientwarfare.automation.tile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
-public class TileWarehouseInput extends TileEntity implements IInventory
+public class TileWarehouseInput extends TileEntity implements IInventory, IInteractableTile
 {
 
-
+InventoryBasic inventory;
 
 public TileWarehouseInput()
   {
-  
+  inventory = new InventoryBasic(27);
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {
+  super.readFromNBT(tag);
+  inventory.readFromNBT(tag.getCompoundTag("inventory"));
+  }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {
+  super.writeToNBT(tag);
+  NBTTagCompound tag1 = new NBTTagCompound();
+  inventory.writeToNBT(tag1);
+  tag.setTag("inventory", tag1);
   }
 
 @Override
 public int getSizeInventory()
   {
-  // TODO Auto-generated method stub
-  return 0;
+  return inventory.getSizeInventory();
   }
 
 @Override
 public ItemStack getStackInSlot(int var1)
   {
-  // TODO Auto-generated method stub
-  return null;
+  return inventory.getStackInSlot(var1);
   }
 
 @Override
 public ItemStack decrStackSize(int var1, int var2)
   {
-  // TODO Auto-generated method stub
-  return null;
+  return inventory.decrStackSize(var1, var2);
   }
 
 @Override
 public ItemStack getStackInSlotOnClosing(int var1)
   {
-  // TODO Auto-generated method stub
-  return null;
+  return inventory.getStackInSlotOnClosing(var1);
   }
 
 @Override
 public void setInventorySlotContents(int var1, ItemStack var2)
   {
-  // TODO Auto-generated method stub
-
+  inventory.setInventorySlotContents(var1, var2);
   }
 
 @Override
 public String getInventoryName()
   {
-  // TODO Auto-generated method stub
-  return null;
+  return inventory.getInventoryName();
   }
 
 @Override
 public boolean hasCustomInventoryName()
   {
-  // TODO Auto-generated method stub
   return false;
   }
 
 @Override
 public int getInventoryStackLimit()
   {
-  // TODO Auto-generated method stub
-  return 0;
+  return 64;
   }
 
 @Override
 public boolean isUseableByPlayer(EntityPlayer var1)
   {
-  // TODO Auto-generated method stub
-  return false;
+  return true;
   }
 
 @Override
 public void openInventory()
   {
-  // TODO Auto-generated method stub
-
+  
   }
 
 @Override
 public void closeInventory()
   {
-  // TODO Auto-generated method stub
-
+  
   }
 
 @Override
 public boolean isItemValidForSlot(int var1, ItemStack var2)
   {
-  // TODO Auto-generated method stub
-  return false;
+  return true;
+  }
+
+@Override
+public boolean onBlockClicked(EntityPlayer player)
+  {
+  if(!player.worldObj.isRemote)
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_INPUT, xCoord, yCoord, zCoord);
+    }
+  return true;
   }
 
 }

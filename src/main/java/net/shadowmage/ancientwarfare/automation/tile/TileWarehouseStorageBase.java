@@ -11,10 +11,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public abstract class TileWarehouseStorageBase extends TileEntity implements IInventory
+public abstract class TileWarehouseStorageBase extends TileEntity implements IInventory, IInteractableTile
 {
 
 String inventoryName = "";
@@ -168,6 +170,16 @@ public void writeToNBT(NBTTagCompound tag)
   inventory.writeToNBT(inventoryTag);
   tag.setTag("inventory", inventoryTag);
   tag.setString("name", inventoryName);
+  }
+
+@Override
+public boolean onBlockClicked(EntityPlayer player)
+  {
+  if(!player.worldObj.isRemote)
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, xCoord, yCoord, zCoord);
+    }
+  return true;
   }
   
 public static final class WarehouseItemFilter

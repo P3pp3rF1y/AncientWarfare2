@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseInput;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalControl;
@@ -33,6 +34,7 @@ public void registerClient()
   //warehouse control
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STORAGE, GuiWarehouseStorage.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STORAGE_FILTER, GuiWarehouseStorageFilter.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_INPUT, GuiWarehouseInput.class);
   registerClientOptions();
   }
 
