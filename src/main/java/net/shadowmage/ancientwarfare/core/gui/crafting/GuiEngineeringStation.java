@@ -18,7 +18,7 @@ public GuiEngineeringStation(ContainerBase par1Container)
 public void initElements()
   {
   ItemSlot bookSlotIcon = new ItemSlot(8, 8, new ItemStack(AWItems.researchBook), this);
-  bookSlotIcon.setRenderTooltip(false).setHighlightOnMouseOver(false).setRenderSlotBackground(false);
+  bookSlotIcon.setRenderTooltip(false).setHighlightOnMouseOver(false).setRenderSlotBackground(false).setRenderItemQuantity(false);
   addGuiElement(bookSlotIcon);
   }
 

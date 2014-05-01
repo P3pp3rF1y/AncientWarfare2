@@ -29,6 +29,7 @@ ItemStack item;
 protected ITooltipRenderer render;
 protected boolean highlightOnMouseOver = true;
 protected boolean renderTooltip = true;
+protected boolean renderItemQuantity = true;
 protected boolean renderSlotBackground = true;
 
 public ItemSlot(int topLeftX, int topLeftY, ItemStack item, ITooltipRenderer render)
@@ -61,6 +62,12 @@ public void setItem(ItemStack item)
 public ItemSlot setRenderTooltip(boolean val)
   {
   this.renderTooltip = val;
+  return this;
+  }
+
+public ItemSlot setRenderItemQuantity(boolean val)
+  {
+  this.renderItemQuantity = val;
   return this;
   }
 
@@ -99,14 +106,14 @@ public void render(int mouseX, int mouseY, float partialTick)
       RenderHelper.enableGUIStandardItemLighting();
       itemRender.zLevel = 10.0F;
       FontRenderer font = null;
-      if (item != null && item.getItem()!=null){font = item.getItem().getFontRenderer(item);}    
+      font = item.getItem().getFontRenderer(item);
       if (font == null){font = Minecraft.getMinecraft().fontRenderer;}
       
       GL11.glEnable(GL11.GL_LIGHTING);
       GL11.glEnable(GL11.GL_DEPTH_TEST);//fix for chests / tile-renderers improper render stuff
       itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1);
       GL11.glDisable(GL11.GL_DEPTH_TEST);
-      if(renderTooltip)
+      if(renderItemQuantity && item.stackSize>0)
         {
         itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1, String.valueOf(item.stackSize));        
         }
