@@ -63,7 +63,7 @@ public void invalidate()
         BlockPosition max = warehouse.getWorkBoundsMax();
         if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
           {
-          warehouse.removeStorageBlock(xCoord, yCoord, zCoord);
+          warehouse.removeStorageBlock(this);
           }
         }
       }
@@ -97,7 +97,7 @@ public void updateEntity()
           BlockPosition max = warehouse.getWorkBoundsMax();
           if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
             {
-            warehouse.addStorageBlock(xCoord, yCoord, zCoord);
+            warehouse.addStorageBlock(this);
             controllerPosition = new BlockPosition(warehouse.xCoord, warehouse.yCoord, warehouse.zCoord);
             break;
             }

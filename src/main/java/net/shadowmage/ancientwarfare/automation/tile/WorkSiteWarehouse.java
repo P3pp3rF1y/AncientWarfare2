@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -22,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteWarehouse extends TileEntity implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
 {
@@ -45,8 +47,8 @@ int maxWorkers;
 
 private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
 
+private List<IWarehouseStorageTile> storageTiles = new ArrayList<IWarehouseStorageTile>();
 private List<BlockPosition> inputBlocks = new ArrayList<BlockPosition>();
-private List<BlockPosition> storageBlocks = new ArrayList<BlockPosition>();
 
 protected String owningPlayer;
 
@@ -78,12 +80,11 @@ public void invalidate()
       ict.setControllerPosition(null);
       }
     }
-  for(BlockPosition pos : this.storageBlocks)
+  for(IWarehouseStorageTile tile : this.storageTiles)
     {
-    te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-    if(te instanceof IControlledTile)
+    if(tile instanceof IControlledTile)
       {
-      ict = (IControlledTile)te;
+      ict = (IControlledTile)tile;
       ict.setControllerPosition(null);
       }
     }
@@ -106,13 +107,14 @@ public void addInputBlock(int x, int y, int z)
   AWLog.logDebug("input blocks now contains: "+inputBlocks);
   }
 
-public void addStorageBlock(int x, int y, int z)
+public void addStorageBlock(IWarehouseStorageTile tile)
   {
-  BlockPosition test = new BlockPosition(x,y,z);
-  if(storageBlocks.contains(test)){return;}
-  AWLog.logDebug("adding storage block at: "+x+","+y+","+z);
-  storageBlocks.add(test);  
-  AWLog.logDebug("storage blocks now contains: "+storageBlocks);
+  if(!storageTiles.contains(tile))
+    {
+    AWLog.logDebug("adding storage tile of: "+tile);
+    storageTiles.add(tile);
+    AWLog.logDebug("storage blocks now contains: "+storageTiles);
+    }
   }
 
 public void removeInputBlock(int x, int y, int z)
@@ -123,12 +125,11 @@ public void removeInputBlock(int x, int y, int z)
   AWLog.logDebug("input blocks now contains: "+inputBlocks);
   }
 
-public void removeStorageBlock(int x, int y, int z)
+public void removeStorageBlock(IWarehouseStorageTile tile)
   {
-  BlockPosition test = new BlockPosition(x,y,z);
-  storageBlocks.remove(test);
-  AWLog.logDebug("removing storage block at: "+test);
-  AWLog.logDebug("storage blocks now contains: "+storageBlocks);
+  AWLog.logDebug("removing storage tile of: "+tile);
+  storageTiles.remove(tile);
+  AWLog.logDebug("storage blocks now contains: "+storageTiles);
   }
 
 /**
@@ -149,7 +150,7 @@ protected void scanInitialBlocks()
         if(te==null){continue;}
         else if(te instanceof IWarehouseStorageTile)
           {
-          addStorageBlock(te.xCoord, te.yCoord, te.zCoord);
+          addStorageBlock((IWarehouseStorageTile) te);
           if(te instanceof IControlledTile)
             {
             ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
@@ -226,7 +227,18 @@ private void processWork()
         {
         item = twi.getStackInSlot(i);
         if(item==null){continue;}
-        
+        for(IWarehouseStorageTile tile : this.storageTiles)
+          {
+          if(tile.isItemValid(item))
+            {
+            item = InventoryTools.mergeItemStack((IInventory) tile, item, -1);
+            if(item==null)
+              {
+              twi.setInventorySlotContents(i, null);
+              return;
+              }
+            }
+          }
         }
       }
     }  

@@ -77,7 +77,7 @@ public void updateEntity()
     if(!worldObj.isRemote)
       {
       AWLog.logDebug("scanning for controller...");
-      for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(worldObj, xCoord-16, yCoord-4, zCoord-16, xCoord+16, yCoord+4, zCoord+16))
+      for(TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, xCoord-16, yCoord-4, zCoord-16, xCoord+16, yCoord+4, zCoord+16))
         {
         if(te instanceof WorkSiteWarehouse)
           {

@@ -27,3 +27,16 @@ npcs module
 	everything
 	
 	
+Warehouse item-storage
+List<GenericStorage>
+Map<Item, StorageEntry>
+
+StorageEntry
+List<Precise>(nbt+dmg)
+List<Damage-specific>
+List<NBT-specific>
+List<GenericStorage>
+
+	
+	
+	
