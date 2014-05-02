@@ -197,12 +197,18 @@ public void closeInventory()
 @Override
 public boolean isItemValidForSlot(int var1, ItemStack var2)
   {
+  return isItemValid(var2);
+  }
+
+@Override
+public boolean isItemValid(ItemStack item)
+  {
   if(this.itemFilters.isEmpty()){return true;}
   for(WarehouseItemFilter filter : this.itemFilters)
     {
-    if(filter.isItemValid(var2))
+    if(filter.isItemValid(item))
       {
-      AWLog.logDebug("item validated by filter: "+var2+ " :: "+filter);
+      AWLog.logDebug("item validated by filter: "+item+ " :: "+filter);
       return true;
       }
     }

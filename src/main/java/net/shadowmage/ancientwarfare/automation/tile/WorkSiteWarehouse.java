@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -51,6 +52,10 @@ protected String owningPlayer;
 
 private boolean init = false;
 
+private boolean shouldRescan = false;
+
+private boolean hasWork = false;
+
 public WorkSiteWarehouse()
   {
   bbMin = new BlockPosition();
@@ -89,6 +94,7 @@ public void validate()
   {  
   super.validate();
   init = false;
+  hasWork = false;
   }
 
 public void addInputBlock(int x, int y, int z)
@@ -160,8 +166,8 @@ protected void scanInitialBlocks()
         }
       }
     }
+  this.scanInputInventory();
   }
-
 
 @Override
 public void updateEntity()
@@ -174,24 +180,89 @@ public void updateEntity()
       scanInitialBlocks();      
       }
     }
+  if(shouldRescan)
+    {    
+    shouldRescan = false;
+    scanInputInventory();
+    }
   }
 
 @Override
 public boolean hasWork()
   {
-  return false;
+  return hasWork;
   }
 
 @Override
 public void doWork(IWorker worker)
   {
-
+  if(hasWork)
+    {
+    processWork();    
+    }
   }
 
 @Override
 public void doPlayerWork(EntityPlayer player)
   {
-  
+  if(hasWork)
+    {
+    processWork();    
+    }
+  }
+
+private void processWork()
+  {
+  TileEntity te;
+  TileWarehouseInput twi;
+  ItemStack item;
+  for(BlockPosition pos : inputBlocks)
+    {
+    te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+    if(te instanceof TileWarehouseInput)
+      {
+      twi = (TileWarehouseInput)te;
+      for(int i = 0; i< twi.getSizeInventory(); i++)
+        {
+        item = twi.getStackInSlot(i);
+        if(item==null){continue;}
+        
+        }
+      }
+    }  
+  scanInputInventory();
+  }
+
+public void onInputInventoryUpdated()
+  {
+  shouldRescan = true;
+  hasWork = false;
+//  scanInputInventory();
+  }
+
+private void scanInputInventory()
+  {
+  shouldRescan = false;
+  hasWork = false;
+  AWLog.logDebug("rescanning controlled input inventories...");
+  TileEntity te;
+  TileWarehouseInput twi;
+  ItemStack item;
+  for(BlockPosition pos : inputBlocks)
+    {
+    te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+    if(te instanceof TileWarehouseInput)
+      {
+      twi = (TileWarehouseInput)te;
+      for(int i = 0; i< twi.getSizeInventory(); i++)
+        {
+        item = twi.getStackInSlot(i);
+        if(item==null){continue;}
+        hasWork = true;
+        return;
+        }
+      }
+    }  
   }
 
 @Override
