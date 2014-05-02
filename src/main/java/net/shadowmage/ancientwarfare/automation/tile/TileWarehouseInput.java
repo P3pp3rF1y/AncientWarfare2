@@ -1,22 +1,99 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public class TileWarehouseInput extends TileEntity implements IInventory, IInteractableTile
+public class TileWarehouseInput extends TileEntity implements IInventory, IInteractableTile, IControlledTile
 {
 
-InventoryBasic inventory;
+private InventoryBasic inventory;
+
+private BlockPosition controllerPosition = null;
 
 public TileWarehouseInput()
   {
   inventory = new InventoryBasic(27);
+  }
+
+@Override
+public void setControllerPosition(BlockPosition position)
+  {
+  this.controllerPosition = position;
+  AWLog.logDebug("set controller position to: "+position);
+  this.init = this.controllerPosition!=null;
+  }
+
+@Override
+public void validate()
+  {
+  super.validate();
+  init = false;
+  }
+
+@Override
+public void invalidate()
+  {  
+  super.invalidate();
+  init = false;
+  if(!worldObj.isRemote)
+    {
+    if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+      {
+      TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+      if(te instanceof WorkSiteWarehouse)
+        {
+        WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
+        BlockPosition min = warehouse.getWorkBoundsMin();
+        BlockPosition max = warehouse.getWorkBoundsMax();
+        if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
+          {
+          warehouse.removeInputBlock(xCoord, yCoord, zCoord);
+          }
+        }
+      }
+    }
+  controllerPosition = null;
+  }
+
+private boolean init;
+
+@Override
+public void updateEntity()
+  {  
+  if(!init)
+    {
+    init = true;
+    if(!worldObj.isRemote)
+      {
+      AWLog.logDebug("scanning for controller...");
+      for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(worldObj, xCoord-16, yCoord-4, zCoord-16, xCoord+16, yCoord+4, zCoord+16))
+        {
+        if(te instanceof WorkSiteWarehouse)
+          {
+          WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
+          BlockPosition min = warehouse.getWorkBoundsMin();
+          BlockPosition max = warehouse.getWorkBoundsMax();
+          if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
+            {
+            warehouse.addInputBlock(xCoord, yCoord, zCoord);
+            controllerPosition = new BlockPosition(warehouse.xCoord, warehouse.yCoord, warehouse.zCoord);
+            break;
+            }
+          }
+        } 
+      }
+    }  
   }
 
 @Override
@@ -116,5 +193,6 @@ public boolean onBlockClicked(EntityPlayer player)
     }
   return true;
   }
+
 
 }

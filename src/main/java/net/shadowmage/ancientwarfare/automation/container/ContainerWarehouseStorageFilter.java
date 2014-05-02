@@ -21,7 +21,7 @@ public ContainerWarehouseStorageFilter(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
   storageTile = (TileWarehouseStorageBase) player.worldObj.getTileEntity(x, y, z);
-  itemFilters.addAll(storageTile.getValidItemFilters());
+  itemFilters.addAll(storageTile.getFilters());
   
   addPlayerSlots(player, 8, 156, 4);
   }
@@ -53,7 +53,7 @@ public void handlePacketData(NBTTagCompound tag)
       filter.readFromNBT(filterList.getCompoundTagAt(i));
       itemFilters.add(filter);
       }
-    storageTile.getValidItemFilters().clear();
+    storageTile.getFilters().clear();
     for(WarehouseItemFilter filter1 : itemFilters)
       {
       storageTile.addFilter(filter1);

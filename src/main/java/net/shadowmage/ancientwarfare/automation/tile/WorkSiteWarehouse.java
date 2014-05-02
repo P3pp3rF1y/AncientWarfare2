@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -12,11 +13,13 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class WorkSiteWarehouse extends TileEntity implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
@@ -41,12 +44,136 @@ int maxWorkers;
 
 private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
 
+private List<BlockPosition> inputBlocks = new ArrayList<BlockPosition>();
+private List<BlockPosition> storageBlocks = new ArrayList<BlockPosition>();
+
 protected String owningPlayer;
+
+private boolean init = false;
 
 public WorkSiteWarehouse()
   {
   bbMin = new BlockPosition();
   bbMax = new BlockPosition();
+  }
+
+@Override
+public void invalidate()
+  {  
+  super.invalidate();
+  init = false;
+  TileEntity te;
+  IControlledTile ict;
+  for(BlockPosition pos : this.inputBlocks)
+    {
+    te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+    if(te instanceof IControlledTile)
+      {
+      ict = (IControlledTile)te;
+      ict.setControllerPosition(null);
+      }
+    }
+  for(BlockPosition pos : this.storageBlocks)
+    {
+    te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+    if(te instanceof IControlledTile)
+      {
+      ict = (IControlledTile)te;
+      ict.setControllerPosition(null);
+      }
+    }
+  }
+
+@Override
+public void validate()
+  {  
+  super.validate();
+  init = false;
+  }
+
+public void addInputBlock(int x, int y, int z)
+  {
+  BlockPosition test = new BlockPosition(x,y,z);
+  if(inputBlocks.contains(test)){return;}
+  AWLog.logDebug("adding input block at: "+x+","+y+","+z);
+  inputBlocks.add(test);
+  AWLog.logDebug("input blocks now contains: "+inputBlocks);
+  }
+
+public void addStorageBlock(int x, int y, int z)
+  {
+  BlockPosition test = new BlockPosition(x,y,z);
+  if(storageBlocks.contains(test)){return;}
+  AWLog.logDebug("adding storage block at: "+x+","+y+","+z);
+  storageBlocks.add(test);  
+  AWLog.logDebug("storage blocks now contains: "+storageBlocks);
+  }
+
+public void removeInputBlock(int x, int y, int z)
+  {
+  BlockPosition test = new BlockPosition(x,y,z);
+  inputBlocks.remove(test);
+  AWLog.logDebug("removing input block at: "+test);
+  AWLog.logDebug("input blocks now contains: "+inputBlocks);
+  }
+
+public void removeStorageBlock(int x, int y, int z)
+  {
+  BlockPosition test = new BlockPosition(x,y,z);
+  storageBlocks.remove(test);
+  AWLog.logDebug("removing storage block at: "+test);
+  AWLog.logDebug("storage blocks now contains: "+storageBlocks);
+  }
+
+/**
+ * should be called when tile is first loaded from disk, after world is set
+ */
+protected void scanInitialBlocks()
+  {
+  AWLog.logDebug("warehouse scanning initial blocks..."); 
+  TileEntity te;
+  for(int x = bbMin.x; x<=bbMax.x; x++)
+    {
+    for(int z = bbMin.z; z<=bbMax.z; z++)
+      {
+      for(int y = bbMin.y; y<=bbMax.y; y++)
+        {
+        if(!worldObj.blockExists(x, y, z)){continue;}
+        te = worldObj.getTileEntity(x, y, z);
+        if(te==null){continue;}
+        else if(te instanceof IWarehouseStorageTile)
+          {
+          addStorageBlock(te.xCoord, te.yCoord, te.zCoord);
+          if(te instanceof IControlledTile)
+            {
+            ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
+            }
+          }
+        else if(te instanceof TileWarehouseInput)
+          {
+          addInputBlock(te.xCoord, te.yCoord, te.zCoord);
+          if(te instanceof IControlledTile)
+            {
+            ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+@Override
+public void updateEntity()
+  {
+  if(!init)
+    {
+    init = true;
+    if(!worldObj.isRemote)
+      {
+      scanInitialBlocks();      
+      }
+    }
   }
 
 @Override
@@ -76,7 +203,11 @@ public WorkType getWorkType()
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  return false;
+  if(!player.worldObj.isRemote)
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, xCoord, yCoord, zCoord);    
+    }
+  return true;
   }
 
 @Override

@@ -183,7 +183,7 @@ public void writeClientData(NBTTagCompound tag)
 @Override
 public void readClientData(NBTTagCompound tag)
   {
-  AWLog.logDebug("reading client data for quarry...");
+  
   }
 
 @Override

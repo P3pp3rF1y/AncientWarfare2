@@ -31,7 +31,7 @@ public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z)
   storageTile = (TileWarehouseStorageBase) player.worldObj.getTileEntity(x, y, z);
   tileName = storageTile.getInventoryName();  
   tileNameOrig = tileName;
-  itemFilters.addAll(storageTile.getValidItemFilters());
+  itemFilters.addAll(storageTile.getFilters());
   int x1, y1;
   for(int i = 0; i < storageTile.getSizeInventory(); i++)
     {
