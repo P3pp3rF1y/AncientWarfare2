@@ -3,11 +3,13 @@ package net.shadowmage.ancientwarfare.automation.tile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -418,4 +420,28 @@ public void setBounds(BlockPosition p1, BlockPosition p2)
   bbMin = p1;
   bbMax = p2;
   }
+
+/**
+ * need to map the available storage inventories so as to know what tile(s) to query when attempting
+ * an item insert.<br>
+ * 
+ */
+/**
+ * 
+ * @author Shadowmage
+ *
+ */
+private static final class WarehouseItemMap
+{
+List<TileWarehouseInput> warehouseInput;
+List<IWarehouseStorageTile> generalStorage;
+Map<Item, ItemEntry> filteredStorage;
+
+}
+
+private static final class ItemEntry
+{
+
+}
+
 }

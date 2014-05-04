@@ -42,13 +42,7 @@ public StructureBuilderWorldGen(World world, StructureTemplate template, int fac
   super(world, template, face, x, y, z);
   }
 
-protected void placeAir()
-  {
-  if(!template.getValidationSettings().isPreserveBlocks())
-    {
-    template.getValidationSettings().handleClearAction(world, destination.x, destination.y, destination.z, template, bb);    
-    }
-  }
+
 
 @Override
 public void placeBlock(int x, int y, int z, Block block, int meta, int priority)

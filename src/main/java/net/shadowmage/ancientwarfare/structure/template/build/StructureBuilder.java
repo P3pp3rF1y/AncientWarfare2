@@ -174,7 +174,10 @@ protected void placeCurrentPosition()
 
 protected void placeAir()
   {
-  world.setBlockToAir(destination.x, destination.y, destination.z);  
+  if(!template.getValidationSettings().isPreserveBlocks())
+    {
+    template.getValidationSettings().handleClearAction(world, destination.x, destination.y, destination.z, template, bb);    
+    }
   }
 
 protected void placeRule(TemplateRule rule)
