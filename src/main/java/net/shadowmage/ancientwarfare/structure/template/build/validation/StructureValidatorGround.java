@@ -25,9 +25,12 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
 public class StructureValidatorGround extends StructureValidator
 {
@@ -65,6 +68,50 @@ public void preGeneration(World world, int x, int y, int z, int face, StructureT
 public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb)
   {
   world.setBlock(x, y, z, Blocks.air);
+  }
+
+@Override
+protected void borderLeveling(World world, int x, int z, StructureTemplate template, StructureBB bb)
+  {
+  if(getMaxLeveling()<=0){return;}
+  int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
+  int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.x, bb.max.x, bb.min.z, bb.max.z);  
+  for(int y = bb.min.y + template.yOffset + step; y <= topFilledY ; y++)
+    {
+    handleClearAction(world, x, y, z, template, bb);
+    }
+  BiomeGenBase biome = world.getBiomeGenForCoords(x, z);  
+  Block fillBlock = Blocks.grass;
+  if(biome!=null && biome.topBlock!=null)
+    {
+    fillBlock = biome.topBlock;
+    }
+  int y = bb.min.y + template.yOffset + step - 1;
+  Block block = world.getBlock(x, y, z);
+  if(block!=null && block!= Blocks.flowing_water && block!=Blocks.water && !AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block)))
+    {
+    world.setBlock(x, y, z, fillBlock);
+    }  
+  
+  int skipCount = 0;
+  for(int y1 = y+1; y1<world.provider.getHeight(); y1++)//lazy clear block handling
+    {
+    block = world.getBlock(x, y1, z); 
+    if(block==Blocks.air)
+      {
+      skipCount++;
+      if(skipCount>=10)//exit out if 10 blocks are found that are not clearable
+        {
+        break;
+        }
+      continue;
+      }
+    skipCount = 0;//if we didn't skip this block, reset skipped count
+    if(AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block)))
+      {
+      world.setBlockToAir(x, y1, z);      
+      }      
+    }
   }
 
 }
