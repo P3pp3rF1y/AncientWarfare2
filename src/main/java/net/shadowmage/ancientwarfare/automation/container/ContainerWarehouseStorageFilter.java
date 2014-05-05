@@ -6,8 +6,9 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
+import net.shadowmage.ancientwarfare.automation.tile.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
@@ -15,12 +16,12 @@ public class ContainerWarehouseStorageFilter extends ContainerBase
 {
 
 public List<WarehouseItemFilter> itemFilters = new ArrayList<WarehouseItemFilter>();
-public TileWarehouseStorageBase storageTile;
+public IWarehouseStorageTile storageTile;
 
 public ContainerWarehouseStorageFilter(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
-  storageTile = (TileWarehouseStorageBase) player.worldObj.getTileEntity(x, y, z);
+  storageTile = (IWarehouseStorageTile) player.worldObj.getTileEntity(x, y, z);
   itemFilters.addAll(storageTile.getFilters());
   
   addPlayerSlots(player, 8, 156, 4);
@@ -53,12 +54,9 @@ public void handlePacketData(NBTTagCompound tag)
       filter.readFromNBT(filterList.getCompoundTagAt(i));
       itemFilters.add(filter);
       }
-    storageTile.getFilters().clear();
-    for(WarehouseItemFilter filter1 : itemFilters)
-      {
-      storageTile.addFilter(filter1);
-      }
-    player.worldObj.markBlockForUpdate(storageTile.xCoord, storageTile.yCoord, storageTile.zCoord);
+    storageTile.setFilterList(itemFilters);
+    TileEntity te = (TileEntity)storageTile;
+    player.worldObj.markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
     }  
   refreshGui();
   }

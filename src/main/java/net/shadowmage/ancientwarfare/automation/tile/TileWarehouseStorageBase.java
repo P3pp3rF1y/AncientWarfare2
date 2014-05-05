@@ -18,7 +18,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public abstract class TileWarehouseStorageBase extends TileEntity implements IInventory, IInteractableTile, IWarehouseStorageTile, IControlledTile
+public abstract class TileWarehouseStorageBase extends TileEntity implements IInteractableTile, IWarehouseStorageTile, IControlledTile
 {
 
 String inventoryName = "";
@@ -113,15 +113,22 @@ public List<WarehouseItemFilter> getFilters()
   return itemFilters;
   }
 
-public void removeFilter(WarehouseItemFilter filter)
+@Override
+public void setFilterList(List<WarehouseItemFilter> filters)
   {
-  itemFilters.remove(filter);
-  }
-
-public void addFilter(WarehouseItemFilter filter)
-  {
-  itemFilters.add(filter);
-  }
+  List<WarehouseItemFilter> filters1 = new ArrayList<WarehouseItemFilter>();
+  filters1.addAll(itemFilters);
+  itemFilters.clear();
+  itemFilters.addAll(filters);
+  if(controllerPosition!=null)
+    {
+    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    if(te instanceof WorkSiteWarehouse)
+      {
+      ((WorkSiteWarehouse)te).updateStorageBlockFilters(this, filters1, itemFilters);
+      }
+    }
+  } 
 
 @Override
 public int getSizeInventory()

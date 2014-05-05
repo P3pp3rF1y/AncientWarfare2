@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.gui;
 import java.util.HashMap;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase.WarehouseItemFilter;
@@ -139,7 +140,8 @@ private HashMap<GuiElement, WarehouseItemFilter> filterMap = new HashMap<GuiElem
 protected boolean onGuiCloseRequested()
   {
   container.sendDataToServer();
-  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, container.storageTile.xCoord, container.storageTile.yCoord, container.storageTile.zCoord);
+  TileEntity te = (TileEntity)container.storageTile;
+  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, te.xCoord, te.yCoord, te.zCoord);
   return false;
   }
 
