@@ -4,6 +4,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControll;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInput;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorageFilter;
@@ -84,7 +85,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, ContainerWorksiteAutoCrafting.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, ContainerWorksiteFishControl.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_MAILBOX_INVENTORY, ContainerMailbox.class);
-  //warehouse control
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CONTROL, ContainerWarehouseControll.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE, ContainerWarehouseStorage.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE_FILTER, ContainerWarehouseStorageFilter.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_INPUT, ContainerWarehouseInput.class);

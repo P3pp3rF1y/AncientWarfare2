@@ -69,6 +69,11 @@ public GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, Strin
   this.player = ((ContainerBase)par1Container).player;
   }
 
+public GuiContainerBase(ContainerBase container)
+  {
+  this(container, 256, 240, defaultBackground);
+  }
+
 @Override
 public void handleItemStackTooltipRender(ItemStack stack)
   {

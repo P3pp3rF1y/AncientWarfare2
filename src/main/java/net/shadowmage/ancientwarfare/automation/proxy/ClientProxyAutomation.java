@@ -1,8 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL31;
+
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
@@ -15,9 +20,11 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteInventorySideSelection;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseControll;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
@@ -36,14 +43,14 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, GuiWorksiteAutoCrafting.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, GuiWorksiteFishControl.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_MAILBOX_INVENTORY, GuiMailboxInventory.class);
-  //warehouse control
+  NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CONTROL, GuiWarehouseControll.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STORAGE, GuiWarehouseStorage.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STORAGE_FILTER, GuiWarehouseStorageFilter.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_INPUT, GuiWarehouseInput.class);
   
   
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStorageBase.class, new RenderTileWarehouseStorageBase());
-  
+    
   registerClientOptions();
   }
 
