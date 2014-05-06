@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelSign;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -46,44 +47,16 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
       int k = i / 65536;
       OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
       renderSignBoard(x+d.offsetX, y+d.offsetY, z+d.offsetZ, r);
-      
+
+      GL11.glPushMatrix();
+      GL11.glTranslated(x, y, z);
+      GL11.glTranslatef(0.5f, 1.f, 0.5f);//translate the point to the top-center of the block
+      GL11.glRotatef(-r+180.f, 0, 1, 0);//rotate for rotation
+      GL11.glTranslatef(0.5f, 0, -0.5f);//translate to top-left corner
       renderSignContents(x, y, z, r);
-//      renderSignContents(d.offsetX, d.offsetY, d.offsetZ, r);
+      GL11.glPopMatrix();      
       }
     }
-//  
-//  if(te.getWorldObj().isAirBlock(te.xCoord-1, te.yCoord, te.zCoord))
-//    {
-//    int i = te.getWorldObj().getLightBrightnessForSkyBlocks(te.xCoord-1, te.yCoord, te.zCoord, 0);
-//    int j = i % 65536;
-//    int k = i / 65536;
-//    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
-//    renderSignAt(tile, (x-1), y, z, 90);
-//    }
-//  if(te.getWorldObj().isAirBlock(te.xCoord+1, te.yCoord, te.zCoord))
-//    {
-//    int i = te.getWorldObj().getLightBrightnessForSkyBlocks(te.xCoord+1, te.yCoord, te.zCoord, 0);
-//    int j = i % 65536;
-//    int k = i / 65536;
-//    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
-//    renderSignAt(tile, (x+1), y, z, 90+180);
-//    }
-//  if(te.getWorldObj().isAirBlock(te.xCoord, te.yCoord, te.zCoord-1))
-//    {
-//    int i = te.getWorldObj().getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord-1, 0);
-//    int j = i % 65536;
-//    int k = i / 65536;
-//    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
-//    renderSignAt(tile, x, y, z-1, 90+90);
-//    }
-//  if(te.getWorldObj().isAirBlock(te.xCoord, te.yCoord, te.zCoord+1))
-//    {
-//    int i = te.getWorldObj().getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord+1, 0);
-//    int j = i % 65536;
-//    int k = i / 65536;
-//    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
-//    renderSignAt(tile, x, y, z+1, 90+90+180);
-//    }
   }
 
 private void renderSignBoard(double x, double y, double z, float r)
@@ -106,10 +79,34 @@ private void renderSignBoard(double x, double y, double z, float r)
 private void renderSignContents(double x, double y, double z, float r)
   {
   GL11.glPushMatrix();
-  GL11.glTranslated(x, y, z);
-  GL11.glTranslatef(0.5f, 1.f, 0.5f);//translate the point to the top-center of the block
-  GL11.glRotatef(-r+180.f, 0, 1, 0);
-  GL11.glTranslatef(-0.5f, 0, -0.5f);
+//  drawPointAtCurrentOrigin();
+
+  
+  //adjust translation for sign-face, move right a little, down a 1/4 block, and out a little
+  //this puts the origin at upper-left-hand corner of the sign-face, about 1 sign pixel in and down
+  GL11.glTranslatef(-0.05f, -0.295f, -0.042f);
+  
+  //rescale for gui rendering axis flip
+  GL11.glScalef(-1, -1, -1);
+  //rescale for font rendering, can fit 4 text lines @ 10px spacing at this scale
+//  GL11.glScalef(0.011f, 0.011f, 0.011f);
+  GL11.glScalef(0.0058f, 0.0058f, 0.0058f);
+  
+  FontRenderer fr = func_147498_b();
+  
+  for(int i = 0; i < 4; i++)
+    {
+    fr.drawString("foo"+i, 20, i*18+4, 0xffffffff);
+    render.zLevel = -55.f;
+    render.renderItemAndEffectIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), new ItemStack(Blocks.wool,1,i), 0, i*18);
+    }
+    
+  GL11.glPopMatrix();  
+  }
+
+private void drawPointAtCurrentOrigin()
+  {
+  //debug point rendering
   GL11.glDisable(GL11.GL_TEXTURE_2D);
   GL11.glColor4f(1.f, 0.f, 0.f, 1.f);
   GL11.glPointSize(10.f);
@@ -118,8 +115,6 @@ private void renderSignContents(double x, double y, double z, float r)
   GL11.glEnd();
   GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
   GL11.glEnable(GL11.GL_TEXTURE_2D);
-  
-  GL11.glPopMatrix();  
   }
 
 }
