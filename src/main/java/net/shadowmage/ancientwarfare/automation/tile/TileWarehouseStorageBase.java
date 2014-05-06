@@ -138,6 +138,7 @@ private void writeFilterList(NBTTagCompound tag)
 
 private void readFilterList(NBTTagCompound tag)
   {
+  itemFilters.clear();
   NBTTagList filterList = tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND);
   WarehouseItemFilter filter;
   for(int i = 0; i < filterList.tagCount(); i++)
@@ -176,9 +177,15 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public boolean receiveClientEvent(int p_145842_1_, int p_145842_2_)
+public boolean receiveClientEvent(int a, int b)
   {
-  return super.receiveClientEvent(p_145842_1_, p_145842_2_);
+  if(!worldObj.isRemote)
+    {
+    return true;
+    }
+  AWLog.logDebug("receiving client event: "+a+"::"+b+" client: "+worldObj.isRemote);
+  updateFilterCount(a, b);
+  return false;
   }
 
 /*****************************************FILTER LIST METHODS*******************************************/
@@ -190,15 +197,19 @@ public void setFilterList(List<WarehouseItemFilter> filters)
   filters1.addAll(itemFilters);
   itemFilters.clear();
   itemFilters.addAll(filters);
-  if(controllerPosition!=null)
-    {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
-    if(te instanceof WorkSiteWarehouse)
+  if(!worldObj.isRemote)
+    { 
+    if(controllerPosition!=null)
       {
-      ((WorkSiteWarehouse)te).updateStorageBlockFilters(this, filters1, itemFilters);
+      TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+      if(te instanceof WorkSiteWarehouse)
+        {
+        ((WorkSiteWarehouse)te).updateStorageBlockFilters(this, filters1, itemFilters);
+        }
       }
+    this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);  
     }
-  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+  this.recountFilters();
   } 
 
 @Override
@@ -215,7 +226,6 @@ public boolean isItemValid(ItemStack item)
     {
     if(filter.isItemValid(item))
       {
-      AWLog.logDebug("item validated by filter: "+item+ " :: "+filter);
       return true;
       }
     }
@@ -305,13 +315,54 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 public void markDirty()
   {
   super.markDirty();  
+  if(!worldObj.isRemote)
+    {
+    long t1 = System.nanoTime();
+    recountFilters();
+    long t2 = System.nanoTime();
+    AWLog.logDebug("inv count took: "+(t2-t1)+"ns  at:");
+    new Exception().printStackTrace();
+    }
   }
 
 private void recountFilters()
   {
-  for(int i = 0; i < this.itemFilters.size(); i++)
+  WarehouseItemFilter filter;
+  ItemStack item;
+  int count = 0;
+  for(int i = 0; i < this.itemFilters.size(); i++, count = 0)
     {
-    
+    filter = this.itemFilters.get(i);
+    for(int k = 0; k < this.getSizeInventory(); k++)
+      {
+      item = inventory.getStackInSlot(k);
+      if(item==null){continue;}
+      if(filter.isItemValid(item))
+        {
+        count+=item.stackSize;
+        }
+      }    
+    setFilterCount(i, count);    
+    }
+  }
+
+private void setFilterCount(int filterIndex, int count)
+  {
+  WarehouseItemFilter filter = this.itemFilters.get(filterIndex);
+  if(filter.getItemCount()!=count)
+    {
+    filter.setItemCount(count);
+    worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), filterIndex, count);
+    } 
+  }
+
+private void updateFilterCount(int filterIndex, int count)
+  {
+  if(filterIndex>=itemFilters.size()){return;}
+  WarehouseItemFilter filter = this.itemFilters.get(filterIndex);
+  if(filter.getItemCount()!=count)
+    {
+    filter.setItemCount(count);
     }
   }
 

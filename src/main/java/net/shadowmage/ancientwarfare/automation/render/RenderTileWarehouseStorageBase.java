@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelSign;
@@ -12,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
+import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 
 import org.lwjgl.opengl.GL11;
 
@@ -24,11 +27,16 @@ private static RenderItem render = new RenderItem();
 
 private static final ForgeDirection[] directions = new ForgeDirection[]{ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST};
 
+public RenderTileWarehouseStorageBase()
+  {
+  render.zLevel = -50.f;
+  signModel.signStick.showModel = false;
+  }
+
 @Override
 public void renderTileEntityAt(TileEntity te, double x, double y, double z, float deltaTime)
   {  
   TileWarehouseStorageBase tile = (TileWarehouseStorageBase)te;
-  signModel.signStick.showModel = false;
   
   ForgeDirection d;
   float r;
@@ -49,7 +57,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
       GL11.glTranslatef(0.5f, 1.f, 0.5f);//translate the point to the top-center of the block
       GL11.glRotatef(-r+180.f, 0, 1, 0);//rotate for rotation
       GL11.glTranslatef(0.5f, 0, -0.5f);//translate to top-left corner
-      renderSignContents(x, y, z, r);
+      renderSignContents(tile.getFilters(), x, y, z, r);
       GL11.glPopMatrix();      
       }
     }
@@ -72,7 +80,7 @@ private void renderSignBoard(double x, double y, double z, float r)
  * matrix should be setup so that 0,0 is upper-left-hand corner of the sign-board, with a
  * transformation of 1 being 1 BLOCK
  */
-private void renderSignContents(double x, double y, double z, float r)
+private void renderSignContents(List<WarehouseItemFilter> filters, double x, double y, double z, float r)
   {
   GL11.glPushMatrix();
 //  drawPointAtCurrentOrigin();
@@ -87,14 +95,28 @@ private void renderSignContents(double x, double y, double z, float r)
   //rescale for font rendering, can fit 4 text lines @ 10px spacing at this scale
 //  GL11.glScalef(0.011f, 0.011f, 0.011f);
   GL11.glScalef(0.0058f, 0.0058f, 0.0058f);
-  
+  GL11.glScalef(1f, 1f, 0.0001f);
   FontRenderer fr = func_147498_b();
   
-  for(int i = 0; i < 4; i++)
+  ItemStack filterItem;
+  WarehouseItemFilter filter;
+  String name = "";
+  for(int i = 0; i < 4 && i<filters.size(); i++)
     {
-    fr.drawString("foo"+i, 20, i*18+4, 0xffffffff);
-    render.zLevel = -55.f;
-    render.renderItemAndEffectIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), new ItemStack(Blocks.wool,1,i), 0, i*18);
+    filter = filters.get(i);
+    filterItem = filter.getFilterItem();
+    
+    if(filterItem!=null)
+      {
+      render.renderItemAndEffectIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), filter.getFilterItem(), 0, i*18);      
+      }
+    
+    name = filterItem==null? "Empty Filter" : filterItem.getDisplayName();
+    fr.drawString(name, 20, i*18+4, 0xffffffff);
+    
+    name = String.valueOf(filter.getItemCount());
+    fr.drawString(name, 140-fr.getStringWidth(name), i*18+4, 0xffffffff);
+    
     }
     
   GL11.glPopMatrix();  

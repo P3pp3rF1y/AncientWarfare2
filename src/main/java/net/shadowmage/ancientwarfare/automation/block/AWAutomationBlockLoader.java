@@ -184,6 +184,12 @@ public static void load()
   
   GameRegistry.registerBlock(warehouseStorage, "warehouse_storage");
   GameRegistry.registerTileEntity(TileWarehouseStorageSmall.class, "warehouse_storage_small_tile");
+  warehouseStorage.setIcon(0, 0, "ancientwarfare:automation/warehouse_storage_small_bottom");
+  warehouseStorage.setIcon(0, 1, "ancientwarfare:automation/warehouse_storage_small_top");
+  warehouseStorage.setIcon(0, 2, "ancientwarfare:automation/warehouse_storage_small_side");
+  warehouseStorage.setIcon(0, 3, "ancientwarfare:automation/warehouse_storage_small_side");
+  warehouseStorage.setIcon(0, 4, "ancientwarfare:automation/warehouse_storage_small_side");
+  warehouseStorage.setIcon(0, 5, "ancientwarfare:automation/warehouse_storage_small_side");
   
   GameRegistry.registerBlock(warehouseInput, "warehouse_input");
   GameRegistry.registerTileEntity(TileWarehouseInput.class, "warehouse_input_tile");

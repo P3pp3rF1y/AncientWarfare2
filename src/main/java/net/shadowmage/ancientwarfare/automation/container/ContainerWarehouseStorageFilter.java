@@ -54,10 +54,7 @@ public void handlePacketData(NBTTagCompound tag)
       filter.readFromNBT(filterList.getCompoundTagAt(i));
       itemFilters.add(filter);
       }
-    if(!player.worldObj.isRemote)
-      {
-      storageTile.setFilterList(itemFilters);      
-      }
+    storageTile.setFilterList(itemFilters);  
     }  
   refreshGui();
   }
@@ -83,6 +80,7 @@ public void sendDataToServer()
     filterList.appendTag(filter.writeToNBT(new NBTTagCompound()));
     }
   tag.setTag("filterList", filterList);
+  storageTile.setFilterList(itemFilters);
   sendDataToServer(tag);
   }
 

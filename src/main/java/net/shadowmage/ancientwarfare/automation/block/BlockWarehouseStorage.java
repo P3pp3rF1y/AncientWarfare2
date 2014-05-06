@@ -1,24 +1,53 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageSmall;
+import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
+import net.shadowmage.ancientwarfare.core.block.RelativeSide;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class BlockWarehouseStorage extends Block
 {
 
+BlockIconMap iconMap = new BlockIconMap();
+
 public BlockWarehouseStorage(String regName)
   {
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
+  }
+
+public BlockWarehouseStorage setIcon(int meta, int side, String texName)
+  {
+  this.iconMap.setIconTexture(side, meta, texName);
+  return this;
+  }
+
+@Override
+@SideOnly(Side.CLIENT)
+public void registerBlockIcons(IIconRegister reg)
+  {
+  iconMap.registerIcons(reg);
+  }
+
+@Override
+@SideOnly(Side.CLIENT)
+public IIcon getIcon(int side, int meta)
+  {
+  return iconMap.getIconFor(side, meta);
   }
 
 @Override
