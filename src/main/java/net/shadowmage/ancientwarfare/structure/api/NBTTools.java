@@ -44,12 +44,6 @@ import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 //import net.shadowmage.ancientwarfare.core.util.StringTools;
 
-
-
-
-
-
-
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 

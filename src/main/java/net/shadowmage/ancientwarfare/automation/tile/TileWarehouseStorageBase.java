@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -15,7 +17,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public abstract class TileWarehouseStorageBase extends TileEntity implements IInteractableTile, IWarehouseStorageTile, IControlledTile
@@ -75,7 +76,6 @@ public void invalidate()
 public void setControllerPosition(BlockPosition position)
   {
   this.controllerPosition = position;
-  AWLog.logDebug("set controller position to: "+position);
   this.init = this.controllerPosition!=null;
   }
 
@@ -107,11 +107,81 @@ public void updateEntity()
     }
   }
 
+/*****************************************NETWORK HANDLING METHODS*******************************************/
 @Override
-public List<WarehouseItemFilter> getFilters()
+public void readFromNBT(NBTTagCompound tag)
   {
-  return itemFilters;
+  super.readFromNBT(tag);
+  readFilterList(tag);
+  inventory.readFromNBT(tag.getCompoundTag("inventory"));
+  inventoryName = tag.getString("name");
   }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {
+  super.writeToNBT(tag);
+  writeFilterList(tag);
+  tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
+  tag.setString("name", inventoryName);
+  }
+
+private void writeFilterList(NBTTagCompound tag)
+  {
+  NBTTagList filterList = new NBTTagList();
+  for(WarehouseItemFilter filter : this.itemFilters)
+    {
+    filterList.appendTag(filter.writeToNBT(new NBTTagCompound()));
+    }
+  tag.setTag("filterList", filterList);
+  }
+
+private void readFilterList(NBTTagCompound tag)
+  {
+  NBTTagList filterList = tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND);
+  WarehouseItemFilter filter;
+  for(int i = 0; i < filterList.tagCount(); i++)
+    {
+    filter = new WarehouseItemFilter();
+    filter.readFromNBT(filterList.getCompoundTagAt(i));
+    itemFilters.add(filter);    
+    }
+  }
+
+@Override
+public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {  
+  readFilterList(pkt.func_148857_g());
+  inventoryName = pkt.func_148857_g().getString("name");
+  }
+
+@Override
+public Packet getDescriptionPacket()
+  {  
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setString("name", inventoryName);
+  writeFilterList(tag);
+  S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+  return pkt;
+  }
+
+@Override
+public boolean onBlockClicked(EntityPlayer player)
+  {
+  if(!player.worldObj.isRemote)
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, xCoord, yCoord, zCoord);
+    }
+  return true;
+  }
+
+@Override
+public boolean receiveClientEvent(int p_145842_1_, int p_145842_2_)
+  {
+  return super.receiveClientEvent(p_145842_1_, p_145842_2_);
+  }
+
+/*****************************************FILTER LIST METHODS*******************************************/
 
 @Override
 public void setFilterList(List<WarehouseItemFilter> filters)
@@ -128,7 +198,31 @@ public void setFilterList(List<WarehouseItemFilter> filters)
       ((WorkSiteWarehouse)te).updateStorageBlockFilters(this, filters1, itemFilters);
       }
     }
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   } 
+
+@Override
+public List<WarehouseItemFilter> getFilters()
+  {
+  return itemFilters;
+  }
+
+@Override
+public boolean isItemValid(ItemStack item)
+  {
+  if(this.itemFilters.isEmpty()){return true;}
+  for(WarehouseItemFilter filter : this.itemFilters)
+    {
+    if(filter.isItemValid(item))
+      {
+      AWLog.logDebug("item validated by filter: "+item+ " :: "+filter);
+      return true;
+      }
+    }
+  return false;
+  }
+
+/*****************************************INVENTORY METHODS*******************************************/
 
 @Override
 public int getSizeInventory()
@@ -208,143 +302,40 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
   }
 
 @Override
-public boolean isItemValid(ItemStack item)
+public void markDirty()
   {
-  if(this.itemFilters.isEmpty()){return true;}
-  for(WarehouseItemFilter filter : this.itemFilters)
-    {
-    if(filter.isItemValid(item))
-      {
-      AWLog.logDebug("item validated by filter: "+item+ " :: "+filter);
-      return true;
-      }
-    }
-  return false;
+  super.markDirty();  
   }
 
-@Override
-public void readFromNBT(NBTTagCompound tag)
+private void recountFilters()
   {
-  super.readFromNBT(tag);
-  NBTTagList filterList = tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND);
-  WarehouseItemFilter filter;
-  for(int i = 0; i < filterList.tagCount(); i++)
+  for(int i = 0; i < this.itemFilters.size(); i++)
     {
-    filter = new WarehouseItemFilter();
-    filter.readFromNBT(filterList.getCompoundTagAt(i));
-    itemFilters.add(filter);    
+    
     }
-  inventory.readFromNBT(tag.getCompoundTag("inventory"));
-  inventoryName = tag.getString("name");
   }
 
-private void writeFilterList(NBTTagCompound tag)
-  {
-  NBTTagList filterList = new NBTTagList();
-  for(WarehouseItemFilter filter : this.itemFilters)
-    {
-    filterList.appendTag(filter.writeToNBT(new NBTTagCompound()));
-    }
-  tag.setTag("filterList", filterList);
-  }
-
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  super.writeToNBT(tag);
-  writeFilterList(tag);
-  NBTTagCompound inventoryTag = new NBTTagCompound();
-  inventory.writeToNBT(inventoryTag);
-  tag.setTag("inventory", inventoryTag);
-  tag.setString("name", inventoryName);
-  }
-
-@Override
-public boolean onBlockClicked(EntityPlayer player)
-  {
-  if(!player.worldObj.isRemote)
-    {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, xCoord, yCoord, zCoord);
-    }
-  return true;
-  }
-  
-public static final class WarehouseItemFilter
+/**
+ * inventory class for use by basic warehouse storage tiles
+ *
+ */
+protected class WarehouseBasicInventory extends InventoryBasic
 {
-private ItemStack filterItem;
-private boolean ignoreDamage;
-private boolean ignoreNBT;
 
-private WarehouseItemFilter(ItemStack item, boolean dmg, boolean nbt)
+TileWarehouseStorageBase tile;
+public WarehouseBasicInventory(int size, TileWarehouseStorageBase tile)
   {
-  this.filterItem = item;
-  this.ignoreDamage = dmg;
-  this.ignoreNBT = nbt;
-  }
-
-public WarehouseItemFilter(){}//nbt-constructor
-
-public boolean isItemValid(ItemStack item)
-  {
-  if(item==null){return false;}
-  if(filterItem==null){return true;}//null filter item, use for 'match all'
-  if(item.getItem()!=filterItem.getItem()){return false;}//item not equivalent, obvious mis-match
-  if(ignoreDamage && ignoreNBT){return true;}//item was equal, and ignore all else, return true
-  else if(ignoreDamage){return ItemStack.areItemStackTagsEqual(item, filterItem);}//item was equal, ignore damage..return true if nbt-tags match
-  else if(ignoreNBT){return item.getItemDamage()==filterItem.getItemDamage();}//item was equal, ignore nbt, check if item damages are equal 
-  return InventoryTools.doItemStacksMatch(item, filterItem);//finally, items were equal, no ignores' -- check both dmg and tag
-  }
-
-public void readFromNBT(NBTTagCompound tag)
-  {
-  ignoreDamage = tag.getBoolean("dmg");
-  ignoreNBT = tag.getBoolean("nbt"); 
-  if(tag.hasKey("filter")){filterItem = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("filter"));}
-  }
-
-public NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  tag.setBoolean("dmg", ignoreDamage);
-  tag.setBoolean("nbt", ignoreNBT);
-  if(filterItem!=null){tag.setTag("filter", filterItem.writeToNBT(new NBTTagCompound()));}  
-  return tag;
-  }
-
-public ItemStack getFilterItem()
-  {
-  return filterItem;
-  }
-
-public void setFilterItem(ItemStack item)
-  {
-  this.filterItem = item;
-  }
-
-public final boolean isIgnoreDamage()
-  {
-  return ignoreDamage;
-  }
-
-public final void setIgnoreDamage(boolean ignoreDamage)
-  {
-  this.ignoreDamage = ignoreDamage;
-  }
-
-public final boolean isIgnoreNBT()
-  {
-  return ignoreNBT;
-  }
-
-public final void setIgnoreNBT(boolean ignoreNBT)
-  {
-  this.ignoreNBT = ignoreNBT;
+  super(size);
+  this.tile = tile;
   }
 
 @Override
-public String toString()
+public void markDirty()
   {
-  return "Filter item: "+filterItem + " ignore dmg/nbt:"+ignoreDamage+":"+ignoreNBT;
+  tile.markDirty();
+  super.markDirty();
   }
+
 }
 
 }

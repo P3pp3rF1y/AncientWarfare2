@@ -9,7 +9,6 @@ public class InventoryBasic implements IInventorySaveable
 {
 
 private ItemStack[] inventorySlots;
-private boolean isDirty;
 
 public InventoryBasic(int size)
   {
@@ -83,7 +82,7 @@ public int getInventoryStackLimit()
 @Override
 public void markDirty()
   {
-  this.isDirty = true;
+  
   }
 
 @Override
@@ -117,15 +116,10 @@ public void readFromNBT(NBTTagCompound tag)
   }
 
 @Override
-public void writeToNBT(NBTTagCompound tag)
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
   InventoryTools.writeInventoryToNBT(this, tag);
-  }
-
-@Override
-public boolean isDirty()
-  {
-  return isDirty;
+  return tag;
   }
 
 }

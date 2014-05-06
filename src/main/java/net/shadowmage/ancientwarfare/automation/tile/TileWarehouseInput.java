@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

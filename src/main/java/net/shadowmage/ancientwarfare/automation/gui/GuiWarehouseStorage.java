@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;

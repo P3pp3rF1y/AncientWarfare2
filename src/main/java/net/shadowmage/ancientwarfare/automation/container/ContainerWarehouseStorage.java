@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase.WarehouseItemFilter;
+import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
@@ -47,35 +47,13 @@ public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z)
 @Override
 public void sendInitData()
   {
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setString("name", tileName); 
-  NBTTagList filterList = new NBTTagList();
-  for(WarehouseItemFilter filter : itemFilters)
-    {
-    filterList.appendTag(filter.writeToNBT(new NBTTagCompound()));
-    }
-  tag.setTag("filterList", filterList);
-  sendDataToClient(tag);
+  
   }
 
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  if(tag.hasKey("name")){tileName = tag.getString("name");}
   if(tag.hasKey("setName")){storageTile.setInventoryName(tag.getString("setName"));}  
-  if(tag.hasKey("filterList"))
-    {
-    itemFilters.clear();
-    NBTTagList filterList = tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND);
-    WarehouseItemFilter filter;
-    for(int i = 0; i < filterList.tagCount();i++)
-      {
-      filter = new WarehouseItemFilter();
-      filter.readFromNBT(filterList.getCompoundTagAt(i));
-      itemFilters.add(filter);
-      }
-    player.worldObj.markBlockForUpdate(storageTile.xCoord, storageTile.yCoord, storageTile.zCoord);
-    }  
   refreshGui();
   }
 

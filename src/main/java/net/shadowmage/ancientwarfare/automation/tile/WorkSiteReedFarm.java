@@ -15,7 +15,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
@@ -23,7 +22,6 @@ import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilte
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteReedFarm extends TileWorksiteBase
 {

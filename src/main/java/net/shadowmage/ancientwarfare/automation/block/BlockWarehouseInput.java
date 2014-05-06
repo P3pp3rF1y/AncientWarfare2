@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +7,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseInput;
-import net.shadowmage.ancientwarfare.automation.tile.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 

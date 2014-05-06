@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.block;
 
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 
 /**

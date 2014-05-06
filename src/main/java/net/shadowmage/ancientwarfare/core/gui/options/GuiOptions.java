@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions.ClientOption;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;

@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +8,6 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageSmall;
-import net.shadowmage.ancientwarfare.automation.tile.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -67,6 +64,14 @@ public void breakBlock(World world, int x, int y, int z, Block block, int fortun
       }    
     }
   super.breakBlock(world, x, y, z, block, fortune);  
+  }
+
+@Override
+public boolean onBlockEventReceived(World world, int x, int y, int z, int eventID, int eventParam)
+  {
+  super.onBlockEventReceived(world, x, y, z, eventID, eventParam);
+  TileEntity tileentity = world.getTileEntity(x, y, z);
+  return tileentity != null ? tileentity.receiveClientEvent(eventID, eventParam) : false;
   }
 
 }

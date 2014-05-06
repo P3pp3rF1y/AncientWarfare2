@@ -1,11 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL30;
-
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+
+import org.lwjgl.opengl.GL30;
 
 public class GuiWarehouseControll extends GuiContainerBase
 {

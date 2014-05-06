@@ -1,8 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
-import java.util.EnumSet;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelSign;
@@ -15,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase.WarehouseItemFilter;
 
 import org.lwjgl.opengl.GL11;
 

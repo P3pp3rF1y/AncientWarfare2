@@ -7,8 +7,6 @@ public interface IInventorySaveable extends IInventory
 {
 
 public void readFromNBT(NBTTagCompound tag);
-public void writeToNBT(NBTTagCompound tag);
-
-public boolean isDirty();
+public NBTTagCompound writeToNBT(NBTTagCompound tag);
 
 }

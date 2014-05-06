@@ -25,7 +25,6 @@ private static int[] emptyIndices = new int[]{};
 ISidedTile te;
 private ItemStack[] inventorySlots;
 private SlotItemFilter[] inventorySlotFilters;
-private boolean isDirty;
 
 /**
  * stores the view-ability map for this inventory.  Should be set during construction of owning tile.
@@ -277,7 +276,6 @@ public int getInventoryStackLimit()
 @Override
 public void markDirty()
   {
-  this.isDirty = true;
   this.te.onInventoryChanged();
   }
 
@@ -322,7 +320,7 @@ public void readFromNBT(NBTTagCompound tag)
   }
 
 @Override
-public void writeToNBT(NBTTagCompound tag)
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
   InventoryTools.writeInventoryToNBT(this, tag);
     
@@ -335,12 +333,7 @@ public void writeToNBT(NBTTagCompound tag)
     sideMap[baseSide.ordinal()] = sideInventoryAccess.get(baseSide).ordinal();
     } 
   tag.setIntArray("sideMap", sideMap);
-  }
-
-@Override
-public boolean isDirty()
-  {
-  return isDirty;
+  return tag;
   }
 
 /**

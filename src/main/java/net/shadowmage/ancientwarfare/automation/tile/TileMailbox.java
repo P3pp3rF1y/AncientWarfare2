@@ -15,7 +15,6 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.inventory.ISidedTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class TileMailbox extends TileEntity implements ISidedTile
 {

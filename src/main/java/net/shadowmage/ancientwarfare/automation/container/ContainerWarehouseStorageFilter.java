@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.IWarehouseStorageTile;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase.WarehouseItemFilter;
+import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerWarehouseStorageFilter extends ContainerBase
@@ -54,9 +54,10 @@ public void handlePacketData(NBTTagCompound tag)
       filter.readFromNBT(filterList.getCompoundTagAt(i));
       itemFilters.add(filter);
       }
-    storageTile.setFilterList(itemFilters);
-    TileEntity te = (TileEntity)storageTile;
-    player.worldObj.markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
+    if(!player.worldObj.isRemote)
+      {
+      storageTile.setFilterList(itemFilters);      
+      }
     }  
   refreshGui();
   }
@@ -65,6 +66,12 @@ public void handlePacketData(NBTTagCompound tag)
 public void detectAndSendChanges()
   {  
   super.detectAndSendChanges();
+  if(!this.itemFilters.equals(storageTile.getFilters()))
+    {
+    this.itemFilters.clear();
+    this.itemFilters.addAll(storageTile.getFilters());
+    sendInitData();
+    }
   }
 
 public void sendDataToServer()

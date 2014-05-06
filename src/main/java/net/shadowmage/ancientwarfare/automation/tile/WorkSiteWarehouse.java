@@ -19,7 +19,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;

@@ -1,16 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL31;
-
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.client.shader.Framebuffer;
 import net.minecraftforge.common.MinecraftForge;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseControll;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseInput;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorageFilter;
@@ -20,14 +12,13 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteInventorySideSelection;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseControll;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
+import cpw.mods.fml.client.registry.ClientRegistry;
 
 public class ClientProxyAutomation extends ClientProxyBase
 {

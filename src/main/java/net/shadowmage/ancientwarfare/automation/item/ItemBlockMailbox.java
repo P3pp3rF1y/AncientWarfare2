@@ -6,7 +6,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
-import net.shadowmage.ancientwarfare.automation.tile.WorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
 
 public class ItemBlockMailbox extends ItemBlock

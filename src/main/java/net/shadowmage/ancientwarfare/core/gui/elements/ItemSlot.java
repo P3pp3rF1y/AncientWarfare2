@@ -5,8 +5,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
