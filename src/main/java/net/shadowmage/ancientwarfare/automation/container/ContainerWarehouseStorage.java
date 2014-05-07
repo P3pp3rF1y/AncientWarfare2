@@ -82,17 +82,20 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
     ItemStack slotStack = theSlot.getStack();
     slotStackCopy = slotStack.copy();
     if (slotClickedIndex < slots)//storage
-      {      
+      {  
       if(!this.mergeItemStack(slotStack, slots, slots+36, false))//merge into player inventory
         {
         return null;
         }
       }
     else
-      {      
-      if(!this.mergeItemStack(slotStack, 0, slots, false))//merge into player inventory
+      { 
+      if(storageTile.isItemValid(slotStack))
         {
-        return null;
+        if(!this.mergeItemStack(slotStack, 0, slots, false))//merge into player inventory
+          {
+          return null;
+          }
         }
       }
     if (slotStack.stackSize == 0)

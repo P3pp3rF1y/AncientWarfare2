@@ -19,12 +19,14 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -32,42 +34,88 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 public class WorkSiteWarehouse extends TileEntity implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
 {
 
-/**
- * minimum position of the work area bounding box, or a single block position if bbMax is not set
- * must not be null if this block has a work-area
- */
-BlockPosition bbMin;
-
-/**
- * maximum position of the work bounding box.  May be null
- */
-BlockPosition bbMax;
-
-/**
- * maximum number of workers for this work-site
- * should be set in constructor of implementing classes
- */
-int maxWorkers;
-
+private BlockPosition bbMin;
+private BlockPosition bbMax;
+private int maxWorkers;
+private String owningPlayer;
 private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
+private boolean init = false;
+private boolean shouldRescan = false;
+private boolean hasWork = false;
 
 private List<IWarehouseStorageTile> storageTiles = new ArrayList<IWarehouseStorageTile>();
 private List<BlockPosition> inputBlocks = new ArrayList<BlockPosition>();
+private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 
-protected String owningPlayer;
+private WarehouseItemMap itemMap = new WarehouseItemMap();
 
-private boolean init = false;
-
-private boolean shouldRescan = false;
-
-private boolean hasWork = false;
-
-WarehouseItemMap itemMap = new WarehouseItemMap();
+public InventoryBasic inventory = new InventoryBasic(9);
 
 public WorkSiteWarehouse()
   {
   bbMin = new BlockPosition();
   bbMax = new BlockPosition();
+  maxWorkers = 3;
+  }
+
+public void addViewer(ContainerWarehouseControl viewer)
+  {
+  if(!viewers.contains(viewer))
+    {
+    viewers.add(viewer);
+    }
+  }
+
+public void removeViewer(ContainerWarehouseControl viewer)
+  {
+  while(viewers.contains(viewer))
+    {
+    viewers.remove(viewer);
+    }
+  }
+
+public void updateViewers()
+  {
+  for(ContainerWarehouseControl container : this.viewers)
+    {
+    container.sendRefreshToClient();
+    }
+  }
+
+public void requestItem(BlockPosition storagePos, ItemStack item, boolean dmg, boolean nbt)
+  {
+  AWLog.logDebug("receiving item request from: "+storagePos+" of: "+item);
+  TileEntity te = worldObj.getTileEntity(storagePos.x, storagePos.y, storagePos.z);
+  if(te instanceof IWarehouseStorageTile)
+    {
+    IWarehouseStorageTile tile = (IWarehouseStorageTile)te; 
+    if(storageTiles.contains(tile))
+      {
+      AWLog.logDebug("was a valid tile...finding item...");
+      //will need to iterate through twice...the first time just checking for a full stack to remove/return
+      //the second time, attempting to create a stack from any partials that are present      
+      ItemStack stack;
+     
+      for(int i = 0; i < tile.getSizeInventory();i++)
+        {
+        stack = tile.getStackInSlot(i);
+        if(stack==null){continue;}        
+        if(InventoryTools.doItemStacksMatch(stack, item, dmg, nbt, false))
+          {         
+          AWLog.logDebug("found stack of: "+stack);
+          stack = InventoryTools.mergeItemStack(inventory, stack, -1);
+          tile.markDirty();
+          if(stack==null || stack.stackSize==0)
+            {
+            tile.setInventorySlotContents(i, null);
+            }
+          return;
+          }
+        }
+      //if made it this far, then a full stack was not found....keep trying to remove partials until up to a full stack was removed
+      }
+    }
+  updateViewers();
   }
 
 @Override
@@ -128,6 +176,7 @@ public void addStorageBlock(IWarehouseStorageTile tile)
 public void updateStorageBlockFilters(IWarehouseStorageTile tile, List<WarehouseItemFilter> oldFilters, List<WarehouseItemFilter> newFilters)
   {
   itemMap.updateStorageFilters(tile, oldFilters, newFilters);
+  updateViewers();
   }
 
 public void removeInputBlock(int x, int y, int z)
@@ -144,6 +193,11 @@ public void removeStorageBlock(IWarehouseStorageTile tile)
   AWLog.logDebug("removing storage tile of: "+tile);
   storageTiles.remove(tile);
   AWLog.logDebug("storage blocks now contains: "+storageTiles);
+  }
+
+public List<IWarehouseStorageTile> getStorageTiles()
+  {
+  return storageTiles;
   }
 
 /**
@@ -229,54 +283,10 @@ public void doPlayerWork(EntityPlayer player)
 private void processWork()
   {
   long t1 = System.nanoTime();
-//  oldUpdate();
   newUpdate();
   long t2 = System.nanoTime();
   AWLog.logDebug("merge time: "+(t2-t1));
   scanInputInventory();
-  }
-
-private void oldUpdate()
-  {
-  TileEntity te;
-  TileWarehouseInput twi;
-  ItemStack item;
-  for(BlockPosition pos : inputBlocks)
-    {
-    te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-    if(te instanceof TileWarehouseInput)
-      {
-      twi = (TileWarehouseInput)te;
-      for(int i = 0; i< twi.getSizeInventory(); i++)
-        {
-        item = twi.getStackInSlot(i);
-        if(item==null){continue;}
-        for(IWarehouseStorageTile tile : this.storageTiles)
-          {
-          if(tile.getFilters().isEmpty()){continue;}//skip 'generic' filter tiles
-          if(tile.isItemValid(item))
-            {
-            item = InventoryTools.mergeItemStack((IInventory) tile, item, -1);
-            if(item==null)
-              {
-              twi.setInventorySlotContents(i, null);
-              return;
-              }
-            }
-          }
-        for(IWarehouseStorageTile tile : this.storageTiles)
-          {
-          if(!tile.getFilters().isEmpty()){continue;}
-          item = InventoryTools.mergeItemStack((IInventory) tile, item, -1);
-          if(item==null)
-            {
-            twi.setInventorySlotContents(i, null);
-            return;
-            }
-          }
-        }
-      }
-    } 
   }
 
 private void newUpdate()
@@ -309,14 +319,12 @@ public void onInputInventoryUpdated()
   {
   shouldRescan = true;
   hasWork = false;
-//  scanInputInventory();
   }
 
 private void scanInputInventory()
   {
   shouldRescan = false;
   hasWork = false;
-  AWLog.logDebug("rescanning controlled input inventories...");
   TileEntity te;
   TileWarehouseInput twi;
   ItemStack item;
@@ -426,6 +434,10 @@ public void readFromNBT(NBTTagCompound tag)
   owningPlayer = tag.getString("owner");
   bbMin.read(tag.getCompoundTag("pos1"));
   bbMax.read(tag.getCompoundTag("pos2"));  
+  if(tag.hasKey("inventory"))
+    {
+    inventory.readFromNBT(tag.getCompoundTag("inventory"));
+    }
   }
 
 @Override
@@ -435,6 +447,7 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setString("owner", owningPlayer);
   tag.setTag("pos1", bbMin.writeToNBT(new NBTTagCompound()));
   tag.setTag("pos2", bbMax.writeToNBT(new NBTTagCompound()));
+  tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
   }
 
 @Override
@@ -479,191 +492,5 @@ public void setBounds(BlockPosition p1, BlockPosition p2)
   bbMax = p2;
   }
 
-/**
- * need to map the available storage inventories so as to know what tile(s) to query when attempting
- * an item insert.<br>
- * when storage tiles are added new mappings will be added for the items for those storage tiles<br>
- * when storage tile filters are updated the old filter set and new filter set need to be passed to
- * an update method
- * 
- */
-/**
- * 
- * @author Shadowmage
- *
- */
-private static final class WarehouseItemMap
-{
-Set<IWarehouseStorageTile> generalStorage = new HashSet<IWarehouseStorageTile>();
-Map<Item, ItemEntry> filteredStorageSpecific = new HashMap<Item, ItemEntry>();
-Map<Item, ItemEntry> filteredStorageIgnoreNBT = new HashMap<Item, ItemEntry>();
-Map<Item, ItemEntry> filteredStorageIgnoreDmg = new HashMap<Item, ItemEntry>();
-Map<Item, ItemEntry> filteredStorageIgnoreDmgNBT = new HashMap<Item, ItemEntry>();
-
-private void addStorageTile(IWarehouseStorageTile tile)
-  {
-  List<WarehouseItemFilter> filters = tile.getFilters();
-  if(filters.isEmpty())
-    {
-    generalStorage.add(tile);    
-    return;
-    }
-  
-  Item item;
-  Map<Item, ItemEntry> entryMap;
-  for(WarehouseItemFilter filter : filters)
-    {
-    if(filter.getFilterItem()==null)
-      {
-      generalStorage.add(tile);
-      continue;
-      }
-    item = filter.getFilterItem().getItem();
-    if(item==null){continue;}
-    if(filter.isIgnoreDamage() && filter.isIgnoreNBT())
-      {
-      entryMap = filteredStorageIgnoreDmgNBT;
-      }
-    else if(filter.isIgnoreDamage())
-      {
-      entryMap = filteredStorageIgnoreDmg;
-      }
-    else if(filter.isIgnoreNBT())
-      {
-      entryMap = filteredStorageIgnoreNBT;
-      }
-    else
-      {
-      entryMap = filteredStorageSpecific;
-      }
-    if(!entryMap.containsKey(item))
-      {
-      entryMap.put(item, new ItemEntry());
-      }
-    entryMap.get(item).addTile(tile);
-    }
-  }
-
-private void removeStorageTile(IWarehouseStorageTile tile, List<WarehouseItemFilter> filters)
-  {
-  if(filters.isEmpty())
-    {
-    generalStorage.remove(tile); 
-    return;
-    }
-  
-  Item item;
-  Map<Item, ItemEntry> entryMap;
-  for(WarehouseItemFilter filter : filters)
-    {
-    if(filter.getFilterItem()==null)
-      {
-      generalStorage.remove(tile);
-      continue;
-      }
-    item = filter.getFilterItem().getItem();
-    if(item==null){continue;}
-    if(filter.isIgnoreDamage() && filter.isIgnoreNBT())
-      {
-      entryMap = filteredStorageIgnoreDmgNBT;
-      }
-    else if(filter.isIgnoreDamage())
-      {
-      entryMap = filteredStorageIgnoreDmg;
-      }
-    else if(filter.isIgnoreNBT())
-      {
-      entryMap = filteredStorageIgnoreNBT;
-      }
-    else
-      {
-      entryMap = filteredStorageSpecific;
-      }
-    if(entryMap.containsKey(item))
-      {
-      entryMap.get(item).removeTile(tile);
-      }
-    }
-  }
-
-private void updateStorageFilters(IWarehouseStorageTile tile, List<WarehouseItemFilter> oldFilters, List<WarehouseItemFilter> newFilters)
-  {
-  removeStorageTile(tile, oldFilters);
-  addStorageTile(tile);
-  }
-
-private ItemStack mergeItem(ItemStack stack)
-  {
-  if(stack==null || stack.getItem()==null)
-    {
-    return stack;
-    }
-  Item item = stack.getItem();
-  if(filteredStorageSpecific.containsKey(item))
-    {
-    stack = filteredStorageSpecific.get(item).mergeStack(stack);
-    if(stack==null){return null;}
-    }
-  if(filteredStorageIgnoreNBT.containsKey(item))
-    {
-    stack = filteredStorageIgnoreNBT.get(item).mergeStack(stack);
-    if(stack==null){return null;}
-    }
-  if(filteredStorageIgnoreDmg.containsKey(item))
-    {
-    stack = filteredStorageIgnoreDmg.get(item).mergeStack(stack);
-    if(stack==null){return null;}
-    }
-  if(filteredStorageIgnoreDmgNBT.containsKey(item))
-    {
-    stack = filteredStorageIgnoreDmgNBT.get(item).mergeStack(stack);
-    if(stack==null){return null;}
-    }
-  
-  for(IWarehouseStorageTile tile : generalStorage)
-    {
-    stack = InventoryTools.mergeItemStack(tile, stack, -1);
-    if(stack==null)
-      {
-      break;
-      }
-    }
-  return stack;
-  }
-
-}
-
-private static final class ItemEntry
-{
-
-private Set<IWarehouseStorageTile> generalStorage = new HashSet<IWarehouseStorageTile>();
-
-private void addTile(IWarehouseStorageTile tile)
-  {
-  generalStorage.add(tile);
-  }
-
-private void removeTile(IWarehouseStorageTile tile)
-  {
-  generalStorage.remove(tile);
-  }
-
-private ItemStack mergeStack(ItemStack stack)
-  {
-  for(IWarehouseStorageTile tile : generalStorage)
-    {
-    if(tile.isItemValid(stack))
-      {
-      stack = InventoryTools.mergeItemStack(tile, stack, -1);
-      if(stack==null)
-        {
-        break;
-        }
-      }
-    }
-  return stack;
-  }
-
-}
 
 }

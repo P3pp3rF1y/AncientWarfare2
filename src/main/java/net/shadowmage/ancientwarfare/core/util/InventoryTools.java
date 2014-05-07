@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class InventoryTools
 {
@@ -305,6 +306,44 @@ public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2)
   if(stack2==null){return stack1==null;}
   if(stack1.getItem()==stack2.getItem() && stack1.getItemDamage()==stack2.getItemDamage() && ItemStack.areItemStackTagsEqual(stack1, stack2))
     {
+    return true;
+    }
+  return false;
+  }
+
+/**
+ * 
+ * @param stack1
+ * @param stack2
+ * @param matchDamage
+ * @param matchNBT
+ * @param useOreDictionary -- NOTE: this setting overrides damage/nbt match if set to true, and uses oredict id comparison
+ * @return
+ */
+public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean matchDamage, boolean matchNBT, boolean useOreDictionary)
+  {
+  if(stack1==null){return stack2==null;}
+  if(stack2==null){return stack1==null;}
+  if(matchDamage && matchNBT && !useOreDictionary)
+    {
+    return doItemStacksMatch(stack1, stack2);
+    }
+  if(stack1.getItem()==stack2.getItem())
+    {
+    if(useOreDictionary)
+      {
+      int id = OreDictionary.getOreID(stack1);
+      int id2 = OreDictionary.getOreID(stack2);
+      return id>0 && id2>0 && id==id2;
+      }
+    if(matchDamage && stack1.getItemDamage()!=stack2.getItemDamage())
+      {
+      return false;
+      }
+    if(matchNBT && !ItemStack.areItemStackTagsEqual(stack1, stack2))
+      {
+      return false;
+      }
     return true;
     }
   return false;

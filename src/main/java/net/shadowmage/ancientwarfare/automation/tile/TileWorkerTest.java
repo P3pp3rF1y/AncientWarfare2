@@ -96,6 +96,7 @@ public void updateEntity()
 
 private boolean findWorkSite()
   {
+  AWLog.logDebug("attempting to find worksite...");
   TileEntity te;
   IWorkSite site;
   for(int x = -1; x<=1; x++)
@@ -107,9 +108,11 @@ private boolean findWorkSite()
         te = worldObj.getTileEntity(xCoord+x, yCoord, zCoord+z);
         if(te instanceof IWorkSite)
           {
+          AWLog.logDebug("found potential site, attempting to add as worker..");
           site = (IWorkSite)te;
           if(site.addWorker(this))
             {
+            AWLog.logDebug("set worksite to: "+site);
             this.setWorkSite(site);
             return true;
             }

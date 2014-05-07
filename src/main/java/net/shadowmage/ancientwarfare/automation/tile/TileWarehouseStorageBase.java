@@ -41,6 +41,12 @@ public TileWarehouseStorageBase()
   }
 
 @Override
+public String toString()
+  {
+  return "Storage tile, size: "+inventory.getSizeInventory()+ " name: "+getInventoryName()+" location: "+xCoord+","+yCoord+","+zCoord;
+  }
+
+@Override
 public void validate()
   {
   super.validate();
@@ -321,7 +327,16 @@ public void markDirty()
     recountFilters();
     long t2 = System.nanoTime();
     AWLog.logDebug("inv count took: "+(t2-t1)+"ns  at:");
-    new Exception().printStackTrace();
+    sendUpdateToController();
+    }
+  }
+
+private void sendUpdateToController()
+  {
+  if(controllerPosition!=null)
+    {
+    WorkSiteWarehouse tile = (WorkSiteWarehouse) worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    tile.updateViewers();
     }
   }
 

@@ -3,6 +3,9 @@ core (done for now)
 	research system--needs definitions of research for research tree
 	block and item textures (engineering station, research station, research book, research notes)
 
+GUIS
+	need LOTS of tooltips added to various elements
+
 modeler
 	who knows....
 	
@@ -18,6 +21,7 @@ automation module:
 	mechanical hopper block -- configurable pull / push side (s), and on/off push control
 		with filter list per-side -- needs redstone power to function?
 	optional input slot to run mechanical worker with coal -- disabled by default in config?	
+	warehouse crafting station -- crafting station that auto-pulls stuff from warehouse
 		
 vehicles module
 	everything
@@ -25,18 +29,6 @@ vehicles module
 npcs module
 	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority
 	everything
-	
-	
-Warehouse item-storage
-List<GenericStorage>
-Map<Item, StorageEntry>
-
-StorageEntry
-List<Precise>(nbt+dmg)
-List<Damage-specific>
-List<NBT-specific>
-List<GenericStorage>
-
 	
 	
 	

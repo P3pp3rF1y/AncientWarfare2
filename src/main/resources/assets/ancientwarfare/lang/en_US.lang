@@ -112,6 +112,8 @@ guistrings.automation.ignore_nbt=Ign. NBT
 guistrings.automation.item=Item
 guistrings.automation.new_filter=Add New Filter
 guistrings.automation.filter_setup=Filters
+guistrings.automation.quantity=Quantity
+guistrings.automation.filter_name=Filter Name
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal
 guistrings.research.queued_research=Queued Research
