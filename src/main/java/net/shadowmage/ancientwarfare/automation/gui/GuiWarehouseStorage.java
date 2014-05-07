@@ -26,7 +26,15 @@ public GuiWarehouseStorage(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  nameInput = new Text(6, 6, 106, "", this);
+  nameInput = new Text(6, 6, 106, container.tileName, this)
+    {
+    @Override
+    protected void handleKeyInput(int keyCode, char ch)
+      {      
+      super.handleKeyInput(keyCode, ch);
+      container.tileName = getText();
+      }
+    };
   addGuiElement(nameInput);
   
   filterScreenButton = new Button(178-8-55, 6, 55, 12, StatCollector.translateToLocal("guistrings.automation.filter_setup"))

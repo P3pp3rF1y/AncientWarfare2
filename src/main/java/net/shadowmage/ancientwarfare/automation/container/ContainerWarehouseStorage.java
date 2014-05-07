@@ -53,7 +53,12 @@ public void sendInitData()
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  if(tag.hasKey("setName")){storageTile.setInventoryName(tag.getString("setName"));}  
+  if(tag.hasKey("setName"))
+    {
+    AWLog.logDebug("setting storage tile name to: "+tag.getString("setName"));
+    storageTile.setInventoryName(tag.getString("setName"));
+    storageTile.getWorldObj().markBlockForUpdate(storageTile.xCoord, storageTile.yCoord, storageTile.zCoord);
+    }  
   refreshGui();
   }
 
@@ -64,6 +69,7 @@ public void sendDataToServer()
     NBTTagCompound tag = new NBTTagCompound();
     tag.setString("setName", tileName);
     sendDataToServer(tag);
+    storageTile.setInventoryName(tileName);
     }
   }
 

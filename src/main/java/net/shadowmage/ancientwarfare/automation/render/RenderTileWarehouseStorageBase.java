@@ -57,7 +57,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
       GL11.glTranslatef(0.5f, 1.f, 0.5f);//translate the point to the top-center of the block
       GL11.glRotatef(-r+180.f, 0, 1, 0);//rotate for rotation
       GL11.glTranslatef(0.5f, 0, -0.5f);//translate to top-left corner
-      renderSignContents(tile.getFilters(), x, y, z, r);
+      renderSignContents(tile.getInventoryName(), tile.getFilters(), x, y, z, r);
       GL11.glPopMatrix();      
       }
     }
@@ -80,7 +80,7 @@ private void renderSignBoard(double x, double y, double z, float r)
  * matrix should be setup so that 0,0 is upper-left-hand corner of the sign-board, with a
  * transformation of 1 being 1 BLOCK
  */
-private void renderSignContents(List<WarehouseItemFilter> filters, double x, double y, double z, float r)
+private void renderSignContents(String tileName, List<WarehouseItemFilter> filters, double x, double y, double z, float r)
   {
   GL11.glPushMatrix();
 //  drawPointAtCurrentOrigin();
@@ -88,19 +88,20 @@ private void renderSignContents(List<WarehouseItemFilter> filters, double x, dou
   
   //adjust translation for sign-face, move right a little, down a 1/4 block, and out a little
   //this puts the origin at upper-left-hand corner of the sign-face, about 1 sign pixel in and down
-  GL11.glTranslatef(-0.05f, -0.295f, -0.042f);
+  GL11.glTranslatef(0, -0.25f, -0.042f);
   
   //rescale for gui rendering axis flip
   GL11.glScalef(-1, -1, -1);
   //rescale for font rendering, can fit 4 text lines @ 10px spacing at this scale
 //  GL11.glScalef(0.011f, 0.011f, 0.011f);
-  GL11.glScalef(0.0058f, 0.0058f, 0.0058f);
+  GL11.glScalef(0.0050f, 0.0050f, 0.0050f);//this scale puts it at 200 pixels per block
   GL11.glScalef(1f, 1f, 0.0001f);
   FontRenderer fr = func_147498_b();
   
   ItemStack filterItem;
   WarehouseItemFilter filter;
   String name = "";
+  fr.drawString(tileName, 100-fr.getStringWidth(tileName)/2, 10, 0xffffffff);
   for(int i = 0; i < 4 && i<filters.size(); i++)
     {
     filter = filters.get(i);
@@ -108,14 +109,14 @@ private void renderSignContents(List<WarehouseItemFilter> filters, double x, dou
     
     if(filterItem!=null)
       {
-      render.renderItemAndEffectIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), filter.getFilterItem(), 0, i*18);      
+      render.renderItemAndEffectIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), filter.getFilterItem(), 0+12, i*18+10+10);      
       }
     
     name = filterItem==null? "Empty Filter" : filterItem.getDisplayName();
-    fr.drawString(name, 20, i*18+4, 0xffffffff);
+    fr.drawString(name, 20+12, i*18+4+10+10, 0xffffffff);
     
     name = String.valueOf(filter.getItemCount());
-    fr.drawString(name, 140-fr.getStringWidth(name), i*18+4, 0xffffffff);
+    fr.drawString(name, 200-13-fr.getStringWidth(name), i*18+4+10+10, 0xffffffff);
     
     }
     
