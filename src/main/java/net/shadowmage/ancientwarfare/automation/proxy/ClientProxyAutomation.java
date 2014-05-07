@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseControll;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseInput;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorageFilter;
@@ -34,7 +34,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, GuiWorksiteAutoCrafting.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, GuiWorksiteFishControl.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_MAILBOX_INVENTORY, GuiMailboxInventory.class);
-  NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CONTROL, GuiWarehouseControll.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CONTROL, GuiWarehouseControl.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STORAGE, GuiWarehouseStorage.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STORAGE_FILTER, GuiWarehouseStorageFilter.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_INPUT, GuiWarehouseInput.class);
