@@ -8,8 +8,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -73,6 +71,47 @@ public void sendDataToServer()
     }
   }
 
+@Override
+public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
+  {
+  ItemStack slotStackCopy = null;
+  Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
+  int slots = this.storageTile.getSizeInventory();
+  if (theSlot != null && theSlot.getHasStack())
+    {
+    ItemStack slotStack = theSlot.getStack();
+    slotStackCopy = slotStack.copy();
+    if (slotClickedIndex < slots)//storage
+      {      
+      if(!this.mergeItemStack(slotStack, slots, slots+36, false))//merge into player inventory
+        {
+        return null;
+        }
+      }
+    else
+      {      
+      if(!this.mergeItemStack(slotStack, 0, slots, false))//merge into player inventory
+        {
+        return null;
+        }
+      }
+    if (slotStack.stackSize == 0)
+      {
+      theSlot.putStack((ItemStack)null);
+      }
+    else
+      {
+      theSlot.onSlotChanged();
+      }
+    if (slotStack.stackSize == slotStackCopy.stackSize)
+      {
+      return null;
+      }
+    theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+    }
+  return slotStackCopy;
+  }
+
 private final class SlotFiltered extends Slot
 {
 
@@ -89,7 +128,6 @@ public boolean isItemValid(ItemStack par1ItemStack)
     {
     if(filter.isItemValid(par1ItemStack))
       {
-      AWLog.logDebug("item validated: "+par1ItemStack+ " :: "+filter);
       return true;
       }
     }
