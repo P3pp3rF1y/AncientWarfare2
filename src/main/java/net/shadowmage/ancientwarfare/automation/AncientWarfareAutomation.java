@@ -109,7 +109,6 @@ public void postInit(FMLPostInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Automation Post-Init started"); 
  
-  InventoryTools.itemCompactTest();
   config.save();
   AWLog.log("Ancient Warfare Automation Post-Init completed.  Successfully completed all loading stages.");
   }

@@ -103,4 +103,11 @@ public void onContainerClosed(EntityPlayer par1EntityPlayer)
   warehouse.removeViewer(this);
   }
 
+public void onWarehouseInventoryUpdated()
+  {
+  /**
+   * called by warehouse when its input inventory is recounted
+   */
+  }
+
 }

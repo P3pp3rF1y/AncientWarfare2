@@ -828,6 +828,18 @@ public int getQuantity(ItemStack item)
   return map.get(wrap).count;
   }
 
+@Override
+public String toString()
+  {
+  String out = "Item Quantity Map:";
+  for(ItemStackHashWrap wrap : map.keySet())
+    {
+    out = out +"\n   "+ wrap.item.getUnlocalizedName();
+    out = out + " : "+map.get(wrap).count;
+    }  
+  return out;
+  }
+
 /**
  * used by ItemQuantityMap for tracking item quantities for a given ItemStackHashWrap
  * @author Shadowmage

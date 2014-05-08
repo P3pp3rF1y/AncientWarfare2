@@ -2,16 +2,11 @@ package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -30,6 +25,7 @@ import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemQuantityMap;
 
 public class WorkSiteWarehouse extends TileEntity implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
 {
@@ -48,6 +44,7 @@ private List<BlockPosition> inputBlocks = new ArrayList<BlockPosition>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 
 private WarehouseItemMap itemMap = new WarehouseItemMap();
+private ItemQuantityMap itemQuantityMap = new ItemQuantityMap();
 
 public InventoryBasic inventory = new InventoryBasic(9);
 
@@ -78,6 +75,29 @@ public void removeViewer(ContainerWarehouseControl viewer)
 
 public void updateViewers()
   {
+  if(!worldObj.isRemote)
+    {
+    long t1, t2;
+    t1 = System.nanoTime();
+    itemQuantityMap.clear();
+    ItemStack stack;
+    for(IWarehouseStorageTile tile : this.getStorageTiles())
+      {
+      for(int i = 0; i < tile.getSizeInventory(); i++)
+        {
+        stack = tile.getStackInSlot(i);
+        if(stack==null){continue;}
+        itemQuantityMap.addItemStack(stack, stack.stackSize);
+        }
+      }
+    for(ContainerWarehouseControl container : this.viewers)
+      {
+      container.onWarehouseInventoryUpdated();
+      }
+    t2 = System.nanoTime();
+    AWLog.logDebug("warehouse inventory recount time: "+(t2-t1)+"ns");
+    AWLog.logDebug("Warehouse contains: "+itemQuantityMap);
+    }
   for(ContainerWarehouseControl container : this.viewers)
     {
     container.refreshGui();
