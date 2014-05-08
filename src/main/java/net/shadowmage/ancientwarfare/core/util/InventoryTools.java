@@ -526,6 +526,16 @@ public static void compactStackList2(List<ItemStack> in, List<ItemStack> out)
     }
   }
 
+public static void compactStackList3(List<ItemStack> in, List<ItemStack> out)
+  {
+  ItemQuantityMap map = new ItemQuantityMap();
+  for(ItemStack stack : in)
+    {
+    map.addItemStack(stack, stack.stackSize);
+    }
+  map.getItems(out);
+  }
+
 public static void itemCompactTest()
   {
   List<ItemStack> toCompact = new ArrayList<ItemStack>();
@@ -541,7 +551,7 @@ public static void itemCompactTest()
     toCompact.add(new ItemStack(Items.apple,64));
     toCompact.add(new ItemStack(Items.apple,1));    
     }
-  for(int i = 0; i < 10000; i++)
+  for(int i = 0; i < 10; i++)
     {
     toCompact.add(new ItemStack(Items.fish,1));
     toCompact.add(new ItemStack(Items.apple,1));    
@@ -552,12 +562,19 @@ public static void itemCompactTest()
   List<ItemStack> result = new ArrayList<ItemStack>();
 
   
-  int runs = 1000;  
+  int runs = 100000;  
   
   for(int i = 0; i < 10; i++)
     {
     test1(toCompact, result, runs);
+    }  
+  for(int i = 0; i < 10; i++)
+    {
     test2(toCompact, result, runs);
+    }  
+  for(int i = 0; i < 10; i++)
+    {
+    test3(toCompact, result, runs);
     }  
   }
 
@@ -625,6 +642,43 @@ private static void test2(List<ItemStack> toCompact, List<ItemStack> result, int
   result.clear();
   }
 
+private static void test3(List<ItemStack> toCompact, List<ItemStack> result, int runs)
+  {
+  int s1;
+  long t1, t2, t3, m1, m2, m3;
+  float tf1, tf2;
+  s1 = 0; 
+  t3 = 0;  
+  m3 = 0; 
+  
+  System.gc();
+  for(int i = 0; i < runs; i++)
+    {
+    m1 = Runtime.getRuntime().freeMemory();    
+    t1 = System.nanoTime();
+    compactStackList3(toCompact, result);
+    t2 = System.nanoTime();
+    m2 = Runtime.getRuntime().freeMemory();
+    m3+=m1-m2;
+    t3+=t2-t1;
+    s1+=result.size();    
+    if(i<runs-1)
+      {
+      result.clear();      
+      }
+    }  
+  tf1 = ((float)t3/(float)runs)/1000000.f;
+  tf2 = (float)t3/1000000.f;
+  AWLog.logDebug("Compact method 3, time for "+runs+" runs: "+t3+"ns (" + tf2+"ms)"+" time per run avg: "+(t3/runs)+"ns ("+tf1+"ms)" + "mem use: "+m3 + " per run: "+(m3/runs));
+  AWLog.logDebug("Compacted list: "+s1+":"+result.size()); 
+  result.clear();
+  }
+
+/**
+ * Item-stack comparator.  Configurable in constructor to sort by localized or unlocalized name, as well as
+ * sort-order (regular or reverse).
+ * @author Shadowmage
+ */
 public static final class ComparatorItemStack implements Comparator<ItemStack>
 {
 
@@ -637,6 +691,11 @@ UNLOCALIZED_NAME,
 private final int sortOrder;
 private final StackSortType sortType;
 
+/**
+ * 
+ * @param type
+ * @param order 1 for normal, -1 for reverse
+ */
 public ComparatorItemStack(StackSortType type, int order)
   {
   this.sortOrder = order<-1 ? -1 : order>1 ? 1 : order==0? 1 : order;
@@ -701,36 +760,105 @@ public int compare(ItemStack o1, ItemStack o2)
 }
 
 /**
- * This class wraps an item stack (item/meta/nbt-tag) with a useable hashcode method
- * that identifies the item-stack.<br>
- * Does not use quantity for hash.  No quantity is maintained in this object.
+ * Utility class for easy storage of quantities of items.  Can quickly iterate over an inventory and get
+ * the complete counts of all items in the inventory.<br>
+ * Supports adding items / quantities, and removing items / quantities.<br>
+ * Supports querying item-quantity by item.<br>
+ * Supports retrieving a list of item-stacks representing the most compact representation of this maps contents (stacks limited by stack-size, may be multiple stacks per item)<br>
  * @author Shadowmage
  */
-
-public static class ItemStackLarge
+public static final class ItemQuantityMap
 {
-private ItemStack stack;
-private int quantity;
-public ItemStackLarge(ItemStack stack, int quantity)
+Map<ItemStackHashWrap, ItemCount> map = new HashMap<ItemStackHashWrap, ItemCount>();
+
+public void addItemStack(ItemStack item, int count)
   {
-  this.stack = stack;
-  this.quantity = quantity;
+  ItemStackHashWrap wrap = new ItemStackHashWrap(item);
+  if(!map.containsKey(wrap))
+    {
+    map.put(wrap, new ItemCount());
+    }
+  map.get(wrap).count+=count;
   }
-public ItemStack getItemStack(){return stack;}
-public int getStackSize(){return quantity;}
-public void setStackSize(int quantity){this.quantity = quantity;}
+
+public void removeItem(ItemStack item, int count)
+  {
+  ItemStackHashWrap wrap = new ItemStackHashWrap(item);
+  if(map.containsKey(wrap))
+    {
+    ItemCount itemCount = map.get(wrap);
+    itemCount.count-=count;
+    if(itemCount.count<=0)
+      {
+      map.remove(wrap);
+      itemCount.count=0;
+      }
+    }
+  }
+
+public void getItems(List<ItemStack> items)
+  {
+  ItemStack outStack;
+  int qty;
+  for(ItemStackHashWrap wrap1 : map.keySet())
+    {
+    qty = map.get(wrap1).count;
+    while(qty>0)
+      {
+      outStack = wrap1.createItemStack();
+      outStack.stackSize = qty>outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty;
+      qty-=outStack.stackSize;
+      items.add(outStack);
+      }
+    } 
+  }
+
+public void clear()
+  {
+  this.map.clear();
+  }
+
+public int getQuantity(ItemStack item)
+  {
+  ItemStackHashWrap wrap = new ItemStackHashWrap(item);
+  if(!map.containsKey(wrap))
+    {
+    return 0;
+    }
+  return map.get(wrap).count;
+  }
+
+/**
+ * used by ItemQuantityMap for tracking item quantities for a given ItemStackHashWrap
+ * @author Shadowmage
+ *
+ */
+private static final class ItemCount
+{
+private int count;
+}
 }
 
+/**
+ * Wraps an item stack with a hashable object.<br>
+ * Uses item, item damage, and nbt-tag for hash-code.<br>
+ * Ignores quantity.
+ * @author Shadowmage
+ */
 public static final class ItemStackHashWrap
 {
 private final Item item;
 private final int damage;
 private final NBTTagCompound tag;
 
+/**
+ * @param item MUST NOT BE NULL
+ */
 public ItemStackHashWrap(ItemStack item)
   {
   if(item==null){throw new IllegalArgumentException("Stack may not be null");}
   this.item = item.getItem();
+  if(this.item==null){throw new IllegalArgumentException("Item may not be null");}
   this.damage = item.getItemDamage();
   if(item.hasTagCompound())
     {
@@ -742,9 +870,15 @@ public ItemStackHashWrap(ItemStack item)
     }
   }
 
+/**
+ * internal constructor used for copying/cloning
+ * @param item
+ * @param damage
+ * @param tag
+ */
 private ItemStackHashWrap(Item item, int damage, NBTTagCompound tag)
   {
-  if(item==null){throw new IllegalArgumentException("Stack may not be null");}
+  if(item==null){throw new IllegalArgumentException("Item may not be null");}
   this.item = item;
   this.damage = damage;
   this.tag = (NBTTagCompound) (tag==null ? null : tag.copy());
