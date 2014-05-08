@@ -168,6 +168,7 @@ public void addStorageBlock(IWarehouseStorageTile tile)
     storageTiles.add(tile);    
     AWLog.logDebug("storage blocks now contains: "+storageTiles);
     }
+  updateViewers();
   }
 
 public void updateStorageBlockFilters(IWarehouseStorageTile tile, List<WarehouseItemFilter> oldFilters, List<WarehouseItemFilter> newFilters)
@@ -182,6 +183,7 @@ public void removeInputBlock(int x, int y, int z)
   inputBlocks.remove(test);
   AWLog.logDebug("removing input block at: "+test);
   AWLog.logDebug("input blocks now contains: "+inputBlocks);
+  updateViewers();
   }
 
 public void removeStorageBlock(IWarehouseStorageTile tile)
@@ -190,6 +192,7 @@ public void removeStorageBlock(IWarehouseStorageTile tile)
   AWLog.logDebug("removing storage tile of: "+tile);
   storageTiles.remove(tile);
   AWLog.logDebug("storage blocks now contains: "+storageTiles);
+  updateViewers();
   }
 
 public List<IWarehouseStorageTile> getStorageTiles()
@@ -277,13 +280,13 @@ public void doPlayerWork(EntityPlayer player)
 private void processWork()
   {
   long t1 = System.nanoTime();
-  newUpdate();
+  attemptItemTransfer();
   long t2 = System.nanoTime();
   AWLog.logDebug("merge time: "+(t2-t1));
   scanInputInventory();
   }
 
-private void newUpdate()
+private void attemptItemTransfer()
   {
   TileEntity te;
   TileWarehouseInput twi;
