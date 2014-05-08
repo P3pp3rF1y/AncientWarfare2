@@ -25,6 +25,7 @@ public static final CreativeTabs automationTab = new CreativeTabs("tabs.automati
 public static void load()
   {
   AWItems.automationHammer = new ItemHammer("hammer");
+  AWItems.automationHammer.setTextureName("ancientwarfare:automation/hammer");
   GameRegistry.registerItem(AWItems.automationHammer, "hammer");
   }
 
