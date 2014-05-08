@@ -79,7 +79,7 @@ public void handlePacketData(NBTTagCompound tag)
     NBTTagCompound reqTag = tag.getCompoundTag("request");
     BlockPosition pos = new BlockPosition(reqTag.getCompoundTag("reqPos"));
     ItemStack item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
-    warehouse.requestItem(pos, item, !tag.getBoolean("dmg"), !tag.getBoolean("nbt"));
+    warehouse.requestItem(pos, item, !reqTag.getBoolean("dmg"), !reqTag.getBoolean("nbt"));
     }
   refreshGui();
   }

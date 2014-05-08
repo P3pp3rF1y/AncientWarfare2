@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class InventoryTools
 {
@@ -350,7 +351,7 @@ public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, bool
   }
 
 /**
- * drops the input itemstack into the world ad the input position;
+ * drops the input itemstack into the world at the input position;
  * @param world
  * @param item
  * @param x

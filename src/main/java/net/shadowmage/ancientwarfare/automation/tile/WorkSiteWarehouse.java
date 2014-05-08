@@ -99,7 +99,7 @@ public void requestItem(BlockPosition storagePos, ItemStack item, boolean dmg, b
       for(int i = 0; i < tile.getSizeInventory();i++)
         {
         stack = tile.getStackInSlot(i);
-        if(stack==null){continue;}        
+        if(stack==null){continue;}  
         if(InventoryTools.doItemStacksMatch(stack, item, dmg, nbt, false))
           {         
           stack = InventoryTools.mergeItemStack(inventory, stack, -1);          
