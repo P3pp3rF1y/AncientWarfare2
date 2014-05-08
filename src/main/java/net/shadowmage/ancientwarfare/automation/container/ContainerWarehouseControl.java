@@ -29,11 +29,7 @@ public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
   warehouse = (WorkSiteWarehouse) player.worldObj.getTileEntity(x, y, z);
   storageTiles = new ArrayList<IWarehouseStorageTile>();
   storageTiles.addAll(warehouse.getStorageTiles());
-  if(!player.worldObj.isRemote)
-    {
-    warehouse.addViewer(this);
-    }
-  
+  warehouse.addViewer(this);  
   int y2 = 8+9+4;
   int x1, y1;
   for(int k = 0; k <9; k++)
@@ -46,16 +42,7 @@ public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
   addPlayerSlots(player, 8, 8, 4);
   }
 
-public void sendRefreshToClient()
-  {
-  AWLog.logDebug("receiving command in container to send update tag to clients..");
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setBoolean("refresh", true);
-  sendDataToClient(tag);
-  }
-
-@Override
-public void sendInitData()
+public void sendPositionList()
   {    
   BlockPosition pos;
   TileEntity te;
@@ -87,10 +74,6 @@ public void handlePacketData(NBTTagCompound tag)
       storageTiles.add(tile);
       }
     }
-  if(tag.hasKey("refresh"))
-    {
-    //noop, just refresh the gui
-    }
   if(tag.hasKey("request"))
     {
     NBTTagCompound reqTag = tag.getCompoundTag("request");
@@ -109,7 +92,7 @@ public void detectAndSendChanges()
     {
     storageTiles.clear();
     storageTiles.addAll(warehouse.getStorageTiles());
-    sendInitData();
+    sendPositionList();
     }
   }
 

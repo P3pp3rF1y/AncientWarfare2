@@ -58,23 +58,20 @@ public void invalidate()
   {  
   super.invalidate();
   this.init = false;
-  if(!worldObj.isRemote)
+  if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
     {
-    if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    if(te instanceof WorkSiteWarehouse)
       {
-      TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
-      if(te instanceof WorkSiteWarehouse)
+      WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
+      BlockPosition min = warehouse.getWorkBoundsMin();
+      BlockPosition max = warehouse.getWorkBoundsMax();
+      if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
         {
-        WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
-        BlockPosition min = warehouse.getWorkBoundsMin();
-        BlockPosition max = warehouse.getWorkBoundsMax();
-        if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
-          {
-          warehouse.removeStorageBlock(this);
-          }
+        warehouse.removeStorageBlock(this);
         }
       }
-    } 
+    }
   controllerPosition = null;
   }
 
@@ -85,31 +82,38 @@ public void setControllerPosition(BlockPosition position)
   this.init = this.controllerPosition!=null;
   }
 
+private void informControllerOfClientUpdate()
+  {
+  if(controllerPosition!=null)
+    {
+    AWLog.logDebug("informing controller of updated information...");
+    WorkSiteWarehouse tile = (WorkSiteWarehouse) worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    tile.updateViewers();
+    }
+  }
+
 @Override
 public void updateEntity()
   {
   if(!init)
     {
     init = true;
-    if(!worldObj.isRemote)
+    AWLog.logDebug("scanning for controller...");
+    for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(worldObj, xCoord-16, yCoord-4, zCoord-16, xCoord+16, yCoord+4, zCoord+16))
       {
-      AWLog.logDebug("scanning for controller...");
-      for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(worldObj, xCoord-16, yCoord-4, zCoord-16, xCoord+16, yCoord+4, zCoord+16))
+      if(te instanceof WorkSiteWarehouse)
         {
-        if(te instanceof WorkSiteWarehouse)
+        WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
+        BlockPosition min = warehouse.getWorkBoundsMin();
+        BlockPosition max = warehouse.getWorkBoundsMax();
+        if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
           {
-          WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
-          BlockPosition min = warehouse.getWorkBoundsMin();
-          BlockPosition max = warehouse.getWorkBoundsMax();
-          if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
-            {
-            warehouse.addStorageBlock(this);
-            controllerPosition = new BlockPosition(warehouse.xCoord, warehouse.yCoord, warehouse.zCoord);
-            break;
-            }
+          warehouse.addStorageBlock(this);
+          controllerPosition = new BlockPosition(warehouse.xCoord, warehouse.yCoord, warehouse.zCoord);
+          break;
           }
-        } 
-      }
+        }
+      } 
     }
   }
 
@@ -158,6 +162,10 @@ private void readFilterList(NBTTagCompound tag)
 @Override
 public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {  
+  if(pkt.func_148857_g().hasKey("controllerPosition"))
+    {
+    controllerPosition = new BlockPosition(pkt.func_148857_g().getCompoundTag("controllerPosition"));
+    }
   readFilterList(pkt.func_148857_g());
   inventoryName = pkt.func_148857_g().getString("name");
   }
@@ -166,6 +174,10 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 public Packet getDescriptionPacket()
   {  
   NBTTagCompound tag = new NBTTagCompound();
+  if(controllerPosition!=null)
+    {
+    tag.setTag("controllerPosition", controllerPosition.writeToNBT(new NBTTagCompound()));
+    }
   tag.setString("name", inventoryName);
   writeFilterList(tag);
   S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
@@ -191,6 +203,7 @@ public boolean receiveClientEvent(int a, int b)
     }
   AWLog.logDebug("receiving client event: "+a+"::"+b+" client: "+worldObj.isRemote);
   updateFilterCount(a, b);
+  this.informControllerOfClientUpdate();
   return false;
   }
 
@@ -216,6 +229,7 @@ public void setFilterList(List<WarehouseItemFilter> filters)
     this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);  
     }
   this.recountFilters();
+  this.informControllerOfClientUpdate();
   } 
 
 @Override
@@ -236,6 +250,48 @@ public boolean isItemValid(ItemStack item)
       }
     }
   return false;
+  }
+
+private void recountFilters()
+  {
+  WarehouseItemFilter filter;
+  ItemStack item;
+  int count = 0;
+  for(int i = 0; i < this.itemFilters.size(); i++)
+    {
+    count = 0;
+    filter = this.itemFilters.get(i);
+    for(int k = 0; k < this.getSizeInventory(); k++)
+      {
+      item = inventory.getStackInSlot(k);
+      if(item==null){continue;}
+      if(filter.isItemValid(item))
+        {
+        count+=item.stackSize;
+        }
+      }    
+    setFilterCount(i, count);    
+    }
+  }
+
+private void setFilterCount(int filterIndex, int count)
+  {
+  WarehouseItemFilter filter = this.itemFilters.get(filterIndex);
+  if(filter.getItemCount()!=count)
+    {
+    filter.setItemCount(count);
+    worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), filterIndex, count);
+    } 
+  }
+
+private void updateFilterCount(int filterIndex, int count)
+  {
+  if(filterIndex>=itemFilters.size()){return;}
+  WarehouseItemFilter filter = this.itemFilters.get(filterIndex);
+  if(filter.getItemCount()!=count)
+    {
+    filter.setItemCount(count);
+    }
   }
 
 /*****************************************INVENTORY METHODS*******************************************/
@@ -327,58 +383,8 @@ public void markDirty()
     recountFilters();
     long t2 = System.nanoTime();
     AWLog.logDebug("inv count took: "+(t2-t1)+"ns  at:");
-    sendUpdateToController();
     }
-  }
-
-private void sendUpdateToController()
-  {
-  if(controllerPosition!=null)
-    {
-    WorkSiteWarehouse tile = (WorkSiteWarehouse) worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
-    tile.updateViewers();
-    }
-  }
-
-private void recountFilters()
-  {
-  WarehouseItemFilter filter;
-  ItemStack item;
-  int count = 0;
-  for(int i = 0; i < this.itemFilters.size(); i++, count = 0)
-    {
-    filter = this.itemFilters.get(i);
-    for(int k = 0; k < this.getSizeInventory(); k++)
-      {
-      item = inventory.getStackInSlot(k);
-      if(item==null){continue;}
-      if(filter.isItemValid(item))
-        {
-        count+=item.stackSize;
-        }
-      }    
-    setFilterCount(i, count);    
-    }
-  }
-
-private void setFilterCount(int filterIndex, int count)
-  {
-  WarehouseItemFilter filter = this.itemFilters.get(filterIndex);
-  if(filter.getItemCount()!=count)
-    {
-    filter.setItemCount(count);
-    worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), filterIndex, count);
-    } 
-  }
-
-private void updateFilterCount(int filterIndex, int count)
-  {
-  if(filterIndex>=itemFilters.size()){return;}
-  WarehouseItemFilter filter = this.itemFilters.get(filterIndex);
-  if(filter.getItemCount()!=count)
-    {
-    filter.setItemCount(count);
-    }
+  informControllerOfClientUpdate();
   }
 
 /**

@@ -64,34 +64,34 @@ public void addViewer(ContainerWarehouseControl viewer)
     {
     viewers.add(viewer);
     }
+  AWLog.logDebug("adding viewer... now contains:"+viewers);
   }
 
 public void removeViewer(ContainerWarehouseControl viewer)
-  {
+  {  
   while(viewers.contains(viewer))
     {
     viewers.remove(viewer);
     }
+  AWLog.logDebug("removing viewer... now contains:"+viewers);
   }
 
 public void updateViewers()
   {
   for(ContainerWarehouseControl container : this.viewers)
     {
-    container.sendRefreshToClient();
+    container.refreshGui();
     }
   }
 
 public void requestItem(BlockPosition storagePos, ItemStack item, boolean dmg, boolean nbt)
   {
-  AWLog.logDebug("receiving item request from: "+storagePos+" of: "+item);
   TileEntity te = worldObj.getTileEntity(storagePos.x, storagePos.y, storagePos.z);
   if(te instanceof IWarehouseStorageTile)
     {
     IWarehouseStorageTile tile = (IWarehouseStorageTile)te; 
     if(storageTiles.contains(tile))
       {
-      AWLog.logDebug("was a valid tile...finding item...");
       //will need to iterate through twice...the first time just checking for a full stack to remove/return
       //the second time, attempting to create a stack from any partials that are present      
       ItemStack stack;
@@ -102,20 +102,18 @@ public void requestItem(BlockPosition storagePos, ItemStack item, boolean dmg, b
         if(stack==null){continue;}        
         if(InventoryTools.doItemStacksMatch(stack, item, dmg, nbt, false))
           {         
-          AWLog.logDebug("found stack of: "+stack);
-          stack = InventoryTools.mergeItemStack(inventory, stack, -1);
-          tile.markDirty();
+          stack = InventoryTools.mergeItemStack(inventory, stack, -1);          
           if(stack==null || stack.stackSize==0)
             {
-            tile.setInventorySlotContents(i, null);
+            tile.setInventorySlotContents(i, null);            
             }
-          return;
+          tile.markDirty();
+          break;
           }
         }
       //if made it this far, then a full stack was not found....keep trying to remove partials until up to a full stack was removed
       }
     }
-  updateViewers();
   }
 
 @Override
@@ -167,8 +165,7 @@ public void addStorageBlock(IWarehouseStorageTile tile)
   if(!storageTiles.contains(tile))
     {
     AWLog.logDebug("adding storage tile of: "+tile);
-    storageTiles.add(tile);
-    
+    storageTiles.add(tile);    
     AWLog.logDebug("storage blocks now contains: "+storageTiles);
     }
   }
@@ -244,12 +241,9 @@ public void updateEntity()
   if(!init)
     {
     init = true;
-    if(!worldObj.isRemote)
-      {
-      scanInitialBlocks();      
-      }
+    scanInitialBlocks();  
     }
-  if(shouldRescan)
+  if(shouldRescan && !worldObj.isRemote)
     {    
     shouldRescan = false;
     scanInputInventory();
