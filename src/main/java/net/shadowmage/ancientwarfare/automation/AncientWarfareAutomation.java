@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -108,6 +109,7 @@ public void postInit(FMLPostInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Automation Post-Init started"); 
  
+  InventoryTools.itemCompactTest();
   config.save();
   AWLog.log("Ancient Warfare Automation Post-Init completed.  Successfully completed all loading stages.");
   }

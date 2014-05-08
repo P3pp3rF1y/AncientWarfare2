@@ -22,6 +22,7 @@ automation module:
 		with filter list per-side -- needs redstone power to function?
 	optional input slot to run mechanical worker with coal -- disabled by default in config?	
 	warehouse crafting station -- crafting station that auto-pulls stuff from warehouse
+	waterwheel type engine / waterwheel worker
 		
 vehicles module
 	everything
@@ -30,5 +31,35 @@ npcs module
 	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority
 	everything
 	
+	
+	
+Warehouse Overview:
+	Control Block
+		Coordinates moving items between input and storage blocks
+		GUI has two view modes -- by filter, and by item.
+		Allows for requesting of items from storage to be moved into the control block.
+			Requests may be process on a per-filter, or specific item basis
+		
+	Storage Blocks
+		Storage for one or more items, defined by filters on a per-block basis.  Block only accepts items that match its filters.
+		
+	Input Blocks
+		Work as default storage and a known place for warehouse control block to remove items that need sorting.
+		Will also be used by control block to place items from storage blocks that no longer match the filters in that storage block.
+		
+Warehouse Functioning:
+	Control Block
+		Maintains a list of input and storage tiles.
+		Maintains a map of what items may be placed into which storage block(s).
+		Maintains a list of items that need sorted out of input blocks
+		
+	Storage Blocks
+		Inform control block when filters change
+		Inform control block when filtered-item-quantities change (client-side updates)
+	
+	Input Blocks		
+		Inform control block when inventory is changed so that it may rescan for moveable items.
+		
+			
 	
 	

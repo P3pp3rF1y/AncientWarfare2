@@ -1,8 +1,18 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -439,5 +449,324 @@ public static void readInventoryFromNBT(IInventory inventory, NBTTagCompound tag
     inventory.setInventorySlotContents(slot, item);
     }
   }
+
+/**
+ * Compacts an input item-stack list.<br>
+ * Any partial stacks in the input list will be merged into max-stack-size stacks.<br>
+ * The output list will be filled with the results of the merge, and will contain as few stacks as possible.<br>
+ * This particular method is on average 2x faster than compactStackList2, but also uses 2x as much memory.
+ * @param in
+ * @param out
+ */
+public static void compactStackList(List<ItemStack> in, List<ItemStack> out)
+  {
+  Map<ItemStackHashWrap, Integer> map = new HashMap<ItemStackHashWrap, Integer>();
+  ItemStackHashWrap wrap;
+  int count;
+  for(ItemStack stack : in)
+    {
+    count = 0;
+    wrap = new ItemStackHashWrap(stack);
+    if(map.containsKey(wrap))
+      {
+      count = map.get(wrap);      
+      }
+    count+=stack.stackSize;
+    map.put(wrap, count);
+    }
+  int qty;
+  ItemStack outStack;
+  for(ItemStackHashWrap wrap1 : map.keySet())
+    {
+    qty = map.get(wrap1);
+    while(qty>0)
+      {
+      outStack = wrap1.stack.copy();
+      outStack.stackSize = qty>outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty;
+      qty-=outStack.stackSize;
+      out.add(outStack);
+      }
+    }
+  
+  }
+
+/**
+ * Compacts an input item-stack list.<br>
+ * Any partial stacks in the input list will be merged into max-stack-size stacks.<br>
+ * The output list will be filled with the results of the merge, and will contain as few stacks as possible.<br>
+ * This particular method is on average 1/2 as fast as compactStackList, but also uses 1/2 as much memory.
+ * @param in
+ * @param out
+ */
+public static void compactStackList2(List<ItemStack> in, List<ItemStack> out)
+  {
+//  ItemStack inStack;
+  int transfer = 0;
+  int tmax;
+  ItemStack copy;
+  for(ItemStack inStack : in)
+    {
+    tmax = inStack.stackSize;    
+    transfer = 0;
+    for(ItemStack outStack : out)
+      {
+      if(!InventoryTools.doItemStacksMatch(inStack, outStack) || outStack.stackSize>=outStack.getMaxStackSize()){continue;}
+      transfer = outStack.getMaxStackSize() - outStack.stackSize;
+      if(transfer>tmax){transfer=tmax;}
+      outStack.stackSize+=transfer;
+      tmax-=transfer;
+      if(tmax<=0){break;}
+      }
+    if(tmax>0)
+      {
+      copy = inStack.copy();
+      copy.stackSize = tmax;
+      out.add(copy);
+      }
+    }
+  }
+
+public static void itemCompactTest()
+  {
+  List<ItemStack> toCompact = new ArrayList<ItemStack>();
+  for(int i = 0; i < 10; i++)
+    {
+    toCompact.add(new ItemStack(Blocks.cobblestone,64));
+    toCompact.add(new ItemStack(Blocks.dirt,64));  
+    toCompact.add(new ItemStack(Blocks.grass,64));  
+    toCompact.add(new ItemStack(Items.apple,1));    
+    }
+  for(int i = 0; i < 20; i++)
+    {
+    toCompact.add(new ItemStack(Items.apple,64));
+    toCompact.add(new ItemStack(Items.apple,1));    
+    }
+  for(int i = 0; i < 1000; i++)
+    {
+    toCompact.add(new ItemStack(Items.fish,1));
+    toCompact.add(new ItemStack(Items.apple,1));    
+    }
+  
+  ComparatorItemStack comparator = new ComparatorItemStack();
+  Collections.sort(toCompact, comparator);
+  List<ItemStack> result = new ArrayList<ItemStack>();
+
+  
+  int runs = 10000;  
+  long t1= 0, t2 = 0, t3 = 0, m1=0, m2=0, m3=0;
+  int s1;
+
+  /**********************************TEST 1**************************************/
+  System.gc();
+  s1 = 0; 
+  t3 = 0;   
+  m3 = 0;
+  for(int i = 0; i < runs; i++)
+    {
+    m1 = Runtime.getRuntime().freeMemory();    
+    t1 = System.nanoTime();
+    compactStackList(toCompact, result);
+    t2 = System.nanoTime();
+    m2 = Runtime.getRuntime().freeMemory();
+    m3+=m1-m2;
+    t3+=t2-t1;
+    s1+=result.size();    
+    if(i<runs-1)
+      {
+      result.clear();      
+      }
+    }  
+  AWLog.logDebug("Compact method 1, time for "+runs+" runs: "+t3+"ns" + " time per run avg: "+(t3/runs) + "mem use: "+m3 + " per run: "+(m3/runs));
+  AWLog.logDebug("Compacted list: "+s1+":"+result.size()); 
+  result.clear();
+
+  /**********************************TEST 2**************************************/
+  System.gc();
+  s1 = 0;
+  t3 = 0;  
+  m3 = 0;
+  for(int i = 0; i < runs; i++)
+    {
+    m1 = Runtime.getRuntime().freeMemory();  
+    t1 = System.nanoTime();
+    compactStackList2(toCompact, result);
+    t2 = System.nanoTime();
+    m2 = Runtime.getRuntime().freeMemory();
+    m3+=m1-m2;
+    t3+=t2-t1;
+    s1+=result.size();
+    if(i<runs-1)
+      {
+      result.clear();      
+      }
+    }  
+  AWLog.logDebug("Compact method 2, time for "+runs+" runs: "+t3+"ns" + " time per run avg: "+(t3/runs) + "mem use: "+m3 + " per run: "+(m3/runs));
+  AWLog.logDebug("Compacted list: "+s1+":"+result.size()); 
+  result.clear();
+  
+  /**********************************TEST 1**************************************/
+  System.gc();
+  s1 = 0; 
+  t3 = 0;   
+  m3 = 0;
+  for(int i = 0; i < runs; i++)
+    {
+    m1 = Runtime.getRuntime().freeMemory();    
+    t1 = System.nanoTime();
+    compactStackList(toCompact, result);
+    t2 = System.nanoTime();
+    m2 = Runtime.getRuntime().freeMemory();
+    m3+=m1-m2;
+    t3+=t2-t1;
+    s1+=result.size();    
+    if(i<runs-1)
+      {
+      result.clear();      
+      }
+    }  
+  AWLog.logDebug("Compact method 1, time for "+runs+" runs: "+t3+"ns" + " time per run avg: "+(t3/runs) + "mem use: "+m3 + " per run: "+(m3/runs));
+  AWLog.logDebug("Compacted list: "+s1+":"+result.size()); 
+  result.clear();
+  
+  /**********************************TEST 2**************************************/
+  System.gc();
+  s1 = 0;
+  t3 = 0;  
+  m3 = 0;
+  for(int i = 0; i < runs; i++)
+    {
+    m1 = Runtime.getRuntime().freeMemory();  
+    t1 = System.nanoTime();
+    compactStackList2(toCompact, result);
+    t2 = System.nanoTime();
+    m2 = Runtime.getRuntime().freeMemory();
+    m3+=m1-m2;
+    t3+=t2-t1;
+    s1+=result.size();
+    if(i<runs-1)
+      {
+      result.clear();      
+      }
+    }  
+  AWLog.logDebug("Compact method 2, time for "+runs+" runs: "+t3+"ns" + " time per run avg: "+(t3/runs) + "mem use: "+m3 + " per run: "+(m3/runs));
+  AWLog.logDebug("Compacted list: "+s1+":"+result.size()); 
+  result.clear();
+  
+  /**********************************TEST 2**************************************/
+  System.gc();
+  s1 = 0;
+  t3 = 0;  
+  m3 = 0;
+  for(int i = 0; i < runs; i++)
+    {
+    m1 = Runtime.getRuntime().freeMemory();  
+    t1 = System.nanoTime();
+    compactStackList2(toCompact, result);
+    t2 = System.nanoTime();
+    m2 = Runtime.getRuntime().freeMemory();
+    m3+=m1-m2;
+    t3+=t2-t1;
+    s1+=result.size();
+    if(i<runs-1)
+      {
+      result.clear();      
+      }
+    }  
+  AWLog.logDebug("Compact method 2, time for "+runs+" runs: "+t3+"ns" + " time per run avg: "+(t3/runs) + "mem use: "+m3 + " per run: "+(m3/runs));
+  AWLog.logDebug("Compacted list: "+s1+":"+result.size()); 
+  result.clear();
+  
+  /**********************************TEST 1**************************************/
+  System.gc();
+  s1 = 0; 
+  t3 = 0;  
+  m3 = 0; 
+  for(int i = 0; i < runs; i++)
+    {
+    m1 = Runtime.getRuntime().freeMemory();    
+    t1 = System.nanoTime();
+    compactStackList(toCompact, result);
+    t2 = System.nanoTime();
+    m2 = Runtime.getRuntime().freeMemory();
+    m3+=m1-m2;
+    t3+=t2-t1;
+    s1+=result.size();    
+    if(i<runs-1)
+      {
+      result.clear();      
+      }
+    }  
+  AWLog.logDebug("Compact method 1, time for "+runs+" runs: "+t3+"ns" + " time per run avg: "+(t3/runs) + "mem use: "+m3 + " per run: "+(m3/runs));
+  AWLog.logDebug("Compacted list: "+s1+":"+result.size()); 
+  result.clear();
+  }
+
+private static class ComparatorItemStack implements Comparator<ItemStack>
+{
+
+@Override
+public int compare(ItemStack o1, ItemStack o2)
+  {
+  return o1.getUnlocalizedName().compareTo(o2.getUnlocalizedName());
+  }
+
+}
+
+public static class ItemStackLarge
+{
+private ItemStack stack;
+private int quantity;
+public ItemStackLarge(ItemStack stack, int quantity)
+  {
+  this.stack = stack;
+  this.quantity = quantity;
+  }
+public ItemStack getItemStack(){return stack;}
+public int getStackSize(){return quantity;}
+public void setStackSize(int quantity){this.quantity = quantity;}
+}
+
+private static class ItemStackHashWrap
+{
+private ItemStack stack;
+private ItemStackHashWrap(ItemStack item)
+  {
+  if(item==null){throw new IllegalArgumentException("Stack may not be null");}
+  this.stack = item.copy();
+  }
+
+@Override
+public int hashCode()
+  {
+  int hash = 1;
+  if(stack.getItem()!=null){hash = 31*hash + stack.getItem().hashCode();}
+  hash = 31*hash + stack.getItemDamage();
+//  hash = 31*hash + stack.stackSize;//noop for implementation, only care about identity, not quantity
+  if(stack.hasTagCompound()){hash = 31*hash + stack.getTagCompound().hashCode();}
+  return hash;
+  }
+
+@Override
+public boolean equals(Object obj)
+  {
+  if(obj==null){return false;}
+  if(obj.getClass()!=this.getClass()){return false;}
+  ItemStackHashWrap wrap = (ItemStackHashWrap)obj;
+  if(wrap.stack==null){return stack==null;}
+  if(stack==null){return wrap.stack==null;}
+  return wrap.stack.getItem()==stack.getItem() && wrap.stack.getItemDamage()==stack.getItemDamage() && ItemStack.areItemStackTagsEqual(stack, wrap.stack);
+  }
+
+@Override
+public String toString()
+  {
+  return "StackHashWrap: "+stack.getDisplayName();
+  }
+
+public ItemStackHashWrap copy()
+  {
+  return new ItemStackHashWrap(stack);
+  }
+}
 
 }
