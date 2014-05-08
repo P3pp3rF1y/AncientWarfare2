@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
@@ -132,6 +133,7 @@ public List<ItemStack> getResourceList()
   {
   if(resourceList==null)
     {
+    ItemQuantityMap map = new ItemQuantityMap();
     TemplateRule rule;
     List<ItemStack> stacks = new ArrayList<ItemStack>();
     for(int x = 0; x < this.xSize; x++)
@@ -144,48 +146,19 @@ public List<ItemStack> getResourceList()
           if(rule!=null)
             {
             rule.addResources(stacks);
+            for(ItemStack stack : stacks)
+              {
+              map.addItemStack(stack, stack.stackSize);
+              }
+            stacks.clear();
             }
           }
         }
-      }
-    compactStackList(stacks);
+      }    
     resourceList = new ArrayList<ItemStack>();
-    resourceList.addAll(stacks);
+    map.getItems(resourceList);
     }
   return resourceList;
-  }
-
-private void compactStackList(List<ItemStack> stacks)
-  {
-  List<ItemStack> out = new ArrayList<ItemStack>();
-  Item item;
-  int dmg;
-  int transfer;
-  for(ItemStack inStack : stacks)
-    {
-    item = inStack.getItem();
-    dmg = inStack.getItemDamage();
-    for(ItemStack outStack : out)
-      {
-      if(outStack.stackSize < outStack.getMaxStackSize() && item==outStack.getItem() && dmg==outStack.getItemDamage() && ItemStack.areItemStackTagsEqual(inStack, outStack))
-        {
-        transfer = inStack.stackSize;
-        transfer = transfer + outStack.stackSize > outStack.getMaxStackSize() ? outStack.getMaxStackSize()-outStack.stackSize: transfer;
-        inStack.stackSize-=transfer;
-        outStack.stackSize+=transfer;        
-        if(inStack.stackSize<=0)
-          {
-          break;//break outStack iterator loop, as inStack has been used up
-          }
-        }
-      }        
-    if(inStack.stackSize>0)
-      {
-      out.add(new ItemStack(item, inStack.stackSize, dmg));
-      }
-    }  
-  stacks.clear();
-  stacks.addAll(out);  
   }
 
 }
