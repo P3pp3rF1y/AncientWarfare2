@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.sun.org.apache.xalan.internal.xsltc.dom.FilterIterator;
@@ -18,9 +19,14 @@ public class TileWarehouseStorageDeep extends TileEntity implements IInteractabl
 {
 
 String inventoryName = "";
+
+
+ItemStack slot1;
+ItemStack inputSlotStack;
+
 int quantity = 0;
 ItemStack filterStack;
-ItemStack[] inventorySlots = new ItemStack[2];
+
 WarehouseItemFilter filter;
 
 BlockPosition controllerPosition;
@@ -100,13 +106,26 @@ public int getSizeInventory()
 @Override
 public ItemStack getStackInSlot(int var1)
   {
-  return inventorySlots[var1];
+  if(var1==0){return slot1;}
+  else if(var1==1){return inputSlotStack;}
+  return null;
   }
 
 @Override
 public ItemStack decrStackSize(int slotIndex, int amount)
   {
-  ItemStack slotStack = inventorySlots[slotIndex];
+//  if(slotIndex==0)
+//    {
+//    if(slot1==null || quantity<=0){return null;}
+//    int qty = amount;
+//    if(qty>quantity){qty=quantity;}
+//    }
+//  else if(slotIndex==1)
+//    {
+//    
+//    }
+  
+  ItemStack slotStack = getStackInSlot(slotIndex);
   if(slotStack!=null)
     {
     if(amount>slotStack.stackSize){amount = slotStack.stackSize;}
@@ -116,28 +135,42 @@ public ItemStack decrStackSize(int slotIndex, int amount)
     returnStack.stackSize = amount;  
     if(slotStack.stackSize<=0)
       {
-      inventorySlots[slotIndex]=null;
+      setInventorySlotContents(slotIndex, null);
       }
-    markDirty();
+    validateSlot(slotIndex);
     return returnStack;
     }
   return null;
   }
 
 @Override
-public ItemStack getStackInSlotOnClosing(int var1)
+public ItemStack getStackInSlotOnClosing(int slotIndex)
   {
-  ItemStack slotStack = inventorySlots[var1];
-  inventorySlots[var1] = null;
-  markDirty();
+  ItemStack slotStack = getStackInSlot(slotIndex);
+  setInventorySlotContents(slotIndex, null);
+  validateSlot(slotIndex);
   return slotStack;
   }
 
 @Override
-public void setInventorySlotContents(int var1, ItemStack var2)
+public void setInventorySlotContents(int slotIndex, ItemStack var2)
   {
-  inventorySlots[var1] = var2;
-  markDirty();
+  if(slotIndex==0)
+    {
+    slot1=var2;
+    validateOutputSlot();
+    }
+  else if(slotIndex==1)
+    {
+    inputSlotStack=var2;
+    validateInputSlot();
+    }
+  }
+
+private void validateSlot(int slotIndex)
+  {
+  if(slotIndex==0){validateOutputSlot();}
+  else if(slotIndex==1){validateInputSlot();}
   }
 
 @Override
@@ -168,68 +201,98 @@ public boolean isUseableByPlayer(EntityPlayer var1)
 public void markDirty()
   {  
   super.markDirty(); 
-  validateSlots();
-  refillSlot1();
-  emptySlot2();
-
-  }
-
-private void validateSlots()
-  {
-  ItemStack slot1 = inventorySlots[0];
-  ItemStack slot2 = inventorySlots[1];
-  if(filterStack==null && slot1!=null)//was empty, fresh assignment
+  validateOutputSlot();
+  validateInputSlot();
+  if(!worldObj.isRemote)
     {
-    filterStack = slot1.copy();
-    quantity = filterStack.stackSize;
-    }
-  if(filterStack==null && slot2!=null)//was empty, fresh assignment
-    {
-    filterStack = slot2.copy();
-    quantity = filterStack.stackSize;
+    informControllerOfClientUpdate();    
     }
   }
 
-private void refillSlot1()
+private void informControllerOfClientUpdate()
   {
-  ItemStack slot1 = inventorySlots[0];
-  if(filterStack!=null && slot1!=null && InventoryTools.doItemStacksMatch(filterStack, slot1))
+  if(controllerPosition!=null)
     {
-    if(slot1.stackSize<slot1.getMaxStackSize())
+    AWLog.logDebug("informing controller of updated information...");
+//    new Exception().printStackTrace();
+    WorkSiteWarehouse tile = (WorkSiteWarehouse) worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    tile.updateViewers();
+    }
+  }
+
+private void validateOutputSlot()
+  {
+  if(filterStack==null)
+    {
+    slot1=null;
+    quantity=0;
+    AWLog.logDebug("deep storage quantity updated to: "+quantity + " slot1: "+(slot1==null? 0 : slot1.stackSize));
+    new Exception().printStackTrace();
+    return;
+    }
+  if(slot1==null)//item was either removed, or fresh from input
+    {
+    slot1=filterStack.copy();
+    slot1.stackSize = 0;
+    }
+  else if(slot1!=null)
+    {
+    if(!InventoryTools.doItemStacksMatch(slot1, filterStack))
       {
-      int qty = slot1.getMaxStackSize()-slot1.stackSize;
-      if(qty>quantity){qty = quantity;}
-      slot1.stackSize+=qty;
-      quantity-=qty;
+      InventoryTools.dropItemInWorld(worldObj, slot1, xCoord, yCoord, zCoord);
+      slot1=filterStack.copy();
+      slot1.stackSize = 0;
       }
     }
-  else if(filterStack!=null && slot1==null)
+  if(slot1.stackSize<=0 && quantity<=0)
     {
-    if(quantity<=0)
+    filterStack=null;
+    slot1=null;
+    return;
+    }
+  if(slot1.stackSize<slot1.getMaxStackSize())
+    {
+    int qty = slot1.getMaxStackSize()-slot1.stackSize;
+    if(qty>quantity){qty=quantity;}
+    quantity-=qty;
+    slot1.stackSize+=qty;
+    }  
+  AWLog.logDebug("deep storage quantity updated to: "+quantity + " slot1: "+slot1.stackSize);
+  new Exception().printStackTrace();
+  }
+
+int prev;
+
+private void validateInputSlot()
+  { 
+  if(inputSlotStack==null)
+    {
+    return;
+    }
+  if(filterStack==null)
+    {
+    filterStack = inputSlotStack.copy();
+    filterStack.stackSize=1;
+    quantity = inputSlotStack.stackSize;
+    AWLog.logDebug("deep storage quantity updated to: "+quantity + " slot1: "+(slot1==null? 0 : slot1.stackSize));
+    new Exception().printStackTrace();
+    validateOutputSlot();
+    }
+  else if(filterStack!=null)
+    {
+    if(InventoryTools.doItemStacksMatch(filterStack, inputSlotStack))
       {
-      
+      quantity+=inputSlotStack.stackSize;
+      AWLog.logDebug("deep storage quantity updated to: "+quantity + " slot1: "+(slot1==null? 0 : slot1.stackSize));
+      new Exception().printStackTrace();
+      validateOutputSlot();  
       }
     else
       {
-      slot1 = filterStack.copy();
-      slot1.stackSize = 0;
-      int qty = quantity;
-      if(qty>slot1.getMaxStackSize()){qty = slot1.getMaxStackSize();}
-      slot1.stackSize = qty;
-      quantity -= qty;
-      inventorySlots[0]=slot1;      
+      InventoryTools.dropItemInWorld(worldObj, inputSlotStack, xCoord, yCoord, zCoord);
       }
     }
-  }
-
-private void emptySlot2()
-  {
-  ItemStack slot2 = inventorySlots[1];  
-  if(slot2!=null && filterStack!=null && InventoryTools.doItemStacksMatch(slot2, filterStack))
-    {
-    quantity+=slot2.stackSize;
-    inventorySlots[1] = null;
-    }
+  inputSlotStack=null;    
   }
 
 @Override
@@ -245,6 +308,7 @@ public void closeInventory()
 @Override
 public boolean isItemValidForSlot(int var1, ItemStack var2)
   {
+  if(var1==0){return false;}
   if(filter!=null)
     {
     return filter.isItemValid(var2);
@@ -262,7 +326,8 @@ public void setControllerPosition(BlockPosition position)
 @Override
 public List<WarehouseItemFilter> getFilters()
   {
-  ArrayList<WarehouseItemFilter> filters = new ArrayList<WarehouseItemFilter>();
+  if(filter==null){return Collections.emptyList();}
+  ArrayList<WarehouseItemFilter> filters = new ArrayList<WarehouseItemFilter>();  
   filters.add(filter);
   return filters;
   }

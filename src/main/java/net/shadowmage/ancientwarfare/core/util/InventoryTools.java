@@ -72,7 +72,7 @@ public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, in
         {        
         index = slotIndices[i];
         slotStack = inventory.getStackInSlot(index);
-        if(slotStack==null)
+        if(slotStack==null && inventory.isItemValidForSlot(index, stack))
           {
           inventory.setInventorySlotContents(index, stack);
           inventory.markDirty();
@@ -117,7 +117,7 @@ public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, in
         {        
         index = i;
         slotStack = inventory.getStackInSlot(index);
-        if(slotStack==null)
+        if(slotStack==null && inventory.isItemValidForSlot(index, stack))
           {
           inventory.setInventorySlotContents(index, stack);
           inventory.markDirty();

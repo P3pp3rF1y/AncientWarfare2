@@ -5,10 +5,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockMailbox;
+import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseInput;
+import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageDeep;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageSmall;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorkerTest;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteAnimalFarm;
@@ -107,7 +109,8 @@ public static final BlockWorksiteBase worksiteWarehouse = new BlockWorksiteBase(
   
 public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 
-public static final BlockWarehouseStorage warehouseStorage = new BlockWarehouseStorage("warehouse_storage");
+public static final BlockWarehouseStorage warehouseStorageSmall = new BlockWarehouseStorage("warehouse_storage_small");
+public static final BlockWarehouseStorageDeep warehouseStorageDeep = new BlockWarehouseStorageDeep("warehouse_storage_deep");
 
 public static final BlockWarehouseInput warehouseInput = new BlockWarehouseInput("warehouse_input");
 
@@ -182,14 +185,17 @@ public static void load()
   GameRegistry.registerTileEntity(WorkSiteWarehouse.class, "civic_warehouse_tile");
   worksiteWarehouse.setWorkVerticalSize(4);
   
-  GameRegistry.registerBlock(warehouseStorage, "warehouse_storage");
+  GameRegistry.registerBlock(warehouseStorageSmall, "warehouse_storage_small");
   GameRegistry.registerTileEntity(TileWarehouseStorageSmall.class, "warehouse_storage_small_tile");
-  warehouseStorage.setIcon(0, 0, "ancientwarfare:automation/warehouse_storage_small_bottom");
-  warehouseStorage.setIcon(0, 1, "ancientwarfare:automation/warehouse_storage_small_top");
-  warehouseStorage.setIcon(0, 2, "ancientwarfare:automation/warehouse_storage_small_side");
-  warehouseStorage.setIcon(0, 3, "ancientwarfare:automation/warehouse_storage_small_side");
-  warehouseStorage.setIcon(0, 4, "ancientwarfare:automation/warehouse_storage_small_side");
-  warehouseStorage.setIcon(0, 5, "ancientwarfare:automation/warehouse_storage_small_side");
+  warehouseStorageSmall.setIcon(0, 0, "ancientwarfare:automation/warehouse_storage_small_bottom");
+  warehouseStorageSmall.setIcon(0, 1, "ancientwarfare:automation/warehouse_storage_small_top");
+  warehouseStorageSmall.setIcon(0, 2, "ancientwarfare:automation/warehouse_storage_small_side");
+  warehouseStorageSmall.setIcon(0, 3, "ancientwarfare:automation/warehouse_storage_small_side");
+  warehouseStorageSmall.setIcon(0, 4, "ancientwarfare:automation/warehouse_storage_small_side");
+  warehouseStorageSmall.setIcon(0, 5, "ancientwarfare:automation/warehouse_storage_small_side");
+
+  GameRegistry.registerBlock(warehouseStorageDeep, "warehouse_storage_deep");
+  GameRegistry.registerTileEntity(TileWarehouseStorageDeep.class, "warehouse_storage_deep_tile");
   
   GameRegistry.registerBlock(warehouseInput, "warehouse_input");
   GameRegistry.registerTileEntity(TileWarehouseInput.class, "warehouse_input_tile");
