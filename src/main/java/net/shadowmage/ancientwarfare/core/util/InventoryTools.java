@@ -38,7 +38,7 @@ public class InventoryTools
  */
 public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, int side)
   {
-  if(side>0 && inventory instanceof ISidedInventory)
+  if(side>=0 && inventory instanceof ISidedInventory)
     {    
     int[] slotIndices = ((ISidedInventory)inventory).getAccessibleSlotsFromSide(side);
     if(slotIndices==null){return null;}
@@ -149,7 +149,7 @@ public static ItemStack removeItems(IInventory inventory, int side, ItemStack fi
     quantity = filter.getMaxStackSize();
     }
   ItemStack returnStack = null;
-  if(side>0 && inventory instanceof ISidedInventory)
+  if(side>=0 && inventory instanceof ISidedInventory)
     {
     int[] slotIndices = ((ISidedInventory)inventory).getAccessibleSlotsFromSide(side);
     if(slotIndices==null){return null;}
@@ -232,7 +232,7 @@ public static int getNumOfSlotsContaining(IInventory inv, int side, ItemStack fi
   {
   if(inv.getSizeInventory()<=0){return 0;}
   int count = 0;
-  if(side>0 && inv instanceof ISidedInventory)
+  if(side>=0 && inv instanceof ISidedInventory)
     {
     int[] slotIndices = ((ISidedInventory) inv).getAccessibleSlotsFromSide(side);
     if(slotIndices==null || slotIndices.length==0){return 0;}
@@ -276,7 +276,7 @@ public static int getCountOf(IInventory inv, int side, ItemStack filter)
   {
   if(inv.getSizeInventory()<=0){return 0;}
   int count = 0;
-  if(side>0 && inv instanceof ISidedInventory)
+  if(side>=0 && inv instanceof ISidedInventory)
     {
     int[] slotIndices = ((ISidedInventory) inv).getAccessibleSlotsFromSide(side);
     if(slotIndices==null || slotIndices.length==0){return 0;}
@@ -527,6 +527,14 @@ public static void compactStackList2(List<ItemStack> in, List<ItemStack> out)
     }
   }
 
+/**
+ * Compacts in input item-stack list.<br>
+ * This particular method wraps an ItemQuantityMap, and has much better speed than the other two methods,
+ * but does use more memory in the process.  On average 2x faster than compactStackList and 4x+ faster than
+ * compacctStackList2
+ * @param in
+ * @param out
+ */
 public static void compactStackList3(List<ItemStack> in, List<ItemStack> out)
   {
   ItemQuantityMap map = new ItemQuantityMap();
