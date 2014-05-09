@@ -58,6 +58,7 @@ public static final int GUI_WAREHOUSE_CONTROL = 18;
 public static final int GUI_WAREHOUSE_STORAGE = 19;
 public static final int GUI_WAREHOUSE_STORAGE_FILTER = 20;
 public static final int GUI_WAREHOUSE_INPUT = 21;
+public static final int GUI_WAREHOUSE_STORAGE_DEEP = 22;
 
 private FMLEventChannel channel;
 

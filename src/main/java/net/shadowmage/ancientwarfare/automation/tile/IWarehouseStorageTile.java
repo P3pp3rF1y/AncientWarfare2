@@ -10,12 +10,6 @@ public interface IWarehouseStorageTile
 {
 
 /**
- * user-set storage priority
- * @return
- */
-public int getStoragePriority();
-
-/**
  * user-set name for this inventory
  * @return
  */

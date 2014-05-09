@@ -144,9 +144,16 @@ private void handleChangeList(NBTTagList changeList)
     tag = changeList.getCompoundTagAt(i);
     wrap = readWrapFromNBT(tag);
     qty = tag.getInteger("qty");
-    itemMap.put(wrap, qty);
+    if(qty==0)
+      {
+      itemMap.remove(wrap);
+      }
+    else
+      {
+      itemMap.put(wrap, qty);      
+      }
     }
-  AWLog.logDebug("Item map now contains:\n"+itemMap);
+  AWLog.logDebug("Client item map now contains:\n"+itemMap);
   }
 
 private void synchItemMaps()

@@ -7,6 +7,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInput;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorageDeep;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoCrafting;
@@ -90,6 +91,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE, ContainerWarehouseStorage.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE_FILTER, ContainerWarehouseStorageFilter.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_INPUT, ContainerWarehouseInput.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE_DEEP, ContainerWarehouseStorageDeep.class);
   AWGameData.INSTANCE.registerSaveData(MailboxData.name, MailboxData.class);
   
   FMLCommonHandler.instance().bus().register(new MailboxTicker());

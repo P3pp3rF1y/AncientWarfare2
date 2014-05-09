@@ -32,7 +32,6 @@ BlockPosition controllerPosition = null;
 
 private List<WarehouseItemFilter> itemFilters = new ArrayList<WarehouseItemFilter>();
 private boolean init;
-private int storagePriority;
 
 /**
  * implementing sub-classes must create their inventory in their constructor, or things will NPE
@@ -212,13 +211,6 @@ public boolean receiveClientEvent(int a, int b)
   }
 
 /*****************************************FILTER LIST METHODS*******************************************/
-
-@Override
-public int getStoragePriority()
-  {
-  return storagePriority;
-  }
-
 @Override
 public void setFilterList(List<WarehouseItemFilter> filters)
   {

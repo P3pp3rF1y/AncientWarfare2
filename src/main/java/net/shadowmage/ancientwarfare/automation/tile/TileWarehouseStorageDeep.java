@@ -13,6 +13,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
@@ -26,7 +27,6 @@ String inventoryName = "";
 ItemStack filterStack;
 int storedQuantity;
 WarehouseItemFilter filter;
-private int storagePriority;
 BlockPosition controllerPosition;
 boolean init = false;
 
@@ -155,7 +155,10 @@ public boolean isItemValid(ItemStack item)
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  //TODO
+  if(!player.worldObj.isRemote)
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE_DEEP, xCoord, yCoord, zCoord);
+    }
   return false;
   }
 
@@ -242,12 +245,6 @@ public boolean receiveClientEvent(int a, int b)
   }
 
 @Override
-public int getStoragePriority()
-  {
-  return storagePriority;
-  }
-
-@Override
 public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {  
   NBTTagCompound tag = pkt.func_148857_g();
@@ -283,7 +280,6 @@ private void readNBTData(NBTTagCompound tag)
     }
   inventoryName = tag.getString("name");
   storedQuantity = tag.getInteger("quantity");
-  storagePriority = tag.getInteger("priority");
   if(tag.hasKey("filterStack"))
     {    
     filterStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("filterStack"));
@@ -310,7 +306,6 @@ private void writeNBTData(NBTTagCompound tag)
   tag.setString("name", inventoryName);
   if(filter!=null){tag.setTag("filter", filter.writeToNBT(new NBTTagCompound()));}
   tag.setInteger("quantity", storedQuantity);
-  tag.setInteger("priority", storagePriority);
   if(filterStack!=null){tag.setTag("filterStack", filterStack.writeToNBT(new NBTTagCompound()));}  
   }
 }
