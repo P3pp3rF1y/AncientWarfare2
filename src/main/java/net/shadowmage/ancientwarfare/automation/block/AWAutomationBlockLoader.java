@@ -109,8 +109,7 @@ public static final BlockWorksiteBase worksiteWarehouse = new BlockWorksiteBase(
   
 public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 
-public static final BlockWarehouseStorage warehouseStorageSmall = new BlockWarehouseStorage("warehouse_storage_small");
-public static final BlockWarehouseStorageDeep warehouseStorageDeep = new BlockWarehouseStorageDeep("warehouse_storage_deep");
+public static final BlockWarehouseStorage warehouseStorageBlock = new BlockWarehouseStorage("warehouse_storage_small");
 
 public static final BlockWarehouseInput warehouseInput = new BlockWarehouseInput("warehouse_input");
 
@@ -185,17 +184,16 @@ public static void load()
   GameRegistry.registerTileEntity(WorkSiteWarehouse.class, "civic_warehouse_tile");
   worksiteWarehouse.setWorkVerticalSize(4);
   
-  GameRegistry.registerBlock(warehouseStorageSmall, "warehouse_storage_small");
+  GameRegistry.registerBlock(warehouseStorageBlock, "warehouse_storage_block");
   GameRegistry.registerTileEntity(TileWarehouseStorageSmall.class, "warehouse_storage_small_tile");
-  warehouseStorageSmall.setIcon(0, 0, "ancientwarfare:automation/warehouse_storage_small_bottom");
-  warehouseStorageSmall.setIcon(0, 1, "ancientwarfare:automation/warehouse_storage_small_top");
-  warehouseStorageSmall.setIcon(0, 2, "ancientwarfare:automation/warehouse_storage_small_side");
-  warehouseStorageSmall.setIcon(0, 3, "ancientwarfare:automation/warehouse_storage_small_side");
-  warehouseStorageSmall.setIcon(0, 4, "ancientwarfare:automation/warehouse_storage_small_side");
-  warehouseStorageSmall.setIcon(0, 5, "ancientwarfare:automation/warehouse_storage_small_side");
-
-  GameRegistry.registerBlock(warehouseStorageDeep, "warehouse_storage_deep");
   GameRegistry.registerTileEntity(TileWarehouseStorageDeep.class, "warehouse_storage_deep_tile");
+  warehouseStorageBlock.setIcon(0, 0, "ancientwarfare:automation/warehouse_storage_small_bottom");
+  warehouseStorageBlock.setIcon(0, 1, "ancientwarfare:automation/warehouse_storage_small_top");
+  warehouseStorageBlock.setIcon(0, 2, "ancientwarfare:automation/warehouse_storage_small_side");
+  warehouseStorageBlock.setIcon(0, 3, "ancientwarfare:automation/warehouse_storage_small_side");
+  warehouseStorageBlock.setIcon(0, 4, "ancientwarfare:automation/warehouse_storage_small_side");
+  warehouseStorageBlock.setIcon(0, 5, "ancientwarfare:automation/warehouse_storage_small_side");
+
   
   GameRegistry.registerBlock(warehouseInput, "warehouse_input");
   GameRegistry.registerTileEntity(TileWarehouseInput.class, "warehouse_input_tile");
