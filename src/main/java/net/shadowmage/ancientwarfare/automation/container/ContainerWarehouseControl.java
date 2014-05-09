@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,12 +16,17 @@ import net.shadowmage.ancientwarfare.automation.tile.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemStackHashWrap;
 
 public class ContainerWarehouseControl extends ContainerBase
 {
 
 public WorkSiteWarehouse warehouse;
 public List<IWarehouseStorageTile> storageTiles;
+public ItemQuantityMap itemMap = new ItemQuantityMap();
+private ItemQuantityMap warehouseItemMap = new ItemQuantityMap();
+boolean shouldUpdate = true;
 
 public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
   {
@@ -40,6 +45,13 @@ public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
     }
   
   addPlayerSlots(player, 8, 8, 4);
+  }
+
+@Override
+public void sendInitData()
+  {  
+  super.sendInitData();
+  synchItemMaps();
   }
 
 public void sendPositionList()
@@ -81,19 +93,146 @@ public void handlePacketData(NBTTagCompound tag)
     ItemStack item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
     warehouse.requestItem(pos, item, !reqTag.getBoolean("dmg"), !reqTag.getBoolean("nbt"));
     }
+  if(tag.hasKey("requestSpecific"))
+    {    
+    NBTTagCompound reqTag = tag.getCompoundTag("requestSpecific");
+    ItemStack item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
+    AWLog.logDebug("processing specific request..."+item);
+    warehouse.requestItem(item);
+    }
+  if(tag.hasKey("changeList"))
+    {
+    handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
+    }
   refreshGui();
+  }
+
+public void handleClientRequestSpecific(ItemStack stack)
+  {    
+  AWLog.logDebug("sending specific request for: "+stack);
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setTag("reqItem", stack.writeToNBT(new NBTTagCompound()));  
+  NBTTagCompound pktTag = new NBTTagCompound();
+  pktTag.setTag("requestSpecific", tag);
+  sendDataToServer(pktTag);
   }
 
 @Override
 public void detectAndSendChanges()
   {  
-  super.detectAndSendChanges();
+  super.detectAndSendChanges();  
   if(!storageTiles.equals(warehouse.getStorageTiles()))
     {
     storageTiles.clear();
     storageTiles.addAll(warehouse.getStorageTiles());
     sendPositionList();
     }
+  if(shouldUpdate)
+    {
+    synchItemMaps();    
+    shouldUpdate = false;
+    }
+  }
+
+private void handleChangeList(NBTTagList changeList)
+  {
+  NBTTagCompound tag;
+  int qty;
+  ItemStackHashWrap wrap;
+  for(int i = 0; i < changeList.tagCount(); i++)
+    {
+    tag = changeList.getCompoundTagAt(i);
+    wrap = readWrapFromNBT(tag);
+    qty = tag.getInteger("qty");
+    itemMap.put(wrap, qty);
+    }
+  AWLog.logDebug("Item map now contains:\n"+itemMap);
+  }
+
+private void synchItemMaps()
+  {
+  long t1, t2, t3;
+  t1 = System.nanoTime();
+  /**
+   * 
+   * need to loop through this.itemMap and compare quantities to warehouse.itemMap
+   *    add any changes to change-list
+   * need to loop through warehouse.itemMap and find new entries
+   *    add any new entries to change-list    
+   */
+  warehouseItemMap.clear();
+  ItemStack stack;
+  for(IWarehouseStorageTile tile : warehouse.getStorageTiles())
+    {
+    for(int i = 0; i < tile.getSizeInventory(); i++)
+      {
+      stack = tile.getStackInSlot(i);
+      if(stack==null){continue;}
+      warehouseItemMap.addItemStack(stack, stack.stackSize);
+      }
+    }
+  
+  int qty;
+  NBTTagList changeList = new NBTTagList();
+  NBTTagCompound tag;
+  for(ItemStackHashWrap wrap : this.itemMap.keySet())
+    {
+    qty = this.itemMap.get(wrap);
+    if(qty!=warehouseItemMap.get(wrap))
+      {
+      qty = warehouseItemMap.get(wrap);
+      tag = writeWrapToNBT(wrap);
+      tag.setInteger("qty", qty);
+      changeList.appendTag(tag);
+      this.itemMap.put(wrap, qty);
+      }
+    }  
+  for(ItemStackHashWrap wrap : warehouseItemMap.keySet())
+    {
+    if(!itemMap.contains(wrap))
+      {
+      qty = warehouseItemMap.get(wrap);
+      tag = writeWrapToNBT(wrap);
+      tag.setInteger("qty", qty);
+      changeList.appendTag(tag);
+      this.itemMap.put(wrap, qty);
+      }
+    }
+  if(changeList.tagCount()>0)
+    {
+    AWLog.logDebug("Warehouse item map contains:\n"+warehouseItemMap);
+    tag = new NBTTagCompound();
+    tag.setTag("changeList", changeList);
+    sendDataToClient(tag);    
+    }
+  t2 = System.nanoTime();
+  t3 = t2-t1;
+  float f1 = (float)((double)t3/1000000d);
+  AWLog.logDebug("inventory synch time: "+t3+"ns ("+f1+"ms)");
+  }
+
+private NBTTagCompound writeWrapToNBT(ItemStackHashWrap wrap)
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setInteger("id", Item.getIdFromItem(wrap.getItem()));
+  tag.setInteger("dmg", wrap.getDamage());
+  NBTTagCompound itemTag = wrap.getTag();
+  if(itemTag!=null)
+    {
+    tag.setTag("itemTag", itemTag);
+    }  
+  return tag;
+  }
+
+private ItemStackHashWrap readWrapFromNBT(NBTTagCompound tag)
+  {
+  int id = tag.getInteger("id");
+  int dmg = tag.getInteger("dmg");
+  NBTTagCompound itemTag = tag.hasKey("itemTag") ? tag.getCompoundTag("itemTag") : null;
+  Item item = Item.getItemById(id);
+  ItemStack stack = new ItemStack(item, 1, dmg);
+  stack.stackTagCompound = itemTag;
+  return new ItemStackHashWrap(stack);
   }
 
 @Override
@@ -104,10 +243,8 @@ public void onContainerClosed(EntityPlayer par1EntityPlayer)
   }
 
 public void onWarehouseInventoryUpdated()
-  {
-  /**
-   * called by warehouse when its input inventory is recounted
-   */
+  {  
+  shouldUpdate = true;
   }
 
 }

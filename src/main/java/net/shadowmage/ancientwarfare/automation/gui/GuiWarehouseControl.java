@@ -12,17 +12,22 @@ import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemStackHashWrap;
 
 public class GuiWarehouseControl extends GuiContainerBase
 {
 
 CompositeScrolled area;
 ContainerWarehouseControl container;
+boolean itemViewMode = true;
 
 public GuiWarehouseControl(ContainerBase par1Container)
   {
@@ -35,13 +40,65 @@ public void initElements()
   {
   area = new CompositeScrolled(0, 88, 320, 152);
   addGuiElement(area);  
+  Checkbox modeBox = new Checkbox(256, 8, 16,16, "itemViewMode")
+    {
+    @Override
+    public void onToggled()
+      {
+      itemViewMode = checked();
+      refreshGui();
+      }
+    };
+  modeBox.setChecked(itemViewMode);
+  addGuiElement(modeBox);
   }
 
 @Override
 public void setupElements()
   {
   area.clearElements();
+  if(itemViewMode)
+    {
+    addInventoryViewElements();
+    }
+  else
+    {
+    addFilterViewElements();
+    } 
+  }
+
+private void addInventoryViewElements()
+  {
+  ItemSlot slot;
+  int qty;
+  ItemStack stack;
+  int x = 0, y= 0;
+  for(ItemStackHashWrap wrap : container.itemMap.keySet())
+    {
+    qty = container.itemMap.get(wrap);
+    stack = wrap.createItemStack();
+    stack.stackSize = qty;
     
+    slot = new ItemSlot(8+x*18, 8+y*18, stack, this)
+      {
+      @Override
+      public void onSlotClicked(ItemStack stack)
+        {
+        container.handleClientRequestSpecific(getStack());
+        }
+      };
+    area.addGuiElement(slot);
+    x++;
+    if(x>=16)
+      {
+      x=0;
+      y++;
+      }
+    }
+  }
+
+private void addFilterViewElements()
+  {
   Label label;
   Line line;  
   ItemSlot slot;

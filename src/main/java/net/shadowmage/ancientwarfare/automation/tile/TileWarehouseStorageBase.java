@@ -87,6 +87,7 @@ private void informControllerOfClientUpdate()
   if(controllerPosition!=null)
     {
     AWLog.logDebug("informing controller of updated information...");
+//    new Exception().printStackTrace();
     WorkSiteWarehouse tile = (WorkSiteWarehouse) worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     tile.updateViewers();
     }
@@ -383,8 +384,8 @@ public void markDirty()
     recountFilters();
     long t2 = System.nanoTime();
     AWLog.logDebug("inv count took: "+(t2-t1)+"ns  at:");
+    informControllerOfClientUpdate();    
     }
-  informControllerOfClientUpdate();
   }
 
 /**

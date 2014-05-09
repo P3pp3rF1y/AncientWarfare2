@@ -44,7 +44,6 @@ private List<BlockPosition> inputBlocks = new ArrayList<BlockPosition>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 
 private WarehouseItemMap itemMap = new WarehouseItemMap();
-private ItemQuantityMap itemQuantityMap = new ItemQuantityMap();
 
 public InventoryBasic inventory = new InventoryBasic(9);
 
@@ -75,32 +74,13 @@ public void removeViewer(ContainerWarehouseControl viewer)
 
 public void updateViewers()
   {
-  if(!worldObj.isRemote)
-    {
-    long t1, t2;
-    t1 = System.nanoTime();
-    itemQuantityMap.clear();
-    ItemStack stack;
-    for(IWarehouseStorageTile tile : this.getStorageTiles())
-      {
-      for(int i = 0; i < tile.getSizeInventory(); i++)
-        {
-        stack = tile.getStackInSlot(i);
-        if(stack==null){continue;}
-        itemQuantityMap.addItemStack(stack, stack.stackSize);
-        }
-      }
-    for(ContainerWarehouseControl container : this.viewers)
-      {
-      container.onWarehouseInventoryUpdated();
-      }
-    t2 = System.nanoTime();
-    AWLog.logDebug("warehouse inventory recount time: "+(t2-t1)+"ns");
-    AWLog.logDebug("Warehouse contains: "+itemQuantityMap);
-    }
   for(ContainerWarehouseControl container : this.viewers)
     {
     container.refreshGui();
+    if(!worldObj.isRemote)
+      {
+      container.onWarehouseInventoryUpdated();
+      }
     }
   }
 
@@ -133,6 +113,41 @@ public void requestItem(BlockPosition storagePos, ItemStack item, boolean dmg, b
         }
       //if made it this far, then a full stack was not found....keep trying to remove partials until up to a full stack was removed
       }
+    }
+  }
+
+public void requestItem(ItemStack filter)
+  {
+  ItemStack returnStack = filter.copy();
+  returnStack.stackSize = 0;
+  ItemStack stack;
+  int qty;
+  for(IWarehouseStorageTile storageTile : this.storageTiles)
+    {
+    for(int i = 0; i < storageTile.getSizeInventory(); i++)
+      {
+      stack = storageTile.getStackInSlot(i);
+      if(stack==null || !InventoryTools.doItemStacksMatch(filter, stack)){continue;}
+      qty = returnStack.getMaxStackSize() - returnStack.stackSize;
+      if(qty>stack.stackSize){qty = stack.stackSize;}
+      storageTile.decrStackSize(i, qty);
+      storageTile.markDirty();
+      returnStack.stackSize+=qty;
+      
+      if(returnStack.stackSize>=64)
+        {
+        break;
+        }
+      }
+    if(returnStack.stackSize>=64)
+      {
+      break;
+      }
+    }
+  if(returnStack.stackSize>0)//merge into inventory
+    {
+    returnStack = InventoryTools.mergeItemStack(inventory, returnStack, -1);
+    if(returnStack!=null){InventoryTools.dropItemInWorld(worldObj, returnStack, xCoord, yCoord, zCoord);}
     }
   }
 

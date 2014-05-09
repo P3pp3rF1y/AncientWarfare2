@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -765,11 +766,35 @@ public int compare(ItemStack o1, ItemStack o2)
  * Supports adding items / quantities, and removing items / quantities.<br>
  * Supports querying item-quantity by item.<br>
  * Supports retrieving a list of item-stacks representing the most compact representation of this maps contents (stacks limited by stack-size, may be multiple stacks per item)<br>
+ * Get / quantity query operations return 0 if no matching item / entry is found.<br>
  * @author Shadowmage
  */
 public static final class ItemQuantityMap
 {
 Map<ItemStackHashWrap, ItemCount> map = new HashMap<ItemStackHashWrap, ItemCount>();
+
+public void put(ItemStackHashWrap wrap, int count)
+  {
+  if(map.containsKey(wrap))
+    {
+    map.get(wrap).count = count;
+    }
+  else
+    {
+    ItemCount c = new ItemCount();
+    c.count = count;
+    map.put(wrap, c);
+    }
+  }
+
+public int get(ItemStackHashWrap wrap)
+  {
+  if(map.containsKey(wrap))
+    {
+    return map.get(wrap).count;
+    }
+  return 0;
+  }
 
 public void addItemStack(ItemStack item, int count)
   {
@@ -796,6 +821,53 @@ public void removeItem(ItemStack item, int count)
     }
   }
 
+public void remove(ItemStackHashWrap wrap)
+  {
+  map.remove(wrap);
+  }
+
+public void clear()
+  {
+  this.map.clear();
+  }
+
+public int get(ItemStack item)
+  {
+  ItemStackHashWrap wrap = new ItemStackHashWrap(item);
+  if(!map.containsKey(wrap))
+    {
+    return 0;
+    }
+  return map.get(wrap).count;
+  }
+
+public Set<ItemStackHashWrap> keySet()
+  {
+  return map.keySet();
+  }
+
+public boolean contains(ItemStackHashWrap wrap)
+  {
+  return map.containsKey(wrap);
+  }
+
+@Override
+public String toString()
+  {
+  String out = "Item Quantity Map:";
+  for(ItemStackHashWrap wrap : map.keySet())
+    {
+    out = out +"\n   "+ wrap.item.getUnlocalizedName();
+    out = out + " : "+map.get(wrap).count;
+    }  
+  return out;
+  }
+
+/**
+ * Return the most compact set of item-stacks that can represent the contents of this map.<br>
+ * May return multiple stacks of the same item if the quantity contained is > maxStackSize.<br> * 
+ * @param items will be filled with the item-stacks from this map, must not be NULL
+ */
 public void getItems(List<ItemStack> items)
   {
   ItemStack outStack;
@@ -813,33 +885,6 @@ public void getItems(List<ItemStack> items)
     } 
   }
 
-public void clear()
-  {
-  this.map.clear();
-  }
-
-public int getQuantity(ItemStack item)
-  {
-  ItemStackHashWrap wrap = new ItemStackHashWrap(item);
-  if(!map.containsKey(wrap))
-    {
-    return 0;
-    }
-  return map.get(wrap).count;
-  }
-
-@Override
-public String toString()
-  {
-  String out = "Item Quantity Map:";
-  for(ItemStackHashWrap wrap : map.keySet())
-    {
-    out = out +"\n   "+ wrap.item.getUnlocalizedName();
-    out = out + " : "+map.get(wrap).count;
-    }  
-  return out;
-  }
-
 /**
  * used by ItemQuantityMap for tracking item quantities for a given ItemStackHashWrap
  * @author Shadowmage
@@ -854,7 +899,8 @@ private int count;
 /**
  * Wraps an item stack with a hashable object.<br>
  * Uses item, item damage, and nbt-tag for hash-code.<br>
- * Ignores quantity.
+ * Ignores quantity.<br>
+ * Immutable.
  * @author Shadowmage
  */
 public static final class ItemStackHashWrap
@@ -880,6 +926,21 @@ public ItemStackHashWrap(ItemStack item)
     {
     this.tag = null;
     }
+  }
+
+public Item getItem()
+  {
+  return item;
+  }
+
+public int getDamage()
+  {
+  return damage;
+  }
+
+public NBTTagCompound getTag()
+  {
+  return (NBTTagCompound) (tag==null? null : tag.copy());
   }
 
 /**
