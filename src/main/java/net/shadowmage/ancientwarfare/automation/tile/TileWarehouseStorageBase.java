@@ -17,19 +17,22 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemQuantityMap;
 
 public abstract class TileWarehouseStorageBase extends TileEntity implements IInteractableTile, IWarehouseStorageTile, IControlledTile
 {
 
 String inventoryName = "";
 
-InventoryBasic inventory;
+public InventoryBasic inventory;
 
 BlockPosition controllerPosition = null;
 
 private List<WarehouseItemFilter> itemFilters = new ArrayList<WarehouseItemFilter>();
 private boolean init;
+private int storagePriority;
 
 /**
  * implementing sub-classes must create their inventory in their constructor, or things will NPE
@@ -211,6 +214,12 @@ public boolean receiveClientEvent(int a, int b)
 /*****************************************FILTER LIST METHODS*******************************************/
 
 @Override
+public int getStoragePriority()
+  {
+  return storagePriority;
+  }
+
+@Override
 public void setFilterList(List<WarehouseItemFilter> filters)
   {
   List<WarehouseItemFilter> filters1 = new ArrayList<WarehouseItemFilter>();
@@ -262,7 +271,7 @@ private void recountFilters()
     {
     count = 0;
     filter = this.itemFilters.get(i);
-    for(int k = 0; k < this.getSizeInventory(); k++)
+    for(int k = 0; k < this.inventory.getSizeInventory(); k++)
       {
       item = inventory.getStackInSlot(k);
       if(item==null){continue;}
@@ -295,39 +304,6 @@ private void updateFilterCount(int filterIndex, int count)
     }
   }
 
-/*****************************************INVENTORY METHODS*******************************************/
-
-@Override
-public int getSizeInventory()
-  {
-  return inventory.getSizeInventory();
-  }
-
-@Override
-public ItemStack getStackInSlot(int var1)
-  {
-  return inventory.getStackInSlot(var1);
-  }
-
-@Override
-public ItemStack decrStackSize(int var1, int var2)
-  {
-  return inventory.decrStackSize(var1, var2);
-  }
-
-@Override
-public ItemStack getStackInSlotOnClosing(int var1)
-  {
-  return inventory.getStackInSlotOnClosing(var1);
-  }
-
-@Override
-public void setInventorySlotContents(int var1, ItemStack var2)
-  {
-  inventory.setInventorySlotContents(var1, var2);
-  }
-
-@Override
 public String getInventoryName()
   {
   return inventoryName;
@@ -336,42 +312,6 @@ public String getInventoryName()
 public void setInventoryName(String name)
   {
   this.inventoryName = name;
-  }
-
-@Override
-public boolean hasCustomInventoryName()
-  {
-  return false;
-  }
-
-@Override
-public int getInventoryStackLimit()
-  {
-  return 64;
-  }
-
-@Override
-public boolean isUseableByPlayer(EntityPlayer var1)
-  {
-  return true;
-  }
-
-@Override
-public void openInventory()
-  {
-  
-  }
-
-@Override
-public void closeInventory()
-  {
-  
-  }
-
-@Override
-public boolean isItemValidForSlot(int var1, ItemStack var2)
-  {
-  return isItemValid(var2);
   }
 
 @Override
@@ -386,6 +326,54 @@ public void markDirty()
     AWLog.logDebug("inv count took: "+(t2-t1)+"ns  at:");
     informControllerOfClientUpdate();    
     }
+  }
+
+@Override
+public int getMaxFilterCount()
+  {
+  return 16;
+  }
+
+@Override
+public void dropInventoryInWorld()
+  {
+  InventoryTools.dropInventoryInWorld(worldObj, inventory, xCoord, yCoord, zCoord);
+  }
+
+@Override
+public void addInventoryContentsToMap(ItemQuantityMap itemMap)
+  {
+  ItemStack stack;
+  for(int i = 0; i<inventory.getSizeInventory(); i++)
+    {
+    stack = inventory.getStackInSlot(i);
+    if(stack!=null){itemMap.addItemStack(stack, stack.stackSize);}    
+    }
+  }
+
+@Override
+public int removeItem(ItemStack filter, int quantity)
+  {
+  int origQuantity = quantity;
+  ItemStack stack;
+  int qty;
+  for(int i = 0; i< this.inventory.getSizeInventory(); i++)
+    {
+    stack = this.inventory.getStackInSlot(i);
+    if(stack==null || !InventoryTools.doItemStacksMatch(filter, stack)){continue;}
+    qty = stack.stackSize;
+    if(qty>quantity){qty = quantity;}
+    this.inventory.decrStackSize(i, qty);
+    quantity-=qty;
+    if(quantity<=0){break;}
+    }
+  return origQuantity - quantity;
+  }
+
+@Override
+public ItemStack addItem(ItemStack item)
+  {
+  return InventoryTools.mergeItemStack(inventory, item, -1);
   }
 
 /**
@@ -407,6 +395,12 @@ public void markDirty()
   {
   tile.markDirty();
   super.markDirty();
+  }
+
+@Override
+public boolean isItemValidForSlot(int var1, ItemStack var2)
+  {
+  return tile.isItemValid(var2);
   }
 
 }

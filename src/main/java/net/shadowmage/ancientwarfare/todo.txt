@@ -49,7 +49,7 @@ Warehouse Overview:
 		
 Warehouse Functioning:
 	Control Block
-		Maintains a list of input and storage tiles.
+		Maintains a list of input, output, and storage tiles.
 		Maintains a map of what items may be placed into which storage block(s).
 		Maintains a list of items that need sorted out of input blocks
 		
@@ -60,6 +60,7 @@ Warehouse Functioning:
 	Input Blocks		
 		Inform control block when inventory is changed so that it may rescan for moveable items.
 		
-			
+As warehouse storage blocks are no longer accessible directly as IInventory tiles, can make the inventory update
+	code MUCH cleaner and more reliable.  Inventories can now be tracked / etc.  
 	
 	

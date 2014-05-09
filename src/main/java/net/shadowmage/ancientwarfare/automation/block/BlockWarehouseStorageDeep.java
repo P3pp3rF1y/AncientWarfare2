@@ -95,7 +95,7 @@ public void breakBlock(World world, int x, int y, int z, Block block, int fortun
     IWarehouseStorageTile storage = (IWarehouseStorageTile) world.getTileEntity(x, y, z);
     if(storage!=null)
       {
-      InventoryTools.dropInventoryInWorld(world, storage, x, y, z);      
+      storage.dropInventoryInWorld();      
       }    
     }
   super.breakBlock(world, x, y, z, block, fortune);  

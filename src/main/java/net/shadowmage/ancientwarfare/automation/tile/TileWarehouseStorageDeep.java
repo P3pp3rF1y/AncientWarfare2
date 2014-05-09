@@ -4,31 +4,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.sun.org.apache.xalan.internal.xsltc.dom.FilterIterator;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemQuantityMap;
 
 public class TileWarehouseStorageDeep extends TileEntity implements IInteractableTile, IWarehouseStorageTile, IControlledTile
 {
 
 String inventoryName = "";
 
-
-ItemStack slot1;
-ItemStack inputSlotStack;
-
-int quantity = 0;
 ItemStack filterStack;
-
+int storedQuantity;
 WarehouseItemFilter filter;
-
+private int storagePriority;
 BlockPosition controllerPosition;
 boolean init = false;
 
@@ -92,117 +90,15 @@ public void invalidate()
   }
 
 @Override
-public String toString()
-  {
-  return "Deep Storage tile. Filter: "+filterStack+" size: "+quantity+" name: "+inventoryName+" location: "+xCoord+","+yCoord+","+zCoord;
-  }
-
-@Override
-public int getSizeInventory()
-  {
-  return 2;
-  }
-
-@Override
-public ItemStack getStackInSlot(int var1)
-  {
-  if(var1==0){return slot1;}
-  else if(var1==1){return inputSlotStack;}
-  return null;
-  }
-
-@Override
-public ItemStack decrStackSize(int slotIndex, int amount)
-  {
-//  if(slotIndex==0)
-//    {
-//    if(slot1==null || quantity<=0){return null;}
-//    int qty = amount;
-//    if(qty>quantity){qty=quantity;}
-//    }
-//  else if(slotIndex==1)
-//    {
-//    
-//    }
-  
-  ItemStack slotStack = getStackInSlot(slotIndex);
-  if(slotStack!=null)
-    {
-    if(amount>slotStack.stackSize){amount = slotStack.stackSize;}
-    if(amount>slotStack.getMaxStackSize()){amount = slotStack.getMaxStackSize();}
-    ItemStack returnStack = slotStack.copy();
-    slotStack.stackSize-=amount;
-    returnStack.stackSize = amount;  
-    if(slotStack.stackSize<=0)
-      {
-      setInventorySlotContents(slotIndex, null);
-      }
-    validateSlot(slotIndex);
-    return returnStack;
-    }
-  return null;
-  }
-
-@Override
-public ItemStack getStackInSlotOnClosing(int slotIndex)
-  {
-  ItemStack slotStack = getStackInSlot(slotIndex);
-  setInventorySlotContents(slotIndex, null);
-  validateSlot(slotIndex);
-  return slotStack;
-  }
-
-@Override
-public void setInventorySlotContents(int slotIndex, ItemStack var2)
-  {
-  if(slotIndex==0)
-    {
-    slot1=var2;
-    validateOutputSlot();
-    }
-  else if(slotIndex==1)
-    {
-    inputSlotStack=var2;
-    validateInputSlot();
-    }
-  }
-
-private void validateSlot(int slotIndex)
-  {
-  if(slotIndex==0){validateOutputSlot();}
-  else if(slotIndex==1){validateInputSlot();}
-  }
-
-@Override
 public String getInventoryName()
   {
   return inventoryName;
   }
 
 @Override
-public boolean hasCustomInventoryName()
-  {
-  return false;
-  }
-
-@Override
-public int getInventoryStackLimit()
-  {
-  return 64;
-  }
-
-@Override
-public boolean isUseableByPlayer(EntityPlayer var1)
-  {
-  return true;
-  }
-
-@Override
 public void markDirty()
   {  
   super.markDirty(); 
-  validateOutputSlot();
-  validateInputSlot();
   if(!worldObj.isRemote)
     {
     informControllerOfClientUpdate();    
@@ -214,106 +110,9 @@ private void informControllerOfClientUpdate()
   if(controllerPosition!=null)
     {
     AWLog.logDebug("informing controller of updated information...");
-//    new Exception().printStackTrace();
     WorkSiteWarehouse tile = (WorkSiteWarehouse) worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     tile.updateViewers();
     }
-  }
-
-private void validateOutputSlot()
-  {
-  if(filterStack==null)
-    {
-    slot1=null;
-    quantity=0;
-    AWLog.logDebug("deep storage quantity updated to: "+quantity + " slot1: "+(slot1==null? 0 : slot1.stackSize));
-    new Exception().printStackTrace();
-    return;
-    }
-  if(slot1==null)//item was either removed, or fresh from input
-    {
-    slot1=filterStack.copy();
-    slot1.stackSize = 0;
-    }
-  else if(slot1!=null)
-    {
-    if(!InventoryTools.doItemStacksMatch(slot1, filterStack))
-      {
-      InventoryTools.dropItemInWorld(worldObj, slot1, xCoord, yCoord, zCoord);
-      slot1=filterStack.copy();
-      slot1.stackSize = 0;
-      }
-    }
-  if(slot1.stackSize<=0 && quantity<=0)
-    {
-    filterStack=null;
-    slot1=null;
-    return;
-    }
-  if(slot1.stackSize<slot1.getMaxStackSize())
-    {
-    int qty = slot1.getMaxStackSize()-slot1.stackSize;
-    if(qty>quantity){qty=quantity;}
-    quantity-=qty;
-    slot1.stackSize+=qty;
-    }  
-  AWLog.logDebug("deep storage quantity updated to: "+quantity + " slot1: "+slot1.stackSize);
-  new Exception().printStackTrace();
-  }
-
-int prev;
-
-private void validateInputSlot()
-  { 
-  if(inputSlotStack==null)
-    {
-    return;
-    }
-  if(filterStack==null)
-    {
-    filterStack = inputSlotStack.copy();
-    filterStack.stackSize=1;
-    quantity = inputSlotStack.stackSize;
-    AWLog.logDebug("deep storage quantity updated to: "+quantity + " slot1: "+(slot1==null? 0 : slot1.stackSize));
-    new Exception().printStackTrace();
-    validateOutputSlot();
-    }
-  else if(filterStack!=null)
-    {
-    if(InventoryTools.doItemStacksMatch(filterStack, inputSlotStack))
-      {
-      quantity+=inputSlotStack.stackSize;
-      AWLog.logDebug("deep storage quantity updated to: "+quantity + " slot1: "+(slot1==null? 0 : slot1.stackSize));
-      new Exception().printStackTrace();
-      validateOutputSlot();  
-      }
-    else
-      {
-      InventoryTools.dropItemInWorld(worldObj, inputSlotStack, xCoord, yCoord, zCoord);
-      }
-    }
-  inputSlotStack=null;    
-  }
-
-@Override
-public void openInventory()
-  {  
-  }
-
-@Override
-public void closeInventory()
-  {  
-  }
-
-@Override
-public boolean isItemValidForSlot(int var1, ItemStack var2)
-  {
-  if(var1==0){return false;}
-  if(filter!=null)
-    {
-    return filter.isItemValid(var2);
-    }
-  return filterStack==null || InventoryTools.doItemStacksMatch(filterStack, var2);
   }
 
 @Override
@@ -342,17 +141,176 @@ public void setFilterList(List<WarehouseItemFilter> filters)
 @Override
 public boolean isItemValid(ItemStack item)
   {
+  if(filterStack!=null)
+    {
+    return InventoryTools.doItemStacksMatch(item, filterStack);
+    }
   if(filter!=null)
     {
     return filter.isItemValid(item);
     }
-  return filterStack==null || InventoryTools.doItemStacksMatch(item, filterStack);
+  return true;
   }
 
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
+  //TODO
   return false;
   }
 
+@Override
+public int getMaxFilterCount()
+  {
+  return 1;
+  }
+
+@Override
+public void dropInventoryInWorld()
+  {
+  if(filterStack!=null)
+    {
+    int qty = storedQuantity;
+    int q1;
+    ItemStack stack;
+    while(qty>0)
+      {
+      q1 = filterStack.getMaxStackSize();
+      if(q1>qty){q1=qty;}
+      qty-=q1;
+      stack = filterStack.copy();
+      stack.stackSize=q1;
+      InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
+      }
+    storedQuantity = 0;
+    }
+  }
+
+@Override
+public void addInventoryContentsToMap(ItemQuantityMap itemMap)
+  {
+  if(filterStack!=null)
+    {
+    itemMap.addItemStack(filterStack, storedQuantity);
+    }
+  }
+
+@Override
+public int removeItem(ItemStack filter, int quantity)
+  {
+  if(filterStack==null || !InventoryTools.doItemStacksMatch(filter, filterStack)){return 0;}
+  if(quantity>storedQuantity)
+    {
+    quantity=storedQuantity;    
+    }
+  storedQuantity-=quantity;
+  informControllerOfClientUpdate();
+  if(storedQuantity<=0){filterStack=null;}
+  return quantity;
+  }
+
+@Override
+public ItemStack addItem(ItemStack item)
+  {
+  if(isItemValid(item))
+    {
+    if(filterStack==null)
+      {
+      filterStack=item.copy();
+      storedQuantity = 0;
+      }
+    storedQuantity+=item.stackSize;
+    informControllerOfClientUpdate();
+    return null;
+    }
+  return item;
+  }
+
+@Override
+public boolean receiveClientEvent(int a, int b)
+  {
+  if(a==0)//qty update
+    {
+    storedQuantity = b;
+    }
+  else if(a==1)//remove filter stack (is only set through description packet)
+    {
+    storedQuantity = 0;
+    filterStack = null;
+    }
+  return super.receiveClientEvent(a, b);
+  }
+
+@Override
+public int getStoragePriority()
+  {
+  return storagePriority;
+  }
+
+@Override
+public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {  
+  NBTTagCompound tag = pkt.func_148857_g();
+  readNBTData(tag);
+  }
+
+@Override
+public Packet getDescriptionPacket()
+  {  
+  NBTTagCompound tag = new NBTTagCompound();
+  writeNBTData(tag);
+  S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+  return pkt;
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {
+  super.readFromNBT(tag);
+  readNBTData(tag);
+  }
+
+private void readNBTData(NBTTagCompound tag)
+  {
+  if(tag.hasKey("controllerPosition"))
+    {
+    controllerPosition = new BlockPosition(tag.getCompoundTag("controllerPosition"));
+    }
+  if(tag.hasKey("filter"))
+    {
+    filter = new WarehouseItemFilter();
+    filter.readFromNBT(tag.getCompoundTag("filter"));
+    }
+  inventoryName = tag.getString("name");
+  storedQuantity = tag.getInteger("quantity");
+  storagePriority = tag.getInteger("priority");
+  if(tag.hasKey("filterStack"))
+    {    
+    filterStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("filterStack"));
+    }
+  else
+    {
+    filterStack = null;
+    }
+  }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {  
+  super.writeToNBT(tag);
+  writeNBTData(tag);
+  }
+
+private void writeNBTData(NBTTagCompound tag)
+  {
+  if(controllerPosition!=null)
+    {
+    tag.setTag("controllerPosition", controllerPosition.writeToNBT(new NBTTagCompound()));
+    }
+  tag.setString("name", inventoryName);
+  if(filter!=null){tag.setTag("filter", filter.writeToNBT(new NBTTagCompound()));}
+  tag.setInteger("quantity", storedQuantity);
+  tag.setInteger("priority", storagePriority);
+  if(filterStack!=null){tag.setTag("filterStack", filterStack.writeToNBT(new NBTTagCompound()));}  
+  }
 }

@@ -160,16 +160,10 @@ private void synchItemMaps()
    * need to loop through warehouse.itemMap and find new entries
    *    add any new entries to change-list    
    */
-  warehouseItemMap.clear();
-  ItemStack stack;
+  warehouseItemMap.clear();    
   for(IWarehouseStorageTile tile : warehouse.getStorageTiles())
     {
-    for(int i = 0; i < tile.getSizeInventory(); i++)
-      {
-      stack = tile.getStackInSlot(i);
-      if(stack==null){continue;}
-      warehouseItemMap.addItemStack(stack, stack.stackSize);
-      }
+    tile.addInventoryContentsToMap(warehouseItemMap);
     }
   
   int qty;

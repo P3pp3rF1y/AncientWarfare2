@@ -31,14 +31,14 @@ public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z)
   tileNameOrig = tileName;
   itemFilters.addAll(storageTile.getFilters());
   int x1, y1;
-  for(int i = 0; i < storageTile.getSizeInventory(); i++)
+  for(int i = 0; i < storageTile.inventory.getSizeInventory(); i++)
     {
     x1 = (i%9) * 18 + 8;
     y1 = (i/9) * 18 + 20;
     addSlotToContainer(new SlotFiltered(storageTile, i, x1, y1));
     }
   
-  guiHeight = 8 + 12 + 18*(storageTile.getSizeInventory()/9)+8;
+  guiHeight = 8 + 12 + 18*(storageTile.inventory.getSizeInventory()/9)+8;
   guiHeight = addPlayerSlots(player, 8, guiHeight, 4) - 16;    
   }
 
@@ -76,7 +76,7 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
   {
   ItemStack slotStackCopy = null;
   Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
-  int slots = this.storageTile.getSizeInventory();
+  int slots = this.storageTile.inventory.getSizeInventory();
   if (theSlot != null && theSlot.getHasStack())
     {
     ItemStack slotStack = theSlot.getStack();
@@ -118,23 +118,18 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
 private final class SlotFiltered extends Slot
 {
 
-public SlotFiltered(IInventory par1iInventory, int par2, int par3, int par4)
+private TileWarehouseStorageBase tile;
+
+public SlotFiltered(TileWarehouseStorageBase tile, int par2, int par3, int par4)
   {
-  super(par1iInventory, par2, par3, par4);
+  super(tile.inventory, par2, par3, par4);
+  this.tile = tile;
   }
 
 @Override
 public boolean isItemValid(ItemStack par1ItemStack)
   {
-  if(itemFilters.isEmpty()){return true;}
-  for(WarehouseItemFilter filter : itemFilters)
-    {
-    if(filter.isItemValid(par1ItemStack))
-      {
-      return true;
-      }
-    }
-  return false;
+  return tile.isItemValid(par1ItemStack);
   }
 
 }

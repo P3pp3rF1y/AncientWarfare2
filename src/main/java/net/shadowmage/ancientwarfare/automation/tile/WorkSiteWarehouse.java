@@ -86,69 +86,69 @@ public void updateViewers()
 
 public void requestItem(BlockPosition storagePos, ItemStack item, boolean dmg, boolean nbt)
   {
-  TileEntity te = worldObj.getTileEntity(storagePos.x, storagePos.y, storagePos.z);
-  if(te instanceof IWarehouseStorageTile)
-    {
-    IWarehouseStorageTile tile = (IWarehouseStorageTile)te; 
-    if(storageTiles.contains(tile))
-      {
-      //will need to iterate through twice...the first time just checking for a full stack to remove/return
-      //the second time, attempting to create a stack from any partials that are present      
-      ItemStack stack;
-     
-      for(int i = 0; i < tile.getSizeInventory();i++)
-        {
-        stack = tile.getStackInSlot(i);
-        if(stack==null){continue;}  
-        if(InventoryTools.doItemStacksMatch(stack, item, dmg, nbt, false))
-          {         
-          stack = InventoryTools.mergeItemStack(inventory, stack, -1);          
-          if(stack==null || stack.stackSize==0)
-            {
-            tile.setInventorySlotContents(i, null);            
-            }
-          tile.markDirty();
-          break;
-          }
-        }
-      //if made it this far, then a full stack was not found....keep trying to remove partials until up to a full stack was removed
-      }
-    }
+//  TileEntity te = worldObj.getTileEntity(storagePos.x, storagePos.y, storagePos.z);
+//  if(te instanceof IWarehouseStorageTile)
+//    {
+//    IWarehouseStorageTile tile = (IWarehouseStorageTile)te; 
+//    if(storageTiles.contains(tile))
+//      {
+//      //will need to iterate through twice...the first time just checking for a full stack to remove/return
+//      //the second time, attempting to create a stack from any partials that are present      
+//      ItemStack stack;
+//     
+//      for(int i = 0; i < tile.getSizeInventory();i++)
+//        {
+//        stack = tile.getStackInSlot(i);
+//        if(stack==null){continue;}  
+//        if(InventoryTools.doItemStacksMatch(stack, item, dmg, nbt, false))
+//          {         
+//          stack = InventoryTools.mergeItemStack(inventory, stack, -1);          
+//          if(stack==null || stack.stackSize==0)
+//            {
+//            tile.setInventorySlotContents(i, null);            
+//            }
+//          tile.markDirty();
+//          break;
+//          }
+//        }
+//      //if made it this far, then a full stack was not found....keep trying to remove partials until up to a full stack was removed
+//      }
+//    }
   }
 
 public void requestItem(ItemStack filter)
   {
-  ItemStack returnStack = filter.copy();
-  returnStack.stackSize = 0;
-  ItemStack stack;
-  int qty;
-  for(IWarehouseStorageTile storageTile : this.storageTiles)
-    {
-    for(int i = 0; i < storageTile.getSizeInventory(); i++)
-      {
-      stack = storageTile.getStackInSlot(i);
-      if(stack==null || !InventoryTools.doItemStacksMatch(filter, stack)){continue;}
-      qty = returnStack.getMaxStackSize() - returnStack.stackSize;
-      if(qty>stack.stackSize){qty = stack.stackSize;}
-      storageTile.decrStackSize(i, qty);
-      storageTile.markDirty();
-      returnStack.stackSize+=qty;
-      
-      if(returnStack.stackSize>=64)
-        {
-        break;
-        }
-      }
-    if(returnStack.stackSize>=64)
-      {
-      break;
-      }
-    }
-  if(returnStack.stackSize>0)//merge into inventory
-    {
-    returnStack = InventoryTools.mergeItemStack(inventory, returnStack, -1);
-    if(returnStack!=null){InventoryTools.dropItemInWorld(worldObj, returnStack, xCoord, yCoord, zCoord);}
-    }
+//  ItemStack returnStack = filter.copy();
+//  returnStack.stackSize = 0;
+//  ItemStack stack;
+//  int qty;
+//  for(IWarehouseStorageTile storageTile : this.storageTiles)
+//    {
+//    for(int i = 0; i < storageTile.getSizeInventory(); i++)
+//      {
+//      stack = storageTile.getStackInSlot(i);
+//      if(stack==null || !InventoryTools.doItemStacksMatch(filter, stack)){continue;}
+//      qty = returnStack.getMaxStackSize() - returnStack.stackSize;
+//      if(qty>stack.stackSize){qty = stack.stackSize;}
+//      storageTile.decrStackSize(i, qty);
+//      storageTile.markDirty();
+//      returnStack.stackSize+=qty;
+//      
+//      if(returnStack.stackSize>=64)
+//        {
+//        break;
+//        }
+//      }
+//    if(returnStack.stackSize>=64)
+//      {
+//      break;
+//      }
+//    }
+//  if(returnStack.stackSize>0)//merge into inventory
+//    {
+//    returnStack = InventoryTools.mergeItemStack(inventory, returnStack, -1);
+//    if(returnStack!=null){InventoryTools.dropItemInWorld(worldObj, returnStack, xCoord, yCoord, zCoord);}
+//    }
   }
 
 @Override

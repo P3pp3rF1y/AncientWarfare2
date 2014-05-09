@@ -141,7 +141,7 @@ public ItemStack mergeItem(ItemStack stack)
   
   for(IWarehouseStorageTile tile : generalStorage)
     {
-    stack = InventoryTools.mergeItemStack(tile, stack, -1);
+    stack = tile.addItem(stack);
     if(stack==null)
       {
       break;
@@ -171,7 +171,7 @@ private ItemStack mergeStack(ItemStack stack)
     {
     if(tile.isItemValid(stack))
       {
-      stack = InventoryTools.mergeItemStack(tile, stack, -1);
+      stack = tile.addItem(stack);
       if(stack==null)
         {
         break;
