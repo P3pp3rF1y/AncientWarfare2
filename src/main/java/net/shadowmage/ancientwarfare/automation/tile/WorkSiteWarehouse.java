@@ -40,9 +40,10 @@ private boolean shouldRescan = false;
 private boolean hasWork = false;
 
 private List<IWarehouseStorageTile> storageTiles = new ArrayList<IWarehouseStorageTile>();
-private List<BlockPosition> inputBlocks = new ArrayList<BlockPosition>();
-private List<BlockPosition> outputBlocks = new ArrayList<BlockPosition>();
+private List<TileWarehouseInput> inputTiles = new ArrayList<TileWarehouseInput>();
+private List<TileEntity> outputTiles = new ArrayList<TileEntity>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
+private List<TileEntity> tilesToUpdate = new ArrayList<TileEntity>();
 
 private WarehouseItemMap itemMap = new WarehouseItemMap();
 
@@ -159,12 +160,15 @@ public void invalidate()
   init = false;
   TileEntity te;
   IControlledTile ict;
-  for(BlockPosition pos : this.inputBlocks)
+  for(TileWarehouseInput tile : this.inputTiles)
     {
-    te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-    if(te instanceof IControlledTile)
+    tile.setControllerPosition(null);
+    }
+  for(TileEntity tile : this.outputTiles)
+    {
+    if(tile instanceof IControlledTile)
       {
-      ict = (IControlledTile)te;
+      ict = (IControlledTile)tile;
       ict.setControllerPosition(null);
       }
     }
@@ -186,11 +190,29 @@ public void validate()
   hasWork = false;
   }
 
-public void addInputBlock(int x, int y, int z)
+public void updateStorageBlockFilters(IWarehouseStorageTile tile, List<WarehouseItemFilter> oldFilters, List<WarehouseItemFilter> newFilters)
   {
-  BlockPosition test = new BlockPosition(x,y,z);
-  if(inputBlocks.contains(test)){return;}
-  inputBlocks.add(test);
+  itemMap.updateStorageFilters(tile, oldFilters, newFilters);
+  updateViewers();
+  }
+
+public void addInputBlock(TileWarehouseInput input)
+  {
+  if(!inputTiles.contains(input))
+    {
+    inputTiles.add(input);
+    tilesToUpdate.add(input);
+    updateViewers();
+    }
+  }
+
+public void removeInputBlock(TileWarehouseInput input)
+  {
+  while(inputTiles.contains(input))
+    {
+    inputTiles.remove(input);
+    }
+  updateViewers();
   }
 
 public void addStorageBlock(IWarehouseStorageTile tile)
@@ -203,29 +225,35 @@ public void addStorageBlock(IWarehouseStorageTile tile)
   updateViewers();
   }
 
-public void updateStorageBlockFilters(IWarehouseStorageTile tile, List<WarehouseItemFilter> oldFilters, List<WarehouseItemFilter> newFilters)
-  {
-  itemMap.updateStorageFilters(tile, oldFilters, newFilters);
-  updateViewers();
-  }
-
-public void removeInputBlock(int x, int y, int z)
-  {
-  BlockPosition test = new BlockPosition(x,y,z);
-  inputBlocks.remove(test);
-  updateViewers();
-  }
-
 public void removeStorageBlock(IWarehouseStorageTile tile)
   {
   itemMap.removeStorageTile(tile, tile.getFilters());
-  storageTiles.remove(tile);
+  while(storageTiles.contains(tile))
+    {
+    storageTiles.remove(tile);    
+    }
   updateViewers();
   }
 
 public List<IWarehouseStorageTile> getStorageTiles()
   {
   return storageTiles;
+  }
+
+public void addOutputBlock(TileEntity te)
+  {
+  if(!outputTiles.contains(te))
+    {
+    outputTiles.add(te);
+    }
+  }
+
+public void removeOutputBlock(TileEntity te)
+  {
+  while(outputTiles.contains(te))
+    {
+    outputTiles.remove(te);
+    }
   }
 
 /**
@@ -253,7 +281,7 @@ protected void scanInitialBlocks()
           }
         else if(te instanceof TileWarehouseInput)
           {
-          addInputBlock(te.xCoord, te.yCoord, te.zCoord);
+          addInputBlock((TileWarehouseInput) te);
           if(te instanceof IControlledTile)
             {
             ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
@@ -315,25 +343,18 @@ private void processWork()
 
 private void attemptItemTransfer()
   {
-  TileEntity te;
-  TileWarehouseInput twi;
   ItemStack item;
-  for(BlockPosition pos : inputBlocks)
+  for(TileWarehouseInput tile : inputTiles)
     {
-    te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-    if(te instanceof TileWarehouseInput)
+    for(int i = 0; i< tile.getSizeInventory(); i++)
       {
-      twi = (TileWarehouseInput)te;
-      for(int i = 0; i< twi.getSizeInventory(); i++)
+      item = tile.getStackInSlot(i);
+      if(item==null){continue;}        
+      item = itemMap.mergeItem(item);
+      if(item==null)
         {
-        item = twi.getStackInSlot(i);
-        if(item==null){continue;}        
-        item = itemMap.mergeItem(item);
-        if(item==null)
-          {
-          twi.setInventorySlotContents(i, null);
-          return;
-          }
+        tile.setInventorySlotContents(i, null);
+        return;
         }
       }
     } 
@@ -349,22 +370,15 @@ private void scanInputInventory()
   {
   shouldRescan = false;
   hasWork = false;
-  TileEntity te;
-  TileWarehouseInput twi;
   ItemStack item;
-  for(BlockPosition pos : inputBlocks)
+  for(TileWarehouseInput tile : inputTiles)
     {
-    te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-    if(te instanceof TileWarehouseInput)
+    for(int i = 0; i< tile.getSizeInventory(); i++)
       {
-      twi = (TileWarehouseInput)te;
-      for(int i = 0; i< twi.getSizeInventory(); i++)
-        {
-        item = twi.getStackInSlot(i);
-        if(item==null){continue;}
-        hasWork = true;
-        return;
-        }
+      item = tile.getStackInSlot(i);
+      if(item==null){continue;}
+      hasWork = true;
+      return;
       }
     }  
   }
