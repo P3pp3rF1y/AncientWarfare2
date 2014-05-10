@@ -71,7 +71,7 @@ public boolean isGeneralStorage();
 
 /**
  * return the item count for the input filter, filter should be one of those
- * returned by getFilters() (can test for identity) 
+ * returned by getFilters() (can test for identity)
  * @param filter
  * @return
  */
