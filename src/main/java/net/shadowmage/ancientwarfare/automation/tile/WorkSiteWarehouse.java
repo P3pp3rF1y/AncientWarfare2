@@ -190,9 +190,7 @@ public void addInputBlock(int x, int y, int z)
   {
   BlockPosition test = new BlockPosition(x,y,z);
   if(inputBlocks.contains(test)){return;}
-  AWLog.logDebug("adding input block at: "+x+","+y+","+z);
   inputBlocks.add(test);
-  AWLog.logDebug("input blocks now contains: "+inputBlocks);
   }
 
 public void addStorageBlock(IWarehouseStorageTile tile)
@@ -200,9 +198,7 @@ public void addStorageBlock(IWarehouseStorageTile tile)
   itemMap.addStorageTile(tile);
   if(!storageTiles.contains(tile))
     {
-    AWLog.logDebug("adding storage tile of: "+tile);
     storageTiles.add(tile);    
-    AWLog.logDebug("storage blocks now contains: "+storageTiles);
     }
   updateViewers();
   }
@@ -217,17 +213,13 @@ public void removeInputBlock(int x, int y, int z)
   {
   BlockPosition test = new BlockPosition(x,y,z);
   inputBlocks.remove(test);
-  AWLog.logDebug("removing input block at: "+test);
-  AWLog.logDebug("input blocks now contains: "+inputBlocks);
   updateViewers();
   }
 
 public void removeStorageBlock(IWarehouseStorageTile tile)
   {
   itemMap.removeStorageTile(tile, tile.getFilters());
-  AWLog.logDebug("removing storage tile of: "+tile);
   storageTiles.remove(tile);
-  AWLog.logDebug("storage blocks now contains: "+storageTiles);
   updateViewers();
   }
 
@@ -241,7 +233,6 @@ public List<IWarehouseStorageTile> getStorageTiles()
  */
 protected void scanInitialBlocks()
   {
-  AWLog.logDebug("warehouse scanning initial blocks..."); 
   TileEntity te;
   for(int x = bbMin.x; x<=bbMax.x; x++)
     {

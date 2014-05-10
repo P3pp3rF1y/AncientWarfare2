@@ -73,6 +73,7 @@ private void addInventoryViewElements()
   int qty;
   ItemStack stack;
   int x = 0, y= 0;
+  int totalSize = 8;
   for(ItemStackHashWrap wrap : container.itemMap.keySet())
     {
     qty = container.itemMap.get(wrap);
@@ -93,8 +94,10 @@ private void addInventoryViewElements()
       {
       x=0;
       y++;
+      totalSize+=18;
       }
     }
+  area.setAreaSize(totalSize);
   }
 
 private void addFilterViewElements()
