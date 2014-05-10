@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,8 +20,8 @@ import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public abstract class TileWarehouseStorageBase extends TileEntity implements IInteractableTile, IWarehouseStorageTile, IControlledTile
 {
@@ -31,6 +33,7 @@ public InventoryBasic inventory;
 BlockPosition controllerPosition = null;
 
 private List<WarehouseItemFilter> itemFilters = new ArrayList<WarehouseItemFilter>();
+private Map<WarehouseItemFilter, Integer> itemFilterQuantities = new HashMap<WarehouseItemFilter, Integer>();
 private boolean init;
 
 /**
@@ -142,9 +145,12 @@ public void writeToNBT(NBTTagCompound tag)
 private void writeFilterList(NBTTagCompound tag)
   {
   NBTTagList filterList = new NBTTagList();
+  NBTTagCompound filterTag;
   for(WarehouseItemFilter filter : this.itemFilters)
     {
-    filterList.appendTag(filter.writeToNBT(new NBTTagCompound()));
+    filterTag = filter.writeToNBT(new NBTTagCompound());
+    filterTag.setInteger("quantity", itemFilterQuantities.get(filter));
+    filterList.appendTag(filterTag);
     }
   tag.setTag("filterList", filterList);
   }
@@ -152,13 +158,19 @@ private void writeFilterList(NBTTagCompound tag)
 private void readFilterList(NBTTagCompound tag)
   {
   itemFilters.clear();
+  itemFilterQuantities.clear();
   NBTTagList filterList = tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND);
   WarehouseItemFilter filter;
+  NBTTagCompound filterTag;
+  int quantity;
   for(int i = 0; i < filterList.tagCount(); i++)
     {
     filter = new WarehouseItemFilter();
-    filter.readFromNBT(filterList.getCompoundTagAt(i));
+    filterTag = filterList.getCompoundTagAt(i);
+    filter.readFromNBT(filterTag);
+    quantity = filterTag.getInteger("quantity");
     itemFilters.add(filter);    
+    itemFilterQuantities.put(filter, quantity);
     }
   }
 
@@ -205,7 +217,8 @@ public boolean receiveClientEvent(int a, int b)
     return true;
     }
   AWLog.logDebug("receiving client event: "+a+"::"+b+" client: "+worldObj.isRemote);
-  updateFilterCount(a, b);
+  WarehouseItemFilter filter = itemFilters.get(a);
+  itemFilterQuantities.put(filter, Integer.valueOf(b));
   this.informControllerOfClientUpdate();
   return false;
   }
@@ -218,6 +231,11 @@ public void setFilterList(List<WarehouseItemFilter> filters)
   filters1.addAll(itemFilters);
   itemFilters.clear();
   itemFilters.addAll(filters);
+  itemFilterQuantities.clear();
+  for(WarehouseItemFilter filter : filters)
+    {
+    itemFilterQuantities.put(filter, Integer.valueOf(0));
+    }
   if(!worldObj.isRemote)
     { 
     if(controllerPosition!=null)
@@ -271,39 +289,32 @@ private void recountFilters()
         {
         count+=item.stackSize;
         }
-      }    
-    setFilterCount(i, count);    
+      }  
+    itemFilterQuantities.put(filter, Integer.valueOf(count));
     }
   }
 
-private void setFilterCount(int filterIndex, int count)
+@Override
+public int getCountOf(WarehouseItemFilter filter)
   {
-  WarehouseItemFilter filter = this.itemFilters.get(filterIndex);
-  if(filter.getItemCount()!=count)
-    {
-    filter.setItemCount(count);
-    worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), filterIndex, count);
-    } 
+  return 0;
   }
 
-private void updateFilterCount(int filterIndex, int count)
-  {
-  if(filterIndex>=itemFilters.size()){return;}
-  WarehouseItemFilter filter = this.itemFilters.get(filterIndex);
-  if(filter.getItemCount()!=count)
-    {
-    filter.setItemCount(count);
-    }
-  }
-
+@Override
 public String getInventoryName()
   {
   return inventoryName;
   }
 
-public void setInventoryName(String name)
+public final void setInventoryName(String name)
   {
   this.inventoryName = name;
+  }
+
+@Override
+public boolean isGeneralStorage()
+  {
+  return itemFilters.isEmpty();
   }
 
 @Override

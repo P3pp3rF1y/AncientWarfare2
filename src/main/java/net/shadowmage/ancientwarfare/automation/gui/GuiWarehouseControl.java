@@ -147,7 +147,7 @@ private void addFilterViewElements()
       label = new Label(8+20, totalHeight+4, name);
       area.addGuiElement(label);
       
-      name = String.valueOf(filter.getItemCount());
+      name = String.valueOf(tile.getCountOf(filter));
       label = new Label(180-fontRendererObj.getStringWidth(name), totalHeight+4, name);
       area.addGuiElement(label);
       

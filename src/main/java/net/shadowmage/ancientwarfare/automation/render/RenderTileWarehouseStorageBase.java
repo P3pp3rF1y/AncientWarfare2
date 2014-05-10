@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.tile.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 
@@ -57,7 +58,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
       GL11.glTranslatef(0.5f, 1.f, 0.5f);//translate the point to the top-center of the block
       GL11.glRotatef(-r+180.f, 0, 1, 0);//rotate for rotation
       GL11.glTranslatef(0.5f, 0, -0.5f);//translate to top-left corner
-      renderSignContents(tile.getInventoryName(), tile.getFilters(), x, y, z, r);
+      renderSignContents(tile, x, y, z, r);
       GL11.glPopMatrix();      
       }
     }
@@ -80,7 +81,7 @@ private void renderSignBoard(double x, double y, double z, float r)
  * matrix should be setup so that 0,0 is upper-left-hand corner of the sign-board, with a
  * transformation of 1 being 1 BLOCK
  */
-private void renderSignContents(String tileName, List<WarehouseItemFilter> filters, double x, double y, double z, float r)
+private void renderSignContents(IWarehouseStorageTile tile, double x, double y, double z, float r)
   {
   GL11.glPushMatrix();
 //  drawPointAtCurrentOrigin();
@@ -101,6 +102,8 @@ private void renderSignContents(String tileName, List<WarehouseItemFilter> filte
   ItemStack filterItem;
   WarehouseItemFilter filter;
   String name = "";
+  List<WarehouseItemFilter>filters = tile.getFilters();
+  String tileName = tile.getInventoryName();
   fr.drawString(tileName, 100-fr.getStringWidth(tileName)/2, 10, 0xffffffff);
   for(int i = 0; i < 4 && i<filters.size(); i++)
     {
@@ -115,7 +118,7 @@ private void renderSignContents(String tileName, List<WarehouseItemFilter> filte
     name = filterItem==null? "Empty Filter" : filterItem.getDisplayName();
     fr.drawString(name, 20+12, i*18+4+10+10, 0xffffffff);
     
-    name = String.valueOf(filter.getItemCount());
+    name = String.valueOf(tile.getCountOf(filter));
     fr.drawString(name, 200-13-fr.getStringWidth(name), i*18+4+10+10, 0xffffffff);
     
     }

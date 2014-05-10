@@ -62,4 +62,13 @@ public int removeItem(ItemStack filter, int quantity);
  */
 public ItemStack addItem(ItemStack item);
 
+/**
+ * Is this tile acceptable for general storage, i.e. inventory is not filtered
+ * and can accept more than one type of item at a time.
+ * @return
+ */
+public boolean isGeneralStorage();
+
+public int getCountOf(WarehouseItemFilter filter);
+
 }

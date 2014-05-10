@@ -308,4 +308,16 @@ private void writeNBTData(NBTTagCompound tag)
   tag.setInteger("quantity", storedQuantity);
   if(filterStack!=null){tag.setTag("filterStack", filterStack.writeToNBT(new NBTTagCompound()));}  
   }
+
+@Override
+public boolean isGeneralStorage()
+  {  
+  return false;
+  }
+
+@Override
+public int getCountOf(WarehouseItemFilter filter)
+  {
+  return filter == this.filter ? storedQuantity : 0;
+  }
 }

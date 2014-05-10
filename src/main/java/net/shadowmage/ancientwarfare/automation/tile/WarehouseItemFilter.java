@@ -10,14 +10,14 @@ public final class WarehouseItemFilter
 private ItemStack filterItem;
 private boolean ignoreDamage;
 private boolean ignoreNBT;
-private int itemCount;
+private int filterPriority;
 
 public WarehouseItemFilter(){}
 
 public boolean isItemValid(ItemStack item)
   {
   if(item==null){return false;}
-  if(filterItem==null){return true;}//null filter item, use for 'match all'
+  if(filterItem==null){return false;}//null filter item, invalid filter
   if(item.getItem()!=filterItem.getItem()){return false;}//item not equivalent, obvious mis-match
   if(ignoreDamage && ignoreNBT){return true;}//item was equal, and ignore all else, return true
   else if(ignoreDamage){return ItemStack.areItemStackTagsEqual(item, filterItem);}//item was equal, ignore damage..return true if nbt-tags match
@@ -27,7 +27,7 @@ public boolean isItemValid(ItemStack item)
 
 public void readFromNBT(NBTTagCompound tag)
   {
-  itemCount = tag.getInteger("count");
+  filterPriority = tag.getInteger("priority");
   ignoreDamage = tag.getBoolean("dmg");
   ignoreNBT = tag.getBoolean("nbt"); 
   if(tag.hasKey("filter")){filterItem = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("filter"));}
@@ -35,21 +35,11 @@ public void readFromNBT(NBTTagCompound tag)
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
-  tag.setInteger("count", itemCount);
+  tag.setInteger("priority", filterPriority);
   tag.setBoolean("dmg", ignoreDamage);
-  tag.setBoolean("nbt", ignoreNBT);
+  tag.setBoolean("nbt", ignoreNBT);  
   if(filterItem!=null){tag.setTag("filter", filterItem.writeToNBT(new NBTTagCompound()));}  
   return tag;
-  }
-
-public final int getItemCount()
-  {
-  return itemCount;
-  }
-
-public final void setItemCount(int itemCount)
-  {
-  this.itemCount = itemCount;
   }
 
 public final ItemStack getFilterItem()
@@ -80,6 +70,16 @@ public final boolean isIgnoreNBT()
 public final void setIgnoreNBT(boolean ignoreNBT)
   {
   this.ignoreNBT = ignoreNBT;
+  }
+
+public final int getFilterPriority()
+  {
+  return filterPriority;
+  }
+
+public final void setFilterPriority(int filterPriority)
+  {
+  this.filterPriority = filterPriority;
   }
 
 @Override

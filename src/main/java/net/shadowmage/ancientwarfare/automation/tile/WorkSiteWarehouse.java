@@ -2,7 +2,9 @@ package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -24,7 +26,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemQuantityMap;
 
 public class WorkSiteWarehouse extends TileEntity implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
@@ -36,7 +37,6 @@ private int maxWorkers;
 private String owningPlayer;
 private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
 private boolean init = false;
-private boolean shouldRescan = false;
 private boolean hasWork = false;
 
 private List<IWarehouseStorageTile> storageTiles = new ArrayList<IWarehouseStorageTile>();
@@ -44,6 +44,10 @@ private List<TileWarehouseInput> inputTiles = new ArrayList<TileWarehouseInput>(
 private List<TileEntity> outputTiles = new ArrayList<TileEntity>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 private List<TileEntity> tilesToUpdate = new ArrayList<TileEntity>();
+
+private Map<TileEntity, ItemQuantityMap> tileInventories = new HashMap<TileEntity, ItemQuantityMap>();
+
+private List<Object> transferQueue = new ArrayList<Object>();//pending item transfers
 
 private WarehouseItemMap itemMap = new WarehouseItemMap();
 
@@ -60,6 +64,32 @@ public WorkSiteWarehouse()
 public final boolean canUpdate()
   {
   return true;
+  }
+
+@Override
+public void updateEntity()
+  {
+  if(!init)
+    {
+    init = true;
+    scanInitialBlocks();  
+    }
+  if(!tilesToUpdate.isEmpty())
+    {
+    for(TileEntity te : tilesToUpdate)
+      {
+      if(te instanceof IWarehouseStorageTile)
+        {
+        updateStorageTile((IWarehouseStorageTile)te);
+        }
+      else if(te instanceof TileWarehouseInput)
+        {
+        updateInputTile((TileWarehouseInput) te);
+        }
+      //else if(te instanceof TileWarehouseOutput){updateOutputTile((TileWarehouseOutput)te);}
+      }
+    tilesToUpdate.clear();
+    }
   }
 
 
@@ -206,22 +236,6 @@ protected void scanInitialBlocks()
         }
       }
     }
-  this.scanInputInventory();
-  }
-
-@Override
-public void updateEntity()
-  {
-  if(!init)
-    {
-    init = true;
-    scanInitialBlocks();  
-    }
-  if(shouldRescan && !worldObj.isRemote)
-    {    
-    shouldRescan = false;
-    scanInputInventory();
-    }
   }
 
 
@@ -246,36 +260,28 @@ private void attemptItemTransfer()
     } 
   }
 
-private void scanInputInventory()
-  {
-  shouldRescan = false;
-  hasWork = false;
-  ItemStack item;
-  for(TileWarehouseInput tile : inputTiles)
-    {
-    for(int i = 0; i< tile.getSizeInventory(); i++)
-      {
-      item = tile.getStackInSlot(i);
-      if(item==null){continue;}
-      hasWork = true;
-      return;
-      }
-    }  
-  }
-
 public void onStorageInventoryUpdated(IWarehouseStorageTile tile)
   {
-  tilesToUpdate.add((TileEntity)tile);
+  if(storageTiles.contains(tile))
+    {
+    tilesToUpdate.add((TileEntity)tile);    
+    }
   }
 
 public void onInputInventoryUpdated(TileWarehouseInput tile)
   {
-  tilesToUpdate.add(tile);
+  if(inputTiles.contains(tile))
+    {
+    tilesToUpdate.add(tile);    
+    }
   }
 
 public void onOutputInventoryUpdated(TileEntity tile)
   {
-  tilesToUpdate.add(tile);
+  if(outputTiles.contains(tile))
+    {
+    tilesToUpdate.add(tile);    
+    }
   }
 
 public void requestItem(BlockPosition storagePos, ItemStack item, boolean dmg, boolean nbt)
@@ -343,6 +349,21 @@ public void requestItem(ItemStack filter)
 //    returnStack = InventoryTools.mergeItemStack(inventory, returnStack, -1);
 //    if(returnStack!=null){InventoryTools.dropItemInWorld(worldObj, returnStack, xCoord, yCoord, zCoord);}
 //    }
+  }
+
+public void updateStorageTile(IWarehouseStorageTile tile)
+  {
+  
+  }
+
+public void updateInputTile(TileWarehouseInput tile)
+  {
+  
+  }
+
+public void updateOutputTile(TileEntity tile)
+  {
+  
   }
 
 public void updateStorageBlockFilters(IWarehouseStorageTile tile, List<WarehouseItemFilter> oldFilters, List<WarehouseItemFilter> newFilters)
@@ -468,10 +489,7 @@ private void processWork()
   attemptItemTransfer();
   long t2 = System.nanoTime();
   AWLog.logDebug("merge time: "+(t2-t1));
-  scanInputInventory();
   }
-
-
 
 
 /************************************************ NETWORK METHODS *************************************************/
