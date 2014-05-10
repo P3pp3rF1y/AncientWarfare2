@@ -56,34 +56,226 @@ public WorkSiteWarehouse()
   maxWorkers = 3;
   }
 
-public void addViewer(ContainerWarehouseControl viewer)
+@Override
+public final boolean canUpdate()
   {
-  if(!viewers.contains(viewer))
-    {
-    viewers.add(viewer);
-    }
-  AWLog.logDebug("adding viewer... now contains:"+viewers);
+  return true;
   }
 
-public void removeViewer(ContainerWarehouseControl viewer)
+
+/************************************************ MULTIBLOCK SYNCH METHODS *************************************************/
+
+public void addInputBlock(TileWarehouseInput input)
+  {
+  if(!inputTiles.contains(input))
+    {
+    inputTiles.add(input);
+    tilesToUpdate.add(input);
+    updateViewers();
+    }
+  }
+
+public void removeInputBlock(TileWarehouseInput input)
+  {
+  while(inputTiles.contains(input))
+    {
+    inputTiles.remove(input);
+    }
+  updateViewers();
+  }
+
+public List<TileWarehouseInput> getInputTiles()
+  {
+  return inputTiles;
+  }
+
+public void addStorageBlock(IWarehouseStorageTile tile)
+  {
+  itemMap.addStorageTile(tile);
+  if(!storageTiles.contains(tile))
+    {
+    storageTiles.add(tile);    
+    }
+  updateViewers();
+  }
+
+public void removeStorageBlock(IWarehouseStorageTile tile)
+  {
+  itemMap.removeStorageTile(tile, tile.getFilters());
+  while(storageTiles.contains(tile))
+    {
+    storageTiles.remove(tile);    
+    }
+  updateViewers();
+  }
+
+public List<IWarehouseStorageTile> getStorageTiles()
+  {
+  return storageTiles;
+  }
+
+public void addOutputBlock(TileEntity te)
+  {
+  if(!outputTiles.contains(te))
+    {
+    outputTiles.add(te);
+    }
+  }
+
+public void removeOutputBlock(TileEntity te)
+  {
+  while(outputTiles.contains(te))
+    {
+    outputTiles.remove(te);
+    }
+  }
+
+public List<TileEntity> getOutputTiles()
+  {
+  return outputTiles;
+  }
+
+@Override
+public void invalidate()
   {  
-  while(viewers.contains(viewer))
+  super.invalidate();
+  init = false;
+  TileEntity te;
+  IControlledTile ict;
+  for(TileWarehouseInput tile : this.inputTiles)
     {
-    viewers.remove(viewer);
+    tile.setControllerPosition(null);
     }
-  AWLog.logDebug("removing viewer... now contains:"+viewers);
-  }
-
-public void updateViewers()
-  {
-  for(ContainerWarehouseControl container : this.viewers)
+  for(TileEntity tile : this.outputTiles)
     {
-    container.refreshGui();
-    if(!worldObj.isRemote)
+    if(tile instanceof IControlledTile)
       {
-      container.onWarehouseInventoryUpdated();
+      ict = (IControlledTile)tile;
+      ict.setControllerPosition(null);
       }
     }
+  for(IWarehouseStorageTile tile : this.storageTiles)
+    {
+    if(tile instanceof IControlledTile)
+      {
+      ict = (IControlledTile)tile;
+      ict.setControllerPosition(null);
+      }
+    }
+  }
+
+@Override
+public void validate()
+  {  
+  super.validate();
+  init = false;
+  hasWork = false;
+  }
+
+/**
+ * should be called when tile is first loaded from disk, after world is set
+ */
+protected void scanInitialBlocks()
+  {
+  TileEntity te;
+  for(int x = bbMin.x; x<=bbMax.x; x++)
+    {
+    for(int z = bbMin.z; z<=bbMax.z; z++)
+      {
+      for(int y = bbMin.y; y<=bbMax.y; y++)
+        {
+        if(!worldObj.blockExists(x, y, z)){continue;}
+        te = worldObj.getTileEntity(x, y, z);
+        if(te==null){continue;}
+        else if(te instanceof IWarehouseStorageTile)
+          {
+          addStorageBlock((IWarehouseStorageTile) te);
+          if(te instanceof IControlledTile)
+            {
+            ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
+            }
+          }
+        else if(te instanceof TileWarehouseInput)
+          {
+          addInputBlock((TileWarehouseInput) te);
+          if(te instanceof IControlledTile)
+            {
+            ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
+            }
+          }
+        }
+      }
+    }
+  this.scanInputInventory();
+  }
+
+@Override
+public void updateEntity()
+  {
+  if(!init)
+    {
+    init = true;
+    scanInitialBlocks();  
+    }
+  if(shouldRescan && !worldObj.isRemote)
+    {    
+    shouldRescan = false;
+    scanInputInventory();
+    }
+  }
+
+
+/************************************************ INVENTORY TRACKING METHODS *************************************************/
+
+private void attemptItemTransfer()
+  {
+  ItemStack item;
+  for(TileWarehouseInput tile : inputTiles)
+    {
+    for(int i = 0; i< tile.getSizeInventory(); i++)
+      {
+      item = tile.getStackInSlot(i);
+      if(item==null){continue;}        
+      item = itemMap.mergeItem(item);
+      if(item==null)
+        {
+        tile.setInventorySlotContents(i, null);
+        return;
+        }
+      }
+    } 
+  }
+
+private void scanInputInventory()
+  {
+  shouldRescan = false;
+  hasWork = false;
+  ItemStack item;
+  for(TileWarehouseInput tile : inputTiles)
+    {
+    for(int i = 0; i< tile.getSizeInventory(); i++)
+      {
+      item = tile.getStackInSlot(i);
+      if(item==null){continue;}
+      hasWork = true;
+      return;
+      }
+    }  
+  }
+
+public void onStorageInventoryUpdated(IWarehouseStorageTile tile)
+  {
+  tilesToUpdate.add((TileEntity)tile);
+  }
+
+public void onInputInventoryUpdated(TileWarehouseInput tile)
+  {
+  tilesToUpdate.add(tile);
+  }
+
+public void onOutputInventoryUpdated(TileEntity tile)
+  {
+  tilesToUpdate.add(tile);
   }
 
 public void requestItem(BlockPosition storagePos, ItemStack item, boolean dmg, boolean nbt)
@@ -153,252 +345,15 @@ public void requestItem(ItemStack filter)
 //    }
   }
 
-@Override
-public void invalidate()
-  {  
-  super.invalidate();
-  init = false;
-  TileEntity te;
-  IControlledTile ict;
-  for(TileWarehouseInput tile : this.inputTiles)
-    {
-    tile.setControllerPosition(null);
-    }
-  for(TileEntity tile : this.outputTiles)
-    {
-    if(tile instanceof IControlledTile)
-      {
-      ict = (IControlledTile)tile;
-      ict.setControllerPosition(null);
-      }
-    }
-  for(IWarehouseStorageTile tile : this.storageTiles)
-    {
-    if(tile instanceof IControlledTile)
-      {
-      ict = (IControlledTile)tile;
-      ict.setControllerPosition(null);
-      }
-    }
-  }
-
-@Override
-public void validate()
-  {  
-  super.validate();
-  init = false;
-  hasWork = false;
-  }
-
 public void updateStorageBlockFilters(IWarehouseStorageTile tile, List<WarehouseItemFilter> oldFilters, List<WarehouseItemFilter> newFilters)
   {
   itemMap.updateStorageFilters(tile, oldFilters, newFilters);
-  updateViewers();
-  }
-
-public void onStorageFiltersUpdate(IWarehouseStorageTile tile, List<WarehouseItemFilter> oldFilters, List<WarehouseItemFilter> newFilters){}
-
-public void onStorageInventoryUpdated(IWarehouseStorageTile tile)
-  {
   tilesToUpdate.add((TileEntity)tile);
-  }
-
-public void onInputInventoryUpdated(TileWarehouseInput tile)
-  {
-  tilesToUpdate.add(tile);
-  }
-
-public void onOutputInventoryUpdated(TileEntity tile)
-  {
-  tilesToUpdate.add(tile);
-  }
-
-public void addInputBlock(TileWarehouseInput input)
-  {
-  if(!inputTiles.contains(input))
-    {
-    inputTiles.add(input);
-    tilesToUpdate.add(input);
-    updateViewers();
-    }
-  }
-
-public void removeInputBlock(TileWarehouseInput input)
-  {
-  while(inputTiles.contains(input))
-    {
-    inputTiles.remove(input);
-    }
   updateViewers();
   }
 
-public void addStorageBlock(IWarehouseStorageTile tile)
-  {
-  itemMap.addStorageTile(tile);
-  if(!storageTiles.contains(tile))
-    {
-    storageTiles.add(tile);    
-    }
-  updateViewers();
-  }
 
-public void removeStorageBlock(IWarehouseStorageTile tile)
-  {
-  itemMap.removeStorageTile(tile, tile.getFilters());
-  while(storageTiles.contains(tile))
-    {
-    storageTiles.remove(tile);    
-    }
-  updateViewers();
-  }
-
-public List<IWarehouseStorageTile> getStorageTiles()
-  {
-  return storageTiles;
-  }
-
-public void addOutputBlock(TileEntity te)
-  {
-  if(!outputTiles.contains(te))
-    {
-    outputTiles.add(te);
-    }
-  }
-
-public void removeOutputBlock(TileEntity te)
-  {
-  while(outputTiles.contains(te))
-    {
-    outputTiles.remove(te);
-    }
-  }
-
-/**
- * should be called when tile is first loaded from disk, after world is set
- */
-protected void scanInitialBlocks()
-  {
-  TileEntity te;
-  for(int x = bbMin.x; x<=bbMax.x; x++)
-    {
-    for(int z = bbMin.z; z<=bbMax.z; z++)
-      {
-      for(int y = bbMin.y; y<=bbMax.y; y++)
-        {
-        if(!worldObj.blockExists(x, y, z)){continue;}
-        te = worldObj.getTileEntity(x, y, z);
-        if(te==null){continue;}
-        else if(te instanceof IWarehouseStorageTile)
-          {
-          addStorageBlock((IWarehouseStorageTile) te);
-          if(te instanceof IControlledTile)
-            {
-            ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
-            }
-          }
-        else if(te instanceof TileWarehouseInput)
-          {
-          addInputBlock((TileWarehouseInput) te);
-          if(te instanceof IControlledTile)
-            {
-            ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
-            }
-          }
-        }
-      }
-    }
-  this.scanInputInventory();
-  }
-
-@Override
-public void updateEntity()
-  {
-  if(!init)
-    {
-    init = true;
-    scanInitialBlocks();  
-    }
-  if(shouldRescan && !worldObj.isRemote)
-    {    
-    shouldRescan = false;
-    scanInputInventory();
-    }
-  }
-
-@Override
-public boolean hasWork()
-  {
-  return hasWork;
-  }
-
-@Override
-public void doWork(IWorker worker)
-  {
-  if(hasWork)
-    {
-    processWork();    
-    }
-  }
-
-@Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  if(hasWork)
-    {
-    processWork();    
-    }
-  }
-
-private void processWork()
-  {
-  long t1 = System.nanoTime();
-  attemptItemTransfer();
-  long t2 = System.nanoTime();
-  AWLog.logDebug("merge time: "+(t2-t1));
-  scanInputInventory();
-  }
-
-private void attemptItemTransfer()
-  {
-  ItemStack item;
-  for(TileWarehouseInput tile : inputTiles)
-    {
-    for(int i = 0; i< tile.getSizeInventory(); i++)
-      {
-      item = tile.getStackInSlot(i);
-      if(item==null){continue;}        
-      item = itemMap.mergeItem(item);
-      if(item==null)
-        {
-        tile.setInventorySlotContents(i, null);
-        return;
-        }
-      }
-    } 
-  }
-
-public void onInputInventoryUpdated()
-  {
-  shouldRescan = true;
-  hasWork = false;
-  }
-
-private void scanInputInventory()
-  {
-  shouldRescan = false;
-  hasWork = false;
-  ItemStack item;
-  for(TileWarehouseInput tile : inputTiles)
-    {
-    for(int i = 0; i< tile.getSizeInventory(); i++)
-      {
-      item = tile.getStackInSlot(i);
-      if(item==null){continue;}
-      hasWork = true;
-      return;
-      }
-    }  
-  }
+/************************************************ WORKSITE METHODS *************************************************/
 
 @Override
 public WorkType getWorkType()
@@ -438,12 +393,6 @@ public final void removeWorker(IWorker worker)
   }
 
 @Override
-public final boolean canUpdate()
-  {
-  return true;
-  }
-
-@Override
 public final boolean hasWorkBounds()
   {
   return bbMin !=null || (bbMin!=null && bbMax!=null);
@@ -480,6 +429,81 @@ public List<BlockPosition> getWorkTargets()
 public final void setOwnerName(String name)
   {
   this.owningPlayer = name;
+  }
+
+@Override
+public void setBounds(BlockPosition p1, BlockPosition p2)
+  {
+  bbMin = p1;
+  bbMax = p2;
+  }
+
+@Override
+public boolean hasWork()
+  {
+  return hasWork;
+  }
+
+@Override
+public void doWork(IWorker worker)
+  {
+  if(hasWork)
+    {
+    processWork();    
+    }
+  }
+
+@Override
+public void doPlayerWork(EntityPlayer player)
+  {
+  if(hasWork)
+    {
+    processWork();    
+    }
+  }
+
+private void processWork()
+  {
+  long t1 = System.nanoTime();
+  attemptItemTransfer();
+  long t2 = System.nanoTime();
+  AWLog.logDebug("merge time: "+(t2-t1));
+  scanInputInventory();
+  }
+
+
+
+
+/************************************************ NETWORK METHODS *************************************************/
+
+public void addViewer(ContainerWarehouseControl viewer)
+  {
+  if(!viewers.contains(viewer))
+    {
+    viewers.add(viewer);
+    }
+  AWLog.logDebug("adding viewer... now contains:"+viewers);
+  }
+
+public void removeViewer(ContainerWarehouseControl viewer)
+  {  
+  while(viewers.contains(viewer))
+    {
+    viewers.remove(viewer);
+    }
+  AWLog.logDebug("removing viewer... now contains:"+viewers);
+  }
+
+public void updateViewers()
+  {
+  for(ContainerWarehouseControl container : this.viewers)
+    {
+    container.refreshGui();
+    if(!worldObj.isRemote)
+      {
+      container.onWarehouseInventoryUpdated();
+      }
+    }
   }
 
 @Override
@@ -538,13 +562,6 @@ public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt
     bbMax = new BlockPosition();
     bbMax.read(tag.getCompoundTag("bbMax"));
     }
-  }
-
-@Override
-public void setBounds(BlockPosition p1, BlockPosition p2)
-  {
-  bbMin = p1;
-  bbMax = p2;
   }
 
 

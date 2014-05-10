@@ -81,7 +81,7 @@ public void updateEntity()
           {
           warehouse.addInputBlock(this);
           controllerPosition = new BlockPosition(warehouse.xCoord, warehouse.yCoord, warehouse.zCoord);
-          warehouse.onInputInventoryUpdated();
+          warehouse.onInputInventoryUpdated(this);
           break;
           }
         }
@@ -98,7 +98,7 @@ public void markDirty()
     TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
-      ((WorkSiteWarehouse) te).onInputInventoryUpdated();
+      ((WorkSiteWarehouse) te).onInputInventoryUpdated(this);
       }
     }
   }
