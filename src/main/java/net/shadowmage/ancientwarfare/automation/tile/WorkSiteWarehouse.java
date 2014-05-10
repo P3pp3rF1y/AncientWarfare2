@@ -196,6 +196,23 @@ public void updateStorageBlockFilters(IWarehouseStorageTile tile, List<Warehouse
   updateViewers();
   }
 
+public void onStorageFiltersUpdate(IWarehouseStorageTile tile, List<WarehouseItemFilter> oldFilters, List<WarehouseItemFilter> newFilters){}
+
+public void onStorageInventoryUpdated(IWarehouseStorageTile tile)
+  {
+  tilesToUpdate.add((TileEntity)tile);
+  }
+
+public void onInputInventoryUpdated(TileWarehouseInput tile)
+  {
+  tilesToUpdate.add(tile);
+  }
+
+public void onOutputInventoryUpdated(TileEntity tile)
+  {
+  tilesToUpdate.add(tile);
+  }
+
 public void addInputBlock(TileWarehouseInput input)
   {
   if(!inputTiles.contains(input))
