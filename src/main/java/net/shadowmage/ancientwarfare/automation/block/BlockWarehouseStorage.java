@@ -1,13 +1,19 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
+import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageDeep;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageSmall;
 import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -17,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockWarehouseStorage extends Block
 {
 
-BlockIconMap iconMap = new BlockIconMap();
+private BlockIconMap iconMap = new BlockIconMap();
 
 public BlockWarehouseStorage(String regName)
   {
@@ -55,7 +61,22 @@ public boolean hasTileEntity(int metadata)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {
-  return new TileWarehouseStorageSmall();  
+  switch(metadata)
+  {
+  case 0:
+  return new TileWarehouseStorageSmall();
+  case 3:
+  return new TileWarehouseStorageDeep();
+  default:
+  return new TileWarehouseStorageSmall();
+  }  
+  }
+
+@Override
+public void getSubBlocks(Item item, CreativeTabs p_149666_2_, List list)
+  {
+  list.add(new ItemStack(item,1,0));
+  list.add(new ItemStack(item,1,3));
   }
 
 @Override

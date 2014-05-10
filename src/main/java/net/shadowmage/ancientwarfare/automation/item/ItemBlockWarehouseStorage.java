@@ -2,6 +2,9 @@ package net.shadowmage.ancientwarfare.automation.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
+import net.shadowmage.ancientwarfare.automation.block.BlockWarehouseStorage;
 
 public class ItemBlockWarehouseStorage extends ItemBlock
 {
@@ -9,6 +12,13 @@ public class ItemBlockWarehouseStorage extends ItemBlock
 public ItemBlockWarehouseStorage(Block p_i45328_1_)
   {
   super(p_i45328_1_);
+  this.setHasSubtypes(true);
+  }
+
+@Override
+public String getUnlocalizedName(ItemStack par1ItemStack)
+  {
+  return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
   }
 
 @Override

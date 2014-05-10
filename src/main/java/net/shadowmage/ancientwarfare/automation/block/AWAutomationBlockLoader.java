@@ -109,7 +109,7 @@ public static final BlockWorksiteBase worksiteWarehouse = new BlockWorksiteBase(
   
 public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 
-public static final BlockWarehouseStorage warehouseStorageBlock = new BlockWarehouseStorage("warehouse_storage_small");
+public static final BlockWarehouseStorage warehouseStorageBlock = new BlockWarehouseStorage("warehouse_storage");
 
 public static final BlockWarehouseInput warehouseInput = new BlockWarehouseInput("warehouse_input");
 
@@ -184,7 +184,7 @@ public static void load()
   GameRegistry.registerTileEntity(WorkSiteWarehouse.class, "civic_warehouse_tile");
   worksiteWarehouse.setWorkVerticalSize(4);
   
-  GameRegistry.registerBlock(warehouseStorageBlock, "warehouse_storage_block");
+  GameRegistry.registerBlock(warehouseStorageBlock, ItemBlockWarehouseStorage.class, "warehouse_storage");
   GameRegistry.registerTileEntity(TileWarehouseStorageSmall.class, "warehouse_storage_small_tile");
   GameRegistry.registerTileEntity(TileWarehouseStorageDeep.class, "warehouse_storage_deep_tile");
   warehouseStorageBlock.setIcon(0, 0, "ancientwarfare:automation/warehouse_storage_small_bottom");

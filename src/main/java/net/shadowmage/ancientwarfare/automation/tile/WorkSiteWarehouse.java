@@ -41,6 +41,7 @@ private boolean hasWork = false;
 
 private List<IWarehouseStorageTile> storageTiles = new ArrayList<IWarehouseStorageTile>();
 private List<BlockPosition> inputBlocks = new ArrayList<BlockPosition>();
+private List<BlockPosition> outputBlocks = new ArrayList<BlockPosition>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 
 private WarehouseItemMap itemMap = new WarehouseItemMap();
