@@ -320,4 +320,14 @@ public int getCountOf(WarehouseItemFilter filter)
   {
   return filter == this.filter ? storedQuantity : 0;
   }
+
+@Override
+public boolean canHoldMore(ItemStack item)
+  {
+  if(isItemValid(item))
+    {
+    return true;
+    }
+  return false;
+  }
 }

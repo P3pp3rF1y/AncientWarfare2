@@ -62,7 +62,7 @@ public void handlePacketData(NBTTagCompound tag)
 
 public void removeTarget(BlockPosition target)
   {
-  boolean val = targetBlocks.remove(target);  
+  targetBlocks.remove(target);  
   }
 
 }

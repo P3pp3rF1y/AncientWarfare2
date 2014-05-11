@@ -45,8 +45,6 @@ private List<TileEntity> outputTiles = new ArrayList<TileEntity>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 private List<TileEntity> tilesToUpdate = new ArrayList<TileEntity>();
 
-private Map<TileEntity, ItemQuantityMap> tileInventories = new HashMap<TileEntity, ItemQuantityMap>();
-
 private List<Object> transferQueue = new ArrayList<Object>();//pending item transfers
 
 private WarehouseItemMap itemMap = new WarehouseItemMap();

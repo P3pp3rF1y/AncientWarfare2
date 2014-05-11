@@ -99,7 +99,6 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
         {
         if(ResearchTracker.instance().addResearchFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode)
           {
-          ItemStack stack1 = player.inventory.getCurrentItem();
           stack.stackSize--;
           if(stack.stackSize<=0)
             {
@@ -111,7 +110,6 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
         {
         if(ResearchTracker.instance().addProgressFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode)
           {
-          ItemStack stack1 = player.inventory.getCurrentItem();
           stack.stackSize--;
           if(stack.stackSize<=0)
             {

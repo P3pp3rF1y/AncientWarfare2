@@ -301,6 +301,24 @@ public int getCountOf(WarehouseItemFilter filter)
   }
 
 @Override
+public boolean canHoldMore(ItemStack item)
+  {
+  if(isItemValid(item))
+    {
+    ItemStack stack;
+    for(int i = 0; i < this.inventory.getSizeInventory(); i++)
+      {
+      stack = inventory.getStackInSlot(i);
+      if(stack==null || (InventoryTools.doItemStacksMatch(stack, item) && stack.stackSize<stack.getMaxStackSize()))
+        {
+        return true;
+        }
+      }
+    }
+  return false;
+  }
+
+@Override
 public String getInventoryName()
   {
   return inventoryName;

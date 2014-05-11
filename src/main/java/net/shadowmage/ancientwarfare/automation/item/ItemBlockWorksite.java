@@ -112,8 +112,6 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     TileEntity worksite = world.getTileEntity(x, y, z);
     if(worksite instanceof IBoundedTile)
       {
-      BlockPosition p1 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos1"));
-      BlockPosition p2 = new BlockPosition(stack.getTagCompound().getCompoundTag("pos2"));
       ((IBoundedTile)worksite).setBounds(min, max);
       }
     if(worksite instanceof IOwnable)

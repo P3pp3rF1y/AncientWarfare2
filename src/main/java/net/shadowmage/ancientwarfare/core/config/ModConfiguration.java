@@ -32,7 +32,6 @@ public abstract class ModConfiguration
 {
 
 public Configuration config;
-private boolean debug = false;
 public static boolean updatedVersion = false;
 public static boolean autoExportOnUpdate = false;
 public static boolean shouldExport = false;
@@ -50,11 +49,6 @@ public void load()
 
 protected abstract void initializeCategories();
 protected abstract void initializeValues();
-
-public void setDebug(boolean value)
-  {
-  this.debug = value;
-  }
 
 public Configuration getConfig()
   {

@@ -77,4 +77,6 @@ public boolean isGeneralStorage();
  */
 public int getCountOf(WarehouseItemFilter filter);
 
+public boolean canHoldMore(ItemStack item);
+
 }

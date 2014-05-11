@@ -75,7 +75,7 @@ public void preItemCrafted()
 
 public void onItemCrafted()
   {
-  ItemStack layoutStack, testStack1;   
+  ItemStack layoutStack;   
   for(int i = 0; i < 9; i++)
     {
     layoutStack = matrixShadow[i];

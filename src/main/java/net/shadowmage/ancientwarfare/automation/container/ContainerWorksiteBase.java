@@ -88,7 +88,6 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
   {
   ItemStack slotStackCopy = null;
   Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
-  SlotItemFilter filter;
   SlotFiltered slot;
   if (theSlot != null && theSlot.getHasStack())
     {
