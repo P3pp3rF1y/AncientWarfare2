@@ -86,7 +86,7 @@ public void setupElements()
     slot = new FilterItemSlot(8, totalHeight, filter, this);
     area.addGuiElement(slot);
     
-    input = new NumberInput(8+30, totalHeight+3, 40, filter.getFilterQuantity(), this);    
+    input = new FilterQuantityInput(8+30, totalHeight+3, filter);    
     input.setIntegerValue();
     area.addGuiElement(input);
     

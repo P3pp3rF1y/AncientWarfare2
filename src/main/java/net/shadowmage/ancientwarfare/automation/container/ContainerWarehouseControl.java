@@ -18,7 +18,7 @@ public class ContainerWarehouseControl extends ContainerBase
 
 public WorkSiteWarehouse warehouse;
 public ItemQuantityMap itemMap = new ItemQuantityMap();
-boolean shouldUpdate;
+boolean shouldUpdate = true;
 
 public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
   {
@@ -40,11 +40,11 @@ public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
 @Override
 public void sendInitData()
   {  
-  NBTTagCompound wtag = warehouse.inventoryMap.writeToNBT(new NBTTagCompound());
-  itemMap.putAll(warehouse.inventoryMap);
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setTag("itemList", wtag);
-  sendDataToServer(tag);
+//  NBTTagCompound wtag = warehouse.inventoryMap.writeToNBT(new NBTTagCompound());
+//  itemMap.putAll(warehouse.inventoryMap);
+//  NBTTagCompound tag = new NBTTagCompound();
+//  tag.setTag("itemList", wtag);
+//  sendDataToServer(tag);
   }
 
 @Override
@@ -150,9 +150,9 @@ private void synchItemMaps()
       this.itemMap.put(entry, qty);
       }
     }
+  AWLog.logDebug("Warehouse item map contains:\n"+warehouseItemMap);
   if(changeList.tagCount()>0)
     {
-    AWLog.logDebug("Warehouse item map contains:\n"+warehouseItemMap);
     tag = new NBTTagCompound();
     tag.setTag("changeList", changeList);
     sendDataToClient(tag);    

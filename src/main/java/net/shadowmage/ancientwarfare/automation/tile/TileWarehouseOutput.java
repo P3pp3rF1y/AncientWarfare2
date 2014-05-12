@@ -125,6 +125,7 @@ public Packet getDescriptionPacket()
 @Override
 public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {
+  filters.clear();
   NBTTagCompound tag = pkt.func_148857_g();
   if(tag.hasKey("filterList"))
     {
@@ -137,6 +138,7 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
+  filters.clear();
   inventory.readFromNBT(tag.getCompoundTag("inventory"));
   if(tag.hasKey("filterList"))
     {
@@ -166,6 +168,19 @@ public void setFilters(List<WarehouseItemFilter> filters)
   {
   this.filters.clear();
   this.filters.addAll(filters);
+  if(!this.worldObj.isRemote)
+    {
+    this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+      {
+      TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+      if(te instanceof WorkSiteWarehouse)
+        {
+        WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
+        warehouse.onOutputInventoryUpdated(this);
+        }
+      }
+    }
   }
 
 @Override

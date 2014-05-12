@@ -263,7 +263,7 @@ public static int getNumOfSlotsContaining(IInventory inv, int side, ItemStack fi
   }
 
 /**
- * return the found count of the input item stack (checks item/meta/tag, ignores qty)<br>
+ * return the found count of the input item stack (checks item/meta/tag)<br>
  * if inv is not a sided inventory, or input side < 0, counts from entire inventory<br>
  * otherwise only returns the item count from the input side
  * @param inv

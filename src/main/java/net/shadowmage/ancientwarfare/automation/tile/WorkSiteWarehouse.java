@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -24,6 +25,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
 
 public class WorkSiteWarehouse extends TileEntity implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
@@ -40,13 +42,13 @@ private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorke
 private boolean init = false;
 private List<IWarehouseStorageTile> storageTiles = new ArrayList<IWarehouseStorageTile>();
 private List<TileWarehouseInput> inputTiles = new ArrayList<TileWarehouseInput>();
-private List<TileEntity> outputTiles = new ArrayList<TileEntity>();
-private List<TileEntity> tilesToUpdate = new ArrayList<TileEntity>();
+private List<TileWarehouseOutput> outputTiles = new ArrayList<TileWarehouseOutput>();
+private Set<TileEntity> tilesToUpdate = new HashSet<TileEntity>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 public InventoryBasic inventory = new InventoryBasic(9);//manual input/output inventory
 public ItemQuantityMap inventoryMap = new ItemQuantityMap(); 
 
-private List<TileEntity> outputToFill = new ArrayList<TileEntity>();
+private List<TileWarehouseOutput> outputToFill = new ArrayList<TileWarehouseOutput>();
 private List<TileWarehouseInput> inputToEmpty = new ArrayList<TileWarehouseInput>();
 
 int currentItemCount;//used slots--calced from item quantity map
@@ -81,7 +83,10 @@ public void updateEntity()
         {
         updateInputTile((TileWarehouseInput) te);
         }
-      //else if(te instanceof TileWarehouseOutput){updateOutputTile((TileWarehouseOutput)te);}
+      else if(te instanceof TileWarehouseOutput)
+        {
+        updateOutputTile((TileWarehouseOutput)te);
+        }
       }
     tilesToUpdate.clear();
     }
@@ -96,7 +101,6 @@ public void addInputBlock(TileWarehouseInput input)
     {
     inputTiles.add(input);
     tilesToUpdate.add(input);
-    updateViewers();
     }
   }
 
@@ -145,15 +149,16 @@ public List<IWarehouseStorageTile> getStorageTiles()
   return storageTiles;
   }
 
-public void addOutputBlock(TileEntity te)
+public void addOutputBlock(TileWarehouseOutput te)
   {
   if(!outputTiles.contains(te))
     {
     outputTiles.add(te);
+    tilesToUpdate.add(te);
     }
   }
 
-public void removeOutputBlock(TileEntity te)
+public void removeOutputBlock(TileWarehouseOutput te)
   {
   while(outputTiles.contains(te))
     {
@@ -165,7 +170,7 @@ public void removeOutputBlock(TileEntity te)
     }
   }
 
-public List<TileEntity> getOutputTiles()
+public List<TileWarehouseOutput> getOutputTiles()
   {
   return outputTiles;
   }
@@ -180,13 +185,9 @@ public void invalidate()
     {
     tile.setControllerPosition(null);
     }
-  for(TileEntity tile : this.outputTiles)
+  for(TileWarehouseOutput tile : this.outputTiles)
     {
-    if(tile instanceof IControlledTile)
-      {
-      ict = (IControlledTile)tile;
-      ict.setControllerPosition(null);
-      }
+    tile.setControllerPosition(null);
     }
   for(IWarehouseStorageTile tile : this.storageTiles)
     {
@@ -261,13 +262,25 @@ public void onOutputInventoryUpdated(TileEntity tile)
 
 public void requestItem(ItemStack filter)
   {
-
+  int quantity = inventoryMap.getCount(filter);
+  if(quantity>filter.getMaxStackSize())
+    {
+    quantity = filter.getMaxStackSize();
+    }
+  if(quantity<=0){return;}
+  ItemStack toMerge = filter.copy();
+  toMerge.stackSize = quantity;
+  inventoryMap.decreaseCount(filter, quantity);
+  toMerge = InventoryTools.mergeItemStack(inventory, toMerge, -1);
+  if(toMerge!=null)
+    {
+    inventoryMap.addCount(toMerge, toMerge.stackSize);
+    }
   }
 
 public void updateInputTile(TileWarehouseInput tile)
   {
   inputToEmpty.remove(tile);
-  //TODO check input tile inventory.  If it contains items, add to toEmpty set\
   ItemStack item;
   for(int i = 0; i < tile.getSizeInventory(); i++)
     {
@@ -280,10 +293,18 @@ public void updateInputTile(TileWarehouseInput tile)
     }
   }
 
-public void updateOutputTile(TileEntity tile)
+public void updateOutputTile(TileWarehouseOutput tile)
   {
   outputToFill.remove(tile);//remove it in case it was already present in the toFil set
-  //TODO check output tile filters/quantity set, if any is below nominal, add to toFill set
+  List<WarehouseItemFilter> filters = tile.getFilters();
+  for(WarehouseItemFilter filter : filters)
+    {
+    if(InventoryTools.getCountOf(tile, -1, filter.getFilterItem())<filter.getFilterQuantity())
+      {
+      outputToFill.add(tile);
+      break;
+      }
+    }  
   }
 
 public void updateSlotCount()
@@ -399,7 +420,26 @@ private void processWork()
   long t1 = System.nanoTime();  
   if(!inputToEmpty.isEmpty())
     {
-    TileWarehouseInput tile = inputToEmpty.remove(0);
+    processInputWork();
+    }
+  else if(!outputToFill.isEmpty())
+    {
+    processOutputWork();
+    }
+  long t2 = System.nanoTime();
+  long t3 = (t2-t1);
+  float f1 = (float)((double)t3 / 1000000.d);
+  AWLog.logDebug("work time: "+(t2-t1)+"ns ("+f1+"ms)");
+  updateViewers();
+  }
+
+private void processInputWork()
+  {
+  TileWarehouseInput tile;
+  outerLoopLabel:
+  while(!inputToEmpty.isEmpty())
+    {
+    tile = inputToEmpty.remove(0);
     ItemStack stack;
     int transferQuantity;
     for(int i=0; i<tile.getSizeInventory(); i++)
@@ -412,30 +452,80 @@ private void processWork()
           {
           transferQuantity=stack.stackSize;
           }
-        inventoryMap.addCount(stack, stack.stackSize);
+        inventoryMap.addCount(stack, transferQuantity);
         stack.stackSize-=transferQuantity;
         currentItemCount+=transferQuantity;
         if(stack.stackSize<=0)
           {
           tile.setInventorySlotContents(i, null);
           }
-        break;
+        tilesToUpdate.add(tile);
+        
+        //if a non-null stack was found
+        break outerLoopLabel;
         }
       }    
     tilesToUpdate.add(tile);
     }
-  else if(!outputToFill.isEmpty())
-    {
-    TileEntity tile = outputToFill.get(0);
+  }
 
+private void processOutputWork()
+  {
+  TileWarehouseOutput tile;
+  List<WarehouseItemFilter> filters;
+  ItemStack toMerge;
+  int filterQuantity, foundQuantity, transferQuantity, passXfer;
+  
+  AWLog.logDebug("processing output work..1");
+  
+  outerLoopLabel:  
+  while(!outputToFill.isEmpty())
+    {
+    AWLog.logDebug("processing output work..2");
+    tile = outputToFill.remove(0);
     tilesToUpdate.add(tile);
-    updateSlotCount();
+    filters = tile.getFilters();
+    for(WarehouseItemFilter filter : filters)
+      {
+      AWLog.logDebug("processing output work..3");
+      if(filter.getFilterItem()==null){continue;}
+      filterQuantity = filter.getFilterQuantity();
+      foundQuantity = InventoryTools.getCountOf(tile, -1, filter.getFilterItem());
+      if(foundQuantity<filterQuantity)
+        {
+        transferQuantity = inventoryMap.getCount(filter.getFilterItem());
+        if(transferQuantity==0){continue;}
+        if(transferQuantity > filterQuantity-foundQuantity)
+          {
+          transferQuantity = filterQuantity - foundQuantity;
+          }
+        while(transferQuantity>0)
+          {
+          AWLog.logDebug("processing output work..4");
+          toMerge = filter.getFilterItem().copy();
+          passXfer = transferQuantity;
+          if(passXfer>toMerge.getMaxStackSize())
+            {
+            passXfer = toMerge.getMaxStackSize();
+            }
+          toMerge.stackSize = passXfer;
+          transferQuantity -= passXfer;
+          inventoryMap.decreaseCount(toMerge, passXfer);
+          toMerge = InventoryTools.mergeItemStack(tile, toMerge, -1);
+          if(toMerge!=null)//could only partially merge--perhaps output is full?
+            {
+            inventoryMap.addCount(toMerge, toMerge.stackSize);
+            break;
+            }
+          }
+        if(transferQuantity != filterQuantity-foundQuantity)//at least one item was merged, break completely out as work was done
+          {
+          break outerLoopLabel;
+          }
+        }
+      }        
     }
-  long t2 = System.nanoTime();
-  long t3 = (t2-t1);
-  float f1 = (float)((double)t3 / 1000000.d);
-  AWLog.logDebug("work time: "+(t2-t1)+"ns ("+f1+"ms)");
-  updateViewers();
+  AWLog.logDebug("processed output work. output set:"+outputToFill+" update set: "+tilesToUpdate);
   }
 
 /************************************************ NETWORK METHODS *************************************************/
@@ -485,6 +575,7 @@ public void readFromNBT(NBTTagCompound tag)
     {
     inventoryMap.readFromNBT(tag.getCompoundTag("itemMap"));
     }
+  this.updateSlotCount();
   }
 
 @Override
