@@ -330,4 +330,12 @@ public boolean canHoldMore(ItemStack item)
     }
   return false;
   }
+
+@Override
+public int getCountOf(ItemStack item)
+  {
+  if(filterStack==null){return 0;}
+  else if(InventoryTools.doItemStacksMatch(item, filterStack)){return storedQuantity;}
+  return 0;
+  }
 }

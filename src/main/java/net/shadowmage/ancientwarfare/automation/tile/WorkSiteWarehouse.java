@@ -45,7 +45,7 @@ private List<TileEntity> outputTiles = new ArrayList<TileEntity>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 private List<TileEntity> tilesToUpdate = new ArrayList<TileEntity>();
 
-private List<Object> transferQueue = new ArrayList<Object>();//pending item transfers
+private List<WarehouseRoutedItem> transferQueue = new ArrayList<WarehouseRoutedItem>();//pending item transfers
 
 private WarehouseItemMap itemMap = new WarehouseItemMap();
 
@@ -238,25 +238,6 @@ protected void scanInitialBlocks()
 
 
 /************************************************ INVENTORY TRACKING METHODS *************************************************/
-
-private void attemptItemTransfer()
-  {
-  ItemStack item;
-  for(TileWarehouseInput tile : inputTiles)
-    {
-    for(int i = 0; i< tile.getSizeInventory(); i++)
-      {
-      item = tile.getStackInSlot(i);
-      if(item==null){continue;}        
-      item = itemMap.mergeItem(item);
-      if(item==null)
-        {
-        tile.setInventorySlotContents(i, null);
-        return;
-        }
-      }
-    } 
-  }
 
 public void onStorageInventoryUpdated(IWarehouseStorageTile tile)
   {
@@ -460,35 +441,38 @@ public void setBounds(BlockPosition p1, BlockPosition p2)
 @Override
 public boolean hasWork()
   {
-  return hasWork;
+  return !transferQueue.isEmpty();
   }
 
 @Override
 public void doWork(IWorker worker)
   {
-  if(hasWork)
-    {
-    processWork();    
-    }
+  processWork();  
   }
 
 @Override
 public void doPlayerWork(EntityPlayer player)
   {
-  if(hasWork)
-    {
-    processWork();    
-    }
+  processWork();
   }
 
 private void processWork()
   {
   long t1 = System.nanoTime();
-  attemptItemTransfer();
+  if(!transferQueue.isEmpty())
+    {
+    WarehouseRoutedItem routedItem = transferQueue.remove(0);
+    
+    }
+  //TODO
   long t2 = System.nanoTime();
   AWLog.logDebug("merge time: "+(t2-t1));
   }
 
+private void handleItemTransfer(WarehouseRoutedItem routedItem)
+  {
+  
+  }
 
 /************************************************ NETWORK METHODS *************************************************/
 

@@ -1,5 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,58 +11,37 @@ import java.util.Set;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WarehouseItemMap
 {
 
+private static ComparatorWarehouseItemFilter comparator = new ComparatorWarehouseItemFilter();
+
 Set<IWarehouseStorageTile> generalStorage = new HashSet<IWarehouseStorageTile>();
-Map<Item, ItemEntry> filteredStorageSpecific = new HashMap<Item, ItemEntry>();
-Map<Item, ItemEntry> filteredStorageIgnoreNBT = new HashMap<Item, ItemEntry>();
-Map<Item, ItemEntry> filteredStorageIgnoreDmg = new HashMap<Item, ItemEntry>();
-Map<Item, ItemEntry> filteredStorageIgnoreDmgNBT = new HashMap<Item, ItemEntry>();
+Map<Item, ItemFilterEntry> filteredStorage = new HashMap<Item, ItemFilterEntry>();
 
 public void addStorageTile(IWarehouseStorageTile tile)
   {
   List<WarehouseItemFilter> filters = tile.getFilters();
-  if(filters.isEmpty())
+  if(filters.isEmpty() && tile.isGeneralStorage())
     {
     generalStorage.add(tile);    
     return;
     }
   
   Item item;
-  Map<Item, ItemEntry> entryMap;
   for(WarehouseItemFilter filter : filters)
     {
     if(filter.getFilterItem()==null)
-      {
-      generalStorage.add(tile);
+      {    
       continue;
       }
-    item = filter.getFilterItem().getItem();
-    if(item==null){continue;}
-    if(filter.isIgnoreDamage() && filter.isIgnoreNBT())
+    item = filter.getFilterItem().getItem();    
+    if(!filteredStorage.containsKey(item))
       {
-      entryMap = filteredStorageIgnoreDmgNBT;
+      filteredStorage.put(item, new ItemFilterEntry());
       }
-    else if(filter.isIgnoreDamage())
-      {
-      entryMap = filteredStorageIgnoreDmg;
-      }
-    else if(filter.isIgnoreNBT())
-      {
-      entryMap = filteredStorageIgnoreNBT;
-      }
-    else
-      {
-      entryMap = filteredStorageSpecific;
-      }
-    if(!entryMap.containsKey(item))
-      {
-      entryMap.put(item, new ItemEntry());
-      }
-    entryMap.get(item).addTile(tile);
+    filteredStorage.get(item).addFilter(tile, filter);
     }
   }
 
@@ -69,38 +51,15 @@ public void removeStorageTile(IWarehouseStorageTile tile, List<WarehouseItemFilt
     {
     generalStorage.remove(tile); 
     return;
-    }
-  
+    }  
   Item item;
-  Map<Item, ItemEntry> entryMap;
   for(WarehouseItemFilter filter : filters)
     {
-    if(filter.getFilterItem()==null)
-      {
-      generalStorage.remove(tile);
-      continue;
-      }
     item = filter.getFilterItem().getItem();
     if(item==null){continue;}
-    if(filter.isIgnoreDamage() && filter.isIgnoreNBT())
+    if(filteredStorage.containsKey(item))
       {
-      entryMap = filteredStorageIgnoreDmgNBT;
-      }
-    else if(filter.isIgnoreDamage())
-      {
-      entryMap = filteredStorageIgnoreDmg;
-      }
-    else if(filter.isIgnoreNBT())
-      {
-      entryMap = filteredStorageIgnoreNBT;
-      }
-    else
-      {
-      entryMap = filteredStorageSpecific;
-      }
-    if(entryMap.containsKey(item))
-      {
-      entryMap.get(item).removeTile(tile);
+      filteredStorage.get(item).removeFilter(tile, filter);
       }
     }
   }
@@ -111,75 +70,71 @@ public void updateStorageFilters(IWarehouseStorageTile tile, List<WarehouseItemF
   addStorageTile(tile);
   }
 
-public ItemStack mergeItem(ItemStack stack)
+public IWarehouseStorageTile getDestinationFor(ItemStack stack)
   {
-  if(stack==null || stack.getItem()==null)
+  if(stack==null || stack.getItem()==null){return null;}
+  Item item = stack.getItem();  
+  if(filteredStorage.containsKey(item))
     {
-    return stack;
-    }
-  Item item = stack.getItem();
-  if(filteredStorageSpecific.containsKey(item))
-    {
-    stack = filteredStorageSpecific.get(item).mergeStack(stack);
-    if(stack==null){return null;}
-    }
-  if(filteredStorageIgnoreNBT.containsKey(item))
-    {
-    stack = filteredStorageIgnoreNBT.get(item).mergeStack(stack);
-    if(stack==null){return null;}
-    }
-  if(filteredStorageIgnoreDmg.containsKey(item))
-    {
-    stack = filteredStorageIgnoreDmg.get(item).mergeStack(stack);
-    if(stack==null){return null;}
-    }
-  if(filteredStorageIgnoreDmgNBT.containsKey(item))
-    {
-    stack = filteredStorageIgnoreDmgNBT.get(item).mergeStack(stack);
-    if(stack==null){return null;}
-    }
-  
+    IWarehouseStorageTile tile;
+    tile = filteredStorage.get(item).getDestinationFor(stack);
+    if(tile!=null){return tile;}
+    }  
   for(IWarehouseStorageTile tile : generalStorage)
     {
-    stack = tile.addItem(stack);
-    if(stack==null)
-      {
-      break;
-      }
-    }
-  return stack;
+    if(tile.canHoldMore(stack)){return tile;}
+    }  
+  return null;
   }
 
-private static final class ItemEntry
+private static final class ComparatorWarehouseItemFilter implements Comparator<WarehouseItemFilter>
 {
-
-private Set<IWarehouseStorageTile> generalStorage = new HashSet<IWarehouseStorageTile>();
-
-private void addTile(IWarehouseStorageTile tile)
+@Override
+public int compare(WarehouseItemFilter o1, WarehouseItemFilter o2)
   {
-  generalStorage.add(tile);
+  return o1.getFilterPriority()-o2.getFilterPriority();  
   }
+}
 
-private void removeTile(IWarehouseStorageTile tile)
-  {
-  generalStorage.remove(tile);
-  }
+private static final class ItemFilterEntry
+{
+private List<WarehouseItemFilter> filters = new ArrayList<WarehouseItemFilter>();
+private Map<WarehouseItemFilter, IWarehouseStorageTile> map = new HashMap<WarehouseItemFilter, IWarehouseStorageTile>();
 
-private ItemStack mergeStack(ItemStack stack)
+private IWarehouseStorageTile getDestinationFor(ItemStack stack)
   {
-  for(IWarehouseStorageTile tile : generalStorage)
+  IWarehouseStorageTile tile;
+  for(WarehouseItemFilter filter : filters)//should be sorted by priority 0....10....max (0=highest priority...)
     {
-    if(tile.isItemValid(stack))
+    if(filter.isItemValid(stack))
       {
-      stack = tile.addItem(stack);
-      if(stack==null)
+      tile = map.get(filter);
+      if(tile.canHoldMore(stack))
         {
-        break;
+        return tile;
         }
       }
     }
-  return stack;
+  return null;
+  }
+
+private void addFilter(IWarehouseStorageTile tile, WarehouseItemFilter filter)
+  {
+  if(!filters.contains(filter))
+    {
+    filters.add(filter);
+    }
+  Collections.sort(filters, comparator);
+  }
+
+private void removeFilter(IWarehouseStorageTile tile, WarehouseItemFilter filter)
+  {
+  filters.remove(filter);
+  map.remove(filter);  
+  Collections.sort(filters, comparator);
   }
 
 }
+
+
 }

@@ -297,6 +297,14 @@ private void recountFilters()
 @Override
 public int getCountOf(WarehouseItemFilter filter)
   {
+  // TODO Auto-generated method stub
+  return 0;
+  }
+
+@Override
+public int getCountOf(ItemStack item)
+  {
+  // TODO Auto-generated method stub
   return 0;
   }
 
