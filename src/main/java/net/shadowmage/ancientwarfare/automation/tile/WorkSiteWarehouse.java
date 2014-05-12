@@ -44,6 +44,7 @@ private List<TileWarehouseInput> inputTiles = new ArrayList<TileWarehouseInput>(
 private List<TileEntity> outputTiles = new ArrayList<TileEntity>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 private List<TileEntity> tilesToUpdate = new ArrayList<TileEntity>();
+//private Map<TileEntity, List<WarehouseRoutedItem>> routed
 
 private List<WarehouseRoutedItem> transferQueue = new ArrayList<WarehouseRoutedItem>();//pending item transfers
 
@@ -462,9 +463,8 @@ private void processWork()
   if(!transferQueue.isEmpty())
     {
     WarehouseRoutedItem routedItem = transferQueue.remove(0);
-    
+    handleItemTransfer(transferQueue.remove(0));
     }
-  //TODO
   long t2 = System.nanoTime();
   AWLog.logDebug("merge time: "+(t2-t1));
   }
