@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -29,7 +29,7 @@ public WorkSiteFishFarm()
   {
   this.canUpdate = true;
   this.maxWorkers = 2;
-  this.inventory = new InventorySided(27, this);
+  this.inventory = new InventorySidedWithContainer(27, this);
   
   this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
   for(int i =0; i <27; i++)

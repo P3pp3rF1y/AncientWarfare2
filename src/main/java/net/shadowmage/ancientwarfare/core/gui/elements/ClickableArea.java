@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
 
 /**
  * simple clickable area interface widget...may be stacked on top of other buttons/labels

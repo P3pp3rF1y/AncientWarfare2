@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.inventory.ISidedTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
 
 public class TileMailbox extends TileEntity implements ISidedTile
 {
@@ -22,7 +22,7 @@ public class TileMailbox extends TileEntity implements ISidedTile
 private boolean autoExport;//should automatically try and export from output side
 private boolean privateBox;
 
-public InventorySided inventory;
+public InventorySidedWithContainer inventory;
 
 private String owningPlayerName;
 private String mailboxName;
@@ -30,7 +30,7 @@ private String destinationName;
 
 public TileMailbox()
   {
-  inventory = new InventorySided(36, this);
+  inventory = new InventorySidedWithContainer(36, this);
   
   this.inventory.addSlotViewMap(InventorySide.TOP, 8, 9, "guistrings.inventory.side.top");
   for(int i =0; i <18; i++)

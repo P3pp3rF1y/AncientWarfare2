@@ -2,9 +2,7 @@ package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -26,31 +24,33 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
 
 public class WorkSiteWarehouse extends TileEntity implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
 {
 
+/**************************WORKSITE FIELDS******************************/
 private BlockPosition bbMin;
 private BlockPosition bbMax;
 private int maxWorkers;
 private String owningPlayer;
 private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
-private boolean init = false;
-private boolean hasWork = false;
 
+/**************************WAREHOUSE FIELDS******************************/
+private boolean init = false;
 private List<IWarehouseStorageTile> storageTiles = new ArrayList<IWarehouseStorageTile>();
 private List<TileWarehouseInput> inputTiles = new ArrayList<TileWarehouseInput>();
 private List<TileEntity> outputTiles = new ArrayList<TileEntity>();
-private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 private List<TileEntity> tilesToUpdate = new ArrayList<TileEntity>();
-//private Map<TileEntity, List<WarehouseRoutedItem>> routed
+private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
+public InventoryBasic inventory = new InventoryBasic(9);//manual input/output inventory
+public ItemQuantityMap inventoryMap = new ItemQuantityMap(); 
 
-private List<WarehouseRoutedItem> transferQueue = new ArrayList<WarehouseRoutedItem>();//pending item transfers
+private List<TileEntity> outputToFill = new ArrayList<TileEntity>();
+private List<TileWarehouseInput> inputToEmpty = new ArrayList<TileWarehouseInput>();
 
-private WarehouseItemMap itemMap = new WarehouseItemMap();
-
-public InventoryBasic inventory = new InventoryBasic(9);
+int currentItemCount;//used slots--calced from item quantity map
+int currentMaxItemCount;//max number of slots -- calced from storage blocks
 
 public WorkSiteWarehouse()
   {
@@ -77,11 +77,7 @@ public void updateEntity()
     {
     for(TileEntity te : tilesToUpdate)
       {
-      if(te instanceof IWarehouseStorageTile)
-        {
-        updateStorageTile((IWarehouseStorageTile)te);
-        }
-      else if(te instanceof TileWarehouseInput)
+      if(te instanceof TileWarehouseInput)
         {
         updateInputTile((TileWarehouseInput) te);
         }
@@ -110,6 +106,10 @@ public void removeInputBlock(TileWarehouseInput input)
     {
     inputTiles.remove(input);
     }
+  while(inputToEmpty.contains(input))
+    {
+    inputToEmpty.remove(input);
+    }
   updateViewers();
   }
 
@@ -120,20 +120,22 @@ public List<TileWarehouseInput> getInputTiles()
 
 public void addStorageBlock(IWarehouseStorageTile tile)
   {
-  itemMap.addStorageTile(tile);
   if(!storageTiles.contains(tile))
     {
-    storageTiles.add(tile);    
+    storageTiles.add(tile);  
+    currentMaxItemCount+=tile.getStorageAdditionSize();
+    AWLog.logDebug("updated warehouse storage size to: "+currentMaxItemCount);
     }
   updateViewers();
   }
 
 public void removeStorageBlock(IWarehouseStorageTile tile)
   {
-  itemMap.removeStorageTile(tile, tile.getFilters());
   while(storageTiles.contains(tile))
     {
     storageTiles.remove(tile);    
+    currentMaxItemCount-=tile.getStorageAdditionSize();
+    AWLog.logDebug("updated warehouse storage size to: "+currentMaxItemCount);
     }
   updateViewers();
   }
@@ -157,6 +159,10 @@ public void removeOutputBlock(TileEntity te)
     {
     outputTiles.remove(te);
     }
+  while(outputToFill.contains(te))
+    {
+    outputToFill.remove(te);
+    }
   }
 
 public List<TileEntity> getOutputTiles()
@@ -169,7 +175,6 @@ public void invalidate()
   {  
   super.invalidate();
   init = false;
-  TileEntity te;
   IControlledTile ict;
   for(TileWarehouseInput tile : this.inputTiles)
     {
@@ -198,7 +203,6 @@ public void validate()
   {  
   super.validate();
   init = false;
-  hasWork = false;
   }
 
 /**
@@ -237,16 +241,7 @@ protected void scanInitialBlocks()
     }
   }
 
-
 /************************************************ INVENTORY TRACKING METHODS *************************************************/
-
-public void onStorageInventoryUpdated(IWarehouseStorageTile tile)
-  {
-  if(storageTiles.contains(tile))
-    {
-    tilesToUpdate.add((TileEntity)tile);    
-    }
-  }
 
 public void onInputInventoryUpdated(TileWarehouseInput tile)
   {
@@ -264,95 +259,37 @@ public void onOutputInventoryUpdated(TileEntity tile)
     }
   }
 
-public void requestItem(BlockPosition storagePos, ItemStack item, boolean dmg, boolean nbt)
-  {
-//  TileEntity te = worldObj.getTileEntity(storagePos.x, storagePos.y, storagePos.z);
-//  if(te instanceof IWarehouseStorageTile)
-//    {
-//    IWarehouseStorageTile tile = (IWarehouseStorageTile)te; 
-//    if(storageTiles.contains(tile))
-//      {
-//      //will need to iterate through twice...the first time just checking for a full stack to remove/return
-//      //the second time, attempting to create a stack from any partials that are present      
-//      ItemStack stack;
-//     
-//      for(int i = 0; i < tile.getSizeInventory();i++)
-//        {
-//        stack = tile.getStackInSlot(i);
-//        if(stack==null){continue;}  
-//        if(InventoryTools.doItemStacksMatch(stack, item, dmg, nbt, false))
-//          {         
-//          stack = InventoryTools.mergeItemStack(inventory, stack, -1);          
-//          if(stack==null || stack.stackSize==0)
-//            {
-//            tile.setInventorySlotContents(i, null);            
-//            }
-//          tile.markDirty();
-//          break;
-//          }
-//        }
-//      //if made it this far, then a full stack was not found....keep trying to remove partials until up to a full stack was removed
-//      }
-//    }
-  }
-
 public void requestItem(ItemStack filter)
   {
-//  ItemStack returnStack = filter.copy();
-//  returnStack.stackSize = 0;
-//  ItemStack stack;
-//  int qty;
-//  for(IWarehouseStorageTile storageTile : this.storageTiles)
-//    {
-//    for(int i = 0; i < storageTile.getSizeInventory(); i++)
-//      {
-//      stack = storageTile.getStackInSlot(i);
-//      if(stack==null || !InventoryTools.doItemStacksMatch(filter, stack)){continue;}
-//      qty = returnStack.getMaxStackSize() - returnStack.stackSize;
-//      if(qty>stack.stackSize){qty = stack.stackSize;}
-//      storageTile.decrStackSize(i, qty);
-//      storageTile.markDirty();
-//      returnStack.stackSize+=qty;
-//      
-//      if(returnStack.stackSize>=64)
-//        {
-//        break;
-//        }
-//      }
-//    if(returnStack.stackSize>=64)
-//      {
-//      break;
-//      }
-//    }
-//  if(returnStack.stackSize>0)//merge into inventory
-//    {
-//    returnStack = InventoryTools.mergeItemStack(inventory, returnStack, -1);
-//    if(returnStack!=null){InventoryTools.dropItemInWorld(worldObj, returnStack, xCoord, yCoord, zCoord);}
-//    }
-  }
 
-public void updateStorageTile(IWarehouseStorageTile tile)
-  {
-  
   }
 
 public void updateInputTile(TileWarehouseInput tile)
   {
-  
+  inputToEmpty.remove(tile);
+  //TODO check input tile inventory.  If it contains items, add to toEmpty set\
+  ItemStack item;
+  for(int i = 0; i < tile.getSizeInventory(); i++)
+    {
+    item = tile.getStackInSlot(i);
+    if(item!=null)
+      {
+      inputToEmpty.add(tile);
+      break;
+      }
+    }
   }
 
 public void updateOutputTile(TileEntity tile)
   {
-  
+  outputToFill.remove(tile);//remove it in case it was already present in the toFil set
+  //TODO check output tile filters/quantity set, if any is below nominal, add to toFill set
   }
 
-public void updateStorageBlockFilters(IWarehouseStorageTile tile, List<WarehouseItemFilter> oldFilters, List<WarehouseItemFilter> newFilters)
+public void updateSlotCount()
   {
-  itemMap.updateStorageFilters(tile, oldFilters, newFilters);
-  tilesToUpdate.add((TileEntity)tile);
-  updateViewers();
+  this.currentItemCount = inventoryMap.getTotalItemCount();
   }
-
 
 /************************************************ WORKSITE METHODS *************************************************/
 
@@ -442,7 +379,7 @@ public void setBounds(BlockPosition p1, BlockPosition p2)
 @Override
 public boolean hasWork()
   {
-  return !transferQueue.isEmpty();
+  return (!inputToEmpty.isEmpty() && currentItemCount<currentMaxItemCount) || !outputToFill.isEmpty();
   }
 
 @Override
@@ -459,19 +396,46 @@ public void doPlayerWork(EntityPlayer player)
 
 private void processWork()
   {
-  long t1 = System.nanoTime();
-  if(!transferQueue.isEmpty())
+  long t1 = System.nanoTime();  
+  if(!inputToEmpty.isEmpty())
     {
-    WarehouseRoutedItem routedItem = transferQueue.remove(0);
-    handleItemTransfer(transferQueue.remove(0));
+    TileWarehouseInput tile = inputToEmpty.remove(0);
+    ItemStack stack;
+    int transferQuantity;
+    for(int i=0; i<tile.getSizeInventory(); i++)
+      {
+      stack = tile.getStackInSlot(i);
+      if(stack!=null)
+        {
+        transferQuantity = currentMaxItemCount-currentItemCount;
+        if(transferQuantity>stack.stackSize)
+          {
+          transferQuantity=stack.stackSize;
+          }
+        inventoryMap.addCount(stack, stack.stackSize);
+        stack.stackSize-=transferQuantity;
+        currentItemCount+=transferQuantity;
+        if(stack.stackSize<=0)
+          {
+          tile.setInventorySlotContents(i, null);
+          }
+        break;
+        }
+      }    
+    tilesToUpdate.add(tile);
+    }
+  else if(!outputToFill.isEmpty())
+    {
+    TileEntity tile = outputToFill.get(0);
+
+    tilesToUpdate.add(tile);
+    updateSlotCount();
     }
   long t2 = System.nanoTime();
-  AWLog.logDebug("merge time: "+(t2-t1));
-  }
-
-private void handleItemTransfer(WarehouseRoutedItem routedItem)
-  {
-  
+  long t3 = (t2-t1);
+  float f1 = (float)((double)t3 / 1000000.d);
+  AWLog.logDebug("work time: "+(t2-t1)+"ns ("+f1+"ms)");
+  updateViewers();
   }
 
 /************************************************ NETWORK METHODS *************************************************/
@@ -517,6 +481,10 @@ public void readFromNBT(NBTTagCompound tag)
     {
     inventory.readFromNBT(tag.getCompoundTag("inventory"));
     }
+  if(tag.hasKey("itemMap"))
+    {
+    inventoryMap.readFromNBT(tag.getCompoundTag("itemMap"));
+    }
   }
 
 @Override
@@ -527,6 +495,7 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setTag("pos1", bbMin.writeToNBT(new NBTTagCompound()));
   tag.setTag("pos2", bbMax.writeToNBT(new NBTTagCompound()));
   tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
+  tag.setTag("itemMap", inventoryMap.writeToNBT(new NBTTagCompound()));
   }
 
 @Override

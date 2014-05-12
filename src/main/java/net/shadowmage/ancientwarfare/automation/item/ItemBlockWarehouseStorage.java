@@ -3,8 +3,6 @@ package net.shadowmage.ancientwarfare.automation.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
-import net.shadowmage.ancientwarfare.automation.block.BlockWarehouseStorage;
 
 public class ItemBlockWarehouseStorage extends ItemBlock
 {

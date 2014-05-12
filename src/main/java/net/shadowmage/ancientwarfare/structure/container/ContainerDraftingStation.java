@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;
+import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
@@ -55,7 +55,7 @@ public ContainerDraftingStation(EntityPlayer player, int x, int y, int z)
       }
     }
   
-  SlotItemFilter filter = new SlotItemFilter()
+  ItemSlotFilter filter = new ItemSlotFilter()
     {
     @Override
     public boolean isItemValid(ItemStack stack)

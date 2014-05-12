@@ -28,7 +28,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.ISidedTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -78,7 +78,7 @@ private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorke
 
 protected String owningPlayer;
 
-public InventorySided inventory;
+public InventorySidedWithContainer inventory;
 
 private ArrayList<BlockPosition> clientWorkTargets = new ArrayList<BlockPosition>();
 

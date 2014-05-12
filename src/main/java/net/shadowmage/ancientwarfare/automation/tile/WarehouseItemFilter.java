@@ -1,43 +1,39 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public final class WarehouseItemFilter
+public final class WarehouseItemFilter extends ItemSlotFilter
 {
 
 private ItemStack filterItem;
-private boolean ignoreDamage;
-private boolean ignoreNBT;
-private int filterPriority;
+private int quantity;
 
 public WarehouseItemFilter(){}
 
+@Override
 public boolean isItemValid(ItemStack item)
   {
   if(item==null){return false;}
   if(filterItem==null){return false;}//null filter item, invalid filter
-  if(item.getItem()!=filterItem.getItem()){return false;}//item not equivalent, obvious mis-match
-  if(ignoreDamage && ignoreNBT){return true;}//item was equal, and ignore all else, return true
-  else if(ignoreDamage){return ItemStack.areItemStackTagsEqual(item, filterItem);}//item was equal, ignore damage..return true if nbt-tags match
-  else if(ignoreNBT){return item.getItemDamage()==filterItem.getItemDamage();}//item was equal, ignore nbt, check if item damages are equal 
+  if(item.getItem()!=filterItem.getItem()){return false;}//item not equivalent, obvious mis-match   
   return InventoryTools.doItemStacksMatch(item, filterItem);//finally, items were equal, no ignores' -- check both dmg and tag
   }
 
 public void readFromNBT(NBTTagCompound tag)
   {
-  filterPriority = tag.getInteger("priority");
-  ignoreDamage = tag.getBoolean("dmg");
-  ignoreNBT = tag.getBoolean("nbt"); 
+  quantity = tag.getInteger("quantity");
   if(tag.hasKey("filter")){filterItem = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("filter"));}
   }
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
-  tag.setInteger("priority", filterPriority);
-  tag.setBoolean("dmg", ignoreDamage);
-  tag.setBoolean("nbt", ignoreNBT);  
+  tag.setInteger("quantity", quantity);
   if(filterItem!=null){tag.setTag("filter", filterItem.writeToNBT(new NBTTagCompound()));}  
   return tag;
   }
@@ -52,40 +48,50 @@ public final void setFilterItem(ItemStack item)
   this.filterItem = item;
   }
 
-public final boolean isIgnoreDamage()
+public final int getFilterQuantity()
   {
-  return ignoreDamage;
+  return quantity;
   }
 
-public final void setIgnoreDamage(boolean ignoreDamage)
+public final void setFilterQuantity(int filterQuantity)
   {
-  this.ignoreDamage = ignoreDamage;
-  }
-
-public final boolean isIgnoreNBT()
-  {
-  return ignoreNBT;
-  }
-
-public final void setIgnoreNBT(boolean ignoreNBT)
-  {
-  this.ignoreNBT = ignoreNBT;
-  }
-
-public final int getFilterPriority()
-  {
-  return filterPriority;
-  }
-
-public final void setFilterPriority(int filterPriority)
-  {
-  this.filterPriority = filterPriority;
+  this.quantity = filterQuantity;
   }
 
 @Override
 public String toString()
   {
-  return "Filter item: "+filterItem + " ignore dmg/nbt:"+ignoreDamage+":"+ignoreNBT;
+  return "Filter item: "+filterItem + " quantity: "+quantity;
+  }
+
+public static NBTTagList writeFilterList(List<WarehouseItemFilter> filters)
+  {
+  NBTTagList list = new NBTTagList();
+  for(WarehouseItemFilter filter : filters)
+    {
+    list.appendTag(filter.writeToNBT(new NBTTagCompound()));
+    }
+  return list;
+  }
+
+public static List<WarehouseItemFilter> readFilterList(NBTTagList list, List<WarehouseItemFilter> filters)
+  {
+  WarehouseItemFilter filter;
+  for(int i = 0; i < list.tagCount(); i++)
+    {
+    filter = new WarehouseItemFilter();
+    filter.readFromNBT(list.getCompoundTagAt(i));   
+    filters.add(filter);    
+    }
+  return filters;
+  }
+
+public WarehouseItemFilter copy()
+  {
+  WarehouseItemFilter filter = new WarehouseItemFilter();
+  filter.filterItem = this.filterItem==null? null : this.filterItem.copy();
+  filter.quantity = this.quantity;
+  return filter;
   }
 
 }

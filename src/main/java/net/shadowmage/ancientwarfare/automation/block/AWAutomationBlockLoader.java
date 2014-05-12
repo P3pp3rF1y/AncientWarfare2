@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseInput;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageDeep;
+import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseOutput;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageSmall;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorkerTest;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteAnimalFarm;
@@ -113,6 +113,8 @@ public static final BlockWarehouseStorage warehouseStorageBlock = new BlockWareh
 
 public static final BlockWarehouseInput warehouseInput = new BlockWarehouseInput("warehouse_input");
 
+public static final BlockWarehouseOutput warehouseOutput = new BlockWarehouseOutput("warehouse_output");
+
 public static void load()
   {  
   GameRegistry.registerBlock(workerTest, "block.testWorker");
@@ -186,17 +188,18 @@ public static void load()
   
   GameRegistry.registerBlock(warehouseStorageBlock, ItemBlockWarehouseStorage.class, "warehouse_storage");
   GameRegistry.registerTileEntity(TileWarehouseStorageSmall.class, "warehouse_storage_small_tile");
-  GameRegistry.registerTileEntity(TileWarehouseStorageDeep.class, "warehouse_storage_deep_tile");
   warehouseStorageBlock.setIcon(0, 0, "ancientwarfare:automation/warehouse_storage_small_bottom");
   warehouseStorageBlock.setIcon(0, 1, "ancientwarfare:automation/warehouse_storage_small_top");
   warehouseStorageBlock.setIcon(0, 2, "ancientwarfare:automation/warehouse_storage_small_side");
   warehouseStorageBlock.setIcon(0, 3, "ancientwarfare:automation/warehouse_storage_small_side");
   warehouseStorageBlock.setIcon(0, 4, "ancientwarfare:automation/warehouse_storage_small_side");
   warehouseStorageBlock.setIcon(0, 5, "ancientwarfare:automation/warehouse_storage_small_side");
-
   
   GameRegistry.registerBlock(warehouseInput, "warehouse_input");
   GameRegistry.registerTileEntity(TileWarehouseInput.class, "warehouse_input_tile");
+  
+  GameRegistry.registerBlock(warehouseOutput, "warehouse_output");
+  GameRegistry.registerTileEntity(TileWarehouseOutput.class, "warehouse_output_tile");
   }
 
 }

@@ -6,14 +6,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -22,6 +20,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.StackSortType;
+import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap.ItemHashEntry;
 
 public class InventoryTools
 {
@@ -462,13 +461,13 @@ public static void readInventoryFromNBT(IInventory inventory, NBTTagCompound tag
  */
 public static void compactStackList(List<ItemStack> in, List<ItemStack> out)
   {
-  Map<ItemStackHashWrap, Integer> map = new HashMap<ItemStackHashWrap, Integer>();  
-  ItemStackHashWrap wrap;
+  Map<ItemHashEntry, Integer> map = new HashMap<ItemHashEntry, Integer>();  
+  ItemHashEntry wrap;
   int count;
   for(ItemStack stack : in)
     {
     count = 0;
-    wrap = new ItemStackHashWrap(stack);
+    wrap = new ItemHashEntry(stack);
     if(map.containsKey(wrap))
       {
       count = map.get(wrap);      
@@ -478,12 +477,12 @@ public static void compactStackList(List<ItemStack> in, List<ItemStack> out)
     }
   int qty;
   ItemStack outStack;
-  for(ItemStackHashWrap wrap1 : map.keySet())
+  for(ItemHashEntry wrap1 : map.keySet())
     {
     qty = map.get(wrap1);
     while(qty>0)
       {
-      outStack = wrap1.createItemStack();
+      outStack = wrap1.getItemStack();
       outStack.stackSize = qty>outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty;
       qty-=outStack.stackSize;
       out.add(outStack);
@@ -540,7 +539,7 @@ public static void compactStackList3(List<ItemStack> in, List<ItemStack> out)
   ItemQuantityMap map = new ItemQuantityMap();
   for(ItemStack stack : in)
     {
-    map.addItemStack(stack, stack.stackSize);
+    map.addCount(stack, stack.stackSize);
     }
   map.getItems(out);
   }
@@ -768,245 +767,6 @@ public int compare(ItemStack o1, ItemStack o2)
   }
 }
 
-/**
- * Utility class for easy storage of quantities of items.  Can quickly iterate over an inventory and get
- * the complete counts of all items in the inventory.<br>
- * Supports adding items / quantities, and removing items / quantities.<br>
- * Supports querying item-quantity by item.<br>
- * Supports retrieving a list of item-stacks representing the most compact representation of this maps contents (stacks limited by stack-size, may be multiple stacks per item)<br>
- * Get / quantity query operations return 0 if no matching item / entry is found.<br>
- * @author Shadowmage
- */
-public static final class ItemQuantityMap
-{
-Map<ItemStackHashWrap, ItemCount> map = new HashMap<ItemStackHashWrap, ItemCount>();
 
-public void put(ItemStackHashWrap wrap, int count)
-  {
-  if(map.containsKey(wrap))
-    {
-    map.get(wrap).count = count;
-    }
-  else
-    {
-    ItemCount c = new ItemCount();
-    c.count = count;
-    map.put(wrap, c);
-    }
-  }
-
-public int get(ItemStackHashWrap wrap)
-  {
-  if(map.containsKey(wrap))
-    {
-    return map.get(wrap).count;
-    }
-  return 0;
-  }
-
-public void addItemStack(ItemStack item, int count)
-  {
-  ItemStackHashWrap wrap = new ItemStackHashWrap(item);
-  if(!map.containsKey(wrap))
-    {
-    map.put(wrap, new ItemCount());
-    }
-  map.get(wrap).count+=count;
-  }
-
-public void removeItem(ItemStack item, int count)
-  {
-  ItemStackHashWrap wrap = new ItemStackHashWrap(item);
-  if(map.containsKey(wrap))
-    {
-    ItemCount itemCount = map.get(wrap);
-    itemCount.count-=count;
-    if(itemCount.count<=0)
-      {
-      map.remove(wrap);
-      itemCount.count=0;
-      }
-    }
-  }
-
-public void remove(ItemStackHashWrap wrap)
-  {
-  map.remove(wrap);
-  }
-
-public void clear()
-  {
-  this.map.clear();
-  }
-
-public int get(ItemStack item)
-  {
-  ItemStackHashWrap wrap = new ItemStackHashWrap(item);
-  if(!map.containsKey(wrap))
-    {
-    return 0;
-    }
-  return map.get(wrap).count;
-  }
-
-public Set<ItemStackHashWrap> keySet()
-  {
-  return map.keySet();
-  }
-
-public boolean contains(ItemStackHashWrap wrap)
-  {
-  return map.containsKey(wrap);
-  }
-
-@Override
-public String toString()
-  {
-  String out = "Item Quantity Map:";
-  for(ItemStackHashWrap wrap : map.keySet())
-    {
-    out = out +"\n   "+ wrap.item.getUnlocalizedName();
-    out = out + " : "+map.get(wrap).count;
-    }  
-  return out;
-  }
-
-/**
- * Return the most compact set of item-stacks that can represent the contents of this map.<br>
- * May return multiple stacks of the same item if the quantity contained is > maxStackSize.<br> * 
- * @param items will be filled with the item-stacks from this map, must not be NULL
- */
-public void getItems(List<ItemStack> items)
-  {
-  ItemStack outStack;
-  int qty;
-  for(ItemStackHashWrap wrap1 : map.keySet())
-    {
-    qty = map.get(wrap1).count;
-    while(qty>0)
-      {
-      outStack = wrap1.createItemStack();
-      outStack.stackSize = qty>outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty;
-      qty-=outStack.stackSize;
-      items.add(outStack);
-      }
-    } 
-  }
-
-/**
- * used by ItemQuantityMap for tracking item quantities for a given ItemStackHashWrap
- * @author Shadowmage
- *
- */
-private static final class ItemCount
-{
-private int count;
-}
-}
-
-/**
- * Wraps an item stack with a hashable object.<br>
- * Uses item, item damage, and nbt-tag for hash-code.<br>
- * Ignores quantity.<br>
- * Immutable.
- * @author Shadowmage
- */
-public static final class ItemStackHashWrap
-{
-private final Item item;
-private final int damage;
-private final NBTTagCompound tag;
-
-/**
- * @param item MUST NOT BE NULL
- */
-public ItemStackHashWrap(ItemStack item)
-  {
-  if(item==null){throw new IllegalArgumentException("Stack may not be null");}
-  this.item = item.getItem();
-  if(this.item==null){throw new IllegalArgumentException("Item may not be null");}
-  this.damage = item.getItemDamage();
-  if(item.hasTagCompound())
-    {
-    this.tag = (NBTTagCompound) item.getTagCompound().copy();    
-    }
-  else
-    {
-    this.tag = null;
-    }
-  }
-
-public Item getItem()
-  {
-  return item;
-  }
-
-public int getDamage()
-  {
-  return damage;
-  }
-
-public NBTTagCompound getTag()
-  {
-  return (NBTTagCompound) (tag==null? null : tag.copy());
-  }
-
-/**
- * internal constructor used for copying/cloning
- * @param item
- * @param damage
- * @param tag
- */
-private ItemStackHashWrap(Item item, int damage, NBTTagCompound tag)
-  {
-  if(item==null){throw new IllegalArgumentException("Item may not be null");}
-  this.item = item;
-  this.damage = damage;
-  this.tag = (NBTTagCompound) (tag==null ? null : tag.copy());
-  }
-
-@Override
-public int hashCode()
-  {
-  int hash = 1;
-  if(item!=null){hash = 31*hash + item.hashCode();}
-  hash = 31*hash + damage;
-//  hash = 31*hash + stack.stackSize;//noop for implementation, only care about identity, not quantity
-  if(tag!=null){hash = 31*hash + tag.hashCode();}
-  return hash;
-  }
-
-@Override
-public boolean equals(Object obj)
-  {
-  if(obj==null){return false;}
-  if(obj.getClass()!=this.getClass()){return false;}
-  ItemStackHashWrap wrap = (ItemStackHashWrap)obj;  
-  boolean tagsMatch = false;
-  if(tag==null){tagsMatch = wrap.tag==null;}
-  else if(wrap.tag==null){tagsMatch=tag==null;}
-  else{tagsMatch = tag.equals(wrap.tag);}  
-  return item==wrap.item && damage==wrap.damage && tagsMatch;  
-  }
-
-@Override
-public String toString()
-  {
-  return "StackHashWrap: "+item.getUnlocalizedName()+"@"+damage;
-  }
-
-public ItemStackHashWrap copy()
-  {
-  return new ItemStackHashWrap(item, damage, tag);
-  }
-
-public ItemStack createItemStack()
-  {
-  ItemStack stack = new ItemStack(item,1,damage);
-  if(tag!=null){stack.stackTagCompound = (NBTTagCompound)tag.copy();}
-  return stack;
-  }
-
-}
 
 }

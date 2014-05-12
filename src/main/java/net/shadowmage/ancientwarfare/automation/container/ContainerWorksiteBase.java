@@ -7,9 +7,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SideSlotMap;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided.ViewableSlot;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer.SideSlotMap;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer.ViewableSlot;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 
 public class ContainerWorksiteBase extends ContainerBase

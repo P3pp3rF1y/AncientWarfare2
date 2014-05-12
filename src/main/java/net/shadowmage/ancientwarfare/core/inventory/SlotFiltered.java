@@ -3,14 +3,13 @@ package net.shadowmage.ancientwarfare.core.inventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;
 
 public class SlotFiltered extends Slot
 {
 
-SlotItemFilter filter;
+ItemSlotFilter filter;
 
-public SlotFiltered(IInventory par1iInventory, int slotIndex, int xPos, int yPos, SlotItemFilter filter)
+public SlotFiltered(IInventory par1iInventory, int slotIndex, int xPos, int yPos, ItemSlotFilter filter)
   {
   super(par1iInventory, slotIndex, xPos, yPos);
   this.filter = filter;

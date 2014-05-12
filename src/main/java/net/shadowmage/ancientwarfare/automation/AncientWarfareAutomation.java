@@ -6,9 +6,7 @@ import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInput;
-import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
-import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorageDeep;
-import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorageFilter;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseOutput;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBase;
@@ -24,7 +22,6 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -88,10 +85,10 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, ContainerWorksiteFishControl.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_MAILBOX_INVENTORY, ContainerMailbox.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CONTROL, ContainerWarehouseControl.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE, ContainerWarehouseStorage.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE_FILTER, ContainerWarehouseStorageFilter.class);
+//  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE, ContainerWarehouseStorage.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_INPUT, ContainerWarehouseInput.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE_DEEP, ContainerWarehouseStorageDeep.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_OUTPUT, ContainerWarehouseOutput.class);
+  
   AWGameData.INSTANCE.registerSaveData(MailboxData.name, MailboxData.class);
   
   FMLCommonHandler.instance().bus().register(new MailboxTicker());

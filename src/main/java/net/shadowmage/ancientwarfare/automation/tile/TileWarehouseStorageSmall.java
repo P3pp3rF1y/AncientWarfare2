@@ -7,7 +7,7 @@ public class TileWarehouseStorageSmall extends TileWarehouseStorageBase
 
 public TileWarehouseStorageSmall()
   {
-  inventory = new WarehouseBasicInventory(27, this);
+  this.storageAdditionSize = 27*64;
   }
 
 

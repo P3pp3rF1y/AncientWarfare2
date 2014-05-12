@@ -26,8 +26,8 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
+import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -60,7 +60,7 @@ public WorkSiteTreeFarm()
   blocksToPlant = new ArrayList<BlockPosition>();
   blocksToFertilize = new ArrayList<BlockPosition>();
   
-  this.inventory = new InventorySided(27 + 3 + 3, this);
+  this.inventory = new InventorySidedWithContainer(27 + 3 + 3, this);
   
   this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
   for(int i =0; i <27; i++)
@@ -69,7 +69,7 @@ public WorkSiteTreeFarm()
     this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
     }
     
-  SlotItemFilter filter = new SlotItemFilter()
+  ItemSlotFilter filter = new ItemSlotFilter()
     {
     @Override
     public boolean isItemValid(ItemStack stack)
@@ -92,7 +92,7 @@ public WorkSiteTreeFarm()
     this.inventory.addSlotFilter(i, filter);
     }
     
-  filter = new SlotItemFilter()
+  filter = new ItemSlotFilter()
     {
     @Override
     public boolean isItemValid(ItemStack stack)

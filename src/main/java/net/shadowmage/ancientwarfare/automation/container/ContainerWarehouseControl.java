@@ -1,39 +1,29 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.automation.tile.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemQuantityMap;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ItemStackHashWrap;
+import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap.ItemHashEntry;
 
 public class ContainerWarehouseControl extends ContainerBase
 {
 
 public WorkSiteWarehouse warehouse;
-public List<IWarehouseStorageTile> storageTiles;
 public ItemQuantityMap itemMap = new ItemQuantityMap();
-private ItemQuantityMap warehouseItemMap = new ItemQuantityMap();
-boolean shouldUpdate = true;
+boolean shouldUpdate;
 
 public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
   warehouse = (WorkSiteWarehouse) player.worldObj.getTileEntity(x, y, z);
-  storageTiles = new ArrayList<IWarehouseStorageTile>();
-  storageTiles.addAll(warehouse.getStorageTiles());
   warehouse.addViewer(this);  
   int y2 = 8+9+4;
   int x1, y1;
@@ -50,49 +40,16 @@ public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
 @Override
 public void sendInitData()
   {  
-  super.sendInitData();
-  synchItemMaps();
-  }
-
-public void sendPositionList()
-  {    
-  BlockPosition pos;
-  TileEntity te;
+  NBTTagCompound wtag = warehouse.inventoryMap.writeToNBT(new NBTTagCompound());
+  itemMap.putAll(warehouse.inventoryMap);
   NBTTagCompound tag = new NBTTagCompound();
-  NBTTagList positionList = new NBTTagList();
-  for(IWarehouseStorageTile tile : storageTiles)
-    {
-    te = (TileEntity)tile;
-    pos = new BlockPosition(te.xCoord, te.yCoord, te.zCoord);
-    positionList.appendTag(pos.writeToNBT(new NBTTagCompound()));
-    }  
-  tag.setTag("positionList", positionList);
-  sendDataToClient(tag);
+  tag.setTag("itemList", wtag);
+  sendDataToServer(tag);
   }
 
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  if(tag.hasKey("positionList"))
-    {
-    storageTiles.clear();
-    IWarehouseStorageTile tile;
-    BlockPosition pos;
-    NBTTagList positionList = tag.getTagList("positionList", Constants.NBT.TAG_COMPOUND);
-    for(int i = 0; i < positionList.tagCount(); i++)
-      {
-      pos = new BlockPosition(positionList.getCompoundTagAt(i));
-      tile = (IWarehouseStorageTile) player.worldObj.getTileEntity(pos.x, pos.y, pos.z);
-      storageTiles.add(tile);
-      }
-    }
-  if(tag.hasKey("request"))
-    {
-    NBTTagCompound reqTag = tag.getCompoundTag("request");
-    BlockPosition pos = new BlockPosition(reqTag.getCompoundTag("reqPos"));
-    ItemStack item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
-    warehouse.requestItem(pos, item, !reqTag.getBoolean("dmg"), !reqTag.getBoolean("nbt"));
-    }
   if(tag.hasKey("requestSpecific"))
     {    
     NBTTagCompound reqTag = tag.getCompoundTag("requestSpecific");
@@ -103,6 +60,10 @@ public void handlePacketData(NBTTagCompound tag)
   if(tag.hasKey("changeList"))
     {
     handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
+    }
+  if(tag.hasKey("itemList"))
+    {
+    itemMap.readFromNBT(tag.getCompoundTag("itemList"));
     }
   refreshGui();
   }
@@ -121,12 +82,6 @@ public void handleClientRequestSpecific(ItemStack stack)
 public void detectAndSendChanges()
   {  
   super.detectAndSendChanges();  
-  if(!storageTiles.equals(warehouse.getStorageTiles()))
-    {
-    storageTiles.clear();
-    storageTiles.addAll(warehouse.getStorageTiles());
-    sendPositionList();
-    }
   if(shouldUpdate)
     {
     synchItemMaps();    
@@ -138,11 +93,11 @@ private void handleChangeList(NBTTagList changeList)
   {
   NBTTagCompound tag;
   int qty;
-  ItemStackHashWrap wrap;
+  ItemHashEntry wrap = null;
   for(int i = 0; i < changeList.tagCount(); i++)
     {
     tag = changeList.getCompoundTagAt(i);
-    wrap = readWrapFromNBT(tag);
+    wrap = ItemHashEntry.readFromNBT(tag);
     qty = tag.getInteger("qty");
     if(qty==0)
       {
@@ -167,36 +122,32 @@ private void synchItemMaps()
    * need to loop through warehouse.itemMap and find new entries
    *    add any new entries to change-list    
    */
-  warehouseItemMap.clear();    
-  for(IWarehouseStorageTile tile : warehouse.getStorageTiles())
-    {
-    tile.addInventoryContentsToMap(warehouseItemMap);
-    }
-  
+
+  ItemQuantityMap warehouseItemMap = warehouse.inventoryMap;
   int qty;
   NBTTagList changeList = new NBTTagList();
   NBTTagCompound tag;
-  for(ItemStackHashWrap wrap : this.itemMap.keySet())
+  for(ItemHashEntry wrap : this.itemMap.keySet())
     {
-    qty = this.itemMap.get(wrap);
-    if(qty!=warehouseItemMap.get(wrap))
+    qty = this.itemMap.getCount(wrap);
+    if(qty!=warehouseItemMap.getCount(wrap))
       {
-      qty = warehouseItemMap.get(wrap);
-      tag = writeWrapToNBT(wrap);
+      qty = warehouseItemMap.getCount(wrap);
+      tag = wrap.writeToNBT(new NBTTagCompound());
       tag.setInteger("qty", qty);
       changeList.appendTag(tag);
       this.itemMap.put(wrap, qty);
       }
     }  
-  for(ItemStackHashWrap wrap : warehouseItemMap.keySet())
+  for(ItemHashEntry entry : warehouseItemMap.keySet())
     {
-    if(!itemMap.contains(wrap))
+    if(!itemMap.contains(entry))
       {
-      qty = warehouseItemMap.get(wrap);
-      tag = writeWrapToNBT(wrap);
+      qty = warehouseItemMap.getCount(entry);
+      tag = ItemHashEntry.writeToNBT(entry, new NBTTagCompound());
       tag.setInteger("qty", qty);
       changeList.appendTag(tag);
-      this.itemMap.put(wrap, qty);
+      this.itemMap.put(entry, qty);
       }
     }
   if(changeList.tagCount()>0)
@@ -210,30 +161,6 @@ private void synchItemMaps()
   t3 = t2-t1;
   float f1 = (float)((double)t3/1000000d);
   AWLog.logDebug("inventory synch time: "+t3+"ns ("+f1+"ms)");
-  }
-
-private NBTTagCompound writeWrapToNBT(ItemStackHashWrap wrap)
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setInteger("id", Item.getIdFromItem(wrap.getItem()));
-  tag.setInteger("dmg", wrap.getDamage());
-  NBTTagCompound itemTag = wrap.getTag();
-  if(itemTag!=null)
-    {
-    tag.setTag("itemTag", itemTag);
-    }  
-  return tag;
-  }
-
-private ItemStackHashWrap readWrapFromNBT(NBTTagCompound tag)
-  {
-  int id = tag.getInteger("id");
-  int dmg = tag.getInteger("dmg");
-  NBTTagCompound itemTag = tag.hasKey("itemTag") ? tag.getCompoundTag("itemTag") : null;
-  Item item = Item.getItemById(id);
-  ItemStack stack = new ItemStack(item, 1, dmg);
-  stack.stackTagCompound = itemTag;
-  return new ItemStackHashWrap(stack);
   }
 
 @Override

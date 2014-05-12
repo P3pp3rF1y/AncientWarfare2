@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SideSlotMap;
+import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer.SideSlotMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 public class GuiWorksiteBase extends GuiContainerBase

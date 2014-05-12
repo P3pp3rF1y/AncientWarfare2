@@ -13,7 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageDeep;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageSmall;
 import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -64,9 +63,7 @@ public TileEntity createTileEntity(World world, int metadata)
   switch(metadata)
   {
   case 0:
-  return new TileWarehouseStorageSmall();
-  case 3:
-  return new TileWarehouseStorageDeep();
+  return new TileWarehouseStorageSmall(); 
   default:
   return new TileWarehouseStorageSmall();
   }  
@@ -76,7 +73,6 @@ public TileEntity createTileEntity(World world, int metadata)
 public void getSubBlocks(Item item, CreativeTabs p_149666_2_, List list)
   {
   list.add(new ItemStack(item,1,0));
-  list.add(new ItemStack(item,1,3));
   }
 
 @Override

@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySided.SlotItemFilter;
+import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
@@ -31,7 +31,7 @@ protected void addSettingsInventorySlots()
   int yPos;
   int slotNum;
   
-  SlotItemFilter filter = new SlotItemFilter()
+  ItemSlotFilter filter = new ItemSlotFilter()
     {
     @Override
     public boolean isItemValid(ItemStack stack)

@@ -56,9 +56,8 @@ public static final int GUI_WORKSITE_FISH_CONTROL = 16;
 public static final int GUI_MAILBOX_INVENTORY = 17;
 public static final int GUI_WAREHOUSE_CONTROL = 18;
 public static final int GUI_WAREHOUSE_STORAGE = 19;
-public static final int GUI_WAREHOUSE_STORAGE_FILTER = 20;
-public static final int GUI_WAREHOUSE_INPUT = 21;
-public static final int GUI_WAREHOUSE_STORAGE_DEEP = 22;
+public static final int GUI_WAREHOUSE_INPUT = 20;
+public static final int GUI_WAREHOUSE_OUTPUT = 21;
 
 private FMLEventChannel channel;
 
