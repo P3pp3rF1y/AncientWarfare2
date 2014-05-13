@@ -2,6 +2,7 @@ core (done for now)
 	crafting system--needs recipes from other modules
 	research system--needs definitions of research for research tree
 	block and item textures (engineering station, research station, research book, research notes)
+	Chunkloader blocks
 
 GUIS (all modules)
 	need LOTS of tooltips added to various elements
@@ -22,17 +23,28 @@ automation module:
 		add IMC-based API to add logs/saplings to forestry farm??
 		add config-based method to add logs/saplings to forestry farm??	
 		add plugin / support for power systems (mechanical worker block)(need APIs updated first)
-	mechanical hopper block -- configurable pull / push side (s), and on/off push control
-		with filter list per-side -- needs redstone power to function?
-	optional input slot to run mechanical worker directly with coal -- disabled by default in config?	
-	waterwheel type engine / waterwheel worker
+			--NEXT
+	optional input slot to run mechanical worker directly with coal
+		-- disabled by default in config
+		-- auto-enabled when npc module is disabled and no other compatible power framework is present
 	hand-cranked engine/dynamo/whatever to interface workers with other power systems
+		-- will likely need one for each power system...separate blocks and tiles for each
 	warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 		--perhaps have different methods for tile.invalidate() and onBlockBroken
-
+	
 npcs module
-	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority	
+	worker will have 'work sites' list / work-order item, denoting which sites to work in what order/priority
+		--possibility to use a user set priority list for workers
+		--possibility to use a user set timetable for workers
+		--possibility to use a user set route for workers
+	npc types
+		researcher (research)
+		craftsman (builder)
+		farmer (farms / animal farms)
+		lumberjack (tree farms / builder)
+		miner (quarries / builder)
+		courier (item routing)
 	everything	
 		
 vehicles module
