@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,6 +9,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -20,6 +23,8 @@ public abstract class TileWarehouseStorageBase extends TileEntity implements IIn
 BlockPosition controllerPosition = null;
 private boolean init;
 int storageAdditionSize;
+List<WarehouseItemFilter> filters = new ArrayList<WarehouseItemFilter>();
+List<ContainerWarehouseStorage> viewers = new ArrayList<ContainerWarehouseStorage>();
 
 /**
  * implementing sub-classes must create their inventory in their constructor, or things will NPE
@@ -28,6 +33,97 @@ int storageAdditionSize;
 public TileWarehouseStorageBase()
   {
   
+  }
+
+public void addViewer(ContainerWarehouseStorage container)
+  {
+  viewers.add(container);
+  }
+
+public void removeViewer(ContainerWarehouseStorage container)
+  {
+  viewers.remove(container);
+  }
+
+public void updateViewers()
+  {
+  for(ContainerWarehouseStorage viewer : viewers)
+    {
+    viewer.refreshGui();
+    }
+  }
+
+@Override
+public void onWarehouseInventoryUpdated(WorkSiteWarehouse warehouse)
+  {
+  updateFilterCountsFromWarehouse();
+  }
+
+private WorkSiteWarehouse getWarehouse()
+  {
+  if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+    {
+    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    if(te instanceof WorkSiteWarehouse)
+      {
+      return (WorkSiteWarehouse) te;
+      }
+    }
+  return null;
+  }
+
+private void updateFilterCountsFromWarehouse()
+  {
+  WarehouseItemFilter filter;
+  WorkSiteWarehouse warehouse = getWarehouse();
+  if(warehouse==null)
+    {
+    for(int i = 0; i <this.filters.size(); i++)
+      {
+      filter = filters.get(i);
+      filter.setFilterQuantity(0);
+      worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, 0);
+      }
+    return;
+    }
+  int qty;
+  for(int i = 0; i <this.filters.size(); i++)
+    {
+    filter = filters.get(i);
+    if(filter.getFilterItem()==null){continue;}
+    qty = warehouse.getCountOf(filter.getFilterItem());
+    if(qty!=filter.getFilterQuantity())
+      {
+      filter.setFilterQuantity(qty);
+      worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, qty);
+      }
+    }
+  }
+
+private void updateFilterCounts()
+  {
+  WarehouseItemFilter filter;
+  WorkSiteWarehouse warehouse = getWarehouse();
+  if(warehouse==null)
+    {
+    for(int i = 0; i <this.filters.size(); i++)
+      {
+      filter = filters.get(i);
+      filter.setFilterQuantity(0);
+      }
+    return;
+    }
+  int qty;
+  for(int i = 0; i <this.filters.size(); i++)
+    {
+    filter = filters.get(i);
+    if(filter.getFilterItem()==null){continue;}
+    qty = warehouse.getCountOf(filter.getFilterItem());
+    if(qty!=filter.getFilterQuantity())
+      {
+      filter.setFilterQuantity(qty);
+      }
+    }
   }
 
 @Override
@@ -68,6 +164,7 @@ public void invalidate()
         }
       }
     }
+  this.viewers.clear();
   controllerPosition = null;
   }
 
@@ -103,26 +200,57 @@ public void updateEntity()
     }
   }
 
+@Override
+public void setFilters(List<WarehouseItemFilter> filters)
+  {
+  this.filters.clear();
+  this.filters.addAll(filters);
+  updateFilterCounts();
+  if(!worldObj.isRemote)
+    {
+    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+  }
+
+@Override
+public List<WarehouseItemFilter> getFilters()
+  {
+  return filters;
+  }
+
 /*****************************************NETWORK HANDLING METHODS*******************************************/
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);  
+  filters.clear();
+  if(tag.hasKey("filterList"))
+    {
+    WarehouseItemFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);    
+    }
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
+  tag.setTag("filterList", WarehouseItemFilter.writeFilterList(filters));
   }
 
 @Override
 public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {  
-  if(pkt.func_148857_g().hasKey("controllerPosition"))
+  NBTTagCompound tag = pkt.func_148857_g();
+  if(tag.hasKey("controllerPosition"))
     {
     controllerPosition = new BlockPosition(pkt.func_148857_g().getCompoundTag("controllerPosition"));
     }
+  filters.clear();
+  if(tag.hasKey("filterList"))
+    {
+    WarehouseItemFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);    
+    }
+  updateViewers();
   }
 
 @Override
@@ -132,6 +260,10 @@ public Packet getDescriptionPacket()
   if(controllerPosition!=null)
     {
     tag.setTag("controllerPosition", controllerPosition.writeToNBT(new NBTTagCompound()));
+    }
+  if(!filters.isEmpty())
+    {
+    tag.setTag("filterList", WarehouseItemFilter.writeFilterList(filters));    
     }
   S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
   return pkt;
@@ -155,6 +287,11 @@ public boolean receiveClientEvent(int a, int b)
     return true;
     }
   AWLog.logDebug("receiving client event: "+a+"::"+b+" client: "+worldObj.isRemote);
+  if(a>=0 && a<filters.size())
+    {
+    WarehouseItemFilter filter = filters.get(a);
+    filter.setFilterQuantity(b);
+    }
   return false;
   }
 

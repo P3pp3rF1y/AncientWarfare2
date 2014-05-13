@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
+import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseInput;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseOutput;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageSmall;
@@ -115,6 +116,8 @@ public static final BlockWarehouseInput warehouseInput = new BlockWarehouseInput
 
 public static final BlockWarehouseOutput warehouseOutput = new BlockWarehouseOutput("warehouse_output");
 
+public static final BlockWarehouseCraftingStation warehouseCrafting = new BlockWarehouseCraftingStation("warehouse_crafting_station");
+
 public static void load()
   {  
   GameRegistry.registerBlock(workerTest, "block.testWorker");
@@ -200,6 +203,9 @@ public static void load()
   
   GameRegistry.registerBlock(warehouseOutput, "warehouse_output");
   GameRegistry.registerTileEntity(TileWarehouseOutput.class, "warehouse_output_tile");
+  
+  GameRegistry.registerBlock(warehouseCrafting, "warehouse_crafting_station");
+  GameRegistry.registerTileEntity(TileWarehouseCraftingStation.class, "warehouse_crafting_station_tile");
   }
 
 }

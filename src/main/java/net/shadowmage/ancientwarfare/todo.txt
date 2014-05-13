@@ -3,15 +3,19 @@ core (done for now)
 	research system--needs definitions of research for research tree
 	block and item textures (engineering station, research station, research book, research notes)
 
-GUIS
+GUIS (all modules)
 	need LOTS of tooltips added to various elements
 
 modeler
-	who knows....
+	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 	
 structures module (done for now)
 	plugins / support for other modules
 	textures for drafting station, survival-mode builder
+	rework gates as a multi-block? (use controller TE TESR to render gate)
+		at that point, can use blocks for collision and interaction
+		probably less buggy than the entity-based interaction
+		but how to handle only partially loaded gates?
 
 automation module:
 	API / compat stuff:
@@ -21,17 +25,21 @@ automation module:
 	mechanical hopper block -- configurable pull / push side (s), and on/off push control
 		with filter list per-side -- needs redstone power to function?
 	optional input slot to run mechanical worker directly with coal -- disabled by default in config?	
-	warehouse crafting station -- crafting station that auto-pulls items from warehouse, must be placed on top of warehouse control block
-		or, make it a part of the warehouse functioning?
 	waterwheel type engine / waterwheel worker
-	hand-cranked engine/dynamo/whatever to interface workers with other power systems
+	hand-cranked engine/dynamo/whatever to interface workers with other power systems	
+	way to request items from a storage block based on the filters set?
+	warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
+		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
+		--perhaps have different methods for tile.invalidate() and onBlockBroken
+
+npcs module
+	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority
+	everything	
 		
 vehicles module
 	everything
 
-npcs module
-	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority
-	everything
+
 	
 	
 	

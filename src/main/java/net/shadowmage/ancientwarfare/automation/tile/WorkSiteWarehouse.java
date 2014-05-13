@@ -40,6 +40,7 @@ private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorke
 
 /**************************WAREHOUSE FIELDS******************************/
 private boolean init = false;
+private boolean warehouseInventoryUpdated = false;
 private List<IWarehouseStorageTile> storageTiles = new ArrayList<IWarehouseStorageTile>();
 private List<TileWarehouseInput> inputTiles = new ArrayList<TileWarehouseInput>();
 private List<TileWarehouseOutput> outputTiles = new ArrayList<TileWarehouseOutput>();
@@ -78,6 +79,12 @@ public void updateEntity()
     }
   if(!worldObj.isRemote)
     {
+    if(warehouseInventoryUpdated)
+      {
+      warehouseInventoryUpdated = false;
+      recheckOutputTiles();
+      informStorageTilesOfUpdate();      
+      }
     if(!tilesToUpdate.isEmpty())
       {
       long t1 = System.nanoTime();
@@ -272,6 +279,11 @@ protected void scanInitialBlocks()
 
 private void onWarehouseInventoryUpdated()
   {
+  warehouseInventoryUpdated = true;
+  }
+
+private void recheckOutputTiles()
+  {
   Set<TileWarehouseOutput> toUpdate = new HashSet<TileWarehouseOutput>();
   toUpdate.addAll(outputToCheck);
   toUpdate.addAll(outputToFill);
@@ -282,6 +294,14 @@ private void onWarehouseInventoryUpdated()
     updateOutputTile(tile);
     }
   updateViewers();
+  }
+
+private void informStorageTilesOfUpdate()
+  {
+  for(IWarehouseStorageTile tile : this.storageTiles)
+    {
+    tile.onWarehouseInventoryUpdated(this);
+    }
   }
 
 public void onInputInventoryUpdated(TileWarehouseInput tile)
@@ -366,6 +386,16 @@ private void updateSlotCount()
   this.currentItemCount = inventoryMap.getTotalItemCount();
   }
 
+public int getCountOf(ItemStack item)
+  {
+  return inventoryMap.getCount(item);
+  }
+
+public void decreaseCountOf(ItemStack item, int count)
+  {
+  inventoryMap.decreaseCount(item, count);
+  onWarehouseInventoryUpdated();
+  }
 
 /************************************************ WORKSITE METHODS *************************************************/
 

@@ -7,69 +7,37 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseOutput;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
-import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class GuiWarehouseOutput extends GuiContainerBase
+public class GuiWarehouseStorage extends GuiContainerBase
 {
 
 CompositeScrolled area;
-ContainerWarehouseOutput container;
+
+ContainerWarehouseStorage container;
+
 List<WarehouseItemFilter> itemFilters = new ArrayList<WarehouseItemFilter>();
 
-public GuiWarehouseOutput(ContainerBase par1Container)
+public GuiWarehouseStorage(ContainerBase par1Container)
   {
   super(par1Container, 178, 240, defaultBackground);
-  this.container = (ContainerWarehouseOutput)par1Container;  
-  for(WarehouseItemFilter filter : container.tile.getFilters())
-    {
-    this.itemFilters.add(filter.copy());
-    }
-  }
-
-@Override
-public void updateScreen()
-  {
-  if(itemFilters.size()!=container.tile.getFilters().size())
-    {
-    refreshGui();
-    }
-  else
-    {
-    WarehouseItemFilter filter1, filter2;
-    boolean shouldUpdate = false;
-    for(int i = 0; i<itemFilters.size(); i++)
-      {
-      filter1 = itemFilters.get(i);
-      filter2 = container.tile.getFilters().get(i);
-      if(filter1.getFilterQuantity()!=filter2.getFilterQuantity() || !InventoryTools.doItemStacksMatch(filter1.getFilterItem(), filter2.getFilterItem()))
-        {
-        shouldUpdate = true;
-        break;
-        }
-      } 
-    if(shouldUpdate)
-      {
-      itemFilters.clear();
-      itemFilters.addAll(container.tile.getFilters());
-      }
-    }
-  super.updateScreen();
+  this.container = (ContainerWarehouseStorage)par1Container;
+  this.ySize = container.guiHeight;
+  itemFilters.addAll(container.tile.getFilters());
   }
 
 @Override
 public void initElements()
   {
-  int areaY = 8 + 3*18 + 8 + 4*18 + 4 + 8;
-  area = new CompositeScrolled(0, areaY, xSize, ySize-areaY);
+  area = new CompositeScrolled(0, 0, xSize, container.areaSize);
   addGuiElement(area);
   }
 
@@ -77,22 +45,26 @@ public void initElements()
 public void setupElements()
   {
   area.clearElements();
+  itemFilters.clear();
+  itemFilters.addAll(container.tile.getFilters());
   List<WarehouseItemFilter> filters = itemFilters;
   
   int totalHeight = 8;
   
   ItemSlot slot;
-  NumberInput input;  
+  Label label;  
   Button button;  
+  String name;
   
   for(WarehouseItemFilter filter : filters)
     {    
     slot = new FilterItemSlot(8, totalHeight, filter, this);
     area.addGuiElement(slot);
     
-    input = new FilterQuantityInput(8+30, totalHeight+3, filter);    
-    input.setIntegerValue();
-    area.addGuiElement(input);
+    name = filter.getFilterItem()==null? "" : filter.getFilterItem().getDisplayName();
+    
+    label = new Label(20+8, totalHeight+4, filter.getFilterQuantity()+" x "+name);
+    area.addGuiElement(label);
     
     button = new FilterRemoveButton(xSize-16-12, totalHeight+3, filter);
     area.addGuiElement(button);
@@ -100,7 +72,7 @@ public void setupElements()
     totalHeight+=18;
     }
   
-  if(filters.size()<9)
+  if(filters.size()<10)
     {
     button = new Button(8, totalHeight, 95, 12, StatCollector.translateToLocal("guistrings.automation.new_filter"))
       {
@@ -108,7 +80,7 @@ public void setupElements()
       protected void onPressed()
         {
         WarehouseItemFilter filter = new WarehouseItemFilter();
-        filter.setFilterQuantity(64);
+        filter.setFilterQuantity(0);
         itemFilters.add(filter);
         sendFiltersToServer();
         refreshGui();
@@ -119,11 +91,11 @@ public void setupElements()
     }
   
   area.setAreaSize(totalHeight);
+
   }
 
-protected void sendFiltersToServer()//should be called whenever filters change, so that the base container/etc can be updated
+private void sendFiltersToServer()
   {
-  container.tile.setFilters(itemFilters);
   NBTTagList filterTagList = WarehouseItemFilter.writeFilterList(itemFilters);
   NBTTagCompound tag = new NBTTagCompound();
   tag.setTag("filterList", filterTagList);
@@ -148,26 +120,6 @@ protected void onPressed()
   }
 }
 
-private class FilterQuantityInput extends NumberInput
-{
-WarehouseItemFilter filter;
-public FilterQuantityInput(int topLeftX, int topLeftY, WarehouseItemFilter filter)
-  {
-  super(topLeftX, topLeftY, 40, filter.getFilterQuantity(), GuiWarehouseOutput.this);
-  this.filter = filter;
-  }
-
-@Override
-public void onValueUpdated(float value)
-  {
-  int val = (int)value;
-  this.filter.setFilterQuantity(val);
-  refreshGui();
-  sendFiltersToServer();
-  }
-
-}
-
 private class FilterItemSlot extends ItemSlot
 {
 WarehouseItemFilter filter;
@@ -175,7 +127,6 @@ public FilterItemSlot(int topLeftX, int topLeftY, WarehouseItemFilter filter, IT
   {
   super(topLeftX, topLeftY, filter.getFilterItem(), render);
   this.filter = filter;
-  this.setRenderItemQuantity(false);
   }
 
 @Override

@@ -51,7 +51,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
       int j = i % 65536;
       int k = i / 65536;
       OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
-      renderSignBoard(x+d.offsetX, y+d.offsetY, z+d.offsetZ, r);
+//      renderSignBoard(x+d.offsetX, y+d.offsetY, z+d.offsetZ, r);
 
       GL11.glPushMatrix();
       GL11.glTranslated(x, y, z);
@@ -88,38 +88,40 @@ private void renderSignContents(IWarehouseStorageTile tile, double x, double y, 
 
   
   //adjust translation for sign-face, move right a little, down a 1/4 block, and out a little
-  //this puts the origin at upper-left-hand corner of the sign-face, about 1 sign pixel in and down
-  GL11.glTranslatef(0, -0.25f, -0.042f);
+  //this puts the origin at upper-left-hand corner of the sign-face
+//  GL11.glTranslatef(0, -0.25f, -0.042f);
   
-  //rescale for gui rendering axis flip
-  GL11.glScalef(-1, -1, -1);
-  //rescale for font rendering, can fit 4 text lines @ 10px spacing at this scale
-//  GL11.glScalef(0.011f, 0.011f, 0.011f);
-  GL11.glScalef(0.0050f, 0.0050f, 0.0050f);//this scale puts it at 200 pixels per block
-  GL11.glScalef(1f, 1f, 0.0001f);
+
+  GL11.glTranslatef(0, 0, -0.002f);//move out from block face slightly, for depth-buffer/z-fighting
+  
+  
+  GL11.glScalef(-1, -1, -1);//rescale for gui rendering axis flip
+  GL11.glScalef(0.0050f, 0.0050f, 0.0050f);//this scale puts it at 200 units(pixels) per block
+  GL11.glScalef(1f, 1f, 0.0001f);//squash Z axis for 'flat' rendering of 3d blocks/items..LOLS
   FontRenderer fr = func_147498_b();
   
   ItemStack filterItem;
   WarehouseItemFilter filter;
   String name = "";
   List<WarehouseItemFilter>filters = tile.getFilters();
-  String tileName = "what_to_do_with_this_field?";
-  fr.drawString(tileName, 100-fr.getStringWidth(tileName)/2, 10, 0xffffffff);
-  for(int i = 0; i < 4 && i<filters.size(); i++)
+//  String tileName = "what_to_do_with_this_field?";
+//  fr.drawString(tileName, 100-fr.getStringWidth(tileName)/2, 10, 0xffffffff);
+  //TODO draw parchment background layer?
+  for(int i = 0; i < 10 && i<filters.size(); i++)
     {
     filter = filters.get(i);
     filterItem = filter.getFilterItem();
     
     if(filterItem!=null)
       {
-      render.renderItemAndEffectIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), filter.getFilterItem(), 0+12, i*18+10+10);      
+      render.renderItemAndEffectIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), filter.getFilterItem(), 0+12, i*18+10);      
       }
     
     name = filterItem==null? "Empty Filter" : filterItem.getDisplayName();
-    fr.drawString(name, 20+12, i*18+4+10+10, 0xffffffff);
+    fr.drawString(name, 20+12, i*18+4+10, 0xffffffff);
     
     name = String.valueOf(filter.getFilterQuantity());
-    fr.drawString(name, 200-13-fr.getStringWidth(name), i*18+4+10+10, 0xffffffff);
+    fr.drawString(name, 200-13-fr.getStringWidth(name), i*18+4+10, 0xffffffff);
     
     }
     
