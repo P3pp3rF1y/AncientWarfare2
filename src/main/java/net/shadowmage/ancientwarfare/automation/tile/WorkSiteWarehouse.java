@@ -150,6 +150,7 @@ public void addStorageBlock(IWarehouseStorageTile tile)
     storageTiles.add(tile);  
     currentMaxItemCount+=tile.getStorageAdditionSize();
     AWLog.logDebug("updated warehouse storage size to: "+currentMaxItemCount);
+    tile.onWarehouseInventoryUpdated(this);
     }
   }
 

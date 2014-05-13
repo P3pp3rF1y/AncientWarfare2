@@ -56,7 +56,7 @@ public void updateViewers()
 @Override
 public void onWarehouseInventoryUpdated(WorkSiteWarehouse warehouse)
   {
-  updateFilterCountsFromWarehouse();
+  updateFilterCounts(true);
   }
 
 private WorkSiteWarehouse getWarehouse()
@@ -72,7 +72,7 @@ private WorkSiteWarehouse getWarehouse()
   return null;
   }
 
-private void updateFilterCountsFromWarehouse()
+private void updateFilterCounts(boolean addBlockEvents)
   {
   WarehouseItemFilter filter;
   WorkSiteWarehouse warehouse = getWarehouse();
@@ -82,7 +82,10 @@ private void updateFilterCountsFromWarehouse()
       {
       filter = filters.get(i);
       filter.setFilterQuantity(0);
-      worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, 0);
+      if(addBlockEvents)
+        {
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, 0);        
+        }
       }
     return;
     }
@@ -95,33 +98,10 @@ private void updateFilterCountsFromWarehouse()
     if(qty!=filter.getFilterQuantity())
       {
       filter.setFilterQuantity(qty);
-      worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, qty);
-      }
-    }
-  }
-
-private void updateFilterCounts()
-  {
-  WarehouseItemFilter filter;
-  WorkSiteWarehouse warehouse = getWarehouse();
-  if(warehouse==null)
-    {
-    for(int i = 0; i <this.filters.size(); i++)
-      {
-      filter = filters.get(i);
-      filter.setFilterQuantity(0);
-      }
-    return;
-    }
-  int qty;
-  for(int i = 0; i <this.filters.size(); i++)
-    {
-    filter = filters.get(i);
-    if(filter.getFilterItem()==null){continue;}
-    qty = warehouse.getCountOf(filter.getFilterItem());
-    if(qty!=filter.getFilterQuantity())
-      {
-      filter.setFilterQuantity(qty);
+      if(addBlockEvents)
+        {
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, qty);
+        }
       }
     }
   }
@@ -205,7 +185,7 @@ public void setFilters(List<WarehouseItemFilter> filters)
   {
   this.filters.clear();
   this.filters.addAll(filters);
-  updateFilterCounts();
+  updateFilterCounts(false);
   if(!worldObj.isRemote)
     {
     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

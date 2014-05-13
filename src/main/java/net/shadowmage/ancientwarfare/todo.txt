@@ -26,14 +26,13 @@ automation module:
 		with filter list per-side -- needs redstone power to function?
 	optional input slot to run mechanical worker directly with coal -- disabled by default in config?	
 	waterwheel type engine / waterwheel worker
-	hand-cranked engine/dynamo/whatever to interface workers with other power systems	
-	way to request items from a storage block based on the filters set?
+	hand-cranked engine/dynamo/whatever to interface workers with other power systems
 	warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 		--perhaps have different methods for tile.invalidate() and onBlockBroken
 
 npcs module
-	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority
+	worker will have 'work sites' list / work-order item, denoting which sites to work in what order or priority	
 	everything	
 		
 vehicles module
