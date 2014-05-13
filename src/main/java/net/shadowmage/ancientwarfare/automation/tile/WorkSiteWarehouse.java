@@ -46,8 +46,8 @@ private List<TileWarehouseOutput> outputTiles = new ArrayList<TileWarehouseOutpu
 private Set<TileEntity> tilesToUpdate = new HashSet<TileEntity>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 public InventoryBasic inventory = new InventoryBasic(9);//manual input/output inventory
-public ItemQuantityMap inventoryMap = new ItemQuantityMap(); 
-
+public ItemQuantityMap inventoryMap = new ItemQuantityMap();//TODO make this private, wrap whatever is needed for the container in access methods
+/**************************WORK QUEUES******************************/
 private List<TileWarehouseOutput> outputToCheck = new ArrayList<TileWarehouseOutput>();
 private List<TileWarehouseOutput> outputToFill = new ArrayList<TileWarehouseOutput>();
 private List<TileWarehouseInput> inputToEmpty = new ArrayList<TileWarehouseInput>();
@@ -76,10 +76,18 @@ public void updateEntity()
     init = true;
     scanInitialBlocks();  
     }
-  if(!tilesToUpdate.isEmpty())
+  if(!worldObj.isRemote)
     {
-    updateTiles();
-    }
+    if(!tilesToUpdate.isEmpty())
+      {
+      long t1 = System.nanoTime();
+      updateTiles();
+      long t2 = System.nanoTime();
+      long t3 = (t2-t1);
+      float f1 = (float)((double)t3 / 1000000.d);
+      AWLog.logDebug("tilesToUpdate update time: "+(t2-t1)+"ns ("+f1+"ms)");
+      }  
+    }  
   }
 
 private void updateTiles()
@@ -97,6 +105,7 @@ private void updateTiles()
     }
   tilesToUpdate.clear();
   }
+
 
 /************************************************ MULTIBLOCK SYNCH METHODS *************************************************/
 
@@ -119,7 +128,7 @@ public void removeInputBlock(TileWarehouseInput input)
     {
     inputToEmpty.remove(input);
     }
-  updateViewers();
+  tilesToUpdate.remove(input);
   }
 
 public List<TileWarehouseInput> getInputTiles()
@@ -135,7 +144,6 @@ public void addStorageBlock(IWarehouseStorageTile tile)
     currentMaxItemCount+=tile.getStorageAdditionSize();
     AWLog.logDebug("updated warehouse storage size to: "+currentMaxItemCount);
     }
-  updateViewers();
   }
 
 public void removeStorageBlock(IWarehouseStorageTile tile)
@@ -146,7 +154,6 @@ public void removeStorageBlock(IWarehouseStorageTile tile)
     currentMaxItemCount-=tile.getStorageAdditionSize();
     AWLog.logDebug("updated warehouse storage size to: "+currentMaxItemCount);
     }
-  updateViewers();
   }
 
 public List<IWarehouseStorageTile> getStorageTiles()
@@ -173,6 +180,11 @@ public void removeOutputBlock(TileWarehouseOutput te)
     {
     outputToFill.remove(te);
     }
+  while(outputToCheck.contains(te))
+    {
+    outputToFill.remove(te);
+    }
+  tilesToUpdate.remove(te);
   }
 
 public List<TileWarehouseOutput> getOutputTiles()
@@ -202,6 +214,14 @@ public void invalidate()
       ict.setControllerPosition(null);
       }
     }
+  this.inputTiles.clear();
+  this.outputTiles.clear();
+  this.storageTiles.clear();
+  this.tilesToUpdate.clear();
+  this.inputToEmpty.clear();  
+  this.outputToCheck.clear();
+  this.outputToFill.clear();
+  this.viewers.clear();
   }
 
 @Override
@@ -247,6 +267,7 @@ protected void scanInitialBlocks()
     }
   }
 
+
 /************************************************ INVENTORY TRACKING METHODS *************************************************/
 
 private void onWarehouseInventoryUpdated()
@@ -260,6 +281,7 @@ private void onWarehouseInventoryUpdated()
     {
     updateOutputTile(tile);
     }
+  updateViewers();
   }
 
 public void onInputInventoryUpdated(TileWarehouseInput tile)
@@ -294,6 +316,8 @@ public void requestItem(ItemStack filter)
     {
     inventoryMap.addCount(toMerge, toMerge.stackSize);
     }
+  updateViewers();
+  onWarehouseInventoryUpdated();
   }
 
 private void updateInputTile(TileWarehouseInput tile)
@@ -341,6 +365,7 @@ private void updateSlotCount()
   {
   this.currentItemCount = inventoryMap.getTotalItemCount();
   }
+
 
 /************************************************ WORKSITE METHODS *************************************************/
 
@@ -559,6 +584,7 @@ private void processOutputWork()
     }
   AWLog.logDebug("processed output work. output set:"+outputToFill+" update set: "+tilesToUpdate);
   }
+
 
 /************************************************ NETWORK METHODS *************************************************/
 
