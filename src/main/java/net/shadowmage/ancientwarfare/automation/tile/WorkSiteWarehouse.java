@@ -48,6 +48,7 @@ private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehou
 public InventoryBasic inventory = new InventoryBasic(9);//manual input/output inventory
 public ItemQuantityMap inventoryMap = new ItemQuantityMap(); 
 
+private List<TileWarehouseOutput> outputToCheck = new ArrayList<TileWarehouseOutput>();
 private List<TileWarehouseOutput> outputToFill = new ArrayList<TileWarehouseOutput>();
 private List<TileWarehouseInput> inputToEmpty = new ArrayList<TileWarehouseInput>();
 
@@ -77,21 +78,25 @@ public void updateEntity()
     }
   if(!tilesToUpdate.isEmpty())
     {
-    for(TileEntity te : tilesToUpdate)
-      {
-      if(te instanceof TileWarehouseInput)
-        {
-        updateInputTile((TileWarehouseInput) te);
-        }
-      else if(te instanceof TileWarehouseOutput)
-        {
-        updateOutputTile((TileWarehouseOutput)te);
-        }
-      }
-    tilesToUpdate.clear();
+    updateTiles();
     }
   }
 
+private void updateTiles()
+  {
+  for(TileEntity te : tilesToUpdate)
+    {
+    if(te instanceof TileWarehouseInput)
+      {
+      updateInputTile((TileWarehouseInput) te);
+      }
+    else if(te instanceof TileWarehouseOutput)
+      {
+      updateOutputTile((TileWarehouseOutput)te);
+      }
+    }
+  tilesToUpdate.clear();
+  }
 
 /************************************************ MULTIBLOCK SYNCH METHODS *************************************************/
 
@@ -244,6 +249,19 @@ protected void scanInitialBlocks()
 
 /************************************************ INVENTORY TRACKING METHODS *************************************************/
 
+private void onWarehouseInventoryUpdated()
+  {
+  Set<TileWarehouseOutput> toUpdate = new HashSet<TileWarehouseOutput>();
+  toUpdate.addAll(outputToCheck);
+  toUpdate.addAll(outputToFill);
+  outputToCheck.clear();
+  outputToFill.clear();
+  for(TileWarehouseOutput tile : toUpdate)
+    {
+    updateOutputTile(tile);
+    }
+  }
+
 public void onInputInventoryUpdated(TileWarehouseInput tile)
   {
   if(inputTiles.contains(tile))
@@ -278,7 +296,7 @@ public void requestItem(ItemStack filter)
     }
   }
 
-public void updateInputTile(TileWarehouseInput tile)
+private void updateInputTile(TileWarehouseInput tile)
   {
   inputToEmpty.remove(tile);
   ItemStack item;
@@ -293,21 +311,33 @@ public void updateInputTile(TileWarehouseInput tile)
     }
   }
 
-public void updateOutputTile(TileWarehouseOutput tile)
+private void updateOutputTile(TileWarehouseOutput tile)
   {
-  outputToFill.remove(tile);//remove it in case it was already present in the toFil set
+  outputToFill.remove(tile);//remove it in case it was already present in the toFill set
+  outputToCheck.remove(tile);
   List<WarehouseItemFilter> filters = tile.getFilters();
+  int count;
   for(WarehouseItemFilter filter : filters)
     {
-    if(InventoryTools.getCountOf(tile, -1, filter.getFilterItem())<filter.getFilterQuantity())
+    if(filter.getFilterItem()==null){continue;}
+    count = InventoryTools.getCountOf(tile, -1, filter.getFilterItem()); 
+    if(count<filter.getFilterQuantity())
       {
-      outputToFill.add(tile);
+      count = inventoryMap.getCount(filter.getFilterItem());
+      if(count>0)
+        {
+        outputToFill.add(tile);        
+        }
+      else
+        {
+        outputToCheck.add(tile);
+        }
       break;
       }
     }  
   }
 
-public void updateSlotCount()
+private void updateSlotCount()
   {
   this.currentItemCount = inventoryMap.getTotalItemCount();
   }
@@ -453,6 +483,7 @@ private void processInputWork()
           transferQuantity=stack.stackSize;
           }
         inventoryMap.addCount(stack, transferQuantity);
+        onWarehouseInventoryUpdated();
         stack.stackSize-=transferQuantity;
         currentItemCount+=transferQuantity;
         if(stack.stackSize<=0)
@@ -511,6 +542,7 @@ private void processOutputWork()
           toMerge.stackSize = passXfer;
           transferQuantity -= passXfer;
           inventoryMap.decreaseCount(toMerge, passXfer);
+          onWarehouseInventoryUpdated();
           toMerge = InventoryTools.mergeItemStack(tile, toMerge, -1);
           if(toMerge!=null)//could only partially merge--perhaps output is full?
             {

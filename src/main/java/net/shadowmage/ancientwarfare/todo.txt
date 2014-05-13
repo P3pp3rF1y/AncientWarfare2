@@ -20,9 +20,11 @@ automation module:
 		add plugin / support for power systems (mechanical worker block)(need APIs updated first)
 	mechanical hopper block -- configurable pull / push side (s), and on/off push control
 		with filter list per-side -- needs redstone power to function?
-	optional input slot to run mechanical worker with coal -- disabled by default in config?	
-	warehouse crafting station -- crafting station that auto-pulls stuff from warehouse
+	optional input slot to run mechanical worker directly with coal -- disabled by default in config?	
+	warehouse crafting station -- crafting station that auto-pulls items from warehouse, must be placed on top of warehouse control block
+		or, make it a part of the warehouse functioning?
 	waterwheel type engine / waterwheel worker
+	hand-cranked engine/dynamo/whatever to interface workers with other power systems
 		
 vehicles module
 	everything
