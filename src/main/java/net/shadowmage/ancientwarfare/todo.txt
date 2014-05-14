@@ -1,4 +1,4 @@
-core (done for now)
+core
 	crafting system--needs recipes from other modules
 	research system--needs definitions of research for research tree
 	block and item textures (engineering station, research station, research book, research notes)
@@ -9,13 +9,15 @@ GUIS (all modules)
 	create item-slot container to improve rendering of item-slots
 		might even go so far as to implement custom rendering handling
 		for the actual items instead of relying on RenderItem
+	Finish creating proper text-input validation stuff for Text and NumberInput widgets
 
 modeler
 	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 	
 structures module (done for now)
 	plugins / support for other modules
-	textures for drafting station, survival-mode builder
+	template plugin support for gates
+	textures for drafting station, survival-mode builder block
 	rework gates as a multi-block? (use controller TE TESR to render gate)
 		at that point, can use blocks for collision and interaction
 		probably less buggy than the entity-based interaction
@@ -25,8 +27,6 @@ automation module:
 	API / compat stuff:
 		add IMC-based API to add logs/saplings to forestry farm??
 		add config-based method to add logs/saplings to forestry farm??	
-		add plugin / support for power systems (mechanical worker block)(need APIs updated first)
-			--NEXT
 	optional input slot to run mechanical worker directly with coal
 		-- disabled by default in config
 		-- auto-enabled when npc module is disabled and no other compatible power framework is present
@@ -36,7 +36,9 @@ automation module:
 		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 		--perhaps have different methods for tile.invalidate() and onBlockBroken
 	BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
-	
+	bc-energy-output worksite (hand-cranked eng. equivalent)  perhaps a flywheel block that can turn work() into MJ
+		and output it via BC pipes....will require testing...
+	warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
 	
 npcs module
 	worker will have 'work sites' list / work-order item, denoting which sites to work in what order/priority
@@ -50,7 +52,7 @@ npcs module
 		lumberjack (tree farms / builder)
 		miner (quarries / builder)
 		courier (item routing)
-	everything	
+	TODO -- everything	
 		
 vehicles module
 	everything

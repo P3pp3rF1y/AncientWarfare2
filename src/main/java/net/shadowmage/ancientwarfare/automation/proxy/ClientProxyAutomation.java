@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
+import net.shadowmage.ancientwarfare.automation.gui.GuiMechanicalWorker;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseInput;
@@ -40,7 +41,8 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_INPUT, GuiWarehouseInput.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_OUTPUT, GuiWarehouseOutput.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CRAFTING, GuiWarehouseCraftingStation.class); 
-    
+  NetworkHandler.registerGui(NetworkHandler.GUI_MECHANICAL_WORKER, GuiMechanicalWorker.class);
+  
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStorageBase.class, new RenderTileWarehouseStorageBase());
   registerClientOptions();
   }

@@ -26,10 +26,38 @@ import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 public class AWAutomationStatics extends ModConfiguration
 {
 
+/**
+ * If true, eligible worksites will send their work-target tiles to clients.<br>
+ * Potentially network intensive, should only be left enabled on small servers or in single-player.<br>
+ */
 public static boolean sendWorkToClients = true;
 
+/**
+ * If true, mechanical workers will consume fuel placed into their input slot.<br>
+ * If false, you will not even be able to open the mechanical worker GUI.<br>
+ */
+public static boolean enableMechanicalWorkerFuelUse = true;
+
+/**
+ * How many energy units are produced by each worker 'work' tick<br>
+ * These units are equivalent to BuildCraft MJ and used interchangeably 
+ */
+public static int energyPerWorkUnit = 50;//equivalent to MJ
+
+/**
+ * How often is a worksite allowed to do a forced rescan of its work-bounds?<br>
+ */
 public static int automationWorkerRescanTicks = 200;
+
+/**
+ * Travel time per block when sending/receiving items using the mailbox system<br>
+ * Distances are calculated as a floating point distance and rounded to the nearest whole<br>
+ */
 public static int mailboxTimePerBlock = 20;
+
+/**
+ * Travel time for mail using mailboxes when items are being sent/received in different dimensions
+ */
 public static int mailboxTimeForDimension = 1200;
 
 public AWAutomationStatics(Configuration config)

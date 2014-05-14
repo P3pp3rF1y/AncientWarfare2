@@ -4,6 +4,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
+import net.shadowmage.ancientwarfare.automation.container.ContainerMechanicalWorker;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInput;
@@ -106,6 +107,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_INPUT, ContainerWarehouseInput.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_OUTPUT, ContainerWarehouseOutput.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CRAFTING, ContainerWarehouseCraftingStation.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_MECHANICAL_WORKER, ContainerMechanicalWorker.class);
   
   /**
    * register persistent game-data handlers

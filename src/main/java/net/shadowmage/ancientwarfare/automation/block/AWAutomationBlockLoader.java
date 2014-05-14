@@ -9,11 +9,11 @@ import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
+import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseInput;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseOutput;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageSmall;
-import net.shadowmage.ancientwarfare.automation.tile.TileWorkerTest;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteFishFarm;
@@ -29,7 +29,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class AWAutomationBlockLoader
 {
 
-public static final Block workerTest = new BlockMechanicalWorker("block.testWorker");
+public static final Block workerTest = new BlockMechanicalWorker("mechanical_worker");
 
 public static final BlockWorksiteBase worksiteQuarry = new BlockWorksiteBase(Material.rock,"civic_quarry")
   {
@@ -120,8 +120,8 @@ public static final BlockWarehouseCraftingStation warehouseCrafting = new BlockW
 
 public static void load()
   {  
-  GameRegistry.registerBlock(workerTest, "block.testWorker");
-  GameRegistry.registerTileEntity(TileWorkerTest.class, "tile.testWorker");
+  GameRegistry.registerBlock(workerTest, "mechanical_worker");
+  GameRegistry.registerTileEntity(TileMechanicalWorker.class, "mechanical_worker_tile");
     
   GameRegistry.registerBlock(worksiteQuarry, ItemBlockWorksite.class, "civic_quarry");
   GameRegistry.registerTileEntity(WorkSiteQuarry.class, "civic_quarry_tile");

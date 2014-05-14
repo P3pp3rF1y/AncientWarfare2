@@ -31,10 +31,21 @@ public Team getTeam();
  */
 public EnumSet<WorkType> getWorkTypes();
 
+/**
+ * return a block-position denoting the location of this worker
+ * @return
+ */
 public BlockPosition getPosition();
 
+/**
+ * return the work-site that is the current target of this worker
+ * @return
+ */
 public IWorkSite getWorkSite();
 
+/**
+ * called by a work-site when the block is removed or the worker found to be invalid
+ */
 public void clearWorkSite();
 
 }

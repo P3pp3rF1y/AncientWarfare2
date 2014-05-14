@@ -59,6 +59,7 @@ public static final int GUI_WAREHOUSE_STORAGE = 19;
 public static final int GUI_WAREHOUSE_INPUT = 20;
 public static final int GUI_WAREHOUSE_OUTPUT = 21;
 public static final int GUI_WAREHOUSE_CRAFTING = 22;
+public static final int GUI_MECHANICAL_WORKER = 23;
 
 private FMLEventChannel channel;
 
