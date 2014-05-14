@@ -1,13 +1,12 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.common.Loader;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
+import net.shadowmage.ancientwarfare.automation.tile.TileWorkerBC;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorkerTest;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class BlockMechanicalWorker extends Block
 {
@@ -22,35 +21,7 @@ public BlockMechanicalWorker(String regName)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {  
-  if(Loader.isModLoaded("BuildCraft|Core"))
-    {
-    try
-      {
-      Class clz = this.getClass().forName("net.shadowmage.ancientwarfare.automation.tile.TileWorkerBC");
-      if(clz!=null)
-        {
-        try
-          {
-          AWLog.logDebug("returning BC mechanical worker tile...");
-          return (TileEntity)clz.newInstance();
-          } 
-        catch (InstantiationException e)
-          {
-          e.printStackTrace();
-          } 
-        catch (IllegalAccessException e)
-          {
-          e.printStackTrace();
-          }
-        }
-      } 
-    catch (ClassNotFoundException e)
-      {
-      e.printStackTrace();
-      }    
-    }
-  AWLog.logDebug("returning default mechanical worker...");
-  return new TileWorkerTest();
+  return new TileWorkerBC();
   }
 
 @Override

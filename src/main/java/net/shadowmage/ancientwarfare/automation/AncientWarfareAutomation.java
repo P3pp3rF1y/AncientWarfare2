@@ -25,6 +25,7 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -38,7 +39,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 name = "Ancient Warfare Automation",
 modid = "ancientwarfareautomation",
 version = "@VERSION@",
-dependencies = "required-after:ancientwarfare"
+dependencies = "required-after:ancientwarfare;after:BuildCraft|Core"
 )
 
 public class AncientWarfareAutomation 
@@ -56,7 +57,6 @@ public static CommonProxyBase proxy;
 
 public static Configuration config;
 
-public static org.apache.logging.log4j.Logger log;
 
 public static AWAutomationStatics statics;
 
@@ -64,21 +64,36 @@ public static AWAutomationStatics statics;
 @EventHandler
 public void preInit(FMLPreInitializationEvent evt)
   {
+  AWLog.log("Ancient Warfare Automation Pre-Init started");
+  
   ModuleStatus.automationLoaded = true;
-  log = AncientWarfareCore.log;
-  AWLog.log("Ancient Warfare Automation Pre-Init started"); 
-  config = new Configuration(evt.getSuggestedConfigurationFile());
-  statics = new AWAutomationStatics(config);
-  proxy.registerClient();
+  if(Loader.isModLoaded("BuildCraft|Core"))
+    {
+    ModuleStatus.buildCraftLoaded = true;
+    AWLog.log("Detecting BuildCraft|Core is loaded, enabling BC Compatibility");
+    }   
   
   /**
-   * load pre-init
+   * setup module-owned config file and config-access class
    */
-  statics.load();
+  config = new Configuration(evt.getSuggestedConfigurationFile());
+  statics = new AWAutomationStatics(config);  
+    
+  /**
+   * load pre-init
+   */  
+  proxy.registerClient();
+  statics.load();//load config settings
   
+  /**
+   * load items and blocks
+   */
   AWAutomationBlockLoader.load();
   AWAutomationItemLoader.load();
 
+  /**
+   * register containers
+   */
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY, ContainerWorksiteBase.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_SET_TARGETS, ContainerWorksiteBlockSelection.class);
@@ -92,9 +107,16 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_OUTPUT, ContainerWarehouseOutput.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CRAFTING, ContainerWarehouseCraftingStation.class);
   
+  /**
+   * register persistent game-data handlers
+   */
   AWGameData.INSTANCE.registerSaveData(MailboxData.name, MailboxData.class);
   
+  /**
+   * register tick-handlers
+   */
   FMLCommonHandler.instance().bus().register(new MailboxTicker());
+  
   AWLog.log("Ancient Warfare Automation Pre-Init completed");
   }
 
@@ -102,7 +124,9 @@ public void preInit(FMLPreInitializationEvent evt)
 public void init(FMLInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Automation Init started"); 
-  
+  /**
+   * construct recipes, load plugins
+   */
   AWLog.log("Ancient Warfare Automation Init completed");
   }
 
@@ -110,7 +134,9 @@ public void init(FMLInitializationEvent evt)
 public void postInit(FMLPostInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Automation Post-Init started"); 
- 
+   /**
+    * save config for any changes that were made during loading stages
+    */
   config.save();
   AWLog.log("Ancient Warfare Automation Post-Init completed.  Successfully completed all loading stages.");
   }
