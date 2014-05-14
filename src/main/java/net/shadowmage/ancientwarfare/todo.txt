@@ -39,6 +39,13 @@ automation module:
 	bc-energy-output worksite (hand-cranked eng. equivalent)  perhaps a flywheel block that can turn work() into MJ
 		and output it via BC pipes....will require testing...
 	warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
+	figure out a better method for rotated blocks.
+		--two types of rotated blocks should be available:
+			6-way (U/D/N/S/E/W) -- can have 3 textures (Top/Bottom/Sides) and inventories
+				-- used by mechanical worker, 'directable' blocks (those with a defined output direction)
+			4-way (N/S/E/W) -- can have 6 textures (Top/Bottom/Left/Right/Front/Rear) and inventories
+				-- used by civics, most rotatable blocks
+			
 	
 npcs module
 	worker will have 'work sites' list / work-order item, denoting which sites to work in what order/priority

@@ -39,6 +39,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.BlockEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.Statics;
@@ -379,6 +380,33 @@ public static int getPlayerFacingFromYaw(float rotation)
   adjYaw /= 360.d;
   int facing = (MathHelper.floor_double(adjYaw)) % 4;//round down, mod 4 for a 0-3 range
   return facing;
+  }
+
+public static ForgeDirection getForgeDirectionFromFacing(int facing)
+  {
+  switch(facing)
+  {
+  case 0:
+    {
+    return ForgeDirection.SOUTH;
+    }
+  case 1:
+    {
+    return ForgeDirection.WEST;
+    }
+  case 2:
+    {
+    return ForgeDirection.NORTH;
+    }
+  case 3:
+    {
+    return ForgeDirection.EAST;
+    }
+  default:
+    {
+    return ForgeDirection.NORTH;
+    }
+  }
   }
 
 /**

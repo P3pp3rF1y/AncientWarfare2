@@ -5,11 +5,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.IRotatableBlock;
 
-public class BlockMechanicalWorker extends Block
+public class BlockMechanicalWorker extends Block implements IRotatableBlock
 {
 
 public BlockMechanicalWorker(String regName)
@@ -51,6 +54,25 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
     ((IInteractableTile) te).onBlockClicked(player);
     }
   return true;  
+  }
+
+@Override
+public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
+  {
+  int meta = worldObj.getBlockMetadata(x, y, z);
+  int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
+  if(rMeta!=meta)
+    {
+    worldObj.setBlockMetadataWithNotify(x, y, z, rMeta, 3);
+    return true;
+    }
+  return false;
+  }
+
+@Override
+public RotationType getRotationType()
+  {
+  return RotationType.SIX_WAY;
   }
 
 }
