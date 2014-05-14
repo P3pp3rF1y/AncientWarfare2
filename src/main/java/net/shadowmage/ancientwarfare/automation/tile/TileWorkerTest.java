@@ -84,13 +84,18 @@ public void updateEntity()
     }  
   if(workDelay==0 && getWorkSite()!=null)
     {
-    AWLog.logDebug("worker attempting work..");
-    if(getWorkSite().hasWork())
-      {
-      AWLog.logDebug("worksite had work, processing doWork");
-      getWorkSite().doWork(this);      
-      }
+    attemptWork();
     workDelay = 40;
+    }
+  }
+
+protected void attemptWork()
+  {
+  AWLog.logDebug("worker attempting work..");
+  if(getWorkSite().hasWork())
+    {
+    AWLog.logDebug("worksite had work, processing doWork");
+    getWorkSite().doWork(this);      
     }
   }
 

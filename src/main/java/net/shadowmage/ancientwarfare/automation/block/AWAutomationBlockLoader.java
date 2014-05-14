@@ -29,7 +29,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class AWAutomationBlockLoader
 {
 
-public static final Block workerTest = new BlockWorkerTest("block.testWorker");
+public static final Block workerTest = new BlockMechanicalWorker("block.testWorker");
 
 public static final BlockWorksiteBase worksiteQuarry = new BlockWorksiteBase(Material.rock,"civic_quarry")
   {

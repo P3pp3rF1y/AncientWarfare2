@@ -57,31 +57,3 @@ vehicles module
 
 	
 	
-	
-Warehouse Functioning:
-	Control Block
-		Coordinates moving things between storage, input, output blocks.
-		All actual items are stored in the controller block, storage blocks only add more room.
-		
-	Storage Blocks
-		Don't actually have any inventory -- inventory is managed in controller
-		Only used to add storage space to the warehouse (as per old-versions)
-		CAN BE SET to display the quantity of specific warehouse goods via filter
-			(configurable via GUI)???
-		
-	Input Blocks
-		Items stored in slots, minimal number of slots per block
-		items set by filter and automatically refilled by warehouse controller (use couriers to route to final destination)
-		warehouse withdraws all potential items from input blocks to store in storage
-		
-	Output Blocks
-		Items stored in slots, minimal number of slots per block (perhaps 3/6 per 'side', each side configurable independently)
-		Controller	
-
-Warehouse Control:
-	Maintain list of storage, input, output tiles.
-	Maintain list of tiles to update (those that have had their inventory marked dirty)
-	Calculate transfers from input to storage, storage to output
-	Calculate repack transfers from storage to storage
-	
-	
