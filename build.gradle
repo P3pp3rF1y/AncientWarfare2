@@ -32,6 +32,12 @@ allprojects
   archivesBaseName = "ancientwarfare"
 }
 
+dependencies {
+  compile files {
+    "lib/buildcraft-6.0.13-dev.jar"
+  }
+}
+
 
 task updateVersion(type:Copy){
   ant.propertyfile(file: versionFile)
