@@ -260,7 +260,7 @@ private void processWork()
               }
             else if(block.getMaterial()==Material.wood)
               {
-              TreeFinder.findAttachedTreeBlocks(blockType, worldObj, position.x, position.y, position.z, blocksToChop);
+              TreeFinder.findAttachedTreeBlocks(block, worldObj, position.x, position.y, position.z, blocksToChop);
               }
             break;
             }

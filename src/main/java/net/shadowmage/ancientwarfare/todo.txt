@@ -24,14 +24,13 @@ structures module (done for now)
 		but how to handle only partially loaded gates?
 
 automation module:
+	Finish block rotation handling -- "HANDLE IT, NOW...!@#$%^!$#!!"
 	API / compat stuff:
 		add IMC-based API to add logs/saplings to forestry farm??
 		add config-based method to add logs/saplings to forestry farm??	
 	optional input slot to run mechanical worker directly with coal
 		-- disabled by default in config
 		-- auto-enabled when npc module is disabled and no other compatible power framework is present
-	hand-cranked engine/dynamo/whatever to interface workers with other power systems
-		-- will likely need one for each power system...separate blocks and tiles for each
 	warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 		--perhaps have different methods for tile.invalidate() and onBlockBroken

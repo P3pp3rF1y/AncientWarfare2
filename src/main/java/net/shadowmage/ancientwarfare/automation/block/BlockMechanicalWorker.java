@@ -2,24 +2,44 @@ package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IconRotationMap;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IRotatableBlock;
 
 public class BlockMechanicalWorker extends Block implements IRotatableBlock
 {
+
+IconRotationMap iconMap = new IconRotationMap();
 
 public BlockMechanicalWorker(String regName)
   {
   super(Material.rock);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
   this.setBlockName(regName);
+  }
+
+@Override
+public void registerBlockIcons(IIconRegister register)
+  {
+  iconMap.registerIcons(register);
+  }
+
+@Override
+public IIcon getIcon(int side, int meta)
+  {
+  return iconMap.getIcon(this, meta, side);
   }
 
 @Override
@@ -32,6 +52,16 @@ public TileEntity createTileEntity(World world, int metadata)
 public boolean hasTileEntity(int metadata)
   {
   return true;
+  }
+
+@Override
+public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
+  {
+  int meta = BlockRotationHandler.getMetaForPlacement(entity, this);
+  if(meta!=world.getBlockMetadata(x, y, z))
+    {
+    world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+    }
   }
 
 @Override

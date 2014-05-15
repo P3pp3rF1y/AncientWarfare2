@@ -139,32 +139,29 @@ public void updateEntity()
     {
     attemptWork();
     }
+  else
+    {
+    AWLog.logDebug("energy: "+storedEnergy);
+    }
   }
 
 private boolean findWorkSite()
   {
-  AWLog.logDebug("attempting to find worksite...");
+  ForgeDirection face = ForgeDirection.getOrientation(getBlockMetadata());
+  
+  AWLog.logDebug("attempting to find worksite... at: "+face);
   TileEntity te;
   IWorkSite site;
-  for(int x = -1; x<=1; x++)
+  te = worldObj.getTileEntity(xCoord+face.offsetX, yCoord+face.offsetY, zCoord+face.offsetZ);
+  if(te instanceof IWorkSite)
     {
-    for(int z = -1; z<=1; z++)
+    AWLog.logDebug("found potential site, attempting to add as worker..");
+    site = (IWorkSite)te;
+    if(site.addWorker(this))
       {
-      if(z!=0 || x!=0 && (z==0 || x==0))
-        {
-        te = worldObj.getTileEntity(xCoord+x, yCoord, zCoord+z);
-        if(te instanceof IWorkSite)
-          {
-          AWLog.logDebug("found potential site, attempting to add as worker..");
-          site = (IWorkSite)te;
-          if(site.addWorker(this))
-            {
-            AWLog.logDebug("set worksite to: "+site);
-            this.setWorkSite(site);
-            return true;
-            }
-          }
-        }
+      AWLog.logDebug("set worksite to: "+site + " at: "+face);
+      this.setWorkSite(site);
+      return true;
       }
     }  
   return false;
@@ -179,6 +176,7 @@ public float getWorkEffectiveness()
 @Override
 public Team getTeam()
   {
+  //TODO set team to that of owning player/placing player
   return null;
   }
 
