@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -175,6 +176,15 @@ public void addSlots()
       s.yDisplayPosition+=10000;
       }
     }
+  }
+
+/**
+ * override default CRASH with default DO NOTHING
+ */
+@Override
+public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex)
+  {
+  return null;
   }
 
 }
