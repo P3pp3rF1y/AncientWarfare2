@@ -333,6 +333,11 @@ public RelativeSide getInventorySide(int mcSide)
   return RelativeSide.getSideViewed(rType, te.getBlockMetadata(), mcSide);
   }
 
+public ItemSlotFilter getFilterForSlot(int slot)
+  {
+  return filtersByInventorySlot[slot];
+  }
+
 @Override
 public int[] getAccessibleSlotsFromSide(int var1)
   {

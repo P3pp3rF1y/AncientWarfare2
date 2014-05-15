@@ -60,6 +60,13 @@ public static final int GUI_WAREHOUSE_INPUT = 20;
 public static final int GUI_WAREHOUSE_OUTPUT = 21;
 public static final int GUI_WAREHOUSE_CRAFTING = 22;
 public static final int GUI_MECHANICAL_WORKER = 23;
+public static final int GUI_WORKSITE_QUARRY = 24;
+public static final int GUI_WORKSITE_TREE_FARM = 25;
+public static final int GUI_WORKSITE_ANIMAL_FARM = 26;
+public static final int GUI_WORKSITE_CROP_FARM = 27;
+public static final int GUI_WORKSITE_MUSHROOM_FARM = 28;
+public static final int GUI_WORKSITE_FISH_FARM = 29;
+public static final int GUI_WORKSITE_REED_FARM = 30;
 
 private FMLEventChannel channel;
 

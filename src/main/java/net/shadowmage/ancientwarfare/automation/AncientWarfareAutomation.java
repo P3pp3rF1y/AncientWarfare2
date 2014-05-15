@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
@@ -107,7 +108,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_OUTPUT, ContainerWarehouseOutput.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CRAFTING, ContainerWarehouseCraftingStation.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_MECHANICAL_WORKER, ContainerMechanicalWorker.class);
-  
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_QUARRY, ContainerWorksiteQuarry.class);
   /**
    * register persistent game-data handlers
    */

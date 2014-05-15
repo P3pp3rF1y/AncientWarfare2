@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteInventorySideSelection;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
@@ -42,7 +43,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_OUTPUT, GuiWarehouseOutput.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CRAFTING, GuiWarehouseCraftingStation.class); 
   NetworkHandler.registerGui(NetworkHandler.GUI_MECHANICAL_WORKER, GuiMechanicalWorker.class);
-  
+  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_QUARRY, GuiWorksiteQuarry.class);
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStorageBase.class, new RenderTileWarehouseStorageBase());
   registerClientOptions();
   }

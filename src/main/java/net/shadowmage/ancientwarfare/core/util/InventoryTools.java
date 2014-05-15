@@ -767,6 +767,15 @@ public int compare(ItemStack o1, ItemStack o2)
   }
 }
 
+public static int[] getIndiceArrayForSpread(int start, int len)
+  {
+  int[] array = new int[len];
+  for(int i = 0, k = start; i<len; i++, k++)
+    {
+    array[i]=k;
+    }
+  return array;
+  }
 
 
 }

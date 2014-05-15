@@ -24,6 +24,15 @@ structures module (done for now)
 		but how to handle only partially loaded gates?
 
 automation module:
+	GUIS NEEDED:
+		Quarry
+		--Quarry layer setup?
+		Tree Farm
+		Animal Farm
+		Crop Farm
+		Fish Farm
+		Mushroom Farm
+		Reed Farm
 	API / compat stuff:
 		add IMC-based API to add logs/saplings to forestry farm??
 		add config-based method to add logs/saplings to forestry farm??	
