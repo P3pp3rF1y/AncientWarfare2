@@ -4,10 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.item.ItemBlockMailbox;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
-import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseCraftingStation;
@@ -23,7 +21,8 @@ import net.shadowmage.ancientwarfare.automation.tile.WorkSiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.tile.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.WorksiteAutoCrafting;
-import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class AWAutomationBlockLoader
@@ -120,7 +119,7 @@ public static final BlockWarehouseCraftingStation warehouseCrafting = new BlockW
 
 public static void load()
   {  
-  GameRegistry.registerBlock(workerTest, "mechanical_worker");
+  GameRegistry.registerBlock(workerTest, ItemBlockOwnedRotatable.class, "mechanical_worker");
   GameRegistry.registerTileEntity(TileMechanicalWorker.class, "mechanical_worker_tile");
     
   GameRegistry.registerBlock(worksiteQuarry, ItemBlockWorksite.class, "civic_quarry");
@@ -169,7 +168,7 @@ public static void load()
   worksiteAnimalFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmMushroomRedSides");
   worksiteAnimalFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmMushroomBrownSides");
   
-  GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockWorksiteAutoCrafting.class, "civic_auto_crafting");
+  GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockOwnedRotatable.class, "civic_auto_craftin");
   GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");
   worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
   
@@ -179,7 +178,7 @@ public static void load()
   GameRegistry.registerBlock(worksiteReedFarm, ItemBlockWorksite.class, "civic_reed_farm");
   GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "civic_reed_farm_tile");
   
-  GameRegistry.registerBlock(mailbox, ItemBlockMailbox.class, "mailbox");
+  GameRegistry.registerBlock(mailbox, ItemBlockOwnedRotatable.class, "mailbox");
   GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");
   mailbox.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
   mailbox.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmMelonSides");

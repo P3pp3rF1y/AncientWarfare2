@@ -6,9 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer.SideSlotMap;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer.ViewableSlot;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 
 public class ContainerWorksiteBase extends ContainerBase
@@ -25,52 +22,53 @@ int totalInventorySize;
 public ContainerWorksiteBase(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
-  worksite = (TileWorksiteBase)player.worldObj.getTileEntity(x, y, z);
-  playerSlotsLabelHeight = addWorksiteInventorySlots(8);
-  guiHeight = this.addPlayerSlots(player, 8, playerSlotsLabelHeight+12, 4);//+12 is for offset for label
-  if(worksite.hasAltSetupGui())
-    {
-    guiHeight+=12;//adjust for advanced control button / worker-view button
-    }
-  sideEndIndices = new int[6];
-  sideStartIndices = new int[6];
-  InventorySide side;
-  int index = 0;
-  int length = 0;
-  for(int i = 0; i <6 ;i++)
-    {
-    length = 0;
-    side = InventorySide.values()[i];
-    SideSlotMap slotMap = worksite.inventory.getSlotMapForSide(side);    
-    if(slotMap!=null)
-      {      
-      length = slotMap.getSlots().size();
-      }    
-    sideStartIndices[i] = index;
-    sideEndIndices[i] = index + length;
-    index+=length;
-    }
-  totalInventorySize = worksite.getSizeInventory();
+//  worksite = (TileWorksiteBase)player.worldObj.getTileEntity(x, y, z);
+//  playerSlotsLabelHeight = addWorksiteInventorySlots(8);
+//  guiHeight = this.addPlayerSlots(player, 8, playerSlotsLabelHeight+12, 4);//+12 is for offset for label
+//  if(worksite.hasAltSetupGui())
+//    {
+//    guiHeight+=12;//adjust for advanced control button / worker-view button
+//    }
+//  sideEndIndices = new int[6];
+//  sideStartIndices = new int[6];
+//  InventorySide side;
+//  int index = 0;
+//  int length = 0;
+//  for(int i = 0; i <6 ;i++)
+//    {
+//    length = 0;
+//    side = InventorySide.values()[i];
+//    SideSlotMap slotMap = worksite.inventory.getSlotMapForSide(side);    
+//    if(slotMap!=null)
+//      {      
+//      length = slotMap.getSlots().size();
+//      }    
+//    sideStartIndices[i] = index;
+//    sideEndIndices[i] = index + length;
+//    index+=length;
+//    }
+//  totalInventorySize = worksite.getSizeInventory();
   }
 
 protected int addWorksiteInventorySlots(int topY)
   {  
-  int lowestY = topY;
-  for(InventorySide side : InventorySide.values())
-    {
-    if(side==InventorySide.NONE){continue;}
-    SideSlotMap slotMap = worksite.inventory.getSlotMapForSide(side);
-    if(slotMap==null){continue;}
-    for(ViewableSlot slot : slotMap.getSlots())
-      {
-      addSlotToContainer(new SlotFiltered(worksite.inventory, slot.slotNumber, slotMap.guiX + slot.viewX, slotMap.slotY+slot.viewY, worksite.inventory.getFilterForSlot(slot.slotNumber)));
-      if(slotMap.slotY+slot.viewY>lowestY)
-        {
-        lowestY = slotMap.slotY+slot.viewY;
-        }
-      }    
-    }  
-  return lowestY + 18 + 4;
+//  int lowestY = topY;
+//  for(InventorySide side : InventorySide.values())
+//    {
+//    if(side==InventorySide.NONE){continue;}
+//    SideSlotMap slotMap = worksite.inventory.getSlotMapForSide(side);
+//    if(slotMap==null){continue;}
+//    for(ViewableSlot slot : slotMap.getSlots())
+//      {
+//      addSlotToContainer(new SlotFiltered(worksite.inventory, slot.slotNumber, slotMap.guiX + slot.viewX, slotMap.slotY+slot.viewY, worksite.inventory.getFilterForSlot(slot.slotNumber)));
+//      if(slotMap.slotY+slot.viewY>lowestY)
+//        {
+//        lowestY = slotMap.slotY+slot.viewY;
+//        }
+//      }    
+//    }  
+//  return lowestY + 18 + 4;
+  return 0;
   }
 
 @Override

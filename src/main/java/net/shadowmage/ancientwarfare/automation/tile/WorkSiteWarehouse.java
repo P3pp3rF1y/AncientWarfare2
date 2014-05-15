@@ -713,5 +713,10 @@ public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt
     }
   }
 
+@Override
+public String getOwnerName()
+  {
+  return owningPlayer;
+  }
 
 }

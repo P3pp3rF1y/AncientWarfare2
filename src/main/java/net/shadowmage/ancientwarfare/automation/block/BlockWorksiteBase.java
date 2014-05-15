@@ -10,17 +10,20 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
-import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class BlockWorksiteBase extends Block
+public abstract class BlockWorksiteBase extends Block implements IRotatableBlock
 {
 
-BlockIconRotationMap iconMap = new BlockIconRotationMap();
+IconRotationMap iconMap = new IconRotationMap();
 public int maxWorkSize = 16;
 public int maxWorkSizeVertical = 1;
 
@@ -33,7 +36,7 @@ public BlockWorksiteBase(Material p_i45394_1_, String regName)
 
 public BlockWorksiteBase setIcon(RelativeSide relativeSide, String texName)
   {
-  this.iconMap.setIconTexture(relativeSide, texName);
+  this.iconMap.setIcon(this, relativeSide, texName);
   return this;
   }
 
@@ -74,9 +77,9 @@ public void registerBlockIcons(IIconRegister p_149651_1_)
 
 @Override
 @SideOnly(Side.CLIENT)
-public IIcon getIcon(int p_149691_1_, int p_149691_2_)
+public IIcon getIcon(int side, int meta)
   {
-  return iconMap.getIconFor(p_149691_1_, p_149691_2_);
+  return iconMap.getIcon(this, meta, side);
   }
 
 @Override
@@ -96,10 +99,16 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
   }
 
 @Override
+public RotationType getRotationType()
+  {
+  return RotationType.FOUR_WAY;
+  }
+
+@Override
 public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
   {  
   int meta = worldObj.getBlockMetadata(x, y, z);
-  int newMeta = RelativeSide.getRotatedMeta(meta, axis, false);
+  int newMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
   if(meta!=newMeta)
     {
     worldObj.setBlockMetadataWithNotify(x, y, z, newMeta, 3);

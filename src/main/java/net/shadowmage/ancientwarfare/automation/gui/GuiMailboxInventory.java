@@ -24,7 +24,7 @@ public GuiMailboxInventory(ContainerBase par1Container)
   {
   super(par1Container, 178, 240, defaultBackground);
   container = (ContainerMailbox)par1Container;
-  ySize = container.guiHeight + 12 + 12;
+  ySize = container.guiHeight;
   }
 
 @Override

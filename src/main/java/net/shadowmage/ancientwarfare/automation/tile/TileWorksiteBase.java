@@ -21,14 +21,13 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.inventory.ISidedTile;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -43,7 +42,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
  * @author Shadowmage
  *
  */
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, ISidedTile, IInteractableTile, IBoundedTile, IOwnable
+public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IBoundedTile, IOwnable
 {
 
 /**
@@ -78,7 +77,7 @@ private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorke
 
 protected String owningPlayer;
 
-public InventorySidedWithContainer inventory;
+public InventorySided inventory;
 
 private ArrayList<BlockPosition> clientWorkTargets = new ArrayList<BlockPosition>();
 
@@ -104,9 +103,10 @@ public void markForUpdate()
   }
 
 @Override
-public int getTileMeta()
+public String getOwnerName()
   {
-  return getBlockMetadata();
+  
+  return null;
   }
 
 public boolean hasAltSetupGui()
@@ -207,11 +207,13 @@ public final BlockPosition getWorkBoundsMax()
   return bbMax;
   }
 
-public final void addStackToInventory(ItemStack stack, InventorySide... sides)
+public final void addStackToInventory(ItemStack stack, RelativeSide... sides)
   {
-  for(InventorySide side: sides)
+  int mcSide;
+  for(RelativeSide side: sides)
     {
-    stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getAccessDirectionFor(side));
+    mcSide = inventory.getAccessDirectionFor(side);
+    stack = InventoryTools.mergeItemStack(inventory, stack, mcSide);
     if(stack==null)
       {
       break;
@@ -229,13 +231,14 @@ public void updateEntity()
   super.updateEntity();
   if(worldObj.isRemote){return;}
   if(inventoryOverflow.isEmpty()){return;}
+  
+  List<ItemStack> notMerged = new ArrayList<ItemStack>();
   Iterator<ItemStack> it = inventoryOverflow.iterator();
   ItemStack stack;
-  List<ItemStack> notMerged = new ArrayList<ItemStack>();
   while(it.hasNext() && (stack=it.next())!=null)
     {
     it.remove();
-    stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getAccessDirectionFor(InventorySide.TOP));
+    stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getAccessDirectionFor(RelativeSide.TOP));
     if(stack!=null)
       {
       notMerged.add(stack);

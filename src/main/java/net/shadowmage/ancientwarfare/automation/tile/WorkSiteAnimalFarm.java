@@ -12,17 +12,14 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -59,71 +56,71 @@ public WorkSiteAnimalFarm()
   this.canUpdate = true;
   this.maxWorkers = 1;
   this.shouldCountResources = true;  
-  this.inventory = new InventorySidedWithContainer(27 + 3 + 3, this);
-  
-  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
-  for(int i =0; i <27; i++)
-    {
-    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
-    }
-    
-  ItemSlotFilter filter = new ItemSlotFilter()
-    {
-    @Override
-    public boolean isItemValid(ItemStack stack)
-      {
-      if(stack==null){return true;}
-      Item item = stack.getItem();
-      if(item==Items.wheat_seeds || item==Items.wheat || item==Items.carrot)
-        {       
-        return true;
-        }      
-      return false;
-      }
-    @Override
-    public String toString()
-      {
-      return "Anon filter -- wheat / seeds / carrot";
-      }
-    };
-  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
-  for(int i = 27, k = 0; i<30; i++, k++)
-    {
-    this.inventory.addSidedMapping(InventorySide.FRONT, i, true, true);
-    this.inventory.addSidedMapping(InventorySide.LEFT, i, true, true);
-    this.inventory.addSidedMapping(InventorySide.RIGHT, i, true, true);
-    this.inventory.addSidedMapping(InventorySide.REAR, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
-    this.inventory.addSlotFilter(i, filter);
-    }
-  
-  filter = new ItemSlotFilter()
-    {
-    @Override
-    public boolean isItemValid(ItemStack stack)
-      {
-      if(stack==null){return true;}
-      Item item = stack.getItem();
-      if(item==Items.bucket || item==Items.shears)
-        {       
-        return true;
-        }      
-      return false;
-      }
-    @Override
-    public String toString()
-      {
-      return "Anon filter -- bucker / shears";
-      }
-    };
-  this.inventory.addSlotViewMap(InventorySide.BOTTOM, 8, (4*18)+12+8+12+8, "guistrings.inventory.side.bottom");
-  for(int i = 30, k = 0; i <33; i++, k++)
-    {
-    this.inventory.addSidedMapping(InventorySide.BOTTOM, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.BOTTOM, i, (k%9)*18, (k/9)*18);
-    this.inventory.addSlotFilter(i, filter);    
-    }
+//  this.inventory = new InventorySidedWithContainer(27 + 3 + 3, this);
+//  
+//  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
+//  for(int i =0; i <27; i++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
+//    }
+//    
+//  ItemSlotFilter filter = new ItemSlotFilter()
+//    {
+//    @Override
+//    public boolean isItemValid(ItemStack stack)
+//      {
+//      if(stack==null){return true;}
+//      Item item = stack.getItem();
+//      if(item==Items.wheat_seeds || item==Items.wheat || item==Items.carrot)
+//        {       
+//        return true;
+//        }      
+//      return false;
+//      }
+//    @Override
+//    public String toString()
+//      {
+//      return "Anon filter -- wheat / seeds / carrot";
+//      }
+//    };
+//  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
+//  for(int i = 27, k = 0; i<30; i++, k++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.FRONT, i, true, true);
+//    this.inventory.addSidedMapping(InventorySide.LEFT, i, true, true);
+//    this.inventory.addSidedMapping(InventorySide.RIGHT, i, true, true);
+//    this.inventory.addSidedMapping(InventorySide.REAR, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
+//    this.inventory.addSlotFilter(i, filter);
+//    }
+//  
+//  filter = new ItemSlotFilter()
+//    {
+//    @Override
+//    public boolean isItemValid(ItemStack stack)
+//      {
+//      if(stack==null){return true;}
+//      Item item = stack.getItem();
+//      if(item==Items.bucket || item==Items.shears)
+//        {       
+//        return true;
+//        }      
+//      return false;
+//      }
+//    @Override
+//    public String toString()
+//      {
+//      return "Anon filter -- bucker / shears";
+//      }
+//    };
+//  this.inventory.addSlotViewMap(InventorySide.BOTTOM, 8, (4*18)+12+8+12+8, "guistrings.inventory.side.bottom");
+//  for(int i = 30, k = 0; i <33; i++, k++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.BOTTOM, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.BOTTOM, i, (k%9)*18, (k/9)*18);
+//    this.inventory.addSlotFilter(i, filter);    
+//    }
   }
 
 @Override
@@ -311,7 +308,7 @@ private void processWork()
     if(didWork)
       {
       wheatCount-=2;
-      InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(InventorySide.FRONT), new ItemStack(Items.wheat), 2);
+      InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat), 2);
       return;
       }
     }
@@ -322,7 +319,7 @@ private void processWork()
     if(didWork)
       {
       wheatCount-=2;
-      InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(InventorySide.FRONT), new ItemStack(Items.wheat), 2);
+      InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat), 2);
       return;
       }
     }
@@ -333,7 +330,7 @@ private void processWork()
     if(didWork)
       {
       seedCount-=2;
-      InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(InventorySide.FRONT), new ItemStack(Items.wheat_seeds), 2);
+      InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat_seeds), 2);
       return;
       }
     }
@@ -344,7 +341,7 @@ private void processWork()
     if(didWork)
       {
       carrotCount-=2;
-      InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(InventorySide.FRONT), new ItemStack(Items.carrot), 2);
+      InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.carrot), 2);
       return;
       }
     }
@@ -363,8 +360,8 @@ private void processWork()
     didWork = tryMilking(cowsToMilk);
     if(didWork)
       {
-      InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(InventorySide.BOTTOM), new ItemStack(Items.bucket), 1);
-      this.addStackToInventory(new ItemStack(Items.milk_bucket), InventorySide.TOP);
+      InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.BOTTOM), new ItemStack(Items.bucket), 1);
+      this.addStackToInventory(new ItemStack(Items.milk_bucket), RelativeSide.TOP);
       return;
       }
     }
@@ -410,7 +407,7 @@ private boolean tryShearing(List<Integer> targets)
   ArrayList<ItemStack> items = sheep.onSheared(shears, worldObj, xCoord, yCoord, zCoord, 0);
   for(ItemStack item : items)
     {
-    addStackToInventory(item, InventorySide.TOP);
+    addStackToInventory(item, RelativeSide.TOP);
     }
   return true;
   }
@@ -429,7 +426,7 @@ private boolean tryCulling(List<Integer> targets)
   for(EntityItem item : animal.capturedDrops)
     {
     stack = item.getEntityItem();
-    this.addStackToInventory(stack, InventorySide.TOP);       
+    this.addStackToInventory(stack, RelativeSide.TOP);       
     item.setDead();
     }
   return true;
@@ -480,7 +477,7 @@ private void pickupEggs()
     if(stack.getItem()==Items.egg)
       {
       item.setDead();
-      addStackToInventory(stack, InventorySide.TOP);
+      addStackToInventory(stack, RelativeSide.TOP);
       }
     }
   }
@@ -505,12 +502,6 @@ private boolean hasAnimalWork()
 public WorkType getWorkType()
   {
   return WorkType.ANIMAL_HUSBANDRY;
-  }
-
-@Override
-public void onInventoryChanged()
-  {
-  this.shouldCountResources = true;
   }
 
 @Override

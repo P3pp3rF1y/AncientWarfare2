@@ -24,7 +24,6 @@ structures module (done for now)
 		but how to handle only partially loaded gates?
 
 automation module:
-	Finish block rotation handling -- "HANDLE IT, NOW...!@#$%^!$#!!"
 	API / compat stuff:
 		add IMC-based API to add logs/saplings to forestry farm??
 		add config-based method to add logs/saplings to forestry farm??	
@@ -63,6 +62,16 @@ npcs module
 vehicles module
 	everything
 
+
+BLOCK ROTATION HANDLING
+	Need meta-based rotation system for blocks.  
+		Two systems actually, one for four-way blocks (nsew), one for six-way blocks (udnsew)
+	Also need block-icon lookup.	
+		--need to map relativeSide->IIcon
+		--need to lookup relativeSide from blockMeta & mcSide
+	Also need inventory-side-accessed lookup
+		--need to know what inventorySide is accessed from which mcSide
+		--need to know what mcSide accesses a given inventorySide
 
 	
 	

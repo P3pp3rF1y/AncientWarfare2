@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
@@ -26,7 +27,7 @@ import buildcraft.api.transport.IPipeTile.PipeType;
 import cpw.mods.fml.common.Optional;
 
 @Optional.Interface(iface="buildcraft.api.transport.IPipeConnection",modid="BuildCraft|Core",striprefs=true)
-public class TileMechanicalWorker extends TileEntity implements IWorker, IInventory, IPipeConnection, IInteractableTile
+public class TileMechanicalWorker extends TileEntity implements IWorker, IInventory, IPipeConnection, IInteractableTile, IOwnable
 {
 
 private static final double maxEnergyStored = 1500.d;
@@ -49,6 +50,8 @@ WeakReference<IWorkSite> workSite = new WeakReference<IWorkSite>(null);
 
 private int searchDelay;
 private int burnTicks;
+
+String ownerName;//TODO load/save
 
 InventoryBasic fuelInventory = new InventoryBasic(1)
   {
@@ -318,6 +321,17 @@ public boolean onBlockClicked(EntityPlayer player)
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_MECHANICAL_WORKER, xCoord, yCoord, zCoord);
     }
   return false;
+  }
+
+public final void setOwnerName(String name)
+  {
+  this.ownerName = name;
+  }
+
+@Override
+public String getOwnerName()
+  {
+  return ownerName;
   }
 
 }

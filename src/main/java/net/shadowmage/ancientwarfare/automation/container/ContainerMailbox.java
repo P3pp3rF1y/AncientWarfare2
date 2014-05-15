@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,31 +13,24 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
-import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer.SideSlotMap;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer.ViewableSlot;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 public class ContainerMailbox extends ContainerBase
 {
 
 public TileMailbox worksite;
-int[] sideStartIndices;
-int[] sideEndIndices;
-int totalInventorySize;
 public int guiHeight;
 
 /**
  * synched stats
  */
-public HashMap<RelativeSide, InventorySide> sideMap = new HashMap<RelativeSide, InventorySide>();
+public HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<RelativeSide, RelativeSide>();
 public String targetName;
 public String mailboxName;
 public boolean autoExport;
@@ -50,36 +42,38 @@ public ContainerMailbox(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);  
   worksite = (TileMailbox) player.worldObj.getTileEntity(x, y, z);
-  InventorySide accessedSide;
-  for(RelativeSide side : RelativeSide.values())
-    {  
-    accessedSide = worksite.inventory.getAccessSideFor(side);
-    sideMap.put(side, accessedSide);
-    } 
-  sideEndIndices = new int[6];
-  sideStartIndices = new int[6];
-  InventorySide side;
-  int index = 0;
-  int length = 0;
-  for(int i = 0; i <6 ;i++)
-    {
-    length = 0;
-    side = InventorySide.values()[i];
-    SideSlotMap slotMap = worksite.inventory.getSlotMapForSide(side);    
-    if(slotMap!=null)
-      {      
-      length = slotMap.getSlots().size();
-      }    
-    sideStartIndices[i] = index;
-    sideEndIndices[i] = index + length;
-    index+=length;
-    }
-  totalInventorySize = worksite.inventory.getSizeInventory();
+  InventorySided inventory = worksite.inventory;
   
-
-  int y1 = addWorksiteInventorySlots(8);
-  guiHeight = addPlayerSlots(player, 8, y1+12, 4) - 16;  
-   
+  RelativeSide rSide2;
+  for(RelativeSide rSide : inventory.rType.getValidSides())
+    {
+    rSide2 = inventory.getRemappedSide(rSide);
+    sideMap.put(rSide, inventory.getRemappedSide(rSide));
+    AWLog.logDebug("adding inventory side mappiong: "+rSide+" :: "+rSide2);
+    }    
+  
+  int xPos, yPos, x1, y1;
+  for(int i = 0; i<18; i++)
+    {
+    x1 = i%9;
+    y1 = i/9;
+    xPos = x1*18 + 8;
+    yPos = y1*18 + 8 + 12;
+    addSlotToContainer(new Slot(inventory, i, xPos, yPos));
+    }
+  
+  for(int i = 0; i<18; i++)
+    {
+    x1 = i%9;
+    y1 = i/9;
+    xPos = x1*18 + 8;
+    yPos = y1*18 + 8 + 12 + 2*18 + 12;
+    addSlotToContainer(new Slot(inventory, i+18, xPos, yPos));
+    }
+    
+  y1 = 8+12+12 + 4*18;
+  guiHeight = addPlayerSlots(player, 8, y1+12, 4) + 8 + 24;  
+  
   if(!player.worldObj.isRemote)
     {
     MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, player.worldObj, MailboxData.class);
@@ -92,48 +86,11 @@ public ContainerMailbox(EntityPlayer player, int x, int y, int z)
     }
   }
 
-protected int addWorksiteInventorySlots(int topY)
-  {  
-  int lowestY = topY;
-  for(InventorySide side : InventorySide.values())
-    {
-    if(side==InventorySide.NONE){continue;}
-    SideSlotMap slotMap = worksite.inventory.getSlotMapForSide(side);
-    if(slotMap==null){continue;}
-    for(ViewableSlot slot : slotMap.getSlots())
-      {
-      addSlotToContainer(new SlotFiltered(worksite.inventory, slot.slotNumber, slotMap.guiX + slot.viewX, slotMap.slotY+slot.viewY, worksite.inventory.getFilterForSlot(slot.slotNumber)));
-      if(slotMap.slotY+slot.viewY>lowestY)
-        {
-        lowestY = slotMap.slotY+slot.viewY;
-        }
-      }    
-    }  
-  return lowestY + 18 + 4;
-  }
-
 @Override
 public void sendInitData()
   {
-  InventorySide accessedSide;  
-  NBTTagList tagList = new NBTTagList();
-  NBTTagCompound inner; 
-  for(RelativeSide side : RelativeSide.values())
-    {
-    inner = new NBTTagCompound();
-    inner.setInteger("baseSide", side.ordinal());
-    accessedSide = sideMap.get(side);
-    inner.setInteger("accessSide", accessedSide.ordinal());
-    tagList.appendTag(inner);
-    } 
-  PacketGui pkt = new PacketGui();
-  pkt.packetData.setTag("slotMap", tagList);  
-  NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
-
-  
-  
-  NBTTagCompound tag = new NBTTagCompound();
-  
+  sendAccessMap();  
+  NBTTagCompound tag = new NBTTagCompound();  
   if(mailboxName!=null)
     {
     tag.setString("mailboxName", mailboxName);
@@ -165,28 +122,8 @@ public void sendInitData()
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  if(tag.hasKey("slotMap"))
-    {
-    readSlotMap(tag.getTagList("slotMap", Constants.NBT.TAG_COMPOUND));
-    if(!player.worldObj.isRemote)
-      {
-      for(RelativeSide side : RelativeSide.values())
-        {
-        worksite.inventory.setSideMapping(side, sideMap.get(side));
-        }
-      }
-    }
-  else if(tag.hasKey("slotChange"))
-    {
-    int b, a;
-    RelativeSide base;
-    InventorySide access; b = tag.getInteger("baseSide");
-    a = tag.getInteger("accessSide");
-    base = RelativeSide.values()[b];
-    access = InventorySide.values()[a];
-    sideMap.put(base, access);
-    worksite.inventory.setSideMapping(base, access);
-    } 
+  handleAccessMapTag(tag);
+  //TODO side-map handling
   if(tag.hasKey("autoExport"))
     {
     autoExport = tag.getBoolean("autoExport");
@@ -252,24 +189,100 @@ public void handlePacketData(NBTTagCompound tag)
   refreshGui();
   }
 
+private void sendAccessMap()
+  {
+  int l = sideMap.size();
+  int rMap[] = new int[l];
+  int iMap[] = new int[l];  
+  int index = 0;
+  for(RelativeSide rSide : sideMap.keySet())
+    {
+    rMap[index]=rSide.ordinal();
+    iMap[index]=sideMap.get(rSide).ordinal();
+    AWLog.logDebug("writing access map..."+rSide+" :: "+sideMap.get(rSide));
+    index++;
+    }
+  NBTTagCompound accessTag = new NBTTagCompound();
+  accessTag.setIntArray("rMap", rMap);
+  accessTag.setIntArray("iMap", iMap);
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setTag("accessMap", accessTag);
+  sendDataToClient(tag);
+  }
+
+private void handleAccessMapTag(NBTTagCompound tag)
+  {
+  if(tag.hasKey("accessMap"))
+    {
+    NBTTagCompound accessTag = tag.getCompoundTag("accessMap");
+    int[] rMap = accessTag.getIntArray("rMap");
+    int[] rMap2 = accessTag.getIntArray("iMap");
+    RelativeSide rSide;
+    RelativeSide iSide;
+    for(int i = 0; i <rMap.length && i<rMap2.length; i++)
+      {
+      rSide = RelativeSide.values()[rMap[i]];
+      iSide = RelativeSide.values()[rMap2[i]];
+      sideMap.put(rSide, iSide);
+      AWLog.logDebug("reading access map..."+rSide+" :: "+iSide);
+      }
+    }
+  if(tag.hasKey("accessChange"))
+    {
+    NBTTagCompound slotTag = tag.getCompoundTag("accessChange");
+    RelativeSide base = RelativeSide.values()[slotTag.getInteger("baseSide")];
+    RelativeSide access = RelativeSide.values()[slotTag.getInteger("accessSide")];
+    sideMap.put(base, access);
+    if(!player.worldObj.isRemote)
+      {
+      AWLog.logDebug("remapping slot on server..."+base+"::"+access);
+      worksite.inventory.remapSideAccess(base, access);      
+      }
+    }
+  }
+
+private void synchAccessMap()
+  {
+  InventorySided inventory = worksite.inventory;
+  NBTTagCompound tag;
+  NBTTagCompound slotTag;
+  RelativeSide rSide2, rSide3;
+  for(RelativeSide rSide : inventory.rType.getValidSides())
+    {
+    rSide2 = inventory.getRemappedSide(rSide);
+    rSide3 = sideMap.get(rSide);
+    if(rSide2!=rSide3)
+      {
+      AWLog.logDebug("detecting side map unsynch: "+rSide+" :: "+rSide2+" :: "+rSide3);
+      sideMap.put(rSide, rSide2);  
+      
+      tag = new NBTTagCompound();
+      slotTag = new NBTTagCompound();
+      slotTag.setInteger("baseSide", rSide.ordinal());
+      slotTag.setInteger("accessSide", rSide2.ordinal());
+      tag.setTag("accessChange", slotTag);
+      sendDataToClient(tag);    
+      }    
+    } 
+  }
+
+public void sendSlotChange(RelativeSide base, RelativeSide access)
+  {  
+  NBTTagCompound tag;
+  NBTTagCompound slotTag;
+  tag = new NBTTagCompound();
+  slotTag = new NBTTagCompound();
+  slotTag.setInteger("baseSide", base.ordinal());
+  slotTag.setInteger("accessSide", access.ordinal());
+  tag.setTag("accessChange", slotTag);
+  sendDataToServer(tag);    
+  }
+
 @Override
 public void detectAndSendChanges()
   {
   super.detectAndSendChanges();
-  /**
-   * DETECT CHANGES TO INVENTORY SIDE MAPPING
-   */
-  InventorySide access;
-  for(RelativeSide side : RelativeSide.values())
-    {
-    access = worksite.inventory.getAccessSideFor(side);
-    if(access!=sideMap.get(side))
-      {
-      sendSlotChange(side, access);
-      sideMap.put(side, access);
-      }
-    } 
-
+  synchAccessMap();
   NBTTagCompound tag = null;
   /**
    * DETECT CHANGES TO NAME AND TARGET AND SEND TO CLIENT
@@ -432,59 +445,7 @@ public void handleAutoExportToggle(boolean newVal)
   sendDataToServer(tag);
   }
 
-public void sendSlotChange(RelativeSide base, InventorySide access)
-  {  
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setBoolean("slotChange", true);
-  tag.setInteger("baseSide", base.ordinal());
-  tag.setInteger("accessSide", access.ordinal());
-  if(player.worldObj.isRemote)
-    {
-    sendDataToServer(tag);
-    }
-  else
-    {
-    sendDataToClient(tag);
-    }
-  }
 
-public void sendSettingsToServer()
-  {
-  InventorySide accessedSide;
-  
-  NBTTagList tagList = new NBTTagList();
-  NBTTagCompound inner;    
-  
-  for(RelativeSide side : RelativeSide.values())
-    {
-    inner = new NBTTagCompound();
-    inner.setInteger("baseSide", side.ordinal());
-    accessedSide = sideMap.get(side);
-    inner.setInteger("accessSide", accessedSide.ordinal());
-    tagList.appendTag(inner);
-    } 
-  PacketGui pkt = new PacketGui();
-  pkt.packetData.setTag("slotMap", tagList);  
-  NetworkHandler.sendToServer(pkt);
-  }
-
-protected void readSlotMap(NBTTagList list)
-  {
-  NBTTagCompound tag;
-  RelativeSide base;
-  InventorySide access;
-  int b, a;
-  for(int i = 0; i < list.tagCount(); i++)
-    {
-    tag = list.getCompoundTagAt(i);
-    b = tag.getInteger("baseSide");
-    a = tag.getInteger("accessSide");
-    base = RelativeSide.values()[b];
-    access = InventorySide.values()[a];
-    sideMap.put(base, access);  
-    }
-  this.refreshGui();
-  }
 
 @Override
 public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
@@ -496,34 +457,34 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
     {
     ItemStack slotStack = theSlot.getStack();
     slotStackCopy = slotStack.copy();    
-    int playerSlotStart = totalInventorySize;    
- 
-    if(slotClickedIndex<totalInventorySize)//clicked in inventory, merge into player inventory
-      {
-      if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart+36, false))//merge into player inventory
-        {
-        return null;
-        }
-      }
-    else//clicked in player inventory, try to merge from bottom up
-      {
-      int start, end;
-      for(int i = 5; i >=0; i--)
-        {
-        start = sideStartIndices[i];
-        end = sideEndIndices[i]; 
-        if(start==end){continue;}
-        slot = (SlotFiltered) inventorySlots.get(start);
-        if(slot.isItemValid(slotStack))
-          {
-          this.mergeItemStack(slotStack, start, end, false);          
-          }       
-        if(slotStack.stackSize==0)
-          {
-          break;
-          }
-        }
-      }
+//    int playerSlotStart = totalInventorySize;    
+// 
+//    if(slotClickedIndex<totalInventorySize)//clicked in inventory, merge into player inventory
+//      {
+//      if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart+36, false))//merge into player inventory
+//        {
+//        return null;
+//        }
+//      }
+//    else//clicked in player inventory, try to merge from bottom up
+//      {
+//      int start, end;
+//      for(int i = 5; i >=0; i--)
+//        {
+//        start = sideStartIndices[i];
+//        end = sideEndIndices[i]; 
+//        if(start==end){continue;}
+//        slot = (SlotFiltered) inventorySlots.get(start);
+//        if(slot.isItemValid(slotStack))
+//          {
+//          this.mergeItemStack(slotStack, start, end, false);          
+//          }       
+//        if(slotStack.stackSize==0)
+//          {
+//          break;
+//          }
+//        }
+//      }
     if (slotStack.stackSize == 0)
       {
       theSlot.putStack((ItemStack)null);

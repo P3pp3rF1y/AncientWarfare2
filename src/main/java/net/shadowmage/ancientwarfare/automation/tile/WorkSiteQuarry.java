@@ -8,9 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -25,26 +24,26 @@ public WorkSiteQuarry()
   {
   this.maxWorkers = 4;
   this.canUpdate = true;//purely event-driven, no polling
-  this.inventory = new InventorySidedWithContainer(27 + 3 + 3, this);
-  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
-  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
-  this.inventory.addSlotViewMap(InventorySide.REAR, 8, (3*18)+18+12+8+12, "guistrings.inventory.side.rear");
-  for(int i =0; i <27; i++)
-    {
-    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
-    }
-  for(int i = 27, k = 0; i<30; i++, k++)
-    {
-    this.inventory.addSidedMapping(InventorySide.LEFT, i, true, true);
-    this.inventory.addSidedMapping(InventorySide.RIGHT, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
-    }
-  for(int i = 30, k = 0; i < 33; i++, k++)
-    {
-    this.inventory.addSidedMapping(InventorySide.REAR, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.REAR, i, (k%9)*18, (k/9)*18);
-    }   
+//  this.inventory = new InventorySidedWithContainer(27 + 3 + 3, this);
+//  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
+//  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
+//  this.inventory.addSlotViewMap(InventorySide.REAR, 8, (3*18)+18+12+8+12, "guistrings.inventory.side.rear");
+//  for(int i =0; i <27; i++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
+//    }
+//  for(int i = 27, k = 0; i<30; i++, k++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.LEFT, i, true, true);
+//    this.inventory.addSidedMapping(InventorySide.RIGHT, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
+//    }
+//  for(int i = 30, k = 0; i < 33; i++, k++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.REAR, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.REAR, i, (k%9)*18, (k/9)*18);
+//    }   
   }
 
 @Override
@@ -54,12 +53,6 @@ protected void addWorkTargets(List<BlockPosition> targets)
     {
     targets.add(nextPosition);
     }
-  }
-
-@Override
-public void onInventoryChanged()
-  {
-
   }
 
 @Override
@@ -93,7 +86,7 @@ private void processWork()
   ArrayList<ItemStack> drops = block.getDrops(worldObj, target.x, target.y, target.z, worldObj.getBlockMetadata(target.x, target.y, target.z), 0);
   for(ItemStack stack : drops)
     {
-    addStackToInventory(stack, InventorySide.TOP);
+    addStackToInventory(stack, RelativeSide.TOP);
     }  
   worldObj.setBlockToAir(target.x, target.y, target.z); 
   scanNextPosition();

@@ -23,11 +23,9 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -60,54 +58,54 @@ public WorkSiteTreeFarm()
   blocksToPlant = new ArrayList<BlockPosition>();
   blocksToFertilize = new ArrayList<BlockPosition>();
   
-  this.inventory = new InventorySidedWithContainer(27 + 3 + 3, this);
-  
-  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
-  for(int i =0; i <27; i++)
-    {
-    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
-    }
-    
-  ItemSlotFilter filter = new ItemSlotFilter()
-    {
-    @Override
-    public boolean isItemValid(ItemStack stack)
-      {
-      if(stack==null){return true;}
-      if(stack.getItem() instanceof ItemBlock)
-        {
-        ItemBlock item = (ItemBlock) stack.getItem();
-        return item.field_150939_a instanceof BlockSapling;//item.field_150939_a == ItemBlock.block
-        }
-      return false;
-      }
-    };
-  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
-  for(int i = 27, k = 0; i<30; i++, k++)
-    {
-    this.inventory.addSidedMapping(InventorySide.LEFT, i, true, true);
-    this.inventory.addSidedMapping(InventorySide.RIGHT, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
-    this.inventory.addSlotFilter(i, filter);
-    }
-    
-  filter = new ItemSlotFilter()
-    {
-    @Override
-    public boolean isItemValid(ItemStack stack)
-      {
-      if(stack==null){return true;}
-      return stack.getItem() == Items.dye && stack.getItemDamage()==15;
-      }
-    };
-  this.inventory.addSlotViewMap(InventorySide.REAR, 8, (3*18)+18+12+8+12, "guistrings.inventory.side.rear");
-  for(int i = 30, k = 0; i < 33; i++, k++)
-    {
-    this.inventory.addSidedMapping(InventorySide.REAR, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.REAR, i, (k%9)*18, (k/9)*18);
-    this.inventory.addSlotFilter(i, filter);
-    }  
+//  this.inventory = new InventorySidedWithContainer(27 + 3 + 3, this);
+//  
+//  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
+//  for(int i =0; i <27; i++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
+//    }
+//    
+//  ItemSlotFilter filter = new ItemSlotFilter()
+//    {
+//    @Override
+//    public boolean isItemValid(ItemStack stack)
+//      {
+//      if(stack==null){return true;}
+//      if(stack.getItem() instanceof ItemBlock)
+//        {
+//        ItemBlock item = (ItemBlock) stack.getItem();
+//        return item.field_150939_a instanceof BlockSapling;//item.field_150939_a == ItemBlock.block
+//        }
+//      return false;
+//      }
+//    };
+//  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
+//  for(int i = 27, k = 0; i<30; i++, k++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.LEFT, i, true, true);
+//    this.inventory.addSidedMapping(InventorySide.RIGHT, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
+//    this.inventory.addSlotFilter(i, filter);
+//    }
+//    
+//  filter = new ItemSlotFilter()
+//    {
+//    @Override
+//    public boolean isItemValid(ItemStack stack)
+//      {
+//      if(stack==null){return true;}
+//      return stack.getItem() == Items.dye && stack.getItemDamage()==15;
+//      }
+//    };
+//  this.inventory.addSlotViewMap(InventorySide.REAR, 8, (3*18)+18+12+8+12, "guistrings.inventory.side.rear");
+//  for(int i = 30, k = 0; i < 33; i++, k++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.REAR, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.REAR, i, (k%9)*18, (k/9)*18);
+//    this.inventory.addSlotFilter(i, filter);
+//    }  
   }
 
 @Override
@@ -116,12 +114,6 @@ protected void addWorkTargets(List<BlockPosition> targets)
   targets.addAll(blocksToChop);
   targets.addAll(blocksToFertilize);
   targets.addAll(blocksToPlant);
-  }
-
-@Override
-public void onInventoryChanged()
-  {
-  this.shouldCountResources = true;
   }
 
 private void countResources()
@@ -195,7 +187,7 @@ private void processWork()
     List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwningPlayer(), position.x, position.y, position.z, 0);
     for(ItemStack item : items)
       {
-      addStackToInventory(item, InventorySide.TOP);
+      addStackToInventory(item, RelativeSide.TOP);
       }
     }
   else if(saplingCount>0 && !blocksToPlant.isEmpty())
@@ -286,7 +278,7 @@ private void pickupSaplings()
     if(stack.getItem()==Items.apple)
       {
       item.setDead();
-      addStackToInventory(stack, InventorySide.TOP);
+      addStackToInventory(stack, RelativeSide.TOP);
       continue;
       }
     if(stack.getItem() instanceof ItemBlock)
@@ -295,7 +287,7 @@ private void pickupSaplings()
       if(ib.field_150939_a instanceof BlockSapling)
         {
         item.setDead();
-        addStackToInventory(stack, InventorySide.FRONT);
+        addStackToInventory(stack, RelativeSide.FRONT);
         }
       }
     }

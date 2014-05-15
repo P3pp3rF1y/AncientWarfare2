@@ -57,7 +57,7 @@ protected int addPlayerSlots(EntityPlayer player, int tx, int ty, int gap)
       this.addSlotToContainer(new Slot(player.inventory, slotNum, xPos, yPos));
       }
     }
-  return ty + (4*18) + gap + 24;//no clue why I need an extra 24...
+  return ty + (4*18) + gap;//no clue why I need an extra 24...
   }
 
 /**

@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMechanicalWorker;
@@ -21,6 +20,7 @@ import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
+import cpw.mods.fml.client.registry.ClientRegistry;
 
 public class ClientProxyAutomation extends ClientProxyBase
 {

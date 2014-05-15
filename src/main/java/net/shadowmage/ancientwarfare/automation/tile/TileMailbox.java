@@ -6,23 +6,22 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData.DeliverableItem;
-import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.inventory.ISidedTile;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
+import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
-public class TileMailbox extends TileEntity implements ISidedTile
+public class TileMailbox extends TileEntity implements IOwnable
 {
 
 private boolean autoExport;//should automatically try and export from output side
 private boolean privateBox;
 
-public InventorySidedWithContainer inventory;
+public InventorySided inventory;
 
 private String owningPlayerName;
 private String mailboxName;
@@ -30,39 +29,11 @@ private String destinationName;
 
 public TileMailbox()
   {
-  inventory = new InventorySidedWithContainer(36, this);
-  
-  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 9, "guistrings.inventory.side.top");
-  for(int i =0; i <18; i++)
-    {
-    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
-    }
-    
-  this.inventory.addSlotViewMap(InventorySide.BOTTOM, 8, (2*18)+12+9, "guistrings.inventory.side.bottom");
-  for(int i = 18, k = 0; i<36; i++, k++)
-    {
-    this.inventory.addSidedMapping(InventorySide.BOTTOM, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.BOTTOM, i, (k%9)*18, (k/9)*18);
-    }
-  }
-
-public void checkOutputDirection()
-  {
-  int check = RelativeSide.getAccessDirection(RelativeSide.REAR, getTileMeta());
-  AWLog.logDebug("checking output direction for rear: "+check + " :: "+ForgeDirection.getOrientation(check));
-  }
-
-@Override
-public int getTileMeta()
-  {
-  return worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-  }
-
-@Override
-public void onInventoryChanged()
-  {
-  
+  inventory = new InventorySided(this, RotationType.FOUR_WAY, 36);
+  int[] topIndices = new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17};
+  int[] bottomIndices = new int[]{18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35};
+  inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
+  inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);
   }
 
 @Override
@@ -107,9 +78,9 @@ private void trySendItems(MailboxData data)
     }
   }
 
-public void setOwningPlayer(String commandSenderName)
+@Override
+public void setOwnerName(String commandSenderName)
   {
-  if(worldObj.isRemote){return;}
   this.owningPlayerName = commandSenderName;
   }
 
@@ -153,6 +124,7 @@ public void setPrivateBox(boolean val)
   privateBox = val;
   }
 
+@Override
 public String getOwnerName()
   {
   return owningPlayerName;

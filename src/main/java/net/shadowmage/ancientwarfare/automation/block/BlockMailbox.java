@@ -1,25 +1,32 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
-import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
-import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockMailbox extends Block
+public class BlockMailbox extends Block implements IRotatableBlock
 {
 
-BlockIconRotationMap iconMap = new BlockIconRotationMap();
+IconRotationMap iconMap = new IconRotationMap();
 
 public BlockMailbox(String regName)
   {
@@ -42,7 +49,7 @@ public TileEntity createTileEntity(World world, int metadata)
 
 public BlockMailbox setIcon(RelativeSide relativeSide, String texName)
   {
-  this.iconMap.setIconTexture(relativeSide, texName);
+  this.iconMap.setIcon(this, relativeSide, texName);
   return this;
   }
 
@@ -55,9 +62,9 @@ public void registerBlockIcons(IIconRegister p_149651_1_)
 
 @Override
 @SideOnly(Side.CLIENT)
-public IIcon getIcon(int p_149691_1_, int p_149691_2_)
+public IIcon getIcon(int side, int meta)
   {
-  return iconMap.getIconFor(p_149691_1_, p_149691_2_);
+  return iconMap.getIcon(this, meta, side);
   }
 
 @Override
@@ -72,16 +79,21 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
 
 @Override
 public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
-  {  
+  {
   int meta = worldObj.getBlockMetadata(x, y, z);
-  int newMeta = RelativeSide.getRotatedMeta(meta, axis, false);
-  if(meta!=newMeta)
+  int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
+  if(rMeta!=meta)
     {
-    worldObj.setBlockMetadataWithNotify(x, y, z, newMeta, 3);
-    worldObj.markBlockForUpdate(x, y, z);    
+    worldObj.setBlockMetadataWithNotify(x, y, z, rMeta, 3);
     return true;
     }
   return false;
+  }
+
+@Override
+public RotationType getRotationType()
+  {
+  return RotationType.FOUR_WAY;
   }
 
 }

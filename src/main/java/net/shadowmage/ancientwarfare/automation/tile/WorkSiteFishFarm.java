@@ -9,9 +9,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -29,14 +28,14 @@ public WorkSiteFishFarm()
   {
   this.canUpdate = true;
   this.maxWorkers = 2;
-  this.inventory = new InventorySidedWithContainer(27, this);
-  
-  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
-  for(int i =0; i <27; i++)
-    {
-    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
-    } 
+//  this.inventory = new InventorySidedWithContainer(27, this);
+//  
+//  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
+//  for(int i =0; i <27; i++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
+//    } 
   }
 
 @Override
@@ -95,12 +94,12 @@ private void processWork()
         else if(fishType<98){fishMeta = ItemFishFood.FishType.PUFFERFISH.func_150976_a();}
         else if(fishType<100){fishMeta = ItemFishFood.FishType.CLOWNFISH.func_150976_a();}
         ItemStack fishStack = new ItemStack(Items.fish,1,fishMeta);
-        addStackToInventory(fishStack, InventorySide.TOP);
+        addStackToInventory(fishStack, RelativeSide.TOP);
         }
       if(ink)
         {
         ItemStack inkItem = new ItemStack(Items.dye,1,0);
-        addStackToInventory(inkItem, InventorySide.TOP);
+        addStackToInventory(inkItem, RelativeSide.TOP);
         }      
       }
     }
@@ -135,12 +134,6 @@ private void countWater()
 public WorkType getWorkType()
   {
   return WorkType.FARMING;
-  }
-
-@Override
-public void onInventoryChanged()
-  {
-  
   }
 
 @Override

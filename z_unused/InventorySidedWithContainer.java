@@ -9,7 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.block.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 /**
@@ -354,7 +355,7 @@ public int[] getAccessibleSlotsFor(RelativeSide blockSide)
  */
 public InventorySide getAccessSideFor(int mcSide, int meta)
   {
-  return sideInventoryAccess.get(RelativeSide.getRelativeSide(mcSide, meta));
+  return sideInventoryAccess.get(RelativeSide.getSideViewed(RotationType.FOUR_WAY, meta, side).getRelativeSide(mcSide, meta));
   }
 
 /**

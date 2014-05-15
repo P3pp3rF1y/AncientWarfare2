@@ -8,7 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.block.BlockWorksiteBase;
-import net.shadowmage.ancientwarfare.core.block.BlockIconRotationMap;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -104,7 +105,7 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   /**
    * TODO validate that block is not inside work bounds of any other nearby worksites ??
    */
-  metadata = BlockIconRotationMap.getBlockMetaForPlacement(player, false);
+  metadata = BlockRotationHandler.getMetaForPlacement(player, (IRotatableBlock) field_150939_a, side);
   
   boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
   if(val)
@@ -123,6 +124,12 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     stack.getTagCompound().removeTag("pos2");
     }
   return val;
+  }
+
+@Override
+public int getDamage(ItemStack stack)
+  {
+  return 3;
   }
 
 }

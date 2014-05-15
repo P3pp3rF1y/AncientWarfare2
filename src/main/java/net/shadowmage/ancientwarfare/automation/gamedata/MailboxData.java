@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
@@ -373,7 +373,7 @@ private void tick(int length)
       if(item.deliveryTime>=time)//find if item is deliverable to this box
         {
         stack = item.item;
-        stack = InventoryTools.mergeItemStack(box.inventory, stack, box.inventory.getAccessDirectionFor(InventorySide.BOTTOM));
+        stack = InventoryTools.mergeItemStack(box.inventory, stack, box.inventory.getAccessDirectionFor(RelativeSide.BOTTOM));
         if(stack==null)
           {
           it.remove();          

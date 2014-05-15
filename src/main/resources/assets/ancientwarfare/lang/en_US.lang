@@ -114,6 +114,13 @@ guistrings.automation.new_filter=Add New Filter
 guistrings.automation.filter_setup=Filters
 guistrings.automation.quantity=Quantity
 guistrings.automation.filter_name=Filter Name
+guistrings.automation.mailbox_name_select=Select Name
+guistrings.automation.mailbox_target_select=Select Target
+guistrings.automation.auto_output=Auto Output
+guistrings.automation.private_mailbox=Private Mailbox
+guistrings.automation.add_mailbox=Add Box
+guistrings.automation.select_mailbox=Select Box
+guistrings.automation.delete_mailbox=Delete Box
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal
 guistrings.research.queued_research=Queued Research

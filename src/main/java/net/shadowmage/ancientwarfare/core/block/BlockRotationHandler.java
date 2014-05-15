@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.core.block;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -11,8 +10,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.IInventorySaveable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
@@ -32,19 +31,22 @@ public static int getRotatedMeta(IRotatableBlock block, int meta, ForgeDirection
   return face.ordinal();
   }
 
-public static int getMetaForPlacement(EntityLivingBase entity, IRotatableBlock block)
+public static int getMetaForPlacement(EntityLivingBase entity, IRotatableBlock block, int sideHit)
   {
   if(block.getRotationType()==RotationType.NONE){return 0;}
   int f = BlockTools.getPlayerFacingFromYaw(entity.rotationYaw);
-  ForgeDirection face = BlockTools.getForgeDirectionFromFacing(f);
+  ForgeDirection face = BlockTools.getForgeDirectionFromFacing(f);  
   if(block.getRotationType()==RotationType.SIX_WAY)
     {
-//    if(sideHit==0 || sideHit==1)
-//      {
-//      face = ForgeDirection.getOrientation(sideHit);
-//      }
-    //TODO figure this crap out
-    }  
+    if(sideHit==0 || sideHit==1)
+      {
+      face = ForgeDirection.getOrientation(sideHit);
+      }
+    }
+  if(!entity.isSneaking())
+    {
+    face = face.getOpposite();
+    }
   AWLog.logDebug("returning facing for block: "+face);
   return face.ordinal();
   }
@@ -72,7 +74,7 @@ SIX_WAY(EnumSet.of(RelativeSide.TOP, RelativeSide.BOTTOM, RelativeSide.ANY_SIDE)
  * No rotation, can still have relative sides, but FRONT always == NORTH
  */
 NONE(EnumSet.of(RelativeSide.TOP, RelativeSide.BOTTOM, RelativeSide.LEFT, RelativeSide.RIGHT, RelativeSide.FRONT, RelativeSide.REAR));
-RotationType(EnumSet<RelativeSide> sides){validSides=sides;}
+private RotationType(EnumSet<RelativeSide> sides){validSides=sides;}
 EnumSet<RelativeSide> validSides;
 public EnumSet<RelativeSide> getValidSides()
   {
@@ -80,15 +82,21 @@ public EnumSet<RelativeSide> getValidSides()
   }
 }
 
-public static enum InventorySide
-{
-BOTTOM,TOP,FRONT,REAR,LEFT,RIGHT,NONE;
-}
+//public static enum InventorySide
+//{
+//BOTTOM,TOP,FRONT,REAR,LEFT,RIGHT,NONE;
+//}
 
 public static enum RelativeSide
 {
-
-BOTTOM,TOP,FRONT,REAR,LEFT,RIGHT,ANY_SIDE;
+TOP("guistrings.inventory.side.top"),
+BOTTOM("guistrings.inventory.side.bottom"),
+FRONT("guistrings.inventory.side.front"),
+REAR("guistrings.inventory.side.rear"),
+LEFT("guistrings.inventory.side.left"),
+RIGHT("guistrings.inventory.side.right"),
+ANY_SIDE("guistrings.inventory.side.all_sides"), 
+NONE("guistrings.inventory.side.none");
 
 private static final int DOWN = 0;
 private static final int UP = 1;
@@ -96,8 +104,13 @@ private static final int NORTH = 2;
 private static final int SOUTH = 3;
 private static final int WEST = 4;
 private static final int EAST = 5;
+//[side-viewed][block-facing]=relative side viewed
 public static final RelativeSide[][] sixWayMap = new RelativeSide[6][6];
+//[side-viewed][block-facing]=relative side viewed
 public static final RelativeSide[][] fourWayMap = new RelativeSide[6][6];
+//[block_meta][relative_side.ordinal] = mcSide output
+public static final int[][] accessMapFourWay = new int[6][6];
+
 static
 {
 //D,U,N,S,W,E
@@ -188,9 +201,16 @@ fourWayMap[EAST][WEST] = REAR;
 fourWayMap[EAST][EAST] = FRONT;
 }
 
-public static RelativeSide getSideViewed(IRotatableBlock block, int meta, int side)
+private String key;
+private RelativeSide(String key)
   {
-  RotationType t = block.getRotationType();
+  this.key = key;
+  }
+
+public String getTranslationKey(){return key;}
+
+public static RelativeSide getSideViewed(RotationType t, int meta, int side)
+  {
   if(t==RotationType.FOUR_WAY)
     {
     return fourWayMap[side][meta];
@@ -201,74 +221,49 @@ public static RelativeSide getSideViewed(IRotatableBlock block, int meta, int si
     }
   return ANY_SIDE;
   }
-}
 
-public static final class IconRotationMap
-{
-private HashMap<RelativeSide, String> texNames = new HashMap<RelativeSide, String>();
-private HashMap<RelativeSide, IIcon> icons = new HashMap<RelativeSide, IIcon>(); 
-
-public void setIcon(IRotatableBlock block, RelativeSide side, String texName)
+public static int getMCSideToAccess(RotationType t, int meta, RelativeSide access)
   {
-  RotationType t = block.getRotationType();
-  if(t==RotationType.NONE)
+  RelativeSide[][] map = t==RotationType.FOUR_WAY ? fourWayMap : sixWayMap;
+  for(int x = 0; x<map.length;x++)
     {
-    //TODO throw error message about improper block-rotatation type, perhaps just register the string as ALL_SIDES
-    }
-  else if(t==RotationType.SIX_WAY)
-    {
-    if(side!=RelativeSide.TOP && side!=RelativeSide.BOTTOM && side!=RelativeSide.ANY_SIDE)
+    if(map[x][meta]==access)
       {
-      //TODO throw error message about improper block-rotation / cannot map specific sides on a six-way
+      return x;
       }
     }
-  texNames.put(side, texName);
+  return -1;
   }
-
-public void registerIcons(IIconRegister register)
-  {
-  String name;
-  for(RelativeSide key : texNames.keySet())
-    {
-    name = texNames.get(key);
-    icons.put(key, register.registerIcon(name));
-    }
-  }
-
-public IIcon getIcon(IRotatableBlock block, int meta, int side)
-  {
-  RelativeSide rSide = RelativeSide.getSideViewed(block, meta, side);
-  return icons.get(rSide);
-  }
-
 }
 
 public static final class InventorySided implements IInventory, ISidedInventory, IInventorySaveable
 {
+
+EnumSet<RelativeSide> validSides = EnumSet.of(RelativeSide.NONE);
+
 /**
- * what inventory side is accessible from what block-side
+ * Block side to Inventory Side
+ * inventorySide should only contain validSides
  */
-HashMap<RelativeSide, InventorySide> accessMap = new HashMap<RelativeSide, InventorySide>();
-HashMap<RelativeSide, InventorySide> accessMapDefault = new HashMap<RelativeSide, InventorySide>();//used to reset access map by user to default settings
-HashMap<InventorySide, int[]> slotsByInventorySide = new HashMap<InventorySide, int[]>();
-HashMap<InventorySide, boolean[]> extractInsertFlags = new HashMap<InventorySide, boolean[]>();//inventoryside x boolean[2]; [0]=extract, [1]=insert
-//InventorySide[] inventoryOrder //for use by GUI for ordering slots on screen and ordering of item-merging from container
-//HashMap<InventorySide, InventorySideLayout> sideLayout //denotes the x,y,w of where the sides slots should be in container/gui
-TileEntity te;
-IRotatableBlock block;
+HashMap<RelativeSide, RelativeSide> accessMap = new HashMap<RelativeSide, RelativeSide>();
+
+HashMap<RelativeSide, int[]> slotsByInventorySide = new HashMap<RelativeSide, int[]>();
+HashMap<RelativeSide, boolean[]> extractInsertFlags = new HashMap<RelativeSide, boolean[]>();//inventoryside x boolean[2]; [0]=extract, [1]=insert
+public final TileEntity te;
+public final RotationType rType;
 ItemStack[] inventorySlots;
 ItemSlotFilter[] filtersByInventorySlot;
 
-public InventorySided(TileEntity te, IRotatableBlock block, int inventorySize)
+public InventorySided(TileEntity te, RotationType rType, int inventorySize)
   {
-  this.te = te;
-  this.block = block;
   //TODO throw error if either is null
+  this.te = te;
+  this.rType = rType;
   inventorySlots = new ItemStack[inventorySize];
   filtersByInventorySlot = new ItemSlotFilter[inventorySize];
-  for(RelativeSide rSide : block.getRotationType().getValidSides())
-    {
-    setAccessibleSideDefault(rSide, InventorySide.NONE);
+  for(RelativeSide rSide : rType.getValidSides())
+    {    
+    setAccessibleSideDefault(rSide, RelativeSide.NONE, new int[]{});
     }
   }
 
@@ -277,30 +272,43 @@ public InventorySided(TileEntity te, IRotatableBlock block, int inventorySize)
  * @param rSide
  * @param iSide
  */
-public void setAccessibleSideDefault(RelativeSide rSide, InventorySide iSide)
+public void setAccessibleSideDefault(RelativeSide rSide, RelativeSide iSide, int[] indices)
   {
-  if(rSide==null || iSide==null){}
-  //TODO throw error if either is null, or NONE
-  accessMapDefault.put(rSide, iSide);
+  if(rSide==null || iSide==null || indices==null){throw new IllegalArgumentException("sides or indices may not be null!");}
+  if(rSide==RelativeSide.NONE){throw new IllegalArgumentException("base side may not be NONE");}
+  validSides.add(rSide);
   accessMap.put(rSide, iSide);
+  setInventoryIndices(iSide, indices);
   }
 
-/**
- * may be called by user/dynamically to reconfigure the inventory access in real-time.  Only has any effect on server.
- * @param rSide
- * @param iSide
- */
-public void setAccessibleSide(RelativeSide rSide, InventorySide iSide)
+public void remapSideAccess(RelativeSide baseSide, RelativeSide remappedSide)
   {
-  if(rSide==null || iSide==null){}
-  //TODO throw error if either is null, or NONE
-  accessMap.put(rSide, iSide);
+  boolean baseValid = rType.getValidSides().contains(baseSide);
+  boolean remapValid = baseValid && validSides.contains(remappedSide);
+  if(baseValid && remapValid)
+    {
+    accessMap.put(baseSide, remappedSide);
+    markDirty();
+    }
+  else
+    {
+    throw new IllegalArgumentException("could not remap: "+baseSide+" to: "+remappedSide);
+    }
   }
 
-public void setInventoryIndices(InventorySide side, int[] indices)
+public RelativeSide getRemappedSide(RelativeSide accessSide)
   {
-  //TODO throw error if either is null, or NONE
-  slotsByInventorySide.put(side, indices);  
+  if(!accessMap.containsKey(accessSide))
+    {
+    throw new IllegalArgumentException("no mapping exists for: "+accessSide);
+    }
+  return accessMap.get(accessSide);
+  }
+
+private void setInventoryIndices(RelativeSide inventorySide, int[] indices)
+  {
+  slotsByInventorySide.put(inventorySide, indices);  
+  markDirty();
   }
 
 public void setFilterForSlots(ItemSlotFilter filter, int[] indices)
@@ -311,30 +319,31 @@ public void setFilterForSlots(ItemSlotFilter filter, int[] indices)
     }
   }
 
-public void setExtractInsertFlags(InventorySide side, boolean[] flags)
+public void setExtractInsertFlags(RelativeSide inventorySide, boolean[] flags)
   {
   //TODO throw error if either is null, or NONE
-  extractInsertFlags.put(side, flags);
+  extractInsertFlags.put(inventorySide, flags);
   }
 
-public InventorySide getInventorySide(int mcSide)
+public RelativeSide getInventorySide(int mcSide)
   {
   int meta = te.getBlockMetadata();
-  RelativeSide rSide = RelativeSide.getSideViewed(block, meta, mcSide);
-  return accessMap.get(rSide);
+  RelativeSide rSide = RelativeSide.getSideViewed(rType, meta, mcSide);
+  rSide = accessMap.get(rSide);
+  return RelativeSide.getSideViewed(rType, te.getBlockMetadata(), mcSide);
   }
 
 @Override
 public int[] getAccessibleSlotsFromSide(int var1)
   {
-  InventorySide iSide = getInventorySide(var1);
+  RelativeSide iSide = getInventorySide(var1);
   return iSide==null ? null : slotsByInventorySide.get(iSide);
   }
 
 @Override
 public boolean canInsertItem(int slot, ItemStack var2, int mcSide)
   {
-  InventorySide iSide = getInventorySide(mcSide);
+  RelativeSide iSide = getInventorySide(mcSide);
   if(iSide==null){return false;}
   boolean[] flags = extractInsertFlags.get(iSide);
   if(flags!=null && !flags[1]){return false;}
@@ -344,7 +353,7 @@ public boolean canInsertItem(int slot, ItemStack var2, int mcSide)
 @Override
 public boolean canExtractItem(int slot, ItemStack var2, int mcSide)
   {
-  InventorySide iSide = getInventorySide(mcSide);
+  RelativeSide iSide = getInventorySide(mcSide);
   if(iSide==null){return false;}
   boolean[] flags = extractInsertFlags.get(iSide);
   return flags!=null ? flags[0] : true;
@@ -376,7 +385,8 @@ public ItemStack decrStackSize(int var1, int var2)
       {
       inventorySlots[var1]=null;
       }
-    if(returnStack.stackSize<=0){returnStack=null;}
+    if(returnStack.stackSize<=0){returnStack=null;}  
+    markDirty();
     return returnStack;
     }
   return null;
@@ -386,14 +396,16 @@ public ItemStack decrStackSize(int var1, int var2)
 public ItemStack getStackInSlotOnClosing(int var1)
   {
   ItemStack stack = inventorySlots[var1];
-  inventorySlots[var1]=null;
+  inventorySlots[var1]=null;  
+  markDirty();
   return stack;
   }
 
 @Override
 public void setInventorySlotContents(int var1, ItemStack var2)
   {
-  inventorySlots[var1]=var2;
+  inventorySlots[var1]=var2;  
+  markDirty();
   }
 
 @Override
@@ -449,15 +461,17 @@ public void readFromNBT(NBTTagCompound tag)
   {
   InventoryTools.readInventoryFromNBT(this, tag);
   NBTTagCompound accessTag = tag.getCompoundTag("accessTag");
+  AWLog.logDebug("accessTag: "+accessTag);
   int[] rMap = accessTag.getIntArray("rMap");
-  int[] iMap = accessTag.getIntArray("iMap");
+  int[] rMap2 = accessTag.getIntArray("iMap");
   RelativeSide rSide;
-  InventorySide iSide;
-  for(int i = 0; i <rMap.length && i<iMap.length; i++)
+  RelativeSide iSide;
+  for(int i = 0; i <rMap.length && i<rMap2.length; i++)
     {
     rSide = RelativeSide.values()[rMap[i]];
-    iSide = InventorySide.values()[iMap[i]];
+    iSide = RelativeSide.values()[rMap2[i]];
     accessMap.put(rSide, iSide);
+    AWLog.logDebug("reading mapping from nbt: "+rSide+"::"+iSide);
     }
   }
 
@@ -469,18 +483,35 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
   int rMap[] = new int[l];
   int iMap[] = new int[l];  
   int index = 0;
+  RelativeSide iSide;
   for(RelativeSide rSide : accessMap.keySet())
     {
+    iSide = accessMap.get(rSide);
     rMap[index]=rSide.ordinal();
-    iMap[index]=accessMap.get(rSide).ordinal();
+    iMap[index]=iSide.ordinal();
+    index++;
+    AWLog.logDebug("writing mapping to nbt: "+rSide+"::"+iSide);
     }
   NBTTagCompound accessTag = new NBTTagCompound();
   accessTag.setIntArray("rMap", rMap);
   accessTag.setIntArray("iMap", iMap);
   tag.setTag("accessTag", accessTag);  
+  AWLog.logDebug("accessTag: "+accessTag);
   return tag;
   }
 
+public int getAccessDirectionFor(RelativeSide blockSide)
+  {
+  return RelativeSide.getMCSideToAccess(rType, te.getBlockMetadata(), blockSide);
+  }
+
+public EnumSet<RelativeSide> getValidSides()
+  {
+  return validSides;
+  }
+
+
 }
+
 
 }

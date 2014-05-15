@@ -9,4 +9,6 @@ public interface IOwnable
 
 public void setOwnerName(String name);
 
+public String getOwnerName();
+
 }

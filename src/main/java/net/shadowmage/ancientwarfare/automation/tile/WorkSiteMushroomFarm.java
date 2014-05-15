@@ -9,16 +9,13 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySide;
-import net.shadowmage.ancientwarfare.core.inventory.InventorySidedWithContainer;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -45,45 +42,45 @@ public WorkSiteMushroomFarm()
   blocksToHarvest = new HashSet<BlockPosition>();
   blocksToPlantMushroom = new HashSet<BlockPosition>();
   blocksToPlantNetherWart = new HashSet<BlockPosition>();
-  this.inventory = new InventorySidedWithContainer(27 + 3, this);
-  
-  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
-  for(int i =0; i <27; i++)
-    {
-    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
-    }
-    
-  ItemSlotFilter filter = new ItemSlotFilter()
-    {
-    @Override
-    public boolean isItemValid(ItemStack stack)
-      {
-      if(stack==null){return true;}
-      Item item = stack.getItem();
-      if(item==Items.nether_wart)
-        {       
-        return true;
-        }
-      else if(item instanceof ItemBlock)
-        {
-        ItemBlock ib = (ItemBlock)item;
-        if(ib.field_150939_a==Blocks.red_mushroom || ib.field_150939_a==Blocks.brown_mushroom)
-          {
-          return true;
-          }
-        }      
-      return false;
-      }
-    };
-  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
-  for(int i = 27, k = 0; i<30; i++, k++)
-    {
-    this.inventory.addSidedMapping(InventorySide.LEFT, i, true, true);
-    this.inventory.addSidedMapping(InventorySide.RIGHT, i, true, true);
-    this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
-    this.inventory.addSlotFilter(i, filter);
-    }
+//  this.inventory = new InventorySidedWithContainer(27 + 3, this);
+//  
+//  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
+//  for(int i =0; i <27; i++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
+//    }
+//    
+//  ItemSlotFilter filter = new ItemSlotFilter()
+//    {
+//    @Override
+//    public boolean isItemValid(ItemStack stack)
+//      {
+//      if(stack==null){return true;}
+//      Item item = stack.getItem();
+//      if(item==Items.nether_wart)
+//        {       
+//        return true;
+//        }
+//      else if(item instanceof ItemBlock)
+//        {
+//        ItemBlock ib = (ItemBlock)item;
+//        if(ib.field_150939_a==Blocks.red_mushroom || ib.field_150939_a==Blocks.brown_mushroom)
+//          {
+//          return true;
+//          }
+//        }      
+//      return false;
+//      }
+//    };
+//  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
+//  for(int i = 27, k = 0; i<30; i++, k++)
+//    {
+//    this.inventory.addSidedMapping(InventorySide.LEFT, i, true, true);
+//    this.inventory.addSidedMapping(InventorySide.RIGHT, i, true, true);
+//    this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
+//    this.inventory.addSlotFilter(i, filter);
+//    }
   }
 
 @Override
@@ -279,7 +276,7 @@ private void processWork()
         List<ItemStack> blockDrops = BlockTools.breakBlock(worldObj, getOwningPlayer(), pos.x, pos.y, pos.z, 0);
         for(ItemStack item : blockDrops)
           {
-          addStackToInventory(item, InventorySide.TOP);
+          addStackToInventory(item, RelativeSide.TOP);
           }
         break;
         }
@@ -292,12 +289,6 @@ private void processWork()
 public WorkType getWorkType()
   {
   return WorkType.FARMING;
-  }
-
-@Override
-public void onInventoryChanged()
-  {
-  this.shouldCountResources = true;
   }
 
 @Override
