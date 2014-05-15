@@ -445,8 +445,6 @@ public void handleAutoExportToggle(boolean newVal)
   sendDataToServer(tag);
   }
 
-
-
 @Override
 public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
   {
@@ -456,35 +454,7 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
   if (theSlot != null && theSlot.getHasStack())
     {
     ItemStack slotStack = theSlot.getStack();
-    slotStackCopy = slotStack.copy();    
-//    int playerSlotStart = totalInventorySize;    
-// 
-//    if(slotClickedIndex<totalInventorySize)//clicked in inventory, merge into player inventory
-//      {
-//      if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart+36, false))//merge into player inventory
-//        {
-//        return null;
-//        }
-//      }
-//    else//clicked in player inventory, try to merge from bottom up
-//      {
-//      int start, end;
-//      for(int i = 5; i >=0; i--)
-//        {
-//        start = sideStartIndices[i];
-//        end = sideEndIndices[i]; 
-//        if(start==end){continue;}
-//        slot = (SlotFiltered) inventorySlots.get(start);
-//        if(slot.isItemValid(slotStack))
-//          {
-//          this.mergeItemStack(slotStack, start, end, false);          
-//          }       
-//        if(slotStack.stackSize==0)
-//          {
-//          break;
-//          }
-//        }
-//      }
+    slotStackCopy = slotStack.copy();  
     if (slotStack.stackSize == 0)
       {
       theSlot.putStack((ItemStack)null);

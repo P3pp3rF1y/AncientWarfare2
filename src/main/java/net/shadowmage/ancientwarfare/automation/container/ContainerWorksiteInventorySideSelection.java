@@ -1,113 +1,148 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
+import java.util.HashMap;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerWorksiteInventorySideSelection extends ContainerBase
 {
 
-//public HashMap<RelativeSide, InventorySide> sideMap = new HashMap<RelativeSide, InventorySide>();
+public HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<RelativeSide, RelativeSide>();
 public TileWorksiteBase worksite;
+public InventorySided inventory;
 
 public ContainerWorksiteInventorySideSelection(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);  
   worksite = (TileWorksiteBase) player.worldObj.getTileEntity(x, y, z);
+  inventory = worksite.inventory;
+  
+  RelativeSide rSide2;
+  for(RelativeSide rSide : inventory.rType.getValidSides())
+    {
+    rSide2 = inventory.getRemappedSide(rSide);
+    sideMap.put(rSide, inventory.getRemappedSide(rSide));
+    AWLog.logDebug("adding inventory side mapping: "+rSide+" :: "+rSide2);
+    }    
   }
 
 @Override
 public void sendInitData()
   {  
-//  InventorySide accessedSide;
-//  
-//  NBTTagList tagList = new NBTTagList();
-//  NBTTagCompound inner;    
-//  
-//  for(RelativeSide side : RelativeSide.values())
-//    {
-//    inner = new NBTTagCompound();
-//    inner.setInteger("baseSide", side.ordinal());
-//    accessedSide = worksite.inventory.getAccessSideFor(side);
-//    inner.setInteger("accessSide", accessedSide.ordinal());
-//    sideMap.put(side, accessedSide);
-//    tagList.appendTag(inner);
-//    } 
-//  PacketGui pkt = new PacketGui();
-//  pkt.packetData.setTag("slotMap", tagList);  
-//  NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
+  sendAccessMap();  
   }
 
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  if(tag.hasKey("slotMap"))
+  handleAccessMapTag(tag);
+  if(tag.hasKey("closeGUI"))
     {
-    readSlotMap(tag.getTagList("slotMap", Constants.NBT.TAG_COMPOUND));
+    worksite.onBlockClicked(player);//hack to open the worksites GUI
+    }
+  refreshGui();
+  }
+
+@Override
+public void detectAndSendChanges()
+  {
+  super.detectAndSendChanges();
+  synchAccessMap();  
+  }
+
+private void handleAccessMapTag(NBTTagCompound tag)
+  {
+  if(tag.hasKey("accessMap"))
+    {
+    NBTTagCompound accessTag = tag.getCompoundTag("accessMap");
+    int[] rMap = accessTag.getIntArray("rMap");
+    int[] rMap2 = accessTag.getIntArray("iMap");
+    RelativeSide rSide;
+    RelativeSide iSide;
+    for(int i = 0; i <rMap.length && i<rMap2.length; i++)
+      {
+      rSide = RelativeSide.values()[rMap[i]];
+      iSide = RelativeSide.values()[rMap2[i]];
+      sideMap.put(rSide, iSide);
+      AWLog.logDebug("reading access map..."+rSide+" :: "+iSide);
+      }
+    }
+  if(tag.hasKey("accessChange"))
+    {
+    NBTTagCompound slotTag = tag.getCompoundTag("accessChange");
+    RelativeSide base = RelativeSide.values()[slotTag.getInteger("baseSide")];
+    RelativeSide access = RelativeSide.values()[slotTag.getInteger("accessSide")];
+    sideMap.put(base, access);
     if(!player.worldObj.isRemote)
       {
-      setSettingsToTile();
+      AWLog.logDebug("remapping slot on server..."+base+"::"+access);
+      worksite.inventory.remapSideAccess(base, access);      
       }
     }
   }
 
-protected void setSettingsToTile()
+private void sendAccessMap()
   {
-//  for(RelativeSide side : RelativeSide.values())
-//    {
-//    worksite.inventory.setSideMapping(side, sideMap.get(side));
-//    }
-  }
-
-public void sendSettingsToServer()
-  {
-//  InventorySide accessedSide;
-//  
-//  NBTTagList tagList = new NBTTagList();
-//  NBTTagCompound inner;    
-//  
-//  for(RelativeSide side : RelativeSide.values())
-//    {
-//    inner = new NBTTagCompound();
-//    inner.setInteger("baseSide", side.ordinal());
-//    accessedSide = sideMap.get(side);
-//    inner.setInteger("accessSide", accessedSide.ordinal());
-//    tagList.appendTag(inner);
-//    } 
-//  PacketGui pkt = new PacketGui();
-//  pkt.packetData.setTag("slotMap", tagList);  
-//  NetworkHandler.sendToServer(pkt);
-  }
-
-protected void readSlotMap(NBTTagList list)
-  {
-//  NBTTagCompound tag;
-//  RelativeSide base;
-//  InventorySide access;
-//  int b, a;
-//  for(int i = 0; i < list.tagCount(); i++)
-//    {
-//    tag = list.getCompoundTagAt(i);
-//    b = tag.getInteger("baseSide");
-//    a = tag.getInteger("accessSide");
-//    base = RelativeSide.values()[b];
-//    access = InventorySide.values()[a];
-//    sideMap.put(base, access);  
-//    }
-  this.refreshGui();
-  }
-
-@Override
-public void onContainerClosed(EntityPlayer par1EntityPlayer)
-  {
-  if(!par1EntityPlayer.worldObj.isRemote)
+  int l = sideMap.size();
+  int rMap[] = new int[l];
+  int iMap[] = new int[l];  
+  int index = 0;
+  for(RelativeSide rSide : sideMap.keySet())
     {
-    setSettingsToTile();
+    rMap[index]=rSide.ordinal();
+    iMap[index]=sideMap.get(rSide).ordinal();
+    AWLog.logDebug("writing access map..."+rSide+" :: "+sideMap.get(rSide));
+    index++;
     }
-  super.onContainerClosed(par1EntityPlayer);
+  NBTTagCompound accessTag = new NBTTagCompound();
+  accessTag.setIntArray("rMap", rMap);
+  accessTag.setIntArray("iMap", iMap);
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setTag("accessMap", accessTag);
+  sendDataToClient(tag);
+  }
+
+private void synchAccessMap()
+  {
+  InventorySided inventory = worksite.inventory;
+  NBTTagCompound tag;
+  NBTTagCompound slotTag;
+  RelativeSide rSide2, rSide3;
+  for(RelativeSide rSide : inventory.rType.getValidSides())
+    {
+    rSide2 = inventory.getRemappedSide(rSide);
+    rSide3 = sideMap.get(rSide);
+    if(rSide2!=rSide3)
+      {
+      AWLog.logDebug("detecting side map unsynch: "+rSide+" :: "+rSide2+" :: "+rSide3);
+      sideMap.put(rSide, rSide2);  
+      
+      tag = new NBTTagCompound();
+      slotTag = new NBTTagCompound();
+      slotTag.setInteger("baseSide", rSide.ordinal());
+      slotTag.setInteger("accessSide", rSide2.ordinal());
+      tag.setTag("accessChange", slotTag);
+      sendDataToClient(tag);    
+      }    
+    } 
+  }
+
+public void sendSlotChange(RelativeSide base, RelativeSide access)
+  {  
+  NBTTagCompound tag;
+  NBTTagCompound slotTag;
+  tag = new NBTTagCompound();
+  slotTag = new NBTTagCompound();
+  slotTag.setInteger("baseSide", base.ordinal());
+  slotTag.setInteger("accessSide", access.ordinal());
+  tag.setTag("accessChange", slotTag);
+  sendDataToServer(tag);    
   }
 
 }

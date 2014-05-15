@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.IInventorySaveable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
@@ -239,20 +238,20 @@ public static int getMCSideToAccess(RotationType t, int meta, RelativeSide acces
 public static final class InventorySided implements IInventory, ISidedInventory, IInventorySaveable
 {
 
-EnumSet<RelativeSide> validSides = EnumSet.of(RelativeSide.NONE);
+private EnumSet<RelativeSide> validSides = EnumSet.of(RelativeSide.NONE);
 
 /**
  * Block side to Inventory Side
  * inventorySide should only contain validSides
  */
-HashMap<RelativeSide, RelativeSide> accessMap = new HashMap<RelativeSide, RelativeSide>();
+private HashMap<RelativeSide, RelativeSide> accessMap = new HashMap<RelativeSide, RelativeSide>();
 
-HashMap<RelativeSide, int[]> slotsByInventorySide = new HashMap<RelativeSide, int[]>();
-HashMap<RelativeSide, boolean[]> extractInsertFlags = new HashMap<RelativeSide, boolean[]>();//inventoryside x boolean[2]; [0]=extract, [1]=insert
+private HashMap<RelativeSide, int[]> slotsByInventorySide = new HashMap<RelativeSide, int[]>();
+private HashMap<RelativeSide, boolean[]> extractInsertFlags = new HashMap<RelativeSide, boolean[]>();//inventoryside x boolean[2]; [0]=extract, [1]=insert
 public final TileEntity te;
 public final RotationType rType;
-ItemStack[] inventorySlots;
-ItemSlotFilter[] filtersByInventorySlot;
+private ItemStack[] inventorySlots;
+private ItemSlotFilter[] filtersByInventorySlot;
 
 public InventorySided(TileEntity te, RotationType rType, int inventorySize)
   {
@@ -276,15 +275,20 @@ public void setAccessibleSideDefault(RelativeSide rSide, RelativeSide iSide, int
   {
   if(rSide==null || iSide==null || indices==null){throw new IllegalArgumentException("sides or indices may not be null!");}
   if(rSide==RelativeSide.NONE){throw new IllegalArgumentException("base side may not be NONE");}
-  validSides.add(rSide);
+  addValidSide(iSide);
   accessMap.put(rSide, iSide);
   setInventoryIndices(iSide, indices);
+  }
+
+private void addValidSide(RelativeSide side)
+  {
+  validSides.add(side);
   }
 
 public void remapSideAccess(RelativeSide baseSide, RelativeSide remappedSide)
   {
   boolean baseValid = rType.getValidSides().contains(baseSide);
-  boolean remapValid = baseValid && validSides.contains(remappedSide);
+  boolean remapValid = baseValid && getValidSides().contains(remappedSide);
   if(baseValid && remapValid)
     {
     accessMap.put(baseSide, remappedSide);

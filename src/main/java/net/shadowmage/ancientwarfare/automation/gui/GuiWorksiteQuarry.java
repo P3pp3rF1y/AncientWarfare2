@@ -5,6 +5,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarr
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 public class GuiWorksiteQuarry extends GuiWorksiteBase
 {
@@ -25,7 +26,14 @@ public void initElements()
   label = new Label(8, container.playerLabel, StatCollector.translateToLocal("guistrings.inventory.player"));
   addGuiElement(label);
   
-  Button button = new Button(8, ySize-8-12, xSize/2-8, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"));
+  Button button = new Button(8, ySize-8-12, xSize/2-8, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
+    {
+    @Override
+    protected void onPressed()
+      {
+      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, container.worksite.xCoord, container.worksite.yCoord, container.worksite.zCoord);
+      }
+    };
   addGuiElement(button);
   
 //  button = new Button(xSize/2, ySize-8-12, xSize/2-8, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"));
