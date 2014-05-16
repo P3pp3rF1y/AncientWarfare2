@@ -10,8 +10,8 @@ import net.shadowmage.ancientwarfare.core.util.RenderTools;
 public class CompositeScrolled extends Composite implements IScrollableCallback
 {
 
-private Scrollbar scrollbar;
-int currentTop = 0;
+protected Scrollbar scrollbar;
+protected int currentTop = 0;
 
 public CompositeScrolled(int topLeftX, int topLeftY, int width, int height)
   {

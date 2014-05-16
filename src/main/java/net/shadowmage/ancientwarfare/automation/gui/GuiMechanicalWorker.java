@@ -1,9 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMechanicalWorker;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeItemSlots;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.ProgressBar;
 
@@ -15,6 +20,8 @@ Label energyLabel;
 ProgressBar pg;
 ProgressBar pg1;
 ContainerMechanicalWorker container;
+
+CompositeScrolled comp;
 
 public GuiMechanicalWorker(ContainerBase par1Container)
   {
@@ -33,6 +40,22 @@ public void initElements()
   
   pg = new ProgressBar(8, 8+10+18+4, 178-16, 16);
   addGuiElement(pg);
+  
+//  comp = new CompositeItemSlots(178, 0, 100, 100, this);
+//  addGuiElement(comp);
+//  
+//  ItemSlot slot;
+//  int x1, y1, xPos, yPos;
+//  for(int i = 0; i < 1000; i++)
+//    {
+//    x1 = i%4;
+//    y1 = i/4;
+//    xPos = x1*18+8;
+//    yPos = y1*18+8;
+//    slot = new ItemSlot(xPos, yPos, new ItemStack(Items.stick), this);
+//    comp.addGuiElement(slot);
+//    }
+//  comp.setAreaSize((1000/4)*18);
   }
 
 @Override

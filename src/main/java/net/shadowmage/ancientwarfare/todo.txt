@@ -56,18 +56,6 @@ npcs module
 		
 vehicles module
 	everything
-
-
-BLOCK ROTATION HANDLING
-	Need meta-based rotation system for blocks.  
-		Two systems actually, one for four-way blocks (nsew), one for six-way blocks (udnsew)
-	Also need block-icon lookup.	
-		--need to map relativeSide->IIcon
-		--need to lookup relativeSide from blockMeta & mcSide
-	Also need inventory-side-accessed lookup
-		--need to know what inventorySide is accessed from which mcSide
-		--need to know what mcSide accesses a given inventorySide
-
 	
 	
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
