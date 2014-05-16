@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class ContainerBase extends Container
 {
@@ -185,6 +186,59 @@ public void addSlots()
 public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex)
   {
   return null;
+  }
+
+/**
+ * merges provided ItemStack with the first avaliable one in the container/player inventory
+ * @return true if item-stack was fully-consumed/merged
+ */
+@Override
+protected boolean mergeItemStack(ItemStack incomingStack, int startIndex, int endBeforeIndex, boolean iterateBackwards)
+  {
+  Slot slotFromContainer;
+  ItemStack stackFromSlot;
+  int currentIndex, start, stop, transferAmount;
+  int iterator = iterateBackwards? -1 : 1;
+  start = iterateBackwards ? endBeforeIndex-1 : startIndex;
+  stop = iterateBackwards ? startIndex : endBeforeIndex-1;
+  if(incomingStack.isStackable())
+    {
+    for(currentIndex = start; incomingStack.stackSize>0 && currentIndex!=stop; currentIndex+=iterator)
+      {
+      slotFromContainer = (Slot)this.inventorySlots.get(currentIndex);
+      if(!slotFromContainer.isItemValid(incomingStack)){continue;}
+      stackFromSlot = slotFromContainer.getStack();
+      if(stackFromSlot==null || !InventoryTools.doItemStacksMatch(incomingStack, stackFromSlot)){continue;}            
+      transferAmount = stackFromSlot.getMaxStackSize()-stackFromSlot.stackSize;      
+      if(transferAmount>incomingStack.stackSize)
+        {
+        transferAmount = incomingStack.stackSize;
+        }
+      if(transferAmount>0)
+        {
+        incomingStack.stackSize-=transferAmount;
+        stackFromSlot.stackSize+=transferAmount;
+        slotFromContainer.onSlotChanged();
+        }
+      }
+    }
+  if(incomingStack.stackSize > 0)
+    {    
+    for(currentIndex = start; incomingStack.stackSize>0 && currentIndex!=stop; currentIndex+=iterator)
+      {
+      slotFromContainer = (Slot)this.inventorySlots.get(currentIndex);
+      if(!slotFromContainer.isItemValid(incomingStack)){continue;}
+      stackFromSlot = slotFromContainer.getStack();
+      if(stackFromSlot == null)
+        {
+        slotFromContainer.putStack(incomingStack.copy());
+        slotFromContainer.onSlotChanged();
+        incomingStack.stackSize = 0;
+        break;
+        }
+      }
+    }
+  return incomingStack.stackSize==0;
   }
 
 }

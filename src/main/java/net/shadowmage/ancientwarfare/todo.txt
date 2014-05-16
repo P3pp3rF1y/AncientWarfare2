@@ -25,16 +25,9 @@ structures module (done for now)
 		but how to handle only partially loaded gates?
 
 automation module:
-	GUIS NEEDED:
-		**Quarry (needs shift-click transfer code)
-		**Tree Farm (needs shift-click transfer code)
-		**Crop Farm (needs shift-click transfer code)
-		**Mushroom Farm (needs shift-click transfer code)
-		**Animal Farm (needs shift-click transfer code)			
-		**Reed Farm (needs shift-click transfer code)
-		**Fish Farm (needs shift-click transfer code)
-		Alt control GUIs for:
-			Quarry layer setup
+	GUIs Needed:
+		Mechanical Worker Stored Energy in GUI (needs container/synch code)
+		
 	Target select GUI is non-functional, and/or cannot remove targets			
 	API / compat stuff:
 		add IMC-based API to add logs/saplings to forestry farm??

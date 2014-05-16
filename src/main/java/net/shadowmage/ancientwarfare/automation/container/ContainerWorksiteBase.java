@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -43,5 +45,35 @@ protected int addSlots(int xPosStart, int yPosStart, int firstSlotIndex, int num
     }
   return maxY;
   }
+
+/**
+ * @return should always return null for normal implementation, not sure wtf the rest of the code is about
+ */
+@Override
+public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
+  {
+  int slots = worksite.getSizeInventory();
+  Slot slot = (Slot)this.inventorySlots.get(slotClickedIndex);
+  if(slot==null || !slot.getHasStack()){return null;}
+  ItemStack stackFromSlot = slot.getStack();
+  if(slotClickedIndex < slots)
+    {
+    this.mergeItemStack(stackFromSlot, slots, slots+36, false);
+    }
+  else
+    {
+    this.mergeItemStack(stackFromSlot, 0, slots, true);
+    }
+  if(stackFromSlot.stackSize == 0)
+    {
+    slot.putStack((ItemStack)null);
+    }
+  else
+    {
+    slot.onSlotChanged();
+    }
+  return null;  
+  }
+
 
 }
