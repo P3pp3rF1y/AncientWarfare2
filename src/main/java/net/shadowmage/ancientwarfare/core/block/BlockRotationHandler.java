@@ -334,7 +334,7 @@ public RelativeSide getInventorySide(int mcSide)
   int meta = te.getBlockMetadata();
   RelativeSide rSide = RelativeSide.getSideViewed(rType, meta, mcSide);
   rSide = accessMap.get(rSide);
-  return RelativeSide.getSideViewed(rType, te.getBlockMetadata(), mcSide);
+  return rSide;
   }
 
 public ItemSlotFilter getFilterForSlot(int slot)
@@ -346,7 +346,9 @@ public ItemSlotFilter getFilterForSlot(int slot)
 public int[] getAccessibleSlotsFromSide(int var1)
   {
   RelativeSide iSide = getInventorySide(var1);
-  return iSide==null ? null : slotsByInventorySide.get(iSide);
+  AWLog.logDebug("returned rSide: "+iSide+" for mcSide: "+var1+" for teMeta: "+te.getBlockMetadata());
+  int[] slots = slotsByInventorySide.get(iSide);
+  return slots==null ? new int[]{} : slots;
   }
 
 @Override
