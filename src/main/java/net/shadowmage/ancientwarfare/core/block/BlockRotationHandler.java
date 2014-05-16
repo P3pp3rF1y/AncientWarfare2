@@ -255,7 +255,7 @@ private ItemSlotFilter[] filtersByInventorySlot;
 
 public InventorySided(TileEntity te, RotationType rType, int inventorySize)
   {
-  //TODO throw error if either is null
+  if(te==null || rType==null || inventorySize<=0){throw new IllegalArgumentException("te and rotation type may not be null, inventory size must be greater than 0");}
   this.te = te;
   this.rType = rType;
   inventorySlots = new ItemStack[inventorySize];
@@ -325,7 +325,7 @@ public void setFilterForSlots(ItemSlotFilter filter, int[] indices)
 
 public void setExtractInsertFlags(RelativeSide inventorySide, boolean[] flags)
   {
-  //TODO throw error if either is null, or NONE
+  if(inventorySide==null || inventorySide==RelativeSide.NONE || flags==null){throw new IllegalArgumentException("inventory side must not be null or NONE, flags must not be null");}
   extractInsertFlags.put(inventorySide, flags);
   }
 
@@ -346,7 +346,6 @@ public ItemSlotFilter getFilterForSlot(int slot)
 public int[] getAccessibleSlotsFromSide(int var1)
   {
   RelativeSide iSide = getInventorySide(var1);
-  AWLog.logDebug("returned rSide: "+iSide+" for mcSide: "+var1+" for teMeta: "+te.getBlockMetadata());
   int[] slots = slotsByInventorySide.get(iSide);
   return slots==null ? new int[]{} : slots;
   }
@@ -472,7 +471,6 @@ public void readFromNBT(NBTTagCompound tag)
   {
   InventoryTools.readInventoryFromNBT(this, tag);
   NBTTagCompound accessTag = tag.getCompoundTag("accessTag");
-  AWLog.logDebug("accessTag: "+accessTag);
   int[] rMap = accessTag.getIntArray("rMap");
   int[] rMap2 = accessTag.getIntArray("iMap");
   RelativeSide rSide;
@@ -482,7 +480,6 @@ public void readFromNBT(NBTTagCompound tag)
     rSide = RelativeSide.values()[rMap[i]];
     iSide = RelativeSide.values()[rMap2[i]];
     accessMap.put(rSide, iSide);
-    AWLog.logDebug("reading mapping from nbt: "+rSide+"::"+iSide);
     }
   }
 
@@ -501,13 +498,11 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
     rMap[index]=rSide.ordinal();
     iMap[index]=iSide.ordinal();
     index++;
-    AWLog.logDebug("writing mapping to nbt: "+rSide+"::"+iSide);
     }
   NBTTagCompound accessTag = new NBTTagCompound();
   accessTag.setIntArray("rMap", rMap);
   accessTag.setIntArray("iMap", iMap);
   tag.setTag("accessTag", accessTag);  
-  AWLog.logDebug("accessTag: "+accessTag);
   return tag;
   }
 
