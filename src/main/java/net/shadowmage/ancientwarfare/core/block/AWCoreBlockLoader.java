@@ -4,6 +4,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -22,7 +24,7 @@ public static final CreativeTabs coreTab = new CreativeTabs("tabs.awcore")
   @SideOnly(Side.CLIENT)
   public Item getTabIconItem()
     {
-    return Items.beef;
+    return AWItems.researchBook;
     }
   };
 

@@ -21,9 +21,8 @@ public ItemResearchBook(String localizationKey)
   this.setUnlocalizedName(localizationKey);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
   this.setMaxStackSize(1);
+  this.setTextureName("ancientwarfare:core/research_book");
   }
-
-
 
 @Override
 @SideOnly(Side.CLIENT)
