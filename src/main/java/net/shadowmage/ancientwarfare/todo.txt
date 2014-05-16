@@ -26,7 +26,6 @@ structures module (done for now)
 
 automation module:
 	GUIs Needed:
-		Mechanical Worker Stored Energy in GUI (needs container/synch code)
 		
 	Target select GUI is non-functional, and/or cannot remove targets			
 	API / compat stuff:

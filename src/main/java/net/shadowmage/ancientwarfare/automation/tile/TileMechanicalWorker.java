@@ -50,6 +50,7 @@ WeakReference<IWorkSite> workSite = new WeakReference<IWorkSite>(null);
 
 private int searchDelay;
 private int burnTicks;
+private int originalBurnTicks;
 
 String ownerName;//TODO load/save
 
@@ -81,6 +82,11 @@ private void setWorkSite(IWorkSite site)
     {
     searchDelay = 40;
     }
+  }
+
+public double getEnergyStored()
+  {
+  return storedEnergy;
   }
 
 @Override
@@ -129,6 +135,7 @@ public void updateEntity()
           {
           fuelInventory.decrStackSize(0, 1);
           burnTicks = ticks;
+          originalBurnTicks = ticks;
           }
         }
       }
@@ -144,7 +151,7 @@ public void updateEntity()
     }
   else
     {
-    AWLog.logDebug("energy: "+storedEnergy);
+//    AWLog.logDebug("energy: "+storedEnergy);
     }
   }
 
@@ -218,6 +225,7 @@ public void readFromNBT(NBTTagCompound tag)
   super.readFromNBT(tag);
   storedEnergy = tag.getDouble("storedEnergy");
   burnTicks = tag.getInteger("burnTicks");
+  originalBurnTicks = tag.getInteger("burnTicksBase");
   if(tag.hasKey("inventory"))
     {
     fuelInventory.readFromNBT(tag.getCompoundTag("inventory"));
@@ -230,6 +238,7 @@ public void writeToNBT(NBTTagCompound tag)
   super.writeToNBT(tag);
   tag.setDouble("storedEnergy", storedEnergy);
   tag.setInteger("burnTicks", burnTicks);
+  tag.setInteger("burnTicksBase", originalBurnTicks);
   tag.setTag("inventory", fuelInventory.writeToNBT(new NBTTagCompound()));
   }
 
@@ -332,6 +341,21 @@ public final void setOwnerName(String name)
 public String getOwnerName()
   {
   return ownerName;
+  }
+
+public int getBurnTime()
+  {
+  return burnTicks;
+  }
+
+public int getBurnTimeBase()
+  {
+  return originalBurnTicks;
+  }
+
+public double getMaxEnergy()
+  {
+  return maxEnergyStored;
   }
 
 }
