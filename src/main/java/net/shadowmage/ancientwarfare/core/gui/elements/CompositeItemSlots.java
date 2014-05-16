@@ -139,10 +139,10 @@ private void renderSlotHighlight(ItemSlot slot, int mouseX, int mouseY)
     GL11.glVertex2d(slot.renderX+slot.width, slot.renderY);      
     GL11.glEnd();      
     GL11.glDisable(GL11.GL_BLEND);
-    }
-  if(slot.renderTooltip && slot.getStack()!=null && render!=null)
-    {
-    this.render.handleItemStackTooltipRender(slot.getStack());
+    if(slot.renderTooltip && slot.getStack()!=null && render!=null)
+      {
+      this.render.handleItemStackTooltipRender(slot.getStack());
+      }
     }
   }
 

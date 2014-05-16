@@ -5,13 +5,11 @@ core
 	Chunkloader blocks
 
 GUIS (all modules)
-	need LOTS of tooltips added to various elements
-	create item-slot container to improve rendering of item-slots
-		might even go so far as to implement custom rendering handling
-		for the actual items instead of relying on RenderItem
+	need LOTS of tooltips added to various elements	
 	Finish creating proper text-input validation stuff for Text and NumberInput widgets
 	SHIFT-CLICK CODE
-
+	rendering of item stack quantities >99 -- need to do custom rendering of text, scaled down appropriately
+	
 modeler
 	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 	

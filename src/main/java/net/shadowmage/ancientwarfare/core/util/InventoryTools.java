@@ -19,7 +19,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.StackSortType;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap.ItemHashEntry;
 
 public class InventoryTools
@@ -565,7 +566,7 @@ public static void itemCompactTest()
     toCompact.add(new ItemStack(Items.apple,1));    
     }
   
-  ComparatorItemStack comparator = new ComparatorItemStack(StackSortType.UNLOCALIZED_NAME,1);
+  ComparatorItemStack comparator = new ComparatorItemStack(SortType.NAME, SortOrder.DESCENDING);
   Collections.sort(toCompact, comparator);
   List<ItemStack> result = new ArrayList<ItemStack>();
 
@@ -690,23 +691,69 @@ private static void test3(List<ItemStack> toCompact, List<ItemStack> result, int
 public static final class ComparatorItemStack implements Comparator<ItemStack>
 {
 
-public static enum StackSortType
+public static enum SortType
 {
-DISPLAY_NAME,
-UNLOCALIZED_NAME,
+QUANTITY("guistrings.automation.sort_type_quantity"),
+NAME("guistrings.automation.sort_type_name"),
+NAME_INPUT("guistrings.automation.sort_type_input");
+
+public final String name;
+SortType(String name){this.name = name;}
+
+public SortType next()
+  {
+  return next(this);
+  }
+
+public static SortType next(SortType type)
+  {
+  int ordinal = type.ordinal();
+  ordinal++;
+  if(ordinal >= values().length){ordinal = 0;}
+  return values()[ordinal];
+  }
+
+@Override
+public String toString()
+  {
+  return name;
+  }
 }
 
-private final int sortOrder;
-private final StackSortType sortType;
+public static enum SortOrder
+{
+ASCENDING(-1), DESCENDING(1);
+SortOrder(int mult){this.mult = mult;}
+int mult;
+}
 
+private SortOrder sortOrder;
+private SortType sortType;
+private String textInput = "";
 /**
  * 
  * @param type
  * @param order 1 for normal, -1 for reverse
  */
-public ComparatorItemStack(StackSortType type, int order)
+public ComparatorItemStack(SortType type, SortOrder order)
   {
-  this.sortOrder = order<-1 ? -1 : order>1 ? 1 : order==0? 1 : order;
+  this.sortOrder = order;
+  this.sortType = type;
+  }
+
+public void setTextInput(String text)
+  {
+  if(text==null){text = "";}
+  this.textInput = text;
+  }
+
+public void setSortOrder(SortOrder order)
+  {
+  this.sortOrder = order;
+  }
+
+public void setSortType(SortType type)
+  {
   this.sortType = type;
   }
 
@@ -714,30 +761,78 @@ public ComparatorItemStack(StackSortType type, int order)
 public int compare(ItemStack o1, ItemStack o2)
   {
   String name1, name2;
+  int val = 0;
   switch(sortType)
   {
-  case DISPLAY_NAME:
+  case NAME:
     {
     name1 = o1.getDisplayName();
     name2 = o2.getDisplayName();
+    val = compareViaNames(name1, name2, o1, o2);  
     }
   break;
   
-  case UNLOCALIZED_NAME:
+  case QUANTITY:
     {
-    name1 = o1.getUnlocalizedName();
-    name2 = o2.getUnlocalizedName();    
+    name1 = String.valueOf(o1.stackSize);
+    name2 = String.valueOf(o2.stackSize); 
+    val= compareViaNames(name1, name2, o1, o2);     
     }
-  break;
+    break;
+  
+  case NAME_INPUT:
+    {
+    name1 = o1.getDisplayName();
+    name2 = o2.getDisplayName();
+    val= compareViaTextInput(name1, name2, o1, o2);  
+    }
+    break;
   
   default:
     {
     name1 = o1.getDisplayName();
     name2 = o2.getDisplayName();
+    val= compareViaNames(name1, name2, o1, o2);
     }
-  break;
+    break;
+  }  
+  AWLog.logDebug("sorted val: "+val+" order: "+sortOrder);
+  return val * sortOrder.mult;
   }
-  
+
+private int compareViaTextInput(String name1, String name2, ItemStack o1, ItemStack o2)
+  {
+  String input = textInput.toLowerCase();
+  String n1 = name1.toLowerCase(), n2 = name2.toLowerCase();
+  if(n1.startsWith(input) && n2.startsWith(input))
+    {
+    return compareViaNames(name1, name2, o1, o2);
+    }
+  else if(n1.startsWith(input))
+    {
+    return -1;    
+    }
+  else if(n2.startsWith(input))
+    {
+    return 1;
+    }
+  else if(n1.contains(input) && n2.contains(input))
+    {
+    return compareViaNames(name1, name2, o1, o2);
+    }
+  else if(n1.contains(input))
+    {
+    return -1;
+    }
+  else if(n2.contains(input))
+    {
+    return 1;
+    }
+  return compareViaNames(name1, name2, o1, o2);
+  }
+
+private int compareViaNames(String name1, String name2, ItemStack o1, ItemStack o2)
+  {  
   int nc = name1.compareTo(name2);
   if(nc==0)//if they have the same name, compare damage/tags
     {
@@ -757,13 +852,13 @@ public int compare(ItemStack o1, ItemStack o2)
         {
         nc=1;
         }
-      else if(o1.hasTagCompound())
+      else if(o2.hasTagCompound())
         {
         nc=-1;
         }
       }
     }
-  return nc * sortOrder;
+  return nc;
   }
 }
 

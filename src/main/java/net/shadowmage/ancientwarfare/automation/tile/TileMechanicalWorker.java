@@ -159,17 +159,17 @@ private boolean findWorkSite()
   {
   ForgeDirection face = ForgeDirection.getOrientation(getBlockMetadata());
   
-  AWLog.logDebug("attempting to find worksite... at: "+face);
+//  AWLog.logDebug("attempting to find worksite... at: "+face);
   TileEntity te;
   IWorkSite site;
   te = worldObj.getTileEntity(xCoord+face.offsetX, yCoord+face.offsetY, zCoord+face.offsetZ);
   if(te instanceof IWorkSite)
     {
-    AWLog.logDebug("found potential site, attempting to add as worker..");
+//    AWLog.logDebug("found potential site, attempting to add as worker..");
     site = (IWorkSite)te;
     if(site.addWorker(this))
       {
-      AWLog.logDebug("set worksite to: "+site + " at: "+face);
+//      AWLog.logDebug("set worksite to: "+site + " at: "+face);
       this.setWorkSite(site);
       return true;
       }
@@ -210,10 +210,10 @@ public void clearWorkSite()
 
 protected void attemptWork()
   {  
-  AWLog.logDebug("Mechanical Worker has worksite, attempting work.. stored energy: "+storedEnergy);
+//  AWLog.logDebug("Mechanical Worker has worksite, attempting work.. stored energy: "+storedEnergy);
   if(getWorkSite().hasWork())
     {
-    AWLog.logDebug("Mechanical Worker had energy and worksite had work, processing work");
+//    AWLog.logDebug("Mechanical Worker had energy and worksite had work, processing work");
     storedEnergy -= AWAutomationStatics.energyPerWorkUnit;
     getWorkSite().doWork(this);      
     }       

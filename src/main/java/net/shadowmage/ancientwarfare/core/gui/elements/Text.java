@@ -84,6 +84,22 @@ protected void addDefaultListeners()
     });
   }
 
+/**
+ * Called directly after character input updates or text changes from
+ * delete/backspace the new text has already been set.<br>
+ * Any references to this.text will return the newtext old test is passed in 
+ * as a param so that it may be validated / reset to the previous text (cursor
+ * position will need manual updating)<br>
+ * Anonymous/Subclasses can override/implement this method for specialized
+ * callback-type functionality.
+ * @param oldText
+ * @param newText
+ */
+public void onTextUpdated(String oldText, String newText)
+  {
+  
+  }
+
 public void setAllowedChars(Set<Character> allowedChars)
   {
   this.denotedAllowedChars.clear();
@@ -189,7 +205,9 @@ protected void handleDeleteAction()
         }
       newText = newText + text.charAt(i);
       }
+    String oldText = text;
     text = newText;
+    onTextUpdated(oldText, newText);
     }
   }
 
@@ -206,7 +224,9 @@ protected void handleBackspaceAction()
         }
       newText = newText + text.charAt(i);
       }
+    String oldText = text;
     text = newText;
+    onTextUpdated(oldText, newText);
     cursorIndex--;
     }
   }
@@ -227,7 +247,9 @@ protected void handleCharacter(char ch)
         newText = newText + text.charAt(i);        
         }
       }
+    String oldText = text;
     text = newText;
+    onTextUpdated(oldText, newText);
     cursorIndex++;
     }
   }

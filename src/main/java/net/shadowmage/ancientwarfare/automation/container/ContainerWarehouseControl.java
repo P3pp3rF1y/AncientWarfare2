@@ -24,16 +24,16 @@ public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
   super(player, x, y, z);
   warehouse = (WorkSiteWarehouse) player.worldObj.getTileEntity(x, y, z);
   warehouse.addViewer(this);  
-  int y2 = 8+9+4;
+  int y2 = 8, x2=8+2*18;
   int x1, y1;
   for(int k = 0; k <9; k++)
     {
-    x1 = (k%3)*18 + 8 + 9*18 + 8;
+    x1 = (k%3)*18 + x2;
     y1 = (k/3)*18 + y2;
     addSlotToContainer(new Slot(warehouse.inventory, k, x1, y1));
     }
   
-  addPlayerSlots(player, 8, 8, 4);
+  addPlayerSlots(player, 8, 156, 4);
   }
 
 @Override
@@ -172,6 +172,35 @@ public void onContainerClosed(EntityPlayer par1EntityPlayer)
 public void onWarehouseInventoryUpdated()
   {  
   shouldUpdate = true;
+  }
+
+/**
+ * @return should always return null for normal implementation, not sure wtf the rest of the code is about
+ */
+@Override
+public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
+  {
+  int slots = 9;
+  Slot slot = (Slot)this.inventorySlots.get(slotClickedIndex);
+  if(slot==null || !slot.getHasStack()){return null;}
+  ItemStack stackFromSlot = slot.getStack();
+  if(slotClickedIndex < slots)
+    {
+    this.mergeItemStack(stackFromSlot, slots, slots+36, false);
+    }
+  else
+    {
+    this.mergeItemStack(stackFromSlot, 0, slots, true);
+    }
+  if(stackFromSlot.stackSize == 0)
+    {
+    slot.putStack((ItemStack)null);
+    }
+  else
+    {
+    slot.onSlotChanged();
+    }
+  return null;  
   }
 
 }

@@ -30,7 +30,7 @@ public class Checkbox extends GuiElement
 {
 
 private boolean checked = false;
-String label;
+protected String label;
 
 /** 
  * @param topLeftX
