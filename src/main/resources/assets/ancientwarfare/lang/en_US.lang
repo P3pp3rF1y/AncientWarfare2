@@ -124,6 +124,17 @@ guistrings.automation.delete_mailbox=Delete Box
 guistrings.automation.block_side=Block Side
 guistrings.automation.direction=Direction
 guistrings.automation.inventory_accessed=Inventory
+guistrings.automation.target_select=Target Select
+guistrings.automation.animal_control=Animal Control
+guistrings.automation.fish_control=Fish Control
+guistrings.automation.quarry_pattern=Quarry Pattern
+guistrings.automation.harvest_fish=Harvest Fish
+guistrings.automation.harvest_ink=Harvest Ink
+guistrings.automation.max_pigs=Max Pigs
+guistrings.automation.max_cows=Max Cows
+guistrings.automation.max_sheep=Max Sheep
+guistrings.automation.max_chickens=Max Chickens
+
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal
 guistrings.research.queued_research=Queued Research

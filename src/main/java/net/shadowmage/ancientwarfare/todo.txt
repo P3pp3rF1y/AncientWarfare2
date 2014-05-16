@@ -10,6 +10,7 @@ GUIS (all modules)
 		might even go so far as to implement custom rendering handling
 		for the actual items instead of relying on RenderItem
 	Finish creating proper text-input validation stuff for Text and NumberInput widgets
+	SHIFT-CLICK CODE
 
 modeler
 	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
@@ -25,20 +26,19 @@ structures module (done for now)
 
 automation module:
 	GUIS NEEDED:
-		Quarry
-		--Quarry layer setup?
-		Tree Farm
-		Animal Farm
-		Crop Farm
-		Fish Farm
-		Mushroom Farm
-		Reed Farm
+		**Quarry (needs shift-click transfer code)
+		**Tree Farm (needs shift-click transfer code)
+		**Crop Farm (needs shift-click transfer code)
+		**Mushroom Farm (needs shift-click transfer code)
+		**Animal Farm (needs shift-click transfer code)			
+		**Reed Farm (needs shift-click transfer code)
+		**Fish Farm (needs shift-click transfer code)
+		Alt control GUIs for:
+			Quarry layer setup
+	Target select GUI is non-functional, and/or cannot remove targets			
 	API / compat stuff:
 		add IMC-based API to add logs/saplings to forestry farm??
 		add config-based method to add logs/saplings to forestry farm??	
-	optional input slot to run mechanical worker directly with coal
-		-- disabled by default in config
-		-- auto-enabled when npc module is disabled and no other compatible power framework is present
 	warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 		--perhaps have different methods for tile.invalidate() and onBlockBroken
@@ -46,13 +46,7 @@ automation module:
 	bc-energy-output worksite (hand-cranked eng. equivalent)  perhaps a flywheel block that can turn work() into MJ
 		and output it via BC pipes....will require testing...
 	warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
-	figure out a better method for rotated blocks.
-		--two types of rotated blocks should be available:
-			6-way (U/D/N/S/E/W) -- can have 3 textures (Top/Bottom/Sides) and inventories
-				-- used by mechanical worker, 'directable' blocks (those with a defined output direction)
-			4-way (N/S/E/W) -- can have 6 textures (Top/Bottom/Left/Right/Front/Rear) and inventories
-				-- used by civics, most rotatable blocks
-			
+				
 	
 npcs module
 	worker will have 'work sites' list / work-order item, denoting which sites to work in what order/priority

@@ -2,13 +2,12 @@ package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public class ContainerWorksiteQuarry extends ContainerWorksiteBase
+public class ContainerWorksiteFishFarm extends ContainerWorksiteBase
 {
 
-public ContainerWorksiteQuarry(EntityPlayer player, int x, int y, int z)
+public ContainerWorksiteFishFarm(EntityPlayer player, int x, int y, int z)
   {
-  super(player, x, y, z);
-  
+  super(player, x, y, z);  
   int layerY = 8;
   int labelGap = 12;
   topLabel = layerY;

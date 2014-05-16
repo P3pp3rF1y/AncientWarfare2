@@ -9,8 +9,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class ContainerWorksiteBlockSelection extends ContainerBase
@@ -37,14 +35,15 @@ public void sendTargetsToServer()
     pos.writeToNBT(blockTag);
     list.appendTag(blockTag);
     }  
-  PacketGui pkt = new PacketGui();
-  pkt.packetData.setTag("userBlocks", list);
-  NetworkHandler.sendToServer(pkt);
+  NBTTagCompound outer = new NBTTagCompound();
+  outer.setTag("userBlocks", list);
+  sendDataToServer(outer);
   }
 
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
+  refreshGui();
   if(tag.hasKey("userBlocks"))
     {
     Set<BlockPosition> set = new HashSet<BlockPosition>();
@@ -57,6 +56,10 @@ public void handlePacketData(NBTTagCompound tag)
       }
     worksite.setUserSetTargets(set);
     worksite.markForUpdate();
+    }
+  if(tag.hasKey("closeGUI"))
+    {
+    worksite.onBlockClicked(player);//hack to open the worksites GUI
     }
   }
 

@@ -11,12 +11,17 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInpu
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseOutput;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalControl;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoCrafting;
-import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarry;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteReedFarm;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
@@ -95,7 +100,6 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * register containers
    */
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY, ContainerWorksiteBase.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_SET_TARGETS, ContainerWorksiteBlockSelection.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, ContainerWorksiteAnimalControl.class);
@@ -109,6 +113,12 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CRAFTING, ContainerWarehouseCraftingStation.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_MECHANICAL_WORKER, ContainerMechanicalWorker.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_QUARRY, ContainerWorksiteQuarry.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_TREE_FARM, ContainerWorksiteTreeFarm.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_CROP_FARM, ContainerWorksiteCropFarm.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, ContainerWorksiteMushroomFarm.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, ContainerWorksiteAnimalFarm.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_REED_FARM, ContainerWorksiteReedFarm.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_FARM, ContainerWorksiteFishFarm.class);
   /**
    * register persistent game-data handlers
    */

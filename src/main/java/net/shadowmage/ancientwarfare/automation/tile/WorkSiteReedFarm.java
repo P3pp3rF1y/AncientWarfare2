@@ -15,11 +15,15 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteReedFarm extends TileWorksiteBase
 {
@@ -48,50 +52,54 @@ public WorkSiteReedFarm()
   cactusToPlant = new HashSet<BlockPosition>();
   reedToPlant = new HashSet<BlockPosition>();
   blocksToHarvest = new HashSet<BlockPosition>();
-//  this.inventory = new InventorySidedWithContainer(27 + 3, this);
-//  
-//  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
-//  for(int i =0; i <27; i++)
-//    {
-//    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
-//    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
-//    }
-//    
-//  ItemSlotFilter filter = new ItemSlotFilter()
-//    {
-//    @Override
-//    public boolean isItemValid(ItemStack stack)
-//      {
-//      if(stack==null){return true;}
-//      Item item = stack.getItem();
-//      if(item==Items.dye && stack.getItemDamage()==3)
-//        {       
-//        return true;
-//        }
-//      if(item==Items.reeds)
-//        {
-//        return true;
-//        }
-//      if(item instanceof ItemBlock)
-//        {
-//        ItemBlock block = (ItemBlock)item;
-//        Block blk = block.field_150939_a;
-//        if(blk==Blocks.cactus)
-//          {
-//          return true;
-//          }
-//        }
-//      return false;
-//      }
-//    };
-//  this.inventory.addSlotViewMap(InventorySide.FRONT, 8, (3*18)+12+8, "guistrings.inventory.side.front");
-//  for(int i = 27, k = 0; i<30; i++, k++)
-//    {
-//    this.inventory.addSidedMapping(InventorySide.LEFT, i, true, true);
-//    this.inventory.addSidedMapping(InventorySide.RIGHT, i, true, true);
-//    this.inventory.addSlotViewMapping(InventorySide.FRONT, i, (k%9)*18, (k/9)*18);
-//    this.inventory.addSlotFilter(i, filter);
-//    }
+  
+  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33);
+  int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
+  int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
+  int[] bottomIndices = InventoryTools.getIndiceArrayForSpread(30, 3);  
+  this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
+  this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//plantables
+  this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//bonemeal
+  
+  ItemSlotFilter filter = new ItemSlotFilter()
+    {
+    @Override
+    public boolean isItemValid(ItemStack stack)
+      {
+      if(stack==null){return true;}
+      Item item = stack.getItem();
+      if(item==Items.dye && stack.getItemDamage()==3)
+        {       
+        return true;
+        }
+      if(item==Items.reeds)
+        {
+        return true;
+        }
+      if(item instanceof ItemBlock)
+        {
+        ItemBlock block = (ItemBlock)item;
+        Block blk = block.field_150939_a;
+        if(blk==Blocks.cactus)
+          {
+          return true;
+          }
+        }
+      return false;
+      }
+    };
+  this.inventory.setFilterForSlots(filter, frontIndices); 
+    
+  filter = new ItemSlotFilter()
+    {
+    @Override
+    public boolean isItemValid(ItemStack stack)
+      {
+      if(stack==null){return true;}
+      return stack.getItem() == Items.dye && stack.getItemDamage()==15;
+      }
+    };
+  this.inventory.setFilterForSlots(filter, bottomIndices);  
   }
 
 @Override
@@ -419,7 +427,7 @@ public boolean onBlockClicked(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_INVENTORY, xCoord, yCoord, zCoord);
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_REED_FARM, xCoord, yCoord, zCoord);
     return true;
     }
   return false;

@@ -11,9 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -32,7 +30,6 @@ public WorkSiteQuarry()
   this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 27);
   int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
   this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
-  AWLog.logDebug("inventory valid sides: "+inventory.getValidSides());
   }
 
 @Override

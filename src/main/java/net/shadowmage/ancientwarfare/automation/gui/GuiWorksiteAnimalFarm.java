@@ -4,12 +4,13 @@ import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 
-public class GuiWorksiteQuarry extends GuiWorksiteBase
+public class GuiWorksiteAnimalFarm extends GuiWorksiteBase
 {
 
-public GuiWorksiteQuarry(ContainerBase par1Container)
+public GuiWorksiteAnimalFarm(ContainerBase par1Container)
   {
   super(par1Container);
+  
   }
 
 @Override
@@ -17,13 +18,12 @@ public void initElements()
   {
   addLabels();
   addSideSelectButton();
-  
-  Button button = new Button(xSize/2, ySize-8-12, xSize/2-8, 12, StatCollector.translateToLocal("guistrings.automation.quarry_pattern"))    
+  Button button = new Button(xSize/2, ySize-8-12, xSize/2-8, 12, StatCollector.translateToLocal("guistrings.automation.animal_control"))    
     {
     @Override
     protected void onPressed()
       {
-      //TODO open quarry-pattern-select GUI
+      container.worksite.openAltGui(player);
       }
     };
   addGuiElement(button);
@@ -34,6 +34,5 @@ public void setupElements()
   {
   
   }
-
 
 }

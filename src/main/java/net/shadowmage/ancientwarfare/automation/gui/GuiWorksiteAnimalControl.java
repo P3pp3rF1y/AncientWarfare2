@@ -95,7 +95,7 @@ public void setupElements()
 protected boolean onGuiCloseRequested()
   {
   container.sendSettingsToServer();
-  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_INVENTORY, worksite.xCoord, worksite.yCoord, worksite.zCoord);
+  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, worksite.xCoord, worksite.yCoord, worksite.zCoord);
   return false;
   }
 

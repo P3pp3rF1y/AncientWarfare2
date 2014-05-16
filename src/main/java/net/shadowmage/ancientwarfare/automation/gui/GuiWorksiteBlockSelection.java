@@ -1,17 +1,17 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class GuiWorksiteBlockSelection extends GuiContainerBase
 {
 
-
+Label label ;
 ContainerWorksiteBlockSelection container;
 public GuiWorksiteBlockSelection(ContainerBase par1Container)
   {
@@ -58,8 +58,6 @@ public void initElements()
   addGuiElement(label);
   }
 
-Label label ;
-
 @Override
 public void setupElements()
   {
@@ -67,10 +65,12 @@ public void setupElements()
   }
 
 @Override
-public void onGuiClosed()
+protected boolean onGuiCloseRequested()
   {
-  super.onGuiClosed();
-  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_INVENTORY, container.worksite.xCoord, container.worksite.yCoord, container.worksite.zCoord);
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setBoolean("closeGUI", true);
+  sendDataToContainer(tag);
+  return false;
   }
 
 private class WorkSelectionButton extends Button

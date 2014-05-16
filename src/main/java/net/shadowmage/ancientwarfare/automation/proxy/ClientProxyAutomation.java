@@ -9,12 +9,17 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseInput;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseOutput;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalControl;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAutoCrafting;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBlockSelection;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishControl;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteInventorySideSelection;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
@@ -30,7 +35,6 @@ public class ClientProxyAutomation extends ClientProxyBase
 public void registerClient()
   {
   MinecraftForge.EVENT_BUS.register(WorkBoundingBoxRenderer.instance());
-  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY, GuiWorksiteBase.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_SET_TARGETS, GuiWorksiteBlockSelection.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
@@ -44,6 +48,12 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CRAFTING, GuiWarehouseCraftingStation.class); 
   NetworkHandler.registerGui(NetworkHandler.GUI_MECHANICAL_WORKER, GuiMechanicalWorker.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_QUARRY, GuiWorksiteQuarry.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_TREE_FARM, GuiWorksiteTreeFarm.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_CROP_FARM, GuiWorksiteCropFarm.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, GuiWorksiteMushroomFarm.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, GuiWorksiteAnimalFarm.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_REED_FARM, GuiWorksiteReedFarm.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_FARM, GuiWorksiteFishFarm.class);
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStorageBase.class, new RenderTileWarehouseStorageBase());
   registerClientOptions();
   }

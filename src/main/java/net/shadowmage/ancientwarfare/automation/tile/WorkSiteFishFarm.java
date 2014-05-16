@@ -9,10 +9,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteFishFarm extends TileWorksiteBase
 {
@@ -28,14 +31,8 @@ public WorkSiteFishFarm()
   {
   this.canUpdate = true;
   this.maxWorkers = 2;
-//  this.inventory = new InventorySidedWithContainer(27, this);
-//  
-//  this.inventory.addSlotViewMap(InventorySide.TOP, 8, 8, "guistrings.inventory.side.top");
-//  for(int i =0; i <27; i++)
-//    {
-//    this.inventory.addSidedMapping(InventorySide.TOP, i, true, true);
-//    this.inventory.addSlotViewMapping(InventorySide.TOP, i, (i%9)*18, (i/9)*18);
-//    } 
+  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 27);
+  this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, InventoryTools.getIndiceArrayForSpread(0, 27)); 
   }
 
 @Override
@@ -141,7 +138,7 @@ public boolean onBlockClicked(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_INVENTORY, xCoord, yCoord, zCoord);
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_FARM, xCoord, yCoord, zCoord);
     return true;
     }
   return false;
