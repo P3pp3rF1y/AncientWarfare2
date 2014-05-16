@@ -24,6 +24,7 @@ public ItemResearchNotes(String localizationKey)
   {
   this.setUnlocalizedName(localizationKey);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
+  setTextureName("ancientwarfare:core/research_note");
   }
 
 @Override
