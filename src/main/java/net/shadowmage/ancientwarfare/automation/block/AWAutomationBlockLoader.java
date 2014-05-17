@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
+import net.shadowmage.ancientwarfare.automation.tile.TileFlywheel;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseCraftingStation;
@@ -27,8 +28,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class AWAutomationBlockLoader
 {
-
-public static final Block workerTest = new BlockMechanicalWorker("mechanical_worker");
 
 public static final BlockWorksiteBase worksiteQuarry = new BlockWorksiteBase(Material.rock,"civic_quarry")
   {
@@ -70,16 +69,7 @@ public static final BlockWorksiteBase worksiteAnimalFarm = new BlockWorksiteBase
     return new WorkSiteAnimalFarm();
     }  
   };
-  
-public static final BlockWorksiteBase worksiteAutoCrafting = new BlockWorksiteBase(Material.rock, "civic_auto_crafting")
-  {
-  @Override
-  public TileEntity createTileEntity(World world, int metadata)
-    {
-    return new WorksiteAutoCrafting();
-    }
-  };
-  
+    
 public static final BlockWorksiteBase worksiteFishFarm = new BlockWorksiteBase(Material.rock, "civic_fish_farm")
   {
   @Override
@@ -98,6 +88,16 @@ public static final BlockWorksiteBase worksiteReedFarm = new BlockWorksiteBase(M
     }
   };
   
+public static final BlockWorksiteBase worksiteAutoCrafting = new BlockWorksiteBase(Material.rock, "civic_auto_crafting")
+  {
+  @Override
+  public TileEntity createTileEntity(World world, int metadata)
+    {
+    return new WorksiteAutoCrafting();
+    }
+  };
+  
+  
 public static final BlockWorksiteBase worksiteWarehouse = new BlockWorksiteBase(Material.rock, "civic_warehouse")
   {    
   @Override
@@ -107,8 +107,6 @@ public static final BlockWorksiteBase worksiteWarehouse = new BlockWorksiteBase(
     }
   };
   
-public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
-
 public static final BlockWarehouseStorage warehouseStorageBlock = new BlockWarehouseStorage("warehouse_storage");
 
 public static final BlockWarehouseInput warehouseInput = new BlockWarehouseInput("warehouse_input");
@@ -117,9 +115,15 @@ public static final BlockWarehouseOutput warehouseOutput = new BlockWarehouseOut
 
 public static final BlockWarehouseCraftingStation warehouseCrafting = new BlockWarehouseCraftingStation("warehouse_crafting_station");
 
+public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
+
+public static final Block mechanicalWorker = new BlockMechanicalWorker("mechanical_worker");
+
+public static final Block flywheel = new BlockFlywheel("flywheel");
+
 public static void load()
   {  
-  GameRegistry.registerBlock(workerTest, ItemBlockOwnedRotatable.class, "mechanical_worker");
+  GameRegistry.registerBlock(mechanicalWorker, ItemBlockOwnedRotatable.class, "mechanical_worker");
   GameRegistry.registerTileEntity(TileMechanicalWorker.class, "mechanical_worker_tile");
     
   GameRegistry.registerBlock(worksiteQuarry, ItemBlockWorksite.class, "civic_quarry");
@@ -205,6 +209,9 @@ public static void load()
   
   GameRegistry.registerBlock(warehouseCrafting, "warehouse_crafting_station");
   GameRegistry.registerTileEntity(TileWarehouseCraftingStation.class, "warehouse_crafting_station_tile");
+  
+  GameRegistry.registerBlock(flywheel, ItemBlockOwnedRotatable.class, "flywheel");
+  GameRegistry.registerTileEntity(TileFlywheel.class, "flywheel_tile");
   }
 
 }

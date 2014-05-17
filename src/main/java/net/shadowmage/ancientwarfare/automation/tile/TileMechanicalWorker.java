@@ -27,12 +27,12 @@ import buildcraft.api.transport.IPipeTile.PipeType;
 import cpw.mods.fml.common.Optional;
 
 @Optional.Interface(iface="buildcraft.api.transport.IPipeConnection",modid="BuildCraft|Core",striprefs=true)
-public class TileMechanicalWorker extends TileEntity implements IWorker, IInventory, IPipeConnection, IInteractableTile, IOwnable
+public class TileMechanicalWorker extends TileEntity implements IWorker, IInventory, IInteractableTile, IOwnable
 {
 
-private static final double maxEnergyStored = 1500.d;
-private static final double maxReceivedPerTick = 100.d;
-private static final double idleConsumption = 0.d;
+public static final double maxEnergyStored = 1500.d;
+public static final double maxReceivedPerTick = 100.d;
+public static final double idleConsumption = 0.d;
 
 /**
  * Used to store MJ energy from BC integration.<br>
@@ -43,7 +43,7 @@ private static final double idleConsumption = 0.d;
     maxReceivedPerCycle=maxReceivedPerTick,
     minimumConsumption=idleConsumption
     )
-double storedEnergy;
+public double storedEnergy;
 
 //TODO swap this to a block-position with an accessor method
 WeakReference<IWorkSite> workSite = new WeakReference<IWorkSite>(null);
@@ -67,6 +67,13 @@ public TileMechanicalWorker()
   
   }
 
+@Override
+public void invalidate()
+  {
+  super.invalidate();
+  setWorkSite(null);
+  }
+
 public void onBlockBroken()
   {
   if(this.workSite!=null && this.workSite.get()!=null)
@@ -75,8 +82,14 @@ public void onBlockBroken()
     }
   }
 
+public void onBlockRotated()
+  {
+  setWorkSite(null);
+  }
+
 private void setWorkSite(IWorkSite site)
   {
+  if(workSite.get()!=null){workSite.get().removeWorker(this);}
   workSite = new WeakReference<IWorkSite>(site);
   if(site==null)
     {
@@ -240,14 +253,6 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("burnTicks", burnTicks);
   tag.setInteger("burnTicksBase", originalBurnTicks);
   tag.setTag("inventory", fuelInventory.writeToNBT(new NBTTagCompound()));
-  }
-
-//TODO is this actually needed since the MjBattery annotation works now?
-@Optional.Method(modid="BuildCraft|Core")
-@Override
-public ConnectOverride overridePipeConnection(PipeType arg0, ForgeDirection arg1)
-  {
-  return arg0==PipeType.POWER ? ConnectOverride.CONNECT : ConnectOverride.DEFAULT;
   }
 
 @Override

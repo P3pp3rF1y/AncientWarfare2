@@ -1,3 +1,6 @@
+Licensing
+	add bc license for using as libs
+
 core
 	crafting system--needs recipes from other modules
 	research system--needs definitions of research for research tree
@@ -20,9 +23,6 @@ TEXTURES
 			mushroom farm
 			reed farm
 			fish farm
-		mechanical worker
-		auto-crafter
-		mailbox
 		warehouse control
 		warehouse input
 		warehouse output
@@ -30,6 +30,11 @@ TEXTURES
 		warehouse storage medium
 		warehouse storage large
 		warehouse crafting station
+		mechanical worker
+		auto-crafter
+		mailbox
+		flywheel
+		hand-cranked-engine
 	structure
 		drafting station
 		structure scanner
