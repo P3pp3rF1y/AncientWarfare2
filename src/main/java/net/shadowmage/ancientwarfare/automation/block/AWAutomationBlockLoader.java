@@ -10,6 +10,9 @@ import net.shadowmage.ancientwarfare.automation.tile.TileFlywheel;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
 import net.shadowmage.ancientwarfare.automation.tile.TileTorqueConduit;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueDistributor;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueGeneratorSterling;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.tile.TileTorqueJunction;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseInput;
@@ -119,13 +122,35 @@ public static final BlockWarehouseCraftingStation warehouseCrafting = new BlockW
 
 public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 
+/**
+ * POWER NETWORK BLOCKS
+ */
 public static final BlockMechanicalWorker mechanicalWorker = new BlockMechanicalWorker("mechanical_worker");
-
 public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel");
-
 public static final BlockTorqueConduit torqueConduit = new BlockTorqueConduit("torque_conduit");
-
 public static final BlockTorqueJunction torqueJunction = new BlockTorqueJunction("torque_junction");
+public static final BlockTorqueDistributor torqueDistributor = new BlockTorqueDistributor("torque_distributor");
+public static final BlockTorqueGenerator torqueGeneratorSterling = new BlockTorqueGenerator("torque_generator_sterling")
+  { 
+  @Override
+  public TileEntity createTileEntity(World world, int metadata)
+    {
+    return new TileTorqueGeneratorSterling();
+    }
+  };
+public static final BlockTorqueGenerator torqueGeneratorWaterwheel = new BlockTorqueGenerator("torque_generator_waterwheel")
+  { 
+  @Override
+  public TileEntity createTileEntity(World world, int metadata)
+    {
+    return new TileTorqueGeneratorWaterwheel();
+    }
+  @Override
+  public boolean invertFacing()
+    {
+    return true;
+    }
+  };
 
 public static void load()
   {      
@@ -266,7 +291,23 @@ public static void load()
   torqueJunction.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");
   torqueJunction.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_junction_side");
   
-  //torque distributor
+  GameRegistry.registerBlock(torqueDistributor, ItemBlockOwnedRotatable.class, "torque_distributor");
+  GameRegistry.registerTileEntity(TileTorqueDistributor.class, "torque_distributor_tile");
+  torqueDistributor.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_distributor_top");
+  torqueDistributor.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_distributor_bottom");
+  torqueDistributor.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_distributor_side");
+  
+  GameRegistry.registerBlock(torqueGeneratorSterling, ItemBlockOwnedRotatable.class, "torque_generator_sterling");
+  GameRegistry.registerTileEntity(TileTorqueGeneratorSterling.class, "torque_generator_sterling_tile");
+  torqueGeneratorSterling.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/torque_junction_top");//TODO add proper textures/refs
+  torqueGeneratorSterling.setIcon(RelativeSide.REAR, "ancientwarfare:automation/torque_junction_bottom");//TODO add proper textures/refs
+  torqueGeneratorSterling.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/torque_junction_bottom");//TODO add proper textures/refs
+  torqueGeneratorSterling.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/torque_junction_bottom");//TODO add proper textures/refs
+  torqueGeneratorSterling.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_junction_bottom");//TODO add proper textures/refs
+  torqueGeneratorSterling.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");//TODO add proper textures/refs
+  
+  GameRegistry.registerBlock(torqueGeneratorWaterwheel, ItemBlockOwnedRotatable.class, "torque_generator_waterwheel");
+  GameRegistry.registerTileEntity(TileTorqueGeneratorWaterwheel.class, "torque_generator_waterwheel_tile");
   }
 
 }

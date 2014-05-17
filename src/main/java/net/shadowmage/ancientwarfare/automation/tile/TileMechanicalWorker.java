@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -27,7 +28,7 @@ import buildcraft.api.transport.IPipeTile.PipeType;
 import cpw.mods.fml.common.Optional;
 
 @Optional.Interface(iface="buildcraft.api.transport.IPipeConnection",modid="BuildCraft|Core",striprefs=true)
-public class TileMechanicalWorker extends TileEntity implements IWorker, IInventory, IInteractableTile, IOwnable
+public class TileMechanicalWorker extends TileEntity implements IWorker, IInteractableTile, IOwnable, ITorqueReceiver
 {
 
 public static final double maxEnergyStored = 1500.d;
@@ -49,22 +50,18 @@ public double storedEnergy;
 WeakReference<IWorkSite> workSite = new WeakReference<IWorkSite>(null);
 
 private int searchDelay;
-private int burnTicks;
-private int originalBurnTicks;
 
 String ownerName;//TODO load/save
-
-InventoryBasic fuelInventory = new InventoryBasic(1)
-  {
-  public boolean isItemValidForSlot(int var1, net.minecraft.item.ItemStack var2) 
-    {
-    return TileEntityFurnace.getItemBurnTime(var2)>0;
-    }
-  };
 
 public TileMechanicalWorker()
   {
   
+  }
+
+@Override
+public String toString()
+  {
+  return "Mechanical Worker ["+storedEnergy+"]";
   }
 
 @Override
@@ -138,25 +135,7 @@ public void updateEntity()
     }
   if(AWAutomationStatics.enableMechanicalWorkerFuelUse)
     {
-    if(burnTicks<=0 && storedEnergy < maxEnergyStored)
-      {
-      if(fuelInventory.getStackInSlot(0)!=null)
-        {
-        //if fuel, consume one, set burn-ticks to fuel value
-        int ticks = TileEntityFurnace.getItemBurnTime(fuelInventory.getStackInSlot(0));
-        if(ticks>0)
-          {
-          fuelInventory.decrStackSize(0, 1);
-          burnTicks = ticks;
-          originalBurnTicks = ticks;
-          }
-        }
-      }
-    else if(burnTicks>0)
-      {
-      storedEnergy++;
-      burnTicks--;
-      }    
+   
     }
   if(storedEnergy >= AWAutomationStatics.energyPerWorkUnit && getWorkSite()!=null)
     {
@@ -199,8 +178,7 @@ public float getWorkEffectiveness()
 @Override
 public Team getTeam()
   {
-  //TODO set team to that of owning player/placing player
-  return null;
+  return worldObj.getScoreboard().getPlayersTeam(ownerName);
   }
 
 @Override
@@ -237,12 +215,6 @@ public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
   storedEnergy = tag.getDouble("storedEnergy");
-  burnTicks = tag.getInteger("burnTicks");
-  originalBurnTicks = tag.getInteger("burnTicksBase");
-  if(tag.hasKey("inventory"))
-    {
-    fuelInventory.readFromNBT(tag.getCompoundTag("inventory"));
-    }
   }
 
 @Override
@@ -250,81 +222,6 @@ public void writeToNBT(NBTTagCompound tag)
   {  
   super.writeToNBT(tag);
   tag.setDouble("storedEnergy", storedEnergy);
-  tag.setInteger("burnTicks", burnTicks);
-  tag.setInteger("burnTicksBase", originalBurnTicks);
-  tag.setTag("inventory", fuelInventory.writeToNBT(new NBTTagCompound()));
-  }
-
-@Override
-public int getSizeInventory()
-  {
-  return fuelInventory.getSizeInventory();
-  }
-
-@Override
-public ItemStack getStackInSlot(int var1)
-  {
-  return fuelInventory.getStackInSlot(var1);
-  }
-
-@Override
-public ItemStack decrStackSize(int var1, int var2)
-  {
-  return fuelInventory.decrStackSize(var1, var2);
-  }
-
-@Override
-public ItemStack getStackInSlotOnClosing(int var1)
-  {
-  return fuelInventory.getStackInSlotOnClosing(var1);
-  }
-
-@Override
-public void setInventorySlotContents(int var1, ItemStack var2)
-  {
-  fuelInventory.setInventorySlotContents(var1, var2);
-  }
-
-@Override
-public String getInventoryName()
-  {
-  return fuelInventory.getInventoryName();
-  }
-
-@Override
-public boolean hasCustomInventoryName()
-  {
-  return fuelInventory.hasCustomInventoryName();
-  }
-
-@Override
-public int getInventoryStackLimit()
-  {
-  return fuelInventory.getInventoryStackLimit();
-  }
-
-@Override
-public boolean isUseableByPlayer(EntityPlayer var1)
-  {
-  return fuelInventory.isUseableByPlayer(var1);
-  }
-
-@Override
-public void openInventory()
-  {
-  fuelInventory.openInventory();
-  }
-
-@Override
-public void closeInventory()
-  {
-  fuelInventory.closeInventory();
-  }
-
-@Override
-public boolean isItemValidForSlot(int var1, ItemStack var2)
-  {
-  return fuelInventory.isItemValidForSlot(var1, var2);
   }
 
 @Override
@@ -348,19 +245,28 @@ public String getOwnerName()
   return ownerName;
   }
 
-public int getBurnTime()
-  {
-  return burnTicks;
-  }
-
-public int getBurnTimeBase()
-  {
-  return originalBurnTicks;
-  }
-
+@Override
 public double getMaxEnergy()
   {
   return maxEnergyStored;
+  }
+
+@Override
+public void setEnergy(double energy)
+  {
+  storedEnergy = energy;
+  }
+
+@Override
+public double getMaxInput()
+  {
+  return maxReceivedPerTick;
+  }
+
+@Override
+public EnumSet<ForgeDirection> getInputDirections()
+  {
+  return EnumSet.of(ForgeDirection.getOrientation(getBlockMetadata()).getOpposite());
   }
 
 }

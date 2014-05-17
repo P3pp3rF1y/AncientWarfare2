@@ -51,7 +51,6 @@ automation module:
 		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 		--perhaps have different methods for tile.invalidate() and onBlockBroken
 	warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
-	coal-burning feature of mechanical worker should be moved to a separate block that outputs torque
 	hand-cranked engine should output torque and/or buildcraft MJ
 		--flywheel accepts MJ input				
 	

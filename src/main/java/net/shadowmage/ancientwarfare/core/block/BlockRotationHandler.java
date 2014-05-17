@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.block;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -39,17 +40,17 @@ public static int getMetaForPlacement(EntityLivingBase entity, IRotatableBlock b
     {
     if(sideHit==0 || sideHit==1)
       {
-      face = ForgeDirection.getOrientation(sideHit);
+      face = ForgeDirection.getOrientation(sideHit).getOpposite();      
       }
     }
   if(block.invertFacing())
     {
     face = face.getOpposite();
     }
-  if(entity.isSneaking())
-    {
-    face = face.getOpposite();
-    }
+//  if(entity.isSneaking())
+//    {
+//    face = face.getOpposite();
+//    }
   AWLog.logDebug("returning facing for block: "+face);
   return face.ordinal();
   }
@@ -58,6 +59,7 @@ public interface IRotatableBlock
 {
 public RotationType getRotationType();
 public boolean invertFacing();
+public Block setIcon(RelativeSide side, String texName);
 }
 
 public static enum RotationType

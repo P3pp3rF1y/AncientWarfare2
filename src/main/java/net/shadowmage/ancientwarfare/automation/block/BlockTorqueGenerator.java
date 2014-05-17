@@ -3,53 +3,29 @@ package net.shadowmage.ancientwarfare.automation.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
-import net.shadowmage.ancientwarfare.automation.tile.TileTorqueJunction;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
+import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
-import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
-public class BlockTorqueJunction extends Block implements IRotatableBlock
+public abstract class BlockTorqueGenerator extends Block implements IRotatableBlock
 {
 
 IconRotationMap iconMap = new IconRotationMap();
 
-public BlockTorqueJunction(String regName)
+protected BlockTorqueGenerator(String regName)
   {
   super(Material.rock);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
   this.setBlockName(regName);
-  }
-
-@Override
-public boolean hasTileEntity(int metadata)
-  {
-  return true;
-  }
-
-@Override
-public TileEntity createTileEntity(World world, int metadata)
-  {
-  return new TileTorqueJunction();
-  }
-
-@Override
-public RotationType getRotationType()
-  {
-  return RotationType.SIX_WAY;
-  }
-
-@Override
-public boolean invertFacing()
-  {
-  return false;
   }
 
 @Override
@@ -78,10 +54,42 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
   }
 
 @Override
-public BlockTorqueJunction setIcon(RelativeSide side, String texName)
+public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ)
+  {  
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof IInteractableTile)
+    {
+    ((IInteractableTile) te).onBlockClicked(player);
+    }
+  return true;  
+  }
+
+@Override
+public BlockTorqueGenerator setIcon(RelativeSide side, String texName)
   {
   iconMap.setIcon(this, side, texName);
   return this;
+  }
+
+@Override
+public abstract TileEntity createTileEntity(World world, int metadata);
+
+@Override
+public boolean hasTileEntity(int metadata)
+  {
+  return true;
+  }
+
+@Override
+public RotationType getRotationType()
+  {
+  return RotationType.FOUR_WAY;
+  }
+
+@Override
+public boolean invertFacing()
+  {
+  return false;
   }
 
 }

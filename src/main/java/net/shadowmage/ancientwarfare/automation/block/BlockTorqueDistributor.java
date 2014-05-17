@@ -8,20 +8,19 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
-import net.shadowmage.ancientwarfare.automation.tile.TileTorqueJunction;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueDistributor;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 
-public class BlockTorqueJunction extends Block implements IRotatableBlock
+public class BlockTorqueDistributor extends Block implements IRotatableBlock
 {
 
 IconRotationMap iconMap = new IconRotationMap();
 
-public BlockTorqueJunction(String regName)
+protected BlockTorqueDistributor(String regName)
   {
   super(Material.rock);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
@@ -37,19 +36,7 @@ public boolean hasTileEntity(int metadata)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {
-  return new TileTorqueJunction();
-  }
-
-@Override
-public RotationType getRotationType()
-  {
-  return RotationType.SIX_WAY;
-  }
-
-@Override
-public boolean invertFacing()
-  {
-  return false;
+  return new TileTorqueDistributor();
   }
 
 @Override
@@ -62,6 +49,13 @@ public void registerBlockIcons(IIconRegister register)
 public IIcon getIcon(int side, int meta)
   {
   return iconMap.getIcon(this, meta, side);
+  }
+
+@Override
+public BlockTorqueDistributor setIcon(RelativeSide side, String texName)
+  {
+  iconMap.setIcon(this, side, texName);
+  return this;
   }
 
 @Override
@@ -78,10 +72,15 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
   }
 
 @Override
-public BlockTorqueJunction setIcon(RelativeSide side, String texName)
+public RotationType getRotationType()
   {
-  iconMap.setIcon(this, side, texName);
-  return this;
+  return RotationType.SIX_WAY;
+  }
+
+@Override
+public boolean invertFacing()
+  {
+  return false;
   }
 
 }

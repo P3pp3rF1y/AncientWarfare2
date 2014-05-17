@@ -6,21 +6,31 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
-public class ContainerMechanicalWorker extends ContainerBase
+public class ContainerTorqueGeneratorSterling extends ContainerBase
 {
 
 public int guiHeight;
 public double energy;
+public int burnTime;
+public int burnTimeBase;
 
-public TileMechanicalWorker tile;
+public TileTorqueGeneratorSterling tile;
 
-public ContainerMechanicalWorker(EntityPlayer player, int x, int y, int z)
+public ContainerTorqueGeneratorSterling(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
-  tile = (TileMechanicalWorker)player.worldObj.getTileEntity(x,y,z);
-
+  tile = (TileTorqueGeneratorSterling)player.worldObj.getTileEntity(x,y,z);
+  addSlotToContainer(new Slot(tile,0, 8+4*18, 8+12)
+    {
+    @Override
+    public boolean isItemValid(ItemStack par1ItemStack)
+      {
+      return TileEntityFurnace.isItemFuel(par1ItemStack);
+      }
+    });
   addPlayerSlots(player, 8, 8+18+8+12+12, 4);
   guiHeight = 8+18+8 + 4*18 + 4 + 8 + 12+12;
   }
@@ -32,7 +42,17 @@ public void updateProgressBar(int par1, int par2)
     {
     energy = (double)par2 / 100.d;
     refreshGui();
-    } 
+    }  
+  if(par1==1)
+    {
+    burnTime = par2;
+    refreshGui();
+    }
+  if(par1==2)
+    {
+    burnTimeBase = par2;
+    refreshGui();
+    }
   }
 
 @Override
@@ -46,6 +66,22 @@ public void detectAndSendChanges()
     for (int j = 0; j < this.crafters.size(); ++j)
       {
       ((ICrafting)this.crafters.get(j)).sendProgressBarUpdate(this, 0, e);
+      }
+    }
+  int b = tile.getBurnTime();
+  if(b!=burnTime)
+    {
+    for (int j = 0; j < this.crafters.size(); ++j)
+      {
+      ((ICrafting)this.crafters.get(j)).sendProgressBarUpdate(this, 1, b);
+      }
+    }
+  b = tile.getBurnTimeBase();
+  if(b!=burnTimeBase)
+    {
+    for (int j = 0; j < this.crafters.size(); ++j)
+      {
+      ((ICrafting)this.crafters.get(j)).sendProgressBarUpdate(this, 2, b);
       }
     }
   }

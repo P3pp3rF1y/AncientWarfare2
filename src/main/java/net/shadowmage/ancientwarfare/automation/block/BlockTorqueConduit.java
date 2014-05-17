@@ -7,11 +7,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 
 public class BlockTorqueConduit extends Block implements IRotatableBlock
@@ -39,9 +41,10 @@ public IIcon getIcon(int side, int meta)
   return iconMap.getIcon(this, meta, side);
   }
 
-public void setIcon(RelativeSide side, String texName)
+public BlockTorqueConduit setIcon(RelativeSide side, String texName)
   {
   iconMap.setIcon(this, side, texName);
+  return this;
   }
 
 @Override
@@ -72,6 +75,26 @@ public RotationType getRotationType()
 public boolean invertFacing()
   {
   return false;
+  }
+
+@Override
+public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
+  {
+  int meta = worldObj.getBlockMetadata(x, y, z);
+  int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
+  if(rMeta!=meta)
+    {
+    worldObj.setBlockMetadataWithNotify(x, y, z, rMeta, 3);
+    return true;
+    }
+  return false;
+  }
+
+@Override
+public void setBlockBoundsForItemRender()
+  {
+  float min = 0.1875f, max = 0.8125f;
+  setBlockBounds(min, 0, min, max, 1, max);
   }
 
 @Override

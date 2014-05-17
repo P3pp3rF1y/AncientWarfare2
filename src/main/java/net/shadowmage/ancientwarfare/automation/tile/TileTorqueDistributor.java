@@ -6,23 +6,30 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTransport;
 
-public class TileTorqueConduit extends TileEntity implements ITorqueTransport
+public class TileTorqueDistributor extends TileEntity implements ITorqueTransport
 {
-
-public static final double maxInput = 100;
-public static final double maxOutput = 100;
-public static final double maxEnergy = 1000;
 
 double storedEnergy;
 
 @Override
 public void updateEntity()
   {
-  if(worldObj.isRemote){return;}
+  if(worldObj.isRemote){return;}  
   ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
+  }
+
+@Override
+public void setEnergy(double energy)
+  {
+  this.storedEnergy = energy;
+  }
+
+@Override
+public double getMaxEnergy()
+  {
+  return TileTorqueConduit.maxEnergy;
   }
 
 @Override
@@ -34,43 +41,28 @@ public double getEnergyStored()
 @Override
 public double getMaxOutput()
   {
-  return maxOutput;
+  return TileTorqueConduit.maxOutput;
   }
 
 @Override
-public double getMaxEnergy()
+public EnumSet<ForgeDirection> getOutputDirection()
   {
-  return maxEnergy;
+  EnumSet<ForgeDirection> dirs = EnumSet.allOf(ForgeDirection.class);
+  dirs.remove(ForgeDirection.UNKNOWN);
+  dirs.remove(ForgeDirection.getOrientation(getBlockMetadata()).getOpposite());
+  return dirs;
   }
 
 @Override
 public double getMaxInput()
-  {  
-  return maxInput;
+  {
+  return TileTorqueConduit.maxInput;
   }
 
 @Override
 public EnumSet<ForgeDirection> getInputDirections()
   {
   return EnumSet.of(ForgeDirection.getOrientation(getBlockMetadata()).getOpposite());
-  }
-
-@Override
-public EnumSet<ForgeDirection> getOutputDirection()
-  {
-  return EnumSet.of(ForgeDirection.getOrientation(getBlockMetadata()));
-  }
-
-@Override
-public void setEnergy(double energy)
-  {
-  this.storedEnergy = energy;
-  }
-
-@Override
-public String toString()
-  {
-  return "Torque Conduit["+storedEnergy+"]";
   }
 
 @Override
@@ -85,6 +77,12 @@ public void writeToNBT(NBTTagCompound tag)
   {  
   super.writeToNBT(tag);
   tag.setDouble("storedEnergy", storedEnergy);
+  }
+
+@Override
+public String toString()
+  {
+  return "Torque Distributor["+storedEnergy+"]";
   }
 
 }

@@ -78,9 +78,11 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
   return false;
   }
 
-public void setIcon(RelativeSide side, String texName)
+@Override
+public BlockFlywheel setIcon(RelativeSide side, String texName)
   {
   iconMap.setIcon(this, side, texName);
+  return this;
   }
 
 }

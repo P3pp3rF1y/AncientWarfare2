@@ -105,9 +105,11 @@ public boolean invertFacing()
   return false;
   }
 
-public void setIcon(RelativeSide side, String texName)
+@Override
+public BlockMechanicalWorker setIcon(RelativeSide side, String texName)
   {
   iconMap.setIcon(this, side, texName);
+  return this;
   }
 
 }

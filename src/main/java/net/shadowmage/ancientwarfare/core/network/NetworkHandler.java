@@ -67,6 +67,9 @@ public static final int GUI_WORKSITE_CROP_FARM = 27;
 public static final int GUI_WORKSITE_MUSHROOM_FARM = 28;
 public static final int GUI_WORKSITE_FISH_FARM = 29;
 public static final int GUI_WORKSITE_REED_FARM = 30;
+public static final int GUI_TORQUE_GENERATOR_STERLING = 31;
+public static final int GUI_TORQUE_GENERATOR_WATERWHEEL = 32;
+public static final int GUI_TORQUE_STORAGE_FLYWHEEL = 33;
 
 private FMLEventChannel channel;
 
