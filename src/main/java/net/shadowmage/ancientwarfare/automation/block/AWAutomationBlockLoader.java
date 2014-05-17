@@ -308,6 +308,12 @@ public static void load()
   
   GameRegistry.registerBlock(torqueGeneratorWaterwheel, ItemBlockOwnedRotatable.class, "torque_generator_waterwheel");
   GameRegistry.registerTileEntity(TileTorqueGeneratorWaterwheel.class, "torque_generator_waterwheel_tile");
+  torqueGeneratorSterling.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/torque_junction_top");//TODO add proper textures/refs
+  torqueGeneratorSterling.setIcon(RelativeSide.REAR, "ancientwarfare:automation/torque_junction_bottom");//TODO add proper textures/refs
+  torqueGeneratorSterling.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/torque_junction_bottom");//TODO add proper textures/refs
+  torqueGeneratorSterling.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/torque_junction_bottom");//TODO add proper textures/refs
+  torqueGeneratorSterling.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_junction_bottom");//TODO add proper textures/refs
+  torqueGeneratorSterling.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");//TODO add proper textures/refs
   }
 
 }

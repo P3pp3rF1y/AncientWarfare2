@@ -54,6 +54,14 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
   }
 
 @Override
+public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b)
+  {
+  super.onBlockEventReceived(world, x, y, z, a, b);
+  TileEntity tileentity = world.getTileEntity(x, y, z);
+  return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
+  }
+
+@Override
 public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ)
   {  
   TileEntity te = world.getTileEntity(x, y, z);

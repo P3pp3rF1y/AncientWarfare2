@@ -27,8 +27,6 @@ public BlockFlywheel(String regName)
   this.setBlockName(regName);
   }
 
-
-
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {  
@@ -83,6 +81,14 @@ public BlockFlywheel setIcon(RelativeSide side, String texName)
   {
   iconMap.setIcon(this, side, texName);
   return this;
+  }
+
+@Override
+public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b)
+  {
+  super.onBlockEventReceived(world, x, y, z, a, b);
+  TileEntity tileentity = world.getTileEntity(x, y, z);
+  return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
   }
 
 }
