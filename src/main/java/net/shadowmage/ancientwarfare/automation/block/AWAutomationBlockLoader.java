@@ -128,65 +128,80 @@ public static void load()
     
   GameRegistry.registerBlock(worksiteQuarry, ItemBlockWorksite.class, "civic_quarry");
   GameRegistry.registerTileEntity(WorkSiteQuarry.class, "civic_quarry_tile");
-  worksiteQuarry.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
-  worksiteQuarry.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
-  worksiteQuarry.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicMineQuarrySides");
-  worksiteQuarry.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmCocoaSides");
-  worksiteQuarry.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmNetherSides");
-  worksiteQuarry.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmOakSides");  
+  worksiteQuarry.setIcon(RelativeSide.TOP, "ancientwarfare:automation/quarry_top");
+  worksiteQuarry.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/quarry_bottom");
+  worksiteQuarry.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/quarry_front");
+  worksiteQuarry.setIcon(RelativeSide.REAR, "ancientwarfare:automation/quarry_rear");
+  worksiteQuarry.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/quarry_left");
+  worksiteQuarry.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/quarry_right");  
   worksiteQuarry.setWorkSize(64);
   
   GameRegistry.registerBlock(worksiteForestry, ItemBlockWorksite.class, "civic_forestry");
   GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "civic_forestry_tile");
-  worksiteForestry.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
-  worksiteForestry.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
-  worksiteForestry.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmOakSides");
-  worksiteForestry.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmJungleSides");
-  worksiteForestry.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmSpruceSides");
-  worksiteForestry.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmBirchSides");  
+  worksiteForestry.setIcon(RelativeSide.TOP, "ancientwarfare:automation/tree_farm_top");
+  worksiteForestry.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/tree_farm_bottom");
+  worksiteForestry.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/tree_farm_front");
+  worksiteForestry.setIcon(RelativeSide.REAR, "ancientwarfare:automation/tree_farm_rear");
+  worksiteForestry.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/tree_farm_left");
+  worksiteForestry.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/tree_farm_right");  
   
   GameRegistry.registerBlock(worksiteCropFarm, ItemBlockWorksite.class, "civic_crop_farm");
   GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "civic_crop_farm_tile");
-  worksiteCropFarm.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
-  worksiteCropFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
-  worksiteCropFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmWheatSides");
-  worksiteCropFarm.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmMelonSides");
-  worksiteCropFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmCarrotSides");
-  worksiteCropFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmPotatoSides");
+  worksiteCropFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/crop_farm_top");
+  worksiteCropFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/crop_farm_bottom");
+  worksiteCropFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/crop_farm_front");
+  worksiteCropFarm.setIcon(RelativeSide.REAR, "ancientwarfare:automation/crop_farm_rear");
+  worksiteCropFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/crop_farm_left");
+  worksiteCropFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/crop_farm_right");
   
   GameRegistry.registerBlock(worksiteMushroomFarm, ItemBlockWorksite.class, "civic_mushroom_farm");
   GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "civic_mushroom_farm_tile");
-  worksiteMushroomFarm.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
-  worksiteMushroomFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
-  worksiteMushroomFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmNetherSides");
-  worksiteMushroomFarm.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmMelonSides");
-  worksiteMushroomFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmMushroomRedSides");
-  worksiteMushroomFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmMushroomBrownSides");
+  worksiteMushroomFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/mushroom_farm_top");
+  worksiteMushroomFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/mushroom_farm_bottom");
+  worksiteMushroomFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/mushroom_farm_front");
+  worksiteMushroomFarm.setIcon(RelativeSide.REAR, "ancientwarfare:automation/mushroom_farm_rear");
+  worksiteMushroomFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/mushroom_farm_left");
+  worksiteMushroomFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mushroom_farm_right");
   
   GameRegistry.registerBlock(worksiteAnimalFarm, ItemBlockWorksite.class, "civic_animal_farm");
   GameRegistry.registerTileEntity(WorkSiteAnimalFarm.class, "civic_animal_farm_tile");
-  worksiteAnimalFarm.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
-  worksiteAnimalFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:civic/civicFarmChickenSides");
-  worksiteAnimalFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmNetherSides");
-  worksiteAnimalFarm.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmMelonSides");
-  worksiteAnimalFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:civic/civicFarmMushroomRedSides");
-  worksiteAnimalFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:civic/civicFarmMushroomBrownSides");
-  
-  GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockOwnedRotatable.class, "civic_auto_craftin");
-  GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");
-  worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
-  
+  worksiteAnimalFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/animal_farm_top");
+  worksiteAnimalFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/animal_farm_bottom");
+  worksiteAnimalFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/animal_farm_front");
+  worksiteAnimalFarm.setIcon(RelativeSide.REAR, "ancientwarfare:automation/animal_farm_rear");
+  worksiteAnimalFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/animal_farm_left");
+  worksiteAnimalFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/animal_farm_right");
+    
   GameRegistry.registerBlock(worksiteFishFarm, ItemBlockWorksite.class, "civic_fish_farm");
   GameRegistry.registerTileEntity(WorkSiteFishFarm.class, "civic_fish_farm_tile");
+  worksiteFishFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/fish_farm_top");
+  worksiteFishFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/fish_farm_bottom");
+  worksiteFishFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/fish_farm_front");
+  worksiteFishFarm.setIcon(RelativeSide.REAR, "ancientwarfare:automation/fish_farm_rear");
+  worksiteFishFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/fish_farm_left");
+  worksiteFishFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/fish_farm_right");
   
   GameRegistry.registerBlock(worksiteReedFarm, ItemBlockWorksite.class, "civic_reed_farm");
   GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "civic_reed_farm_tile");
+  worksiteReedFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/reed_farm_top");
+  worksiteReedFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/reed_farm_bottom");
+  worksiteReedFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/reed_farm_front");
+  worksiteReedFarm.setIcon(RelativeSide.REAR, "ancientwarfare:automation/reed_farm_rear");
+  worksiteReedFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/reed_farm_left");
+  worksiteReedFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/reed_farm_right");
+  
+  GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockOwnedRotatable.class, "civic_auto_crafting");
+  GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");
+  worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
   
   GameRegistry.registerBlock(mailbox, ItemBlockOwnedRotatable.class, "mailbox");
   GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");
-  mailbox.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
-  mailbox.setIcon(RelativeSide.FRONT, "ancientwarfare:civic/civicFarmMelonSides");
-  mailbox.setIcon(RelativeSide.REAR, "ancientwarfare:civic/civicFarmNetherSides");  
+  mailbox.setIcon(RelativeSide.TOP, "ancientwarfare:automation/mailbox_top");
+  mailbox.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/mailbox_front");
+  mailbox.setIcon(RelativeSide.REAR, "ancientwarfare:automation/mailbox_rear");  
+  mailbox.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/mailbox_bottom");
+  mailbox.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/mailbox_left");
+  mailbox.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mailbox_right");
   
   GameRegistry.registerBlock(worksiteWarehouse, ItemBlockWorksite.class, "civic_warehouse");
   GameRegistry.registerTileEntity(WorkSiteWarehouse.class, "civic_warehouse_tile");
