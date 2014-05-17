@@ -9,6 +9,31 @@ GUIS (all modules)
 	Finish creating proper text-input validation stuff for Text and NumberInput widgets
 	SHIFT-CLICK CODE
 	rendering of item stack quantities >99 -- need to do custom rendering of text, scaled down appropriately
+
+TEXTURES
+	automation
+		worksites:
+			quarry
+			tree farm
+			crop farm
+			animal farm
+			mushroom farm
+			reed farm
+			fish farm
+		mechanical worker
+		auto-crafter
+		mailbox
+		warehouse control
+		warehouse input
+		warehouse output
+		warehouse storage small
+		warehouse storage medium
+		warehouse storage large
+		warehouse crafting station
+	structure
+		drafting station
+		structure scanner
+		structure builder
 	
 modeler
 	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module

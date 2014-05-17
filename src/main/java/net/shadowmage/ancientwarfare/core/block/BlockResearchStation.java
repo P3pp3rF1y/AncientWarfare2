@@ -22,6 +22,7 @@ public BlockResearchStation(String regName)
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
+  iconMap.setIconTexture(0, 0, "ancientwarfare:core/research_station_bottom");
   iconMap.setIconTexture(1, 0, "ancientwarfare:core/research_station_top");
   iconMap.setIconTexture(2, 0, "ancientwarfare:core/research_station_front");
   iconMap.setIconTexture(3, 0, "ancientwarfare:core/research_station_front");
