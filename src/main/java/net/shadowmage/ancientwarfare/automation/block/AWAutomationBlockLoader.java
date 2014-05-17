@@ -9,6 +9,8 @@ import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
 import net.shadowmage.ancientwarfare.automation.tile.TileFlywheel;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueConduit;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueJunction;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseInput;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseOutput;
@@ -117,15 +119,16 @@ public static final BlockWarehouseCraftingStation warehouseCrafting = new BlockW
 
 public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 
-public static final Block mechanicalWorker = new BlockMechanicalWorker("mechanical_worker");
+public static final BlockMechanicalWorker mechanicalWorker = new BlockMechanicalWorker("mechanical_worker");
 
-public static final Block flywheel = new BlockFlywheel("flywheel");
+public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel");
+
+public static final BlockTorqueConduit torqueConduit = new BlockTorqueConduit("torque_conduit");
+
+public static final BlockTorqueJunction torqueJunction = new BlockTorqueJunction("torque_junction");
 
 public static void load()
-  {  
-  GameRegistry.registerBlock(mechanicalWorker, ItemBlockOwnedRotatable.class, "mechanical_worker");
-  GameRegistry.registerTileEntity(TileMechanicalWorker.class, "mechanical_worker_tile");
-    
+  {      
   GameRegistry.registerBlock(worksiteQuarry, ItemBlockWorksite.class, "civic_quarry");
   GameRegistry.registerTileEntity(WorkSiteQuarry.class, "civic_quarry_tile");
   worksiteQuarry.setIcon(RelativeSide.TOP, "ancientwarfare:automation/quarry_top");
@@ -190,21 +193,14 @@ public static void load()
   worksiteReedFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/reed_farm_left");
   worksiteReedFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/reed_farm_right");
   
-  GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockOwnedRotatable.class, "civic_auto_crafting");
-  GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");
-  worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:civic/civicMineQuarryTop");
-  
-  GameRegistry.registerBlock(mailbox, ItemBlockOwnedRotatable.class, "mailbox");
-  GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");
-  mailbox.setIcon(RelativeSide.TOP, "ancientwarfare:automation/mailbox_top");
-  mailbox.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/mailbox_front");
-  mailbox.setIcon(RelativeSide.REAR, "ancientwarfare:automation/mailbox_rear");  
-  mailbox.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/mailbox_bottom");
-  mailbox.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/mailbox_left");
-  mailbox.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mailbox_right");
-  
   GameRegistry.registerBlock(worksiteWarehouse, ItemBlockWorksite.class, "civic_warehouse");
   GameRegistry.registerTileEntity(WorkSiteWarehouse.class, "civic_warehouse_tile");
+  worksiteWarehouse.setIcon(RelativeSide.TOP, "ancientwarfare:automation/warehouse_control_top");
+  worksiteWarehouse.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/warehouse_control_bottom");
+  worksiteWarehouse.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/warehouse_control_front");
+  worksiteWarehouse.setIcon(RelativeSide.REAR, "ancientwarfare:automation/warehouse_control_rear");
+  worksiteWarehouse.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/warehouse_control_left");
+  worksiteWarehouse.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/warehouse_control_right");
   worksiteWarehouse.setWorkVerticalSize(4);
   
   GameRegistry.registerBlock(warehouseStorageBlock, ItemBlockWarehouseStorage.class, "warehouse_storage");
@@ -225,8 +221,52 @@ public static void load()
   GameRegistry.registerBlock(warehouseCrafting, "warehouse_crafting_station");
   GameRegistry.registerTileEntity(TileWarehouseCraftingStation.class, "warehouse_crafting_station_tile");
   
+  GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockOwnedRotatable.class, "civic_auto_crafting");
+  GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");
+  worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:automation/auto_crafting_top");
+  worksiteAutoCrafting.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/auto_crafting_front");
+  worksiteAutoCrafting.setIcon(RelativeSide.REAR, "ancientwarfare:automation/auto_crafting_side");  
+  worksiteAutoCrafting.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/auto_crafting_side");
+  worksiteAutoCrafting.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/auto_crafting_side");
+  worksiteAutoCrafting.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/auto_crafting_side");  
+  
+  GameRegistry.registerBlock(mailbox, ItemBlockOwnedRotatable.class, "mailbox");
+  GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");
+  mailbox.setIcon(RelativeSide.TOP, "ancientwarfare:automation/mailbox_top");
+  mailbox.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/mailbox_front");
+  mailbox.setIcon(RelativeSide.REAR, "ancientwarfare:automation/mailbox_rear");  
+  mailbox.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/mailbox_bottom");
+  mailbox.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/mailbox_left");
+  mailbox.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mailbox_right");  
+
+  GameRegistry.registerBlock(mechanicalWorker, ItemBlockOwnedRotatable.class, "mechanical_worker");
+  mechanicalWorker.setIcon(RelativeSide.TOP, "ancientwarfare:automation/mechanical_worker_top");
+  mechanicalWorker.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/mechanical_worker_bottom");
+  mechanicalWorker.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/mechanical_worker_sides");
+  GameRegistry.registerTileEntity(TileMechanicalWorker.class, "mechanical_worker_tile");
+  
   GameRegistry.registerBlock(flywheel, ItemBlockOwnedRotatable.class, "flywheel");
   GameRegistry.registerTileEntity(TileFlywheel.class, "flywheel_tile");
+  flywheel.setIcon(RelativeSide.TOP, "ancientwarfare:automation/flywheel_top");
+  flywheel.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/flywheel_front");
+  flywheel.setIcon(RelativeSide.REAR, "ancientwarfare:automation/flywheel_rear");  
+  flywheel.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/flywheel_bottom");
+  flywheel.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/flywheel_left");
+  flywheel.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_right");  
+  
+  GameRegistry.registerBlock(torqueConduit, ItemBlockOwnedRotatable.class, "torque_conduit");
+  GameRegistry.registerTileEntity(TileTorqueConduit.class, "torque_conduit_tile");
+  torqueConduit.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_top");
+  torqueConduit.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_bottom");
+  torqueConduit.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_side");
+  
+  GameRegistry.registerBlock(torqueJunction, ItemBlockOwnedRotatable.class, "torque_junction");
+  GameRegistry.registerTileEntity(TileTorqueJunction.class, "torque_junction_tile");
+  torqueJunction.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_junction_top");
+  torqueJunction.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");
+  torqueJunction.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_junction_side");
+  
+  //torque distributor
   }
 
 }

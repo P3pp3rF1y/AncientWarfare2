@@ -15,24 +15,12 @@ GUIS (all modules)
 
 TEXTURES
 	automation
-		worksites:
-			quarry
-			tree farm
-			crop farm
-			animal farm
-			mushroom farm
-			reed farm
-			fish farm
-		warehouse control
 		warehouse input
 		warehouse output
 		warehouse storage small
 		warehouse storage medium
 		warehouse storage large
 		warehouse crafting station
-		mechanical worker
-		auto-crafter
-		mailbox
 		flywheel
 		hand-cranked-engine
 	structure
@@ -62,11 +50,10 @@ automation module:
 	warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 		--perhaps have different methods for tile.invalidate() and onBlockBroken
-	BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
-	bc-energy-output worksite (hand-cranked eng. equivalent)  perhaps a flywheel block that can turn work() into MJ
-		and output it via BC pipes....will require testing...
 	warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
-				
+	coal-burning feature of mechanical worker should be moved to a separate block that outputs torque
+	hand-cranked engine should output torque and/or buildcraft MJ
+		--flywheel accepts MJ input				
 	
 npcs module
 	worker will have 'work sites' list / work-order item, denoting which sites to work in what order/priority
@@ -85,5 +72,5 @@ npcs module
 vehicles module
 	everything
 	
-	
+//BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java

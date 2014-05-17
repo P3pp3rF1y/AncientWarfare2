@@ -34,7 +34,7 @@ public static int getMetaForPlacement(EntityLivingBase entity, IRotatableBlock b
   {
   if(block.getRotationType()==RotationType.NONE){return 0;}
   int f = BlockTools.getPlayerFacingFromYaw(entity.rotationYaw);
-  ForgeDirection face = BlockTools.getForgeDirectionFromFacing(f);  
+  ForgeDirection face = BlockTools.getForgeDirectionFromFacing(f);
   if(block.getRotationType()==RotationType.SIX_WAY)
     {
     if(sideHit==0 || sideHit==1)
@@ -42,7 +42,11 @@ public static int getMetaForPlacement(EntityLivingBase entity, IRotatableBlock b
       face = ForgeDirection.getOrientation(sideHit);
       }
     }
-  if(!entity.isSneaking())
+  if(block.invertFacing())
+    {
+    face = face.getOpposite();
+    }
+  if(entity.isSneaking())
     {
     face = face.getOpposite();
     }
@@ -53,6 +57,7 @@ public static int getMetaForPlacement(EntityLivingBase entity, IRotatableBlock b
 public interface IRotatableBlock
 {
 public RotationType getRotationType();
+public boolean invertFacing();
 }
 
 public static enum RotationType

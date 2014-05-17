@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -96,6 +97,17 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
 public RotationType getRotationType()
   {
   return RotationType.SIX_WAY;
+  }
+
+@Override
+public boolean invertFacing()
+  {
+  return false;
+  }
+
+public void setIcon(RelativeSide side, String texName)
+  {
+  iconMap.setIcon(this, side, texName);
   }
 
 }

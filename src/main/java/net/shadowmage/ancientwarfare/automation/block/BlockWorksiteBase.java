@@ -105,6 +105,12 @@ public RotationType getRotationType()
   }
 
 @Override
+public boolean invertFacing()
+  {
+  return true;
+  }
+
+@Override
 public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
   {  
   int meta = worldObj.getBlockMetadata(x, y, z);

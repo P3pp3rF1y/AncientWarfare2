@@ -92,4 +92,10 @@ public RotationType getRotationType()
   return RotationType.FOUR_WAY;
   }
 
+@Override
+public boolean invertFacing()
+  {
+  return true;
+  }
+
 }
