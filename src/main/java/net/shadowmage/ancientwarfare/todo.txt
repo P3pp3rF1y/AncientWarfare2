@@ -71,5 +71,17 @@ npcs module
 vehicles module
 	everything
 	
+Power network:
+	Generators:
+		Solid Fuel (sterling)
+		Water (waterwheel)
+		NPC (hand cranked engine)
+	Storage:
+		Flywheel
+	Transport:
+		Conduit
+		Junction (bc-compat)
+		Distributor	(bc-compat)
+	
 //BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java

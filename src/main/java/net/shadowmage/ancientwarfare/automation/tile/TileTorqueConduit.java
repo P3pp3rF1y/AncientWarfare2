@@ -1,12 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
-import java.util.EnumSet;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTransport;
 
 public class TileTorqueConduit extends TileEntity implements ITorqueTransport
@@ -50,15 +47,15 @@ public double getMaxInput()
   }
 
 @Override
-public EnumSet<ForgeDirection> getInputDirections()
+public boolean canInput(ForgeDirection from)
   {
-  return EnumSet.of(ForgeDirection.getOrientation(getBlockMetadata()).getOpposite());
+  return from==ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
   }
 
 @Override
-public EnumSet<ForgeDirection> getOutputDirection()
+public boolean canOutput(ForgeDirection towards)
   {
-  return EnumSet.of(ForgeDirection.getOrientation(getBlockMetadata()));
+  return towards==ForgeDirection.getOrientation(getBlockMetadata());
   }
 
 @Override

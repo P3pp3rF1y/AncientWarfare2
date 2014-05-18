@@ -26,6 +26,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeF
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
+import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
@@ -73,12 +74,13 @@ public void preInit(FMLPreInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Automation Pre-Init started");
   
-  ModuleStatus.automationLoaded = true;
+  ModuleStatus.automationLoaded = true;  
   if(Loader.isModLoaded("BuildCraft|Core"))
     {
     ModuleStatus.buildCraftLoaded = true;
     AWLog.log("Detecting BuildCraft|Core is loaded, enabling BC Compatibility");
     }   
+  BCProxy.loadInstance();
   
   /**
    * setup module-owned config file and config-access class

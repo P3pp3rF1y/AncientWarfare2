@@ -1,14 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMechanicalWorker;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.CompositeItemSlots;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.ProgressBar;
 

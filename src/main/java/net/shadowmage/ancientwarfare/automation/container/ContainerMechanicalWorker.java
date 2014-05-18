@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 

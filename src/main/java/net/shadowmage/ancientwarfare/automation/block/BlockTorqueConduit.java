@@ -10,10 +10,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileTorqueConduit;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 
 public class BlockTorqueConduit extends Block implements IRotatableBlock

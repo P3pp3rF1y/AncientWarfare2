@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
-import java.util.EnumSet;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -9,7 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
@@ -84,9 +81,9 @@ public double getMaxOutput()
   }
 
 @Override
-public EnumSet<ForgeDirection> getOutputDirection()
+public boolean canOutput(ForgeDirection towards)
   {
-  return EnumSet.of(ForgeDirection.getOrientation(getBlockMetadata()));
+  return towards==ForgeDirection.getOrientation(getBlockMetadata());
   }
 
 @Override

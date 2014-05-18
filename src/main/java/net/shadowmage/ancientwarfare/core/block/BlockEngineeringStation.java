@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,6 +9,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockEngineeringStation extends Block
 {

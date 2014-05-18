@@ -4,30 +4,20 @@ import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import buildcraft.api.mj.MjBattery;
-import buildcraft.api.transport.IPipeConnection;
-import buildcraft.api.transport.IPipeTile.PipeType;
-import cpw.mods.fml.common.Optional;
 
-@Optional.Interface(iface="buildcraft.api.transport.IPipeConnection",modid="BuildCraft|Core",striprefs=true)
 public class TileMechanicalWorker extends TileEntity implements IWorker, IInteractableTile, IOwnable, ITorqueReceiver
 {
 
@@ -35,15 +25,6 @@ public static final double maxEnergyStored = 1500.d;
 public static final double maxReceivedPerTick = 100.d;
 public static final double idleConsumption = 0.d;
 
-/**
- * Used to store MJ energy from BC integration.<br>
- * Also used to store energy from direct coal burning when mechanical-worker fuel use is enabled.<br>
- */
-@MjBattery(
-    maxCapacity=maxEnergyStored,
-    maxReceivedPerCycle=maxReceivedPerTick,
-    minimumConsumption=idleConsumption
-    )
 public double storedEnergy;
 
 //TODO swap this to a block-position with an accessor method
@@ -264,9 +245,9 @@ public double getMaxInput()
   }
 
 @Override
-public EnumSet<ForgeDirection> getInputDirections()
+public boolean canInput(ForgeDirection from)
   {
-  return EnumSet.of(ForgeDirection.getOrientation(getBlockMetadata()).getOpposite());
+  return from==ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
   }
 
 }

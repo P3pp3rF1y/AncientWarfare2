@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.automation.container.ContainerMechanicalWorker;
 import net.shadowmage.ancientwarfare.automation.container.ContainerTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;

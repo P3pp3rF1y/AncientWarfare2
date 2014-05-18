@@ -1,10 +1,9 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
-import java.util.EnumSet;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public final class ITorque
@@ -17,7 +16,8 @@ void setEnergy(double energy);
 double getMaxEnergy();
 double getEnergyStored();
 double getMaxOutput();
-EnumSet<ForgeDirection> getOutputDirection();
+//EnumSet<ForgeDirection> getOutputDirection();
+boolean canOutput(ForgeDirection towards);
 }
 
 public static interface ITorqueReceiver
@@ -26,7 +26,8 @@ void setEnergy(double energy);
 double getMaxEnergy();
 double getEnergyStored();
 double getMaxInput();
-EnumSet<ForgeDirection> getInputDirections();
+//EnumSet<ForgeDirection> getInputDirections();
+boolean canInput(ForgeDirection from);
 }
 
 public static interface ITorqueStorage extends ITorqueGenerator, ITorqueReceiver
@@ -39,33 +40,6 @@ public static interface ITorqueTransport extends ITorqueGenerator, ITorqueReceiv
 
 }
 
-public static void transferPower(ITorqueGenerator generator, ForgeDirection from, ITorqueReceiver target)
-  {
-  ForgeDirection fromOp = from.getOpposite();
-  double transferAmount = generator.getMaxOutput();
-  if(!target.getInputDirections().contains(fromOp)){transferAmount = 0;}
-  if(generator instanceof ITorqueTransport && target instanceof ITorqueTransport)
-    {
-    if(target.getEnergyStored()<generator.getEnergyStored())
-      {
-      double diff = (generator.getEnergyStored() - target.getEnergyStored())*0.5d;
-      if(transferAmount>diff){transferAmount=diff;}
-      }
-    else
-      {
-      transferAmount = 0;
-      }
-    }
-  if(transferAmount>generator.getEnergyStored()){transferAmount = generator.getEnergyStored();}
-  if(transferAmount>target.getMaxInput()){transferAmount=target.getMaxInput();}
-  if(transferAmount+target.getEnergyStored()>target.getMaxEnergy()){transferAmount=target.getMaxEnergy()-target.getEnergyStored();}
-  if(transferAmount>=1)
-    {
-    AWLog.logDebug("transferring: "+transferAmount+" from: "+generator+" to "+target);
-    generator.setEnergy(generator.getEnergyStored()-transferAmount);
-    generator.setEnergy(target.getEnergyStored()+transferAmount);
-    }
-  }
 
 public static void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
   {
@@ -81,14 +55,18 @@ public static void transferPower(World world, int x, int y, int z, ITorqueGenera
     return;
     }  
   double request;
-  double totalRequest = 0;  
-  for(ForgeDirection d : generator.getOutputDirection())
+  double totalRequest = 0;
+  
+  ForgeDirection d;
+  for(int i = 0; i < 6; i++)
     {
+    d = ForgeDirection.getOrientation(i);
+    if(!generator.canOutput(d)){continue;}
     te = world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
     if(te instanceof ITorqueReceiver)      
       {
       target = (ITorqueReceiver)te;
-      if(target.getInputDirections().contains(d.getOpposite()))
+      if(target.canInput(d.getOpposite()))
         {
         targets[d.ordinal()]=target;  
         request = target.getMaxInput();
@@ -111,11 +89,12 @@ public static void transferPower(World world, int x, int y, int z, ITorqueGenera
           totalRequest += request;          
           }          
         }
-      }    
+      }  
     }
   if(totalRequest>0)
     {
     double percentFullfilled = maxOutput / totalRequest;  
+    if(percentFullfilled>1.f){percentFullfilled=1.f;}
     for(int i = 0; i<6; i++)
       {
       if(targets[i]==null){continue;}
@@ -128,6 +107,7 @@ public static void transferPower(World world, int x, int y, int z, ITorqueGenera
       AWLog.logDebug("transferring: "+request+" from: "+generator+" to "+target);
       }
     }
+  BCProxy.instance.transferPower(world, x, y, z, generator);
   }
 
 }

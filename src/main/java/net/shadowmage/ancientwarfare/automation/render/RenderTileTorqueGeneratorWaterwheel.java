@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.TileTorqueGeneratorWaterwheel;
+
+import org.lwjgl.opengl.GL11;
 
 public class RenderTileTorqueGeneratorWaterwheel extends TileEntitySpecialRenderer
 {

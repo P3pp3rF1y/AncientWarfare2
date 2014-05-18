@@ -8,12 +8,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.TileMechanicalWorker;
 import net.shadowmage.ancientwarfare.automation.tile.TileTorqueJunction;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 
 public class BlockTorqueJunction extends Block implements IRotatableBlock

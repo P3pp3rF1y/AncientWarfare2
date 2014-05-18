@@ -1,16 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueStorage;
-import buildcraft.api.mj.MjBattery;
 
 
 public class TileFlywheel extends TileEntity implements ITorqueStorage
@@ -19,8 +16,6 @@ public static final double maxEnergyStored = 10000;
 public static final double maxInputPerTick = 100;
 public static final double maxOutputPerTick = 100;
 
-
-@MjBattery(maxCapacity=maxEnergyStored)
 public double storedEnergy;
 
 private List<TileFlywheel> wheelsToBalance = new ArrayList<TileFlywheel>();
@@ -96,15 +91,15 @@ public void setEnergy(double energy)
   }
 
 @Override
-public EnumSet<ForgeDirection> getInputDirections()
+public boolean canInput(ForgeDirection from)
   {
-  return EnumSet.of(ForgeDirection.getOrientation(getBlockMetadata()).getOpposite());
+  return from==ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
   }
 
 @Override
-public EnumSet<ForgeDirection> getOutputDirection()
+public boolean canOutput(ForgeDirection towards)
   {
-  return EnumSet.of(ForgeDirection.getOrientation(getBlockMetadata()));
+  return towards==ForgeDirection.getOrientation(getBlockMetadata());
   }
 
 @Override

@@ -23,7 +23,6 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStorageBase;
-import net.shadowmage.ancientwarfare.automation.render.RenderTorqueConduit;
 import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
@@ -31,7 +30,6 @@ import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
 import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxyAutomation extends ClientProxyBase
 {
