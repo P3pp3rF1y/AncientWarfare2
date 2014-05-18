@@ -73,15 +73,17 @@ vehicles module
 	
 Power network:
 	Generators:
-		Solid Fuel (sterling)
-		Water (waterwheel)
-		NPC (hand cranked engine)
+		Solid Fuel (sterling) 1e/t gen, 1000 max, 10 out
+		Water (waterwheel) 0-0.2e/t gen, 100 max, 1 out
+		NPC (hand cranked engine) 50e/work, 100 max, 1 out
 	Storage:
-		Flywheel
+		Flywheel 10000 max, 100 in, 100 out
 	Transport:
-		Conduit
-		Junction (bc-compat)
-		Distributor	(bc-compat)
+		Conduit 100 max, 10 in, 10 out
+		ConduitHighGrade 1000 max, 100 in, 100 out
+		Junction (bc-compat) 1000 max, 100 in, 100 out
+		Distributor	(bc-compat) 1000 max, 100 in, 100 out
+		
 	
 //BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
