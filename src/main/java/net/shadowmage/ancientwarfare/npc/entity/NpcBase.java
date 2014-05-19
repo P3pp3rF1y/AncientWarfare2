@@ -59,11 +59,14 @@ public NpcBase(World par1World)
   this.getNavigator().setAvoidsWater(true);
   this.tasks.addTask(0, new EntityAISwimming(this));
 //  this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-  //1 reserved for attack task for soldier npcs, unused for civilian types
+  //1 reserved for attack task for soldier npcs, used for work AI for civilians
   this.tasks.addTask(2, new NpcAIFollowPlayer(this, 1.d, 10.f, 2.f));
   this.tasks.addTask(3, new NpcAIGetFood(this));
+  //basic self-defense attack tasks may be placed above getFood
   this.tasks.addTask(4, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));//this should be set to a generic 'flee' AI for civilians
-//  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));
+  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));
+  //all other tasks...work, etc, should go below idlewhenhungry
+  
   this.tasks.addTask(6, new EntityAIMoveIndoors(this));
   this.tasks.addTask(7, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(8, new EntityAIOpenDoor(this, true));
@@ -95,14 +98,21 @@ protected void applyEntityAttributes()
   super.applyEntityAttributes();
   this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.d);
   this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-  this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
+  this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.325D);
   this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-  this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);  
+  this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);
   }
 
 public int getFoodRemaining()
   {
   return foodValueRemaining;
+  }
+
+@Override
+public boolean canAttackClass(Class par1Class)
+  {
+  // TODO Auto-generated method stub
+  return super.canAttackClass(par1Class);
   }
 
 public BlockPosition getUpkeepPoint()

@@ -14,7 +14,7 @@ private static int nextID = 0;
 
 public static void load()
   {
-  EntityDeclaration reg = new EntityDeclaration(NpcBase.class, AWEntityRegistry.NPC_TEST, nextID++, AncientWarfareNPC.instance, 250, 5, true)
+  EntityDeclaration reg = new EntityDeclaration(NpcBase.class, AWEntityRegistry.NPC_TEST, nextID++, AncientWarfareNPC.instance, 250, 3, true)
     {
     @Override
     public Entity createEntity(World world)
