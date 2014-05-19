@@ -72,5 +72,20 @@
   "screenshots": [],
   "parent":"ancientwarfare",
   "dependencies": ["ancientwarfare"]
+},
+{
+  "modid": "ancientwarfarenpc",
+  "name": "Ancient Warfare NPCs",
+  "description": "Ancient Warfare NPCs for Minecraft 1.7+",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "ancientwarfare.wikispaces.com",
+  "updateUrl": "ancientwarfare.wikispaces.com",
+  "authorList": ["shadowmage45"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "parent":"ancientwarfare",
+  "dependencies": ["ancientwarfare"]
 }
 ]

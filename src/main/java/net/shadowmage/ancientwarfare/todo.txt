@@ -14,6 +14,7 @@ GUIS (all modules)
 	rendering of item stack quantities >99 -- need to do custom rendering of text, scaled down appropriately
 
 TEXTURES
+	core
 	automation
 		warehouse input
 		warehouse output
@@ -21,12 +22,15 @@ TEXTURES
 		warehouse storage medium
 		warehouse storage large
 		warehouse crafting station
-		flywheel
 		hand-cranked-engine
+		sterling generator
+		waterwheel generator
 	structure
 		drafting station
 		structure scanner
 		structure builder
+	npc
+	vehicle
 	
 modeler
 	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module

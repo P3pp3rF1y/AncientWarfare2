@@ -47,7 +47,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 name = "Ancient Warfare Automation",
 modid = "ancientwarfareautomation",
 version = "@VERSION@",
-dependencies = "required-after:ancientwarfare;after:BuildCraft|Core"
+dependencies = "required-after:ancientwarfare"
 )
 
 public class AncientWarfareAutomation 
