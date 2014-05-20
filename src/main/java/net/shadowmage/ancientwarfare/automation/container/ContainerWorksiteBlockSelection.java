@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -23,6 +24,23 @@ public ContainerWorksiteBlockSelection(EntityPlayer player, int x, int y, int z)
   super(player, x, y, z);  
   worksite = (TileWorksiteBase) player.worldObj.getTileEntity(x, y, z);
   targetBlocks.addAll(worksite.getUserSetTargets());
+  }
+
+@Override
+public void sendInitData()
+  {  
+  NBTTagList list = new NBTTagList();
+  NBTTagCompound blockTag;
+  for(BlockPosition pos : targetBlocks)
+    {
+    blockTag = new NBTTagCompound();
+    pos.writeToNBT(blockTag);
+    list.appendTag(blockTag);
+    }  
+  NBTTagCompound outer = new NBTTagCompound();
+  outer.setTag("userBlocks", list);
+  AWLog.logDebug("sending init data set of: "+outer);
+  sendDataToClient(outer);
   }
 
 public void sendTargetsToServer()
@@ -46,6 +64,7 @@ public void handlePacketData(NBTTagCompound tag)
   refreshGui();
   if(tag.hasKey("userBlocks"))
     {
+    AWLog.logDebug("handling user block list..."+tag);
     Set<BlockPosition> set = new HashSet<BlockPosition>();
     NBTTagList list = tag.getTagList("userBlocks", Constants.NBT.TAG_COMPOUND);
     BlockPosition pos;
@@ -54,12 +73,17 @@ public void handlePacketData(NBTTagCompound tag)
       pos = new BlockPosition(list.getCompoundTagAt(i));
       set.add(pos);
       }
-    worksite.setUserSetTargets(set);
+    targetBlocks.clear();
+    targetBlocks.addAll(set);
+    if(!player.worldObj.isRemote)
+      {
+      worksite.setUserSetTargets(set);      
+      }
     }
   if(tag.hasKey("closeGUI"))
     {
     worksite.onBlockClicked(player);//hack to open the worksites GUI
-    }
+    }  
   }
 
 public void removeTarget(BlockPosition target)

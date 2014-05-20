@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -28,6 +29,18 @@ public GuiWorksiteBlockSelection(ContainerBase par1Container)
 @Override
 public void initElements()
   {
+ 
+  
+  label = new Label(0, -12, "W=Worksite, X=Work Target");
+  addGuiElement(label);
+  }
+
+@Override
+public void setupElements()
+  {
+  clearElements();
+  addGuiElement(label);
+  label.setRenderPosition(0, -12);
   BlockPosition min = container.worksite.getWorkBoundsMin();
   BlockPosition max = container.worksite.getWorkBoundsMax();
   int xSize = (max.x-min.x)+1;
@@ -44,29 +57,23 @@ public void initElements()
   
   BlockPosition testPos = new BlockPosition();
   WorkSelectionButton button;
+  AWLog.logDebug("setting up worksite buttons...: "+container.targetBlocks);
   for(int x = 0; x<xSize; x++)
     {
     for(int z = 0; z<zSize; z++)
       {
-      testPos.reassign(x+min.x, min.y, z+min.z);
-      button = new WorkSelectionButton(tlx + x*12, tly+z*12, x+min.x, z+min.z, container.worksite.getUserSetTargets().contains(testPos));
+      testPos.reassign(x + min.x, min.y, z + min.z);
+      button = new WorkSelectionButton(tlx + x*12, tly+z*12, x+min.x, z+min.z, container.targetBlocks.contains(testPos));
       addGuiElement(button);      
       }
     }  
   
-  label = new Label(0, -12, "W=Worksite, X=Work Target");
-  addGuiElement(label);
-  }
-
-@Override
-public void setupElements()
-  {
-  label.setRenderPosition(0, -12);
   }
 
 @Override
 protected boolean onGuiCloseRequested()
   {
+  container.sendTargetsToServer();
   NBTTagCompound tag = new NBTTagCompound();
   tag.setBoolean("closeGUI", true);
   sendDataToContainer(tag);
@@ -99,7 +106,7 @@ protected void onPressed()
     {
     container.removeTarget(pos);
     }
-  container.sendTargetsToServer();
+//  container.sendTargetsToServer();
   }
 }
 
