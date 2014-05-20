@@ -95,12 +95,16 @@ public void generate(Random random, int chunkX, int chunkZ, World world, IChunkP
   else
     {
     isGenerating = true;
+    world.theProfiler.startSection("AWWorldGen");
     generateAt(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+    world.theProfiler.endSection();
     }
   while(!delayedChunks.isEmpty())
     {    
     DelayedGenerationEntry entry = delayedChunks.poll();
+    world.theProfiler.startSection("AWWorldGen");
     generateAt(entry.chunkX, entry.chunkZ, entry.world, entry.generator, entry.provider);
+    world.theProfiler.endSection();
     }
   isGenerating = false;
   }
