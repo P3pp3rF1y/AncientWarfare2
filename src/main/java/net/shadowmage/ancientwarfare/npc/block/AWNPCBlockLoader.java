@@ -4,7 +4,6 @@ public class AWNPCBlockLoader
 {
 public static void load()
   {
-  // TODO Auto-generated method stub
   
   }
 }

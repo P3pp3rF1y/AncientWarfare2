@@ -123,7 +123,6 @@ public void sendInitData()
 public void handlePacketData(NBTTagCompound tag)
   {
   handleAccessMapTag(tag);
-  //TODO side-map handling
   if(tag.hasKey("autoExport"))
     {
     autoExport = tag.getBoolean("autoExport");

@@ -68,7 +68,8 @@ automation module:
 				Remove mechanical worker, or change it to a block that decreases energy use per work unit performed.
 				Most Worksites will rescan 1 block per tick, taken randomly from a set containing all of the
 					blocks in bounds.  remove that block from set.  when set is empty, refill with entire
-					work-bounds.  When a block is worked, add it directly back into the rescan set. 
+					work-bounds.  When a block is worked, add it directly back into the rescan set.
+				HasWork==targetBlocks!=empty && hasResources && isUnpowered				 
 			2.) The current system -works-, it just requires careful management of workers to ensure that
 					they call removeWorker() at all appropriate times.  Could possibly move over to a ticked
 					validation of workers to remove any invalid ones.

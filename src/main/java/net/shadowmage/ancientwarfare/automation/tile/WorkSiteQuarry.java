@@ -11,7 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -25,7 +24,6 @@ BlockPosition nextPosition = new BlockPosition();
 
 public WorkSiteQuarry()
   {
-  this.maxWorkers = 4;
   this.canUpdate = true;//purely event-driven, no polling
   this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 27);
   int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
@@ -41,21 +39,10 @@ protected void addWorkTargets(List<BlockPosition> targets)
     }
   }
 
-@Override
-public boolean hasWork()
-  {
-  return canWork() && !finished;
-  }
-
-@Override
-public void doWork(IWorker worker)
-  {    
-  processWork();
-  }
-
 private boolean hasDoneInit = false;
 
-private void processWork()
+@Override
+protected boolean processWork()
   {
   if(!hasDoneInit)
     {
@@ -65,17 +52,18 @@ private void processWork()
   if(validatePosition()!=currentY)
     {
     scanNextPosition();
-    if(finished){return;}
+    if(finished){return false;}
     }  
   BlockPosition target = nextPosition;
   Block block = worldObj.getBlock(target.x, target.y, target.z);  
   ArrayList<ItemStack> drops = block.getDrops(worldObj, target.x, target.y, target.z, worldObj.getBlockMetadata(target.x, target.y, target.z), 0);
   for(ItemStack stack : drops)
     {
-    addStackToInventory(stack, RelativeSide.TOP);
+    addStackToInventory(stack, RelativeSide.TOP);    
     }  
   worldObj.setBlockToAir(target.x, target.y, target.z); 
   scanNextPosition();
+  return true;
   }
 
 /**
@@ -127,7 +115,6 @@ private void scanNextPosition()
   if(!finished)
     {
     nextPosition.reassign(currentX, currentY, currentZ);
-    this.markForUpdate();
     }
   }
 
@@ -143,7 +130,6 @@ public void initWorkSite()
   this.currentX = this.getWorkBoundsMin().x;
   this.currentZ = this.getWorkBoundsMin().z;
   this.nextPosition.reassign(currentX, currentY, currentZ);
-  this.markForUpdate();
   }
 
 @Override
@@ -202,10 +188,17 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
+protected void fillBlocksToProcess()
   {
-  processWork();
+  // TODO Auto-generated method stub
+  
   }
 
+@Override
+protected void scanBlockPosition(BlockPosition pos)
+  {
+  // TODO Auto-generated method stub
+  
+  }
 
 }

@@ -41,7 +41,7 @@ public void updateEntity()
   float mid, right, left;
   int leftY = yCoord, rightY = yCoord, midY = yCoord;
   Block blockRight, blockLeft;
-  boolean flowsLeft;//TODO send block event denoting which direction, and speed for rotor
+  boolean flowsLeft;
   if(blockMid.getMaterial()==Material.water)
     {
     metaMid = worldObj.getBlockMetadata(x, y, z);

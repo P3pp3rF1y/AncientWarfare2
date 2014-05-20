@@ -33,12 +33,6 @@ public class AWAutomationStatics extends ModConfiguration
 public static boolean sendWorkToClients = true;
 
 /**
- * If true, mechanical workers will consume fuel placed into their input slot.<br>
- * If false, you will not even be able to open the mechanical worker GUI.<br>
- */
-public static boolean enableMechanicalWorkerFuelUse = true;
-
-/**
  * How many energy units are produced by each worker 'work' tick<br>
  * These units are equivalent to BuildCraft MJ and used interchangeably 
  */

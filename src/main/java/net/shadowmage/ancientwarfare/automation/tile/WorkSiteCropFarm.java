@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -14,12 +15,10 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldServer;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -33,17 +32,17 @@ Set<BlockPosition> blocksToTill;
 Set<BlockPosition> blocksToHarvest;
 Set<BlockPosition> blocksToPlant;
 Set<BlockPosition> blocksToFertilize;
+
+List<BlockPosition> blocksToUpdate = new ArrayList<BlockPosition>();
+
 int plantableCount;
 int bonemealCount;
-int workerRescanDelay;
 boolean shouldCountResources;
 
 public WorkSiteCropFarm()
   {
   this.canUserSetBlocks = true;
   this.canUpdate = true;
-  this.maxWorkers = 1;
-  this.shouldSendWorkTargets = true;
   this.shouldCountResources = true;
   
   blocksToTill = new HashSet<BlockPosition>();
@@ -92,8 +91,7 @@ public void updateEntity()
   {
   super.updateEntity();
   if(worldObj.isRemote){return;}
-  if(workerRescanDelay>0){workerRescanDelay--;}
-  if(shouldCountResources){countResources();}
+  if(shouldCountResources){countResources();}  
   }
 
 private void countResources()
@@ -125,100 +123,93 @@ private void countResources()
   }
 
 @Override
-public boolean hasWork()
-  {  
-  return canWork() && (workerRescanDelay<=0 || hasWorkBlock());
-  }
-
-private boolean hasWorkBlock()
+protected void incrementalScan()
   {
-  return !blocksToTill.isEmpty() || !blocksToHarvest.isEmpty() || (!blocksToPlant.isEmpty() && plantableCount>0) || (!blocksToFertilize.isEmpty() && bonemealCount>0);
+  if(blocksToUpdate.isEmpty())
+    {
+   
+    }
+  if(!blocksToUpdate.isEmpty())
+    {
+    int rand = worldObj.rand.nextInt(blocksToUpdate.size());
+    BlockPosition pos = blocksToUpdate.remove(rand);
+    scanBlockPosition(pos);
+    }
   }
 
 @Override
-public void doWork(IWorker worker)
+protected void fillBlocksToProcess()
+  { 
+  Set<BlockPosition> targets = new HashSet<BlockPosition>();
+  targets.addAll(getUserSetTargets());
+  targets.removeAll(blocksToFertilize);
+  targets.removeAll(blocksToHarvest);
+  targets.removeAll(blocksToPlant);
+  targets.removeAll(blocksToTill);
+  blocksToUpdate.addAll(targets);  
+  }
+
+@Override
+protected void scanBlockPosition(BlockPosition position)
   {
-  if(workerRescanDelay<=0 || !hasWorkBlock())
+  Block block = worldObj.getBlock(position.x, position.y, position.z);
+  if(worldObj.isAirBlock(position.x, position.y, position.z))
     {
-    rescan();
-    }  
-  if(hasWorkBlock())
+    block = worldObj.getBlock(position.x, position.y-1, position.z);
+    if(block==Blocks.dirt || block==Blocks.grass)
+      {
+      blocksToTill.add(new BlockPosition(position.x, position.y-1, position.z));
+      }
+    else if(block==Blocks.farmland)
+      {
+      blocksToPlant.add(position);
+      }
+    }    
+  else if(block==Blocks.wheat || block==Blocks.carrots || block==Blocks.potatoes)
     {
-    processWork();
+    if(worldObj.getBlockMetadata(position.x, position.y, position.z)>=7)
+      {
+      blocksToHarvest.add(position);
+      }
+    else
+      {
+      blocksToFertilize.add(position);
+      }
+    }
+  else if(block==Blocks.melon_stem || block==Blocks.pumpkin_stem)
+    {
+    if(worldObj.getBlockMetadata(position.x, position.y, position.z)>=7)
+      {
+      block = worldObj.getBlock(position.x-1, position.y, position.z);
+      if(block==Blocks.melon_block || block==Blocks.pumpkin)
+        {
+        blocksToHarvest.add(new BlockPosition(position.x-1, position.y, position.z));
+        }
+      block = worldObj.getBlock(position.x+1, position.y, position.z);
+      if(block==Blocks.melon_block || block==Blocks.pumpkin)
+        {
+        blocksToHarvest.add(new BlockPosition(position.x+1, position.y, position.z));
+        }
+      block = worldObj.getBlock(position.x, position.y, position.z-1);
+      if(block==Blocks.melon_block || block==Blocks.pumpkin)
+        {
+        blocksToHarvest.add(new BlockPosition(position.x, position.y, position.z-1));
+        }
+      block = worldObj.getBlock(position.x, position.y, position.z+1);
+      if(block==Blocks.melon_block || block==Blocks.pumpkin)
+        {
+        blocksToHarvest.add(new BlockPosition(position.x, position.y, position.z+1));
+        }
+      }
+    else
+      {
+      blocksToFertilize.add(position);
+      }      
     }
   }
 
-private void rescan()
-  {
-  workerRescanDelay = AWAutomationStatics.automationWorkerRescanTicks;
-  blocksToTill.clear();
-  blocksToHarvest.clear();
-  blocksToPlant.clear();
-  blocksToFertilize.clear();  
- 
-  Block block;
-  for(BlockPosition position : getUserSetTargets())
-    {
-    position = position.copy();
-    block = worldObj.getBlock(position.x, position.y, position.z);
-    if(worldObj.isAirBlock(position.x, position.y, position.z))
-      {
-      block = worldObj.getBlock(position.x, position.y-1, position.z);
-      if(block==Blocks.dirt || block==Blocks.grass)
-        {
-        blocksToTill.add(new BlockPosition(position.x, position.y-1, position.z));
-        }
-      else if(block==Blocks.farmland)
-        {
-        blocksToPlant.add(position);
-        }
-      }    
-    else if(block==Blocks.wheat || block==Blocks.carrots || block==Blocks.potatoes)
-      {
-      if(worldObj.getBlockMetadata(position.x, position.y, position.z)>=7)
-        {
-        blocksToHarvest.add(position);
-        }
-      else
-        {
-        blocksToFertilize.add(position);
-        }
-      }
-    else if(block==Blocks.melon_stem || block==Blocks.pumpkin_stem)
-      {
-      if(worldObj.getBlockMetadata(position.x, position.y, position.z)>=7)
-        {
-        block = worldObj.getBlock(position.x-1, position.y, position.z);
-        if(block==Blocks.melon_block || block==Blocks.pumpkin)
-          {
-          blocksToHarvest.add(new BlockPosition(position.x-1, position.y, position.z));
-          }
-        block = worldObj.getBlock(position.x+1, position.y, position.z);
-        if(block==Blocks.melon_block || block==Blocks.pumpkin)
-          {
-          blocksToHarvest.add(new BlockPosition(position.x+1, position.y, position.z));
-          }
-        block = worldObj.getBlock(position.x, position.y, position.z-1);
-        if(block==Blocks.melon_block || block==Blocks.pumpkin)
-          {
-          blocksToHarvest.add(new BlockPosition(position.x, position.y, position.z-1));
-          }
-        block = worldObj.getBlock(position.x, position.y, position.z+1);
-        if(block==Blocks.melon_block || block==Blocks.pumpkin)
-          {
-          blocksToHarvest.add(new BlockPosition(position.x, position.y, position.z+1));
-          }
-        }
-      else
-        {
-        blocksToFertilize.add(position);
-        }      
-      }
-    }
-  this.markForUpdate();
-  }
-
-private void processWork()
+@Override
+protected boolean processWork()
   {
   Iterator<BlockPosition> it;
   BlockPosition position;
@@ -234,7 +225,7 @@ private void processWork()
       if(worldObj.isAirBlock(position.x, position.y+1, position.z) && (block==Blocks.grass || block==Blocks.dirt))
         {
         worldObj.setBlock(position.x, position.y, position.z, Blocks.farmland);
-        break;
+        return true;
         }
       }
     }
@@ -255,7 +246,7 @@ private void processWork()
           {
           addStackToInventory(item, RelativeSide.TOP);
           }
-        break;
+        return true;
         }
       else if(block==Blocks.pumpkin || block==Blocks.melon_block)
         {
@@ -268,7 +259,7 @@ private void processWork()
             InventoryTools.dropItemInWorld(worldObj, item, xCoord, yCoord, zCoord);
             }
           }
-        break;
+        return true;
         }
       }
     }
@@ -301,14 +292,11 @@ private void processWork()
             else if(item==Items.potato){block = Blocks.potatoes;}
             else if(item==Items.melon_seeds){block = Blocks.melon_stem;}
             else {block = Blocks.pumpkin_stem;}
-            if(block!=null)
-              {
-              worldObj.setBlock(position.x, position.y, position.z, block);
-              }
-            break;            
+            worldObj.setBlock(position.x, position.y, position.z, block);
+            return true;         
             }          
           }
-        break;
+        return false;
         }
       }
     }
@@ -351,14 +339,14 @@ private void processWork()
                   }
                 }
               }
-            break;
+            return true;
             }
           }
-        break;
+        return false;
         }
       }
     }
-  this.markForUpdate();
+  return false;
   }
 
 @Override
@@ -397,19 +385,6 @@ public void writeClientData(NBTTagCompound tag)
 public void readClientData(NBTTagCompound tag)
   {
 
-  }
-
-@Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  if(workerRescanDelay<=0 || !hasWorkBlock())
-    {
-    rescan();
-    }  
-  if(hasWorkBlock())
-    {
-    processWork();
-    }
   }
 
 }

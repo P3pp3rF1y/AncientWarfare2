@@ -217,14 +217,13 @@ public static Gate getGateByID(int id)
 @Override
 public void onUpdate(EntityGate ent)
   {
-  // TODO Auto-generated method stub
+  
   }
 
 @Override
 public void setCollisionBoundingBox(EntityGate gate)
   {
   if(gate.pos1==null || gate.pos2==null){return;}
-  boolean wideOnXAxis = gate.pos1.x!=gate.pos2.x;  
   BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
   BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
   if(gate.edgePosition>0)
@@ -287,7 +286,6 @@ public void onGateStartOpen(EntityGate gate)
 @Override
 public void onGateFinishOpen(EntityGate gate)
   {
-  // TODO Auto-generated method stub
   
   }
 

@@ -1,9 +1,6 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -11,8 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
@@ -23,14 +21,10 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 public class TileResearchStation extends TileEntity implements IWorkSite, IInventory
 {
 
-private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
-
 protected String owningPlayer;
 
 public InventoryBasic bookInventory = new InventoryBasic(1);
 public InventoryBasic resourceInventory = new InventoryBasic(9);
-
-int maxWorkers = 2;
 
 int startCheckDelay = 0;
 int startCheckDelayMax = 40;
@@ -39,6 +33,59 @@ public boolean useAdjacentInventory;
 
 public TileResearchStation()
   {
+  }
+
+double maxEnergyStored = 1600;
+double maxInput = 100;
+private double storedEnergy;
+
+@Override
+public void setEnergy(double energy)
+  {
+  this.storedEnergy = energy;
+  }
+
+@Override
+public double addEnergy(ForgeDirection from, double energy)
+  {
+  if(canInput(from))
+    {
+    if(energy+getEnergyStored()>getMaxEnergy())
+      {
+      energy = getMaxEnergy()-getEnergyStored();
+      }
+    if(energy>getMaxInput())
+      {
+      energy = getMaxInput();
+      }
+    storedEnergy+=energy;
+    return energy;    
+    }
+  return 0;
+  }
+
+@Override
+public double getMaxEnergy()
+  {
+  return TileTorqueConduit.maxEnergy;
+  }
+
+@Override
+public double getEnergyStored()
+  {
+  return storedEnergy;
+  }
+
+@Override
+public double getMaxInput()
+  {
+  return maxInput;
+  }
+
+@Override
+public boolean canInput(ForgeDirection from)
+  {
+  return true;
   }
 
 @Override
@@ -89,33 +136,6 @@ public void writeToNBT(NBTTagCompound tag)
   }
 
 @Override
-public final boolean addWorker(IWorker worker)
-  {
-  if(!worker.getWorkTypes().contains(getWorkType()) || worker.getTeam() != this.getTeam())
-    {
-    return false;
-    }
-  if(workers.size()<maxWorkers || workers.contains(worker))
-    {
-    workers.add(worker);
-    return true;
-    }
-  return false;
-  }
-
-@Override
-public final void removeWorker(IWorker worker)
-  {
-  workers.remove(worker);
-  }
-
-@Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  workTick(1);
-  }
-
-@Override
 public boolean hasWork()
   {
   String name = getCrafterName();
@@ -125,12 +145,6 @@ public boolean hasWork()
   List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(worldObj, name);  
   if(!queue.isEmpty() && startCheckDelay==0){return true;}
   return false;
-  }
-
-@Override
-public void doWork(IWorker worker)
-  {
-  workTick((int)(worker.getWorkEffectiveness() * 5.f));
   }
 
 private void workTick(int tickCount)
@@ -222,12 +236,6 @@ public BlockPosition getWorkBoundsMin()
 public BlockPosition getWorkBoundsMax()
   {
   return null;
-  }
-
-@Override
-public List<BlockPosition> getWorkTargets()
-  {
-  return Collections.emptyList();
   }
 
 @Override

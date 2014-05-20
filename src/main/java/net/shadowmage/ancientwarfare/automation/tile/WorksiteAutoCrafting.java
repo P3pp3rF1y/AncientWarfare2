@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -83,6 +82,59 @@ public WorksiteAutoCrafting()
     }
   }
 
+double maxEnergyStored = 1600;
+double maxInput = 100;
+private double storedEnergy;
+
+@Override
+public void setEnergy(double energy)
+  {
+  this.storedEnergy = energy;
+  }
+
+@Override
+public double addEnergy(ForgeDirection from, double energy)
+  {
+  if(canInput(from))
+    {
+    if(energy+getEnergyStored()>getMaxEnergy())
+      {
+      energy = getMaxEnergy()-getEnergyStored();
+      }
+    if(energy>getMaxInput())
+      {
+      energy = getMaxInput();
+      }
+    storedEnergy+=energy;
+    return energy;    
+    }
+  return 0;
+  }
+
+@Override
+public double getMaxEnergy()
+  {
+  return TileTorqueConduit.maxEnergy;
+  }
+
+@Override
+public double getEnergyStored()
+  {
+  return storedEnergy;
+  }
+
+@Override
+public double getMaxInput()
+  {
+  return maxInput;
+  }
+
+@Override
+public boolean canInput(ForgeDirection from)
+  {
+  return true;
+  }
+
 @Override
 public void updateEntity()
   {  
@@ -151,27 +203,6 @@ public String getCrafterName()
   return ItemResearchBook.getResearcherName(bookSlot.getStackInSlot(0));
   }
 
-@Override
-public final boolean addWorker(IWorker worker)
-  {
-  if(!worker.getWorkTypes().contains(getWorkType()) || worker.getTeam() != this.getTeam())
-    {
-    return false;
-    }
-  if(workers.size()<maxWorkers || workers.contains(worker))
-    {
-    workers.add(worker);
-    return true;
-    }
-  return false;
-  }
-
-@Override
-public final void removeWorker(IWorker worker)
-  {
-  workers.remove(worker);
-  }
-
 public final void setOwningPlayer(String name)
   {
   this.owningPlayer = name;
@@ -184,36 +215,18 @@ public final boolean canUpdate()
   }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  if(hasWork())
-    {
-    craftItem();    
-    }
-  }
-
-@Override
 public boolean hasWork()
   {  
   return outputSlot.getStackInSlot(0)!=null && hasResourcesForCraft;
   }
 
-@Override
-public void doWork(IWorker worker)
-  {
-  if(hasWork())
-    {
-    craftItem();    
-    }
-  }
-
-private void craftItem()
+public void craftItem()
   {
   if(this.outputSlot.getStackInSlot(0)==null){return;}
   ItemStack stack = this.outputSlot.getStackInSlot(0).copy();
   useResources();
   stack = InventoryTools.mergeItemStack(outputInventory, stack, -1);
-  if(stack!=null)//TODO handle stack overflow
+  if(stack!=null)
     {
     InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
     }  
@@ -257,12 +270,6 @@ public BlockPosition getWorkBoundsMin()
 public BlockPosition getWorkBoundsMax()
   {
   return null;
-  }
-
-@Override
-public List<BlockPosition> getWorkTargets()
-  {
-  return Collections.emptyList();
   }
 
 @Override
@@ -463,11 +470,6 @@ public boolean onBlockClicked(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
     {
-    if(player.isSneaking())//TODO fix detection of player work -- only when using wrench type item??
-      {
-      doPlayerWork(player);
-      return true;
-      }
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, xCoord, yCoord, zCoord);
     }
   return true;

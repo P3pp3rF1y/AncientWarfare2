@@ -18,7 +18,6 @@ public NBTTagCompound packetData = new NBTTagCompound();
 
 public PacketStructure()
   {
-  // TODO Auto-generated constructor stub
   }
 
 @Override

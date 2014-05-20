@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
-import buildcraft.api.mj.MjBattery;
-import buildcraft.api.power.IPowerEmitter;
-import cpw.mods.fml.common.Optional;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTransport;
+import buildcraft.api.mj.MjBattery;
+import buildcraft.api.power.IPowerEmitter;
+import cpw.mods.fml.common.Optional;
 
 
 @Optional.Interface(iface="buildcraft.api.power.IPowerEmitter",modid="BuildCraft|Core",striprefs=true)

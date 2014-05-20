@@ -13,14 +13,12 @@ public TestPacket()
 @Override
 protected void writeToStream(ByteBuf data)
   {
-  // TODO Auto-generated method stub
   
   }
 
 @Override
 protected void readFromStream(ByteBuf data)
   {
-  // TODO Auto-generated method stub
   
   }
 

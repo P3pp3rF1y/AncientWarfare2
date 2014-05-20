@@ -291,7 +291,7 @@ public void detectAndSendChanges()
     {
     this.sendDataToClient(tag);
     }
-  tile.doPlayerWork(player);
+  
   }
 
 

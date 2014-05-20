@@ -55,7 +55,6 @@ public void handlePacketData(NBTTagCompound tag)
       set.add(pos);
       }
     worksite.setUserSetTargets(set);
-    worksite.markForUpdate();
     }
   if(tag.hasKey("closeGUI"))
     {

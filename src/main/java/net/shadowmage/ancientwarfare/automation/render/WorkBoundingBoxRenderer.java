@@ -21,7 +21,6 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
 import java.util.Iterator;
-import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -120,10 +119,6 @@ private void renderWorkBounds(EntityPlayer player, float delta)
   BlockPosition min;
   BlockPosition max;
   IWorkSite site;
-  List<BlockPosition> workTargets;
-  float colorIncrement;
-  int targetIndex;
-  float color;
   while(it.hasNext() && (te = it.next())!=null)
     {
     if(te instanceof IWorkSite)
@@ -139,21 +134,6 @@ private void renderWorkBounds(EntityPlayer player, float delta)
           }
         pos2Cache.reassign(max.x + 1, max.y + 1, max.z + 1);//using cached value so that the reference can be manipulated
         renderBoundingBox(player, min, pos2Cache, delta);
-        }
-      if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_WORK_POINTS))
-        {
-        workTargets = site.getWorkTargets();
-        if(!workTargets.isEmpty())
-          {
-          targetIndex = 0;
-          colorIncrement = 1.f / (float)(workTargets.size()*2);        
-          for(BlockPosition target : workTargets)
-            {
-            color = 1.f - (float)(colorIncrement * (float)targetIndex);
-            renderBoundingBox(player, target, pos2Cache.reassign(target.x+1, target.y+1, target.z+1), delta, color, color, color, 0.f);
-            targetIndex++;
-            }
-          }
         }
       }
     }

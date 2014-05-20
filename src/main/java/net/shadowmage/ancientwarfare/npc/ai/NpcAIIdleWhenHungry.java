@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIIdleWhenHungry extends NpcAI

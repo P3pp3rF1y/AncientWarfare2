@@ -1,12 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,9 +15,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
@@ -27,7 +27,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -57,25 +56,15 @@ BlockPosition bbMin;
 BlockPosition bbMax;
 
 /**
- * maximum number of workers for this work-site
- * should be set in constructor of implementing classes
- */
-int maxWorkers;
-
-/**
  * should updateEntity be called for this tile?
  */
 protected boolean canUpdate;
 
 protected boolean canUserSetBlocks;
 
-protected boolean shouldSendWorkTargets;
-
 private Set<BlockPosition> userTargetBlocks = new HashSet<BlockPosition>();
 
-private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
-
-protected String owningPlayer;
+protected String owningPlayer = "";
 
 public InventorySided inventory;
 
@@ -83,30 +72,82 @@ private ArrayList<BlockPosition> clientWorkTargets = new ArrayList<BlockPosition
 
 private ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 
+List<BlockPosition> blocksToUpdate = new ArrayList<BlockPosition>();
+
+double maxEnergyStored = AWAutomationStatics.energyPerWorkUnit;
+double maxInput = maxEnergyStored;
+private double storedEnergy;
+
 public TileWorksiteBase()
   {
   
   }
 
+protected abstract boolean processWork();
+
+protected abstract void fillBlocksToProcess();
+
+protected abstract void scanBlockPosition(BlockPosition pos);
+
 @Override
-public void markDirty()
+public void setEnergy(double energy)
   {
-  super.markDirty();
+  this.storedEnergy = energy;
   }
 
-public void markForUpdate()
+@Override
+public double addEnergy(ForgeDirection from, double energy)
   {
-  if(!worldObj.isRemote)
+  if(canInput(from))
     {
-    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    if(energy+getEnergyStored()>getMaxEnergy())
+      {
+      energy = getMaxEnergy()-getEnergyStored();
+      }
+    if(energy>getMaxInput())
+      {
+      energy = getMaxInput();
+      }
+    storedEnergy+=energy;
+    return energy;    
     }
+  return 0;
+  }
+
+@Override
+public double getMaxEnergy()
+  {
+  return TileTorqueConduit.maxEnergy;
+  }
+
+@Override
+public double getEnergyStored()
+  {
+  return storedEnergy;
+  }
+
+@Override
+public double getMaxInput()
+  {
+  return maxInput;
+  }
+
+@Override
+public boolean canInput(ForgeDirection from)
+  {
+  return true;
+  }
+
+@Override
+public final boolean hasWork()
+  {
+  return storedEnergy<maxEnergyStored && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);  
   }
 
 @Override
 public String getOwnerName()
-  {
-  
-  return null;
+  {  
+  return owningPlayer;
   }
 
 public boolean hasAltSetupGui()
@@ -124,6 +165,7 @@ public boolean hasUserSetTargets()
   return canUserSetBlocks;
   }
 
+//TODO change these over to SERVER only, synch them in the gui container
 public Set<BlockPosition> getUserSetTargets()
   {
   return userTargetBlocks;
@@ -135,52 +177,17 @@ public void setUserSetTargets(Set<BlockPosition> targets)
     {
     userTargetBlocks.clear();
     userTargetBlocks.addAll(targets);
-    if(!this.worldObj.isRemote)
-      {
-      this.markForUpdate();    
-      }
     }
   }
 
 public void addUserBlock(BlockPosition pos)
   {
   userTargetBlocks.add(pos);
-  if(!this.worldObj.isRemote)
-    {
-    this.markForUpdate();    
-    }
   }
 
 public void removeUserBlock(BlockPosition pos)
   {
   this.userTargetBlocks.remove(pos);
-  }
-
-//@Override
-//public void doPlayerWork(EntityPlayer player)
-//  {
-//  doWork(new WorkerPlayerWrapper(player, this));
-//  }
-
-@Override
-public final boolean addWorker(IWorker worker)
-  {
-  if(!worker.getWorkTypes().contains(getWorkType()) || worker.getTeam() != this.getTeam())
-    {
-    return false;
-    }
-  if(workers.size()<maxWorkers || workers.contains(worker))
-    {
-    workers.add(worker);
-    return true;
-    }
-  return false;
-  }
-
-@Override
-public final void removeWorker(IWorker worker)
-  {
-  workers.remove(worker);
   }
 
 @Override
@@ -230,8 +237,40 @@ public void updateEntity()
   {
   super.updateEntity();
   if(worldObj.isRemote){return;}
-  if(inventoryOverflow.isEmpty()){return;}
-  
+  worldObj.theProfiler.startSection("AW.WorksiteTile.Update");
+  incrementalScan();  
+  if(!inventoryOverflow.isEmpty())
+    {
+    updateOverflowInventory();
+    } 
+  incrementalScan();
+  if(getEnergyStored()>=getMaxEnergy())
+    {
+    if(processWork())
+      {
+      storedEnergy -= AWAutomationStatics.energyPerWorkUnit;
+      if(storedEnergy<0){storedEnergy = 0.d;}
+      }    
+    }
+  worldObj.theProfiler.endSection();
+  }
+
+protected void incrementalScan()
+  {
+  if(blocksToUpdate.isEmpty())
+    {
+    fillBlocksToProcess();
+    }
+  if(!blocksToUpdate.isEmpty())
+    {
+    int rand = worldObj.rand.nextInt(blocksToUpdate.size());
+    BlockPosition pos = blocksToUpdate.remove(rand);
+    scanBlockPosition(pos);
+    }
+  }
+
+private void updateOverflowInventory()
+  {
   List<ItemStack> notMerged = new ArrayList<ItemStack>();
   Iterator<ItemStack> it = inventoryOverflow.iterator();
   ItemStack stack;
@@ -292,13 +331,8 @@ public final String getOwningPlayer()
 @Override
 public void setOwnerName(String name)
   {
-  this.owningPlayer = name;
-  }
-
-@Override
-public List<BlockPosition> getWorkTargets()
-  {
-  return clientWorkTargets;
+  if(name==null){name="";}
+  this.owningPlayer = name;  
   }
 
 @Override
@@ -434,23 +468,6 @@ public final Packet getDescriptionPacket()
       }    
     tag.setTag("userBlocks", list);
     }
-  if(shouldSendWorkTargets && AWAutomationStatics.sendWorkToClients)
-    {
-    ArrayList<BlockPosition> blockList = new ArrayList<BlockPosition>();
-    addWorkTargets(blockList);
-    if(!blockList.isEmpty())
-      {
-      NBTTagList list = new NBTTagList();
-      NBTTagCompound posTag;
-      for(BlockPosition pos : blockList)
-        {
-        posTag = new NBTTagCompound();
-        pos.writeToNBT(posTag);
-        list.appendTag(posTag);
-        }    
-      tag.setTag("workBlocks", list);      
-      }
-    }  
   writeClientData(tag);
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, tag);
   }

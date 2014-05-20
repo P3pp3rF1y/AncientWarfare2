@@ -1,28 +1,22 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.WeakHashMap;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
 public class TileStructureBuilder extends TileEntity implements IWorkSite
 {
 
-private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
 protected String owningPlayer;
 int maxWorkers = 2;
 
@@ -34,6 +28,59 @@ int workDelay = 20;
 public TileStructureBuilder()
   {
   
+  }
+
+double maxEnergyStored = 1600;
+double maxInput = 100;
+private double storedEnergy;
+
+@Override
+public void setEnergy(double energy)
+  {
+  this.storedEnergy = energy;
+  }
+
+@Override
+public double addEnergy(ForgeDirection from, double energy)
+  {
+  if(canInput(from))
+    {
+    if(energy+getEnergyStored()>getMaxEnergy())
+      {
+      energy = getMaxEnergy()-getEnergyStored();
+      }
+    if(energy>getMaxInput())
+      {
+      energy = getMaxInput();
+      }
+    storedEnergy+=energy;
+    return energy;    
+    }
+  return 0;
+  }
+
+@Override
+public double getMaxEnergy()
+  {
+  return TileTorqueConduit.maxEnergy;
+  }
+
+@Override
+public double getEnergyStored()
+  {
+  return storedEnergy;
+  }
+
+@Override
+public double getMaxInput()
+  {
+  return maxInput;
+  }
+
+@Override
+public boolean canInput(ForgeDirection from)
+  {
+  return true;
   }
 
 @Override
@@ -144,39 +191,6 @@ public boolean hasWork()
   }
 
 @Override
-public void doWork(IWorker worker)
-  {
-  processWork();
-  }
-
-@Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  processWork();
-  }
-
-@Override
-public final boolean addWorker(IWorker worker)
-  {
-  if(!worker.getWorkTypes().contains(getWorkType()) || worker.getTeam() != this.getTeam())
-    {
-    return false;
-    }
-  if(workers.size()<maxWorkers || workers.contains(worker))
-    {
-    workers.add(worker);
-    return true;
-    }
-  return false;
-  }
-
-@Override
-public final void removeWorker(IWorker worker)
-  {
-  workers.remove(worker);
-  }
-
-@Override
 public WorkType getWorkType()
   {
   return WorkType.CONSTRUCTION;
@@ -202,12 +216,6 @@ public BlockPosition getWorkBoundsMin()
 public BlockPosition getWorkBoundsMax()
   {
   return null;
-  }
-
-@Override
-public List<BlockPosition> getWorkTargets()
-  {
-  return Collections.emptyList();
   }
 
 @Override

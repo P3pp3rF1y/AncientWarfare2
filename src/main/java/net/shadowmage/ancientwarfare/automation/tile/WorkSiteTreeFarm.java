@@ -21,13 +21,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -44,7 +42,6 @@ public class WorkSiteTreeFarm extends TileWorksiteBase
 private boolean shouldCountResources = true;
 int saplingCount;
 int bonemealCount;
-int workerRescanDelay;
 Set<BlockPosition> blocksToChop;
 List<BlockPosition> blocksToPlant;
 List<BlockPosition> blocksToFertilize;
@@ -55,8 +52,6 @@ public WorkSiteTreeFarm()
   {
   this.canUserSetBlocks = true;
   this.canUpdate = true;
-  this.maxWorkers = 1;
-  this.shouldSendWorkTargets = true;
   
   blocksToChop = new HashSet<BlockPosition>();
   blocksToPlant = new ArrayList<BlockPosition>();
@@ -135,36 +130,15 @@ public void updateEntity()
   {
   super.updateEntity();
   if(worldObj.isRemote){return;}
-  if(workerRescanDelay>0){workerRescanDelay--;}
-  if(shouldCountResources){countResources();}
-  }
-
-@Override
-public boolean hasWork()
-  {  
-  return canWork() && (workerRescanDelay<=0 || hasWorkBlock());
-  }
-
-private boolean hasWorkBlock()
-  {
-  return !blocksToChop.isEmpty() || (!blocksToPlant.isEmpty() && saplingCount>0) || (!blocksToFertilize.isEmpty() && bonemealCount>0);
-  }
-
-@Override
-public void doWork(IWorker worker)
-  {  
-  if(workerRescanDelay<=0 || !hasWorkBlock())
+  if(shouldCountResources){countResources();}  
+  if(worldObj.getWorldTime()%20==0)
     {
-    rescan();
-    }  
-  if(hasWorkBlock())
-    {
-    processWork();
+    pickupSaplings();
     }
-  pickupSaplings();
   }
 
-private void processWork()
+@Override
+protected boolean processWork()
   {
   BlockPosition position;
   if(!blocksToChop.isEmpty())
@@ -177,6 +151,7 @@ private void processWork()
       {
       addStackToInventory(item, RelativeSide.TOP);
       }
+    return true;
     }
   else if(saplingCount>0 && !blocksToPlant.isEmpty())
     {
@@ -207,7 +182,7 @@ private void processWork()
           worldObj.setBlock(position.x, position.y, position.z, block, stack.getItemDamage(), 3);
           saplingCount--;
           inventory.decrStackSize(slot, 1);
-          break;
+          return true;
           }
         }      
       }
@@ -242,14 +217,14 @@ private void processWork()
               {
               TreeFinder.findAttachedTreeBlocks(block, worldObj, position.x, position.y, position.z, blocksToChop);
               }
-            break;
+            return true;
             }
           } 
-        break;
+        return false;
         }
       }
     }
-  this.markForUpdate();
+  return false;
   }
 
 private void pickupSaplings()
@@ -277,60 +252,6 @@ private void pickupSaplings()
         item.setDead();
         addStackToInventory(stack, RelativeSide.FRONT);
         }
-      }
-    }
-  }
-
-private void rescan()
-  {
-  validateChopBlocks();
-  blocksToPlant.clear();
-  blocksToFertilize.clear();
-  workerRescanDelay = AWAutomationStatics.automationWorkerRescanTicks;//two minutes
-  
-  Block block;
-  for(BlockPosition pos : getUserSetTargets())
-    {
-    if(worldObj.isAirBlock(pos.x, pos.y, pos.z))
-      {
-      block = worldObj.getBlock(pos.x, pos.y-1, pos.z);
-      if(block==Blocks.dirt || block==Blocks.grass)
-        {
-        blocksToPlant.add(pos.copy().reassign(pos.x, pos.y, pos.z));
-        }
-      }
-    else
-      {
-      block = worldObj.getBlock(pos.x, pos.y, pos.z);
-      if(block instanceof BlockSapling)
-        {
-        blocksToFertilize.add(pos.copy().reassign(pos.x, pos.y, pos.z));
-        }
-      else if(block.getMaterial()==Material.wood && !blocksToChop.contains(pos))
-        {
-        BlockPosition p1 = pos.copy().reassign(pos.x, pos.y, pos.z);
-        if(!blocksToChop.contains(p1))
-          {
-          addTreeBlocks(p1);          
-          }
-        }
-      }
-    }
-  if(shouldSendWorkTargets && AWAutomationStatics.sendWorkToClients)
-    {
-    this.markForUpdate();
-    }
-  }
-
-private void validateChopBlocks()
-  {
-  BlockPosition pos;
-  Iterator<BlockPosition> it = this.blocksToChop.iterator();
-  while(it.hasNext() && (pos=it.next())!=null)
-    {
-    if(worldObj.getBlock(pos.x, pos.y, pos.z).getMaterial()!=Material.wood)
-      {
-      it.remove();
       }
     }
   }
@@ -385,7 +306,6 @@ public void writeToNBT(NBTTagCompound tag)
       }
     tag.setTag("targetList", chopList);    
     }
-  tag.setInteger("scanDelay", workerRescanDelay);
   }
 
 @Override
@@ -400,21 +320,48 @@ public void readFromNBT(NBTTagCompound tag)
       blocksToChop.add(new BlockPosition(chopList.getCompoundTagAt(i)));
       }
     }
-  workerRescanDelay = tag.getInteger("scanDelay");
   this.shouldCountResources = true;
   }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  if(workerRescanDelay<=0 || !hasWorkBlock())
-    {
-    rescan();
-    }  
-  if(hasWorkBlock())
-    {
-    processWork();
-    }
-  pickupSaplings();
+protected void fillBlocksToProcess()
+  { 
+  Set<BlockPosition> targets = new HashSet<BlockPosition>();
+  targets.addAll(getUserSetTargets());  
+  targets.removeAll(blocksToChop);
+  targets.removeAll(blocksToFertilize);
+  targets.removeAll(blocksToPlant);
+  blocksToUpdate.addAll(targets);  
   }
+
+@Override
+protected void scanBlockPosition(BlockPosition pos)
+  {
+  Block block;
+  if(worldObj.isAirBlock(pos.x, pos.y, pos.z))
+    {
+    block = worldObj.getBlock(pos.x, pos.y-1, pos.z);
+    if(block==Blocks.dirt || block==Blocks.grass)
+      {
+      blocksToPlant.add(pos.copy().reassign(pos.x, pos.y, pos.z));
+      }
+    }
+  else
+    {
+    block = worldObj.getBlock(pos.x, pos.y, pos.z);
+    if(block instanceof BlockSapling)
+      {
+      blocksToFertilize.add(pos.copy().reassign(pos.x, pos.y, pos.z));
+      }
+    else if(block.getMaterial()==Material.wood && !blocksToChop.contains(pos))
+      {
+      BlockPosition p1 = pos.copy().reassign(pos.x, pos.y, pos.z);
+      if(!blocksToChop.contains(p1))
+        {
+        addTreeBlocks(p1);          
+        }
+      }
+    }
+  }
+
 }

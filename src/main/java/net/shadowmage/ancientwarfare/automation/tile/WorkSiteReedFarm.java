@@ -14,11 +14,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -37,15 +35,12 @@ int reedCount;
 int cactusCount;
 int cocoaCount;
 
-int workerRescanDelay;
 boolean shouldCountResources;
 
 public WorkSiteReedFarm()
   {
   this.canUserSetBlocks = true;
   this.canUpdate = true;
-  this.maxWorkers = 1;
-  this.shouldSendWorkTargets = true;
   this.shouldCountResources = true;
     
   cocoaToPlant = new HashSet<BlockPosition>();
@@ -107,95 +102,11 @@ public void updateEntity()
   {
   super.updateEntity();
   if(worldObj.isRemote){return;}
-  if(workerRescanDelay>0){workerRescanDelay--;}
   if(shouldCountResources){countResources();}
   }
 
 @Override
-public boolean hasWork()
-  {  
-  return canWork() && (workerRescanDelay<=0 || hasWorkBlock());
-  }
-
-private boolean hasWorkBlock()
-  {
-  return !blocksToHarvest.isEmpty() || (!cactusToPlant.isEmpty() && cactusCount>0)  || (cocoaToPlant.isEmpty() && cocoaCount>0) || (!reedToPlant.isEmpty() && reedCount>0);
-  }
-
-@Override
-public void doWork(IWorker worker)
-  {
-  if(workerRescanDelay<=0 || !hasWorkBlock())
-    {
-    rescan();
-    }  
-  if(hasWorkBlock())
-    {
-    processWork();
-    }
-  }
-
-private void rescan()
-  {
-  this.workerRescanDelay = AWAutomationStatics.automationWorkerRescanTicks;
-  this.cactusToPlant.clear();
-  this.reedToPlant.clear();
-  this.cocoaToPlant.clear();
-  this.blocksToHarvest.clear();
-  Block block;
-  for(BlockPosition p : this.getUserSetTargets())
-    {
-    block = worldObj.getBlock(p.x, p.y, p.z);    
-    if(block==Blocks.cactus)//find top of cactus, harvest from top down (leave 1 at bottom)
-      {
-      for(int y = p.y + 4; y>p.y; y--)
-        {
-        block = worldObj.getBlock(p.x, y, p.z);
-        if(block==Blocks.cactus)
-          {
-          blocksToHarvest.add(new BlockPosition(p.x, y, p.z));
-          }
-        }
-      }
-    else if(block==Blocks.reeds)//find top of reeds, harvest from top down (leave 1 at bottom)
-      {
-      for(int y = p.y + 4; y>p.y; y--)
-        {
-        block = worldObj.getBlock(p.x, y, p.z);
-        if(block==Blocks.reeds)
-          {
-          blocksToHarvest.add(new BlockPosition(p.x, y, p.z));
-          }
-        }
-      }
-    else if(block==Blocks.cocoa)
-      {
-      int meta = worldObj.getBlockMetadata(p.x, p.y, p.z);
-      if(meta >= 8 && meta <=11)
-        {
-        blocksToHarvest.add(p.copy());
-        }
-      }
-    else if(block==Blocks.air)//check for plantability for each type
-      {
-      if(Blocks.cactus.canBlockStay(worldObj, p.x, p.y, p.z))
-        {
-        cactusToPlant.add(p.copy());
-        }
-      else if(Blocks.reeds.canBlockStay(worldObj, p.x, p.y, p.z))
-        {
-        reedToPlant.add(p.copy());
-        }
-      else if(Blocks.cocoa.canBlockStay(worldObj, p.x, p.y, p.z))
-        {
-        cocoaToPlant.add(p.copy());
-        }
-      }
-    }
-  this.markForUpdate();
-  }
-
-private void processWork()
+protected boolean processWork()
   {
   if(!blocksToHarvest.isEmpty())
     {
@@ -205,8 +116,7 @@ private void processWork()
       {
       p = it.next();
       it.remove();
-      harvestBlock(p);
-      break;
+      return harvestBlock(p);      
       }
     }
   else if(cocoaCount>0 && !cocoaToPlant.isEmpty())
@@ -219,7 +129,7 @@ private void processWork()
       it.remove();
       if(plantCocoa(p))
         {
-        break;
+        return true;
         }
       }
     }
@@ -233,7 +143,7 @@ private void processWork()
       it.remove();
       if(plantReeds(p))
         {
-        break;
+        return true;
         }
       }
     }
@@ -247,11 +157,11 @@ private void processWork()
       it.remove();   
       if(plantCactus(p))
         {
-        break;
+        return true;
         }
       }
     }
-  this.markForUpdate();
+  return false;    
   }
 
 private boolean removeItem(Item item)
@@ -270,7 +180,7 @@ private boolean removeItem(Item item)
   return false;
   }
 
-private void harvestBlock(BlockPosition p)
+private boolean harvestBlock(BlockPosition p)
   {
   Block block = worldObj.getBlock(p.x, p.y, p.z);
   if(block==Blocks.cactus || block==Blocks.reeds || block==Blocks.cocoa)
@@ -280,7 +190,9 @@ private void harvestBlock(BlockPosition p)
       {
       addStackToInventory(item, RelativeSide.TOP);
       }
+    return true;
     }  
+  return false;
   }
 
 private boolean plantCactus(BlockPosition p)
@@ -455,15 +367,66 @@ public void readClientData(NBTTagCompound tag)
   }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
+protected void fillBlocksToProcess()
+  { 
+  Set<BlockPosition> targets = new HashSet<BlockPosition>();
+  targets.addAll(getUserSetTargets());  
+  targets.removeAll(blocksToHarvest);
+  targets.removeAll(cactusToPlant);
+  targets.removeAll(reedToPlant);
+  targets.removeAll(cocoaToPlant);
+  blocksToUpdate.addAll(targets);  
+  }
+
+@Override
+protected void scanBlockPosition(BlockPosition pos)
   {
-  if(workerRescanDelay<=0 || !hasWorkBlock())
+  Block block;
+  block = worldObj.getBlock(pos.x, pos.y, pos.z);    
+  if(block==Blocks.cactus)//find top of cactus, harvest from top down (leave 1 at bottom)
     {
-    rescan();
-    }  
-  if(hasWorkBlock())
+    for(int y = pos.y + 4; y>pos.y; y--)
+      {
+      block = worldObj.getBlock(pos.x, y, pos.z);
+      if(block==Blocks.cactus)
+        {
+        blocksToHarvest.add(new BlockPosition(pos.x, y, pos.z));
+        }
+      }
+    }
+  else if(block==Blocks.reeds)//find top of reeds, harvest from top down (leave 1 at bottom)
     {
-    processWork();
+    for(int y = pos.y + 4; y>pos.y; y--)
+      {
+      block = worldObj.getBlock(pos.x, y, pos.z);
+      if(block==Blocks.reeds)
+        {
+        blocksToHarvest.add(new BlockPosition(pos.x, y, pos.z));
+        }
+      }
+    }
+  else if(block==Blocks.cocoa)
+    {
+    int meta = worldObj.getBlockMetadata(pos.x, pos.y, pos.z);
+    if(meta >= 8 && meta <=11)
+      {
+      blocksToHarvest.add(pos.copy());
+      }
+    }
+  else if(block==Blocks.air)//check for plantability for each type
+    {
+    if(Blocks.cactus.canBlockStay(worldObj, pos.x, pos.y, pos.z))
+      {
+      cactusToPlant.add(pos.copy());
+      }
+    else if(Blocks.reeds.canBlockStay(worldObj, pos.x, pos.y, pos.z))
+      {
+      reedToPlant.add(pos.copy());
+      }
+    else if(Blocks.cocoa.canBlockStay(worldObj, pos.x, pos.y, pos.z))
+      {
+      cocoaToPlant.add(pos.copy());
+      }
     }
   }
 

@@ -174,14 +174,12 @@ public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
 @Override
 public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
   {
-  // TODO Auto-generated method stub
   return false;
   }
 
 @Override
 public void onLeftClick(EntityPlayer player, ItemStack stack)
   {
-  // TODO Auto-generated method stub
   
   }
 

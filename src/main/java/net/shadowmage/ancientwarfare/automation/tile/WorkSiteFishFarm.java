@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -30,7 +29,6 @@ private int waterRescanDelay = 0;
 public WorkSiteFishFarm()
   {
   this.canUpdate = true;
-  this.maxWorkers = 2;
   this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 27);
   this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, InventoryTools.getIndiceArrayForSpread(0, 27)); 
   }
@@ -45,18 +43,7 @@ public void updateEntity()
   }
 
 @Override
-public boolean hasWork()
-  {
-  return canWork() && (waterRescanDelay<=0 || waterBlockCount>0) && (harvestFish || harvestInk);
-  }
-
-@Override
-public void doWork(IWorker worker)
-  {
-  processWork();
-  }
-
-private void processWork()
+protected boolean processWork()
   {
   if(waterRescanDelay<=0)
     {
@@ -92,14 +79,17 @@ private void processWork()
         else if(fishType<100){fishMeta = ItemFishFood.FishType.CLOWNFISH.func_150976_a();}
         ItemStack fishStack = new ItemStack(Items.fish,1,fishMeta);
         addStackToInventory(fishStack, RelativeSide.TOP);
+        return true;
         }
       if(ink)
         {
         ItemStack inkItem = new ItemStack(Items.dye,1,0);
         addStackToInventory(inkItem, RelativeSide.TOP);
+        return true;
         }      
       }
     }
+  return false;
   }
 
 private void countWater()
@@ -175,9 +165,18 @@ public void openAltGui(EntityPlayer player)
   }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
+protected void fillBlocksToProcess()
   {
-  processWork();
+  // TODO Auto-generated method stub
+  
   }
+
+@Override
+protected void scanBlockPosition(BlockPosition pos)
+  {
+  // TODO Auto-generated method stub
+  
+  }
+
 
 }

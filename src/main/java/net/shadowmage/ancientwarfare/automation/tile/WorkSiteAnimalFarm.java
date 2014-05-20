@@ -22,7 +22,6 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySi
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -58,7 +57,6 @@ List<Integer> entitiesToCull = new ArrayList<Integer>();
 public WorkSiteAnimalFarm()
   {
   this.canUpdate = true;
-  this.maxWorkers = 1;
   this.shouldCountResources = true;  
   
   this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33);
@@ -285,7 +283,8 @@ private void scanForCows(List<EntityAnimal> animals)
     }
   }
 
-private void processWork()
+@Override
+protected boolean processWork()
   {
   AWLog.logDebug("processing work from animal farm...");
   boolean didWork = false;
@@ -297,7 +296,7 @@ private void processWork()
       {
       wheatCount-=2;
       InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat), 2);
-      return;
+      return true;
       }
     }
   if(!sheepToBreed.isEmpty() && wheatCount>=2)
@@ -308,7 +307,7 @@ private void processWork()
       {
       wheatCount-=2;
       InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat), 2);
-      return;
+      return true;
       }
     }
   if(!chickensToBreed.isEmpty() && seedCount>=2)
@@ -319,7 +318,7 @@ private void processWork()
       {
       seedCount-=2;
       InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat_seeds), 2);
-      return;
+      return true;
       }
     }
   if(!pigsToBreed.isEmpty() && carrotCount>=2)
@@ -330,7 +329,7 @@ private void processWork()
       {
       carrotCount-=2;
       InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.carrot), 2);
-      return;
+      return true;
       }
     }
   if(shears!=null && !sheepToShear.isEmpty())
@@ -339,7 +338,7 @@ private void processWork()
     didWork = tryShearing(sheepToShear);
     if(didWork)      
       {
-      return;
+      return true;
       }
     }
   if(bucketCount>0 && !cowsToMilk.isEmpty())
@@ -350,14 +349,18 @@ private void processWork()
       {
       InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.BOTTOM), new ItemStack(Items.bucket), 1);
       this.addStackToInventory(new ItemStack(Items.milk_bucket), RelativeSide.TOP);
-      return;
+      return true;
       }
     }
   if(!entitiesToCull.isEmpty())
     {
     AWLog.logDebug("attempting culling of animals..");
-    tryCulling(entitiesToCull);
+    if(tryCulling(entitiesToCull))
+      {
+      return true;
+      }
     }
+  return false;
   }
 
 private boolean tryBreeding(List<EntityPair> targets)
@@ -437,20 +440,6 @@ public boolean hasAltSetupGui()
   return true;
   }
 
-@Override
-public void doWork(IWorker worker)
-  {
-  if(workerRescanDelay<=0 || !hasAnimalWork())
-    {
-    rescan();
-    }  
-  if(hasAnimalWork())
-    {
-    processWork();
-    }
-  pickupEggs();
-  }
-
 private void pickupEggs()
   {
   BlockPosition p1 = getWorkBoundsMin();
@@ -468,12 +457,6 @@ private void pickupEggs()
       addStackToInventory(stack, RelativeSide.TOP);
       }
     }
-  }
-
-@Override
-public boolean hasWork()
-  {
-  return canWork() && (workerRescanDelay<=0 || hasAnimalWork());
   }
 
 private boolean hasAnimalWork()
@@ -546,17 +529,15 @@ public Entity getEntityB(World world)
 }
 
 @Override
-public void doPlayerWork(EntityPlayer player)
+protected void fillBlocksToProcess()
   {
-  if(workerRescanDelay<=0 || !hasAnimalWork())
-    {
-    rescan();
-    }  
-  if(hasAnimalWork())
-    {
-    processWork();
-    }
-  pickupEggs();
+  
+  }
+
+@Override
+protected void scanBlockPosition(BlockPosition pos)
+  {
+  
   }
 
 }

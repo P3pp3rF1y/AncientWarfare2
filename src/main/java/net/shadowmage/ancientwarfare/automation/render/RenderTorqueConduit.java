@@ -34,7 +34,6 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
 @Override
 public boolean shouldRender3DInInventory(int modelId)
   {
-  // TODO Auto-generated method stub
   return false;
   }
 

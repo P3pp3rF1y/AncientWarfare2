@@ -15,6 +15,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
@@ -61,6 +62,59 @@ public WorkSiteWarehouse()
   bbMin = new BlockPosition();
   bbMax = new BlockPosition();
   maxWorkers = 3;
+  }
+
+double maxEnergyStored = 1600;
+double maxInput = 100;
+private double storedEnergy;
+
+@Override
+public void setEnergy(double energy)
+  {
+  this.storedEnergy = energy;
+  }
+
+@Override
+public double addEnergy(ForgeDirection from, double energy)
+  {
+  if(canInput(from))
+    {
+    if(energy+getEnergyStored()>getMaxEnergy())
+      {
+      energy = getMaxEnergy()-getEnergyStored();
+      }
+    if(energy>getMaxInput())
+      {
+      energy = getMaxInput();
+      }
+    storedEnergy+=energy;
+    return energy;    
+    }
+  return 0;
+  }
+
+@Override
+public double getMaxEnergy()
+  {
+  return TileTorqueConduit.maxEnergy;
+  }
+
+@Override
+public double getEnergyStored()
+  {
+  return storedEnergy;
+  }
+
+@Override
+public double getMaxInput()
+  {
+  return maxInput;
+  }
+
+@Override
+public boolean canInput(ForgeDirection from)
+  {
+  return true;
   }
 
 @Override
@@ -417,27 +471,6 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public final boolean addWorker(IWorker worker)
-  {
-  if(!worker.getWorkTypes().contains(getWorkType()) || worker.getTeam() != this.getTeam())
-    {
-    return false;
-    }
-  if(workers.size()<maxWorkers || workers.contains(worker))
-    {
-    workers.add(worker);
-    return true;
-    }
-  return false;
-  }
-
-@Override
-public final void removeWorker(IWorker worker)
-  {
-  workers.remove(worker);
-  }
-
-@Override
 public final boolean hasWorkBounds()
   {
   return bbMin !=null || (bbMin!=null && bbMax!=null);
@@ -465,12 +498,6 @@ public final Team getTeam()
   return null;
   }
 
-@Override
-public List<BlockPosition> getWorkTargets()
-  {
-  return Collections.emptyList();
-  }
-
 public final void setOwnerName(String name)
   {
   this.owningPlayer = name;
@@ -487,18 +514,6 @@ public void setBounds(BlockPosition p1, BlockPosition p2)
 public boolean hasWork()
   {
   return (!inputToEmpty.isEmpty() && currentItemCount<currentMaxItemCount) || !outputToFill.isEmpty();
-  }
-
-@Override
-public void doWork(IWorker worker)
-  {
-  processWork();  
-  }
-
-@Override
-public void doPlayerWork(EntityPlayer player)
-  {
-  processWork();
   }
 
 private void processWork()

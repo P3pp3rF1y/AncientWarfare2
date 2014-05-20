@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
-import java.util.EnumSet;
-
 import net.minecraft.scoreboard.Team;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -25,27 +23,13 @@ public float getWorkEffectiveness();
  */
 public Team getTeam();
 
-/**
- * return an enumSet of the valid work-types for this worker.
- * @return
- */
-public EnumSet<WorkType> getWorkTypes();
+
+public boolean canWorkAt(WorkType type);
 
 /**
  * return a block-position denoting the location of this worker
  * @return
  */
 public BlockPosition getPosition();
-
-/**
- * return the work-site that is the current target of this worker
- * @return
- */
-public IWorkSite getWorkSite();
-
-/**
- * called by a work-site when the block is removed or the worker found to be invalid
- */
-public void clearWorkSite();
 
 }

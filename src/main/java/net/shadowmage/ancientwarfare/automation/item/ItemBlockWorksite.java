@@ -6,6 +6,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.block.BlockWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
@@ -40,7 +41,8 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
   if(stack.getTagCompound().hasKey("pos2") && stack.getTagCompound().hasKey("pos1"))
     {
     AWLog.logDebug("has pos1 and pos2..should send chat message");
-    //TODO send chat message
+    ChatComponentTranslation chat = new ChatComponentTranslation("guistrings.automation.work_bounds_set", new Object[]{});
+    player.addChatComponentMessage(chat);
     }
   else if(stack.getTagCompound().hasKey("pos1"))
     {
@@ -51,26 +53,30 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
     BlockPosition max = BlockTools.getMax(pos1, hit);
     if(max.y-min.y >= ySize)
       {
-      //TODO send chat message      
+      ChatComponentTranslation chat = new ChatComponentTranslation("guistrings.automation.y_size_too_large", new Object[]{});
+      player.addChatComponentMessage(chat);
       }
     else if(max.x-min.x >= size || max.z-min.z >=size)
       {
-      //TODO send chat message      
+      ChatComponentTranslation chat = new ChatComponentTranslation("guistrings.automation.x_z_size_too_large", new Object[]{});
+      player.addChatComponentMessage(chat);
       }
     else
       {
       NBTTagCompound tag = new NBTTagCompound();
       hit.writeToNBT(tag);
-      stack.getTagCompound().setTag("pos2", tag);      
+      stack.getTagCompound().setTag("pos2", tag);  
+      ChatComponentTranslation chat = new ChatComponentTranslation("guistrings.automation.set_pos_2", new Object[]{});
+      player.addChatComponentMessage(chat);
       }
-    //TODO send chat message
     }
   else
     {
     NBTTagCompound tag = new NBTTagCompound();
     hit.writeToNBT(tag);
     stack.getTagCompound().setTag("pos1", tag);
-    //TODO send chat message
+    ChatComponentTranslation chat = new ChatComponentTranslation("guistrings.automation.set_pos_1", new Object[]{});
+    player.addChatComponentMessage(chat);
     }
   }
 
@@ -89,17 +95,15 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   if(x<min.x-1 || z<min.z-1 || y<min.y-1 || x>max.x+1 || z>max.z+1 || y>max.y+1)
     {
     AWLog.logDebug("too far away from bounds to place block.." + min + " :: "+max);
-    /**
-     * TODO output chat message saying block is too far away from work bounds
-     */
+    ChatComponentTranslation chat = new ChatComponentTranslation("guistrings.automation.too_far_from_bounds", new Object[]{});
+    player.addChatComponentMessage(chat);
     return false;
     }
   else if((x>=min.x && x<=max.x)&&(y>=min.y && y<=max.y)&&(z>=min.z && z<=max.z))
     {
+    ChatComponentTranslation chat = new ChatComponentTranslation("guistrings.automation.no_place_inside_bounds", new Object[]{});
+    player.addChatComponentMessage(chat);
     AWLog.logDebug("cannot place block within work bounds");
-    /**
-     * TODO output chat message saying block cannot be inside work bounds
-     */
     return false;
     }
   /**

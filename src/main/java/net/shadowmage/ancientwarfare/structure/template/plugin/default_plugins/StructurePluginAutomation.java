@@ -30,9 +30,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentP
 public class StructurePluginAutomation extends StructureContentPlugin
 {
 
-/**
- * 
- */
+
 public StructurePluginAutomation()
   {
   // TODO Auto-generated constructor stub
@@ -42,14 +40,12 @@ public StructurePluginAutomation()
 public void addHandledBlocks(IStructurePluginManager manager)
   {
   // TODO Auto-generated method stub
-
   }
 
 @Override
 public void addHandledEntities(IStructurePluginManager manager)
   {
   // TODO Auto-generated method stub
-
   }
 
 public static void load()

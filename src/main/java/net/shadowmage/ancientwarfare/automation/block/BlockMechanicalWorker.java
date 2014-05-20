@@ -54,17 +54,6 @@ public boolean hasTileEntity(int metadata)
   }
 
 @Override
-public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
-  {
-  TileMechanicalWorker te = (TileMechanicalWorker) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
-  if(te!=null)
-    {
-    te.onBlockBroken();    
-    }
-  super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
-  }
-
-@Override
 public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ)
   {  
   TileEntity te = world.getTileEntity(x, y, z);
@@ -84,10 +73,6 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
     {
     worldObj.setBlockMetadataWithNotify(x, y, z, rMeta, 3);
     TileEntity te = worldObj.getTileEntity(x, y, z);
-    if(te instanceof TileMechanicalWorker)
-      {
-      ((TileMechanicalWorker)te).onBlockRotated();
-      }
     return true;
     }
   return false;

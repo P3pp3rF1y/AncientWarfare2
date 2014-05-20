@@ -28,7 +28,6 @@ public PacketStructureImageData(String imageName, BufferedImage image)
 
 public PacketStructureImageData()
   {
-  // TODO Auto-generated constructor stub
   }
 
 @Override

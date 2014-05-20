@@ -1,18 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
-import java.lang.ref.WeakReference;
-import java.util.EnumSet;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -26,9 +21,6 @@ public static final double maxReceivedPerTick = 100.d;
 public static final double idleConsumption = 0.d;
 
 public double storedEnergy;
-
-//TODO swap this to a block-position with an accessor method
-WeakReference<IWorkSite> workSite = new WeakReference<IWorkSite>(null);
 
 private int searchDelay;
 
@@ -45,45 +37,9 @@ public String toString()
   return "Mechanical Worker ["+storedEnergy+"]";
   }
 
-@Override
-public void invalidate()
-  {
-  super.invalidate();
-  setWorkSite(null);
-  }
-
-public void onBlockBroken()
-  {
-  if(this.workSite!=null && this.workSite.get()!=null)
-    {
-    this.workSite.get().removeWorker(this);
-    }
-  }
-
-public void onBlockRotated()
-  {
-  setWorkSite(null);
-  }
-
-private void setWorkSite(IWorkSite site)
-  {
-  if(workSite.get()!=null){workSite.get().removeWorker(this);}
-  workSite = new WeakReference<IWorkSite>(site);
-  if(site==null)
-    {
-    searchDelay = 40;
-    }
-  }
-
 public double getEnergyStored()
   {
   return storedEnergy;
-  }
-
-@Override
-public IWorkSite getWorkSite()
-  {
-  return workSite==null ? null : workSite.get();
   }
 
 @Override
@@ -99,55 +55,6 @@ public void updateEntity()
     {
     return;
     }
-  if(searchDelay>0)
-    {
-    searchDelay--;
-    }  
-  if(searchDelay==0 && getWorkSite()==null)
-    {
-    if(findWorkSite())
-      {
-      searchDelay = -1;
-      }
-    else
-      {
-      searchDelay = 40;
-      }
-    }
-  if(AWAutomationStatics.enableMechanicalWorkerFuelUse)
-    {
-   
-    }
-  if(storedEnergy >= AWAutomationStatics.energyPerWorkUnit && getWorkSite()!=null)
-    {
-    attemptWork();
-    }
-  else
-    {
-//    AWLog.logDebug("energy: "+storedEnergy);
-    }
-  }
-
-private boolean findWorkSite()
-  {
-  ForgeDirection face = ForgeDirection.getOrientation(getBlockMetadata());
-  
-//  AWLog.logDebug("attempting to find worksite... at: "+face);
-  TileEntity te;
-  IWorkSite site;
-  te = worldObj.getTileEntity(xCoord+face.offsetX, yCoord+face.offsetY, zCoord+face.offsetZ);
-  if(te instanceof IWorkSite)
-    {
-//    AWLog.logDebug("found potential site, attempting to add as worker..");
-    site = (IWorkSite)te;
-    if(site.addWorker(this))
-      {
-//      AWLog.logDebug("set worksite to: "+site + " at: "+face);
-      this.setWorkSite(site);
-      return true;
-      }
-    }  
-  return false;
   }
 
 @Override
@@ -163,32 +70,9 @@ public Team getTeam()
   }
 
 @Override
-public EnumSet<WorkType> getWorkTypes()
-  {
-  return EnumSet.allOf(WorkType.class);
-  }
-
-@Override
 public BlockPosition getPosition()
   {
   return new BlockPosition(xCoord,yCoord,zCoord);
-  }
-
-@Override
-public void clearWorkSite()
-  {
-  this.setWorkSite(null);
-  }  
-
-protected void attemptWork()
-  {  
-//  AWLog.logDebug("Mechanical Worker has worksite, attempting work.. stored energy: "+storedEnergy);
-  if(getWorkSite().hasWork())
-    {
-//    AWLog.logDebug("Mechanical Worker had energy and worksite had work, processing work");
-    storedEnergy -= AWAutomationStatics.energyPerWorkUnit;
-    getWorkSite().doWork(this);      
-    }       
   }
 
 @Override
@@ -267,6 +151,12 @@ public double addEnergy(ForgeDirection from, double energy)
     return energy;    
     }
   return 0;
+  }
+
+@Override
+public boolean canWorkAt(WorkType type)
+  {
+  return true;
   }
 
 }
