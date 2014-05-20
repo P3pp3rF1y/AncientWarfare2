@@ -48,17 +48,27 @@ structures module (done for now)
 
 automation module:
 	Add profiling stuff to mc-profiler
+	
+	Add load/save of stored power / state to power-tiles
+	
+	Custom renders for power-states on power tiles?  Optional?
+		would require a client-side config on whether to use custom render
+		would also require a server-side config on whether to send the network data or not
 		
 	IWorker/IWorksite cleanup:
-		Need to implement a cleaner interface for workers that does not require worksites keeping a reference
-			to their workers.
+		Need to implement a cleaner interface for workers that does not require worksites 
+			keeping a reference to their workers.
+		The original intent behind this functioning was to limit how fast work could be accomplished
+			at any given site -- but this limits the usefulness of automation methods. 
 		Possible solutions:
 			1.) Move worksites over to Torque api for power input.
 				Move workers over to torque api for power output.
 				The amount of power a worker gives to a block depends on his level / tool quality.
 				Worksites automatically rescan work bounds when 'on'.  Use redstone to 'turn off'.
-				Change mechanical-worker block to give bonuses to any worksites they are attached to
-					this bonus comes in the form of ??
+				Remove mechanical worker, or change it to a block that decreases energy use per work unit performed.
+				Most Worksites will rescan 1 block per tick, taken randomly from a set containing all of the
+					blocks in bounds.  remove that block from set.  when set is empty, refill with entire
+					work-bounds.  When a block is worked, add it directly back into the rescan set. 
 			2.) The current system -works-, it just requires careful management of workers to ensure that
 					they call removeWorker() at all appropriate times.  Could possibly move over to a ticked
 					validation of workers to remove any invalid ones.
