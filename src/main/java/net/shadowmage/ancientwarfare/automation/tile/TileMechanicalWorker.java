@@ -250,4 +250,23 @@ public boolean canInput(ForgeDirection from)
   return from==ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
   }
 
+@Override
+public double addEnergy(ForgeDirection from, double energy)
+  {
+  if(canInput(from))
+    {
+    if(energy+getEnergyStored()>getMaxEnergy())
+      {
+      energy = getMaxEnergy()-getEnergyStored();
+      }
+    if(energy>getMaxInput())
+      {
+      energy = getMaxInput();
+      }
+    storedEnergy+=energy;
+    return energy;    
+    }
+  return 0;
+  }
+
 }

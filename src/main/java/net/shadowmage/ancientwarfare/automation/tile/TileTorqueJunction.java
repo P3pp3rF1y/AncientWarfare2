@@ -28,6 +28,25 @@ public void updateEntity()
   }
 
 @Override
+public double addEnergy(ForgeDirection from, double energy)
+  {
+  if(canInput(from))
+    {
+    if(energy+getEnergyStored()>getMaxEnergy())
+      {
+      energy = getMaxEnergy()-getEnergyStored();
+      }
+    if(energy>getMaxInput())
+      {
+      energy = getMaxInput();
+      }
+    storedEnergy+=energy;
+    return energy;    
+    }
+  return 0;
+  }
+
+@Override
 public void setEnergy(double energy)
   {
   this.storedEnergy = energy;

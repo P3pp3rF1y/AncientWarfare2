@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.automation.tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -120,6 +122,25 @@ public void writeToNBT(NBTTagCompound tag)
   {  
   super.writeToNBT(tag);
   tag.setDouble("storedEnergy", storedEnergy);
+  }
+
+@Override
+public double addEnergy(ForgeDirection from, double energy)
+  {
+  if(canInput(from))
+    {
+    if(energy+getEnergyStored()>getMaxEnergy())
+      {
+      energy = getMaxEnergy()-getEnergyStored();
+      }
+    if(energy>getMaxInput())
+      {
+      energy = getMaxInput();
+      }
+    storedEnergy+=energy;
+    return energy;    
+    }
+  return 0;
   }
 
 }

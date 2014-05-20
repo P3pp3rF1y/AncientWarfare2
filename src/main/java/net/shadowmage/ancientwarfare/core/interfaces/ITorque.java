@@ -16,17 +16,16 @@ void setEnergy(double energy);
 double getMaxEnergy();
 double getEnergyStored();
 double getMaxOutput();
-//EnumSet<ForgeDirection> getOutputDirection();
 boolean canOutput(ForgeDirection towards);
 }
 
 public static interface ITorqueReceiver
 {
+double addEnergy(ForgeDirection from, double energy);
 void setEnergy(double energy);
 double getMaxEnergy();
 double getEnergyStored();
 double getMaxInput();
-//EnumSet<ForgeDirection> getInputDirections();
 boolean canInput(ForgeDirection from);
 }
 
@@ -101,7 +100,7 @@ public static void transferPower(World world, int x, int y, int z, ITorqueGenera
       target = targets[i];
       request = requestedEnergy[i];
       request *= percentFullfilled;
-      target.setEnergy(target.getEnergyStored()+request);
+      request = target.addEnergy(ForgeDirection.getOrientation(i).getOpposite(), request);
       generator.setEnergy(generator.getEnergyStored()-request);
       if(target.getEnergyStored()>target.getMaxEnergy()){target.setEnergy(target.getMaxEnergy());}
       AWLog.logDebug("transferring: "+request+" from: "+generator+" to "+target);

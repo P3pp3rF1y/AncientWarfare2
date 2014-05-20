@@ -19,7 +19,7 @@ TEXTURES
 		warehouse input
 		warehouse output
 		warehouse storage small
-		warehouse storage medium
+		warehouse storage medium 
 		warehouse storage large
 		warehouse crafting station
 		hand-cranked-engine
@@ -47,7 +47,32 @@ structures module (done for now)
 		but how to handle only partially loaded gates?
 
 automation module:
+	Add profiling stuff to mc-profiler
+		
+	IWorker/IWorksite cleanup:
+		Need to implement a cleaner interface for workers that does not require worksites keeping a reference
+			to their workers.
+		Possible solutions:
+			1.) Move worksites over to Torque api for power input.
+				Move workers over to torque api for power output.
+				The amount of power a worker gives to a block depends on his level / tool quality.
+				Worksites automatically rescan work bounds when 'on'.  Use redstone to 'turn off'.
+				Change mechanical-worker block to give bonuses to any worksites they are attached to
+					this bonus comes in the form of ??
+			2.) The current system -works-, it just requires careful management of workers to ensure that
+					they call removeWorker() at all appropriate times.  Could possibly move over to a ticked
+					validation of workers to remove any invalid ones.
+			3.) ??
+	
+	Torque API:
+		Add double removeEnergy(ForgeDirection towards, double amount) to ITorqueGenerator
+		Add input/output max/tick code to tiles, reset counter every tile-update.
+		Add power-loss to blocks.  The amount lost should be proportionate to the amount stored.  Something about
+			drag from air resistance increasing with the speed of the object that is moving. 
+		Add high-quality blocks with higher capacity and less power loss.
+					
 	GUIs Needed:
+		Power-display GUI for flywheel, others?
 	
 	Recipes Needed:
 		ALL
@@ -77,6 +102,8 @@ automation module:
 			Distributor	(bc-compat) 1000 max, 100 in, 100 out		
 	
 npcs module
+	Add profiling stuff to mc-profiler
+	
 	all npcs will have full inventory accessibility for equipment slots	
 	
 	Teams:
