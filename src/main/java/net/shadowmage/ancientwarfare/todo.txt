@@ -36,6 +36,8 @@ modeler
 	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 	
 structures module (done for now)
+	Recipes Needed:
+		ALL (except for templates in drafting station)
 	plugins / support for other modules
 	template plugin support for gates
 	textures for drafting station, survival-mode builder block
@@ -46,48 +48,115 @@ structures module (done for now)
 
 automation module:
 	GUIs Needed:
-		
-	Target select GUI is non-functional, and/or cannot remove targets			
+	
+	Recipes Needed:
+		ALL
+	
+	worksite target select GUI is non-functional, and/or cannot remove targets
+	warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
+	mailbox side-select GUI needs cleaned up to mirror worksite side-select GUI		
+				
 	API / compat stuff:
 		add IMC-based API to add logs/saplings to forestry farm??
 		add config-based method to add logs/saplings to forestry farm??	
 	warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 		--perhaps have different methods for tile.invalidate() and onBlockBroken
-	warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
-	hand-cranked engine should output torque and/or buildcraft MJ
-		--flywheel accepts MJ input				
+	
+	Power network:
+		Generators:
+			Solid Fuel (sterling) 1e/t gen, 1000 max, 10 out
+			Water (waterwheel) 0-0.2e/t gen, 100 max, 1 out
+			NPC (hand cranked engine) 50e/work, 100 max, 1 out
+		Storage:	
+			Flywheel 10000 max, 100 in, 100 out
+		Transport:
+			Conduit 100 max, 10 in, 10 out
+			ConduitHighGrade 1000 max, 100 in, 100 out
+			Junction (bc-compat) 1000 max, 100 in, 100 out
+			Distributor	(bc-compat) 1000 max, 100 in, 100 out		
 	
 npcs module
-	worker will have 'work sites' list / work-order item, denoting which sites to work in what order/priority
-		--possibility to use a user set priority list for workers
-		--possibility to use a user set timetable for workers
-		--possibility to use a user set route for workers
+	all npcs will have full inventory accessibility for equipment slots	
+	
+	Teams:
+		All teams are derived from owning players team.
+		If owning player is not on a team, or npc is not owned, they are considered NEUTRAL.  
+		Neutral will not attack other teams, but will defend themselves vs attacks and attack 'bandits'. 
+		Bandits / hostile NPCs will not be part of the team system and will have customized AI
+		Combat npcs will attack other combat NPCS if the attacker has a team and the target has a team, and they are not the same team
+	
+	all npcs will have an 'orders' slot
+		worker = work order
+		courer = routing slip
+		combat = combat order
+		
+		orders item has slot to set upkeep point?
+		
+		Work Order:
+			3 settings - Priority, Timed, Route
+			List of work-sites denotes what sites to work.  Setting type denotes when to go to the next worksite and what the next site will be.
+		Routing Slip:
+			Works pretty much like AW1
+		Combat Order:
+			Set custom team / player aggro controls
+			Patrol path setting / guard setting
+			Ability to customize the already config-customized aggro list.
+	
+	all npcs will have a 'level'
+		they should gain experience towards this level with every successful action.
+			actions:
+				work
+				attack
+				patrol
+				route items
+				food upkeep
+		how many levels?
+		how big an effect should levels have on stats?
+		
+	all npcs will 'heal' over time on their own, slowly
+		player-owned NPCs will require upkeep be met in order to heal
+	
 	npc types
-		researcher (research)
-		craftsman (builder)
-		farmer (farms / animal farms)
-		lumberjack (tree farms / builder)
-		miner (quarries / builder)
-		courier (item routing)
-	TODO -- everything	
+		worker
+			worksite list set by item (orders slot)				
+			work type set by primary equipped item type (weapon slot)
+				miner=pickaxe
+				lumberjack=axe
+				farmer=hoe
+				craftsman=hammer
+				researcher=quill
+			work capability set by equipped item quality
+			work capability adjusted by npc 'level'
+				keep level independently per work type?
+		courier 
+			own npc type, has custom storage inventory, accepts routing slips instead of work-orders
+		combat
+			combat type set by equipped item
+				soldier=sword
+				commander=special?
+				archer=bow
+				medic=special?
+				combat engineer (repair)=hammer
+				siege engineer (vehicle driver)=axe
+			soldier damage determined by item equipped / item quality.
+			soldier damage adjusted by npc 'level'
+				keep level independently per attack type?
+			all should be capable of riding horses (and should gain a damage bonus while mounted?)
+		
+	NpcBase Class
+		Inventory Management
+		Shared AI and stats setup.
+		Upkeep base system.
+		Ownership / team base system
+		Base AI targeting setup
+		
+	NpcSubclasses
+		Individual AI setups
+		Some overrides for team status for 'hostile' NPCs
 		
 vehicles module
 	everything
-	
-Power network:
-	Generators:
-		Solid Fuel (sterling) 1e/t gen, 1000 max, 10 out
-		Water (waterwheel) 0-0.2e/t gen, 100 max, 1 out
-		NPC (hand cranked engine) 50e/work, 100 max, 1 out
-	Storage:
-		Flywheel 10000 max, 100 in, 100 out
-	Transport:
-		Conduit 100 max, 10 in, 10 out
-		ConduitHighGrade 1000 max, 100 in, 100 out
-		Junction (bc-compat) 1000 max, 100 in, 100 out
-		Distributor	(bc-compat) 1000 max, 100 in, 100 out
 		
-	
 //BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
