@@ -142,7 +142,8 @@ npcs module
 			soldier damage determined by item equipped / item quality.
 			soldier damage adjusted by npc 'level'
 				keep level independently per attack type?
-			all should be capable of riding horses (and should gain a damage bonus while mounted?)
+				
+	all npcs should be capable of riding horses -- they use it purely for transportation speed increase
 		
 	NpcBase Class
 		Inventory Management
