@@ -57,7 +57,15 @@ public WorkSiteTreeFarm()
   blocksToPlant = new ArrayList<BlockPosition>();
   blocksToFertilize = new ArrayList<BlockPosition>();
   
-  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33);
+  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33)
+    {
+    @Override
+    public void markDirty()
+      {
+      super.markDirty();
+      shouldCountResources = true;
+      }
+    };
   int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
   int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
   int[] bottomIndices = InventoryTools.getIndiceArrayForSpread(30, 3);  
@@ -89,14 +97,6 @@ public WorkSiteTreeFarm()
       }
     };
   this.inventory.setFilterForSlots(filter, bottomIndices);
-  }
-
-@Override
-protected void addWorkTargets(List<BlockPosition> targets)
-  {
-  targets.addAll(blocksToChop);
-  targets.addAll(blocksToFertilize);
-  targets.addAll(blocksToPlant);
   }
 
 private void countResources()
@@ -144,14 +144,20 @@ protected boolean processWork()
   if(!blocksToChop.isEmpty())
     {
     Iterator<BlockPosition> it = blocksToChop.iterator();
-    position = it.next();
-    it.remove();
-    List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwningPlayer(), position.x, position.y, position.z, 0);
-    for(ItemStack item : items)
+    while(it.hasNext() && (position=it.next())!=null)
       {
-      addStackToInventory(item, RelativeSide.TOP);
+      it.remove();
+      if(worldObj.getBlock(position.x, position.y, position.z).getMaterial()!=Material.wood)
+        {
+        continue;
+        }      
+      List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwningPlayer(), position.x, position.y, position.z, 0);
+      for(ItemStack item : items)
+        {
+        addStackToInventory(item, RelativeSide.TOP);
+        }
+      return true;      
       }
-    return true;
     }
   else if(saplingCount>0 && !blocksToPlant.isEmpty())
     {
@@ -326,12 +332,7 @@ public void readFromNBT(NBTTagCompound tag)
 @Override
 protected void fillBlocksToProcess()
   { 
-  Set<BlockPosition> targets = new HashSet<BlockPosition>();
-  targets.addAll(getUserSetTargets());  
-  targets.removeAll(blocksToChop);
-  targets.removeAll(blocksToFertilize);
-  targets.removeAll(blocksToPlant);
-  blocksToUpdate.addAll(targets);  
+  blocksToUpdate.addAll(getUserSetTargets());  
   }
 
 @Override

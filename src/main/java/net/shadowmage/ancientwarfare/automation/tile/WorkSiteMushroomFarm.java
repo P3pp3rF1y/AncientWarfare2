@@ -43,7 +43,15 @@ public WorkSiteMushroomFarm()
   blocksToPlantMushroom = new HashSet<BlockPosition>();
   blocksToPlantNetherWart = new HashSet<BlockPosition>();
   
-  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 30);
+  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 30)
+    {
+    @Override
+    public void markDirty()
+      {
+      super.markDirty();
+      shouldCountResources = true;
+      }
+    };
   int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
   int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
   this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
@@ -214,13 +222,6 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-protected void addWorkTargets(List<BlockPosition> targets)
-  {
-  targets.addAll(blocksToPlantMushroom);
-  targets.addAll(blocksToHarvest);  
-  }
-
-@Override
 public void writeClientData(NBTTagCompound tag)
   {
 
@@ -237,9 +238,6 @@ protected void fillBlocksToProcess()
   { 
   Set<BlockPosition> targets = new HashSet<BlockPosition>();
   targets.addAll(getUserSetTargets());
-  targets.removeAll(blocksToPlantMushroom);
-  targets.removeAll(blocksToHarvest);
-  targets.removeAll(blocksToPlantNetherWart);
   blocksToUpdate.addAll(targets);  
   }
 

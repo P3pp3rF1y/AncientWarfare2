@@ -23,6 +23,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -115,9 +116,15 @@ public double addEnergy(ForgeDirection from, double energy)
   }
 
 @Override
+public String toString()
+  {
+  return "Worksite Base["+storedEnergy+"]";
+  }
+
+@Override
 public double getMaxEnergy()
   {
-  return TileTorqueConduit.maxEnergy;
+  return maxEnergyStored;
   }
 
 @Override
@@ -165,7 +172,6 @@ public boolean hasUserSetTargets()
   return canUserSetBlocks;
   }
 
-//TODO change these over to SERVER only, synch them in the gui container
 public Set<BlockPosition> getUserSetTargets()
   {
   return userTargetBlocks;
@@ -237,17 +243,18 @@ public void updateEntity()
   {
   super.updateEntity();
   if(worldObj.isRemote){return;}
-  worldObj.theProfiler.startSection("AW.WorksiteTile.Update");
-  incrementalScan();  
+  worldObj.theProfiler.startSection("AWWorksite");
   if(!inventoryOverflow.isEmpty())
     {
     updateOverflowInventory();
     } 
   incrementalScan();
-  if(getEnergyStored()>=getMaxEnergy())
+  if(getEnergyStored()>=getMaxEnergy() && inventoryOverflow.isEmpty())
     {
+    AWLog.logDebug("has energy...attempting work");
     if(processWork())
       {
+      AWLog.logDebug("work processed....");
       storedEnergy -= AWAutomationStatics.energyPerWorkUnit;
       if(storedEnergy<0){storedEnergy = 0.d;}
       }    
@@ -296,15 +303,6 @@ public final boolean canWork()
 
 @Override
 public abstract boolean onBlockClicked(EntityPlayer player);
-
-/**
- * subclasses should add any work-targets they want sent to clients to this list.
- * targets will only be sent to clients if the config option sendWorkToClients==true
- * can add original/primary reference, no need to copy -- input is not changed or 
- * cached in any way only used to write out to nbt
- * @param targets
- */
-protected abstract void addWorkTargets(List<BlockPosition> targets);
 
 private final void setWorkBoundsMin(BlockPosition min)
   {
@@ -456,18 +454,6 @@ public final Packet getDescriptionPacket()
     {
     tag.setString("owner", owningPlayer);
     }
-  if(!userTargetBlocks.isEmpty())
-    {
-    NBTTagList list = new NBTTagList();
-    NBTTagCompound posTag;
-    for(BlockPosition pos : userTargetBlocks)
-      {
-      posTag = new NBTTagCompound();
-      pos.writeToNBT(posTag);
-      list.appendTag(posTag);
-      }    
-    tag.setTag("userBlocks", list);
-    }
   writeClientData(tag);
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, tag);
   }
@@ -486,28 +472,6 @@ public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt
     {
     bbMax = new BlockPosition();
     bbMax.read(tag.getCompoundTag("bbMax"));
-    }
-  if(tag.hasKey("userBlocks"))
-    {
-    userTargetBlocks.clear();
-    NBTTagList list = tag.getTagList("userBlocks", Constants.NBT.TAG_COMPOUND);
-    BlockPosition pos;
-    for(int i = 0; i < list.tagCount(); i++)
-      {
-      pos = new BlockPosition(list.getCompoundTagAt(i));
-      userTargetBlocks.add(pos);
-      }
-    }
-  if(tag.hasKey("workBlocks"))
-    {
-    clientWorkTargets.clear();
-    NBTTagList list = tag.getTagList("workBlocks", Constants.NBT.TAG_COMPOUND);
-    BlockPosition pos;
-    for(int i = 0; i < list.tagCount(); i++)
-      {
-      pos = new BlockPosition(list.getCompoundTagAt(i));
-      clientWorkTargets.add(pos);
-      }
     }
   readClientData(tag);
   }

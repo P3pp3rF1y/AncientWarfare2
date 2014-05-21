@@ -48,7 +48,15 @@ public WorkSiteReedFarm()
   reedToPlant = new HashSet<BlockPosition>();
   blocksToHarvest = new HashSet<BlockPosition>();
   
-  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33);
+  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33)
+    {
+    @Override
+    public void markDirty()
+      {
+      super.markDirty();
+      shouldCountResources = true;
+      }
+    };
   int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
   int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
   int[] bottomIndices = InventoryTools.getIndiceArrayForSpread(30, 3);  
@@ -346,15 +354,6 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-protected void addWorkTargets(List<BlockPosition> targets)
-  {
-  targets.addAll(blocksToHarvest);
-  targets.addAll(cactusToPlant);
-  targets.addAll(cocoaToPlant);
-  targets.addAll(reedToPlant);
-  }
-
-@Override
 public void writeClientData(NBTTagCompound tag)
   {
 
@@ -371,10 +370,6 @@ protected void fillBlocksToProcess()
   { 
   Set<BlockPosition> targets = new HashSet<BlockPosition>();
   targets.addAll(getUserSetTargets());  
-  targets.removeAll(blocksToHarvest);
-  targets.removeAll(cactusToPlant);
-  targets.removeAll(reedToPlant);
-  targets.removeAll(cocoaToPlant);
   blocksToUpdate.addAll(targets);  
   }
 

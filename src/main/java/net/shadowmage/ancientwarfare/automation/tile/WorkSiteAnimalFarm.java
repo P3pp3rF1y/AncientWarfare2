@@ -59,7 +59,15 @@ public WorkSiteAnimalFarm()
   this.canUpdate = true;
   this.shouldCountResources = true;  
   
-  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33);
+  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33)
+    {
+    @Override
+    public void markDirty()
+      {
+      super.markDirty();
+      shouldCountResources = true;
+      }
+    };
   int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
   int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
   int[] bottomIndices = InventoryTools.getIndiceArrayForSpread(30, 3);  
@@ -116,6 +124,10 @@ public void updateEntity()
   if(worldObj.isRemote){return;}
   if(workerRescanDelay>0){workerRescanDelay--;}
   if(shouldCountResources){countResources();}
+  if(worldObj.getWorldTime()%20==0)
+    {
+    pickupEggs();
+    }
   }
 
 private void countResources()
@@ -286,6 +298,10 @@ private void scanForCows(List<EntityAnimal> animals)
 @Override
 protected boolean processWork()
   {
+  if(workerRescanDelay<=0)
+    {
+    rescan();
+    }
   AWLog.logDebug("processing work from animal farm...");
   boolean didWork = false;
   if(!cowsToBreed.isEmpty() && wheatCount>=2)
@@ -473,12 +489,6 @@ private boolean hasAnimalWork()
 public WorkType getWorkType()
   {
   return WorkType.ANIMAL_HUSBANDRY;
-  }
-
-@Override
-protected void addWorkTargets(List<BlockPosition> targets)
-  {
-  //noop
   }
 
 @Override

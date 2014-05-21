@@ -30,15 +30,6 @@ public WorkSiteQuarry()
   this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
   }
 
-@Override
-protected void addWorkTargets(List<BlockPosition> targets)
-  {
-  if(nextPosition!=null)
-    {
-    targets.add(nextPosition);
-    }
-  }
-
 private boolean hasDoneInit = false;
 
 @Override
@@ -49,10 +40,10 @@ protected boolean processWork()
     initWorkSite();
     hasDoneInit = true;
     }
+  if(finished){return false;}
   if(validatePosition()!=currentY)
     {
     scanNextPosition();
-    if(finished){return false;}
     }  
   BlockPosition target = nextPosition;
   Block block = worldObj.getBlock(target.x, target.y, target.z);  
@@ -95,7 +86,7 @@ private void incrementPosition()
       {
       currentZ = getWorkBoundsMin().z;
       currentY--;
-      if(currentY<0)
+      if(currentY<=0)
         {
         this.finished = true;
         }

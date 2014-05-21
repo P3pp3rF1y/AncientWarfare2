@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -34,8 +32,15 @@ public WorkSiteFishFarm()
   }
 
 @Override
+protected void incrementalScan()
+  {
+  //noop on fish farm
+  }
+
+@Override
 public void updateEntity()
   {
+  super.updateEntity();
   if(waterRescanDelay>0)
     {
     waterRescanDelay--;
@@ -132,12 +137,6 @@ public boolean onBlockClicked(EntityPlayer player)
     return true;
     }
   return false;
-  }
-
-@Override
-protected void addWorkTargets(List<BlockPosition> targets)
-  {
-
   }
 
 @Override

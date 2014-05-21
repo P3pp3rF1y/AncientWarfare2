@@ -242,7 +242,7 @@ public static int getMCSideToAccess(RotationType t, int meta, RelativeSide acces
   }
 }
 
-public static final class InventorySided implements IInventory, ISidedInventory, IInventorySaveable
+public static class InventorySided implements IInventory, ISidedInventory, IInventorySaveable
 {
 
 private EnumSet<RelativeSide> validSides = EnumSet.of(RelativeSide.NONE);

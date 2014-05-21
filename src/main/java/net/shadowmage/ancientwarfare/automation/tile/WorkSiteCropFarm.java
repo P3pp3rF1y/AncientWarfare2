@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -32,8 +33,6 @@ Set<BlockPosition> blocksToTill;
 Set<BlockPosition> blocksToHarvest;
 Set<BlockPosition> blocksToPlant;
 Set<BlockPosition> blocksToFertilize;
-
-List<BlockPosition> blocksToUpdate = new ArrayList<BlockPosition>();
 
 int plantableCount;
 int bonemealCount;
@@ -50,7 +49,15 @@ public WorkSiteCropFarm()
   blocksToPlant = new HashSet<BlockPosition>();
   blocksToFertilize = new HashSet<BlockPosition>();
   
-  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33);
+  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33)
+    {
+    @Override
+    public void markDirty()
+      {
+      super.markDirty();
+      shouldCountResources = true;
+      }
+    };
   int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
   int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
   int[] bottomIndices = InventoryTools.getIndiceArrayForSpread(30, 3);  
@@ -123,29 +130,10 @@ private void countResources()
   }
 
 @Override
-protected void incrementalScan()
-  {
-  if(blocksToUpdate.isEmpty())
-    {
-   
-    }
-  if(!blocksToUpdate.isEmpty())
-    {
-    int rand = worldObj.rand.nextInt(blocksToUpdate.size());
-    BlockPosition pos = blocksToUpdate.remove(rand);
-    scanBlockPosition(pos);
-    }
-  }
-
-@Override
 protected void fillBlocksToProcess()
   { 
   Set<BlockPosition> targets = new HashSet<BlockPosition>();
   targets.addAll(getUserSetTargets());
-  targets.removeAll(blocksToFertilize);
-  targets.removeAll(blocksToHarvest);
-  targets.removeAll(blocksToPlant);
-  targets.removeAll(blocksToTill);
   blocksToUpdate.addAll(targets);  
   }
 
@@ -364,15 +352,6 @@ public boolean onBlockClicked(EntityPlayer player)
     return true;
     }
   return false;
-  }
-
-@Override
-protected void addWorkTargets(List<BlockPosition> targets)
-  {
-  targets.addAll(blocksToTill);
-  targets.addAll(blocksToHarvest);
-  targets.addAll(blocksToPlant);
-  targets.addAll(blocksToFertilize);
   }
 
 @Override
