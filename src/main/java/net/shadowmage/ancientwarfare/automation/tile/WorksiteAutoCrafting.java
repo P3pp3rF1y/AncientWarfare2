@@ -33,9 +33,7 @@ public InventoryBasic outputInventory;
 public InventoryBasic resourceInventory;
 public InventoryBasic outputSlot;
 public InventoryCrafting craftMatrix;
-private int maxWorkers = 2;
 protected String owningPlayer;
-private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
 int[] outputSlotIndices;
 int[] resourceSlotIndices;
 ItemStack[] matrixShadow = new ItemStack[9];//shadow copy of input matrix
@@ -145,6 +143,12 @@ public void updateEntity()
     hasResourcesForCraft = false;
     countResources();
     shouldUpdateInventory = false;
+    }
+  if(hasResourcesForCraft && storedEnergy==maxEnergyStored)
+    {
+    craftItem();
+    shouldUpdateInventory = true;
+    storedEnergy-=maxEnergyStored;
     }
   }
 
@@ -289,6 +293,7 @@ public void readFromNBT(NBTTagCompound tag)
   if(tag.hasKey("craftMatrix")){InventoryTools.readInventoryFromNBT(craftMatrix, tag.getCompoundTag("craftMatrix"));}
   hasResourcesForCraft = tag.getBoolean("hasResourcesForNext");
   shouldUpdateInventory = tag.getBoolean("shouldUpdateInventory");
+  storedEnergy = tag.getDouble("storedEnergy");
   }
 
 @Override
@@ -319,6 +324,7 @@ public void writeToNBT(NBTTagCompound tag)
   
   tag.setBoolean("hasResourcesForNext", hasResourcesForCraft);
   tag.setBoolean("shouldUpdateInventory", shouldUpdateInventory);
+  tag.setDouble("storedEnergy", storedEnergy);
   }
 
 /***************************************INVENTORY METHODS************************************************/

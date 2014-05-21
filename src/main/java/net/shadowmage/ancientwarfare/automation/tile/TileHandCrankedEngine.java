@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
@@ -51,6 +52,20 @@ public boolean canOutput(ForgeDirection towards)
 public String toString()
   {
   return "Hand Cranked Engine["+storedEnergy+"]";
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {  
+  super.readFromNBT(tag);
+  storedEnergy = tag.getDouble("storedEnergy");
+  }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {  
+  super.writeToNBT(tag);
+  tag.setDouble("storedEnergy", storedEnergy);
   }
 
 }

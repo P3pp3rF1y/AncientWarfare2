@@ -335,6 +335,7 @@ public void setOwnerName(String name)
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
+  tag.setDouble("storedEnergy", storedEnergy);
   if(bbMin!=null)
     {
     NBTTagCompound innerTag = new NBTTagCompound();
@@ -387,6 +388,7 @@ public void writeToNBT(NBTTagCompound tag)
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
+  storedEnergy = tag.getDouble("storedEnergy");
   if(tag.hasKey("bbMin"))
     {
     bbMin = new BlockPosition();

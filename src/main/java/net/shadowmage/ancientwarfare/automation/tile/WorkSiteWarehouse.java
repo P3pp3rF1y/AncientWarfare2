@@ -57,16 +57,16 @@ private List<TileWarehouseInput> inputToEmpty = new ArrayList<TileWarehouseInput
 int currentItemCount;//used slots--calced from item quantity map
 int currentMaxItemCount;//max number of slots -- calced from storage blocks
 
+double maxEnergyStored = 1600;
+double maxInput = 100;
+private double storedEnergy;
+
 public WorkSiteWarehouse()
   {
   bbMin = new BlockPosition();
   bbMax = new BlockPosition();
   maxWorkers = 3;
   }
-
-double maxEnergyStored = 1600;
-double maxInput = 100;
-private double storedEnergy;
 
 @Override
 public void setEnergy(double energy)
@@ -147,7 +147,12 @@ public void updateEntity()
       long t3 = (t2-t1);
       float f1 = (float)((double)t3 / 1000000.d);
       AWLog.logDebug("tilesToUpdate update time: "+(t2-t1)+"ns ("+f1+"ms)");
-      }  
+      }
+    if(hasWork() && storedEnergy==maxEnergyStored)
+      {
+      processWork();
+      storedEnergy-=maxEnergyStored;
+      }
     }  
   }
 
@@ -513,6 +518,11 @@ public void setBounds(BlockPosition p1, BlockPosition p2)
 @Override
 public boolean hasWork()
   {
+  return storedEnergy<maxEnergyStored;
+  }
+
+private boolean hasWarehouseWork()
+  {
   return (!inputToEmpty.isEmpty() && currentItemCount<currentMaxItemCount) || !outputToFill.isEmpty();
   }
 
@@ -628,7 +638,6 @@ private void processOutputWork()
         }
       }        
     }
-  AWLog.logDebug("processed output work. output set:"+outputToFill+" update set: "+tilesToUpdate);
   }
 
 
@@ -640,7 +649,6 @@ public void addViewer(ContainerWarehouseControl viewer)
     {
     viewers.add(viewer);
     }
-  AWLog.logDebug("adding viewer... now contains:"+viewers);
   }
 
 public void removeViewer(ContainerWarehouseControl viewer)
@@ -649,7 +657,6 @@ public void removeViewer(ContainerWarehouseControl viewer)
     {
     viewers.remove(viewer);
     }
-  AWLog.logDebug("removing viewer... now contains:"+viewers);
   }
 
 public void updateViewers()
@@ -668,6 +675,7 @@ public void updateViewers()
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
+  storedEnergy = tag.getDouble("storedEnergy");
   owningPlayer = tag.getString("owner");
   bbMin.read(tag.getCompoundTag("pos1"));
   bbMax.read(tag.getCompoundTag("pos2"));  
@@ -686,6 +694,7 @@ public void readFromNBT(NBTTagCompound tag)
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
+  tag.setDouble("storedEnergy", storedEnergy);
   tag.setString("owner", owningPlayer);
   tag.setTag("pos1", bbMin.writeToNBT(new NBTTagCompound()));
   tag.setTag("pos2", bbMax.writeToNBT(new NBTTagCompound()));
