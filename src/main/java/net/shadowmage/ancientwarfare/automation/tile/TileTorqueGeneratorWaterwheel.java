@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 
-public class TileTorqueGeneratorWaterwheel extends TileEntity implements ITorqueGenerator, IInteractableTile
+public class TileTorqueGeneratorWaterwheel extends TileTorqueBase implements ITorqueGenerator, IInteractableTile
 {
 
 public float rotationAngle;
@@ -21,6 +21,12 @@ public static double maxEnergy = 100;
 public static double maxOutput = 10;
 private double storedEnergy;
 private int updateTick;
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  return neighborTileCache;
+  }
 
 @Override
 public void updateEntity()

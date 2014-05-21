@@ -6,7 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTransport;
 
-public class TileTorqueConduit extends TileEntity implements ITorqueTransport
+public class TileTorqueConduit extends TileTorqueBase implements ITorqueTransport
 {
 
 public static final double maxInput = 100;
@@ -14,6 +14,12 @@ public static final double maxOutput = 100;
 public static final double maxEnergy = 1000;
 
 double storedEnergy;
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  return neighborTileCache;
+  }
 
 @Override
 public void updateEntity()

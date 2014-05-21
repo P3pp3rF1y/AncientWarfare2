@@ -6,10 +6,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 
-public class TileHandCrankedEngine extends TileEntity implements ITorqueGenerator
+public class TileHandCrankedEngine extends TileTorqueBase implements ITorqueGenerator
 {
 
 double storedEnergy = 0;
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  return neighborTileCache;
+  }
 
 @Override
 public void updateEntity()

@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueStorage;
 
 
-public class TileFlywheel extends TileEntity implements ITorqueStorage
+public class TileFlywheel extends TileTorqueBase implements ITorqueStorage
 {
 public static final double maxEnergyStored = 10000;
 public static final double maxInputPerTick = 100;
@@ -139,6 +139,12 @@ public double addEnergy(ForgeDirection from, double energy)
     return energy;    
     }
   return 0;
+  }
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  return neighborTileCache;
   }
 
 }

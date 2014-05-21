@@ -11,11 +11,17 @@ import cpw.mods.fml.common.Optional;
 
 
 @Optional.Interface(iface="buildcraft.api.power.IPowerEmitter",modid="BuildCraft|Core",striprefs=true)
-public class TileTorqueDistributor extends TileEntity implements ITorqueTransport, IPowerEmitter
+public class TileTorqueDistributor extends TileTorqueBase implements ITorqueTransport, IPowerEmitter
 {
 
 @MjBattery(maxCapacity = TileTorqueConduit.maxEnergy)
 double storedEnergy;
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  return neighborTileCache;
+  }
 
 @Override
 public void updateEntity()

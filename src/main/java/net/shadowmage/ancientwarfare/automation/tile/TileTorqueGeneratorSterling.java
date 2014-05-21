@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
-public class TileTorqueGeneratorSterling extends TileEntity implements ITorqueGenerator, IInteractableTile, IInventory
+public class TileTorqueGeneratorSterling extends TileTorqueBase implements ITorqueGenerator, IInteractableTile, IInventory
 {
 
 InventoryBasic fuelInventory = new InventoryBasic(1)
@@ -29,6 +29,12 @@ double maxOutput = 100;
 double storedEnergy = 0;
 int burnTime = 0;
 int burnTimeBase = 0;
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  return neighborTileCache;
+  }
 
 @Override
 public void updateEntity()

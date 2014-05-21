@@ -16,6 +16,7 @@ double getMaxEnergy();
 double getEnergyStored();
 double getMaxOutput();
 boolean canOutput(ForgeDirection towards);
+TileEntity[] getNeighbors();
 }
 
 public static interface ITorqueReceiver
@@ -43,6 +44,7 @@ public static void transferPower(World world, int x, int y, int z, ITorqueGenera
   {
   world.theProfiler.startSection("AWPower");
   double[] requestedEnergy = new double[6];
+  TileEntity[] tes = generator.getNeighbors();
   ITorqueReceiver[] targets = new ITorqueReceiver[6];
   TileEntity te;
   ITorqueReceiver target;
@@ -62,7 +64,7 @@ public static void transferPower(World world, int x, int y, int z, ITorqueGenera
     {
     d = ForgeDirection.getOrientation(i);
     if(!generator.canOutput(d)){continue;}
-    te = world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
+    te = tes[i];//world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
     if(te instanceof ITorqueReceiver)      
       {
       target = (ITorqueReceiver)te;

@@ -13,6 +13,11 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
+/**
+ * TODO change this over to a block that provides energy bonuses to worksites...
+ * @author Shadowmage
+ *
+ */
 public class TileMechanicalWorker extends TileEntity implements IWorker, IInteractableTile, IOwnable, ITorqueReceiver
 {
 

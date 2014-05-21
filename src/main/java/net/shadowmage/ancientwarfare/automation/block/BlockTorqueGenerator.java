@@ -6,9 +6,11 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
@@ -26,6 +28,28 @@ protected BlockTorqueGenerator(String regName)
   super(Material.rock);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
   this.setBlockName(regName);
+  }
+
+@Override
+public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ)
+  {
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof TileTorqueBase)
+    {
+    ((TileTorqueBase)te).onBlockUpdated();
+    }
+  super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
+  }
+
+@Override
+public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+  {
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof TileTorqueBase)
+    {
+    ((TileTorqueBase)te).onBlockUpdated();
+    }
+  super.onNeighborBlockChange(world, x, y, z, block);
   }
 
 @Override

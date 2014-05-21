@@ -20,7 +20,9 @@ public void transferPower(World world, int x, int y, int z, ITorqueGenerator gen
   double[] requestedEnergy = new double[6];
   
   IBatteryObject[] targets = new IBatteryObject[6];
+  TileEntity[] tes = generator.getNeighbors();
   TileEntity te;
+  
   IBatteryObject target;
   
   double maxOutput = generator.getMaxOutput();
@@ -37,7 +39,7 @@ public void transferPower(World world, int x, int y, int z, ITorqueGenerator gen
     {
     d = ForgeDirection.getOrientation(i);
     if(!generator.canOutput(d)){continue;}
-    te = world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
+    te = tes[i];//world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
     if(te instanceof ITorqueReceiver){continue;}
     target = MjAPI.getMjBattery(te);
     if(target==null){continue;}
