@@ -5,22 +5,26 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteQuarry extends TileWorksiteBounded
 {
 
 boolean finished;
+private boolean hasDoneInit = false;
+
+/**
+ * Current position within work bounds.
+ * Incremented when work is processed.
+ */
 int currentX, currentY, currentZ;//position within bounds that is the 'active' position
-BlockPosition nextPosition = new BlockPosition();
+int validateX, validateY, validateZ;
 
 public WorkSiteQuarry()
   {
@@ -29,7 +33,33 @@ public WorkSiteQuarry()
   this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
   }
 
-private boolean hasDoneInit = false;
+@Override
+protected void updateWorksite()
+  {
+  if(!hasDoneInit)
+    {
+    initWorkSite();
+    hasDoneInit = true;
+    }
+  incrementalScan();
+  }
+
+private void incrementalScan()
+  {
+  worldObj.theProfiler.startSection("Incremental Scan");
+  if(validatePosition(validateX, validateY, validateZ))
+    {
+    currentX = validateX;
+    currentY = validateY;
+    currentZ = validateZ;
+    finished = false;
+    }
+  else
+    {
+    incrementValidationPosition();
+    }
+  worldObj.theProfiler.endSection();
+  }
 
 @Override
 protected boolean processWork()
@@ -40,42 +70,46 @@ protected boolean processWork()
     hasDoneInit = true;
     }
   if(finished){return false;}
-  if(validatePosition()!=currentY)
+  /**
+   * while the current position is invalid, increment to a valid one. generally the incremental scan
+   * should have take care of this prior to processWork being called, but just in case...
+   */
+  while(!validatePosition(currentX, currentY, currentZ))
     {
-    scanNextPosition();
+    if(!incrementPosition())
+      {
+      /**
+       * if no valid position was found, set finished, exit
+       */
+      finished = true;
+      return false;
+      }
     }  
-  BlockPosition target = nextPosition;
-  Block block = worldObj.getBlock(target.x, target.y, target.z);  
-  ArrayList<ItemStack> drops = block.getDrops(worldObj, target.x, target.y, target.z, worldObj.getBlockMetadata(target.x, target.y, target.z), 0);
+  /**
+   * if made it this far, a valid position was found, break it and add blocks to inventory
+   */
+  Block block = worldObj.getBlock(currentX, currentY, currentZ);  
+  ArrayList<ItemStack> drops = block.getDrops(worldObj, currentX, currentY, currentZ, worldObj.getBlockMetadata(currentX, currentY, currentZ), 0);
   for(ItemStack stack : drops)
     {
     addStackToInventory(stack, RelativeSide.TOP);    
     }  
-  worldObj.setBlockToAir(target.x, target.y, target.z); 
-  scanNextPosition();
+  worldObj.setBlockToAir(currentX, currentY, currentZ); 
   return true;
   }
 
-/**
- * 
- * @return the Y level of the first block to be mined at currentX / currentZ
- * -1 for invalid / below currentY (will force increment to next block)
- */
-private int validatePosition()
+private boolean validatePosition(int x, int y, int z)
   {
-  for(int y = getWorkBoundsMax().y; y>=currentY; y--)
+  if(!worldObj.isAirBlock(x, y, z) && canHarvest(worldObj.getBlock(x, y, z)))
     {
-    if(!worldObj.isAirBlock(currentX, y, currentZ) && canHarvest(worldObj.getBlock(currentX, y, currentZ)))
-      {
-      return y;
-      }
+    return true;
     }
-  return -1;
+  return false;
   }
 
-private void incrementPosition()
+private boolean incrementPosition()
   {
-  if(finished){return;}
+  if(finished){return false;}
   currentX++;
   if(currentX>getWorkBoundsMax().x)
     {
@@ -87,29 +121,43 @@ private void incrementPosition()
       currentY--;
       if(currentY<=0)
         {
-        this.finished = true;
+        return false;
+        }
+      }
+    }
+  return true;
+  }
+
+private void incrementValidationPosition()
+  {
+  validateX++;
+  if(validateY>=currentY && validateZ>=currentZ && validateX>=currentX)
+    {//dont let validation pass current position    
+    validateY = getWorkBoundsMax().y;
+    validateX = getWorkBoundsMin().x;
+    validateZ = getWorkBoundsMin().z;
+    }
+  else if(validateX>getWorkBoundsMax().x)
+    {
+    validateX = getWorkBoundsMin().x;
+    validateZ++;
+    if(validateZ>getWorkBoundsMax().z)
+      {
+      validateZ = getWorkBoundsMin().z;
+      validateY--;
+      if(validateY<=0)
+        {        
+        validateY = getWorkBoundsMax().y;
+        validateX = getWorkBoundsMin().x;
+        validateZ = getWorkBoundsMin().z;
         }
       }
     }
   }
 
-private void scanNextPosition()
-  {
-  if(finished){return;}
-  int validY = -1;
-  while(validY<=0 && !finished)
-    {
-    incrementPosition();
-    validY = validatePosition();
-    }
-  if(!finished)
-    {
-    nextPosition.reassign(currentX, currentY, currentZ);
-    }
-  }
-
 private boolean canHarvest(Block block)
   {
+  //TODO add block-breaking exclusion list to config
   return block.getMaterial()!=Material.lava && block.getMaterial()!=Material.water && block.getBlockHardness(worldObj, currentX, currentY, currentZ)>=0;
   }
 
@@ -119,7 +167,10 @@ public void initWorkSite()
   this.currentY = this.getWorkBoundsMax().y;
   this.currentX = this.getWorkBoundsMin().x;
   this.currentZ = this.getWorkBoundsMin().z;
-  this.nextPosition.reassign(currentX, currentY, currentZ);
+  this.validateX = this.currentX;
+  this.validateY = this.currentY;
+  this.validateZ = this.currentZ;
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);//resend work-bounds change
   }
 
 @Override
@@ -127,6 +178,7 @@ public WorkType getWorkType()
   {
   return WorkType.MINING;
   }
+
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
@@ -134,8 +186,10 @@ public void readFromNBT(NBTTagCompound tag)
   currentY = tag.getInteger("currentY");
   currentX = tag.getInteger("currentX");
   currentZ = tag.getInteger("currentZ");  
+  validateX = tag.getInteger("validateX");
+  validateY = tag.getInteger("validateY");
+  validateZ = tag.getInteger("validateZ");  
   finished = tag.getBoolean("finished");
-  nextPosition.read(tag.getCompoundTag("nextPos"));
   hasDoneInit = tag.getBoolean("init");
   }
 
@@ -146,11 +200,11 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("currentY", currentY);
   tag.setInteger("currentX", currentX);
   tag.setInteger("currentZ", currentZ);
+  tag.setInteger("validateX", validateX);
+  tag.setInteger("validateY", validateY);
+  tag.setInteger("validateZ", validateZ);
   tag.setBoolean("finished", finished);
   tag.setBoolean("init", hasDoneInit);
-  NBTTagCompound posTag = new NBTTagCompound();
-  nextPosition.writeToNBT(posTag);
-  tag.setTag("nextPos", posTag);
   }
 
 @Override
@@ -170,10 +224,5 @@ protected boolean hasWorksiteWork()
   return !finished;
   }
 
-@Override
-protected void updateWorksite()
-  {
-  
-  }
 
 }
