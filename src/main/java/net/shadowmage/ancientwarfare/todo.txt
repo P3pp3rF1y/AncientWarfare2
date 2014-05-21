@@ -49,8 +49,14 @@ structures module (done for now)
 automation module:
 	Add profiling stuff to mc-profiler
 	
+	worksites that need work:
+	
 	worksites needed:
 		Smeltery multiblock -- ore processing
+			Smeltery control block (worksite)
+			Smeltery heater/smelting block
+			Smeltery input block
+			Smeltery output block
 		Lumberyard multiblock -- wood processing
 	
 	Custom renders for power-states on power tiles?  Optional?
