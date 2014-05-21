@@ -13,11 +13,12 @@ public static final String resourcePath = "/assets/ancientwarfare/resources/";
 /**
  * category names
  */
-private static final String generalOptions = "a_general_options";
-private static final String serverOptions = "b_server_options";
-private static final String clientOptions = "c_client_options";
-private static final String worldGenSettings = "d_world_gen_settings";
-private static final String keybinds = "e_keybinds";
+private static final String generalOptions = "01_general_options";
+private static final String serverOptions = "02_server_options";
+private static final String clientOptions = "03_client_options";
+private static final String worldGenSettings = "04_world_gen_settings";
+private static final String keybinds = "05_keybinds";
+private static final String researchSettings = "06_research";
 
 /**
  * general options
@@ -28,11 +29,15 @@ public static boolean useResearchSystem = true;
  * server options
  */
 public static boolean fireBlockBreakEvents = true;
-public static boolean includeResearchInChests = true;//TODO add to config
+public static boolean includeResearchInChests = true;
+public static int energyPerWorkUnit = 50;
+public static int energyPerResearchUnit = 50;
 
 /**
  * client options
  */
+
+
 public static void loadConfig(Configuration config)
   {
   setCategoryNames(config);
@@ -41,7 +46,7 @@ public static void loadConfig(Configuration config)
    */
   useResearchSystem = config.get(generalOptions, "use_research_system", useResearchSystem, "Default = true\n" +
   		"If set to false, research system will be disabled and\n" +
-  		"all recipes will be available in normal crafting station.").getBoolean(useResearchSystem);
+  		"all recipes will be available in normal crafting station.").getBoolean(useResearchSystem);    
   
   /**
    * server options
@@ -52,14 +57,32 @@ public static void loadConfig(Configuration config)
   		"If left at true, block-break events will be posted for any automation or vehicles\n" +
   		"which are changing blocks in the world.  Most will use a reference to their owners-name\n" +
   		"for permissions systems.").getBoolean(fireBlockBreakEvents);
-  
+  includeResearchInChests = config.get(serverOptions, "include_research_in_chests", includeResearchInChests, "Default=true\n" +
+  		"If set to true, Research Note items will be added to dungeon-chest loot tables.\n" +
+  		"If set to false, no research will be added.\n" +
+  		"This is the global setting.  Individual research may be toggled in the Research\n" +
+  		"section of the config file.").getBoolean(includeResearchInChests);
+  energyPerWorkUnit = config.get(serverOptions, "energy_per_work_unit", energyPerWorkUnit, "Default = 50\n" +
+  		"How much Torque energy is generated per worker work tick.\n" +
+  		"This is the base number and is further adjusted per worker by worker effectiveness.\n" +
+  		"Setting to 0 or below effectively disables  workers.").getInt(energyPerWorkUnit);
+      
   /**
    * client options
    */
   
   /**
-   * world-gen options
+   * core module world-gen options
    */
+  
+  /**
+   * research settings
+   */
+  energyPerResearchUnit = config.get(researchSettings, "energy_used per_research_tick", energyPerResearchUnit, "Default = 1\n" +
+      "How much energy is consumed per research tick.\n" +
+      "Setting to 0 will eliminate the energy/worker requirements for research.\n" +
+      "Setting to higher than 1 will increase the amount of energy needed for research,\n" +
+      "increasing the amount of time/resources required for all research.").getInt(energyPerResearchUnit);
   
   config.save();
   }
@@ -68,7 +91,7 @@ private static void setCategoryNames(Configuration config)
   {
   config.addCustomCategoryComment(generalOptions, "General Options\n" +
   		"Affect both client and server.  These configs must match for client and server, or\n" +
-  		"strange things WILL happen.");
+  		"strange and probably BAD things WILL happen.");
   
   config.addCustomCategoryComment(serverOptions, "Server Options\n" +
   		"Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
@@ -86,6 +109,10 @@ private static void setCategoryNames(Configuration config)
   		"These keybinds need-not be unique -- you may bind the same key to multiple\n" +
   		"functions, or to keys used by other mods or vanilla functions.  Resolution of\n" +
   		"key conflicts is left up to the user.");
+  
+  config.addCustomCategoryComment(researchSettings, "Research Settings Section\n" +
+      "Affect both client and server.  These configs must match for client and server, or\n" +
+      "strange and probably BAD things WILL happen.");
   }
 
 }
