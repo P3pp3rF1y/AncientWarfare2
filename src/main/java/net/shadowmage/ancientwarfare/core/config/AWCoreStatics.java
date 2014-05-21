@@ -30,8 +30,8 @@ public static boolean useResearchSystem = true;
  */
 public static boolean fireBlockBreakEvents = true;
 public static boolean includeResearchInChests = true;
-public static int energyPerWorkUnit = 50;
-public static int energyPerResearchUnit = 50;
+public static double energyPerWorkUnit = 50;
+public static double energyPerResearchUnit = 1;
 
 /**
  * client options
@@ -65,7 +65,7 @@ public static void loadConfig(Configuration config)
   energyPerWorkUnit = config.get(serverOptions, "energy_per_work_unit", energyPerWorkUnit, "Default = 50\n" +
   		"How much Torque energy is generated per worker work tick.\n" +
   		"This is the base number and is further adjusted per worker by worker effectiveness.\n" +
-  		"Setting to 0 or below effectively disables  workers.").getInt(energyPerWorkUnit);
+  		"Setting to 0 or below effectively disables  workers.").getDouble(energyPerWorkUnit);
       
   /**
    * client options
@@ -82,7 +82,7 @@ public static void loadConfig(Configuration config)
       "How much energy is consumed per research tick.\n" +
       "Setting to 0 will eliminate the energy/worker requirements for research.\n" +
       "Setting to higher than 1 will increase the amount of energy needed for research,\n" +
-      "increasing the amount of time/resources required for all research.").getInt(energyPerResearchUnit);
+      "increasing the amount of time/resources required for all research.").getDouble(energyPerResearchUnit);
   
   config.save();
   }

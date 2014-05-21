@@ -26,22 +26,8 @@ import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 public class AWAutomationStatics extends ModConfiguration
 {
 
-/**
- * If true, eligible worksites will send their work-target tiles to clients.<br>
- * Potentially network intensive, should only be left enabled on small servers or in single-player.<br>
- */
-public static boolean sendWorkToClients = true;
-
-/**
- * How many energy units are produced by each worker 'work' tick<br>
- * These units are equivalent to BuildCraft MJ and used interchangeably 
- */
-public static double energyPerWorkUnit = 50;//equivalent to MJ
-
-/**
- * How often is a worksite allowed to do a forced rescan of its work-bounds?<br>
- */
-public static int automationWorkerRescanTicks = 200;
+public static int fishFarmRescanTicks = 200;
+public static int animalFarmRescanTicks = 200;
 
 /**
  * Travel time per block when sending/receiving items using the mailbox system<br>

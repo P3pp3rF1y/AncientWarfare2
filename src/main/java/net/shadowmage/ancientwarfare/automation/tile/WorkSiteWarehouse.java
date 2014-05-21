@@ -1,11 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,8 +14,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -124,7 +122,7 @@ public final boolean canUpdate()
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  storedEnergy += AWAutomationStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
   }
 
 @Override

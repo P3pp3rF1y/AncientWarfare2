@@ -9,8 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.tile.TileTorqueConduit;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -321,8 +321,7 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  //TODO fix this ref to a core-file reference
-  storedEnergy += AWAutomationStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
   }
 
 }

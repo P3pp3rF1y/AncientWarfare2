@@ -7,10 +7,10 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.tile.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -237,7 +237,7 @@ public boolean hasWorkBounds()
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  storedEnergy += AWAutomationStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
   }
 
 }

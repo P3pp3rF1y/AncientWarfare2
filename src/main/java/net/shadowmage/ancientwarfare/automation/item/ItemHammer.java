@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -78,7 +78,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
       {
       if(((IWorkSite) te).hasWork())
         {
-        ((IWorkSite) te).addEnergy(ForgeDirection.UNKNOWN, AWAutomationStatics.energyPerWorkUnit);
+        ((IWorkSite) te).addEnergy(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit);
         }
       player.addChatMessage(new ChatComponentTranslation("guistrings.automation.doing_player_work"));
       }

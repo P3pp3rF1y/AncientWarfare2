@@ -12,7 +12,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -25,7 +25,7 @@ protected String owningPlayer = "";
 
 protected ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 
-private double maxEnergyStored = AWAutomationStatics.energyPerWorkUnit;
+private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit;
 private double maxInput = maxEnergyStored;
 private double storedEnergy;
 
@@ -136,11 +136,11 @@ public void updateEntity()
   worldObj.theProfiler.endStartSection("Check For Work");
   boolean hasWork = hasWork();
   worldObj.theProfiler.endStartSection("Process Work");
-  if(hasWork && getEnergyStored() >= AWAutomationStatics.energyPerWorkUnit)
+  if(hasWork && getEnergyStored() >= AWCoreStatics.energyPerWorkUnit)
     {
     if(processWork())
       {
-      storedEnergy -= AWAutomationStatics.energyPerWorkUnit;
+      storedEnergy -= AWCoreStatics.energyPerWorkUnit;
       if(storedEnergy<0){storedEnergy = 0.d;}
       }    
     }
@@ -152,7 +152,7 @@ public void updateEntity()
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  storedEnergy += AWAutomationStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
   }
 
 @Override
