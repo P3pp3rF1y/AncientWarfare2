@@ -103,13 +103,6 @@ public WorkSiteReedFarm()
   this.inventory.setFilterForSlots(filter, bottomIndices);  
   }
 
-@Override
-public void updateEntity()
-  {
-  super.updateEntity();
-  if(worldObj.isRemote){return;}
-  if(shouldCountResources){countResources();}
-  }
 
 @Override
 protected boolean processWork()
@@ -413,6 +406,14 @@ protected void scanBlockPosition(BlockPosition pos)
 protected boolean hasWorksiteWork()
   {
   return (reedCount>0 && !reedToPlant.isEmpty()) || (cactusCount>0 && !cactusToPlant.isEmpty()) || (cocoaCount>0 && !cocoaToPlant.isEmpty()) || !blocksToHarvest.isEmpty();
+  }
+
+@Override
+protected void updateBlockWorksite()
+  {
+  worldObj.theProfiler.startSection("Count Resources");  
+  if(shouldCountResources){countResources();}  
+  worldObj.theProfiler.endSection();
   }
 
 }

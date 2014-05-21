@@ -81,11 +81,11 @@ public WorkSiteMushroomFarm()
   }
 
 @Override
-public void updateEntity()
+protected void updateBlockWorksite()
   {
-  super.updateEntity();
-  if(worldObj.isRemote){return;}
-  if(shouldCountResources){countResources();}
+  worldObj.theProfiler.startSection("Count Resources");  
+  if(shouldCountResources){countResources();}  
+  worldObj.theProfiler.endSection();
   }
 
 private void countResources()

@@ -31,26 +31,6 @@ public WorkSiteFishFarm()
   }
 
 @Override
-public void updateEntity()
-  {
-  super.updateEntity();
-  worldObj.theProfiler.startSection("AWWorksite");
-  if(waterRescanDelay>0)
-    {
-    waterRescanDelay--;
-    }
-  if(waterRescanDelay<=0)
-    {
-    worldObj.theProfiler.startSection("WaterCount");
-    waterBlockCount = 0;
-    countWater();
-    waterRescanDelay = 200;
-    worldObj.theProfiler.endSection();
-    }
-  worldObj.theProfiler.endSection();
-  }
-
-@Override
 protected boolean processWork()
   {
   if(waterBlockCount>0)
@@ -162,6 +142,23 @@ public void openAltGui(EntityPlayer player)
 protected boolean hasWorksiteWork()
   {
   return waterBlockCount>0;
+  }
+
+@Override
+protected void updateWorksite()
+  {
+  worldObj.theProfiler.startSection("WaterCount");
+  if(waterRescanDelay>0)
+    {
+    waterRescanDelay--;
+    }
+  if(waterRescanDelay<=0)
+    {
+    waterBlockCount = 0;
+    countWater();
+    waterRescanDelay = 200;
+    }
+  worldObj.theProfiler.endSection();
   }
 
 }

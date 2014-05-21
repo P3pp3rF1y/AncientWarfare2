@@ -77,21 +77,6 @@ public WorksiteAutoCrafting()
     }
   }
 
-@Override
-public void updateEntity()
-  {  
-  super.updateEntity();
-  if(worldObj.isRemote){return;}
-  worldObj.theProfiler.startSection("AWWorksite");
-  if(shouldUpdateInventory)
-    {
-    hasResourcesForCraft = false;
-    countResources();
-    shouldUpdateInventory = false;
-    }
-  worldObj.theProfiler.endSection();
-  }
-
 private void onInventoryUpdated()
   {
   if(!worldObj.isRemote)
@@ -446,6 +431,19 @@ protected void updateOverflowInventory()
     {
     inventoryOverflow.addAll(notMerged);    
     }
+  }
+
+@Override
+protected void updateWorksite()
+  {
+  worldObj.theProfiler.startSection("CraftingInventoryCheck");
+  if(shouldUpdateInventory)
+    {
+    hasResourcesForCraft = false;
+    countResources();
+    shouldUpdateInventory = false;
+    }
+  worldObj.theProfiler.endSection();
   }
 
 }

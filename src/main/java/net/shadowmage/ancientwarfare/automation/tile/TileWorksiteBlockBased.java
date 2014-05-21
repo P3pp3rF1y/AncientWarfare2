@@ -16,16 +16,15 @@ protected abstract void fillBlocksToProcess(Collection<BlockPosition> addTo);
 
 protected abstract void scanBlockPosition(BlockPosition pos);
 
+protected abstract void updateBlockWorksite();
+
 @Override
-public void updateEntity()
+protected void updateWorksite()
   {
-  super.updateEntity();
-  if(worldObj.isRemote){return;}
-  worldObj.theProfiler.startSection("AWWorksite");
   worldObj.theProfiler.startSection("Incremental Scan");
   incrementalScan();
   worldObj.theProfiler.endSection();
-  worldObj.theProfiler.endSection();
+  updateBlockWorksite();
   }
 
 protected void incrementalScan()

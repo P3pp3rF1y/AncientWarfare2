@@ -40,6 +40,8 @@ protected abstract boolean hasWorksiteWork();
 
 protected abstract void updateOverflowInventory();
 
+protected abstract void updateWorksite();
+
 @Override
 public abstract boolean onBlockClicked(EntityPlayer player);
 
@@ -143,6 +145,7 @@ public void updateEntity()
       }    
     }
   worldObj.theProfiler.endSection();
+  updateWorksite();
   worldObj.theProfiler.endSection();
   }
 

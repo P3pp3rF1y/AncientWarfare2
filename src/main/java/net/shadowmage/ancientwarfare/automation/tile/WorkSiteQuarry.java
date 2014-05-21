@@ -170,4 +170,10 @@ protected boolean hasWorksiteWork()
   return !finished;
   }
 
+@Override
+protected void updateWorksite()
+  {
+  
+  }
+
 }

@@ -114,19 +114,6 @@ public WorkSiteAnimalFarm()
   inventory.setFilterForSlots(filter, bottomIndices);
   }
 
-@Override
-public void updateEntity()
-  {
-  super.updateEntity();
-  if(worldObj.isRemote){return;}
-  if(workerRescanDelay>0){workerRescanDelay--;}
-  if(shouldCountResources){countResources();}
-  if(worldObj.getWorldTime()%20==0)
-    {
-    pickupEggs();
-    }
-  }
-
 private void countResources()
   {
   this.shouldCountResources = false;
@@ -515,6 +502,21 @@ public Entity getEntityB(World world)
 protected boolean hasWorksiteWork()
   {
   return hasAnimalWork();
+  }
+
+@Override
+protected void updateWorksite()
+  {
+  worldObj.theProfiler.startSection("Count Resources");  
+  if(shouldCountResources){countResources();}
+  worldObj.theProfiler.endStartSection("Delay Update");
+  if(workerRescanDelay>0){workerRescanDelay--;}
+  worldObj.theProfiler.endStartSection("EggPickup");
+  if(worldObj.getWorldTime()%20==0)
+    {
+    pickupEggs();
+    }
+  worldObj.theProfiler.endSection();
   }
 
 }

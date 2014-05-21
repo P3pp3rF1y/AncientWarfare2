@@ -89,14 +89,6 @@ public WorkSiteCropFarm()
   this.inventory.setFilterForSlots(filter, bottomIndices);  
   }
 
-@Override
-public void updateEntity()
-  {
-  super.updateEntity();
-  if(worldObj.isRemote){return;}
-  if(shouldCountResources){countResources();}  
-  }
-
 private void countResources()
   {
   shouldCountResources = false;
@@ -351,6 +343,14 @@ public boolean onBlockClicked(EntityPlayer player)
 protected boolean hasWorksiteWork()
   {
   return (plantableCount > 0 && !blocksToPlant.isEmpty()) || (bonemealCount>0 && !blocksToFertilize.isEmpty()) || !blocksToTill.isEmpty() || !blocksToHarvest.isEmpty();
+  }
+
+@Override
+protected void updateBlockWorksite()
+  {
+  worldObj.theProfiler.startSection("Count Resources");  
+  if(shouldCountResources){countResources();}  
+  worldObj.theProfiler.endSection();
   }
 
 }

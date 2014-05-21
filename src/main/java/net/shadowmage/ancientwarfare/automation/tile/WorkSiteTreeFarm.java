@@ -125,18 +125,6 @@ private void countResources()
   }
 
 @Override
-public void updateEntity()
-  {
-  super.updateEntity();
-  if(worldObj.isRemote){return;}
-  if(shouldCountResources){countResources();}  
-  if(worldObj.getWorldTime()%20==0)
-    {
-    pickupSaplings();
-    }
-  }
-
-@Override
 protected boolean processWork()
   {
   BlockPosition position;
@@ -356,6 +344,19 @@ protected void scanBlockPosition(BlockPosition pos)
 protected boolean hasWorksiteWork()
   {
   return (bonemealCount>0 && !blocksToFertilize.isEmpty()) || (saplingCount>0 && !blocksToPlant.isEmpty()) || !blocksToChop.isEmpty();
+  }
+
+@Override
+protected void updateBlockWorksite()
+  {
+  worldObj.theProfiler.startSection("Count Resources");  
+  if(shouldCountResources){countResources();}  
+  worldObj.theProfiler.endStartSection("SaplingPickup");
+  if(worldObj.getWorldTime()%20==0)
+    {
+    pickupSaplings();
+    }
+  worldObj.theProfiler.endSection();
   }
 
 }
