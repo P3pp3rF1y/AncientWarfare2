@@ -1,9 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -12,21 +11,17 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.scoreboard.Team;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorksiteAutoCrafting extends TileEntity implements IInventory, IWorkSite, ISidedInventory, IInteractableTile
+public class WorksiteAutoCrafting extends TileWorksiteBase implements IInventory, IWorkSite, ISidedInventory, IInteractableTile
 {
 
 public InventoryBasic bookSlot;
@@ -34,10 +29,11 @@ public InventoryBasic outputInventory;
 public InventoryBasic resourceInventory;
 public InventoryBasic outputSlot;
 public InventoryCrafting craftMatrix;
-protected String owningPlayer;
+
 int[] outputSlotIndices;
 int[] resourceSlotIndices;
 ItemStack[] matrixShadow = new ItemStack[9];//shadow copy of input matrix
+
 boolean hasResourcesForCraft;//set from onInventoryChanged() to check if there are enough resources in input inventory to craft the next item
 boolean shouldUpdateInventory;
 
@@ -81,59 +77,6 @@ public WorksiteAutoCrafting()
     }
   }
 
-double maxEnergyStored = 1600;
-double maxInput = 100;
-private double storedEnergy;
-
-@Override
-public void setEnergy(double energy)
-  {
-  this.storedEnergy = energy;
-  }
-
-@Override
-public double addEnergy(ForgeDirection from, double energy)
-  {
-  if(canInput(from))
-    {
-    if(energy+getEnergyStored()>getMaxEnergy())
-      {
-      energy = getMaxEnergy()-getEnergyStored();
-      }
-    if(energy>getMaxInput())
-      {
-      energy = getMaxInput();
-      }
-    storedEnergy+=energy;
-    return energy;    
-    }
-  return 0;
-  }
-
-@Override
-public double getMaxEnergy()
-  {
-  return TileTorqueConduit.maxEnergy;
-  }
-
-@Override
-public double getEnergyStored()
-  {
-  return storedEnergy;
-  }
-
-@Override
-public double getMaxInput()
-  {
-  return maxInput;
-  }
-
-@Override
-public boolean canInput(ForgeDirection from)
-  {
-  return true;
-  }
-
 @Override
 public void updateEntity()
   {  
@@ -144,12 +87,6 @@ public void updateEntity()
     hasResourcesForCraft = false;
     countResources();
     shouldUpdateInventory = false;
-    }
-  if(hasResourcesForCraft && storedEnergy==maxEnergyStored)
-    {
-    craftItem();
-    shouldUpdateInventory = true;
-    storedEnergy-=maxEnergyStored;
     }
   }
 
@@ -214,15 +151,9 @@ public final void setOwningPlayer(String name)
   }
 
 @Override
-public final boolean canUpdate()
-  {
-  return true;
-  }
-
-@Override
 public boolean hasWork()
   {  
-  return outputSlot.getStackInSlot(0)!=null && hasResourcesForCraft;
+  return super.hasWork() && outputSlot.getStackInSlot(0)!=null && hasResourcesForCraft;
   }
 
 public void craftItem()
@@ -233,7 +164,7 @@ public void craftItem()
   stack = InventoryTools.mergeItemStack(outputInventory, stack, -1);
   if(stack!=null)
     {
-    InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
+    inventoryOverflow.add(stack);
     }  
   countResources();
   }
@@ -253,16 +184,6 @@ private void useResources()
 public WorkType getWorkType()
   {
   return WorkType.CRAFTING;
-  }
-
-@Override
-public final Team getTeam()
-  {  
-  if(owningPlayer!=null)
-    {
-    worldObj.getScoreboard().getPlayersTeam(owningPlayer);
-    }
-  return null;
   }
 
 @Override
@@ -294,7 +215,6 @@ public void readFromNBT(NBTTagCompound tag)
   if(tag.hasKey("craftMatrix")){InventoryTools.readInventoryFromNBT(craftMatrix, tag.getCompoundTag("craftMatrix"));}
   hasResourcesForCraft = tag.getBoolean("hasResourcesForNext");
   shouldUpdateInventory = tag.getBoolean("shouldUpdateInventory");
-  storedEnergy = tag.getDouble("storedEnergy");
   }
 
 @Override
@@ -325,7 +245,6 @@ public void writeToNBT(NBTTagCompound tag)
   
   tag.setBoolean("hasResourcesForNext", hasResourcesForCraft);
   tag.setBoolean("shouldUpdateInventory", shouldUpdateInventory);
-  tag.setDouble("storedEnergy", storedEnergy);
   }
 
 /***************************************INVENTORY METHODS************************************************/
@@ -483,9 +402,48 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public void addEnergyFromWorker(IWorker worker)
+public void setBounds(BlockPosition p1, BlockPosition p2)
   {
-  storedEnergy+=AWAutomationStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  
+  }
+
+@Override
+protected boolean processWork()
+  {
+  if(hasResourcesForCraft)
+    {
+    craftItem();
+    shouldUpdateInventory = true;
+    return true;
+    }
+  return false;
+  }
+
+@Override
+protected boolean hasWorksiteWork()
+  {
+  return hasResourcesForCraft && outputInventory.getStackInSlot(0)!=null;
+  }
+
+@Override
+protected void updateOverflowInventory()
+  {
+  List<ItemStack> notMerged = new ArrayList<ItemStack>();
+  Iterator<ItemStack> it = inventoryOverflow.iterator();
+  ItemStack stack;
+  while(it.hasNext() && (stack=it.next())!=null)
+    {
+    it.remove();
+    stack = InventoryTools.mergeItemStack(resourceInventory, stack, -1);
+    if(stack!=null)
+      {
+      notMerged.add(stack);
+      }      
+    }
+  if(!notMerged.isEmpty())
+    {
+    inventoryOverflow.addAll(notMerged);    
+    }
   }
 
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
+import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBasic;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -14,13 +14,13 @@ public class ContainerWorksiteInventorySideSelection extends ContainerBase
 {
 
 public HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<RelativeSide, RelativeSide>();
-public TileWorksiteBase worksite;
+public TileWorksiteBasic worksite;
 public InventorySided inventory;
 
 public ContainerWorksiteInventorySideSelection(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);  
-  worksite = (TileWorksiteBase) player.worldObj.getTileEntity(x, y, z);
+  worksite = (TileWorksiteBasic) player.worldObj.getTileEntity(x, y, z);
   inventory = worksite.inventory;
   
   RelativeSide rSide2;

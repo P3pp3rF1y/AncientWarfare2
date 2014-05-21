@@ -14,20 +14,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorkSiteAnimalFarm extends TileWorksiteBase
+public class WorkSiteAnimalFarm extends TileWorksiteBounded
 {
 
 int carrotCount;
@@ -56,7 +54,6 @@ List<Integer> entitiesToCull = new ArrayList<Integer>();
 
 public WorkSiteAnimalFarm()
   {
-  this.canUpdate = true;
   this.shouldCountResources = true;  
   
   this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33)
@@ -442,12 +439,6 @@ public boolean onBlockClicked(EntityPlayer player)
   return false;
   }
 
-@Override
-public boolean hasAltSetupGui()
-  {
-  return true;
-  }
-
 private void pickupEggs()
   {
   BlockPosition p1 = getWorkBoundsMin();
@@ -484,18 +475,6 @@ public WorkType getWorkType()
   }
 
 @Override
-public void writeClientData(NBTTagCompound tag)
-  {
-  //noop
-  }
-
-@Override
-public void readClientData(NBTTagCompound tag)
-  {
-  //noop
-  }
-
-@Override
 public void openAltGui(EntityPlayer player)
   {
   NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, xCoord, yCoord, zCoord);
@@ -529,18 +508,6 @@ public Entity getEntityB(World world)
   return world.getEntityByID(idB);
   }
 }
-
-@Override
-protected void fillBlocksToProcess()
-  {
-  
-  }
-
-@Override
-protected void scanBlockPosition(BlockPosition pos)
-  {
-  
-  }
 
 @Override
 protected boolean hasWorksiteWork()

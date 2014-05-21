@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -32,7 +33,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorkSiteTreeFarm extends TileWorksiteBase
+public class WorkSiteTreeFarm extends TileWorksiteUserBlocks
 {
 
 /**
@@ -50,8 +51,6 @@ List<BlockPosition> blocksToFertilize;
  */
 public WorkSiteTreeFarm()
   {
-  this.canUserSetBlocks = true;
-  this.canUpdate = true;
   
   blocksToChop = new HashSet<BlockPosition>();
   blocksToPlant = new ArrayList<BlockPosition>();
@@ -285,18 +284,6 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public void writeClientData(NBTTagCompound tag)
-  {
-
-  }
-
-@Override
-public void readClientData(NBTTagCompound tag)
-  {
-
-  }
-
-@Override
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
@@ -330,9 +317,9 @@ public void readFromNBT(NBTTagCompound tag)
   }
 
 @Override
-protected void fillBlocksToProcess()
+protected void fillBlocksToProcess(Collection<BlockPosition> targets)
   { 
-  blocksToUpdate.addAll(getUserSetTargets());  
+  targets.addAll(getUserSetTargets());  
   }
 
 @Override

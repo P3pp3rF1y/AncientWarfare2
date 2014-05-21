@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBase;
+import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteUserBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -15,14 +15,14 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 public class ContainerWorksiteBlockSelection extends ContainerBase
 {
 
-public TileWorksiteBase worksite;
+public TileWorksiteUserBlocks worksite;
 
 public Set<BlockPosition> targetBlocks = new HashSet<BlockPosition>();
 
 public ContainerWorksiteBlockSelection(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);  
-  worksite = (TileWorksiteBase) player.worldObj.getTileEntity(x, y, z);
+  worksite = (TileWorksiteUserBlocks) player.worldObj.getTileEntity(x, y, z);
   targetBlocks.addAll(worksite.getUserSetTargets());
   }
 

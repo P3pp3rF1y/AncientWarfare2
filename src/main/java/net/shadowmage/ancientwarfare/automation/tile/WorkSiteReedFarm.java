@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -13,7 +14,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -23,7 +23,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorkSiteReedFarm extends TileWorksiteBase
+public class WorkSiteReedFarm extends TileWorksiteUserBlocks
 {
 
 Set<BlockPosition> cocoaToPlant;
@@ -39,8 +39,6 @@ boolean shouldCountResources;
 
 public WorkSiteReedFarm()
   {
-  this.canUserSetBlocks = true;
-  this.canUpdate = true;
   this.shouldCountResources = true;
     
   cocoaToPlant = new HashSet<BlockPosition>();
@@ -354,23 +352,9 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public void writeClientData(NBTTagCompound tag)
-  {
-
-  }
-
-@Override
-public void readClientData(NBTTagCompound tag)
-  {
-
-  }
-
-@Override
-protected void fillBlocksToProcess()
+protected void fillBlocksToProcess(Collection<BlockPosition> targets)
   { 
-  Set<BlockPosition> targets = new HashSet<BlockPosition>();
   targets.addAll(getUserSetTargets());  
-  blocksToUpdate.addAll(targets);  
   }
 
 @Override

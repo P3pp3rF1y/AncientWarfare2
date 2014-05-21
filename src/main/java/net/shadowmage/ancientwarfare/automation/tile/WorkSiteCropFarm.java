@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -13,21 +13,18 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorkSiteCropFarm extends TileWorksiteBase
+public class WorkSiteCropFarm extends TileWorksiteUserBlocks
 {
 
 Set<BlockPosition> blocksToTill;
@@ -41,8 +38,6 @@ boolean shouldCountResources;
 
 public WorkSiteCropFarm()
   {
-  this.canUserSetBlocks = true;
-  this.canUpdate = true;
   this.shouldCountResources = true;
   
   blocksToTill = new HashSet<BlockPosition>();
@@ -131,11 +126,9 @@ private void countResources()
   }
 
 @Override
-protected void fillBlocksToProcess()
+protected void fillBlocksToProcess(Collection<BlockPosition> targets)
   { 
-  Set<BlockPosition> targets = new HashSet<BlockPosition>();
-  targets.addAll(getUserSetTargets());
-  blocksToUpdate.addAll(targets);  
+  targets.addAll(getUserSetTargets());  
   }
 
 @Override
@@ -354,19 +347,6 @@ public boolean onBlockClicked(EntityPlayer player)
     }
   return false;
   }
-
-@Override
-public void writeClientData(NBTTagCompound tag)
-  {
-
-  }
-
-@Override
-public void readClientData(NBTTagCompound tag)
-  {
-
-  }
-
 @Override
 protected boolean hasWorksiteWork()
   {

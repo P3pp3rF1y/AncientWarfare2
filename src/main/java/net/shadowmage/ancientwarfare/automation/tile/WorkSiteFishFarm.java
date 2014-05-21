@@ -6,7 +6,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -14,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorkSiteFishFarm extends TileWorksiteBase
+public class WorkSiteFishFarm extends TileWorksiteBounded
 {
 
 public boolean harvestFish = true;
@@ -26,15 +25,8 @@ private int waterRescanDelay = 0;
 
 public WorkSiteFishFarm()
   {
-  this.canUpdate = true;
   this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 27);
   this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, InventoryTools.getIndiceArrayForSpread(0, 27)); 
-  }
-
-@Override
-protected void incrementalScan()
-  {
-  //noop on fish farm
   }
 
 @Override
@@ -140,39 +132,9 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public void writeClientData(NBTTagCompound tag)
-  {
-
-  }
-
-@Override
-public void readClientData(NBTTagCompound tag)
-  {
-
-  }
-
-@Override
-public boolean hasAltSetupGui()
-  {
-  return true;
-  }
-
-@Override
 public void openAltGui(EntityPlayer player)
   {
   NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_CONTROL, xCoord, yCoord, zCoord);
-  }
-
-@Override
-protected void fillBlocksToProcess()
-  {
-  
-  }
-
-@Override
-protected void scanBlockPosition(BlockPosition pos)
-  {
-  
   }
 
 @Override

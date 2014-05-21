@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorkSiteQuarry extends TileWorksiteBase
+public class WorkSiteQuarry extends TileWorksiteBounded
 {
 
 boolean finished;
@@ -24,7 +23,6 @@ BlockPosition nextPosition = new BlockPosition();
 
 public WorkSiteQuarry()
   {
-  this.canUpdate = true;//purely event-driven, no polling
   this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 27);
   int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
   this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
@@ -128,19 +126,6 @@ public WorkType getWorkType()
   {
   return WorkType.MINING;
   }
-
-@Override
-public void writeClientData(NBTTagCompound tag)
-  {
-  
-  }
-
-@Override
-public void readClientData(NBTTagCompound tag)
-  {
-  
-  }
-
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
@@ -176,20 +161,6 @@ public boolean onBlockClicked(EntityPlayer player)
     return true;
     }
   return false;
-  }
-
-@Override
-protected void fillBlocksToProcess()
-  {
-  // TODO Auto-generated method stub
-  
-  }
-
-@Override
-protected void scanBlockPosition(BlockPosition pos)
-  {
-  // TODO Auto-generated method stub
-  
   }
 
 @Override
