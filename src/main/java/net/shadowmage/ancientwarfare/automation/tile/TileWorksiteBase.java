@@ -38,14 +38,23 @@ protected abstract boolean processWork();
 
 protected abstract boolean hasWorksiteWork();
 
+protected abstract void updateOverflowInventory();
+
 @Override
-public void setEnergy(double energy)
+public abstract boolean onBlockClicked(EntityPlayer player);
+
+@Override
+public final void setEnergy(double energy)
   {
   this.storedEnergy = energy;
+  if(this.storedEnergy>this.maxEnergyStored)
+    {
+    this.storedEnergy = this.maxEnergyStored;
+    }
   }
 
 @Override
-public double addEnergy(ForgeDirection from, double energy)
+public final double addEnergy(ForgeDirection from, double energy)
   {
   if(canInput(from))
     {
@@ -70,19 +79,19 @@ public String toString()
   }
 
 @Override
-public double getMaxEnergy()
+public final double getMaxEnergy()
   {
   return maxEnergyStored;
   }
 
 @Override
-public double getEnergyStored()
+public final double getEnergyStored()
   {
   return storedEnergy;
   }
 
 @Override
-public double getMaxInput()
+public final double getMaxInput()
   {
   return maxInput;
   }
@@ -100,7 +109,7 @@ public boolean hasWork()
   }
 
 @Override
-public String getOwnerName()
+public final String getOwnerName()
   {  
   return owningPlayer;
   }
@@ -115,13 +124,17 @@ public final boolean canUpdate()
 public void updateEntity()
   {
   super.updateEntity();
-  if(worldObj.isRemote){return;}
+  if(worldObj.isRemote){return;}  
   worldObj.theProfiler.startSection("AWWorksite");
+  worldObj.theProfiler.startSection("InventoryOverflow");
   if(!inventoryOverflow.isEmpty())
     {
     updateOverflowInventory();
     } 
-  if(hasWork() && getEnergyStored()>=getMaxEnergy())
+  worldObj.theProfiler.endStartSection("Check For Work");
+  boolean hasWork = hasWork();
+  worldObj.theProfiler.endStartSection("Process Work");
+  if(hasWork && getEnergyStored() >= AWAutomationStatics.energyPerWorkUnit)
     {
     if(processWork())
       {
@@ -129,6 +142,7 @@ public void updateEntity()
       if(storedEnergy<0){storedEnergy = 0.d;}
       }    
     }
+  worldObj.theProfiler.endSection();
   worldObj.theProfiler.endSection();
   }
 
@@ -138,18 +152,8 @@ public void addEnergyFromWorker(IWorker worker)
   storedEnergy += AWAutomationStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
   }
 
-protected abstract void updateOverflowInventory();
-
 @Override
-public abstract boolean onBlockClicked(EntityPlayer player);
-
-public final String getOwningPlayer()
-  {
-  return owningPlayer;
-  }
-
-@Override
-public void setOwnerName(String name)
+public final void setOwnerName(String name)
   {
   if(name==null){name="";}
   this.owningPlayer = name;  

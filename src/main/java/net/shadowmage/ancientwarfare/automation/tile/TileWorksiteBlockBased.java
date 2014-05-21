@@ -22,7 +22,9 @@ public void updateEntity()
   super.updateEntity();
   if(worldObj.isRemote){return;}
   worldObj.theProfiler.startSection("AWWorksite");
+  worldObj.theProfiler.startSection("Incremental Scan");
   incrementalScan();
+  worldObj.theProfiler.endSection();
   worldObj.theProfiler.endSection();
   }
 

@@ -36,9 +36,7 @@ public class WorkSiteWarehouse extends TileEntity implements IWorkSite, IInterac
 /**************************WORKSITE FIELDS******************************/
 private BlockPosition bbMin;
 private BlockPosition bbMax;
-private int maxWorkers;
 private String owningPlayer;
-private Set<IWorker> workers = Collections.newSetFromMap( new WeakHashMap<IWorker, Boolean>());
 
 /**************************WAREHOUSE FIELDS******************************/
 private boolean init = false;
@@ -66,7 +64,6 @@ public WorkSiteWarehouse()
   {
   bbMin = new BlockPosition();
   bbMax = new BlockPosition();
-  maxWorkers = 3;
   }
 
 @Override
@@ -133,6 +130,8 @@ public void addEnergyFromWorker(IWorker worker)
 @Override
 public void updateEntity()
   {
+  worldObj.theProfiler.startSection("AWWorksite");
+  worldObj.theProfiler.startSection("Warehouse");
   if(!init)
     {
     init = true;
@@ -161,6 +160,8 @@ public void updateEntity()
       storedEnergy-=maxEnergyStored;
       }
     }  
+  worldObj.theProfiler.endSection();
+  worldObj.theProfiler.endSection();
   }
 
 private void updateTiles()

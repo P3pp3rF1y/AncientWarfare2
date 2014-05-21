@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.tile;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -109,7 +110,7 @@ private void scanNextPosition()
 
 private boolean canHarvest(Block block)
   {
-  return block!=Blocks.flowing_lava && block!=Blocks.lava && block.getBlockHardness(worldObj, currentX, currentY, currentZ)>=0;
+  return block.getMaterial()!=Material.lava && block.getMaterial()!=Material.water && block.getBlockHardness(worldObj, currentX, currentY, currentZ)>=0;
   }
 
 public void initWorkSite()

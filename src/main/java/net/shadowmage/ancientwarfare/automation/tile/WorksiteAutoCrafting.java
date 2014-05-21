@@ -82,12 +82,14 @@ public void updateEntity()
   {  
   super.updateEntity();
   if(worldObj.isRemote){return;}
+  worldObj.theProfiler.startSection("AWWorksite");
   if(shouldUpdateInventory)
     {
     hasResourcesForCraft = false;
     countResources();
     shouldUpdateInventory = false;
     }
+  worldObj.theProfiler.endSection();
   }
 
 private void onInventoryUpdated()

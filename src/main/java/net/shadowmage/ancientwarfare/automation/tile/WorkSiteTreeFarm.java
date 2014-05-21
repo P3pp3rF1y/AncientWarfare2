@@ -150,7 +150,7 @@ protected boolean processWork()
         {
         continue;
         }      
-      List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwningPlayer(), position.x, position.y, position.z, 0);
+      List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwnerName(), position.x, position.y, position.z, 0);
       for(ItemStack item : items)
         {
         addStackToInventory(item, RelativeSide.TOP);

@@ -170,6 +170,7 @@ private void countResources()
 
 private void rescan()
   {
+  worldObj.theProfiler.startSection("Animal Rescan");
   pigsToBreed.clear();
   cowsToBreed.clear();
   cowsToMilk.clear();
@@ -213,6 +214,7 @@ private void rescan()
   scanForAnimals(chickens, chickensToBreed, maxChickenCount);
   scanForAnimals(sheep, sheepToBreed, maxSheepCount);  
   workerRescanDelay = 200;
+  worldObj.theProfiler.endSection();
   }
 
 private void scanForAnimals(List<EntityAnimal> animals, List<EntityPair> targets, int maxCount)

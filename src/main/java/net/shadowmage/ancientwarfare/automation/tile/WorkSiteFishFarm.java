@@ -6,6 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -33,21 +34,25 @@ public WorkSiteFishFarm()
 public void updateEntity()
   {
   super.updateEntity();
+  worldObj.theProfiler.startSection("AWWorksite");
   if(waterRescanDelay>0)
     {
     waterRescanDelay--;
     }
+  if(waterRescanDelay<=0)
+    {
+    worldObj.theProfiler.startSection("WaterCount");
+    waterBlockCount = 0;
+    countWater();
+    waterRescanDelay = 200;
+    worldObj.theProfiler.endSection();
+    }
+  worldObj.theProfiler.endSection();
   }
 
 @Override
 protected boolean processWork()
   {
-  if(waterRescanDelay<=0)
-    {
-    waterBlockCount = 0;
-    countWater();
-    waterRescanDelay = 200;
-    }
   if(waterBlockCount>0)
     {
     int maxBlocks = 1280;
@@ -112,6 +117,22 @@ private void countWater()
         }
       }
     }
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {  
+  super.readFromNBT(tag);
+  harvestFish = tag.getBoolean("fish");
+  harvestInk = tag.getBoolean("ink");
+  }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {  
+  super.writeToNBT(tag);
+  tag.setBoolean("fish", harvestFish);
+  tag.setBoolean("ink", harvestInk);
   }
 
 @Override
