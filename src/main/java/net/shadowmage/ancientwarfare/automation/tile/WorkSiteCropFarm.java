@@ -15,6 +15,7 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
@@ -364,6 +365,12 @@ public void writeClientData(NBTTagCompound tag)
 public void readClientData(NBTTagCompound tag)
   {
 
+  }
+
+@Override
+protected boolean hasWorksiteWork()
+  {
+  return (plantableCount > 0 && !blocksToPlant.isEmpty()) || (bonemealCount>0 && !blocksToFertilize.isEmpty()) || !blocksToTill.isEmpty() || !blocksToHarvest.isEmpty();
   }
 
 }

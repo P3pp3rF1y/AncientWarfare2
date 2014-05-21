@@ -49,31 +49,13 @@ structures module (done for now)
 automation module:
 	Add profiling stuff to mc-profiler
 	
-	Add load/save of stored power / state to power-tiles
+	worksites needed:
+		Smeltery multiblock -- ore processing
+		Lumberyard multiblock -- wood processing
 	
 	Custom renders for power-states on power tiles?  Optional?
 		would require a client-side config on whether to use custom render
 		would also require a server-side config on whether to send the network data or not
-		
-	IWorker/IWorksite cleanup:
-		Need to implement a cleaner interface for workers that does not require worksites 
-			keeping a reference to their workers.
-		The original intent behind this functioning was to limit how fast work could be accomplished
-			at any given site -- but this limits the usefulness of automation methods. 
-		Possible solutions:
-			1.) Move worksites over to Torque api for power input.
-				Move workers over to torque api for power output.
-				The amount of power a worker gives to a block depends on his level / tool quality.
-				Worksites automatically rescan work bounds when 'on'.  Use redstone to 'turn off'.
-				Remove mechanical worker, or change it to a block that decreases energy use per work unit performed.
-				Most Worksites will rescan 1 block per tick, taken randomly from a set containing all of the
-					blocks in bounds.  remove that block from set.  when set is empty, refill with entire
-					work-bounds.  When a block is worked, add it directly back into the rescan set.
-				HasWork==targetBlocks!=empty && hasResources && isUnpowered				 
-			2.) The current system -works-, it just requires careful management of workers to ensure that
-					they call removeWorker() at all appropriate times.  Could possibly move over to a ticked
-					validation of workers to remove any invalid ones.
-			3.) ??
 	
 	Torque API:
 		Add double removeEnergy(ForgeDirection towards, double amount) to ITorqueGenerator
@@ -98,6 +80,20 @@ automation module:
 	warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 		--perhaps have different methods for tile.invalidate() and onBlockBroken
+
+	Worksite functionality
+		Workers should be able to tell if a worksite needs work by calling hasWork()
+		Workers need ability to add energy to worksite, adjusted by worker effectiveness
+		Worksites need method to do player work
+		Worksites need ability to add power directly from power system	
+		Worksites should attempt to process work and remove power directly after it is added from a worker?
+		-or- worksites do all work based off of power input, they maintain a small buffer of 2-3x the work-unit rate to allow for multiple workers to tick at the same time
+	
+		onUpdate:
+			incremental rescan of work area 1 block/tick for block-working worksites
+			delay-based rescan for some (fish-farm, animal farm)
+			event driven rescan when possible (quarry, warehouse, research station		
+					
 	
 	Power network:
 		Generators:

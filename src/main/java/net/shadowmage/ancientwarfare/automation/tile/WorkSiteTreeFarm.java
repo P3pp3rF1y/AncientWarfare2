@@ -365,4 +365,10 @@ protected void scanBlockPosition(BlockPosition pos)
     }
   }
 
+@Override
+protected boolean hasWorksiteWork()
+  {
+  return (bonemealCount>0 && !blocksToFertilize.isEmpty()) || (saplingCount>0 && !blocksToPlant.isEmpty()) || !blocksToChop.isEmpty();
+  }
+
 }

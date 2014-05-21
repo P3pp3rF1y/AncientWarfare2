@@ -542,4 +542,10 @@ protected void scanBlockPosition(BlockPosition pos)
   
   }
 
+@Override
+protected boolean hasWorksiteWork()
+  {
+  return hasAnimalWork();
+  }
+
 }

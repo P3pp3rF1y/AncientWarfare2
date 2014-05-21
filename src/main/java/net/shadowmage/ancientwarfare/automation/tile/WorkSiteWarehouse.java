@@ -16,6 +16,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
@@ -121,6 +122,12 @@ public boolean canInput(ForgeDirection from)
 public final boolean canUpdate()
   {
   return true;
+  }
+
+@Override
+public void addEnergyFromWorker(IWorker worker)
+  {
+  storedEnergy += AWAutomationStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
   }
 
 @Override

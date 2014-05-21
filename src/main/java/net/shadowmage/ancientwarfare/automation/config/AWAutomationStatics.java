@@ -36,7 +36,7 @@ public static boolean sendWorkToClients = true;
  * How many energy units are produced by each worker 'work' tick<br>
  * These units are equivalent to BuildCraft MJ and used interchangeably 
  */
-public static int energyPerWorkUnit = 50;//equivalent to MJ
+public static double energyPerWorkUnit = 50;//equivalent to MJ
 
 /**
  * How often is a worksite allowed to do a forced rescan of its work-bounds?<br>

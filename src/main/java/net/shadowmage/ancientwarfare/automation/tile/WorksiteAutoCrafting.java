@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -479,6 +480,12 @@ public boolean onBlockClicked(EntityPlayer player)
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, xCoord, yCoord, zCoord);
     }
   return true;
+  }
+
+@Override
+public void addEnergyFromWorker(IWorker worker)
+  {
+  storedEnergy+=AWAutomationStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
   }
 
 }

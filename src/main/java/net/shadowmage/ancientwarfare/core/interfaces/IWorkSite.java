@@ -15,6 +15,12 @@ public interface IWorkSite extends ITorqueReceiver
 public boolean hasWork();
 
 /**
+ * can be called by a worker if hasWork() returns true.
+ * @param worker
+ */
+public void addEnergyFromWorker(IWorker worker);
+
+/**
  * called by workers to validate work-type when IWorker.canWorkAt(IWorkSite) is called
  * workers should be responsible for maintaining their own list of acceptable work types
  * @return

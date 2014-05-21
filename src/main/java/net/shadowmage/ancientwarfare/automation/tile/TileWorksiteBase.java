@@ -28,6 +28,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -69,8 +70,6 @@ protected String owningPlayer = "";
 
 public InventorySided inventory;
 
-private ArrayList<BlockPosition> clientWorkTargets = new ArrayList<BlockPosition>();
-
 private ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 
 List<BlockPosition> blocksToUpdate = new ArrayList<BlockPosition>();
@@ -89,6 +88,8 @@ protected abstract boolean processWork();
 protected abstract void fillBlocksToProcess();
 
 protected abstract void scanBlockPosition(BlockPosition pos);
+
+protected abstract boolean hasWorksiteWork();
 
 @Override
 public void setEnergy(double energy)
@@ -146,9 +147,9 @@ public boolean canInput(ForgeDirection from)
   }
 
 @Override
-public final boolean hasWork()
+public boolean hasWork()
   {
-  return storedEnergy<maxEnergyStored && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);  
+  return hasWorksiteWork() && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
   }
 
 @Override
@@ -249,7 +250,7 @@ public void updateEntity()
     updateOverflowInventory();
     } 
   incrementalScan();
-  if(getEnergyStored()>=getMaxEnergy() && inventoryOverflow.isEmpty())
+  if(hasWork() && getEnergyStored()>=getMaxEnergy())
     {
     if(processWork())
       {
@@ -258,6 +259,12 @@ public void updateEntity()
       }    
     }
   worldObj.theProfiler.endSection();
+  }
+
+@Override
+public void addEnergyFromWorker(IWorker worker)
+  {
+  storedEnergy += AWAutomationStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
   }
 
 protected void incrementalScan()

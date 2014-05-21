@@ -166,16 +166,19 @@ public void openAltGui(EntityPlayer player)
 @Override
 protected void fillBlocksToProcess()
   {
-  // TODO Auto-generated method stub
   
   }
 
 @Override
 protected void scanBlockPosition(BlockPosition pos)
   {
-  // TODO Auto-generated method stub
   
   }
 
+@Override
+protected boolean hasWorksiteWork()
+  {
+  return waterBlockCount>0;
+  }
 
 }

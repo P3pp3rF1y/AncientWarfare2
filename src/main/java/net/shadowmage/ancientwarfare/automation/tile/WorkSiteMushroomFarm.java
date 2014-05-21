@@ -284,4 +284,10 @@ protected void scanBlockPosition(BlockPosition pos)
     }
   }
 
+@Override
+protected boolean hasWorksiteWork()
+  {
+  return (mushroomCount > 0 && !blocksToPlantMushroom.isEmpty()) || (netherWartCount>0 && !blocksToPlantNetherWart.isEmpty()) || !blocksToHarvest.isEmpty();
+  }
+
 }

@@ -425,4 +425,10 @@ protected void scanBlockPosition(BlockPosition pos)
     }
   }
 
+@Override
+protected boolean hasWorksiteWork()
+  {
+  return (reedCount>0 && !reedToPlant.isEmpty()) || (cactusCount>0 && !cactusToPlant.isEmpty()) || (cocoaCount>0 && !cocoaToPlant.isEmpty()) || !blocksToHarvest.isEmpty();
+  }
+
 }
