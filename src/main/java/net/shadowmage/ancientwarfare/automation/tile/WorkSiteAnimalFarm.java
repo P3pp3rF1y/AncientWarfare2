@@ -302,11 +302,9 @@ protected boolean processWork()
     {
     rescan();
     }
-  AWLog.logDebug("processing work from animal farm...");
   boolean didWork = false;
   if(!cowsToBreed.isEmpty() && wheatCount>=2)
     {
-    AWLog.logDebug("attempting breeding of cows..");
     didWork = tryBreeding(cowsToBreed);    
     if(didWork)
       {
@@ -317,7 +315,6 @@ protected boolean processWork()
     }
   if(!sheepToBreed.isEmpty() && wheatCount>=2)
     {
-    AWLog.logDebug("attempting breeding of sheep..");
     didWork = tryBreeding(sheepToBreed);
     if(didWork)
       {
@@ -328,7 +325,6 @@ protected boolean processWork()
     }
   if(!chickensToBreed.isEmpty() && seedCount>=2)
     {
-    AWLog.logDebug("attempting breeding of chickens..");
     didWork = tryBreeding(chickensToBreed);
     if(didWork)
       {
@@ -339,7 +335,6 @@ protected boolean processWork()
     }
   if(!pigsToBreed.isEmpty() && carrotCount>=2)
     {
-    AWLog.logDebug("attempting breeding of pigs..");
     didWork = tryBreeding(pigsToBreed);
     if(didWork)
       {
@@ -350,7 +345,6 @@ protected boolean processWork()
     }
   if(shears!=null && !sheepToShear.isEmpty())
     {
-    AWLog.logDebug("attempting shearing of sheep..");
     didWork = tryShearing(sheepToShear);
     if(didWork)      
       {
@@ -359,7 +353,6 @@ protected boolean processWork()
     }
   if(bucketCount>0 && !cowsToMilk.isEmpty())
     {
-    AWLog.logDebug("attempting milking of cows..");
     didWork = tryMilking(cowsToMilk);
     if(didWork)
       {
@@ -370,7 +363,6 @@ protected boolean processWork()
     }
   if(!entitiesToCull.isEmpty())
     {
-    AWLog.logDebug("attempting culling of animals..");
     if(tryCulling(entitiesToCull))
       {
       return true;

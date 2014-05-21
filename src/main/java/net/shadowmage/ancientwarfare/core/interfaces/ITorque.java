@@ -42,6 +42,7 @@ public static interface ITorqueTransport extends ITorqueGenerator, ITorqueReceiv
 
 public static void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
   {
+  world.theProfiler.startSection("AWPower");
   double[] requestedEnergy = new double[6];
   ITorqueReceiver[] targets = new ITorqueReceiver[6];
   TileEntity te;
@@ -51,6 +52,7 @@ public static void transferPower(World world, int x, int y, int z, ITorqueGenera
   if(maxOutput>generator.getEnergyStored()){maxOutput = generator.getEnergyStored();}
   if(maxOutput<1)
     {
+    world.theProfiler.endSection();
     return;
     }  
   double request;
@@ -103,10 +105,11 @@ public static void transferPower(World world, int x, int y, int z, ITorqueGenera
       request = target.addEnergy(ForgeDirection.getOrientation(i).getOpposite(), request);
       generator.setEnergy(generator.getEnergyStored()-request);
       if(target.getEnergyStored()>target.getMaxEnergy()){target.setEnergy(target.getMaxEnergy());}
-      AWLog.logDebug("transferring: "+request+" from: "+generator+" to "+target);
+//      AWLog.logDebug("transferring: "+request+" from: "+generator+" to "+target);
       }
     }
   BCProxy.instance.transferPower(world, x, y, z, generator);
+  world.theProfiler.endSection();
   }
 
 }

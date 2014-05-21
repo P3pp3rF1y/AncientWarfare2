@@ -251,10 +251,8 @@ public void updateEntity()
   incrementalScan();
   if(getEnergyStored()>=getMaxEnergy() && inventoryOverflow.isEmpty())
     {
-    AWLog.logDebug("has energy...attempting work");
     if(processWork())
       {
-      AWLog.logDebug("work processed....");
       storedEnergy -= AWAutomationStatics.energyPerWorkUnit;
       if(storedEnergy<0){storedEnergy = 0.d;}
       }    
