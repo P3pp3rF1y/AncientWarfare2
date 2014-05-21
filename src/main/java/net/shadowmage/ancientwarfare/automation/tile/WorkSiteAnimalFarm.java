@@ -399,22 +399,33 @@ private boolean tryShearing(List<Integer> targets)
 
 private boolean tryCulling(List<Integer> targets)
   {
-  Integer i = targets.remove(0);
-  Entity e = worldObj.getEntityByID(i);
-  if(!(e instanceof EntityAnimal)){return false;}
-  EntityAnimal animal = (EntityAnimal)e;
-  animal.captureDrops = true;
-  animal.captureDrops = true;
-  animal.arrowHitTimer =10;
-  animal.attackEntityFrom(DamageSource.generic, animal.getHealth()+1);
-  ItemStack stack;
-  for(EntityItem item : animal.capturedDrops)
+  int entityId;
+  Entity entity;
+  EntityAnimal animal;
+  while(!targets.isEmpty())
     {
-    stack = item.getEntityItem();
-    this.addStackToInventory(stack, RelativeSide.TOP);       
-    item.setDead();
+    entityId = targets.remove(0);
+    entity = worldObj.getEntityByID(entityId);
+    if(entity instanceof EntityAnimal)
+      {
+      animal = (EntityAnimal)entity;
+      if(animal.isInLove() || animal.getGrowingAge()<0){continue;}
+
+      animal.captureDrops = true;
+      animal.captureDrops = true;
+      animal.arrowHitTimer =10;
+      animal.attackEntityFrom(DamageSource.generic, animal.getHealth()+1);
+      ItemStack stack;
+      for(EntityItem item : animal.capturedDrops)
+        {
+        stack = item.getEntityItem();
+        this.addStackToInventory(stack, RelativeSide.TOP);       
+        item.setDead();
+        }
+      return true;
+      }
     }
-  return true;
+  return false;
   }
 
 @Override
