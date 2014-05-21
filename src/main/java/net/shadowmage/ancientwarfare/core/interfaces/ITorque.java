@@ -42,7 +42,7 @@ public static interface ITorqueTransport extends ITorqueGenerator, ITorqueReceiv
 
 public static void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
   {
-  world.theProfiler.startSection("AWPower");
+  world.theProfiler.startSection("AWPowerTransfer");
   double[] requestedEnergy = new double[6];
   TileEntity[] tes = generator.getNeighbors();
   ITorqueReceiver[] targets = new ITorqueReceiver[6];

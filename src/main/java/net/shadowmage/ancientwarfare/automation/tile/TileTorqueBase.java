@@ -20,6 +20,7 @@ public void invalidate()
  */
 public void onBlockUpdated()
   {
+  worldObj.theProfiler.startSection("AWPowerTileNeighborUpdate");
   ForgeDirection d;
   TileEntity te;
   for(int i = 0; i < 6; i++)
@@ -28,6 +29,7 @@ public void onBlockUpdated()
     te = worldObj.getTileEntity(xCoord+d.offsetX, yCoord+d.offsetY, zCoord+d.offsetZ);
     this.neighborTileCache[i] = te;
     }
+  worldObj.theProfiler.endSection();
   }
 
 }

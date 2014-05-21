@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import buildcraft.api.mj.IBatteryObject;
@@ -17,6 +16,7 @@ public class BCProxyActual extends BCProxy
 public void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
   {
   if(!(generator instanceof IPowerEmitter)){return;}
+  world.theProfiler.startSection("AW-BC-PowerUpdate");
   double[] requestedEnergy = new double[6];
   
   IBatteryObject[] targets = new IBatteryObject[6];
@@ -29,6 +29,7 @@ public void transferPower(World world, int x, int y, int z, ITorqueGenerator gen
   if(maxOutput>generator.getEnergyStored()){maxOutput = generator.getEnergyStored();}
   if(maxOutput<1)
     {
+    world.theProfiler.endSection();
     return;
     }  
   double request;
@@ -62,10 +63,10 @@ public void transferPower(World world, int x, int y, int z, ITorqueGenerator gen
       request = requestedEnergy[i];
       request *= percentFullfilled;
       request = target.addEnergy(request);
-      generator.setEnergy(generator.getEnergyStored()-request);      
-      AWLog.logDebug("transferring: "+request+" from: "+generator+" to "+target.kind()+"["+target.getEnergyStored()+"]");
+      generator.setEnergy(generator.getEnergyStored()-request);  
       }
     }
+  world.theProfiler.endSection();
   }
 
 }
