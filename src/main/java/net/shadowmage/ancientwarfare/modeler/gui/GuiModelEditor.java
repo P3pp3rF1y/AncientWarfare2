@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiFileSelect;
@@ -196,7 +196,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, Statics.configPath, false)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath, false)
         {
         @Override
         public void onFileSelected(File file)
@@ -215,7 +215,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, Statics.configPath, true)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath, true)
         {
         @Override
         public void onFileSelected(File file)
@@ -234,7 +234,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, Statics.configPath, false)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath, false)
         {
         @Override
         public void onFileSelected(File file)
@@ -253,7 +253,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, Statics.configPath, false)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath, false)
         {
         @Override
         public void onFileSelected(File file)

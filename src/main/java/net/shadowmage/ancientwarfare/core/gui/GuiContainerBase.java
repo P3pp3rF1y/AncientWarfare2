@@ -12,7 +12,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
@@ -64,7 +64,7 @@ public GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, Strin
   if(backgroundTexture!=null)
     {
     this.backgroundTextureName = backgroundTexture;
-    this.backgroundTexture = new ResourceLocation(Statics.coreModID, "textures/gui/"+backgroundTextureName);    
+    this.backgroundTexture = new ResourceLocation(AWCoreStatics.coreModID, "textures/gui/"+backgroundTextureName);    
     }
   this.player = ((ContainerBase)par1Container).player;
   }

@@ -42,7 +42,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.BlockEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 public class BlockTools
 {
@@ -483,7 +483,7 @@ public static List<ItemStack> breakBlock(World world, String playerName, int x, 
     return Collections.emptyList();
     }
   boolean dropBlock = true;
-  if(Statics.fireBlockBreakEvents)
+  if(AWCoreStatics.fireBlockBreakEvents)
     {
     BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(x, y, z, world, block, meta, AncientWarfareCore.instance.proxy.getFakePlayer((WorldServer)world, playerName));
     MinecraftForge.EVENT_BUS.post(event);

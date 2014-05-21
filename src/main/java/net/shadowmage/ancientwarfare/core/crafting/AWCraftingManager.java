@@ -14,7 +14,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 public class AWCraftingManager
 {
@@ -134,7 +134,7 @@ public RecipeResearched addRecipe(ItemStack par1ItemStack, Object ... par2ArrayO
 
   RecipeResearched recipe = new RecipeResearched(j, k, recipeItemArray, par1ItemStack);
   this.recipes.add(recipe);
-  if(!Statics.useResearchSystem)
+  if(!AWCoreStatics.useResearchSystem)
     {
     CraftingManager.getInstance().getRecipeList().add(recipe);
     }

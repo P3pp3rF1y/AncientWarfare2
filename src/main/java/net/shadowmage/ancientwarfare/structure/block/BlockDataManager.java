@@ -9,7 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 /**
@@ -55,11 +55,11 @@ public static BlockDataManager instance(){return instance;}
  */
 public void load()
   {
-  loadBlockNamesAndIDs(StringTools.getResourceLines(Statics.resourcePath+"block_name_id.csv"));
-  loadItemNamesAndIDs(StringTools.getResourceLines(Statics.resourcePath+"item_name_id.csv"));
-  loadBlockRotations(StringTools.getResourceLines(Statics.resourcePath+"block_rotations.csv"));
-  loadBlockPriorities(StringTools.getResourceLines(Statics.resourcePath+"block_priorities.csv"));
-  loadBlockItems(StringTools.getResourceLines(Statics.resourcePath+"block_items.csv"));
+  loadBlockNamesAndIDs(StringTools.getResourceLines(AWCoreStatics.resourcePath+"block_name_id.csv"));
+  loadItemNamesAndIDs(StringTools.getResourceLines(AWCoreStatics.resourcePath+"item_name_id.csv"));
+  loadBlockRotations(StringTools.getResourceLines(AWCoreStatics.resourcePath+"block_rotations.csv"));
+  loadBlockPriorities(StringTools.getResourceLines(AWCoreStatics.resourcePath+"block_priorities.csv"));
+  loadBlockItems(StringTools.getResourceLines(AWCoreStatics.resourcePath+"block_items.csv"));
   
   Set keys = Block.blockRegistry.getKeys();
   Block block;

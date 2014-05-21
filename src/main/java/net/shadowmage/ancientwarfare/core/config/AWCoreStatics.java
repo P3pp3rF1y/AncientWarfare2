@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.core.config;
 
 import net.minecraftforge.common.config.Configuration;
 
-public class Statics
+public class AWCoreStatics
 {
 
 public static final boolean DEBUG = true;

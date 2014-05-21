@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 public class TexturedRectangle extends GuiElement
@@ -28,7 +28,7 @@ public TexturedRectangle(int topLeftX, int topLeftY, int width, int height, Stri
   v1 = ((float) v) * perY;
   u2 = (float)(u + uw) * perX;
   v2 = (float)(v + vh) * perY;
-  this.texture = new ResourceLocation(Statics.coreModID, "textures/"+texture);
+  this.texture = new ResourceLocation(AWCoreStatics.coreModID, "textures/"+texture);
   }
 
 public TexturedRectangle(int topLeftX, int topLeftY, int width, int height, ResourceLocation texture, int tx, int ty, int u, int v, int uw, int vh)

@@ -5,7 +5,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
-import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
@@ -63,8 +63,8 @@ public void preInit(FMLPreInitializationEvent evt)
   
   AWLog.log("Ancient Warfare Core Pre-Init Started");
   
-  Statics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
-  Statics.loadConfig(config);
+  AWCoreStatics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
+  AWCoreStatics.loadConfig(config);
   
   
   /**

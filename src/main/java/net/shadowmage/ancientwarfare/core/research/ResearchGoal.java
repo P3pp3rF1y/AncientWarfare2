@@ -12,7 +12,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
@@ -123,9 +123,9 @@ public static void initializeResearch()
   {
   if(hasInit){return;}
   hasInit = true;
-  parseGoalNames(StringTools.getResourceLines(Statics.resourcePath+"research_data.csv")); 
-  parseGoalDependencies(StringTools.getResourceLines(Statics.resourcePath+"research_dependencies.csv"));
-  parseGoalResources(StringTools.getResourceLines(Statics.resourcePath+"research_resources.csv"));
+  parseGoalNames(StringTools.getResourceLines(AWCoreStatics.resourcePath+"research_data.csv")); 
+  parseGoalDependencies(StringTools.getResourceLines(AWCoreStatics.resourcePath+"research_dependencies.csv"));
+  parseGoalResources(StringTools.getResourceLines(AWCoreStatics.resourcePath+"research_resources.csv"));
   }
 
 private static void parseGoalNames(List<String> lines)

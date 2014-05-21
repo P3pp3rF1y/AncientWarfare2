@@ -32,7 +32,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.config.Statics;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -121,7 +121,7 @@ private void generateAt(int chunkX, int chunkZ, World world, IChunkProvider chun
   int face = rng.nextInt(4);
   StructureTemplate template = WorldGenStructureManager.instance().selectTemplateForGeneration(world, rng, x, y, z, face, AWStructureStatics.chunkSearchRadius);  
   int remainingClusterValue = WorldGenStructureManager.instance().getRemainingValue();//TODO use this to alter the random chance/range values to favor generating in clusters  
-  if(Statics.DEBUG)
+  if(AWCoreStatics.DEBUG)
     {
     AWLog.logError("Template selection took: "+(System.currentTimeMillis()-t1)+" ms.");
     }
@@ -191,7 +191,7 @@ public boolean attemptStructureGenerationAt(World world, int x, int y, int z, in
       }
     }  
   generate = template.getValidationSettings().validatePlacement(world, x, y, z, face, template, bb);
-  if(Statics.DEBUG)
+  if(AWCoreStatics.DEBUG)
     {
     AWLog.logError("validation took: "+(System.currentTimeMillis()-t1+" ms"));   
     }
@@ -199,7 +199,7 @@ public boolean attemptStructureGenerationAt(World world, int x, int y, int z, in
     {    
     t2 = System.currentTimeMillis();
     generateStructureAt(world, x, y, z, face, template, map, bb);
-    if(Statics.DEBUG)
+    if(AWCoreStatics.DEBUG)
       {
       AWLog.logError("generation took: "+(System.currentTimeMillis()-t2)+" ms");      
       }
