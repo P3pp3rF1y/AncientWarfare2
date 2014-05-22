@@ -7,7 +7,6 @@ import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheel;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileMechanicalWorker;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueDistributor;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
@@ -124,7 +123,6 @@ public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 /**
  * POWER NETWORK BLOCKS
  */
-public static final BlockMechanicalWorker mechanicalWorker = new BlockMechanicalWorker("mechanical_worker");
 public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel");
 public static final BlockTorqueConduit torqueConduit = new BlockTorqueConduit("torque_conduit");
 public static final BlockTorqueDistributor torqueDistributor = new BlockTorqueDistributor("torque_distributor");
@@ -263,12 +261,6 @@ public static void load()
   mailbox.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/mailbox_left");
   mailbox.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mailbox_right");  
 
-  GameRegistry.registerBlock(mechanicalWorker, ItemBlockOwnedRotatable.class, "mechanical_worker");
-  mechanicalWorker.setIcon(RelativeSide.TOP, "ancientwarfare:automation/mechanical_worker_top");
-  mechanicalWorker.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/mechanical_worker_bottom");
-  mechanicalWorker.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/mechanical_worker_sides");
-  GameRegistry.registerTileEntity(TileMechanicalWorker.class, "mechanical_worker_tile");
-  
   GameRegistry.registerBlock(flywheel, ItemBlockOwnedRotatable.class, "flywheel");
   GameRegistry.registerTileEntity(TileFlywheel.class, "flywheel_tile");
   flywheel.setIcon(RelativeSide.TOP, "ancientwarfare:automation/flywheel_top");
