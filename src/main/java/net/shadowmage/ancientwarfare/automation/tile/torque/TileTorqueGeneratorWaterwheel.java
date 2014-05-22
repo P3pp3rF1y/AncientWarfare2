@@ -1,28 +1,20 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import buildcraft.api.mj.MjBattery;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 
 public class TileTorqueGeneratorWaterwheel extends TileTorqueGeneratorBase implements IInteractableTile
 {
 
 public float rotationAngle;
 public float rotationSpeed;
-public static double maxEnergy = 100;
-public static double maxOutput = 10;
-@MjBattery(maxCapacity=100)
-private double storedEnergy;
 private int updateTick;
 protected TileEntity[] neighborTileCache = null;
 
@@ -132,18 +124,6 @@ private int getWaterYLevel(int x, int y, int z)
   }
 
 @Override
-public void setEnergy(double energy)
-  {
-  storedEnergy = energy;
-  }
-
-@Override
-public double getEnergyStored()
-  {
-  return storedEnergy;
-  }
-
-@Override
 public boolean canOutput(ForgeDirection towards)
   {
   return towards==ForgeDirection.getOrientation(getBlockMetadata());
@@ -153,12 +133,6 @@ public boolean canOutput(ForgeDirection towards)
 public boolean onBlockClicked(EntityPlayer player)
   {
   return false;
-  }
-
-@Override
-public String toString()
-  {
-  return "Torque Generator Waterwheel["+storedEnergy+"]";
   }
 
 }

@@ -9,22 +9,23 @@ public final class ITorque
 {
 private ITorque(){}//noop the class, it is just a container for the interfaces and static methods
 
-public static interface ITorqueGenerator
+public static interface ITorqueTile
 {
 void setEnergy(double energy);
 double getMaxEnergy();
 double getEnergyStored();
-double getMaxOutput();
-boolean canOutput(ForgeDirection towards);
-TileEntity[] getNeighbors();
 }
 
-public static interface ITorqueReceiver
+public static interface ITorqueGenerator extends ITorqueTile
+{
+TileEntity[] getNeighbors();
+double getMaxOutput();
+boolean canOutput(ForgeDirection towards);
+}
+
+public static interface ITorqueReceiver extends ITorqueTile
 {
 double addEnergy(ForgeDirection from, double energy);
-void setEnergy(double energy);
-double getMaxEnergy();
-double getEnergyStored();
 double getMaxInput();
 boolean canInput(ForgeDirection from);
 }

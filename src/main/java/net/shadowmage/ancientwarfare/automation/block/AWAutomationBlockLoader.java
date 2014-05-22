@@ -7,10 +7,10 @@ import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheel;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedEngine;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileMechanicalWorker;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueDistributor;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseCraftingStation;
@@ -311,7 +311,7 @@ public static void load()
   torqueGeneratorWaterwheel.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");
   
   GameRegistry.registerBlock(handCrankedEngine, ItemBlockOwnedRotatable.class, "hand_cranked_engine");
-  GameRegistry.registerTileEntity(TileHandCrankedEngine.class, "hand_cranked_engine_tile");
+  GameRegistry.registerTileEntity(TileTorqueGeneratorHandCranked.class, "hand_cranked_engine_tile");
 //TODO add proper textures/refs
   handCrankedEngine.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_junction_top");
   handCrankedEngine.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");

@@ -9,18 +9,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTransport;
-import buildcraft.api.mj.MjBattery;
 
-public class TileTorqueConduit extends TileTorqueTransportBase implements ITorqueTransport
+public class TileTorqueConduit extends TileTorqueTransportBase
 {
-
-public static final double maxInput = 100;
-public static final double maxOutput = 100;
-public static final double maxEnergy = 1000;
-
-@MjBattery(maxCapacity=maxEnergy)
-double storedEnergy;
 
 boolean[] connections;
 
@@ -98,24 +89,6 @@ public boolean receiveClientEvent(int a, int b)
   if(!worldObj.isRemote){return true;}
   if(a==0){readConnectionsInt(b);}  
   return true;
-  }
-
-@Override
-public double getEnergyStored()
-  {
-  return storedEnergy;
-  }
-
-@Override
-public void setEnergy(double energy)
-  {
-  this.storedEnergy = energy;
-  }
-
-@Override
-public String toString()
-  {
-  return "Torque Conduit["+storedEnergy+"]";
   }
 
 @Override

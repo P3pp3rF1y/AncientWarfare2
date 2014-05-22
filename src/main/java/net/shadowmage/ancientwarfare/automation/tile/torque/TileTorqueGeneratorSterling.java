@@ -22,8 +22,6 @@ InventoryBasic fuelInventory = new InventoryBasic(1)
     }
   };  
 
-@MjBattery(maxCapacity=1600)
-double storedEnergy = 0;
 int burnTime = 0;
 int burnTimeBase = 0;
 
@@ -51,18 +49,6 @@ public void updateEntity()
     storedEnergy++;
     burnTime--;
     }  
-  }
-
-@Override
-public void setEnergy(double energy)
-  {
-  storedEnergy = energy;
-  }
-
-@Override
-public double getEnergyStored()
-  {
-  return storedEnergy;
   }
 
 @Override
@@ -164,12 +150,6 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
   }
 
 @Override
-public String toString()
-  {
-  return "Torque Generator Sterling["+storedEnergy+"]";
-  }
-
-@Override
 public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
@@ -189,7 +169,5 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("burnTicksBase", burnTimeBase);
   tag.setTag("inventory", fuelInventory.writeToNBT(new NBTTagCompound()));
   }
-
-
 
 }
