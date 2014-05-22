@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
-public class TileTorqueGeneratorSterling extends TileTorqueGeneratorBase implements IInteractableTile, IInventory
+public class TileTorqueGeneratorSterling extends TileTorqueGeneratorBase implements IInventory
 {
 
 InventoryBasic fuelInventory = new InventoryBasic(1)

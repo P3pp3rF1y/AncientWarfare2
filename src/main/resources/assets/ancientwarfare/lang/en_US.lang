@@ -141,6 +141,8 @@ guistrings.automation.sort_type_input=Input
 guistrings.automation.sort_order=Sort Order
 guistrings.automation.ascending=Asc.
 guistrings.automation.descending=Desc.
+guistrings.automation.energy_stored=Energy Stored
+guistrings.automation.current_energy=Energy Stored: %s
 
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal
