@@ -25,8 +25,8 @@ import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueGenerator
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.render.RenderTorqueConduit;
 import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
-import net.shadowmage.ancientwarfare.automation.tile.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageBase;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;

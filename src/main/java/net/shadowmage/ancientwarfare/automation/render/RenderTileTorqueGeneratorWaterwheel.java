@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.TileTorqueGeneratorWaterwheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
 
 import org.lwjgl.opengl.GL11;
 

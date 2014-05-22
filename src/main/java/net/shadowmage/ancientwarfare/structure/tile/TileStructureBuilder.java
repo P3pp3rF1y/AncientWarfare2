@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.TileTorqueConduit;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
