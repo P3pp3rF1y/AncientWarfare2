@@ -137,12 +137,6 @@ public final void setOwningPlayer(String name)
   this.owningPlayer = name;
   }
 
-@Override
-public boolean hasWork()
-  {  
-  return super.hasWork() && outputSlot.getStackInSlot(0)!=null && hasResourcesForCraft;
-  }
-
 public void craftItem()
   {
   if(this.outputSlot.getStackInSlot(0)==null){return;}
@@ -383,6 +377,7 @@ public boolean onBlockClicked(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
     {
+    //TODO validate team status?
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, xCoord, yCoord, zCoord);
     }
   return true;
@@ -397,7 +392,7 @@ public void setBounds(BlockPosition p1, BlockPosition p2)
 @Override
 protected boolean processWork()
   {
-  if(hasResourcesForCraft)
+  if(hasResourcesForCraft && outputInventory.getStackInSlot(0)!=null)
     {
     craftItem();
     shouldUpdateInventory = true;

@@ -23,7 +23,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueReceiver
 {
 
-protected String owningPlayer;
+protected String owningPlayer = "";
 
 public InventoryBasic bookInventory = new InventoryBasic(1);
 public InventoryBasic resourceInventory = new InventoryBasic(9);
@@ -32,10 +32,6 @@ int startCheckDelay = 0;
 int startCheckDelayMax = 40;
 
 public boolean useAdjacentInventory;
-
-public TileResearchStation()
-  {
-  }
 
 double maxEnergyStored = 1600;
 double maxInput = 100;
@@ -104,11 +100,15 @@ public String getCrafterName()
 @Override
 public void updateEntity()
   {
-  if(worldObj.isRemote){return;}
-    
+  if(worldObj.isRemote){return;}    
   if(startCheckDelay>0)
     {
     startCheckDelay--;
+    }
+  if(hasWork() && storedEnergy>=AWCoreStatics.energyPerResearchUnit)
+    {
+    storedEnergy -= AWCoreStatics.energyPerResearchUnit;
+    workTick(1);
     }
   }
 
@@ -119,22 +119,17 @@ public void readFromNBT(NBTTagCompound tag)
   InventoryTools.readInventoryFromNBT(bookInventory, tag.getCompoundTag("bookInventory"));
   InventoryTools.readInventoryFromNBT(resourceInventory, tag.getCompoundTag("resourceInventory"));
   this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
+  this.storedEnergy = tag.getDouble("storedEnergy");
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
-  super.writeToNBT(tag);
-  
-  NBTTagCompound inventoryTag = new NBTTagCompound();
-  InventoryTools.writeInventoryToNBT(bookInventory, inventoryTag);
-  tag.setTag("bookInventory", inventoryTag);
-  
-  inventoryTag = new NBTTagCompound();
-  InventoryTools.writeInventoryToNBT(resourceInventory, inventoryTag);
-  tag.setTag("resourceInventory", inventoryTag);
-  
+  super.writeToNBT(tag);  
+  tag.setTag("bookInventory", InventoryTools.writeInventoryToNBT(bookInventory, new NBTTagCompound()));  
+  tag.setTag("resourceInventory", InventoryTools.writeInventoryToNBT(resourceInventory, new NBTTagCompound()));  
   tag.setBoolean("useAdjacentInventory", useAdjacentInventory);  
+  tag.setDouble("storedEnergy", storedEnergy);
   }
 
 @Override
@@ -221,11 +216,7 @@ public WorkType getWorkType()
 @Override
 public final Team getTeam()
   {  
-  if(owningPlayer!=null)
-    {
-    worldObj.getScoreboard().getPlayersTeam(owningPlayer);
-    }
-  return null;
+  return worldObj.getScoreboard().getPlayersTeam(owningPlayer);
   }
 
 @Override

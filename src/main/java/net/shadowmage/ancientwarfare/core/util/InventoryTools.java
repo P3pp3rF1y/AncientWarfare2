@@ -413,7 +413,7 @@ public static void dropInventoryInWorld(World world, IInventory localInventory, 
  * @param inventory
  * @param tag
  */
-public static void writeInventoryToNBT(IInventory inventory, NBTTagCompound tag)
+public static NBTTagCompound writeInventoryToNBT(IInventory inventory, NBTTagCompound tag)
   {
   NBTTagList itemList = new NBTTagList();
   NBTTagCompound itemTag;  
@@ -428,6 +428,7 @@ public static void writeInventoryToNBT(IInventory inventory, NBTTagCompound tag)
     itemList.appendTag(itemTag);
     }  
   tag.setTag("itemList", itemList);
+  return tag;//TODO clean up all references to this to use single-line semantics
   }
 
 /**
