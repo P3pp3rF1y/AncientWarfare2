@@ -78,7 +78,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
       {
       if(((IWorkSite) te).hasWork())
         {
-        ((IWorkSite) te).addEnergy(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit);
+        ((IWorkSite) te).addEnergyFromPlayer(player);
         }
       player.addChatMessage(new ChatComponentTranslation("guistrings.automation.doing_player_work"));
       }

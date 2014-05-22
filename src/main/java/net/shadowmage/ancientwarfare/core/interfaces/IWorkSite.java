@@ -1,10 +1,10 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-public interface IWorkSite extends ITorqueReceiver
+public interface IWorkSite
 {
 
 /**
@@ -19,6 +19,8 @@ public boolean hasWork();
  * @param worker
  */
 public void addEnergyFromWorker(IWorker worker);
+
+public void addEnergyFromPlayer(EntityPlayer player);
 
 /**
  * called by workers to validate work-type when IWorker.canWorkAt(IWorkSite) is called

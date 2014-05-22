@@ -18,7 +18,6 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCont
 import net.shadowmage.ancientwarfare.automation.tile.IControlledTile;
 import net.shadowmage.ancientwarfare.automation.tile.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
@@ -32,7 +31,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
 
-public class WorkSiteWarehouse extends TileEntity implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
+public class WorkSiteWarehouse extends TileWorksiteBase implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
 {
 
 /**************************WORKSITE FIELDS******************************/
@@ -69,56 +68,7 @@ public WorkSiteWarehouse()
   }
 
 @Override
-public void setEnergy(double energy)
-  {
-  this.storedEnergy = energy;
-  }
-
-@Override
-public double addEnergy(ForgeDirection from, double energy)
-  {
-  if(canInput(from))
-    {
-    if(energy+getEnergyStored()>getMaxEnergy())
-      {
-      energy = getMaxEnergy()-getEnergyStored();
-      }
-    if(energy>getMaxInput())
-      {
-      energy = getMaxInput();
-      }
-    storedEnergy+=energy;
-    return energy;    
-    }
-  return 0;
-  }
-
-@Override
-public double getMaxEnergy()
-  {
-  return TileTorqueConduit.maxEnergy;
-  }
-
-@Override
-public double getEnergyStored()
-  {
-  return storedEnergy;
-  }
-
-@Override
-public double getMaxInput()
-  {
-  return maxInput;
-  }
-
-@Override
 public boolean canInput(ForgeDirection from)
-  {
-  return true;
-  }
-
-@Override
-public final boolean canUpdate()
   {
   return true;
   }
@@ -504,31 +454,10 @@ public final BlockPosition getWorkBoundsMax()
   }
 
 @Override
-public final Team getTeam()
-  {  
-  if(owningPlayer!=null)
-    {
-    worldObj.getScoreboard().getPlayersTeam(owningPlayer);
-    }
-  return null;
-  }
-
-public final void setOwnerName(String name)
-  {
-  this.owningPlayer = name;
-  }
-
-@Override
 public void setBounds(BlockPosition p1, BlockPosition p2)
   {
   bbMin = p1;
   bbMax = p2;
-  }
-
-@Override
-public boolean hasWork()
-  {
-  return storedEnergy<maxEnergyStored;
   }
 
 private boolean hasWarehouseWork()
@@ -536,22 +465,26 @@ private boolean hasWarehouseWork()
   return (!inputToEmpty.isEmpty() && currentItemCount<currentMaxItemCount) || !outputToFill.isEmpty();
   }
 
-private void processWork()
+@Override
+protected boolean processWork()
   {
   long t1 = System.nanoTime();  
   if(!inputToEmpty.isEmpty())
     {
     processInputWork();
+    return true;
     }
   else if(!outputToFill.isEmpty())
     {
     processOutputWork();
+    return true;
     }
   long t2 = System.nanoTime();
   long t3 = (t2-t1);
   float f1 = (float)((double)t3 / 1000000.d);
   AWLog.logDebug("work time: "+(t2-t1)+"ns ("+f1+"ms)");
   updateViewers();
+  return false;
   }
 
 private void processInputWork()
@@ -597,19 +530,15 @@ private void processOutputWork()
   List<WarehouseItemFilter> filters;
   ItemStack toMerge;
   int filterQuantity, foundQuantity, transferQuantity, passXfer;
-  
-  AWLog.logDebug("processing output work..1");
-  
+    
   outerLoopLabel:  
   while(!outputToFill.isEmpty())
     {
-    AWLog.logDebug("processing output work..2");
     tile = outputToFill.remove(0);
     tilesToUpdate.add(tile);
     filters = tile.getFilters();
     for(WarehouseItemFilter filter : filters)
       {
-      AWLog.logDebug("processing output work..3");
       if(filter.getFilterItem()==null){continue;}
       filterQuantity = filter.getFilterQuantity();
       foundQuantity = InventoryTools.getCountOf(tile, -1, filter.getFilterItem());
@@ -623,7 +552,6 @@ private void processOutputWork()
           }
         while(transferQuantity>0)
           {
-          AWLog.logDebug("processing output work..4");
           toMerge = filter.getFilterItem().copy();
           passXfer = transferQuantity;
           if(passXfer>toMerge.getMaxStackSize())
@@ -685,8 +613,6 @@ public void updateViewers()
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  storedEnergy = tag.getDouble("storedEnergy");
-  owningPlayer = tag.getString("owner");
   bbMin.read(tag.getCompoundTag("pos1"));
   bbMax.read(tag.getCompoundTag("pos2"));  
   if(tag.hasKey("inventory"))
@@ -704,8 +630,6 @@ public void readFromNBT(NBTTagCompound tag)
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", storedEnergy);
-  tag.setString("owner", owningPlayer);
   tag.setTag("pos1", bbMin.writeToNBT(new NBTTagCompound()));
   tag.setTag("pos2", bbMax.writeToNBT(new NBTTagCompound()));
   tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
@@ -748,9 +672,109 @@ public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt
   }
 
 @Override
-public String getOwnerName()
+public int getSizeInventory()
   {
-  return owningPlayer;
+  return inventory.getSizeInventory();
+  }
+
+@Override
+public ItemStack getStackInSlot(int var1)
+  {
+  return inventory.getStackInSlot(var1);
+  }
+
+@Override
+public ItemStack decrStackSize(int var1, int var2)
+  {
+  return inventory.decrStackSize(var1, var2);
+  }
+
+@Override
+public ItemStack getStackInSlotOnClosing(int var1)
+  {
+  return inventory.getStackInSlotOnClosing(var1);
+  }
+
+@Override
+public void setInventorySlotContents(int var1, ItemStack var2)
+  {
+  inventory.setInventorySlotContents(var1, var2);
+  }
+
+@Override
+public String getInventoryName()
+  {
+  return inventory.getInventoryName();
+  }
+
+@Override
+public boolean hasCustomInventoryName()
+  {
+  return inventory.hasCustomInventoryName();
+  }
+
+@Override
+public int getInventoryStackLimit()
+  {
+  return inventory.getSizeInventory();
+  }
+
+@Override
+public boolean isUseableByPlayer(EntityPlayer var1)
+  {
+  return true;
+  }
+
+@Override
+public void openInventory()
+  {  
+  }
+
+@Override
+public void closeInventory()
+  {  
+  }
+
+@Override
+public boolean isItemValidForSlot(int var1, ItemStack var2)
+  {
+  return inventory.isItemValidForSlot(var1, var2);
+  }
+
+@Override
+public int[] getAccessibleSlotsFromSide(int var1)
+  {
+  return new int[]{};
+  }
+
+@Override
+public boolean canInsertItem(int var1, ItemStack var2, int var3)
+  {
+  return false;
+  }
+
+@Override
+public boolean canExtractItem(int var1, ItemStack var2, int var3)
+  {
+  return false;
+  }
+
+@Override
+protected boolean hasWorksiteWork()
+  {
+  return hasWarehouseWork();
+  }
+
+@Override
+protected void updateOverflowInventory()
+  {
+  
+  }
+
+@Override
+protected void updateWorksite()
+  {
+  
   }
 
 }

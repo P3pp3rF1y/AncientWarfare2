@@ -18,8 +18,9 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IBoundedTile, IOwnable
+public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IBoundedTile, IOwnable, ITorqueReceiver
 {
 protected String owningPlayer = "";
 
@@ -53,6 +54,13 @@ public final void setEnergy(double energy)
     {
     this.storedEnergy = this.maxEnergyStored;
     }
+  }
+
+@Override
+public void addEnergyFromPlayer(EntityPlayer player)
+  {
+  // TODO Auto-generated method stub
+  
   }
 
 @Override

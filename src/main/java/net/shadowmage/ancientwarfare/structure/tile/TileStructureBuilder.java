@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,16 +8,16 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
-public class TileStructureBuilder extends TileEntity implements IWorkSite
+public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorqueReceiver
 {
 
 protected String owningPlayer;
@@ -64,7 +65,7 @@ public double addEnergy(ForgeDirection from, double energy)
 @Override
 public double getMaxEnergy()
   {
-  return TileTorqueConduit.maxEnergy;
+  return maxEnergyStored;
   }
 
 @Override
@@ -238,6 +239,13 @@ public boolean hasWorkBounds()
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  }
+
+@Override
+public void addEnergyFromPlayer(EntityPlayer player)
+  {
+  // TODO Auto-generated method stub
+  
   }
 
 }

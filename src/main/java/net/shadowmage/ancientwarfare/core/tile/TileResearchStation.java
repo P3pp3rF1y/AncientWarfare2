@@ -9,8 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -20,7 +20,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileResearchStation extends TileEntity implements IWorkSite, IInventory
+public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueReceiver
 {
 
 protected String owningPlayer;
@@ -69,7 +69,7 @@ public double addEnergy(ForgeDirection from, double energy)
 @Override
 public double getMaxEnergy()
   {
-  return TileTorqueConduit.maxEnergy;
+  return maxEnergyStored;
   }
 
 @Override
@@ -322,6 +322,13 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  }
+
+@Override
+public void addEnergyFromPlayer(EntityPlayer player)
+  {
+  // TODO Auto-generated method stub
+  
   }
 
 }
