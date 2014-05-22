@@ -4,9 +4,11 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
+import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
 import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
@@ -72,6 +74,7 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * register containers
    */
+  NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_INVENTORY, ContainerNpcInventory.class);
   
   /**
    * register persistent game-data handlers

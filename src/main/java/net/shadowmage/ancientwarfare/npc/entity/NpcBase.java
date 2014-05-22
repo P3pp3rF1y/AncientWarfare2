@@ -5,8 +5,6 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.ai.EntityAIMoveIndoors;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
@@ -14,67 +12,104 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable
+public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable
 {
-
 /**
  * user-set name for this NPC -- set via name tag items or other means
  */
-private String npcName = "";
+protected String npcName = "";
+
+protected String ownerName = "";//the owner of this NPC, used for checking teams
+
+protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
+
+protected NpcLevelingStats levelingStats;
 
 /**
- * the owner of this NPC, used for checking teams
- * for HOSTILE mobs, this will="AWHOSTILE", and be unchangeable
+ * the current/custom user set texture;
  */
-private String ownerName = "";//the owner of this NPC, used for checking teams
+protected ResourceLocation texture;
 
-private String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
+protected ResourceLocation defaultTexture;
 
-private int foodValueRemaining = -1;//set to -1 to disable upkeep (used by hostile npcs, others)
-
-private int upkeepDimensionId;
-private BlockPosition upkeepPoint;
+private final ResourceLocation baseDefaultTexture;
 
 public NpcBase(World par1World)
   {
   super(par1World);
+  baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
+  levelingStats = new NpcLevelingStats(this);
+  
+  /**
+   * shared AI behaviors
+   */
   this.getNavigator().setBreakDoors(true);
   this.getNavigator().setAvoidsWater(true);
   this.tasks.addTask(0, new EntityAISwimming(this));
-//  this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-  //1 reserved for attack task for soldier npcs, used for work AI for civilians
-  this.tasks.addTask(2, new NpcAIFollowPlayer(this, 1.d, 10.f, 2.f));
-  this.tasks.addTask(3, new NpcAIGetFood(this));
-  //basic self-defense attack tasks may be placed above getFood
-  this.tasks.addTask(4, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));//this should be set to a generic 'flee' AI for civilians
-  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));
-  //all other tasks...work, etc, should go below idlewhenhungry
+  this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+  this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
+  //1--attack command should go here -- noop for non-combat NPCs, needs implemented in combat and hostile npc types
+  this.tasks.addTask(2, new NpcAIFollowPlayer(this, 1.d, 10.f, 2.f)); 
+  //3--civilian/courier 'flee' command goes here, or combat/hostile 'flee-on-low-health'
+  //4--used by player-owned for upkeep tasks
+  //5--used by player-owned for upkeep tasks
   
-  this.tasks.addTask(6, new EntityAIMoveIndoors(this));
-  this.tasks.addTask(7, new EntityAIRestrictOpenDoor(this));
-  this.tasks.addTask(8, new EntityAIOpenDoor(this, true));
-  this.tasks.addTask(9, new EntityAIMoveTowardsRestriction(this, 0.6D));  
-  this.tasks.addTask(10, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-  this.tasks.addTask(11, new EntityAIWander(this, 1.0D));
-  this.tasks.addTask(12, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+  //post-100 -- used by delayed shared tasks (stay near home, look at random stuff, wander)
+  this.tasks.addTask(100, new EntityAIMoveTowardsRestriction(this, 0.6D)); 
+  this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+  this.tasks.addTask(102, new EntityAIWander(this, 1.0D));
+  this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
   
   //target tasks
 //  this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 //  this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+  }
+
+public abstract void readAdditionalItemData(NBTTagCompound tag);
+
+public abstract void writeAddtionalItemData(NBTTagCompound tag);
+
+public ResourceLocation getDefaultTexture()
+  {
+  return defaultTexture==null ? baseDefaultTexture : defaultTexture;
+  }
+
+public ItemStack getItemToSpawn()
+  {
+  ItemStack stack = new ItemStack(AWNPCItemLoader.npcSpawner);
+  stack.setTagInfo("npcType", new NBTTagString(AWEntityRegistry.getRegistryNameFor(this.getClass())));
+  return stack;
+  }
+
+@Override
+public abstract void writeSpawnData(ByteBuf buffer);
+
+@Override
+public abstract void readSpawnData(ByteBuf additionalData);
+
+@Override
+public void onUpdate()
+  {
+  worldObj.theProfiler.startSection("AWNpcTick");
+  super.onUpdate();
+  worldObj.theProfiler.endSection();
   }
 
 @Override
@@ -102,24 +137,22 @@ protected void applyEntityAttributes()
 
 public int getFoodRemaining()
   {
-  return foodValueRemaining;
-  }
-
-@Override
-public boolean canAttackClass(Class par1Class)
-  {
-  // TODO Auto-generated method stub
-  return super.canAttackClass(par1Class);
+  return 0;
   }
 
 public BlockPosition getUpkeepPoint()
   {
-  return upkeepPoint;
+  return null;
   }
 
 public int getUpkeepDimensionId()
   {
-  return upkeepDimensionId;
+  return 0;
+  }
+
+public boolean requiresUpkeep()
+  {
+  return false;
   }
 
 @Override
@@ -160,73 +193,36 @@ public boolean allowLeashing()
   return false;
   }
 
-@Override
-protected boolean interact(EntityPlayer par1EntityPlayer)
-  {
-  if(par1EntityPlayer.worldObj.isRemote){return false;}
-  Team t = par1EntityPlayer.getTeam();
-  Team t1 = getTeam();
-  if(t==t1)
-    {
-    if(this.followingPlayerName==null)
-      {
-      this.followingPlayerName = par1EntityPlayer.getCommandSenderName();
-      AWLog.logDebug("set following player name to: "+this.followingPlayerName);      
-      }
-    else if(this.followingPlayerName.equals(par1EntityPlayer.getCommandSenderName()))
-      {
-      this.followingPlayerName = null;
-      AWLog.logDebug("set following player name to: "+this.followingPlayerName);  
-      }
-    else
-      {
-      this.followingPlayerName = par1EntityPlayer.getCommandSenderName();   
-      AWLog.logDebug("set following player name to: "+this.followingPlayerName);     
-      }
-    return true;
-    }
-  return true;
-  }
-
-public void readAdditionalItemData(NBTTagCompound tag)
-  {
-//TODO should be implemented by subclasses to read in the inventory/etc saved into item NBT from an NPC repack
-  }
-
 public void repackEntity(EntityPlayer player)
   {
-  //TODO repack into an item-stack, attempt to merge into playe inventory else drop into world.
-  }
-
-public ItemStack getItemToSpawn()
-  {
-  return null;//TODO
+  ItemStack item = this.getItemToSpawn();
+  NBTTagCompound tag = new NBTTagCompound();
+  writeAddtionalItemData(tag);
+  item.setTagInfo("npcStoredData", tag);
   }
 
 @Override
 public void readEntityFromNBT(NBTTagCompound par1nbtTagCompound)
   {
-//TODO
   super.readEntityFromNBT(par1nbtTagCompound);
+  //TODO
   }
 
 @Override
 public void writeEntityToNBT(NBTTagCompound par1nbtTagCompound)
   {
-//TODO
   super.writeEntityToNBT(par1nbtTagCompound);
+  //TODO
   }
 
-@Override
-public void writeSpawnData(ByteBuf buffer)
+public final void setTexture(ResourceLocation texture)
   {
-//TODO
+  this.texture = texture;
   }
 
-@Override
-public void readSpawnData(ByteBuf additionalData)
-  {
-//TODO
+public final ResourceLocation getTexture()
+  {  
+  return texture==null ? getDefaultTexture() : texture;
   }
 
 }

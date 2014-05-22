@@ -11,11 +11,18 @@ public class AWEntityRegistry
 public static final String NPC_TEST = "aw_npc_test";
 
 private static HashMap<String, EntityDeclaration> entityRegistrations = new HashMap<String, EntityDeclaration>();
+private static HashMap<Class, String> classToRegistration = new HashMap<Class, String>();
 
 public static void registerEntity(EntityDeclaration reg)
   {
   entityRegistrations.put(reg.entityName, reg);
+  classToRegistration.put(reg.entityClass, reg.entityName);
   cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(reg.entityClass, reg.entityName, reg.id, reg.mod, reg.trackingRange, reg.updateFrequency, reg.sendsVelocityUpdates);
+  }
+
+public static String getRegistryNameFor(Class clz)
+  {
+  return classToRegistration.get(clz);
   }
 
 public static Entity createEntity(String type, World world)
@@ -51,6 +58,10 @@ public EntityDeclaration(Class<? extends Entity> entityClass, String entityName,
 
 public abstract Entity createEntity(World world);
 
+public String getEntityName()
+  {
+  return entityName;
+  }
 }
 
 }

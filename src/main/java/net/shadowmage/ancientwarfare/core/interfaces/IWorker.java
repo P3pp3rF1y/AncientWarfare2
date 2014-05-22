@@ -21,15 +21,9 @@ public float getWorkEffectiveness();
  * return the team that this worker belongs to, null for none
  * @return
  */
-public Team getTeam();
+public Team getWorkerTeam();
 
 
 public boolean canWorkAt(WorkType type);
-
-/**
- * return a block-position denoting the location of this worker
- * @return
- */
-public BlockPosition getPosition();
 
 }

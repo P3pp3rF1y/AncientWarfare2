@@ -15,14 +15,14 @@ public NpcAIGetFood(NpcBase npc)
 public boolean shouldExecute()
   {
 //  AWLog.logDebug("npc get food shouldExecute");
-  return npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0 && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
+  return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0 && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
   }
 
 @Override
 public boolean continueExecuting()
   {
 //  AWLog.logDebug("npc get food continueExecuting");
-  return npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0;
+  return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0;
   }
 
 /**

@@ -14,14 +14,14 @@ public NpcAIIdleWhenHungry(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
-  return npc.getFoodRemaining()==0;
+  return npc.requiresUpkeep() && npc.getFoodRemaining()==0;
   }
 
 @Override
 public boolean continueExecuting()
   {
 //  AWLog.logDebug("npc idle food continueExecuting");
-  return npc.getFoodRemaining()==0;
+  return npc.requiresUpkeep() && npc.getFoodRemaining()==0;
   }
 
 /**

@@ -26,6 +26,7 @@ TEXTURES
 		hand-cranked-engine
 		sterling generator
 		waterwheel generator
+		distribution block
 	structure
 		drafting station
 		structure scanner
@@ -63,26 +64,20 @@ automation module:
 	Custom renders for power-states on power tiles?  Optional?
 		would require a client-side config on whether to use custom render
 		would also require a server-side config on whether to send the network data or not
+		would need a change in block rendering for opacity/cutaway 
+			and a TESR implemented for rendering of state
 	
 	Torque API:
 		Add input max/tick code to tiles, reset counter every tile-update.
-		Add power-loss to blocks.  The amount lost should be proportionate to the amount stored.  Something about
+		Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 			drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 		Add high-quality blocks with higher capacity and less power loss.
-		Need conduit that can turn corners // allow conduit to input from any direction, output to 1 
-			Replaces 'junction', and allows them to turn corners by default.
-			Still uses regular six-way rotatable block.
-			Will need cached field in the tile to determine what blocks it is connected to.
-				Will need to synch this to client.
-			Will require at least an IBSRH or probably more easily an TESR
 					
 	GUIs Needed:
-		Power-display GUI for flywheel, others?
 	
 	Recipes Needed:
 		ALL
 	
-	worksite target select GUI is non-functional, and/or cannot remove targets
 	warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
 	mailbox side-select GUI needs cleaned up to mirror worksite side-select GUI		
 				
@@ -120,6 +115,8 @@ automation module:
 	
 npcs module
 	Add profiling stuff to mc-profiler
+	
+	how the -F to allow for user-set textures for NPCs?
 	
 	all npcs will have full inventory accessibility for equipment slots	
 	
