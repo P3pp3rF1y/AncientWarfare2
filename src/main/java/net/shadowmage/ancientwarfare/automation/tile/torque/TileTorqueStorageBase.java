@@ -3,12 +3,12 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTransport;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueStorage;
 import buildcraft.api.power.IPowerEmitter;
 import cpw.mods.fml.common.Optional;
 
 @Optional.Interface(iface="buildcraft.api.power.IPowerEmitter",modid="BuildCraft|Core",striprefs=true)
-public abstract class TileTorqueTransportBase extends TileTorqueBase implements ITorqueTransport, IPowerEmitter
+public abstract class TileTorqueStorageBase extends TileTorqueBase implements ITorqueStorage, IPowerEmitter
 {
 
 protected double maxEnergy = 1000;
@@ -57,18 +57,6 @@ public double getMaxOutput()
 public double getMaxInput()
   {
   return maxInput;
-  }
-
-@Override
-public boolean canInput(ForgeDirection from)
-  {
-  return from!=ForgeDirection.getOrientation(getBlockMetadata());
-  }
-
-@Override
-public boolean canOutput(ForgeDirection towards)
-  {
-  return towards==ForgeDirection.getOrientation(getBlockMetadata());
   }
 
 @Override

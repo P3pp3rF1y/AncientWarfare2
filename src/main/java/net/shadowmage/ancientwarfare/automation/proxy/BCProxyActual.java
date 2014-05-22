@@ -8,9 +8,26 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import buildcraft.api.mj.IBatteryObject;
 import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerEmitter;
+import buildcraft.transport.PipeTransportPower;
+import buildcraft.transport.TileGenericPipe;
 
 public class BCProxyActual extends BCProxy
 {
+
+@Override
+public boolean isPowerPipe(World world, TileEntity te)
+  {
+  if(te==null){return false;}
+  if(te instanceof TileGenericPipe)
+    {
+    TileGenericPipe tgp = (TileGenericPipe)te;
+    if(tgp.pipe!=null && tgp.pipe.transport instanceof PipeTransportPower)
+      {
+      return true;
+      }
+    }
+  return false;
+  }
 
 @Override
 public void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)

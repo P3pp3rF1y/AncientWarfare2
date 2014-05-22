@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import java.util.ArrayList;
 import java.util.List;
 
+import buildcraft.api.mj.MjBattery;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -16,6 +18,7 @@ public static final double maxEnergyStored = 10000;
 public static final double maxInputPerTick = 100;
 public static final double maxOutputPerTick = 100;
 
+@MjBattery(maxCapacity=maxEnergyStored)
 public double storedEnergy;
 
 private List<TileFlywheel> wheelsToBalance = new ArrayList<TileFlywheel>();
@@ -75,7 +78,7 @@ public void setEnergy(double energy)
 @Override
 public boolean canInput(ForgeDirection from)
   {
-  return from==ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
+  return !canOutput(from);
   }
 
 @Override

@@ -8,9 +8,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTransport;
+import buildcraft.api.mj.MjBattery;
 
 public class TileTorqueConduit extends TileTorqueTransportBase implements ITorqueTransport
 {
@@ -19,6 +19,7 @@ public static final double maxInput = 100;
 public static final double maxOutput = 100;
 public static final double maxEnergy = 1000;
 
+@MjBattery(maxCapacity=maxEnergy)
 double storedEnergy;
 
 boolean[] connections;
@@ -26,8 +27,8 @@ boolean[] connections;
 @Override
 protected void buildNeighborCache()
   {  
-  neighborTileCache = new TileEntity[6];
   connections = new boolean[6];
+  neighborTileCache = new TileEntity[6];
   worldObj.theProfiler.startSection("AWPowerTileNeighborUpdate");
   ForgeDirection d;
   TileEntity te;
@@ -45,17 +46,12 @@ protected void buildNeighborCache()
   worldObj.theProfiler.endSection();
   }
 
-@Override
-public void onBlockUpdated()
-  {  
-  super.onBlockUpdated();
-//  int con = getConnectionsInt();
-//  worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, con);  
-  }
-
 public boolean[] getConnections()
   {
-  if(connections==null){buildNeighborCache();}
+  if(connections==null)
+    {
+    buildNeighborCache();
+    }
   return connections;
   }
 
@@ -102,13 +98,6 @@ public boolean receiveClientEvent(int a, int b)
   if(!worldObj.isRemote){return true;}
   if(a==0){readConnectionsInt(b);}  
   return true;
-  }
-
-@Override
-public void updateEntity()
-  {
-  if(worldObj.isRemote){return;}
-  ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
   }
 
 @Override

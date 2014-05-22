@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
+import buildcraft.api.mj.MjBattery;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -13,13 +14,14 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 
-public class TileTorqueGeneratorWaterwheel extends TileEntity implements ITorqueGenerator, IInteractableTile
+public class TileTorqueGeneratorWaterwheel extends TileTorqueGeneratorBase implements IInteractableTile
 {
 
 public float rotationAngle;
 public float rotationSpeed;
 public static double maxEnergy = 100;
 public static double maxOutput = 10;
+@MjBattery(maxCapacity=100)
 private double storedEnergy;
 private int updateTick;
 protected TileEntity[] neighborTileCache = null;
@@ -27,6 +29,7 @@ protected TileEntity[] neighborTileCache = null;
 @Override
 public void updateEntity()
   {
+  super.updateEntity();
   rotationAngle+=rotationSpeed*10.f;
   if(worldObj.isRemote){return;}
   if(storedEnergy>1.f)
@@ -156,79 +159,6 @@ public boolean onBlockClicked(EntityPlayer player)
 public String toString()
   {
   return "Torque Generator Waterwheel["+storedEnergy+"]";
-  }
-
-@Override
-public double getMaxEnergy()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
-
-@Override
-public double getMaxOutput()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
-
-@Override
-public TileEntity[] getNeighbors()
-  {
-  if(neighborTileCache==null){buildNeighborCache();}
-  return neighborTileCache;
-  }
-
-@Override
-public void validate()
-  {  
-  super.validate();
-  neighborTileCache = null;
-  }
-
-@Override
-public void invalidate()
-  {  
-  super.invalidate();
-  neighborTileCache = null;
-  }
-
-/**
- * should be called from the containing block when it receives a 'onNeighbotUpdate' callback 
- */
-public void onBlockUpdated()
-  {
-  AWLog.logDebug("torque tile update...");
-  buildNeighborCache();
-  }
-
-protected void buildNeighborCache()
-  {
-  this.neighborTileCache = new TileEntity[6];
-  worldObj.theProfiler.startSection("AWPowerTileNeighborUpdate");
-  ForgeDirection d;
-  TileEntity te;
-  for(int i = 0; i < 6; i++)
-    {
-    d = ForgeDirection.getOrientation(i);
-    te = worldObj.getTileEntity(xCoord+d.offsetX, yCoord+d.offsetY, zCoord+d.offsetZ);
-    this.neighborTileCache[i] = te;
-    }
-  worldObj.theProfiler.endSection();    
-  }
-
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {  
-  super.readFromNBT(tag);
-  setEnergy(tag.getDouble("storedEnergy"));
-  }
-
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {  
-  super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", getEnergyStored());
   }
 
 }
