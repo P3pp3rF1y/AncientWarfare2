@@ -3,10 +3,12 @@ package net.shadowmage.ancientwarfare.npc;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
+import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
 import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -74,6 +76,7 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * register persistent game-data handlers
    */
+  AWGameData.INSTANCE.registerSaveData(FactionData.name, FactionData.class);
   
   /**
    * register tick-handlers
