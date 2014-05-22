@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueDistributor;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueJunction;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -128,7 +127,6 @@ public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 public static final BlockMechanicalWorker mechanicalWorker = new BlockMechanicalWorker("mechanical_worker");
 public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel");
 public static final BlockTorqueConduit torqueConduit = new BlockTorqueConduit("torque_conduit");
-public static final BlockTorqueJunction torqueJunction = new BlockTorqueJunction("torque_junction");
 public static final BlockTorqueDistributor torqueDistributor = new BlockTorqueDistributor("torque_distributor");
 public static final BlockHandCrankedEngine handCrankedEngine = new BlockHandCrankedEngine("hand_cranked_engine");
 public static final BlockTorqueGenerator torqueGeneratorSterling = new BlockTorqueGenerator("torque_generator_sterling")
@@ -285,12 +283,6 @@ public static void load()
   torqueConduit.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_top");
   torqueConduit.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_bottom");
   torqueConduit.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_bottom");
-  
-  GameRegistry.registerBlock(torqueJunction, ItemBlockOwnedRotatable.class, "torque_junction");
-  GameRegistry.registerTileEntity(TileTorqueJunction.class, "torque_junction_tile");
-  torqueJunction.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_junction_top");
-  torqueJunction.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");
-  torqueJunction.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_junction_side");
   
   GameRegistry.registerBlock(torqueDistributor, ItemBlockOwnedRotatable.class, "torque_distributor");
   GameRegistry.registerTileEntity(TileTorqueDistributor.class, "torque_distributor_tile");
