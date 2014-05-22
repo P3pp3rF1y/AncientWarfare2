@@ -40,6 +40,12 @@ public boolean isOpaqueCube()
   }
 
 @Override
+public boolean isNormalCube()
+  {
+  return false;
+  }
+
+@Override
 public RotationType getRotationType()
   {
   return RotationType.SIX_WAY;

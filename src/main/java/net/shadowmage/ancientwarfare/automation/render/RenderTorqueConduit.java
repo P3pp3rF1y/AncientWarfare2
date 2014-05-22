@@ -81,87 +81,106 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
   
   if(sides[0])//down
     {
-    renderer.setOverrideBlockTexture(block.getIcon(0, 2));  
+    if(meta!=0)
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      }  
+    else
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+//      renderer.clearOverrideBlockTexture();
+      block.setBlockBounds(min2, 0.f, min2, max2, min3, max2);      
+      renderer.setRenderBoundsFromBlock(block);
+      renderer.renderStandardBlock(block, x, y, z);
+      }
     block.setBlockBounds(min, 0, min, max, min, max);
     renderer.setRenderBoundsFromBlock(block);
     renderer.renderStandardBlock(block, x, y, z);
-    if(meta==0)
-      {
-      renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(min2, -0.01f, min2, max2, min3, max2);      
-      renderer.setRenderBoundsFromBlock(block);
-      renderer.renderStandardBlock(block, x, y, z);
-      }//renderoutputlip
     }
   if(sides[1])//up
     {
-    renderer.setOverrideBlockTexture(block.getIcon(0, 2));  
+    if(meta!=1)
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      }  
+    else
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+      block.setBlockBounds(min2, max3, min2, max2, 1.0f, max2);
+      renderer.setRenderBoundsFromBlock(block);
+      renderer.renderStandardBlock(block, x, y, z);
+      }
     block.setBlockBounds(min, max, min, max, 1, max);
     renderer.setRenderBoundsFromBlock(block);
     renderer.renderStandardBlock(block, x, y, z);
-    if(meta==1)
-      {
-      renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(min2, max3, min2, max2, 1.01f, max2);
-      renderer.setRenderBoundsFromBlock(block);
-      renderer.renderStandardBlock(block, x, y, z);
-      }//renderoutputlip
     }
   if(sides[2])//z-
     {
-    renderer.setOverrideBlockTexture(block.getIcon(0, 2));  
+    if(meta!=2)
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      }  
+    else
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+      block.setBlockBounds(min2, min2, 0.f, max2, max2, min3);
+      renderer.setRenderBoundsFromBlock(block);
+      renderer.renderStandardBlock(block, x, y, z);      
+      }
     block.setBlockBounds(min, min, 0, max, max, min);
     renderer.setRenderBoundsFromBlock(block);
     renderer.renderStandardBlock(block, x, y, z);
-    if(meta==2)
-      {
-      renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(min2, min2, -0.01f, max2, max2, min3);
-      renderer.setRenderBoundsFromBlock(block);
-      renderer.renderStandardBlock(block, x, y, z);
-      }//renderoutputlip
     }
   if(sides[3])//z++
     {
-    renderer.setOverrideBlockTexture(block.getIcon(0, 2));  
+    if(meta!=3)
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      }  
+    else
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+      block.setBlockBounds(min2, min2, max3, max2, max2, 1.f);
+      renderer.setRenderBoundsFromBlock(block);
+      renderer.renderStandardBlock(block, x, y, z);      
+      }
     block.setBlockBounds(min, min, max, max, max, 1);
     renderer.setRenderBoundsFromBlock(block);
     renderer.renderStandardBlock(block, x, y, z);
-    if(meta==3)
-      {
-      renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(min2, min2, max3, max2, max2, 1.01f);
-      renderer.setRenderBoundsFromBlock(block);
-      renderer.renderStandardBlock(block, x, y, z);
-      }//renderoutputlip
     }
   if(sides[4])//x--
     {
-    renderer.setOverrideBlockTexture(block.getIcon(0, 2));  
+    if(meta!=4)
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      }  
+    else
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+      block.setBlockBounds(0.f, min2, min2, min3, max2, max2);
+      renderer.setRenderBoundsFromBlock(block);
+      renderer.renderStandardBlock(block, x, y, z);
+      }
     block.setBlockBounds(0, min, min, min, max, max);
     renderer.setRenderBoundsFromBlock(block);
     renderer.renderStandardBlock(block, x, y, z);
-    if(meta==4)
-      {
-      renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(-0.01f, min2, min2, min3, max2, max2);
-      renderer.setRenderBoundsFromBlock(block);
-      renderer.renderStandardBlock(block, x, y, z);
-      }//renderoutputlip
     }
   if(sides[5])
     {
-    renderer.setOverrideBlockTexture(block.getIcon(0, 2));  
+    if(meta!=5)
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      }  
+    else
+      {
+      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+      block.setBlockBounds(max3, min2, min2, 1.f, max2, max2);
+      renderer.setRenderBoundsFromBlock(block);
+      renderer.renderStandardBlock(block, x, y, z);      
+      }
     block.setBlockBounds(max, min, min, 1, max, max);
     renderer.setRenderBoundsFromBlock(block);
     renderer.renderStandardBlock(block, x, y, z);
-    if(meta==5)
-      {
-      renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(max3, min2, min2, 1.01f, max2, max2);
-      renderer.setRenderBoundsFromBlock(block);
-      renderer.renderStandardBlock(block, x, y, z);
-      }//renderoutputlip
     }
   renderer.clearOverrideBlockTexture();
   return true;
