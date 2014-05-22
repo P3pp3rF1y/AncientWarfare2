@@ -7,13 +7,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
-public class TileTorqueGeneratorSterling extends TileTorqueBase implements ITorqueGenerator, IInteractableTile, IInventory
+public class TileTorqueGeneratorSterling extends TileEntity implements ITorqueGenerator, IInteractableTile, IInventory
 {
 
 InventoryBasic fuelInventory = new InventoryBasic(1)
@@ -23,18 +24,15 @@ InventoryBasic fuelInventory = new InventoryBasic(1)
     return TileEntityFurnace.getItemBurnTime(var2)>0;
     }
   };
+  
+
+protected TileEntity[] neighborTileCache = null;
 
 double maxEnergyStored = 1600;
 double maxOutput = 100;
 double storedEnergy = 0;
 int burnTime = 0;
 int burnTimeBase = 0;
-
-@Override
-public TileEntity[] getNeighbors()
-  {
-  return neighborTileCache;
-  }
 
 @Override
 public void updateEntity()
@@ -69,21 +67,9 @@ public void setEnergy(double energy)
   }
 
 @Override
-public double getMaxEnergy()
-  {
-  return maxEnergyStored;
-  }
-
-@Override
 public double getEnergyStored()
   {
   return storedEnergy;
-  }
-
-@Override
-public double getMaxOutput()
-  {
-  return maxOutput;
   }
 
 @Override
@@ -194,7 +180,6 @@ public String toString()
 public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
-  storedEnergy = tag.getDouble("storedEnergy");
   burnTime = tag.getInteger("burnTicks");
   burnTimeBase = tag.getInteger("burnTicksBase");
   if(tag.hasKey("inventory"))
@@ -207,10 +192,68 @@ public void readFromNBT(NBTTagCompound tag)
 public void writeToNBT(NBTTagCompound tag)
   {  
   super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", storedEnergy);
   tag.setInteger("burnTicks", burnTime);
   tag.setInteger("burnTicksBase", burnTimeBase);
   tag.setTag("inventory", fuelInventory.writeToNBT(new NBTTagCompound()));
+  }
+
+@Override
+public double getMaxEnergy()
+  {
+  // TODO Auto-generated method stub
+  return 0;
+  }
+
+@Override
+public double getMaxOutput()
+  {
+  // TODO Auto-generated method stub
+  return 0;
+  }
+
+@Override
+public void validate()
+  {  
+  super.validate();
+  neighborTileCache = null;
+  }
+
+@Override
+public void invalidate()
+  {  
+  super.invalidate();
+  neighborTileCache = null;
+  }
+
+/**
+ * should be called from the containing block when it receives a 'onNeighbotUpdate' callback 
+ */
+public void onBlockUpdated()
+  {
+  AWLog.logDebug("torque tile update...");
+  buildNeighborCache();
+  }
+
+protected void buildNeighborCache()
+  {
+  this.neighborTileCache = new TileEntity[6];
+  worldObj.theProfiler.startSection("AWPowerTileNeighborUpdate");
+  ForgeDirection d;
+  TileEntity te;
+  for(int i = 0; i < 6; i++)
+    {
+    d = ForgeDirection.getOrientation(i);
+    te = worldObj.getTileEntity(xCoord+d.offsetX, yCoord+d.offsetY, zCoord+d.offsetZ);
+    this.neighborTileCache[i] = te;
+    }
+  worldObj.theProfiler.endSection();    
+  }
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  if(neighborTileCache==null){buildNeighborCache();}
+  return neighborTileCache;
   }
 
 }

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -34,6 +35,11 @@ public static void loadInstance()
 public void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
   {
   
+  }
+
+public boolean isPowerPipe(World world, TileEntity te)
+  {
+  return false;
   }
 
 }

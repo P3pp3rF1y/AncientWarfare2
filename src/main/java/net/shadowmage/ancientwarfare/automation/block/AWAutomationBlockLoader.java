@@ -284,7 +284,7 @@ public static void load()
   GameRegistry.registerTileEntity(TileTorqueConduit.class, "torque_conduit_tile");
   torqueConduit.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_top");
   torqueConduit.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_bottom");
-  torqueConduit.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_side");
+  torqueConduit.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_bottom");
   
   GameRegistry.registerBlock(torqueJunction, ItemBlockOwnedRotatable.class, "torque_junction");
   GameRegistry.registerTileEntity(TileTorqueJunction.class, "torque_junction_tile");

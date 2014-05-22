@@ -8,11 +8,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 
-public class TileTorqueGeneratorWaterwheel extends TileTorqueBase implements ITorqueGenerator, IInteractableTile
+public class TileTorqueGeneratorWaterwheel extends TileEntity implements ITorqueGenerator, IInteractableTile
 {
 
 public float rotationAngle;
@@ -21,12 +22,7 @@ public static double maxEnergy = 100;
 public static double maxOutput = 10;
 private double storedEnergy;
 private int updateTick;
-
-@Override
-public TileEntity[] getNeighbors()
-  {
-  return neighborTileCache;
-  }
+protected TileEntity[] neighborTileCache = null;
 
 @Override
 public void updateEntity()
@@ -139,21 +135,9 @@ public void setEnergy(double energy)
   }
 
 @Override
-public double getMaxEnergy()
-  {
-  return maxEnergy;
-  }
-
-@Override
 public double getEnergyStored()
   {
   return storedEnergy;
-  }
-
-@Override
-public double getMaxOutput()
-  {
-  return maxOutput;
   }
 
 @Override
@@ -162,7 +146,6 @@ public boolean canOutput(ForgeDirection towards)
   return towards==ForgeDirection.getOrientation(getBlockMetadata());
   }
 
-
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
@@ -170,23 +153,82 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
+public String toString()
+  {
+  return "Torque Generator Waterwheel["+storedEnergy+"]";
+  }
+
+@Override
+public double getMaxEnergy()
+  {
+  // TODO Auto-generated method stub
+  return 0;
+  }
+
+@Override
+public double getMaxOutput()
+  {
+  // TODO Auto-generated method stub
+  return 0;
+  }
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  if(neighborTileCache==null){buildNeighborCache();}
+  return neighborTileCache;
+  }
+
+@Override
+public void validate()
+  {  
+  super.validate();
+  neighborTileCache = null;
+  }
+
+@Override
+public void invalidate()
+  {  
+  super.invalidate();
+  neighborTileCache = null;
+  }
+
+/**
+ * should be called from the containing block when it receives a 'onNeighbotUpdate' callback 
+ */
+public void onBlockUpdated()
+  {
+  AWLog.logDebug("torque tile update...");
+  buildNeighborCache();
+  }
+
+protected void buildNeighborCache()
+  {
+  this.neighborTileCache = new TileEntity[6];
+  worldObj.theProfiler.startSection("AWPowerTileNeighborUpdate");
+  ForgeDirection d;
+  TileEntity te;
+  for(int i = 0; i < 6; i++)
+    {
+    d = ForgeDirection.getOrientation(i);
+    te = worldObj.getTileEntity(xCoord+d.offsetX, yCoord+d.offsetY, zCoord+d.offsetZ);
+    this.neighborTileCache[i] = te;
+    }
+  worldObj.theProfiler.endSection();    
+  }
+
+@Override
 public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
-  storedEnergy = tag.getDouble("storedEnergy");
+  setEnergy(tag.getDouble("storedEnergy"));
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {  
   super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", storedEnergy);
-  }
-
-@Override
-public String toString()
-  {
-  return "Torque Generator Waterwheel["+storedEnergy+"]";
+  tag.setDouble("storedEnergy", getEnergyStored());
   }
 
 }

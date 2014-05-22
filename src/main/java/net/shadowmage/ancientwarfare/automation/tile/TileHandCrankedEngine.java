@@ -6,16 +6,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 
-public class TileHandCrankedEngine extends TileTorqueBase implements ITorqueGenerator
+public class TileHandCrankedEngine extends TileTorqueTransportBase implements ITorqueGenerator
 {
 
 double storedEnergy = 0;
-
-@Override
-public TileEntity[] getNeighbors()
-  {
-  return neighborTileCache;
-  }
 
 @Override
 public void updateEntity()
@@ -31,21 +25,9 @@ public void setEnergy(double energy)
   }
 
 @Override
-public double getMaxEnergy()
-  {
-  return 1000;
-  }
-
-@Override
 public double getEnergyStored()
   {
   return storedEnergy;
-  }
-
-@Override
-public double getMaxOutput()
-  {
-  return 10;
   }
 
 @Override
@@ -58,20 +40,6 @@ public boolean canOutput(ForgeDirection towards)
 public String toString()
   {
   return "Hand Cranked Engine["+storedEnergy+"]";
-  }
-
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {  
-  super.readFromNBT(tag);
-  storedEnergy = tag.getDouble("storedEnergy");
-  }
-
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {  
-  super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", storedEnergy);
   }
 
 }

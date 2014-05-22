@@ -6,6 +6,7 @@ core
 	research system--needs definitions of research for research tree
 	block and item textures (engineering station, research station, research book, research notes)
 	Chunkloader blocks
+	Implement tile-based rotatable block -- twenty-four way
 
 GUIS (all modules)
 	need LOTS of tooltips added to various elements	
@@ -64,11 +65,16 @@ automation module:
 		would also require a server-side config on whether to send the network data or not
 	
 	Torque API:
-		Add double removeEnergy(ForgeDirection towards, double amount) to ITorqueGenerator
-		Add input/output max/tick code to tiles, reset counter every tile-update.
+		Add input max/tick code to tiles, reset counter every tile-update.
 		Add power-loss to blocks.  The amount lost should be proportionate to the amount stored.  Something about
-			drag from air resistance increasing with the speed of the object that is moving. 
+			drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 		Add high-quality blocks with higher capacity and less power loss.
+		Need conduit that can turn corners // allow conduit to input from any direction, output to 1 
+			Replaces 'junction', and allows them to turn corners by default.
+			Still uses regular six-way rotatable block.
+			Will need cached field in the tile to determine what blocks it is connected to.
+				Will need to synch this to client.
+			Will require at least an IBSRH or probably more easily an TESR
 					
 	GUIs Needed:
 		Power-display GUI for flywheel, others?
@@ -92,14 +98,12 @@ automation module:
 		Workers need ability to add energy to worksite, adjusted by worker effectiveness
 		Worksites need method to do player work
 		Worksites need ability to add power directly from power system	
-		Worksites should attempt to process work and remove power directly after it is added from a worker?
-		-or- worksites do all work based off of power input, they maintain a small buffer of 2-3x the work-unit rate to allow for multiple workers to tick at the same time
+		Worksites do all work based off of power input, they maintain a small buffer of 2-3x the work-unit rate to allow for multiple workers to tick at the same time
 	
 		onUpdate:
 			incremental rescan of work area 1 block/tick for block-working worksites
 			delay-based rescan for some (fish-farm, animal farm)
-			event driven rescan when possible (quarry, warehouse, research station		
-					
+			event driven rescan when possible (warehouse, research station, auto-crafting)					
 	
 	Power network:
 		Generators:

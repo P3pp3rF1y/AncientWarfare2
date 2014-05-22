@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueStorage;
 
 
-public class TileFlywheel extends TileTorqueBase implements ITorqueStorage
+public class TileFlywheel extends TileTorqueTransportBase implements ITorqueStorage
 {
 public static final double maxEnergyStored = 10000;
 public static final double maxInputPerTick = 100;
@@ -23,9 +23,9 @@ private List<TileFlywheel> wheelsToBalance = new ArrayList<TileFlywheel>();
 @Override
 public void updateEntity()
   {
+  super.updateEntity();
   if(!worldObj.isRemote)
     {
-    ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
     tryBalancingFlywheels();    
     }
   }
@@ -67,24 +67,6 @@ public double getEnergyStored()
   }
 
 @Override
-public double getMaxOutput()
-  {
-  return maxOutputPerTick;
-  }
-
-@Override
-public double getMaxEnergy()
-  {
-  return maxEnergyStored;
-  }
-
-@Override
-public double getMaxInput()
-  {  
-  return maxInputPerTick;
-  }
-
-@Override
 public void setEnergy(double energy)
   {
   this.storedEnergy = energy;
@@ -106,45 +88,6 @@ public boolean canOutput(ForgeDirection towards)
 public String toString()
   {
   return "Flywheel Energy Storage["+storedEnergy+"]";
-  }
-
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {  
-  super.readFromNBT(tag);
-  storedEnergy = tag.getDouble("storedEnergy");
-  }
-
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {  
-  super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", storedEnergy);
-  }
-
-@Override
-public double addEnergy(ForgeDirection from, double energy)
-  {
-  if(canInput(from))
-    {
-    if(energy+getEnergyStored()>getMaxEnergy())
-      {
-      energy = getMaxEnergy()-getEnergyStored();
-      }
-    if(energy>getMaxInput())
-      {
-      energy = getMaxInput();
-      }
-    storedEnergy+=energy;
-    return energy;    
-    }
-  return 0;
-  }
-
-@Override
-public TileEntity[] getNeighbors()
-  {
-  return neighborTileCache;
   }
 
 }

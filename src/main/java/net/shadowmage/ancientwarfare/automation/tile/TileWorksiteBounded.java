@@ -113,7 +113,7 @@ public final Packet getDescriptionPacket()
     bbMax.writeToNBT(innerTag);
     tag.setTag("bbMax", innerTag);
     }
-  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, tag);
+  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
   }
 
 @Override

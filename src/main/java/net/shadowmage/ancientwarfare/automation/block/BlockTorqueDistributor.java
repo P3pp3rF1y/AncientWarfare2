@@ -9,7 +9,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.TileTorqueBase;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueTransportBase;
+import net.shadowmage.ancientwarfare.automation.tile.TileTorqueConduit;
 import net.shadowmage.ancientwarfare.automation.tile.TileTorqueDistributor;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
@@ -30,12 +31,23 @@ protected BlockTorqueDistributor(String regName)
   }
 
 @Override
+public void onPostBlockPlaced(World world, int x, int y, int z, int meta)
+  {
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof TileTorqueTransportBase)
+    {
+    ((TileTorqueTransportBase) te).onBlockUpdated();
+    }
+  super.onPostBlockPlaced(world, x, y, z,  meta);
+  }
+
+@Override
 public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ)
   {
   TileEntity te = world.getTileEntity(x, y, z);
-  if(te instanceof TileTorqueBase)
+  if(te instanceof TileTorqueTransportBase)
     {
-    ((TileTorqueBase)te).onBlockUpdated();
+    ((TileTorqueTransportBase)te).onBlockUpdated();
     }
   super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
   }
@@ -44,9 +56,9 @@ public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX,
 public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
   {
   TileEntity te = world.getTileEntity(x, y, z);
-  if(te instanceof TileTorqueBase)
+  if(te instanceof TileTorqueTransportBase)
     {
-    ((TileTorqueBase)te).onBlockUpdated();
+    ((TileTorqueTransportBase)te).onBlockUpdated();
     }
   super.onNeighborBlockChange(world, x, y, z, block);
   }
