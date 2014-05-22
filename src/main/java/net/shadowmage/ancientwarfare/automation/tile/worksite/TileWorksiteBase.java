@@ -16,9 +16,9 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 
 public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IBoundedTile, IOwnable, ITorqueReceiver
 {
@@ -59,8 +59,8 @@ public final void setEnergy(double energy)
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
-  // TODO Auto-generated method stub
-  
+  storedEnergy+=AWCoreStatics.energyPerWorkUnit;
+  if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
   }
 
 @Override
@@ -161,6 +161,7 @@ public void updateEntity()
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
   }
 
 @Override

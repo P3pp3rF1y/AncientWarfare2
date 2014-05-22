@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import buildcraft.api.mj.MjBattery;
 
 public class TileTorqueGeneratorSterling extends TileTorqueGeneratorBase implements IInteractableTile, IInventory
 {

@@ -239,13 +239,14 @@ public boolean hasWorkBounds()
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
   }
 
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
-  // TODO Auto-generated method stub
-  
+  storedEnergy+=AWCoreStatics.energyPerWorkUnit;
+  if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
   }
 
 }

@@ -21,12 +21,6 @@ BlockPosition bbMin;
  */
 BlockPosition bbMax;
 
-
-public TileWorksiteBounded()
-  {
-  // TODO Auto-generated constructor stub
-  }
-
 @Override
 public final boolean hasWorkBounds()
   {
