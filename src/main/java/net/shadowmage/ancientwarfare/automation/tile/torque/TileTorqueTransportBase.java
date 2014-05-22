@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
@@ -17,34 +16,15 @@ import cpw.mods.fml.common.Optional;
   })
 public abstract class TileTorqueTransportBase extends TileTorqueBase implements ITorqueTransport, IPowerEmitter, ISidedBatteryProvider
 {
-protected double maxEnergy = 1000;
+
 protected double maxInput = 100;
 protected double maxOutput = 100;
-protected double storedEnergy;
 
 @Override
 public void updateEntity()
   {
   if(worldObj.isRemote){return;}  
   ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
-  }
-
-@Override
-public String toString()
-  {
-  return "Torque Transport["+storedEnergy+"]::" +getClass().getSimpleName();
-  }
-
-@Override
-public void setEnergy(double energy)
-  {
-  this.storedEnergy = energy;
-  }
-
-@Override
-public double getEnergyStored()
-  {
-  return storedEnergy;
   }
 
 @Override
@@ -64,12 +44,6 @@ public double addEnergy(ForgeDirection from, double energy)
     return energy;    
     }
   return 0;
-  }
-
-@Override
-public double getMaxEnergy()
-  {
-  return maxEnergy;
   }
 
 @Override
@@ -94,20 +68,6 @@ public boolean canInput(ForgeDirection from)
 public boolean canOutput(ForgeDirection towards)
   {
   return towards==ForgeDirection.getOrientation(getBlockMetadata());
-  }
-
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {  
-  super.readFromNBT(tag);
-  setEnergy(tag.getDouble("storedEnergy"));
-  }
-
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {  
-  super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", getEnergyStored());
   }
 
 @Optional.Method(modid="BuildCraft|Core")

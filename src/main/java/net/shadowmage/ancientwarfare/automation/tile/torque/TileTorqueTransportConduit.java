@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 
-public class TileTorqueConduit extends TileTorqueTransportBase
+public class TileTorqueTransportConduit extends TileTorqueTransportBase
 {
 
 boolean[] connections;

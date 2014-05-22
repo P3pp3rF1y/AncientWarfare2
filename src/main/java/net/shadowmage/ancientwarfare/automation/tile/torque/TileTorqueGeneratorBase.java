@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
@@ -19,27 +18,12 @@ import cpw.mods.fml.common.Optional;
 public abstract class TileTorqueGeneratorBase extends TileTorqueBase implements ITorqueGenerator, IPowerEmitter, ISidedBatteryProvider
 {
 
-protected double maxEnergy = 1000;
 protected double maxOutput = 100;
-protected double storedEnergy = 0;
-
 
 @Override
 public String toString()
   {
   return "Torque Generator Tile["+storedEnergy+"]::"+getClass().getSimpleName();
-  }
-
-@Override
-public void setEnergy(double energy)
-  {
-  storedEnergy = energy;
-  }
-
-@Override
-public double getEnergyStored()
-  {
-  return storedEnergy;
   }
 
 @Override
@@ -50,29 +34,9 @@ public void updateEntity()
   }
 
 @Override
-public double getMaxEnergy()
-  {
-  return maxEnergy;
-  }
-
-@Override
 public double getMaxOutput()
   {
   return maxOutput;
-  }
-
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {  
-  super.readFromNBT(tag);
-  setEnergy(tag.getDouble("storedEnergy"));
-  }
-
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {  
-  super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", getEnergyStored());
   }
 
 @Optional.Method(modid="BuildCraft|Core")

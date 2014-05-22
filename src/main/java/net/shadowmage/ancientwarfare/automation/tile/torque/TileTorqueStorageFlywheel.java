@@ -5,13 +5,12 @@ import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueStorage;
 
 
-public class TileFlywheel extends TileTorqueTransportBase implements ITorqueStorage
+public class TileTorqueStorageFlywheel extends TileTorqueStorageBase
 {
 
-private List<TileFlywheel> wheelsToBalance = new ArrayList<TileFlywheel>();
+private List<TileTorqueStorageFlywheel> wheelsToBalance = new ArrayList<TileTorqueStorageFlywheel>();
 
 @Override
 public void updateEntity()
@@ -26,27 +25,27 @@ public void updateEntity()
 private void tryBalancingFlywheels()
   {
   TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
-  if((te instanceof TileFlywheel))
+  if((te instanceof TileTorqueStorageFlywheel))
     {
     return;
     }
   int y = yCoord-1;
   te = worldObj.getTileEntity(xCoord, y, zCoord);
-  while(y<156 && y>=1 && te instanceof TileFlywheel)
+  while(y<156 && y>=1 && te instanceof TileTorqueStorageFlywheel)
     {
-    wheelsToBalance.add((TileFlywheel) te);
+    wheelsToBalance.add((TileTorqueStorageFlywheel) te);
     y--;
     te = worldObj.getTileEntity(xCoord, y, zCoord);
     }
   wheelsToBalance.add(this);
   double totalPower = 0.d;
   double average;
-  for(TileFlywheel wheel : wheelsToBalance)
+  for(TileTorqueStorageFlywheel wheel : wheelsToBalance)
     {
     totalPower+=wheel.getEnergyStored();
     }
   average = totalPower / (double)wheelsToBalance.size();
-  for(TileFlywheel wheel : wheelsToBalance)
+  for(TileTorqueStorageFlywheel wheel : wheelsToBalance)
     {
     wheel.setEnergy(average);
     }

@@ -7,7 +7,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.render.RenderTorqueConduit;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueConduit;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
 public class BlockTorqueConduit extends BlockTorqueBase
@@ -30,7 +30,7 @@ protected BlockTorqueConduit(String regName)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {  
-  return new TileTorqueConduit();
+  return new TileTorqueTransportConduit();
   }
 
 @Override
@@ -70,7 +70,7 @@ public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
   {
   float min = 0.1875f, max = 0.8125f;
   float x1=min, y1=min, z1=min, x2=max, y2=max, z2=max;
-  TileTorqueConduit tile = (TileTorqueConduit) world.getTileEntity(x, y, z);
+  TileTorqueTransportConduit tile = (TileTorqueTransportConduit) world.getTileEntity(x, y, z);
   if(tile!=null)
     {
     boolean[] sides = tile.getConnections();

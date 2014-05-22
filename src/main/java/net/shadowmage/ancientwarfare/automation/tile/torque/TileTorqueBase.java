@@ -1,18 +1,44 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
-public abstract class TileTorqueBase extends TileEntity
+public abstract class TileTorqueBase extends TileEntity implements ITorqueTile
 {
 
 protected TileEntity[] neighborTileCache = null;
+protected double maxEnergy = 1000;
+protected double storedEnergy = 0;
 
 public void onBlockUpdated()
   {
-  AWLog.logDebug("torque tile update...");
   buildNeighborCache();
+  }
+
+@Override
+public String toString()
+  {
+  return "Torque Tile["+storedEnergy+"]::" +getClass().getSimpleName();
+  }
+
+@Override
+public void setEnergy(double energy)
+  {
+  this.storedEnergy = energy;
+  }
+
+@Override
+public double getEnergyStored()
+  {
+  return storedEnergy;
+  }
+
+@Override
+public double getMaxEnergy()
+  {
+  return maxEnergy;
   }
 
 @Override
@@ -48,6 +74,20 @@ protected void buildNeighborCache()
     this.neighborTileCache[i] = te;
     }
   worldObj.theProfiler.endSection();    
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {  
+  super.readFromNBT(tag);
+  storedEnergy = tag.getDouble("storedEnergy");
+  }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {  
+  super.writeToNBT(tag);
+  tag.setDouble("storedEnergy", storedEnergy);
   }
 
 }

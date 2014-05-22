@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import net.minecraftforge.common.util.ForgeDirection;
 
 
-public class TileTorqueDistributor extends TileTorqueTransportBase
+public class TileTorqueTransportDistributor extends TileTorqueTransportBase
 {
 
 @Override

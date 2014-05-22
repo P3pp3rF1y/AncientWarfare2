@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueConduit;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -72,7 +72,7 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
   float min  = 0.1875f, max  = 0.8125f;
   float min2 = 0.1250f, max2 = 0.8750f;
   float min3 = 0.0625f, max3 = 0.9375f;
-  TileTorqueConduit tile = (TileTorqueConduit) world.getTileEntity(x, y, z);
+  TileTorqueTransportConduit tile = (TileTorqueTransportConduit) world.getTileEntity(x, y, z);
   boolean[] sides = tile.getConnections();
   block.setBlockBounds(min, min, min, max, max, max);
   renderer.setRenderBoundsFromBlock(block);
