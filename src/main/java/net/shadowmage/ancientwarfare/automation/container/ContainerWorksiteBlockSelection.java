@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteUserBlocks;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteUserBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;

@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseStorageSmall;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseStorageSmall;
 import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import cpw.mods.fml.relauncher.Side;

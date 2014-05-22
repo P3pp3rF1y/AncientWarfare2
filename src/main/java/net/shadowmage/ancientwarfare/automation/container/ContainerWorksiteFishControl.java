@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.automation.tile.WorkSiteFishFarm;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerWorksiteFishControl extends ContainerBase

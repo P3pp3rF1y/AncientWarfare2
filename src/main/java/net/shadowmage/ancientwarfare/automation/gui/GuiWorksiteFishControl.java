@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
-import net.shadowmage.ancientwarfare.automation.tile.WorkSiteFishFarm;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;

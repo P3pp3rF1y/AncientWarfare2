@@ -5,7 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseCraftingStation;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;

@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile;
+package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;

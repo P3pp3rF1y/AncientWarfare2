@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseCraftingStation;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 

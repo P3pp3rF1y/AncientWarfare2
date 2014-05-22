@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBasic;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBasic;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.config.AWLog;

@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.tile.TileWarehouseInput;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseInput;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerWarehouseInput extends ContainerBase

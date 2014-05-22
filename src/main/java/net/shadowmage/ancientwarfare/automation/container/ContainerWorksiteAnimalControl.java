@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.automation.tile.WorkSiteAnimalFarm;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerWorksiteAnimalControl extends ContainerBase

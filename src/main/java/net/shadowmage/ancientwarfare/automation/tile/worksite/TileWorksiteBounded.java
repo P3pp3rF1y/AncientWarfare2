@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile;
+package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;

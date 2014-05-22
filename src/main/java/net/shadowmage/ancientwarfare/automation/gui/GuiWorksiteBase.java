@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBase;
-import net.shadowmage.ancientwarfare.automation.tile.TileWorksiteBasic;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBasic;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;

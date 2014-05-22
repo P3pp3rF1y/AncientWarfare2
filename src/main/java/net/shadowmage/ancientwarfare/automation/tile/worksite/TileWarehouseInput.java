@@ -1,10 +1,11 @@
-package net.shadowmage.ancientwarfare.automation.tile;
+package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.automation.tile.IControlledTile;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;

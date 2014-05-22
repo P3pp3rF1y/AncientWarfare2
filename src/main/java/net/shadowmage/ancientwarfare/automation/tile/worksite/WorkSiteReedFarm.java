@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile;
+package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import java.util.Collection;
 import java.util.HashSet;

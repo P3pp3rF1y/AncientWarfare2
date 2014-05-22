@@ -2,6 +2,8 @@ package net.shadowmage.ancientwarfare.automation.tile;
 
 import java.util.List;
 
+import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteWarehouse;
+
 
 public interface IWarehouseStorageTile
 {

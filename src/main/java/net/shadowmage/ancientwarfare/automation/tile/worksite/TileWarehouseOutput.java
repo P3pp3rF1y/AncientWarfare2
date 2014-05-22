@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile;
+package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.automation.tile.IControlledTile;
+import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
