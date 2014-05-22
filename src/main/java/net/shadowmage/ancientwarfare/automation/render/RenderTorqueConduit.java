@@ -88,7 +88,7 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     if(meta==0)
       {
       renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(min2, 0, min2, max2, min3, max2);      
+      block.setBlockBounds(min2, -0.01f, min2, max2, min3, max2);      
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);
       }//renderoutputlip
@@ -102,7 +102,7 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     if(meta==1)
       {
       renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(min2, max3, min2, max2, 1, max2);
+      block.setBlockBounds(min2, max3, min2, max2, 1.01f, max2);
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);
       }//renderoutputlip
@@ -116,7 +116,7 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     if(meta==2)
       {
       renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(min2, min2, 0, max2, max2, min3);
+      block.setBlockBounds(min2, min2, -0.01f, max2, max2, min3);
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);
       }//renderoutputlip
@@ -130,7 +130,7 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     if(meta==3)
       {
       renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(min2, min2, max3, max2, max2, 1);
+      block.setBlockBounds(min2, min2, max3, max2, max2, 1.01f);
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);
       }//renderoutputlip
@@ -144,7 +144,7 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     if(meta==4)
       {
       renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(0, min2, min2, min3, max2, max2);
+      block.setBlockBounds(-0.01f, min2, min2, min3, max2, max2);
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);
       }//renderoutputlip
@@ -158,7 +158,7 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     if(meta==5)
       {
       renderer.clearOverrideBlockTexture();
-      block.setBlockBounds(max3, min2, min2, 1, max2, max2);
+      block.setBlockBounds(max3, min2, min2, 1.01f, max2, max2);
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);
       }//renderoutputlip
