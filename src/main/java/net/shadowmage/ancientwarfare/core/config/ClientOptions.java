@@ -14,13 +14,20 @@ private ClientOptions(){}
 private Configuration config;
 private HashMap<String, ClientOption> clientOptions = new HashMap<String, ClientOption>();
 
-private static final String clientOptionsCategory = "c_client_options";
+private static final String clientOptionsCategory = AWCoreStatics.clientOptions;
 
 /**
  * automation module client-side options
  */
 public static final String OPTION_RENDER_WORK_BOUNDS = "render_work_bounds";
 public static final String OPTION_RENDER_WORK_POINTS = "render_work_points";
+
+/**
+ * npc module client-side options
+ */
+public static final String OPTION_RENDER_NPC_AI = "render_npc_ai";
+public static final String OPTION_RENDER_NPC_HOSTILE_NAMES = "render_hostile_names";
+public static final String OPTION_RENDER_NPC_FRIENDLY_NAMES = "render_friendly_names";
 
 public void setConfig(Configuration config)
   {
@@ -34,9 +41,9 @@ public void setConfig(Configuration config)
  * @param comment
  * @param value
  */
-public void registerClientOption(String name, String comment, Object value)
+public void registerClientOption(String name, String comment, Object value, Configuration configFile)
   {
-  ClientOption option = new ClientOption(name, value, comment);
+  ClientOption option = new ClientOption(name, value, comment, configFile);
   clientOptions.put(name, option);
   }
 
@@ -53,11 +60,11 @@ public void loadClientOptions()
     option = clientOptions.get(name);
     if(option.isBooleanValue())
       {
-      option.setValue(config.get(clientOptionsCategory, name, option.getBooleanValue(), option.getComment()).getBoolean(option.getBooleanValue()));
+      option.setValue(option.config.get(clientOptionsCategory, name, option.getBooleanValue(), option.getComment()).getBoolean(option.getBooleanValue()));
       }
     else if(option.isIntValue())
       {
-      option.setValue(config.get(clientOptionsCategory, name, option.getIntValue(), option.getComment()).getInt(option.getIntValue()));
+      option.setValue(option.config.get(clientOptionsCategory, name, option.getIntValue(), option.getComment()).getInt(option.getIntValue()));
       }
     }
   }
@@ -92,15 +99,17 @@ public ClientOption getClientOption(String name)
 
 public static final class ClientOption
 {
+Configuration config;
 private String name;
 private Object value;
 private String comment;
 
-private ClientOption(String name, Object value, String comment)
+private ClientOption(String name, Object value, String comment, Configuration config)
   {
   this.value = value;
   this.name = name;
   this.comment = comment;
+  this.config = config;
   }
 
 public boolean getBooleanValue()

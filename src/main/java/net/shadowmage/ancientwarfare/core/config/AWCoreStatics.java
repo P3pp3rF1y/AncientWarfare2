@@ -13,12 +13,12 @@ public static final String resourcePath = "/assets/ancientwarfare/resources/";
 /**
  * category names
  */
-private static final String generalOptions = "01_general_options";
-private static final String serverOptions = "02_server_options";
-private static final String clientOptions = "03_client_options";
-private static final String worldGenSettings = "04_world_gen_settings";
-private static final String keybinds = "05_keybinds";
-private static final String researchSettings = "06_research";
+public static final String generalOptions = "01_general_options";
+public static final String serverOptions = "02_server_options";
+public static final String clientOptions = "03_client_options";
+public static final String worldGenSettings = "04_world_gen_settings";
+public static final String keybinds = "05_keybinds";
+public static final String researchSettings = "06_research";
 
 /**
  * general options

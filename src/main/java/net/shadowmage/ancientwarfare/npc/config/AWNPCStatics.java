@@ -27,10 +27,49 @@ public class AWNPCStatics extends ModConfiguration
 {
 
 /**
+ * shared settings:
+ * NONE?
+ */
+public static final String sharedSettings = "1_shared_settings";
+
+/**
+ * server settings:
+ * npc worker tick rate / ticks per work unit
+ */
+public static final String serverSettinngs = "2_server_settings";
+
+/**
+ * client settings:
+ * --SET VIA PROXY / ClientOptions.INSTANCE
+ */
+public static final String clientSettings = "3_client_settings";
+
+/**
+ * what food items are edible, and the amount of food value an NPC will get from eating them
+ */
+public static final String foodSettings = "3_food_settings";
+
+/**
+ * base aggro / target settings for combat NPCs.  Can be further
+ * customized on a per-npc basis via config GUI.
+ */
+public static final String targetSettings = "4_target_settings";
+
+/**
+ * enable/disable specific recipes
+ * enable/disable research for specific recipes
+ */
+public static final String recipeSettings = "5_recipe_settings";
+
+
+
+/**
  * how often an NPC should 'tick' the worksite and add energy
  * TODO add to config file
  */
 public static int npcWorkTicks = 50;
+
+
 
 public AWNPCStatics(Configuration config)
   {

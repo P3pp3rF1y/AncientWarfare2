@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.options.GuiOptions;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -34,7 +35,7 @@ private HashMap<String, Keybind> keybindMap = new HashMap<String, Keybind>();
 private HashMap<Integer, Set<Keybind>> bindsByKey = new HashMap<Integer, Set<Keybind>>();
 
 Configuration config;
-private static final String keybinds = "e_keybinds";
+private static final String keybinds = AWCoreStatics.keybinds;
 
 public void loadConfig(Configuration config)
   {
