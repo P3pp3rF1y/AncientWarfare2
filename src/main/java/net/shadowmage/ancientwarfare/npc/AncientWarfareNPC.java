@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -88,6 +89,12 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * register tick-handlers
    */
+  
+  /**
+   * load npc skins
+   */
+  String path = evt.getModConfigurationDirectory().getAbsolutePath();
+  NpcSkinManager.INSTANCE.loadSkinPacks(path);
   
   AWLog.log("Ancient Warfare NPCs Pre-Init completed");
   }
