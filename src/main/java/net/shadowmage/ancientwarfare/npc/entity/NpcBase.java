@@ -20,12 +20,12 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable
@@ -42,25 +42,26 @@ protected String followingPlayerName;//set/cleared onInteract from player if pla
 protected NpcLevelingStats levelingStats;
 
 /**
- * the current/custom user set texture;
- */
-protected ResourceLocation texture;
-
-/**
  * the default texture for this entity type, should be set in entity constructor<br>
  * e.g. combat / worker / courier / hostile
+ * Used as the render texture if the local-texture has not been set or was not found
  */
 protected ResourceLocation defaultTexture;
 
+/**
+ * a single base texture for ALL npcs to share, used in case other textures were not set
+ */
 private final ResourceLocation baseDefaultTexture;
 
 public ItemStack ordersStack;
+
+public ItemStack upkeepStack;
 
 public NpcBase(World par1World)
   {
   super(par1World);
   baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
-  levelingStats = new NpcLevelingStats(this);
+  levelingStats = new NpcLevelingStats();
   
   /**
    * shared AI behaviors
@@ -95,10 +96,13 @@ public abstract boolean isValidOrdersStack(ItemStack stack);
 
 public abstract void onOrdersInventoryChanged();
 
-@Override
-public void swingItem()
+public abstract void onUpkeepInventoryChanged();
+
+public abstract String getNpcSubType();
+
+public String getNpcType()
   {
-  super.swingItem();
+  return AWEntityRegistry.getRegistryNameFor(this.getClass());
   }
 
 public NpcLevelingStats getLevelingStats()
@@ -119,7 +123,7 @@ public ItemStack getItemToSpawn()
   }
 
 @Override
-public abstract void writeSpawnData(ByteBuf buffer);
+public abstract void writeSpawnData(ByteBuf buffer);//TODO send entity name??
 
 @Override
 public abstract void readSpawnData(ByteBuf additionalData);
@@ -158,6 +162,11 @@ protected void applyEntityAttributes()
   }
 
 public int getFoodRemaining()
+  {
+  return 0;
+  }
+
+public int getUpkeepBlockSide()
   {
   return 0;
   }
@@ -239,12 +248,14 @@ public void readEntityFromNBT(NBTTagCompound tag)
   ownerName = tag.getString("owner");
   npcName = tag.getString("npcName");
   if(tag.hasKey("ordersItem")){ordersStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("ordersItem"));}
+  if(tag.hasKey("upkeepItem")){upkeepStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("upkeepItem"));}
   if(getHomePosition()!=null)
     {
     ChunkCoordinates cc = getHomePosition();
     int[] ccia = new int[]{cc.posX,cc.posY,cc.posZ,(int)func_110174_bM()};
     tag.setIntArray("home", ccia);
     }
+  if(tag.hasKey("levelingStats")){levelingStats.readFromNBT(tag.getCompoundTag("levelingStats"));}
   //TODO
   }
 
@@ -255,22 +266,20 @@ public void writeEntityToNBT(NBTTagCompound tag)
   tag.setString("owner", ownerName);
   tag.setString("npcName", npcName);
   if(ordersStack!=null){tag.setTag("ordersItem", ordersStack.writeToNBT(new NBTTagCompound()));}
+  if(upkeepStack!=null){tag.setTag("upkeepItem", upkeepStack.writeToNBT(new NBTTagCompound()));}
   if(tag.hasKey("home"))
     {
     int[] ccia = tag.getIntArray("home");
     setHomeArea(ccia[0], ccia[1], ccia[2], ccia[3]);
     }
+  tag.setTag("levelingStats", levelingStats.writeToNBT(new NBTTagCompound()));
   //TODO
-  }
-
-public final void setTexture(ResourceLocation texture)
-  {
-  this.texture = texture;
   }
 
 public final ResourceLocation getTexture()
   {  
-  return texture==null ? getDefaultTexture() : texture;
+  ResourceLocation tex = NpcSkinManager.INSTANCE.getTextureFor(this);
+  return tex==null ? getDefaultTexture() : tex;
   }
 
 }

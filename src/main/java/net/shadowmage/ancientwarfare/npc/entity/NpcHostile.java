@@ -27,6 +27,19 @@ public boolean isValidOrdersStack(ItemStack stack)
   }
 
 @Override
+public void onUpkeepInventoryChanged()
+  {
+  //noop for hostile
+  }
+
+@Override
+public String getNpcSubType()
+  {
+  //TODO lookup type based on item equipped in main slot and 'faction'
+  return null;
+  }
+
+@Override
 public void readAdditionalItemData(NBTTagCompound tag)
   {
   
@@ -49,5 +62,7 @@ public void readSpawnData(ByteBuf additionalData)
   {
   
   }
+
+
 
 }

@@ -59,7 +59,7 @@ public static final int GUI_WAREHOUSE_STORAGE = 19;
 public static final int GUI_WAREHOUSE_INPUT = 20;
 public static final int GUI_WAREHOUSE_OUTPUT = 21;
 public static final int GUI_WAREHOUSE_CRAFTING = 22;
-public static final int GUI_MECHANICAL_WORKER = 23;
+//public static final int GUI_MECHANICAL_WORKER = 23;//unused
 public static final int GUI_WORKSITE_QUARRY = 24;
 public static final int GUI_WORKSITE_TREE_FARM = 25;
 public static final int GUI_WORKSITE_ANIMAL_FARM = 26;
@@ -71,6 +71,7 @@ public static final int GUI_TORQUE_GENERATOR_STERLING = 31;
 public static final int GUI_TORQUE_GENERATOR_WATERWHEEL = 32;
 public static final int GUI_TORQUE_STORAGE_FLYWHEEL = 33;
 public static final int GUI_NPC_WORK_ORDER = 34;
+public static final int GUI_NPC_UPKEEP_ORDER = 35;
 
 private FMLEventChannel channel;
 

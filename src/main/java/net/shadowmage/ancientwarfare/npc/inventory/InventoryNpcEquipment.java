@@ -18,13 +18,14 @@ public InventoryNpcEquipment(NpcBase npc)
 @Override
 public int getSizeInventory()
   {  
-  return 6;
+  return 7;
   }
 
 @Override
 public ItemStack getStackInSlot(int var1)
   {
   if(var1==5){return npc.ordersStack;}
+  if(var1==6){return npc.upkeepStack;}
   return npc.getEquipmentInSlot(var1);
   }
 
@@ -60,8 +61,13 @@ public void setInventorySlotContents(int var1, ItemStack var2)
   {
   if(var1==5)
     {
-    npc.ordersStack=var2;
+    npc.ordersStack =var2;
     npc.onOrdersInventoryChanged();
+    }
+  else if(var1==6)
+    {
+    npc.upkeepStack = var2;
+    npc.onUpkeepInventoryChanged();
     }
   else
     {

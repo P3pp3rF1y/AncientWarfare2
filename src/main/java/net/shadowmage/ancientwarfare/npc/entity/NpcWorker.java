@@ -34,6 +34,28 @@ public NpcWorker(World par1World)
   }
 
 @Override
+public String getNpcSubType()
+  {
+  WorkType type = getWorkTypeFromEquipment();
+  switch(type)
+  {
+  case CRAFTING:
+  return "craftsman";
+  case FARMING:
+  return "farmer";
+  case FORESTRY:
+  return "lumberjack";
+  case MINING:
+  return "miner";
+  case RESEARCH:
+  return "researcher";
+  case NONE:
+  default:
+  return "default";  
+  }
+  }
+
+@Override
 public float getWorkEffectiveness(WorkType type)
   {
   return 1.f;//TODO base this off of worker level?

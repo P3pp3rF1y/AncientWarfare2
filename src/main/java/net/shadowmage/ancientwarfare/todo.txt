@@ -114,6 +114,9 @@ automation module:
 			Distributor	(bc-compat) 1000 max, 100 in, 100 out		
 	
 npcs module
+	add edible food items to config file with upkeep amount given.
+		allow players to add/remove items and / or adjust the upkeep amount per-item.
+
 	add rendering of routes when npc-order item is being held
 		work-order renders route + numbers
 		routing-order renders route + sides

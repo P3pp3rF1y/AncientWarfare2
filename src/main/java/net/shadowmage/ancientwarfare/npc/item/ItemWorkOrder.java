@@ -3,12 +3,11 @@ package net.shadowmage.ancientwarfare.npc.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.npc.orders.NpcOrders;
+import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 
 
@@ -21,28 +20,21 @@ public ItemWorkOrder(String name)
   }
 
 @Override
-public WorkOrder getOrders(ItemStack stack)
+public WorkOrder getOrders(NBTTagCompound tag)
   {
-  if(stack!=null && stack.getItem()==this)
-    {
-    WorkOrder order = new WorkOrder();
-    if(stack.hasTagCompound() && stack.getTagCompound().hasKey("orders"))
-      {
-      order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));      
-      }
-    AWLog.logDebug("returning orders..."+order);
-    return order;
-    }
-  return null;
+  WorkOrder order = new WorkOrder();
+  order.readFromNBT(tag);
+  return order;
   }
 
 @Override
-public void writeOrders(NpcOrders orders, ItemStack stack)
+public WorkOrder getOrders(ItemStack stack)
   {
-  if(stack!=null && stack.getItem()==this)
+  if(stack!=null && stack.hasTagCompound() && stack.getTagCompound().hasKey("orders"))
     {
-    stack.setTagInfo("orders", orders.writeToNBT(new NBTTagCompound()));
+    return getOrders(stack.getTagCompound().getCompoundTag("orders"));
     }
+  return new WorkOrder();
   }
 
 @Override
@@ -63,6 +55,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
       if(wo.addWorkPosition(player.worldObj, hit, 0))
         {
         writeOrders(wo, stack);
+        player.openContainer.detectAndSendChanges();
         //TODO add chat output message regarding adding a worksite to the work-orders
         //TODO possibly open the gui after setting the work-point?
 //        player.setCurrentItemOrArmor(0, stack);//TODO probably un-necessary        

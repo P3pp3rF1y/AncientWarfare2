@@ -9,21 +9,26 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
+import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public abstract class NpcPlayerOwned extends NpcBase
 {
 
 private int foodValueRemaining = 0;
 
-private int upkeepDimensionId;
-private BlockPosition upkeepPoint;
-
 public NpcPlayerOwned(World par1World)
   {
   super(par1World);  
   //3 should be flee hostiles when low-health (or based on morale check?)
-//  this.tasks.addTask(4, new NpcAIGetFood(this));  
+  this.tasks.addTask(4, new NpcAIGetFood(this));  
 //  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));  
+  }
+
+@Override
+public void onUpkeepInventoryChanged()
+  {
+  //should inform upkeep AI about upkeep point change
   }
 
 @Override
@@ -41,13 +46,23 @@ public int getFoodRemaining()
 @Override
 public BlockPosition getUpkeepPoint()
   {
-  return upkeepPoint;
+  return upkeepStack==null ? null : AWNpcItemLoader.upkeepOrder.getOrders(upkeepStack).getUpkeepPosition();
+  }
+
+public int getUpkeepBlockSide()
+  {
+  int side = 0;
+  if(upkeepStack!=null)
+    {
+    side = AWNpcItemLoader.upkeepOrder.getOrders(upkeepStack).getUpkeepBlockSide();    
+    }
+  return side;
   }
 
 @Override
 public int getUpkeepDimensionId()
   {
-  return upkeepDimensionId;
+  return upkeepStack==null ? 0 : AWNpcItemLoader.upkeepOrder.getOrders(upkeepStack).getUpkeepDimension();
   }
 
 @Override
@@ -89,6 +104,20 @@ protected boolean interact(EntityPlayer par1EntityPlayer)
     return true;
     }
   return true;
+  }
+
+@Override
+public void readEntityFromNBT(NBTTagCompound tag)
+  {  
+  super.readEntityFromNBT(tag);
+  foodValueRemaining = tag.getInteger("foodValue");
+  }
+
+@Override
+public void writeEntityToNBT(NBTTagCompound tag)
+  {  
+  super.writeEntityToNBT(tag);
+  tag.setInteger("foodValue", foodValueRemaining);
   }
 
 @Override

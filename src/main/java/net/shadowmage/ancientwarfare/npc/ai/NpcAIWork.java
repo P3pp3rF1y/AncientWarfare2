@@ -17,14 +17,14 @@ public class NpcAIWork extends NpcAI
 {
 
 public int workIndex;//TODO read/write nbt
-int ticksAtSite = 0;
-boolean atSite = false;
+int ticksAtSite = 0;//TODO read/write nbt
+boolean atSite = false;//TODO read/write nbt
 WorkOrder order;
 ItemStack orderStack;
 boolean init = false;
 
 int moveTickDelay = 0;
-private int ticksSinceWork;
+private int ticksTilNextWorkUpdate;
 
 public NpcAIWork(NpcBase npc)
   {
@@ -84,9 +84,9 @@ protected void workAtSite()
   {
   ticksAtSite++;
   npc.swingItem();
-  if(ticksSinceWork>0)
+  if(ticksTilNextWorkUpdate>0)
     {
-    ticksSinceWork--;
+    ticksTilNextWorkUpdate--;
     return;
     }
   WorkEntry entry = order.getEntries().get(workIndex);
@@ -103,7 +103,7 @@ protected void workAtSite()
         //do work at the worksite if has work
         AWLog.logDebug("adding energy to site from work");
         site.addEnergyFromWorker((IWorker) npc);
-        ticksSinceWork=AWNPCStatics.npcWorkTicks;
+        ticksTilNextWorkUpdate=AWNPCStatics.npcWorkTicks;
         }
       else
         {
@@ -151,7 +151,7 @@ protected boolean shouldMoveFromTimeAtSite(WorkEntry entry)
 protected void setMoveToNextSite()
   {
   atSite=false;
-  ticksSinceWork=0;
+  ticksTilNextWorkUpdate=0;
   workIndex++;
   ticksAtSite=0;
   moveTickDelay=0;

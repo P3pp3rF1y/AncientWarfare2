@@ -21,11 +21,13 @@ public static final CreativeTabs npcTab = new CreativeTabs("tabs.npc")
   
 public static final ItemNpcSpawner npcSpawner = new ItemNpcSpawner("npc_spawner");
 public static final ItemWorkOrder workOrder = new ItemWorkOrder("work_order");
+public static final ItemUpkeepOrder upkeepOrder = new ItemUpkeepOrder("upkeep_order");
   
 public static void load()
   {
   GameRegistry.registerItem(npcSpawner, "npc_spawner");  
   GameRegistry.registerItem(workOrder, "work_order");
+  GameRegistry.registerItem(upkeepOrder, "upkeep_order");
   }
 
 }
