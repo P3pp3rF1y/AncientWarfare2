@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -115,6 +116,7 @@ public boolean canInput(ForgeDirection from)
 @Override
 public boolean hasWork()
   {
+  if(!hasWorksiteWork()){AWLog.logDebug("no worksite work");}
   return hasWorksiteWork() && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
   }
 
@@ -160,7 +162,7 @@ public void updateEntity()
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
   if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
   }
 

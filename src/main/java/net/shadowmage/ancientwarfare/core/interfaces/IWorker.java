@@ -13,9 +13,10 @@ public interface IWorker
 
 /**
  * get worker effectiveness.  base == 1.  higher values are more effective at most work-types
+ * @param type TODO
  * @return
  */
-public float getWorkEffectiveness();
+public float getWorkEffectiveness(WorkType type);
 
 /**
  * return the team that this worker belongs to, null for none

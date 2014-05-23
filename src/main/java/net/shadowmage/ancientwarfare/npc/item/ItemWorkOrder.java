@@ -23,7 +23,7 @@ public ItemWorkOrder(String name)
 @Override
 public WorkOrder getOrders(ItemStack stack)
   {
-  if(stack.getItem()==this)
+  if(stack!=null && stack.getItem()==this)
     {
     WorkOrder order = new WorkOrder();
     if(stack.hasTagCompound() && stack.getTagCompound().hasKey("orders"))
@@ -60,7 +60,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
     BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
     if(hit!=null && player.worldObj.getTileEntity(hit.x, hit.y, hit.z) instanceof IWorkSite)
       {
-      if(wo.addWorkPosition(player.worldObj, hit))
+      if(wo.addWorkPosition(player.worldObj, hit, 0))
         {
         writeOrders(wo, stack);
         //TODO add chat output message regarding adding a worksite to the work-orders

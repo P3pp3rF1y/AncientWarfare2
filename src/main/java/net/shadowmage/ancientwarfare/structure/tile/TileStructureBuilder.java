@@ -21,7 +21,6 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorq
 {
 
 protected String owningPlayer;
-int maxWorkers = 2;
 
 StructureBuilderTicked builder;
 private boolean shouldRemove = false;
@@ -179,6 +178,7 @@ public void readFromNBT(NBTTagCompound tag)
     this.shouldRemove = true;
     }
   this.isStarted = tag.getBoolean("started");
+  this.storedEnergy = tag.getDouble("storedEnergy");
   }
 
 @Override
@@ -192,13 +192,14 @@ public void writeToNBT(NBTTagCompound tag)
     tag.setTag("builder", builderTag);    
     }
   tag.setBoolean("started", isStarted);
+  tag.setDouble("storedEnergy", storedEnergy);
   }
 
 //*******************************************WORKSITE************************************************//
 @Override
 public boolean hasWork()
   {
-  return true;
+  return !builder.isFinished() && storedEnergy<maxEnergyStored;
   }
 
 @Override
@@ -238,7 +239,7 @@ public boolean hasWorkBounds()
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
   if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
   }
 

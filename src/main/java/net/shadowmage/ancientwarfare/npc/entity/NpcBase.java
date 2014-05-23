@@ -20,6 +20,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -92,6 +93,14 @@ public abstract void writeAddtionalItemData(NBTTagCompound tag);
 
 public abstract boolean isValidOrdersStack(ItemStack stack);
 
+public abstract void onOrdersInventoryChanged();
+
+@Override
+public void swingItem()
+  {
+  super.swingItem();
+  }
+
 public NpcLevelingStats getLevelingStats()
   {
   return levelingStats;
@@ -119,6 +128,7 @@ public abstract void readSpawnData(ByteBuf additionalData);
 public void onUpdate()
   {
   worldObj.theProfiler.startSection("AWNpcTick");
+  updateArmSwingProgress();
   super.onUpdate();
   worldObj.theProfiler.endSection();
   }

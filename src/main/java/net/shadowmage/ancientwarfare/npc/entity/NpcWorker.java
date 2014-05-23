@@ -9,35 +9,40 @@ import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.item.ItemHammer;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWork;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public class NpcWorker extends NpcPlayerOwned implements IWorker
 {
+
+//protected WorkOrder workOrders;
+
+private NpcAIWork workAI;
 
 public NpcWorker(World par1World)
   {
   super(par1World);  
   //this should be set to a generic 'flee' AI for civilians
   this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
-
+  //get food
+  //idle
   this.tasks.addTask(6, new EntityAIMoveIndoors(this));
+  this.tasks.addTask(7, (workAI = new NpcAIWork(this)));
   }
 
 @Override
-public float getWorkEffectiveness()
+public float getWorkEffectiveness(WorkType type)
   {
-  return 0;//TODO base this off of worker level?
+  return 1.f;//TODO base this off of worker level?
   }
 
 @Override
 public boolean canWorkAt(WorkType type)
   {
-  return false;
+  return type==getWorkTypeFromEquipment();
   }
 
 @Override
@@ -65,6 +70,12 @@ protected WorkType getWorkTypeFromEquipment()
     //else if(stack.getItem() == AWItems.researchQuil){return WorkType.RESEARCH}
     }
   return WorkType.NONE;
+  }
+
+@Override
+public void onOrdersInventoryChanged()
+  {
+  this.workAI.onOrdersChanged();
   }
 
 }

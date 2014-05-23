@@ -26,6 +26,12 @@ import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 public class AWNPCStatics extends ModConfiguration
 {
 
+/**
+ * how often an NPC should 'tick' the worksite and add energy
+ * TODO add to config file
+ */
+public static int npcWorkTicks = 50;
+
 public AWNPCStatics(Configuration config)
   {
   super(config);

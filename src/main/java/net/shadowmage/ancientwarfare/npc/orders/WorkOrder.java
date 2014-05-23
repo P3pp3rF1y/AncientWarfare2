@@ -52,15 +52,15 @@ public WorkPriorityType getPriorityType()
   }
 
 public List<WorkEntry> getEntries()
-  {
-  return entries;
-  }
+{
+return entries;
+}
 
-public boolean addWorkPosition(World world, BlockPosition position)
+public boolean addWorkPosition(World world, BlockPosition position, int length)
   {
   if(entries.size()<8)
     {
-    entries.add(new WorkEntry(world, position, world.provider.dimensionId, priorityType==WorkPriorityType.TIMED? 600 : 0));
+    entries.add(new WorkEntry(world, position, world.provider.dimensionId, length));
     AWLog.logDebug("added new work entry (call from WorkOrder)");
     return true;
     }
@@ -104,9 +104,9 @@ public static final class WorkEntry
 
 private Block block;
 int blockMeta;
-private BlockPosition position;
+private BlockPosition position = new BlockPosition();
 int dimension;
-int workLength;
+private int workLength;
 
 private WorkEntry(){}//nbt constructor
 
@@ -116,14 +116,14 @@ public WorkEntry(World world, BlockPosition position, int dimension, int workLen
   this.blockMeta = world.getBlockMetadata(position.x, position.y, position.z);
   this.setPosition(position);
   this.dimension = dimension;
-  this.workLength = workLength;
+  this.setWorkLength(workLength);
   }
 
 public void readFromNBT(NBTTagCompound tag)
   {
   setPosition(new BlockPosition(tag.getCompoundTag("pos")));
   dimension = tag.getInteger("dim");
-  workLength = tag.getInteger("length");
+  setWorkLength(tag.getInteger("length"));
   setBlock(Block.getBlockFromName(tag.getString("block")));
   blockMeta = tag.getInteger("blockMeta");
   }
@@ -132,7 +132,7 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
   tag.setTag("pos", getPosition().writeToNBT(new NBTTagCompound()));
   tag.setInteger("dim", dimension);
-  tag.setInteger("length", workLength);
+  tag.setInteger("length", getWorkLength());
   tag.setString("block", Block.blockRegistry.getNameForObject(getBlock()));
   tag.setInteger("blockMeta", blockMeta);
   return tag;
@@ -143,7 +143,7 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
  */
 public Block getBlock()
   {
-    return block;
+  return block;
   }
 
 /**
@@ -151,7 +151,7 @@ public Block getBlock()
  */
 public void setBlock(Block block)
   {
-    this.block = block;
+  this.block = block;
   }
 
 /**
@@ -159,7 +159,7 @@ public void setBlock(Block block)
  */
 public BlockPosition getPosition()
   {
-    return position;
+  return position;
   }
 
 /**
@@ -167,7 +167,23 @@ public BlockPosition getPosition()
  */
 public void setPosition(BlockPosition position)
   {
-    this.position = position;
+  this.position = position;
+  }
+
+/**
+ * @return the workLength
+ */
+public int getWorkLength()
+  {
+  return workLength;
+  }
+
+/**
+ * @param workLength the workLength to set
+ */
+public void setWorkLength(int workLength)
+  {
+  this.workLength = workLength;
   }
 }
 

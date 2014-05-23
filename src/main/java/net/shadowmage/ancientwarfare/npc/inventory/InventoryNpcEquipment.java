@@ -61,6 +61,7 @@ public void setInventorySlotContents(int var1, ItemStack var2)
   if(var1==5)
     {
     npc.ordersStack=var2;
+    npc.onOrdersInventoryChanged();
     }
   else
     {

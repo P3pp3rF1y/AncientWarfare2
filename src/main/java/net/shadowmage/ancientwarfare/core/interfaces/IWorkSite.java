@@ -2,9 +2,10 @@ package net.shadowmage.ancientwarfare.core.interfaces;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-public interface IWorkSite
+public interface IWorkSite extends ITorqueTile
 {
 
 /**

@@ -21,5 +21,12 @@ public boolean isValidOrdersStack(ItemStack stack)
   return false;
   }
 
+@Override
+public void onOrdersInventoryChanged()
+  {
+  // TODO Auto-generated method stub
+  
+  }
+
 
 }

@@ -29,7 +29,7 @@ public boolean hasWork()
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
   if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
   }
 

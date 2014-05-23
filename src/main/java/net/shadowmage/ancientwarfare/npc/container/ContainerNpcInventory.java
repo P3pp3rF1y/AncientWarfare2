@@ -26,4 +26,10 @@ public ContainerNpcInventory(EntityPlayer player, int x, int y, int z)
   guiHeight = addPlayerSlots(player, 8, 8+5*18+8, 4)+8;
   }
 
+@Override
+public void onContainerClosed(EntityPlayer par1EntityPlayer)
+  {  
+  super.onContainerClosed(par1EntityPlayer);
+  }
+
 }

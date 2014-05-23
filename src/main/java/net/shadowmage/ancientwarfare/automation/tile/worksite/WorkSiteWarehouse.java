@@ -75,7 +75,7 @@ public boolean canInput(ForgeDirection from)
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
   }
 
 @Override

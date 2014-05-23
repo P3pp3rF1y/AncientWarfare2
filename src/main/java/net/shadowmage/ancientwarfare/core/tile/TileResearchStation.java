@@ -135,6 +135,7 @@ public void writeToNBT(NBTTagCompound tag)
 @Override
 public boolean hasWork()
   {
+  if(storedEnergy>=maxEnergyStored){return false;}
   String name = getCrafterName();
   if(name==null){return false;}
   int goal = ResearchTracker.instance().getCurrentGoal(worldObj, name);
@@ -312,7 +313,7 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness();
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
   if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
   }
 

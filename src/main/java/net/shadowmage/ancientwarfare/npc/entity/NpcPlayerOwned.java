@@ -9,8 +9,6 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 
 public abstract class NpcPlayerOwned extends NpcBase
 {
@@ -24,8 +22,8 @@ public NpcPlayerOwned(World par1World)
   {
   super(par1World);  
   //3 should be flee hostiles when low-health (or based on morale check?)
-  this.tasks.addTask(4, new NpcAIGetFood(this));  
-  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));  
+//  this.tasks.addTask(4, new NpcAIGetFood(this));  
+//  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));  
   }
 
 @Override

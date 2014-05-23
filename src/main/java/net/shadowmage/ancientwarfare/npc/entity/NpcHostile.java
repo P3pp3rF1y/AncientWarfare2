@@ -14,6 +14,12 @@ public NpcHostile(World par1World)
   }
 
 @Override
+public void onOrdersInventoryChanged()
+  {
+  //noop
+  }
+
+@Override
 public boolean isValidOrdersStack(ItemStack stack)
   {
   //noop on hostile

@@ -19,6 +19,9 @@ import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
 public class GuiWorkOrder extends GuiContainerBase
 {
 
+//TODO display work priority type via button
+//TODO add number-input for changing work-length
+
 boolean hasChanged = false;
 CompositeScrolled area;
 

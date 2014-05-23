@@ -54,7 +54,7 @@ public boolean shouldExecute()
  */
 public boolean continueExecuting()
   {
-  return !this.npcPathfinder.noPath() && this.npc.getDistanceSqToEntity(this.owner) > (double)(this.maxDist * this.maxDist);
+  return this.npc.getFollowingEntity()!=null;//!this.npcPathfinder.noPath() && this.npc.getDistanceSqToEntity(this.owner) > (double)(this.maxDist * this.maxDist);
   }
 
 /**
@@ -87,24 +87,26 @@ public void updateTask()
   if (--this.executionTimer <= 0)
     {
     this.executionTimer = 10;
-
-    if (!this.npcPathfinder.tryMoveToEntityLiving(this.owner, this.moveSpeed))
+    if(this.npc.getDistanceSqToEntity(this.owner) >= 2.d*2.d)
       {
-      if (this.npc.getDistanceSqToEntity(this.owner) >= 144.0D)
+      if (!this.npcPathfinder.tryMoveToEntityLiving(this.owner, this.moveSpeed))
         {
-        int i = MathHelper.floor_double(this.owner.posX) - 2;
-        int j = MathHelper.floor_double(this.owner.posZ) - 2;
-        int k = MathHelper.floor_double(this.owner.boundingBox.minY);
-
-        for (int l = 0; l <= 4; ++l)
+        if (this.npc.getDistanceSqToEntity(this.owner) >= 144.0D)
           {
-          for (int i1 = 0; i1 <= 4; ++i1)
+          int i = MathHelper.floor_double(this.owner.posX) - 2;
+          int j = MathHelper.floor_double(this.owner.posZ) - 2;
+          int k = MathHelper.floor_double(this.owner.boundingBox.minY);
+
+          for (int l = 0; l <= 4; ++l)
             {
-            if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, i + l, k - 1, j + i1) && !this.theWorld.getBlock(i + l, k, j + i1).isNormalCube() && !this.theWorld.getBlock(i + l, k + 1, j + i1).isNormalCube())
+            for (int i1 = 0; i1 <= 4; ++i1)
               {
-              this.npc.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.npc.rotationYaw, this.npc.rotationPitch);
-              this.npcPathfinder.clearPathEntity();
-              return;
+              if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, i + l, k - 1, j + i1) && !this.theWorld.getBlock(i + l, k, j + i1).isNormalCube() && !this.theWorld.getBlock(i + l, k + 1, j + i1).isNormalCube())
+                {
+                this.npc.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.npc.rotationYaw, this.npc.rotationPitch);
+                this.npcPathfinder.clearPathEntity();
+                return;
+                }
               }
             }
           }
