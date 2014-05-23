@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -16,20 +17,21 @@ public InventoryNpcEquipment(NpcBase npc)
 
 @Override
 public int getSizeInventory()
-  {
-  return 5;
+  {  
+  return 6;
   }
 
 @Override
 public ItemStack getStackInSlot(int var1)
   {
+  if(var1==5){return npc.ordersStack;}
   return npc.getEquipmentInSlot(var1);
   }
 
 @Override
 public ItemStack decrStackSize(int var1, int var2)
   {
-  ItemStack item = npc.getEquipmentInSlot(var1);
+  ItemStack item = getStackInSlot(var1);
   if(item!=null)
     {
     if(var2>item.stackSize){var2=item.stackSize;}
@@ -38,7 +40,7 @@ public ItemStack decrStackSize(int var1, int var2)
     item.stackSize-=var2;
     if(item.stackSize<=0)
       {
-      npc.setCurrentItemOrArmor(var1, null);
+      setInventorySlotContents(var1, null);      
       }
     return copy;
     }
@@ -56,7 +58,14 @@ public ItemStack getStackInSlotOnClosing(int var1)
 @Override
 public void setInventorySlotContents(int var1, ItemStack var2)
   {
-  npc.setCurrentItemOrArmor(var1, var2);
+  if(var1==5)
+    {
+    npc.ordersStack=var2;
+    }
+  else
+    {
+    npc.setCurrentItemOrArmor(var1, var2);  
+    }
   }
 
 @Override
@@ -105,14 +114,22 @@ public void closeInventory()
 @Override
 public boolean isItemValidForSlot(int var1, ItemStack var2)
   {
-  // TODO validate input for slot
+  if(var2==null || var2.getItem()==null){return false;}
   switch(var1)
   {
-  case 0:
-  case 1:
-  case 2:
-  case 3:
-  case 4:
+  case 0://weapon/tool, open
+  // TODO validate input for weapon slot?
+  return true;
+  case 1://head
+  return (var2.getItem() instanceof ItemArmor) && ((ItemArmor)var2.getItem()).armorType==3;
+  case 2://chest
+  return (var2.getItem() instanceof ItemArmor) && ((ItemArmor)var2.getItem()).armorType==2;
+  case 3://legs
+  return (var2.getItem() instanceof ItemArmor) && ((ItemArmor)var2.getItem()).armorType==1;
+  case 4://boots
+  return (var2.getItem() instanceof ItemArmor) && ((ItemArmor)var2.getItem()).armorType==0;
+  case 5:
+  return npc.isValidOrdersStack(var2);
   default:
   return false;
   }

@@ -22,7 +22,7 @@ public boolean shouldExecute()
 public boolean continueExecuting()
   {
 //  AWLog.logDebug("npc get food continueExecuting");
-  return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0;
+  return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0 && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
   }
 
 /**

@@ -1,13 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class AWNPCItemLoader
+public class AWNpcItemLoader
 {
 
 public static final CreativeTabs npcTab = new CreativeTabs("tabs.npc")
@@ -16,15 +15,17 @@ public static final CreativeTabs npcTab = new CreativeTabs("tabs.npc")
   @SideOnly(Side.CLIENT)
   public Item getTabIconItem()
     {
-    return Items.stick;
+    return npcSpawner;
     }
   };
   
 public static final ItemNpcSpawner npcSpawner = new ItemNpcSpawner("npc_spawner");
+public static final ItemWorkOrder workOrder = new ItemWorkOrder("work_order");
   
 public static void load()
   {
   GameRegistry.registerItem(npcSpawner, "npc_spawner");  
+  GameRegistry.registerItem(workOrder, "work_order");
   }
 
 }

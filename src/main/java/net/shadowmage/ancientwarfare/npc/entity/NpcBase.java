@@ -17,17 +17,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable
 {
@@ -47,9 +45,15 @@ protected NpcLevelingStats levelingStats;
  */
 protected ResourceLocation texture;
 
+/**
+ * the default texture for this entity type, should be set in entity constructor<br>
+ * e.g. combat / worker / courier / hostile
+ */
 protected ResourceLocation defaultTexture;
 
 private final ResourceLocation baseDefaultTexture;
+
+public ItemStack ordersStack;
 
 public NpcBase(World par1World)
   {
@@ -74,7 +78,7 @@ public NpcBase(World par1World)
   //post-100 -- used by delayed shared tasks (stay near home, look at random stuff, wander)
   this.tasks.addTask(100, new EntityAIMoveTowardsRestriction(this, 0.6D)); 
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-  this.tasks.addTask(102, new EntityAIWander(this, 1.0D));
+  this.tasks.addTask(102, new EntityAIWander(this, 0.625D));
   this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
   
   //target tasks
@@ -86,6 +90,13 @@ public abstract void readAdditionalItemData(NBTTagCompound tag);
 
 public abstract void writeAddtionalItemData(NBTTagCompound tag);
 
+public abstract boolean isValidOrdersStack(ItemStack stack);
+
+public NpcLevelingStats getLevelingStats()
+  {
+  return levelingStats;
+  }
+
 public ResourceLocation getDefaultTexture()
   {
   return defaultTexture==null ? baseDefaultTexture : defaultTexture;
@@ -93,7 +104,7 @@ public ResourceLocation getDefaultTexture()
 
 public ItemStack getItemToSpawn()
   {
-  ItemStack stack = new ItemStack(AWNPCItemLoader.npcSpawner);
+  ItemStack stack = new ItemStack(AWNpcItemLoader.npcSpawner);
   stack.setTagInfo("npcType", new NBTTagString(AWEntityRegistry.getRegistryNameFor(this.getClass())));
   return stack;
   }
@@ -128,6 +139,7 @@ protected boolean isAIEnabled()
 protected void applyEntityAttributes()
   {
   super.applyEntityAttributes();
+  //TODO figure out how to dynamically reset attack damage attribute based on weapon equipped
   this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.d);
   this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
   this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.325D);
@@ -173,6 +185,13 @@ public Team getTeam()
   return worldObj.getScoreboard().getPlayersTeam(ownerName);
   }
 
+public boolean isHostileTowards(Team team)
+  {
+  Team a = getTeam();
+  if(a!=null && team!=null && a!=team){return true;}
+  return false;
+  }
+
 public EntityLivingBase getFollowingEntity()
   {
   if(followingPlayerName==null){return null;}
@@ -199,19 +218,38 @@ public void repackEntity(EntityPlayer player)
   NBTTagCompound tag = new NBTTagCompound();
   writeAddtionalItemData(tag);
   item.setTagInfo("npcStoredData", tag);
+  //TODO add to player inventory or drop into world
+  //TODO add repack button to npc-gui
   }
 
 @Override
-public void readEntityFromNBT(NBTTagCompound par1nbtTagCompound)
+public void readEntityFromNBT(NBTTagCompound tag)
   {
-  super.readEntityFromNBT(par1nbtTagCompound);
+  super.readEntityFromNBT(tag);
+  ownerName = tag.getString("owner");
+  npcName = tag.getString("npcName");
+  if(tag.hasKey("ordersItem")){ordersStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("ordersItem"));}
+  if(getHomePosition()!=null)
+    {
+    ChunkCoordinates cc = getHomePosition();
+    int[] ccia = new int[]{cc.posX,cc.posY,cc.posZ,(int)func_110174_bM()};
+    tag.setIntArray("home", ccia);
+    }
   //TODO
   }
 
 @Override
-public void writeEntityToNBT(NBTTagCompound par1nbtTagCompound)
+public void writeEntityToNBT(NBTTagCompound tag)
   {
-  super.writeEntityToNBT(par1nbtTagCompound);
+  super.writeEntityToNBT(tag);
+  tag.setString("owner", ownerName);
+  tag.setString("npcName", npcName);
+  if(ordersStack!=null){tag.setTag("ordersItem", ordersStack.writeToNBT(new NBTTagCompound()));}
+  if(tag.hasKey("home"))
+    {
+    int[] ccia = tag.getIntArray("home");
+    setHomeArea(ccia[0], ccia[1], ccia[2], ccia[3]);
+    }
   //TODO
   }
 

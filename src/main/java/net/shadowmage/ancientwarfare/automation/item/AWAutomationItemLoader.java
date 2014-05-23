@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.item;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -17,11 +16,10 @@ public static final CreativeTabs automationTab = new CreativeTabs("tabs.automati
   @SideOnly(Side.CLIENT)
   public Item getTabIconItem()
     {  
-    return Items.stick;
+    return AWItems.automationHammer;
     }  
   };
  
-
 public static void load()
   {
   AWItems.automationHammer = new ItemHammer("hammer");

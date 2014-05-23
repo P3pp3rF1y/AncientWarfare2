@@ -8,7 +8,9 @@ import net.minecraft.world.World;
 public class AWEntityRegistry
 {
 
-public static final String NPC_TEST = "aw_npc_test";
+public static final String NPC_WORKER = "aw_npc_worker";
+public static final String NPC_COMBAT = "aw_npc_combat";
+public static final String NPC_COURIER = "aw_npc_courier";
 
 private static HashMap<String, EntityDeclaration> entityRegistrations = new HashMap<String, EntityDeclaration>();
 private static HashMap<Class, String> classToRegistration = new HashMap<Class, String>();

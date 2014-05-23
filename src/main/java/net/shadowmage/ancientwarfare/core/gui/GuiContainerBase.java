@@ -55,7 +55,7 @@ private ResourceLocation backgroundTexture;
 
 protected EntityPlayer player;
 
-public GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, String backgroundTexture)
+protected GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, String backgroundTexture)
   {
   super(par1Container);
   par1Container.setGui(this);

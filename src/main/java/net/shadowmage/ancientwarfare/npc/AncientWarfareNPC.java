@@ -9,9 +9,10 @@ import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
+import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
-import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -67,7 +68,7 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * load items, blocks, and entities
    */
-  AWNPCItemLoader.load();
+  AWNpcItemLoader.load();
   AWNPCBlockLoader.load();
   AWNPCEntityLoader.load();
 
@@ -75,6 +76,7 @@ public void preInit(FMLPreInitializationEvent evt)
    * register containers
    */
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_INVENTORY, ContainerNpcInventory.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_WORK_ORDER, ContainerWorkOrder.class);
   
   /**
    * register persistent game-data handlers

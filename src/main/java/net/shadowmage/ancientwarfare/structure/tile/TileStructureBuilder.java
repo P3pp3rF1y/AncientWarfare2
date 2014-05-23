@@ -204,7 +204,7 @@ public boolean hasWork()
 @Override
 public WorkType getWorkType()
   {
-  return WorkType.CONSTRUCTION;
+  return WorkType.CRAFTING;
   }
 
 @Override

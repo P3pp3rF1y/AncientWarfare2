@@ -471,7 +471,7 @@ private boolean hasAnimalWork()
 @Override
 public WorkType getWorkType()
   {
-  return WorkType.ANIMAL_HUSBANDRY;
+  return WorkType.FARMING;
   }
 
 @Override

@@ -43,7 +43,7 @@ public void addEnergyFromPlayer(EntityPlayer player)
 @Override
 public WorkType getWorkType()
   {
-  return WorkType.CONSTRUCTION;
+  return WorkType.CRAFTING;
   }
 
 @Override

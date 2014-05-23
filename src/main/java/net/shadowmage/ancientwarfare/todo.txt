@@ -114,7 +114,10 @@ automation module:
 			Distributor	(bc-compat) 1000 max, 100 in, 100 out		
 	
 npcs module
-	Add profiling stuff to mc-profiler
+	add rendering of routes when npc-order item is being held
+		work-order renders route + numbers
+		routing-order renders route + sides
+		combat-order renders patrol and guard points/targets
 	
 	how the -F to allow for user-set textures for NPCs?
 	

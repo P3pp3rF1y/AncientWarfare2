@@ -23,8 +23,27 @@ public static final List<String> npcNames = new ArrayList<String>();
 
 public ItemNpcSpawner(String regName)
   {
-  this.setCreativeTab(AWNPCItemLoader.npcTab);
+  this.setCreativeTab(AWNpcItemLoader.npcTab);
   this.setUnlocalizedName(regName);
+  }
+
+@Override
+public String getUnlocalizedName()
+  {  
+  return super.getUnlocalizedName();
+  }
+
+@Override
+public String getUnlocalizedName(ItemStack par1ItemStack)
+  {  
+  String npcName = getNpcType(par1ItemStack);
+  return super.getUnlocalizedName(par1ItemStack) + (npcName==null? "" : "."+npcName);
+  }
+
+@Override
+public String getItemStackDisplayName(ItemStack par1ItemStack)
+  {
+  return super.getItemStackDisplayName(par1ItemStack);
   }
 
 @Override
@@ -44,6 +63,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   if(npc==null){return;}
   npc.setOwnerName(player.getCommandSenderName());
   npc.setPosition(hit.x+0.5d, hit.y, hit.z+0.5d);
+  npc.setHomeArea(hit.x, hit.y, hit.z, 60);
   if(stack.hasTagCompound()&&stack.getTagCompound().hasKey("npcStoredData"))
     {
     npc.readAdditionalItemData(stack.getTagCompound().getCompoundTag("npcStoredData"));
