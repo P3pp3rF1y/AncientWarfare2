@@ -1,9 +1,11 @@
 package net.shadowmage.ancientwarfare.npc.orders;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public class UpkeepOrder extends NpcOrders
 {
@@ -94,6 +96,28 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
     tag.setInteger("blockMeta", blockMeta);
     }
   return tag;
+  }
+
+public static UpkeepOrder getUpkeepOrder(ItemStack stack)
+  {
+  if(stack!=null && stack.getItem()==AWNpcItemLoader.upkeepOrder)
+    {
+    UpkeepOrder order = new UpkeepOrder();
+    if(stack.hasTagCompound() && stack.getTagCompound().hasKey("orders"))
+      {
+      order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
+      }
+    return order;
+    }
+  return null;
+  }
+
+public static void writeUpkeepOrder(ItemStack stack, UpkeepOrder order)
+  {
+  if(stack!=null && stack.getItem()==AWNpcItemLoader.upkeepOrder)
+    {
+    stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+    }
   }
 
 }

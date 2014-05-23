@@ -17,18 +17,6 @@ public ItemOrders(String name)
   this.setCreativeTab(AWNpcItemLoader.npcTab);
   }
 
-public abstract NpcOrders getOrders(NBTTagCompound tag);
-
-public abstract NpcOrders getOrders(ItemStack stack);
-
-public final void writeOrders(NpcOrders orders, ItemStack stack)
-  {
-  if(stack!=null && stack.getItem()==this)
-    {
-    stack.setTagInfo("orders", orders.writeToNBT(new NBTTagCompound()));
-    }
-  }
-
 @Override
 public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
   {  

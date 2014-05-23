@@ -29,7 +29,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
   {
   //TODO set upkeep position
   //TODO open GUI so player may select block-side
-  UpkeepOrder upkeepOrder = getOrders(stack);
+  UpkeepOrder upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
   if(upkeepOrder!=null)
     {
     BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
@@ -37,31 +37,13 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
       {
       if(upkeepOrder.addUpkeepPosition(player.worldObj, hit))
         {
-        writeOrders(upkeepOrder, stack);
+        UpkeepOrder.writeUpkeepOrder(stack, upkeepOrder);
         player.openContainer.detectAndSendChanges();
         NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
         //TODO add chat output message regarding adding a worksite to the work-orders
         }
       }
     }
-  }
-
-@Override
-public UpkeepOrder getOrders(ItemStack stack)
-  {
-  if(stack!=null && stack.hasTagCompound() && stack.getTagCompound().hasKey("orders"))
-    {
-    return getOrders(stack.getTagCompound().getCompoundTag("orders"));
-    }
-  return new UpkeepOrder();
-  }
-
-@Override
-public UpkeepOrder getOrders(NBTTagCompound tag)
-  {
-  UpkeepOrder order = new UpkeepOrder();
-  order.readFromNBT(tag);
-  return order;
   }
 
 }

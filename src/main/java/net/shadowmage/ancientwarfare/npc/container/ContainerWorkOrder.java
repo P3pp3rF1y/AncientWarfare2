@@ -18,7 +18,7 @@ public ContainerWorkOrder(EntityPlayer player, int x, int y, int z)
   super(player, x, y, z);
   ItemStack stack = player.getCurrentEquippedItem();
   if(stack==null || stack.getItem()==null){throw new IllegalArgumentException("Cannot open Work Order GUI for null stack/item.");}  
-  wo = AWNpcItemLoader.workOrder.getOrders(stack);
+  wo = WorkOrder.getWorkOrder(stack);
   if(wo==null){throw new IllegalArgumentException("Work orders was null for some reason");}
   }
 
@@ -38,7 +38,7 @@ public void onContainerClosed(EntityPlayer par1EntityPlayer)
   super.onContainerClosed(par1EntityPlayer);
   if(hasChanged && !player.worldObj.isRemote)
     {
-    AWNpcItemLoader.workOrder.writeOrders(wo, player.getCurrentEquippedItem());    
+    WorkOrder.writeWorkOrder(player.getCurrentEquippedItem(), wo);    
     }
   }
 

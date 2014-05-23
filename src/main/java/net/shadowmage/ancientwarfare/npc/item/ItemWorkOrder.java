@@ -20,24 +20,6 @@ public ItemWorkOrder(String name)
   }
 
 @Override
-public WorkOrder getOrders(NBTTagCompound tag)
-  {
-  WorkOrder order = new WorkOrder();
-  order.readFromNBT(tag);
-  return order;
-  }
-
-@Override
-public WorkOrder getOrders(ItemStack stack)
-  {
-  if(stack!=null && stack.hasTagCompound() && stack.getTagCompound().hasKey("orders"))
-    {
-    return getOrders(stack.getTagCompound().getCompoundTag("orders"));
-    }
-  return new WorkOrder();
-  }
-
-@Override
 public void onRightClick(EntityPlayer player, ItemStack stack)
   {
   NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_WORK_ORDER, 0, 0, 0);
@@ -46,7 +28,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
 @Override
 public void onKeyAction(EntityPlayer player, ItemStack stack)
   {
-  WorkOrder wo = getOrders(stack);
+  WorkOrder wo = WorkOrder.getWorkOrder(stack);
   if(wo!=null)
     {
     BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
@@ -54,7 +36,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
       {
       if(wo.addWorkPosition(player.worldObj, hit, 0))
         {
-        writeOrders(wo, stack);
+        WorkOrder.writeWorkOrder(stack, wo);
         player.openContainer.detectAndSendChanges();
         //TODO add chat output message regarding adding a worksite to the work-orders
         //TODO possibly open the gui after setting the work-point?

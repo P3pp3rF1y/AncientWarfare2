@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
 public abstract class NpcPlayerOwned extends NpcBase
 {
@@ -46,23 +47,33 @@ public int getFoodRemaining()
 @Override
 public BlockPosition getUpkeepPoint()
   {
-  return upkeepStack==null ? null : AWNpcItemLoader.upkeepOrder.getOrders(upkeepStack).getUpkeepPosition();
+  UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
+  if(order!=null)
+    {
+    return order.getUpkeepPosition();
+    }
+  return null;
   }
 
 public int getUpkeepBlockSide()
   {
-  int side = 0;
-  if(upkeepStack!=null)
+  UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
+  if(order!=null)
     {
-    side = AWNpcItemLoader.upkeepOrder.getOrders(upkeepStack).getUpkeepBlockSide();    
+    return order.getUpkeepBlockSide();
     }
-  return side;
+  return 0;
   }
 
 @Override
 public int getUpkeepDimensionId()
   {
-  return upkeepStack==null ? 0 : AWNpcItemLoader.upkeepOrder.getOrders(upkeepStack).getUpkeepDimension();
+  UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
+  if(order!=null)
+    {
+    return order.getUpkeepDimension();
+    }
+  return 0;
   }
 
 @Override

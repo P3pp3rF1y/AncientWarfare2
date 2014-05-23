@@ -43,7 +43,7 @@ public boolean shouldExecute()
   if(!init)
     {
     orderStack = npc.ordersStack;
-    order = AWNpcItemLoader.workOrder.getOrders(orderStack);
+    order = WorkOrder.getWorkOrder(orderStack);
     init = true;
     }
   if(orderStack!=null && order!=null && order.getEntries().size()>0)
@@ -193,7 +193,7 @@ public void onOrdersChanged()
   {
   AWLog.logDebug("orders changed!!");
   orderStack = npc.ordersStack;
-  order = AWNpcItemLoader.workOrder.getOrders(orderStack);
+  order = WorkOrder.getWorkOrder(orderStack);
   workIndex = 0;
   ticksAtSite = 0;
   atSite = false;
