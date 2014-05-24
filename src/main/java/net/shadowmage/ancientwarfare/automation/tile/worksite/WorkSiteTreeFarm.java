@@ -122,7 +122,6 @@ private void countResources()
       bonemealCount+=stack.stackSize;
       }
     }
-  AWLog.logDebug("rescanned inventory.  bonemeal: "+bonemealCount+" saplings: "+saplingCount);
   }
 
 @Override

@@ -16,6 +16,7 @@ public class ItemUpkeepOrder extends ItemOrders
 public ItemUpkeepOrder(String name)
   {
   super(name);
+  this.setTextureName("ancientwarfare:npc/upkeep_order");
   }
 
 @Override

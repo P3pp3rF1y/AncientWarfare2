@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -14,6 +15,7 @@ import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
+import net.shadowmage.ancientwarfare.npc.render.RenderWorkLines;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -111,6 +113,7 @@ public void postInit(FMLPostInitializationEvent evt)
     * save config for any changes that were made during loading stages
     */
   proxy.loadSkins();
+  AWNPCEntityLoader.loadNpcSubtypeEquipment();
   config.save();
   AWLog.log("Ancient Warfare NPCs Post-Init completed.  Successfully completed all loading stages.");
   }

@@ -120,7 +120,6 @@ protected boolean processWork()
   Iterator<BlockPosition> it;
   if(!blocksToPlantMushroom.isEmpty())
     {
-    AWLog.logDebug("planting mushroom...");
     it = blocksToPlantMushroom.iterator();
     BlockPosition pos;
     ItemStack item;
@@ -153,7 +152,6 @@ protected boolean processWork()
     }
   else if(!blocksToPlantNetherWart.isEmpty())
     {
-    AWLog.logDebug("planting nether wart");
     it = blocksToPlantNetherWart.iterator();
     BlockPosition pos;
     ItemStack item;
@@ -181,7 +179,6 @@ protected boolean processWork()
     }
   else if(!blocksToHarvest.isEmpty())
     {
-    AWLog.logDebug("harvesting mushroom..");
     it = blocksToHarvest.iterator();
     BlockPosition pos;
     Block block;
@@ -239,12 +236,7 @@ protected void scanBlockPosition(BlockPosition pos)
       }
     else if(Blocks.brown_mushroom.canPlaceBlockAt(worldObj, pos.x, pos.y, pos.z))
       {
-      AWLog.logDebug("added block to plant: "+pos);
       blocksToPlantMushroom.add(pos);
-      }
-    else
-      {
-      AWLog.logDebug("could not select block for planting: "+pos);
       }
     }
   else//not an air block, check for harvestable nether-wart

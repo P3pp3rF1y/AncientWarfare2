@@ -18,13 +18,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -83,9 +88,42 @@ public NpcBase(World par1World)
 //  this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
   }
 
+@Override
+public void handleHealthUpdate(byte par1)
+  {  
+  super.handleHealthUpdate(par1);
+  //TODO handle npc ai updates, set AI...render AI tasks...load icons for tasks...rework all vanilla AI to inform of AI change
+  int lower = par1 &0x0f;
+  int upper = (par1 >>4) &0x0f;
+  if(lower==0)
+    {
+    AWLog.logDebug("should set entity ai task icon to: "+upper);
+    }
+  }
+
+public void setEntityAIForDisplay(int ai)
+  {
+  if(!worldObj.isRemote)
+    {
+    int lower = 0;
+    int upper = ai;
+    int total = ((upper&0x0f)<<4) | (lower &0x0f) ;
+    ((WorldServer)worldObj).setEntityState(this, (byte)total);
+    }
+  }
+
+/**
+ * implementations should read in any data written during {@link #writeAdditionalItemData(NBTTagCompound)}
+ * @param tag
+ */
 public abstract void readAdditionalItemData(NBTTagCompound tag);
 
-public abstract void writeAddtionalItemData(NBTTagCompound tag);
+/**
+ * Implementations should write out any persistent entity-data needed to restore entity-state from an item-stack.<br>
+ * This should include inventory, levels, orders, faction / etc
+ * @param tag
+ */
+public abstract void writeAdditionalItemData(NBTTagCompound tag);
 
 public abstract boolean isValidOrdersStack(ItemStack stack);
 
@@ -111,9 +149,13 @@ public ResourceLocation getDefaultTexture()
 
 public ItemStack getItemToSpawn()
   {
-  ItemStack stack = new ItemStack(AWNpcItemLoader.npcSpawner);
-  stack.setTagInfo("npcType", new NBTTagString(AWEntityRegistry.getRegistryNameFor(this.getClass())));
-  return stack;
+  return ItemNpcSpawner.getSpawnerItemForNpc(this);
+  }
+
+@Override
+public ItemStack getPickedResult(MovingObjectPosition target)
+  {
+  return getItemToSpawn();
   }
 
 @Override
@@ -227,12 +269,16 @@ public boolean allowLeashing()
 
 public void repackEntity(EntityPlayer player)
   {
-  ItemStack item = this.getItemToSpawn();
-  NBTTagCompound tag = new NBTTagCompound();
-  writeAddtionalItemData(tag);
-  item.setTagInfo("npcStoredData", tag);
-  //TODO add to player inventory or drop into world
-  //TODO add repack button to npc-gui
+  if(!player.worldObj.isRemote)
+    {
+    ItemStack item = this.getItemToSpawn();
+    //TODO add repack button to npc-gui
+    item = InventoryTools.mergeItemStack(player.inventory, item, -1);
+    if(item!=null)
+      {
+      InventoryTools.dropItemInWorld(player.worldObj, item, player.posX, player.posY, player.posZ);    
+      }    
+    }
   }
 
 @Override

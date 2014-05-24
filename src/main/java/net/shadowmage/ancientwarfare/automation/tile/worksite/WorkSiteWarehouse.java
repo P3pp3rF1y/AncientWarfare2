@@ -103,7 +103,7 @@ public void updateEntity()
       long t2 = System.nanoTime();
       long t3 = (t2-t1);
       float f1 = (float)((double)t3 / 1000000.d);
-      AWLog.logDebug("tilesToUpdate update time: "+(t2-t1)+"ns ("+f1+"ms)");
+//      AWLog.logDebug("tilesToUpdate update time: "+(t2-t1)+"ns ("+f1+"ms)");
       }
     if(hasWork() && storedEnergy==maxEnergyStored)
       {
@@ -167,7 +167,7 @@ public void addStorageBlock(IWarehouseStorageTile tile)
     {
     storageTiles.add(tile);  
     currentMaxItemCount+=tile.getStorageAdditionSize();
-    AWLog.logDebug("updated warehouse storage size to: "+currentMaxItemCount);
+//    AWLog.logDebug("updated warehouse storage size to: "+currentMaxItemCount);
     tile.onWarehouseInventoryUpdated(this);
     }
   }
@@ -178,7 +178,7 @@ public void removeStorageBlock(IWarehouseStorageTile tile)
     {
     storageTiles.remove(tile);    
     currentMaxItemCount-=tile.getStorageAdditionSize();
-    AWLog.logDebug("updated warehouse storage size to: "+currentMaxItemCount);
+//    AWLog.logDebug("updated warehouse storage size to: "+currentMaxItemCount);
     }
   }
 
@@ -481,7 +481,7 @@ protected boolean processWork()
   long t2 = System.nanoTime();
   long t3 = (t2-t1);
   float f1 = (float)((double)t3 / 1000000.d);
-  AWLog.logDebug("work time: "+(t2-t1)+"ns ("+f1+"ms)");
+//  AWLog.logDebug("work time: "+(t2-t1)+"ns ("+f1+"ms)");
   updateViewers();
   return false;
   }

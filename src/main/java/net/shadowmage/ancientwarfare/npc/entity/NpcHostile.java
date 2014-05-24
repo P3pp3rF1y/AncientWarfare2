@@ -58,7 +58,7 @@ public void readAdditionalItemData(NBTTagCompound tag)
   }
 
 @Override
-public void writeAddtionalItemData(NBTTagCompound tag)
+public void writeAdditionalItemData(NBTTagCompound tag)
   {
   
   }

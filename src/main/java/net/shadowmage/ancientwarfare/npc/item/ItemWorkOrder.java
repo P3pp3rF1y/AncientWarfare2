@@ -17,6 +17,7 @@ public class ItemWorkOrder extends ItemOrders
 public ItemWorkOrder(String name)
   {
   super(name);
+  this.setTextureName("ancientwarfare:npc/work_order");
   }
 
 @Override

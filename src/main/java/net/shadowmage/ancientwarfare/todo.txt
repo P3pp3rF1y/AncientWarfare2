@@ -37,9 +37,10 @@ TEXTURES
 modeler
 	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 	
-structures module (done for now)
+structures module
 	Recipes Needed:
 		ALL (except for templates in drafting station)
+	Scanner GUI needs some cleanup / make it look nice
 	plugins / support for other modules
 	template plugin support for gates
 	textures for drafting station, survival-mode builder block
@@ -50,6 +51,8 @@ structures module (done for now)
 
 automation module:
 	Add profiling stuff to mc-profiler
+	
+	Change over worksite BB render to a TESR -- should be slightly more optimized
 	
 	worksites that need work:
 	
@@ -121,9 +124,7 @@ npcs module
 		work-order renders route + numbers
 		routing-order renders route + sides
 		combat-order renders patrol and guard points/targets
-	
-	how the -F to allow for user-set textures for NPCs?
-	
+		
 	all npcs will have full inventory accessibility for equipment slots	
 	
 	Teams:
@@ -133,12 +134,15 @@ npcs module
 		Bandits / hostile NPCs will not be part of the team system and will have customized AI
 		Combat npcs will attack other combat NPCS if the attacker has a team and the target has a team, and they are not the same team
 	
+	all npcs will have an 'upkeep order' slot
+		simple work-order that denotes a single point for npc upkeep.
+		--perhaps have additional variables for the slip such as min / max to withdraw?
+	
 	all npcs will have an 'orders' slot
 		worker = work order
 		courer = routing slip
 		combat = combat order
 		
-		orders item has slot to set upkeep point?
 		
 		Work Order:
 			3 settings - Priority, Timed, Route

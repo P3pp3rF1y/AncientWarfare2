@@ -116,7 +116,6 @@ public boolean canInput(ForgeDirection from)
 @Override
 public boolean hasWork()
   {
-  if(!hasWorksiteWork()){AWLog.logDebug("no worksite work");}
   return hasWorksiteWork() && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
   }
 
