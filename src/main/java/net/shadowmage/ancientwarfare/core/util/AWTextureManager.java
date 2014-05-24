@@ -12,6 +12,11 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+/**
+ * TODO clean this class up to use new image/file based texture classes
+ * @author Shadowmage
+ *
+ */
 public class AWTextureManager
 {
 

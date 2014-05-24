@@ -19,7 +19,7 @@ public static void loadInstance()
     {
     try
       {
-      instance = (BCProxy) BCProxy.class.forName("net.shadowmage.ancientwarfare.automation.proxy.BCProxyActual").newInstance();
+      instance = (BCProxy) Class.forName("net.shadowmage.ancientwarfare.automation.proxy.BCProxyActual").newInstance();
       AWLog.logDebug("set bc proxy to bc-proxy actual");
       } 
     catch (Exception e)

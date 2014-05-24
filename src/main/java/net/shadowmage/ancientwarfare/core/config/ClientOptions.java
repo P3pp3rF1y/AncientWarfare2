@@ -11,7 +11,6 @@ public class ClientOptions
 public static final ClientOptions INSTANCE = new ClientOptions();
 private ClientOptions(){}
 
-private Configuration config;
 private HashMap<String, ClientOption> clientOptions = new HashMap<String, ClientOption>();
 
 private static final String clientOptionsCategory = AWCoreStatics.clientOptions;
@@ -29,10 +28,6 @@ public static final String OPTION_RENDER_NPC_AI = "render_npc_ai";
 public static final String OPTION_RENDER_NPC_HOSTILE_NAMES = "render_hostile_names";
 public static final String OPTION_RENDER_NPC_FRIENDLY_NAMES = "render_friendly_names";
 
-public void setConfig(Configuration config)
-  {
-  this.config = config;
-  }
 
 /**
  * registers the client-option, with default value.  actual value will be loaded

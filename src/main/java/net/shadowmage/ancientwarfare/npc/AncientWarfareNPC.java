@@ -5,7 +5,6 @@ import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
@@ -14,7 +13,7 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
-import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
+import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -39,10 +38,10 @@ public static AncientWarfareNPC instance;
 
 @SidedProxy
 (
-clientSide = "net.shadowmage.ancientwarfare.npc.proxy.ClientProxyNPC",
-serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy"
+clientSide = "net.shadowmage.ancientwarfare.npc.proxy.NpcClientProxy",
+serverSide = "net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy"
 )
-public static CommonProxyBase proxy;
+public static NpcCommonProxy proxy;
 
 public static Configuration config;
 
@@ -89,13 +88,7 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * register tick-handlers
    */
-  
-  /**
-   * load npc skins
-   */
-  String path = evt.getModConfigurationDirectory().getAbsolutePath();
-  NpcSkinManager.INSTANCE.loadSkinPacks(path);
-  
+    
   AWLog.log("Ancient Warfare NPCs Pre-Init completed");
   }
 
@@ -117,6 +110,7 @@ public void postInit(FMLPostInitializationEvent evt)
    /**
     * save config for any changes that were made during loading stages
     */
+  proxy.loadSkins();
   config.save();
   AWLog.log("Ancient Warfare NPCs Post-Init completed.  Successfully completed all loading stages.");
   }

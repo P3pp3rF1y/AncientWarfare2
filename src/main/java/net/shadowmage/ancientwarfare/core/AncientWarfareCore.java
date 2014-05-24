@@ -58,7 +58,6 @@ public void preInit(FMLPreInitializationEvent evt)
    * setup config file and logger
    */
   config = new Configuration(evt.getSuggestedConfigurationFile());
-  ClientOptions.INSTANCE.setConfig(config);
   log = evt.getModLog();
   
   AWLog.log("Ancient Warfare Core Pre-Init Started");
