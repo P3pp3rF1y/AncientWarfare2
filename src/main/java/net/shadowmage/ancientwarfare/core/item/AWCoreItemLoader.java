@@ -16,6 +16,9 @@ public void load()
   
   AWItems.researchNote = new ItemResearchNotes("research_note");
   GameRegistry.registerItem(AWItems.researchNote, "research_note");
+  
+  AWItems.automationHammer = new ItemHammer("hammer");
+  GameRegistry.registerItem(AWItems.automationHammer, "hammer");
   }
 
 }

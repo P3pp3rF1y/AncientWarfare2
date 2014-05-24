@@ -93,9 +93,8 @@ protected WorkType getWorkTypeFromEquipment()
     if(stack.getItem() instanceof ItemHoe){return WorkType.FARMING;}
     else if(stack.getItem() instanceof ItemAxe){return WorkType.FORESTRY;}
     else if(stack.getItem() instanceof ItemPickaxe){return WorkType.MINING;}    
-    else if(stack.getItem() == AWItems.automationHammer){return WorkType.CRAFTING;}//TODO move hammer into core as it is used by multiple modules
-    //TODO add researcher custom item -- quill?
-    //else if(stack.getItem() == AWItems.researchQuil){return WorkType.RESEARCH}
+    else if(stack.getItem() == AWItems.automationHammer){return WorkType.CRAFTING;}
+    //else if(stack.getItem() == AWItems.researchQuil){return WorkType.RESEARCH}//TODO add researcher custom item -- quill?
     }
   return WorkType.NONE;
   }

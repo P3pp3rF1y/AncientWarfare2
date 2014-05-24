@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
@@ -38,6 +41,11 @@ public static void load()
       }
     };
   addPlayerOwnableNpcRegistration(reg, "combat", "ancientwarfare:npc/spawner_combat");
+  addNpcSubtypeEntry("combat", "commander", "ancientwarfare:npc/spawner_commander");
+  addNpcSubtypeEntry("combat", "soldier", "ancientwarfare:npc/spawner_combat");
+  addNpcSubtypeEntry("combat", "archer", "ancientwarfare:npc/spawner_archer");
+  addNpcSubtypeEntry("combat", "medic", "ancientwarfare:npc/spawner_medic");
+  addNpcSubtypeEntry("combat", "engineer", "ancientwarfare:npc/spawner_engineer");
   
   reg = new NpcDeclaration(NpcWorker.class, AWEntityRegistry.NPC_WORKER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "worker")
     {
@@ -51,6 +59,8 @@ public static void load()
   addNpcSubtypeEntry("worker", "farmer", "ancientwarfare:npc/spawner_farmer");
   addNpcSubtypeEntry("worker", "miner", "ancientwarfare:npc/spawner_miner");
   addNpcSubtypeEntry("worker", "lumberjack", "ancientwarfare:npc/spawner_lumberjack");
+  addNpcSubtypeEntry("worker", "researcher", "ancientwarfare:npc/spawner_researcher");
+  addNpcSubtypeEntry("worker", "craftsman", "ancientwarfare:npc/spawner_craftsman");
   
   reg = new NpcDeclaration(NpcCourier.class, AWEntityRegistry.NPC_COURIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "courier")
     {
@@ -72,12 +82,15 @@ public static void loadNpcSubtypeEquipment()
   {
   addNpcSubtypeEquipment("worker", "farmer", new ItemStack(Items.iron_hoe));
   addNpcSubtypeEquipment("worker", "miner", new ItemStack(Items.iron_pickaxe));
-  addNpcSubtypeEquipment("worker", "lumberjack", new ItemStack(Items.iron_axe));
-  
-  //addNpcSubtypeEquipment("worker", "researcher", --);//TODO make quill item
-//  addNpcSubtypeEquipment("worker", "craftsman", equipment);//TODO move hammer item to core module
-  
-  //TODO combat
+  addNpcSubtypeEquipment("worker", "lumberjack", new ItemStack(Items.iron_axe));  
+  addNpcSubtypeEquipment("worker", "researcher", new ItemStack(Item.getItemFromBlock(Blocks.torch)));//TODO make quill item
+  addNpcSubtypeEquipment("worker", "craftsman", new ItemStack(AWItems.automationHammer));
+      
+  addNpcSubtypeEquipment("combat", "commander", new ItemStack(Items.diamond_sword));//TODO commander -- scepter / mace?
+  addNpcSubtypeEquipment("combat", "soldier", new ItemStack(Items.iron_sword));
+  addNpcSubtypeEquipment("combat", "archer", new ItemStack(Items.bow));
+  addNpcSubtypeEquipment("combat", "engineer", new ItemStack(AWItems.automationHammer));
+  addNpcSubtypeEquipment("combat", "medic", new ItemStack(Items.iron_axe));
   
   //TODO hostiles
   }
@@ -140,8 +153,6 @@ public static void getSpawnerSubItems(List list)
       }
     }
   }
-
-
 
 public static abstract class NpcDeclaration extends EntityDeclaration
 {

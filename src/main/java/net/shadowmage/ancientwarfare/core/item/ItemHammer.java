@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.item;
+package net.shadowmage.ancientwarfare.core.item;
 
 import java.util.List;
 
@@ -11,6 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -24,6 +26,7 @@ public ItemHammer(String regName)
   {
   this.setUnlocalizedName(regName);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
+  this.setTextureName("ancientwarfare:automation/hammer");
   }
 
 @Override
