@@ -32,4 +32,10 @@ public String getNpcSubType()
   return null;
   }
 
+@Override
+public String getNpcType()
+  {
+  return "combat";
+  }
+
 }

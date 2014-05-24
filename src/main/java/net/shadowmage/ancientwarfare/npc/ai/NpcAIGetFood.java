@@ -20,14 +20,14 @@ public NpcAIGetFood(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
-  AWLog.logDebug("npc get food shouldExecute");
+//  AWLog.logDebug("npc get food shouldExecute");
   return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0 && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
   }
 
 @Override
 public boolean continueExecuting()
   {
-  AWLog.logDebug("npc get food continueExecuting");
+//  AWLog.logDebug("npc get food continueExecuting");
   return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0 && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
   }
 
@@ -37,7 +37,7 @@ public boolean continueExecuting()
 @Override
 public void startExecuting()
   {
-  AWLog.logDebug("npc get food starting executing");  
+//  AWLog.logDebug("npc get food starting executing");  
   }
 
 /**
@@ -46,7 +46,7 @@ public void startExecuting()
 @Override
 public void updateTask()
   {
-  AWLog.logDebug("npc get food update task");
+//  AWLog.logDebug("npc get food update task");
   BlockPosition pos = npc.getUpkeepPoint();
   if(pos==null){return;}
   if(withinDistanceToUpkeep(pos))
@@ -65,7 +65,7 @@ public void updateTask()
 @Override
 public void resetTask()
   {
-  AWLog.logDebug("npc get food resetting task");
+//  AWLog.logDebug("npc get food resetting task");
   moveDelayTicks=0;
   }
 

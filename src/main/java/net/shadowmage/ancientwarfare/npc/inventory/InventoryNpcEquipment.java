@@ -71,7 +71,8 @@ public void setInventorySlotContents(int var1, ItemStack var2)
     }
   else
     {
-    npc.setCurrentItemOrArmor(var1, var2);  
+    npc.setCurrentItemOrArmor(var1, var2);
+    if(var1==0){npc.onWeaponInventoryChanged();}  
     }
   }
 

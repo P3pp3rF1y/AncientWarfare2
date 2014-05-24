@@ -51,8 +51,14 @@ public String getNpcSubType()
   return "researcher";
   case NONE:
   default:
-  return "default";  
+  return "";  
   }
+  }
+
+@Override
+public String getNpcType()
+  {
+  return "worker";
   }
 
 @Override

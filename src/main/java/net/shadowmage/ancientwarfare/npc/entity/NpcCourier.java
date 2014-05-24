@@ -31,8 +31,13 @@ public void onOrdersInventoryChanged()
 @Override
 public String getNpcSubType()
   {
-  //TODO lookup type based on item equipped in main slot
-  return null;
+  return "";
+  }
+
+@Override
+public String getNpcType()
+  {
+  return "courier";
   }
 
 

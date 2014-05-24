@@ -42,16 +42,11 @@ protected String followingPlayerName;//set/cleared onInteract from player if pla
 protected NpcLevelingStats levelingStats;
 
 /**
- * the default texture for this entity type, should be set in entity constructor<br>
- * e.g. combat / worker / courier / hostile
- * Used as the render texture if the local-texture has not been set or was not found
- */
-protected ResourceLocation defaultTexture;
-
-/**
  * a single base texture for ALL npcs to share, used in case other textures were not set
  */
 private final ResourceLocation baseDefaultTexture;
+
+private ResourceLocation currentTexture = null;
 
 public ItemStack ordersStack;
 
@@ -98,12 +93,11 @@ public abstract void onOrdersInventoryChanged();
 
 public abstract void onUpkeepInventoryChanged();
 
+public abstract void onWeaponInventoryChanged();
+
 public abstract String getNpcSubType();
 
-public String getNpcType()
-  {
-  return AWEntityRegistry.getRegistryNameFor(this.getClass());
-  }
+public abstract String getNpcType();
 
 public NpcLevelingStats getLevelingStats()
   {
@@ -112,7 +106,7 @@ public NpcLevelingStats getLevelingStats()
 
 public ResourceLocation getDefaultTexture()
   {
-  return defaultTexture==null ? baseDefaultTexture : defaultTexture;
+  return baseDefaultTexture;
   }
 
 public ItemStack getItemToSpawn()
@@ -278,8 +272,16 @@ public void writeEntityToNBT(NBTTagCompound tag)
 
 public final ResourceLocation getTexture()
   {  
-  ResourceLocation tex = NpcSkinManager.INSTANCE.getTextureFor(this);
-  return tex==null ? getDefaultTexture() : tex;
+  if(currentTexture==null)
+    {
+    updateTexture();
+    }  
+  return currentTexture==null ? getDefaultTexture() : currentTexture;
+  }
+
+public final void updateTexture()
+  {
+  currentTexture = NpcSkinManager.INSTANCE.getTextureFor(this);
   }
 
 }

@@ -33,10 +33,22 @@ public void onUpkeepInventoryChanged()
   }
 
 @Override
+public void onWeaponInventoryChanged()
+  {
+  //noop for hostile
+  }
+
+@Override
 public String getNpcSubType()
   {
   //TODO lookup type based on item equipped in main slot and 'faction'
   return null;
+  }
+
+@Override
+public String getNpcType()
+  {
+  return "hostile";
   }
 
 @Override
@@ -62,7 +74,5 @@ public void readSpawnData(ByteBuf additionalData)
   {
   
   }
-
-
 
 }

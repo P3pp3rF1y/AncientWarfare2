@@ -9,14 +9,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
@@ -34,6 +32,8 @@ public static final NpcSkinManager INSTANCE = new NpcSkinManager();
 
 private HashMap<String, SkinGroup> skinGroups = new HashMap<String, SkinGroup>();
 
+private Random rng = new Random();
+
 /**
  * server-side skins
  */
@@ -45,14 +45,17 @@ private final String defaultSkinPack = "/assets/ancientwarfare/skin_pack/default
 public ResourceLocation getTextureFor(NpcBase npc)
   {  
   String type = npc.getNpcType();
-  String subType = npc.getNpcSubType();
-  String fullTypeName = type+"."+subType;
+  String subType = npc.getNpcSubType();  
+  String fullTypeName = subType.isEmpty() ? type : type+"."+subType;
   SkinGroup group = skinGroups.get(fullTypeName);
+//  AWLog.logDebug("looking up texture for name: "+fullTypeName);
   if(group!=null && !group.textures.isEmpty())
     {
     UUID id = npc.getPersistentID();
     long idlsb = id.getLeastSignificantBits();
-    int tex = (int)(idlsb % group.textures.size());
+    rng.setSeed(idlsb);
+    int tex = rng.nextInt(group.textures.size());
+//    AWLog.logDebug("returning texture index: "+tex+" from size: "+group.textures.size());
     return group.getTexture(tex);
     }
   return null;
@@ -72,7 +75,6 @@ public void loadSkinPacks()
 private void loadDefaultSkinPack()
   {
   InputStream is = getClass().getResourceAsStream(defaultSkinPack);
-  AWLog.logDebug("loading default skin pack...stream: "+is);  
   ZipInputStream zis = new ZipInputStream(is);  
   SkinPack pack = loadPackFromZip("default_skin_pack.zip", zis);
   if(pack!=null)
@@ -108,14 +110,13 @@ private SkinPack loadPackFromZip(String fileName, ZipInputStream zis)
     {
     while((entry = zis.getNextEntry())!=null)
       {
-      metaFile = null;
       if(entry.isDirectory()){continue;}
       else if(entry.getName().toLowerCase().equals("skin_pack.meta"))
         {
         metaFile = new SkinMeta(zis);        
         }
       else if(entry.getName().toLowerCase().endsWith(".png"))
-        {
+        {        
         loc = loadSkinPackImage(fileName, entry.getName(), zis);
         if(loc!=null)
           {
@@ -123,10 +124,10 @@ private SkinPack loadPackFromZip(String fileName, ZipInputStream zis)
           parsed++;
           }
         }
-      if(metaFile!=null)
-        {
-        pack = new SkinPack(metaFile, parsedImages);        
-        }
+      }
+    if(metaFile!=null)
+      {
+      pack = new SkinPack(metaFile, parsedImages);        
       }
     } 
   catch (IOException e1)
@@ -182,7 +183,6 @@ private void parseZipFiles(List<File> probableZipFiles)
   
   for(File f : probableZipFiles)
     {
-    AWLog.logDebug("Parsing skin pack zip file: "+f.getName() + " at: "+f.getAbsolutePath());
     try
       {
       fis = new FileInputStream(f);
@@ -219,13 +219,15 @@ private void unpackSkinPacks(List<SkinPack> packs)
 
 private void unpackSkinPack(SkinPack pack)
   {
+  AWLog.logDebug("Unpacking skin pack: "+pack);
   SkinMeta meta = pack.meta;
   String img;
   for(String key : meta.imageMap.keySet())
-    {
+    {    
     img = meta.imageMap.get(key);
     if(pack.textures.containsKey(img))
       {
+      AWLog.logDebug("Loading skin pack image: "+key+" :: "+img);
       loadSkinImage(key, pack.textures.get(img));
       }
     }
@@ -259,8 +261,7 @@ private ResourceLocation loadSkinPackImage(String packName, String imageName, In
     BufferedImage image = ImageIO.read(is);
     ResourceLocation loc = new ResourceLocation("ancientwarfare:skinpack/"+packName+"/"+imageName);
     TextureImageBased tex = new TextureImageBased(loc, image);
-//    imagesToLoad.add(tex);
-    Minecraft.getMinecraft().renderEngine.loadTexture(loc, tex);//TODO delay loading until render engine is loaded?
+    Minecraft.getMinecraft().renderEngine.loadTexture(loc, tex);
     return loc;
     } 
   catch (IOException e)
@@ -279,7 +280,10 @@ private class SkinGroup
 {
 List<ResourceLocation> textures = new ArrayList<ResourceLocation>();
 public void addTexture(ResourceLocation loc){this.textures.add(loc);}
-public ResourceLocation getTexture(int index){return textures.get(index);}
+public ResourceLocation getTexture(int index)
+  {
+  return textures.get(index);
+  }
 }
 
 private class SkinPack
@@ -290,6 +294,8 @@ public SkinPack(SkinMeta meta, Map<String, ResourceLocation> textureMap)
   {
   this.meta = meta;
   this.textures.putAll(textureMap);
+  AWLog.logDebug("creating skin pack...meta:"+meta);
+  AWLog.logDebug("map: "+textures);
   }
 }
 

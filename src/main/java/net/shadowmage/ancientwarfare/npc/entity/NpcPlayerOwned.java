@@ -10,7 +10,6 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
 public abstract class NpcPlayerOwned extends NpcBase
@@ -30,6 +29,13 @@ public NpcPlayerOwned(World par1World)
 public void onUpkeepInventoryChanged()
   {
   //should inform upkeep AI about upkeep point change
+  }
+
+@Override
+public void onWeaponInventoryChanged()
+  {
+  AWLog.logDebug("weapon inventory changed, should update texture..");
+  updateTexture();
   }
 
 @Override

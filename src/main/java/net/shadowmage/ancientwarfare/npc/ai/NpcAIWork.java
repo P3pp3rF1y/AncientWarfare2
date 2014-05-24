@@ -48,7 +48,7 @@ public boolean shouldExecute()
     }
   if(orderStack!=null && order!=null && order.getEntries().size()>0)
     {
-    AWLog.logDebug("starting work AI");
+//    AWLog.logDebug("starting work AI");
     return true;
     }
   return false;
@@ -60,7 +60,7 @@ public boolean continueExecuting()
 //  if(npc.getFoodRemaining()<=0){return false;} //TODO uncomment out once update AI is finished
   if(orderStack!=null && order!=null && order.getEntries().size()>0)
     {
-    AWLog.logDebug("continuing work AI");
+//    AWLog.logDebug("continuing work AI");
     return true;
     }
   return false;
@@ -69,7 +69,7 @@ public boolean continueExecuting()
 @Override
 public void updateTask()
   {
-  AWLog.logDebug("continuing work AI2");
+//  AWLog.logDebug("continuing work AI2");
   if(!atSite)
     {
     moveToWorksite();
@@ -97,17 +97,17 @@ protected void workAtSite()
     IWorkSite site = (IWorkSite)te;
     if(((IWorker)npc).canWorkAt(site.getWorkType()))
       {
-      AWLog.logDebug("should do work at site!!");      
+//      AWLog.logDebug("should do work at site!!");      
       if(site.hasWork())
         {
         //do work at the worksite if has work
-        AWLog.logDebug("adding energy to site from work");
+//        AWLog.logDebug("adding energy to site from work");
         site.addEnergyFromWorker((IWorker) npc);
         ticksTilNextWorkUpdate=AWNPCStatics.npcWorkTicks;
         }
       else
         {
-        AWLog.logDebug("site has no work...");
+//        AWLog.logDebug("site has no work...");
         //else chose appropriate action based on orders.priorityType
         if(shouldMoveFromNoWork(entry))
           {
@@ -116,19 +116,19 @@ protected void workAtSite()
         }
       if(shouldMoveFromTimeAtSite(entry))
         {
-        AWLog.logDebug("moving to next site due to work timing");
+//        AWLog.logDebug("moving to next site due to work timing");
         setMoveToNextSite();
         }  
       }
     else
       {
-      AWLog.logDebug("moving to next site due to incompatble work types");
+//      AWLog.logDebug("moving to next site due to incompatble work types");
       setMoveToNextSite();
       }      
     }
   else
     {
-    AWLog.logDebug("moving to next site due to invalid work site");
+//    AWLog.logDebug("moving to next site due to invalid work site");
     setMoveToNextSite();
     }
   }
@@ -166,7 +166,7 @@ protected void moveToWorksite()
     {
     WorkEntry entry = order.getEntries().get(workIndex);
     BlockPosition pos = entry.getPosition();
-    AWLog.logDebug("commanding move to worksite...");
+//    AWLog.logDebug("commanding move to worksite...");
     //check distance to position    
     double dist = npc.getDistanceSq(pos.x+0.5d, pos.y, pos.z+0.5d);
     if(dist>5.d*5.d)
@@ -177,7 +177,7 @@ protected void moveToWorksite()
       
       if(npc.getNavigator().noPath())
         {        
-        AWLog.logDebug("navigator has no path!!");
+//        AWLog.logDebug("navigator has no path!!");
         setMoveToNextSite();
         }
       }
@@ -191,7 +191,7 @@ protected void moveToWorksite()
 
 public void onOrdersChanged()
   {
-  AWLog.logDebug("orders changed!!");
+//  AWLog.logDebug("orders changed!!");
   orderStack = npc.ordersStack;
   order = WorkOrder.getWorkOrder(orderStack);
   workIndex = 0;
@@ -202,7 +202,7 @@ public void onOrdersChanged()
 @Override
 public void resetTask()
   {
-  AWLog.logDebug("resetting work task..");
+//  AWLog.logDebug("resetting work task..");
   super.resetTask();
   ticksAtSite = 0;
   atSite = false;
