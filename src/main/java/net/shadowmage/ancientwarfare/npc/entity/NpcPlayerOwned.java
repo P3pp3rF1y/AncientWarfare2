@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
 public abstract class NpcPlayerOwned extends NpcBase
@@ -21,8 +22,12 @@ public NpcPlayerOwned(World par1World)
   {
   super(par1World);  
   //3 should be flee hostiles when low-health (or based on morale check?)
+  //3 should be self defense tasks
+  //3 should be follow player command tasks
   this.tasks.addTask(4, new NpcAIGetFood(this));  
-//  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));  
+  //5 == go indoors at night for worker / courier -- what for combat?
+  this.tasks.addTask(6, new NpcAIIdleWhenHungry(this)); 
+  //7 == work, attack, etc
   }
 
 @Override
@@ -48,6 +53,12 @@ public ItemStack getEquipmentInSlot(int par1)
 public int getFoodRemaining()
   {
   return foodValueRemaining;
+  }
+
+@Override
+public void setFoodRemaining(int food)
+  {
+  this.foodValueRemaining = food;
   }
 
 @Override
@@ -78,6 +89,17 @@ public int getUpkeepDimensionId()
   if(order!=null)
     {
     return order.getUpkeepDimension();
+    }
+  return 0;
+  }
+
+@Override
+public int getUpkeepAmount()
+  {
+  UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
+  if(order!=null)
+    {
+    return order.getUpkeepAmount();
     }
   return 0;
   }

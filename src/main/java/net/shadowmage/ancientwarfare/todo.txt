@@ -125,7 +125,6 @@ npcs module
 		routing-order renders route + sides
 		combat-order renders patrol and guard points/targets
 		
-	all npcs will have full inventory accessibility for equipment slots	
 	
 	Teams:
 		All teams are derived from owning players team.
@@ -133,6 +132,12 @@ npcs module
 		Neutral will not attack other teams, but will defend themselves vs attacks and attack 'bandits'. 
 		Bandits / hostile NPCs will not be part of the team system and will have customized AI
 		Combat npcs will attack other combat NPCS if the attacker has a team and the target has a team, and they are not the same team
+	
+	all npcs will have full inventory accessibility for equipment slots
+		main-hand slot determines work/combat type
+		armor slots are used for actual armor
+		upkeep slot is for upkeep orders -- where to get the food
+		orders slot is for work/combat/route orders -- where to work / what to fight / what items to move	
 	
 	all npcs will have an 'upkeep order' slot
 		simple work-order that denotes a single point for npc upkeep.
@@ -177,11 +182,14 @@ npcs module
 				farmer=hoe
 				craftsman=hammer
 				researcher=quill
-			work capability set by equipped item quality
-			work capability adjusted by npc 'level'
-				keep level independently per work type?
+			work capability set by equipped item quality for miner/lumberjack/farmer			 
+			work capability adjusted by npc level for for miner/lumberjack/farmer
+			work capability adjusted by npc level*2 for craftsman/researcher
+			npc levels stored by work-type.
 		courier 
 			own npc type, has custom storage inventory, accepts routing slips instead of work-orders
+			--backpack items for main inventory slot to determine inventory size (base 9 + bonus)?
+			--actually displays/stores inventory in backpack item? --probably easier to not....
 		combat
 			combat type set by equipped item
 				soldier=sword

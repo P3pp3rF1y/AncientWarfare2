@@ -202,6 +202,11 @@ public int getFoodRemaining()
   return 0;
   }
 
+public void setFoodRemaining(int food)
+  {
+  
+  }
+
 public int getUpkeepBlockSide()
   {
   return 0;
@@ -210,6 +215,11 @@ public int getUpkeepBlockSide()
 public BlockPosition getUpkeepPoint()
   {
   return null;
+  }
+
+public int getUpkeepAmount()
+  {
+  return 0;
   }
 
 public int getUpkeepDimensionId()

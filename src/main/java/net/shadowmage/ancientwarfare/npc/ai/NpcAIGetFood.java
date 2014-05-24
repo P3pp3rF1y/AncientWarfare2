@@ -1,9 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIGetFood extends NpcAI
@@ -14,7 +18,7 @@ int moveDelayTicks = 0;
 public NpcAIGetFood(NpcBase npc)
   {
   super(npc);
-  this.setMutexBits(MOVE+ATTACK);
+  this.setMutexBits(MOVE+ATTACK+HUNGRY);
   }
 
 @Override
@@ -28,7 +32,7 @@ public boolean shouldExecute()
 public boolean continueExecuting()
   {
 //  AWLog.logDebug("npc get food continueExecuting");
-  return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0 && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
+  return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining() < npc.getUpkeepAmount() && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
   }
 
 /**
@@ -65,7 +69,6 @@ public void updateTask()
 @Override
 public void resetTask()
   {
-//  AWLog.logDebug("npc get food resetting task");
   moveDelayTicks=0;
   }
 
@@ -99,6 +102,53 @@ protected boolean withinDistanceToUpkeep(BlockPosition pos)
 
 protected void withdrawFood(IInventory inventory, int side)
   {
+  int amount = npc.getUpkeepAmount() - npc.getFoodRemaining();
+  AWLog.logDebug("attempting to withdraw food of at least value: "+amount);
+  if(amount<=0){return;}
+  ItemStack stack;
+  int val;
+  int eaten = 0;
+  if(side>=0 && inventory instanceof ISidedInventory)
+    {
+    int[] ind = ((ISidedInventory)inventory).getAccessibleSlotsFromSide(side);
+    for(int i : ind)
+      {
+      stack = inventory.getStackInSlot(i);
+      val = AncientWarfareNPC.statics.getFoodValue(stack);
+      if(val<=0){continue;}
+      while(eaten < amount && stack.stackSize>0)
+        {
+        eaten+=val;
+        stack.stackSize--;
+        inventory.markDirty();
+        }
+      if(stack.stackSize<=0)
+        {
+        inventory.setInventorySlotContents(i, null);
+        }
+      }
+    }
+  else
+    {
+    for(int i = 0 ; i<inventory.getSizeInventory();i++)
+      {
+      stack = inventory.getStackInSlot(i);
+      val = AncientWarfareNPC.statics.getFoodValue(stack);
+      if(val<=0){continue;}
+      while(eaten < amount && stack.stackSize>0)
+        {
+        eaten+=val;
+        stack.stackSize--;
+        inventory.markDirty();
+        }
+      if(stack.stackSize<=0)
+        {
+        inventory.setInventorySlotContents(i, null);
+        }
+      }    
+    }
+  AWLog.logDebug("ate food of value: "+eaten);
+  npc.setFoodRemaining(npc.getFoodRemaining()+eaten);
   }
 
 }

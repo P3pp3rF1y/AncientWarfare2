@@ -28,8 +28,8 @@ public NpcWorker(World par1World)
   //this should be set to a generic 'flee' AI for civilians
   this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
   //get food
+  this.tasks.addTask(5, new EntityAIMoveIndoors(this));
   //idle
-  this.tasks.addTask(6, new EntityAIMoveIndoors(this));
   this.tasks.addTask(7, (workAI = new NpcAIWork(this)));
   }
 

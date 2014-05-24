@@ -15,6 +15,7 @@ int upkeepDimension;
 int blockSide;
 Block block;
 int blockMeta;
+int upkeepAmount = 6000;
 
 public UpkeepOrder()
   {
@@ -34,6 +35,7 @@ public void removeUpkeepPoint()
   blockMeta = 0;
   blockSide = 0;
   upkeepDimension = 0;
+  upkeepAmount = 6000;
   }
 
 public int getUpkeepBlockSide()
@@ -61,6 +63,11 @@ public int getBlockMeta()
   return blockMeta;
   }
 
+public final int getUpkeepAmount()
+  {
+  return upkeepAmount;
+  }
+
 public boolean addUpkeepPosition(World world, BlockPosition pos)
   {
   upkeepPosition = pos;
@@ -68,6 +75,7 @@ public boolean addUpkeepPosition(World world, BlockPosition pos)
   blockSide = 0;
   block = world.getBlock(pos.x, pos.y, pos.z);
   blockMeta = world.getBlockMetadata(pos.x, pos.y, pos.z);
+  upkeepAmount  = 6000;
   return true;
   }
 
@@ -81,6 +89,7 @@ public void readFromNBT(NBTTagCompound tag)
     blockSide = tag.getInteger("side");
     block = Block.getBlockFromName(tag.getString("block"));
     blockMeta = tag.getInteger("blockMeta");
+    upkeepAmount = tag.getInteger("upkeepAmount");
     }
   }
 
@@ -94,9 +103,11 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
     tag.setInteger("side", blockSide);
     tag.setString("block", Block.blockRegistry.getNameForObject(block));
     tag.setInteger("blockMeta", blockMeta);
+    tag.setInteger("upkeepAmount", upkeepAmount);
     }
   return tag;
   }
+
 
 public static UpkeepOrder getUpkeepOrder(ItemStack stack)
   {

@@ -8,7 +8,7 @@ public class NpcAIIdleWhenHungry extends NpcAI
 public NpcAIIdleWhenHungry(NpcBase npc)
   {
   super(npc);
-  this.setMutexBits(ATTACK+MOVE);
+  this.setMutexBits(MOVE+ATTACK+HUNGRY);
   }
 
 @Override
@@ -20,8 +20,6 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   {
-  //TODO move towards home point
-//  AWLog.logDebug("npc idle food continueExecuting");
   return npc.requiresUpkeep() && npc.getFoodRemaining()==0;
   }
 
@@ -32,6 +30,7 @@ public boolean continueExecuting()
 public void startExecuting()
   {
 //  AWLog.logDebug("npc idle food starting executing");
+  //TODO move towards home point
   }
 
 /**
