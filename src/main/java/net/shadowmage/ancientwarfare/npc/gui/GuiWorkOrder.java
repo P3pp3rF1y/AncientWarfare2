@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
 import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
 
@@ -37,6 +38,8 @@ public void initElements()
   {
   area = new CompositeScrolled(0, 40, xSize, ySize-40);
   addGuiElement(area);
+  
+  //TODO add 'shift selection' to the top of the GUI -- early day / late day / night??
   }
 
 @Override
@@ -54,13 +57,13 @@ public void setupElements()
   for(WorkEntry entry : entries)
     {    
     blockStack = new ItemStack(Item.getItemFromBlock(entry.getBlock()));
-    slot = new ItemSlot(8,totalHeight,blockStack, this);
+    slot = new ItemSlot(8,totalHeight+2,blockStack, this);
     area.addGuiElement(slot);
     
-    label = new Label (8+20, totalHeight+4, String.valueOf(entry.getPosition()));
+    label = new Label (8+20, totalHeight, String.valueOf(entry.getPosition()));
     area.addGuiElement(label);
     
-    button = new IndexedButton(160, totalHeight+3, 12, 12, "+", index)
+    button = new IndexedButton(8+20+20, totalHeight+10, 12, 12, "+", index)
       {
       @Override
       protected void onPressed()
@@ -72,7 +75,7 @@ public void setupElements()
       };
     area.addGuiElement(button);
       
-    button = new IndexedButton(160+12, totalHeight+3, 12, 12, "-", index)
+    button = new IndexedButton(8+20+12+20, totalHeight+10, 12, 12, "-", index)
       {
       @Override
       protected void onPressed()
@@ -84,7 +87,7 @@ public void setupElements()
       };
     area.addGuiElement(button);
       
-    button = new IndexedButton(160+12+12, totalHeight+3, 35, 12, StatCollector.translateToLocal("guistrings.npc.work_order.delete"), index)
+    button = new IndexedButton(8+20+12+12+20, totalHeight+10, 60, 12, StatCollector.translateToLocal("guistrings.npc.remove_work_point"), index)
       {
       @Override
       protected void onPressed()
@@ -96,7 +99,23 @@ public void setupElements()
       };    
     area.addGuiElement(button);
     
-    totalHeight+=18;
+    label = new Label(8+20+12+12+60+40+20, totalHeight, StatCollector.translateToLocal("guistrings.npc.work_length"));
+    area.addGuiElement(label);
+    
+    input = new WorkEntryNumberInput(8+20+12+12+60+40+20, totalHeight+10, 60, entry.getWorkLength()/1200, this, entry)
+      {
+      @Override
+      public void onValueUpdated(float value)
+        {
+        int ticks = (int)(value*1200.f);
+        entry.setWorkLength(ticks);
+        super.onValueUpdated(value);
+        }
+      };
+    
+    area.addGuiElement(input);
+    
+    totalHeight+=25;
     index++;
     }
   area.setAreaSize(totalHeight);
@@ -113,6 +132,19 @@ protected boolean onGuiCloseRequested()
     }
   return super.onGuiCloseRequested();
   }
+
+private class WorkEntryNumberInput extends NumberInput
+{
+
+WorkEntry entry;
+public WorkEntryNumberInput(int topLeftX, int topLeftY, int width,
+    float defaultText, IWidgetSelection selector, WorkEntry e)
+  {
+  super(topLeftX, topLeftY, width, defaultText, selector);
+  this.entry = e;
+  }
+
+}
 
 private class IndexedButton extends Button
 {

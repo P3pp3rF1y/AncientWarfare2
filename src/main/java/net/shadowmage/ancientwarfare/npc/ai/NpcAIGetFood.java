@@ -149,6 +149,7 @@ protected void withdrawFood(IInventory inventory, int side)
     }
   AWLog.logDebug("ate food of value: "+eaten);
   npc.setFoodRemaining(npc.getFoodRemaining()+eaten);
+  //TODO if eaten>0 add experience
   }
 
 }

@@ -38,6 +38,16 @@ public void removeUpkeepPoint()
   upkeepAmount = 6000;
   }
 
+public void setUpkeepAmount(int amt)
+  {
+  this.upkeepAmount = amt;
+  }
+
+public void setBlockSide(int side)
+  {
+  this.blockSide = side;
+  }
+
 public int getUpkeepBlockSide()
   {
   return blockSide;

@@ -144,6 +144,14 @@ guistrings.automation.descending=Desc.
 guistrings.automation.energy_stored=Energy Stored
 guistrings.automation.current_energy=Energy Stored: %s
 
+#npc localization
+guistrings.npc.remove_upkeep_point=Remove
+guistrings.npc.side_change=Side
+guistrings.npc.upkeep_time=Upkeep Time
+guistrings.npc.assign_upkeep_point=Please Assign An Upkeep Point
+guistrings.npc.remove_work_point=Remove
+guistrings.npc.work_length=Work Time
+
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal
 guistrings.research.queued_research=Queued Research

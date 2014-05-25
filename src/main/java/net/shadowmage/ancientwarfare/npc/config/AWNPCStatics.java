@@ -78,8 +78,6 @@ public static final String recipeSettings = "06_recipe_settings";
  */
 public static int npcWorkTicks = 50;
 
-public static int foodMultiplier = 750;//ticks per food value
-
 public AWNPCStatics(Configuration config)
   {
   super(config);
@@ -100,22 +98,23 @@ public void initializeValues()
 
 private void loadFoodValues()
   {
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.apple), 4);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.mushroom_stew), 6);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.bread), 5);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.carrot), 4);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.potato), 1);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.baked_potato), 6);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.beef), 3);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_beef), 8);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.chicken), 2);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_chicken), 6);
+  
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.apple), 3000);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.mushroom_stew), 4500);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.bread), 3750);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.carrot), 3000);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.potato), 1750);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.baked_potato), 4500);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.beef), 2250);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_beef), 6000);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.chicken), 1500);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_chicken), 4500);
 //  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.fish), 6);//TODO what to do about fish / item subtypes?
 //  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_fished), 6);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.porkchop), 3);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_porkchop), 8);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cookie), 2);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.pumpkin_pie), 8);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.porkchop), 2250);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_porkchop), 6000);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cookie), 1500);
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.pumpkin_pie), 6000);
   
   
   ConfigCategory category = config.getCategory(foodSettings);
@@ -144,7 +143,7 @@ public int getFoodValue(ItemStack stack)
     {
     food = foodValues.get(name);    
     }  
-  return food*foodMultiplier;
+  return food;
   }
 
 }
