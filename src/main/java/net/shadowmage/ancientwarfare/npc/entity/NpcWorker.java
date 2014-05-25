@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.ai.EntityAIMoveIndoors;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
@@ -12,6 +11,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWork;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
@@ -28,7 +28,7 @@ public NpcWorker(World par1World)
   //this should be set to a generic 'flee' AI for civilians
   this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
   //get food
-  this.tasks.addTask(5, new EntityAIMoveIndoors(this));
+  this.tasks.addTask(5, new NpcAIMoveHome(this, 80.f, 4.f, 40.f, 20.f));
   //idle
   this.tasks.addTask(7, (workAI = new NpcAIWork(this)));
   }

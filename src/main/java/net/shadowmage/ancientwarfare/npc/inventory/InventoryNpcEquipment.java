@@ -67,7 +67,6 @@ public void setInventorySlotContents(int var1, ItemStack var2)
   else if(var1==6)
     {
     npc.upkeepStack = var2;
-    npc.onUpkeepInventoryChanged();
     }
   else
     {

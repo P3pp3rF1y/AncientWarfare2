@@ -91,6 +91,13 @@ public NpcBase(World par1World)
   }
 
 @Override
+public void setHomeArea(int par1, int par2, int par3, int par4)
+  {  
+  super.setHomeArea(par1, par2, par3, par4);
+  AWLog.logDebug("setting home position...");
+  }
+
+@Override
 public void handleHealthUpdate(byte par1)
   {  
   super.handleHealthUpdate(par1);
@@ -138,8 +145,6 @@ public abstract void writeAdditionalItemData(NBTTagCompound tag);
 public abstract boolean isValidOrdersStack(ItemStack stack);
 
 public abstract void onOrdersInventoryChanged();
-
-public abstract void onUpkeepInventoryChanged();
 
 public abstract void onWeaponInventoryChanged();
 
@@ -322,11 +327,10 @@ public void readEntityFromNBT(NBTTagCompound tag)
   npcName = tag.getString("npcName");
   if(tag.hasKey("ordersItem")){ordersStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("ordersItem"));}
   if(tag.hasKey("upkeepItem")){upkeepStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("upkeepItem"));}
-  if(getHomePosition()!=null)
+  if(tag.hasKey("home"))
     {
-    ChunkCoordinates cc = getHomePosition();
-    int[] ccia = new int[]{cc.posX,cc.posY,cc.posZ,(int)func_110174_bM()};
-    tag.setIntArray("home", ccia);
+    int[] ccia = tag.getIntArray("home");
+    setHomeArea(ccia[0], ccia[1], ccia[2], ccia[3]);
     }
   if(tag.hasKey("levelingStats")){levelingStats.readFromNBT(tag.getCompoundTag("levelingStats"));}
   //TODO
@@ -340,10 +344,11 @@ public void writeEntityToNBT(NBTTagCompound tag)
   tag.setString("npcName", npcName);
   if(ordersStack!=null){tag.setTag("ordersItem", ordersStack.writeToNBT(new NBTTagCompound()));}
   if(upkeepStack!=null){tag.setTag("upkeepItem", upkeepStack.writeToNBT(new NBTTagCompound()));}
-  if(tag.hasKey("home"))
+  if(getHomePosition()!=null)
     {
-    int[] ccia = tag.getIntArray("home");
-    setHomeArea(ccia[0], ccia[1], ccia[2], ccia[3]);
+    ChunkCoordinates cc = getHomePosition();
+    int[] ccia = new int[]{cc.posX,cc.posY,cc.posZ, (int)func_110174_bM()};
+    tag.setIntArray("home", ccia);
     }
   tag.setTag("levelingStats", levelingStats.writeToNBT(new NBTTagCompound()));
   //TODO

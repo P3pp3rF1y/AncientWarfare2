@@ -49,9 +49,7 @@ structures module
 		probably less buggy than the entity-based interaction
 		but how to handle only partially loaded gates?
 
-automation module:
-	Add profiling stuff to mc-profiler
-	
+automation module:	
 	Change over worksite BB render to a TESR -- should be slightly more optimized
 	
 	worksites that need work:
@@ -74,7 +72,7 @@ automation module:
 		Add input max/tick code to tiles, reset counter every tile-update.
 		Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 			drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
-		Add high-quality blocks with higher capacity and less power loss.
+		Add high-quality blocks with higher capacity and less/no power loss.
 					
 	GUIs Needed:
 	
@@ -87,21 +85,10 @@ automation module:
 	API / compat stuff:
 		add IMC-based API to add logs/saplings to forestry farm??
 		add config-based method to add logs/saplings to forestry farm??	
+		
 	warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 		--perhaps have different methods for tile.invalidate() and onBlockBroken
-
-	Worksite functionality
-		Workers should be able to tell if a worksite needs work by calling hasWork()
-		Workers need ability to add energy to worksite, adjusted by worker effectiveness
-		Worksites need method to do player work
-		Worksites need ability to add power directly from power system	
-		Worksites do all work based off of power input, they maintain a small buffer of 2-3x the work-unit rate to allow for multiple workers to tick at the same time
-	
-		onUpdate:
-			incremental rescan of work area 1 block/tick for block-working worksites
-			delay-based rescan for some (fish-farm, animal farm)
-			event driven rescan when possible (warehouse, research station, auto-crafting)					
 	
 	Power network:
 		Generators:
@@ -117,15 +104,15 @@ automation module:
 			Distributor	(bc-compat) 1000 max, 100 in, 100 out		
 	
 npcs module
-	add edible food items to config file with upkeep amount given.
-		allow players to add/remove items and / or adjust the upkeep amount per-item.
-
 	add rendering of routes when npc-order item is being held
 		work-order renders route + numbers
 		routing-order renders route + sides
 		combat-order renders patrol and guard points/targets
-		
 	
+vehicles module
+	everything
+	
+NPCS INFO:
 	Teams:
 		All teams are derived from owning players team.
 		If owning player is not on a team, or npc is not owned, they are considered NEUTRAL.  
@@ -146,8 +133,7 @@ npcs module
 	all npcs will have an 'orders' slot
 		worker = work order
 		courer = routing slip
-		combat = combat order
-		
+		combat = combat order		
 		
 		Work Order:
 			3 settings - Priority, Timed, Route
@@ -215,8 +201,6 @@ npcs module
 		Individual AI setups
 		Some overrides for team status for 'hostile' NPCs
 		
-vehicles module
-	everything
 		
 //BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java

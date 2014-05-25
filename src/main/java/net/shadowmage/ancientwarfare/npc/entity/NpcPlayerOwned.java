@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
@@ -31,22 +29,9 @@ public NpcPlayerOwned(World par1World)
   }
 
 @Override
-public void onUpkeepInventoryChanged()
-  {
-  //should inform upkeep AI about upkeep point change
-  }
-
-@Override
 public void onWeaponInventoryChanged()
   {
-  AWLog.logDebug("weapon inventory changed, should update texture..");
   updateTexture();
-  }
-
-@Override
-public ItemStack getEquipmentInSlot(int par1)
-  {
-  return super.getEquipmentInSlot(par1);
   }
 
 @Override

@@ -27,12 +27,6 @@ public boolean isValidOrdersStack(ItemStack stack)
   }
 
 @Override
-public void onUpkeepInventoryChanged()
-  {
-  //noop for hostile
-  }
-
-@Override
 public void onWeaponInventoryChanged()
   {
   //noop for hostile
