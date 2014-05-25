@@ -9,9 +9,9 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
+import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkPriorityType;
 
 public class NpcAIWork extends NpcAI
 {
@@ -39,7 +39,7 @@ public NpcAIWork(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {  
-//  if(npc.getFoodRemaining()<=0){return false;} //TODO uncomment out once update AI is finished
+  if(npc.getFoodRemaining()<=0){return false;} 
   if(!init)
     {
     orderStack = npc.ordersStack;
@@ -48,7 +48,6 @@ public boolean shouldExecute()
     }
   if(orderStack!=null && order!=null && order.getEntries().size()>0)
     {
-//    AWLog.logDebug("starting work AI");
     return true;
     }
   return false;
@@ -57,10 +56,9 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   { 
-//  if(npc.getFoodRemaining()<=0){return false;} //TODO uncomment out once update AI is finished
+  if(npc.getFoodRemaining()<=0){return false;}
   if(orderStack!=null && order!=null && order.getEntries().size()>0)
     {
-//    AWLog.logDebug("continuing work AI");
     return true;
     }
   return false;
@@ -69,7 +67,6 @@ public boolean continueExecuting()
 @Override
 public void updateTask()
   {
-//  AWLog.logDebug("continuing work AI2");
   if(!atSite)
     {
     moveToWorksite();
@@ -96,19 +93,15 @@ protected void workAtSite()
     {
     IWorkSite site = (IWorkSite)te;
     if(((IWorker)npc).canWorkAt(site.getWorkType()))
-      {
-//      AWLog.logDebug("should do work at site!!");      
+      {      
       if(site.hasWork())
-        {
-        //do work at the worksite if has work
-//        AWLog.logDebug("adding energy to site from work");
+        {        
+//        npc.addExperience(amount);//TODO add experience from work
         site.addEnergyFromWorker((IWorker) npc);
         ticksTilNextWorkUpdate=AWNPCStatics.npcWorkTicks;
         }
       else
         {
-//        AWLog.logDebug("site has no work...");
-        //else chose appropriate action based on orders.priorityType
         if(shouldMoveFromNoWork(entry))
           {
           setMoveToNextSite();
@@ -116,35 +109,33 @@ protected void workAtSite()
         }
       if(shouldMoveFromTimeAtSite(entry))
         {
-//        AWLog.logDebug("moving to next site due to work timing");
         setMoveToNextSite();
         }  
       }
     else
       {
-//      AWLog.logDebug("moving to next site due to incompatble work types");
       setMoveToNextSite();
       }      
     }
   else
     {
-//    AWLog.logDebug("moving to next site due to invalid work site");
     setMoveToNextSite();
     }
   }
 
 protected boolean shouldMoveFromNoWork(WorkEntry entry)
   {
-  return order.getEntries().size()>1;//TODO vary based on order.priorityType
+  if(order.getPriorityType()==WorkPriorityType.TIMED){return false;}
+  else if(order.getPriorityType()==WorkPriorityType.ROUTE){return true;}
+  else if(order.getPriorityType()==WorkPriorityType.PRIORITY_LIST){return true;}
+  return order.getEntries().size()>1;
   }
 
 protected boolean shouldMoveFromTimeAtSite(WorkEntry entry)
   {
-  //TODO vary based on order.priorityType;
-  if(entry.getWorkLength()>0 && ticksAtSite>entry.getWorkLength())
-    {
-    return true;
-    }
+  if(order.getPriorityType()==WorkPriorityType.TIMED){return ticksAtSite>entry.getWorkLength();}
+  else if(order.getPriorityType()==WorkPriorityType.ROUTE){return false;}
+  else if(order.getPriorityType()==WorkPriorityType.PRIORITY_LIST){return false;}
   return false;
   }
 
@@ -152,10 +143,36 @@ protected void setMoveToNextSite()
   {
   atSite=false;
   ticksTilNextWorkUpdate=0;
-  workIndex++;
   ticksAtSite=0;
   moveTickDelay=0;
-  if(workIndex>=order.getEntries().size()){workIndex=0;}
+  if(order.getPriorityType()==WorkPriorityType.PRIORITY_LIST)    
+    {
+    workIndex=0;
+    WorkEntry entry;
+    BlockPosition pos;
+    IWorkSite site;
+    IWorker worker = (IWorker)npc;
+    for(int i = 0; i < order.getEntries().size(); i++)
+      {
+      entry = order.getEntries().get(workIndex);
+      pos = entry.getPosition();
+      TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+      if(te instanceof IWorkSite)
+        {
+        site = (IWorkSite)te;        
+        if(worker.canWorkAt(site.getWorkType()) && site.hasWork())
+          {
+          workIndex = i;
+          break;
+          }
+        }
+      }
+    }
+  else
+    {
+    workIndex++;
+    if(workIndex>=order.getEntries().size()){workIndex=0;}    
+    }
   }
 
 protected void moveToWorksite()
@@ -166,18 +183,15 @@ protected void moveToWorksite()
     {
     WorkEntry entry = order.getEntries().get(workIndex);
     BlockPosition pos = entry.getPosition();
-//    AWLog.logDebug("commanding move to worksite...");
-    //check distance to position    
     double dist = npc.getDistanceSq(pos.x+0.5d, pos.y, pos.z+0.5d);
     if(dist>5.d*5.d)
       {
       moveTickDelay = 5;
-      //proceed to work site
-      npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);
+      npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);  
       
       if(npc.getNavigator().noPath())
         {        
-//        AWLog.logDebug("navigator has no path!!");
+        AWLog.logDebug("navigator has no path!!  moving to next site early!!");
         setMoveToNextSite();
         }
       }

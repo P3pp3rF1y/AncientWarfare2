@@ -103,6 +103,14 @@ public void handleHealthUpdate(byte par1)
     }
   }
 
+public void addExperience(float amount)
+  {
+  String type = getNpcType();
+  String subtype = getNpcSubType();
+  if(!subtype.isEmpty()){type = type+"."+subtype;}
+  getLevelingStats().addExperience(type, amount);
+  }
+
 public void setEntityAIForDisplay(int ai)
   {
   if(!worldObj.isRemote)

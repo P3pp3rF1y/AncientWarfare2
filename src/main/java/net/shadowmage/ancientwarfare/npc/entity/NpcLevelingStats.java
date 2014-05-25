@@ -8,6 +8,7 @@ public class NpcLevelingStats
 {
 
 private HashMap<String, ExperienceEntry> experienceMap = new HashMap<String, ExperienceEntry>();
+private float baseExperience;//'generic' xp, always incremented for all xp-types
 
 public NpcLevelingStats()
   {
@@ -19,10 +20,16 @@ public float getExperience(String type)
   return 0.f;
   }
 
+public float getBaseExperience()
+  {
+  return baseExperience;
+  }
+
 public void addExperience(String type, float xp)
   {
   if(!experienceMap.containsKey(type)){experienceMap.put(type, new ExperienceEntry());}
   experienceMap.get(type).xp+=xp;
+  baseExperience+=xp;
   }
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)

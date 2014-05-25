@@ -4,10 +4,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIGetFood extends NpcAI
@@ -24,14 +22,12 @@ public NpcAIGetFood(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
-//  AWLog.logDebug("npc get food shouldExecute");
   return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0 && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
   }
 
 @Override
 public boolean continueExecuting()
   {
-//  AWLog.logDebug("npc get food continueExecuting");
   return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining() < npc.getUpkeepAmount() && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
   }
 
@@ -41,7 +37,7 @@ public boolean continueExecuting()
 @Override
 public void startExecuting()
   {
-//  AWLog.logDebug("npc get food starting executing");  
+  //TODO set npc 'current task' to get food
   }
 
 /**
@@ -50,7 +46,6 @@ public void startExecuting()
 @Override
 public void updateTask()
   {
-//  AWLog.logDebug("npc get food update task");
   BlockPosition pos = npc.getUpkeepPoint();
   if(pos==null){return;}
   if(withinDistanceToUpkeep(pos))
@@ -70,6 +65,7 @@ public void updateTask()
 public void resetTask()
   {
   moveDelayTicks=0;
+  //TODO set npc 'current task' to idle
   }
 
 protected void moveToUpkeep(BlockPosition pos)
@@ -103,7 +99,6 @@ protected boolean withinDistanceToUpkeep(BlockPosition pos)
 protected void withdrawFood(IInventory inventory, int side)
   {
   int amount = npc.getUpkeepAmount() - npc.getFoodRemaining();
-  AWLog.logDebug("attempting to withdraw food of at least value: "+amount);
   if(amount<=0){return;}
   ItemStack stack;
   int val;
@@ -147,9 +142,8 @@ protected void withdrawFood(IInventory inventory, int side)
         }
       }    
     }
-  AWLog.logDebug("ate food of value: "+eaten);
   npc.setFoodRemaining(npc.getFoodRemaining()+eaten);
-  //TODO if eaten>0 add experience
+  //  npc.addExperience(amount);//TODO if eaten>0 add experience
   }
 
 }
