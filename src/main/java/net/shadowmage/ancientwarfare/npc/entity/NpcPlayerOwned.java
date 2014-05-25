@@ -159,17 +159,6 @@ public void writeEntityToNBT(NBTTagCompound tag)
   tag.setInteger("foodValue", foodValueRemaining);
   }
 
-@Override
-public void writeSpawnData(ByteBuf buffer)
-  {
-  
-  }
-
-@Override
-public void readSpawnData(ByteBuf additionalData)
-  {
-  
-  }
 
 @Override
 public void readAdditionalItemData(NBTTagCompound tag)

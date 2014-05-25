@@ -46,8 +46,7 @@ public ResourceLocation getTextureFor(NpcBase npc)
 //  AWLog.logDebug("looking up texture for name: "+fullTypeName);
   if(group!=null && !group.textures.isEmpty())
     {
-    UUID id = npc.getPersistentID();
-    long idlsb = id.getLeastSignificantBits();
+    long idlsb = npc.getIDForSkin();
     rng.setSeed(idlsb);
     int tex = rng.nextInt(group.textures.size());
 //    AWLog.logDebug("returning texture index: "+tex+" from size: "+group.textures.size());

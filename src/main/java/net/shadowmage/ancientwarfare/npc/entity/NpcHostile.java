@@ -63,16 +63,4 @@ public void writeAdditionalItemData(NBTTagCompound tag)
   
   }
 
-@Override
-public void writeSpawnData(ByteBuf buffer)
-  {
-  
-  }
-
-@Override
-public void readSpawnData(ByteBuf additionalData)
-  {
-  
-  }
-
 }

@@ -57,6 +57,8 @@ public ItemStack ordersStack;
 
 public ItemStack upkeepStack;
 
+long idMsb;//used for skins
+
 public NpcBase(World par1World)
   {
   super(par1World);
@@ -152,6 +154,11 @@ public ItemStack getItemToSpawn()
   return ItemNpcSpawner.getSpawnerItemForNpc(this);
   }
 
+public long getIDForSkin()
+  {
+  return this.idMsb;
+  }
+
 @Override
 public ItemStack getPickedResult(MovingObjectPosition target)
   {
@@ -159,10 +166,18 @@ public ItemStack getPickedResult(MovingObjectPosition target)
   }
 
 @Override
-public abstract void writeSpawnData(ByteBuf buffer);//TODO send entity name??
+public void writeSpawnData(ByteBuf buffer)
+  {
+  buffer.writeLong(getUniqueID().getLeastSignificantBits());
+  }
 
 @Override
-public abstract void readSpawnData(ByteBuf additionalData);
+public void readSpawnData(ByteBuf additionalData)
+  {
+  long l2;
+  l2 = additionalData.readLong();
+  this.idMsb = l2;
+  }
 
 @Override
 public void onUpdate()
