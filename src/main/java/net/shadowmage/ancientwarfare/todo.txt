@@ -108,9 +108,7 @@ npcs module
 		work-order renders route + numbers
 		routing-order renders route + sides
 		combat-order renders patrol and guard points/targets
-	
-	add rendering of combat, work, and food task icon/hints
-	
+	add rendering of npc health/name
 	
 	
 vehicles module

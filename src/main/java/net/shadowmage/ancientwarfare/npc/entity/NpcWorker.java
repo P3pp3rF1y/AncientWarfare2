@@ -1,7 +1,15 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.ai.EntityAIOpenDoor;
+import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemPickaxe;
@@ -11,6 +19,9 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWork;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
@@ -24,13 +35,22 @@ private NpcAIWork workAI;
 
 public NpcWorker(World par1World)
   {
-  super(par1World);  
-  //this should be set to a generic 'flee' AI for civilians
-  this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
-  //get food
-  this.tasks.addTask(5, new NpcAIMoveHome(this, 80.f, 4.f, 40.f, 20.f));
-  //idle
+  super(par1World);    
+  this.tasks.addTask(0, new EntityAISwimming(this));
+  this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+  this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
+  
+  this.tasks.addTask(2, new NpcAIFollowPlayer(this, 1.d, 10.f, 2.f));
+  this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 1.0D));
+  this.tasks.addTask(4, new NpcAIGetFood(this));  
+  this.tasks.addTask(5, new NpcAIMoveHome(this, 80.f, 8.f, 40.f, 3.f));
+  this.tasks.addTask(6, new NpcAIIdleWhenHungry(this)); 
   this.tasks.addTask(7, (workAI = new NpcAIWork(this)));
+  
+  //post-100 -- used by delayed shared tasks (look at random stuff, wander)
+  this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+  this.tasks.addTask(102, new EntityAIWander(this, 0.625D));
+  this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
   }
 
 @Override

@@ -20,7 +20,10 @@
  */
 package net.shadowmage.ancientwarfare.npc.config;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.init.Items;
@@ -63,14 +66,13 @@ private HashMap<String, Integer> foodValues = new HashMap<String, Integer>();
  * customized on a per-npc basis via config GUI.
  */
 public static final String targetSettings = "05_target_settings";
+private HashMap<String, List<String>> entityTargetSettings = new HashMap<String, List<String>>();
 
 /**
  * enable/disable specific recipes
  * enable/disable research for specific recipes
  */
 public static final String recipeSettings = "06_recipe_settings";
-
-
 
 /**
  * how often an NPC should 'tick' the worksite and add energy
@@ -93,7 +95,44 @@ public void initializeCategories()
 public void initializeValues()
   { 
   loadFoodValues();
+  loadTargetValues();
   this.config.save();
+  }
+
+private void loadTargetValues()
+  {
+  String[] defaultTargets = new String[]{"Zombie","Skeleton"};
+  String[] targets;
+  
+  targets = config.get(targetSettings, "combat", defaultTargets).getStringList();
+  addTargetMapping("combat", "", targets);
+  
+  targets = config.get(targetSettings, "combat.archer", defaultTargets).getStringList();
+  addTargetMapping("combat", "archer", targets);
+  
+  targets = config.get(targetSettings, "combat.soldier", defaultTargets).getStringList();
+  addTargetMapping("combat", "soldier", targets);
+  
+  //TODO rest of combat npc types
+  //TODO rest of hostile npc types (after they have been decided upon)
+  }
+
+private void addTargetMapping(String npcType, String npcSubtype, String[] targets)
+  {
+  String type = npcType + (npcSubtype.isEmpty()? "" : "."+npcSubtype);
+  if(!entityTargetSettings.containsKey(type)){entityTargetSettings.put(type, new ArrayList<String>());}
+  List<String> t = entityTargetSettings.get(type);
+  for(String target : targets)
+    {
+    t.add(target);
+    }
+  } 
+
+public List<String> getValidTargetsFor(String npcType, String npcSubtype)
+  {
+  String type = npcType + (npcSubtype.isEmpty()? "" : "."+npcSubtype);
+  if(entityTargetSettings.containsKey(type)){return entityTargetSettings.get(type);}
+  return Collections.emptyList();
   }
 
 private void loadFoodValues()

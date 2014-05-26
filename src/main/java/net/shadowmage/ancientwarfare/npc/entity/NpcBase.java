@@ -65,29 +65,9 @@ public NpcBase(World par1World)
   baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
   levelingStats = new NpcLevelingStats();
   
-  /**
-   * shared AI behaviors
-   */
   this.getNavigator().setBreakDoors(true);
   this.getNavigator().setAvoidsWater(true);
-  this.tasks.addTask(0, new EntityAISwimming(this));
-  this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-  this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
-  //1--attack command should go here -- noop for non-combat NPCs, needs implemented in combat and hostile npc types
-  this.tasks.addTask(2, new NpcAIFollowPlayer(this, 1.d, 10.f, 2.f)); 
-  //3--civilian/courier 'flee' command goes here, or combat/hostile 'flee-on-low-health'
-  //4--used by player-owned for upkeep tasks
-  //5--used by player-owned for upkeep tasks
   
-  //post-100 -- used by delayed shared tasks (stay near home, look at random stuff, wander)
-  this.tasks.addTask(100, new EntityAIMoveTowardsRestriction(this, 0.6D)); 
-  this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-  this.tasks.addTask(102, new EntityAIWander(this, 0.625D));
-  this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-  
-  //target tasks
-//  this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-//  this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
   this.width = 1.f;
   }
 
@@ -95,7 +75,7 @@ public NpcBase(World par1World)
 protected void entityInit()
   {
   super.entityInit();
-  this.getDataWatcher().addObject(20, Integer.valueOf(0));//TODO load/save from nbt
+  this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks, TODO load/save from nbt
   }
 
 public int getAITasks()
@@ -116,13 +96,6 @@ public void removeAITask(int task)
   AWLog.logDebug("removing ai task: "+task);
   int tasks = getAITasks();
   tasks = tasks & (~task);
-//  int test = tasks & task;
-//  if(test>0)
-//    {
-//    tasks ^= task;    
-//    }
-//  int mask = ~task;
-//  tasks = tasks & mask;
   setAITasks(tasks);
   }
 
@@ -234,11 +207,12 @@ protected boolean isAIEnabled()
 @Override
 protected void applyEntityAttributes()
   {
-  super.applyEntityAttributes();
+  super.applyEntityAttributes();  
+  this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.d);//TODO figure out dynamic changing of max-health based on level from levelingStats
+  this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);//TODO check what pathfinding range is really needed, perhaps allow config option for longer paths
+  this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.325D);//TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
+
   //TODO figure out how to dynamically reset attack damage attribute based on weapon equipped
-  this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.d);
-  this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-  this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.325D);
   this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
   this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);
   }

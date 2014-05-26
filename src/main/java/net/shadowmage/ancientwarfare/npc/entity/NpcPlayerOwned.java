@@ -1,5 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
+import net.minecraft.entity.ai.EntityAIOpenDoor;
+import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -7,6 +15,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
@@ -18,14 +27,7 @@ private int foodValueRemaining = 0;
 
 public NpcPlayerOwned(World par1World)
   {
-  super(par1World);  
-  //3 should be flee hostiles when low-health (or based on morale check?)
-  //3 should be self defense tasks
-  //3 should be follow player command tasks
-  this.tasks.addTask(4, new NpcAIGetFood(this));  
-  //5 == go indoors at night for worker / courier -- what for combat?
-  this.tasks.addTask(6, new NpcAIIdleWhenHungry(this)); 
-  //7 == work, attack, etc
+  super(par1World);
   }
 
 @Override

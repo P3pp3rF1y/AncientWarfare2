@@ -26,7 +26,7 @@ public boolean shouldExecute()
   if(!npc.hasHome()){return false;}
   if(npc.getAttackTarget()!=null){return false;}
   ChunkCoordinates cc = npc.getHomePosition();
-  float distSq = (float) npc.getDistanceSq(cc.posX, cc.posY, cc.posZ);
+  float distSq = (float) npc.getDistanceSq(cc.posX+0.5d, cc.posY, cc.posZ+0.5d);
   boolean isNight = !npc.worldObj.isDaytime();
   float check = isNight ? nightRange : dayRange;
   if(distSq >= check*check){return true;}
@@ -38,7 +38,7 @@ public boolean continueExecuting()
   {
   if(!npc.hasHome()){return false;}
   ChunkCoordinates cc = npc.getHomePosition();
-  float distSq = (float) npc.getDistanceSq(cc.posX, cc.posY, cc.posZ);
+  float distSq = (float) npc.getDistanceSq(cc.posX+0.5d, cc.posY, cc.posZ+0.5d);
   boolean isNight = !npc.worldObj.isDaytime();
   float check = isNight ? nightLeash : dayLeash;
   if(distSq >= check*check){return true;}
@@ -51,7 +51,7 @@ public void startExecuting()
   npc.addAITask(TASK_GO_HOME);
   moveTimer = 0;
   ChunkCoordinates cc = npc.getHomePosition();
-  npc.getNavigator().tryMoveToXYZ(cc.posX, cc.posY, cc.posZ, 1.0d);
+  npc.getNavigator().tryMoveToXYZ(cc.posX+0.5d, cc.posY, cc.posZ+0.5d, 1.0d);
   npc.setTarget(null);
   }
 
