@@ -37,7 +37,7 @@ public boolean continueExecuting()
 @Override
 public void startExecuting()
   {
-  //TODO set npc 'current task' to get food
+  npc.addAITask(TASK_UPKEEP);
   }
 
 /**
@@ -65,7 +65,7 @@ public void updateTask()
 public void resetTask()
   {
   moveDelayTicks=0;
-  //TODO set npc 'current task' to idle
+  npc.removeAITask(TASK_UPKEEP);
   }
 
 protected void moveToUpkeep(BlockPosition pos)

@@ -65,6 +65,7 @@ public void startExecuting()
   this.executionTimer = 0;
   this.avoidWaterCache = this.npc.getNavigator().getAvoidsWater();
   this.npc.getNavigator().setAvoidsWater(false);
+  this.npc.addAITask(TASK_GUARD);
   }
 
 /**
@@ -75,6 +76,7 @@ public void resetTask()
   this.owner = null;
   this.npcPathfinder.clearPathEntity();
   this.npc.getNavigator().setAvoidsWater(this.avoidWaterCache);
+  this.npc.removeAITask(TASK_GUARD);
   }
 
 /**

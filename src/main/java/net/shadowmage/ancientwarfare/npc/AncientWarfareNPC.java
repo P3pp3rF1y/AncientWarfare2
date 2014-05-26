@@ -90,7 +90,6 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * register tick-handlers
    */
-    
   AWLog.log("Ancient Warfare NPCs Pre-Init completed");
   }
 

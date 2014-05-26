@@ -88,6 +88,48 @@ public NpcBase(World par1World)
   //target tasks
 //  this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 //  this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+  this.width = 1.f;
+  }
+
+@Override
+protected void entityInit()
+  {
+  super.entityInit();
+  this.getDataWatcher().addObject(20, Integer.valueOf(0));//TODO load/save from nbt
+  }
+
+public int getAITasks()
+  {
+  return getDataWatcher().getWatchableObjectInt(20);
+  }
+
+public void addAITask(int task)
+  {
+  AWLog.logDebug("adding ai task: "+task);
+  int tasks = getAITasks();
+  tasks = tasks | task;
+  setAITasks(tasks);
+  }
+
+public void removeAITask(int task)
+  {
+  AWLog.logDebug("removing ai task: "+task);
+  int tasks = getAITasks();
+  tasks = tasks & (~task);
+//  int test = tasks & task;
+//  if(test>0)
+//    {
+//    tasks ^= task;    
+//    }
+//  int mask = ~task;
+//  tasks = tasks & mask;
+  setAITasks(tasks);
+  }
+
+private void setAITasks(int tasks)
+  {
+  AWLog.logDebug("setting npc ai tasks to: "+tasks);
+  this.getDataWatcher().updateObject(20, Integer.valueOf(tasks));  
   }
 
 @Override
@@ -97,36 +139,12 @@ public void setHomeArea(int par1, int par2, int par3, int par4)
   AWLog.logDebug("setting home position...");
   }
 
-@Override
-public void handleHealthUpdate(byte par1)
-  {  
-  super.handleHealthUpdate(par1);
-  //TODO handle npc ai updates, set AI...render AI tasks...load icons for tasks...rework all vanilla AI to inform of AI change
-  int lower = par1 &0x0f;
-  int upper = (par1 >>4) &0x0f;
-  if(lower==0)
-    {
-    AWLog.logDebug("should set entity ai task icon to: "+upper);
-    }
-  }
-
 public void addExperience(float amount)
   {
   String type = getNpcType();
   String subtype = getNpcSubType();
   if(!subtype.isEmpty()){type = type+"."+subtype;}
   getLevelingStats().addExperience(type, amount);
-  }
-
-public void setEntityAIForDisplay(int ai)
-  {
-  if(!worldObj.isRemote)
-    {
-    int lower = 0;
-    int upper = ai;
-    int total = ((upper&0x0f)<<4) | (lower &0x0f) ;
-    ((WorldServer)worldObj).setEntityState(this, (byte)total);
-    }
   }
 
 /**

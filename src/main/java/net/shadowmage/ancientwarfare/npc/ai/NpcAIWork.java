@@ -82,6 +82,12 @@ public void updateTask()
     }  
   }
 
+@Override
+public void startExecuting()
+  {
+  npc.addAITask(TASK_WORK);
+  }
+
 protected void workAtSite()
   {
   ticksAtSite++;
@@ -225,6 +231,7 @@ public void resetTask()
   super.resetTask();
   ticksAtSite = 0;
   atSite = false;
+  this.npc.removeAITask(TASK_WORK);
   }
 
 public void readFromNBT(NBTTagCompound tag)

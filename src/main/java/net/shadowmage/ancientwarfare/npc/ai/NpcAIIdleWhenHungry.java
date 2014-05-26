@@ -1,9 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import net.minecraft.util.ChunkCoordinates;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIIdleWhenHungry extends NpcAI
 {
+
+int moveTimer = 0;
 
 public NpcAIIdleWhenHungry(NpcBase npc)
   {
@@ -29,8 +32,13 @@ public boolean continueExecuting()
 @Override
 public void startExecuting()
   {
-//  AWLog.logDebug("npc idle food starting executing");
-  //TODO move towards home point
+  npc.addAITask(TASK_IDLE_HUNGRY);
+  moveTimer = 0;
+  if(npc.hasHome())
+    {
+    ChunkCoordinates cc = npc.getHomePosition();
+    npc.getNavigator().tryMoveToXYZ(cc.posX, cc.posY, cc.posZ, 1.0d);    
+    }
   }
 
 /**
@@ -39,7 +47,7 @@ public void startExecuting()
 @Override
 public void resetTask()
   {
-//  AWLog.logDebug("npc idle food resetting task");
+  npc.removeAITask(TASK_IDLE_HUNGRY);
   }
 
 /**
@@ -48,7 +56,16 @@ public void resetTask()
 @Override
 public void updateTask()
   {
-//  AWLog.logDebug("npc idle food update task");  
+  if(npc.hasHome())    
+    {
+    moveTimer--;
+    if(moveTimer<=0)
+      {
+      ChunkCoordinates cc = npc.getHomePosition();
+      npc.getNavigator().tryMoveToXYZ(cc.posX, cc.posY, cc.posZ, 1.0d);
+      moveTimer = 10;
+      }    
+    }
   }
 
 
