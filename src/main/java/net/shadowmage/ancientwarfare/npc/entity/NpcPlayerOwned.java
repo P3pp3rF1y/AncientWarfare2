@@ -131,6 +131,13 @@ protected boolean interact(EntityPlayer par1EntityPlayer)
   }
 
 @Override
+public void onLivingUpdate()
+  {  
+  super.onLivingUpdate();
+  if(foodValueRemaining>0){foodValueRemaining--;}
+  }
+
+@Override
 public void readEntityFromNBT(NBTTagCompound tag)
   {  
   super.readEntityFromNBT(tag);

@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -16,9 +17,9 @@ import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkPriorityType;
 public class NpcAIWork extends NpcAI
 {
 
-public int workIndex;//TODO read/write nbt
-int ticksAtSite = 0;//TODO read/write nbt
-boolean atSite = false;//TODO read/write nbt
+public int workIndex;
+public int ticksAtSite = 0;
+public boolean atSite = false;
 WorkOrder order;
 ItemStack orderStack;
 boolean init = false;
@@ -45,6 +46,10 @@ public boolean shouldExecute()
     orderStack = npc.ordersStack;
     order = WorkOrder.getWorkOrder(orderStack);
     init = true;
+    if(order==null || workIndex >= order.getEntries().size())
+      {
+      workIndex=0;
+      }
     }
   if(orderStack!=null && order!=null && order.getEntries().size()>0)
     {
@@ -220,6 +225,20 @@ public void resetTask()
   super.resetTask();
   ticksAtSite = 0;
   atSite = false;
+  }
+
+public void readFromNBT(NBTTagCompound tag)
+  {
+  ticksAtSite = tag.getInteger("ticksAtSite");
+  atSite = tag.getBoolean("atSite");
+  workIndex = tag.getInteger("workIndex");
+  }
+
+public void writeToNBT(NBTTagCompound tag)
+  {
+  tag.setInteger("ticksAtSite", ticksAtSite);
+  tag.setBoolean("atSite", atSite);
+  tag.setInteger("workIndex", workIndex);
   }
 
 
