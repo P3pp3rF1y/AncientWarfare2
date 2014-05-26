@@ -29,6 +29,7 @@ public void registerClient()
 
 public void registerClientOptions()
   {
+  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_ADDITIONAL_INFO, "Main control for additional npc-related rendering", true, AncientWarfareNPC.config);
   ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_AI, "Render NPC AI Tasks", true, AncientWarfareNPC.config);
   ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_FRIENDLY_NAMES, "Render friendly/neutral NPC nameplates", true, AncientWarfareNPC.config);
   ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES, "Render hostile NPC nameplates", true, AncientWarfareNPC.config);

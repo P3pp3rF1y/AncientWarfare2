@@ -8,6 +8,9 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -23,6 +26,11 @@ public class AWTextureManager
 public static AWTextureManager instance(){return instance;}
 private static AWTextureManager instance = new AWTextureManager();
 private AWTextureManager(){}
+
+private HashMap<String, ResourceLocation> locationTextures = new HashMap<String, ResourceLocation>();
+
+
+
 
 private HashMap<Integer, Texture> textures = new HashMap<Integer, Texture>();
 private HashMap<String, Integer> textureNames = new HashMap<String, Integer>();
@@ -46,6 +54,16 @@ private void bindTexture(int texNum)
     throw new IllegalArgumentException("Could not locate texture for texNum: "+texNum);
     }
   }
+
+public void bindLocationTexture(String name)
+  {
+  if(!locationTextures.containsKey(name))
+    {
+    locationTextures.put(name, new ResourceLocation(name));
+    }
+  Minecraft.getMinecraft().renderEngine.bindTexture(locationTextures.get(name));
+  }
+
 
 public void loadTexture(String name, BufferedImage image)
   {

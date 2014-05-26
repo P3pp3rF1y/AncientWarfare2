@@ -95,6 +95,7 @@ public boolean continueExecuting()
 public void startExecuting()
   {
   npc.addAITask(TASK_ATTACK);
+  npc.addAITask(TASK_MOVE);
   this.npc.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
   this.recheckDelay = 0;
   }
@@ -106,6 +107,7 @@ public void startExecuting()
 public void resetTask()
   {
   npc.removeAITask(TASK_ATTACK);
+  npc.removeAITask(TASK_MOVE);
   this.npc.getNavigator().clearPathEntity();
   }
 

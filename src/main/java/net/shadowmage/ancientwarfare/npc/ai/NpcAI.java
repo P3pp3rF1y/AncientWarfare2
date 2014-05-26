@@ -5,6 +5,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public abstract class NpcAI extends EntityAIBase
 {
+public static final int NUMBER_OF_TASKS = 9;
 public static final int TASK_ATTACK = 1;
 public static final int TASK_UPKEEP = 2;
 public static final int TASK_IDLE_HUNGRY = 4;
@@ -12,6 +13,8 @@ public static final int TASK_GO_HOME = 8;
 public static final int TASK_WORK = 16;
 public static final int TASK_PATROL = 32;
 public static final int TASK_GUARD = 64;
+public static final int TASK_FOLLOW = 128;
+public static final int TASK_MOVE = 256;
 
 public static final int MOVE = 1;
 public static final int ATTACK = 2;

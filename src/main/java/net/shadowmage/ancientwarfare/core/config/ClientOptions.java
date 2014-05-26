@@ -25,20 +25,19 @@ public static final String OPTION_RENDER_WORK_POINTS = "render_work_points";
  * npc module client-side options
  */
 public static final String OPTION_RENDER_NPC_AI = "render_npc_ai";
+public static final String OPTION_RENDER_NPC_ADDITIONAL_INFO = "render_nameplates";
 public static final String OPTION_RENDER_NPC_HOSTILE_NAMES = "render_hostile_names";
 public static final String OPTION_RENDER_NPC_FRIENDLY_NAMES = "render_friendly_names";
 
-
-/**
- * registers the client-option, with default value.  actual value will be loaded
- * from config file.  Need not be proxied, may be called from main/server thread.
- * @param name
- * @param comment
- * @param value
- */
-public void registerClientOption(String name, String comment, Object value, Configuration configFile)
+public void registerClientOption(String name, String comment, boolean val, Configuration config)
   {
-  ClientOption option = new ClientOption(name, value, comment, configFile);
+  ClientOption option = new ClientOption(name, val, comment, config);
+  clientOptions.put(name, option);
+  }
+
+public void registerClientOption(String name, String comment, int val, Configuration config)
+  {
+  ClientOption option = new ClientOption(name, val, comment, config);
   clientOptions.put(name, option);
   }
 
@@ -96,12 +95,25 @@ public static final class ClientOption
 {
 Configuration config;
 private String name;
-private Object value;
 private String comment;
+private boolean isBoolean = false;
 
-private ClientOption(String name, Object value, String comment, Configuration config)
+private boolean booleanVal;
+private int intVal;
+
+private ClientOption(String name, int value, String comment, Configuration config)
   {
-  this.value = value;
+  this.intVal = value;
+  isBoolean = false;
+  this.name = name;
+  this.comment = comment;
+  this.config = config;
+  }
+
+private ClientOption(String name, boolean value, String comment, Configuration config)
+  {
+  this.booleanVal = value;
+  isBoolean = true;
   this.name = name;
   this.comment = comment;
   this.config = config;
@@ -109,12 +121,12 @@ private ClientOption(String name, Object value, String comment, Configuration co
 
 public boolean getBooleanValue()
   {
-  return value instanceof Boolean ? ((Boolean)value) : false;
+  return isBoolean ? booleanVal : false;
   }
 
 public int getIntValue()
   {
-  return value instanceof Integer ? ((Integer)value) : 0;
+  return !isBoolean ? intVal : 0;
   }
 
 public String getName()
@@ -122,19 +134,30 @@ public String getName()
   return name;
   }
 
-public void setValue(Object value)
+public void setValue(int value)
   {
-  this.value = value;
+  if(!isBoolean)
+    {
+    intVal = value;
+    }
+  }
+
+public void setValue(boolean val)
+  {
+  if(isBoolean)
+    {
+    this.booleanVal = val;
+    }
   }
 
 public boolean isBooleanValue()
   {
-  return value instanceof Boolean;
+  return isBoolean;
   }
 
 public boolean isIntValue()
   {
-  return value instanceof Integer;
+  return !isBoolean;
   }
 
 public String getComment()
