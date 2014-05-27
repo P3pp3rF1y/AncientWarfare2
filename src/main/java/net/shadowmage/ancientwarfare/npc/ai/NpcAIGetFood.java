@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIGetFood extends NpcAI
@@ -50,10 +51,12 @@ public void updateTask()
   if(pos==null){return;}
   if(withinDistanceToUpkeep(pos))
     {
-    tryUpkeep(pos);
+    npc.removeAITask(TASK_MOVE);
+    tryUpkeep(pos);    
     }
   else
     {
+    npc.addAITask(TASK_MOVE);
     moveToUpkeep(pos);
     }
   }
@@ -65,7 +68,7 @@ public void updateTask()
 public void resetTask()
   {
   moveDelayTicks=0;
-  npc.removeAITask(TASK_UPKEEP);
+  npc.removeAITask(TASK_UPKEEP + TASK_MOVE);
   }
 
 protected void moveToUpkeep(BlockPosition pos)
@@ -143,7 +146,10 @@ protected void withdrawFood(IInventory inventory, int side)
       }    
     }
   npc.setFoodRemaining(npc.getFoodRemaining()+eaten);
-  //  npc.addExperience(amount);//TODO if eaten>0 add experience
+  if(amount>0 && AWNPCStatics.npcFoodTicksForExperience>0)
+    {
+    npc.addExperience( amount / AWNPCStatics.npcFoodTicksForExperience );
+    }
   }
 
 }

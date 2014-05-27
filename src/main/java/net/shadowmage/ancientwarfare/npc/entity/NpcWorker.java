@@ -40,7 +40,7 @@ public NpcWorker(World par1World)
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
   
-  this.tasks.addTask(2, new NpcAIFollowPlayer(this, 1.d, 10.f, 2.f));
+  this.tasks.addTask(2, new NpcAIFollowPlayer(this));
   this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 1.0D));
   this.tasks.addTask(4, new NpcAIGetFood(this));  
   this.tasks.addTask(5, new NpcAIMoveHome(this, 80.f, 8.f, 40.f, 3.f));

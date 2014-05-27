@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMelee;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMelee2;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
@@ -47,7 +48,7 @@ private EntityAIBase arrowAI;
 public NpcCombat(World par1World)
   {
   super(par1World);
-  collideAI = new NpcAIAttackMelee(this, 1.0D, false);
+  collideAI = new NpcAIAttackMelee2(this);
   arrowAI = new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F); 
   IEntitySelector selector = new IEntitySelector()
     {
@@ -67,11 +68,12 @@ public NpcCombat(World par1World)
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
   
-  this.tasks.addTask(2, new NpcAIFollowPlayer(this, 1.d, 10.f, 2.f));
+  this.tasks.addTask(2, new NpcAIFollowPlayer(this));
 //  this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));//TODO change to a flee on low health
   this.tasks.addTask(4, new NpcAIGetFood(this));  
   this.tasks.addTask(5, new NpcAIMoveHome(this, 80.f, 20.f, 40.f, 5.f));
   this.tasks.addTask(6, new NpcAIIdleWhenHungry(this)); 
+  //7==combat task, inserted onweaponinventoryupdated
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));

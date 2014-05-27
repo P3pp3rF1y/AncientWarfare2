@@ -5,6 +5,10 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public abstract class NpcAI extends EntityAIBase
 {
+/**
+ * used during npc-ai task-rendering to determine how many bits to loop through
+ * of the task bitfield
+ */
 public static final int NUMBER_OF_TASKS = 9;
 public static final int TASK_ATTACK = 1;
 public static final int TASK_UPKEEP = 2;

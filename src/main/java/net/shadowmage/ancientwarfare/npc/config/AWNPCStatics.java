@@ -48,7 +48,12 @@ public static final String sharedSettings = "01_shared_settings";
  * npc worker tick rate / ticks per work unit
  */
 public static final String serverSettinngs = "02_server_settings";
-
+public static int maxNpcLevel = 10;
+public static int npcFoodTicksForExperience = 1600;
+public static int npcXpFromWork = 1;
+public static int npcXpFromPatrol = 1;
+public static int npcXpFromAttack = 1;
+public static int npcXpFromKill = 5;
 /**
  * client settings:
  * --SET VIA PROXY / ClientOptions.INSTANCE

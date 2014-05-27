@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;

@@ -74,10 +74,12 @@ public void updateTask()
   {
   if(!atSite)
     {
+    npc.addAITask(TASK_MOVE);
     moveToWorksite();
     }
   else
     {
+    npc.removeAITask(TASK_MOVE);
     workAtSite();
     }  
   }
@@ -107,7 +109,7 @@ protected void workAtSite()
       {      
       if(site.hasWork())
         {        
-//        npc.addExperience(amount);//TODO add experience from work
+        npc.addExperience(AWNPCStatics.npcXpFromWork);
         site.addEnergyFromWorker((IWorker) npc);
         ticksTilNextWorkUpdate=AWNPCStatics.npcWorkTicks;
         }
@@ -231,7 +233,7 @@ public void resetTask()
   super.resetTask();
   ticksAtSite = 0;
   atSite = false;
-  this.npc.removeAITask(TASK_WORK);
+  this.npc.removeAITask(TASK_WORK + TASK_WORK);
   }
 
 public void readFromNBT(NBTTagCompound tag)

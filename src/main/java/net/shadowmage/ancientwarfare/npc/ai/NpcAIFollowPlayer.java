@@ -1,30 +1,22 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIFollowPlayer extends NpcAI
 {
-private EntityLivingBase owner;
-World theWorld;
-private double moveSpeed;
-private PathNavigate npcPathfinder;
-private int executionTimer;
-float maxDist;
-float minDist;
-private boolean avoidWaterCache;
 
-public NpcAIFollowPlayer(NpcBase npc, double par2, float par4, float par5)
+private Entity target;
+private double attackIgnoreDistance = 4.d*4.d;
+private double followStopDistance = 4.d*4.d;
+private int moveDelay = 0;
+
+public NpcAIFollowPlayer(NpcBase npc)
   {
   super(npc);
-  this.theWorld = npc.worldObj;
-  this.moveSpeed = par2;
-  this.npcPathfinder = npc.getNavigator();
-  this.minDist = par4;
-  this.maxDist = par5;
   this.setMutexBits(MOVE+ATTACK);
   }
 
@@ -33,20 +25,19 @@ public NpcAIFollowPlayer(NpcBase npc, double par2, float par4, float par5)
  */
 public boolean shouldExecute()
   {
-  EntityLivingBase owner = this.npc.getFollowingEntity();  
-  if(owner == null)
+  target = this.npc.getFollowingEntity();  
+  if(target == null)
     {
     return false;
     }
-  else if (this.npc.getDistanceSqToEntity(owner) < (double)(this.minDist * this.minDist))
+  if(npc.getAttackTarget()!=null)
     {
-    return false;
+    if(npc.getDistanceSqToEntity(target)<attackIgnoreDistance && npc.getDistanceSqToEntity(npc.getAttackTarget())<attackIgnoreDistance)
+      {
+      return false;
+      }
     }
-  else
-    {
-    this.owner = owner;
-    return true;
-    }
+  return true;
   }
 
 /**
@@ -54,7 +45,19 @@ public boolean shouldExecute()
  */
 public boolean continueExecuting()
   {
-  return this.npc.getFollowingEntity()!=null;//!this.npcPathfinder.noPath() && this.npc.getDistanceSqToEntity(this.owner) > (double)(this.maxDist * this.maxDist);
+  target = this.npc.getFollowingEntity();  
+  if(target == null)
+    {
+    return false;
+    }
+  if(npc.getAttackTarget()!=null)
+    {
+    if(npc.getDistanceSqToEntity(target)<attackIgnoreDistance && npc.getDistanceSqToEntity(npc.getAttackTarget())<attackIgnoreDistance)
+      {
+      return false;
+      }
+    }
+  return true;
   }
 
 /**
@@ -62,10 +65,8 @@ public boolean continueExecuting()
  */
 public void startExecuting()
   {
-  this.executionTimer = 0;
-  this.avoidWaterCache = this.npc.getNavigator().getAvoidsWater();
-  this.npc.getNavigator().setAvoidsWater(false);
-  this.npc.addAITask(TASK_GUARD);
+  moveDelay = 0;
+  this.npc.addAITask(TASK_FOLLOW);
   }
 
 /**
@@ -73,10 +74,9 @@ public void startExecuting()
  */
 public void resetTask()
   {
-  this.owner = null;
-  this.npcPathfinder.clearPathEntity();
-  this.npc.getNavigator().setAvoidsWater(this.avoidWaterCache);
-  this.npc.removeAITask(TASK_GUARD);
+  this.target = null;
+  moveDelay = 0;
+  this.npc.removeAITask(TASK_FOLLOW + TASK_MOVE);
   }
 
 /**
@@ -84,37 +84,25 @@ public void resetTask()
  */
 public void updateTask()
   {
-  this.npc.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)this.npc.getVerticalFaceSpeed());
-
-  if (--this.executionTimer <= 0)
+  this.npc.getLookHelper().setLookPositionWithEntity(this.target, 10.0F, (float)this.npc.getVerticalFaceSpeed());
+  this.moveDelay--;  
+  double distance = npc.getDistanceSqToEntity(target);
+  if(distance > followStopDistance)
     {
-    this.executionTimer = 10;
-    if(this.npc.getDistanceSqToEntity(this.owner) >= 2.d*2.d)
+    if(moveDelay<=0)
       {
-      if (!this.npcPathfinder.tryMoveToEntityLiving(this.owner, this.moveSpeed))
-        {
-        if (this.npc.getDistanceSqToEntity(this.owner) >= 144.0D)
-          {
-          int i = MathHelper.floor_double(this.owner.posX) - 2;
-          int j = MathHelper.floor_double(this.owner.posZ) - 2;
-          int k = MathHelper.floor_double(this.owner.boundingBox.minY);
-
-          for (int l = 0; l <= 4; ++l)
-            {
-            for (int i1 = 0; i1 <= 4; ++i1)
-              {
-              if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, i + l, k - 1, j + i1) && !this.theWorld.getBlock(i + l, k, j + i1).isNormalCube() && !this.theWorld.getBlock(i + l, k + 1, j + i1).isNormalCube())
-                {
-                this.npc.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.npc.rotationYaw, this.npc.rotationPitch);
-                this.npcPathfinder.clearPathEntity();
-                return;
-                }
-              }
-            }
-          }
-        }
-      }
+      this.npc.addAITask(TASK_MOVE);
+      this.npc.getNavigator().tryMoveToEntityLiving(target, 1.d);
+      this.moveDelay = 10;
+      if(distance>256){moveDelay+=10;}
+      if(distance>1024){moveDelay+=20;}
+      }    
     }
+  else
+    {
+    this.npc.removeAITask(TASK_MOVE);   
+    this.npc.getNavigator().clearPathEntity();
+    }  
   }
 
 }

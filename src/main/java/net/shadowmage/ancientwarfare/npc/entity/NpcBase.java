@@ -46,7 +46,7 @@ public NpcBase(World par1World)
   {
   super(par1World);
   baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
-  levelingStats = new NpcLevelingStats();
+  levelingStats = new NpcLevelingStats(this);
   
   this.getNavigator().setBreakDoors(true);
   this.getNavigator().setAvoidsWater(true);
@@ -70,16 +70,24 @@ public void addAITask(int task)
   {
   AWLog.logDebug("adding ai task: "+task);
   int tasks = getAITasks();
+  int tc = tasks;
   tasks = tasks | task;
-  setAITasks(tasks);
+  if(tc!=tasks)
+    {
+    setAITasks(tasks);    
+    }
   }
 
 public void removeAITask(int task)
   {
   AWLog.logDebug("removing ai task: "+task);
   int tasks = getAITasks();
+  int tc = tasks;
   tasks = tasks & (~task);
-  setAITasks(tasks);
+  if(tc!=tasks)
+    {
+    setAITasks(tasks);    
+    }
   }
 
 private void setAITasks(int tasks)
@@ -95,7 +103,7 @@ public void setHomeArea(int par1, int par2, int par3, int par4)
   AWLog.logDebug("setting home position...");
   }
 
-public void addExperience(float amount)
+public void addExperience(int amount)
   {
   String type = getNpcFullType();
   getLevelingStats().addExperience(type, amount);

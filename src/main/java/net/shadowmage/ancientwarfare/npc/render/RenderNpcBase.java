@@ -102,7 +102,6 @@ private void renderNpcAITasks(NpcBase entity, double x, double y, double z, int 
       mask = 1<<i;
       if((tasks & mask)!=0)
         {
-        icon = getIconFor(mask);
         renderTasks.add(mask);
         }
       }
