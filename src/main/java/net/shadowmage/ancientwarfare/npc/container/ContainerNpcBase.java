@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 public class ContainerNpcBase extends ContainerBase
 {
 
-NpcBase npc;
+public NpcBase npc;
 public ContainerNpcBase(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);

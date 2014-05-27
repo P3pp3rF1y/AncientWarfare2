@@ -2,6 +2,8 @@ package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.SlotArmor;
 import net.shadowmage.ancientwarfare.npc.inventory.InventoryNpcEquipment;
 
@@ -10,6 +12,7 @@ public class ContainerNpcInventory extends ContainerNpcBase
 
 InventoryNpcEquipment inventory;
 public int guiHeight;
+String name;
 
 public ContainerNpcInventory(EntityPlayer player, int x, int y, int z)
   {
@@ -28,12 +31,38 @@ public ContainerNpcInventory(EntityPlayer player, int x, int y, int z)
   
       
   guiHeight = addPlayerSlots(player, 8, 8+5*18+8, 4)+8;
+  name = npc.getCustomNameTag();
   }
 
 @Override
 public void onContainerClosed(EntityPlayer par1EntityPlayer)
   {  
   super.onContainerClosed(par1EntityPlayer);
+  }
+
+@Override
+public void detectAndSendChanges()
+  {  
+  super.detectAndSendChanges();
+  }
+
+@Override
+public void handlePacketData(NBTTagCompound tag)
+  {
+  if(tag.hasKey("customName"))
+    {    
+    npc.setCustomNameTag(tag.getString("customName"));
+    AWLog.logDebug("setting npc custom name from packet input: "+npc.getCustomNameTag());
+    }
+  }
+
+public void handleNpcNameUpdate(String newName)
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setString("customName", newName);
+  sendDataToServer(tag);
+//  container.npc.setNpcName(newText);//TODO send to server, set server-side
+  //TODO send text to server, let data-watcher populate back to client-side and force gui-refresh fro synch detection
   }
 
 }

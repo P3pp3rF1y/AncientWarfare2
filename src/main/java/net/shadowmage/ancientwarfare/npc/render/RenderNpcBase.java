@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
@@ -39,7 +41,7 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
       {
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_FRIENDLY_NAMES))
         {
-        String name = npc.getNpcName() + " "+getHealthForRender(npc);  
+        String name = getNameForRender(npc);  
         renderColoredLabel(npc, name, x, y, z, 64, 0x20ffffff, 0xffffffff);
         }
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_AI))
@@ -51,11 +53,22 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
       {
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES))
         {
-        String name = npc.getNpcName() + " "+getHealthForRender(npc);        
+        String name = getNameForRender(npc);        
         renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
         }
       }
     }
+  }
+
+protected boolean func_110813_b(EntityLivingBase par1EntityLivingBase)
+  {
+  return false;
+  }
+
+private String getNameForRender(NpcBase npc)
+  {
+  String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : npc.getNpcFullType();
+  return customName + " "+getHealthForRender(npc);
   }
 
 private String getHealthForRender(NpcBase npc)

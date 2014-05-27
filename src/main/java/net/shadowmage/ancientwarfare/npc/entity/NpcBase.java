@@ -22,10 +22,6 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable
 {
-/**
- * user-set name for this NPC -- set via name tag items or other means
- */
-protected String npcName = "";
 
 protected String ownerName = "";//the owner of this NPC, used for checking teams
 
@@ -103,28 +99,6 @@ public void addExperience(float amount)
   {
   String type = getNpcFullType();
   getLevelingStats().addExperience(type, amount);
-  }
-
-/**
- * returns the custom-set NPC name if any, else returns the npc type/subtype combo string
- * @return
- */
-public String getNpcName()
-  {
-  String name = npcName;
-  if(name==null || name.isEmpty())
-    {
-    name = getNpcType();
-    String subtype = getNpcSubType();
-    if(!subtype.isEmpty()){name = name+"."+subtype;}
-    }
-  return name;
-  }
-
-public void setNpcName(String name)
-  {
-  if(name==null){name="";}
-  this.npcName = name;
   }
 
 /**
@@ -335,7 +309,6 @@ public void readEntityFromNBT(NBTTagCompound tag)
   {
   super.readEntityFromNBT(tag);
   ownerName = tag.getString("owner");
-  npcName = tag.getString("npcName");
   if(tag.hasKey("ordersItem")){ordersStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("ordersItem"));}
   if(tag.hasKey("upkeepItem")){upkeepStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("upkeepItem"));}
   if(tag.hasKey("home"))
@@ -352,7 +325,6 @@ public void writeEntityToNBT(NBTTagCompound tag)
   {
   super.writeEntityToNBT(tag);
   tag.setString("owner", ownerName);
-  tag.setString("npcName", npcName);
   if(ordersStack!=null){tag.setTag("ordersItem", ordersStack.writeToNBT(new NBTTagCompound()));}
   if(upkeepStack!=null){tag.setTag("upkeepItem", upkeepStack.writeToNBT(new NBTTagCompound()));}
   if(getHomePosition()!=null)
