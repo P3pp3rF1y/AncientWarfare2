@@ -2,33 +2,20 @@ package net.shadowmage.ancientwarfare.npc.entity;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAIOpenDoor;
-import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
@@ -114,10 +101,30 @@ public void setHomeArea(int par1, int par2, int par3, int par4)
 
 public void addExperience(float amount)
   {
-  String type = getNpcType();
-  String subtype = getNpcSubType();
-  if(!subtype.isEmpty()){type = type+"."+subtype;}
+  String type = getNpcFullType();
   getLevelingStats().addExperience(type, amount);
+  }
+
+/**
+ * returns the custom-set NPC name if any, else returns the npc type/subtype combo string
+ * @return
+ */
+public String getNpcName()
+  {
+  String name = npcName;
+  if(name==null || name.isEmpty())
+    {
+    name = getNpcType();
+    String subtype = getNpcSubType();
+    if(!subtype.isEmpty()){name = name+"."+subtype;}
+    }
+  return name;
+  }
+
+public void setNpcName(String name)
+  {
+  if(name==null){name="";}
+  this.npcName = name;
   }
 
 /**
@@ -142,6 +149,14 @@ public abstract void onWeaponInventoryChanged();
 public abstract String getNpcSubType();
 
 public abstract String getNpcType();
+
+public String getNpcFullType()
+  {
+  String type = getNpcType();
+  String sub = getNpcSubType();
+  if(!sub.isEmpty()){type = type+"."+sub;}
+  return type;
+  }
 
 public NpcLevelingStats getLevelingStats()
   {
@@ -188,6 +203,10 @@ public void onUpdate()
   {
   worldObj.theProfiler.startSection("AWNpcTick");
   updateArmSwingProgress();
+  if(ticksExisted%200==0 && getHealth()<getMaxHealth())
+    {
+    setHealth(getHealth()+1);
+    }
   super.onUpdate();
   worldObj.theProfiler.endSection();
   }

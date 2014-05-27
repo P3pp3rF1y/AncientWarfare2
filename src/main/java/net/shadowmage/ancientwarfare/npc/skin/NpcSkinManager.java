@@ -39,10 +39,8 @@ private final String defaultSkinPack = "/assets/ancientwarfare/skin_pack/default
 
 public ResourceLocation getTextureFor(NpcBase npc)
   {  
-  String type = npc.getNpcType();
-  String subType = npc.getNpcSubType();  
-  String fullTypeName = subType.isEmpty() ? type : type+"."+subType;
-  SkinGroup group = skinGroups.get(fullTypeName);
+  String type = npc.getNpcFullType();
+  SkinGroup group = skinGroups.get(type);
 //  AWLog.logDebug("looking up texture for name: "+fullTypeName);
   if(group!=null && !group.textures.isEmpty())
     {

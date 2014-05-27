@@ -39,7 +39,7 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
       {
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_FRIENDLY_NAMES))
         {
-        String name = "foo.anme";//TODO get ncp name
+        String name = npc.getNpcName() + " "+getHealthForRender(npc);  
         renderColoredLabel(npc, name, x, y, z, 64, 0x20ffffff, 0xffffffff);
         }
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_AI))
@@ -51,11 +51,17 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
       {
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES))
         {
-        String name = "foo.anme";//TODO get ncp name
+        String name = npc.getNpcName() + " "+getHealthForRender(npc);        
         renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
         }
       }
     }
+  }
+
+private String getHealthForRender(NpcBase npc)
+  {
+  String health = String.format("%.1f", npc.getHealth());
+  return health;
   }
 
 private void renderNpcAITasks(NpcBase entity, double x, double y, double z, int renderDistance)

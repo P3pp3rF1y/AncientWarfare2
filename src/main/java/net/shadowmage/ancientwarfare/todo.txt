@@ -108,8 +108,8 @@ npcs module
 		work-order renders route + numbers
 		routing-order renders route + sides
 		combat-order renders patrol and guard points/targets
-	add rendering of npc health/name
-	
+	figure out / add command system
+	add command-orders item
 	
 vehicles module
 	everything
