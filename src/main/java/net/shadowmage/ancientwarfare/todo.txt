@@ -106,11 +106,25 @@ automation module:
 			Distributor	(bc-compat) 1000 max, 100 in, 100 out		
 	
 npcs module
+	-- add getEntityClickedOn to raytraceutils --
 	? add rendering of routes when npc-order item is being held
 		work-order renders route + numbers
 		routing-order renders route + sides
 		combat-order renders patrol and guard points/targets		
 	* figure out / add command system	
+		non-persistent list of entities commanded.
+		stored on server/client, not in item-stack.
+		list is looked up per-player by player name.  different command-baton stacks do NOTHING different
+		players may add to / remove from list easily.
+		--store it client-side only? send ID list to server to process commands?
+		--how to not leak memory?
+			just cache a entityID (the regular int one)
+			if world.getEntityByID lookup fails than the entity is either dead or removed
+				remove it from the tracked list
+			requires validating of entities @ display time / command time
+			if stored client-side only this alleviates problems of trying to command npcs that might be unloaded
+				as they will be already trimmed from the client-side entity list and thus the lookup will fail
+						
 	* add combat-orders item -- sets patrol / guard orders for npcs
 	* add recipes to copy upkeep/work/combat/routing orders
 	* add npc factions system

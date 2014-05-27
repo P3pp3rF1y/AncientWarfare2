@@ -1,5 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
+import java.util.List;
+import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -50,7 +53,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
 
 private class NpcCommandSet
 {
-//List<NpcBase> commandedEntities;
+List<UUID> commandedEntities;
 }
 
 }
