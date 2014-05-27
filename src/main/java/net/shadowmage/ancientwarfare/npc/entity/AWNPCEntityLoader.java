@@ -31,7 +31,6 @@ private static HashMap<String, NpcDeclaration> npcMap = new HashMap<String, NpcD
 
 public static void load()
   {
-  //TODO fix with proper reg name, fix reg-names in core-entity registry
   NpcDeclaration reg = new NpcDeclaration(NpcCombat.class, AWEntityRegistry.NPC_COMBAT, nextID++, AncientWarfareNPC.instance, 120, 3, true, "combat")
     {
     @Override

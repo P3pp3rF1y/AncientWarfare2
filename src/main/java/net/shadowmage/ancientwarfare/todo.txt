@@ -50,6 +50,8 @@ structures module
 		but how to handle only partially loaded gates?
 
 automation module:	
+	Add rendering of work-site sizes while holding a work-site setting item.
+
 	Change over worksite BB render to a TESR -- should be slightly more optimized
 	
 	worksites that need work:
@@ -104,17 +106,58 @@ automation module:
 			Distributor	(bc-compat) 1000 max, 100 in, 100 out		
 	
 npcs module
-	add rendering of routes when npc-order item is being held
+	? add rendering of routes when npc-order item is being held
 		work-order renders route + numbers
 		routing-order renders route + sides
-		combat-order renders patrol and guard points/targets
-	figure out / add command system
-	add command-orders item
+		combat-order renders patrol and guard points/targets		
+	* figure out / add command system	
+	* add combat-orders item -- sets patrol / guard orders for npcs
+	* add recipes to copy upkeep/work/combat/routing orders
+	* add npc factions system
+		will have multiple factions:
+			pirates
+			vikings
+			brigands
+			jungle natives
+			??
+		will have two tiers of npcs:
+			normal -- use base faction number for if should attack
+			elite guard -- use a higher number for if should attack -- have to have really good standing to be 'neutral' with them
+		Each faction will have multiple NPC types:
+			soldier / elite soldier
+			archer / elite archer
+			trader
+			priest/medic (combo)
+			commander / leader (elite version)
+		Npc faction sub-types will have specific equipment, non-player configurable, set at spawn time, that vary by
+			faction.  Cosmetic only.  Such as:
+				pirate.archer = musket
+				brigand.archer = crossbow
+				viking.archer = bow
+				natives.archer = spear
+				brigand.soldier = sword
+				pirate.soldier = cutlass
+		Each 'faction' will have its own NPC base-class -- so players can i.e. specify npcs to be hostile vs brigands but not pirates.				
+
+	* add other 'misc' npc types -- bard, priest, trader, ??			
+		
+	? add method to 'recruit' a factioned NPC that you are on high-standing with
+	
 	
 vehicles module
+	figure out collision detection for large rectangular entities
+		examine collision detection for ender-dragon?
 	everything
 	
 NPCS INFO:
+	Command Baton:
+		Stores a list of commanded NPCs by UUID
+		Render list of commanded NPCs into selection-box on screen overlay
+		Can open GUI to remove npcs from list.
+		Can 'click' on an npc to add to list.
+		Has multiple hotkeys to issue commands? (move, attack, ??)
+		Can open GUI to view tactical map for issuing commands / npc selection?
+
 	Teams:
 		All teams are derived from owning players team.
 		If owning player is not on a team, or npc is not owned, they are considered NEUTRAL.  

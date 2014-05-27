@@ -4,6 +4,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
+import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
 import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -52,10 +53,11 @@ public void preInit(FMLPreInitializationEvent evt)
   statics = new AWVehicleStatics(config);
     
   /**
-   * load pre-init
+   * load pre-init (items, blocks, entities)
    */  
   proxy.registerClient();
   statics.load();//load config settings
+  AWVehicleEntityLoader.load();
       
   /**
    * register tick-handlers
