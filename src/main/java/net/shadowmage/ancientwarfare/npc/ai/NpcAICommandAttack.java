@@ -32,7 +32,7 @@ public boolean shouldExecute()
   Command cmd = npc.getCurrentCommand();
   if(cmd!=null && cmd.type==CommandType.ATTACK)
     {
-    Entity e = npc.worldObj.getEntityByID(cmd.x);
+    Entity e = cmd.getEntityTarget(npc.worldObj);
     if(e instanceof EntityLivingBase)
       {
       if(e instanceof NpcPlayerOwned && !npc.isHostileTowards(((EntityLivingBase) e).getTeam()))

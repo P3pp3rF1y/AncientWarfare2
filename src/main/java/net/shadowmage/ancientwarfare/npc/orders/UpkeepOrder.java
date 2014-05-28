@@ -118,6 +118,11 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
   return tag;
   }
 
+@Override
+public String toString()
+  {
+  return "Upkeep Orders["+upkeepPosition+"]";
+  }
 
 public static UpkeepOrder getUpkeepOrder(ItemStack stack)
   {

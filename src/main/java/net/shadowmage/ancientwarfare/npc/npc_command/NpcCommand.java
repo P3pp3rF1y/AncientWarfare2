@@ -2,13 +2,17 @@ package net.shadowmage.ancientwarfare.npc.npc_command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
@@ -25,7 +29,8 @@ GUARD,//attack click on friendly player or npc
 SET_HOME,
 SET_UPKEEP,
 CLEAR_HOME,
-CLEAR_UPKEEP;
+CLEAR_UPKEEP,
+CLEAR_COMMAND;
 }
 
 /**
@@ -76,11 +81,22 @@ public static void handleServerCommand(EntityPlayer player, CommandType type, bo
     }
   }
 
-public static class Command
+public static final class Command
 {
-public final CommandType type;
-public final int x, y, z;
-public final boolean blockTarget;
+public CommandType type;
+public int x, y, z;
+public boolean blockTarget;
+
+UUID entityID;
+Entity entity;
+
+public Command(){}
+
+public Command(NBTTagCompound tag)
+  {
+  readFromNBT(tag);
+  }
+
 public Command(CommandType type, int x, int y, int z)
   {
   this.type = type;
@@ -89,6 +105,7 @@ public Command(CommandType type, int x, int y, int z)
   this.z = z;
   this.blockTarget = true;  
   }
+
 public Command(CommandType type, int entityID)
   {
   this.type = type;
@@ -96,6 +113,83 @@ public Command(CommandType type, int entityID)
   this.y=this.z=0;
   this.blockTarget = false;
   }
+
+public Command copy()
+  {
+  Command cmd = new Command();
+  cmd.type = this.type;
+  cmd.x=this.x;
+  cmd.y=this.y;
+  cmd.z=this.z;
+  cmd.entity=this.entity;
+  cmd.entityID=this.entityID;
+  cmd.blockTarget=this.blockTarget;
+  return cmd;
+  }
+
+public final void readFromNBT(NBTTagCompound tag)
+  {
+  tag.setInteger("type", type.ordinal());
+  tag.setBoolean("block", blockTarget);
+  tag.setInteger("x", x);
+  tag.setInteger("y", y);
+  tag.setInteger("z", z);
+  if(entityID!=null)
+    {
+    tag.setLong("idmsb", entityID.getMostSignificantBits());
+    tag.setLong("idlsb", entityID.getLeastSignificantBits());
+    }
+  }
+
+public final NBTTagCompound writeToNBT(NBTTagCompound tag)
+  {
+  type = CommandType.values()[tag.getInteger("type")];
+  blockTarget = tag.getBoolean("block");
+  x = tag.getInteger("x");
+  y = tag.getInteger("y");
+  z = tag.getInteger("z");
+  if(tag.hasKey("idmsb") && tag.hasKey("idlsb"))
+    {
+    entityID = new UUID(tag.getLong("idmsb"), tag.getLong("idlsb"));
+    }
+  return tag;
+  }
+
+/**
+ * should be called by packet prior to passing command into npc processing
+ */
+public void findEntity(World world)
+  {
+  if(blockTarget){return;}
+  if(entity!=null){return;}
+  if(entityID==null)
+    {
+    entity = world.getEntityByID(x);
+    if(entity!=null)
+      {
+      entityID = entity.getPersistentID();
+      }
+    }
+  else
+    {
+    entity = WorldTools.getEntityByUUID(world, entityID.getMostSignificantBits(), entityID.getLeastSignificantBits());
+    }
+  }
+
+public Entity getEntityTarget(World world)
+  {
+  if(blockTarget){return null;}
+  if(entity!=null)
+    {
+    return entity;
+    }
+  else
+    {
+    findEntity(world);    
+    } 
+  return entity;
+  }
+
 }
 
 

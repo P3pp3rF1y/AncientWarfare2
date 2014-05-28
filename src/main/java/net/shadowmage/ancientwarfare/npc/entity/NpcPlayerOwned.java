@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
+import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
 public abstract class NpcPlayerOwned extends NpcBase
@@ -29,8 +30,43 @@ public Command getCurrentCommand()
 
 @Override
 public void setCurrentCommand(Command cmd)
-  {
-  this.playerIssuedCommand=cmd;
+  {  
+  if(cmd.type==CommandType.ATTACK || cmd.type==CommandType.ATTACK_AREA || cmd.type==CommandType.GUARD || cmd.type==CommandType.MOVE)
+    {
+    this.playerIssuedCommand=cmd;    
+    }
+  else if(cmd.type==CommandType.SET_HOME)
+    {
+    setHomeArea(cmd.x, cmd.y, cmd.z, 40);
+    }
+  else if(cmd.type==CommandType.SET_UPKEEP)
+    {
+    UpkeepOrder orders = UpkeepOrder.getUpkeepOrder(upkeepStack);
+    if(orders!=null)
+      {
+      orders.addUpkeepPosition(worldObj, new BlockPosition(cmd.x, cmd.y, cmd.z));
+      orders.setUpkeepAmount(6000);//TODO set from config or baton GUI somehow??
+      UpkeepOrder.writeUpkeepOrder(upkeepStack, orders);
+      AWLog.logDebug("set upkeep position for npc from command...: "+orders);
+      }
+    }
+  else if(cmd.type==CommandType.CLEAR_HOME)
+    {
+    detachHome();
+    }
+  else if(cmd.type==CommandType.CLEAR_UPKEEP)
+    {
+    UpkeepOrder orders = UpkeepOrder.getUpkeepOrder(upkeepStack);
+    if(orders!=null)
+      {
+      orders.removeUpkeepPoint();
+      UpkeepOrder.writeUpkeepOrder(upkeepStack, orders);
+      }    
+    }
+  else if(cmd.type==CommandType.CLEAR_COMMAND)
+    {
+    this.playerIssuedCommand = null;
+    }
   }
 
 @Override
@@ -147,6 +183,7 @@ public void readEntityFromNBT(NBTTagCompound tag)
   {  
   super.readEntityFromNBT(tag);
   foodValueRemaining = tag.getInteger("foodValue");
+  if(tag.hasKey("command")){playerIssuedCommand = new Command(tag.getCompoundTag("command"));}  
   }
 
 @Override
@@ -154,8 +191,8 @@ public void writeEntityToNBT(NBTTagCompound tag)
   {  
   super.writeEntityToNBT(tag);
   tag.setInteger("foodValue", foodValueRemaining);
+  if(playerIssuedCommand!=null){tag.setTag("command", playerIssuedCommand.writeToNBT(new NBTTagCompound()));}
   }
-
 
 @Override
 public void readAdditionalItemData(NBTTagCompound tag)

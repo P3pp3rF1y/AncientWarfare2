@@ -52,6 +52,8 @@ private void registerKeybinds()
   InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_UPKEEP, Keyboard.KEY_B);//TODO register new inputcallback
   InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_ATTACK, new BatonInputCallbackAttack(CommandType.ATTACK));
   InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_MOVE, new BatonInputCallbackMove(CommandType.MOVE));
+  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_HOME, new BatonInputCallback(CommandType.SET_HOME));
+  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_UPKEEP, new BatonInputCallback(CommandType.SET_UPKEEP));
   }
 
 private void registerClientOptions()
