@@ -11,7 +11,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class RenderWorkLines
 {
-
+private RenderWorkLines(){}
 public static final RenderWorkLines INSTANCE = new RenderWorkLines();
 
 @SubscribeEvent

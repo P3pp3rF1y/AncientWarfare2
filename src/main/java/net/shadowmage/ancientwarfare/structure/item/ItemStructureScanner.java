@@ -131,6 +131,12 @@ public static boolean scanStructure(World world, BlockPosition pos1, BlockPositi
   }
 
 @Override
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
 public void onKeyAction(EntityPlayer player, ItemStack stack)
   {  
   if(!MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(player.getCommandSenderName()))

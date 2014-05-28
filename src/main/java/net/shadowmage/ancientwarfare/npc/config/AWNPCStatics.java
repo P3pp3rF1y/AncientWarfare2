@@ -55,6 +55,12 @@ public static int npcXpFromPatrol = 1;
 public static int npcXpFromAttack = 1;
 public static int npcXpFromKill = 5;
 /**
+ * how often an NPC should 'tick' the worksite and add energy
+ * TODO add to config file
+ */
+public static int npcWorkTicks = 50;
+
+/**
  * client settings:
  * --SET VIA PROXY / ClientOptions.INSTANCE
  */
@@ -79,11 +85,6 @@ private HashMap<String, List<String>> entityTargetSettings = new HashMap<String,
  */
 public static final String recipeSettings = "06_recipe_settings";
 
-/**
- * how often an NPC should 'tick' the worksite and add energy
- * TODO add to config file
- */
-public static int npcWorkTicks = 50;
 
 public AWNPCStatics(Configuration config)
   {

@@ -87,12 +87,11 @@ private void renderNpcAITasks(NpcBase entity, double x, double y, double z, int 
     float f1 = 0.016666668F * f;
     GL11.glPushMatrix();
     GL11.glTranslatef((float)x + 0.0F, (float)y + entity.height + 0.5F, (float)z);
-    GL11.glNormal3f(0.0F, 1.0F, 0.0F);
     GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
     GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
     GL11.glScalef(-f1, -f1, f1);
     GL11.glDisable(GL11.GL_LIGHTING);
-    GL11.glDisable(GL11.GL_DEPTH_TEST);
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     int tasks = entity.getAITasks();
     int mask;    
     String icon;
@@ -114,9 +113,7 @@ private void renderNpcAITasks(NpcBase entity, double x, double y, double z, int 
       icon = getIconFor(renderTasks.get(i));
       renderIcon(icon, 16, 16, startX+i*20, -16);
       }    
-    GL11.glEnable(GL11.GL_DEPTH_TEST);
     GL11.glEnable(GL11.GL_LIGHTING);
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     GL11.glPopMatrix();
     this.renderTasks.clear();
     }

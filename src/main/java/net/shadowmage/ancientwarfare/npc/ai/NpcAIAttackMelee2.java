@@ -94,7 +94,7 @@ private void attackTarget()
 public void resetTask()
   {
   super.resetTask();
-  npc.removeAITask(TASK_MOVE + TASK_WORK);
+  npc.removeAITask(TASK_MOVE + TASK_ATTACK);
   target = null;
   attackDelay = 0;
   moveRetryDelay = 0;

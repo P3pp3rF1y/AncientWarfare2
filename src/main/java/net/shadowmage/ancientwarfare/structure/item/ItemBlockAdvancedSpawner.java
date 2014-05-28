@@ -57,6 +57,12 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   }
 
 @Override
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
 public void onKeyAction(EntityPlayer player, ItemStack stack)
   {
   if(!player.worldObj.isRemote)

@@ -27,6 +27,14 @@ import cpw.mods.fml.common.gameevent.InputEvent.MouseInputEvent;
 public class InputHandler
 {
 
+public static final String KEY_OPTIONS = "keybind.options";
+public static final String KEY_ALT_ITEM_USE = "keybind.alt_item_use";
+
+public static final String KEY_NPC_ATTACK = "keybind.npc_command.attack";
+public static final String KEY_NPC_MOVE = "keybind.npc_command.move";
+public static final String KEY_NPC_HOME = "keybind.npc_command.home";
+public static final String KEY_NPC_UPKEEP = "keybind.npc_command.upkeep";
+
 private static InputHandler instance = new InputHandler();
 public static InputHandler instance(){return instance;}
 private InputHandler(){}
@@ -40,8 +48,8 @@ private static final String keybinds = AWCoreStatics.keybinds;
 public void loadConfig(Configuration config)
   {
   this.config = config;
-  registerKeybind("keybind.options", Keyboard.KEY_F7);
-  registerKeybind("keybind.alt_item_use", Keyboard.KEY_Z);
+  registerKeybind(KEY_OPTIONS, Keyboard.KEY_F7);
+  registerKeybind(KEY_ALT_ITEM_USE, Keyboard.KEY_Z);
   
   InputCallback optionsCB = new InputCallback()
     {
@@ -61,7 +69,7 @@ public void loadConfig(Configuration config)
       minecraft.displayGuiScreen(new GuiOptions(new ContainerBase(minecraft.thePlayer, 0, 0, 0))); 
       }
     };
-  addInputCallback("keybind.options", optionsCB);
+  addInputCallback(KEY_OPTIONS, optionsCB);
   
   InputCallback itemUseCB = new InputCallback()
     {
@@ -81,12 +89,15 @@ public void loadConfig(Configuration config)
       ItemStack stack = minecraft.thePlayer.inventory.getCurrentItem();
       if(stack!=null && stack.getItem() instanceof IItemKeyInterface)
         {
-        PacketItemInteraction pkt = new PacketItemInteraction();
-        NetworkHandler.sendToServer(pkt);
+        if(((IItemKeyInterface)stack.getItem()).onKeyActionClient(minecraft.thePlayer, stack))
+          {
+          PacketItemInteraction pkt = new PacketItemInteraction();
+          NetworkHandler.sendToServer(pkt);
+          }        
         }
       }
     };
-  addInputCallback("keybind.alt_item_use", itemUseCB);
+  addInputCallback(KEY_ALT_ITEM_USE, itemUseCB);
   }
 
 @SubscribeEvent

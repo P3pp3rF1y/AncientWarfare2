@@ -14,6 +14,15 @@ public interface IItemKeyInterface
 {
 
 /**
+ * called client side before sending packet to server
+ * return true to send packet
+ * @param player
+ * @param stack
+ * @return
+ */
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack);
+
+/**
  * called server-side when a client presses the key that is bound to alternate item-use function
  * 
  * @param player the player using the item

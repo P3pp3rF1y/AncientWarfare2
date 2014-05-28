@@ -136,4 +136,10 @@ public int getDamage(ItemStack stack)
   return 3;
   }
 
+@Override
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
 }
