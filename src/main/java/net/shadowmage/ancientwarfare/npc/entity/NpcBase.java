@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
+import java.util.UUID;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -39,8 +41,6 @@ private ResourceLocation currentTexture = null;
 public ItemStack ordersStack;
 
 public ItemStack upkeepStack;
-
-long idMsb;//used for skins
 
 public NpcBase(World par1World)
   {
@@ -157,7 +157,7 @@ public ItemStack getItemToSpawn()
 
 public long getIDForSkin()
   {
-  return this.idMsb;
+  return this.entityUniqueID.getLeastSignificantBits();
   }
 
 @Override
@@ -169,15 +169,17 @@ public ItemStack getPickedResult(MovingObjectPosition target)
 @Override
 public void writeSpawnData(ByteBuf buffer)
   {
+  buffer.writeLong(getUniqueID().getMostSignificantBits());
   buffer.writeLong(getUniqueID().getLeastSignificantBits());
   }
 
 @Override
 public void readSpawnData(ByteBuf additionalData)
   {
-  long l2;
+  long l1, l2;
+  l1 = additionalData.readLong();
   l2 = additionalData.readLong();
-  this.idMsb = l2;
+  this.entityUniqueID = new UUID(l1, l2);
   }
 
 @Override

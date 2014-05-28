@@ -15,11 +15,13 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 
 public class RenderCommandOverlay
@@ -30,6 +32,17 @@ private Gui gui = new Gui();
 
 private List<Entity> targetEntities = new ArrayList<Entity>();
 private MovingObjectPosition target = null;
+
+@SubscribeEvent
+public void onClientTick(ClientTickEvent evt)
+  {
+  targetEntities.clear();
+  target = null;
+  Minecraft mc = Minecraft.getMinecraft();
+  if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)){return;}
+  target = RayTraceUtils.getPlayerTarget(mc.thePlayer, 120, 0);
+  ItemCommandBaton.getCommandedEntities(mc.theWorld, mc.thePlayer.getCurrentEquippedItem(), targetEntities);
+  }
 
 @SubscribeEvent
 public void onRenderTick(RenderTickEvent evt)
@@ -62,8 +75,6 @@ public void onRenderTick(RenderTickEvent evt)
     {
     gui.drawString(mc.fontRenderer, targetEntities.get(i).getCommandSenderName(), 10, 10+10*i, 0xffffffff);
     }
-  targetEntities.clear();
-  target = null;
   }
 
 @SubscribeEvent
@@ -75,8 +86,7 @@ public void onRenderLast(RenderWorldLastEvent evt)
   EntityPlayer player = mc.thePlayer;
   if(player==null){return;}
   if(player.getCurrentEquippedItem()==null || !(player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)){return;}
-  MovingObjectPosition pos = RayTraceUtils.getPlayerTarget(player, 120, 0);//TODO load range from config
-  target = pos;
+  MovingObjectPosition pos = target;
   if(pos!=null)
     {
     AxisAlignedBB bb=null;
@@ -100,32 +110,18 @@ public void onRenderLast(RenderWorldLastEvent evt)
       RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
       }
     }
-  World world = mc.theWorld;
-  List<Integer> targets = NpcCommand.INSTANCE.getCommandedNpcs();
-  Entity e;
-  AxisAlignedBB bb = null;
-  Iterator<Integer> it = targets.iterator();
-  Integer targetID;
-  while(it.hasNext() && (targetID=it.next())!=null)
+  AxisAlignedBB bb = null;  
+  for(Entity e : targetEntities)
     {
-    e = world.getEntityByID(targetID);
-    if(e!=null)
-      {
-      targetEntities.add(e);
-      if(e.boundingBox==null){continue;}
-      bb=e.boundingBox.copy();//TODO all this bb-rendering could potentially be moved to the entity itself
-      float t = 1.f-evt.partialTicks;
-      double dx = e.posX - e.lastTickPosX;
-      double dy = e.posY - e.lastTickPosY;
-      double dz = e.posZ - e.lastTickPosZ;
-      bb.offset(t*-dx, t*-dy, t*-dz);
-      bb = RenderTools.adjustBBForPlayerPos(bb, player, evt.partialTicks);
-      RenderTools.drawOutlinedBoundingBox(bb, 1.f, 0.f, 0.f);
-      }
-    else
-      {
-      it.remove();//TODO validation of list and building of cached entity-list could be moved to a tick-handler instead of render-tick
-      }
+    if(e.boundingBox==null){continue;}
+    bb=e.boundingBox.copy();//TODO all this bb-rendering could potentially be moved to the entity itself
+    float t = 1.f-evt.partialTicks;
+    double dx = e.posX - e.lastTickPosX;
+    double dy = e.posY - e.lastTickPosY;
+    double dz = e.posZ - e.lastTickPosZ;
+    bb.offset(t*-dx, t*-dy, t*-dz);
+    bb = RenderTools.adjustBBForPlayerPos(bb, player, evt.partialTicks);
+    RenderTools.drawOutlinedBoundingBox(bb, 1.f, 0.f, 0.f);
     }
   }
 

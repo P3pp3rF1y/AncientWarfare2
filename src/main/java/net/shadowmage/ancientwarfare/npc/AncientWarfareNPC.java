@@ -11,7 +11,6 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
-import net.shadowmage.ancientwarfare.npc.gamedata.CommandData;
 import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
@@ -85,7 +84,6 @@ public void preInit(FMLPreInitializationEvent evt)
    * register persistent game-data handlers
    */
   AWGameData.INSTANCE.registerSaveData(FactionData.name, FactionData.class);
-  AWGameData.INSTANCE.registerSaveData(CommandData.name, CommandData.class);
   /**
    * register tick-handlers
    */

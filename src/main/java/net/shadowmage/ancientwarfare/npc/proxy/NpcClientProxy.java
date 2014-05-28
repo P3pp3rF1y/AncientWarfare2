@@ -28,11 +28,11 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_WORK_ORDER, GuiWorkOrder.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_UPKEEP_ORDER, GuiUpkeepOrder.class);
   RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, new RenderNpcBase());
-//  MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);
-//  FMLCommonHandler.instance().bus().register(RenderCommandOverlay.INSTANCE);//register overlay renderer
-//  MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register block/entity highlight renderer
+  MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);
+  FMLCommonHandler.instance().bus().register(RenderCommandOverlay.INSTANCE);//register overlay renderer
+  MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register block/entity highlight renderer
   registerClientOptions();
-//  registerKeybinds();
+  registerKeybinds();
   }
 
 private void registerKeybinds()
