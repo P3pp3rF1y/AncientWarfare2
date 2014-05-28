@@ -73,6 +73,8 @@ public static final int GUI_TORQUE_GENERATOR_WATERWHEEL = 32;
 public static final int GUI_TORQUE_STORAGE_FLYWHEEL = 33;
 public static final int GUI_NPC_WORK_ORDER = 34;
 public static final int GUI_NPC_UPKEEP_ORDER = 35;
+public static final int GUI_NPC_COMBAT_ORDER = 36;
+public static final int GUI_NPC_ROUTING_ORDER = 37;
 
 private FMLEventChannel channel;
 

@@ -30,6 +30,12 @@ public void onLeftClick(EntityPlayer player, ItemStack stack)
   }
 
 @Override
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
 public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
   {
   return true;
