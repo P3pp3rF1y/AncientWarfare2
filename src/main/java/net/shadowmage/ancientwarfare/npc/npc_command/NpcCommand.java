@@ -1,82 +1,71 @@
 package net.shadowmage.ancientwarfare.npc.npc_command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 
 public class NpcCommand
 {
 
-public static final NpcCommand INSTANCE = new NpcCommand();
-
-private List<Integer> commandedNpcs = new ArrayList<Integer>();
-//private HashMap<String, List<Integer>> commandedNPCs = new HashMap<String, List<Integer>>();
-
-public void onClientConnectToServer(){commandedNpcs.clear();}//TODO handle this
-
-public void onNpcClicked(int entityID)
-  {
-  Integer val = Integer.valueOf(entityID);
-  if(commandedNpcs.contains(val))
-    {
-    commandedNpcs.remove(val);
-    }
-  else
-    {
-    commandedNpcs.add(val);
-    }
-  }
-
-public void addCommandedNpc(int entityID)
-  {
-  commandedNpcs.add(Integer.valueOf(entityID));  
-  }
-
-public void removeCommandedNpc(int entityID)
-  {
-  commandedNpcs.remove(Integer.valueOf(entityID));
-  }
-
-public void clearCommandedNpcs()
-  {
-  commandedNpcs.clear();
-  }
-
-public List<Integer> getCommandedNpcs()
-  {
-  return commandedNpcs;
-  }
+public static enum CommandType
+{
+MOVE(true),
+ATTACK(false),//attack click on entity
+ATTACK_AREA(true),//attack click on block
+GUARD(false),//attack click on friendly player or npc
+SET_HOME(true),
+SET_UPKEEP(true),
+CLEAR_HOME(false),
+CLEAR_UPKEEP(false);
+private CommandType(boolean blockData){this.blockData=blockData;}
+boolean blockData;
+}
 
 /**
  * client-side handle command. called from command baton key handler
  * @param cmd
  */
-public void handleCommandClient(Command cmd)
+public static void handleCommandClient(CommandType type, MovingObjectPosition hit)
   {
-  
+  AWLog.logDebug("receiving client command...:"+type+" at: "+hit);
+  if(hit!=null && hit.typeOfHit!=MovingObjectType.MISS)
+    {
+    if(hit.typeOfHit==MovingObjectType.ENTITY && hit.entityHit!=null)
+      {
+      PacketNpcCommand pkt = new PacketNpcCommand(type, hit.entityHit);
+      NetworkHandler.sendToServer(pkt);
+      }
+    else if(hit.typeOfHit==MovingObjectType.BLOCK)
+      {
+      PacketNpcCommand pkt = new PacketNpcCommand(type, hit.blockX, hit.blockY, hit.blockZ);
+      NetworkHandler.sendToServer(pkt);
+      }    
+    }
   }
 
-private static int MOVE = 0;
-private static int ATTACK_AREA=1;
-private static int ATTACK = 2;
-private static int SET_HOME = 3;
-private static int CLEAR_HOME = 4;
-private static int SET_UPKEEP = 5;
-private static int CLEAR_UPKEEP = 6;
-private static int GUARD = 7;
+/**
+ * server side handle command. called from packet triggered from client key input while baton is equipped
+ */
+public static void handleServerCommand(World world, CommandType type, boolean block, int x, int y, int z)
+  {
+  AWLog.logDebug("receiving server-side command: "+type+" : "+block+" : "+x+","+y+","+z);
+  }
+
 
 public abstract static class Command
 {
-private int commandID;
-private Command(int id){this.commandID=id;}
+private CommandType commandID;
+private Command(CommandType id){this.commandID=id;}
 }
 
 public static class CommandBlockBased extends Command
 {
 int targetX, targetY, targetZ;
-private CommandBlockBased(int id, int x, int y, int z)
+private CommandBlockBased(CommandType id, int x, int y, int z)
   {
   super(id);
   targetX=x;
@@ -89,7 +78,7 @@ public static class CommandMove extends CommandBlockBased
 {
 public CommandMove(int x, int y, int z)
   {
-  super(MOVE, x,y,z);
+  super(CommandType.MOVE, x,y,z);
   }
 }
 
@@ -97,7 +86,7 @@ public static class CommandAttackArea extends CommandBlockBased
 {
 public CommandAttackArea(int x, int y, int z)
   {
-  super(ATTACK_AREA,x,y,z);
+  super(CommandType.ATTACK_AREA,x,y,z);
   }
 }
 
@@ -105,7 +94,7 @@ public static class CommandSetHome extends CommandBlockBased
 {
 public CommandSetHome(int x, int y, int z)
   {
-  super(SET_HOME,x,y,z);
+  super(CommandType.SET_HOME,x,y,z);
   }
 }
 
@@ -113,7 +102,7 @@ public static class CommandSetUpkeep extends CommandBlockBased
 {
 public CommandSetUpkeep(int x, int y, int z)
   {
-  super(SET_UPKEEP, x,y,z);
+  super(CommandType.SET_UPKEEP, x,y,z);
   }
 }
 
@@ -122,7 +111,7 @@ public static class CommandAttack extends Command
 Entity target;
 public CommandAttack(Entity target)
   {
-  super(ATTACK);
+  super(CommandType.ATTACK);
   this.target=target;
   }
 }
@@ -132,7 +121,7 @@ public static class CommandGuard extends Command
 Entity target;
 public CommandGuard(Entity target)
   {
-  super(GUARD);
+  super(CommandType.GUARD);
   this.target=target;
   }
 }

@@ -68,7 +68,7 @@ public int getAITasks()
 
 public void addAITask(int task)
   {
-  AWLog.logDebug("adding ai task: "+task);
+//  AWLog.logDebug("adding ai task: "+task);
   int tasks = getAITasks();
   int tc = tasks;
   tasks = tasks | task;
@@ -80,7 +80,7 @@ public void addAITask(int task)
 
 public void removeAITask(int task)
   {
-  AWLog.logDebug("removing ai task: "+task);
+//  AWLog.logDebug("removing ai task: "+task);
   int tasks = getAITasks();
   int tc = tasks;
   tasks = tasks & (~task);

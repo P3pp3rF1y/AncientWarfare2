@@ -151,6 +151,8 @@ guistrings.npc.upkeep_time=Upkeep Time
 guistrings.npc.assign_upkeep_point=Please Assign An Upkeep Point
 guistrings.npc.remove_work_point=Remove
 guistrings.npc.work_length=Work Time
+guistrings.npc.commanded=Commanded:
+guistrings.npc.target=Target
 
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal
@@ -170,6 +172,23 @@ guistrings.research.unknown_research=Unknown Research
 guistrings.research.click_to_learn=Right Click To Learn
 guistrings.research.researcher_name=Researcher Name
 guistrings.research.click_to_add_progress=Right Click To Add Progress To Current Research
+
+#npc
+entity.ancientwarfarenpc.aw_npc_worker.name=Worker
+entity.ancientwarfarenpc.aw_npc_combat.name=Soldier
+entity.ancientwarfarenpc.aw_npc_courier.name=Courier
+npc.combat.name=Soldier
+npc.combat.soldier.name=Soldier
+npc.combat.archer.name=Archer
+npc.combat.medic.name=Medic
+npc.combat.engineer.name=Engineer
+npc.combat.commander.name=Commander
+npc.worker.name=Worker
+npc.worker.farmer.name=Farmer
+npc.worker.lumberjack.name=Lumberjack
+npc.worker.miner.name=Miner
+npc.worker.researcher.name=Researcher
+npc.worker.craftsman.name=Craftsman
 
 #commands
 command.aw.structure.usage=foo usage

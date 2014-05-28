@@ -23,7 +23,7 @@ public final class NetworkHandler implements IGuiHandler
 public static final String CHANNELNAME = "AWCORE";
 public static final NetworkHandler INSTANCE = new NetworkHandler();
 
-public static final int PACKET_TEST = 0;
+//public static final int PACKET_TEST = 0;//unused id
 public static final int PACKET_GUI = 1;
 public static final int PACKET_STRUCTURE = 2;
 public static final int PACKET_ITEM_KEY_INTERFACE = 3;
@@ -35,6 +35,7 @@ public static final int PACKET_RESEARCH_START = 8;
 public static final int PACKET_STRUCTURE_IMAGE_LIST = 9;
 public static final int PACKET_STRUCTURE_IMAGE_DATA = 10;
 public static final int PACKET_STRUCTURE_REMOVE = 11;
+public static final int PACKET_NPC_COMMAND = 12;
 
 public static final int GUI_CRAFTING = 0;
 public static final int GUI_SCANNER = 1;
@@ -82,7 +83,6 @@ public final void registerNetwork()
   {
   channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
   channel.register(new PacketHandlerServer());
-  PacketBase.registerPacketType(PACKET_TEST, TestPacket.class);
   PacketBase.registerPacketType(PACKET_GUI, PacketGui.class);
   PacketBase.registerPacketType(PACKET_ITEM_KEY_INTERFACE, PacketItemInteraction.class);
   PacketBase.registerPacketType(PACKET_SOUND, PacketSound.class);

@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -56,7 +57,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   {
   if(player.isSneaking())
     {
-    //openGUI
+    //TODO openGUI
     }
   else
     {
@@ -73,13 +74,13 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
 @Override
 public void onKeyAction(EntityPlayer player, ItemStack stack)
   {
-  //noop  
+  //noop ...or...??
   }
 
 @Override
 public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
   {
-  //noop  
+  //noop ...or...??
   return false;
   }
 
@@ -89,6 +90,7 @@ private void onNpcClicked(EntityPlayer player, NpcBase npc, ItemStack stack)
   CommandSet set = new CommandSet();
   set.loadFromStack(stack);
   set.onNpcClicked(npc);
+  set.validateEntities(player.worldObj);
   set.writeToStack(stack);
   }
 
@@ -107,7 +109,7 @@ public static void getCommandedEntities(World world, ItemStack stack, List<Entit
  */
 private static class CommandSet
 {
-Set<UUID> ids = new HashSet<UUID>();
+private Set<UUID> ids = new HashSet<UUID>();
 
 public void loadFromStack(ItemStack stack)
   {
@@ -122,7 +124,7 @@ public void writeToStack(ItemStack stack)
   stack.setTagInfo("entityList", writeToNBT(new NBTTagCompound()));
   }
 
-public void readFromNBT(NBTTagCompound tag)
+private void readFromNBT(NBTTagCompound tag)
   {
   NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
   NBTTagCompound idTag;
@@ -133,7 +135,7 @@ public void readFromNBT(NBTTagCompound tag)
     }
   }
 
-public NBTTagCompound writeToNBT(NBTTagCompound tag)
+private NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
   NBTTagList entryList = new NBTTagList();
   NBTTagCompound idTag;
@@ -158,7 +160,6 @@ public void onNpcClicked(NpcBase npc)
     {
     ids.add(npc.getPersistentID());
     }
-  AWLog.logDebug("npc clicked...id set now contains: "+ids);
   }
 
 public void getEntities(World world, List<Entity> in)
@@ -170,6 +171,25 @@ public void getEntities(World world, List<Entity> in)
     if(e!=null){in.add(e);}
     }
   }
+
+/**
+ * should be called server side to clear out any old un-findable entity references.<br>
+ * should probably only be called on-right click, as operation may be costly
+ * @param world
+ */
+public void validateEntities(World world)
+  {
+  Iterator<UUID> it = ids.iterator();
+  UUID id;
+  while(it.hasNext() && (id=it.next())!=null)
+    {
+    if(WorldTools.getEntityByUUID(world, id.getMostSignificantBits(), id.getLeastSignificantBits())==null)
+      {
+      it.remove();
+      }
+    }
+  }
+
 }
 
 }

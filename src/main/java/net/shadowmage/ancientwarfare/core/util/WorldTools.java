@@ -32,7 +32,8 @@ public static List<TileEntity> getTileEntitiesInArea(World world, int x1, int y1
   }
 
 /**
- * PROBABLY SLOW AS HELL
+ * PROBABLY SLOW AS HELL<br>
+ * ONLY WORKS SERVER SIDE UNLESS ENTITY-UNIQUE ID HAS BEEN SYNCHED BY MODDER
  * @param world
  * @param msb
  * @param lsb
