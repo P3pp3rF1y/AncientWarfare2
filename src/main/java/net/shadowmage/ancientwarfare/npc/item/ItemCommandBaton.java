@@ -16,13 +16,14 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
+import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
+import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
 public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemClickable 
 {
@@ -78,7 +79,8 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
 @Override
 public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
   {
-  //noop ...or...??
+  MovingObjectPosition hit = new MovingObjectPosition(player);
+  NpcCommand.handleCommandClient(CommandType.CLEAR_COMMAND, hit);
   return false;
   }
 

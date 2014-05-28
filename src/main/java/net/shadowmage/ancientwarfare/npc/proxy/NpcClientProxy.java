@@ -46,14 +46,15 @@ public void registerClient()
 
 private void registerKeybinds()
   {
+  //TODO move all this input crap out to a separate input helper class
   InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_ATTACK, Keyboard.KEY_X);
-  InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_MOVE, Keyboard.KEY_C);//TODO register new inputcallback
-  InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_HOME, Keyboard.KEY_V);//TODO register new inputcallback
-  InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_UPKEEP, Keyboard.KEY_B);//TODO register new inputcallback
+  InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_MOVE, Keyboard.KEY_C);
+  InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_HOME, Keyboard.KEY_V);
+  InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_UPKEEP, Keyboard.KEY_B);
   InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_ATTACK, new BatonInputCallbackAttack(CommandType.ATTACK));
   InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_MOVE, new BatonInputCallbackMove(CommandType.MOVE));
-  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_HOME, new BatonInputCallback(CommandType.SET_HOME));
-  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_UPKEEP, new BatonInputCallback(CommandType.SET_UPKEEP));
+  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_HOME, new BatonInputCallbackHome(CommandType.SET_HOME));
+  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_UPKEEP, new BatonInputCallbackUpkeep(CommandType.SET_UPKEEP));
   }
 
 private void registerClientOptions()
@@ -70,7 +71,7 @@ public void loadSkins()
   NpcSkinManager.INSTANCE.loadSkinPacks();
   }
 
-private class BatonInputCallback extends InputCallback
+private abstract class BatonInputCallback extends InputCallback
 {
 CommandType type;
 private BatonInputCallback(CommandType type){this.type=type;}
@@ -84,28 +85,27 @@ public void onKeyPressed()
   Minecraft mc = Minecraft.getMinecraft();
   if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || mc.thePlayer.getCurrentEquippedItem().getItem()!=AWNpcItemLoader.commandBaton){return;}
   MovingObjectPosition pos = RenderCommandOverlay.INSTANCE.getClientTarget();
-  if(pos!=null){NpcCommand.handleCommandClient(type, pos);}
+  if(pos!=null)
+    {
+    handleCommand(pos);
+    }
   }
+
+public abstract void handleCommand(MovingObjectPosition pos);
 }
 
 private class BatonInputCallbackMove extends BatonInputCallback
 {
 private BatonInputCallbackMove(CommandType type){super(type);}
 @Override
-public void onKeyPressed()
-  {  
-  Minecraft mc = Minecraft.getMinecraft();
-  if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || mc.thePlayer.getCurrentEquippedItem().getItem()!=AWNpcItemLoader.commandBaton){return;}
-  MovingObjectPosition pos = RenderCommandOverlay.INSTANCE.getClientTarget();
-  if(pos!=null)
+public void handleCommand(MovingObjectPosition pos)
+  {
+  CommandType type = this.type;
+  if(pos.typeOfHit==MovingObjectType.ENTITY)
     {
-    CommandType type = this.type;
-    if(pos.typeOfHit==MovingObjectType.ENTITY)
-      {
-      type = CommandType.GUARD;
-      }
-    NpcCommand.handleCommandClient(type, pos);
+    type = CommandType.GUARD;
     }
+  NpcCommand.handleCommandClient(type, pos);
   }
 }
 
@@ -113,20 +113,44 @@ private class BatonInputCallbackAttack extends BatonInputCallback
 {
 private BatonInputCallbackAttack(CommandType type){super(type);}
 @Override
-public void onKeyPressed()
+public void handleCommand(MovingObjectPosition pos)
   {
-  Minecraft mc = Minecraft.getMinecraft();
-  if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || mc.thePlayer.getCurrentEquippedItem().getItem()!=AWNpcItemLoader.commandBaton){return;}
-  MovingObjectPosition pos = RenderCommandOverlay.INSTANCE.getClientTarget();
-  if(pos!=null)
+  CommandType type = this.type;
+  if(pos.typeOfHit==MovingObjectType.BLOCK)
     {
-    CommandType type = this.type;
-    if(pos.typeOfHit==MovingObjectType.BLOCK)
-      {
-      type = CommandType.ATTACK_AREA;
-      }
-    NpcCommand.handleCommandClient(type, pos);
+    type = CommandType.ATTACK_AREA;
     }
+  NpcCommand.handleCommandClient(type, pos);
+  }
+}
+
+private class BatonInputCallbackHome extends BatonInputCallback
+{
+private BatonInputCallbackHome(CommandType type){super(type);}
+@Override
+public void handleCommand(MovingObjectPosition pos)
+  {
+  CommandType type = this.type;
+  if(Minecraft.getMinecraft().thePlayer.isSneaking())
+    {
+    type = CommandType.CLEAR_HOME;
+    }    
+  NpcCommand.handleCommandClient(type, pos);
+  }
+}
+
+private class BatonInputCallbackUpkeep extends BatonInputCallback
+{
+private BatonInputCallbackUpkeep(CommandType type){super(type);}
+@Override
+public void handleCommand(MovingObjectPosition pos)
+  {
+  CommandType type = this.type;
+  if(Minecraft.getMinecraft().thePlayer.isSneaking())
+    {
+    type = CommandType.CLEAR_UPKEEP;
+    }    
+  NpcCommand.handleCommandClient(type, pos);
   }
 }
 

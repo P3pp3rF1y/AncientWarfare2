@@ -53,6 +53,7 @@ public void setCurrentCommand(Command cmd)
   else if(cmd.type==CommandType.CLEAR_HOME)
     {
     detachHome();
+    AWLog.logDebug("clearing home from player-issued command!");
     }
   else if(cmd.type==CommandType.CLEAR_UPKEEP)
     {
@@ -61,11 +62,13 @@ public void setCurrentCommand(Command cmd)
       {
       orders.removeUpkeepPoint();
       UpkeepOrder.writeUpkeepOrder(upkeepStack, orders);
+      AWLog.logDebug("clearing upkeep from player-issued command!");
       }    
     }
   else if(cmd.type==CommandType.CLEAR_COMMAND)
     {
     this.playerIssuedCommand = null;
+    AWLog.logDebug("clearing player-issued commands!!");
     }
   }
 
