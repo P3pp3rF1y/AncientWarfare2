@@ -75,7 +75,7 @@ protected void readFromStream(ByteBuf data)
 @Override
 protected void execute()
   {
-  NpcCommand.handleServerCommand(player.worldObj, type, blockTarget, x, y, z);
+  NpcCommand.handleServerCommand(player, type, blockTarget, x, y, z);
   }
 
 }

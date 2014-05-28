@@ -1,13 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAIOpenDoor;
-import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -15,19 +7,30 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
+import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
 public abstract class NpcPlayerOwned extends NpcBase
 {
 
+private Command playerIssuedCommand;//TODO load/save
 private int foodValueRemaining = 0;
 
 public NpcPlayerOwned(World par1World)
   {
   super(par1World);
+  }
+
+@Override
+public Command getCurrentCommand()
+  {
+  return playerIssuedCommand;
+  }
+
+@Override
+public void setCurrentCommand(Command cmd)
+  {
+  this.playerIssuedCommand=cmd;
   }
 
 @Override

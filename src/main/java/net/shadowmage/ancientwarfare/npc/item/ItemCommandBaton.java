@@ -62,10 +62,8 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   else
     {
     MovingObjectPosition pos = RayTraceUtils.getPlayerTarget(player, 120, 0);//TODO set range from config;
-    AWLog.logDebug("pos..: "+pos);
     if(pos!=null && pos.typeOfHit==MovingObjectType.ENTITY && pos.entityHit instanceof NpcPlayerOwned)
       {
-      AWLog.logDebug("npc clicked...");
       onNpcClicked(player, (NpcPlayerOwned) pos.entityHit, stack);
       }
     }

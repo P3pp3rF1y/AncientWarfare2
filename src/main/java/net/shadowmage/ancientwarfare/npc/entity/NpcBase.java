@@ -1,12 +1,15 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.UUID;
 
-import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -19,6 +22,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
+import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -51,7 +55,7 @@ public NpcBase(World par1World)
   this.getNavigator().setBreakDoors(true);
   this.getNavigator().setAvoidsWater(true);
   
-  this.width = 1.f;
+  this.width = 0.6f;
   }
 
 @Override
@@ -59,6 +63,16 @@ protected void entityInit()
   {
   super.entityInit();
   this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks, TODO load/save from nbt
+  }
+
+public Command getCurrentCommand()
+  {
+  return null;
+  }
+
+public void setCurrentCommand(Command cmd)
+  {
+  
   }
 
 public int getAITasks()
@@ -272,6 +286,12 @@ public Team getTeam()
   {
   return worldObj.getScoreboard().getPlayersTeam(ownerName);
   }
+
+//public boolean isHostileTowards(Entity e)
+//  {
+//  String n = EntityList.getEntityString(e);
+//  return false;
+//  }
 
 public boolean isHostileTowards(Team team)
   {

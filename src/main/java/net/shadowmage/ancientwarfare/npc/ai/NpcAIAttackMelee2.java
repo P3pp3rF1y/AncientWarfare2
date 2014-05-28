@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.pathfinding.PathEntity;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -9,9 +8,7 @@ public class NpcAIAttackMelee2 extends NpcAI
 {
 
 Entity target;
-PathEntity path;
 double moveSpeed = 1.d;
-
 
 int moveRetryDelay = 0;
 int attackDelay = 0;

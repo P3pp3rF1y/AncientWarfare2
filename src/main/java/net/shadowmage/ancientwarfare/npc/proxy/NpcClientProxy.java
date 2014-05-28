@@ -4,7 +4,9 @@ import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraftforge.common.MinecraftForge;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.input.InputHandler.InputCallback;
@@ -48,26 +50,9 @@ private void registerKeybinds()
   InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_MOVE, Keyboard.KEY_C);//TODO register new inputcallback
   InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_HOME, Keyboard.KEY_V);//TODO register new inputcallback
   InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_UPKEEP, Keyboard.KEY_B);//TODO register new inputcallback
-  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_ATTACK, new BatonInputCallback(CommandType.ATTACK));
+  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_ATTACK, new BatonInputCallbackAttack(CommandType.ATTACK));
+  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_MOVE, new BatonInputCallbackMove(CommandType.MOVE));
   }
-
-private class BatonInputCallback extends InputCallback
-{
-CommandType type;
-private BatonInputCallback(CommandType type){this.type=type;}
-@Override
-public void onKeyPressed()
-  {  
-  }
-@Override
-public void onKeyReleased()
-  {
-  Minecraft mc = Minecraft.getMinecraft();
-  if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || mc.thePlayer.getCurrentEquippedItem().getItem()!=AWNpcItemLoader.commandBaton){return;}
-  MovingObjectPosition pos = RenderCommandOverlay.INSTANCE.getClientTarget();
-  if(pos!=null){NpcCommand.handleCommandClient(type, pos);}
-  }
-}
 
 private void registerClientOptions()
   {
@@ -82,4 +67,65 @@ public void loadSkins()
   {
   NpcSkinManager.INSTANCE.loadSkinPacks();
   }
+
+private class BatonInputCallback extends InputCallback
+{
+CommandType type;
+private BatonInputCallback(CommandType type){this.type=type;}
+@Override
+public void onKeyReleased()
+  {  
+  }
+@Override
+public void onKeyPressed()
+  {
+  Minecraft mc = Minecraft.getMinecraft();
+  if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || mc.thePlayer.getCurrentEquippedItem().getItem()!=AWNpcItemLoader.commandBaton){return;}
+  MovingObjectPosition pos = RenderCommandOverlay.INSTANCE.getClientTarget();
+  if(pos!=null){NpcCommand.handleCommandClient(type, pos);}
+  }
+}
+
+private class BatonInputCallbackMove extends BatonInputCallback
+{
+private BatonInputCallbackMove(CommandType type){super(type);}
+@Override
+public void onKeyPressed()
+  {  
+  Minecraft mc = Minecraft.getMinecraft();
+  if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || mc.thePlayer.getCurrentEquippedItem().getItem()!=AWNpcItemLoader.commandBaton){return;}
+  MovingObjectPosition pos = RenderCommandOverlay.INSTANCE.getClientTarget();
+  if(pos!=null)
+    {
+    CommandType type = this.type;
+    if(pos.typeOfHit==MovingObjectType.ENTITY)
+      {
+      type = CommandType.GUARD;
+      }
+    NpcCommand.handleCommandClient(type, pos);
+    }
+  }
+}
+
+private class BatonInputCallbackAttack extends BatonInputCallback
+{
+private BatonInputCallbackAttack(CommandType type){super(type);}
+@Override
+public void onKeyPressed()
+  {
+  Minecraft mc = Minecraft.getMinecraft();
+  if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || mc.thePlayer.getCurrentEquippedItem().getItem()!=AWNpcItemLoader.commandBaton){return;}
+  MovingObjectPosition pos = RenderCommandOverlay.INSTANCE.getClientTarget();
+  if(pos!=null)
+    {
+    CommandType type = this.type;
+    if(pos.typeOfHit==MovingObjectType.BLOCK)
+      {
+      type = CommandType.ATTACK_AREA;
+      }
+    NpcCommand.handleCommandClient(type, pos);
+    }
+  }
+}
+
 }

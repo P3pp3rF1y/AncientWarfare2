@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.options.GuiOptions;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -118,7 +119,7 @@ public void onKeyInput(KeyInputEvent evt)
   boolean state = Keyboard.getEventKeyState();
   
   if(bindsByKey.containsKey(key))
-    {
+    {    
     Set<Keybind> keys = bindsByKey.get(key);
     for(Keybind k : keys)
       {
@@ -216,9 +217,15 @@ public void onKeyPressed()
 public void onKeyReleased()
   {
   for(InputCallback c : inputHandlers)
-    {
+    {    
     c.onKeyReleased();
     }
+  }
+
+@Override
+public String toString()
+  {
+  return "Keybind ["+key+","+name+"]";
   }
 }
 
