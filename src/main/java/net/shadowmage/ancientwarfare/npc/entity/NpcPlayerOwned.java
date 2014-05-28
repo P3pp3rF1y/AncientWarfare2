@@ -31,7 +31,11 @@ public Command getCurrentCommand()
 @Override
 public void setCurrentCommand(Command cmd)
   {  
-  if(cmd.type==CommandType.ATTACK || cmd.type==CommandType.ATTACK_AREA || cmd.type==CommandType.GUARD || cmd.type==CommandType.MOVE)
+  if(cmd==null)
+    {
+    this.playerIssuedCommand=null;
+    }
+  else if(cmd.type==CommandType.ATTACK || cmd.type==CommandType.ATTACK_AREA || cmd.type==CommandType.GUARD || cmd.type==CommandType.MOVE)
     {
     this.playerIssuedCommand=cmd;    
     }

@@ -129,6 +129,19 @@ public Command copy()
 
 public final void readFromNBT(NBTTagCompound tag)
   {
+  type = CommandType.values()[tag.getInteger("type")];
+  blockTarget = tag.getBoolean("block");
+  x = tag.getInteger("x");
+  y = tag.getInteger("y");
+  z = tag.getInteger("z");
+  if(tag.hasKey("idmsb") && tag.hasKey("idlsb"))
+    {
+    entityID = new UUID(tag.getLong("idmsb"), tag.getLong("idlsb"));
+    }
+  }
+
+public final NBTTagCompound writeToNBT(NBTTagCompound tag)
+  {
   tag.setInteger("type", type.ordinal());
   tag.setBoolean("block", blockTarget);
   tag.setInteger("x", x);
@@ -138,19 +151,6 @@ public final void readFromNBT(NBTTagCompound tag)
     {
     tag.setLong("idmsb", entityID.getMostSignificantBits());
     tag.setLong("idlsb", entityID.getLeastSignificantBits());
-    }
-  }
-
-public final NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  type = CommandType.values()[tag.getInteger("type")];
-  blockTarget = tag.getBoolean("block");
-  x = tag.getInteger("x");
-  y = tag.getInteger("y");
-  z = tag.getInteger("z");
-  if(tag.hasKey("idmsb") && tag.hasKey("idlsb"))
-    {
-    entityID = new UUID(tag.getLong("idmsb"), tag.getLong("idlsb"));
     }
   return tag;
   }

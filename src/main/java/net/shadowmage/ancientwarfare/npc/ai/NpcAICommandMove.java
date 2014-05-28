@@ -30,12 +30,11 @@ public boolean shouldExecute()
   Command cmd = npc.getCurrentCommand();
   if(cmd!=null && (cmd.type==CommandType.MOVE || cmd.type==CommandType.ATTACK_AREA))
     {
-    if(cmd.type==CommandType.MOVE && npc.getAttackTarget()!=null)
+    if(cmd.type==CommandType.MOVE || npc.getAttackTarget()==null)
       {
-      return false;
+      command = cmd;
+      return true;
       }
-    command = cmd;
-    return true;
     }
   return false;
   }
@@ -43,12 +42,20 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   {
-  if(command==null || npc.getCurrentCommand()!=command)
+  Command cmd = command;
+  if(cmd!=npc.getCurrentCommand())
     {
     command = null;
     return false;
     }
-  return (command.type==CommandType.MOVE && npc.getAttackTarget()==null) || (command.type==CommandType.ATTACK_AREA);
+  else if(cmd!=null && (cmd.type==CommandType.MOVE || cmd.type==CommandType.ATTACK_AREA))
+    {
+    if(cmd.type==CommandType.MOVE || npc.getAttackTarget()==null)
+      {
+      return true;
+      }
+    }
+  return false;
   }
 
 @Override
@@ -59,10 +66,11 @@ public void startExecuting()
 @Override
 public void updateTask()
   {  
+  AWLog.logDebug("updating command move ai..");
   moveRetryDelay--;
+  npc.addAITask(TASK_MOVE);
   if(moveRetryDelay<=0)
     {
-    AWLog.logDebug("updating command move ai..");
     double dist = npc.getDistanceSq(command.x+0.5d, command.y, command.z+0.5d);
     if(dist>16.d)
       {
@@ -86,6 +94,7 @@ public void resetTask()
   {
   command = null;
   npc.getNavigator().clearPathEntity();
+  npc.removeAITask(TASK_MOVE);
   }
 
 

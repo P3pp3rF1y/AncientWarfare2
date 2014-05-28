@@ -16,6 +16,7 @@ int attackDelay = 0;
 public NpcAIAttackMelee2(NpcBase npc)
   {
   super(npc);
+  this.setMutexBits(ATTACK+MOVE);
   }
 
 @Override
@@ -83,7 +84,12 @@ private void attackTarget()
     npc.attackEntityAsMob(target);    
     this.attackDelay=20;//TODO set attack delay from npc-attributes? 
     int xp = target.isDead ? AWNPCStatics.npcXpFromKill : AWNPCStatics.npcXpFromAttack;
-    npc.addExperience(xp);    
+    npc.addExperience(xp);
+    if(target.isDead)
+      {
+      npc.setAttackTarget(null);
+      this.target = null;
+      }
     }
   }
 
