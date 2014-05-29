@@ -53,6 +53,7 @@ public boolean isHostileTowards(Entity e)
 @Override
 public boolean isHostileTowards(Team team)
   {
+  //TODO how to handle teams...ignore them entirely??
   return super.isHostileTowards(team);
   }
 
