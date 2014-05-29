@@ -60,12 +60,7 @@ public NpcCombat(World par1World)
     @Override
     public boolean isEntityApplicable(Entity entity)
       {
-      String name = EntityList.getEntityString(entity);
-      if(AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), getNpcSubType()).contains(name))
-        {
-        return true;
-        }
-      return false;
+      return isHostileTowards(entity);
       }    
     };
     

@@ -12,6 +12,14 @@ public static final String NPC_WORKER = "aw_npc_worker";
 public static final String NPC_COMBAT = "aw_npc_combat";
 public static final String NPC_COURIER = "aw_npc_courier";
 
+public static final String NPC_FACTION_BANDIT_ARCHER = "aw_npc_bandit_archer";
+public static final String NPC_FACTION_BANDIT_SOLDIER = "aw_npc_bandit_soldier";
+public static final String NPC_FACTION_BANDIT_PRIEST = "aw_npc_bandit_priest";
+public static final String NPC_FACTION_BANDIT_TRADER = "aw_npc_bandit_trader";
+public static final String NPC_FACTION_BANDIT_COMMANDER = "aw_npc_bandit_commander";
+public static final String NPC_FACTION_VIKING = "aw_npc_viking";
+public static final String NPC_FACTION_PIRATE = "aw_npc_pirate";
+
 public static final String VEHICLE_TEST = "vehicle_test";
 
 private static HashMap<String, EntityDeclaration> entityRegistrations = new HashMap<String, EntityDeclaration>();

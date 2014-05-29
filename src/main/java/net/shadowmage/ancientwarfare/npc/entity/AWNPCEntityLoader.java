@@ -10,9 +10,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditArcher;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditPriest;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditSoldier;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditTrader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionBase;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
@@ -39,7 +46,7 @@ public static void load()
       return new NpcCombat(world);
       }
     };
-  addPlayerOwnableNpcRegistration(reg, "combat", "ancientwarfare:npc/spawner_combat");
+  addNpcRegistration(reg, "combat", "ancientwarfare:npc/spawner_combat");
   addNpcSubtypeEntry("combat", "commander", "ancientwarfare:npc/spawner_commander");
   addNpcSubtypeEntry("combat", "soldier", "ancientwarfare:npc/spawner_combat");
   addNpcSubtypeEntry("combat", "archer", "ancientwarfare:npc/spawner_archer");
@@ -54,9 +61,9 @@ public static void load()
       return new NpcWorker(world);
       }
     };
-  addPlayerOwnableNpcRegistration(reg, "worker", "ancientwarfare:npc/spawner_miner");
-  addNpcSubtypeEntry("worker", "farmer", "ancientwarfare:npc/spawner_farmer");
+  addNpcRegistration(reg, "worker", "ancientwarfare:npc/spawner_miner");
   addNpcSubtypeEntry("worker", "miner", "ancientwarfare:npc/spawner_miner");
+  addNpcSubtypeEntry("worker", "farmer", "ancientwarfare:npc/spawner_farmer");
   addNpcSubtypeEntry("worker", "lumberjack", "ancientwarfare:npc/spawner_lumberjack");
   addNpcSubtypeEntry("worker", "researcher", "ancientwarfare:npc/spawner_researcher");
   addNpcSubtypeEntry("worker", "craftsman", "ancientwarfare:npc/spawner_craftsman");
@@ -69,9 +76,63 @@ public static void load()
       return new NpcCourier(world);
       }
     };
-  addPlayerOwnableNpcRegistration(reg, "courier", "ancientwarfare:npc/spawner_courier");
+  addNpcRegistration(reg, "courier", "ancientwarfare:npc/spawner_courier");
   
-  //TODO hostile
+  /**
+   * HOSTILE NPCS
+   */
+  reg = new NpcFactionDeclaration(NpcBanditArcher.class, AWEntityRegistry.NPC_FACTION_BANDIT_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.archer")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditArcher(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.archer", "ancientwarfare:npc/spawner_bandit_archer");
+  addNpcSubtypeEntry("bandit.archer", "elite", "ancientwarfare:npc/spawner_bandit_archer_elite");
+  
+  reg = new NpcFactionDeclaration(NpcBanditSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.soldier")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditSoldier(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.soldier", "ancientwarfare:npc/spawner_bandit_soldier");
+  addNpcSubtypeEntry("bandit.soldier", "elite", "ancientwarfare:npc/spawner_bandit_soldier_elite");
+  
+  reg = new NpcFactionDeclaration(NpcBanditLeader.class, AWEntityRegistry.NPC_FACTION_BANDIT_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.leader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditLeader(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.leader", "ancientwarfare:npc/spawner_bandit_leader");
+  addNpcSubtypeEntry("bandit.leader", "elite", "ancientwarfare:npc/spawner_bandit_leader_elite");
+  
+  reg = new NpcFactionDeclaration(NpcBanditPriest.class, AWEntityRegistry.NPC_FACTION_BANDIT_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.priest")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditPriest(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.priest", "ancientwarfare:npc/spawner_bandit_priest");
+  
+  reg = new NpcFactionDeclaration(NpcBanditTrader.class, AWEntityRegistry.NPC_FACTION_BANDIT_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.trader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditTrader(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.trader", "ancientwarfare:npc/spawner_bandit_trader");
   }
 
 /**
@@ -91,10 +152,10 @@ public static void loadNpcSubtypeEquipment()
   addNpcSubtypeEquipment("combat", "engineer", new ItemStack(AWItems.automationHammer));
   addNpcSubtypeEquipment("combat", "medic", new ItemStack(Items.iron_axe));
   
-  //TODO hostiles
+  //noop for hostile ...equipment set in constructor
   }
 
-protected static void addPlayerOwnableNpcRegistration(NpcDeclaration reg, String npcName, String icon)
+protected static void addNpcRegistration(NpcDeclaration reg, String npcName, String icon)
   {
   AWEntityRegistry.registerEntity(reg);
   if(reg.canSpawnBaseEntity)
@@ -108,16 +169,7 @@ public static NpcBase createNpc(World world, String npcType, String npcSubtype)
   {
   if(!npcMap.containsKey(npcType)){return null;}
   NpcDeclaration reg = npcMap.get(npcType);
-  NpcBase npc = (NpcBase) reg.createEntity(world);
-  if(!npcSubtype.isEmpty())
-    {
-    ItemStack stack = reg.spawnEquipment.get(npcSubtype);
-    if(stack!=null)
-      {
-      npc.setCurrentItemOrArmor(0, stack.copy());
-      }
-    }
-  return npc;
+  return reg.createEntity(world, npcSubtype);
   }
 
 protected static void addNpcSubtypeEntry(String npcType, String npcSubtype, String icon)
@@ -138,6 +190,7 @@ protected static void addNpcSubtypeEquipment(String npcType, String npcSubtype, 
 /**
  * used by npc spawner item to get the sub-items
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })//WHY THE FUCK DOES VANILLA DO RETARDED SHIT I HAVE TO SUPPRESS WARNINGS ON?
 public static void getSpawnerSubItems(List list)
   {
   for(NpcDeclaration dec : npcMap.values())
@@ -176,6 +229,38 @@ public NpcDeclaration setCanSpawnBaseType(boolean can)
 public void addSubtype(String type, String icon)
   {
   subTypeIcons.put(type, icon);
+  }
+
+public NpcBase createEntity(World world, String subType)
+  {
+  NpcBase npc = (NpcBase) createEntity(world);
+  if(!subType.isEmpty())
+    {
+    ItemStack stack = spawnEquipment.get(subType);
+    if(stack!=null)
+      {
+      npc.setCurrentItemOrArmor(0, stack.copy());
+      }
+    }  
+  return npc;
+  }
+}
+
+public static abstract class NpcFactionDeclaration extends NpcDeclaration
+{
+
+public NpcFactionDeclaration(Class<? extends NpcFactionBase> entityClass, String entityName, int id, Object mod, int trackingRange,int updateFrequency, boolean sendsVelocityUpdates, String npcName)
+  {
+  super(entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates, npcName);
+  }
+
+@Override
+public NpcFactionBase createEntity(World world, String subType)
+  {
+  NpcFactionBase npc = (NpcFactionBase) createEntity(world);
+  AWLog.logDebug("creating faction npc of subtype: "+subType);
+  npc.setSubtype(subType);  
+  return npc;
   }
 
 }
