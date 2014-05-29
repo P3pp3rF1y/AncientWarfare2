@@ -109,11 +109,21 @@ npcs module
 	? add rendering of routes when npc-order item is being held
 		work-order renders route + numbers
 		routing-order renders route + sides
-		combat-order renders patrol and guard points/targets		
-	
+		combat-order renders patrol and guard points/targets
 		
+	? add 'pay' to NPCs -- consume iron / gold for upkeep?		
+		
+	* add town-hall block
+		can serve as a central upkeep-point for NPCs
+		can issue a 'call to arms' command to all nearby teamed npcs
+			combat npcs will respond to the point in question 
+			worker npcs will move to the town-hall for a certain period of time
+		occasionally broadcast to all npcs in broadcast range (set from gui) to set town-hall point			
+		
+	* add 'alert' ai to workers/combat/courier npcs to trigger
+		triggers when npc has an AI attack target and is within range of a town hall
+		causes town-hall to send out
 						
-	* add combat-orders item -- sets patrol / guard orders for npcs
 	* add recipes to copy upkeep/work/combat/routing orders
 	* add npc factions system
 		will have multiple factions:

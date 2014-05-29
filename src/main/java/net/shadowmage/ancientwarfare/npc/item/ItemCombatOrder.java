@@ -14,6 +14,7 @@ public class ItemCombatOrder extends ItemOrders
 public ItemCombatOrder(String name)
   {
   super(name);
+  this.setTextureName("ancientwarfare:npc/combat_order");
   }
 
 @Override

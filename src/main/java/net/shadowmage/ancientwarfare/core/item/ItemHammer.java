@@ -13,6 +13,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -25,7 +26,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
 public ItemHammer(String regName)
   {
   this.setUnlocalizedName(regName);
-  this.setCreativeTab(AWAutomationItemLoader.automationTab);
+  this.setCreativeTab(AWCoreBlockLoader.coreTab);
   this.setTextureName("ancientwarfare:automation/hammer");
   }
 

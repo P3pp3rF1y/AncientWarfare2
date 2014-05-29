@@ -2,14 +2,15 @@ package net.shadowmage.ancientwarfare.npc.entity;
 
 import io.netty.buffer.ByteBuf;
 
+import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -21,6 +22,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
@@ -29,7 +31,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable
 {
 
-protected String ownerName = "";//the owner of this NPC, used for checking teams
+private String ownerName = "";//the owner of this NPC, used for checking teams
 
 protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
 
@@ -63,6 +65,26 @@ protected void entityInit()
   {
   super.entityInit();
   this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks, TODO load/save from nbt
+  }
+
+/**
+ * Used by command baton and town-hall to determine if this NPC is commandable by a player / team
+ * @param playerName
+ * @return
+ */
+public boolean canBeCommandedBy(String playerName)
+  {
+  if(ownerName.isEmpty()){return false;}
+  if(playerName==null){return false;}
+  Team team = getTeam();
+  if(team==null)
+    {
+    return playerName.equals(ownerName);
+    }
+  else
+    {
+    return team==worldObj.getScoreboard().getPlayersTeam(playerName);
+    }
   }
 
 public Command getCurrentCommand()
@@ -287,11 +309,21 @@ public Team getTeam()
   return worldObj.getScoreboard().getPlayersTeam(ownerName);
   }
 
-//public boolean isHostileTowards(Entity e)
-//  {
-//  String n = EntityList.getEntityString(e);
-//  return false;
-//  }
+public boolean isHostileTowards(Entity e)
+  {
+  if(e instanceof NpcBase)
+    {
+    NpcBase npc = (NpcBase)e;
+    return isHostileTowards(npc.getTeam());
+    }
+  String n = EntityList.getEntityString(e);
+  List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), getNpcSubType());
+  if(targets.contains(n))
+    {
+    return true;
+    }
+  return false;
+  }
 
 public boolean isHostileTowards(Team team)
   {
@@ -308,7 +340,7 @@ public EntityLivingBase getFollowingEntity()
 
 public void setFollowingEntity(EntityLivingBase entity)
   {
-  if(entity instanceof EntityPlayer)
+  if(entity instanceof EntityPlayer && canBeCommandedBy(entity.getCommandSenderName()))
     {
     this.followingPlayerName = entity.getCommandSenderName();        
     }

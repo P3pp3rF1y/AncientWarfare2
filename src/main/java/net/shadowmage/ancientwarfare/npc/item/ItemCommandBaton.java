@@ -32,6 +32,7 @@ public ItemCommandBaton(String name)
   {
   this.setUnlocalizedName(name);
   this.setCreativeTab(AWNpcItemLoader.npcTab);
+  this.setTextureName("ancientwarfare:npc/command_baton");
   }
 
 @Override
@@ -65,7 +66,11 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
     MovingObjectPosition pos = RayTraceUtils.getPlayerTarget(player, 120, 0);//TODO set range from config;
     if(pos!=null && pos.typeOfHit==MovingObjectType.ENTITY && pos.entityHit instanceof NpcPlayerOwned)
       {
-      onNpcClicked(player, (NpcPlayerOwned) pos.entityHit, stack);
+      NpcPlayerOwned npc = (NpcPlayerOwned)pos.entityHit;
+      if(npc.canBeCommandedBy(player.getCommandSenderName()))
+        {      
+        onNpcClicked(player, (NpcPlayerOwned) pos.entityHit, stack);        
+        }
       }
     }
   }

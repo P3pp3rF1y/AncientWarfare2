@@ -151,7 +151,7 @@ protected boolean interact(EntityPlayer par1EntityPlayer)
   Team t1 = getTeam();
   if(t==t1)
     {
-    if(par1EntityPlayer.isSneaking())
+    if(par1EntityPlayer.isSneaking() && this.canBeCommandedBy(par1EntityPlayer.getCommandSenderName()))
       {
       if(this.followingPlayerName==null)
         {

@@ -5,23 +5,71 @@ itemGroup.tabs.awcore=Ancient Warfare Core
 itemGroup.tabs.structures=Ancient Warfare Structures
 itemGroup.tabs.editor=Ancient Warfare Model Editor
 itemGroup.tabs.automation=Ancient Warfare Automation
+itemGroup.tabs.npc=Ancient Warfare Npcs
+#core
+item.research_book.name=Research Book
+item.hammer.name=Hammer
 item.research_note.name=Research Note
+#modeler
+item.editor_opener.name=Model Editor
+#structure
 item.structure_scanner.name=Structure Scanner
 item.structure_builder.name=Structure Builder
 item.spawner_placer.name=Mob Spawner Placement Tool
-item.editor_opener.name=Model Editor
-item.research_book.name=Research Book
+#automation
+#npc
+item.work_order.name=Work Order
+item.upkeep_order.name=Upkeep Order
+item.combat_order.name=Combat Order
+item.route_order.name=Routing Order
+item.command_baton.name=Command Baton
+item.npc_spawner.courier.name=Courier
+item.npc_spawner.worker.name=Worker
+item.npc_spawner.worker.farmer.name=Farmer
+item.npc_spawner.worker.lumberjack.name=Lumberjack
+item.npc_spawner.worker.miner.name=Miner
+item.npc_spawner.worker.researcher.name=Researcher
+item.npc_spawner.worker.craftsman.name=Craftsman
+item.npc_spawner.combat.name=Combat NPC
+item.npc_spawner.combat.soldier.name=Soldier
+item.npc_spawner.combat.archer.name=Archer
+item.npc_spawner.combat.medic.name=Medic
+item.npc_spawner.combat.engineer.name=Engineer
+item.npc_spawner.combat.commander.name=Commander
+#vehicle
 
 #blocks
-tile.advanced_spawner.name=Advanced Monster Spawner
+#core
+tile.engineering_station.name=Engineering Station
+tile.research_station.name=Research Station
+#automation
+tile.civic_auto_crafting.name=Auto Crafting Station
 tile.civic_quarry.name=Quarry
 tile.civic_forestry.name=Tree Farm
 tile.civic_crop_farm.name=Crop Farm
 tile.civic_mushroom_farm.name=Mushroom Farm
 tile.civic_animal_farm.name=Animal Farm
+tile.civic_fish_farm.name=Fish Farm
+tile.civic_reed_farm.name=Reed Farm
+tile.civic_warehouse.name=Warehouse Control Block
+tile.warehouse_storage.0.name=Small Warehouse Storage
+tile.warehouse_storage.1.name=Medium Warehouse Storage
+tile.warehouse_storage.2.name=Large Warehouse Storage
+tile.warehouse_input.name=Warehouse Input
+tile.warehouse_output.name=Warehouse Output
+tile.warehouse_crafting_station.name=Warehouse Crafting Station
+tile.mailbox.name=Mailbox
+tile.flywheel.name=Flywheel Energy Storage
+tile.torque_conduit.name=Torque Conduit
+tile.torque_distributor.name=Torque Distributor
+tile.torque_generator_sterling.name=Sterling Generator
+tile.torque_generator_waterwheel.name=Waterwheel Generator
+tile.hand_cranked_engine.name=Hand Cranked Torque Generator
+#structure
+tile.advanced_spawner.name=Advanced Monster Spawner
 tile.drafting_station.name=Drafting Station
-tile.engineering_station.name=Engineering Station
-tile.research_station.name=Research Station
+#npc
+#vehicle
 
 #guistrings
 guistrings.no_selection=No Selection
@@ -144,6 +192,7 @@ guistrings.automation.descending=Desc.
 guistrings.automation.energy_stored=Energy Stored
 guistrings.automation.current_energy=Energy Stored: %s
 
+
 #npc localization
 guistrings.npc.remove_upkeep_point=Remove
 guistrings.npc.side_change=Side
@@ -154,6 +203,18 @@ guistrings.npc.work_length=Work Time
 guistrings.npc.commanded=Commanded:
 guistrings.npc.target=Target
 guistrings.npc.remove_point=Remove
+npc.combat.name=Soldier
+npc.combat.soldier.name=Soldier
+npc.combat.archer.name=Archer
+npc.combat.medic.name=Medic
+npc.combat.engineer.name=Engineer
+npc.combat.commander.name=Commander
+npc.worker.name=Worker
+npc.worker.farmer.name=Farmer
+npc.worker.lumberjack.name=Lumberjack
+npc.worker.miner.name=Miner
+npc.worker.researcher.name=Researcher
+npc.worker.craftsman.name=Craftsman
 
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal
@@ -178,18 +239,6 @@ guistrings.research.click_to_add_progress=Right Click To Add Progress To Current
 entity.ancientwarfarenpc.aw_npc_worker.name=Worker
 entity.ancientwarfarenpc.aw_npc_combat.name=Soldier
 entity.ancientwarfarenpc.aw_npc_courier.name=Courier
-npc.combat.name=Soldier
-npc.combat.soldier.name=Soldier
-npc.combat.archer.name=Archer
-npc.combat.medic.name=Medic
-npc.combat.engineer.name=Engineer
-npc.combat.commander.name=Commander
-npc.worker.name=Worker
-npc.worker.farmer.name=Farmer
-npc.worker.lumberjack.name=Lumberjack
-npc.worker.miner.name=Miner
-npc.worker.researcher.name=Researcher
-npc.worker.craftsman.name=Craftsman
 
 #commands
 command.aw.structure.usage=foo usage
