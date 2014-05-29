@@ -36,6 +36,7 @@ public static final int PACKET_STRUCTURE_IMAGE_LIST = 9;
 public static final int PACKET_STRUCTURE_IMAGE_DATA = 10;
 public static final int PACKET_STRUCTURE_REMOVE = 11;
 public static final int PACKET_NPC_COMMAND = 12;
+public static final int PACKET_FACTION_UPDATE = 13;
 
 public static final int GUI_CRAFTING = 0;
 public static final int GUI_SCANNER = 1;

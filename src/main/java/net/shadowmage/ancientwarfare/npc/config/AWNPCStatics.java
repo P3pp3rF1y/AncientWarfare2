@@ -85,6 +85,8 @@ private HashMap<String, List<String>> entityTargetSettings = new HashMap<String,
  */
 public static final String recipeSettings = "06_recipe_settings";
 
+public static final String factionSettings = "07_faction_settings";
+private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
 
 public AWNPCStatics(Configuration config)
   {
@@ -189,6 +191,15 @@ public int getFoodValue(ItemStack stack)
     food = foodValues.get(name);    
     }  
   return food;
+  }
+
+public int getDefaultFaction(String factionName)
+  {
+  if(defaultFactionStandings.containsKey(factionName))
+    {
+    return defaultFactionStandings.get(factionName);
+    }
+  return 0;
   }
 
 }

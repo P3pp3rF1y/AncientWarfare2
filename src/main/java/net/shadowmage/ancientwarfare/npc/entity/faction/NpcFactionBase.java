@@ -11,9 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
+import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import cpw.mods.fml.common.network.ByteBufUtils;
 
 public abstract class NpcFactionBase extends NpcBase
@@ -31,11 +33,14 @@ public boolean isHostileTowards(Entity e)
   {
   if(e instanceof EntityPlayer)
     {
-    return true;//TODO
+    int standing = FactionTracker.INSTANCE.getStandingFor(worldObj, e.getCommandSenderName(), getFaction());
+    return standing<0;
     }
   else if(e instanceof NpcPlayerOwned)
     {
-    return true;//TODO
+    NpcBase npc = (NpcBase)e;
+    int standing = FactionTracker.INSTANCE.getStandingFor(worldObj, npc.getOwnerName(), getFaction());
+    return standing<0;
     }
   else
     {
@@ -65,7 +70,9 @@ public String getNpcSubType()
 
 public String getFaction()
   {
-  return getNpcType().split(".")[0];
+  String type = getNpcType();
+  String faction = type.substring(0, type.indexOf("."));
+  return faction;
   }
 
 @Override

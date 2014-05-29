@@ -13,10 +13,13 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
+import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -24,6 +27,9 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 
 @Mod
 (
@@ -68,6 +74,7 @@ public void preInit(FMLPreInitializationEvent evt)
    */  
   proxy.registerClient();
   statics.load();//load config settings
+  FMLCommonHandler.instance().bus().register(FactionTracker.INSTANCE);
   
   /**
    * load items, blocks, and entities
@@ -84,6 +91,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_UPKEEP_ORDER, ContainerUpkeepOrder.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_COMBAT_ORDER, ContainerCombatOrder.class);
   PacketBase.registerPacketType(NetworkHandler.PACKET_NPC_COMMAND, PacketNpcCommand.class);
+  PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class);
   
   /**
    * register persistent game-data handlers
@@ -118,5 +126,6 @@ public void postInit(FMLPostInitializationEvent evt)
   config.save();
   AWLog.log("Ancient Warfare NPCs Post-Init completed.  Successfully completed all loading stages.");
   }
+
 
 }
