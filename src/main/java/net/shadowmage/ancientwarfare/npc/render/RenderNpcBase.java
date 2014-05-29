@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
@@ -67,7 +68,8 @@ protected boolean func_110813_b(EntityLivingBase par1EntityLivingBase)
 
 private String getNameForRender(NpcBase npc)
   {
-  String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : npc.getNpcFullType();
+  String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : "npc."+npc.getNpcFullType()+".name";
+  customName = StatCollector.translateToLocal(customName);
   return customName + " "+getHealthForRender(npc);
   }
 
