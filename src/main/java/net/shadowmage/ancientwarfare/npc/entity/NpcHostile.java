@@ -28,11 +28,12 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 
-public class NpcHostile extends NpcBase implements IRangedAttackMob
+public abstract class NpcHostile extends NpcBase implements IRangedAttackMob
 {
 
 private EntityAIBase collideAI;
 private EntityAIBase arrowAI;
+private String subType = "trader";
 
 public NpcHostile(World par1World)
   {
@@ -87,17 +88,24 @@ public void onWeaponInventoryChanged()
   //noop for hostile
   }
 
+public abstract String getFaction();
+
 @Override
 public String getNpcSubType()
   {
-  //TODO lookup type based on item equipped in main slot and 'faction'
-  return null;
+  return getFaction()+"."+this.subType;
+  }
+
+public void setSubType(String type)
+  {
+  if(type==null){type="";}
+  this.subType=type;
   }
 
 @Override
 public String getNpcType()
   {
-  return "hostile";
+  return "faction";
   }
 
 @Override
@@ -110,6 +118,20 @@ public void readAdditionalItemData(NBTTagCompound tag)
 public void writeAdditionalItemData(NBTTagCompound tag)
   {
   
+  }
+
+@Override
+public void writeEntityToNBT(NBTTagCompound tag)
+  {
+  super.writeEntityToNBT(tag);
+  tag.setString("subType", subType);
+  }
+
+@Override
+public void readEntityFromNBT(NBTTagCompound tag)
+  {
+  super.readEntityFromNBT(tag);
+  subType = tag.getString("subType");
   }
 
 @Override

@@ -113,8 +113,12 @@ npcs module
 		
 	? add 'pay' to NPCs -- consume iron / gold for upkeep?		
 		
-	* add town-hall block
-		can serve as a central upkeep-point for NPCs
+	* add town-hall block GUI
+		tracks nearby entities.
+		maintains list of dead-entity-data (they transmit to town-hall on death)
+			this can be viewed by user
+			? priests may occasionally use this to 'resurrect' a dead npc
+		?can serve as a central upkeep-point for NPCs
 		can issue a 'call to arms' command to all nearby teamed npcs
 			combat npcs will respond to the point in question 
 			worker npcs will move to the town-hall for a certain period of time
@@ -162,6 +166,11 @@ vehicles module
 	everything
 	
 NPCS INFO:
+	Town Hall (block):
+		Coordinates AI amongst nearby player-owned NPCs.
+		Combat NPCs issue 'combat alerts' when they engage in combat, worker npcs issue combat alerts when they are attacked/flee from a target
+			this triggers a force-attack command to other nearby combat npcs
+			this triggers a force-move-to command to other nearby worker npcs
 
 	Command Baton:
 		persistent list of entities commanded.
