@@ -76,7 +76,7 @@ public static void handleServerCommand(EntityPlayer player, CommandType type, bo
     {
     if(e instanceof NpcBase)
       {
-      ((NpcBase)e).setCurrentCommand(cmd);
+      ((NpcBase)e).handlePlayerCommand(cmd);
       }
     }
   }

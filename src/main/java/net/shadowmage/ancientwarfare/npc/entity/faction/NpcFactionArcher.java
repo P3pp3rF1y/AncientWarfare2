@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 
-public abstract class NpcFactionArcher extends NpcFactionBase implements IRangedAttackMob
+public abstract class NpcFactionArcher extends NpcFaction implements IRangedAttackMob
 {
 
 public NpcFactionArcher(World par1World)

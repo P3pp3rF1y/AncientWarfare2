@@ -52,7 +52,7 @@ public void adjustStandingFor(String factionName, int adjustment)
   if(factionStandings.containsKey(factionName))
     {
     FactionStanding standing = factionStandings.get(factionName);
-    standing.standing+=adjustment;
+    standing.standing+=adjustment;    
     }
   }
 

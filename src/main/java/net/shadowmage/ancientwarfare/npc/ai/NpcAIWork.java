@@ -74,7 +74,6 @@ public void updateTask()
   {
   if(!atSite)
     {
-    npc.addAITask(TASK_MOVE);
     moveToWorksite();
     }
   else
@@ -199,6 +198,7 @@ protected void moveToWorksite()
     double dist = npc.getDistanceSq(pos.x+0.5d, pos.y, pos.z+0.5d);
     if(dist>5.d*5.d)
       {
+      npc.addAITask(TASK_MOVE);
       moveTickDelay = 5;
       npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);  
       

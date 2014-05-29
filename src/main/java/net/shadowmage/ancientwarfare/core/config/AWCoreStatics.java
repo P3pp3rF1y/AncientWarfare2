@@ -13,9 +13,9 @@ public static final String resourcePath = "/assets/ancientwarfare/resources/";
 /**
  * category names
  */
-public static final String generalOptions = "01_general_options";
-public static final String serverOptions = "02_server_options";
-public static final String clientOptions = "03_client_options";
+public static final String generalOptions = "01_shared_settings";
+public static final String serverOptions = "02_server_settings";
+public static final String clientOptions = "03_client_settings";
 public static final String worldGenSettings = "04_world_gen_settings";
 public static final String keybinds = "05_keybinds";
 public static final String researchSettings = "06_research";

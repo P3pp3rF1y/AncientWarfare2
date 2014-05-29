@@ -83,7 +83,7 @@ public void updateTask()
       {
       if(npc.getCurrentCommand()==command)
         {
-        npc.setCurrentCommand(null);        
+        npc.handlePlayerCommand(null);        
         }
       }
     }

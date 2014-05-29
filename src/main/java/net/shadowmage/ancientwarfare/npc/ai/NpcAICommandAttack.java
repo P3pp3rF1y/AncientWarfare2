@@ -35,9 +35,9 @@ public boolean shouldExecute()
     Entity e = cmd.getEntityTarget(npc.worldObj);
     if(e instanceof EntityLivingBase)
       {
-      if(e instanceof NpcPlayerOwned && !npc.isHostileTowards(((EntityLivingBase) e).getTeam()))
+      if(e instanceof NpcBase && !npc.isHostileTowards(e))
         {
-        npc.setCurrentCommand(null);
+        npc.handlePlayerCommand(null);
         AWLog.logDebug("setting cannot attack from command due to friendly!!: "+e);
         }
       else
@@ -52,7 +52,7 @@ public boolean shouldExecute()
     else
       {
       AWLog.logDebug("setting cannot attack from command due to invalid target!!: "+e);
-      npc.setCurrentCommand(null);
+      npc.handlePlayerCommand(null);
       }
     startRecheckDelay=10;
     }
@@ -71,14 +71,14 @@ public boolean continueExecuting()
     }
   if(npc.getAttackTarget()!=target)
     {
-    npc.setCurrentCommand(null);
+    npc.handlePlayerCommand(null);
     target = null;   
     return false;
     }
   if(target==null || target.isDead)
     {
     npc.setAttackTarget(null);
-    npc.setCurrentCommand(null);
+    npc.handlePlayerCommand(null);
     target = null;    
     return false;
     }

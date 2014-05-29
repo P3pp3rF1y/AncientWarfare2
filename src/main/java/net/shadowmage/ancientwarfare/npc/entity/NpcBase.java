@@ -147,7 +147,7 @@ public Command getCurrentCommand()
   return null;
   }
 
-public void setCurrentCommand(Command cmd)
+public void handlePlayerCommand(Command cmd)
   {
   
   }
@@ -364,28 +364,7 @@ public Team getTeam()
   return worldObj.getScoreboard().getPlayersTeam(ownerName);
   }
 
-public boolean isHostileTowards(Entity e)
-  {
-  if(e instanceof NpcBase)
-    {
-    NpcBase npc = (NpcBase)e;
-    return isHostileTowards(npc.getTeam());
-    }
-  String n = EntityList.getEntityString(e);
-  List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), getNpcSubType());
-  if(targets.contains(n))
-    {
-    return true;
-    }
-  return false;
-  }
-
-public boolean isHostileTowards(Team team)
-  {
-  Team a = getTeam();
-  if(a!=null && team!=null && a!=team){return true;}
-  return false;
-  }
+public abstract boolean isHostileTowards(Entity e);
 
 public EntityLivingBase getFollowingEntity()
   {

@@ -146,10 +146,6 @@ protected void withdrawFood(IInventory inventory, int side)
       }    
     }
   npc.setFoodRemaining(npc.getFoodRemaining()+eaten);
-  if(amount>0 && AWNPCStatics.npcFoodTicksForExperience>0)
-    {
-    npc.addExperience( amount / AWNPCStatics.npcFoodTicksForExperience );
-    }
   }
 
 }

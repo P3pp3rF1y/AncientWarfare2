@@ -4,7 +4,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public abstract class NpcFactionLeader extends NpcFactionBase
+public abstract class NpcFactionLeader extends NpcFaction
 {
 
 public NpcFactionLeader(World par1World)

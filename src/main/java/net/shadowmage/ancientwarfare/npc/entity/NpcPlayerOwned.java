@@ -1,5 +1,9 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
+import java.util.List;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -8,6 +12,8 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
@@ -100,7 +106,7 @@ public Command getCurrentCommand()
   }
 
 @Override
-public void setCurrentCommand(Command cmd)
+public void handlePlayerCommand(Command cmd)
   {  
   if(cmd==null)
     {
@@ -109,6 +115,7 @@ public void setCurrentCommand(Command cmd)
   else if(cmd.type==CommandType.ATTACK || cmd.type==CommandType.ATTACK_AREA || cmd.type==CommandType.GUARD || cmd.type==CommandType.MOVE)
     {
     this.playerIssuedCommand=cmd;    
+    AWLog.logDebug("set player issued command to: "+cmd);
     }
   else if(cmd.type==CommandType.SET_HOME)
     {
@@ -145,6 +152,44 @@ public void setCurrentCommand(Command cmd)
     this.playerIssuedCommand = null;
     AWLog.logDebug("clearing player-issued commands!!");
     }
+  }
+
+@Override
+public boolean isHostileTowards(Entity e)
+  {
+  if(e instanceof NpcPlayerOwned)
+    {
+    NpcPlayerOwned npc = (NpcPlayerOwned)e;
+    Team t = npc.getTeam();
+    return isHostileTowards(t);
+    }
+  else if(e instanceof NpcFaction)
+    {
+    NpcFaction npc = (NpcFaction)e;
+    return npc.isHostileTowards(this);//cheap trick to determine if should be hostile or not
+    }
+  else if(e instanceof EntityPlayer)
+    {
+    Team t = worldObj.getScoreboard().getPlayersTeam(e.getCommandSenderName());
+    return isHostileTowards(t);
+    }
+  else
+    {
+    String n = EntityList.getEntityString(e);
+    List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), getNpcSubType());
+    if(targets.contains(n))
+      {
+      return true;
+      }
+    }
+  return false;
+  }
+
+protected boolean isHostileTowards(Team team)
+  {
+  Team a = getTeam();
+  if(a!=null && team!=null && a!=team){return true;}
+  return false;
   }
 
 @Override

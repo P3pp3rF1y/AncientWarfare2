@@ -84,12 +84,12 @@ public void handleNpcCombatAlert(NpcBase npc, Entity target)
       if(npc1 instanceof NpcCombat)
         {
         AWLog.logDebug("commanding npc: "+npc1+" to attack target: "+cmd);
-        npc1.setCurrentCommand(cmd);
+        npc1.handlePlayerCommand(cmd);
         }
       else
         {
         AWLog.logDebug("commanding npc: "+npc1+" to move to town hall:: "+cmd2);
-        npc1.setCurrentCommand(cmd2);
+        npc1.handlePlayerCommand(cmd2);
         }
       }
     recentAlertTimer = recentAlertMaxTicks;

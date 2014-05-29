@@ -4,7 +4,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public abstract class NpcFactionTrader extends NpcFactionBase
+public abstract class NpcFactionTrader extends NpcFaction
 {
 
 public NpcFactionTrader(World par1World)

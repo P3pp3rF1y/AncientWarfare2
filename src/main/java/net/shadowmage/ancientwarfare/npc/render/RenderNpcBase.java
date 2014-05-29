@@ -38,24 +38,27 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
   if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_ADDITIONAL_INFO))
     {
     NpcBase npc = (NpcBase)par1Entity;
-    if(!npc.isHostileTowards(renderManager.livingPlayer.getTeam()))
+    if(npc.isHostileTowards(renderManager.livingPlayer))
+      {
+      if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES))
+        {
+        String name = getNameForRender(npc);        
+        renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
+        }
+      }
+    else
       {
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_FRIENDLY_NAMES))
         {
         String name = getNameForRender(npc);  
         renderColoredLabel(npc, name, x, y, z, 64, 0x20ffffff, 0xffffffff);
         }
-      if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_AI))
+      if(npc.canBeCommandedBy(renderManager.livingPlayer.getCommandSenderName()))
         {
-        renderNpcAITasks(npc, x, y, z, 64);
-        }
-      } 
-    else
-      {
-      if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES))
-        {
-        String name = getNameForRender(npc);        
-        renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
+        if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_AI))
+          {
+          renderNpcAITasks(npc, x, y, z, 64);
+          }
         }
       }
     }
@@ -64,6 +67,12 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
 protected boolean func_110813_b(EntityLivingBase par1EntityLivingBase)
   {
   return false;
+  }
+
+@Override
+protected void func_147906_a(Entity p_147906_1_, String p_147906_2_, double p_147906_3_, double p_147906_5_, double p_147906_7_, int p_147906_9_)
+  {
+  //noop, custom label rendering
   }
 
 private String getNameForRender(NpcBase npc)

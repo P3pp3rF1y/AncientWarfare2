@@ -10,22 +10,29 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import cpw.mods.fml.common.network.ByteBufUtils;
 
-public abstract class NpcFactionBase extends NpcBase
+public abstract class NpcFaction extends NpcBase
 {
 
 String subType = "";
 
-public NpcFactionBase(World par1World)
+public NpcFaction(World par1World)
   {
   super(par1World);
+  }
+
+@Override
+public boolean canBeCommandedBy(String playerName)
+  {
+  return false;
   }
 
 @Override
@@ -51,10 +58,25 @@ public boolean isHostileTowards(Entity e)
   }
 
 @Override
-public boolean isHostileTowards(Team team)
-  {
-  //TODO how to handle teams...ignore them entirely??
-  return super.isHostileTowards(team);
+public void onDeath(DamageSource damageSource)
+  {  
+  super.onDeath(damageSource);
+  if(damageSource.getEntity() instanceof EntityPlayer)
+    {
+    String faction = getFaction();
+    EntityPlayer player = (EntityPlayer)damageSource.getEntity();
+    FactionTracker.INSTANCE.adjustStandingFor(worldObj, player.getCommandSenderName(), faction, -AWNPCStatics.factionLossOnDeath);
+    }  
+  else if(damageSource.getEntity() instanceof NpcPlayerOwned)
+    {
+    NpcBase npc = (NpcBase)damageSource.getEntity();
+    String faction = getFaction();
+    String playerName = npc.getOwnerName();
+    if(!playerName.isEmpty())
+      {
+      FactionTracker.INSTANCE.adjustStandingFor(worldObj, playerName, faction, -AWNPCStatics.factionLossOnDeath);
+      }
+    }
   }
 
 public void setSubtype(String subtype)

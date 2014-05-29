@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditLeader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditPriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditTrader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
@@ -249,15 +249,15 @@ public NpcBase createEntity(World world, String subType)
 public static abstract class NpcFactionDeclaration extends NpcDeclaration
 {
 
-public NpcFactionDeclaration(Class<? extends NpcFactionBase> entityClass, String entityName, int id, Object mod, int trackingRange,int updateFrequency, boolean sendsVelocityUpdates, String npcName)
+public NpcFactionDeclaration(Class<? extends NpcFaction> entityClass, String entityName, int id, Object mod, int trackingRange,int updateFrequency, boolean sendsVelocityUpdates, String npcName)
   {
   super(entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates, npcName);
   }
 
 @Override
-public NpcFactionBase createEntity(World world, String subType)
+public NpcFaction createEntity(World world, String subType)
   {
-  NpcFactionBase npc = (NpcFactionBase) createEntity(world);
+  NpcFaction npc = (NpcFaction) createEntity(world);
   AWLog.logDebug("creating faction npc of subtype: "+subType);
   npc.setSubtype(subType);  
   return npc;

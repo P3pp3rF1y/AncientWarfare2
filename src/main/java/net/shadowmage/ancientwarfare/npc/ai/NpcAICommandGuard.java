@@ -44,7 +44,7 @@ public boolean shouldExecute()
       command = cmd;
       return true;
       }
-    npc.setCurrentCommand(null);
+    npc.handlePlayerCommand(null);
     command = null;
     }
   return false;

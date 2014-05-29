@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMelee2;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 
-public abstract class NpcFactionSoldier extends NpcFactionBase
+public abstract class NpcFactionSoldier extends NpcFaction
 {
 
 public NpcFactionSoldier(World par1World)
