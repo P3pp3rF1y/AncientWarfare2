@@ -20,7 +20,7 @@ public class NpcAIWork extends NpcAI
 public int workIndex;
 public int ticksAtSite = 0;
 public boolean atSite = false;
-WorkOrder order;
+public WorkOrder order;
 ItemStack orderStack;
 boolean init = false;
 
@@ -243,11 +243,12 @@ public void readFromNBT(NBTTagCompound tag)
   workIndex = tag.getInteger("workIndex");
   }
 
-public void writeToNBT(NBTTagCompound tag)
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
   tag.setInteger("ticksAtSite", ticksAtSite);
   tag.setBoolean("atSite", atSite);
   tag.setInteger("workIndex", workIndex);
+  return tag;
   }
 
 

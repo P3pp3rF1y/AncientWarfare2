@@ -148,16 +148,12 @@ public WorkEntryNumberInput(int topLeftX, int topLeftY, int width,
 
 private class IndexedButton extends Button
 {
-
 int index;
-
 public IndexedButton(int topLeftX, int topLeftY, int width, int height, String text, int index)
   {
   super(topLeftX, topLeftY, width, height, text);
   this.index = index;
   }
-
-
 }
 
 }

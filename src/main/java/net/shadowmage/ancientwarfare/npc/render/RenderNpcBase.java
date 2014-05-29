@@ -204,6 +204,8 @@ private String getIconFor(int task)
   return "ancientwarfare:textures/entity/npc/ai/task_guard.png";
   case NpcAI.TASK_FOLLOW:
   return "ancientwarfare:textures/entity/npc/ai/task_follow.png";
+  case NpcAI.TASK_WANDER:
+  return "ancientwarfare:textures/entity/npc/ai/task_wander.png";
   case NpcAI.TASK_MOVE:
   return "ancientwarfare:textures/entity/npc/ai/task_move.png";
   default:

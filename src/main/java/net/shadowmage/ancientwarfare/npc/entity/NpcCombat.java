@@ -15,7 +15,6 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,18 +34,23 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIPatrol;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob
 {
 
 private EntityAIBase collideAI;
 private EntityAIBase arrowAI;
+private NpcAIPatrol patrolAI;
 
 public NpcCombat(World par1World)
   {
   super(par1World);
   collideAI = new NpcAIAttackMelee2(this);
   arrowAI = new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F); 
+  patrolAI = new NpcAIPatrol(this);
   IEntitySelector selector = new IEntitySelector()
     {
     @Override
@@ -69,14 +73,17 @@ public NpcCombat(World par1World)
   this.tasks.addTask(2, new NpcAICommandGuard(this));
   this.tasks.addTask(2, new NpcAICommandMove(this));
   
-  this.tasks.addTask(4, new NpcAIGetFood(this));  
-  this.tasks.addTask(5, new NpcAIMoveHome(this, 80.f, 20.f, 40.f, 5.f));
-  this.tasks.addTask(6, new NpcAIIdleWhenHungry(this)); 
+  this.tasks.addTask(4, new NpcAIGetFood(this));
+  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));
+  //6--empty....
   //7==combat task, inserted onweaponinventoryupdated
+  this.tasks.addTask(8, patrolAI);
+  
+  this.tasks.addTask(9, new NpcAIMoveHome(this, 80.f, 20.f, 40.f, 5.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-  this.tasks.addTask(102, new EntityAIWander(this, 0.625D));
+  this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
   this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));      
   
   this.targetTasks.addTask(0, new NpcAICommandAttack(this));
@@ -84,25 +91,20 @@ public NpcCombat(World par1World)
   this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, true, false, selector));
   }
 
-
-
 @Override
 public boolean attackEntityAsMob(Entity target)
   {
   float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
   int knockback = 0;
-
-  if (target instanceof EntityLivingBase)
+  if(target instanceof EntityLivingBase)
     {
     damage += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)target);
     knockback += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)target);
     }
-
   boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
-
-  if (targetHit)
+  if(targetHit)
     {
-    if (knockback > 0)
+    if(knockback > 0)
       {
       target.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F));
       this.motionX *= 0.6D;
@@ -110,38 +112,29 @@ public boolean attackEntityAsMob(Entity target)
       }
     int fireDamage = EnchantmentHelper.getFireAspectModifier(this);
 
-    if (fireDamage > 0)
+    if(fireDamage > 0)
       {
       target.setFire(fireDamage * 4);
       }
-    if (target instanceof EntityLivingBase)
+    if(target instanceof EntityLivingBase)
       {
       EnchantmentHelper.func_151384_a((EntityLivingBase)target, this);
       }
     EnchantmentHelper.func_151385_b(this, target);
     }
-
   return targetHit;
   }
-
-//@Override
-//public void onLivingUpdate()
-//  {
-//  super.onLivingUpdate();
-//  if(this.getAITarget()!=null && this.getAITarget().isDead){this.setTarget(null);}
-//  }
 
 @Override
 public boolean isValidOrdersStack(ItemStack stack)
   {
-  // TODO Auto-generated method stub
-  return false;
+  return stack!=null && stack.getItem()==AWNpcItemLoader.combatOrder;
   }
 
 @Override
 public void onOrdersInventoryChanged()
   {
-  // TODO Auto-generated method stub  
+  patrolAI.onOrdersInventoryChanged();
   }
 
 @Override
@@ -188,6 +181,14 @@ public void readEntityFromNBT(NBTTagCompound tag)
   {
   super.readEntityFromNBT(tag);
   onWeaponInventoryChanged();
+  if(tag.hasKey("patrolAI")){patrolAI.readFromNBT(tag.getCompoundTag("patrolAI"));}
+  }
+
+@Override
+public void writeEntityToNBT(NBTTagCompound tag)
+  {  
+  super.writeEntityToNBT(tag);
+  tag.setTag("patrolAI", patrolAI.writeToNBT(new NBTTagCompound()));
   }
 
 @Override

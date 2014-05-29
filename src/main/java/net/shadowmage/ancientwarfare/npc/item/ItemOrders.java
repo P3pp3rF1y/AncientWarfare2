@@ -3,10 +3,8 @@ package net.shadowmage.ancientwarfare.npc.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.npc.orders.NpcOrders;
 
 public abstract class ItemOrders extends Item implements IItemClickable, IItemKeyInterface
 {

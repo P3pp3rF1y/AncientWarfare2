@@ -153,6 +153,7 @@ guistrings.npc.remove_work_point=Remove
 guistrings.npc.work_length=Work Time
 guistrings.npc.commanded=Commanded:
 guistrings.npc.target=Target
+guistrings.npc.remove_point=Remove
 
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal

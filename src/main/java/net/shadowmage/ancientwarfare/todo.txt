@@ -110,19 +110,8 @@ npcs module
 		work-order renders route + numbers
 		routing-order renders route + sides
 		combat-order renders patrol and guard points/targets		
-	* figure out / add command system	
-		non-persistent list of entities commanded.
-		stored on server/client, not in item-stack.
-		list is looked up per-player by player name.  different command-baton stacks do NOTHING different
-		players may add to / remove from list easily.
-		--store it client-side only? send ID list to server to process commands?
-		--how to not leak memory?
-			just cache a entityID (the regular int one)
-			if world.getEntityByID lookup fails than the entity is either dead or removed
-				remove it from the tracked list
-			requires validating of entities @ display time / command time
-			if stored client-side only this alleviates problems of trying to command npcs that might be unloaded
-				as they will be already trimmed from the client-side entity list and thus the lookup will fail
+	
+		
 						
 	* add combat-orders item -- sets patrol / guard orders for npcs
 	* add recipes to copy upkeep/work/combat/routing orders
@@ -163,14 +152,23 @@ vehicles module
 	everything
 	
 NPCS INFO:
-	Command Baton:
-		Stores a list of commanded NPCs by UUID
-		Render list of commanded NPCs into selection-box on screen overlay
-		Can open GUI to remove npcs from list.
-		Can 'click' on an npc to add to list.
-		Has multiple hotkeys to issue commands? (move, attack, ??)
-		Can open GUI to view tactical map for issuing commands / npc selection?
 
+	Command Baton:
+		persistent list of entities commanded.
+		stored in item-stack nbt as a list of UUIDs
+		list is looked client side from item-nbt
+		npcs must transmit UUID to client-side for lookup
+		players may add to / remove from list by right-click of item while targeting a commandable NPC
+		Commands -- move / guard / attack / attack area / set home / clear home / set upkeep / clear upkeep / clear command
+		Client renders list of commanded npcs for baton while equipped
+		Client renders under-cursor target while baton is equipped
+		Has 5 hotkeys to control commands
+			z-clear current command / openGUI (reg/sneak)
+			x-attack / attack area (entity/block)
+			c-move / guard (entity/block)
+			v-set/clear home (reg/sneak)
+			b-set/clear upkeep (reg/sneak)		
+		
 	Teams:
 		All teams are derived from owning players team.
 		If owning player is not on a team, or npc is not owned, they are considered NEUTRAL.  
