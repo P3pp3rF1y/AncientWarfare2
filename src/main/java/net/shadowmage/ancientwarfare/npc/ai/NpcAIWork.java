@@ -229,11 +229,9 @@ public void onOrdersChanged()
 @Override
 public void resetTask()
   {
-//  AWLog.logDebug("resetting work task..");
-  super.resetTask();
   ticksAtSite = 0;
   atSite = false;
-  this.npc.removeAITask(TASK_WORK + TASK_WORK);
+  this.npc.removeAITask(TASK_WORK + TASK_MOVE);
   }
 
 public void readFromNBT(NBTTagCompound tag)

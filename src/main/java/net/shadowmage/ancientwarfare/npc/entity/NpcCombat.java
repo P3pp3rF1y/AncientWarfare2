@@ -19,11 +19,15 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMelee2;
@@ -166,8 +170,22 @@ public void onWeaponInventoryChanged()
 @Override
 public String getNpcSubType()
   {
-  //TODO lookup type based on item equipped in main slot
-  return "soldier";
+  return getSubtypeFromEquipment();
+  }
+
+protected String getSubtypeFromEquipment()
+  {
+  ItemStack stack = getEquipmentInSlot(0);  
+  if(stack!=null && stack.getItem()!=null)
+    {
+    Item item = stack.getItem();
+    if(item instanceof ItemSword){return "soldier";}
+    else if(item instanceof ItemAxe){return "medic";}
+    else if(item==AWItems.automationHammer){return "engineer";}
+    else if(item==Items.bow){return "archer";}
+    else if(item==AWNpcItemLoader.commandBaton){return "commander";}
+    }
+  return "";
   }
 
 @Override

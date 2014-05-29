@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 public class BlockTownHall extends Block implements IRotatableBlock
 {
 
-IconRotationMap iconMap;
+IconRotationMap iconMap = new IconRotationMap();
 
 public BlockTownHall(String regName)
   {

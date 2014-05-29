@@ -14,7 +14,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -26,6 +28,7 @@ import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
+import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable
@@ -36,6 +39,8 @@ private String ownerName = "";//the owner of this NPC, used for checking teams
 protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
 
 protected NpcLevelingStats levelingStats;
+
+
 
 /**
  * a single base texture for ALL npcs to share, used in case other textures were not set
@@ -56,7 +61,7 @@ public NpcBase(World par1World)
   
   this.getNavigator().setBreakDoors(true);
   this.getNavigator().setAvoidsWater(true);
-  
+  this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
   this.width = 0.6f;
   }
 
@@ -65,6 +70,26 @@ protected void entityInit()
   {
   super.entityInit();
   this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks, TODO load/save from nbt
+  }
+
+public void setTownHallPosition(BlockPosition pos)
+  {
+  
+  }
+
+public BlockPosition getTownHallPosition()
+  {
+  return null;
+  }
+
+public TileTownHall getTownHall()
+  {
+  return null;
+  }
+
+public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position)
+  {
+ 
   }
 
 /**
@@ -84,6 +109,36 @@ public boolean canBeCommandedBy(String playerName)
   else
     {
     return team==worldObj.getScoreboard().getPlayersTeam(playerName);
+    }
+  }
+
+@Override
+protected void dropEquipment(boolean par1, int par2)
+  {
+  if(!worldObj.isRemote)
+    {
+    ItemStack stack;
+    for(int i = 0; i < 5; i++)
+      {
+      stack = getEquipmentInSlot(i);
+      if(stack!=null){entityDropItem(stack, 0.f);}
+      setCurrentItemOrArmor(i, null);
+      }
+    if(ordersStack!=null){entityDropItem(ordersStack, 0.f);}
+    if(upkeepStack!=null){entityDropItem(upkeepStack, 0.f);}
+    ordersStack=null;
+    upkeepStack=null;
+    }
+  }
+
+@Override
+public void onDeath(DamageSource par1DamageSource)
+  {  
+  super.onDeath(par1DamageSource);
+  if(!worldObj.isRemote)
+    {
+    //TODO
+    //if town-hall is not null, inform town hall of death
     }
   }
 

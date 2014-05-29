@@ -61,6 +61,7 @@ public boolean continueExecuting()
 @Override
 public void startExecuting()
   {
+  npc.addAITask(TASK_MOVE);
   }
 
 @Override
@@ -68,7 +69,6 @@ public void updateTask()
   {  
   AWLog.logDebug("updating command move ai..");
   moveRetryDelay--;
-  npc.addAITask(TASK_MOVE);
   if(moveRetryDelay<=0)
     {
     double dist = npc.getDistanceSq(command.x+0.5d, command.y, command.z+0.5d);

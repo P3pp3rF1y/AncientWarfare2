@@ -19,6 +19,8 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
@@ -42,6 +44,8 @@ public NpcWorker(World par1World)
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
   
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
+  this.tasks.addTask(2, new NpcAICommandGuard(this));
+  this.tasks.addTask(2, new NpcAICommandMove(this));
   this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 1.0D));
   this.tasks.addTask(4, new NpcAIGetFood(this));  
   this.tasks.addTask(5, new NpcAIIdleWhenHungry(this)); 

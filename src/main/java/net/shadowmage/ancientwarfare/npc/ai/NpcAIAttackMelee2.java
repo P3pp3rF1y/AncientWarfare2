@@ -1,8 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 public class NpcAIAttackMelee2 extends NpcAI
 {
@@ -40,6 +42,11 @@ public void startExecuting()
   target = npc.getAttackTarget();
   attackDelay = 0;
   moveRetryDelay = 0;
+  TileTownHall th = npc.getTownHall();
+  if(th!=null)
+    {
+    th.handleNpcCombatAlert(npc, target);
+    }
   }
 
 @Override
