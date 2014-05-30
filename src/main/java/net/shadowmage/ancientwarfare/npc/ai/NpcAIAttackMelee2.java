@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
@@ -25,7 +24,7 @@ public NpcAIAttackMelee2(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
-  AWLog.logDebug("checking attack ai...target: "+npc.getAttackTarget());
+//  AWLog.logDebug("checking attack ai...target: "+npc.getAttackTarget());
 //  Entity t = npc.getAttackTarget();
 //  if(t==null || t.isDead){return false;}
   return npc.getAttackTarget()!=null && !npc.getAttackTarget().isDead;

@@ -7,8 +7,8 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIArrowAttack;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
@@ -37,9 +37,9 @@ public void entitySpawnEvent(EntityJoinWorldEvent evt)
       else
         {
         boolean foundRangedAttack=false;
-        for(EntityAIBase base : (List<EntityAIBase>)e.tasks.taskEntries)
+        for(EntityAITaskEntry entry : (List<EntityAITaskEntry>)e.tasks.taskEntries)
           {
-          if(base instanceof EntityAIArrowAttack)
+          if(entry.action instanceof EntityAIArrowAttack)
             {
             foundRangedAttack=true;
             break;

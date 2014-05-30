@@ -176,10 +176,8 @@ public boolean isHostileTowards(Entity e)
     {
     String n = EntityList.getEntityString(e);
     List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), getNpcSubType());
-//    AWLog.logDebug("examining targets for npc: "+getNpcType()+","+getNpcSubType() + " "+targets);
     if(targets.contains(n))
       {
-//      AWLog.logDebug("returning should attack mob: "+e);
       return true;
       }
     }

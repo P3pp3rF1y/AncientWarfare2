@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -90,10 +91,14 @@ public boolean isHostileTowards(Entity e)
     }
   else
     {
-    List <String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getFaction(), "");
+    List <String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), "");
     String t = EntityList.getEntityString(e);
-    return targets.contains(t);
+    if(targets.contains(t))
+      {
+      return true;
+      }
     }
+  return false;
   }
 
 @Override

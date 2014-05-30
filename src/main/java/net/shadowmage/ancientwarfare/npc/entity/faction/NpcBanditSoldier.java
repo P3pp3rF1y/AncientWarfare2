@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class NpcBanditSoldier extends NpcFactionSoldier
