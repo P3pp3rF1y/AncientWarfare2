@@ -151,7 +151,12 @@ public void onWeaponInventoryChanged()
   this.tasks.removeTask(arrowAI);
   this.tasks.removeTask(collideAI);
   ItemStack stack = getEquipmentInSlot(0);
-  if(stack!=null && stack.getItem()==Items.bow)
+  if(stack==null)
+    {
+    AWLog.logDebug("adding melee attack task");
+    this.tasks.addTask(7, collideAI);
+    }
+  else if(stack.getItem()==Items.bow)
     {
     AWLog.logDebug("adding ranged attack task");
     this.tasks.addTask(7, arrowAI);
