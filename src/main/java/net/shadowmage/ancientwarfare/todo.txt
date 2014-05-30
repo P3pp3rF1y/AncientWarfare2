@@ -106,8 +106,6 @@ automation module:
 			Distributor	(bc-compat) 1000 max, 100 in, 100 out		
 	
 npcs module
-	* hostile NPCs:
-		One class per npc type (melee, archer,
 
 	? add rendering of routes when npc-order item is being held
 		work-order renders route + numbers

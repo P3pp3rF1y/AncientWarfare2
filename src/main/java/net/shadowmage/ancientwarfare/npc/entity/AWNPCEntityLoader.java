@@ -89,8 +89,8 @@ public static void load()
       return new NpcBanditArcher(world);
       }
     };
-  addNpcRegistration(reg, "bandit.archer", "ancientwarfare:npc/spawner_bandit_archer");
-  addNpcSubtypeEntry("bandit.archer", "elite", "ancientwarfare:npc/spawner_bandit_archer_elite");
+  addNpcRegistration(reg, "bandit.archer", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcSubtypeEntry("bandit.archer", "elite", "ancientwarfare:npc/spawner_hostile_archer");
   
   reg = new NpcFactionDeclaration(NpcBanditSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.soldier")
     {    
@@ -100,8 +100,8 @@ public static void load()
       return new NpcBanditSoldier(world);
       }
     };
-  addNpcRegistration(reg, "bandit.soldier", "ancientwarfare:npc/spawner_bandit_soldier");
-  addNpcSubtypeEntry("bandit.soldier", "elite", "ancientwarfare:npc/spawner_bandit_soldier_elite");
+  addNpcRegistration(reg, "bandit.soldier", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcSubtypeEntry("bandit.soldier", "elite", "ancientwarfare:npc/spawner_hostile_soldier");
   
   reg = new NpcFactionDeclaration(NpcBanditLeader.class, AWEntityRegistry.NPC_FACTION_BANDIT_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.leader")
     {    
@@ -111,8 +111,8 @@ public static void load()
       return new NpcBanditLeader(world);
       }
     };
-  addNpcRegistration(reg, "bandit.leader", "ancientwarfare:npc/spawner_bandit_leader");
-  addNpcSubtypeEntry("bandit.leader", "elite", "ancientwarfare:npc/spawner_bandit_leader_elite");
+  addNpcRegistration(reg, "bandit.leader", "ancientwarfare:npc/spawner_hostile_commander");
+  addNpcSubtypeEntry("bandit.leader", "elite", "ancientwarfare:npc/spawner_hostile_commander");
   
   reg = new NpcFactionDeclaration(NpcBanditPriest.class, AWEntityRegistry.NPC_FACTION_BANDIT_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.priest")
     {    
@@ -122,7 +122,7 @@ public static void load()
       return new NpcBanditPriest(world);
       }
     };
-  addNpcRegistration(reg, "bandit.priest", "ancientwarfare:npc/spawner_bandit_priest");
+  addNpcRegistration(reg, "bandit.priest", "ancientwarfare:npc/spawner_hostile_priest");
   
   reg = new NpcFactionDeclaration(NpcBanditTrader.class, AWEntityRegistry.NPC_FACTION_BANDIT_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.trader")
     {    
@@ -132,7 +132,9 @@ public static void load()
       return new NpcBanditTrader(world);
       }
     };
-  addNpcRegistration(reg, "bandit.trader", "ancientwarfare:npc/spawner_bandit_trader");
+  addNpcRegistration(reg, "bandit.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  
+  //TODO registrations for the rest of the factions....
   }
 
 /**
@@ -150,9 +152,7 @@ public static void loadNpcSubtypeEquipment()
   addNpcSubtypeEquipment("combat", "soldier", new ItemStack(Items.iron_sword));
   addNpcSubtypeEquipment("combat", "archer", new ItemStack(Items.bow));
   addNpcSubtypeEquipment("combat", "engineer", new ItemStack(AWItems.automationHammer));
-  addNpcSubtypeEquipment("combat", "medic", new ItemStack(Items.iron_axe));
-  
-  //noop for hostile ...equipment set in constructor
+  addNpcSubtypeEquipment("combat", "medic", new ItemStack(Items.iron_axe));  
   }
 
 protected static void addNpcRegistration(NpcDeclaration reg, String npcName, String icon)

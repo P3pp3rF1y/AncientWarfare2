@@ -36,6 +36,16 @@ item.npc_spawner.combat.archer.name=Archer
 item.npc_spawner.combat.medic.name=Medic
 item.npc_spawner.combat.engineer.name=Engineer
 item.npc_spawner.combat.commander.name=Commander
+item.npc_spawner.bandit.soldier.name=Bandit Soldier
+item.npc_spawner.bandit.archer.name=Bandit Archer
+item.npc_spawner.bandit.leader.name=Bandit Leader
+item.npc_spawner.bandit.priest.name=Bandit Priest
+item.npc_spawner.bandit.trader.name=Bandit Trader
+item.npc_spawner.bandit.soldier.elite.name=Elite Bandit Soldier
+item.npc_spawner.bandit.archer.elite.name=Elite Bandit Archer
+item.npc_spawner.bandit.leader.elite.name=Elite Bandit Leader
+
+
 #vehicle
 
 #blocks
