@@ -86,6 +86,8 @@ public static int factionLossOnDeath = 10;//how much faction standing is lost wh
 public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
 private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
 
+public static final String tradeSettings = "08_trade_settings";
+
 public AWNPCStatics(Configuration config)
   {
   super(config);
@@ -122,6 +124,11 @@ public void initializeCategories()
   
   config.addCustomCategoryComment(factionSettings, "Faction Options\n" +
   		"Set starting faction values, and alter the amount of standing gained/lost from player actions.\n" +
+      "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
+      "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
+  
+  config.addCustomCategoryComment(tradeSettings, "Trade Options\n" +
+  		"Add/Remove/Customize trade options for player owned and faction-based NPCs.\n" +
       "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
       "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
   }

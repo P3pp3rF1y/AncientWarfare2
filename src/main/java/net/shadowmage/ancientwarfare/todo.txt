@@ -127,6 +127,7 @@ npcs module
 		
 	* add 'alert' ai to workers/combat/courier npcs to trigger
 		triggers when npc has an AI attack target and is within range of a town hall
+		  or when a worker npc is attacked / fleeing from an enemy
 		causes town-hall to send out
 						
 	* add recipes to copy upkeep/work/combat/routing orders
@@ -159,6 +160,11 @@ npcs module
 	* add other 'misc' npc types -- bard, priest, trader, ??			
 		
 	? add method to 'recruit' a factioned NPC that you are on high-standing with
+	
+	* add faction structure control block
+		for use by structure creators.
+		respawns faction-based npcs and attempts to keep them within the bounds designated in the block
+		controls only accessible to players in creative mode
 	
 	
 vehicles module
@@ -226,9 +232,7 @@ NPCS INFO:
 			actions:
 				work
 				attack
-				patrol
 				route items
-				food upkeep
 		how many levels?
 		how big an effect should levels have on stats?
 		

@@ -225,6 +225,14 @@ npc.worker.lumberjack.name=Lumberjack
 npc.worker.miner.name=Miner
 npc.worker.researcher.name=Researcher
 npc.worker.craftsman.name=Craftsman
+npc.bandit.soldier=Bandit Soldier
+npc.bandit.soldier.elite=Elite Bandit Soldier
+npc.bandit.archer=Bandit Archer
+npc.bandit.archer.elite=Elite Bandit Archer
+npc.bandit.leader=Bandit Leader
+npc.bandit.leader.elite=Elite Bandit Leader
+npc.bandit.priest=Bandit Priest
+npc.bandit.trader=Bandit Trader
 
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal

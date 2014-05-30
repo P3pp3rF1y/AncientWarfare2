@@ -4,13 +4,16 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -30,6 +33,40 @@ public NpcFaction(World par1World)
   }
 
 @Override
+public boolean attackEntityAsMob(Entity target)
+  {
+  float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+  int knockback = 0;
+  if(target instanceof EntityLivingBase)
+    {
+    damage += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)target);
+    knockback += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)target);
+    }
+  boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+  if(targetHit)
+    {
+    if(knockback > 0)
+      {
+      target.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F));
+      this.motionX *= 0.6D;
+      this.motionZ *= 0.6D;
+      }
+    int fireDamage = EnchantmentHelper.getFireAspectModifier(this);
+
+    if(fireDamage > 0)
+      {
+      target.setFire(fireDamage * 4);
+      }
+    if(target instanceof EntityLivingBase)
+      {
+      EnchantmentHelper.func_151384_a((EntityLivingBase)target, this);
+      }
+    EnchantmentHelper.func_151385_b(this, target);
+    }
+  return targetHit;
+  }
+
+@Override
 public boolean canBeCommandedBy(String playerName)
   {
   return false;
@@ -41,12 +78,14 @@ public boolean isHostileTowards(Entity e)
   if(e instanceof EntityPlayer)
     {
     int standing = FactionTracker.INSTANCE.getStandingFor(worldObj, e.getCommandSenderName(), getFaction());
+    if("elite".equals(subType)){standing-=50;}
     return standing<0;
     }
   else if(e instanceof NpcPlayerOwned)
     {
     NpcBase npc = (NpcBase)e;
     int standing = FactionTracker.INSTANCE.getStandingFor(worldObj, npc.getOwnerName(), getFaction());
+    if("elite".equals(subType)){standing-=50;}
     return standing<0;
     }
   else
@@ -124,6 +163,7 @@ public void readSpawnData(ByteBuf additionalData)
   {
   super.readSpawnData(additionalData);
   subType = ByteBufUtils.readUTF8String(additionalData);
+  this.updateTexture();
   }
   
 @Override
