@@ -106,6 +106,19 @@ automation module:
 			Distributor	(bc-compat) 1000 max, 100 in, 100 out		
 	
 npcs module
+	* npc vendor type
+		player-owned npc that has a customizable trade list via GUI.
+		owning players can setup the trades and give the npc their 'stock'
+		owning players can withdraw the proceeds from bartering, and restock the vendor
+		non-owning players can access the vendors trade screen to barter
+	* figure out trade system
+		more specifically, figure out how to make it user-customizeable through a normal config file.
+		trades will be up to 9 items as 'input', single item as 'output'.
+		trades will be customizable per npc type, per npc level.
+			bandits may have different trades than vikings or pirates
+		traders should trade regardless of faction-standing, will be the only way to gain standing once you go hostile
+			when below 0 standing, traders will always trade using the level 0 trades list
+					
 
 	? add rendering of routes when npc-order item is being held
 		work-order renders route + numbers
@@ -157,7 +170,7 @@ npcs module
 				pirate.soldier = cutlass
 		Each 'faction' will have its own NPC base-class -- so players can i.e. specify npcs to be hostile vs brigands but not pirates.				
 
-	* add other 'misc' npc types -- bard, priest, trader, ??			
+	* add other 'misc' npc types -- bard, priest, trader, vendor??			
 		
 	? add method to 'recruit' a factioned NPC that you are on high-standing with
 	

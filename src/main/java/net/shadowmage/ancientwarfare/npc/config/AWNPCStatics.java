@@ -20,6 +20,13 @@
  */
 package net.shadowmage.ancientwarfare.npc.config;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,6 +41,8 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.trade.NpcTrade;
+import net.shadowmage.ancientwarfare.npc.trade.TradeParser;
 
 public class AWNPCStatics extends ModConfiguration
 {
@@ -87,6 +96,7 @@ public static int factionGainOnTrade = 2;//how much faction standing is gained w
 private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
 
 public static final String tradeSettings = "08_trade_settings";
+private List<NpcTrade> npcTrades = new ArrayList<NpcTrade>();
 
 public AWNPCStatics(Configuration config)
   {
@@ -181,7 +191,7 @@ public void initializeValues()
 
 private void loadTargetValues()
   {
-  String[] defaultTargets = new String[]{"Zombie","Skeleton"};
+  String[] defaultTargets = new String[]{"Zombie","Skeleton","Slime"};
   String[] targets;
   
   targets = config.get(targetSettings, "combat.targets", defaultTargets, "Default targets for: unassigned combat npc").getStringList();
@@ -272,6 +282,45 @@ private void loadDefaultFactionStandings()
     {
     this.defaultFactionStandings.put(name, config.get(factionSettings, name+".starting_faction_standing", 0, "Default faction standing for: ["+name+"s] for new players joining a game.").getInt(0));
     }
+  }
+
+/**
+ * called during post-init, to ensure all items are loaded
+ */
+public void loadDefaultTrades()
+  {
+  File file = new File("config/AWConfig/npc/trades");
+  file.mkdirs();
+  file = new File(file, "trades.cfg");
+  if(!file.exists())
+    {
+    writeOutDefaultTrades(file);
+    }
+  List<NpcTrade> trades = TradeParser.parseTrades(file);
+  this.npcTrades.addAll(trades);
+  }
+
+private void writeOutDefaultTrades(File file)
+  {
+  InputStream is = getClass().getResourceAsStream("/assets/ancientwarfare/trades/trades.cfg");
+  BufferedReader reader = new BufferedReader(new InputStreamReader(is));    
+  try
+    {
+    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+    String line;
+    while((line=reader.readLine())!=null)
+      {
+      writer.write(line);
+      writer.newLine();
+      }
+    writer.close();
+    reader.close();
+    is.close();
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }  
   }
 
 /**

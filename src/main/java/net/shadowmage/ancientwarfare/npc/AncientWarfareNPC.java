@@ -27,9 +27,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 
 @Mod
 (
@@ -121,6 +118,7 @@ public void postInit(FMLPostInitializationEvent evt)
    /**
     * save config for any changes that were made during loading stages
     */
+  statics.loadDefaultTrades();
   proxy.loadSkins();
   AWNPCEntityLoader.loadNpcSubtypeEquipment();
   config.save();
