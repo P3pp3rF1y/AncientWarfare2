@@ -39,6 +39,11 @@ public int getBaseExperience()
   return xp;
   }
 
+public int getBaseLevel()
+  {
+  return level;
+  }
+
 public void addExperience(String type, int xp)
   {
   if(!experienceMap.containsKey(type)){experienceMap.put(type, new ExperienceEntry());}

@@ -4,7 +4,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBase;
 
-public class GuiNpcBase extends GuiContainerBase
+public abstract class GuiNpcBase extends GuiContainerBase
 {
 
 ContainerNpcBase container;
@@ -14,16 +14,5 @@ public GuiNpcBase(ContainerBase container)
   this.container = (ContainerNpcBase)container;
   }
 
-@Override
-public void initElements()
-  {
-
-  }
-
-@Override
-public void setupElements()
-  {
-
-  }
 
 }

@@ -2,19 +2,16 @@ package net.shadowmage.ancientwarfare.npc.entity;
 
 import io.netty.buffer.ByteBuf;
 
-import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
@@ -24,7 +21,6 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
@@ -278,7 +274,7 @@ public void onUpdate()
   {
   worldObj.theProfiler.startSection("AWNpcTick");
   updateArmSwingProgress();
-  if(ticksExisted%200==0 && getHealth()<getMaxHealth())
+  if(ticksExisted%200==0 && getHealth()<getMaxHealth() && (!requiresUpkeep() || getFoodRemaining()>0))
     {
     setHealth(getHealth()+1);
     }

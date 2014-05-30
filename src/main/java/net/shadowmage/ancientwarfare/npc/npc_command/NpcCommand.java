@@ -39,7 +39,6 @@ CLEAR_COMMAND;
  */
 public static void handleCommandClient(CommandType type, MovingObjectPosition hit)
   {
-  AWLog.logDebug("receiving client command...:"+type+" at: "+hit);
   if(hit!=null && hit.typeOfHit!=MovingObjectType.MISS)
     {
     if(hit.typeOfHit==MovingObjectType.ENTITY && hit.entityHit!=null)
@@ -60,7 +59,6 @@ public static void handleCommandClient(CommandType type, MovingObjectPosition hi
  */
 public static void handleServerCommand(EntityPlayer player, CommandType type, boolean block, int x, int y, int z)
   {
-  AWLog.logDebug("receiving server-side command: "+type+" : "+block+" : "+x+","+y+","+z);
   Command cmd = null;
   if(block)
     {

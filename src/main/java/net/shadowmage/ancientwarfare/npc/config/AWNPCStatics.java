@@ -42,6 +42,7 @@ import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTrade;
+import net.shadowmage.ancientwarfare.npc.trade.NpcTradeManager;
 import net.shadowmage.ancientwarfare.npc.trade.TradeParser;
 
 public class AWNPCStatics extends ModConfiguration
@@ -95,9 +96,6 @@ public static int factionLossOnDeath = 10;//how much faction standing is lost wh
 public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
 private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
 
-public static final String tradeSettings = "08_trade_settings";
-private List<NpcTrade> npcTrades = new ArrayList<NpcTrade>();
-
 public AWNPCStatics(Configuration config)
   {
   super(config);
@@ -137,10 +135,6 @@ public void initializeCategories()
       "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
       "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
   
-  config.addCustomCategoryComment(tradeSettings, "Trade Options\n" +
-  		"Add/Remove/Customize trade options for player owned and faction-based NPCs.\n" +
-      "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
-      "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
   }
 
 @Override
@@ -297,7 +291,10 @@ public void loadDefaultTrades()
     writeOutDefaultTrades(file);
     }
   List<NpcTrade> trades = TradeParser.parseTrades(file);
-  this.npcTrades.addAll(trades);
+  for(NpcTrade trade : trades)
+    {
+    NpcTradeManager.INSTANCE.addNpcTrade(trade);
+    }
   }
 
 private void writeOutDefaultTrades(File file)

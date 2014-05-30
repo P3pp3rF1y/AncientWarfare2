@@ -157,11 +157,10 @@ public static ItemStack removeItems(IInventory inventory, int side, ItemStack fi
     int toMove;
     ItemStack slotStack;
     for(int i = 0; i <slotIndices.length; i++)
-      {  
-      
+      {        
       index = slotIndices[i];
       slotStack = inventory.getStackInSlot(index);
-      if(!doItemStacksMatch(slotStack, filter)){continue;}
+      if(slotStack==null || !doItemStacksMatch(slotStack, filter)){continue;}
       if(returnStack==null)
         {
         returnStack = new ItemStack(filter.getItem());
@@ -169,8 +168,7 @@ public static ItemStack removeItems(IInventory inventory, int side, ItemStack fi
         }
       toMove = slotStack.stackSize;
       if(toMove>quantity){toMove = quantity;}
-      if(toMove + returnStack.stackSize> returnStack.getMaxStackSize()){toMove = returnStack.getMaxStackSize() - returnStack.stackSize;}
-      
+      if(toMove + returnStack.stackSize> returnStack.getMaxStackSize()){toMove = returnStack.getMaxStackSize() - returnStack.stackSize;}      
       returnStack.stackSize+=toMove;
       slotStack.stackSize-=toMove;
       quantity-=toMove;
@@ -187,30 +185,27 @@ public static ItemStack removeItems(IInventory inventory, int side, ItemStack fi
     }
   else
     {
-    int index;
     int toMove;
     ItemStack slotStack;
     for(int i = 0; i <inventory.getSizeInventory(); i++)
-      {        
-      index = i;
-      slotStack = inventory.getStackInSlot(index);
-      if(!doItemStacksMatch(slotStack, filter)){continue;}
+      {              
+      slotStack = inventory.getStackInSlot(i);
+      if(slotStack==null || !doItemStacksMatch(slotStack, filter)){continue;}      
       if(returnStack==null)
         {
         returnStack = new ItemStack(filter.getItem());
         returnStack.stackSize = 0;
-        }
+        }      
       toMove = slotStack.stackSize;
       if(toMove>quantity){toMove = quantity;}
-      if(toMove + returnStack.stackSize> returnStack.getMaxStackSize()){toMove = returnStack.getMaxStackSize() - returnStack.stackSize;}
-      
+      if(toMove + returnStack.stackSize> returnStack.getMaxStackSize()){toMove = returnStack.getMaxStackSize() - returnStack.stackSize;}      
       returnStack.stackSize+=toMove;
       slotStack.stackSize-=toMove;
-      quantity-=toMove;
+      quantity-=toMove;      
       if(slotStack.stackSize<=0)
         {
-        inventory.setInventorySlotContents(index, null);        
-        }
+        inventory.setInventorySlotContents(i, null);        
+        }      
       inventory.markDirty();
       if(quantity<=0)
         {
