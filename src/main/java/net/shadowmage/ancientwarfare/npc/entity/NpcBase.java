@@ -21,6 +21,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
@@ -138,6 +139,20 @@ public void onDeath(DamageSource par1DamageSource)
     }
   }
 
+@Override
+public void onKillEntity(EntityLivingBase par1EntityLivingBase)
+  {  
+  super.onKillEntity(par1EntityLivingBase);
+  if(!worldObj.isRemote)
+    {
+    addExperience(AWNPCStatics.npcXpFromKill);
+    if(par1EntityLivingBase==this.getAttackTarget())
+      {
+      this.setAttackTarget(null);
+      }
+    }
+  }
+
 public Command getCurrentCommand()
   {
   return null;
@@ -179,7 +194,7 @@ public void removeAITask(int task)
 
 private void setAITasks(int tasks)
   {
-  AWLog.logDebug("setting npc ai tasks to: "+tasks);
+//  AWLog.logDebug("setting npc ai tasks to: "+tasks);
   this.getDataWatcher().updateObject(20, Integer.valueOf(tasks));  
   }
 
@@ -187,7 +202,7 @@ private void setAITasks(int tasks)
 public void setHomeArea(int par1, int par2, int par3, int par4)
   {  
   super.setHomeArea(par1, par2, par3, par4);
-  AWLog.logDebug("setting home position...");
+//  AWLog.logDebug("setting home position...");
   }
 
 public void addExperience(int amount)

@@ -47,19 +47,13 @@ public void updateEntity()
 
 private void broadcast()
   {
-  AWLog.logDebug("broadcasting from town hall tile...");
   List<NpcPlayerOwned> npcs = getNpcsInArea();
   BlockPosition pos = new BlockPosition(xCoord, yCoord, zCoord);
   for(NpcPlayerOwned npc : npcs)
     {
     if(npc.canBeCommandedBy(getOwnerName()))
       {
-      AWLog.logDebug("xmit to entity: "+npc);
       npc.handleTownHallBroadcast(this, pos);      
-      }
-    else
-      {
-      AWLog.logDebug("npc cannot be commanded by owner..: "+npc.getOwnerName()+" this: "+getOwnerName());
       }
     }
   }
@@ -71,7 +65,7 @@ public void handleAlert(BlockPosition pos)
 
 public void handleNpcCombatAlert(NpcBase npc, Entity target)
   {
-  AWLog.logDebug("receiving combat alert from: "+npc +" at: "+target);
+//  AWLog.logDebug("receiving combat alert from: "+npc +" at: "+target);
   if(recentAlertTimer<=0)
     {
     Command cmd = new Command(CommandType.ATTACK, target.getEntityId());
@@ -83,12 +77,12 @@ public void handleNpcCombatAlert(NpcBase npc, Entity target)
       if(!npc1.canBeCommandedBy(getOwnerName())){continue;}
       if(npc1 instanceof NpcCombat)
         {
-        AWLog.logDebug("commanding npc: "+npc1+" to attack target: "+cmd);
+//        AWLog.logDebug("commanding npc: "+npc1+" to attack target: "+cmd);
         npc1.handlePlayerCommand(cmd);
         }
       else
         {
-        AWLog.logDebug("commanding npc: "+npc1+" to move to town hall:: "+cmd2);
+//        AWLog.logDebug("commanding npc: "+npc1+" to move to town hall:: "+cmd2);
         npc1.handlePlayerCommand(cmd2);
         }
       }

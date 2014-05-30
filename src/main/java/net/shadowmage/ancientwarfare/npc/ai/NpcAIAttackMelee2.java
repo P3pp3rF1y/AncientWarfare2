@@ -90,7 +90,7 @@ private void attackTarget()
     npc.swingItem();
     npc.attackEntityAsMob(target);    
     this.attackDelay=20;//TODO set attack delay from npc-attributes? 
-    int xp = target.isDead ? AWNPCStatics.npcXpFromKill : AWNPCStatics.npcXpFromAttack;
+    int xp = AWNPCStatics.npcXpFromAttack;
     npc.addExperience(xp);
     if(target.isDead)
       {

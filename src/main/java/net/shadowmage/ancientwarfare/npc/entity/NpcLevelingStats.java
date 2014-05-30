@@ -44,34 +44,32 @@ public int getBaseLevel()
   return level;
   }
 
-public void addExperience(String type, int xp)
+public void addExperience(String type, int xpGained)
   {
+  if(npc.worldObj.isRemote){return;}
   if(!experienceMap.containsKey(type)){experienceMap.put(type, new ExperienceEntry());}
   ExperienceEntry entry = experienceMap.get(type);
-  entry.xp+=xp;
+  entry.xp+=xpGained;
   while(entry.level < AWNPCStatics.maxNpcLevel && entry.xp>=getXPToLevel(entry.level+1))
     {
     entry.xp -= getXPToLevel(entry.level+1);
     entry.level++;
-    }
- 
-  xp+=xp;
-  while(level < AWNPCStatics.maxNpcLevel && xp>=getXPToLevel(level+1))
+    } 
+  this.xp+=xpGained;
+  while(level < AWNPCStatics.maxNpcLevel && this.xp>=getXPToLevel(level))
     {
-    xp -= getXPToLevel(level+1);
-    level++;
-    onBaseLevelGained(level);
-    }
-  
+    this.xp -= getXPToLevel(level);
+    onBaseLevelGained(level+1);
+    }  
   }
 
 private void onBaseLevelGained(int newLevel)
   {
+  level = newLevel;
   if(newLevel<=10)//TODO set max-cap level from config...or just let diminishing xp gain taper it off....
     {
     int health = 20 + newLevel;
-    npc.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health);
-    AWLog.logDebug("npc max health increased from level up to: "+health+" for npc: "+npc);    
+    npc.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health); 
     }
   }
 

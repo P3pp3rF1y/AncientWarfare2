@@ -64,7 +64,6 @@ public TileTownHall getTownHall()
 @Override
 public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position)
   {
-  AWLog.logDebug("receiving townhall broadcast at entity...from: "+position);
   validateTownHallPosition();
   if(getTownHallPosition()!=null)
     {
