@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -24,6 +25,7 @@ public NpcAIAttackMelee2(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
+  AWLog.logDebug("checking attack ai...target: "+npc.getAttackTarget());
 //  Entity t = npc.getAttackTarget();
 //  if(t==null || t.isDead){return false;}
   return npc.getAttackTarget()!=null && !npc.getAttackTarget().isDead;
@@ -54,7 +56,7 @@ public void updateTask()
   {
   npc.getLookHelper().setLookPositionWithEntity(target, 30.f, 30.f);
   double distanceToEntity = this.npc.getDistanceSq(target.posX, target.boundingBox.minY, target.posZ);
-  double attackDistance = (double)(this.npc.width * 2.0F * this.npc.width * 2.0F + target.width);
+  double attackDistance = (double)((this.npc.width * this.npc.width * 2.0F * 2.0F) + (target.width * target.width * 2.0F * 2.0F));
   if(distanceToEntity>attackDistance)
     {
     moveToTarget(distanceToEntity);

@@ -17,13 +17,13 @@ public NpcAIIdleWhenHungry(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
-  return npc.requiresUpkeep() && npc.getFoodRemaining()==0;
+  return npc.getAttackTarget()==null && npc.requiresUpkeep() && npc.getFoodRemaining()==0;
   }
 
 @Override
 public boolean continueExecuting()
   {
-  return npc.requiresUpkeep() && npc.getFoodRemaining()==0;
+  return npc.getAttackTarget()==null && npc.requiresUpkeep() && npc.getFoodRemaining()==0;
   }
 
 /**

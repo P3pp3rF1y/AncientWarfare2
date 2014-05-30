@@ -153,10 +153,12 @@ public void onWeaponInventoryChanged()
   ItemStack stack = getEquipmentInSlot(0);
   if(stack!=null && stack.getItem()==Items.bow)
     {
+    AWLog.logDebug("adding ranged attack task");
     this.tasks.addTask(7, arrowAI);
     }
   else
     {
+    AWLog.logDebug("adding melee attack task");
     this.tasks.addTask(7, collideAI);
     }
   //TODO set damage

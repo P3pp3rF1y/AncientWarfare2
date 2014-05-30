@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -73,6 +74,8 @@ public void preInit(FMLPreInitializationEvent evt)
   proxy.registerClient();
   statics.load();//load config settings
   FMLCommonHandler.instance().bus().register(FactionTracker.INSTANCE);
+  MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
+//  FMLCommonHandler.instance().bus().register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
   
   /**
    * load items, blocks, and entities

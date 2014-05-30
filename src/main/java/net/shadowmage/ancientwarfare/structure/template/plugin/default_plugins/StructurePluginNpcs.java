@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
 import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;

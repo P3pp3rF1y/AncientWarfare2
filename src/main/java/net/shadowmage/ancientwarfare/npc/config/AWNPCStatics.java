@@ -84,6 +84,7 @@ private HashMap<String, Integer> foodValues = new HashMap<String, Integer>();
  */
 public static final String targetSettings = "05_target_settings";
 private HashMap<String, List<String>> entityTargetSettings = new HashMap<String, List<String>>();
+private List<String> entitiesToTargetNpcs = new ArrayList<String>();
 
 /**
  * enable/disable specific recipes
@@ -217,6 +218,14 @@ private void loadTargetValues()
     targets = config.get(targetSettings, name+".leader.targets", defaultTargets, "Default targets for: "+name+" leaders").getStringList();
     addTargetMapping(name, "leader", targets);  
     }  
+  
+  targets = config.get(targetSettings, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
+  		"Should work with any new-ai enabled mob type; vanilla or mod-added.").getStringList();
+  
+  for(String target : targets)
+    {
+    entitiesToTargetNpcs.add(target);
+    }
   }
 
 private void addTargetMapping(String npcType, String npcSubtype, String[] targets)
@@ -229,6 +238,11 @@ private void addTargetMapping(String npcType, String npcSubtype, String[] target
     t.add(target);
     }
   } 
+
+public boolean shouldEntityTargetNpcs(String entityName)
+  {
+  return entitiesToTargetNpcs.contains(entityName);
+  }
 
 public List<String> getValidTargetsFor(String npcType, String npcSubtype)
   {
