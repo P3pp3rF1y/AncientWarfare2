@@ -20,12 +20,19 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
-import java.util.List;
-
+import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
+import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
+import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
+import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditArcher;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditPriest;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditSoldier;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditTrader;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;
 
 public class StructurePluginNpcs extends StructureContentPlugin
 {
@@ -44,14 +51,22 @@ public void addHandledBlocks(IStructurePluginManager manager)
 @Override
 public void addHandledEntities(IStructurePluginManager manager)
   {
-
+  manager.registerEntityHandler("AWNpc", NpcCombat.class, TemplateRuleEntityLogic.class);
+  manager.registerEntityHandler("AWNpc", NpcWorker.class, TemplateRuleEntityLogic.class);
+  manager.registerEntityHandler("AWNpc", NpcCourier.class, TemplateRuleEntityLogic.class);
+  manager.registerEntityHandler("AWNpc", NpcTrader.class, TemplateRuleEntityLogic.class);
+//  manager.registerEntityHandler("AWNpc", NpcPriest.class, TemplateRuleEntityLogic.class);
+//  manager.registerEntityHandler("AWNpc", NpcBard.class, TemplateRuleEntityLogic.class);
+  manager.registerEntityHandler("AWNpc", NpcBanditArcher.class, TemplateRuleEntityLogic.class);
+  manager.registerEntityHandler("AWNpc", NpcBanditSoldier.class, TemplateRuleEntityLogic.class);
+  manager.registerEntityHandler("AWNpc", NpcBanditLeader.class, TemplateRuleEntityLogic.class);
+  manager.registerEntityHandler("AWNpc", NpcBanditPriest.class, TemplateRuleEntityLogic.class);
+  manager.registerEntityHandler("AWNpc", NpcBanditTrader.class, TemplateRuleEntityLogic.class);
   }
 
 public static void load()
   {
   StructurePluginManager.instance().addPlugin(new StructurePluginNpcs());
   }
-
-public static TemplateRuleEntity parseNpcRule(List<String> lines){return null;}
 
 }

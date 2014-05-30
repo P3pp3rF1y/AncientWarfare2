@@ -53,5 +53,4 @@ public static void load()
   StructurePluginManager.instance().addPlugin(new StructurePluginAutomation());
   }
 
-public static TemplateRuleBlock parseAutomationRule(List<String> lines){return null;}
 }
