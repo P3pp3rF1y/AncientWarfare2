@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMelee2;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandAttack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeOnLowHealth;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
@@ -71,7 +72,7 @@ public NpcCombat(World par1World)
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAICommandGuard(this));
   this.tasks.addTask(2, new NpcAICommandMove(this));
-  
+  this.tasks.addTask(3, new NpcAIFleeOnLowHealth(this));
   this.tasks.addTask(4, new NpcAIGetFood(this));
   this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));
   //6--empty....
