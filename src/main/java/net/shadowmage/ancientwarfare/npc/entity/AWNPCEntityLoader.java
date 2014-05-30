@@ -98,15 +98,15 @@ public static void load()
 //    };
 //  addNpcRegistration(reg, "priest", "ancientwarfare:npc/spawner_priest");
   
-//  reg = new NpcDeclaration(NpcBard.class, AWEntityRegistry.NPC_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bard")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcBard(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "bard", "ancientwarfare:npc/spawner_bard");
+  reg = new NpcDeclaration(NpcBard.class, AWEntityRegistry.NPC_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bard")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBard(world);
+      }
+    };
+  addNpcRegistration(reg, "bard", "ancientwarfare:npc/spawner_bard");
   
   /**
    * HOSTILE NPCS

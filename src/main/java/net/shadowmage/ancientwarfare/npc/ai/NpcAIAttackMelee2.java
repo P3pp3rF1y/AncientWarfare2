@@ -33,7 +33,7 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   {  
-  return npc.getAttackTarget()!=null && !npc.getAttackTarget().isDead;
+  return target!=null && target==npc.getAttackTarget() && !npc.getAttackTarget().isDead;
   }
 
 @Override

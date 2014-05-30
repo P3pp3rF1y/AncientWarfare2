@@ -38,6 +38,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeOnLowHealth;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMedic;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIPatrol;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
@@ -55,7 +56,7 @@ public NpcCombat(World par1World)
   super(par1World);
   collideAI = new NpcAIAttackMelee2(this);
   arrowAI = new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F); 
-  patrolAI = new NpcAIPatrol(this);
+  
   IEntitySelector selector = new IEntitySelector()
     {
     @Override
@@ -77,9 +78,10 @@ public NpcCombat(World par1World)
   this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));
   //6--empty....
   //7==combat task, inserted onweaponinventoryupdated
-  this.tasks.addTask(8, patrolAI);
+  this.tasks.addTask(8, new NpcAIMedic(this));
+  this.tasks.addTask(9, (patrolAI = new NpcAIPatrol(this)));
   
-  this.tasks.addTask(9, new NpcAIMoveHome(this, 80.f, 20.f, 40.f, 5.f));
+  this.tasks.addTask(10, new NpcAIMoveHome(this, 80.f, 20.f, 40.f, 5.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
