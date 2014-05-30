@@ -238,8 +238,7 @@ public List<String> getValidTargetsFor(String npcType, String npcSubtype)
   }
 
 private void loadFoodValues()
-  {
-  
+  {  
   config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.apple), 3000);
   config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.mushroom_stew), 4500);
   config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.bread), 3750);
