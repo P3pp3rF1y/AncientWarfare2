@@ -7,9 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTrade;
@@ -41,7 +41,7 @@ public ContainerNpcTrade(EntityPlayer player, int x, int y, int z)
     }
   for(int i = 0; i <9; i++)
     {
-    addSlotToContainer(new Slot(inventory, i, (i%3)*18+8+18, (i/3)*18 +8+8+3*18+12+8)
+    addSlotToContainer(new Slot(inventory, i, (i%3)*18+8+18, (i/3)*18 +8+8+3*18+12+8+2)
       {
       @Override
       public void onSlotChanged()
@@ -51,13 +51,14 @@ public ContainerNpcTrade(EntityPlayer player, int x, int y, int z)
       });
     }
   
-  addSlotToContainer(new Slot(result, 0, 8+7*18, 8+8+2*18+12+8+18+18)
+  addSlotToContainer(new Slot(result, 0, 8+7*18, 8+8+2*18+12+8+18+18+2)
     {
     @Override
     public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
       {
       super.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
       currentTrade.removeItems(ContainerNpcTrade.this.inventory);
+      npc.addExperience(AWNPCStatics.npcXpFromTrade);
       updateTrade();
       }
     @Override
@@ -67,7 +68,7 @@ public ContainerNpcTrade(EntityPlayer player, int x, int y, int z)
       }
     });
   
-  addPlayerSlots(player, 8, 8+8+2*18+12+8+18+18+18+8+18, 4);
+  addPlayerSlots(player, 8, 8+8+2*18+12+8+18+18+18+8+18+2, 4);
   updateTrade();
   }
 
