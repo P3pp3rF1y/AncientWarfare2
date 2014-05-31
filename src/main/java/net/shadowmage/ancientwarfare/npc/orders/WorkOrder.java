@@ -54,9 +54,9 @@ public WorkPriorityType getPriorityType()
   }
 
 public List<WorkEntry> getEntries()
-{
-return entries;
-}
+  {
+  return entries;
+  }
 
 public boolean addWorkPosition(World world, BlockPosition position, int length)
   {

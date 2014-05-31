@@ -12,6 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -417,8 +418,7 @@ public static NBTTagCompound writeInventoryToNBT(IInventory inventory, NBTTagCom
     {
     item = inventory.getStackInSlot(i);
     if(item==null){continue;}
-    itemTag = new NBTTagCompound();
-    item.writeToNBT(itemTag);
+    itemTag = writeItemStack(item, new NBTTagCompound());
     itemTag.setShort("slot", (short)i);
     itemList.appendTag(itemTag);
     }  
@@ -443,9 +443,49 @@ public static void readInventoryFromNBT(IInventory inventory, NBTTagCompound tag
     {
     itemTag = itemList.getCompoundTagAt(i);
     slot = itemTag.getShort("slot");
-    item = ItemStack.loadItemStackFromNBT(itemTag);
+    item = readItemStack(itemTag);
     inventory.setInventorySlotContents(slot, item);
     }
+  }
+
+/**
+ * writes an item stack to nbt in a item-id agnostic format.<br>
+ * suitable for cross-save item-stack saving.
+ * @param stack
+ * @param tag
+ * @return
+ */
+public static NBTTagCompound writeItemStack(ItemStack stack, NBTTagCompound tag)
+  {
+  tag.setString("item", Item.itemRegistry.getNameForObject(stack.getItem()));
+  tag.setInteger("damage", stack.getItemDamage());
+  tag.setInteger("quantity", stack.stackSize);
+  if(stack.stackTagCompound!=null){tag.setTag("stackTag", stack.stackTagCompound.copy());}
+  return tag;
+  }
+
+/**
+ * reads an item-stack written out via {@link #InventoryTools.writeItemStack(ItemStack, NBTTagCompound)} 
+ * @param tag
+ * @return
+ */
+public static ItemStack readItemStack(NBTTagCompound tag)
+  {
+  if(tag.hasKey("item") && tag.hasKey("damage") && tag.hasKey("quantity"))
+    {
+    Item item = (Item) Item.itemRegistry.getObject(tag.getString("item"));
+    int damage = tag.getInteger("damage");
+    int quantity = tag.getInteger("quantity");
+    NBTTagCompound stackTag = null;
+    if(tag.hasKey("stackTag")){stackTag=tag.getCompoundTag("stackTag");}
+    if(item!=null)
+      {
+      ItemStack stack = new ItemStack(item, quantity, damage);
+      stack.stackTagCompound = stackTag;
+      return stack;
+      }
+    }
+  return null;
   }
 
 /**

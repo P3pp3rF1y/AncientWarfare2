@@ -34,108 +34,105 @@ TEXTURES
 	vehicle	
 	
 ****************************MEIM MODULE TODO****************************
-	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
+who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 	
 ****************************STRUCTURE MODULE TODO****************************
-	--need to examine all plugins for places when item-stacks are saved to the tile/entity nbt -- need to handle these special and sideline the
-		item-data to preserve the item-name rather than item-id.
-		
-	Recipes Needed:
-		ALL (except for templates in drafting station)
-	Scanner GUI needs some cleanup / make it look nice
-	plugins / support for vehicle module
-	plugin support for automation module
-	plugin support for npc module
-		npcs--done
-		blocks--
-			town-hall
-			structure-control block
-	template plugin support for gates
-	textures for drafting station, survival-mode builder block
-	rework gates as a multi-block? (use controller TE TESR to render gate)
-		at that point, can use blocks for collision and interaction
-		probably less buggy than the entity-based interaction
-		but how to handle only partially loaded gates?
+? rework gates as a multi-block? (use controller TE TESR to render gate)
+	at that point, can use blocks for collision and interaction
+	probably less buggy than the entity-based interaction
+	but how to handle only partially loaded gates?	
+* need to examine all plugins for places when item-stacks are saved to the tile/entity nbt -- need to handle these special and sideline the
+	item-data to preserve the item-name rather than item-id.	
+* recipes: (none?)
+* Scanner GUI needs some cleanup / make it look nice
+* plugins / support for vehicle module
+* plugin support for automation module
+* plugin support for npc module
+	npcs--done
+	blocks--
+		town-hall
+		structure-control block
+* template plugin support for gates
+* textures for drafting station, survival-mode builder block
 
 ****************************AUTOMATION MODULE TODO****************************	
-	? worksites needed:
-		Smeltery multiblock -- ore processing
-			Smeltery control block (worksite)
-			Smeltery heater/smelting block
-			Smeltery input block
-			Smeltery output block
-		Lumberyard multiblock -- wood processing	
-	? Custom renders for power-states on power tiles?  Optional?
-		would require a client-side config on whether to use custom render
-		would also require a server-side config on whether to send the network data or not
-		would need a change in block rendering for opacity/cutaway 
-			and a TESR implemented for rendering of state
-	? API / compat stuff:
-		add IMC-based API to add logs/saplings to forestry farm??
-		add config-based method to add logs/saplings to forestry farm??	
-	* chunkloader blocks
-	* Add overlay rendering of work-site sizes while holding a work-site setting item.
-	* Change over worksite BB render to a TESR -- should be slightly more optimized
-	* Torque API:
-		Add input max/tick code to tiles, reset counter every tile-update.
-		Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
-			drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
-		Add high-quality blocks with higher capacity and less/no power loss.
-	* recipes
-	* warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
-	* mailbox side-select GUI needs cleaned up to mirror worksite side-select GUI
-	* warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
-		how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
-		--perhaps have different methods for tile.invalidate() and onBlockBroken							
+? worksites needed:
+	Smeltery multiblock -- ore processing
+		Smeltery control block (worksite)
+		Smeltery heater/smelting block
+		Smeltery input block
+		Smeltery output block
+	Lumberyard multiblock -- wood processing	
+? Custom renders for power-states on power tiles?  Optional?
+	would require a client-side config on whether to use custom render
+	would also require a server-side config on whether to send the network data or not
+	would need a change in block rendering for opacity/cutaway 
+		and a TESR implemented for rendering of state
+? API / compat stuff:
+	add IMC-based API to add logs/saplings to forestry farm??
+	add config-based method to add logs/saplings to forestry farm??	
+* chunkloader blocks
+* Add overlay rendering of work-site sizes while holding a work-site setting item.
+* Change over worksite BB render to a TESR -- should be slightly more optimized
+* Torque API:
+	Add input max/tick code to tiles, reset counter every tile-update.
+	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
+		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
+	Add high-quality blocks with higher capacity and less/no power loss.
+* recipes
+* warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
+* mailbox side-select GUI needs cleaned up to mirror worksite side-select GUI
+* warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
+	how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
+	--perhaps have different methods for tile.invalidate() and onBlockBroken							
 
 		
 ****************************NPC MODULE TODO****************************
-	? all npcs should be capable of riding horses -- they use it purely for transportation speed increase
-	? add method to 'recruit' a factioned NPC that you are on high-standing with (converts to closest player-owned npc class?)	
-	? npc vendor type?
-		player-owned npc that has a customizable trade list via GUI.
-		owning players can setup the trades and give the npc their 'stock'
-		owning players can withdraw the proceeds from bartering, and restock the vendor
-		non-owning players can access the vendors trade screen to barter
-	? add rendering of routes when npc-order item is being held
-		work-order renders route + numbers
-		routing-order renders route + sides
-		combat-order renders patrol and guard points/targets
-	* combat bonuses for player-owned combat NPCs when in-range of a 'commander' set combat npc
-	* player-owned courier AI
-	* routing-orders item
-	* routing-orders class	
-	* player-owned priest AI
-	* player-owned trader AI
-	* player-owned bard AI
-	* find default sound/music for bards
-	* faction soldier AI
-	* faction leader AI
-	* faction archer AI
-	* faction priest AI
-	* faction trader AI
-	* add faction structure control block
-		for use by structure creators.
-		respawns faction-based npcs and attempts to keep them within the bounds designated in the block
-		controls only accessible to players in creative mode
-	* add recipes and research requirements for npcs and npc-related blocks
-	* add recipes to copy upkeep/work/combat/routing orders		
-	* add town-hall block GUI
-		tracks nearby entities.
-		maintains list of dead-entity-data (they transmit to town-hall on death)
-			this can be viewed by user
-			? priests may occasionally use this to 'resurrect' a dead npc
-		?can serve as a central upkeep-point for NPCs / designate a default 'safe' place
-		can issue a 'call to arms' command to all nearby teamed npcs
-			combat npcs will respond to the point in question 
-			worker npcs will move to the town-hall for a certain period of time
-		occasionally broadcast to all npcs in broadcast range (set from gui) to set town-hall point	
+? all npcs should be capable of riding horses -- they use it purely for transportation speed increase
+? add method to 'recruit' a factioned NPC that you are on high-standing with (converts to closest player-owned npc class?)	
+? npc vendor type?
+	player-owned npc that has a customizable trade list via GUI.
+	owning players can setup the trades and give the npc their 'stock'
+	owning players can withdraw the proceeds from bartering, and restock the vendor
+	non-owning players can access the vendors trade screen to barter
+? add rendering of routes when npc-order item is being held
+	work-order renders route + numbers
+	routing-order renders route + sides
+	combat-order renders patrol and guard points/targets
+* combat bonuses for player-owned combat NPCs when in-range of a 'commander' set combat npc
+* player-owned courier AI
+* routing-orders item
+* routing-orders class	
+* player-owned priest AI
+* player-owned trader AI
+* player-owned bard AI
+* find default sound/music for bards
+* faction soldier AI
+* faction leader AI
+* faction archer AI
+* faction priest AI
+* faction trader AI
+* add faction structure control block
+	for use by structure creators.
+	respawns faction-based npcs and attempts to keep them within the bounds designated in the block
+	controls only accessible to players in creative mode
+* add recipes and research requirements for npcs and npc-related blocks
+* add recipes to copy upkeep/work/combat/routing orders		
+* add town-hall block GUI
+	tracks nearby entities.
+	maintains list of dead-entity-data (they transmit to town-hall on death)
+		this can be viewed by user
+		? priests may occasionally use this to 'resurrect' a dead npc
+	?can serve as a central upkeep-point for NPCs / designate a default 'safe' place
+	can issue a 'call to arms' command to all nearby teamed npcs
+		combat npcs will respond to the point in question 
+		worker npcs will move to the town-hall for a certain period of time
+	occasionally broadcast to all npcs in broadcast range (set from gui) to set town-hall point	
 	
 ****************************VEHICLE MODULE TODO****************************
-vehicles module
-	figure out collision detection for large rectangular entities
-		examine collision detection for ender-dragon?
-	everything
+figure out collision detection for large rectangular entities
+	examine collision detection for ender-dragon?
+everything
 	
 
 *****************************************************************
