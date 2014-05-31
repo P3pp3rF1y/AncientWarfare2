@@ -41,7 +41,7 @@ public float rotation;
 
 public TemplateRuleVanillaEntity(World world, Entity entity, int turns, int x, int y, int z)
   {
-  this.mobID = EntityList.getStringFromID(EntityList.getEntityID(entity));
+  this.mobID = EntityList.getEntityString(entity);
   rotation = (entity.rotationYaw + 90.f*turns)%360.f;
   float x1, z1;
   x1 = (float) (entity.posX%1.d);

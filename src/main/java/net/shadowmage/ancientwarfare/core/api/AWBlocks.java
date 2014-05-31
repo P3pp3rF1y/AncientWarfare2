@@ -20,7 +20,7 @@ public static Block draftingStation;
 public static Block builderBlock;
 
 /**
- * AUTOMATION module
+ * AUTOMATION module TODO
  */
 public static Block workerBlock;
 public static Block civicMineBlock;

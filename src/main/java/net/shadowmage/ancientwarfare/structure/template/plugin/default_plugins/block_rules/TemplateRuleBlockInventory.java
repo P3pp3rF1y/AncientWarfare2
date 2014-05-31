@@ -23,17 +23,22 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.NBTTools;
 
 public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks
 {
 
 public int randomLootLevel = 0;
 public NBTTagCompound tag = new NBTTagCompound();
+ItemStack[] inventoryStacks;
 
 public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block, int meta, int turns)
   {
@@ -60,7 +65,20 @@ public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block,
         }      
       }
     this.randomLootLevel = useKey? keyStack.getItem()==Items.gold_ingot? 1 : keyStack.getItem()==Items.diamond ? 2 : 3 : 0;
-    }  
+    inventoryStacks = new ItemStack[inventory.getSizeInventory()];
+    ItemStack stack;
+    for(int i = 0; i<inventory.getSizeInventory();i++)
+      {
+      stack = inventory.getStackInSlot(i);
+      inventory.setInventorySlotContents(i, null);
+      inventoryStacks[i] = stack==null ? null : stack.copy();
+      }
+    te.writeToNBT(tag);
+    for(int i = 0; i<inventory.getSizeInventory();i++)
+      {
+      inventory.setInventorySlotContents(i, inventoryStacks[i]);      
+      }
+    }
   }
 
 public TemplateRuleBlockInventory()
@@ -74,22 +92,28 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
   super.handlePlacement(world, turns, x, y, z, builder);
   TileEntity te = world.getTileEntity(x, y, z);
   IInventory inventory = (IInventory)te;
-  if(inventory!=null && randomLootLevel>0)
+  tag.setInteger("x", x);
+  tag.setInteger("y", y);
+  tag.setInteger("z", z);
+  te.readFromNBT(tag);
+  if(inventory==null){return;}
+  if(randomLootLevel>0)
     {
     /**
      * TODO
-     */
-    
+     */    
 //    LootGenerator.instance().generateLootFor(inventory, inventory.getSizeInventory(), randomLootLevel-1, world.rand);
     }
-  else if(te!=null)
+  else if(inventoryStacks!=null)
     {
-    tag.setInteger("x", x);
-    tag.setInteger("y", y);
-    tag.setInteger("z", z);
-    te.readFromNBT(tag);
-    world.markBlockForUpdate(x, y, z);
+    ItemStack stack;
+    for(int i = 0; i < inventory.getSizeInventory();i++)
+      {
+      stack = i<inventoryStacks.length ? inventoryStacks[i] : null;
+      inventory.setInventorySlotContents(i, stack==null? null : stack.copy());
+      }
     }
+  world.markBlockForUpdate(x, y, z);  
   }
 
 @Override
@@ -103,20 +127,50 @@ public void writeRuleData(NBTTagCompound tag)
   {
   super.writeRuleData(tag);
   tag.setInteger("lootLevel", randomLootLevel);
-  if(randomLootLevel<=0)
+  tag.setTag("teData", this.tag);
+  
+  NBTTagCompound invData = new NBTTagCompound();
+  invData.setInteger("length", inventoryStacks.length);
+  NBTTagCompound itemTag;
+  NBTTagList list = new NBTTagList();
+  ItemStack stack;
+  for(int i = 0; i < inventoryStacks.length;i++)
     {
-    tag.setTag("teData", this.tag);    
-    }
+    stack = inventoryStacks[i];
+    if(stack==null){continue;}
+    itemTag = NBTTools.writeItemStack(stack, new NBTTagCompound());    
+    itemTag.setInteger("slot", i);
+    list.appendTag(itemTag);
+    }  
+  invData.setTag("inventoryContents", list);
+  tag.setTag("inventoryData", invData);
   }
 
 @Override
 public void parseRuleData(NBTTagCompound tag)
   {
-  super.parseRuleData(tag);  
-  randomLootLevel = tag.getInteger("lootLevel");
-  if(randomLootLevel<=0)
+  super.parseRuleData(tag);
+  if(tag.hasKey("inventoryData"))
     {
-    this.tag = tag.getCompoundTag("teData");
+    NBTTagCompound inventoryTag = tag.getCompoundTag("inventoryData");
+    int length = inventoryTag.getInteger("length");
+    inventoryStacks = new ItemStack[length];
+    NBTTagCompound itemTag;
+    NBTTagList list = tag.getTagList("inventoryContents", Constants.NBT.TAG_COMPOUND); 
+    int slot;
+    ItemStack stack;
+    for(int i = 0; i < list.tagCount(); i++)
+      {      
+      itemTag = list.getCompoundTagAt(i);
+      stack = NBTTools.readItemStack(itemTag);
+      if(stack!=null)
+        {
+        slot = itemTag.getInteger("slot");
+        inventoryStacks[slot] = stack;
+        }
+      }
     }
+  randomLootLevel = tag.getInteger("lootLevel");
+  this.tag = tag.getCompoundTag("teData");
   }
 }

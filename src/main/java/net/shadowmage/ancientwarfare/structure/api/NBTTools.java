@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
@@ -49,6 +51,49 @@ import com.google.common.io.ByteArrayDataOutput;
 public class NBTTools
 {
 
+//public static NBTTagCompound addItemStackNameReferences(NBTTagCompound tag)
+//  {
+//  Set<String> keys = tag.func_150296_c();
+//  for(Object key : tag.func_150296_c())
+//    {
+//    
+//    }
+//  return tag;
+//  }
+//
+//private static NBTTagCompound replaceItemStackIDsFromNameReferences(NBTTagCompound tag)
+//  {
+//  
+//  return tag;
+//  }
+
+public static NBTTagCompound writeItemStack(ItemStack stack, NBTTagCompound tag)
+  {
+  tag.setString("item", Item.itemRegistry.getNameForObject(stack.getItem()));
+  tag.setInteger("damage", stack.getItemDamage());
+  tag.setInteger("quantity", stack.stackSize);
+  if(stack.stackTagCompound!=null){tag.setTag("stackTag", stack.stackTagCompound.copy());}
+  return tag;
+  }
+
+public static ItemStack readItemStack(NBTTagCompound tag)
+  {
+  if(tag.hasKey("item") && tag.hasKey("damage") && tag.hasKey("quantity"))
+    {
+    Item item = (Item) Item.itemRegistry.getObject(tag.getString("item"));
+    int damage = tag.getInteger("damage");
+    int quantity = tag.getInteger("quantity");
+    NBTTagCompound stackTag = null;
+    if(tag.hasKey("stackTag")){stackTag=tag.getCompoundTag("stackTag");}
+    if(item!=null)
+      {
+      ItemStack stack = new ItemStack(item, quantity, damage);
+      stack.stackTagCompound = stackTag;
+      return stack;
+      }
+    }
+  return null;
+  }
 
 public static int safeParseInt(String num)
   {  

@@ -27,6 +27,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -82,20 +85,31 @@ public void parseRule(int ruleNumber, List<String> lines)
 
 public final void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOException
   {
-  out.write("tag:");
-  out.newLine();
-  List<String> tagData = NBTTools.getLinesFor(tag);
-  for(String line : tagData)
-    {
-    out.write(line);
-    out.newLine();
-    }
-  out.write(":endtag");
+  String line = "jsonTag="+tag.toString();
+  out.write(line);
   out.newLine();
   }
 
 public final NBTTagCompound readTag(List<String> ruleData)
   {
+  for(String line : ruleData)
+    {
+    if(line.toLowerCase().startsWith("jsontag="))
+      {
+      try
+        {
+        NBTBase tag = JsonToNBT.func_150315_a(line.split("=", -1)[1]);
+        if(tag instanceof NBTTagCompound)
+          {
+          return (NBTTagCompound)tag;
+          }
+        } 
+      catch (NBTException e)
+        {
+        e.printStackTrace();
+        }      
+      }
+    }
   List<String> tagLines = new ArrayList<String>();  
   String line;
   Iterator<String> it = ruleData.iterator();

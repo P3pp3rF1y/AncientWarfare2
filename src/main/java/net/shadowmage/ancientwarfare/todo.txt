@@ -38,10 +38,24 @@ modeler
 	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 	
 structures module
+	Fix NBT tags that may contain item-stacks
+		stacks still store item in nbt by int id rather than item-name
+		this will cause MAJOR FUCKUPS when scanning any entity that has an inventory
+		or any block that has an inventory.
+		--should be fixed for inventory-tiles, as long as they don't read/write any random item-stacks to nbt
+		--still need to fix for entities.
+		--will require writing special handling for npcs / vehicles as they will have their own inventories / item-stacks
+		
 	Recipes Needed:
 		ALL (except for templates in drafting station)
 	Scanner GUI needs some cleanup / make it look nice
-	plugins / support for other modules
+	plugins / support for vehicle module
+	plugin support for automation module
+	plugin support for npc module
+		npcs--done
+		blocks--
+			town-hall
+			structure-control block
 	template plugin support for gates
 	textures for drafting station, survival-mode builder block
 	rework gates as a multi-block? (use controller TE TESR to render gate)
