@@ -1,9 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIFollowPlayer extends NpcAI

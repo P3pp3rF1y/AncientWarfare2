@@ -39,7 +39,6 @@ import net.shadowmage.ancientwarfare.structure.api.IStructurePluginLookup;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginRegister;
 import net.shadowmage.ancientwarfare.structure.api.StructurePluginRegistrationEvent;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;

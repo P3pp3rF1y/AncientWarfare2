@@ -20,10 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
-import java.util.List;
-
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 

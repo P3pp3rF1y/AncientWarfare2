@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.core.interfaces;
 
 import net.minecraft.scoreboard.Team;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 /**
  * IWorker interface marks entities and tile-entities that are capable of doing 'work'

@@ -18,7 +18,6 @@ import net.shadowmage.ancientwarfare.automation.tile.IControlledTile;
 import net.shadowmage.ancientwarfare.automation.tile.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
