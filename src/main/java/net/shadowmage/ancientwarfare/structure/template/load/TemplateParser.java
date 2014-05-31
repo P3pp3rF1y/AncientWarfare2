@@ -26,6 +26,8 @@ import java.util.List;
 
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
@@ -189,11 +191,13 @@ private StructureTemplate parseTemplateLines(String fileName, List<String> lines
             }
           }
         }
-      catch(TemplateParsingException e)
+      catch(TemplateRuleParsingException e)
         {
+        String data = e.getMessage()+"\n";
+        for(String line1 : groupedLines){data+=line1+"\n";}
+        TemplateRuleParsingException e1 = new TemplateRuleParsingException(data, e);
         AWLog.logError("Caught exception parsing template rule for structure: "+name);
-        AWLog.logError(e.getMessage());
-//        e.printStackTrace();
+        AWLog.logError(e1.getMessage()); 
         }
       groupedLines.clear();
       } 
@@ -221,11 +225,13 @@ private StructureTemplate parseTemplateLines(String fileName, List<String> lines
           parsedEntities.add(rule);
           }        
         }
-      catch(TemplateParsingException e)
+      catch(TemplateRuleParsingException e)
         {
+        String data = e.getMessage()+"\n";
+        for(String line1 : groupedLines){data+=line1+"\n";}
+        TemplateRuleParsingException e1 = new TemplateRuleParsingException(data, e);
         AWLog.logError("Caught exception parsing template rule for structure: "+name);
-        AWLog.logError(e.getMessage());
-//        e.printStackTrace();        
+        AWLog.logError(e1.getMessage()); 
         }
       groupedLines.clear();
       } 
@@ -274,7 +280,7 @@ private StructureTemplate parseTemplateLines(String fileName, List<String> lines
   return constructTemplate(name, xSize, ySize, zSize, xOffset, yOffset, zOffset, templateData, ruleArray, entityRuleArray, validation);  
   }
 
-private TemplateRule parseRule(List<String> templateLines, String ruleType) throws TemplateParsingException
+private TemplateRule parseRule(List<String> templateLines, String ruleType) throws TemplateRuleParsingException
   {
   return StructurePluginManager.getRule(templateLines, ruleType);
   }
@@ -310,13 +316,5 @@ private void parseLayer(List<String> templateLines, int yLayer, int xSize, int y
     z++;
     }
   }
-
-public static class TemplateParsingException extends Exception
-{
-public TemplateParsingException(String string)
-  {
-  super(string);
-  }
-}
 
 }

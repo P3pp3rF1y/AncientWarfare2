@@ -27,6 +27,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 
 public abstract class TemplateRuleEntity extends TemplateRule
 {
@@ -50,7 +51,7 @@ public final void writeRule(BufferedWriter out) throws IOException
   super.writeRule(out);
   }
 
-public final void parseRule(int ruleNumber, List<String> lines)
+public final void parseRule(int ruleNumber, List<String> lines) throws TemplateRuleParsingException
   {
   this.ruleNumber = ruleNumber;
   for(String line : lines)

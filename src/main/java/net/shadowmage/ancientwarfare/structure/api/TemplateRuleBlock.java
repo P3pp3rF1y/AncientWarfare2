@@ -20,9 +20,12 @@
  */
 package net.shadowmage.ancientwarfare.structure.api;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 
 public abstract class TemplateRuleBlock extends TemplateRule
 {
@@ -54,6 +57,10 @@ public TemplateRuleBlock()
  */
 public abstract boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z);
 
-
+@Override
+public final void parseRule(int ruleNumber, List<String> lines) throws TemplateRuleParsingException
+  {
+  super.parseRule(ruleNumber, lines);
+  }
 
 }

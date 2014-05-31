@@ -29,9 +29,9 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 
 /**
  * base template-rule class.  Plugins should define their own rule classes.
@@ -76,7 +76,7 @@ public void writeRule(BufferedWriter out) throws IOException
   writeTag(out, tag);
   }
 
-public void parseRule(int ruleNumber, List<String> lines)
+public void parseRule(int ruleNumber, List<String> lines) throws TemplateRuleParsingException
   {
   this.ruleNumber = ruleNumber;
   NBTTagCompound tag = readTag(lines);
@@ -90,7 +90,7 @@ public final void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOExce
   out.newLine();
   }
 
-public final NBTTagCompound readTag(List<String> ruleData)
+public final NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException
   {
   for(String line : ruleData)
     {
@@ -104,9 +104,10 @@ public final NBTTagCompound readTag(List<String> ruleData)
           return (NBTTagCompound)tag;
           }
         } 
-      catch (NBTException e)
+      catch (Exception e)
         {
         e.printStackTrace();
+        throw new TemplateRuleParsingException("Caught exception while parsing json-nbt tag: "+line, e);
         }      
       }
     }

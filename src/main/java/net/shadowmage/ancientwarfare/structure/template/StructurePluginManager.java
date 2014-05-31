@@ -39,11 +39,12 @@ import net.shadowmage.ancientwarfare.structure.api.IStructurePluginLookup;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginRegister;
 import net.shadowmage.ancientwarfare.structure.api.StructurePluginRegistrationEvent;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
-import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVanillaHandler;
 
@@ -305,7 +306,7 @@ public void registerPlugin(StructureContentPlugin plugin)
   addPlugin(plugin);  
   }
 
-public static final TemplateRule getRule(List<String> ruleData, String ruleType) throws TemplateParsingException
+public static final TemplateRule getRule(List<String> ruleData, String ruleType) throws TemplateRuleParsingException
   {
   Iterator<String> it = ruleData.iterator();
   String name = null;
@@ -346,18 +347,26 @@ public static final TemplateRule getRule(List<String> ruleData, String ruleType)
       }
     }
   Class<?extends TemplateRule> clz = StructurePluginManager.instance().getRuleByName(name);
-  if(name==null || ruleNumber<0 || ruleDataPackage.size()==0 || clz==null)
+  if(clz==null)
     {
-    throw new TemplateParser.TemplateParsingException("Not enough data to create template rule.\n"+
+    throw new TemplateRuleParsingException("Not enough data to create template rule.\n" +
+        "Missing plugin for name: "+name+"\n"+
         "name: "+name+"\n"+
         "number:"+ruleNumber+"\n"+
         "ruleDataPackage.size:"+ruleDataPackage.size()+"\n"+
         "ruleClass: "+clz);
     }
-  
+  else if(name==null || ruleNumber<0 || ruleDataPackage.isEmpty())
+    {
+    throw new TemplateRuleParsingException("Not enough data to create template rule.\n"+
+        "name: "+name+"\n"+
+        "number:"+ruleNumber+"\n"+
+        "ruleDataPackage.size:"+ruleDataPackage.size()+"\n"+
+        "ruleClass: "+clz);
+    }
   try
     {    
-    TemplateRule rule = clz.getConstructor().newInstance();    
+    TemplateRule rule = clz.getConstructor().newInstance();  
     rule.parseRule(ruleNumber, ruleDataPackage);
     return rule;
     } 
