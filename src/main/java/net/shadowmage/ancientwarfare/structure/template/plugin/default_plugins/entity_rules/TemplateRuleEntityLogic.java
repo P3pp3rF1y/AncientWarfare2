@@ -75,6 +75,12 @@ public TemplateRuleEntityLogic(World world, Entity entity, int turns, int x, int
 @Override
 public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder)
   {
+  Entity e = createEntity(world, turns, x, y, z, builder);
+  world.spawnEntityInWorld(e);
+  }
+
+protected Entity createEntity(World world, int turns, int x, int y, int z, IStructureBuilder builder)
+  {
   Entity e = EntityList.createEntityByName(mobID, world);  
   NBTTagList list = new NBTTagList();
   list.appendTag(new NBTTagDouble(x + BlockTools.rotateFloatX(xOffset, zOffset, turns)));
@@ -100,7 +106,7 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
     }
   float yaw = (rotation + 90.f * turns)%360.f;
   e.rotationYaw = yaw;
-  world.spawnEntityInWorld(e);
+  return e;
   }
 
 @Override

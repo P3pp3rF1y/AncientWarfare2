@@ -51,22 +51,6 @@ import com.google.common.io.ByteArrayDataOutput;
 public class NBTTools
 {
 
-//public static NBTTagCompound addItemStackNameReferences(NBTTagCompound tag)
-//  {
-//  Set<String> keys = tag.func_150296_c();
-//  for(Object key : tag.func_150296_c())
-//    {
-//    
-//    }
-//  return tag;
-//  }
-//
-//private static NBTTagCompound replaceItemStackIDsFromNameReferences(NBTTagCompound tag)
-//  {
-//  
-//  return tag;
-//  }
-
 public static NBTTagCompound writeItemStack(ItemStack stack, NBTTagCompound tag)
   {
   tag.setString("item", Item.itemRegistry.getNameForObject(stack.getItem()));
