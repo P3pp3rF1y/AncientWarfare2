@@ -57,6 +57,16 @@ private static HashMap<String, NpcDeclaration> npcMap = new HashMap<String, NpcD
 
 public static void load()
   {
+  addPlayerOwnedNpcs();  
+  addBandits();
+  addDesertNatives();
+  addJungleNatives();
+  addPirates();
+  addVikings();
+  }
+
+private static void addPlayerOwnedNpcs()
+  {
   NpcDeclaration reg = new NpcDeclaration(NpcCombat.class, AWEntityRegistry.NPC_COMBAT, nextID++, AncientWarfareNPC.instance, 120, 3, true, "combat")
     {
     @Override
@@ -126,12 +136,6 @@ public static void load()
       }
     };
   addNpcRegistration(reg, "bard", "ancientwarfare:npc/spawner_bard");
-  
-  addBandits();
-  addDesertNatives();
-  addJungleNatives();
-  addPirates();
-  addVikings();
   }
 
 private static void addBandits()
@@ -452,7 +456,7 @@ public static void loadNpcSubtypeEquipment()
   addNpcSubtypeEquipment("combat", "medic", new ItemStack(Items.iron_axe));  
   }
 
-protected static void addNpcRegistration(NpcDeclaration reg, String npcName, String icon)
+private static void addNpcRegistration(NpcDeclaration reg, String npcName, String icon)
   {
   AWEntityRegistry.registerEntity(reg);
   if(reg.canSpawnBaseEntity)
@@ -469,14 +473,14 @@ public static NpcBase createNpc(World world, String npcType, String npcSubtype)
   return reg.createEntity(world, npcSubtype);
   }
 
-protected static void addNpcSubtypeEntry(String npcType, String npcSubtype, String icon)
+private static void addNpcSubtypeEntry(String npcType, String npcSubtype, String icon)
   {
   if(!npcMap.containsKey(npcType)){throw new IllegalArgumentException("npc type must first be mapped");}
   npcMap.get(npcType).addSubtype(npcSubtype, icon);
   AWNpcItemLoader.npcSpawner.addNpcType(npcType+"."+npcSubtype, icon);
   }
 
-protected static void addNpcSubtypeEquipment(String npcType, String npcSubtype, ItemStack equipment)
+private static void addNpcSubtypeEquipment(String npcType, String npcSubtype, ItemStack equipment)
   {
   if(!npcMap.containsKey(npcType)){throw new IllegalArgumentException("npc type must first be mapped");}
   NpcDeclaration reg = npcMap.get(npcType);

@@ -1,0 +1,146 @@
+****************************AUTOMATION MODULE INFO****************************
+	**************TORQUE POWER SYSTEM**************
+	Power network:
+		Generators:
+			Solid Fuel (sterling) 1e/t gen, 1000 max, 10 out
+			Water (waterwheel) 0-0.2e/t gen, 100 max, 1 out
+			NPC (hand cranked engine) 50e/work, 100 max, 1 out
+		Storage:	
+			Flywheel 10000 max, 100 in, 100 out
+		Transport:
+			Conduit 100 max, 10 in, 10 out
+			ConduitHighGrade 1000 max, 100 in, 100 out
+			Junction (bc-compat) 1000 max, 100 in, 100 out
+			Distributor	(bc-compat) 1000 max, 100 in, 100 out			
+	
+****************************NPC MODULE INFO****************************
+	**************TOWN HALL**************
+	Tracks nearby NPCs.
+	NPCs report to the nearest in range (allied) town-hall block when they are killed.
+		Player-owned priests use this dead-npc list to occasionally 'resurrect' a killed npc
+		--must have an 'altar' block, or some-such?
+	dead-npc list is saved in nbt, and clearable from player input.
+	live entity list is only temporarily cached, rebuilt every X seconds to drop references and prevent memory leaks			  
+
+	**************COMMAND BATON**************
+		persistent list of entities commanded.
+		stored in item-stack nbt as a list of UUIDs
+		list is looked client side from item-nbt
+		npcs must transmit UUID to client-side for lookup
+		players may add to / remove from list by right-click of item while targeting a commandable NPC
+		Commands -- move / guard / attack / attack area / set home / clear home / set upkeep / clear upkeep / clear command
+		Client renders list of commanded npcs for baton while equipped
+		Client renders under-cursor target while baton is equipped
+		Has 5 hotkeys to control commands
+			z-clear current command / openGUI (reg/sneak)
+			x-attack / attack area (entity/block)
+			c-move / guard (entity/block)
+			v-set/clear home (reg/sneak)(may be removed)
+			b-set/clear upkeep (reg/sneak)(may be removed)
+		
+	**************TEAMS**************
+		All teams are derived from owning players team.
+		If owning player is not on a team, or npc is not owned, they are considered NEUTRAL.  
+		Neutral will not attack other teams, but will defend themselves vs attacks and attack 'bandits'. 
+		Bandits / hostile NPCs will not be part of the team system and will have customized AI
+		Combat npcs will attack other combat NPCS if the attacker has a team and the target has a team, and they are not the same team
+	
+	**************NPC INVENTORIES**************
+	all npcs will have full inventory accessibility for equipment slots
+		main-hand slot determines work/combat type
+		armor slots are used for actual armor
+		upkeep slot is for upkeep orders -- where to get the food
+		orders slot is for work/combat/route orders -- where to work / what to fight / what items to move	
+	
+	all npcs will have an 'upkeep order' slot
+		simple work-order that denotes a single point for npc upkeep.
+		--perhaps have additional variables for the slip such as min / max to withdraw?
+	
+	all npcs will have an 'orders' slot
+		worker = work order
+		courer = routing slip
+		combat = combat order		
+		
+		Work Order:
+			3 settings - Priority, Timed, Route
+			List of work-sites denotes what sites to work.  Setting type denotes when to go to the next worksite and what the next site will be.
+		Routing Slip:
+			Works pretty much like AW1
+		Combat Order:
+			Set custom team / player aggro controls
+			Patrol path setting / guard setting
+			Ability to customize the already config-customized aggro list.
+	
+	**************NPC LEVELING**************
+	all npcs will have a 'level'
+		they should gain experience towards this level with every successful action.
+			actions:
+				work
+				attack
+				route items
+		how many levels?
+		how big an effect should levels have on stats?
+		
+	**************NPC HEALING**************		
+	all npcs will 'heal' over time on their own, slowly
+		player-owned NPCs will require upkeep be met in order to heal
+	
+	**************NPC TYPES**************
+	npc types
+		worker
+			worksite list set by item (orders slot)				
+			work type set by primary equipped item type (weapon slot)
+				miner=pickaxe
+				lumberjack=axe
+				farmer=hoe
+				craftsman=hammer
+				researcher=quill
+			work capability set by equipped item quality for miner/lumberjack/farmer			 
+			work capability adjusted by npc level for for miner/lumberjack/farmer
+			work capability adjusted by npc level*2 for craftsman/researcher
+			npc levels stored by work-type.
+		courier 
+			own npc type, has custom storage inventory, accepts routing slips instead of work-orders
+			--backpack items for main inventory slot to determine inventory size (base 9 + bonus)?
+			--actually displays/stores inventory in backpack item? --probably easier to not....
+		combat
+			combat type set by equipped item
+				soldier=sword
+				commander=special?
+				archer=bow
+				medic=special?
+				combat engineer (repair)=hammer
+				siege engineer (vehicle driver)=axe
+			soldier damage determined by item equipped / item quality.
+			soldier damage adjusted by npc 'level'
+				keep level independently per attack type?
+				
+				
+	**************NPC FACTIONS**************
+	will have multiple factions:
+		bandits
+		pirates
+		vikings
+		jungle natives
+		desert natives
+	will have two tiers of npcs:
+		normal -- use base faction number for if should attack
+		elite guard -- use a higher number for if should attack -- have to have really good standing to be 'neutral' with them
+	Each faction will have multiple NPC types:
+		soldier / elite soldier
+		archer / elite archer
+		trader
+		priest/medic (combo)
+		commander / leader (elite version)
+	Npc faction sub-types will have specific equipment, non-player configurable, set at spawn time, that vary by
+		faction.  Cosmetic only.  Such as:
+			pirate.archer = musket
+			brigand.archer = crossbow
+			viking.archer = bow
+			natives.archer = spear
+			brigand.soldier = sword
+			pirate.soldier = cutlass
+	Each 'faction' will have its own NPC base-class -- so players can i.e. specify npcs to be hostile vs brigands but not pirates.	
+	
+	
+			
