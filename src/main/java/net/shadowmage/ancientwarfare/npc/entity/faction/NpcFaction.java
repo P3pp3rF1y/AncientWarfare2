@@ -15,8 +15,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -27,10 +27,20 @@ public abstract class NpcFaction extends NpcBase
 {
 
 String subType = "";
+protected NpcAIAlertFaction alertAI;
 
 public NpcFaction(World par1World)
   {
   super(par1World);
+  }
+
+@Override
+public void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target)
+  {
+  if(alertAI!=null)
+    {
+    alertAI.handleAlert(broadcaster, target);
+    }
   }
 
 @Override

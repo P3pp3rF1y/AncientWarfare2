@@ -25,8 +25,7 @@ public void entitySpawnEvent(EntityJoinWorldEvent evt)
   {
   String s = EntityList.getEntityString(evt.entity);
   if(AncientWarfareNPC.statics.shouldEntityTargetNpcs(s))
-    {
-    AWLog.logDebug("returning entity should target npcs..: "+evt.entity);
+    {    
     if(evt.entity instanceof EntityCreature)
       {
       EntityCreature e = (EntityCreature)evt.entity;

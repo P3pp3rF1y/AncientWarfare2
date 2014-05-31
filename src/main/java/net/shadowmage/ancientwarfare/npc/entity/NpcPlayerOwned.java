@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -13,6 +14,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
@@ -24,12 +26,22 @@ public abstract class NpcPlayerOwned extends NpcBase
 
 private Command playerIssuedCommand;//TODO load/save
 private int foodValueRemaining = 0;
+protected NpcAIAlertPlayerOwned alertAI;
 
 private BlockPosition townHallPosition;
 
 public NpcPlayerOwned(World par1World)
   {
   super(par1World);
+  }
+
+@Override
+public void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target)
+  {
+  if(alertAI!=null)
+    {
+    alertAI.handleAlert(broadcaster, target);
+    }  
   }
 
 @Override

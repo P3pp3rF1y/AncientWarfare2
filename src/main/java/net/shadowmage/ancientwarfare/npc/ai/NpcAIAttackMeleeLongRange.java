@@ -1,12 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
-public class NpcAIAttackMelee2 extends NpcAI
+public class NpcAIAttackMeleeLongRange extends NpcAI
 {
 
 Entity target;
@@ -15,7 +13,7 @@ double moveSpeed = 1.d;
 int moveRetryDelay = 0;
 int attackDelay = 0;
 
-public NpcAIAttackMelee2(NpcBase npc)
+public NpcAIAttackMeleeLongRange(NpcBase npc)
   {
   super(npc);
   this.setMutexBits(ATTACK+MOVE);
@@ -24,9 +22,6 @@ public NpcAIAttackMelee2(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
-//  AWLog.logDebug("checking attack ai...target: "+npc.getAttackTarget());
-//  Entity t = npc.getAttackTarget();
-//  if(t==null || t.isDead){return false;}
   return npc.getAttackTarget()!=null && !npc.getAttackTarget().isDead;
   }
 
@@ -43,11 +38,6 @@ public void startExecuting()
   target = npc.getAttackTarget();
   attackDelay = 0;
   moveRetryDelay = 0;
-  TileTownHall th = npc.getTownHall();
-  if(th!=null)
-    {
-    th.handleNpcCombatAlert(npc, target);
-    }
   }
 
 @Override

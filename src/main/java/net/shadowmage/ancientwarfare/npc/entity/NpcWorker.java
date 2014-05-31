@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
@@ -31,8 +32,6 @@ import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 public class NpcWorker extends NpcPlayerOwned implements IWorker
 {
 
-//protected WorkOrder workOrders;
-
 private NpcAIWork workAI;
 
 public NpcWorker(World par1World)
@@ -41,7 +40,7 @@ public NpcWorker(World par1World)
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
-  
+  this.tasks.addTask(1, (alertAI=new NpcAIAlertPlayerOwned(this)));  
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAICommandGuard(this));
   this.tasks.addTask(2, new NpcAICommandMove(this));

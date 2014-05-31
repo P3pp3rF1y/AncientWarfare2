@@ -234,6 +234,8 @@ public abstract String getNpcSubType();
 
 public abstract String getNpcType();
 
+public abstract void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target);
+
 public String getNpcFullType()
   {
   String type = getNpcType();

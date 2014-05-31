@@ -34,7 +34,7 @@ public boolean shouldExecute()
       {
       command = cmd;
       return true;
-      }
+      }    
     }
   return false;
   }
@@ -79,13 +79,13 @@ public void updateTask()
       if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
       if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32
       }
-    else
-      {
-      if(npc.getCurrentCommand()==command)
-        {
-        npc.handlePlayerCommand(null);        
-        }
-      }
+//    else
+//      {
+//      if(npc.getCurrentCommand()==command)
+//        {
+//        npc.handlePlayerCommand(null);        
+//        }
+//      }
     }
   }
 

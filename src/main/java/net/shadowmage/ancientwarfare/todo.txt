@@ -38,13 +38,8 @@ modeler
 	who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 	
 structures module
-	Fix NBT tags that may contain item-stacks
-		stacks still store item in nbt by int id rather than item-name
-		this will cause MAJOR FUCKUPS when scanning any entity that has an inventory
-		or any block that has an inventory.
-		--should be fixed for inventory-tiles, as long as they don't read/write any random item-stacks to nbt
-		--still need to fix for entities.
-		--will require writing special handling for npcs / vehicles as they will have their own inventories / item-stacks
+	--need to examine all plugins for places when item-stacks are saved to the tile/entity nbt -- need to handle these special and sideline the
+		item-data to preserve the item-name rather than item-id.
 		
 	Recipes Needed:
 		ALL (except for templates in drafting station)
@@ -125,21 +120,11 @@ npcs module
 		owning players can setup the trades and give the npc their 'stock'
 		owning players can withdraw the proceeds from bartering, and restock the vendor
 		non-owning players can access the vendors trade screen to barter
-	* figure out trade system
-		more specifically, figure out how to make it user-customizeable through a normal config file.
-		trades will be up to 9 items as 'input', single item as 'output'.
-		trades will be customizable per npc type, per npc level.
-			bandits may have different trades than vikings or pirates
-		traders should trade regardless of faction-standing, will be the only way to gain standing once you go hostile
-			when below 0 standing, traders will always trade using the level 0 trades list
-					
 
 	? add rendering of routes when npc-order item is being held
 		work-order renders route + numbers
 		routing-order renders route + sides
 		combat-order renders patrol and guard points/targets
-		
-	? add 'pay' to NPCs -- consume iron / gold for upkeep?		
 		
 	* add town-hall block GUI
 		tracks nearby entities.

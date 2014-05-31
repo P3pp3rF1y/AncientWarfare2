@@ -30,7 +30,8 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMelee2;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwnedCombat;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandAttack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
@@ -54,7 +55,7 @@ private NpcAIPatrol patrolAI;
 public NpcCombat(World par1World)
   {
   super(par1World);
-  collideAI = new NpcAIAttackMelee2(this);
+  collideAI = new NpcAIAttackMeleeLongRange(this);
   arrowAI = new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F); 
   
   IEntitySelector selector = new IEntitySelector()
@@ -69,6 +70,8 @@ public NpcCombat(World par1World)
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
+  
+  this.tasks.addTask(1, (alertAI=new NpcAIAlertPlayerOwnedCombat(this)));
   
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAICommandGuard(this));

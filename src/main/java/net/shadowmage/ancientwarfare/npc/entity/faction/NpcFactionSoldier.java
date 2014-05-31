@@ -15,7 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMelee2;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 
@@ -39,7 +39,7 @@ public NpcFactionSoldier(World par1World)
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(1, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(2, new EntityAIOpenDoor(this, true));
-  this.tasks.addTask(3, new NpcAIAttackMelee2(this));
+  this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
   this.tasks.addTask(4, new NpcAIMoveHome(this, 80.f, 20.f, 40.f, 5.f));    
   this.tasks.addTask(5, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
   this.tasks.addTask(6, new NpcAIWander(this, 0.625D));
