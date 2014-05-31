@@ -1,0 +1,15 @@
+courier=courier.png
+worker=worker.png
+worker.researcher=researcher.png
+worker.craftsman=craftsman.png
+worker.farmer=farmer.png
+worker.miner=miner.png
+worker.lumberjack=lumberjack.png
+bandit.archer=bandit_archer.png
+bandit.archer.elite=bandit_archer_elite.png
+bandit.solder=bandit_soldier.png
+bandit.soldier.elite=bandit_soldier_elite.png
+bandit.leader=bandit_leader.png
+bandit.leader.elite=bandit_leader_elite.png
+bandit.trader=bandit_trader.png
+bandit.priest=bandit_priest.png
