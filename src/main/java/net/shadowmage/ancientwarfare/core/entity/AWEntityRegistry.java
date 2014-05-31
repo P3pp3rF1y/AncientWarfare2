@@ -20,12 +20,26 @@ public static final String NPC_FACTION_BANDIT_SOLDIER = "aw_npc_bandit_soldier";
 public static final String NPC_FACTION_BANDIT_PRIEST = "aw_npc_bandit_priest";
 public static final String NPC_FACTION_BANDIT_TRADER = "aw_npc_bandit_trader";
 public static final String NPC_FACTION_BANDIT_COMMANDER = "aw_npc_bandit_commander";
+public static final String NPC_FACTION_PIRATE_ARCHER = "aw_npc_pirate_archer";
+public static final String NPC_FACTION_PIRATE_SOLDIER = "aw_npc_pirate_soldier";
+public static final String NPC_FACTION_PIRATE_PRIEST = "aw_npc_pirate_priest";
+public static final String NPC_FACTION_PIRATE_TRADER = "aw_npc_pirate_trader";
+public static final String NPC_FACTION_PIRATE_COMMANDER = "aw_npc_pirate_commander";
+public static final String NPC_FACTION_NATIVE_ARCHER = "aw_npc_native_archer";
+public static final String NPC_FACTION_NATIVE_SOLDIER = "aw_npc_native_soldier";
+public static final String NPC_FACTION_NATIVE_PRIEST = "aw_npc_native_priest";
+public static final String NPC_FACTION_NATIVE_TRADER = "aw_npc_native_trader";
+public static final String NPC_FACTION_NATIVE_COMMANDER = "aw_npc_native_commander";
+public static final String NPC_FACTION_DESERT_ARCHER = "aw_npc_desert_archer";
+public static final String NPC_FACTION_DESERT_SOLDIER = "aw_npc_desert_soldier";
+public static final String NPC_FACTION_DESERT_PRIEST = "aw_npc_desert_priest";
+public static final String NPC_FACTION_DESERT_TRADER = "aw_npc_desert_trader";
+public static final String NPC_FACTION_DESERT_COMMANDER = "aw_npc_desert_commander";
 public static final String NPC_FACTION_VIKING_ARCHER = "aw_npc_viking_archer";
 public static final String NPC_FACTION_VIKING_SOLDIER = "aw_npc_viking_soldier";
 public static final String NPC_FACTION_VIKING_PRIEST = "aw_npc_viking_priest";
 public static final String NPC_FACTION_VIKING_TRADER = "aw_npc_viking_trader";
 public static final String NPC_FACTION_VIKING_COMMANDER = "aw_npc_viking_commander";
-public static final String NPC_FACTION_PIRATE = "aw_npc_pirate";
 
 public static final String VEHICLE_TEST = "vehicle_test";
 

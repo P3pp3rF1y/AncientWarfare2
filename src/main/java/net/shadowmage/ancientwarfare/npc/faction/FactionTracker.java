@@ -19,7 +19,7 @@ public class FactionTracker
 private FactionTracker(){}
 public static final FactionTracker INSTANCE = new FactionTracker();
 
-public static final String[] factionNames = new String[]{"bandit","viking","pirate"};
+public static final String[] factionNames = new String[]{"bandit","viking","pirate","desert","native"};
 
 FactionEntry clientEntry = null;
 
