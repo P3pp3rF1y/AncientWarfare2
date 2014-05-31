@@ -88,15 +88,15 @@ public static void load()
     };
   addNpcRegistration(reg, "trader", "ancientwarfare:npc/spawner_trader");
   
-//  reg = new NpcDeclaration(NpcPriest.class, AWEntityRegistry.NPC_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "priest")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcPriest(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "priest", "ancientwarfare:npc/spawner_priest");
+  reg = new NpcDeclaration(NpcPriest.class, AWEntityRegistry.NPC_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "priest")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcPriest(world);
+      }
+    };
+  addNpcRegistration(reg, "priest", "ancientwarfare:npc/spawner_priest");
   
   reg = new NpcDeclaration(NpcBard.class, AWEntityRegistry.NPC_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bard")
     {    
@@ -288,7 +288,6 @@ public NpcFactionDeclaration(Class<? extends NpcFaction> entityClass, String ent
 public NpcFaction createEntity(World world, String subType)
   {
   NpcFaction npc = (NpcFaction) createEntity(world);
-  AWLog.logDebug("creating faction npc of subtype: "+subType);
   npc.setSubtype(subType);  
   return npc;
   }

@@ -169,7 +169,7 @@ npcs module
 				pirate.soldier = cutlass
 		Each 'faction' will have its own NPC base-class -- so players can i.e. specify npcs to be hostile vs brigands but not pirates.				
 
-	* add other 'misc' npc types -- bard, priest, trader, vendor??			
+	* add other 'misc' npc types -- vendor??			
 		
 	? add method to 'recruit' a factioned NPC that you are on high-standing with
 	

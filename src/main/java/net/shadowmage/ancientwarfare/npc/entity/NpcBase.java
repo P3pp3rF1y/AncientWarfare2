@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable
@@ -274,6 +276,7 @@ public void writeSpawnData(ByteBuf buffer)
   {
   buffer.writeLong(getUniqueID().getMostSignificantBits());
   buffer.writeLong(getUniqueID().getLeastSignificantBits());
+  ByteBufUtils.writeUTF8String(buffer, ownerName);
   }
 
 @Override
@@ -283,6 +286,7 @@ public void readSpawnData(ByteBuf additionalData)
   l1 = additionalData.readLong();
   l2 = additionalData.readLong();
   this.entityUniqueID = new UUID(l1, l2);
+  ownerName=ByteBufUtils.readUTF8String(additionalData);
   }
 
 @Override
