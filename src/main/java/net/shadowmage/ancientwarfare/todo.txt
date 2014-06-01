@@ -95,6 +95,11 @@ who knows.... will need to start using it to find out what is broken / not worki
 	owning players can setup the trades and give the npc their 'stock'
 	owning players can withdraw the proceeds from bartering, and restock the vendor
 	non-owning players can access the vendors trade screen to barter
+? remove upkeep-orders, use internal block-position reference
+? add auto-upkeep-point setting from town-hall broadcast
+? add inventory to town-hall to use for upkeep
+? add work broadcast to worksites for workers with no work-orders?
+? add courier GUI that allows viewing of courier backpack inventory	
 * add rendering of routes when npc-order item is being held
 	work-order renders route + numbers
 	routing-order renders route + sides
@@ -102,6 +107,10 @@ who knows.... will need to start using it to find out what is broken / not worki
 	find a way to render quads instead of gl-line, to enable depth-scaling of line width?
 * combat bonuses for player-owned combat NPCs when in-range of a 'commander' set combat npc
 * courier adjust functionality (speed) based on level
+* add set/clear home point to npc GUI
+* add repack button to npc GUI
+* write all code for npc-item repack read/write
+* worker needs to not work at night (if has home point set)
 * player-owned priest AI
 * player-owned trader AI
 * player-owned bard AI
@@ -111,8 +120,6 @@ who knows.... will need to start using it to find out what is broken / not worki
 * faction archer AI
 * faction priest AI
 * faction trader AI
-* command baton -- extend from ItemTool? or at least turn it into an alternative sword item...perhaps rename it to 'sceptre of command' or somesuch
-* hammer item -- use durability on work or rotate use, create multiple tool-material tiers
 * fix skeletons / ranged mobs attack ai
 	perhaps special case skeletons, loop through their AI to see how they are configured before adding either melee or ranged attack task (could just query skeleton-type)
 * add faction structure control block
@@ -121,6 +128,14 @@ who knows.... will need to start using it to find out what is broken / not worki
 	controls only accessible to players in creative mode
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
+* add npc-recruiting station -- worksite, crafting
+	has input slots for raw recruiting goods -- possibly just have input of player-owned raw npc-recruiting items to spawn/equip directly
+	has X queue slots for queuing npcs for recruiting
+	has X weapon/armor slots corresponding to queue slots
+	when work is completed, spawns an NPC equipped with the items from the corresponding queue spots
+	each input slot type has a different block-side to allow for automated item input
+	allow for auto-queue of npc type
+	-use is optional, players can always craft the raw npc items and equip manually	
 * add town-hall block GUI
 	tracks nearby entities.
 	maintains list of dead-entity-data (they transmit to town-hall on death)

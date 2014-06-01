@@ -66,6 +66,7 @@ public static int npcXpFromAttack = 1;
 public static int npcXpFromKill = 5;
 public static int npcXpFromMoveItem = 1;//TODO add to config
 public static int npcWorkTicks = 50;
+public static int npcDefaultUpkeepWithdraw = 6000;//5 minutes
 /**
  * TODO add these to config
  */

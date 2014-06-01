@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
@@ -29,11 +30,14 @@ private int foodValueRemaining = 0;
 protected NpcAIAlertPlayerOwned alertAI;
 
 private BlockPosition townHallPosition;
+private BlockPosition upkeepAutoBlock;
 
 public NpcPlayerOwned(World par1World)
   {
   super(par1World);
   }
+
+
 
 @Override
 public void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target)
@@ -77,20 +81,30 @@ public TileTownHall getTownHall()
 public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position)
   {
   validateTownHallPosition();
-  if(getTownHallPosition()!=null)
-    {
-    BlockPosition pos = getTownHallPosition();
+  BlockPosition pos = getTownHallPosition();
+  if(pos!=null)
+    {    
     double curDist = getDistanceSq(pos.x+0.5d, pos.y, pos.z+0.5d);
     double newDist = getDistanceSq(position.x+0.5d, position.y, position.z+0.5d);
     if(newDist<curDist)
       {
       setTownHallPosition(position);
+      if(upkeepAutoBlock==null || upkeepAutoBlock.equals(pos))
+        {
+        upkeepAutoBlock=position;
+        }
       }
     }
   else
     {
     setTownHallPosition(position);
+    if(upkeepAutoBlock==null || upkeepAutoBlock.equals(pos))
+      {
+      upkeepAutoBlock=position;
+      }
     }
+
+
   }
 
 private boolean validateTownHallPosition()
@@ -134,14 +148,7 @@ public void handlePlayerCommand(Command cmd)
     }
   else if(cmd.type==CommandType.SET_UPKEEP)
     {
-    UpkeepOrder orders = UpkeepOrder.getUpkeepOrder(upkeepStack);
-    if(orders!=null)
-      {
-      orders.addUpkeepPosition(worldObj, new BlockPosition(cmd.x, cmd.y, cmd.z));
-      orders.setUpkeepAmount(6000);//TODO set from config or baton GUI somehow??
-      UpkeepOrder.writeUpkeepOrder(upkeepStack, orders);
-      AWLog.logDebug("set upkeep position for npc from command...: "+orders);
-      }
+    upkeepAutoBlock = new BlockPosition(cmd.x, cmd.y, cmd.z);
     }
   else if(cmd.type==CommandType.CLEAR_HOME)
     {
@@ -150,13 +157,7 @@ public void handlePlayerCommand(Command cmd)
     }
   else if(cmd.type==CommandType.CLEAR_UPKEEP)
     {
-    UpkeepOrder orders = UpkeepOrder.getUpkeepOrder(upkeepStack);
-    if(orders!=null)
-      {
-      orders.removeUpkeepPoint();
-      UpkeepOrder.writeUpkeepOrder(upkeepStack, orders);
-      AWLog.logDebug("clearing upkeep from player-issued command!");
-      }    
+    upkeepAutoBlock=null;
     }
   else if(cmd.type==CommandType.CLEAR_COMMAND)
     {
@@ -223,13 +224,13 @@ public void setFoodRemaining(int food)
 
 @Override
 public BlockPosition getUpkeepPoint()
-  {
+  {  
   UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
   if(order!=null)
     {
     return order.getUpkeepPosition();
     }
-  return null;
+  return upkeepAutoBlock;
   }
 
 @Override
@@ -251,7 +252,7 @@ public int getUpkeepDimensionId()
     {
     return order.getUpkeepDimension();
     }
-  return 0;
+  return worldObj.provider.dimensionId;
   }
 
 @Override
@@ -262,7 +263,7 @@ public int getUpkeepAmount()
     {
     return order.getUpkeepAmount();
     }
-  return 0;
+  return AWNPCStatics.npcDefaultUpkeepWithdraw;
   }
 
 @Override
@@ -317,6 +318,7 @@ public void onLivingUpdate()
 public void travelToDimension(int par1)
   {
   this.townHallPosition=null;
+  this.upkeepAutoBlock=null;
   super.travelToDimension(par1);
   }
 
