@@ -15,7 +15,7 @@ public class ItemEventHandler
 public void onItemUse(PlayerInteractEvent evt)
   {
   ItemStack stack = evt.entityPlayer.inventory.getCurrentItem();
-  if(stack!=null && stack.getItem() instanceof IItemClickable)
+  if(stack!=null && stack.getItem() instanceof IItemClickable && evt.entityPlayer.worldObj.isRemote)
     {
     IItemClickable clickable = (IItemClickable)stack.getItem();
     boolean send = false;
@@ -33,8 +33,8 @@ public void onItemUse(PlayerInteractEvent evt)
       {
       PacketItemInteraction pkt = new PacketItemInteraction(type);
       NetworkHandler.sendToServer(pkt);
+      evt.setCanceled(true);     
       }    
-    evt.setCanceled(true);
     }  
   }
 

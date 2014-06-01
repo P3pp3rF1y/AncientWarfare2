@@ -196,7 +196,7 @@ protected String getSubtypeFromEquipment()
     else if(item instanceof ItemAxe){return "medic";}
     else if(item==AWItems.automationHammer){return "engineer";}
     else if(item==Items.bow){return "archer";}
-    else if(item==AWNpcItemLoader.commandBaton){return "commander";}
+    else if(item==AWNpcItemLoader.commandBatonWood){return "commander";}
     }
   return "";
   }

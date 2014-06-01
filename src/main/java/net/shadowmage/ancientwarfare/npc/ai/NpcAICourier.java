@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
@@ -107,8 +108,10 @@ private void startWork()
   if(target!=null)
     {
     startedWork = true;
-    ticksToWork = ticksToWorkPerStack + ticksToWorkPerStack * order.handleRouteAction(order.getEntries().get(routeIndex), npcInv, target);
+    int moved = order.handleRouteAction(order.getEntries().get(routeIndex), npcInv, target);
     courier.updateBackpackItemContents();
+    ticksToWork = ticksToWorkPerStack + ticksToWorkPerStack * moved;
+    npc.addExperience(moved*AWNPCStatics.npcXpFromMoveItem);
     }
   else
     {

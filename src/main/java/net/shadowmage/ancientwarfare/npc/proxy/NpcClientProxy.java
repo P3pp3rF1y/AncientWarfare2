@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.npc.gui.GuiRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiWorkOrder;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.render.RenderCommandOverlay;
@@ -89,7 +90,7 @@ public void onKeyReleased()
 public void onKeyPressed()
   {
   Minecraft mc = Minecraft.getMinecraft();
-  if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || mc.thePlayer.getCurrentEquippedItem().getItem()!=AWNpcItemLoader.commandBaton){return;}
+  if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)){return;}
   MovingObjectPosition pos = RenderCommandOverlay.INSTANCE.getClientTarget();
   if(pos!=null)
     {

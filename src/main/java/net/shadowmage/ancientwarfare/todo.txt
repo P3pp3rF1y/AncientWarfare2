@@ -101,9 +101,7 @@ who knows.... will need to start using it to find out what is broken / not worki
 	combat-order renders patrol and guard points/targets
 	find a way to render quads instead of gl-line, to enable depth-scaling of line width?
 * combat bonuses for player-owned combat NPCs when in-range of a 'commander' set combat npc
-* combat npc variable damage based on type and level
-* courier adjust functionality based on level
-* courier add xp per item-stack moved
+* courier adjust functionality (speed) based on level
 * player-owned priest AI
 * player-owned trader AI
 * player-owned bard AI

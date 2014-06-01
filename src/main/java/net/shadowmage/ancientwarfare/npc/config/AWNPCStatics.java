@@ -64,8 +64,12 @@ public static int npcXpFromWork = 1;
 public static int npcXpFromTrade = 1;
 public static int npcXpFromAttack = 1;
 public static int npcXpFromKill = 5;
+public static int npcXpFromMoveItem = 1;//TODO add to config
 public static int npcWorkTicks = 50;
-public static int npcAttackDamage = 1;//attack damage for unarmed npcs
+/**
+ * TODO add these to config
+ */
+public static int npcAttackDamage = 1;//base attack damage for npcs--further multiplied by their equipped weapon
 public static float npcLevelDamageMultiplier = 0.05f;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
 public static int npcArcherAttackDamage = 3;//damage for npc archers...can be increased via enchanted weapons
 

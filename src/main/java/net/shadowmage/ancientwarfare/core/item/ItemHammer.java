@@ -2,7 +2,11 @@ package net.shadowmage.ancientwarfare.core.item;
 
 import java.util.List;
 
+import com.google.common.collect.Multimap;
+
 import net.minecraft.block.Block;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,11 +25,21 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemHammer extends Item implements IItemKeyInterface, IItemClickable
 {
 
+double attackDamage = 5.d;
+
 public ItemHammer(String regName)
   {
   this.setUnlocalizedName(regName);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
   this.setTextureName("ancientwarfare:automation/hammer");
+  }
+
+@Override
+public Multimap getItemAttributeModifiers()
+  {
+  Multimap multimap = super.getItemAttributeModifiers();
+  multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", (double)this.attackDamage, 0));
+  return multimap;
   }
 
 @Override

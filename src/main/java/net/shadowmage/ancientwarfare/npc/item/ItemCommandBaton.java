@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,14 +29,74 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
+import com.google.common.collect.Multimap;
+
 public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemClickable 
 {
 
-public ItemCommandBaton(String name)
+double attackDamage = 5.d;
+
+private ToolMaterial material;
+
+public ItemCommandBaton(String name, ToolMaterial material)
   {
   this.setUnlocalizedName(name);
   this.setCreativeTab(AWNpcItemLoader.npcTab);
-  this.setTextureName("ancientwarfare:npc/command_baton");
+  this.setTextureName("ancientwarfare:npc/"+name);
+  this.attackDamage = 4.f + material.getDamageVsEntity();
+  this.material = material;
+  this.maxStackSize = 1;
+  this.setMaxDamage(material.getMaxUses());
+  }
+
+/**
+ * Return the enchantability factor of the item, most of the time is based on material.
+ */
+@Override
+public int getItemEnchantability()
+  {
+  return this.material.getEnchantability();
+  }
+
+/**
+ * Return whether this item is repairable in an anvil.
+ */
+@Override
+public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
+  {
+  return this.material.func_150995_f() == par2ItemStack.getItem() ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+  }
+
+/**
+ * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
+ * the damage on the stack.
+ */
+@Override
+public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase)
+  {
+  par1ItemStack.damageItem(1, par3EntityLivingBase);
+  return true;
+  }
+
+@Override
+public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_)
+  {
+  if ((double)p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_, p_150894_5_, p_150894_6_) != 0.0D)
+    {
+    p_150894_1_.damageItem(2, p_150894_7_);
+    }
+  return true;
+  }
+
+/**
+ * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
+ */
+@Override
+public Multimap getItemAttributeModifiers()
+  {
+  Multimap multimap = super.getItemAttributeModifiers();
+  multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", (double)this.attackDamage, 0));
+  return multimap;
   }
 
 @Override
@@ -69,10 +133,16 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
       NpcPlayerOwned npc = (NpcPlayerOwned)pos.entityHit;
       if(npc.canBeCommandedBy(player.getCommandSenderName()))
         {      
-        onNpcClicked(player, (NpcPlayerOwned) pos.entityHit, stack);        
+        onNpcClicked(player, (NpcPlayerOwned) pos.entityHit, player.getHeldItem());        
         }
       }
-    }
+    }  
+  }
+
+@Override
+public boolean isFull3D()
+  {
+  return true;
   }
 
 @Override
@@ -101,7 +171,7 @@ private void onNpcClicked(EntityPlayer player, NpcBase npc, ItemStack stack)
 
 public static void getCommandedEntities(World world, ItemStack stack, List<Entity> entities)
   {
-  if(world==null || stack==null || entities==null || stack.getItem()!=AWNpcItemLoader.commandBaton){return;}
+  if(world==null || stack==null || entities==null || !(stack.getItem() instanceof ItemCommandBaton)){return;}
   CommandSet set = new CommandSet();
   set.loadFromStack(stack);
   set.getEntities(world, entities);
