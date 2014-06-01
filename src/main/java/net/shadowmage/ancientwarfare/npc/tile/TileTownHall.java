@@ -2,20 +2,26 @@ package net.shadowmage.ancientwarfare.npc.tile;
 
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
-public class TileTownHall extends TileEntity implements IOwnable
+public class TileTownHall extends TileEntity implements IOwnable, IInventory
 {
 
 String ownerName = "";
 int broadcastRange = 80;
 int updateDelayTicks = 0;
 int updateDelayMaxTicks = 20*5;//5 second broadcast frequency
+
+InventoryBasic inventory = new InventoryBasic(27);
 
 @Override
 public boolean canUpdate()
@@ -48,32 +54,10 @@ private void broadcast()
     }
   }
 
-//public void handleNpcCombatAlert(NpcBase npc, Entity target)
-//  {
-////  AWLog.logDebug("receiving combat alert from: "+npc +" at: "+target);
-//  if(recentAlertTimer<=0)
-//    {
-//    Command cmd = new Command(CommandType.ATTACK, target.getEntityId());
-//    Command cmd2 = new Command(CommandType.MOVE, xCoord, yCoord, zCoord);
-//    List<NpcPlayerOwned> npcs = getNpcsInArea();
-//    for(NpcPlayerOwned npc1 : npcs)
-//      {
-//      if(npc1==npc){continue;}//do not issue orders to alerting npc
-//      if(!npc1.canBeCommandedBy(getOwnerName())){continue;}
-//      if(npc1 instanceof NpcCombat)
-//        {
-////        AWLog.logDebug("commanding npc: "+npc1+" to attack target: "+cmd);
-//        npc1.handlePlayerCommand(cmd);
-//        }
-//      else
-//        {
-////        AWLog.logDebug("commanding npc: "+npc1+" to move to town hall:: "+cmd2);
-//        npc1.handlePlayerCommand(cmd2);
-//        }
-//      }
-//    recentAlertTimer = recentAlertMaxTicks;
-//    }
-//  }
+public void handleNpcDeath(NpcPlayerOwned npc)
+  {
+  
+  }
 
 private List<NpcPlayerOwned> getNpcsInArea()
   {
@@ -100,6 +84,7 @@ public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
   ownerName = tag.getString("owner");
+  //TODO read inventory
   }
 
 @Override
@@ -107,7 +92,44 @@ public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
   tag.setString("owner", ownerName);
+  //TODO write inventory
   }
+
+@Override
+public int getSizeInventory(){return inventory.getSizeInventory();}
+
+@Override
+public ItemStack getStackInSlot(int var1){return inventory.getStackInSlot(var1);}
+
+@Override
+public ItemStack decrStackSize(int var1, int var2){return inventory.decrStackSize(var1, var2);}
+
+@Override
+public ItemStack getStackInSlotOnClosing(int var1){return inventory.getStackInSlotOnClosing(var1);}
+
+@Override
+public void setInventorySlotContents(int var1, ItemStack var2){inventory.setInventorySlotContents(var1, var2);}
+
+@Override
+public String getInventoryName(){return inventory.getInventoryName();}
+
+@Override
+public boolean hasCustomInventoryName(){return inventory.hasCustomInventoryName();}
+
+@Override
+public int getInventoryStackLimit(){return inventory.getInventoryStackLimit();}
+
+@Override
+public boolean isUseableByPlayer(EntityPlayer var1){return true;}
+
+@Override
+public void openInventory(){}
+
+@Override
+public void closeInventory(){}
+
+@Override
+public boolean isItemValidForSlot(int var1, ItemStack var2){return inventory.isItemValidForSlot(var1, var2);}
 
 
 }

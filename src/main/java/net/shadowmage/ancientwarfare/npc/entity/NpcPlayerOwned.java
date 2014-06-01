@@ -329,6 +329,7 @@ public void readEntityFromNBT(NBTTagCompound tag)
   foodValueRemaining = tag.getInteger("foodValue");
   if(tag.hasKey("command")){playerIssuedCommand = new Command(tag.getCompoundTag("command"));} 
   if(tag.hasKey("townHall")){townHallPosition = new BlockPosition(tag.getCompoundTag("townHall"));}
+  if(tag.hasKey("upkeepPos")){upkeepAutoBlock = new BlockPosition(tag.getCompoundTag("upkeepPos"));}
   onWeaponInventoryChanged();
   }
 
@@ -339,6 +340,7 @@ public void writeEntityToNBT(NBTTagCompound tag)
   tag.setInteger("foodValue", foodValueRemaining);
   if(playerIssuedCommand!=null){tag.setTag("command", playerIssuedCommand.writeToNBT(new NBTTagCompound()));}
   if(townHallPosition!=null){tag.setTag("townHall", townHallPosition.writeToNBT(new NBTTagCompound()));}
+  if(upkeepAutoBlock!=null){tag.setTag("upkeepPos", upkeepAutoBlock.writeToNBT(new NBTTagCompound()));}
   }
 
 @Override
