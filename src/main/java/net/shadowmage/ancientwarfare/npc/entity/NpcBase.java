@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 
 import java.util.UUID;
 

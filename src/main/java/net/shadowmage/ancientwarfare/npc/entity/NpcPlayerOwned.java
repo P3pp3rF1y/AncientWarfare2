@@ -327,6 +327,7 @@ public void readEntityFromNBT(NBTTagCompound tag)
   foodValueRemaining = tag.getInteger("foodValue");
   if(tag.hasKey("command")){playerIssuedCommand = new Command(tag.getCompoundTag("command"));} 
   if(tag.hasKey("townHall")){townHallPosition = new BlockPosition(tag.getCompoundTag("townHall"));}
+  onWeaponInventoryChanged();
   }
 
 @Override

@@ -4,6 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
@@ -29,6 +30,7 @@ public NpcAICourier(NpcBase npc)
   {
   super(npc);
   courier = (NpcCourier)npc;
+  this.setMutexBits(ATTACK+MOVE);
   }
 
 @Override
@@ -150,8 +152,9 @@ public void setMoveToNextSite()
   atSite=false;
   startedWork=false;
   ticksToWork=0;
-  routeIndex++;
+  routeIndex++;  
   if(routeIndex>=order.getEntries().size()){routeIndex=0;}
+  AWLog.logDebug("setting route move to index: "+routeIndex);
   }
 
 public void onOrdersChanged()

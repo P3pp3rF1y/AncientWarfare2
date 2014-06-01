@@ -273,7 +273,7 @@ private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to,
   int stackSize = 0;  
   int fromIndices[];
   boolean shouldMove;
-  if(from instanceof ISidedInventory)
+  if(from instanceof ISidedInventory && fromSide>=0)
     {
     fromIndices = ((ISidedInventory)from).getAccessibleSlotsFromSide(fromSide);
     }
@@ -300,9 +300,13 @@ private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to,
     if(shouldMove)
       {
       stack = InventoryTools.mergeItemStack(to, stack, toSide);
-      if(stack==null){break;}
+      if(stack==null){from.setInventorySlotContents(index, null);}
       }    
-    if(stack==null || stack.stackSize!=stackSize){moved++;}    
+    if(stack==null || stack.stackSize!=stackSize)
+      {
+      moved++;
+      from.markDirty();
+      }   
     }  
   return moved;
   }
@@ -315,7 +319,7 @@ private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInvento
   int stackSize = 0;  
   int fromIndices[];
   boolean shouldMove;
-  if(from instanceof ISidedInventory)
+  if(from instanceof ISidedInventory && fromSide>=0)
     {
     fromIndices = ((ISidedInventory)from).getAccessibleSlotsFromSide(fromSide);
     }
@@ -342,17 +346,37 @@ private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInvento
     if(shouldMove)
       {
       stack = InventoryTools.mergeItemStack(to, stack, toSide);
-      if(stack==null){break;}
+      if(stack==null){from.setInventorySlotContents(index, null);}
       }    
-    if(stack==null || stack.stackSize!=stackSize){moved++;}    
+    if(stack==null || stack.stackSize!=stackSize)
+      {
+      moved++;
+      from.markDirty();
+      }
     }  
   return moved;
   }
 
 private int fillTo(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide)
   {
-  return 0;
-  }//TODO
+  int moved = 0;
+  int toMove = 0;
+  int foundCount = 0;
+  ItemStack filter;
+  int m1;
+  for(int i = 0; i < filters.length; i++)
+    {
+    filter = filters[i];
+    if(filter==null){continue;}
+    foundCount = InventoryTools.getCountOf(to, toSide, filter);    
+    toMove = filter.stackSize;
+    if(foundCount>toMove){continue;}    
+    toMove-=foundCount;
+    m1 = InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide);
+    moved += m1/filter.getMaxStackSize();
+    }
+  return moved;
+  }
 
 public List<RoutePoint> getEntries()
   {

@@ -218,6 +218,74 @@ public static ItemStack removeItems(IInventory inventory, int side, ItemStack fi
   }
 
 /**
+ * Move up to the specified quantity of filter stack from 'from' into 'to', using the designated sides (or general all sides merge if side<0 or from/to are not sided inventories)
+ * @param from
+ * @param to
+ * @param filter
+ * @param quantity
+ * @param fromSide
+ * @param toSide
+ * @return
+ */
+public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, int fromSide, int toSide)
+  {
+  int moved = 0;
+  int fromIndices[] = from instanceof ISidedInventory && fromSide>=0 ? ((ISidedInventory)from).getAccessibleSlotsFromSide(fromSide) : getIndiceArrayForSpread(0, from.getSizeInventory());  
+  int count = getCountOf(from, fromSide, filter);
+  if(count<=0){return moved;}//nothing to move, don't bother trying  
+  ItemStack s1, s2;
+  int toMove = quantity;
+  int stackSize;
+  for(int fromIndex : fromIndices)
+    {
+    s1 = from.getStackInSlot(fromIndex);
+    if(s1==null || !doItemStacksMatch(s1, filter)){continue;}
+    stackSize = s1.stackSize;
+    if(s1.stackSize>toMove)//move partial stack      
+      {
+      s2 = s1.copy();
+      s2.stackSize=toMove;
+      s1.stackSize-=toMove;
+      stackSize=s2.stackSize;
+      s2=mergeItemStack(to, s2, toSide);
+      from.markDirty();
+      if(s2!=null)//partial merge, destination full, break out
+        {
+        moved+=stackSize-s2.stackSize;
+        toMove-=stackSize-s2.stackSize;
+        mergeItemStack(from, s2, fromSide);//put back the remainder of the partial stack that was copied out
+        break;
+        }
+      else
+        {
+        moved+=stackSize;
+        toMove-=stackSize;
+        }
+      }
+    else
+      {
+      s1 = mergeItemStack(to, s1, toSide);
+      if(s1!=null)//destination inventory was full, break out
+        {
+        from.markDirty();
+        moved+=stackSize-s1.stackSize;
+        toMove-=stackSize-s1.stackSize;
+        break;
+        }
+      else
+        {
+        moved+=stackSize;
+        toMove-=stackSize;
+        from.setInventorySlotContents(fromIndex, null);
+        from.markDirty();
+        }
+      } 
+    if(toMove<=0){break;}
+    }    
+  return moved;
+  }
+
+/**
  * return a count of how many slots in an inventory contain a certain item stack (any size)
  * @param inv
  * @param side

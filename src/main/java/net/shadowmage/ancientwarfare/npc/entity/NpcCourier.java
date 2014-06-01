@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
@@ -77,6 +78,7 @@ public void onWeaponInventoryChanged()
     {
     backpackInventory=null;
     }
+  AWLog.logDebug("set courier inventory to: "+backpackInventory);
   }
 
 /**

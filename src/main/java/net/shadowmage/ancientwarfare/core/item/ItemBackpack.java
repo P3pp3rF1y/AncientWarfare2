@@ -1,5 +1,8 @@
 package net.shadowmage.ancientwarfare.core.item;
 
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +21,7 @@ public ItemBackpack(String regName)
   {
   this.setUnlocalizedName(regName);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
+  this.setTextureName("ancientwarfare:core/backpack");
   }
 
 @Override
@@ -49,6 +53,21 @@ public void onLeftClick(EntityPlayer player, ItemStack stack)
 public boolean getShareTag()
   {
   return false;
+  }
+
+@Override
+public String getUnlocalizedName(ItemStack par1ItemStack)
+  {
+  return super.getUnlocalizedName(par1ItemStack)+"."+par1ItemStack.getItemDamage();
+  }
+
+@Override
+public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List displayList)
+  {
+  for(int i = 0; i < 4; i++)
+    {
+    displayList.add(new ItemStack(this, 1, i));
+    }
   }
 
 public static InventoryBackpack getInventoryFor(ItemStack stack)
