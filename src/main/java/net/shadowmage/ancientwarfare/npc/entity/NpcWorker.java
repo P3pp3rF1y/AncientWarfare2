@@ -15,9 +15,9 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
@@ -133,7 +133,7 @@ protected WorkType getWorkTypeFromEquipment()
     if(stack.getItem() instanceof ItemHoe){return WorkType.FARMING;}
     else if(stack.getItem() instanceof ItemAxe){return WorkType.FORESTRY;}
     else if(stack.getItem() instanceof ItemPickaxe){return WorkType.MINING;}    
-    else if(stack.getItem() == AWItems.automationHammer){return WorkType.CRAFTING;}
+    else if(stack.getItem() instanceof ItemHammer){return WorkType.CRAFTING;}
     //else if(stack.getItem() == AWItems.researchQuil){return WorkType.RESEARCH}//TODO add researcher custom item -- quill?
     }
   return WorkType.NONE;

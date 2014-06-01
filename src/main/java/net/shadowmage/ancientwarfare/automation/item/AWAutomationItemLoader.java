@@ -15,7 +15,7 @@ public static final CreativeTabs automationTab = new CreativeTabs("tabs.automati
   @SideOnly(Side.CLIENT)
   public Item getTabIconItem()
     {  
-    return AWItems.automationHammer;
+    return AWItems.automationHammerIron;
     }  
   };
  

@@ -24,13 +24,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwnedCombat;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandAttack;
@@ -46,6 +45,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIPatrol;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 
 public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob
 {
@@ -194,9 +194,9 @@ protected String getSubtypeFromEquipment()
     Item item = stack.getItem();
     if(item instanceof ItemSword){return "soldier";}
     else if(item instanceof ItemAxe){return "medic";}
-    else if(item==AWItems.automationHammer){return "engineer";}
+    else if(item instanceof ItemHammer){return "engineer";}
     else if(item==Items.bow){return "archer";}
-    else if(item==AWNpcItemLoader.commandBatonWood){return "commander";}
+    else if(item instanceof ItemCommandBaton){return "commander";}
     }
   return "";
   }

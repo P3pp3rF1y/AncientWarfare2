@@ -100,6 +100,12 @@ public Multimap getItemAttributeModifiers()
   }
 
 @Override
+public boolean isFull3D()
+  {
+  return true;
+  }
+
+@Override
 public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
   {
   return true;
@@ -137,12 +143,6 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
         }
       }
     }  
-  }
-
-@Override
-public boolean isFull3D()
-  {
-  return true;
   }
 
 @Override

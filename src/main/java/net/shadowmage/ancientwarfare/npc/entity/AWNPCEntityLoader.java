@@ -447,12 +447,12 @@ public static void loadNpcSubtypeEquipment()
   addNpcSubtypeEquipment("worker", "miner", new ItemStack(Items.iron_pickaxe));
   addNpcSubtypeEquipment("worker", "lumberjack", new ItemStack(Items.iron_axe));  
   addNpcSubtypeEquipment("worker", "researcher", new ItemStack(Item.getItemFromBlock(Blocks.torch)));//TODO make quill item
-  addNpcSubtypeEquipment("worker", "craftsman", new ItemStack(AWItems.automationHammer));
+  addNpcSubtypeEquipment("worker", "craftsman", new ItemStack(AWItems.automationHammerIron));
       
   addNpcSubtypeEquipment("combat", "commander", new ItemStack(Items.diamond_sword));//TODO commander -- scepter / mace?
   addNpcSubtypeEquipment("combat", "soldier", new ItemStack(Items.iron_sword));
   addNpcSubtypeEquipment("combat", "archer", new ItemStack(Items.bow));
-  addNpcSubtypeEquipment("combat", "engineer", new ItemStack(AWItems.automationHammer));
+  addNpcSubtypeEquipment("combat", "engineer", new ItemStack(AWItems.automationHammerIron));
   addNpcSubtypeEquipment("combat", "medic", new ItemStack(Items.iron_axe));  
   }
 

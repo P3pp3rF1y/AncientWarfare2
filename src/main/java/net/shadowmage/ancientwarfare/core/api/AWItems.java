@@ -10,7 +10,11 @@ public class AWItems
  */
 public static Item researchBook;
 public static Item researchNote;
-public static Item automationHammer;
+public static Item automationHammerWood;
+public static Item automationHammerStone;
+public static Item automationHammerIron;
+public static Item automationHammerGold;
+public static Item automationHammerDiamond;
 public static Item backpack;
 
 /**

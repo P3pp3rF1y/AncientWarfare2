@@ -13,6 +13,7 @@ public class ItemRoutingOrder extends ItemOrders
 public ItemRoutingOrder(String name)
   {
   super(name);
+  this.setTextureName("ancientwarfare:npc/routing_order");
   }
 
 @Override

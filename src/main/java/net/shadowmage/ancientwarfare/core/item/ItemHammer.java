@@ -2,9 +2,8 @@ package net.shadowmage.ancientwarfare.core.item;
 
 import java.util.List;
 
-import com.google.common.collect.Multimap;
-
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,11 +13,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+
+import com.google.common.collect.Multimap;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -27,13 +30,61 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
 
 double attackDamage = 5.d;
 
-public ItemHammer(String regName)
+private ToolMaterial material;
+
+public ItemHammer(String regName, ToolMaterial material)
   {
   this.setUnlocalizedName(regName);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
-  this.setTextureName("ancientwarfare:automation/hammer");
+  this.setTextureName("ancientwarfare:core/"+regName);
+  this.attackDamage = 4.f + material.getDamageVsEntity();
+  this.material = material;
+  this.maxStackSize = 1;
+  this.setMaxDamage(material.getMaxUses());
   }
 
+/**
+ * Return the enchantability factor of the item, most of the time is based on material.
+ */
+@Override
+public int getItemEnchantability()
+  {
+  return this.material.getEnchantability();
+  }
+
+/**
+ * Return whether this item is repairable in an anvil.
+ */
+@Override
+public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
+  {
+  return this.material.func_150995_f() == par2ItemStack.getItem() ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+  }
+
+/**
+ * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
+ * the damage on the stack.
+ */
+@Override
+public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase)
+  {
+  par1ItemStack.damageItem(1, par3EntityLivingBase);
+  return true;
+  }
+
+@Override
+public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_)
+  {
+  if ((double)p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_, p_150894_5_, p_150894_6_) != 0.0D)
+    {
+    p_150894_1_.damageItem(2, p_150894_7_);
+    }
+  return true;
+  }
+
+/**
+ * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
+ */
 @Override
 public Multimap getItemAttributeModifiers()
   {
