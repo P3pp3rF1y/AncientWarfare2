@@ -113,10 +113,25 @@ public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, f
  */
 public static AxisAlignedBB adjustBBForPlayerPos(AxisAlignedBB bb, EntityPlayer player, float partialTick)
   {
-  double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTick;
-  double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTick;
-  double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTick;  
+  double x = getRenderOffsetX(player, partialTick);
+  double y = getRenderOffsetY(player, partialTick);
+  double z = getRenderOffsetZ(player, partialTick);
   return bb.offset(-x, -y, -z);
+  }
+
+public static double getRenderOffsetX(EntityPlayer player, float partialTick)
+  {
+  return player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTick;
+  }
+
+public static double getRenderOffsetY(EntityPlayer player, float partialTick)
+  {
+  return player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTick;
+  }
+
+public static double getRenderOffsetZ(EntityPlayer player, float partialTick)
+  {
+  return player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTick;
   }
 
 }
