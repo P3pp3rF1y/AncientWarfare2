@@ -10,6 +10,8 @@ public class InventoryBasic implements IInventorySaveable
 
 private ItemStack[] inventorySlots;
 
+protected InventoryBasic(){}
+
 public InventoryBasic(int size)
   {
   inventorySlots = new ItemStack[size];

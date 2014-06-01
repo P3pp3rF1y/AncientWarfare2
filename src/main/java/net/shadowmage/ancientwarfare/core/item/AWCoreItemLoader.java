@@ -19,6 +19,9 @@ public void load()
   
   AWItems.automationHammer = new ItemHammer("hammer");
   GameRegistry.registerItem(AWItems.automationHammer, "hammer");
+  
+  AWItems.backpack = new ItemBackpack("backpack");
+  GameRegistry.registerItem(AWItems.backpack, "backpack");
   }
 
 }

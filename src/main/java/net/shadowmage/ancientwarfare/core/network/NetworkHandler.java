@@ -78,6 +78,7 @@ public static final int GUI_NPC_COMBAT_ORDER = 36;
 public static final int GUI_NPC_ROUTING_ORDER = 37;
 public static final int GUI_NPC_COMMAND_BATON = 38;
 public static final int GUI_NPC_TRADE = 39;
+public static final int GUI_BACKPACK = 40;
 
 private FMLEventChannel channel;
 
