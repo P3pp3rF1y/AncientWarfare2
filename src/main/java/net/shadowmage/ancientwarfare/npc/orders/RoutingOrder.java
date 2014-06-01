@@ -76,6 +76,24 @@ public void changeBlockSide(int index)
     }
   }
 
+public void toggleIgnoreDamage(int index)
+  {
+  if(index>=0 && index<routingPoints.size())
+    {
+    RoutePoint entry = routingPoints.get(index);
+    entry.setIgnoreDamage(!entry.getIgnoreDamage());
+    }
+  }
+
+public void toggleIgnoreTag(int index)
+  {
+  if(index>=0 && index<routingPoints.size())
+    {
+    RoutePoint entry = routingPoints.get(index);
+    entry.setIgnoreTag(!entry.getIgnoreTag());
+    }
+  }
+
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
@@ -123,6 +141,7 @@ public static void writeRoutingOrder(ItemStack stack, RoutingOrder order)
 
 public static class RoutePoint
 {
+boolean ignoreDamage, ignoreTag;
 RouteType routeType = RouteType.FILL_TARGET_TO;
 BlockPosition target = new BlockPosition();
 int blockSide = 0;
@@ -137,6 +156,123 @@ public int getBlockSide(){return blockSide;}
 public RouteType getRouteType(){return routeType;}
 public BlockPosition getTarget(){return target;}
 public ItemStack getFilterInSlot(int slot){return filters[slot];}
+public boolean getIgnoreDamage(){return ignoreDamage;}
+public boolean getIgnoreTag(){return ignoreTag;}
+public void setIgnoreDamage(boolean val){ignoreDamage=val;}
+public void setIgnoreTag(boolean val){ignoreTag=val;}
+
+private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide)
+  {
+  int moved = 0;
+  ItemStack stack;
+  ItemStack filter;
+  int stackSize = 0;  
+  int fromIndices[];
+  boolean shouldMove;
+  if(from instanceof ISidedInventory && fromSide>=0)
+    {
+    fromIndices = ((ISidedInventory)from).getAccessibleSlotsFromSide(fromSide);
+    }
+  else
+    {
+    fromIndices = InventoryTools.getIndiceArrayForSpread(0, from.getSizeInventory());
+    }  
+  for(int index : fromIndices)
+    {
+    shouldMove = false;
+    stack = from.getStackInSlot(index);
+    if(stack==null){continue;}
+    stackSize = stack.stackSize;    
+    for(int i = 0; i < filters.length; i++)
+      {
+      filter = filters[i];
+      if(filter==null){continue;}
+      if(InventoryTools.doItemStacksMatch(stack, filter, ignoreDamage, ignoreTag))
+        {
+        shouldMove=true;
+        break;
+        }
+      }
+    if(shouldMove)
+      {
+      stack = InventoryTools.mergeItemStack(to, stack, toSide);
+      if(stack==null){from.setInventorySlotContents(index, null);}
+      }    
+    if(stack==null || stack.stackSize!=stackSize)
+      {
+      moved++;
+      from.markDirty();
+      }   
+    }  
+  return moved;
+  }
+
+private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide)
+  {
+  int moved = 0;
+  ItemStack stack;
+  ItemStack filter;
+  int stackSize = 0;  
+  int fromIndices[];
+  boolean shouldMove;
+  if(from instanceof ISidedInventory && fromSide>=0)
+    {
+    fromIndices = ((ISidedInventory)from).getAccessibleSlotsFromSide(fromSide);
+    }
+  else
+    {
+    fromIndices = InventoryTools.getIndiceArrayForSpread(0, from.getSizeInventory());
+    }  
+  for(int index : fromIndices)
+    {
+    shouldMove = true;
+    stack = from.getStackInSlot(index);
+    if(stack==null){continue;}
+    stackSize = stack.stackSize;    
+    for(int i = 0; i < filters.length; i++)
+      {
+      filter = filters[i];
+      if(filter==null){continue;}
+      if(InventoryTools.doItemStacksMatch(stack, filter, ignoreDamage, ignoreTag))
+        {
+        shouldMove=false;
+        break;
+        }
+      }
+    if(shouldMove)
+      {
+      stack = InventoryTools.mergeItemStack(to, stack, toSide);
+      if(stack==null){from.setInventorySlotContents(index, null);}
+      }    
+    if(stack==null || stack.stackSize!=stackSize)
+      {
+      moved++;
+      from.markDirty();
+      }
+    }  
+  return moved;
+  }
+
+private int fillTo(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide)
+  {
+  int moved = 0;
+  int toMove = 0;
+  int foundCount = 0;
+  ItemStack filter;
+  int m1;
+  for(int i = 0; i < filters.length; i++)
+    {
+    filter = filters[i];
+    if(filter==null){continue;}
+    foundCount = InventoryTools.getCountOf(to, toSide, filter);    
+    toMove = filter.stackSize;
+    if(foundCount>toMove){continue;}    
+    toMove-=foundCount;
+    m1 = InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide, ignoreDamage, ignoreTag);
+    moved += m1/filter.getMaxStackSize();
+    }
+  return moved;
+  }
 
 private final void readFromNBT(NBTTagCompound tag)
   {
@@ -144,6 +280,8 @@ private final void readFromNBT(NBTTagCompound tag)
   routeType = RouteType.values()[tag.getInteger("type")];
   target = new BlockPosition(tag.getCompoundTag("position"));
   blockSide = tag.getInteger("blockSide");
+  ignoreDamage = tag.getBoolean("ignoreDamage");
+  ignoreTag = tag.getBoolean("ignoreTag");
   NBTTagList filterList = tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND);  
   
   NBTTagCompound itemTag;
@@ -161,6 +299,8 @@ private final NBTTagCompound writeToNBT(NBTTagCompound tag)
   tag.setInteger("type", routeType.ordinal());
   tag.setTag("position", target.writeToNBT(new NBTTagCompound()));
   tag.setInteger("blockSide", blockSide);
+  tag.setBoolean("ignoreDamage", ignoreDamage);
+  tag.setBoolean("ignoreTag", ignoreTag);
   NBTTagList filterList = new NBTTagList();
   NBTTagCompound itemTag;
   for(int i = 0; i < filters.length; i++)
@@ -227,6 +367,8 @@ public RouteType next()
   if(ordinal>=RouteType.values().length){ordinal=0;}
   return RouteType.values()[ordinal];
   }
+
+
 }
 
 /**
@@ -243,140 +385,29 @@ public int handleRouteAction(RoutePoint p, IInventory npc, IInventory target)
   switch(p.routeType)
   {
   case FILL_COURIER_TO:
-  return fillTo(p.filters, target, npc, side, -1);
+  return p.fillTo(p.filters, target, npc, side, -1);
   
   case FILL_TARGET_TO:
-  return fillTo(p.filters, npc, target, -1, side);
+  return p.fillTo(p.filters, npc, target, -1, side);
     
   case DEPOSIT_ALL_EXCEPT:
-  return depositAllItemsExcept(p.filters, npc, target, -1, side);
+  return p.depositAllItemsExcept(p.filters, npc, target, -1, side);
   
   case DEPOSIT_ALL_OF:  
-  return depositAllItems(p.filters, npc, target, -1, side);
+  return p.depositAllItems(p.filters, npc, target, -1, side);
   
   case WITHDRAW_ALL_EXCEPT:  
-  return depositAllItemsExcept(p.filters, target, npc, side, -1);
+  return p.depositAllItemsExcept(p.filters, target, npc, side, -1);
   
   case WITHDRAW_ALL_OF:
-  return depositAllItems(p.filters, target, npc, side, -1);
+  return p.depositAllItems(p.filters, target, npc, side, -1);
   
   default:
   return 0;
   }
   }
 
-private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide)
-  {
-  int moved = 0;
-  ItemStack stack;
-  ItemStack filter;
-  int stackSize = 0;  
-  int fromIndices[];
-  boolean shouldMove;
-  if(from instanceof ISidedInventory && fromSide>=0)
-    {
-    fromIndices = ((ISidedInventory)from).getAccessibleSlotsFromSide(fromSide);
-    }
-  else
-    {
-    fromIndices = InventoryTools.getIndiceArrayForSpread(0, from.getSizeInventory());
-    }  
-  for(int index : fromIndices)
-    {
-    shouldMove = false;
-    stack = from.getStackInSlot(index);
-    if(stack==null){continue;}
-    stackSize = stack.stackSize;    
-    for(int i = 0; i < filters.length; i++)
-      {
-      filter = filters[i];
-      if(filter==null){continue;}
-      if(InventoryTools.doItemStacksMatch(stack, filter))
-        {
-        shouldMove=true;
-        break;
-        }
-      }
-    if(shouldMove)
-      {
-      stack = InventoryTools.mergeItemStack(to, stack, toSide);
-      if(stack==null){from.setInventorySlotContents(index, null);}
-      }    
-    if(stack==null || stack.stackSize!=stackSize)
-      {
-      moved++;
-      from.markDirty();
-      }   
-    }  
-  return moved;
-  }
 
-private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide)
-  {
-  int moved = 0;
-  ItemStack stack;
-  ItemStack filter;
-  int stackSize = 0;  
-  int fromIndices[];
-  boolean shouldMove;
-  if(from instanceof ISidedInventory && fromSide>=0)
-    {
-    fromIndices = ((ISidedInventory)from).getAccessibleSlotsFromSide(fromSide);
-    }
-  else
-    {
-    fromIndices = InventoryTools.getIndiceArrayForSpread(0, from.getSizeInventory());
-    }  
-  for(int index : fromIndices)
-    {
-    shouldMove = true;
-    stack = from.getStackInSlot(index);
-    if(stack==null){continue;}
-    stackSize = stack.stackSize;    
-    for(int i = 0; i < filters.length; i++)
-      {
-      filter = filters[i];
-      if(filter==null){continue;}
-      if(InventoryTools.doItemStacksMatch(stack, filter))
-        {
-        shouldMove=false;
-        break;
-        }
-      }
-    if(shouldMove)
-      {
-      stack = InventoryTools.mergeItemStack(to, stack, toSide);
-      if(stack==null){from.setInventorySlotContents(index, null);}
-      }    
-    if(stack==null || stack.stackSize!=stackSize)
-      {
-      moved++;
-      from.markDirty();
-      }
-    }  
-  return moved;
-  }
-
-private int fillTo(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide)
-  {
-  int moved = 0;
-  int toMove = 0;
-  int foundCount = 0;
-  ItemStack filter;
-  int m1;
-  for(int i = 0; i < filters.length; i++)
-    {
-    filter = filters[i];
-    if(filter==null){continue;}
-    foundCount = InventoryTools.getCountOf(to, toSide, filter);    
-    toMove = filter.stackSize;
-    if(foundCount>toMove){continue;}    
-    toMove-=foundCount;
-    m1 = InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide);
-    moved += m1/filter.getMaxStackSize();
-    }
-  return moved;
-  }
 
 public List<RoutePoint> getEntries()
   {

@@ -95,16 +95,17 @@ who knows.... will need to start using it to find out what is broken / not worki
 	owning players can setup the trades and give the npc their 'stock'
 	owning players can withdraw the proceeds from bartering, and restock the vendor
 	non-owning players can access the vendors trade screen to barter
-? add rendering of routes when npc-order item is being held
+* add rendering of routes when npc-order item is being held
 	work-order renders route + numbers
 	routing-order renders route + sides
 	combat-order renders patrol and guard points/targets
+	find a way to render quads instead of gl-line, to enable depth-scaling of line width?
 * combat bonuses for player-owned combat NPCs when in-range of a 'commander' set combat npc
 * combat npc ranged-attacks
 * combat npc variable damage based on type and level
-* player-owned courier AI
-* routing-orders class	
-* routing-orders gui/container
+* courier adjust functionality based on level
+* courier add xp per item-stack moved
+* worker adjust functionality based on level and tool effectiveness
 * player-owned priest AI
 * player-owned trader AI
 * player-owned bard AI

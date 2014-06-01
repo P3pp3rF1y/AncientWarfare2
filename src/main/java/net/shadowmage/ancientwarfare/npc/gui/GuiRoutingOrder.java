@@ -2,20 +2,30 @@ package net.shadowmage.ancientwarfare.npc.gui;
 
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.block.Direction;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder.RoutePoint;
 
@@ -131,16 +141,40 @@ public void setupElements()
         {
         @Override
         public void onSlotClicked(ItemStack stack)
-          {
-          stack = stack==null? null : stack.copy();
-          //TODO add increment/decrement capabilities...
-          point.setFilter(index, stack);
-          setItem(stack);
-          hasChanged=true;
+          {    
+          onFilterSlotClicked(this, point, index, stack);          
           }
         };
       area.addGuiElement(slot);
       }
+    
+    labelString = point.getIgnoreDamage()? EnumChatFormatting.RED.toString()+EnumChatFormatting.STRIKETHROUGH.toString() : "";
+    labelString += StatCollector.translateToLocal("guistrings.dmg");
+    button = new IndexedButton(8+8*18, totalHeight+10+12+2, 40, 12, labelString, index)
+      {
+      @Override
+      protected void onPressed()
+        {
+        container.routingOrder.toggleIgnoreDamage(index);
+        hasChanged=true;
+        refreshGui();
+        }
+      };
+    area.addGuiElement(button);
+    
+    labelString = point.getIgnoreTag()? EnumChatFormatting.RED.toString()+EnumChatFormatting.STRIKETHROUGH.toString() : "";
+    labelString += StatCollector.translateToLocal("guistrings.tag");
+    button = new IndexedButton(8+8*18+40, totalHeight+10+12+2, 40, 12, labelString, index)
+      {
+      @Override
+      protected void onPressed()
+        {
+        container.routingOrder.toggleIgnoreTag(index);
+        hasChanged=true;
+        refreshGui();
+        }
+      };
+    area.addGuiElement(button);
     
     totalHeight += 18+10+12+4;
     
@@ -149,6 +183,71 @@ public void setupElements()
     index++;
     }    
   area.setAreaSize(totalHeight);
+  }
+
+private void onFilterSlotClicked(ItemSlot slot, RoutePoint point, int index, ItemStack stack)
+  {
+  //TODO move this functionality in as default for item-slots, or toggleable to enable?
+  if(slot.getStack()!=null && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+    {             
+    if(Mouse.getEventButton()==0)//left
+      {
+      slot.getStack().stackSize+=32;
+      point.setFilter(index, slot.getStack());
+      }
+    else if(Mouse.getEventButton()==1)//right
+      {
+      slot.getStack().stackSize-=32;
+      if(slot.getStack().stackSize<1){slot.getStack().stackSize=1;}
+      point.setFilter(index, slot.getStack());
+      }
+    }
+  else if(slot.getStack()!=null && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+    {
+    if(Mouse.getEventButton()==0)//left
+      {              
+      slot.getStack().stackSize+=1;
+      point.setFilter(index, slot.getStack());
+      }
+    else if(Mouse.getEventButton()==1)//right
+      {
+      slot.getStack().stackSize-=1;
+      if(slot.getStack().stackSize<1){slot.getStack().stackSize=1;}
+      point.setFilter(index, slot.getStack());
+      }
+    }
+  else
+    {
+    if(stack==null)
+      {
+      point.setFilter(index, stack);
+      slot.setItem(stack);
+      }
+    else
+      {
+      if(InventoryTools.doItemStacksMatch(stack, slot.getStack()))
+        {
+        if(Mouse.getEventButton()==0)//left
+          {              
+          slot.getStack().stackSize+=stack.stackSize;
+          point.setFilter(index, slot.getStack());
+          }
+        else if(Mouse.getEventButton()==1)//right
+          {
+          slot.getStack().stackSize-=stack.stackSize;
+          if(slot.getStack().stackSize<1){slot.getStack().stackSize=1;}
+          point.setFilter(index, slot.getStack());
+          }
+        }
+      else
+        {
+        stack = stack.copy();                
+        point.setFilter(index, stack);
+        slot.setItem(stack);
+        }
+      }
+    }
+  hasChanged=true;
   }
 
 @Override

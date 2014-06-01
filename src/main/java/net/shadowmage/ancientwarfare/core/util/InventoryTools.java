@@ -219,27 +219,42 @@ public static ItemStack removeItems(IInventory inventory, int side, ItemStack fi
 
 /**
  * Move up to the specified quantity of filter stack from 'from' into 'to', using the designated sides (or general all sides merge if side<0 or from/to are not sided inventories)
- * @param from
- * @param to
- * @param filter
- * @param quantity
- * @param fromSide
- * @param toSide
+ * @param from the inventory to withdraw items from
+ * @param to the inventory to deposit items into
+ * @param filter the stack used as a filter, only items matching this will be moved
+ * @param quantity how many items to move
+ * @param fromSide the side of 'from' inventory to withdraw out of
+ * @param toSide the side of 'to' inventory to deposit into
  * @return
  */
 public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, int fromSide, int toSide)
   {
+  return transferItems(from, to, filter, quantity, fromSide, toSide, false, false);
+  }
+
+/**
+ * Move up to the specified quantity of filter stack from 'from' into 'to', using the designated sides (or general all sides merge if side<0 or from/to are not sided inventories)
+ * @param from the inventory to withdraw items from
+ * @param to the inventory to deposit items into
+ * @param filter the stack used as a filter, only items matching this will be moved
+ * @param quantity how many items to move
+ * @param fromSide the side of 'from' inventory to withdraw out of
+ * @param toSide the side of 'to' inventory to deposit into
+ * @param ignoreDamage ignore item-damage when looking for items to move
+ * @param ignoreNBT ignore item-tag when looking for items to move
+ * @return
+ */
+public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, int fromSide, int toSide, boolean ignoreDamage, boolean ignoreNBT)
+  {
   int moved = 0;
   int fromIndices[] = from instanceof ISidedInventory && fromSide>=0 ? ((ISidedInventory)from).getAccessibleSlotsFromSide(fromSide) : getIndiceArrayForSpread(0, from.getSizeInventory());  
-  int count = getCountOf(from, fromSide, filter);
-  if(count<=0){return moved;}//nothing to move, don't bother trying  
   ItemStack s1, s2;
   int toMove = quantity;
   int stackSize;
   for(int fromIndex : fromIndices)
     {
     s1 = from.getStackInSlot(fromIndex);
-    if(s1==null || !doItemStacksMatch(s1, filter)){continue;}
+    if(s1==null || !doItemStacksMatch(s1, filter, ignoreDamage, ignoreNBT)){continue;}
     stackSize = s1.stackSize;
     if(s1.stackSize>toMove)//move partial stack      
       {
@@ -248,18 +263,19 @@ public static int transferItems(IInventory from, IInventory to, ItemStack filter
       s1.stackSize-=toMove;
       stackSize=s2.stackSize;
       s2=mergeItemStack(to, s2, toSide);
-      from.markDirty();
       if(s2!=null)//partial merge, destination full, break out
         {
         moved+=stackSize-s2.stackSize;
         toMove-=stackSize-s2.stackSize;
         mergeItemStack(from, s2, fromSide);//put back the remainder of the partial stack that was copied out
+        from.markDirty();
         break;
         }
       else
         {
         moved+=stackSize;
         toMove-=stackSize;
+        from.markDirty();
         }
       }
     else
@@ -267,9 +283,9 @@ public static int transferItems(IInventory from, IInventory to, ItemStack filter
       s1 = mergeItemStack(to, s1, toSide);
       if(s1!=null)//destination inventory was full, break out
         {
-        from.markDirty();
         moved+=stackSize-s1.stackSize;
         toMove-=stackSize-s1.stackSize;
+        from.markDirty();
         break;
         }
       else
@@ -388,6 +404,17 @@ public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2)
   return false;
   }
 
+public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean ignoreDamage, boolean ignoreNBT)
+  {
+  if(!ignoreDamage && !ignoreNBT){return doItemStacksMatch(stack1, stack2);}
+  if(stack1==null){return stack2==null;}
+  if(stack2==null){return stack1==null;}
+  if(stack1.getItem()!=stack2.getItem()){return false;}
+  if(!ignoreDamage && stack1.getItemDamage()!=stack2.getItemDamage()){return false;}
+  if(!ignoreNBT && !ItemStack.areItemStackTagsEqual(stack1, stack2)){return false;}
+  return true;
+  }
+
 /**
  * 
  * @param stack1
@@ -399,29 +426,20 @@ public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2)
  */
 public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean matchDamage, boolean matchNBT, boolean useOreDictionary)
   {
-  if(stack1==null){return stack2==null;}
-  if(stack2==null){return stack1==null;}
-  if(matchDamage && matchNBT && !useOreDictionary)
+  if(!useOreDictionary)
     {
-    return doItemStacksMatch(stack1, stack2);
+    return doItemStacksMatch(stack1, stack2, !matchDamage, !matchNBT);
     }
-  if(stack1.getItem()==stack2.getItem())
+  else
     {
-    if(useOreDictionary)
+    if(stack1==null){return stack2==null;}
+    if(stack2==null){return stack1==null;}
+    if(stack1.getItem()==stack2.getItem())
       {
       int id = OreDictionary.getOreID(stack1);
       int id2 = OreDictionary.getOreID(stack2);
       return id>0 && id2>0 && id==id2;
       }
-    if(matchDamage && stack1.getItemDamage()!=stack2.getItemDamage())
-      {
-      return false;
-      }
-    if(matchNBT && !ItemStack.areItemStackTagsEqual(stack1, stack2))
-      {
-      return false;
-      }
-    return true;
     }
   return false;
   }
@@ -647,144 +665,6 @@ public static void compactStackList3(List<ItemStack> in, List<ItemStack> out)
     map.addCount(stack, stack.stackSize);
     }
   map.getItems(out);
-  }
-
-public static void itemCompactTest()
-  {
-  List<ItemStack> toCompact = new ArrayList<ItemStack>();
-  for(int i = 0; i < 10; i++)
-    {
-    toCompact.add(new ItemStack(Blocks.cobblestone,64));
-    toCompact.add(new ItemStack(Blocks.dirt,64));  
-    toCompact.add(new ItemStack(Blocks.grass,64));  
-    toCompact.add(new ItemStack(Items.apple,1));    
-    }
-  for(int i = 0; i < 20; i++)
-    {
-    toCompact.add(new ItemStack(Items.apple,64));
-    toCompact.add(new ItemStack(Items.apple,1));    
-    }
-  for(int i = 0; i < 10; i++)
-    {
-    toCompact.add(new ItemStack(Items.fish,1));
-    toCompact.add(new ItemStack(Items.apple,1));    
-    }
-  
-  ComparatorItemStack comparator = new ComparatorItemStack(SortType.NAME, SortOrder.DESCENDING);
-  Collections.sort(toCompact, comparator);
-  List<ItemStack> result = new ArrayList<ItemStack>();
-
-  
-  int runs = 100000;  
-  
-  for(int i = 0; i < 10; i++)
-    {
-    test1(toCompact, result, runs);
-    }  
-  for(int i = 0; i < 10; i++)
-    {
-    test2(toCompact, result, runs);
-    }  
-  for(int i = 0; i < 10; i++)
-    {
-    test3(toCompact, result, runs);
-    }  
-  }
-
-private static void test1(List<ItemStack> toCompact, List<ItemStack> result, int runs)
-  {
-  int s1;
-  long t1, t2, t3, m1, m2, m3;
-  float tf1, tf2;
-  s1 = 0; 
-  t3 = 0;  
-  m3 = 0; 
-  
-  System.gc();
-  for(int i = 0; i < runs; i++)
-    {
-    m1 = Runtime.getRuntime().freeMemory();    
-    t1 = System.nanoTime();
-    compactStackList(toCompact, result);
-    t2 = System.nanoTime();
-    m2 = Runtime.getRuntime().freeMemory();
-    m3+=m1-m2;
-    t3+=t2-t1;
-    s1+=result.size();    
-    if(i<runs-1)
-      {
-      result.clear();      
-      }
-    }  
-  tf1 = ((float)t3/(float)runs)/1000000.f;
-  tf2 = (float)t3/1000000.f;
-  AWLog.logDebug("Compact method 1, time for "+runs+" runs: "+t3+"ns (" + tf2+"ms)"+" time per run avg: "+(t3/runs)+"ns ("+tf1+"ms)" + "mem use: "+m3 + " per run: "+(m3/runs));
-  AWLog.logDebug("Compacted list: "+s1+":"+result.size()); 
-  result.clear();
-  }
-
-private static void test2(List<ItemStack> toCompact, List<ItemStack> result, int runs)
-  {
-  int s1;
-  long t1, t2, t3, m1, m2, m3;
-  float tf1, tf2;
-  s1 = 0; 
-  t3 = 0;  
-  m3 = 0; 
-  
-  System.gc();
-  for(int i = 0; i < runs; i++)
-    {
-    m1 = Runtime.getRuntime().freeMemory();    
-    t1 = System.nanoTime();
-    compactStackList2(toCompact, result);
-    t2 = System.nanoTime();
-    m2 = Runtime.getRuntime().freeMemory();
-    m3+=m1-m2;
-    t3+=t2-t1;
-    s1+=result.size();    
-    if(i<runs-1)
-      {
-      result.clear();      
-      }
-    }  
-  tf1 = ((float)t3/(float)runs)/1000000.f;
-  tf2 = (float)t3/1000000.f;
-  AWLog.logDebug("Compact method 2, time for "+runs+" runs: "+t3+"ns (" + tf2+"ms)"+" time per run avg: "+(t3/runs)+"ns ("+tf1+"ms)" + "mem use: "+m3 + " per run: "+(m3/runs));
-  AWLog.logDebug("Compacted list: "+s1+":"+result.size()); 
-  result.clear();
-  }
-
-private static void test3(List<ItemStack> toCompact, List<ItemStack> result, int runs)
-  {
-  int s1;
-  long t1, t2, t3, m1, m2, m3;
-  float tf1, tf2;
-  s1 = 0; 
-  t3 = 0;  
-  m3 = 0; 
-  
-  System.gc();
-  for(int i = 0; i < runs; i++)
-    {
-    m1 = Runtime.getRuntime().freeMemory();    
-    t1 = System.nanoTime();
-    compactStackList3(toCompact, result);
-    t2 = System.nanoTime();
-    m2 = Runtime.getRuntime().freeMemory();
-    m3+=m1-m2;
-    t3+=t2-t1;
-    s1+=result.size();    
-    if(i<runs-1)
-      {
-      result.clear();      
-      }
-    }  
-  tf1 = ((float)t3/(float)runs)/1000000.f;
-  tf2 = (float)t3/1000000.f;
-  AWLog.logDebug("Compact method 3, time for "+runs+" runs: "+t3+"ns (" + tf2+"ms)"+" time per run avg: "+(t3/runs)+"ns ("+tf1+"ms)" + "mem use: "+m3 + " per run: "+(m3/runs));
-  AWLog.logDebug("Compacted list: "+s1+":"+result.size()); 
-  result.clear();
   }
 
 /**
