@@ -11,6 +11,7 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
@@ -87,7 +88,23 @@ public String getNpcType()
 @Override
 public float getWorkEffectiveness(WorkType type)
   {
-  return 1.f;//TODO base this off of worker level?
+  if(type==this.getWorkTypeFromEquipment())
+    {
+    float level = this.getLevelingStats().getLevel(getNpcFullType());
+    float effectiveness=1.f;
+    effectiveness += level*0.05f;    
+    if(getEquipmentInSlot(0)!=null && getEquipmentInSlot(0).getItem() instanceof ItemTool)
+      {
+      ItemTool tool = (ItemTool)getEquipmentInSlot(0).getItem();
+      effectiveness += tool.func_150913_i().getEfficiencyOnProperMaterial()*0.05f;
+      }    
+    else if(getEquipmentInSlot(0)!=null)
+      {
+      effectiveness += level*0.05f;
+      }        
+    return effectiveness;
+    }
+  return 0.f;
   }
 
 @Override

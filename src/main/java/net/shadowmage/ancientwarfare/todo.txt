@@ -101,11 +101,9 @@ who knows.... will need to start using it to find out what is broken / not worki
 	combat-order renders patrol and guard points/targets
 	find a way to render quads instead of gl-line, to enable depth-scaling of line width?
 * combat bonuses for player-owned combat NPCs when in-range of a 'commander' set combat npc
-* combat npc ranged-attacks
 * combat npc variable damage based on type and level
 * courier adjust functionality based on level
 * courier add xp per item-stack moved
-* worker adjust functionality based on level and tool effectiveness
 * player-owned priest AI
 * player-owned trader AI
 * player-owned bard AI
@@ -115,6 +113,10 @@ who knows.... will need to start using it to find out what is broken / not worki
 * faction archer AI
 * faction priest AI
 * faction trader AI
+* command baton -- extend from ItemTool? or at least turn it into an alternative sword item...perhaps rename it to 'sceptre of command' or somesuch
+* hammer item -- use durability on work or rotate use, create multiple tool-material tiers
+* fix skeletons / ranged mobs attack ai
+	perhaps special case skeletons, loop through their AI to see how they are configured before adding either melee or ranged attack task (could just query skeleton-type)
 * add faction structure control block
 	for use by structure creators.
 	respawns faction-based npcs and attempts to keep them within the bounds designated in the block

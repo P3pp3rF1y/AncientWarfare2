@@ -17,6 +17,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -320,10 +321,18 @@ protected void applyEntityAttributes()
   this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.d);//TODO figure out dynamic changing of max-health based on level from levelingStats
   this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);//TODO check what pathfinding range is really needed, perhaps allow config option for longer paths
   this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.325D);//TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
-
-  //TODO figure out how to dynamically reset attack damage attribute based on weapon equipped
   this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-  this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);
+  }
+
+/**
+ * called whenever level changes, to update the damage-done stat for the entity
+ */
+public void updateDamageFromLevel()
+  {
+  float dmg = AWNPCStatics.npcAttackDamage;
+  float lvl = getLevelingStats().getLevel(getNpcFullType());
+  dmg += dmg*lvl*AWNPCStatics.npcLevelDamageMultiplier;
+  this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(dmg);  
   }
 
 public int getFoodRemaining()

@@ -188,7 +188,7 @@ public void setupElements()
 private void onFilterSlotClicked(ItemSlot slot, RoutePoint point, int index, ItemStack stack)
   {
   //TODO move this functionality in as default for item-slots, or toggleable to enable?
-  if(slot.getStack()!=null && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+  if(slot.getStack()!=null && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)))
     {             
     if(Mouse.getEventButton()==0)//left
       {
@@ -202,7 +202,7 @@ private void onFilterSlotClicked(ItemSlot slot, RoutePoint point, int index, Ite
       point.setFilter(index, slot.getStack());
       }
     }
-  else if(slot.getStack()!=null && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+  else if(slot.getStack()!=null && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)))
     {
     if(Mouse.getEventButton()==0)//left
       {              

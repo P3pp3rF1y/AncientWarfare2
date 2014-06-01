@@ -53,6 +53,7 @@ public void addExperience(String type, int xpGained)
     {
     entry.xp -= getXPToLevel(entry.level+1);
     entry.level++;
+    onSubLevelGained(type, entry.level);
     } 
   this.xp+=xpGained;
   while(level < AWNPCStatics.maxNpcLevel && this.xp>=getXPToLevel(level))
@@ -65,11 +66,17 @@ public void addExperience(String type, int xpGained)
 private void onBaseLevelGained(int newLevel)
   {
   level = newLevel;
-  if(newLevel<=10)//TODO set max-cap level from config...or just let diminishing xp gain taper it off....
+  if(newLevel<=AWNPCStatics.maxNpcLevel)
     {
     int health = 20 + newLevel;
     npc.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health); 
+    npc.updateDamageFromLevel();
     }
+  }
+
+private void onSubLevelGained(String type, int newLevel)
+  {
+  npc.updateDamageFromLevel();  
   }
 
 private int getXPToLevel(int level)
