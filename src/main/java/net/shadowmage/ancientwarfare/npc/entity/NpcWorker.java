@@ -7,6 +7,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemPickaxe;
@@ -15,6 +16,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
@@ -93,11 +95,18 @@ public float getWorkEffectiveness(WorkType type)
     float level = this.getLevelingStats().getLevel(getNpcFullType());
     float effectiveness=1.f;
     effectiveness += level*0.05f;    
-    if(getEquipmentInSlot(0)!=null && getEquipmentInSlot(0).getItem() instanceof ItemTool)
+    if(getEquipmentInSlot(0)==null){return effectiveness;}
+    Item item = getEquipmentInSlot(0).getItem();    
+    if(item instanceof ItemTool)
       {
       ItemTool tool = (ItemTool)getEquipmentInSlot(0).getItem();
       effectiveness += tool.func_150913_i().getEfficiencyOnProperMaterial()*0.05f;
       }    
+    else if(item instanceof ItemHammer)
+      {
+      ItemHammer hammer = (ItemHammer)item;
+      effectiveness += hammer.getMaterial().getEfficiencyOnProperMaterial()*0.05f;
+      }
     else if(getEquipmentInSlot(0)!=null)
       {
       effectiveness += level*0.05f;
@@ -157,6 +166,11 @@ public void writeEntityToNBT(NBTTagCompound tag)
   {
   super.writeEntityToNBT(tag);
   tag.setTag("workAI", workAI.writeToNBT(new NBTTagCompound()));
+  }
+
+public void handleWorkBroadcast(IWorkSite worksite)
+  {
+  
   }
 
 }

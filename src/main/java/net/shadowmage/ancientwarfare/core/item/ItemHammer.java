@@ -43,6 +43,11 @@ public ItemHammer(String regName, ToolMaterial material)
   this.setMaxDamage(material.getMaxUses());
   }
 
+public ToolMaterial getMaterial()
+  {
+  return material;
+  }
+
 /**
  * Return the enchantability factor of the item, most of the time is based on material.
  */
