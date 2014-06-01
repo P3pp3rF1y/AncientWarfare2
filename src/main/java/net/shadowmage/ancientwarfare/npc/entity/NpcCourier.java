@@ -8,19 +8,24 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAICourier;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public class NpcCourier extends NpcPlayerOwned
 {
+
+NpcAICourier courierAI;
 
 public NpcCourier(World par1World)
   {
@@ -35,7 +40,7 @@ public NpcCourier(World par1World)
   this.tasks.addTask(3, new NpcAIFleeHostiles(this));
   this.tasks.addTask(4, new NpcAIGetFood(this));  
   this.tasks.addTask(5, new NpcAIIdleWhenHungry(this)); 
-  
+  this.tasks.addTask(6, (courierAI=new NpcAICourier(this)));
   this.tasks.addTask(7, new NpcAIMoveHome(this, 80.f, 8.f, 40.f, 3.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
@@ -47,15 +52,13 @@ public NpcCourier(World par1World)
 @Override
 public boolean isValidOrdersStack(ItemStack stack)
   {
-  // TODO Auto-generated method stub
-  return false;
+  return stack!=null && stack.getItem()==AWNpcItemLoader.routingOrder;
   }
 
 @Override
 public void onOrdersInventoryChanged()
   {
-  // TODO Auto-generated method stub
-  
+  courierAI.onOrdersChanged();
   }
 
 @Override
@@ -68,6 +71,20 @@ public String getNpcSubType()
 public String getNpcType()
   {
   return "courier";
+  }
+
+@Override
+public void readEntityFromNBT(NBTTagCompound tag)
+  {
+  super.readEntityFromNBT(tag);
+  if(tag.hasKey("courierAI")){courierAI.readFromNBT(tag.getCompoundTag("courierAI"));}
+  }
+
+@Override
+public void writeEntityToNBT(NBTTagCompound tag)
+  {  
+  super.writeEntityToNBT(tag);
+  tag.setTag("courierAI", courierAI.writeToNBT(new NBTTagCompound()));
   }
 
 

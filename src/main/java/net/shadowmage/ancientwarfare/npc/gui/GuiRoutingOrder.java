@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -63,7 +64,7 @@ public void setupElements()
     label = new Label(120, totalHeight, pos.toString());
     area.addGuiElement(label);
     
-    labelString = Direction.getDirectionFor(point.getBlockSide()).getTranslationKey();//TODO translate
+    labelString = StatCollector.translateToLocal(Direction.getDirectionFor(point.getBlockSide()).getTranslationKey());
     button = new IndexedButton(8, totalHeight+10, 55, 12, labelString, index)
       {
       @Override
@@ -76,8 +77,8 @@ public void setupElements()
       };
     area.addGuiElement(button);
       
-    labelString = point.getRouteType().toString();
-    button = new IndexedButton(8+55+2, totalHeight+10, 55, 12, labelString, index)
+    labelString = StatCollector.translateToLocal(point.getRouteType().getTranslationKey());
+    button = new IndexedButton(8+55+2, totalHeight+10, 80, 12, labelString, index)
       {
       @Override
       protected void onPressed()
@@ -89,7 +90,7 @@ public void setupElements()
       };
     area.addGuiElement(button);
     
-    button = new IndexedButton(8+55+55+4, totalHeight+10, 12, 12, "+", index)
+    button = new IndexedButton(8+55+80+4, totalHeight+10, 12, 12, "+", index)
       {
       @Override
       protected void onPressed()
@@ -101,7 +102,7 @@ public void setupElements()
       };
     area.addGuiElement(button);
     
-    button = new IndexedButton(8+55+55+12+6, totalHeight+10, 12, 12, "-", index)
+    button = new IndexedButton(8+55+80+12+6, totalHeight+10, 12, 12, "-", index)
       {
       @Override
       protected void onPressed()
@@ -113,7 +114,7 @@ public void setupElements()
       };
     area.addGuiElement(button);
     
-    button = new IndexedButton(8+55+55+12+12+8, totalHeight+10, 55, 12, "foo.remove", index)
+    button = new IndexedButton(8+55+80+12+12+8, totalHeight+10, 55, 12, StatCollector.translateToLocal("guistrings.npc.remove_point"), index)
       {
       @Override
       protected void onPressed()

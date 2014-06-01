@@ -83,10 +83,10 @@ public void updateTask()
     double dist = npc.getDistanceSq(pos.x+0.5d, pos.y, pos.z+0.5d);
     if(dist>2.d*2.d)
       {
-      npc.addAITask(TASK_MOVE);
       moveRetryDelay--;
       if(moveRetryDelay<=0)
         {
+        npc.addAITask(TASK_MOVE);
         npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, moveSpeed);
         moveRetryDelay=10;//base .5 second retry delay
         if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16

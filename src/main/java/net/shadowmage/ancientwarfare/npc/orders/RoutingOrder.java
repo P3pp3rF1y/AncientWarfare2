@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -180,34 +181,39 @@ public static enum RouteType
 /**
  * fill target up to the specified quantity from couriers inventory
  */
-FILL_TARGET_TO,
+FILL_TARGET_TO("route.fill.target"),
 
 /**
  * fill courier up to the specified quantity from targets inventory 
  */
-FILL_COURIER_TO,
+FILL_COURIER_TO("route.fill.courier"),
 
 /**
  * deposit any of the specified items from courier into target inventory
  * (no quantity limit)
  */
-DEPOSIT_ALL_OF,
+DEPOSIT_ALL_OF("route.deposit.match"),
 
 /**
  * withdraw any of the specified items from target inventory into courier inventory
  * (no quantity limit)
  */
-WITHDRAW_ALL_OF,
+WITHDRAW_ALL_OF("route.withdraw.match"),
 
 /**
  * deposit all items in courier inventory, except those matching filter items
  */
-DEPOSIT_ALL_EXCEPT,
+DEPOSIT_ALL_EXCEPT("route.deposit.no_match"),
 
 /**
  * withdraw all items in target inventory except those matching filters
  */
-WITHDRAW_ALL_EXCEPT;
+WITHDRAW_ALL_EXCEPT("route.withdraw.no_match");
+
+final String key;
+RouteType(String key){this.key = key;}
+
+public String getTranslationKey(){return key;}
 
 public static RouteType next(RouteType type)
   {
@@ -233,36 +239,120 @@ public RouteType next()
  */
 public int handleRouteAction(RoutePoint p, IInventory npc, IInventory target)
   {
+  int side = p.getBlockSide();
   switch(p.routeType)
   {
   case FILL_COURIER_TO:
-  return fillTo(p.filters, target, npc);
+  return fillTo(p.filters, target, npc, side, -1);
   
   case FILL_TARGET_TO:
-  return fillTo(p.filters, npc, target);
+  return fillTo(p.filters, npc, target, -1, side);
     
   case DEPOSIT_ALL_EXCEPT:
-  return depositAllItemsExcept(p.filters, npc, target);
+  return depositAllItemsExcept(p.filters, npc, target, -1, side);
   
   case DEPOSIT_ALL_OF:  
-  return depositAllItems(p.filters, npc, target);
+  return depositAllItems(p.filters, npc, target, -1, side);
   
   case WITHDRAW_ALL_EXCEPT:  
-  return depositAllItemsExcept(p.filters, target, npc);
+  return depositAllItemsExcept(p.filters, target, npc, side, -1);
   
   case WITHDRAW_ALL_OF:
-  return depositAllItems(p.filters, target, npc);
+  return depositAllItems(p.filters, target, npc, side, -1);
   
   default:
   return 0;
   }
   }
 
-private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to){return 0;}//TODO
+private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide)
+  {
+  int moved = 0;
+  ItemStack stack;
+  ItemStack filter;
+  int stackSize = 0;  
+  int fromIndices[];
+  boolean shouldMove;
+  if(from instanceof ISidedInventory)
+    {
+    fromIndices = ((ISidedInventory)from).getAccessibleSlotsFromSide(fromSide);
+    }
+  else
+    {
+    fromIndices = InventoryTools.getIndiceArrayForSpread(0, from.getSizeInventory());
+    }  
+  for(int index : fromIndices)
+    {
+    shouldMove = false;
+    stack = from.getStackInSlot(index);
+    if(stack==null){continue;}
+    stackSize = stack.stackSize;    
+    for(int i = 0; i < filters.length; i++)
+      {
+      filter = filters[i];
+      if(filter==null){continue;}
+      if(InventoryTools.doItemStacksMatch(stack, filter))
+        {
+        shouldMove=true;
+        break;
+        }
+      }
+    if(shouldMove)
+      {
+      stack = InventoryTools.mergeItemStack(to, stack, toSide);
+      if(stack==null){break;}
+      }    
+    if(stack==null || stack.stackSize!=stackSize){moved++;}    
+    }  
+  return moved;
+  }
 
-private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInventory to){return 0;}//TODO
+private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide)
+  {
+  int moved = 0;
+  ItemStack stack;
+  ItemStack filter;
+  int stackSize = 0;  
+  int fromIndices[];
+  boolean shouldMove;
+  if(from instanceof ISidedInventory)
+    {
+    fromIndices = ((ISidedInventory)from).getAccessibleSlotsFromSide(fromSide);
+    }
+  else
+    {
+    fromIndices = InventoryTools.getIndiceArrayForSpread(0, from.getSizeInventory());
+    }  
+  for(int index : fromIndices)
+    {
+    shouldMove = true;
+    stack = from.getStackInSlot(index);
+    if(stack==null){continue;}
+    stackSize = stack.stackSize;    
+    for(int i = 0; i < filters.length; i++)
+      {
+      filter = filters[i];
+      if(filter==null){continue;}
+      if(InventoryTools.doItemStacksMatch(stack, filter))
+        {
+        shouldMove=false;
+        break;
+        }
+      }
+    if(shouldMove)
+      {
+      stack = InventoryTools.mergeItemStack(to, stack, toSide);
+      if(stack==null){break;}
+      }    
+    if(stack==null || stack.stackSize!=stackSize){moved++;}    
+    }  
+  return moved;
+  }
 
-private int fillTo(ItemStack[] filters, IInventory from, IInventory to){return 0;}//TODO
+private int fillTo(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide)
+  {
+  return 0;
+  }//TODO
 
 public List<RoutePoint> getEntries()
   {
