@@ -10,6 +10,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
+import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
@@ -26,6 +29,7 @@ public class NpcCourier extends NpcPlayerOwned
 {
 
 NpcAICourier courierAI;
+public InventoryBackpack backpackInventory;
 
 public NpcCourier(World par1World)
   {
@@ -62,6 +66,31 @@ public void onOrdersInventoryChanged()
   }
 
 @Override
+public void onWeaponInventoryChanged()
+  {
+  super.onWeaponInventoryChanged();
+  if(getEquipmentInSlot(0)!=null && getEquipmentInSlot(0).getItem()==AWItems.backpack)
+    {
+    backpackInventory = ItemBackpack.getInventoryFor(getEquipmentInSlot(0));
+    }
+  else
+    {
+    backpackInventory=null;
+    }
+  }
+
+/**
+ * should be called from courier routing AI whenever work done>0, to ensure items are saved to backpack
+ */
+public void updateBackpackItemContents()  
+  {
+  if(getEquipmentInSlot(0)!=null && getEquipmentInSlot(0).getItem()==AWItems.backpack)
+    {
+    ItemBackpack.writeBackpackToItem(backpackInventory, getEquipmentInSlot(0));
+    }
+  }
+
+@Override
 public String getNpcSubType()
   {
   return "";//TODO make a liquid courier?? how to define liquid filters?
@@ -77,7 +106,7 @@ public String getNpcType()
 public void readEntityFromNBT(NBTTagCompound tag)
   {
   super.readEntityFromNBT(tag);
-  if(tag.hasKey("courierAI")){courierAI.readFromNBT(tag.getCompoundTag("courierAI"));}
+  if(tag.hasKey("courierAI")){courierAI.readFromNBT(tag.getCompoundTag("courierAI"));}  
   }
 
 @Override

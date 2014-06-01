@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
 public class NpcAICourier extends NpcAI
@@ -23,9 +24,11 @@ double moveSpeed = 1.d;
 RoutingOrder order;
 ItemStack routeStack;
 
+NpcCourier courier;
 public NpcAICourier(NpcBase npc)
   {
   super(npc);
+  courier = (NpcCourier)npc;
   }
 
 @Override
@@ -38,13 +41,13 @@ public boolean shouldExecute()
     order = RoutingOrder.getRoutingOrder(routeStack);
     if((order!=null && routeIndex>=order.getEntries().size()) || order==null){routeIndex=0;}
     }
-  return order!=null && !order.getEntries().isEmpty();
+  return courier.backpackInventory!=null && order!=null && !order.getEntries().isEmpty();
   }
 
 @Override
 public boolean continueExecuting()
   {
-  return order!=null && !order.getEntries().isEmpty();
+  return courier.backpackInventory!=null && order!=null && !order.getEntries().isEmpty();
   }
 
 @Override
@@ -98,11 +101,12 @@ public void workAtSite()
 private void startWork()
   {
   IInventory target = getTargetInventory();
-  IInventory npcInv = null;
+  IInventory npcInv = courier.backpackInventory;
   if(target!=null)
     {
     startedWork = true;
     ticksToWork = ticksToWorkPerStack + ticksToWorkPerStack * order.handleRouteAction(order.getEntries().get(routeIndex), npcInv, target);
+    courier.updateBackpackItemContents();
     }
   else
     {
