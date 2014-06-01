@@ -101,8 +101,8 @@ who knows.... will need to start using it to find out what is broken / not worki
 	combat-order renders patrol and guard points/targets
 * combat bonuses for player-owned combat NPCs when in-range of a 'commander' set combat npc
 * player-owned courier AI
-* routing-orders item
 * routing-orders class	
+* routing-orders gui/container
 * player-owned priest AI
 * player-owned trader AI
 * player-owned bard AI

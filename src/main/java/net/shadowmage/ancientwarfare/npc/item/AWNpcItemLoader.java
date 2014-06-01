@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -16,6 +18,13 @@ public static final CreativeTabs npcTab = new CreativeTabs("tabs.npc")
   public Item getTabIconItem()
     {
     return npcSpawner;
+    }
+  
+  @Override
+  public void displayAllReleventItems(List par1List)
+    {
+    super.displayAllReleventItems(par1List);
+    //TODO sort list
     }
   };
   

@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
@@ -53,6 +54,7 @@ public void addRoutePoint(World world, int x, int y, int z)
   {
   RoutePoint p = new RoutePoint(x, y, z);
   routingPoints.add(p);
+  AWLog.logDebug("added route point, list now contains: "+routingPoints);
   }
 
 public void changeRouteType(int index)
@@ -98,7 +100,7 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
 
 public static RoutingOrder getRoutingOrder(ItemStack stack)
   {
-  if(stack!=null && stack.getItem()==AWNpcItemLoader.upkeepOrder)
+  if(stack!=null && stack.getItem()==AWNpcItemLoader.routingOrder)
     {
     RoutingOrder order = new RoutingOrder();
     if(stack.hasTagCompound() && stack.getTagCompound().hasKey("orders"))
@@ -256,10 +258,15 @@ public int handleRouteAction(RoutePoint p, IInventory npc, IInventory target)
   }
   }
 
-private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to){return 0;}
+private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to){return 0;}//TODO
 
-private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInventory to){return 0;}
+private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInventory to){return 0;}//TODO
 
-private int fillTo(ItemStack[] filters, IInventory from, IInventory to){return 0;}
+private int fillTo(ItemStack[] filters, IInventory from, IInventory to){return 0;}//TODO
+
+public List<RoutePoint> getEntries()
+  {
+  return routingPoints;
+  }
 
 }
