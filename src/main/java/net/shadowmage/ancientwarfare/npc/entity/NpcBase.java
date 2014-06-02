@@ -235,6 +235,7 @@ public final void readAdditionalItemData(NBTTagCompound tag)
   if(tag.hasKey("maxHealth")){getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(tag.getFloat("maxHealth"));}
   if(tag.hasKey("health")){setHealth(tag.getFloat("health"));}
   if(tag.hasKey("name")){setCustomNameTag(tag.getString("name"));}
+  if(tag.hasKey("food")){setFoodRemaining(tag.getInteger("food"));}
   }
 
 /**
@@ -278,6 +279,7 @@ public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag)
   tag.setTag("levelingStats", getLevelingStats().writeToNBT(new NBTTagCompound()));
   tag.setFloat("maxHealth", getMaxHealth());
   tag.setFloat("health", getHealth());
+  tag.setInteger("food", getFoodRemaining());
   if(hasCustomNameTag()){tag.setString("name", getCustomNameTag());}
   return tag;
   }
