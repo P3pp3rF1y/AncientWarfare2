@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.automation.tile.IControlledTile;
 import net.shadowmage.ancientwarfare.automation.tile.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -28,6 +29,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 
 public class WorkSiteWarehouse extends TileWorksiteBase implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
 {
@@ -55,7 +57,7 @@ private List<TileWarehouseInput> inputToEmpty = new ArrayList<TileWarehouseInput
 int currentItemCount;//used slots--calced from item quantity map
 int currentMaxItemCount;//max number of slots -- calced from storage blocks
 
-double maxEnergyStored = 1600;
+double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
 double maxInput = 100;
 private double storedEnergy;
 
@@ -75,6 +77,7 @@ public boolean canInput(ForgeDirection from)
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
+//  AWLog.logDebug("adding energy to warehouse..new energy: "+storedEnergy);
   }
 
 @Override
@@ -104,10 +107,10 @@ public void updateEntity()
       float f1 = (float)((double)t3 / 1000000.d);
 //      AWLog.logDebug("tilesToUpdate update time: "+(t2-t1)+"ns ("+f1+"ms)");
       }
-    if(hasWork() && storedEnergy==maxEnergyStored)
+    if(hasWarehouseWork() && storedEnergy>=AWCoreStatics.energyPerWorkUnit)
       {
       processWork();
-      storedEnergy-=maxEnergyStored;
+      storedEnergy-=AWCoreStatics.energyPerWorkUnit;
       }
     }  
   worldObj.theProfiler.endSection();
@@ -758,9 +761,15 @@ public boolean canExtractItem(int var1, ItemStack var2, int var3)
   }
 
 @Override
+public boolean hasWork()
+  {
+  return hasWorksiteWork() && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
+  }
+
+@Override
 protected boolean hasWorksiteWork()
   {
-  return hasWarehouseWork();
+  return storedEnergy<maxEnergyStored;
   }
 
 @Override

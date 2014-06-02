@@ -26,7 +26,7 @@ protected String owningPlayer = "";
 
 protected ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 
-private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit;
+private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
 private double maxInput = maxEnergyStored;
 private double storedEnergy;
 
