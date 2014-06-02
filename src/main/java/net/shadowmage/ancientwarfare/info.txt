@@ -47,39 +47,43 @@
 	
 	**************NPC INVENTORIES**************
 	all npcs will have full inventory accessibility for equipment slots
-		main-hand slot determines work/combat type
+		main-hand slot determines work/combat type/inventory-size for couriers/bonus effectiveness for bards
 		armor slots are used for actual armor
 		upkeep slot is for upkeep orders -- where to get the food
 		orders slot is for work/combat/route orders -- where to work / what to fight / what items to move	
 	
 	all npcs will have an 'upkeep order' slot
 		simple work-order that denotes a single point for npc upkeep.
-		--perhaps have additional variables for the slip such as min / max to withdraw?
+		allows setting the amount of upkeep to withdraw
+		allows setting the block-side to withdraw from (in the case of sided inventories)
 	
 	all npcs will have an 'orders' slot
-		worker = work order
-		courer = routing slip
-		combat = combat order		
-		
-		Work Order:
-			3 settings - Priority, Timed, Route
-			List of work-sites denotes what sites to work.  Setting type denotes when to go to the next worksite and what the next site will be.
-		Routing Slip:
-			Works pretty much like AW1
-		Combat Order:
-			Set custom team / player aggro controls
-			Patrol path setting / guard setting
-			Ability to customize the already config-customized aggro list.
+		worker = work order, denotes what sites and in what order a workers should work
+		courer = routing slip, denotes what sites and what items a courier should move
+		combat = combat order, denotes a patro route for combat-based npcs.
+			
+	**************NPC UPKEEP**************
+	Player owned NPCs may have their upkeep point set through the use of the 'Upkeep Orders' item
+	Alternatively, if no upkeep item is present, an NPC will auto-assign an upkeep point to the
+		nearest in range friendly town-hall.
+	A player may use the command-baton to override this 'auto assigned upkeep point' to one of their choosing
+		however while it does not require a upkeep-orders item ,using the command baton does not give the 
+		option to set the amount of upkeep to withdraw or the side of the inventory to withdraw from.					
+
+	**************NPC WORKERS**************
+	Worker work points may be set via work-orders item.
+	If no work-orders item is present, NPC will work at whatever nearby worksites 
+		have work that are appropriate for his sub-type.			
 	
 	**************NPC LEVELING**************
-	all npcs will have a 'level'
-		they should gain experience towards this level with every successful action.
-			actions:
-				work
-				attack
-				route items
-		how many levels?
-		how big an effect should levels have on stats?
+	All npcs have a base (shared) level and experience value;
+	Sub-typed npcs also store level and xp per sub-type.
+		For npcs that can change subtypes (combat,worker), current level is looked up per-subtype;
+		Each work/combat type will return a different level/experience value.
+	When an NPC gains experience, it is applied to both his base-level/xp, as well as the sub-type level/xp
+	Base level determines max hit-points.
+	Sub-type level determines bonus damage or work-effectiveness.
+	Npcs with no subtypes will have the same value for their base and (single) subtype level/xp values.		
 		
 	**************NPC HEALING**************		
 	all npcs will 'heal' over time on their own, slowly
@@ -114,8 +118,7 @@
 			soldier damage determined by item equipped / item quality.
 			soldier damage adjusted by npc 'level'
 				keep level independently per attack type?
-				
-				
+		
 	**************NPC FACTIONS**************
 	will have multiple factions:
 		bandits
@@ -142,5 +145,86 @@
 			pirate.soldier = cutlass
 	Each 'faction' will have its own NPC base-class -- so players can i.e. specify npcs to be hostile vs brigands but not pirates.	
 	
-	
-			
+	**************NPC TYPES**************	
+		**************PLAYER OWNED COMBAT NPC**************
+		All player-owned combat units share the following AI:
+		1.)
+		2.)
+		3.)
+		4.)
+		5.)
+		6.)
+		7.)
+		8.)
+			**************COMMANDERS**************
+			Player owned NPC Commanders	give a 2-point damage bonus to all nearby allied combat npcs.
+				This is not cumulative -- a soldier may only have a single commander and get a single bonus.
+			Otherwise uses basic soldier AI.
+			Commanders may not have a 'commander', and will not gain combat bonuses from other nearby commanders.
+			**************SOLDIER**************
+			Basic melee unit.  			
+			**************ARCHER**************
+			**************MEDIC**************
+			**************ENGINEER**************
+			**************UNARMED**************	
+		**************PLAYER OWNED WORKER NPC**************
+		All player-owned worker units share the following AI:
+		1.)
+		2.)
+		3.)
+		4.)
+		5.)
+		6.)
+		7.)
+		8.)
+			**************UNARMED**************
+			**************FARMER**************
+			**************MINER**************
+			**************LUMBERJACK**************
+			**************CRAFTSMAN**************
+			**************RESEARCHER**************			
+		**************PLAYER OWNED COURIER NPC**************
+		All player-owned courier units share the following AI:
+		1.)
+		2.)
+		3.)
+		4.)
+		5.)
+		6.)
+		7.)
+		8.)
+		**************PLAYER OWNED TRADER NPC**************
+		All player-owned trader units share the following AI:
+		1.)
+		2.)
+		3.)
+		4.)
+		5.)
+		6.)
+		7.)
+		8.)
+		**************PLAYER OWNED BARD NPC**************
+		All player-owned bard units share the following AI:
+		1.)
+		2.)
+		3.)
+		4.)
+		5.)
+		6.)
+		7.)
+		8.)
+		**************PLAYER OWNED PRIEST NPC**************
+		All player-owned priest units share the following AI:
+		1.)
+		2.)
+		3.)
+		4.)
+		5.)
+		6.)
+		7.)
+		8.)
+		**************FACTION OWNED LEADER NPC**************
+		**************FACTION OWNED SOLDIER NPC**************
+		**************FACTION OWNED ARCHER NPC**************
+		**************FACTION OWNED TRADER NPC**************
+		**************FACTION OWNED PRIEST NPC**************		

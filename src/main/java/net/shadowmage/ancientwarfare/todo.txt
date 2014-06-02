@@ -54,8 +54,8 @@ who knows.... will need to start using it to find out what is broken / not worki
 	blocks--
 		town-hall
 		structure-control block
-* template plugin support for gates
 * textures for drafting station, survival-mode builder block
+* screenshots for all default-included structures
 
 ****************************AUTOMATION MODULE TODO****************************	
 ? worksites needed:
