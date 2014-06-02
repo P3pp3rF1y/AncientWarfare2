@@ -761,12 +761,6 @@ public boolean canExtractItem(int var1, ItemStack var2, int var3)
   }
 
 @Override
-public boolean hasWork()
-  {
-  return hasWorksiteWork() && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
-  }
-
-@Override
 protected boolean hasWorksiteWork()
   {
   return storedEnergy<maxEnergyStored;

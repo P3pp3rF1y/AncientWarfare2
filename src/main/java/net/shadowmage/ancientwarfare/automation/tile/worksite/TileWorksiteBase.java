@@ -77,6 +77,7 @@ public final double addEnergy(ForgeDirection from, double energy)
       energy = getMaxInput();
       }
     storedEnergy+=energy;
+    if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
     return energy;    
     }
   return 0;
@@ -115,7 +116,7 @@ public boolean canInput(ForgeDirection from)
 @Override
 public boolean hasWork()
   {
-  return hasWorksiteWork() && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
+  return storedEnergy<maxEnergyStored && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
   }
 
 @Override
@@ -142,9 +143,9 @@ public void updateEntity()
     updateOverflowInventory();
     } 
   worldObj.theProfiler.endStartSection("Check For Work");
-  boolean hasWork = hasWork();
+  boolean hasWork = getEnergyStored() >= AWCoreStatics.energyPerWorkUnit && hasWorksiteWork();
   worldObj.theProfiler.endStartSection("Process Work");
-  if(hasWork && getEnergyStored() >= AWCoreStatics.energyPerWorkUnit)
+  if(hasWork)
     {
     if(processWork())
       {

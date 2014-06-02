@@ -73,9 +73,6 @@ who knows.... will need to start using it to find out what is broken / not worki
 ? API / compat stuff:
 	add IMC-based API to add logs/saplings to forestry farm??
 	add config-based method to add logs/saplings to forestry farm??	
-* clean up worksite hasWork() stuff -- only report hasWork when can have more energy
-	use hasWorksiteWork() internally to tell when should decrement power and actually do work
-	set base worksite max power to 4xenergyPerWorkUnit	
 * chunkloader blocks
 * Add overlay rendering of work-site sizes while holding a work-site setting item.
 * Change over worksite BB render to a TESR -- should be slightly more optimized

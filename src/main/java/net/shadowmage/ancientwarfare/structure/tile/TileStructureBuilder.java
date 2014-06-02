@@ -199,7 +199,7 @@ public void writeToNBT(NBTTagCompound tag)
 @Override
 public boolean hasWork()
   {
-  return !builder.isFinished() && storedEnergy<maxEnergyStored;
+  return storedEnergy<maxEnergyStored;
   }
 
 @Override

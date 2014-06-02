@@ -135,14 +135,15 @@ public void writeToNBT(NBTTagCompound tag)
 @Override
 public boolean hasWork()
   {
-  if(storedEnergy>=maxEnergyStored){return false;}
-  String name = getCrafterName();
-  if(name==null){return false;}
-  int goal = ResearchTracker.instance().getCurrentGoal(worldObj, name);
-  if(goal>=0){return true;}
-  List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(worldObj, name);  
-  if(!queue.isEmpty() && startCheckDelay==0){return true;}
-  return false;
+  return storedEnergy<maxEnergyStored;
+//  if(storedEnergy>=maxEnergyStored){return false;}
+//  String name = getCrafterName();
+//  if(name==null){return false;}
+//  int goal = ResearchTracker.instance().getCurrentGoal(worldObj, name);
+//  if(goal>=0){return true;}
+//  List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(worldObj, name);  
+//  if(!queue.isEmpty() && startCheckDelay==0){return true;}
+//  return false;
   }
 
 private void workTick(int tickCount)
