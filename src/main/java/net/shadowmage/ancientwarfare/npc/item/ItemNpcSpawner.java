@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -54,12 +55,36 @@ public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
 public void onRightClick(EntityPlayer player, ItemStack stack)
   {
   BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
-  if(hit==null){return;}
+  if(hit==null){return;}  
+  NpcBase npc = createNpcFromItem(player.worldObj, stack);
+  if(npc!=null)
+    {
+    npc.setOwnerName(player.getCommandSenderName());
+    npc.setPosition(hit.x+0.5d, hit.y, hit.z+0.5d);
+    npc.setHomeArea(hit.x, hit.y, hit.z, 60);
+    player.worldObj.spawnEntityInWorld(npc);  
+    stack.stackSize--;
+    if(stack.stackSize<=0)
+      {
+      player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+      }
+    }
+  }
+
+/**
+ * create an NPC from the input item stack if valid, else return null<br>
+ * npc will have type, subtype, equipment, levels, health, food and owner set from item.
+ * @param world
+ * @param stack
+ * @return
+ */
+public static NpcBase createNpcFromItem(World world, ItemStack stack)
+  {
   String type = getNpcType(stack);
-  if(type==null){return;}
+  if(type==null){return null;}
   String subType = getNpcSubtype(stack);
-  NpcBase npc = (NpcBase) AWNPCEntityLoader.createNpc(player.worldObj, type, subType);
-  if(npc==null){return;}
+  NpcBase npc = (NpcBase) AWNPCEntityLoader.createNpc(world, type, subType);
+  if(npc==null){return null;}
   if(stack.hasTagCompound()&&stack.getTagCompound().hasKey("npcStoredData"))
     {
     for(int i = 0; i < 5; i++)
@@ -68,17 +93,15 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
       }
     npc.readAdditionalItemData(stack.getTagCompound().getCompoundTag("npcStoredData"));
     }
-  npc.setOwnerName(player.getCommandSenderName());
-  npc.setPosition(hit.x+0.5d, hit.y, hit.z+0.5d);
-  npc.setHomeArea(hit.x, hit.y, hit.z, 60);
-  player.worldObj.spawnEntityInWorld(npc);  
-  stack.stackSize--;
-  if(stack.stackSize<=0)
-    {
-    player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-    }
+  return null;
   }
 
+/**
+ * return an itemstack of npc spawner item that contains the data to spawn the input npc<br>
+ * npc type, subtype, equipment, levels health, food value, and owner will be stored.
+ * @param npc
+ * @return
+ */
 public static ItemStack getSpawnerItemForNpc(NpcBase npc)
   {
   String type = npc.getNpcType();

@@ -39,7 +39,7 @@ public NpcPlayerOwned(World par1World)
   }
 
 @Override
-public void onDeath(DamageSource par1DamageSource)
+public void onDeath(DamageSource source)
   {
   if(!worldObj.isRemote)
     {
@@ -47,10 +47,10 @@ public void onDeath(DamageSource par1DamageSource)
     TileTownHall townHall = getTownHall();
     if(townHall!=null)
       {
-      townHall.handleNpcDeath(this);
+      townHall.handleNpcDeath(this, source);
       }
     }  
-  super.onDeath(par1DamageSource);  
+  super.onDeath(source);  
   }
 
 @Override
@@ -116,8 +116,6 @@ public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position)
       upkeepAutoBlock=position;
       }
     }
-
-
   }
 
 private boolean validateTownHallPosition()

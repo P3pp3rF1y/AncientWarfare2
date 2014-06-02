@@ -252,6 +252,7 @@ public final void readAdditionalItemData(NBTTagCompound tag)
   if(tag.hasKey("health")){setHealth(tag.getFloat("health"));}
   if(tag.hasKey("name")){setCustomNameTag(tag.getString("name"));}
   if(tag.hasKey("food")){setFoodRemaining(tag.getInteger("food"));}
+  ownerName=tag.getString("owner");
   }
 
 /**
@@ -297,6 +298,7 @@ public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag)
   tag.setFloat("health", getHealth());
   tag.setInteger("food", getFoodRemaining());
   if(hasCustomNameTag()){tag.setString("name", getCustomNameTag());}
+  tag.setString("owner", ownerName);
   return tag;
   }
 

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -54,7 +55,7 @@ private void broadcast()
     }
   }
 
-public void handleNpcDeath(NpcPlayerOwned npc)
+public void handleNpcDeath(NpcPlayerOwned npc, DamageSource source)
   {
   
   }
@@ -131,5 +132,11 @@ public void closeInventory(){}
 @Override
 public boolean isItemValidForSlot(int var1, ItemStack var2){return inventory.isItemValidForSlot(var1, var2);}
 
+public static class NpcDeathEntry
+{
+ItemStack stackToSpawn;
+String npcType;
+String deathCause;
+}
 
 }
