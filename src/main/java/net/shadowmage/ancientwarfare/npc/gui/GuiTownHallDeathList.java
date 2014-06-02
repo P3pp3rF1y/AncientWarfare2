@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.gui;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -28,7 +29,16 @@ public void initElements()
   {
   area = new CompositeScrolled(0, 40, xSize, ySize-40);
   addGuiElement(area);
-  Button button = new Button(8, 8, 55, 12, "foo.clear");
+  Button button = new Button(8, 8, 55, 12, StatCollector.translateToLocal("guistrings.npc.clear_death_list"))
+    {
+    @Override
+    protected void onPressed()
+      {
+      NBTTagCompound tag = new NBTTagCompound();
+      tag.setBoolean("clear", true);
+      sendDataToContainer(tag);
+      }
+    };
   addGuiElement(button);
   }
 
@@ -49,7 +59,7 @@ public void setupElements()
     totalHeight+=12;
     
     labelText = StatCollector.translateToLocal("guistrings.npc.npc_type");
-    label = new Label(8, totalHeight, labelText+": "+entry.npcType);
+    label = new Label(8, totalHeight, labelText+": "+StatCollector.translateToLocal("npc."+entry.npcType+".name"));
     area.addGuiElement(label);
     totalHeight+=12;
     
@@ -63,10 +73,13 @@ public void setupElements()
     area.addGuiElement(label);
     totalHeight+=12;
     
-    labelText = StatCollector.translateToLocal("guistrings.npc.resurrected");
-    label = new Label(8, totalHeight, labelText+": "+ String.valueOf(entry.resurrected));
-    area.addGuiElement(label);
-    totalHeight+=12;
+    if(entry.canRes)
+      {    
+      labelText = StatCollector.translateToLocal("guistrings.npc.resurrected");
+      label = new Label(8, totalHeight, labelText+": "+ String.valueOf(entry.resurrected));
+      area.addGuiElement(label);
+      totalHeight+=12;      
+      }
     
     area.addGuiElement(new Line(0, totalHeight-1, xSize, totalHeight-1, 1, 0x000000ff));
     totalHeight+=4;

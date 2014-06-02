@@ -62,6 +62,10 @@ public void handlePacketData(NBTTagCompound tag)
       }
     refreshGui();
     }
+  if(tag.hasKey("clear"))
+    {
+    townHall.clearDeathNotices();
+    }
   }
 
 @Override
@@ -79,6 +83,8 @@ public void onContainerClosed(EntityPlayer par1EntityPlayer)
 
 public void onTownHallDeathListUpdated()
   {
+  this.deathList.clear();
+  this.deathList.addAll(townHall.getDeathList());
   sendDeathListToClient();
   }
 

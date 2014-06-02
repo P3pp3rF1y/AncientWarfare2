@@ -80,6 +80,10 @@ private void broadcast()
 public void clearDeathNotices()
   {
   deathNotices.clear();
+  for(ContainerTownHall cth : viewers)
+    {
+    cth.onTownHallDeathListUpdated();
+    }
   }
 
 public void handleNpcDeath(NpcPlayerOwned npc, DamageSource source)
