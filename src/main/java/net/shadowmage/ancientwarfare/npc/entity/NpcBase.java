@@ -159,17 +159,6 @@ protected void dropEquipment(boolean par1, int par2)
   }
 
 @Override
-public void onDeath(DamageSource par1DamageSource)
-  {  
-  super.onDeath(par1DamageSource);
-  if(!worldObj.isRemote)
-    {
-    //TODO
-    //if town-hall is not null, inform town hall of death
-    }
-  }
-
-@Override
 public void onKillEntity(EntityLivingBase par1EntityLivingBase)
   {  
   super.onKillEntity(par1EntityLivingBase);

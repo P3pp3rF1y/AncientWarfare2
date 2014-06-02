@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -37,7 +38,20 @@ public NpcPlayerOwned(World par1World)
   super(par1World);
   }
 
-
+@Override
+public void onDeath(DamageSource par1DamageSource)
+  {
+  if(!worldObj.isRemote)
+    {
+    validateTownHallPosition();
+    TileTownHall townHall = getTownHall();
+    if(townHall!=null)
+      {
+      townHall.handleNpcDeath(this);
+      }
+    }  
+  super.onDeath(par1DamageSource);  
+  }
 
 @Override
 public void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target)
@@ -51,7 +65,6 @@ public void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target)
 @Override
 public void setTownHallPosition(BlockPosition pos)
   {
-  AWLog.logDebug("setting town hall position to: "+pos);
   if(pos!=null){this.townHallPosition = pos.copy();}
   else{this.townHallPosition=null;}
   }
@@ -137,7 +150,16 @@ public void handlePlayerCommand(Command cmd)
     {
     this.playerIssuedCommand=null;
     }
-  else if(cmd.type==CommandType.ATTACK || cmd.type==CommandType.ATTACK_AREA || cmd.type==CommandType.GUARD || cmd.type==CommandType.MOVE)
+  if(cmd.type==CommandType.ATTACK)
+    {
+    Entity e = cmd.getEntityTarget(worldObj);
+    if(e instanceof EntityLivingBase && isHostileTowards(e))
+      {
+      setAttackTarget((EntityLivingBase)e);
+      }
+    this.playerIssuedCommand=null;
+    }
+  else if(cmd.type==CommandType.ATTACK_AREA || cmd.type==CommandType.GUARD || cmd.type==CommandType.MOVE)
     {
     this.playerIssuedCommand=cmd;    
     AWLog.logDebug("set player issued command to: "+cmd);

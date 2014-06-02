@@ -83,11 +83,6 @@ private void attackTarget()
     this.attackDelay=20;//TODO set attack delay from npc-attributes? 
     int xp = AWNPCStatics.npcXpFromAttack;
     npc.addExperience(xp);
-    if(target==null || target.isDead)
-      {
-      npc.setAttackTarget(null);
-      this.target = null;
-      }
     }
   }
 

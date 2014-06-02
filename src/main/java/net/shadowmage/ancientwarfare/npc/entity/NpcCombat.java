@@ -32,7 +32,6 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwnedCombat;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandAttack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeOnLowHealth;
@@ -93,7 +92,6 @@ public NpcCombat(World par1World)
   this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
   this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));      
   
-  this.targetTasks.addTask(0, new NpcAICommandAttack(this));
   this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
   this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, true, false, selector));
   }

@@ -8,7 +8,6 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -28,7 +27,7 @@ public class NpcTrader extends NpcPlayerOwned
 public NpcTrader(World par1World)
   {
   super(par1World);
-  setCurrentItemOrArmor(0, new ItemStack(Items.book));  
+  
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
@@ -39,7 +38,7 @@ public NpcTrader(World par1World)
   this.tasks.addTask(3, new NpcAIFleeHostiles(this));
   this.tasks.addTask(4, new NpcAIGetFood(this));  
   this.tasks.addTask(5, new NpcAIIdleWhenHungry(this)); 
-  
+  //TODO swap move home ai to move home by default? home position is the npcs vendor-stall?
   this.tasks.addTask(7, new NpcAIMoveHome(this, 80.f, 8.f, 40.f, 3.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
