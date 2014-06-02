@@ -52,7 +52,6 @@ who knows.... will need to start using it to find out what is broken / not worki
 * plugin support for npc module
 	npcs--done
 	blocks--
-		town-hall
 		structure-control block
 * textures for drafting station, survival-mode builder block
 * screenshots for all default-included structures

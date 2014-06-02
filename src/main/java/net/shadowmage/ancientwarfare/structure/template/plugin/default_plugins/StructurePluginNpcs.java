@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
+import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
@@ -33,6 +34,7 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditTrader;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockInventory;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityNpc;
 
 public class StructurePluginNpcs extends StructureContentPlugin
@@ -46,7 +48,7 @@ public StructurePluginNpcs()
 @Override
 public void addHandledBlocks(IStructurePluginManager manager)
   {
-
+  manager.registerBlockHandler("awTownHall", AWNPCBlockLoader.townHall, TemplateRuleBlockInventory.class);
   }
 
 @Override

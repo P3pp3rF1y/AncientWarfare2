@@ -72,12 +72,12 @@ public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block,
       inventory.setInventorySlotContents(i, null);
       inventoryStacks[i] = stack==null ? null : stack.copy();
       }
-    te.writeToNBT(tag);
     for(int i = 0; i<inventory.getSizeInventory();i++)
       {
       inventory.setInventorySlotContents(i, inventoryStacks[i]);      
       }
     }
+  te.writeToNBT(tag);
   }
 
 public TemplateRuleBlockInventory()
