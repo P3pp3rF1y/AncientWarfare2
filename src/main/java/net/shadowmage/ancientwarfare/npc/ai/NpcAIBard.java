@@ -41,7 +41,7 @@ public void startExecuting()
 @Override
 public void updateTask()
   {
-  AWLog.logDebug("ticks existed: "+npc.ticksExisted);
+//  AWLog.logDebug("ticks existed: "+npc.ticksExisted);
   }
 
 }

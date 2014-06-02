@@ -93,6 +93,9 @@ who knows.... will need to start using it to find out what is broken / not worki
 
 		
 ****************************NPC MODULE TODO****************************
+^ check that medic AI works and that 'flee to medic' ai works
+^ check that 'flee hostiles' ai works as intended
+^ check that courier/work AI/random workAI was not fubar'd by changes
 ? all npcs should be capable of riding horses -- they use it purely for transportation speed increase
 ? add method to 'recruit' a factioned NPC that you are on high-standing with (converts to closest player-owned npc class?)	
 ? npc vendor type?
@@ -104,9 +107,6 @@ who knows.... will need to start using it to find out what is broken / not worki
 	for use by structure creators.
 	respawns faction-based npcs and attempts to keep them within the bounds designated in the block
 	controls only accessible to players in creative mode
-* check that medic AI works and that 'flee to medic' ai works
-* check that 'flee hostiles' ai works as intended
-* check that courier/work AI/random workAI was not fubar'd by changes
 * add initial side-hit to courier-routing slip on-block selected
 * player-owned priest AI
 * player-owned bard AI

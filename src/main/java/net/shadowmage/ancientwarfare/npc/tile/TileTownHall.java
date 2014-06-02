@@ -12,14 +12,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
-public class TileTownHall extends TileEntity implements IOwnable, IInventory
+public class TileTownHall extends TileEntity implements IOwnable, IInventory, IInteractableTile
 {
 
 private String ownerName = "";
@@ -30,6 +33,8 @@ private int updateDelayMaxTicks = 20*5;//5 second broadcast frequency  TODO set 
 private List<NpcDeathEntry> deathNotices = new ArrayList<TileTownHall.NpcDeathEntry>();
 
 private InventoryBasic inventory = new InventoryBasic(27);
+
+private List<ContainerTownHall> viewers = new ArrayList<ContainerTownHall>();
 
 @Override
 public boolean canUpdate()
@@ -47,6 +52,16 @@ public void updateEntity()
     broadcast();
     updateDelayTicks = updateDelayMaxTicks;
     }
+  }
+
+public void addViewer(ContainerTownHall viewer)
+  {
+  if(!viewers.contains(viewer)){viewers.add(viewer);}
+  }
+
+public void removeViewer(ContainerTownHall viewer)
+  {
+  while(viewers.contains(viewer)){viewers.remove(viewer);}
   }
 
 private void broadcast()
@@ -71,6 +86,10 @@ public void handleNpcDeath(NpcPlayerOwned npc, DamageSource source)
   {
   boolean canRes = true;//TODO set canRes  based on distance from town-hall?
   deathNotices.add(new NpcDeathEntry(npc, source, canRes));
+  for(ContainerTownHall cth : viewers)
+    {
+    cth.onTownHallDeathListUpdated();
+    }
   }
 
 private List<NpcPlayerOwned> getNpcsInArea()
@@ -159,14 +178,14 @@ public boolean isItemValidForSlot(int var1, ItemStack var2){return inventory.isI
 
 public static class NpcDeathEntry
 {
-ItemStack stackToSpawn;
-String npcType;
-String npcName;
-String deathCause;
-boolean resurrected;
-boolean canRes;
+public ItemStack stackToSpawn;
+public String npcType;
+public String npcName;
+public String deathCause;
+public boolean resurrected;
+public boolean canRes;
 
-private NpcDeathEntry(NBTTagCompound tag)
+public NpcDeathEntry(NBTTagCompound tag)
   {
   readFromNBT(tag);
   } 
@@ -201,5 +220,20 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
   return tag;
   }
 }
+
+@Override
+public boolean onBlockClicked(EntityPlayer player)
+  {
+  if(!player.worldObj.isRemote)
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TOWN_HALL, xCoord, yCoord, zCoord);
+    }
+  return false;
+  }
+
+public List<NpcDeathEntry> getDeathList()
+  {
+  return deathNotices;
+  }
 
 }

@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcTrade;
 import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
+import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
@@ -76,7 +77,6 @@ public void preInit(FMLPreInitializationEvent evt)
   statics.load();//load config settings
   FMLCommonHandler.instance().bus().register(FactionTracker.INSTANCE);
   MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
-//  FMLCommonHandler.instance().bus().register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
   
   /**
    * load items, blocks, and entities
@@ -94,6 +94,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_COMBAT_ORDER, ContainerCombatOrder.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_TRADE, ContainerNpcTrade.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_ROUTING_ORDER, ContainerRoutingOrder.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_TOWN_HALL, ContainerTownHall.class);
   PacketBase.registerPacketType(NetworkHandler.PACKET_NPC_COMMAND, PacketNpcCommand.class);
   PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class);
   

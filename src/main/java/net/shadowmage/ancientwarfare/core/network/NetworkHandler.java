@@ -79,6 +79,7 @@ public static final int GUI_NPC_ROUTING_ORDER = 37;
 public static final int GUI_NPC_COMMAND_BATON = 38;
 public static final int GUI_NPC_TRADE = 39;
 public static final int GUI_BACKPACK = 40;
+public static final int GUI_NPC_TOWN_HALL = 41;
 
 private FMLEventChannel channel;
 

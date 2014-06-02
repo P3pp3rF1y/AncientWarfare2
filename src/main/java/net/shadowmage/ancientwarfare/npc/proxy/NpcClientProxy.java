@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcInventory;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcTrade;
 import net.shadowmage.ancientwarfare.npc.gui.GuiRoutingOrder;
+import net.shadowmage.ancientwarfare.npc.gui.GuiTownHallInventory;
 import net.shadowmage.ancientwarfare.npc.gui.GuiUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiWorkOrder;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
@@ -42,7 +43,8 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_UPKEEP_ORDER, GuiUpkeepOrder.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_COMBAT_ORDER, GuiCombatOrder.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_ROUTING_ORDER, GuiRoutingOrder.class);
-    
+  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_TOWN_HALL, GuiTownHallInventory.class);  
+  
   RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, new RenderNpcBase());
   MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);
   FMLCommonHandler.instance().bus().register(RenderCommandOverlay.INSTANCE);//register overlay renderer

@@ -148,7 +148,7 @@ public void handlePlayerCommand(Command cmd)
     {
     this.playerIssuedCommand=null;
     }
-  if(cmd.type==CommandType.ATTACK)
+  else if(cmd.type==CommandType.ATTACK)
     {
     Entity e = cmd.getEntityTarget(worldObj);
     if(e instanceof EntityLivingBase && isHostileTowards(e))
@@ -160,7 +160,6 @@ public void handlePlayerCommand(Command cmd)
   else if(cmd.type==CommandType.ATTACK_AREA || cmd.type==CommandType.GUARD || cmd.type==CommandType.MOVE)
     {
     this.playerIssuedCommand=cmd;    
-    AWLog.logDebug("set player issued command to: "+cmd);
     }
   else if(cmd.type==CommandType.SET_HOME)
     {
@@ -173,7 +172,6 @@ public void handlePlayerCommand(Command cmd)
   else if(cmd.type==CommandType.CLEAR_HOME)
     {
     detachHome();
-    AWLog.logDebug("clearing home from player-issued command!");
     }
   else if(cmd.type==CommandType.CLEAR_UPKEEP)
     {
@@ -182,7 +180,6 @@ public void handlePlayerCommand(Command cmd)
   else if(cmd.type==CommandType.CLEAR_COMMAND)
     {
     this.playerIssuedCommand = null;
-    AWLog.logDebug("clearing player-issued commands!!");
     }
   }
 

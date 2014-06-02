@@ -24,6 +24,10 @@ public ContainerBase(EntityPlayer player, int x, int y, int z)
   this.player = player;
   }
 
+/**
+ * set the gui for this container for callback (refreshGui) purposes
+ * @param gui
+ */
 public final void setGui(IContainerGuiCallback gui)
   {
   this.gui = gui;
@@ -149,6 +153,9 @@ public boolean canInteractWith(EntityPlayer var1)
   return true;
   }
 
+/**
+ * Causes the GUI to be re-setup on its next update tick
+ */
 public void refreshGui()
   {
   if(this.gui!=null)
@@ -157,6 +164,9 @@ public void refreshGui()
     }
   }
 
+/**
+ * remove the inventory slots from view on the screen, effectively disabling them
+ */
 public void removeSlots()
   {
   for(Slot s : ((List<Slot>)this.inventorySlots))
@@ -168,6 +178,9 @@ public void removeSlots()
     }
   }
 
+/**
+ * add any removed from screen slots back into view
+ */
 public void addSlots()
   {
   for(Slot s : ((List<Slot>)this.inventorySlots))
@@ -189,7 +202,8 @@ public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex)
   }
 
 /**
- * merges provided ItemStack with the first avaliable one in the container/player inventory
+ * merges provided ItemStack with the first avaliable one in the container/player inventory<br>
+ * overriden to clean up the mess of the code that was the vanilla code.
  * @return true if item-stack was fully-consumed/merged
  */
 @Override

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -10,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
@@ -66,6 +68,17 @@ public boolean hasTileEntity(int metadata)
 public TileEntity createTileEntity(World world, int metadata)
   {
   return new TileTownHall();
+  }
+
+@Override
+public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ)
+  {  
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof IInteractableTile)
+    {
+    ((IInteractableTile) te).onBlockClicked(player);
+    }
+  return true;  
   }
 
 }
