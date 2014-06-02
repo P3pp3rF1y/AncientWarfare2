@@ -9,6 +9,8 @@ Licensing
 GUIS (all modules)
 	need LOTS of tooltips added to various elements	
 	Finish creating proper text-input validation stuff for Text and NumberInput widgets
+		need support for space, underscore, period.
+		need to setup validation per-input box...
 	SHIFT-CLICK CODE
 	rendering of item stack quantities >99 -- need to do custom rendering of text, scaled down appropriately
 
@@ -120,15 +122,8 @@ who knows.... will need to start using it to find out what is broken / not worki
 	allow for auto-queue of npc type
 	-use is optional, players can always craft the raw npc items and equip manually	
 * add town-hall block GUI
-	tracks nearby entities.
-	maintains list of dead-entity-data (they transmit to town-hall on death)
-		this can be viewed by user
-		? priests may occasionally use this to 'resurrect' a dead npc
-	can serve as a central upkeep-point for NPCs / designate a default 'safe' place
-	can issue a 'call to arms' command to all nearby teamed npcs
-		combat npcs will respond to the point in question 
-		worker npcs will move to the town-hall for a certain period of time
-	occasionally broadcast to all npcs in broadcast range (set from gui) to set town-hall point	
+	add items to upkeep storage
+	view killed npc list
 	
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

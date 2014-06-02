@@ -93,7 +93,7 @@ public static NpcBase createNpcFromItem(World world, ItemStack stack)
       }
     npc.readAdditionalItemData(stack.getTagCompound().getCompoundTag("npcStoredData"));
     }
-  return null;
+  return npc;
   }
 
 /**

@@ -16,6 +16,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
@@ -103,10 +104,11 @@ public String getNpcType()
 @Override
 public float getWorkEffectiveness(WorkType type)
   {
+  float effectiveness=1.f;
   if(type==this.getWorkTypeFromEquipment())
     {
     float level = this.getLevelingStats().getLevel(getNpcFullType());
-    float effectiveness=1.f;
+    
     effectiveness += level*0.05f;    
     if(getEquipmentInSlot(0)==null){return effectiveness;}
     Item item = getEquipmentInSlot(0).getItem();    
@@ -124,9 +126,10 @@ public float getWorkEffectiveness(WorkType type)
       {
       effectiveness += level*0.05f;
       }        
-    return effectiveness;
     }
-  return 0.f;
+  else{effectiveness=0.f;}
+  AWLog.logDebug("getting worker effectiveness for: "+this.getNpcFullType()+" :: "+effectiveness);
+  return effectiveness;
   }
 
 @Override
