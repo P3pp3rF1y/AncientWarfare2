@@ -100,7 +100,6 @@ who knows.... will need to start using it to find out what is broken / not worki
 * combat bonuses for player-owned combat NPCs when in-range of a 'commander' set combat npc
 * courier adjust functionality (speed) based on level
 * add set/clear home point to npc GUI
-* worker needs to not work at night (if has home point set)
 * player-owned priest AI
 * player-owned trader AI
 * player-owned bard AI

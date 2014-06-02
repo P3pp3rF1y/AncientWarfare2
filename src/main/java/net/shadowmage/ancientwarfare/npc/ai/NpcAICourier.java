@@ -44,12 +44,20 @@ public boolean shouldExecute()
     order = RoutingOrder.getRoutingOrder(routeStack);
     if((order!=null && routeIndex>=order.getEntries().size()) || order==null){routeIndex=0;}
     }
+  if(!npc.worldObj.provider.hasNoSky && !npc.worldObj.isDaytime() && npc.hasHome())//dont work at night if has home point
+    {
+    return false;
+    }
   return courier.backpackInventory!=null && order!=null && !order.getEntries().isEmpty();
   }
 
 @Override
 public boolean continueExecuting()
   {
+  if(!npc.worldObj.provider.hasNoSky && !npc.worldObj.isDaytime() && npc.hasHome())//dont work at night if has home point
+    {
+    return false;
+    }
   return courier.backpackInventory!=null && order!=null && !order.getEntries().isEmpty();
   }
 
