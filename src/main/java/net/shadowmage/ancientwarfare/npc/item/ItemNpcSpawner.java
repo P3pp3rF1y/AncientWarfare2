@@ -125,6 +125,7 @@ public void onLeftClick(EntityPlayer player, ItemStack stack)
   
   }
 
+@SuppressWarnings("rawtypes")
 @Override
 @SideOnly(Side.CLIENT)
 public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List list)

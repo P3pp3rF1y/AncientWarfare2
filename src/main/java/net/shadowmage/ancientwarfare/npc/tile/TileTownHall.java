@@ -1,28 +1,35 @@
 package net.shadowmage.ancientwarfare.npc.tile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
+import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
 public class TileTownHall extends TileEntity implements IOwnable, IInventory
 {
 
-String ownerName = "";
-int broadcastRange = 80;
-int updateDelayTicks = 0;
-int updateDelayMaxTicks = 20*5;//5 second broadcast frequency
+private String ownerName = "";
+private int broadcastRange = 80;//TODO set from config and/or gui?
+private int updateDelayTicks = 0;
+private int updateDelayMaxTicks = 20*5;//5 second broadcast frequency  TODO set from config
 
-InventoryBasic inventory = new InventoryBasic(27);
+private List<NpcDeathEntry> deathNotices = new ArrayList<TileTownHall.NpcDeathEntry>();
+
+private InventoryBasic inventory = new InventoryBasic(27);
 
 @Override
 public boolean canUpdate()
@@ -55,14 +62,21 @@ private void broadcast()
     }
   }
 
+public void clearDeathNotices()
+  {
+  deathNotices.clear();
+  }
+
 public void handleNpcDeath(NpcPlayerOwned npc, DamageSource source)
   {
-  
+  boolean canRes = true;//TODO set canRes  based on distance from town-hall?
+  deathNotices.add(new NpcDeathEntry(npc, source, canRes));
   }
 
 private List<NpcPlayerOwned> getNpcsInArea()
   {
   AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(xCoord-broadcastRange, yCoord-broadcastRange/2, zCoord-broadcastRange, xCoord+broadcastRange+1, yCoord+broadcastRange/2+1, zCoord+broadcastRange+1);
+  @SuppressWarnings("unchecked")
   List<NpcPlayerOwned> npcs = worldObj.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
   return npcs;
   }
@@ -85,7 +99,12 @@ public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
   ownerName = tag.getString("owner");
-  //TODO read inventory
+  InventoryTools.readInventoryFromNBT(inventory, tag.getCompoundTag("inventory"));  
+  NBTTagList entryList = tag.getTagList("deathNotices", Constants.NBT.TAG_COMPOUND);
+  for(int i = 0;i < entryList.tagCount(); i++)
+    {
+    deathNotices.add(new NpcDeathEntry(entryList.getCompoundTagAt(i)));
+    }
   }
 
 @Override
@@ -93,7 +112,13 @@ public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
   tag.setString("owner", ownerName);
-  //TODO write inventory
+  tag.setTag("inventory", InventoryTools.writeInventoryToNBT(inventory, new NBTTagCompound()));
+  NBTTagList entryList = new NBTTagList();
+  for(NpcDeathEntry entry : deathNotices)
+    {
+    entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
+    }
+  tag.setTag("deathNotices", entryList);
   }
 
 @Override
@@ -136,7 +161,45 @@ public static class NpcDeathEntry
 {
 ItemStack stackToSpawn;
 String npcType;
+String npcName;
 String deathCause;
+boolean resurrected;
+boolean canRes;
+
+private NpcDeathEntry(NBTTagCompound tag)
+  {
+  readFromNBT(tag);
+  } 
+
+public NpcDeathEntry(NpcPlayerOwned npc, DamageSource source, boolean canRes)
+  {
+  this.stackToSpawn = ItemNpcSpawner.getSpawnerItemForNpc(npc);
+  this.npcType = npc.getNpcFullType();
+  this.npcName = npc.getCustomNameTag();
+  this.deathCause = source.damageType;
+  this.canRes = canRes;
+  }
+
+public final void readFromNBT(NBTTagCompound tag)
+  {
+  stackToSpawn = InventoryTools.readItemStack(tag.getCompoundTag("spawnerStack"));
+  npcType = tag.getString("npcType");
+  npcName = tag.getString("npcName");
+  deathCause = tag.getString("deathCause");
+  resurrected = tag.getBoolean("resurrected");
+  canRes = tag.getBoolean("canRes");
+  }
+
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
+  {
+  tag.setTag("spawnerStack", InventoryTools.writeItemStack(stackToSpawn, new NBTTagCompound()));
+  tag.setString("npcType", npcType);
+  tag.setString("npcName", npcName);
+  tag.setString("deathCause", deathCause);
+  tag.setBoolean("resurrected", resurrected);
+  tag.setBoolean("canRes", canRes);
+  return tag;
+  }
 }
 
 }
