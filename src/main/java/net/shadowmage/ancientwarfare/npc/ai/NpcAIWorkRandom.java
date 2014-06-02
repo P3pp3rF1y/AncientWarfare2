@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -14,9 +13,7 @@ public class NpcAIWorkRandom extends NpcAI
 {
 
 private int ticksAtSite = 0;
-private boolean atSite = false;
 private int moveRetryDelay = 0;
-private int ticksTilNextWorkUpdate;
 NpcWorker worker;
 public NpcAIWorkRandom(NpcBase npc)
   {
@@ -51,106 +48,91 @@ public boolean continueExecuting()
 public void startExecuting()
   {
   npc.addAITask(TASK_WORK);
-  atSite=false;
+  ticksAtSite=0;  
   }
 
 @Override
 public void updateTask()
   {
-  if(!atSite)
+  BlockPosition pos = worker.autoWorkTarget;
+  double dist = npc.getDistance(pos.x, pos.y, pos.z);
+  if(dist>5.d*5.d)
     {
-    moveToWork();
+    npc.addAITask(TASK_MOVE);
+    ticksAtSite=0;
+    moveToWork(dist);
     }
   else
     {
+    npc.getNavigator().clearPathEntity();
     npc.removeAITask(TASK_MOVE);
     workAtSite();
-    }  
+    }
   }
 
 @Override
 public void resetTask()
   {
   npc.removeAITask(TASK_WORK+TASK_MOVE);
-  atSite=false;
   }
 
-private void moveToWork()
+private void moveToWork(double dist)
   {
-  ticksAtSite = 0;
   moveRetryDelay--;
   if(moveRetryDelay<=0)
     {
     BlockPosition pos = worker.autoWorkTarget;
-    double distance = npc.getDistanceSq(pos.x+0.5d, pos.y, pos.z+0.5d);
-    if(distance>5.d*5.d)
-      {
-      npc.addAITask(TASK_MOVE);
-      npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);
-      moveRetryDelay=10;//base .5 second retry delay
-      if(distance>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-      if(distance>1024){moveRetryDelay+=20;}//add another 1 second if distance>32
-      }
-    else
-      {
-      moveRetryDelay = 0;
-      atSite = true;
-      npc.removeAITask(TASK_MOVE);
-      }    
+    npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);
+    moveRetryDelay=10;//base .5 second retry delay
+    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
+    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
     }
   }
 
 private void workAtSite()
   {
   ticksAtSite++;
-  npc.swingItem();
-  if(ticksTilNextWorkUpdate>0)
-    {
-    ticksTilNextWorkUpdate--;
-    return;
-    }
-  BlockPosition pos = worker.autoWorkTarget;
-  TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
-  if(te instanceof IWorkSite)
-    {
-    IWorkSite site = (IWorkSite)te;
-    if(((IWorker)npc).canWorkAt(site.getWorkType()))
-      {      
-      if(site.hasWork())
-        {        
-        npc.addExperience(AWNPCStatics.npcXpFromWork);
-        site.addEnergyFromWorker((IWorker) npc);
-        ticksTilNextWorkUpdate=AWNPCStatics.npcWorkTicks;
+  if(npc.ticksExisted%10==0){npc.swingItem();}
+  if(ticksAtSite>=AWNPCStatics.npcWorkTicks)
+    { 
+    ticksAtSite = 0;   
+    BlockPosition pos = worker.autoWorkTarget;
+    TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+    if(te instanceof IWorkSite)
+      {
+      IWorkSite site = (IWorkSite)te;
+      if(worker.canWorkAt(site.getWorkType()))
+        {      
+        if(site.hasWork())
+          {        
+          npc.addExperience(AWNPCStatics.npcXpFromWork);
+          site.addEnergyFromWorker(worker);
+          }
+        else
+          {
+          worker.autoWorkTarget=null;
+          }  
         }
       else
         {
-        atSite=false;
         worker.autoWorkTarget=null;
-        }  
+        }      
       }
     else
       {
-      atSite=false;
       worker.autoWorkTarget=null;
-      }      
-    }
-  else
-    {
-    atSite=false;
-    worker.autoWorkTarget=null;
-    }
+      }
+    }  
   }
 
 public void readFromNBT(NBTTagCompound tag)
   {
   ticksAtSite = tag.getInteger("ticksAtSite");
-  atSite = tag.getBoolean("atSite");
   }
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
   tag.setInteger("ticksAtSite", ticksAtSite);
-  tag.setBoolean("atSite", atSite);
   return tag;
   }
 

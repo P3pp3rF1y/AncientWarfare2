@@ -4,7 +4,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -15,13 +14,12 @@ public class NpcAICourier extends NpcAI
 {
 
 boolean init;
+double moveSpeed = 1.d;
+int moveRetryDelay;
+
 int routeIndex;
 int ticksToWork;
-int ticksToWorkPerStack = 50;//default npc work ticks, TODO adjust based on npc level?
-int moveRetryDelay;
-boolean atSite;
-boolean startedWork;
-double moveSpeed = 1.d;
+int ticksAtSite;
 
 RoutingOrder order;
 ItemStack routeStack;
@@ -64,48 +62,63 @@ public boolean continueExecuting()
 @Override
 public void startExecuting()
   {  
-  super.startExecuting();
   npc.addAITask(TASK_WORK);
   }
 
 @Override
 public void updateTask()
   {
-  if(atSite)
+  BlockPosition pos = order.getEntries().get(routeIndex).getTarget();
+  double dist = npc.getDistance(pos.x, pos.y, pos.z);
+  if(dist>5.d*5.d)
     {
-    workAtSite();
+    npc.addAITask(TASK_MOVE);
+    ticksAtSite=0;
+    moveToWork(pos, dist);
     }
   else
     {
-    moveToSite();
+    npc.getNavigator().clearPathEntity();
+    npc.removeAITask(TASK_MOVE);
+    workAtSite();
     }
-  super.updateTask();
   }
 
 @Override
 public void resetTask()
   {
   ticksToWork=0;
-  atSite=false;
+  ticksAtSite=0;
   npc.getNavigator().clearPathEntity();
   npc.removeAITask(TASK_WORK+TASK_MOVE);
   }
 
 public void workAtSite()
   {
-  if(!startedWork)
+  if(ticksToWork==0)
     {
     startWork();    
     }
   else
     {
-    ticksToWork--;
-    npc.swingItem();
-    if(ticksToWork<=0)
+    ticksAtSite++;
+    if(npc.ticksExisted%10==0){npc.swingItem();}
+    if(ticksAtSite>ticksToWork)
       {
       setMoveToNextSite();
-      startedWork=false;
       }
+    }
+  }
+
+private void moveToWork(BlockPosition pos, double dist)
+  {
+  moveRetryDelay--;
+  if(moveRetryDelay<=0)
+    {
+    npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);
+    moveRetryDelay=10;//base .5 second retry delay
+    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
+    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
     }
   }
 
@@ -115,11 +128,21 @@ private void startWork()
   IInventory npcInv = courier.backpackInventory;
   if(target!=null)
     {
-    startedWork = true;
+    ticksAtSite=0;
     int moved = order.handleRouteAction(order.getEntries().get(routeIndex), npcInv, target);
     courier.updateBackpackItemContents();
-    ticksToWork = ticksToWorkPerStack + ticksToWorkPerStack * moved;
-    npc.addExperience(moved*AWNPCStatics.npcXpFromMoveItem);
+    if(moved>0)
+      {
+      ticksToWork = AWNPCStatics.npcCourierWorkTicks * moved;
+      int lvl = npc.getLevelingStats().getLevel(npc.getNpcFullType());
+      ticksToWork -= lvl * moved;
+      if(ticksToWork<=0){ticksToWork=0;}
+      npc.addExperience(moved*AWNPCStatics.npcXpFromMoveItem);      
+      }
+    else
+      {
+      setMoveToNextSite();
+      }
     }
   else
     {
@@ -135,37 +158,13 @@ private IInventory getTargetInventory()
   return null;
   }
 
-public void moveToSite()
-  {
-  moveRetryDelay--;
-  BlockPosition pos = order.getEntries().get(routeIndex).getTarget();
-  double distance = npc.getDistanceSq(pos.x, pos.y, pos.z);
-  if(distance<4.d*4.d)
-    {
-    atSite=true;
-    npc.removeAITask(TASK_MOVE);
-    }
-  else
-    {
-    if(moveRetryDelay<=0)
-      {
-      npc.addAITask(TASK_MOVE);
-      npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, moveSpeed);
-      moveRetryDelay=10;//base .5 second retry delay
-      if(distance>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-      if(distance>1024){moveRetryDelay+=20;}//add another 1 second if distance>32
-      }
-    }
-  }
-
 public void setMoveToNextSite()
   {
-  atSite=false;
-  startedWork=false;
+  ticksAtSite=0;
   ticksToWork=0;
+  moveRetryDelay=0;
   routeIndex++;  
   if(routeIndex>=order.getEntries().size()){routeIndex=0;}
-  AWLog.logDebug("setting route move to index: "+routeIndex);
   }
 
 public void onOrdersChanged()
@@ -173,13 +172,24 @@ public void onOrdersChanged()
   routeStack = npc.ordersStack;
   order = RoutingOrder.getRoutingOrder(routeStack);
   routeIndex = 0;
-  atSite=false;
+  ticksAtSite=0;
   ticksToWork=0;
   moveRetryDelay=0;
   }
 
-public void readFromNBT(NBTTagCompound tag){}//TODO
+public void readFromNBT(NBTTagCompound tag)
+  {
+  routeIndex = tag.getInteger("routeIndex");
+  ticksAtSite = tag.getInteger("ticksAtSite");
+  ticksToWork = tag.getInteger("ticksToWork");
+  }
 
-public NBTTagCompound writeToNBT(NBTTagCompound tag){return tag;}//TODO
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
+  {
+  tag.setInteger("routeIndex", routeIndex);
+  tag.setInteger("ticksAtSite", ticksAtSite);
+  tag.setInteger("ticksToWork", ticksToWork);
+  return tag;
+  }
 
 }

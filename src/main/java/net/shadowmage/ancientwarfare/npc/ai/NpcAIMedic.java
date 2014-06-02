@@ -48,6 +48,7 @@ public NpcAIMedic(NpcBase npc)
     };
   }
 
+@SuppressWarnings("unchecked")
 @Override
 public boolean shouldExecute()
   {
@@ -115,7 +116,7 @@ public void updateTask()
     if(healDelay<0)
       {
       healDelay = healDelayMax;//TODO get from config
-      float amountToHeal = 1.f;
+      float amountToHeal = ((float) npc.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue())/2.f;
       targetToHeal.setHealth(targetToHeal.getHealth()+amountToHeal);
       }
     }

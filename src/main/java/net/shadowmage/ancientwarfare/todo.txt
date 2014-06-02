@@ -73,6 +73,9 @@ who knows.... will need to start using it to find out what is broken / not worki
 ? API / compat stuff:
 	add IMC-based API to add logs/saplings to forestry farm??
 	add config-based method to add logs/saplings to forestry farm??	
+* clean up worksite hasWork() stuff -- only report hasWork when can have more energy
+	use hasWorksiteWork() internally to tell when should decrement power and actually do work
+	set base worksite max power to 4xenergyPerWorkUnit	
 * chunkloader blocks
 * Add overlay rendering of work-site sizes while holding a work-site setting item.
 * Change over worksite BB render to a TESR -- should be slightly more optimized
@@ -97,20 +100,23 @@ who knows.... will need to start using it to find out what is broken / not worki
 	owning players can setup the trades and give the npc their 'stock'
 	owning players can withdraw the proceeds from bartering, and restock the vendor
 	non-owning players can access the vendors trade screen to barter
-* combat bonuses for player-owned combat NPCs when in-range of a 'commander' set combat npc
-* courier adjust functionality (speed) based on level
+? add faction structure control block
+	for use by structure creators.
+	respawns faction-based npcs and attempts to keep them within the bounds designated in the block
+	controls only accessible to players in creative mode
+* check that medic AI works and that 'flee to medic' ai works
+* check that 'flee hostiles' ai works as intended
+* check that courier/work AI/random workAI was not fubar'd by changes
+* add initial side-hit to courier-routing slip on-block selected
 * player-owned priest AI
 * player-owned bard AI
 * find default sound/music for bards
+* add alert/flee ai to faction-based NPCs
 * faction soldier AI
 * faction leader AI
 * faction archer AI
 * faction priest AI
 * faction trader AI
-* add faction structure control block
-	for use by structure creators.
-	respawns faction-based npcs and attempts to keep them within the bounds designated in the block
-	controls only accessible to players in creative mode
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
 * add npc-recruiting station -- worksite, crafting

@@ -17,15 +17,17 @@ import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkPriorityType;
 public class NpcAIWork extends NpcAI
 {
 
-public int workIndex;
 public int ticksAtSite = 0;
-public boolean atSite = false;
+
+public int workIndex;
+
 public WorkOrder order;
 ItemStack orderStack;
 boolean init = false;
 
-int moveTickDelay = 0;
-private int ticksTilNextWorkUpdate;
+int moveRetryDelay = 0;
+
+NpcWorker worker;
 
 public NpcAIWork(NpcBase npc)
   {
@@ -34,6 +36,7 @@ public NpcAIWork(NpcBase npc)
     {
     throw new IllegalArgumentException("cannot instantiate work ai task on non-worker npc");
     }
+  worker = (NpcWorker)npc;
   this.setMutexBits(MOVE+ATTACK);
   }
 
@@ -80,15 +83,20 @@ public boolean continueExecuting()
 @Override
 public void updateTask()
   {
-  if(!atSite)
+  BlockPosition pos = order.getEntries().get(workIndex).getPosition();
+  double dist = npc.getDistance(pos.x, pos.y, pos.z);
+  if(dist>5.d*5.d)
     {
-    moveToWorksite();
+    npc.addAITask(TASK_MOVE);
+    ticksAtSite=0;
+    moveToWorksite(dist);
     }
   else
     {
+    npc.getNavigator().clearPathEntity();
     npc.removeAITask(TASK_MOVE);
     workAtSite();
-    }  
+    }
   }
 
 @Override
@@ -100,47 +108,45 @@ public void startExecuting()
 protected void workAtSite()
   {
   ticksAtSite++;
-  npc.swingItem();
-  if(ticksTilNextWorkUpdate>0)
+  if(npc.ticksExisted%10==0){npc.swingItem();}
+  if(ticksAtSite>=AWNPCStatics.npcWorkTicks)
     {
-    ticksTilNextWorkUpdate--;
-    return;
-    }
-  WorkEntry entry = order.getEntries().get(workIndex);
-  BlockPosition pos = entry.getPosition();
-  TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
-  if(te instanceof IWorkSite)
-    {
-    IWorkSite site = (IWorkSite)te;
-    if(((IWorker)npc).canWorkAt(site.getWorkType()))
-      {      
-      if(site.hasWork())
-        {        
-        npc.addExperience(AWNPCStatics.npcXpFromWork);
-        site.addEnergyFromWorker((IWorker) npc);
-        ticksTilNextWorkUpdate=AWNPCStatics.npcWorkTicks;
+    ticksAtSite=0;
+    WorkEntry entry = order.getEntries().get(workIndex);
+    BlockPosition pos = entry.getPosition();
+    TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+    if(te instanceof IWorkSite)
+      {
+      IWorkSite site = (IWorkSite)te;
+      if(((IWorker)npc).canWorkAt(site.getWorkType()))
+        {      
+        if(site.hasWork())
+          {        
+          npc.addExperience(AWNPCStatics.npcXpFromWork);
+          site.addEnergyFromWorker((IWorker) npc);
+          }
+        else
+          {
+          if(shouldMoveFromNoWork(entry))
+            {
+            setMoveToNextSite();
+            }        
+          }
+        if(shouldMoveFromTimeAtSite(entry))
+          {
+          setMoveToNextSite();
+          }  
         }
       else
         {
-        if(shouldMoveFromNoWork(entry))
-          {
-          setMoveToNextSite();
-          }        
-        }
-      if(shouldMoveFromTimeAtSite(entry))
-        {
         setMoveToNextSite();
-        }  
+        }      
       }
     else
       {
       setMoveToNextSite();
-      }      
-    }
-  else
-    {
-    setMoveToNextSite();
-    }
+      }
+    }  
   }
 
 protected boolean shouldMoveFromNoWork(WorkEntry entry)
@@ -161,10 +167,8 @@ protected boolean shouldMoveFromTimeAtSite(WorkEntry entry)
 
 protected void setMoveToNextSite()
   {
-  atSite=false;
-  ticksTilNextWorkUpdate=0;
   ticksAtSite=0;
-  moveTickDelay=0;
+  moveRetryDelay=0;
   if(order.getPriorityType()==WorkPriorityType.PRIORITY_LIST)    
     {
     workIndex=0;
@@ -195,64 +199,43 @@ protected void setMoveToNextSite()
     }
   }
 
-protected void moveToWorksite()
+private void moveToWorksite(double dist)
   {
-  ticksAtSite = 0;
-  if(moveTickDelay>0){moveTickDelay--;}
-  if(moveTickDelay<=0)
+  moveRetryDelay--;
+  if(moveRetryDelay<=0)
     {
-    WorkEntry entry = order.getEntries().get(workIndex);
-    BlockPosition pos = entry.getPosition();
-    double dist = npc.getDistanceSq(pos.x+0.5d, pos.y, pos.z+0.5d);
-    if(dist>5.d*5.d)
-      {
-      npc.addAITask(TASK_MOVE);
-      moveTickDelay = 5;
-      npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);  
-      
-      if(npc.getNavigator().noPath())
-        {        
-        AWLog.logDebug("navigator has no path!!  moving to next site early!!");
-        setMoveToNextSite();
-        }
-      }
-    else
-      {
-      moveTickDelay = 0;
-      atSite = true;
-      }    
+    BlockPosition pos = order.getEntries().get(workIndex).getPosition();
+    npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);
+    moveRetryDelay=10;//base .5 second retry delay
+    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
+    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
     }
   }
 
 public void onOrdersChanged()
   {
-//  AWLog.logDebug("orders changed!!");
   orderStack = npc.ordersStack;
   order = WorkOrder.getWorkOrder(orderStack);
   workIndex = 0;
   ticksAtSite = 0;
-  atSite = false;
   }
 
 @Override
 public void resetTask()
   {
   ticksAtSite = 0;
-  atSite = false;
   this.npc.removeAITask(TASK_WORK + TASK_MOVE);
   }
 
 public void readFromNBT(NBTTagCompound tag)
   {
   ticksAtSite = tag.getInteger("ticksAtSite");
-  atSite = tag.getBoolean("atSite");
   workIndex = tag.getInteger("workIndex");
   }
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
   tag.setInteger("ticksAtSite", ticksAtSite);
-  tag.setBoolean("atSite", atSite);
   tag.setInteger("workIndex", workIndex);
   return tag;
   }
