@@ -57,6 +57,30 @@ public void initElements()
       }
     };
   addGuiElement(repackButton);
+  
+  Button button = new Button(110, 72, 55, 12, "foo.sethome")
+    {
+    @Override
+    protected void onPressed()
+      {
+      NBTTagCompound tag = new NBTTagCompound();
+      tag.setBoolean("setHome", true);
+      sendDataToContainer(tag);
+      }
+    };
+  addGuiElement(button);
+  
+  button = new Button(110, 84, 55, 12, "foo.clearhome")
+    {
+    @Override
+    protected void onPressed()
+      {
+      NBTTagCompound tag = new NBTTagCompound();
+      tag.setBoolean("clearHome", true);
+      sendDataToContainer(tag);
+      }
+    };
+  addGuiElement(button);
   }
 
 @Override

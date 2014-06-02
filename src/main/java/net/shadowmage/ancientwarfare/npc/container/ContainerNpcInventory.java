@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.SlotArmor;
 import net.shadowmage.ancientwarfare.npc.inventory.InventoryNpcEquipment;
@@ -58,6 +59,8 @@ public void handlePacketData(NBTTagCompound tag)
     {
     npc.repackEntity(player);
     }
+  if(tag.hasKey("setHome")){npc.setHomeArea(MathHelper.floor_double(npc.posX), MathHelper.floor_double(npc.posY), MathHelper.floor_double(npc.posZ), 40);}
+  if(tag.hasKey("clearHome")){npc.detachHome();}
   }
 
 public void handleNpcNameUpdate(String newName)

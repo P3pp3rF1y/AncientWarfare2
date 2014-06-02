@@ -186,8 +186,8 @@ public final void offsetForHorizontalDirection(int direction, int amt)
   }
 
 public final boolean equals(BlockPosition pos)
-  {
-  return this.x == pos.x && this.y == pos.y && this.z== pos.z ? true : false;
+  {  
+  return pos!=null && this.x == pos.x && this.y == pos.y && this.z== pos.z ? true : false;
   }
 
 public final BlockPosition copy()

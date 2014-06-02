@@ -18,6 +18,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -110,6 +111,32 @@ public boolean canBeCommandedBy(String playerName)
     {
     return team==worldObj.getScoreboard().getPlayersTeam(playerName);
     }
+  }
+
+@Override
+public boolean attackEntityFrom(DamageSource source, float par2)
+  {
+  if(source.getEntity() instanceof NpcBase)
+    {
+    if(!isHostileTowards(source.getEntity()))
+      {
+      return false;
+      }
+    }
+  return super.attackEntityFrom(source, par2);
+  }
+
+@Override
+public void setRevengeTarget(EntityLivingBase par1EntityLivingBase)
+  {
+  if(par1EntityLivingBase instanceof NpcBase)
+    {
+    if(!isHostileTowards(par1EntityLivingBase))
+      {
+      return;
+      }
+    }
+  super.setRevengeTarget(par1EntityLivingBase);
   }
 
 @Override

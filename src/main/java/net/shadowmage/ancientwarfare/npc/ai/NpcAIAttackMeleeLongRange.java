@@ -27,7 +27,7 @@ public boolean shouldExecute()
 
 @Override
 public boolean continueExecuting()
-  {  
+  {
   return target!=null && target==npc.getAttackTarget() && !npc.getAttackTarget().isDead;
   }
 
@@ -83,7 +83,7 @@ private void attackTarget()
     this.attackDelay=20;//TODO set attack delay from npc-attributes? 
     int xp = AWNPCStatics.npcXpFromAttack;
     npc.addExperience(xp);
-    if(target.isDead)
+    if(target==null || target.isDead)
       {
       npc.setAttackTarget(null);
       this.target = null;

@@ -20,9 +20,11 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindWorksite;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
@@ -30,12 +32,15 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWork;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWorkRandom;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public class NpcWorker extends NpcPlayerOwned implements IWorker
 {
 
+public BlockPosition autoWorkTarget;
 private NpcAIWork workAI;
+private NpcAIWorkRandom workRandomAI;
 
 public NpcWorker(World par1World)
   {
@@ -51,12 +56,15 @@ public NpcWorker(World par1World)
   this.tasks.addTask(4, new NpcAIGetFood(this));  
   this.tasks.addTask(5, new NpcAIIdleWhenHungry(this)); 
   this.tasks.addTask(6, (workAI = new NpcAIWork(this)));
-  this.tasks.addTask(7, new NpcAIMoveHome(this, 80.f, 8.f, 40.f, 3.f));
+  this.tasks.addTask(7, (workRandomAI = new NpcAIWorkRandom(this)));
+  this.tasks.addTask(8, new NpcAIMoveHome(this, 80.f, 8.f, 40.f, 3.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
   this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
   this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+  
+  this.targetTasks.addTask(0, new NpcAIFindWorksite(this));
   }
 
 @Override
@@ -81,6 +89,11 @@ public String getNpcSubType()
   }
   }
 
+public void handleWorksiteBroadcast(IWorkSite site, BlockPosition pos)
+  {
+  
+  }
+
 @Override
 public String getNpcType()
   {
@@ -97,7 +110,7 @@ public float getWorkEffectiveness(WorkType type)
     effectiveness += level*0.05f;    
     if(getEquipmentInSlot(0)==null){return effectiveness;}
     Item item = getEquipmentInSlot(0).getItem();    
-    if(item instanceof ItemTool)
+    if(item instanceof ItemTool)//TODO handle hoe item
       {
       ItemTool tool = (ItemTool)getEquipmentInSlot(0).getItem();
       effectiveness += tool.func_150913_i().getEfficiencyOnProperMaterial()*0.05f;
@@ -159,6 +172,7 @@ public void readEntityFromNBT(NBTTagCompound tag)
   {  
   super.readEntityFromNBT(tag);
   if(tag.hasKey("workAI")){workAI.readFromNBT(tag.getCompoundTag("workAI"));}
+  if(tag.hasKey("workRandomAI")){workRandomAI.readFromNBT(tag.getCompoundTag("workRandomAI"));}
   }
 
 @Override
@@ -166,11 +180,7 @@ public void writeEntityToNBT(NBTTagCompound tag)
   {
   super.writeEntityToNBT(tag);
   tag.setTag("workAI", workAI.writeToNBT(new NBTTagCompound()));
-  }
-
-public void handleWorkBroadcast(IWorkSite worksite)
-  {
-  
+  tag.setTag("workRandomAI", workRandomAI.writeToNBT(new NBTTagCompound()));
   }
 
 }

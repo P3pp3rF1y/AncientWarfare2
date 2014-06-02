@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.EntityAIArrowAttack;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -28,27 +29,28 @@ public void entitySpawnEvent(EntityJoinWorldEvent evt)
     if(evt.entity instanceof EntityCreature)
       {
       EntityCreature e = (EntityCreature)evt.entity;
-      if(!(e instanceof IRangedAttackMob))
+      if(evt.entity instanceof EntitySkeleton)
         {
-        e.tasks.addTask(3, new EntityAIAttackOnCollide(e, NpcBase.class, 1.d, false));        
+        EntitySkeleton skel = (EntitySkeleton)evt.entity;
+        if(skel.getSkeletonType()==0)//normal
+          {
+          e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));          
+          }
+        else//wither
+          {
+          e.tasks.addTask(3, new EntityAIAttackOnCollide(e, NpcBase.class, 1.d, false));      
+          e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));          
+          }
+        }
+      else if(evt.entity instanceof IRangedAttackMob)
+        {
+        e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));
         }
       else
-        {
-        boolean foundRangedAttack=false;
-        for(EntityAITaskEntry entry : (List<EntityAITaskEntry>)e.tasks.taskEntries)
-          {
-          if(entry.action instanceof EntityAIArrowAttack)
-            {
-            foundRangedAttack=true;
-            break;
-            }
-          }
-        if(!foundRangedAttack)
-          {
-          e.tasks.addTask(3, new EntityAIAttackOnCollide(e, NpcBase.class, 1.d, false));          
-          }
+        {        
+        e.tasks.addTask(3, new EntityAIAttackOnCollide(e, NpcBase.class, 1.d, false));      
+        e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));           
         }
-      e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));      
       }
     }
   }
