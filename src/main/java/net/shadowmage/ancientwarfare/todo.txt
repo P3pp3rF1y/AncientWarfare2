@@ -1,3 +1,9 @@
+* = todo
+^ = to check
+> = cannot do until later
+? = optional / need to think on it
+
+
 Licensing
 	add bc license for using as libs
 
@@ -42,13 +48,13 @@ who knows.... will need to start using it to find out what is broken / not worki
 ? rework gates as a multi-block? (use controller TE TESR to render gate)
 	at that point, can use blocks for collision and interaction
 	probably less buggy than the entity-based interaction
-	but how to handle only partially loaded gates?	
+	but how to handle only partially loaded gates?
+> plugins / support for vehicle module
+> plugin support for automation module		
 * need to examine all plugins for places when item-stacks are saved to the tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.	
-* recipes: (none?)
+* recipes: drafting station
 * Scanner GUI needs some cleanup / make it look nice
-* plugins / support for vehicle module
-* plugin support for automation module
 * plugin support for npc module
 	npcs--done
 	blocks--
@@ -69,9 +75,9 @@ who knows.... will need to start using it to find out what is broken / not worki
 	would also require a server-side config on whether to send the network data or not
 	would need a change in block rendering for opacity/cutaway 
 		and a TESR implemented for rendering of state
-? API / compat stuff:
-	add IMC-based API to add logs/saplings to forestry farm??
-	add config-based method to add logs/saplings to forestry farm??	
+	would need to design model and model-renderer for it
+	would need textures	
+* textures for warehouse storage / input / output	
 * chunkloader blocks
 * Add overlay rendering of work-site sizes while holding a work-site setting item.
 * Change over worksite BB render to a TESR -- should be slightly more optimized
@@ -80,12 +86,14 @@ who knows.... will need to start using it to find out what is broken / not worki
 	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
-* recipes
+* recipes for EVERYTHING
 * warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
 * mailbox side-select GUI needs cleaned up to mirror worksite side-select GUI
 * warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 	how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
-	--perhaps have different methods for tile.invalidate() and onBlockBroken							
+	--perhaps have different methods for tile.invalidate() and onBlockBroken
+	--or move back to storing actual items in the storage blocks 
+		control block merely aggregates all items in storage blocks					
 
 		
 ****************************NPC MODULE TODO****************************

@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.automation;
 
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
+import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
 import net.shadowmage.ancientwarfare.automation.container.ContainerTorqueGeneratorSterling;
@@ -49,7 +51,7 @@ version = "@VERSION@",
 dependencies = "required-after:ancientwarfare"
 )
 
-public class AncientWarfareAutomation 
+public class AncientWarfareAutomation
 {
 
 @Instance(value="ancientwarfareautomation")
@@ -130,6 +132,8 @@ public void preInit(FMLPreInitializationEvent evt)
    * register tick-handlers
    */
   FMLCommonHandler.instance().bus().register(new MailboxTicker());
+  
+  ForgeChunkManager.setForcedChunkLoadingCallback(this, new AWChunkLoader());
   
   AWLog.log("Ancient Warfare Automation Pre-Init completed");
   }

@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
+import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
@@ -148,6 +149,8 @@ public static final BlockTorqueGenerator torqueGeneratorWaterwheel = new BlockTo
     return true;
     }
   };
+  
+public static final BlockChunkLoaderSimple chunkLoaderSimple = new BlockChunkLoaderSimple("chunk_loader_simple");
 
 public static void load()
   {      
@@ -308,6 +311,9 @@ public static void load()
   handCrankedEngine.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_junction_top");
   handCrankedEngine.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");
   handCrankedEngine.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_junction_side");
+  
+  GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");
+  GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");
   }
 
 }
