@@ -139,6 +139,9 @@ private void renderLineBetween(EntityPlayer player, double x1, double y1, double
   double ox = RenderTools.getRenderOffsetX(player, partialTick);
   double oy = RenderTools.getRenderOffsetY(player, partialTick);
   double oz = RenderTools.getRenderOffsetZ(player, partialTick);  
+  GL11.glEnable(GL11.GL_BLEND);
+  GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+  GL11.glColor4f(1.f, 1.f, 1.f, 0.4F);
   GL11.glDisable(GL11.GL_TEXTURE_2D);
   GL11.glDisable(GL11.GL_LIGHTING);
   GL11.glBegin(GL11.GL_LINE_LOOP);
@@ -146,6 +149,7 @@ private void renderLineBetween(EntityPlayer player, double x1, double y1, double
   GL11.glVertex3d(x2-ox, y2-oy, z2-oz);  
   GL11.glEnd();
   GL11.glEnable(GL11.GL_TEXTURE_2D);
+  GL11.glDisable(GL11.GL_BLEND);
   }
 
 private void renderTextAt(EntityPlayer player, double x, double y, double z, String text, float partialTick)

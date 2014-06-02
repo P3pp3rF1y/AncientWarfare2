@@ -126,10 +126,7 @@ who knows.... will need to start using it to find out what is broken / not worki
 	when work is completed, spawns an NPC equipped with the items from the corresponding queue spots
 	each input slot type has a different block-side to allow for automated item input
 	allow for auto-queue of npc type
-	-use is optional, players can always craft the raw npc items and equip manually	
-* add town-hall block GUI
-	add items to upkeep storage
-	view killed npc list
+	-use is optional, players can always craft the raw npc items and equip manually
 	
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
