@@ -1,12 +1,15 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 
 public class GuiNpcInventory extends GuiNpcBase
 {
 
+Button repackButton;
 Text nameInput;
 ContainerNpcInventory container;
 String name;
@@ -41,6 +44,19 @@ public void initElements()
       }
     };
   addGuiElement(nameInput);
+  
+  repackButton = new Button(110, 60, 55, 12, "foo.repack")
+    {
+    @Override
+    protected void onPressed()
+      {
+      NBTTagCompound tag = new NBTTagCompound();
+      tag.setBoolean("repack", true);
+      sendDataToContainer(tag);
+      closeGui();
+      }
+    };
+  addGuiElement(repackButton);
   }
 
 @Override

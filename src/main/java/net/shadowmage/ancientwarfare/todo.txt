@@ -97,20 +97,14 @@ who knows.... will need to start using it to find out what is broken / not worki
 	non-owning players can access the vendors trade screen to barter
 ? add work broadcast to worksites for workers with no work-orders?
 ? add courier GUI that allows viewing of courier backpack inventory	
-* add rendering of routes when npc-order item is being held
-	work-order renders route + numbers
-	routing-order renders route + sides
-	combat-order renders patrol and guard points/targets
-	find a way to render quads instead of gl-line, to enable depth-scaling of line width?
 * combat bonuses for player-owned combat NPCs when in-range of a 'commander' set combat npc
 * courier adjust functionality (speed) based on level
 * add set/clear home point to npc GUI
-* add repack button to npc GUI
-* write all code for npc-item repack read/write
 * worker needs to not work at night (if has home point set)
 * player-owned priest AI
 * player-owned trader AI
 * player-owned bard AI
+* archer AI / ranged attack ability
 * find default sound/music for bards
 * faction soldier AI
 * faction leader AI

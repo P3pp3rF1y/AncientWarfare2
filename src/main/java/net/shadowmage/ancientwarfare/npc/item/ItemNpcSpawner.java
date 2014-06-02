@@ -60,9 +60,6 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   String subType = getNpcSubtype(stack);
   NpcBase npc = (NpcBase) AWNPCEntityLoader.createNpc(player.worldObj, type, subType);
   if(npc==null){return;}
-  npc.setOwnerName(player.getCommandSenderName());
-  npc.setPosition(hit.x+0.5d, hit.y, hit.z+0.5d);
-  npc.setHomeArea(hit.x, hit.y, hit.z, 60);
   if(stack.hasTagCompound()&&stack.getTagCompound().hasKey("npcStoredData"))
     {
     for(int i = 0; i < 5; i++)
@@ -71,6 +68,9 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
       }
     npc.readAdditionalItemData(stack.getTagCompound().getCompoundTag("npcStoredData"));
     }
+  npc.setOwnerName(player.getCommandSenderName());
+  npc.setPosition(hit.x+0.5d, hit.y, hit.z+0.5d);
+  npc.setHomeArea(hit.x, hit.y, hit.z, 60);
   player.worldObj.spawnEntityInWorld(npc);  
   stack.stackSize--;
   if(stack.stackSize<=0)

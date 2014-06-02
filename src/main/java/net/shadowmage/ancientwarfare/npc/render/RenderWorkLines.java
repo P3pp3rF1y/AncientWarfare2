@@ -115,7 +115,6 @@ public void renderCombatList(EntityPlayer player, ItemStack orderStack, float pa
 
 private void renderListOfPoints(EntityPlayer player, List<BlockPosition> points, float partialTick)
   {
-//  GL11.glBegin(GL11.GL_LINE_LOOP);
   AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(0, 0, 0, 1, 1, 1);  
   BlockPosition prev = null;
   int index = 1;
@@ -133,7 +132,6 @@ private void renderListOfPoints(EntityPlayer player, List<BlockPosition> points,
     prev=point;
     index++;
     }
-//  GL11.glEnd();
   }
 
 private void renderLineBetween(EntityPlayer player, double x1, double y1, double z1, double x2, double y2, double z2, float partialTick)
@@ -142,6 +140,7 @@ private void renderLineBetween(EntityPlayer player, double x1, double y1, double
   double oy = RenderTools.getRenderOffsetY(player, partialTick);
   double oz = RenderTools.getRenderOffsetZ(player, partialTick);  
   GL11.glDisable(GL11.GL_TEXTURE_2D);
+  GL11.glDisable(GL11.GL_LIGHTING);
   GL11.glBegin(GL11.GL_LINE_LOOP);
   GL11.glVertex3d(x1-ox, y1-oy, z1-oz);
   GL11.glVertex3d(x2-ox, y2-oy, z2-oz);  
@@ -167,7 +166,6 @@ private void renderTextAt(EntityPlayer player, double x, double y, double z, Str
   GL11.glDisable(GL11.GL_LIGHTING);
   GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
   Minecraft.getMinecraft().fontRenderer.drawString(text, 0, 0, 0xffffffff);
-  GL11.glEnable(GL11.GL_LIGHTING);
   GL11.glPopMatrix();
   }
 

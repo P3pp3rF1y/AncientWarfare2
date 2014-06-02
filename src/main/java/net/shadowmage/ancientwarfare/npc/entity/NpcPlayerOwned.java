@@ -343,16 +343,4 @@ public void writeEntityToNBT(NBTTagCompound tag)
   if(upkeepAutoBlock!=null){tag.setTag("upkeepPos", upkeepAutoBlock.writeToNBT(new NBTTagCompound()));}
   }
 
-@Override
-public void readAdditionalItemData(NBTTagCompound tag)
-  {
-  // TODO Auto-generated method stub
-  }
-
-@Override
-public void writeAdditionalItemData(NBTTagCompound tag)
-  {
-  // TODO Auto-generated method stub
-  }
-
 }

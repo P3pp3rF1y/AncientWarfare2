@@ -54,6 +54,10 @@ public void handlePacketData(NBTTagCompound tag)
     npc.setCustomNameTag(tag.getString("customName"));
     AWLog.logDebug("setting npc custom name from packet input: "+npc.getCustomNameTag());
     }
+  if(tag.hasKey("repack"))
+    {
+    npc.repackEntity(player);
+    }
   }
 
 public void handleNpcNameUpdate(String newName)

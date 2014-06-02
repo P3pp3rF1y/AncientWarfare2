@@ -11,12 +11,14 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -216,14 +218,67 @@ public void addExperience(int amount)
  * implementations should read in any data written during {@link #writeAdditionalItemData(NBTTagCompound)}
  * @param tag
  */
-public abstract void readAdditionalItemData(NBTTagCompound tag);
+public final void readAdditionalItemData(NBTTagCompound tag)
+  {
+  NBTTagList equipmentList = tag.getTagList("equipment", Constants.NBT.TAG_COMPOUND);
+  ItemStack stack;
+  NBTTagCompound equipmentTag;
+  for(int i = 0; i < equipmentList.tagCount(); i++)
+    {
+    equipmentTag = equipmentList.getCompoundTagAt(i);
+    stack = InventoryTools.readItemStack(equipmentTag);
+    if(equipmentTag.hasKey("slotNum")){setCurrentItemOrArmor(equipmentTag.getInteger("slotNum"), stack);}
+    else if(equipmentTag.hasKey("orders")){ordersStack=stack;}
+    else if(equipmentTag.hasKey("upkeep")){upkeepStack=stack;}
+    }
+  if(tag.hasKey("levelingStats")){getLevelingStats().readFromNBT(tag.getCompoundTag("levelingStats"));}
+  if(tag.hasKey("maxHealth")){getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(tag.getFloat("maxHealth"));}
+  if(tag.hasKey("health")){setHealth(tag.getFloat("health"));}
+  }
 
 /**
  * Implementations should write out any persistent entity-data needed to restore entity-state from an item-stack.<br>
  * This should include inventory, levels, orders, faction / etc
  * @param tag
  */
-public abstract void writeAdditionalItemData(NBTTagCompound tag);
+public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag)
+  {
+  /**
+   * write out:
+   * equipment (including orders items)
+   * leveling stats
+   * current health
+   */
+  NBTTagList equipmentList = new NBTTagList();
+  ItemStack stack;
+  NBTTagCompound equipmentTag;
+  for(int i = 0; i < 5; i++)
+    {
+    stack = getEquipmentInSlot(i);
+    if(stack==null){continue;}
+    equipmentTag = InventoryTools.writeItemStack(stack, new NBTTagCompound());
+    equipmentTag.setInteger("slotNum", i);
+    equipmentList.appendTag(equipmentTag);
+    }
+  if(ordersStack!=null)
+    {
+    equipmentTag = InventoryTools.writeItemStack(ordersStack, new NBTTagCompound());
+    equipmentTag.setBoolean("orders", true);
+    equipmentList.appendTag(equipmentTag);
+    }
+  if(upkeepStack!=null)
+    {
+    equipmentTag = InventoryTools.writeItemStack(upkeepStack, new NBTTagCompound());
+    equipmentTag.setBoolean("upkeep", true);
+    equipmentList.appendTag(equipmentTag);
+    }  
+  tag.setTag("equipment", equipmentList);
+  
+  tag.setTag("levelingStats", getLevelingStats().writeToNBT(new NBTTagCompound()));
+  tag.setFloat("maxHealth", getMaxHealth());
+  tag.setFloat("health", getHealth());
+  return tag;
+  }
 
 public abstract boolean isValidOrdersStack(ItemStack stack);
 
@@ -415,12 +470,12 @@ public void repackEntity(EntityPlayer player)
   if(!player.worldObj.isRemote)
     {
     ItemStack item = this.getItemToSpawn();
-    //TODO add repack button to npc-gui
     item = InventoryTools.mergeItemStack(player.inventory, item, -1);
     if(item!=null)
       {
       InventoryTools.dropItemInWorld(player.worldObj, item, player.posX, player.posY, player.posZ);    
       }    
+    setDead();
     }
   }
 

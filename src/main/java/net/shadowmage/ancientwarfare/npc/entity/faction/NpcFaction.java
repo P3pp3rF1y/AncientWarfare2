@@ -180,18 +180,6 @@ public void readSpawnData(ByteBuf additionalData)
   subType = ByteBufUtils.readUTF8String(additionalData);
   this.updateTexture();
   }
-  
-@Override
-public void readAdditionalItemData(NBTTagCompound tag)
-  {
-  //TODO
-  }
-
-@Override
-public void writeAdditionalItemData(NBTTagCompound tag)
-  {
-   //TODO
-  }
 
 @Override
 public boolean isValidOrdersStack(ItemStack stack)
