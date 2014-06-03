@@ -97,41 +97,6 @@ TEXTURES
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
 ^ check that courier/work AI/random workAI was not fubar'd by changes
-? all npcs should be capable of riding horses -- they use it purely for transportation speed increase
-	problem:
-		navigator tests for onGround for calculating paths.  When npc is riding, onGround ALWAYS is false.
-	solution:
-		1.)  Every time a path is about to be calculated, cache onGround, set onGround to true, calc path, reset onGround from cache
-			pros: quick hack
-			cons: 
-				reallyhacky
-				requires 100% custom AI
-				probably won't work
-				would need more code in EVERY access point for the navigator
-				LOTS of AI to write
-		2.)  Wrap access to navigator in a nav-helper -- anytime path stuff is called it either calls the npc or mounts navigator appropriately 
-			pros: 
-				should be reliable as long as custom AI is enforced
-				minimal code intrusiveness (few/no extra lines)
-			cons:
-				requires 100% custom AI to make sure nav is no longer accessed directly, but only through custom nav wrapper
-				^^ double con...that is ALOT of fucking ai to rewrite
-		3.)  Full custom pathNavigate force-set to navigator field through reflection
-			pros:
-				should be very reliable -when- it works
-			cons:				
-				LOTS of stuff to rewrite as it is ALL private-only garbage
-				requires constant updating of duplicate class for any changes in vanilla
-				very hacky -- 				
-		4.)  Create custom entity class and AI for 'mounted' npc types
-			pros:
-				separation of npc function
-				fewer AI functions to rewrite
-			cons:
-				yet more npc types....			
-				 
-				
-				
 ? add method to 'recruit' a factioned NPC that you are on high-standing with (converts to closest player-owned npc class?)	
 ? npc vendor type?
 	player-owned npc that has a customizable trade list via GUI.
@@ -142,6 +107,9 @@ TEXTURES
 	for use by structure creators.
 	respawns faction-based npcs and attempts to keep them within the bounds designated in the block
 	controls only accessible to players in creative mode
+* add flag to npc to determine if he should ride a horse or not
+* add mount-horse AI to more/all npc types
+* test that AI functions still work while mounted -- might need to increase 'reach' distance	
 * player-owned priest AI
 * player-owned bard AI
 * find default sound/music for bards

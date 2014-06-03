@@ -6,12 +6,14 @@ import java.util.UUID;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
@@ -64,6 +66,16 @@ public NpcBase(World par1World)
   this.getNavigator().setAvoidsWater(true);
   this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
   this.width = 0.6f;
+  }
+
+@Override
+public PathNavigate getNavigator()
+  {
+  if(this.ridingEntity instanceof EntityLiving)
+    {
+    return ((EntityLiving)this.ridingEntity).getNavigator();
+    }
+  return super.getNavigator();
   }
 
 @Override

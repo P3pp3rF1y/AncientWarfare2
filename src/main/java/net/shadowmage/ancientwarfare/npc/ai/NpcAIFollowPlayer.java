@@ -82,18 +82,15 @@ public void resetTask()
  */
 public void updateTask()
   {
-  AWLog.logDebug("setting move to player from ai...");
   this.npc.getLookHelper().setLookPositionWithEntity(this.target, 10.0F, (float)this.npc.getVerticalFaceSpeed());
   this.moveDelay--;  
   double distance = npc.getDistanceSqToEntity(target);
   if(distance > followStopDistance)
     {
-    AWLog.logDebug("outside stop distance...moving closer..."+npc.onGround);
     if(moveDelay<=0)
       {
       this.npc.addAITask(TASK_MOVE);
       this.npc.getNavigator().tryMoveToEntityLiving(target, 1.d);
-      AWLog.logDebug("set path to: "+npc.getNavigator().getPath());
       this.moveDelay = 10;
       if(distance>256){moveDelay+=10;}
       if(distance>1024){moveDelay+=20;}
@@ -101,7 +98,6 @@ public void updateTask()
     }
   else
     {
-    AWLog.logDebug("inside stop distance...stoping moving...");
     this.npc.removeAITask(TASK_MOVE);   
     this.npc.getNavigator().clearPathEntity();
     }  
