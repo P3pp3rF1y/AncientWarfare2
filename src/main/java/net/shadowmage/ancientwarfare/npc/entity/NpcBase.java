@@ -69,6 +69,19 @@ public NpcBase(World par1World)
   }
 
 @Override
+public double getYOffset()
+  {
+  return (double)(this.yOffset - 0.5F);
+  }
+
+@Override
+public double getMountedYOffset()
+  {
+  // TODO Auto-generated method stub
+  return super.getMountedYOffset();
+  }
+
+@Override
 public PathNavigate getNavigator()
   {
   if(this.ridingEntity instanceof EntityLiving)
