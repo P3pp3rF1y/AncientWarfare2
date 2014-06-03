@@ -109,7 +109,8 @@ TEXTURES
 	controls only accessible to players in creative mode
 * add flag to npc to determine if he should ride a horse or not
 * add mount-horse AI to more/all npc types
-* test that AI functions still work while mounted -- might need to increase 'reach' distance	
+* test that AI functions still work while mounted -- might need to increase 'reach' distance
+* adjust npc mountedY offset to seat properly on horse/vehicles
 * player-owned priest AI
 * player-owned bard AI
 * find default sound/music for bards
