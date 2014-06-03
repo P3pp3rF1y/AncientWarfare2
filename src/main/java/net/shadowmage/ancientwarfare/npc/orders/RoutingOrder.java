@@ -153,6 +153,7 @@ private void changeBlockSide(){blockSide = blockSide==5? 0 : blockSide+1;}
 private void changeRouteType(){routeType=routeType.next();}
 public void setFilter(int index, ItemStack stack){filters[index]=stack;}
 public int getBlockSide(){return blockSide;}
+public void setBlockSide(int side){blockSide=side;}
 public RouteType getRouteType(){return routeType;}
 public BlockPosition getTarget(){return target;}
 public ItemStack getFilterInSlot(int slot){return filters[slot];}

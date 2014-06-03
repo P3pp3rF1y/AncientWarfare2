@@ -8,17 +8,15 @@ Licensing
 	add bc license for using as libs
 
 ****************************CORE MODULE TODO****************************
-	* crafting system--needs recipes from other modules
-	* research system--needs definitions of research for research tree
-	Implement tile-based rotatable block -- twenty-four way
-
-GUIS (all modules)
-	need LOTS of tooltips added to various elements	
-	Finish creating proper text-input validation stuff for Text and NumberInput widgets
-		need support for space, underscore, period.
-		need to setup validation per-input box...
-	SHIFT-CLICK CODE
-	rendering of item stack quantities >99 -- need to do custom rendering of text, scaled down appropriately
+? Implement tile-based rotatable block -- twenty-four way
+* crafting system--needs recipes from other modules
+* research system--needs definitions of research for research tree
+* need LOTS of tooltips added to various elements in GUIs	
+* Finish creating proper text-input validation stuff for Text and NumberInput widgets
+	need support for space, underscore, period.
+	need to setup validation per-input box...
+* GUI - SHIFT-CLICK CODE
+* GUI - rendering of item stack quantities >99 -- need to do custom rendering of text, scaled down appropriately
 
 ****************************TEXTURES TODO****************************
 TEXTURES
@@ -42,7 +40,7 @@ TEXTURES
 	vehicle	
 	
 ****************************MEIM MODULE TODO****************************
-who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
+? who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 	
 ****************************STRUCTURE MODULE TODO****************************
 ? rework gates as a multi-block? (use controller TE TESR to render gate)
@@ -110,7 +108,6 @@ who knows.... will need to start using it to find out what is broken / not worki
 	for use by structure creators.
 	respawns faction-based npcs and attempts to keep them within the bounds designated in the block
 	controls only accessible to players in creative mode
-* add initial side-hit to courier-routing slip on-block selected
 * player-owned priest AI
 * player-owned bard AI
 * find default sound/music for bards
