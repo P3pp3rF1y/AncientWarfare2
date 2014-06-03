@@ -59,10 +59,7 @@ public void updateTask()
 private void moveToTarget(double distance)
   {
   npc.addAITask(TASK_MOVE);
-  if(moveRetryDelay>0)
-    {
-    moveRetryDelay--;    
-    }
+  moveRetryDelay--;    
   if(moveRetryDelay<=0)
     {
     npc.getNavigator().tryMoveToEntityLiving(target, moveSpeed);
@@ -75,7 +72,7 @@ private void moveToTarget(double distance)
 private void attackTarget()
   {
   npc.removeAITask(TASK_MOVE);
-  if(attackDelay>0){attackDelay--;}
+  attackDelay--;
   if(attackDelay<=0)
     {
     npc.swingItem();

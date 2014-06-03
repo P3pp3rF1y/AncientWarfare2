@@ -258,6 +258,7 @@ protected void drawGuiContainerForegroundLayer(int par1, int par2)
   GL11.glPushMatrix();
   GL11.glTranslatef(-guiLeft, -guiTop, 0);
   long time = System.currentTimeMillis();
+  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
   for(GuiElement element : elements)
     {
     element.render(par1, par2, partialRenderTick);
