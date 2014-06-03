@@ -1,0 +1,33 @@
+****************************AUTOMATION MODULE TODO****************************	
+? worksites needed:
+	Smeltery multiblock -- ore processing
+		Smeltery control block (worksite)
+		Smeltery heater/smelting block
+		Smeltery input block
+		Smeltery output block
+	Lumberyard multiblock -- wood processing	
+? Custom renders for power-states on power tiles?  Optional?
+	would require a client-side config on whether to use custom render
+	would also require a server-side config on whether to send the network data or not
+	would need a change in block rendering for opacity/cutaway 
+		and a TESR implemented for rendering of state
+	would need to design model and model-renderer for it
+	would need textures	
+			
+****************************NPC MODULE TODO****************************
+? add method to 'recruit' a factioned NPC that you are on high-standing with (converts to closest player-owned npc class?)	
+? npc vendor type?
+	player-owned npc that has a customizable trade list via GUI.
+	owning players can setup the trades and give the npc their 'stock'
+	owning players can withdraw the proceeds from bartering, and restock the vendor
+	non-owning players can access the vendors trade screen to barter
+? add faction structure control block
+	for use by structure creators.
+	respawns faction-based npcs and attempts to keep them within the bounds designated in the block
+	controls only accessible to players in creative mode
+	
+****************************STRUCTURE MODULE TODO****************************
+? rework gates as a multi-block? (use controller TE TESR to render gate)
+	at that point, can use blocks for collision and interaction
+	probably less buggy than the entity-based interaction
+	but how to handle only partially loaded gates?

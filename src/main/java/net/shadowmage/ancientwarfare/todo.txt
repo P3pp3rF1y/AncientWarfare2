@@ -40,13 +40,9 @@ TEXTURES
 	vehicle	
 	
 ****************************MEIM MODULE TODO****************************
-? who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
+> who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 	
 ****************************STRUCTURE MODULE TODO****************************
-? rework gates as a multi-block? (use controller TE TESR to render gate)
-	at that point, can use blocks for collision and interaction
-	probably less buggy than the entity-based interaction
-	but how to handle only partially loaded gates?
 > plugins / support for vehicle module
 > plugin support for automation module		
 * need to examine all plugins for places when item-stacks are saved to the tile/entity nbt -- need to handle these special and sideline the
@@ -61,20 +57,6 @@ TEXTURES
 * screenshots for all default-included structures
 
 ****************************AUTOMATION MODULE TODO****************************	
-? worksites needed:
-	Smeltery multiblock -- ore processing
-		Smeltery control block (worksite)
-		Smeltery heater/smelting block
-		Smeltery input block
-		Smeltery output block
-	Lumberyard multiblock -- wood processing	
-? Custom renders for power-states on power tiles?  Optional?
-	would require a client-side config on whether to use custom render
-	would also require a server-side config on whether to send the network data or not
-	would need a change in block rendering for opacity/cutaway 
-		and a TESR implemented for rendering of state
-	would need to design model and model-renderer for it
-	would need textures	
 * textures for warehouse storage / input / output	
 * Add overlay rendering of work-site sizes while holding a work-site setting item.
 * Change over worksite BB render to a TESR -- should be slightly more optimized
@@ -97,16 +79,6 @@ TEXTURES
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
 ^ check that courier/work AI/random workAI was not fubar'd by changes
-? add method to 'recruit' a factioned NPC that you are on high-standing with (converts to closest player-owned npc class?)	
-? npc vendor type?
-	player-owned npc that has a customizable trade list via GUI.
-	owning players can setup the trades and give the npc their 'stock'
-	owning players can withdraw the proceeds from bartering, and restock the vendor
-	non-owning players can access the vendors trade screen to barter
-? add faction structure control block
-	for use by structure creators.
-	respawns faction-based npcs and attempts to keep them within the bounds designated in the block
-	controls only accessible to players in creative mode
 * add flag to npc to determine if he should ride a horse or not
 * add mount-horse AI to more/all npc types
 * test that AI functions still work while mounted -- might need to increase 'reach' distance
