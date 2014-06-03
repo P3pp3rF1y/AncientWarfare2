@@ -78,7 +78,6 @@ who knows.... will need to start using it to find out what is broken / not worki
 	would need to design model and model-renderer for it
 	would need textures	
 * textures for warehouse storage / input / output	
-* chunkloader blocks
 * Add overlay rendering of work-site sizes while holding a work-site setting item.
 * Change over worksite BB render to a TESR -- should be slightly more optimized
 * Torque API:

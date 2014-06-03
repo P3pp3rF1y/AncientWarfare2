@@ -15,79 +15,75 @@ public class TileChunkLoaderSimple extends TileEntity implements IInteractableTi
 {
 
 Ticket chunkTicket = null;
-boolean init = false;
 
 public TileChunkLoaderSimple()
   {
   
   }
 
-@Override
 public boolean canUpdate()
   {
-  return true;
+  return false;
+  }
+
+public void releaseTicket()
+  {
+  if(chunkTicket!=null)
+    {
+    for(ChunkCoordIntPair ccip : chunkTicket.getChunkList())
+      {
+      ForgeChunkManager.unforceChunk(chunkTicket, ccip);
+      }
+    ForgeChunkManager.releaseTicket(chunkTicket);
+    }
+  chunkTicket=null;    
   }
 
 @Override
-public void updateEntity()
+public void validate()
+  {  
+  super.validate();
+  releaseTicket();
+  }
+
+@Override
+public void invalidate()
   {
-  if(!worldObj.isRemote && !init)
-    {
-    setupInitialTicket();
-    }
+  super.invalidate();
+  releaseTicket();
   }
 
 public void setTicketFromCallback(Ticket tk)
   {
   if(this.chunkTicket!=null)
     {
-    for(ChunkCoordIntPair ccip : tk.getChunkList())
-      {
-      ForgeChunkManager.unforceChunk(tk, ccip);    
-      }
+    ForgeChunkManager.releaseTicket(chunkTicket);
     }
+  this.chunkTicket = tk;
+  forceTicketChunks(tk);
+  }
+
+public void setupInitialTicket()
+  {
+  Ticket tk = ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, worldObj, Type.NORMAL);
   this.chunkTicket = tk;
   if(tk!=null)
     {
-    for(ChunkCoordIntPair ccip : tk.getChunkList())
-      {
-      ForgeChunkManager.forceChunk(tk, ccip);      
-      }    
-    }
-  AWLog.logDebug("set ticket from loading callback....ticket: "+tk);
-  if(tk!=null)
-    {
-    AWLog.logDebug("ticket now has forced chunks of: "+tk.getChunkList());
-    }
+    writeDataToTicket(tk);
+    forceTicketChunks(tk);
+    } 
   }
 
-protected void setupInitialTicket()
-  {
-  AWLog.logDebug("setting init ticket for chunk loader simple...");
-  Ticket tk = ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, worldObj, Type.NORMAL);
-  if(tk!=null)
-    {
-    setInitialTicket(tk);
-    }
-  else
-    {
-    AWLog.logDebug("TICKET WAS NULL...");
-    }    
-  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
-  init = true;
-  }
-
-protected void setInitialTicket(Ticket tk)
+protected void writeDataToTicket(Ticket tk)
   {
   NBTTagCompound posTag = new NBTTagCompound();
   posTag.setInteger("x", xCoord);
   posTag.setInteger("y", yCoord);
   posTag.setInteger("z", zCoord);
   tk.getModData().setTag("tilePosition", posTag);
-  forceInitialChunks();
   }
 
-protected void forceInitialChunks()
+protected void forceTicketChunks(Ticket tk)
   {
   int cx = xCoord>>4;
   int cz = zCoord>>4;
@@ -96,19 +92,16 @@ protected void forceInitialChunks()
     for(int z = cz-1; z<=cz+1; z++)
       {
       ChunkCoordIntPair ccip = new ChunkCoordIntPair(x, z);
-      ForgeChunkManager.forceChunk(chunkTicket, ccip);
+      ForgeChunkManager.forceChunk(tk, ccip);
       }
     }
+  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
+  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(worldObj));
   }
 
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  if(!player.worldObj.isRemote)
-    {
-    //TODO create gui/container
-    //TODO open proper GUI
-    }
   return false;
   }
 
@@ -116,14 +109,12 @@ public boolean onBlockClicked(EntityPlayer player)
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  init = tag.getBoolean("init");
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
-  tag.setBoolean("init", init);
   }
 
 }

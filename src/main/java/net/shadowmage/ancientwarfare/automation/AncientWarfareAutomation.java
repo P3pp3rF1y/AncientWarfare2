@@ -5,6 +5,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
 import net.shadowmage.ancientwarfare.automation.container.ContainerTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
@@ -123,6 +124,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_REED_FARM, ContainerWorksiteReedFarm.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_FARM, ContainerWorksiteFishFarm.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, ContainerTorqueGeneratorSterling.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, ContainerChunkLoaderDeluxe.class);
   /**
    * register persistent game-data handlers
    */

@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
+import net.shadowmage.ancientwarfare.automation.gui.GuiChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
 import net.shadowmage.ancientwarfare.automation.gui.GuiTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseControl;
@@ -59,6 +60,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_REED_FARM, GuiWorksiteReedFarm.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_FARM, GuiWorksiteFishFarm.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, GuiTorqueGeneratorSterling.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, GuiChunkLoaderDeluxe.class);
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStorageBase.class, new RenderTileWarehouseStorageBase());
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel());
   RenderingRegistry.registerBlockHandler(new RenderTorqueConduit());
