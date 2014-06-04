@@ -82,14 +82,13 @@ TEXTURES
 ^ test that AI functions still work while mounted -- might need to increase 'reach' distance
 * add flag to npc to determine if he should ride a horse or not
 * add mount-horse AI to more/all npc types
-* player-owned priest AI
 * player-owned bard AI
 * find default sound/music for bards
 * add alert/flee ai to faction-based NPCs
 * faction soldier AI
 * faction leader AI
 * faction archer AI
-* faction priest AI
+* faction priest AI -- act as medics
 * faction trader AI
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
