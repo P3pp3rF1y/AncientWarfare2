@@ -18,6 +18,7 @@ int resurrectionDelay = 0;
 public NpcAIPriestPlayerOwned(NpcBase npc)
   {
   super(npc);
+  this.setMutexBits(ATTACK+MOVE);
   }
 
 @Override
