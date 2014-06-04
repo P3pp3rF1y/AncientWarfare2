@@ -10,7 +10,6 @@ public class NpcAIFollowPlayer extends NpcAI
 private Entity target;
 private double attackIgnoreDistance = 4.d*4.d;
 private double followStopDistance = 4.d*4.d;
-private int moveDelay = 0;
 
 public NpcAIFollowPlayer(NpcBase npc)
   {
@@ -63,7 +62,7 @@ public boolean continueExecuting()
  */
 public void startExecuting()
   {
-  moveDelay = 0;
+  moveRetryDelay=0;
   this.npc.addAITask(TASK_FOLLOW);
   }
 
@@ -73,7 +72,7 @@ public void startExecuting()
 public void resetTask()
   {
   this.target = null;
-  moveDelay = 0;
+  moveRetryDelay=0;
   this.npc.removeAITask(TASK_FOLLOW + TASK_MOVE);
   }
 
@@ -83,18 +82,11 @@ public void resetTask()
 public void updateTask()
   {
   this.npc.getLookHelper().setLookPositionWithEntity(this.target, 10.0F, (float)this.npc.getVerticalFaceSpeed());
-  this.moveDelay--;  
   double distance = npc.getDistanceSqToEntity(target);
   if(distance > followStopDistance)
     {
-    if(moveDelay<=0)
-      {
-      this.npc.addAITask(TASK_MOVE);
-      this.npc.getNavigator().tryMoveToEntityLiving(target, 1.d);
-      this.moveDelay = 10;
-      if(distance>256){moveDelay+=10;}
-      if(distance>1024){moveDelay+=20;}
-      }    
+    this.npc.addAITask(TASK_MOVE);
+    moveToEntity(target, distance);    
     }
   else
     {

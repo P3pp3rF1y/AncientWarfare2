@@ -11,8 +11,6 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 public class NpcAIGetFood extends NpcAI
 {
 
-int moveDelayTicks = 0;
-
 public NpcAIGetFood(NpcBase npc)
   {
   super(npc);
@@ -48,15 +46,16 @@ public void updateTask()
   {
   BlockPosition pos = npc.getUpkeepPoint();
   if(pos==null){return;}
-  if(withinDistanceToUpkeep(pos))
+  double dist = npc.getDistanceSq(pos.x+0.5d, pos.y, pos.z+0.5d);
+  if(dist<5.d*5.d)
     {
-    npc.removeAITask(TASK_MOVE);
-    tryUpkeep(pos);    
+    npc.addAITask(TASK_MOVE);
+    moveToPosition(pos, dist);
     }
   else
     {
-    npc.addAITask(TASK_MOVE);
-    moveToUpkeep(pos);
+    npc.removeAITask(TASK_MOVE);
+    tryUpkeep(pos);
     }
   }
 
@@ -66,21 +65,8 @@ public void updateTask()
 @Override
 public void resetTask()
   {
-  moveDelayTicks=0;
+  moveRetryDelay=0;
   npc.removeAITask(TASK_UPKEEP + TASK_MOVE);
-  }
-
-protected void moveToUpkeep(BlockPosition pos)
-  {
-  if(moveDelayTicks>0)
-    {
-    moveDelayTicks--;
-    }
-  else
-    {
-    moveDelayTicks=10;
-    npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);
-    }
   }
 
 protected void tryUpkeep(BlockPosition pos)
@@ -91,11 +77,6 @@ protected void tryUpkeep(BlockPosition pos)
     {
     withdrawFood((IInventory) te, side);    
     }
-  }
-
-protected boolean withinDistanceToUpkeep(BlockPosition pos)
-  {
-  return pos!=null && npc.getDistanceSq(pos.x+0.5d, pos.y, pos.z+0.5d) < 5.d*5.d;
   }
 
 protected void withdrawFood(IInventory inventory, int side)

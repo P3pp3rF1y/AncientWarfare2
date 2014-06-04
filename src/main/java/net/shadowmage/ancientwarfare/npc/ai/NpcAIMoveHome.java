@@ -8,7 +8,6 @@ public class NpcAIMoveHome extends NpcAI
 
 float dayRange, nightRange;
 float dayLeash, nightLeash;
-int moveTimer = 0;
 
 public NpcAIMoveHome(NpcBase npc, float dayRange, float nightRange, float dayLeash, float nightLeash)
   {
@@ -49,28 +48,28 @@ public boolean continueExecuting()
 public void startExecuting()
   {
   npc.addAITask(TASK_GO_HOME);
-  moveTimer = 0;
-  ChunkCoordinates cc = npc.getHomePosition();
-  npc.getNavigator().tryMoveToXYZ(cc.posX+0.5d, cc.posY, cc.posZ+0.5d, 1.0d);
-  npc.setTarget(null);
   }
 
 @Override
 public void updateTask()
   {
-  moveTimer--;
-  if(moveTimer<=0)
+  ChunkCoordinates cc = npc.getHomePosition();
+  double dist = npc.getDistance(cc.posX+0.5d, cc.posY, cc.posZ+0.5d);
+  if(dist>5.d*5.d)
     {
-    ChunkCoordinates cc = npc.getHomePosition();
-    npc.getNavigator().tryMoveToXYZ(cc.posX, cc.posY, cc.posZ, 1.0d);
-    moveTimer = 10;
+    npc.addAITask(TASK_MOVE);
+    moveToPosition(cc.posX, cc.posY, cc.posZ, dist);
+    }
+  else
+    {
+    npc.removeAITask(TASK_MOVE);
+    npc.getNavigator().clearPathEntity();
     }
   }
 
 @Override
 public void resetTask()
   {
-  moveTimer = 0;
   npc.removeAITask(TASK_GO_HOME);
   }
 

@@ -16,7 +16,6 @@ public class NpcAIMountHorse extends NpcAI
 {
 
 int lastExecutedTick = -1;
-int moveRetryDelay = 0;
 double moveSpeed = 1.d;
 private final EntityAINearestAttackableTarget.Sorter sorter;
 AttributeModifier followRangeModifier;
@@ -80,14 +79,7 @@ public void updateTask()
     double dist = npc.getDistanceSqToEntity(target);
     if(dist>5.d*5.d)
       {
-      moveRetryDelay--;   
-      if(moveRetryDelay<=0)
-        {
-        npc.getNavigator().tryMoveToEntityLiving(target, moveSpeed);
-        moveRetryDelay=10;//base .5 second retry delay
-        if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-        if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32
-        }
+      moveToEntity(target, dist);
       }
     else
       {

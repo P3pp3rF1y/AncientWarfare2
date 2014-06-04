@@ -17,7 +17,6 @@ public class NpcAIMedic extends NpcAI
 
 int injuredRecheckDelay = 0;
 int injuredRecheckDelayMax = 20;
-int moveRetryDelay = 0;
 int healDelay = 0;
 int healDelayMax = 20;
 
@@ -78,35 +77,17 @@ public boolean continueExecuting()
 public void startExecuting()
   {
   npc.addAITask(TASK_GUARD);
-  double dist = npc.getDistanceSqToEntity(targetToHeal);
-  double attackDistance = (double)((this.npc.width * this.npc.width * 2.0F * 2.0F) + (targetToHeal.width * targetToHeal.width * 2.0F * 2.0F));
-  if(dist>attackDistance)
-    {
-    npc.getNavigator().tryMoveToEntityLiving(targetToHeal, 1.d);
-    npc.addAITask(TASK_MOVE);
-    moveRetryDelay=10;//base .5 second retry delay
-    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32
-    healDelay = healDelayMax;//TODO get from config
-    }
   }
 
 @Override
 public void updateTask()
   {
-  moveRetryDelay--;
   double dist = npc.getDistanceSqToEntity(targetToHeal);
   double attackDistance = (double)((this.npc.width * this.npc.width * 2.0F * 2.0F) + (targetToHeal.width * targetToHeal.width * 2.0F * 2.0F));
   if(dist>attackDistance)
     {
-    if(moveRetryDelay<=0)
-      {
-      npc.addAITask(TASK_MOVE);
-      moveRetryDelay=10;//base .5 second retry delay
-      if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-      if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32
-      npc.getNavigator().tryMoveToEntityLiving(targetToHeal, 1.d);
-      } 
+    npc.addAITask(TASK_MOVE);
+    moveToEntity(targetToHeal, dist);
     healDelay = healDelayMax;//TODO get from config
     }
   else

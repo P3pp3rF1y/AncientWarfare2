@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
@@ -9,8 +10,6 @@ public class NpcAICommandMove extends NpcAI
 
 Command command;
 int startRecheckDelay = 0;
-double moveSpeed = 1.d;
-int moveRetryDelay = 0;
 
 public NpcAICommandMove(NpcBase npc)
   {
@@ -60,23 +59,20 @@ public boolean continueExecuting()
 @Override
 public void startExecuting()
   {
-  npc.addAITask(TASK_MOVE);
   }
 
 @Override
 public void updateTask()
   {  
-  moveRetryDelay--;
-  if(moveRetryDelay<=0)
+  double dist = npc.getDistanceSq(command.x+0.5d, command.y, command.z+0.5d);
+  if(dist>4.d*4.d)
     {
-    double dist = npc.getDistanceSq(command.x+0.5d, command.y, command.z+0.5d);
-    if(dist>16.d)
-      {
-      npc.getNavigator().tryMoveToXYZ(command.x+0.5d, command.y, command.z+0.5d, moveSpeed);
-      moveRetryDelay=10;//base .5 second retry delay
-      if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-      if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32
-      }
+    npc.addAITask(TASK_MOVE);
+    moveToPosition(command.x, command.y, command.z, dist);
+    }
+  else
+    {
+    npc.removeAITask(TASK_MOVE);    
     }
   }
 

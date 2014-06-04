@@ -79,9 +79,9 @@ TEXTURES
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
 ^ check that courier/work AI/random workAI was not fubar'd by changes
+^ test that AI functions still work while mounted -- might need to increase 'reach' distance
 * add flag to npc to determine if he should ride a horse or not
 * add mount-horse AI to more/all npc types
-* test that AI functions still work while mounted -- might need to increase 'reach' distance
 * player-owned priest AI
 * player-owned bard AI
 * find default sound/music for bards

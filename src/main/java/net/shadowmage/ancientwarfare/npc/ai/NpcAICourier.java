@@ -14,8 +14,6 @@ public class NpcAICourier extends NpcAI
 {
 
 boolean init;
-double moveSpeed = 1.d;
-int moveRetryDelay;
 
 int routeIndex;
 int ticksToWork;
@@ -69,12 +67,12 @@ public void startExecuting()
 public void updateTask()
   {
   BlockPosition pos = order.getEntries().get(routeIndex).getTarget();
-  double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
+  double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);  
   if(dist>5.d*5.d)
-    {
+    {    
     npc.addAITask(TASK_MOVE);
     ticksAtSite=0;
-    moveToWork(pos, dist);
+    moveToPosition(pos, dist);
     }
   else
     {
@@ -107,18 +105,6 @@ public void workAtSite()
       {
       setMoveToNextSite();
       }
-    }
-  }
-
-private void moveToWork(BlockPosition pos, double dist)
-  {
-  moveRetryDelay--;
-  if(moveRetryDelay<=0)
-    {
-    npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);
-    moveRetryDelay=10;//base .5 second retry delay
-    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
     }
   }
 

@@ -13,8 +13,6 @@ double followDistance = 4.d*4.d;//4^2
 Entity target;
 Command command;
 int startRecheckDelay = 0;
-double moveSpeed = 1.d;
-int moveRetryDelay = 0;
 
 public NpcAICommandGuard(NpcBase npc)
   {
@@ -65,24 +63,21 @@ public boolean continueExecuting()
 @Override
 public void startExecuting()
   {
-  
+  npc.addAITask(TASK_GUARD);    
   }
 
 @Override
 public void updateTask()
   {
-  moveRetryDelay--;
-  if(moveRetryDelay<=0)
+  double dist = npc.getDistanceSqToEntity(target);
+  if(dist>followDistance)
     {
-    AWLog.logDebug("updating command guard ai..");
-    double dist = npc.getDistanceSqToEntity(target);
-    if(dist>followDistance)
-      {
-      npc.getNavigator().tryMoveToEntityLiving(target, moveSpeed);
-      }    
-    moveRetryDelay=10;//base .5 second retry delay
-    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32
+    npc.addAITask(TASK_MOVE);
+    moveToEntity(target, dist);
+    }
+  else
+    {
+    npc.removeAITask(TASK_MOVE);    
     }
   }
 
@@ -92,6 +87,7 @@ public void resetTask()
   target = null;
   command = null;
   npc.getNavigator().clearPathEntity();
+  npc.removeAITask(TASK_GUARD);  
   }
 
 }

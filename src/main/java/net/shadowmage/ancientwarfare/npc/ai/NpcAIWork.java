@@ -18,15 +18,10 @@ public class NpcAIWork extends NpcAI
 {
 
 public int ticksAtSite = 0;
-
 public int workIndex;
-
 public WorkOrder order;
 ItemStack orderStack;
 boolean init = false;
-
-int moveRetryDelay = 0;
-
 NpcWorker worker;
 
 public NpcAIWork(NpcBase npc)
@@ -91,7 +86,7 @@ public void updateTask()
     AWLog.logDebug("moving to worksite..."+pos);
     npc.addAITask(TASK_MOVE);
     ticksAtSite=0;
-    moveToWorksite(pos, dist);
+    moveToPosition(pos, dist);
     }
   else
     {
@@ -199,18 +194,6 @@ protected void setMoveToNextSite()
     {
     workIndex++;
     if(workIndex>=order.getEntries().size()){workIndex=0;}    
-    }
-  }
-
-private void moveToWorksite(BlockPosition pos, double dist)
-  {
-  moveRetryDelay--;
-  if(moveRetryDelay<=0)
-    {
-    npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);
-    moveRetryDelay=10;//base .5 second retry delay
-    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
     }
   }
 
