@@ -30,8 +30,8 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMountHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWork;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWorkRandom;
@@ -50,6 +50,7 @@ public NpcWorker(World par1World)
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
+  this.tasks.addTask(0, new NpcAIRideHorse(this));
   this.tasks.addTask(1, (alertAI=new NpcAIAlertPlayerOwned(this)));  
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAICommandGuard(this));
@@ -60,7 +61,6 @@ public NpcWorker(World par1World)
   this.tasks.addTask(6, (workAI = new NpcAIWork(this)));
   this.tasks.addTask(7, (workRandomAI = new NpcAIWorkRandom(this)));
   this.tasks.addTask(8, new NpcAIMoveHome(this, 80.f, 8.f, 40.f, 3.f));
-//  this.tasks.addTask(9, (horseAI=new NpcAIMountHorse(this)));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));

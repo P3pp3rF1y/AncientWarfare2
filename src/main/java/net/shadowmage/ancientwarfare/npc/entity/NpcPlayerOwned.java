@@ -17,7 +17,6 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMountHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
@@ -32,7 +31,6 @@ private Command playerIssuedCommand;//TODO load/save
 private int foodValueRemaining = 0;
 
 protected NpcAIAlertPlayerOwned alertAI;
-protected NpcAIMountHorse horseAI;
 
 private BlockPosition townHallPosition;
 private BlockPosition upkeepAutoBlock;
@@ -304,10 +302,6 @@ protected boolean interact(EntityPlayer player)
     if(this.ridingEntity!=null)
       {
       this.dismountEntity(ridingEntity);
-      if(this.horseAI!=null && this.ridingEntity instanceof EntityHorse)
-        {
-        this.horseAI.onDismount((EntityHorse) ridingEntity);
-        }
       if(this.ridingEntity!=null){this.ridingEntity.riddenByEntity=null;}
       this.ridingEntity=null;
       }

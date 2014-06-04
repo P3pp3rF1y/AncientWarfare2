@@ -81,11 +81,6 @@ TEXTURES
 ^ check that courier/work AI/random workAI was not fubar'd by changes
 ^ test that AI functions still work while mounted -- might need to increase 'reach' distance
 ^ check that movement-related ai functions properly after refactor
-* how to determine if an npc should ride a horse, and what horse?
-	--use command-baton guard/follow function to set the horse that should ridden
-	--allow any player owned NPC to ride a horse
-	--enable horse functionality for specific faction-based Npcs
-		they don't find a horse to mount, they spawn with a horse
 * horse-riding AI
 	--needs to store ref to last ridden horse
 		if ref and ridden do not match
