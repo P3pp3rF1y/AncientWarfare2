@@ -43,8 +43,6 @@ protected String followingPlayerName;//set/cleared onInteract from player if pla
 
 protected NpcLevelingStats levelingStats;
 
-
-
 /**
  * a single base texture for ALL npcs to share, used in case other textures were not set
  */
@@ -60,8 +58,7 @@ public NpcBase(World par1World)
   {
   super(par1World);
   baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
-  levelingStats = new NpcLevelingStats(this);
-  
+  levelingStats = new NpcLevelingStats(this);  
   this.getNavigator().setBreakDoors(true);
   this.getNavigator().setAvoidsWater(true);
   this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
@@ -69,16 +66,9 @@ public NpcBase(World par1World)
   }
 
 @Override
-public double getYOffset()
+public final double getYOffset()
   {
   return (double)(this.yOffset - 0.5F);
-  }
-
-@Override
-public double getMountedYOffset()
-  {
-  // TODO Auto-generated method stub
-  return super.getMountedYOffset();
   }
 
 @Override
@@ -95,27 +85,27 @@ public PathNavigate getNavigator()
 protected void entityInit()
   {
   super.entityInit();
-  this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks, TODO load/save from nbt
+  this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks
   }
 
 public void setTownHallPosition(BlockPosition pos)
   {
-  
+  //NOOP on non-player owned npc
   }
 
 public BlockPosition getTownHallPosition()
   {
-  return null;
+  return null;//NOOP on non-player owned npc
   }
 
 public TileTownHall getTownHall()
   {
-  return null;
+  return null;//NOOP on non-player owned npc
   }
 
 public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position)
   {
- 
+//NOOP on non-player owned npc
   }
 
 /**
@@ -139,7 +129,7 @@ public boolean canBeCommandedBy(String playerName)
   }
 
 @Override
-public boolean attackEntityFrom(DamageSource source, float par2)
+public final boolean attackEntityFrom(DamageSource source, float par2)
   {
   if(source.getEntity() instanceof NpcBase)
     {
@@ -152,7 +142,7 @@ public boolean attackEntityFrom(DamageSource source, float par2)
   }
 
 @Override
-public void setRevengeTarget(EntityLivingBase par1EntityLivingBase)
+public final void setRevengeTarget(EntityLivingBase par1EntityLivingBase)
   {
   if(par1EntityLivingBase instanceof NpcBase)
     {
@@ -165,7 +155,7 @@ public void setRevengeTarget(EntityLivingBase par1EntityLivingBase)
   }
 
 @Override
-protected void dropEquipment(boolean par1, int par2)
+protected final void dropEquipment(boolean par1, int par2)
   {
   if(!worldObj.isRemote)
     {
@@ -184,7 +174,7 @@ protected void dropEquipment(boolean par1, int par2)
   }
 
 @Override
-public void onKillEntity(EntityLivingBase par1EntityLivingBase)
+public final void onKillEntity(EntityLivingBase par1EntityLivingBase)
   {  
   super.onKillEntity(par1EntityLivingBase);
   if(!worldObj.isRemote)
@@ -199,22 +189,31 @@ public void onKillEntity(EntityLivingBase par1EntityLivingBase)
 
 public Command getCurrentCommand()
   {
-  return null;
+  return null;//NOOP on non-player owned npc
   }
 
 public void handlePlayerCommand(Command cmd)
   {
-  
+//NOOP on non-player owned npc
   }
 
-public int getAITasks()
+/**
+ * return the bitfield containing all of the currently executing AI tasks<br>
+ * used by player-owned npcs for rendering ai-tasks
+ * @return
+ */
+public final int getAITasks()
   {
   return getDataWatcher().getWatchableObjectInt(20);
   }
 
-public void addAITask(int task)
+/**
+ * add a task to the bitfield of currently executing tasks<br>
+ * input should be a ^2, or combination of (e.g. 1+2 or 2+4)<br>
+ * @param task
+ */
+public final void addAITask(int task)
   {
-//  AWLog.logDebug("adding ai task: "+task);
   int tasks = getAITasks();
   int tc = tasks;
   tasks = tasks | task;
@@ -224,9 +223,13 @@ public void addAITask(int task)
     }
   }
 
-public void removeAITask(int task)
+/**
+ * remove a task from the bitfield of currently executing tasks<br>
+ * input should be a ^2, or combination of (e.g. 1+2 or 2+4)<br>
+ * @param task
+ */
+public final void removeAITask(int task)
   {
-//  AWLog.logDebug("removing ai task: "+task);
   int tasks = getAITasks();
   int tc = tasks;
   tasks = tasks & (~task);
@@ -236,20 +239,21 @@ public void removeAITask(int task)
     }
   }
 
-private void setAITasks(int tasks)
+/**
+ * set ai tasks -- only used internally
+ * @param task
+ */
+private final void setAITasks(int tasks)
   {
-//  AWLog.logDebug("setting npc ai tasks to: "+tasks);
   this.getDataWatcher().updateObject(20, Integer.valueOf(tasks));  
   }
 
-@Override
-public void setHomeArea(int par1, int par2, int par3, int par4)
-  {  
-  super.setHomeArea(par1, par2, par3, par4);
-//  AWLog.logDebug("setting home position...");
-  }
-
-public void addExperience(int amount)
+/**
+ * add an amount of experience to this npcs leveling stats<br>
+ * experience is added for base level, and subtype level(if any)
+ * @param amount
+ */
+public final void addExperience(int amount)
   {
   String type = getNpcFullType();
   getLevelingStats().addExperience(type, amount);
@@ -327,19 +331,57 @@ public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag)
   return tag;
   }
 
+/**
+ * is the input stack a valid orders-item for this npc?<br>
+ * used by player-owned NPCs
+ * TODO noop this in base, re-abstract in npc-player owned class
+ * @param stack
+ * @return
+ */
 public abstract boolean isValidOrdersStack(ItemStack stack);
 
+/**
+ * callback for when orders-stack changes.  implemenations should inform any neccessary AI tasks of the
+ * change to order-items
+ */
 public abstract void onOrdersInventoryChanged();
 
+/**
+ * callback for when weapon slot has been changed.<br>
+ * Implementations should re-set any subtype or inform any AI that need to know when
+ * weapon was changed.
+ */
 public abstract void onWeaponInventoryChanged();
 
+/**
+ * return the NPCs subtype.<br>
+ * this subtype may vary at runtime.
+ * @return
+ */
 public abstract String getNpcSubType();
 
+/**
+ * return the NPCs type.  This type should be unique for the class of entity,
+ * or at least unique pertaining to the entity registration.
+ * @return
+ */
 public abstract String getNpcType();
 
+/**
+ * handle an incoming attack alert from another NPC.<br>
+ * implementations should inform their alert-AI and/or set attack/flee targets appropriately<br>
+ * called from alert-AI tasks when npc attack target / attacker changes.
+ * @param broadcaster
+ * @param target
+ */
 public abstract void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target);
 
-public String getNpcFullType()
+/**
+ * return the full NPC type for this npc<br>
+ * returns npcType if subtype is empty, else npcType.npcSubtype 
+ * @return
+ */
+public final String getNpcFullType()
   {
   String type = getNpcType();
   String sub = getNpcSubType();
@@ -347,28 +389,28 @@ public String getNpcFullType()
   return type;
   }
 
-public NpcLevelingStats getLevelingStats()
+public final NpcLevelingStats getLevelingStats()
   {
   return levelingStats;
   }
 
-public ResourceLocation getDefaultTexture()
+public final ResourceLocation getDefaultTexture()
   {
   return baseDefaultTexture;
   }
 
-public ItemStack getItemToSpawn()
+public final ItemStack getItemToSpawn()
   {
   return ItemNpcSpawner.getSpawnerItemForNpc(this);
   }
 
-public long getIDForSkin()
+public final long getIDForSkin()
   {
   return this.entityUniqueID.getLeastSignificantBits();
   }
 
 @Override
-public ItemStack getPickedResult(MovingObjectPosition target)
+public final ItemStack getPickedResult(MovingObjectPosition target)
   {
   return getItemToSpawn();
   }
@@ -405,13 +447,13 @@ public void onUpdate()
   }
 
 @Override
-protected boolean canDespawn()
+protected final boolean canDespawn()
   {
   return false;
   }
 
 @Override
-protected boolean isAIEnabled()
+protected final boolean isAIEnabled()
   {
   return true;
   }
@@ -429,7 +471,7 @@ protected void applyEntityAttributes()
 /**
  * called whenever level changes, to update the damage-done stat for the entity
  */
-public void updateDamageFromLevel()
+public final void updateDamageFromLevel()
   {
   float dmg = AWNPCStatics.npcAttackDamage;
   float lvl = getLevelingStats().getLevel(getNpcFullType());
@@ -439,37 +481,37 @@ public void updateDamageFromLevel()
 
 public int getFoodRemaining()
   {
-  return 0;
+  return 0;//NOOP in non-player owned
   }
 
 public void setFoodRemaining(int food)
   {
-  
+  //NOOP in non-player owned
   }
 
 public int getUpkeepBlockSide()
   {
-  return 0;
+  return 0;//NOOP in non-player owned
   }
 
 public BlockPosition getUpkeepPoint()
   {
-  return null;
+  return null;//NOOP in non-player owned
   }
 
 public int getUpkeepAmount()
   {
-  return 0;
+  return 0;//NOOP in non-player owned
   }
 
 public int getUpkeepDimensionId()
   {
-  return 0;
+  return 0;//NOOP in non-player owned
   }
 
 public boolean requiresUpkeep()
   {
-  return false;
+  return false;//NOOP in non-player owned
   }
 
 @Override
@@ -492,13 +534,13 @@ public Team getTeam()
 
 public abstract boolean isHostileTowards(Entity e);
 
-public EntityLivingBase getFollowingEntity()
+public final EntityLivingBase getFollowingEntity()
   {
   if(followingPlayerName==null){return null;}
   return worldObj.getPlayerEntityByName(followingPlayerName);
   }
 
-public void setFollowingEntity(EntityLivingBase entity)
+public final void setFollowingEntity(EntityLivingBase entity)
   {
   if(entity instanceof EntityPlayer && canBeCommandedBy(entity.getCommandSenderName()))
     {
@@ -512,7 +554,7 @@ public boolean allowLeashing()
   return false;
   }
 
-public void repackEntity(EntityPlayer player)
+public final void repackEntity(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
     {
@@ -530,7 +572,7 @@ public void repackEntity(EntityPlayer player)
 public void readEntityFromNBT(NBTTagCompound tag)
   {
   super.readEntityFromNBT(tag);
-  ownerName = tag.getString("owner");
+  ownerName = tag.getString("owner");  
   if(tag.hasKey("ordersItem")){ordersStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("ordersItem"));}
   if(tag.hasKey("upkeepItem")){upkeepStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("upkeepItem"));}
   if(tag.hasKey("home"))
