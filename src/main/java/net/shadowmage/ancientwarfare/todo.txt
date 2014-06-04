@@ -81,12 +81,6 @@ TEXTURES
 ^ check that courier/work AI/random workAI was not fubar'd by changes
 ^ test that AI functions still work while mounted -- might need to increase 'reach' distance
 ^ check that movement-related ai functions properly after refactor
-* player-owned bard AI
-* add faction-based mounted npc type(s)
-	cavalry
-	mounted archer?
-	--need to adapt AI to spawn the horse for the npc if it is not already present
-	--need to add an onDeath to remove modifiers from mount if was killed while riding
 * find default sound/music for bards
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
