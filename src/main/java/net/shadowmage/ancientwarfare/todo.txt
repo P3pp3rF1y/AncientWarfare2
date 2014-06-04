@@ -80,16 +80,21 @@ TEXTURES
 ^ check that 'flee hostiles' ai works as intended
 ^ check that courier/work AI/random workAI was not fubar'd by changes
 ^ test that AI functions still work while mounted -- might need to increase 'reach' distance
-* add flag to npc to determine if he should ride a horse or not
+^ check that movement-related ai functions properly after refactor
+* how to determine if an npc should ride a horse, and what horse?
+	--use command-baton guard/follow function to set the horse that should ridden
+	--allow any player owned NPC to ride a horse
+	--enable horse functionality for specific faction-based Npcs
+		they don't find a horse to mount, they spawn with a horse
+* horse-riding AI
+	--needs to store ref to last ridden horse
+		if ref and ridden do not match
+			remove modiferes from ref if ref!=null
+			add modifiers to ridden if not already applied and ridden!=null
+			set ref to ridden
 * add mount-horse AI to more/all npc types
 * player-owned bard AI
 * find default sound/music for bards
-* add alert/flee ai to faction-based NPCs
-* faction soldier AI
-* faction leader AI
-* faction archer AI
-* faction priest AI -- act as medics
-* faction trader AI
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
 * add npc-recruiting station -- worksite, crafting

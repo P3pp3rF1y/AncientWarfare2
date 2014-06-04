@@ -29,7 +29,7 @@ public NpcAIMountHorse(NpcBase npc)
   sorter = new Sorter(npc);
   this.setMutexBits(ATTACK+MOVE);
   this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", 1.5d, 2);
-  moveSpeedModifier.setSaved(false);
+  this.moveSpeedModifier.setSaved(false);
   this.followRangeModifier = new AttributeModifier("modifier.npc_horse_path_extension", 24.d, 0);
   this.followRangeModifier.setSaved(false);
   }
