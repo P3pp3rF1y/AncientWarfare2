@@ -15,27 +15,37 @@ import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclarat
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditMountedArcher;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditPriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditTrader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertMountedArcher;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertPriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertTrader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeMountedArcher;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativePriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeTrader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateMountedArcher;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPiratePriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateTrader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingMountedArcher;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingPriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingTrader;
@@ -196,6 +206,26 @@ private static void addBandits()
       }
     };
   addNpcRegistration(reg, "bandit.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  
+  reg = new NpcFactionDeclaration(NpcBanditMountedSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.cavalry")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditMountedSoldier(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.cavalry", "ancientwarfare:npc/spawner_hostile_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcBanditMountedArcher.class, AWEntityRegistry.NPC_FACTION_BANDIT_MOUNTED_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.mounted_archer")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditMountedArcher(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.mounted_archer", "ancientwarfare:npc/spawner_hostile_archer");
   }
 
 private static void addDesertNatives()
@@ -256,6 +286,26 @@ private static void addDesertNatives()
       }
     };
   addNpcRegistration(reg, "desert.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  
+  reg = new NpcFactionDeclaration(NpcDesertMountedSoldier.class, AWEntityRegistry.NPC_FACTION_DESERT_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.cavalry")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcDesertMountedSoldier(world);
+      }
+    };
+  addNpcRegistration(reg, "desert.cavalry", "ancientwarfare:npc/spawner_hostile_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcDesertMountedArcher.class, AWEntityRegistry.NPC_FACTION_DESERT_MOUNTED_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.mounted_archer")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcDesertMountedArcher(world);
+      }
+    };
+  addNpcRegistration(reg, "desert.mounted_archer", "ancientwarfare:npc/spawner_hostile_archer");
   }
 
 private static void addJungleNatives()
@@ -316,6 +366,26 @@ private static void addJungleNatives()
       }
     };
   addNpcRegistration(reg, "native.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  
+  reg = new NpcFactionDeclaration(NpcNativeMountedSoldier.class, AWEntityRegistry.NPC_FACTION_NATIVE_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.cavalry")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcNativeMountedSoldier(world);
+      }
+    };
+  addNpcRegistration(reg, "native.cavalry", "ancientwarfare:npc/spawner_hostile_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcNativeMountedArcher.class, AWEntityRegistry.NPC_FACTION_NATIVE_MOUNTED_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.mounted_archer")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcNativeMountedArcher(world);
+      }
+    };
+  addNpcRegistration(reg, "native.mounted_archer", "ancientwarfare:npc/spawner_hostile_archer");
   }
 
 private static void addPirates()
@@ -376,6 +446,26 @@ private static void addPirates()
       }
     };
   addNpcRegistration(reg, "pirate.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  
+  reg = new NpcFactionDeclaration(NpcPirateMountedSoldier.class, AWEntityRegistry.NPC_FACTION_PIRATE_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.cavalry")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcPirateMountedSoldier(world);
+      }
+    };
+  addNpcRegistration(reg, "pirate.cavalry", "ancientwarfare:npc/spawner_hostile_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcPirateMountedArcher.class, AWEntityRegistry.NPC_FACTION_PIRATE_MOUNTED_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.mounted_archer")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcPirateMountedArcher(world);
+      }
+    };
+  addNpcRegistration(reg, "pirate.mounted_archer", "ancientwarfare:npc/spawner_hostile_archer");
   }
 
 private static void addVikings()
@@ -436,6 +526,26 @@ private static void addVikings()
       }
     };
   addNpcRegistration(reg, "viking.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  
+  reg = new NpcFactionDeclaration(NpcVikingMountedSoldier.class, AWEntityRegistry.NPC_FACTION_VIKING_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.cavalry")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcVikingMountedSoldier(world);
+      }
+    };
+  addNpcRegistration(reg, "viking.cavalry", "ancientwarfare:npc/spawner_hostile_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcVikingMountedArcher.class, AWEntityRegistry.NPC_FACTION_VIKING_MOUNTED_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.mounted_archer")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcVikingMountedArcher(world);
+      }
+    };
+  addNpcRegistration(reg, "viking.mounted_archer", "ancientwarfare:npc/spawner_hostile_archer");
   }
 
 /**
