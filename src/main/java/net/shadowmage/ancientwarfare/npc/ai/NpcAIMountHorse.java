@@ -3,8 +3,10 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget.Sorter;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.util.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -14,16 +16,23 @@ public class NpcAIMountHorse extends NpcAI
 {
 
 int lastExecutedTick = -1;
-EntityHorse target;
 int moveRetryDelay = 0;
 double moveSpeed = 1.d;
 private final EntityAINearestAttackableTarget.Sorter sorter;
+AttributeModifier followRangeModifier;
+AttributeModifier moveSpeedModifier;
+
+EntityHorse target;
 
 public NpcAIMountHorse(NpcBase npc)
   {
   super(npc);
   sorter = new Sorter(npc);
   this.setMutexBits(ATTACK+MOVE);
+  this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", 1.5d, 2);
+  moveSpeedModifier.setSaved(false);
+  this.followRangeModifier = new AttributeModifier("modifier.npc_horse_path_extension", 24.d, 0);
+  this.followRangeModifier.setSaved(false);
   }
 
 @Override
@@ -50,7 +59,7 @@ public void startExecuting()
   Collections.sort(horses, sorter);
   for(EntityHorse horse : horses)
     {
-    if(horse.riddenByEntity==null)
+    if(horse.riddenByEntity==null && horse.isTame() && horse.isAdultHorse())
       {
       target = horse;
       break;
@@ -82,11 +91,26 @@ public void updateTask()
       }
     else
       {
-      npc.getNavigator().clearPathEntity();
+      npc.getNavigator().clearPathEntity(); 
+      target.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(moveSpeedModifier);
+      target.getEntityAttribute(SharedMonsterAttributes.followRange).removeModifier(followRangeModifier);
+      target.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(moveSpeedModifier);
+      target.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(followRangeModifier);
       npc.mountEntity(target);
       target = null;
       }
     }
+  }
+
+/**
+ * should be called when the npc dismounts to remove the movement-speed modifier<br>
+ * called from NpcPlayerOwned-interact when player interacts with riding npc
+ * @param horse
+ */
+public void onDismount(EntityHorse horse)
+  {
+  horse.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(moveSpeedModifier);
+  horse.getEntityAttribute(SharedMonsterAttributes.followRange).removeModifier(followRangeModifier);
   }
 
 @Override

@@ -55,12 +55,12 @@ public void startExecuting()
 public void updateTask()
   {
   BlockPosition pos = worker.autoWorkTarget;
-  double dist = npc.getDistance(pos.x, pos.y, pos.z);
+  double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
   if(dist>5.d*5.d)
     {
     npc.addAITask(TASK_MOVE);
     ticksAtSite=0;
-    moveToWork(dist);
+    moveToWork(pos, dist);
     }
   else
     {
@@ -76,12 +76,11 @@ public void resetTask()
   npc.removeAITask(TASK_WORK+TASK_MOVE);
   }
 
-private void moveToWork(double dist)
+private void moveToWork(BlockPosition pos, double dist)
   {
   moveRetryDelay--;
   if(moveRetryDelay<=0)
     {
-    BlockPosition pos = worker.autoWorkTarget;
     npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);
     moveRetryDelay=10;//base .5 second retry delay
     if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16

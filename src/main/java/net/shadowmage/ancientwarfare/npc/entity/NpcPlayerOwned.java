@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -16,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMountHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
@@ -28,7 +30,9 @@ public abstract class NpcPlayerOwned extends NpcBase
 
 private Command playerIssuedCommand;//TODO load/save
 private int foodValueRemaining = 0;
+
 protected NpcAIAlertPlayerOwned alertAI;
+protected NpcAIMountHorse horseAI;
 
 private BlockPosition townHallPosition;
 private BlockPosition upkeepAutoBlock;
@@ -290,34 +294,44 @@ public boolean requiresUpkeep()
   }
 
 @Override
-protected boolean interact(EntityPlayer par1EntityPlayer)
+protected boolean interact(EntityPlayer player)
   {
-  if(par1EntityPlayer.worldObj.isRemote){return false;}
-  Team t = par1EntityPlayer.getTeam();
+  if(player.worldObj.isRemote){return false;}
+  Team t = player.getTeam();
   Team t1 = getTeam();
-  if(t==t1)
+  if(t==t1 && this.canBeCommandedBy(player.getCommandSenderName()))
     {
-    if(par1EntityPlayer.isSneaking() && this.canBeCommandedBy(par1EntityPlayer.getCommandSenderName()))
+    if(this.ridingEntity!=null)
+      {
+      this.dismountEntity(ridingEntity);
+      if(this.horseAI!=null && this.ridingEntity instanceof EntityHorse)
+        {
+        this.horseAI.onDismount((EntityHorse) ridingEntity);
+        }
+      if(this.ridingEntity!=null){this.ridingEntity.riddenByEntity=null;}
+      this.ridingEntity=null;
+      }
+    else if(player.isSneaking())
       {
       if(this.followingPlayerName==null)
         {
-        this.followingPlayerName = par1EntityPlayer.getCommandSenderName();
+        this.followingPlayerName = player.getCommandSenderName();
         AWLog.logDebug("set following player name to: "+this.followingPlayerName);      
         }
-      else if(this.followingPlayerName.equals(par1EntityPlayer.getCommandSenderName()))
+      else if(this.followingPlayerName.equals(player.getCommandSenderName()))
         {
         this.followingPlayerName = null;
         AWLog.logDebug("set following player name to: "+this.followingPlayerName);  
         }
       else
         {
-        this.followingPlayerName = par1EntityPlayer.getCommandSenderName();   
+        this.followingPlayerName = player.getCommandSenderName();   
         AWLog.logDebug("set following player name to: "+this.followingPlayerName);     
         }
       }
     else
       {
-      NetworkHandler.INSTANCE.openGui(par1EntityPlayer, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);
+      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);
       }
     return true;
     }

@@ -84,15 +84,18 @@ public boolean continueExecuting()
 public void updateTask()
   {
   BlockPosition pos = order.getEntries().get(workIndex).getPosition();
-  double dist = npc.getDistance(pos.x, pos.y, pos.z);
-  if(dist>5.d*5.d)
+  double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
+  AWLog.logDebug("distance to site: "+dist);
+  if(dist > 5.d*5.d)
     {
+    AWLog.logDebug("moving to worksite..."+pos);
     npc.addAITask(TASK_MOVE);
     ticksAtSite=0;
-    moveToWorksite(dist);
+    moveToWorksite(pos, dist);
     }
   else
     {
+    AWLog.logDebug("working at site....."+pos);
     npc.getNavigator().clearPathEntity();
     npc.removeAITask(TASK_MOVE);
     workAtSite();
@@ -199,12 +202,11 @@ protected void setMoveToNextSite()
     }
   }
 
-private void moveToWorksite(double dist)
+private void moveToWorksite(BlockPosition pos, double dist)
   {
   moveRetryDelay--;
   if(moveRetryDelay<=0)
     {
-    BlockPosition pos = order.getEntries().get(workIndex).getPosition();
     npc.getNavigator().tryMoveToXYZ(pos.x+0.5d, pos.y, pos.z+0.5d, 1.d);
     moveRetryDelay=10;//base .5 second retry delay
     if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16

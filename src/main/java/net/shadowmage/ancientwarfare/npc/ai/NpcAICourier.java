@@ -69,7 +69,7 @@ public void startExecuting()
 public void updateTask()
   {
   BlockPosition pos = order.getEntries().get(routeIndex).getTarget();
-  double dist = npc.getDistance(pos.x, pos.y, pos.z);
+  double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
   if(dist>5.d*5.d)
     {
     npc.addAITask(TASK_MOVE);

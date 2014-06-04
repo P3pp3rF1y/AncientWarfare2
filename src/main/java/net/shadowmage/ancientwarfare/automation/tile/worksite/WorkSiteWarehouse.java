@@ -77,6 +77,7 @@ public boolean canInput(ForgeDirection from)
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
+  if(this.storedEnergy>=this.maxEnergyStored){this.storedEnergy=this.maxEnergyStored;}
 //  AWLog.logDebug("adding energy to warehouse..new energy: "+storedEnergy);
   }
 
