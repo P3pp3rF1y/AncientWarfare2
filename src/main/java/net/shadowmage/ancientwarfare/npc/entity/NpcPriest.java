@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMountHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIPriestPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 
 public class NpcPriest extends NpcPlayerOwned
@@ -38,7 +39,8 @@ public NpcPriest(World par1World)
   this.tasks.addTask(4, new NpcAIGetFood(this));  
   this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));
   this.tasks.addTask(6, new NpcAIMoveHome(this, 80.f, 8.f, 40.f, 3.f));
-  this.tasks.addTask(7, (horseAI=new NpcAIMountHorse(this)));
+  this.tasks.addTask(7, new NpcAIPriestPlayerOwned(this));
+  this.tasks.addTask(8, (horseAI=new NpcAIMountHorse(this)));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));

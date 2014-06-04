@@ -80,6 +80,11 @@ private void broadcast()
 public void clearDeathNotices()
   {
   deathNotices.clear();
+  informViewers();
+  }
+
+public void informViewers()
+  {
   for(ContainerTownHall cth : viewers)
     {
     cth.onTownHallDeathListUpdated();
@@ -89,11 +94,9 @@ public void clearDeathNotices()
 public void handleNpcDeath(NpcPlayerOwned npc, DamageSource source)
   {
   boolean canRes = true;//TODO set canRes  based on distance from town-hall?
-  deathNotices.add(new NpcDeathEntry(npc, source, canRes));
-  for(ContainerTownHall cth : viewers)
-    {
-    cth.onTownHallDeathListUpdated();
-    }
+  NpcDeathEntry entry = new NpcDeathEntry(npc, source, canRes);
+  deathNotices.add(entry);
+  informViewers();
   }
 
 private List<NpcPlayerOwned> getNpcsInArea()
@@ -124,9 +127,11 @@ public void readFromNBT(NBTTagCompound tag)
   ownerName = tag.getString("owner");
   InventoryTools.readInventoryFromNBT(inventory, tag.getCompoundTag("inventory"));  
   NBTTagList entryList = tag.getTagList("deathNotices", Constants.NBT.TAG_COMPOUND);
+  NpcDeathEntry entry;
   for(int i = 0;i < entryList.tagCount(); i++)
     {
-    deathNotices.add(new NpcDeathEntry(entryList.getCompoundTagAt(i)));
+    entry = new NpcDeathEntry(entryList.getCompoundTagAt(i));
+    deathNotices.add(entry);
     }
   }
 
@@ -188,6 +193,7 @@ public String npcName;
 public String deathCause;
 public boolean resurrected;
 public boolean canRes;
+public boolean beingResurrected;
 
 public NpcDeathEntry(NBTTagCompound tag)
   {
