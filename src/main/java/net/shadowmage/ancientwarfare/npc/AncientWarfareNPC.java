@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcTrade;
+import net.shadowmage.ancientwarfare.npc.container.ContainerRecruitingStation;
 import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
@@ -95,6 +96,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_TRADE, ContainerNpcTrade.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_ROUTING_ORDER, ContainerRoutingOrder.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_TOWN_HALL, ContainerTownHall.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_RECRUITING_STATION, ContainerRecruitingStation.class);
   PacketBase.registerPacketType(NetworkHandler.PACKET_NPC_COMMAND, PacketNpcCommand.class);
   PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class);
   

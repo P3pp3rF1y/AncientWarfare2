@@ -68,7 +68,7 @@ TEXTURES
 * recipes for EVERYTHING
 * warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
 * mailbox side-select GUI needs cleaned up to mirror worksite side-select GUI
-* warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
+** warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 	how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 	--perhaps have different methods for tile.invalidate() and onBlockBroken
 	--or move back to storing actual items in the storage blocks 
