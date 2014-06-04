@@ -21,6 +21,15 @@ public NpcAIRideHorse(NpcBase npc)
   this.followRangeModifier.setSaved(false);
   }
 
+public void onKilled()
+  {
+  if(horse!=null)
+    {
+    removeModifiers();    
+    }
+  horse=null;
+  }
+
 @Override
 public boolean shouldExecute()
   {

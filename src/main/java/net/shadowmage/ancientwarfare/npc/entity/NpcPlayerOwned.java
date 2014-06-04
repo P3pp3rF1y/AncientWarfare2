@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
@@ -31,6 +32,7 @@ private Command playerIssuedCommand;//TODO load/save
 private int foodValueRemaining = 0;
 
 protected NpcAIAlertPlayerOwned alertAI;
+protected NpcAIRideHorse horseAI;
 
 private BlockPosition townHallPosition;
 private BlockPosition upkeepAutoBlock;
@@ -45,6 +47,10 @@ public void onDeath(DamageSource source)
   {
   if(!worldObj.isRemote)
     {
+    if(horseAI!=null)
+      {
+      horseAI.onKilled();
+      }
     validateTownHallPosition();
     TileTownHall townHall = getTownHall();
     if(townHall!=null)
