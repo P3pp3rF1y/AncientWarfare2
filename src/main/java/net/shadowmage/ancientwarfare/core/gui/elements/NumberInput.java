@@ -125,9 +125,7 @@ public void setText(String text)
     }
   catch(NumberFormatException e)
     {
-    this.text = "0";
-    this.value = 0.f;
-    this.onValueUpdated(value);
+    this.setValue(0.f);
     }
   }
 
@@ -140,6 +138,7 @@ public NumberInput setValue(float val)
   this.text = String.format("%."+decimalPlaces+"f", val);  
   this.value = val;
   this.onValueUpdated(value);
+  if(this.cursorIndex>this.text.length()){this.cursorIndex=this.text.length();}
   return this;
   }
 
