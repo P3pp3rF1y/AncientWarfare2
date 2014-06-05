@@ -57,9 +57,8 @@ TEXTURES
 * screenshots for all default-included structures
 
 ****************************AUTOMATION MODULE TODO****************************	
-* textures for warehouse storage / input / output	
-* Add overlay rendering of work-site sizes while holding a work-site setting item.
-* Change over worksite BB render to a TESR -- should be slightly more optimized
+* textures for warehouse storage / input / output
+* Change over worksite BB render to a TESR -- should be slightly more optimized than looping through all TEs every render tick
 * Torque API:
 	Add input max/tick code to tiles, reset counter every tile-update.
 	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
@@ -68,7 +67,6 @@ TEXTURES
 * recipes for EVERYTHING
 * warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
 * mailbox side-select GUI needs cleaned up to mirror worksite side-select GUI
-* wheat farm doesnt put seeds back into input slot
 ** warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 	how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 	--perhaps have different methods for tile.invalidate() and onBlockBroken

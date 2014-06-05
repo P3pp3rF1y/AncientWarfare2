@@ -23,20 +23,27 @@ package net.shadowmage.ancientwarfare.automation.render;
 import java.util.Iterator;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
+import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 
 public class WorkBoundingBoxRenderer
 {
@@ -51,7 +58,6 @@ BlockPosition pos2Cache = new BlockPosition();
 @SubscribeEvent
 public void handleRenderLastEvent(RenderWorldLastEvent evt)
   {
-
   Minecraft mc = Minecraft.getMinecraft();
   if(mc==null)
     {
@@ -108,7 +114,63 @@ private void renderWorksiteItemSetupBounds(EntityPlayer player, ItemStack stack,
     }
 
   if(min==null || max==null){return;}
-  renderBoundingBox(player, BlockTools.getMin(min, max), BlockTools.getMax(min, max).offset(1, 1, 1), delta);
+  renderBoundingBox(player, BlockTools.getMin(min, max), BlockTools.getMax(min, max).offset(1, 1, 1), delta);  
+  }
+
+@SubscribeEvent
+public void onRenderTick(RenderTickEvent evt)
+  {
+  if(evt.phase!=Phase.END){return;}
+  Minecraft mc = Minecraft.getMinecraft();
+  if(mc==null || mc.theWorld==null || mc.currentScreen!=null || mc.gameSettings.showDebugInfo || mc.thePlayer==null)
+    {
+    return;
+    } 
+  EntityPlayer player = mc.thePlayer;
+  ItemStack stack = player.getCurrentEquippedItem();
+  if(stack!=null && stack.getItem() instanceof ItemBlockWorksite)
+    {
+    if(!stack.hasTagCompound())
+      {
+      stack.setTagCompound(new NBTTagCompound());
+      }    
+    BlockPosition min = null;
+    BlockPosition max = null;    
+    if(stack.getTagCompound().hasKey("pos1"))
+      {
+      min = new BlockPosition();
+      min.read(stack.getTagCompound().getCompoundTag("pos1"));
+      }
+    else
+      {
+      min = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+      }  
+    if(stack.getTagCompound().hasKey("pos2"))
+      {
+      max = new BlockPosition();
+      max.read(stack.getTagCompound().getCompoundTag("pos2"));
+      }
+    else
+      {
+      max = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+      if(max==null && min!=null)
+        {
+        max = min;
+        }
+      }
+    if(min==null || max==null){return;}
+    BlockPosition m = BlockTools.getMin(min, max);
+    BlockPosition m1 = BlockTools.getMax(min, max);
+    min = m;
+    max = m1;
+    int x = max.x-min.x + 1;
+    int y = max.y-min.y + 1;
+    int z = max.z-min.z + 1;  
+    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    fr.drawString("foo.x: "+x, 8, 8, 0xffffffff);
+    fr.drawString("foo.y: "+y, 8, 18, 0xffffffff);
+    fr.drawString("foo.z: "+z, 8, 28, 0xffffffff);
+    }
   }
 
 private void renderWorkBounds(EntityPlayer player, float delta)

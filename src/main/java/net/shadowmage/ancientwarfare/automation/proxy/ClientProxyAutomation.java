@@ -31,8 +31,10 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseStora
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class ClientProxyAutomation extends ClientProxyBase
 {
@@ -41,6 +43,7 @@ public class ClientProxyAutomation extends ClientProxyBase
 public void registerClient()
   {
   MinecraftForge.EVENT_BUS.register(WorkBoundingBoxRenderer.instance());
+  FMLCommonHandler.instance().bus().register(WorkBoundingBoxRenderer.instance());
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_SET_TARGETS, GuiWorksiteBlockSelection.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
