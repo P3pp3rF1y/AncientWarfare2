@@ -68,6 +68,7 @@ TEXTURES
 * recipes for EVERYTHING
 * warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
 * mailbox side-select GUI needs cleaned up to mirror worksite side-select GUI
+* wheat farm doesnt put seeds back into input slot
 ** warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 	how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 	--perhaps have different methods for tile.invalidate() and onBlockBroken
@@ -82,6 +83,7 @@ TEXTURES
 ^ test that AI functions still work while mounted -- might need to increase 'reach' distance
 ^ check that movement-related ai functions properly after refactor
 * find default sound/music for bards
+* textures for -lots- of npc types
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
 * add npc-recruiting station -- worksite, crafting

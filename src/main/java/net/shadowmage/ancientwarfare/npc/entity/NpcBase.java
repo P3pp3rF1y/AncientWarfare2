@@ -60,15 +60,16 @@ public NpcBase(World par1World)
   baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
   levelingStats = new NpcLevelingStats(this);  
   this.getNavigator().setBreakDoors(true);
-  this.getNavigator().setAvoidsWater(true);
+  this.getNavigator().setAvoidsWater(false);
   this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
   this.width = 0.6f;
+  this.func_110163_bv();//set persistence required==true
   }
 
 @Override
 public final double getYOffset()
   {
-  return (double)(this.yOffset - 0.5F);
+  return (double)(this.yOffset - 0.5F);//fixes mounted offset for horses, probably minecarts
   }
 
 @Override
@@ -106,6 +107,19 @@ public TileTownHall getTownHall()
 public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position)
   {
 //NOOP on non-player owned npc
+  }
+
+/**
+ * implementations should vary for combat and non-combat npcs.<br>
+ * should return true anytime the npc should be at his home point<br>
+ * should allow for combat npcs to still attack targets<br>
+ * @return
+ */
+public boolean shouldBeAtHome()
+  {
+  if(!hasHome() || getAttackTarget()!=null){return false;}
+  
+  return false;
   }
 
 /**

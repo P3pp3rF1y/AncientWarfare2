@@ -72,10 +72,12 @@ public void updateTask()
     {    
     npc.addAITask(TASK_MOVE);
     ticksAtSite=0;
-    moveToPosition(pos, dist);
+    ticksToWork=0;
+    moveToPosition(pos, dist);    
     }
   else
     {
+    moveRetryDelay=0;
     npc.getNavigator().clearPathEntity();
     npc.removeAITask(TASK_MOVE);
     workAtSite();
@@ -87,6 +89,7 @@ public void resetTask()
   {
   ticksToWork=0;
   ticksAtSite=0;
+  moveRetryDelay=0;
   npc.getNavigator().clearPathEntity();
   npc.removeAITask(TASK_WORK+TASK_MOVE);
   }

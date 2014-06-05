@@ -1,6 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntityHorse;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -10,13 +14,16 @@ public class NpcAIRideHorse extends NpcAI
 
 AttributeModifier followRangeModifier;
 AttributeModifier moveSpeedModifier;
+
 EntityHorse horse;
+List<EntityAITaskEntry> horseAI = new ArrayList<EntityAITaskEntry>();
+boolean saddled = false;
 
 public NpcAIRideHorse(NpcBase npc)
   {
   super(npc);
-  this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", 1.5d, 2);
-  this.moveSpeedModifier.setSaved(false);
+  this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", 1.0d, 2);
+  this.moveSpeedModifier.setSaved(false);  
   this.followRangeModifier = new AttributeModifier("modifier.npc_horse_path_extension", 24.d, 0);
   this.followRangeModifier.setSaved(false);
   }
@@ -24,8 +31,8 @@ public NpcAIRideHorse(NpcBase npc)
 public void onKilled()
   {
   if(horse!=null)
-    {
-    removeModifiers();    
+    {    
+    onDismountHorse();
     }
   horse=null;
   }
@@ -33,28 +40,63 @@ public void onKilled()
 @Override
 public boolean shouldExecute()
   {
-  return horse != npc.ridingEntity && (horse!=null || npc.ridingEntity instanceof EntityHorse);
+  if(horse==null)
+    {
+    if(npc.ridingEntity instanceof EntityHorse)
+      {      
+      horse = (EntityHorse)npc.ridingEntity;
+      onMountHorse();
+      return true;
+      }
+    }
+  return false;
   }
 
 @Override
 public boolean continueExecuting()
   {
-  return false;
+  return horse!=null;
   }
 
 @Override
 public void startExecuting()
   {
+  
+  }
+
+@Override
+public void updateTask()
+  {
+  if(horse != npc.ridingEntity && horse!=null)
+    {
+    onDismountHorse();
+    horse=null;    
+    } 
+  }
+
+@Override
+public void resetTask()
+  {
   if(horse!=null)
     {
-    removeModifiers();
+    onDismountHorse();
     }
-  horse = null;
-  if(npc.ridingEntity instanceof EntityHorse)
-    {
-    horse = (EntityHorse)npc.ridingEntity;
-    applyModifiers();
-    }
+  horse=null;
+  }
+
+private void onMountHorse()
+  {
+  this.saddled = horse.isHorseSaddled();
+  removeHorseAI();
+  horse.setHorseSaddled(false);
+  applyModifiers();
+  }
+
+private void onDismountHorse()
+  {
+  addHorseAI();
+  removeModifiers();
+  horse.setHorseSaddled(saddled);
   }
 
 private void applyModifiers()
@@ -71,9 +113,23 @@ private void removeModifiers()
   horse.getEntityAttribute(SharedMonsterAttributes.followRange).removeModifier(followRangeModifier);
   }
 
-@Override
-public void resetTask()
+private void removeHorseAI()
   {
+  horseAI.clear();
+  horseAI.addAll(horse.tasks.taskEntries);
+  for(EntityAITaskEntry task : horseAI)
+    {
+    horse.tasks.removeTask(task.action);
+    }
+  }
+
+private void addHorseAI()
+  {
+  if(horse.tasks.taskEntries.isEmpty())
+    {
+    horse.tasks.taskEntries.addAll(horseAI);
+    }  
+  horseAI.clear();
   }
 
 }

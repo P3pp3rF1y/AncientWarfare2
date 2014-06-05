@@ -18,6 +18,7 @@ int mountRecheckDelay = 0;
 public NpcAICommandGuard(NpcBase npc)
   {
   super(npc);
+  this.setMutexBits(ATTACK+MOVE);
   }
 
 @Override
@@ -84,7 +85,7 @@ public void updateTask()
       {
       mountRecheckDelay=200;//TODO set from config?
       EntityHorse horse = (EntityHorse)target;
-      if(horse.riddenByEntity==null && horse.isTame() && horse.isAdultHorse() && horse.isHorseSaddled())
+      if(horse.riddenByEntity==null && horse.isTame() && horse.isAdultHorse())// && horse.isHorseSaddled()
         {
         npc.mountEntity(horse);
         command=null;
