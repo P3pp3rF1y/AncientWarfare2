@@ -118,7 +118,38 @@ public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position)
 public boolean shouldBeAtHome()
   {
   if(!hasHome() || getAttackTarget()!=null){return false;}
+  //TODO....
+  return false;
+  }
+
+/**
+ * should be implemented by any npc that wishes to open a GUI on interact<br>
+ * must be called from interact code to actually open the GUI<br>
+ * allows for subtypes/etc to vary the opened GUI without re-implementing the interact logic
+ * @param player
+ */
+public void openGUI(EntityPlayer player)
+  {
   
+  }
+
+/**
+ * if this npc has an alt-control GUI, open it here.<br>
+ * should called from the npc inventory gui.
+ * @param player
+ */
+public void openAltGui(EntityPlayer player)
+  {
+  
+  }
+
+/**
+ * used by the npc inventory gui to determine if it should display the 'alt control gui' button<br>
+ * this setting must return true -on the client- if the button is to be displayed.
+ * @return
+ */
+public boolean hasAltGui()
+  {
   return false;
   }
 

@@ -1,8 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 
@@ -13,6 +15,8 @@ Button repackButton;
 Text nameInput;
 ContainerNpcInventory container;
 String name;
+
+int buttonX = 8+18+18+18+18+4;
 public GuiNpcInventory(ContainerBase container)
   {
   super(container);
@@ -35,7 +39,10 @@ public void updateScreen()
 @Override
 public void initElements()
   {
-  nameInput = new Text(60, 20, 100, container.npc.getCustomNameTag(), this)
+  Label label = new Label(70, 9, StatCollector.translateToLocal("guistrings.npc.npc_name"));
+  addGuiElement(label);
+  
+  nameInput = new Text(70, 20, 100, container.npc.getCustomNameTag(), this)
     {
     @Override
     public void onTextUpdated(String oldText, String newText)
@@ -45,7 +52,7 @@ public void initElements()
     };
   addGuiElement(nameInput);
   
-  repackButton = new Button(110, 60, 55, 12, "foo.repack")
+  repackButton = new Button(buttonX, 36, 75, 12, StatCollector.translateToLocal("guistrings.npc.repack"))
     {
     @Override
     protected void onPressed()
@@ -58,7 +65,7 @@ public void initElements()
     };
   addGuiElement(repackButton);
   
-  Button button = new Button(110, 72, 55, 12, "foo.sethome")
+  Button button = new Button(buttonX, 48, 75, 12, StatCollector.translateToLocal("guistrings.npc.set_home"))
     {
     @Override
     protected void onPressed()
@@ -70,7 +77,7 @@ public void initElements()
     };
   addGuiElement(button);
   
-  button = new Button(110, 84, 55, 12, "foo.clearhome")
+  button = new Button(buttonX, 60, 75, 12, StatCollector.translateToLocal("guistrings.npc.clear_home"))
     {
     @Override
     protected void onPressed()
@@ -81,6 +88,19 @@ public void initElements()
       }
     };
   addGuiElement(button);
+  
+  if(container.npc.hasAltGui())
+    {
+    button = new Button(buttonX, 72, 75, 12, StatCollector.translateToLocal("guistrings.npc.alt_gui"))
+      {
+      @Override
+      protected void onPressed()
+        {
+        container.npc.openAltGui(player);
+        }
+      };
+    addGuiElement(button);  
+    }
   }
 
 @Override

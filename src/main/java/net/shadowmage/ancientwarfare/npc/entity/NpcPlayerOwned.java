@@ -331,11 +331,17 @@ protected boolean interact(EntityPlayer player)
       }
     else
       {
-      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);
+      openGUI(player);
       }
     return true;
     }
   return true;
+  }
+
+@Override
+public void openGUI(EntityPlayer player)
+  {
+  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);  
   }
 
 @Override

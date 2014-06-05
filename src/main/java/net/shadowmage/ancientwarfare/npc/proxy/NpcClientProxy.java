@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.input.InputHandler.InputCallback;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.gui.GuiBard;
 import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcInventory;
 import net.shadowmage.ancientwarfare.npc.gui.GuiRecruitingStation;
@@ -46,6 +47,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_ROUTING_ORDER, GuiRoutingOrder.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_TOWN_HALL, GuiTownHallInventory.class);  
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_RECRUITING_STATION, GuiRecruitingStation.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_BARD, GuiBard.class);
   RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, new RenderNpcBase());
   MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);
   FMLCommonHandler.instance().bus().register(RenderCommandOverlay.INSTANCE);//register overlay renderer

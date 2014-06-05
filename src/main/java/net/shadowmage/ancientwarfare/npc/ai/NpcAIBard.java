@@ -1,52 +1,67 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBard;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIBard extends NpcAI
 {
 
 int lastExecuted = -1;
-int playLength = 200;
-int ticksToPlay = 0;
+boolean playing;
+int playLength = 0;
 
+NpcBard bard;
 public NpcAIBard(NpcBase npc)
   {
   super(npc);
+  this.bard = (NpcBard)npc;
   }
 
 @Override
 public boolean shouldExecute()
   {
-  return lastExecuted==-1 || npc.ticksExisted-lastExecuted>200;
+  return true;
   }
 
 @Override
 public boolean continueExecuting()
   {
-  return ticksToPlay>0;
+  return true;
   }
 
 @Override
 public void startExecuting()
   {
-  if(npc.getRNG().nextInt(10)<2)
-    {
-    ticksToPlay=playLength;
-    int tune = npc.getRNG().nextInt(10);
-    AWLog.logDebug("PLAYING SOUND AT BARD...: "+(tune+1));
-    npc.worldObj.playSoundAtEntity(npc, "ancientwarfare:bard.tune.tune"+String.valueOf(tune+1), 1.f, 1.f);
-    }
+  
   }
 
 @Override
 public void updateTask()
   {
-  ticksToPlay--;
-  if(npc.ticksExisted%10==0){npc.swingItem();}
-  if(ticksToPlay<=0)
+  if(playing)
     {
-    lastExecuted = npc.ticksExisted;
+    playLength++;
+    if(playLength>bard.bardPlayLength)
+      {
+      playing = false;
+      playLength = 0;
+      }
+    }
+  else
+    {
+    if(lastExecuted<0 || npc.ticksExisted-lastExecuted>bard.bardPlayRecheckDelay)
+      {
+      AWLog.logDebug("checking if bard should play...");
+      lastExecuted = npc.ticksExisted;
+      int rng = npc.getRNG().nextInt(100);
+      if(rng<bard.bardPlayChance)
+        {
+        int tune = bard.bardTuneNumber == -1? npc.getRNG().nextInt(10) : bard.bardTuneNumber;
+        AWLog.logDebug("playing tune: "+tune);
+        playing = true;
+        }
+      }
     }
   }
 

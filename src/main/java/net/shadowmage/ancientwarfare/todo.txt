@@ -81,6 +81,7 @@ TEXTURES
 ^ check that 'flee hostiles' ai works as intended
 * find default sound/music for bards
 * textures for -lots- of npc types
+* spawner icons for trader, bard, priest
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
 * add npc-recruiting station -- worksite, crafting
