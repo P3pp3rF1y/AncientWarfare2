@@ -6,6 +6,7 @@
 
 Licensing
 	add bc license for using as libs
+	add general license for mod
 
 ****************************CORE MODULE TODO****************************
 ? Implement tile-based rotatable block -- twenty-four way
@@ -81,7 +82,63 @@ TEXTURES
 * rework trader / gui to still allow access to inventory for player-owned traders.
 * add item for bard instrument
 * add item for priest holy-symbols (should I just make it a 'religious book'?)
-* textures for -lots- of npc types
+* textures for npc types:
+	viking soldier
+	viking elite soldier
+	viking archer
+	viking elite archer
+	viking leader
+	viking elite leader
+	viking mounted soldier
+	viking mounted archer
+	viking trader
+	viking priest
+	pirate soldier
+	pirate elite soldier
+	pirate archer
+	pirate elite archer
+	pirate leader
+	pirate elite leader
+	pirate mounted soldier
+	pirate mounted archer
+	pirate trader
+	pirate priest
+	bandit soldier
+	bandit elite soldier
+	bandit archer
+	bandit elite archer
+	bandit leader
+	bandit elite leader
+	bandit mounted soldier
+	bandit mounted archer
+	bandit trader
+	bandit priest
+	desert soldier
+	desert elite soldier
+	desert archer
+	desert elite archer
+	desert leader
+	desert elite leader
+	desert mounted soldier
+	desert mounted archer
+	desert trader
+	desert priest
+	native soldier
+	native elite soldier
+	native archer
+	native elite archer
+	native leader
+	native elite leader
+	native mounted soldier
+	native mounted archer
+	native trader
+	native priest
+	player owned trader
+	player owned priest
+	player owned soldier
+	player owned commander
+	player owned medic
+	player owned archer
 * spawner icons for trader, bard, priest
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
