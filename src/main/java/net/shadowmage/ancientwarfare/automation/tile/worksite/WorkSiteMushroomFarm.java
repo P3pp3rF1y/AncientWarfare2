@@ -190,7 +190,7 @@ protected boolean processWork()
         List<ItemStack> blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, pos.x, pos.y, pos.z, 0);
         for(ItemStack item : blockDrops)
           {
-          addStackToInventory(item, RelativeSide.TOP);
+          addStackToInventory(item, RelativeSide.FRONT, RelativeSide.TOP);
           }
         return true;
         }

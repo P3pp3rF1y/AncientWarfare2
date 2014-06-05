@@ -80,6 +80,9 @@ TEXTURES
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
 * find default sound/music for bards
+* rework trader / gui to still allow access to inventory for player-owned traders.
+* add item for bard instrument
+* add item for priest holy-symbols (should I just make it a 'religious book'?)
 * textures for -lots- of npc types
 * spawner icons for trader, bard, priest
 * add recipes and research requirements for npcs and npc-related blocks

@@ -24,8 +24,8 @@ public ContainerNpcInventory(EntityPlayer player, int x, int y, int z)
   addSlotToContainer(new SlotArmor(inventory, 2, 8, 8+18*3, 2, npc));//chest
   addSlotToContainer(new SlotArmor(inventory, 3, 8, 8+18*2, 1, npc));//legs
   addSlotToContainer(new SlotArmor(inventory, 4, 8, 8+18*1, 0, npc));//boots  
-  addSlotToContainer(new Slot(inventory, 6, 8+18*2, 8+18*2));//upkeep orders slot  
-  addSlotToContainer(new Slot(inventory, 5, 8+18*2, 8+18*3));//work/combat/route orders slot        
+  addSlotToContainer(new Slot(inventory, 6, 8+18*2, 8+18*2));//upkeep orders slot  TODO add slot validation
+  addSlotToContainer(new Slot(inventory, 5, 8+18*2, 8+18*3));//work/combat/route orders slot   TODO add slot validation
   guiHeight = addPlayerSlots(player, 8, 8+5*18+8, 4)+8;
   name = npc.getCustomNameTag();
   }

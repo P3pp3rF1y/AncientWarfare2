@@ -187,7 +187,7 @@ private boolean harvestBlock(BlockPosition p)
     List<ItemStack> items = BlockTools.breakBlock(worldObj, owningPlayer, p.x, p.y, p.z, 0);
     for(ItemStack item : items)
       {
-      addStackToInventory(item, RelativeSide.TOP);
+      addStackToInventory(item, RelativeSide.FRONT, RelativeSide.TOP);
       }
     return true;
     }  

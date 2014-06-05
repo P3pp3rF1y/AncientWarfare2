@@ -37,6 +37,14 @@ public void openAltGui(EntityPlayer player)
   //noop, must be implemented by individual tiles, if they have an alt-control gui
   }
 
+/**
+ * attempt to add an item stack to this worksites inventory.<br>
+ * iterates through input sides in the order given, 
+ * so should pick the most restrictive inventory first, 
+ * least restrictive last
+ * @param stack
+ * @param sides
+ */
 public final void addStackToInventory(ItemStack stack, RelativeSide... sides)
   {
   int mcSide;

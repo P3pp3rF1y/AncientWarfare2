@@ -242,7 +242,7 @@ private void pickupSaplings()
       if(ib.field_150939_a instanceof BlockSapling)
         {
         item.setDead();
-        addStackToInventory(stack, RelativeSide.FRONT);
+        addStackToInventory(stack, RelativeSide.FRONT, RelativeSide.TOP);
         }
       }
     }

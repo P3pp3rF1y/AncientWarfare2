@@ -218,7 +218,7 @@ protected boolean processWork()
         blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, position.x, position.y, position.z, 0);
         for(ItemStack item : blockDrops)
           {
-          addStackToInventory(item, RelativeSide.TOP);
+          addStackToInventory(item, RelativeSide.BOTTOM, RelativeSide.FRONT, RelativeSide.TOP);
           }
         return true;
         }
@@ -227,6 +227,7 @@ protected boolean processWork()
         blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, position.x, position.y, position.z, 0);
         for(ItemStack item : blockDrops)
           {
+          addStackToInventory(item, RelativeSide.BOTTOM, RelativeSide.FRONT, RelativeSide.TOP);
           item = InventoryTools.mergeItemStack(inventory, item, inventory.getAccessDirectionFor(RelativeSide.TOP));
           if(item!=null)
             {
