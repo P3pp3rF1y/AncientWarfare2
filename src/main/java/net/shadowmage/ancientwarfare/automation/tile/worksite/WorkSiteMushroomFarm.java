@@ -187,7 +187,7 @@ protected boolean processWork()
       block = worldObj.getBlock(pos.x, pos.y, pos.z);
       if(block==Blocks.nether_wart || block==Blocks.red_mushroom || block==Blocks.brown_mushroom_block)
         {
-        List<ItemStack> blockDrops = BlockTools.breakBlock(worldObj, getOwnerName(), pos.x, pos.y, pos.z, 0);
+        List<ItemStack> blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, pos.x, pos.y, pos.z, 0);
         for(ItemStack item : blockDrops)
           {
           addStackToInventory(item, RelativeSide.TOP);

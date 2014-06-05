@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySi
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteQuarry extends TileWorksiteBounded
@@ -87,9 +88,8 @@ protected boolean processWork()
     }  
   /**
    * if made it this far, a valid position was found, break it and add blocks to inventory
-   */
-  Block block = worldObj.getBlock(currentX, currentY, currentZ);  
-  ArrayList<ItemStack> drops = block.getDrops(worldObj, currentX, currentY, currentZ, worldObj.getBlockMetadata(currentX, currentY, currentZ), 0);
+   */  
+  List<ItemStack> drops = BlockTools.breakBlock(worldObj, owningPlayer, currentX, currentY, currentZ, 0);
   for(ItemStack stack : drops)
     {
     addStackToInventory(stack, RelativeSide.TOP);    

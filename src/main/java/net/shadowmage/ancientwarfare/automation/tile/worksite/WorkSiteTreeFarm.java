@@ -250,7 +250,9 @@ private void pickupSaplings()
 
 private void addTreeBlocks(BlockPosition base)
   {
+  worldObj.theProfiler.startSection("TreeFinder");
   TreeFinder.findAttachedTreeBlocks(worldObj.getBlock(base.x, base.y, base.z), worldObj, base.x, base.y, base.z, blocksToChop);
+  worldObj.theProfiler.endSection();
   }
 
 @Override

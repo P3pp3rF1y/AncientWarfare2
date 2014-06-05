@@ -184,7 +184,7 @@ private boolean harvestBlock(BlockPosition p)
   Block block = worldObj.getBlock(p.x, p.y, p.z);
   if(block==Blocks.cactus || block==Blocks.reeds || block==Blocks.cocoa)
     {
-    List<ItemStack> items = BlockTools.breakBlock(worldObj, p.x, p.y, p.z, 0);
+    List<ItemStack> items = BlockTools.breakBlock(worldObj, owningPlayer, p.x, p.y, p.z, 0);
     for(ItemStack item : items)
       {
       addStackToInventory(item, RelativeSide.TOP);

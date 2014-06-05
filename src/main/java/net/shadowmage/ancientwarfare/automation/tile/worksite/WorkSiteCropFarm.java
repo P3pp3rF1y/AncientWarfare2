@@ -215,7 +215,7 @@ protected boolean processWork()
         {
         meta = worldObj.getBlockMetadata(position.x, position.y, position.z);
         if(meta<7){continue;}
-        blockDrops = BlockTools.breakBlock(worldObj, position.x, position.y, position.z, 0);
+        blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, position.x, position.y, position.z, 0);
         for(ItemStack item : blockDrops)
           {
           addStackToInventory(item, RelativeSide.TOP);
@@ -224,7 +224,7 @@ protected boolean processWork()
         }
       else if(block==Blocks.pumpkin || block==Blocks.melon_block)
         {
-        blockDrops = BlockTools.breakBlock(worldObj, position.x, position.y, position.z, 0);
+        blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, position.x, position.y, position.z, 0);
         for(ItemStack item : blockDrops)
           {
           item = InventoryTools.mergeItemStack(inventory, item, inventory.getAccessDirectionFor(RelativeSide.TOP));
