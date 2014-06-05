@@ -79,9 +79,6 @@ TEXTURES
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
-^ check that courier/work AI/random workAI was not fubar'd by changes
-^ test that AI functions still work while mounted -- might need to increase 'reach' distance
-^ check that movement-related ai functions properly after refactor
 * find default sound/music for bards
 * textures for -lots- of npc types
 * add recipes and research requirements for npcs and npc-related blocks
