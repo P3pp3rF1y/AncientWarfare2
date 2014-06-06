@@ -425,12 +425,36 @@ command.aw.structure.file_deleted=File was deleted: %s
 command.aw.structure.built=Structure built: %s at: %s,%s,%s
 
 #research
-research.test_research1=Test Research 1
-research.test_research2=Test Research 2
-research.test_research3=Test Research 3
-research.test_research4=Test Research 4
-research.test_research5=Test Research 5
-research.test_research6=Test Research 6
+research.invention=Invention
+research.agriculture=Agriculture
+research.leadership=Leadership
+research.engineering=Engineering
+research.farming=Farming
+research.animal_husbandry=Animal Husbandry
+research.fishing=Fishing
+research.conscription=Conscription
+research.command=Command
+research.mining=Mining
+research.the_wheel=The Wheel
+research.construction=Construction
+research.mathematics=Mathematics
+research.trade=Trade
+research.tactics=Tactics
+research.combustion=Combustion
+research.chemistry=Chemistry
+research.theory_of_gravity=Theory Of Gravity
+research.seafaring=Seafaring
+research.explosives=Explosives
+research.refining=Refining
+research.machinery=Machinery
+research.navigation=Navigation
+research.siege_warfare=Siege Warfare
+research.gunpowder=Gunpowder
+research.mass_production=Mass Production
+research.flight=Flight
+research.naval_warfare=Naval Warfare
+research.advanced_siege_warfare=Advanced Siege Warfare
+
 
 #structure validation translation stuff
 structure.validation.survival=Survival

@@ -21,11 +21,13 @@ public static final String worldGenSettings = "04_world_gen_settings";
 public static final String keybinds = "05_keybinds";
 public static final String researchSettings = "06_research";
 public static final String researchDetailSettings = "07_research_details";
-
 /**
- * general options
+ * research options
  */
 public static boolean useResearchSystem = true;
+public static boolean enableResearchResourceUse = true;
+public static double energyPerResearchUnit = 1;
+public static double researchPerTick = 1;//TODO add to config
 
 /**
  * server options
@@ -33,8 +35,6 @@ public static boolean useResearchSystem = true;
 public static boolean fireBlockBreakEvents = true;
 public static boolean includeResearchInChests = true;
 public static double energyPerWorkUnit = 50;
-public static double energyPerResearchUnit = 1;
-public static double researchPerTick = 1;//TODO add to config
 
 /**
  * client options
@@ -45,9 +45,6 @@ public static void loadConfig(Configuration config)
   /**
    * general options
    */
-  useResearchSystem = config.get(generalOptions, "use_research_system", useResearchSystem, "Default = true\n" +
-  		"If set to false, research system will be disabled and\n" +
-  		"all recipes will be available in normal crafting station.").getBoolean(useResearchSystem);    
   
   /**
    * server options
@@ -84,9 +81,13 @@ public static void loadConfig(Configuration config)
       "Setting to 0 will eliminate the energy/worker requirements for research.\n" +
       "Setting to higher than 1 will increase the amount of energy needed for research,\n" +
       "increasing the amount of time/resources required for all research.").getDouble(energyPerResearchUnit);
+
+  useResearchSystem = config.get(researchSettings, "use_research_system", useResearchSystem, "Default = true\n" +
+      "If set to false, research system will be disabled and\n" +
+      "all recipes will be available in normal crafting station.").getBoolean(useResearchSystem);
   
-  
-  
+  enableResearchResourceUse = config.get(researchSettings, "use_research_resources", useResearchSystem, "Default = true\n" +
+      "If set to false, research system will not use resources for research.").getBoolean(useResearchSystem);
   config.save();
   }
 
