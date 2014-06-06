@@ -8,8 +8,16 @@ itemGroup.tabs.automation=Ancient Warfare Automation
 itemGroup.tabs.npc=Ancient Warfare Npcs
 #core
 item.research_book.name=Research Book
-item.hammer.name=Hammer
+item.wooden_hammer.name=Wooden Hammer
+item.stone_hammer.name=Stone Hammer
+item.iron_hammer.name=Iron Hammer
+item.gold_hammer.name=Gold Hammer
+item.diamond_hammer.name=Diamond Hammer
 item.research_note.name=Research Note
+item.backpack.0.name=Small Pack
+item.backpack.1.name=Travel Pack
+item.backpack.2.name=Medium Pack
+item.backpack.3.name=Large Pack
 #modeler
 item.editor_opener.name=Model Editor
 #structure
@@ -22,7 +30,15 @@ item.work_order.name=Work Order
 item.upkeep_order.name=Upkeep Order
 item.combat_order.name=Combat Order
 item.route_order.name=Routing Order
-item.command_baton.name=Command Baton
+item.wooden_command_baton.name=Wooden Command Baton
+item.stone_command_baton.name=Stone Command Baton
+item.iron_command_baton.name=Iron Command Baton
+item.gold_command_baton.name=Gold Command Baton
+item.diamond_command_baton.name=Diamond Command Baton
+item.bard_instrument.lute.name=Lute
+item.bard_instrument.flute.name=Flute
+item.bard_instrument.harp.name=Harp
+item.bard_instrument.drum.name=Drum
 item.npc_spawner.courier.name=Courier
 item.npc_spawner.trader.name=Trader
 item.npc_spawner.priest.name=Priest
@@ -41,6 +57,8 @@ item.npc_spawner.combat.engineer.name=Engineer
 item.npc_spawner.combat.commander.name=Commander
 item.npc_spawner.bandit.soldier.name=Bandit Soldier
 item.npc_spawner.bandit.archer.name=Bandit Archer
+item.npc_spawner.bandit.mounted_archer.name=Bandit Mounted Archer
+item.npc_spawner.bandit.cavalry.name=Bandit Cavalry
 item.npc_spawner.bandit.leader.name=Bandit Leader
 item.npc_spawner.bandit.priest.name=Bandit Priest
 item.npc_spawner.bandit.trader.name=Bandit Trader
@@ -55,6 +73,8 @@ item.npc_spawner.desert.trader.name=Desert Native Trader
 item.npc_spawner.desert.soldier.elite.name=Elite Desert Native Soldier
 item.npc_spawner.desert.archer.elite.name=Elite Desert Native Archer
 item.npc_spawner.desert.leader.elite.name=Elite Desert Native Leader
+item.npc_spawner.desert.mounted_archer.name=Desert Native Mounted Archer
+item.npc_spawner.desert.cavalry.name=Desert Native Cavalry
 item.npc_spawner.native.soldier.name=Jungle Native Soldier
 item.npc_spawner.native.archer.name=Jungle Native Archer
 item.npc_spawner.native.leader.name=Jungle Native Leader
@@ -63,6 +83,8 @@ item.npc_spawner.native.trader.name=Jungle Native Trader
 item.npc_spawner.native.soldier.elite.name=Elite Jungle Native Soldier
 item.npc_spawner.native.archer.elite.name=Elite Jungle Native Archer
 item.npc_spawner.native.leader.elite.name=Elite Jungle Native Leader
+item.npc_spawner.native.mounted_archer.name=Jungle Native Mounted Archer
+item.npc_spawner.native.cavalry.name=Jungle Native Cavalry
 item.npc_spawner.pirate.soldier.name=Pirate Soldier
 item.npc_spawner.pirate.archer.name=Pirate Archer
 item.npc_spawner.pirate.leader.name=Pirate Leader
@@ -71,6 +93,8 @@ item.npc_spawner.pirate.trader.name=Pirate Trader
 item.npc_spawner.pirate.soldier.elite.name=Elite Pirate Soldier
 item.npc_spawner.pirate.archer.elite.name=Elite Pirate Archer
 item.npc_spawner.pirate.leader.elite.name=Elite Pirate Leader
+item.npc_spawner.pirate.mounted_archer.name=Pirate Mounted Archer
+item.npc_spawner.pirate.cavalry.name=Pirate Cavalry
 item.npc_spawner.viking.soldier.name=Viking Soldier
 item.npc_spawner.viking.archer.name=Viking Archer
 item.npc_spawner.viking.leader.name=Viking Leader
@@ -79,6 +103,8 @@ item.npc_spawner.viking.trader.name=Viking Trader
 item.npc_spawner.viking.soldier.elite.name=Elite Viking Soldier
 item.npc_spawner.viking.archer.elite.name=Elite Viking Archer
 item.npc_spawner.viking.leader.elite.name=Elite Viking Leader
+item.npc_spawner.viking.mounted_archer.name=Viking Mounted Archer
+item.npc_spawner.viking.cavalry.name=Viking Cavalry
 #vehicle
 
 #blocks
@@ -108,10 +134,14 @@ tile.torque_distributor.name=Torque Distributor
 tile.torque_generator_sterling.name=Sterling Generator
 tile.torque_generator_waterwheel.name=Waterwheel Generator
 tile.hand_cranked_engine.name=Hand Cranked Torque Generator
+tile.chunk_loader_simple.name=Simple Chunk Loader
+tile.chunk_loader_deluxe.name=Deluxe Chunk Loader
 #structure
 tile.advanced_spawner.name=Advanced Monster Spawner
 tile.drafting_station.name=Drafting Station
 #npc
+tile.town_hall.name=Town Hall
+tile.recruiting_station.name=Recruiting Station
 #vehicle
 
 #guistrings
