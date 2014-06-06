@@ -1,6 +1,2 @@
 #goal id,dep id
-research.test_research2,research.test_research1
-research.test_research3,research.test_research2
-research.test_research5,research.test_research1
-research.test_research5,research.test_research4
-research.test_research6,research.test_research5
+#research.planned_farming,research.advanced_tools

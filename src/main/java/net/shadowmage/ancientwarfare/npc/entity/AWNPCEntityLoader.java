@@ -559,7 +559,7 @@ public static void loadNpcSubtypeEquipment()
   addNpcSubtypeEquipment("worker", "researcher", new ItemStack(AWItems.quillIron));
   addNpcSubtypeEquipment("worker", "craftsman", new ItemStack(AWItems.automationHammerIron));
       
-  addNpcSubtypeEquipment("combat", "commander", new ItemStack(Items.diamond_sword));//TODO commander -- scepter / mace?
+  addNpcSubtypeEquipment("combat", "commander", new ItemStack(AWNpcItemLoader.commandBatonIron));
   addNpcSubtypeEquipment("combat", "soldier", new ItemStack(Items.iron_sword));
   addNpcSubtypeEquipment("combat", "archer", new ItemStack(Items.bow));
   addNpcSubtypeEquipment("combat", "engineer", new ItemStack(AWItems.automationHammerIron));
