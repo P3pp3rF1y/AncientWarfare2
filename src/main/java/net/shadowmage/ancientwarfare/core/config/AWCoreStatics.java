@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.config;
 
 import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AWCoreStatics
 {
@@ -19,6 +20,7 @@ public static final String clientOptions = "03_client_settings";
 public static final String worldGenSettings = "04_world_gen_settings";
 public static final String keybinds = "05_keybinds";
 public static final String researchSettings = "06_research";
+public static final String researchDetailSettings = "07_research_details";
 
 /**
  * general options
@@ -32,12 +34,11 @@ public static boolean fireBlockBreakEvents = true;
 public static boolean includeResearchInChests = true;
 public static double energyPerWorkUnit = 50;
 public static double energyPerResearchUnit = 1;
+public static double researchPerTick = 1;//TODO add to config
 
 /**
  * client options
  */
-
-
 public static void loadConfig(Configuration config)
   {
   setCategoryNames(config);
@@ -84,6 +85,8 @@ public static void loadConfig(Configuration config)
       "Setting to higher than 1 will increase the amount of energy needed for research,\n" +
       "increasing the amount of time/resources required for all research.").getDouble(energyPerResearchUnit);
   
+  
+  
   config.save();
   }
 
@@ -113,6 +116,17 @@ private static void setCategoryNames(Configuration config)
   config.addCustomCategoryComment(researchSettings, "Research Settings Section\n" +
       "Affect both client and server.  These configs must match for client and server, or\n" +
       "strange and probably BAD things WILL happen.");
+  
+  config.addCustomCategoryComment(researchDetailSettings, "Research DetailSettings Section\n" +
+  		"Configure research times per research goal.\n" +
+      "Affect both client and server.  These configs must match for client and server, or\n" +
+      "strange and probably BAD things WILL happen.");
+  }
+
+public static int getResearchTimeFor(String goalName, int defaultTime)
+  {
+  Configuration config = AncientWarfareCore.config;
+  return config.get(researchDetailSettings, goalName, defaultTime).getInt(defaultTime);
   }
 
 }

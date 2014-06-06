@@ -144,6 +144,7 @@ private static void parseGoalNames(List<String> lines)
       id = StringTools.safeParseInt(split[0]);
       name = split[1].startsWith("research.") ? split[1] : "research."+split[1];
       time = StringTools.safeParseInt(split[2]);
+      time = AWCoreStatics.getResearchTimeFor(name, time);
       goal = new ResearchGoal(id, name);
       goalsByID.put(id, goal);
       goalsByName.put(name, goal);
