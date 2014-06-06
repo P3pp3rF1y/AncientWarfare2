@@ -18,6 +18,7 @@ Licensing
 	need to setup validation per-input box...
 * GUI - SHIFT-CLICK CODE
 * GUI - rendering of item stack quantities >99 -- need to do custom rendering of text, scaled down appropriately
+* icons for quill item
 
 ****************************TEXTURES TODO****************************
 TEXTURES

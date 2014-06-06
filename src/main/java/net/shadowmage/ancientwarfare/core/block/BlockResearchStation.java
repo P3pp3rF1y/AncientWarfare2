@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import cpw.mods.fml.relauncher.Side;
@@ -57,13 +58,14 @@ public TileEntity createTileEntity(World world, int metadata)
   }
 
 @Override
-public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-  {
-  if(!world.isRemote)
+public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ)
+  {  
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof IInteractableTile)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_STATION, x, y, z);    
+    ((IInteractableTile) te).onBlockClicked(player);
     }
-  return true;
+  return true;  
   }
 
 }

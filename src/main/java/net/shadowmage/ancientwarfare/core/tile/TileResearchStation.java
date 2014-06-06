@@ -8,20 +8,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueReceiver, IOwnable
+public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueReceiver, IOwnable, IInteractableTile
 {
 
 protected String owningPlayer = "";
@@ -338,6 +341,17 @@ public void setOwnerName(String name)
 public String getOwnerName()
   {
   return owningPlayer;
+  }
+
+@Override
+public boolean onBlockClicked(EntityPlayer player)
+  {
+  //TODO validate team/owner status
+  if(!player.worldObj.isRemote)
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_STATION, xCoord, yCoord, zCoord);    
+    }
+  return false;
   }
 
 }

@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemPickaxe;
@@ -21,6 +22,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
+import net.shadowmage.ancientwarfare.core.item.ItemQuill;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
@@ -119,10 +121,22 @@ public float getWorkEffectiveness(WorkType type)
       ItemTool tool = (ItemTool)getEquipmentInSlot(0).getItem();
       effectiveness += tool.func_150913_i().getEfficiencyOnProperMaterial()*0.05f;
       }    
+    else if(item instanceof ItemHoe)
+      {
+      ItemHoe hammer = (ItemHoe)item;
+      String name = hammer.getToolMaterialName();
+      ToolMaterial mat = ToolMaterial.valueOf(name);
+      effectiveness += mat.getEfficiencyOnProperMaterial()*0.05f;
+      }
     else if(item instanceof ItemHammer)
       {
       ItemHammer hammer = (ItemHammer)item;
       effectiveness += hammer.getMaterial().getEfficiencyOnProperMaterial()*0.05f;
+      }
+    else if(item instanceof ItemQuill)
+      {
+      ItemQuill quill = (ItemQuill)item;
+      effectiveness += quill.getMaterial().getEfficiencyOnProperMaterial()*0.05f;
       }
     else if(getEquipmentInSlot(0)!=null)
       {
@@ -161,7 +175,7 @@ protected WorkType getWorkTypeFromEquipment()
     else if(stack.getItem() instanceof ItemAxe){return WorkType.FORESTRY;}
     else if(stack.getItem() instanceof ItemPickaxe){return WorkType.MINING;}    
     else if(stack.getItem() instanceof ItemHammer){return WorkType.CRAFTING;}
-    //else if(stack.getItem() == AWItems.researchQuil){return WorkType.RESEARCH}//TODO add researcher custom item -- quill?
+    else if(stack.getItem() instanceof ItemQuill){return WorkType.RESEARCH;}//TODO add researcher custom item -- quill?
     }
   return WorkType.NONE;
   }

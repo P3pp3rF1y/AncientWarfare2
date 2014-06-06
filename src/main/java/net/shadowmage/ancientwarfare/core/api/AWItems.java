@@ -16,6 +16,11 @@ public static Item automationHammerIron;
 public static Item automationHammerGold;
 public static Item automationHammerDiamond;
 public static Item backpack;
+public static Item quillWood;
+public static Item quillStone;
+public static Item quillIron;
+public static Item quillGold;
+public static Item quillDiamond;
 
 /**
  * NPC module
