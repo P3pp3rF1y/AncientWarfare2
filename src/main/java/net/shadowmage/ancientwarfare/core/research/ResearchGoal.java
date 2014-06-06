@@ -142,7 +142,7 @@ private static void parseGoalNames(List<String> lines)
       {
       split = StringTools.parseStringArray(line);
       id = StringTools.safeParseInt(split[0]);
-      name = split[1];
+      name = split[1].startsWith("research.") ? split[1] : "research."+split[1];
       time = StringTools.safeParseInt(split[2]);
       goal = new ResearchGoal(id, name);
       goalsByID.put(id, goal);
@@ -166,8 +166,8 @@ private static void parseGoalDependencies(List<String> lines)
   for(String line : lines)
     {
     split = StringTools.parseStringArray(line);
-    name = split[0];
-    dep = split[1];
+    name = split[0].startsWith("research.") ? split[0]: "research."+split[0];
+    dep = split[1].startsWith("research.") ? split[1] : "research."+split[1];
     if(goalsByName.containsKey(name) && goalsByName.containsKey(dep))
       {
       goalsByName.get(name).addDependencies(goalsByName.get(dep).researchId);
@@ -186,7 +186,7 @@ private static void parseGoalResources(List<String> lines)
   for(String line : lines)
     {
     split = StringTools.parseStringArray(line);
-    name = split[0];
+    name = split[0].startsWith("research.") ? split[0] : "research."+split[0];
     itemName = split[1];
     meta = StringTools.safeParseInt(split[2]);
     qty = StringTools.safeParseInt(split[3]);

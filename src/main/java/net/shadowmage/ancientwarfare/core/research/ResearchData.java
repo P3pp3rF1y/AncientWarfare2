@@ -328,7 +328,6 @@ private void readFromNBT(NBTTagCompound tag)
     }
   }
 
-
 private void removeQueuedResearch(int goal)
   {
   Integer goalObject = Integer.valueOf(goal);
