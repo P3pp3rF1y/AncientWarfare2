@@ -39,6 +39,7 @@ public static final ItemCommandBaton commandBatonStone = new ItemCommandBaton("s
 public static final ItemCommandBaton commandBatonIron = new ItemCommandBaton("iron_command_baton", ToolMaterial.IRON);
 public static final ItemCommandBaton commandBatonGold = new ItemCommandBaton("gold_command_baton", ToolMaterial.GOLD);
 public static final ItemCommandBaton commandBatonDiamond = new ItemCommandBaton("diamond_command_baton", ToolMaterial.EMERALD);
+public static final ItemBardInstrument bardInstrument = new ItemBardInstrument("bard_instrument");
   
 public static void load()
   {
@@ -51,7 +52,8 @@ public static void load()
   GameRegistry.registerItem(commandBatonStone, "stone_command_baton");
   GameRegistry.registerItem(commandBatonIron, "iron_command_baton");
   GameRegistry.registerItem(commandBatonGold, "gold_command_baton");
-  GameRegistry.registerItem(commandBatonDiamond, "diamond_command_baton");  
+  GameRegistry.registerItem(commandBatonDiamond, "diamond_command_baton");
+  GameRegistry.registerItem(bardInstrument, "bard_instrument");
   }
 
 }
