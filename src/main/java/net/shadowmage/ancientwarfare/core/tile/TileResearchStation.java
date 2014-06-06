@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
+import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -20,7 +21,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueReceiver
+public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueReceiver, IOwnable
 {
 
 protected String owningPlayer = "";
@@ -116,6 +117,7 @@ public void updateEntity()
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
+  owningPlayer=tag.getString("owningPlayer");
   InventoryTools.readInventoryFromNBT(bookInventory, tag.getCompoundTag("bookInventory"));
   InventoryTools.readInventoryFromNBT(resourceInventory, tag.getCompoundTag("resourceInventory"));
   this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
@@ -125,7 +127,8 @@ public void readFromNBT(NBTTagCompound tag)
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
-  super.writeToNBT(tag);  
+  super.writeToNBT(tag);
+  tag.setString("owningPlayer", owningPlayer);
   tag.setTag("bookInventory", InventoryTools.writeInventoryToNBT(bookInventory, new NBTTagCompound()));  
   tag.setTag("resourceInventory", InventoryTools.writeInventoryToNBT(resourceInventory, new NBTTagCompound()));  
   tag.setBoolean("useAdjacentInventory", useAdjacentInventory);  
@@ -323,6 +326,18 @@ public void addEnergyFromPlayer(EntityPlayer player)
   {
   storedEnergy+=AWCoreStatics.energyPerWorkUnit;
   if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
+  }
+
+@Override
+public void setOwnerName(String name)
+  {
+  this.owningPlayer=name==null ? "" : name;
+  }
+
+@Override
+public String getOwnerName()
+  {
+  return owningPlayer;
   }
 
 }
