@@ -1,21 +1,47 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 public class BlockStructureBuilder extends Block
 {
 
+private BlockIconMap iconMap = new BlockIconMap();
+
 public BlockStructureBuilder(String regName)
   {
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
-  this.setBlockTextureName("ancientwarfare:spawner/advanced_spawner");
+  }
+
+public BlockStructureBuilder setIcon(int meta, int side, String texName)
+  {
+  this.iconMap.setIconTexture(side, meta, texName);
+  return this;
+  }
+
+@Override
+@SideOnly(Side.CLIENT)
+public void registerBlockIcons(IIconRegister reg)
+  {
+  iconMap.registerIcons(reg);
+  }
+
+@Override
+@SideOnly(Side.CLIENT)
+public IIcon getIcon(int side, int meta)
+  {
+  return iconMap.getIconFor(side, meta);
   }
 
 @Override

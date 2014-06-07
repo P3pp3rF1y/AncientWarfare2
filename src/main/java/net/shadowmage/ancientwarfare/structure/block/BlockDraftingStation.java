@@ -1,10 +1,16 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.block.BlockWarehouseOutput;
+import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
@@ -12,11 +18,33 @@ import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 public class BlockDraftingStation extends Block
 {
 
+private BlockIconMap iconMap = new BlockIconMap();
+
 public BlockDraftingStation(String regName)
   {
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
+  }
+
+public BlockDraftingStation setIcon(int meta, int side, String texName)
+  {
+  this.iconMap.setIconTexture(side, meta, texName);
+  return this;
+  }
+
+@Override
+@SideOnly(Side.CLIENT)
+public void registerBlockIcons(IIconRegister reg)
+  {
+  iconMap.registerIcons(reg);
+  }
+
+@Override
+@SideOnly(Side.CLIENT)
+public IIcon getIcon(int side, int meta)
+  {
+  return iconMap.getIconFor(side, meta);
   }
 
 @Override
