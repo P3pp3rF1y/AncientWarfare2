@@ -1,10 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,8 +27,8 @@ public static final CreativeTabs npcTab = new CreativeTabs("tabs.npc")
   @Override
   public void displayAllReleventItems(List par1List)
     {
-    super.displayAllReleventItems(par1List);
-    //TODO sort list
+    super.displayAllReleventItems(par1List);   
+    Collections.sort(par1List, sorter);     
     }
   };
   
@@ -40,6 +43,9 @@ public static final ItemCommandBaton commandBatonIron = new ItemCommandBaton("ir
 public static final ItemCommandBaton commandBatonGold = new ItemCommandBaton("gold_command_baton", ToolMaterial.GOLD);
 public static final ItemCommandBaton commandBatonDiamond = new ItemCommandBaton("diamond_command_baton", ToolMaterial.EMERALD);
 public static final ItemBardInstrument bardInstrument = new ItemBardInstrument("bard_instrument");
+
+
+private static final TabSorter sorter = new TabSorter();
   
 public static void load()
   {
@@ -55,5 +61,48 @@ public static void load()
   GameRegistry.registerItem(commandBatonDiamond, "diamond_command_baton");
   GameRegistry.registerItem(bardInstrument, "bard_instrument");
   }
+
+
+private static class TabSorter implements Comparator<ItemStack>
+{
+
+@Override
+public int compare(ItemStack arg0, ItemStack arg1)
+  {
+  Item i1 = arg0.getItem();
+  Item i2 = arg1.getItem();
+  int i1p = getItemPriority(i1);
+  int i2p = getItemPriority(i2);
+  if(i1p==i2p)
+    {
+    if(i1==npcSpawner && i2==npcSpawner){return compareSpawnerStacks(arg0, arg1);}
+    return arg0.getDisplayName().compareTo(arg1.getDisplayName());
+    }
+  else
+    {
+    return i1p < i2p ? -1 : 1;
+    }
+  }
+
+private int compareSpawnerStacks(ItemStack arg0, ItemStack arg1)
+  {
+  String s1 = arg0.getUnlocalizedName();
+  String s2 = arg1.getUnlocalizedName();
+  boolean f1 = s1.contains("bandit") || s1.contains("viking") || s1.contains("native") || s1.contains("desert") || s1.contains("pirate");
+  boolean f2 = s2.contains("bandit") || s2.contains("viking") || s2.contains("native") || s2.contains("desert") || s2.contains("pirate");
+  if(f1 && f2){return s1.compareTo(s2);}
+  else if(!f1 && !f2){return s1.compareTo(s2);}
+  else{return f1 ? 1 : -1;}
+  }
+
+private int getItemPriority(Item item)
+  {
+  if(item==npcSpawner){return 4;}
+  else if(item==bardInstrument){return 3;}
+  else if(item instanceof ItemCommandBaton){return 2;}
+  else if(item instanceof ItemOrders){return 1;}
+  else{return 0;}
+  }
+}
 
 }
