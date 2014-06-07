@@ -40,7 +40,6 @@ TEXTURES
 		structure-control block	
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
-* recipes: drafting station -- has 'construction' as its research
 * Scanner GUI needs some cleanup / make it look nice
 * screenshots for all default-included structures
 * add lake-filling item
@@ -69,7 +68,6 @@ TEXTURES
 * method for creative-mode players to access and alter faction-based NPCs -- equipment, owner-name??, other settings?
 	add a temp disable wander control -- non saved, used for map setup
 	allow them to follow creative players for positioning
-* fix horses spawned with horse-combat units	
 * find default sound/music for bards
 * rework trader / gui to still allow access to inventory for player-owned traders.
 * add item for priest holy-symbols (should I just make it a 'religious book'?)
@@ -80,6 +78,7 @@ TEXTURES
 	player owned commander
 	player owned medic
 	player owned archer
+* faction owned archer default ranged attack	
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
 * add npc-recruiting station -- worksite, crafting
