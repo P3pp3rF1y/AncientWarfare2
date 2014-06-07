@@ -30,7 +30,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 @Mod
 (
 name = "Ancient Warfare Core",
-modid = "ancientwarfare",
+modid = "AncientWarfare",
 version = "@VERSION@",
 dependencies="after:BuildCraft|Core"
 )
@@ -38,7 +38,7 @@ dependencies="after:BuildCraft|Core"
 public class AncientWarfareCore 
 {
 
-@Instance(value="ancientwarfare")
+@Instance(value="AncientWarfare")
 public static AncientWarfareCore instance;
 
 @SidedProxy

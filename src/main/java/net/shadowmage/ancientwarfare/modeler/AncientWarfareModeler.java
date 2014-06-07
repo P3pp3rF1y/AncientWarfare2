@@ -18,15 +18,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod
 (
 name = "Ancient Warfare Model Editor",
-modid = "ancientwarfaremodeler",
+modid = "AncientWarfareModeler",
 version = "@VERSION@",
-dependencies = "required-after:ancientwarfare"
+dependencies = "required-after:AncientWarfare"
 )
 
 public class AncientWarfareModeler 
 {
 
-@Instance(value="ancientwarfaremodeler")
+@Instance(value="AncientWarfareModeler")
 public static AncientWarfareModeler instance;
 
 @SidedProxy

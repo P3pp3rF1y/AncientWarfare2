@@ -53,15 +53,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod
 (
 name = "Ancient Warfare Structures",
-modid = "ancientwarfarestructures",
+modid = "AncientWarfareStructure",
 version = "@VERSION@",
-dependencies = "required-after:ancientwarfare"
+dependencies = "required-after:AncientWarfare"
 )
 
 public class AncientWarfareStructures 
 {
 
-@Instance(value="ancientwarfarestructures")
+@Instance(value="AncientWarfareStructure")
 public static AncientWarfareStructures instance;
 
 @SidedProxy

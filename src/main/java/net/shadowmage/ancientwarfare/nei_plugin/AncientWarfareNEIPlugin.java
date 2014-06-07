@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation;
+package net.shadowmage.ancientwarfare.nei_plugin;
 
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.config.Configuration;
@@ -48,16 +48,16 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 @Mod
 (
 name = "Ancient Warfare Automation",
-modid = "AncientWarfareAutomation",
+modid = "AncientWarfareNEIPlugin",
 version = "@VERSION@",
 dependencies = "required-after:AncientWarfare"
 )
 
-public class AncientWarfareAutomation
+public class AncientWarfareNEIPlugin
 {
 
-@Instance(value="AncientWarfareAutomation")
-public static AncientWarfareAutomation instance;
+@Instance(value="AncientWarfareNEIPlugin")
+public static AncientWarfareNEIPlugin instance;
 
 @SidedProxy
 (
@@ -76,68 +76,7 @@ public static AWAutomationStatics statics;
 public void preInit(FMLPreInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Automation Pre-Init started");
-  
-  ModuleStatus.automationLoaded = true;  
-  if(Loader.isModLoaded("BuildCraft|Core"))
-    {
-    ModuleStatus.buildCraftLoaded = true;
-    AWLog.log("Detecting BuildCraft|Core is loaded, enabling BC Compatibility");
-    }   
-  BCProxy.loadInstance();
-  
-  /**
-   * setup module-owned config file and config-access class
-   */
-  config = new Configuration(evt.getSuggestedConfigurationFile());
-  statics = new AWAutomationStatics(config);  
     
-  /**
-   * load pre-init
-   */  
-  proxy.registerClient();
-  statics.load();//load config settings
-  
-  /**
-   * load items and blocks
-   */
-  AWAutomationBlockLoader.load();
-  AWAutomationItemLoader.load();
-
-  /**
-   * register containers
-   */
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_SET_TARGETS, ContainerWorksiteBlockSelection.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, ContainerWorksiteAnimalControl.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, ContainerWorksiteAutoCrafting.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, ContainerWorksiteFishControl.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_MAILBOX_INVENTORY, ContainerMailbox.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CONTROL, ContainerWarehouseControl.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE, ContainerWarehouseStorage.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_INPUT, ContainerWarehouseInput.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_OUTPUT, ContainerWarehouseOutput.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CRAFTING, ContainerWarehouseCraftingStation.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_QUARRY, ContainerWorksiteQuarry.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_TREE_FARM, ContainerWorksiteTreeFarm.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_CROP_FARM, ContainerWorksiteCropFarm.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, ContainerWorksiteMushroomFarm.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, ContainerWorksiteAnimalFarm.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_REED_FARM, ContainerWorksiteReedFarm.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_FARM, ContainerWorksiteFishFarm.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, ContainerTorqueGeneratorSterling.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, ContainerChunkLoaderDeluxe.class);
-  /**
-   * register persistent game-data handlers
-   */
-  AWGameData.INSTANCE.registerSaveData(MailboxData.name, MailboxData.class);
-  
-  /**
-   * register tick-handlers
-   */
-  FMLCommonHandler.instance().bus().register(new MailboxTicker());
-  
-  ForgeChunkManager.setForcedChunkLoadingCallback(this, new AWChunkLoader());
-  
   AWLog.log("Ancient Warfare Automation Pre-Init completed");
   }
 
@@ -145,10 +84,7 @@ public void preInit(FMLPreInitializationEvent evt)
 public void init(FMLInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Automation Init started"); 
-  /**
-   * construct recipes, load plugins
-   */
-  AWAutomationCrafting.loadRecipes();
+
   AWLog.log("Ancient Warfare Automation Init completed");
   }
 
@@ -156,10 +92,7 @@ public void init(FMLInitializationEvent evt)
 public void postInit(FMLPostInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Automation Post-Init started"); 
-   /**
-    * save config for any changes that were made during loading stages
-    */
-  config.save();
+  
   AWLog.log("Ancient Warfare Automation Post-Init completed.  Successfully completed all loading stages.");
   }
 

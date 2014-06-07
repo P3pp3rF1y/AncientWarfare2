@@ -33,18 +33,18 @@ TEXTURES
 	
 ****************************STRUCTURE MODULE TODO****************************
 > plugins / support for vehicle module
-> plugin support for automation module		
-* need to examine all plugins for places when item-stacks are saved to the tile/entity nbt -- need to handle these special and sideline the
-	item-data to preserve the item-name rather than item-id.	
-* recipes: drafting station
-* Scanner GUI needs some cleanup / make it look nice
+> plugin support for automation module	
 * plugin support for npc module
 	npcs--done
 	blocks--
-		structure-control block
-* textures for drafting station, survival-mode builder block
+		structure-control block	
+* need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
+	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
+* recipes: drafting station -- has 'construction' as its research
+* Scanner GUI needs some cleanup / make it look nice
 * screenshots for all default-included structures
-* add lake-filling block
+* add lake-filling item
+	needs basic pathfinding algorithm to find what blocks to fill
 
 ****************************AUTOMATION MODULE TODO****************************	
 * textures for warehouse storage / input / output

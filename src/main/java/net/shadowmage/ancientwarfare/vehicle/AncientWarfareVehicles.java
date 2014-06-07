@@ -18,15 +18,15 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 @Mod
 (
 name = "Ancient Warfare Vehicles",
-modid = "ancientwarfarevehicles",
+modid = "AncientWarfareVehicle",
 version = "@VERSION@",
-dependencies = "required-after:ancientwarfare"
+dependencies = "required-after:AncientWarfare"
 )
 
 public class AncientWarfareVehicles 
 {
 
-@Instance(value="ancientwarfarevehicles")
+@Instance(value="AncientWarfareVehicle")
 public static AncientWarfareVehicles instance;
 
 @SidedProxy
