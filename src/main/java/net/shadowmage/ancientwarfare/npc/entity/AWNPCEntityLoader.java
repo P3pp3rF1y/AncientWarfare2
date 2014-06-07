@@ -162,8 +162,8 @@ private static void addBandits()
       return new NpcBanditArcher(world);
       }
     };
-  addNpcRegistration(reg, "bandit.archer", "ancientwarfare:npc/spawner_hostile_archer");
-  addNpcSubtypeEntry("bandit.archer", "elite", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcRegistration(reg, "bandit.archer", "ancientwarfare:npc/spawner_bandit_archer");
+  addNpcSubtypeEntry("bandit.archer", "elite", "ancientwarfare:npc/spawner_bandit_archer");
   
   reg = new NpcFactionDeclaration(NpcBanditSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.soldier")
     {    
@@ -173,8 +173,8 @@ private static void addBandits()
       return new NpcBanditSoldier(world);
       }
     };
-  addNpcRegistration(reg, "bandit.soldier", "ancientwarfare:npc/spawner_hostile_soldier");
-  addNpcSubtypeEntry("bandit.soldier", "elite", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcRegistration(reg, "bandit.soldier", "ancientwarfare:npc/spawner_bandit_soldier");
+  addNpcSubtypeEntry("bandit.soldier", "elite", "ancientwarfare:npc/spawner_bandit_soldier");
   
   reg = new NpcFactionDeclaration(NpcBanditLeader.class, AWEntityRegistry.NPC_FACTION_BANDIT_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.leader")
     {    
@@ -184,8 +184,8 @@ private static void addBandits()
       return new NpcBanditLeader(world);
       }
     };
-  addNpcRegistration(reg, "bandit.leader", "ancientwarfare:npc/spawner_hostile_commander");
-  addNpcSubtypeEntry("bandit.leader", "elite", "ancientwarfare:npc/spawner_hostile_commander");
+  addNpcRegistration(reg, "bandit.leader", "ancientwarfare:npc/spawner_bandit_leader");
+  addNpcSubtypeEntry("bandit.leader", "elite", "ancientwarfare:npc/spawner_bandit_leader");
   
   reg = new NpcFactionDeclaration(NpcBanditPriest.class, AWEntityRegistry.NPC_FACTION_BANDIT_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.priest")
     {    
@@ -195,7 +195,7 @@ private static void addBandits()
       return new NpcBanditPriest(world);
       }
     };
-  addNpcRegistration(reg, "bandit.priest", "ancientwarfare:npc/spawner_hostile_priest");
+  addNpcRegistration(reg, "bandit.priest", "ancientwarfare:npc/spawner_bandit_priest");
   
   reg = new NpcFactionDeclaration(NpcBanditTrader.class, AWEntityRegistry.NPC_FACTION_BANDIT_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.trader")
     {    
@@ -205,7 +205,7 @@ private static void addBandits()
       return new NpcBanditTrader(world);
       }
     };
-  addNpcRegistration(reg, "bandit.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  addNpcRegistration(reg, "bandit.trader", "ancientwarfare:npc/spawner_bandit_trader");
   
   reg = new NpcFactionDeclaration(NpcBanditMountedSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.cavalry")
     {    
@@ -215,7 +215,7 @@ private static void addBandits()
       return new NpcBanditMountedSoldier(world);
       }
     };
-  addNpcRegistration(reg, "bandit.cavalry", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcRegistration(reg, "bandit.cavalry", "ancientwarfare:npc/spawner_bandit_soldier");
   
   reg = new NpcFactionDeclaration(NpcBanditMountedArcher.class, AWEntityRegistry.NPC_FACTION_BANDIT_MOUNTED_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.mounted_archer")
     {    
@@ -225,7 +225,7 @@ private static void addBandits()
       return new NpcBanditMountedArcher(world);
       }
     };
-  addNpcRegistration(reg, "bandit.mounted_archer", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcRegistration(reg, "bandit.mounted_archer", "ancientwarfare:npc/spawner_bandit_archer");
   }
 
 private static void addDesertNatives()
@@ -242,8 +242,8 @@ private static void addDesertNatives()
       return new NpcDesertArcher(world);
       }
     };
-  addNpcRegistration(reg, "desert.archer", "ancientwarfare:npc/spawner_hostile_archer");
-  addNpcSubtypeEntry("desert.archer", "elite", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcRegistration(reg, "desert.archer", "ancientwarfare:npc/spawner_desert_archer");
+  addNpcSubtypeEntry("desert.archer", "elite", "ancientwarfare:npc/spawner_desert_archer");
   
   reg = new NpcFactionDeclaration(NpcDesertSoldier.class, AWEntityRegistry.NPC_FACTION_DESERT_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.soldier")
     {    
@@ -253,8 +253,8 @@ private static void addDesertNatives()
       return new NpcDesertSoldier(world);
       }
     };
-  addNpcRegistration(reg, "desert.soldier", "ancientwarfare:npc/spawner_hostile_soldier");
-  addNpcSubtypeEntry("desert.soldier", "elite", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcRegistration(reg, "desert.soldier", "ancientwarfare:npc/spawner_desert_soldier");
+  addNpcSubtypeEntry("desert.soldier", "elite", "ancientwarfare:npc/spawner_desert_soldier");
   
   reg = new NpcFactionDeclaration(NpcDesertLeader.class, AWEntityRegistry.NPC_FACTION_DESERT_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.leader")
     {    
@@ -264,8 +264,8 @@ private static void addDesertNatives()
       return new NpcDesertLeader(world);
       }
     };
-  addNpcRegistration(reg, "desert.leader", "ancientwarfare:npc/spawner_hostile_commander");
-  addNpcSubtypeEntry("desert.leader", "elite", "ancientwarfare:npc/spawner_hostile_commander");
+  addNpcRegistration(reg, "desert.leader", "ancientwarfare:npc/spawner_desert_leader");
+  addNpcSubtypeEntry("desert.leader", "elite", "ancientwarfare:npc/spawner_desert_leader");
   
   reg = new NpcFactionDeclaration(NpcDesertPriest.class, AWEntityRegistry.NPC_FACTION_DESERT_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.priest")
     {    
@@ -275,7 +275,7 @@ private static void addDesertNatives()
       return new NpcDesertPriest(world);
       }
     };
-  addNpcRegistration(reg, "desert.priest", "ancientwarfare:npc/spawner_hostile_priest");
+  addNpcRegistration(reg, "desert.priest", "ancientwarfare:npc/spawner_desert_priest");
   
   reg = new NpcFactionDeclaration(NpcDesertTrader.class, AWEntityRegistry.NPC_FACTION_DESERT_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.trader")
     {    
@@ -285,7 +285,7 @@ private static void addDesertNatives()
       return new NpcDesertTrader(world);
       }
     };
-  addNpcRegistration(reg, "desert.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  addNpcRegistration(reg, "desert.trader", "ancientwarfare:npc/spawner_desert_trader");
   
   reg = new NpcFactionDeclaration(NpcDesertMountedSoldier.class, AWEntityRegistry.NPC_FACTION_DESERT_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.cavalry")
     {    
@@ -295,7 +295,7 @@ private static void addDesertNatives()
       return new NpcDesertMountedSoldier(world);
       }
     };
-  addNpcRegistration(reg, "desert.cavalry", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcRegistration(reg, "desert.cavalry", "ancientwarfare:npc/spawner_desert_soldier");
   
   reg = new NpcFactionDeclaration(NpcDesertMountedArcher.class, AWEntityRegistry.NPC_FACTION_DESERT_MOUNTED_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.mounted_archer")
     {    
@@ -305,7 +305,7 @@ private static void addDesertNatives()
       return new NpcDesertMountedArcher(world);
       }
     };
-  addNpcRegistration(reg, "desert.mounted_archer", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcRegistration(reg, "desert.mounted_archer", "ancientwarfare:npc/spawner_desert_archer");
   }
 
 private static void addJungleNatives()
@@ -322,8 +322,8 @@ private static void addJungleNatives()
       return new NpcNativeArcher(world);
       }
     };
-  addNpcRegistration(reg, "native.archer", "ancientwarfare:npc/spawner_hostile_archer");
-  addNpcSubtypeEntry("native.archer", "elite", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcRegistration(reg, "native.archer", "ancientwarfare:npc/spawner_native_archer");
+  addNpcSubtypeEntry("native.archer", "elite", "ancientwarfare:npc/spawner_native_archer");
   
   reg = new NpcFactionDeclaration(NpcNativeSoldier.class, AWEntityRegistry.NPC_FACTION_NATIVE_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.soldier")
     {    
@@ -333,8 +333,8 @@ private static void addJungleNatives()
       return new NpcNativeSoldier(world);
       }
     };
-  addNpcRegistration(reg, "native.soldier", "ancientwarfare:npc/spawner_hostile_soldier");
-  addNpcSubtypeEntry("native.soldier", "elite", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcRegistration(reg, "native.soldier", "ancientwarfare:npc/spawner_native_soldier");
+  addNpcSubtypeEntry("native.soldier", "elite", "ancientwarfare:npc/spawner_native_soldier");
   
   reg = new NpcFactionDeclaration(NpcNativeLeader.class, AWEntityRegistry.NPC_FACTION_NATIVE_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.leader")
     {    
@@ -344,8 +344,8 @@ private static void addJungleNatives()
       return new NpcNativeLeader(world);
       }
     };
-  addNpcRegistration(reg, "native.leader", "ancientwarfare:npc/spawner_hostile_commander");
-  addNpcSubtypeEntry("native.leader", "elite", "ancientwarfare:npc/spawner_hostile_commander");
+  addNpcRegistration(reg, "native.leader", "ancientwarfare:npc/spawner_native_leader");
+  addNpcSubtypeEntry("native.leader", "elite", "ancientwarfare:npc/spawner_native_leader");
   
   reg = new NpcFactionDeclaration(NpcNativePriest.class, AWEntityRegistry.NPC_FACTION_NATIVE_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.priest")
     {    
@@ -355,7 +355,7 @@ private static void addJungleNatives()
       return new NpcNativePriest(world);
       }
     };
-  addNpcRegistration(reg, "native.priest", "ancientwarfare:npc/spawner_hostile_priest");
+  addNpcRegistration(reg, "native.priest", "ancientwarfare:npc/spawner_native_priest");
   
   reg = new NpcFactionDeclaration(NpcNativeTrader.class, AWEntityRegistry.NPC_FACTION_NATIVE_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.trader")
     {    
@@ -365,7 +365,7 @@ private static void addJungleNatives()
       return new NpcNativeTrader(world);
       }
     };
-  addNpcRegistration(reg, "native.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  addNpcRegistration(reg, "native.trader", "ancientwarfare:npc/spawner_native_trader");
   
   reg = new NpcFactionDeclaration(NpcNativeMountedSoldier.class, AWEntityRegistry.NPC_FACTION_NATIVE_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.cavalry")
     {    
@@ -375,7 +375,7 @@ private static void addJungleNatives()
       return new NpcNativeMountedSoldier(world);
       }
     };
-  addNpcRegistration(reg, "native.cavalry", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcRegistration(reg, "native.cavalry", "ancientwarfare:npc/spawner_native_soldier");
   
   reg = new NpcFactionDeclaration(NpcNativeMountedArcher.class, AWEntityRegistry.NPC_FACTION_NATIVE_MOUNTED_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.mounted_archer")
     {    
@@ -385,7 +385,7 @@ private static void addJungleNatives()
       return new NpcNativeMountedArcher(world);
       }
     };
-  addNpcRegistration(reg, "native.mounted_archer", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcRegistration(reg, "native.mounted_archer", "ancientwarfare:npc/spawner_native_archer");
   }
 
 private static void addPirates()
@@ -402,8 +402,8 @@ private static void addPirates()
       return new NpcPirateArcher(world);
       }
     };
-  addNpcRegistration(reg, "pirate.archer", "ancientwarfare:npc/spawner_hostile_archer");
-  addNpcSubtypeEntry("pirate.archer", "elite", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcRegistration(reg, "pirate.archer", "ancientwarfare:npc/spawner_pirate_archer");
+  addNpcSubtypeEntry("pirate.archer", "elite", "ancientwarfare:npc/spawner_pirate_archer");
   
   reg = new NpcFactionDeclaration(NpcPirateSoldier.class, AWEntityRegistry.NPC_FACTION_PIRATE_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.soldier")
     {    
@@ -413,8 +413,8 @@ private static void addPirates()
       return new NpcPirateSoldier(world);
       }
     };
-  addNpcRegistration(reg, "pirate.soldier", "ancientwarfare:npc/spawner_hostile_soldier");
-  addNpcSubtypeEntry("pirate.soldier", "elite", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcRegistration(reg, "pirate.soldier", "ancientwarfare:npc/spawner_pirate_soldier");
+  addNpcSubtypeEntry("pirate.soldier", "elite", "ancientwarfare:npc/spawner_pirate_soldier");
   
   reg = new NpcFactionDeclaration(NpcPirateLeader.class, AWEntityRegistry.NPC_FACTION_PIRATE_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.leader")
     {    
@@ -424,8 +424,8 @@ private static void addPirates()
       return new NpcPirateLeader(world);
       }
     };
-  addNpcRegistration(reg, "pirate.leader", "ancientwarfare:npc/spawner_hostile_commander");
-  addNpcSubtypeEntry("pirate.leader", "elite", "ancientwarfare:npc/spawner_hostile_commander");
+  addNpcRegistration(reg, "pirate.leader", "ancientwarfare:npc/spawner_pirate_leader");
+  addNpcSubtypeEntry("pirate.leader", "elite", "ancientwarfare:npc/spawner_pirate_leader");
   
   reg = new NpcFactionDeclaration(NpcPiratePriest.class, AWEntityRegistry.NPC_FACTION_PIRATE_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.priest")
     {    
@@ -435,7 +435,7 @@ private static void addPirates()
       return new NpcPiratePriest(world);
       }
     };
-  addNpcRegistration(reg, "pirate.priest", "ancientwarfare:npc/spawner_hostile_priest");
+  addNpcRegistration(reg, "pirate.priest", "ancientwarfare:npc/spawner_pirate_priest");
   
   reg = new NpcFactionDeclaration(NpcPirateTrader.class, AWEntityRegistry.NPC_FACTION_PIRATE_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.trader")
     {    
@@ -445,7 +445,7 @@ private static void addPirates()
       return new NpcPirateTrader(world);
       }
     };
-  addNpcRegistration(reg, "pirate.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  addNpcRegistration(reg, "pirate.trader", "ancientwarfare:npc/spawner_pirate_trader");
   
   reg = new NpcFactionDeclaration(NpcPirateMountedSoldier.class, AWEntityRegistry.NPC_FACTION_PIRATE_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.cavalry")
     {    
@@ -455,7 +455,7 @@ private static void addPirates()
       return new NpcPirateMountedSoldier(world);
       }
     };
-  addNpcRegistration(reg, "pirate.cavalry", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcRegistration(reg, "pirate.cavalry", "ancientwarfare:npc/spawner_pirate_soldier");
   
   reg = new NpcFactionDeclaration(NpcPirateMountedArcher.class, AWEntityRegistry.NPC_FACTION_PIRATE_MOUNTED_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.mounted_archer")
     {    
@@ -465,7 +465,7 @@ private static void addPirates()
       return new NpcPirateMountedArcher(world);
       }
     };
-  addNpcRegistration(reg, "pirate.mounted_archer", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcRegistration(reg, "pirate.mounted_archer", "ancientwarfare:npc/spawner_pirate_archer");
   }
 
 private static void addVikings()
@@ -482,8 +482,8 @@ private static void addVikings()
       return new NpcVikingArcher(world);
       }
     };
-  addNpcRegistration(reg, "viking.archer", "ancientwarfare:npc/spawner_hostile_archer");
-  addNpcSubtypeEntry("viking.archer", "elite", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcRegistration(reg, "viking.archer", "ancientwarfare:npc/spawner_viking_archer");
+  addNpcSubtypeEntry("viking.archer", "elite", "ancientwarfare:npc/spawner_viking_archer");
   
   reg = new NpcFactionDeclaration(NpcVikingSoldier.class, AWEntityRegistry.NPC_FACTION_VIKING_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.soldier")
     {    
@@ -493,8 +493,8 @@ private static void addVikings()
       return new NpcVikingSoldier(world);
       }
     };
-  addNpcRegistration(reg, "viking.soldier", "ancientwarfare:npc/spawner_hostile_soldier");
-  addNpcSubtypeEntry("viking.soldier", "elite", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcRegistration(reg, "viking.soldier", "ancientwarfare:npc/spawner_viking_soldier");
+  addNpcSubtypeEntry("viking.soldier", "elite", "ancientwarfare:npc/spawner_viking_soldier");
   
   reg = new NpcFactionDeclaration(NpcVikingLeader.class, AWEntityRegistry.NPC_FACTION_VIKING_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.leader")
     {    
@@ -504,8 +504,8 @@ private static void addVikings()
       return new NpcVikingLeader(world);
       }
     };
-  addNpcRegistration(reg, "viking.leader", "ancientwarfare:npc/spawner_hostile_commander");
-  addNpcSubtypeEntry("viking.leader", "elite", "ancientwarfare:npc/spawner_hostile_commander");
+  addNpcRegistration(reg, "viking.leader", "ancientwarfare:npc/spawner_viking_leader");
+  addNpcSubtypeEntry("viking.leader", "elite", "ancientwarfare:npc/spawner_viking_leader");
   
   reg = new NpcFactionDeclaration(NpcVikingPriest.class, AWEntityRegistry.NPC_FACTION_VIKING_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.priest")
     {    
@@ -515,7 +515,7 @@ private static void addVikings()
       return new NpcVikingPriest(world);
       }
     };
-  addNpcRegistration(reg, "viking.priest", "ancientwarfare:npc/spawner_hostile_priest");
+  addNpcRegistration(reg, "viking.priest", "ancientwarfare:npc/spawner_viking_priest");
   
   reg = new NpcFactionDeclaration(NpcVikingTrader.class, AWEntityRegistry.NPC_FACTION_VIKING_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.trader")
     {    
@@ -525,7 +525,7 @@ private static void addVikings()
       return new NpcVikingTrader(world);
       }
     };
-  addNpcRegistration(reg, "viking.trader", "ancientwarfare:npc/spawner_hostile_trader");
+  addNpcRegistration(reg, "viking.trader", "ancientwarfare:npc/spawner_viking_trader");
   
   reg = new NpcFactionDeclaration(NpcVikingMountedSoldier.class, AWEntityRegistry.NPC_FACTION_VIKING_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.cavalry")
     {    
@@ -535,7 +535,7 @@ private static void addVikings()
       return new NpcVikingMountedSoldier(world);
       }
     };
-  addNpcRegistration(reg, "viking.cavalry", "ancientwarfare:npc/spawner_hostile_soldier");
+  addNpcRegistration(reg, "viking.cavalry", "ancientwarfare:npc/spawner_viking_soldier");
   
   reg = new NpcFactionDeclaration(NpcVikingMountedArcher.class, AWEntityRegistry.NPC_FACTION_VIKING_MOUNTED_ARCHER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.mounted_archer")
     {    
@@ -545,7 +545,7 @@ private static void addVikings()
       return new NpcVikingMountedArcher(world);
       }
     };
-  addNpcRegistration(reg, "viking.mounted_archer", "ancientwarfare:npc/spawner_hostile_archer");
+  addNpcRegistration(reg, "viking.mounted_archer", "ancientwarfare:npc/spawner_viking_archer");
   }
 
 /**
