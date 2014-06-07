@@ -14,14 +14,12 @@ Licensing
 	this would be a map or 'notes' item that a player can find in a dungeon or structures
 	this should lead them to another dungeon that contains good treasure
 * crafting system--needs recipes from other modules
-* research system--needs definitions of research for research tree
 * need LOTS of tooltips added to various elements in GUIs	
 * Finish creating proper text-input validation stuff for Text and NumberInput widgets
 	need support for space, underscore, period.
 	need to setup validation per-input box...
 * GUI - SHIFT-CLICK CODE
 * GUI - rendering of item stack quantities >99 -- need to do custom rendering of text, scaled down appropriately
-* icons for quill item
 
 ****************************TEXTURES TODO****************************
 TEXTURES
@@ -52,6 +50,7 @@ TEXTURES
 		structure-control block
 * textures for drafting station, survival-mode builder block
 * screenshots for all default-included structures
+* add lake-filling block
 
 ****************************AUTOMATION MODULE TODO****************************	
 * textures for warehouse storage / input / output
@@ -75,9 +74,11 @@ TEXTURES
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
 * method for creative-mode players to access and alter faction-based NPCs -- equipment, owner-name??, other settings?
+	add a temp disable wander control -- non saved, used for map setup
+	allow them to follow creative players for positioning
+* fix horses spawned with horse-combat units	
 * find default sound/music for bards
 * rework trader / gui to still allow access to inventory for player-owned traders.
-* add item for bard instrument
 * add item for priest holy-symbols (should I just make it a 'religious book'?)
 * textures for npc types:
 	player owned trader
@@ -86,7 +87,6 @@ TEXTURES
 	player owned commander
 	player owned medic
 	player owned archer
-* spawner icons for trader, bard, priest
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
 * add npc-recruiting station -- worksite, crafting

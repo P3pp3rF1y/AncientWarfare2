@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
-import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.crafting.AWCoreCrafting;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.item.ItemEventHandler;
@@ -106,7 +106,7 @@ public void preInit(FMLPreInitializationEvent evt)
 public void init(FMLInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Core Init Started");
-  AWCraftingManager.INSTANCE.loadRecipes();
+  AWCoreCrafting.loadRecipes();
   ClientOptions.INSTANCE.loadClientOptions();
   /**
    * register recipes

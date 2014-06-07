@@ -14,7 +14,6 @@ public class RecipeResearched extends ShapedRecipes
 
 private Set<Integer> neededResearch = new HashSet<Integer>();
 
-
 public RecipeResearched(int par1, int par2, ItemStack[] par3ArrayOfItemStack, ItemStack par4ItemStack)
   {
   super(par1, par2, par3ArrayOfItemStack, par4ItemStack);
@@ -25,7 +24,14 @@ public final RecipeResearched addResearch(String... names)
   ResearchGoal g;  
   for(String name : names)
     {
-    g = ResearchGoal.getGoal(name);
+    if(name.startsWith("research."))
+      {
+      g = ResearchGoal.getGoal(name);      
+      }
+    else
+      {
+      g = ResearchGoal.getGoal("resesarch."+name);
+      }
     if(g!=null)
       {
       neededResearch.add(g.getId());
