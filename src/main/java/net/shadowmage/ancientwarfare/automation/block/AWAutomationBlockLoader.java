@@ -241,9 +241,21 @@ public static void load()
   
   GameRegistry.registerBlock(warehouseInput, "warehouse_input");
   GameRegistry.registerTileEntity(TileWarehouseInput.class, "warehouse_input_tile");
+  warehouseInput.setIcon(0, 0, "ancientwarfare:automation/warehouse_input_bottom");
+  warehouseInput.setIcon(0, 1, "ancientwarfare:automation/warehouse_input_top");
+  warehouseInput.setIcon(0, 2, "ancientwarfare:automation/warehouse_input_side");
+  warehouseInput.setIcon(0, 3, "ancientwarfare:automation/warehouse_input_side");
+  warehouseInput.setIcon(0, 4, "ancientwarfare:automation/warehouse_input_side");
+  warehouseInput.setIcon(0, 5, "ancientwarfare:automation/warehouse_input_side");
   
   GameRegistry.registerBlock(warehouseOutput, "warehouse_output");
   GameRegistry.registerTileEntity(TileWarehouseOutput.class, "warehouse_output_tile");
+  warehouseOutput.setIcon(0, 0, "ancientwarfare:automation/warehouse_output_bottom");
+  warehouseOutput.setIcon(0, 1, "ancientwarfare:automation/warehouse_output_top");
+  warehouseOutput.setIcon(0, 2, "ancientwarfare:automation/warehouse_output_side");
+  warehouseOutput.setIcon(0, 3, "ancientwarfare:automation/warehouse_output_side");
+  warehouseOutput.setIcon(0, 4, "ancientwarfare:automation/warehouse_output_side");
+  warehouseOutput.setIcon(0, 5, "ancientwarfare:automation/warehouse_output_side");
   
   GameRegistry.registerBlock(warehouseCrafting, "warehouse_crafting_station");
   GameRegistry.registerTileEntity(TileWarehouseCraftingStation.class, "warehouse_crafting_station_tile");
@@ -316,9 +328,21 @@ public static void load()
   
   GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");
   GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");
+  chunkLoaderSimple.iconMap.setIconTexture(0, 0, "ancientwarfare:automation/chunk_loader_simple_bottom");
+  chunkLoaderSimple.iconMap.setIconTexture(1, 0, "ancientwarfare:automation/chunk_loader_simple_bottom");
+  chunkLoaderSimple.iconMap.setIconTexture(2, 0, "ancientwarfare:automation/chunk_loader_simple_side");
+  chunkLoaderSimple.iconMap.setIconTexture(3, 0, "ancientwarfare:automation/chunk_loader_simple_side");
+  chunkLoaderSimple.iconMap.setIconTexture(4, 0, "ancientwarfare:automation/chunk_loader_simple_side");
+  chunkLoaderSimple.iconMap.setIconTexture(5, 0, "ancientwarfare:automation/chunk_loader_simple_side");
   
   GameRegistry.registerBlock(chunkLoaderDeluxe, "chunk_loader_deluxe");
   GameRegistry.registerTileEntity(TileChunkLoaderDeluxe.class, "chunk_loader_deluxe_tile");
+  chunkLoaderDeluxe.iconMap.setIconTexture(0, 0, "ancientwarfare:automation/chunk_loader_deluxe_bottom");
+  chunkLoaderDeluxe.iconMap.setIconTexture(1, 0, "ancientwarfare:automation/chunk_loader_deluxe_bottom");
+  chunkLoaderDeluxe.iconMap.setIconTexture(2, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
+  chunkLoaderDeluxe.iconMap.setIconTexture(3, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
+  chunkLoaderDeluxe.iconMap.setIconTexture(4, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
+  chunkLoaderDeluxe.iconMap.setIconTexture(5, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
   }
 
 }
