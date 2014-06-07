@@ -259,6 +259,12 @@ public static void load()
   
   GameRegistry.registerBlock(warehouseCrafting, "warehouse_crafting_station");
   GameRegistry.registerTileEntity(TileWarehouseCraftingStation.class, "warehouse_crafting_station_tile");
+  warehouseCrafting.setIcon(0,0, "ancientwarfare:automation/warehouse_crafting_bottom");
+  warehouseCrafting.setIcon(1,0, "ancientwarfare:automation/warehouse_crafting_top");
+  warehouseCrafting.setIcon(2,0, "ancientwarfare:automation/warehouse_crafting_front");  
+  warehouseCrafting.setIcon(3,0, "ancientwarfare:automation/warehouse_crafting_front");
+  warehouseCrafting.setIcon(4,0, "ancientwarfare:automation/warehouse_crafting_side");
+  warehouseCrafting.setIcon(5,0, "ancientwarfare:automation/warehouse_crafting_side");  
   
   GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockOwnedRotatable.class, "civic_auto_crafting");
   GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");
@@ -301,30 +307,27 @@ public static void load()
   
   GameRegistry.registerBlock(torqueGeneratorSterling, ItemBlockOwnedRotatable.class, "torque_generator_sterling");
   GameRegistry.registerTileEntity(TileTorqueGeneratorSterling.class, "torque_generator_sterling_tile");
-//TODO add proper textures/refs
-  torqueGeneratorSterling.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/torque_junction_top");
-  torqueGeneratorSterling.setIcon(RelativeSide.REAR, "ancientwarfare:automation/torque_junction_bottom");
-  torqueGeneratorSterling.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/torque_junction_bottom");
-  torqueGeneratorSterling.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/torque_junction_bottom");
-  torqueGeneratorSterling.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_junction_bottom");
-  torqueGeneratorSterling.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");
+  torqueGeneratorSterling.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/torque_generator_sterling_top");
+  torqueGeneratorSterling.setIcon(RelativeSide.REAR, "ancientwarfare:automation/torque_generator_sterling_bottom");
+  torqueGeneratorSterling.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/torque_generator_sterling_bottom");
+  torqueGeneratorSterling.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/torque_generator_sterling_bottom");
+  torqueGeneratorSterling.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_generator_sterling_bottom");
+  torqueGeneratorSterling.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_generator_sterling_bottom");
   
   GameRegistry.registerBlock(torqueGeneratorWaterwheel, ItemBlockOwnedRotatable.class, "torque_generator_waterwheel");
   GameRegistry.registerTileEntity(TileTorqueGeneratorWaterwheel.class, "torque_generator_waterwheel_tile");
-//TODO add proper textures/refs
-  torqueGeneratorWaterwheel.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/torque_junction_top");
-  torqueGeneratorWaterwheel.setIcon(RelativeSide.REAR, "ancientwarfare:automation/torque_junction_bottom");
-  torqueGeneratorWaterwheel.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/torque_junction_bottom");
-  torqueGeneratorWaterwheel.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/torque_junction_bottom");
-  torqueGeneratorWaterwheel.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_junction_bottom");
-  torqueGeneratorWaterwheel.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");
+  torqueGeneratorWaterwheel.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/torque_generator_waterwheel_top");
+  torqueGeneratorWaterwheel.setIcon(RelativeSide.REAR, "ancientwarfare:automation/torque_generator_waterwheel_bottom");
+  torqueGeneratorWaterwheel.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/torque_generator_waterwheel_bottom");
+  torqueGeneratorWaterwheel.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/torque_generator_waterwheel_bottom");
+  torqueGeneratorWaterwheel.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_generator_waterwheel_bottom");
+  torqueGeneratorWaterwheel.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_generator_waterwheel_bottom");
   
   GameRegistry.registerBlock(handCrankedEngine, ItemBlockOwnedRotatable.class, "hand_cranked_engine");
   GameRegistry.registerTileEntity(TileTorqueGeneratorHandCranked.class, "hand_cranked_engine_tile");
-//TODO add proper textures/refs
-  handCrankedEngine.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_junction_top");
-  handCrankedEngine.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_junction_bottom");
-  handCrankedEngine.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_junction_side");
+  handCrankedEngine.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_generator_hand_top");
+  handCrankedEngine.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_generator_hand_bottom");
+  handCrankedEngine.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_generator_hand_side");
   
   GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");
   GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");
