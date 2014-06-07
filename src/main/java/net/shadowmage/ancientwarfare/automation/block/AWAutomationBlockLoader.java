@@ -101,8 +101,7 @@ public static final BlockWorksiteBase worksiteAutoCrafting = new BlockWorksiteBa
     return new WorksiteAutoCrafting();
     }
   };
-  
-  
+    
 public static final BlockWorksiteBase worksiteWarehouse = new BlockWorksiteBase(Material.rock, "civic_warehouse")
   {    
   @Override
