@@ -31,7 +31,6 @@ import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import sun.security.krb5.Config;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -78,20 +77,6 @@ public Class<? extends GuiContainer> getGuiClass()
   }
 
 @Override
-public void loadCraftingRecipes(String outputId, Object... results)
-  {
-  if(results.length>=1 && results[0]!=null && results[0] instanceof ItemStack)
-    {
-    ItemStack stack = (ItemStack)results[0];
-//    if(stack.hasTagCompound())
-//      {
-//      stack.getTagCompound().setName("tag");
-//      }
-    loadCraftingRecipes((ItemStack)results[0]);
-    }  
-  }
-
-@Override
 public void loadCraftingRecipes(ItemStack result)
   {  
   List<RecipeResearched> allrecipes = AWCraftingManager.INSTANCE.getRecipes();
@@ -126,8 +111,6 @@ public boolean hasOverlay(GuiContainer gui, Container container, int recipe)
   return super.hasOverlay(gui, container, recipe) || RecipeInfo.hasDefaultOverlay(gui, "awcrafting");
   }
 
-
-
 public class AWCachedRecipe extends CachedRecipe
 {
 
@@ -137,27 +120,24 @@ public AWCachedRecipe(RecipeResearched recipe)
   {
   result = new PositionedStack(recipe.getRecipeOutput().copy(), 119, 24);
   ingredients = new ArrayList<PositionedStack>();
-  setIngredients(recipe.recipeItems);
+  setIngredients(recipe.recipeWidth, recipe.recipeHeight, recipe.recipeItems);
   }
 
-public void setIngredients(ItemStack[] items)
+public void setIngredients(int width, int height, Object[] items)
   {
-//  int index;
-//  for(int x = 0; x < 3; x++)
-//    {
-//    for(int y = 0; y < 3; y++)
-//      {
-//      index = y*3+x;
-//      if(items[y*3+x]==null)
-//      if((y*3+x)>=items.size() || items.get(y*3+x) == null)
-//        {
-//        continue;
-//        }
-//      PositionedStack stack = new PositionedStack(items.get(y*3+x).getFilter(), 25+x*18, 6+y*18);
-//      stack.setMaxSize(64);
-//      ingredients.add(stack);
-//      }
-//    }
+  for (int x = 0; x < width; x++)
+    {
+    for (int y = 0; y < height; y++)
+      {
+      if (items[y * width + x] == null)
+        {
+        continue;    
+        }
+      PositionedStack stack = new PositionedStack(items[y * width + x], 25 + x * 18, 6 + y * 18, false);
+      stack.setMaxSize(1);
+      ingredients.add(stack);
+      }
+    }
   }
 
 @Override
