@@ -259,12 +259,12 @@ public static void load()
   
   GameRegistry.registerBlock(warehouseCrafting, "warehouse_crafting_station");
   GameRegistry.registerTileEntity(TileWarehouseCraftingStation.class, "warehouse_crafting_station_tile");
-  warehouseCrafting.setIcon(0,0, "ancientwarfare:automation/warehouse_crafting_bottom");
-  warehouseCrafting.setIcon(1,0, "ancientwarfare:automation/warehouse_crafting_top");
-  warehouseCrafting.setIcon(2,0, "ancientwarfare:automation/warehouse_crafting_front");  
-  warehouseCrafting.setIcon(3,0, "ancientwarfare:automation/warehouse_crafting_front");
-  warehouseCrafting.setIcon(4,0, "ancientwarfare:automation/warehouse_crafting_side");
-  warehouseCrafting.setIcon(5,0, "ancientwarfare:automation/warehouse_crafting_side");  
+  warehouseCrafting.setIcon(0, 0, "ancientwarfare:automation/warehouse_crafting_bottom");
+  warehouseCrafting.setIcon(0, 1, "ancientwarfare:automation/warehouse_crafting_top");
+  warehouseCrafting.setIcon(0, 2, "ancientwarfare:automation/warehouse_crafting_front");  
+  warehouseCrafting.setIcon(0, 3, "ancientwarfare:automation/warehouse_crafting_front");
+  warehouseCrafting.setIcon(0, 4, "ancientwarfare:automation/warehouse_crafting_side");
+  warehouseCrafting.setIcon(0, 5, "ancientwarfare:automation/warehouse_crafting_side");  
   
   GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockOwnedRotatable.class, "civic_auto_crafting");
   GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");

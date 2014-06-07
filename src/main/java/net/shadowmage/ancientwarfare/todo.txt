@@ -27,21 +27,13 @@ Licensing
 TEXTURES
 	core
 	automation
-		warehouse input
-		warehouse output
-		warehouse storage small
 		warehouse storage medium 
 		warehouse storage large
-		warehouse crafting station
-		hand-cranked-engine
+		hand-cranked-generator
 		sterling generator
-		waterwheel generator
-		distribution block
-	structure
-		drafting station
-		structure scanner
-		structure builder
+		waterwheel generator	
 	npc
+		recruiting station
 	vehicle	
 	
 ****************************MEIM MODULE TODO****************************
