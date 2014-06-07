@@ -45,7 +45,7 @@ public BlockGateProxy(String regName)
   {
   super(Material.rock);
   this.setBlockName(regName);
-  this.setBlockTextureName("ancientwarfare:gate/gateProxy");
+  this.setBlockTextureName("ancientwarfare:structure/gate_proxy");
   this.setCreativeTab(null);
   this.setResistance(2000.f);
   this.setHardness(5.f);

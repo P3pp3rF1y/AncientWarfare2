@@ -25,7 +25,7 @@ public BlockAdvancedSpawner(String regName)
   super(Material.rock);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setBlockName(regName);
-  this.setBlockTextureName("ancientwarfare:spawner/advanced_spawner");
+  this.setBlockTextureName("ancientwarfare:structure/advanced_spawner");
   }
 
 @Override
@@ -65,7 +65,7 @@ public boolean isOpaqueCube()
 public void registerBlockIcons(IIconRegister p_149651_1_)
   {
   super.registerBlockIcons(p_149651_1_);
-  transparentIcon = p_149651_1_.registerIcon("ancientwarfare:spawner/advanced_spawner2");
+  transparentIcon = p_149651_1_.registerIcon("ancientwarfare:structure/advanced_spawner2");
   }
 
 @Override
