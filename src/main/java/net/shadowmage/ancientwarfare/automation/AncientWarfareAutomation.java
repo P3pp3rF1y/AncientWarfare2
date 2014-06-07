@@ -25,6 +25,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteMushr
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeFarm;
+import net.shadowmage.ancientwarfare.automation.crafting.AWAutomationCrafting;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
@@ -147,6 +148,7 @@ public void init(FMLInitializationEvent evt)
   /**
    * construct recipes, load plugins
    */
+  AWAutomationCrafting.loadRecipes();
   AWLog.log("Ancient Warfare Automation Init completed");
   }
 

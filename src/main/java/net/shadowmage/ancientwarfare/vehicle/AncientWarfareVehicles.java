@@ -4,6 +4,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
+import net.shadowmage.ancientwarfare.vehicle.crafting.AWVehicleCrafting;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
 import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
 import cpw.mods.fml.common.Mod;
@@ -73,6 +74,7 @@ public void init(FMLInitializationEvent evt)
   /**
    * construct recipes, load plugins
    */
+  AWVehicleCrafting.loadRecipes();
   AWLog.log("Ancient Warfare Vehicles Init completed");
   }
 

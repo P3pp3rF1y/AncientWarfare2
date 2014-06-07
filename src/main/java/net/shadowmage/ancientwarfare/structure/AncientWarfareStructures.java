@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvance
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerPlacer;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
+import net.shadowmage.ancientwarfare.structure.crafting.AWStructureCrafting;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
@@ -128,7 +129,7 @@ public void init(FMLInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Structures Init started"); 
   BlockDataManager.instance().load();
-
+  AWStructureCrafting.loadRecipes();
   AWLog.log("Ancient Warfare Structures Init completed");
   }
 

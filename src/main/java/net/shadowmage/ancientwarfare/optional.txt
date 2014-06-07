@@ -1,3 +1,9 @@
+****************************CORE MODULE TODO****************************
+? Implement tile-based rotatable block -- twenty-four way
+? find a method to make a 'treasure' system:
+	this would be a map or 'notes' item that a player can find in a dungeon or structures
+	this should lead them to another dungeon that contains good treasure
+
 ****************************AUTOMATION MODULE TODO****************************	
 ? worksites needed:
 	Smeltery multiblock -- ore processing

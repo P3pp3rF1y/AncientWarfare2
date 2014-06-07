@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
+import net.shadowmage.ancientwarfare.npc.crafting.AWNpcCrafting;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
@@ -120,6 +121,7 @@ public void init(FMLInitializationEvent evt)
   /**
    * construct recipes, load plugins
    */
+  AWNpcCrafting.loadRecipes();
   AWLog.log("Ancient Warfare NPCs Init completed");
   }
 
