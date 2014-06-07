@@ -133,4 +133,6 @@ public RecipeResearched addRecipe(ItemStack par1ItemStack, Object ... par2ArrayO
   return recipe;
   }
 
+public List<RecipeResearched> getRecipes(){return recipes;}
+
 }

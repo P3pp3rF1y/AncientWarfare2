@@ -59,12 +59,6 @@ public class AncientWarfareNEIPlugin
 @Instance(value="AncientWarfareNEIPlugin")
 public static AncientWarfareNEIPlugin instance;
 
-@SidedProxy
-(
-clientSide = "net.shadowmage.ancientwarfare.automation.proxy.ClientProxyAutomation",
-serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy"
-)
-public static CommonProxyBase proxy;
 
 public static Configuration config;
 
