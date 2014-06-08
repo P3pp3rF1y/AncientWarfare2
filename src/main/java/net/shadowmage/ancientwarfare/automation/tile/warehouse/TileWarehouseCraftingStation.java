@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile.worksite;
+package net.shadowmage.ancientwarfare.automation.tile.warehouse;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

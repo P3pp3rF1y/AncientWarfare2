@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseStorageBase;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseStorageBase;
 
 import org.lwjgl.opengl.GL11;
 

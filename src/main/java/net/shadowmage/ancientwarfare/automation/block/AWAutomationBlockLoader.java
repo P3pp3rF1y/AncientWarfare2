@@ -14,10 +14,11 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorW
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheel;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributor;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseCraftingStation;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseInput;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseOutput;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWarehouseStorageSmall;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseCraftingStation;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseInput;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseOutput;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseStorageSmall;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
@@ -25,7 +26,6 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteMushroomFa
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteTreeFarm;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;

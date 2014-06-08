@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile.worksite;
+package net.shadowmage.ancientwarfare.automation.tile.warehouse;
 
 import java.util.ArrayList;
 import java.util.List;
