@@ -46,21 +46,20 @@ TEXTURES
 	needs basic pathfinding algorithm to find what blocks to fill
 
 ****************************AUTOMATION MODULE TODO****************************	
-* textures for warehouse storage / input / output
-* figure out lighting / color stuff on tesr renderer
 * Torque API:
 	Add input max/tick code to tiles, reset counter every tile-update.
 	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
 * recipes for nearly everything
-* warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
-* mailbox side-select GUI needs cleaned up to mirror worksite side-select GUI
+* mailbox gui has some translations missing
 ** warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 	how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 	--perhaps have different methods for tile.invalidate() and onBlockBroken
 	--or move back to storing actual items in the storage blocks 
-		control block merely aggregates all items in storage blocks	
+		control block merely aggregates all items in storage blocks
+		allow players to filter the contents of specific blocks? fill those first when inputing into warehouse?	
+	--check into status of the ISlotlessInventory pull-request		
 		
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works

@@ -373,7 +373,7 @@ private void tick(int length)
       if(item.deliveryTime>=time)//find if item is deliverable to this box
         {
         stack = item.item;
-        stack = InventoryTools.mergeItemStack(box.inventory, stack, box.inventory.getAccessDirectionFor(RelativeSide.BOTTOM));
+        stack = InventoryTools.mergeItemStack(box.inventory, stack, box.inventory.getAccessDirectionFor(RelativeSide.TOP));
         if(stack==null)
           {
           it.remove();          

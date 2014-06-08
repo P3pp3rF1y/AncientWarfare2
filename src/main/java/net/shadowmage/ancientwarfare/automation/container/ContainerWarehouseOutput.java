@@ -26,10 +26,10 @@ public ContainerWarehouseOutput(EntityPlayer player, int x, int y, int z)
   WarehouseSlotFilter filter = new WarehouseSlotFilter();  
   for(int i = 0; i < 9; i++)
     {
-    addSlotToContainer(new SlotFiltered(tile, i, (i%3)*18+8+3*18, (i/3)*18+8, filter));
+    addSlotToContainer(new SlotFiltered(tile, i, (i%3)*18+8+3*18, (i/3)*18+8+80+8, filter));
     }
   
-  addPlayerSlots(player, 8, 8+8+3*18, 4);
+  addPlayerSlots(player, 8, 8+8+3*18+80+8, 4);
   }
 
 @Override

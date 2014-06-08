@@ -68,8 +68,7 @@ public void updateScreen()
 @Override
 public void initElements()
   {
-  int areaY = 8 + 3*18 + 8 + 4*18 + 4 + 8;
-  area = new CompositeScrolled(0, areaY, xSize, ySize-areaY);
+  area = new CompositeScrolled(0, 0, xSize, 88);
   addGuiElement(area);
   }
 

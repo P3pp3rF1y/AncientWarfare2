@@ -30,7 +30,7 @@ public GuiMailboxInventory(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  inputNameSelect = new Button(178-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.automation.mailbox_name_select"))
+  inputNameSelect = new Button(178-8-75, 8, 75, 12, StatCollector.translateToLocal("guistrings.automation.mailbox_name_select"))
     {
     @Override
     protected void onPressed()
@@ -44,7 +44,7 @@ public void initElements()
     };
   addGuiElement(inputNameSelect);
   
-  outputNameSelect = new Button(178-8-55, 8+12+2*18, 55, 12, StatCollector.translateToLocal("guistrings.automation.mailbox_target_select"))
+  outputNameSelect = new Button(178-8-75, 8+12+2*18, 75, 12, StatCollector.translateToLocal("guistrings.automation.mailbox_target_select"))
     {
     @Override
     protected void onPressed()
@@ -58,7 +58,7 @@ public void initElements()
     };
   addGuiElement(outputNameSelect);
   
-  sideSelectButton = new Button(178-8-55, ySize-8-12-12, 55, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
+  sideSelectButton = new Button(178-8-75, ySize-8-12-12, 75, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
     {
     @Override
     protected void onPressed()
