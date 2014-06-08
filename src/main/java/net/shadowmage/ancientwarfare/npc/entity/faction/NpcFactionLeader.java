@@ -4,7 +4,6 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
@@ -18,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindCommanderFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 

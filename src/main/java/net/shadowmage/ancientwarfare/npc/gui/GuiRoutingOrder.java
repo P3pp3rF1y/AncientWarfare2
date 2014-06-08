@@ -2,24 +2,16 @@ package net.shadowmage.ancientwarfare.npc.gui;
 
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.block.Direction;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
-import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Line;
@@ -28,6 +20,9 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder.RoutePoint;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 public class GuiRoutingOrder extends GuiContainerBase
 {

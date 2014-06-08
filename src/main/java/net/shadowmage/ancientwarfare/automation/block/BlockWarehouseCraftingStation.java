@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,6 +12,8 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseCraf
 import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockWarehouseCraftingStation extends Block
 {

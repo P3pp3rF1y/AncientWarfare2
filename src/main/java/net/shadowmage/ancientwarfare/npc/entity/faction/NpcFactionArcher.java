@@ -18,7 +18,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindCommanderFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;

@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;

@@ -2,10 +2,6 @@ package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -17,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindCommanderFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 

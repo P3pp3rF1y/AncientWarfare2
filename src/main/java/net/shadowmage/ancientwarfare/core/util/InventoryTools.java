@@ -1,15 +1,11 @@
 package net.shadowmage.ancientwarfare.core.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -20,8 +16,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap.ItemHashEntry;
 
 public class InventoryTools

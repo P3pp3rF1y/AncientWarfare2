@@ -1,14 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.event;
 
-import java.util.List;
-
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;

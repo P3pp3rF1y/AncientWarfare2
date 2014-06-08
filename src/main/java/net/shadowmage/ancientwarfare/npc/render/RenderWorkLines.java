@@ -3,8 +3,6 @@ package net.shadowmage.ancientwarfare.npc.render;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -15,12 +13,15 @@ import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder.RoutePoint;
-import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class RenderWorkLines

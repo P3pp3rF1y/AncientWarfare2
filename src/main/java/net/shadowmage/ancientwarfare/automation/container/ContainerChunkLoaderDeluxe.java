@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerChunkLoaderDeluxe extends ContainerBase

@@ -5,8 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 

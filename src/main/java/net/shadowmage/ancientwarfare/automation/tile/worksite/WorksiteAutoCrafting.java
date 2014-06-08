@@ -12,8 +12,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -22,7 +20,6 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 
 public class WorksiteAutoCrafting extends TileWorksiteBase implements IInventory, IWorkSite, ISidedInventory, IInteractableTile
 {

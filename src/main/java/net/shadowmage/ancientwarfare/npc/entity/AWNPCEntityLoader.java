@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
