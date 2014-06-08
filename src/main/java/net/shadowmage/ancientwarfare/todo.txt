@@ -22,6 +22,7 @@ TEXTURES
 	vehicle	
 	
 ****************************CORE MODULE TODO****************************
+^ (fixed) research table has some bug where it will stall out even with proper resources, perhaps a resource-meta-matching problem, or some issue with checking power levels
 * crafting system--needs recipes from other modules
 * need LOTS of tooltips added to various elements in GUIs	
 * Finish creating proper text-input validation stuff for Text and NumberInput widgets
@@ -29,14 +30,15 @@ TEXTURES
 	need to setup validation per-input box...
 * GUI - SHIFT-CLICK CODE
 * GUI - rendering of item stack quantities >99 -- need to do custom rendering of text, scaled down appropriately
-* research table has some bug where it will stall out even with proper resources, perhaps a resource-meta-matching problem, or some issue with checking power levels
 	
 ****************************STRUCTURE MODULE TODO****************************
 > plugins / support for vehicle module
 > plugin support for automation module	
 * plugin support for npc module
-	npcs--done
+	npcs--done?
 	blocks--
+		town hall
+		recruiting station
 		structure-control block	
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
@@ -44,6 +46,7 @@ TEXTURES
 * screenshots for all default-included structures
 * add lake-filling item
 	needs basic pathfinding algorithm to find what blocks to fill
+* basic construction/destruction tools -- set block in an area, clear blocks in an area (possibly same tool)	
 
 ****************************AUTOMATION MODULE TODO****************************	
 * Torque API:
@@ -66,6 +69,7 @@ TEXTURES
 * method for creative-mode players to access and alter faction-based NPCs -- equipment, owner-name??, other settings?
 	add a temp disable wander control -- non saved, used for map setup
 	allow them to follow creative players for positioning
+* add hint icons to npc gui for weapon/armor/orders slots (with hover/tooltip)	
 * find default sound/music for bards
 * rework trader / gui to still allow access to inventory for player-owned traders.
 * add item for priest holy-symbols (should I just make it a 'religious book'?)
