@@ -52,7 +52,6 @@ TEXTURES
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
 * recipes for nearly everything
-* mailbox gui has some translations missing
 ** warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
 	how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
 	--perhaps have different methods for tile.invalidate() and onBlockBroken
@@ -70,13 +69,6 @@ TEXTURES
 * find default sound/music for bards
 * rework trader / gui to still allow access to inventory for player-owned traders.
 * add item for priest holy-symbols (should I just make it a 'religious book'?)
-* textures for npc types:
-	player owned trader
-	player owned priest
-	player owned soldier
-	player owned commander
-	player owned medic
-	player owned archer
 * faction owned archer default ranged attack	
 * add recipes and research requirements for npcs and npc-related blocks
 * add recipes to copy upkeep/work/combat/routing orders		
