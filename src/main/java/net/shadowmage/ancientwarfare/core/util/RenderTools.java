@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -9,6 +10,11 @@ import org.lwjgl.opengl.GL11;
 public class RenderTools
 {
 
+
+public static void setFullColorLightmap()
+  {
+  OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0.f, 240.f);  
+  }
 
 /**
  * @param textureWidth texture width
@@ -64,6 +70,86 @@ public static void renderTexturedQuad(float x1, float y1, float x2, float y2, fl
   }
 
 /**
+ * render a BB as a set of enlarged cuboids.
+ * @param bb
+ * @param r
+ * @param g
+ * @param b
+ * @param width
+ */
+public static void drawOutlinedBoundingBox2(AxisAlignedBB bb, float r, float g, float b, float width)
+  {
+  GL11.glEnable(GL11.GL_BLEND);
+  GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+  GL11.glColor4f(r, g, b, 0.4F);
+  GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);  
+  float hw = width/2;  
+  drawCuboid((float)bb.minX, (float)bb.minY-hw, (float)bb.minZ-hw, (float)bb.maxX, (float)bb.minY+hw, (float)bb.minZ+hw);
+  drawCuboid((float)bb.minX, (float)bb.maxY-hw, (float)bb.minZ-hw, (float)bb.maxX, (float)bb.maxY+hw, (float)bb.minZ+hw);  
+  drawCuboid((float)bb.minX, (float)bb.minY-hw, (float)bb.maxZ-hw, (float)bb.maxX, (float)bb.minY+hw, (float)bb.maxZ+hw);
+  drawCuboid((float)bb.minX, (float)bb.maxY-hw, (float)bb.maxZ-hw, (float)bb.maxX, (float)bb.maxY+hw, (float)bb.maxZ+hw);
+  
+  drawCuboid((float)bb.minX-hw, (float)bb.minY, (float)bb.minZ-hw, (float)bb.minX+hw, (float)bb.maxY, (float)bb.minZ+hw);
+  drawCuboid((float)bb.maxX-hw, (float)bb.minY, (float)bb.minZ-hw, (float)bb.maxX+hw, (float)bb.maxY, (float)bb.minZ+hw);
+  drawCuboid((float)bb.minX-hw, (float)bb.minY, (float)bb.maxZ-hw, (float)bb.minX+hw, (float)bb.maxY, (float)bb.maxZ+hw);
+  drawCuboid((float)bb.maxX-hw, (float)bb.minY, (float)bb.maxZ-hw, (float)bb.maxX+hw, (float)bb.maxY, (float)bb.maxZ+hw);
+  
+  drawCuboid((float)bb.minX-hw, (float)bb.minY-hw, (float)bb.minZ, (float)bb.minX+hw, (float)bb.minY+hw, (float)bb.maxZ);
+  drawCuboid((float)bb.minX-hw, (float)bb.maxY-hw, (float)bb.minZ, (float)bb.minX+hw, (float)bb.maxY+hw, (float)bb.maxZ);  
+  drawCuboid((float)bb.maxX-hw, (float)bb.minY-hw, (float)bb.minZ, (float)bb.maxX+hw, (float)bb.minY+hw, (float)bb.maxZ);
+  drawCuboid((float)bb.maxX-hw, (float)bb.maxY-hw, (float)bb.minZ, (float)bb.maxX+hw, (float)bb.maxY+hw, (float)bb.maxZ);
+  GL11.glDisable(GL11.GL_BLEND);
+  }
+
+public static void drawCuboid(float x, float y, float z, float mx, float my, float mz)
+  {
+  GL11.glBegin(GL11.GL_QUADS);
+  //z+ side
+  GL11.glNormal3f(0, 0, 1);
+  GL11.glVertex3f(x, my, mz);
+  GL11.glVertex3f(x, y, mz);
+  GL11.glVertex3f(mx, y, mz);
+  GL11.glVertex3f(mx, my, mz);
+  
+  //x+ side
+  GL11.glNormal3f(1, 0, 0);
+  GL11.glVertex3f(mx, my, mz);
+  GL11.glVertex3f(mx, y, mz);
+  GL11.glVertex3f(mx, y, z);
+  GL11.glVertex3f(mx, my, z);
+  
+  //y+ side
+  GL11.glNormal3f(0, 1, 0);
+  GL11.glVertex3f(x, my, z);
+  GL11.glVertex3f(x, my, mz);
+  GL11.glVertex3f(mx, my, mz);
+  GL11.glVertex3f(mx, my, z);
+  
+  //z- side
+  GL11.glNormal3f(0, 0, -1);
+  GL11.glVertex3f(x, my, z);
+  GL11.glVertex3f(mx, my, z);
+  GL11.glVertex3f(mx, y, z);
+  GL11.glVertex3f(x, y, z);
+  
+  //x-side
+  GL11.glNormal3f(-1, 0, 0);
+  GL11.glVertex3f(x, y, mz);
+  GL11.glVertex3f(x, my, mz);
+  GL11.glVertex3f(x, my, z);
+  GL11.glVertex3f(x, y, z);
+  
+  //y- side
+  GL11.glNormal3f(0, -1, 0);
+  GL11.glVertex3f(x, y, z);
+  GL11.glVertex3f(mx, y, z);
+  GL11.glVertex3f(mx, y, mz);
+  GL11.glVertex3f(x, y, mz);
+  
+  GL11.glEnd();
+  }
+
+/**
  * draw a player-position-normalized bounding box (can only be called during worldRender)
  * @param bb
  */
@@ -75,6 +161,7 @@ public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, f
   GL11.glLineWidth(8.0F);
   GL11.glDisable(GL11.GL_TEXTURE_2D);
   GL11.glDepthMask(false);
+  
   Tessellator tess = Tessellator.instance;
   tess.startDrawing(3);
   tess.addVertex(bb.minX, bb.minY, bb.minZ);
@@ -100,6 +187,7 @@ public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, f
   tess.addVertex(bb.minX, bb.minY, bb.maxZ);
   tess.addVertex(bb.minX, bb.maxY, bb.maxZ);
   tess.draw();
+  
   GL11.glDepthMask(true);
   GL11.glEnable(GL11.GL_TEXTURE_2D);
   GL11.glDisable(GL11.GL_BLEND);

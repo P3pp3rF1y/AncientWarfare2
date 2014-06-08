@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
@@ -19,6 +20,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IBoundedTile, IOwnable, ITorqueReceiver
 {
@@ -42,6 +44,12 @@ protected abstract boolean hasWorksiteWork();
 protected abstract void updateOverflowInventory();
 
 protected abstract void updateWorksite();
+
+@Override
+public boolean shouldRenderInPass(int pass)
+  {
+  return pass==1;
+  }
 
 @Override
 public abstract boolean onBlockClicked(EntityPlayer player);
@@ -229,6 +237,24 @@ public final Team getTeam()
     worldObj.getScoreboard().getPlayersTeam(owningPlayer);
     }
   return null;
+  }
+
+@Override
+public AxisAlignedBB getRenderBoundingBox()
+  {
+  AxisAlignedBB bb = super.getRenderBoundingBox();
+  if(hasWorkBounds())
+    {
+    BlockPosition min = getWorkBoundsMin();
+    BlockPosition max = getWorkBoundsMax();
+    bb.minX = min.x < bb.minX ? min.x : bb.minX;
+    bb.minY = min.y < bb.minY ? min.y : bb.minY;
+    bb.minZ = min.z < bb.minZ ? min.z : bb.minZ;
+    bb.maxX = max.x+1 > bb.maxX ? max.x+1 : bb.maxX;
+    bb.maxY = max.y+1 > bb.maxY ? max.y+1 : bb.maxY;
+    bb.maxZ = max.z+1 > bb.maxZ ? max.z+1 : bb.maxZ;
+    }
+  return bb;
   }
 
 }

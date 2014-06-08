@@ -47,13 +47,13 @@ TEXTURES
 
 ****************************AUTOMATION MODULE TODO****************************	
 * textures for warehouse storage / input / output
-* Change over worksite BB render to a TESR -- should be slightly more optimized than looping through all TEs every render tick
+* figure out lighting / color stuff on tesr renderer
 * Torque API:
 	Add input max/tick code to tiles, reset counter every tile-update.
 	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
-* recipes for EVERYTHING
+* recipes for nearly everything
 * warehouse output GUI -- swap filters from bottom to top, clone layout from storage block
 * mailbox side-select GUI needs cleaned up to mirror worksite side-select GUI
 ** warehouse needs to eject/limit item access when currentMaxStorage<currentStorage

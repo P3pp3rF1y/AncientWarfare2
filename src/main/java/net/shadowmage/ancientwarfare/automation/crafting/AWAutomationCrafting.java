@@ -98,5 +98,24 @@ public static void loadRecipes()
       'p', Items.paper,
       'c', Blocks.chest});
   recipe.addResearch("trade");
+    
+  //warehouse crafting
+  //warehouse input
+  //warehouse output
+  //warehouse small storage
+  //warehouse med storage
+  //warehouse large storage  
+  
+  //mailbox
+  
+  //chunkloader simple
+  //chunkloader deluxe
+  
+  //torque conduit
+  //torque distributor
+  //torque flywheel
+  //torque generator sterling
+  //torque generator waterwheel
+  //torque generator hand
   }
 }

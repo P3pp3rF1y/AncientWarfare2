@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,7 +26,8 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   drawShaftLine(0,0,0,0,0,1);
   GL11.glTranslatef(0, 0, 0.50f);
   TileTorqueGeneratorWaterwheel wheel = (TileTorqueGeneratorWaterwheel)te;
-  
+
+  OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)0 / 1.0F, (float)240 / 1.0F);
   float speed = wheel.rotationSpeed;  
   double angle = wheel.rotationAngle - (1.f-partialTick*speed);
   

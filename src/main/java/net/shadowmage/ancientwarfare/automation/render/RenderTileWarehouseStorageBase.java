@@ -57,6 +57,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
       GL11.glTranslatef(0.5f, 1.f, 0.5f);//translate the point to the top-center of the block
       GL11.glRotatef(-r+180.f, 0, 1, 0);//rotate for rotation
       GL11.glTranslatef(0.5f, 0, -0.5f);//translate to top-left corner
+      drawPointAtCurrentOrigin();
       renderSignContents(tile, x, y, z, r);
       GL11.glPopMatrix();      
       }
@@ -131,6 +132,7 @@ private void drawPointAtCurrentOrigin()
   {
   //debug point rendering
   GL11.glDisable(GL11.GL_TEXTURE_2D);
+  GL11.glDisable(GL11.GL_LIGHTING);
   GL11.glColor4f(1.f, 0.f, 0.f, 1.f);
   GL11.glPointSize(10.f);
   GL11.glBegin(GL11.GL_POINTS);
@@ -138,6 +140,7 @@ private void drawPointAtCurrentOrigin()
   GL11.glEnd();
   GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
   GL11.glEnable(GL11.GL_TEXTURE_2D);
+  GL11.glEnable(GL11.GL_LIGHTING);
   }
 
 }

@@ -68,10 +68,10 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
     {
     return;
     }
-  if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_WORK_BOUNDS))
-    {
-    renderWorkBounds(player, evt.partialTicks);
-    }
+//  if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_WORK_BOUNDS))
+//    {
+//    renderWorkBounds(player, evt.partialTicks);
+//    }
   ItemStack stack = player.inventory.getCurrentItem();
   if(stack!=null && stack.getItem() instanceof ItemBlockWorksite)
     {
@@ -195,7 +195,7 @@ private void renderWorkBounds(EntityPlayer player, float delta)
           max = min;
           }
         pos2Cache.reassign(max.x + 1, max.y + 1, max.z + 1);//using cached value so that the reference can be manipulated
-        renderBoundingBox(player, min, pos2Cache, delta);
+//        renderBoundingBox(player, min, pos2Cache, delta);
         }
       }
     }
