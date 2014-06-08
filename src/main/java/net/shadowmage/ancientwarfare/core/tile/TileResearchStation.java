@@ -108,7 +108,7 @@ public void updateEntity()
     {
     startCheckDelay--;
     }
-  if(hasWork() && storedEnergy>=AWCoreStatics.energyPerResearchUnit)
+  if(storedEnergy>=AWCoreStatics.energyPerResearchUnit)
     {
     storedEnergy -= AWCoreStatics.energyPerResearchUnit;
     workTick(1);
