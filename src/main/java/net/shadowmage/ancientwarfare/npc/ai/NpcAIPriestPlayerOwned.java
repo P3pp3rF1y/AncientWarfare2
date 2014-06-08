@@ -77,9 +77,10 @@ protected void resurrectTarget()
   entryToRes.beingResurrected=false;  
   npc.getTownHall().informViewers();  
   ItemStack stack = entryToRes.stackToSpawn;
-  NpcBase resdNpc = ItemNpcSpawner.createNpcFromItem(npc.worldObj, stack);
+  NpcBase resdNpc = ItemNpcSpawner.createNpcFromItem(npc.worldObj, stack);  
   if(resdNpc!=null)
     {
+    resdNpc.setHealth(resdNpc.getMaxHealth()/2);
     resdNpc.setPositionAndRotation(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
     npc.worldObj.spawnEntityInWorld(resdNpc);
     }
