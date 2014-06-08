@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile;
+package net.shadowmage.ancientwarfare.automation.tile.warehouse;
 
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 

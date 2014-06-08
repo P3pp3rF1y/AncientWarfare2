@@ -12,9 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.IWarehouseStorageTile;
-import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseStorageBase;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse.WarehouseItemFilter;
 
 import org.lwjgl.opengl.GL11;
 

@@ -14,9 +14,6 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
-import net.shadowmage.ancientwarfare.automation.tile.IControlledTile;
-import net.shadowmage.ancientwarfare.automation.tile.IWarehouseStorageTile;
-import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
@@ -47,6 +44,7 @@ private Set<TileEntity> tilesToUpdate = new HashSet<TileEntity>();
 private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
 public InventoryBasic inventory = new InventoryBasic(9);//manual input/output inventory
 public ItemQuantityMap inventoryMap = new ItemQuantityMap();//TODO make this private, wrap whatever is needed for the container in access methods
+
 /**************************WORK QUEUES******************************/
 private List<TileWarehouseOutput> outputToCheck = new ArrayList<TileWarehouseOutput>();
 private List<TileWarehouseOutput> outputToFill = new ArrayList<TileWarehouseOutput>();
@@ -76,7 +74,6 @@ public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
   if(this.storedEnergy>=this.maxEnergyStored){this.storedEnergy=this.maxEnergyStored;}
-//  AWLog.logDebug("adding energy to warehouse..new energy: "+storedEnergy);
   }
 
 @Override

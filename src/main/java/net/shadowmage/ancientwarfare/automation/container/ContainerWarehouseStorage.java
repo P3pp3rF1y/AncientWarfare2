@@ -6,8 +6,8 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.automation.tile.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseStorageBase;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse.WarehouseItemFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerWarehouseStorage extends ContainerBase
