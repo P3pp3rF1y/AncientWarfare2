@@ -36,7 +36,6 @@ public class WorkSiteWarehouse extends TileWorksiteBase implements IWorkSite, II
 /**************************WORKSITE FIELDS******************************/
 private BlockPosition bbMin;
 private BlockPosition bbMax;
-private String owningPlayer;
 
 /**************************WAREHOUSE FIELDS******************************/
 private boolean init = false;
