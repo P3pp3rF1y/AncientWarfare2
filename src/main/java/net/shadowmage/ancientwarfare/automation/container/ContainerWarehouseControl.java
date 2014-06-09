@@ -47,7 +47,7 @@ public void handlePacketData(NBTTagCompound tag)
       item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
       }    
     AWLog.logDebug("processing slot click..."+item);
-    warehouse.handleSlotClick(player, item);
+    warehouse.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
     }
   if(tag.hasKey("changeList"))
     {
@@ -56,7 +56,7 @@ public void handlePacketData(NBTTagCompound tag)
   refreshGui();
   }
 
-public void handleClientRequestSpecific(ItemStack stack)
+public void handleClientRequestSpecific(ItemStack stack, boolean isShiftClick)
   {    
   AWLog.logDebug("sending specific request for: "+stack);
   NBTTagCompound tag = new NBTTagCompound();
@@ -64,6 +64,7 @@ public void handleClientRequestSpecific(ItemStack stack)
     {
     tag.setTag("reqItem", stack.writeToNBT(new NBTTagCompound()));    
     }  
+  tag.setBoolean("isShiftClick", isShiftClick);
   NBTTagCompound pktTag = new NBTTagCompound();
   pktTag.setTag("slotClick", tag);
   sendDataToServer(pktTag);

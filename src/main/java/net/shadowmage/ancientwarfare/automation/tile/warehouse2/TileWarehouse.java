@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 
 public class TileWarehouse extends TileWarehouseBase
@@ -17,11 +18,11 @@ public TileWarehouse()
   }
 
 @Override
-public void handleSlotClick(EntityPlayer player, ItemStack filter)
+public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick)
   {
   if(filter!=null && player.inventory.getItemStack()==null)
     {
-    tryGetItem(player, filter);    
+    tryGetItem(player, filter, shiftClick);    
     }
   else if(player.inventory.getItemStack()!=null)
     {
@@ -54,7 +55,7 @@ private void tryAddItem(EntityPlayer player, ItemStack cursorStack)
     }
   }
 
-private void tryGetItem(EntityPlayer player, ItemStack filter)
+private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick)
   {
   List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
   ItemStack newCursorStack = filter.copy();
@@ -78,12 +79,19 @@ private void tryGetItem(EntityPlayer player, ItemStack filter)
       {
       break;
       }
-    }
+    }  
   if(newCursorStack.stackSize>0)
     {
-    player.inventory.setItemStack(newCursorStack);
-    EntityPlayerMP playerMP = (EntityPlayerMP)player;
-    playerMP.updateHeldItem();
+    if(shiftClick)
+      {
+      newCursorStack = InventoryTools.mergeItemStack(player.inventory, newCursorStack, -1);
+      }
+    if(newCursorStack!=null)
+      {
+      player.inventory.setItemStack(newCursorStack);
+      EntityPlayerMP playerMP = (EntityPlayerMP)player;
+      playerMP.updateHeldItem();      
+      }
     }
   }
 

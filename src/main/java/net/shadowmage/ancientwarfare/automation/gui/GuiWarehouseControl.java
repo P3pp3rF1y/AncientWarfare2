@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
@@ -101,7 +103,7 @@ public void initElements()
       {
       if(evt.mButton==0 && widget.isMouseOverElement(evt.mx, evt.my) && !area.isMouseOverSubElement(evt.mx, evt.my))
         {
-        container.handleClientRequestSpecific(null);
+        container.handleClientRequestSpecific(null, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
         }
       return true;
       }
@@ -142,7 +144,7 @@ private void addInventoryViewElements()
       @Override
       public void onSlotClicked(ItemStack stack)
         {
-        container.handleClientRequestSpecific(getStack());
+        container.handleClientRequestSpecific(getStack(), Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
         }
       };
     area.addGuiElement(slot);

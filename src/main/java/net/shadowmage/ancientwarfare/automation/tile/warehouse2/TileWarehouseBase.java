@@ -70,7 +70,7 @@ public TileWarehouseBase()
   
   }
 
-public abstract void handleSlotClick(EntityPlayer player, ItemStack filter);
+public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick);
 
 private boolean tryEmptyInterfaces()
   {  
