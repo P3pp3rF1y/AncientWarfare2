@@ -1,23 +1,32 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.WorkSiteWarehouse;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySlotlessBasic;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public class TileWarehouseStorage extends TileControlled implements IWarehouseStorageTile
+public class TileWarehouseStorage extends TileControlled implements IWarehouseStorageTile, IInteractableTile
 {
 
 InventorySlotlessBasic inventory;
 List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
+
+Set<ContainerWarehouseStorage> viewers = new HashSet<ContainerWarehouseStorage>();
 
 public TileWarehouseStorage()
   {
@@ -55,7 +64,7 @@ protected void searchForController()
 @Override
 protected boolean isValidController(IControllerTile tile)
   {
-  return tile instanceof TileWarehouseBase;//TODO validate bounding area
+  return tile instanceof TileWarehouseBase;//TODO validate inside of bounding area
   }
 
 @Override
@@ -84,6 +93,7 @@ public void setFilters(List<WarehouseStorageFilter> filters)
   this.filters.clear();
   this.filters.addAll(filters);
   ((TileWarehouse)this.getController()).onStorageFilterChanged(this, old, this.filters);
+  updateViewers();
   }
 
 @Override
@@ -121,6 +131,7 @@ public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
   inventory.readFromNBT(tag.getCompoundTag("inventory"));
+  WarehouseStorageFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);
   }
 
 @Override
@@ -128,6 +139,38 @@ public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
   tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
+  tag.setTag("filterList", WarehouseStorageFilter.writeFilterList(filters));
+  }
+
+@Override
+public void addViewer(ContainerWarehouseStorage containerWarehouseStorage)
+  {
+  if(worldObj.isRemote){return;}
+  viewers.add(containerWarehouseStorage);
+  }
+
+@Override
+public void removeViewer(ContainerWarehouseStorage containerWarehouseStorage)
+  {
+  viewers.remove(containerWarehouseStorage);
+  }
+
+protected void updateViewers()
+  {
+  for(ContainerWarehouseStorage viewer : viewers)
+    {
+    viewer.onFilterListUpdated();
+    }
+  }
+
+@Override
+public boolean onBlockClicked(EntityPlayer player)
+  {
+  if(!player.worldObj.isRemote)
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, xCoord, yCoord, zCoord);
+    }
+  return true;
   }
 
 }

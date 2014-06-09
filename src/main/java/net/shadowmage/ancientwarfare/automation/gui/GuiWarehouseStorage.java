@@ -25,14 +25,11 @@ CompositeScrolled area;
 
 ContainerWarehouseStorage container;
 
-List<WarehouseStorageFilter> itemFilters = new ArrayList<WarehouseStorageFilter>();
-
 public GuiWarehouseStorage(ContainerBase par1Container)
   {
   super(par1Container, 178, 240, defaultBackground);
   this.container = (ContainerWarehouseStorage)par1Container;
   this.ySize = container.guiHeight;
-  itemFilters.addAll(container.tile.getFilters());
   }
 
 @Override
@@ -46,9 +43,7 @@ public void initElements()
 public void setupElements()
   {
   area.clearElements();
-  itemFilters.clear();
-  itemFilters.addAll(container.tile.getFilters());
-  List<WarehouseStorageFilter> filters = itemFilters;
+  List<WarehouseStorageFilter> filters = container.filters;
   
   int totalHeight = 8;
   
@@ -64,7 +59,7 @@ public void setupElements()
     
     name = filter.getFilterItem()==null? "" : filter.getFilterItem().getDisplayName();
     
-    label = new Label(20+8, totalHeight+4, 0+" x "+name);//TODO
+    label = new Label(20+8, totalHeight+4, name);
     area.addGuiElement(label);
     
     button = new FilterRemoveButton(xSize-16-12, totalHeight+3, filter);
@@ -81,26 +76,15 @@ public void setupElements()
       protected void onPressed()
         {
         WarehouseStorageFilter filter = new WarehouseStorageFilter(null);
-        itemFilters.add(filter);
-        sendFiltersToServer();
+        container.filters.add(filter);
+        container.sendFiltersToServer();
         refreshGui();
         }
       };
     area.addGuiElement(button);
     totalHeight+=12;
-    }
-  
+    }  
   area.setAreaSize(totalHeight);
-
-  }
-
-private void sendFiltersToServer()
-  {
-  //TODO
-//  NBTTagList filterTagList = WarehouseItemFilter.writeFilterList(itemFilters);
-//  NBTTagCompound tag = new NBTTagCompound();
-//  tag.setTag("filterList", filterTagList);
-//  sendDataToContainer(tag);
   }
 
 private class FilterRemoveButton extends Button
@@ -111,12 +95,11 @@ public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseStorageFilter fil
   super(topLeftX, topLeftY, 12, 12, "-");
   this.filter = filter;
   }
-
 @Override
 protected void onPressed()
   {
-  itemFilters.remove(filter);
-  sendFiltersToServer();
+  container.filters.remove(filter);
+  container.sendFiltersToServer();
   refreshGui();
   }
 }
@@ -140,7 +123,7 @@ public void onSlotClicked(ItemStack stack)
     in.stackSize = 1;
     }
   filter.setFilterItem(in==null? null : in.copy());
-  sendFiltersToServer();
+  container.sendFiltersToServer();
   }
 }
 
