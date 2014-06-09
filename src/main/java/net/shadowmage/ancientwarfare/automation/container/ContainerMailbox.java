@@ -18,7 +18,6 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 public class ContainerMailbox extends ContainerBase

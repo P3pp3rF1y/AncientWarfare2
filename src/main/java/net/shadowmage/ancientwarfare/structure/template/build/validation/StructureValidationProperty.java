@@ -142,6 +142,7 @@ public boolean getDataBoolean()
   return false;
   }
 
+@SuppressWarnings("unchecked")
 public Set<String> getDataStringSet()
   {
   return (Set<String>)data;
@@ -195,6 +196,7 @@ public void readFromNBT(NBTTagCompound tag)
   }
   }
 
+@SuppressWarnings("unchecked")
 public void writeToNBT(NBTTagCompound tag)
   {
   switch(dataType)

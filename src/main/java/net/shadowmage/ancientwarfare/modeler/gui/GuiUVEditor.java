@@ -126,14 +126,14 @@ public void setupElements()
 private void setTextureXSize(int size)
   {  
   textureXSize = size;
-  parent.model.setTextureSize(textureXSize, textureYSize);
+  GuiModelEditor.model.setTextureSize(textureXSize, textureYSize);
   updateTextureSize();
   }
 
 private void setTextureYSize(int size)
   {
   textureYSize = size;
-  parent.model.setTextureSize(textureXSize, textureYSize);
+  GuiModelEditor.model.setTextureSize(textureXSize, textureYSize);
   updateTextureSize();
   }
 
@@ -161,7 +161,7 @@ private void updateTexture()
       }
     }
   ArrayList<ModelPiece> pieces = new ArrayList<ModelPiece>();
-  parent.model.getPieces(pieces);
+  GuiModelEditor.model.getPieces(pieces);
   for(ModelPiece piece : pieces)
     {
     for(Primitive primitive : piece.getPrimitives())
@@ -1066,7 +1066,7 @@ private void addQuadControls()
 private void addPieceList()
   {
   ArrayList<ModelPiece> pieces = new ArrayList<ModelPiece>();
-  parent.model.getPieces(pieces);
+  GuiModelEditor.model.getPieces(pieces);
     
   int totalHeight = 3;
   Label label = null;

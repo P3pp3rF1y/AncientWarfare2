@@ -24,6 +24,7 @@ public static final CreativeTabs npcTab = new CreativeTabs("tabs.npc")
     return npcSpawner;
     }
   
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public void displayAllReleventItems(List par1List)
     {

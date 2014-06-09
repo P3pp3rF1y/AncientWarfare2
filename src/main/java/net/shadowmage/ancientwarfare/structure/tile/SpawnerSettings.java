@@ -160,6 +160,7 @@ private void updateNormalMode()
     }
   }
 
+@SuppressWarnings("unchecked")
 private void spawnEntities()
   {  
   if(worldObj.difficultySetting==EnumDifficulty.PEACEFUL)
@@ -576,6 +577,7 @@ public final void readFromNBT(NBTTagCompound tag)
   remainingSpawnCount = tag.getInteger("remainingSpawnCount");
   }
 
+@SuppressWarnings("unchecked")
 public final void setEntityToSpawn(String entityId)
   {
   this.entityId = entityId;
@@ -686,6 +688,7 @@ private final void sendSoundPacket(World world, int x, int y, int z)
 private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord, int grpIndex, int setIndex)
   {
 //  sendSoundPacket(world, xCoord, yCoord, zCoord);
+  //TODO
   int toSpawn = getNumToSpawn(world.rand);
   decrementSpawnCounter(toSpawn); 
   

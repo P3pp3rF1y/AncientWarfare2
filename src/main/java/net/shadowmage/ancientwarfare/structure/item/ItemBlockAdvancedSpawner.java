@@ -79,6 +79,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack)
   }
 
 SpawnerSettings tooltipSettings = new SpawnerSettings();
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 @SideOnly(Side.CLIENT)
 public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
@@ -104,6 +105,7 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
     }  
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 @SideOnly(Side.CLIENT)
 public void getSubItems(Item item, CreativeTabs creativeTab, List stackList)

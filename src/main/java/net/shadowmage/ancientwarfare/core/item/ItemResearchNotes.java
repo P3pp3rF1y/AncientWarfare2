@@ -27,6 +27,7 @@ public ItemResearchNotes(String localizationKey)
   setTextureName("ancientwarfare:core/research_note");
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
   {  
@@ -60,6 +61,7 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
     }
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void getSubItems(Item item, CreativeTabs tab, List list)
   {

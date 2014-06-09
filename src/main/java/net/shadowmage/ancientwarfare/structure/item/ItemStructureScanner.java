@@ -37,6 +37,7 @@ public ItemStructureScanner(String localizationKey)
   }
 
 ItemStructureSettings viewSettings = new ItemStructureSettings();
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4)
   { 

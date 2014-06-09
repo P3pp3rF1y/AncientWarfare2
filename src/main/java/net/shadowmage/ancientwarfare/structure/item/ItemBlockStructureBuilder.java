@@ -34,6 +34,7 @@ public ItemBlockStructureBuilder(Block p_i45328_1_)
   super(p_i45328_1_);
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 @SideOnly(Side.CLIENT)
 public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
@@ -46,6 +47,7 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
   par3List.add("DEBUG- struct name: "+name);  
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 @SideOnly(Side.CLIENT)
 public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_)

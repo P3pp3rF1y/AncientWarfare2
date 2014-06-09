@@ -66,6 +66,7 @@ public void registerIcons(IIconRegister par1IconRegister)
   Gate.registerIconsForGates(par1IconRegister);
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
   {
@@ -95,6 +96,7 @@ public void addInformation(ItemStack stack, EntityPlayer player, List list, bool
     }
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_)
   {
@@ -179,6 +181,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
     }
   }
 
+@SuppressWarnings("unchecked")
 protected boolean canSpawnGate(World world, BlockPosition pos1, BlockPosition pos2)
   {  
   BlockPosition min = BlockTools.getMin(pos1, pos2);

@@ -139,6 +139,7 @@ public static BlockPosition getAverageOf(BlockPosition ... positions)
  * @param offset
  * @return
  */
+@SuppressWarnings("rawtypes")
 public static BlockPosition getBlockClickedOn(EntityPlayer player, World world, boolean offset)
   {
   float scaleFactor = 1.0F;
@@ -485,7 +486,7 @@ public static List<ItemStack> breakBlock(World world, String playerName, int x, 
   boolean dropBlock = true;
   if(AWCoreStatics.fireBlockBreakEvents)
     {
-    BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(x, y, z, world, block, meta, AncientWarfareCore.instance.proxy.getFakePlayer((WorldServer)world, playerName));
+    BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(x, y, z, world, block, meta, AncientWarfareCore.proxy.getFakePlayer((WorldServer)world, playerName));
     MinecraftForge.EVENT_BUS.post(event);
     if(event.isCanceled())
       {

@@ -45,6 +45,7 @@ public static final CreativeTabs automationTab = new CreativeTabs("tabs.automati
     return AWItems.automationHammerIron;
     }  
   
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public void displayAllReleventItems(java.util.List par1List) 
     {
     super.displayAllReleventItems(par1List);

@@ -24,6 +24,7 @@ public ItemResearchBook(String localizationKey)
   this.setTextureName("ancientwarfare:core/research_book");
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 @SideOnly(Side.CLIENT)
 public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)

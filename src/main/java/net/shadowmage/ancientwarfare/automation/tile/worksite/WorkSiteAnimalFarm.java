@@ -155,6 +155,7 @@ private void countResources()
     }
   }
 
+@SuppressWarnings("unchecked")
 private void rescan()
   {
   worldObj.theProfiler.startSection("Animal Rescan");
@@ -439,6 +440,7 @@ public boolean onBlockClicked(EntityPlayer player)
   return false;
   }
 
+@SuppressWarnings("unchecked")
 private void pickupEggs()
   {
   BlockPosition p1 = getWorkBoundsMin();

@@ -55,6 +55,7 @@ public ItemStructureBuilder(String itemName)
   this.setTextureName("ancientwarfare:structure/"+itemName);
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
   {
