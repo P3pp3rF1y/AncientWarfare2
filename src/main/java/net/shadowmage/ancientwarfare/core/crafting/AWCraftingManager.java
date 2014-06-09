@@ -52,6 +52,7 @@ public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, St
   return null;
   }
 
+@SuppressWarnings("unchecked")
 public RecipeResearched addRecipe(ItemStack par1ItemStack, Object ... par2ArrayOfObj)
   {
   String recipeCharactersAsSequence = "";

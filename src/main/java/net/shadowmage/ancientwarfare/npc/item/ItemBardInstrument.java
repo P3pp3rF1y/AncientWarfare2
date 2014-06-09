@@ -21,6 +21,7 @@ public ItemBardInstrument(String regName)
   setHasSubtypes(true);  
   }
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 @Override
 public void getSubItems(Item item, CreativeTabs tab, List stackList)
   {

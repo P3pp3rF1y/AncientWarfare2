@@ -219,6 +219,7 @@ protected boolean processWork()
   return false;
   }
 
+@SuppressWarnings("unchecked")
 private void pickupSaplings()
   {
   BlockPosition p1 = getWorkBoundsMin();

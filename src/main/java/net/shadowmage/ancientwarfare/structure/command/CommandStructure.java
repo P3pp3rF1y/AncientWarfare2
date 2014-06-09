@@ -46,6 +46,7 @@ public String getCommandUsage(ICommandSender var1)
   return "command.aw.structure.usage";
   }
 
+@SuppressWarnings("rawtypes")
 @Override
 public List getCommandAliases()
   {
@@ -154,6 +155,7 @@ public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
   return par1ICommandSender.canCommandSenderUseCommand(this.permissionLevel, this.getCommandName());
   }
 
+@SuppressWarnings("rawtypes")
 @Override
 public List addTabCompletionOptions(ICommandSender var1, String[] var2)
   {

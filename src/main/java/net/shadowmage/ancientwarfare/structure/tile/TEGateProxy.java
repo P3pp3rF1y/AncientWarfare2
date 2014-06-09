@@ -73,6 +73,7 @@ public void onBlockClicked(EntityPlayer player)
     }
   }
 
+@SuppressWarnings("unchecked")
 @Override
 public void updateEntity()
   {

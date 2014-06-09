@@ -35,6 +35,7 @@ public StructurePluginModDefault()
   
   }
 
+@SuppressWarnings("unchecked")
 @Override
 public void addHandledBlocks(IStructurePluginManager manager)
   {

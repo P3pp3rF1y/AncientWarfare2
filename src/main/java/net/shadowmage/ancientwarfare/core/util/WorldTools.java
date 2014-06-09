@@ -22,6 +22,7 @@ public class WorldTools
  * @param z2
  * @return
  */
+@SuppressWarnings("unchecked")
 public static List<TileEntity> getTileEntitiesInArea(World world, int x1, int y1, int z1, int x2, int y2, int z2)
   {  
   if(world instanceof WorldServer)
@@ -39,6 +40,7 @@ public static List<TileEntity> getTileEntitiesInArea(World world, int x1, int y1
  * @param lsb
  * @return
  */
+@SuppressWarnings("unchecked")
 public static Entity getEntityByUUID(World world, long msb, long lsb)
   {
   world.getEntityByID(0);

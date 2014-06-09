@@ -145,8 +145,10 @@ public static class ValidationProperty
 {
 public String displayName;
 public String propertyName;
+@SuppressWarnings("rawtypes")
 public Class clz;//property class -- boolean or int for most
 
+@SuppressWarnings("rawtypes")
 public ValidationProperty(String reg, String display, Class clz)
   {
   this.propertyName = reg;

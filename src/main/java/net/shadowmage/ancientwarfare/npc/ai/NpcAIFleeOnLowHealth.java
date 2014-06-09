@@ -18,6 +18,7 @@ public NpcAIFleeOnLowHealth(NpcBase npc)
   this.setMutexBits(ATTACK+MOVE);
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public boolean shouldExecute()
   {

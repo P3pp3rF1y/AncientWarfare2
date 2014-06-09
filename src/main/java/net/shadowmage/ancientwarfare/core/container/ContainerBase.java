@@ -167,6 +167,7 @@ public void refreshGui()
 /**
  * remove the inventory slots from view on the screen, effectively disabling them
  */
+@SuppressWarnings("unchecked")
 public void removeSlots()
   {
   for(Slot s : ((List<Slot>)this.inventorySlots))
@@ -181,6 +182,7 @@ public void removeSlots()
 /**
  * add any removed from screen slots back into view
  */
+@SuppressWarnings("unchecked")
 public void addSlots()
   {
   for(Slot s : ((List<Slot>)this.inventorySlots))

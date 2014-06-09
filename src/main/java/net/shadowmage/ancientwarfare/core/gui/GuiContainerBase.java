@@ -220,6 +220,7 @@ public void updateScreen()
   super.updateScreen();
   }
 
+@SuppressWarnings("unchecked")
 @Override
 protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
   {

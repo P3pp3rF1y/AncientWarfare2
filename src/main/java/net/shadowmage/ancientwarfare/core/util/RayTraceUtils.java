@@ -53,6 +53,7 @@ public static MovingObjectPosition tracePathWithYawPitch(World world, float x, f
  * @param excluded any excluded entities (the player, etc)
  * @return a MovingObjectPosition of either the block hit (no entity hit), the entity hit (hit an entity), or null for nothing hit
  */
+@SuppressWarnings("unchecked")
 public static MovingObjectPosition tracePath(World world, double x, double y, double z, double tx, double ty, double tz, float borderSize, HashSet<Entity> excluded)
   {
   Vec3 startVec = Vec3.fakePool.getVecFromPool(x, y, z);

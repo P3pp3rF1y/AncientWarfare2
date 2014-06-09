@@ -38,6 +38,7 @@ public NpcAIFleeHostiles(NpcBase npc)
   this.setMutexBits(ATTACK+MOVE);
   }
 
+@SuppressWarnings("rawtypes")
 @Override
 public boolean shouldExecute()
   {

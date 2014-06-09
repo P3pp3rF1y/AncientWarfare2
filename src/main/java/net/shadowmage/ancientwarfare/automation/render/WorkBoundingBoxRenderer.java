@@ -168,6 +168,7 @@ public void onRenderTick(RenderTickEvent evt)
     }
   }
 
+@SuppressWarnings("unchecked")
 private void renderWorkBounds(EntityPlayer player, float delta)
   {
   World world = player.worldObj;

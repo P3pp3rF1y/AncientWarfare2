@@ -58,6 +58,7 @@ public TemplateScanner()
  * @param turns # of turns for proper orientation
  * @return
  */
+@SuppressWarnings("unchecked")
 public StructureTemplate scan(World world, BlockPosition min, BlockPosition max, BlockPosition key, int turns, String name)
   {
   int xSize = max.x - min.x+1;

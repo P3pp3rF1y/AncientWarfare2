@@ -47,6 +47,7 @@ public void updateTask()
     }
   }
 
+@SuppressWarnings("unchecked")
 protected void issueAlert()
   {
   AWLog.logDebug("issuing alert from npc: "+npc);

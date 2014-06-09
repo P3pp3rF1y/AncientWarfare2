@@ -113,6 +113,7 @@ private void removeModifiers()
   horse.getEntityAttribute(SharedMonsterAttributes.followRange).removeModifier(followRangeModifier);
   }
 
+@SuppressWarnings("unchecked")
 private void removeHorseAI()
   {
   horseAI.clear();
@@ -123,6 +124,7 @@ private void removeHorseAI()
     }
   }
 
+@SuppressWarnings("unchecked")
 private void addHorseAI()
   {
   if(horse.tasks.taskEntries.isEmpty())
