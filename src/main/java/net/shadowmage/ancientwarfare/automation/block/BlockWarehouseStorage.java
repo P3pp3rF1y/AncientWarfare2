@@ -14,6 +14,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseStorageSmall;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import cpw.mods.fml.relauncher.Side;
@@ -63,7 +64,7 @@ public TileEntity createTileEntity(World world, int metadata)
   switch(metadata)
   {
   case 0:
-  return new TileWarehouseStorageSmall(); 
+  return new TileWarehouseStorage(); 
   default:
   return new TileWarehouseStorageSmall();
   }  
@@ -96,7 +97,7 @@ public void breakBlock(World world, int x, int y, int z, Block block, int fortun
 //    if(storage!=null)
 //      {
 //      InventoryTools.dropInventoryInWorld(world, storage, x, y, z);      
-//      }    
+//      }  TODO  
     }
   super.breakBlock(world, x, y, z, block, fortune);  
   }

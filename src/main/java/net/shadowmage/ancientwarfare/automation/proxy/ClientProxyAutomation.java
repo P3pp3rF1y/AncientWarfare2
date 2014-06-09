@@ -7,8 +7,7 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
 import net.shadowmage.ancientwarfare.automation.gui.GuiTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseCraftingStation;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseInput;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseOutput;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseInterface;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalFarm;
@@ -23,12 +22,11 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueGeneratorWaterwheel;
-import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWorksite;
 import net.shadowmage.ancientwarfare.automation.render.RenderTorqueConduit;
 import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseStorageBase;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -53,8 +51,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_MAILBOX_INVENTORY, GuiMailboxInventory.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CONTROL, GuiWarehouseControl.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STORAGE, GuiWarehouseStorage.class);
-  NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_INPUT, GuiWarehouseInput.class);
-  NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_OUTPUT, GuiWarehouseOutput.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_OUTPUT, GuiWarehouseInterface.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CRAFTING, GuiWarehouseCraftingStation.class); 
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_QUARRY, GuiWorksiteQuarry.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_TREE_FARM, GuiWorksiteTreeFarm.class);
@@ -64,11 +61,10 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_REED_FARM, GuiWorksiteReedFarm.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_FARM, GuiWorksiteFishFarm.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, GuiTorqueGeneratorSterling.class);
-  NetworkHandler.registerGui(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, GuiChunkLoaderDeluxe.class);
-  ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStorageBase.class, new RenderTileWarehouseStorageBase());
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel());
-  
+  NetworkHandler.registerGui(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, GuiChunkLoaderDeluxe.class);  
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel());  
   ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new RenderTileWorksite());
+  ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new RenderTileWorksite());
   
   RenderingRegistry.registerBlockHandler(new RenderTorqueConduit());
   registerClientOptions();

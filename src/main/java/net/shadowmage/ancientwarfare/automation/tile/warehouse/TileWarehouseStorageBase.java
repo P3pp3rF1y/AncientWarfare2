@@ -11,6 +11,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;

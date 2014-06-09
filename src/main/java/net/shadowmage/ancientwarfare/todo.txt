@@ -112,7 +112,9 @@ Storage blocks
 Interface block
 	allows for automation output, items specified via filter will attempt to remain stocked
 	allows for automation input, any items not matching filter, or in excess of filter qty will be removed and added to warehouse storage
-
+	
+	internally tracks what items it needs filled, and what slots need emptied
+	
 		
 //BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java

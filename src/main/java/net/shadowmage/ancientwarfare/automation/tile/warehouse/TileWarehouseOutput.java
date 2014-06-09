@@ -12,6 +12,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -25,7 +26,7 @@ BlockPosition controllerPosition = null;
 private boolean init;
 private InventoryBasic inventory;
 
-private List<WarehouseItemFilter> filters = new ArrayList<WarehouseItemFilter>();
+private List<WarehouseInterfaceFilter> filters = new ArrayList<WarehouseInterfaceFilter>();
 
 public TileWarehouseOutput()
   {
@@ -117,7 +118,7 @@ public void updateEntity()
 public Packet getDescriptionPacket()
   {
   NBTTagCompound tag = new NBTTagCompound();
-  tag.setTag("filterList", WarehouseItemFilter.writeFilterList(filters));
+  tag.setTag("filterList", WarehouseInterfaceFilter.writeFilterList(filters));
   S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
   return pkt;
   }
@@ -129,7 +130,7 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   NBTTagCompound tag = pkt.func_148857_g();
   if(tag.hasKey("filterList"))
     {
-    filters = WarehouseItemFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);    
+    filters = WarehouseInterfaceFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);    
     }
   super.onDataPacket(net, pkt);
   }
@@ -142,7 +143,7 @@ public void readFromNBT(NBTTagCompound tag)
   inventory.readFromNBT(tag.getCompoundTag("inventory"));
   if(tag.hasKey("filterList"))
     {
-    filters = WarehouseItemFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);    
+    filters = WarehouseInterfaceFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);    
     }
   }
 
@@ -155,16 +156,16 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setTag("inventory", tag1);
   if(!filters.isEmpty())
     {
-    tag.setTag("filterList", WarehouseItemFilter.writeFilterList(filters));
+    tag.setTag("filterList", WarehouseInterfaceFilter.writeFilterList(filters));
     }
   }
 
-public List<WarehouseItemFilter> getFilters()
+public List<WarehouseInterfaceFilter> getFilters()
   {
   return filters;
   }
 
-public void setFilters(List<WarehouseItemFilter> filters)
+public void setFilters(List<WarehouseInterfaceFilter> filters)
   {
   this.filters.clear();
   this.filters.addAll(filters);
@@ -252,7 +253,7 @@ public void closeInventory()
 @Override
 public boolean isItemValidForSlot(int var1, ItemStack var2)
   {
-  for(WarehouseItemFilter filter : filters)
+  for(WarehouseInterfaceFilter filter : filters)
     {
     if(filter.isItemValid(var2))
       {

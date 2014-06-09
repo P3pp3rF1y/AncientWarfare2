@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.WarehouseItemFilter;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;

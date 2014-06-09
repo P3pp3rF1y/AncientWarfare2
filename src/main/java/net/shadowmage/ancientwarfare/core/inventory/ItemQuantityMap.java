@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.Constants;
 
 public class ItemQuantityMap
 {
+
 private final Map<ItemHashEntry, ItemCount> map = new HashMap<ItemHashEntry, ItemCount>();
 
 /**
@@ -25,7 +26,7 @@ public void putAll(ItemQuantityMap incoming)
   for(ItemHashEntry entry : incoming.map.keySet())
     {
     if(map.containsKey(entry))
-      {
+      {           
       map.get(entry).count=incoming.map.get(entry).count;
       }
     else
@@ -65,6 +66,7 @@ public void removeAll(ItemQuantityMap toRemove)
   for(ItemHashEntry entry : toRemove.map.keySet())
     {
     remove(entry);
+    
     }
   }
 

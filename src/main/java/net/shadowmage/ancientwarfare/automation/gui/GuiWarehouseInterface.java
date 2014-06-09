@@ -1,14 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseOutput;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.WarehouseItemFilter;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInterface;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -16,53 +13,18 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class GuiWarehouseOutput extends GuiContainerBase
+public class GuiWarehouseInterface extends GuiContainerBase
 {
 
 CompositeScrolled area;
-ContainerWarehouseOutput container;
-List<WarehouseItemFilter> itemFilters = new ArrayList<WarehouseItemFilter>();
+ContainerWarehouseInterface container;
+boolean hasChanged = false;
 
-public GuiWarehouseOutput(ContainerBase par1Container)
+public GuiWarehouseInterface(ContainerBase par1Container)
   {
   super(par1Container, 178, 240, defaultBackground);
-  this.container = (ContainerWarehouseOutput)par1Container;  
-  for(WarehouseItemFilter filter : container.tile.getFilters())
-    {
-    this.itemFilters.add(filter.copy());
-    }
-  }
-
-@Override
-public void updateScreen()
-  {
-  if(itemFilters.size()!=container.tile.getFilters().size())
-    {
-    refreshGui();
-    }
-  else
-    {
-    WarehouseItemFilter filter1, filter2;
-    boolean shouldUpdate = false;
-    for(int i = 0; i<itemFilters.size(); i++)
-      {
-      filter1 = itemFilters.get(i);
-      filter2 = container.tile.getFilters().get(i);
-      if(filter1.getFilterQuantity()!=filter2.getFilterQuantity() || !InventoryTools.doItemStacksMatch(filter1.getFilterItem(), filter2.getFilterItem()))
-        {
-        shouldUpdate = true;
-        break;
-        }
-      } 
-    if(shouldUpdate)
-      {
-      itemFilters.clear();
-      itemFilters.addAll(container.tile.getFilters());
-      }
-    }
-  super.updateScreen();
+  this.container = (ContainerWarehouseInterface)par1Container;  
   }
 
 @Override
@@ -76,7 +38,7 @@ public void initElements()
 public void setupElements()
   {
   area.clearElements();
-  List<WarehouseItemFilter> filters = itemFilters;
+  List<WarehouseInterfaceFilter> filters = container.filters;
   
   int totalHeight = 8;
   
@@ -84,7 +46,7 @@ public void setupElements()
   NumberInput input;  
   Button button;  
   
-  for(WarehouseItemFilter filter : filters)
+  for(WarehouseInterfaceFilter filter : filters)
     {    
     slot = new FilterItemSlot(8, totalHeight, filter, this);
     area.addGuiElement(slot);
@@ -106,10 +68,10 @@ public void setupElements()
       @Override
       protected void onPressed()
         {
-        WarehouseItemFilter filter = new WarehouseItemFilter();
+        WarehouseInterfaceFilter filter = new WarehouseInterfaceFilter();
         filter.setFilterQuantity(64);
-        itemFilters.add(filter);
-        sendFiltersToServer();
+        container.filters.add(filter);
+        container.sendFiltersToServer();
         refreshGui();
         }
       };
@@ -120,19 +82,11 @@ public void setupElements()
   area.setAreaSize(totalHeight);
   }
 
-protected void sendFiltersToServer()//should be called whenever filters change, so that the base container/etc can be updated
-  {
-  container.tile.setFilters(itemFilters);
-  NBTTagList filterTagList = WarehouseItemFilter.writeFilterList(itemFilters);
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setTag("filterList", filterTagList);
-  sendDataToContainer(tag);
-  }
 
 private class FilterRemoveButton extends Button
 {
-WarehouseItemFilter filter;
-public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseItemFilter filter)
+WarehouseInterfaceFilter filter;
+public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseInterfaceFilter filter)
   {
   super(topLeftX, topLeftY, 12, 12, "-");
   this.filter = filter;
@@ -141,18 +95,18 @@ public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseItemFilter filter
 @Override
 protected void onPressed()
   {
-  itemFilters.remove(filter);
-  sendFiltersToServer();
+  container.filters.remove(filter);
+  container.sendFiltersToServer();
   refreshGui();
   }
 }
 
 private class FilterQuantityInput extends NumberInput
 {
-WarehouseItemFilter filter;
-public FilterQuantityInput(int topLeftX, int topLeftY, WarehouseItemFilter filter)
+WarehouseInterfaceFilter filter;
+public FilterQuantityInput(int topLeftX, int topLeftY, WarehouseInterfaceFilter filter)
   {
-  super(topLeftX, topLeftY, 40, filter.getFilterQuantity(), GuiWarehouseOutput.this);
+  super(topLeftX, topLeftY, 40, filter.getFilterQuantity(), GuiWarehouseInterface.this);
   this.filter = filter;
   }
 
@@ -162,15 +116,15 @@ public void onValueUpdated(float value)
   int val = (int)value;
   this.filter.setFilterQuantity(val);
   refreshGui();
-  sendFiltersToServer();
+  container.sendFiltersToServer();
   }
 
 }
 
 private class FilterItemSlot extends ItemSlot
 {
-WarehouseItemFilter filter;
-public FilterItemSlot(int topLeftX, int topLeftY, WarehouseItemFilter filter, ITooltipRenderer render)
+WarehouseInterfaceFilter filter;
+public FilterItemSlot(int topLeftX, int topLeftY, WarehouseInterfaceFilter filter, ITooltipRenderer render)
   {
   super(topLeftX, topLeftY, filter.getFilterItem(), render);
   this.filter = filter;
@@ -188,7 +142,7 @@ public void onSlotClicked(ItemStack stack)
     }
   filter.setFilterQuantity(0);
   filter.setFilterItem(in==null? null : in.copy());
-  sendFiltersToServer();
+  container.sendFiltersToServer();
   }
 }
 

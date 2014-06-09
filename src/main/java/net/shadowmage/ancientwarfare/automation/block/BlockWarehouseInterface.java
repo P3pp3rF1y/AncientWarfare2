@@ -8,26 +8,26 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseOutput;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockWarehouseOutput extends Block
+public class BlockWarehouseInterface extends Block
 {
 
 private BlockIconMap iconMap = new BlockIconMap();
 
-public BlockWarehouseOutput(String regName)
+public BlockWarehouseInterface(String regName)
   {
   super(Material.rock);
   this.setBlockName(regName);
   setCreativeTab(AWAutomationItemLoader.automationTab);
   }
 
-public BlockWarehouseOutput setIcon(int meta, int side, String texName)
+public BlockWarehouseInterface setIcon(int meta, int side, String texName)
   {
   this.iconMap.setIconTexture(side, meta, texName);
   return this;
@@ -56,7 +56,7 @@ public boolean hasTileEntity(int metadata)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {
-  return new TileWarehouseOutput();
+  return new TileWarehouseInterface();
   }
 
 @Override
@@ -75,7 +75,7 @@ public void breakBlock(World world, int x, int y, int z, Block block, int fortun
   {
   if(!world.isRemote)
     {
-    TileWarehouseOutput storage = (TileWarehouseOutput) world.getTileEntity(x, y, z);
+    TileWarehouseInterface storage = (TileWarehouseInterface) world.getTileEntity(x, y, z);
     if(storage!=null)
       {
       InventoryTools.dropInventoryInWorld(world, storage, x, y, z);      

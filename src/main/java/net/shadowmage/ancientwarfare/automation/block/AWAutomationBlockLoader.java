@@ -15,10 +15,10 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFly
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributor;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseCraftingStation;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseInput;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseOutput;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseStorageSmall;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.WorkSiteWarehouse;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
@@ -107,15 +107,13 @@ public static final BlockWorksiteBase worksiteWarehouse = new BlockWorksiteBase(
   @Override
   public TileEntity createTileEntity(World world, int metadata)
     {   
-    return new WorkSiteWarehouse();
+    return new TileWarehouse();
     }
   };
   
 public static final BlockWarehouseStorage warehouseStorageBlock = new BlockWarehouseStorage("warehouse_storage");
 
-public static final BlockWarehouseInput warehouseInput = new BlockWarehouseInput("warehouse_input");
-
-public static final BlockWarehouseOutput warehouseOutput = new BlockWarehouseOutput("warehouse_output");
+public static final BlockWarehouseInterface warehouseOutput = new BlockWarehouseInterface("warehouse_interface");
 
 public static final BlockWarehouseCraftingStation warehouseCrafting = new BlockWarehouseCraftingStation("warehouse_crafting_station");
 
@@ -220,7 +218,7 @@ public static void load()
   worksiteReedFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/reed_farm_right");
   
   GameRegistry.registerBlock(worksiteWarehouse, ItemBlockWorksite.class, "civic_warehouse");
-  GameRegistry.registerTileEntity(WorkSiteWarehouse.class, "civic_warehouse_tile");
+  GameRegistry.registerTileEntity(TileWarehouse.class, "civic_warehouse_tile");
   worksiteWarehouse.setIcon(RelativeSide.TOP, "ancientwarfare:automation/warehouse_control_top");
   worksiteWarehouse.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/warehouse_control_bottom");
   worksiteWarehouse.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/warehouse_control_front");
@@ -230,31 +228,22 @@ public static void load()
   worksiteWarehouse.setWorkVerticalSize(4);
   
   GameRegistry.registerBlock(warehouseStorageBlock, ItemBlockWarehouseStorage.class, "warehouse_storage");
-  GameRegistry.registerTileEntity(TileWarehouseStorageSmall.class, "warehouse_storage_small_tile");
+  GameRegistry.registerTileEntity(TileWarehouseStorage.class, "warehouse_storage_small_tile");
   warehouseStorageBlock.setIcon(0, 0, "ancientwarfare:automation/warehouse_storage_small_bottom");
   warehouseStorageBlock.setIcon(0, 1, "ancientwarfare:automation/warehouse_storage_small_top");
   warehouseStorageBlock.setIcon(0, 2, "ancientwarfare:automation/warehouse_storage_small_side");
   warehouseStorageBlock.setIcon(0, 3, "ancientwarfare:automation/warehouse_storage_small_side");
   warehouseStorageBlock.setIcon(0, 4, "ancientwarfare:automation/warehouse_storage_small_side");
   warehouseStorageBlock.setIcon(0, 5, "ancientwarfare:automation/warehouse_storage_small_side");
-  
-  GameRegistry.registerBlock(warehouseInput, "warehouse_input");
-  GameRegistry.registerTileEntity(TileWarehouseInput.class, "warehouse_input_tile");
-  warehouseInput.setIcon(0, 0, "ancientwarfare:automation/warehouse_input_bottom");
-  warehouseInput.setIcon(0, 1, "ancientwarfare:automation/warehouse_input_top");
-  warehouseInput.setIcon(0, 2, "ancientwarfare:automation/warehouse_input_side");
-  warehouseInput.setIcon(0, 3, "ancientwarfare:automation/warehouse_input_side");
-  warehouseInput.setIcon(0, 4, "ancientwarfare:automation/warehouse_input_side");
-  warehouseInput.setIcon(0, 5, "ancientwarfare:automation/warehouse_input_side");
-  
-  GameRegistry.registerBlock(warehouseOutput, "warehouse_output");
-  GameRegistry.registerTileEntity(TileWarehouseOutput.class, "warehouse_output_tile");
-  warehouseOutput.setIcon(0, 0, "ancientwarfare:automation/warehouse_output_bottom");
-  warehouseOutput.setIcon(0, 1, "ancientwarfare:automation/warehouse_output_top");
-  warehouseOutput.setIcon(0, 2, "ancientwarfare:automation/warehouse_output_side");
-  warehouseOutput.setIcon(0, 3, "ancientwarfare:automation/warehouse_output_side");
-  warehouseOutput.setIcon(0, 4, "ancientwarfare:automation/warehouse_output_side");
-  warehouseOutput.setIcon(0, 5, "ancientwarfare:automation/warehouse_output_side");
+    
+  GameRegistry.registerBlock(warehouseOutput, "warehouse_interface");
+  GameRegistry.registerTileEntity(TileWarehouseInterface.class, "warehouse_interface_tile");
+  warehouseOutput.setIcon(0, 0, "ancientwarfare:automation/warehouse_interface_bottom");
+  warehouseOutput.setIcon(0, 1, "ancientwarfare:automation/warehouse_interface_top");
+  warehouseOutput.setIcon(0, 2, "ancientwarfare:automation/warehouse_interface_side");
+  warehouseOutput.setIcon(0, 3, "ancientwarfare:automation/warehouse_interface_side");
+  warehouseOutput.setIcon(0, 4, "ancientwarfare:automation/warehouse_interface_side");
+  warehouseOutput.setIcon(0, 5, "ancientwarfare:automation/warehouse_interface_side");
   
   GameRegistry.registerBlock(warehouseCrafting, "warehouse_crafting_station");
   GameRegistry.registerTileEntity(TileWarehouseCraftingStation.class, "warehouse_crafting_station_tile");

@@ -14,8 +14,9 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.IWarehouseStorageTile;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -45,18 +46,6 @@ Set<TileWarehouseInterface> interfaceTiles = new HashSet<TileWarehouseInterface>
 Set<IWarehouseStorageTile> storageTiles = new HashSet<IWarehouseStorageTile>();
 
 /**
- * first stage of updating -- gets placed into this set from several different actions
- * from here it gets sorted into if it needs filled and can be filled, needs filled but cannot be filled, or needs emptied 
- */
-Set<TileWarehouseInterface> interfaceToUpdate = new HashSet<TileWarehouseInterface>();
-
-/**
- * interfaces that need items are cached here.  anytime storage blocks inventories are updated, this list is checked
- * to see if any of them can now be filled
- */
-Set<TileWarehouseInterface> unfullfilledInterfaces = new HashSet<TileWarehouseInterface>();
-
-/**
  * interfaces that need filling, AND there are items available to fill.  anytime storage block inventories are updated, this list needs to be
  * rechecked to make sure items are still available
  */
@@ -70,22 +59,25 @@ Set<TileWarehouseInterface> interfacesToEmpty = new HashSet<TileWarehouseInterfa
 WarehouseStorageMap storageMap = new WarehouseStorageMap();
 ItemQuantityMap cachedItemMap = new ItemQuantityMap();
 
+Set<ContainerWarehouseControl> viewers = new HashSet<ContainerWarehouseControl>();
+
 public TileWarehouseBase()
   {
   
   }
 
-protected abstract boolean tryCleanOutput();
+protected abstract boolean tryFillInterfaces();
 
-protected abstract boolean tryFillOutput();
-
-protected abstract boolean tryEmptyInput();
-
-protected abstract void processDirtyOutputTiles();
+protected abstract boolean tryEmptyInterfaces();
 
 public abstract ItemStack requestItem(ItemStack filter);
 
 public abstract ItemStack mergeItem(ItemStack item);
+
+public final void getItems(ItemQuantityMap map)
+  {
+  map.addAll(cachedItemMap);
+  }
 
 @Override
 public final boolean canUpdate()
@@ -101,16 +93,9 @@ public final void updateEntity()
     init=true;  
     scanForInitialTiles();
     }
-  if(!interfaceToUpdate.isEmpty())
+  while(storedEnergy >= AWCoreStatics.energyPerWorkUnit && processWork())
     {
-    processDirtyInputTiles();
-    }
-  if(storedEnergy>AWCoreStatics.energyPerWorkUnit)
-    {
-    if(processWork())
-      {
-      storedEnergy-=AWCoreStatics.energyPerWorkUnit;
-      }
+    storedEnergy -= AWCoreStatics.energyPerWorkUnit;
     }
   if(shouldRecount)
     {
@@ -123,30 +108,13 @@ private boolean processWork()
   {
   if(!interfacesToEmpty.isEmpty())
     {
-    if(tryCleanOutput()){return true;}
+    if(tryEmptyInterfaces()){return true;}
     }
   if(!interfacesToFill.isEmpty())
     {
-    if(tryFillOutput()){return true;}
+    if(tryFillInterfaces()){return true;}
     }
   return false;
-  }
-
-private void processDirtyInputTiles()
-  {
-  for(TileWarehouseInterface input : interfaceToUpdate)
-    {
-    //TODO create inventory in interface tiles
-//    for(int i = 0; i<input.getSizeInventory(); i++)
-//      {
-//      if(input.getStackInSlot(i)!=null)
-//        {
-//        inputToEmpty.add(input);
-//        break;
-//        }
-//      }
-    }
-  interfaceToUpdate.clear();
   }
 
 private void scanForInitialTiles()
@@ -174,18 +142,26 @@ private void recountInventory()
     }
   }
 
+public final void addViewer(ContainerWarehouseControl viewer){viewers.add(viewer);}
+
+public final void removeViewer(ContainerWarehouseControl viewer){viewers.remove(viewer);}
+
+public final void updateViewers(){for(ContainerWarehouseControl viewer : viewers){viewer.onWarehouseInventoryUpdated();}}
+
 public final void addStorageTile(IWarehouseStorageTile tile)
   {
   if(!storageTiles.contains(tile))
     {
-    storageTiles.add(tile);  
+    storageTiles.add(tile);    
     if(tile instanceof IControlledTile)
       {
       ((IControlledTile) tile).setController(this);
       }
     storageMap.addStorageTile(tile);
-    tile.addItems(cachedItemMap);    
+    tile.addItems(cachedItemMap);  
+    onStorageInventoryUpdated(tile);
     }
+  AWLog.logDebug("added storage tile, set now contains: "+storageTiles);
   }
 
 public final void removeStorageTile(IWarehouseStorageTile tile)
@@ -204,29 +180,54 @@ public final void addInterfaceTile(TileWarehouseInterface tile)
   {
   if(!interfaceTiles.contains(tile))
     {
-    interfaceTiles.add(tile);
-    interfaceToUpdate.add(tile);    
+    interfaceTiles.add(tile);  
+    tile.setController(this);
+    if(!tile.getEmptyRequests().isEmpty())
+      {
+      interfacesToEmpty.add(tile);
+      }
+    if(!tile.getFillRequests().isEmpty())
+      {
+      interfacesToFill.add(tile);
+      }
     }
+  AWLog.logDebug("added interface tile, set now contains: "+interfaceTiles);
   }
 
 public final void removeInterfaceTile(TileWarehouseInterface tile)
   {
   interfaceTiles.remove(tile);
-  interfaceToUpdate.remove(tile);
+  interfacesToFill.remove(tile);
+  interfacesToEmpty.remove(tile);
   }
 
 public final void onIterfaceInventoryChanged(TileWarehouseInterface tile)
-  {
-  interfaceToUpdate.add(tile);
+  {  
+  AWLog.logDebug("receiving interface inventory changed update for: "+tile);
   interfacesToFill.remove(tile);
   interfacesToEmpty.remove(tile);
+  if(!tile.getEmptyRequests().isEmpty())
+    {
+    interfacesToEmpty.add(tile);
+    }
+  if(!tile.getFillRequests().isEmpty())
+    {
+    interfacesToFill.add(tile);
+    }
   }
 
-public final void onOutputFilterChanged(TileWarehouseInterface tile)
+public final void onInterfaceFilterChanged(TileWarehouseInterface tile)
   {
-  interfaceToUpdate.add(tile);
   interfacesToFill.remove(tile);
   interfacesToEmpty.remove(tile);
+  if(!tile.getEmptyRequests().isEmpty())
+    {
+    interfacesToEmpty.add(tile);
+    }
+  if(!tile.getFillRequests().isEmpty())
+    {
+    interfacesToFill.add(tile);
+    }
   }
 
 public final void onStorageFilterChanged(IWarehouseStorageTile tile, List<WarehouseStorageFilter> oldFilters, List<WarehouseStorageFilter> newFilters)
@@ -386,6 +387,7 @@ public final void setBounds(BlockPosition p1, BlockPosition p2)
   {
   min = BlockTools.getMin(p1, p2);
   max = BlockTools.getMax(p1, p2);
+  AWLog.logDebug("set bounds to: "+min+" :: "+max);
   }
 
 @Override
@@ -418,7 +420,7 @@ public Packet getDescriptionPacket()
   NBTTagCompound tag = new NBTTagCompound();
   tag.setTag("min", min.writeToNBT(new NBTTagCompound()));
   tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
-  return new S35PacketUpdateTileEntity(xCoord, yCoord, yCoord, 0, tag);
+  return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
   }
 
 @Override

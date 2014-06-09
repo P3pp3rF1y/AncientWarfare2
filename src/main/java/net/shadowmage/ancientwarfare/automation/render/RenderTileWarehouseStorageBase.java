@@ -12,70 +12,70 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseStorageBase;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.WarehouseItemFilter;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.IWarehouseStorageTile;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 
 import org.lwjgl.opengl.GL11;
 
 public class RenderTileWarehouseStorageBase extends TileEntitySpecialRenderer
 {
-private static final ResourceLocation signTexture = new ResourceLocation("textures/entity/sign.png");
-private static final ModelSign signModel = new ModelSign();
-private static RenderItem render = new RenderItem();
-
-
-private static final ForgeDirection[] directions = new ForgeDirection[]{ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST};
+//private static final ResourceLocation signTexture = new ResourceLocation("textures/entity/sign.png");
+//private static final ModelSign signModel = new ModelSign();
+//private static RenderItem render = new RenderItem();
+//
+//
+//private static final ForgeDirection[] directions = new ForgeDirection[]{ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST};
 
 public RenderTileWarehouseStorageBase()
   {
-  render.zLevel = -50.f;
-  signModel.signStick.showModel = false;
+//  render.zLevel = -50.f;
+//  signModel.signStick.showModel = false;
   }
 
 @Override
 public void renderTileEntityAt(TileEntity te, double x, double y, double z, float deltaTime)
   {  
-  TileWarehouseStorageBase tile = (TileWarehouseStorageBase)te;
-  
-  ForgeDirection d;
-  float r;
-  for(int b = 0; b < 4; b++)
-    {
-    d = directions[b];
-    r = 90 * b;
-    if(te.getWorldObj().isAirBlock(te.xCoord+d.offsetX, te.yCoord+d.offsetY, te.zCoord+d.offsetZ))
-      {
-      int i = te.getWorldObj().getLightBrightnessForSkyBlocks(te.xCoord+d.offsetX, te.yCoord+d.offsetY, te.zCoord+d.offsetZ, 0);
-      int j = i % 65536;
-      int k = i / 65536;
-      OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
-//      renderSignBoard(x+d.offsetX, y+d.offsetY, z+d.offsetZ, r);
-
-      GL11.glPushMatrix();
-      GL11.glTranslated(x, y, z);
-      GL11.glTranslatef(0.5f, 1.f, 0.5f);//translate the point to the top-center of the block
-      GL11.glRotatef(-r+180.f, 0, 1, 0);//rotate for rotation
-      GL11.glTranslatef(0.5f, 0, -0.5f);//translate to top-left corner
-      drawPointAtCurrentOrigin();
-      renderSignContents(tile, x, y, z, r);
-      GL11.glPopMatrix();      
-      }
-    }
+//  TileWarehouseStorageBase tile = (TileWarehouseStorageBase)te;
+//  
+//  ForgeDirection d;
+//  float r;
+//  for(int b = 0; b < 4; b++)
+//    {
+//    d = directions[b];
+//    r = 90 * b;
+//    if(te.getWorldObj().isAirBlock(te.xCoord+d.offsetX, te.yCoord+d.offsetY, te.zCoord+d.offsetZ))
+//      {
+//      int i = te.getWorldObj().getLightBrightnessForSkyBlocks(te.xCoord+d.offsetX, te.yCoord+d.offsetY, te.zCoord+d.offsetZ, 0);
+//      int j = i % 65536;
+//      int k = i / 65536;
+//      OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+////      renderSignBoard(x+d.offsetX, y+d.offsetY, z+d.offsetZ, r);
+//
+//      GL11.glPushMatrix();
+//      GL11.glTranslated(x, y, z);
+//      GL11.glTranslatef(0.5f, 1.f, 0.5f);//translate the point to the top-center of the block
+//      GL11.glRotatef(-r+180.f, 0, 1, 0);//rotate for rotation
+//      GL11.glTranslatef(0.5f, 0, -0.5f);//translate to top-left corner
+//      drawPointAtCurrentOrigin();
+//      renderSignContents(tile, x, y, z, r);
+//      GL11.glPopMatrix();      
+//      }
+//    }
   }
 
 private void renderSignBoard(double x, double y, double z, float r)
   {
-  this.bindTexture(signTexture);
-  float renderScale = 0.65f;//666667F;
-  GL11.glPushMatrix();
-  GL11.glTranslatef((float)x + 0.5F, (float)y + 0.75F * renderScale, (float)z + 0.5F);    
-  GL11.glRotatef(-r, 0.0F, 1.0F, 0.0F);
-  GL11.glTranslatef(0.0F, -0.3125F, -0.4375F - 1.f*0.0625f);  
-  GL11.glScalef(renderScale, -renderScale, -renderScale);
-  signModel.renderSign();  
-  GL11.glPopMatrix();  
+//  this.bindTexture(signTexture);
+//  float renderScale = 0.65f;//666667F;
+//  GL11.glPushMatrix();
+//  GL11.glTranslatef((float)x + 0.5F, (float)y + 0.75F * renderScale, (float)z + 0.5F);    
+//  GL11.glRotatef(-r, 0.0F, 1.0F, 0.0F);
+//  GL11.glTranslatef(0.0F, -0.3125F, -0.4375F - 1.f*0.0625f);  
+//  GL11.glScalef(renderScale, -renderScale, -renderScale);
+//  signModel.renderSign();  
+//  GL11.glPopMatrix();  
   }
 
 /**
@@ -84,49 +84,49 @@ private void renderSignBoard(double x, double y, double z, float r)
  */
 private void renderSignContents(IWarehouseStorageTile tile, double x, double y, double z, float r)
   {
-  GL11.glPushMatrix();
-//  drawPointAtCurrentOrigin();
-
-  
-  //adjust translation for sign-face, move right a little, down a 1/4 block, and out a little
-  //this puts the origin at upper-left-hand corner of the sign-face
-//  GL11.glTranslatef(0, -0.25f, -0.042f);
-  
-
-  GL11.glTranslatef(0, 0, -0.002f);//move out from block face slightly, for depth-buffer/z-fighting
-  
-  
-  GL11.glScalef(-1, -1, -1);//rescale for gui rendering axis flip
-  GL11.glScalef(0.0050f, 0.0050f, 0.0050f);//this scale puts it at 200 units(pixels) per block
-  GL11.glScalef(1f, 1f, 0.0001f);//squash Z axis for 'flat' rendering of 3d blocks/items..LOLS
-  FontRenderer fr = func_147498_b();
-  
-  ItemStack filterItem;
-  WarehouseStorageFilter filter;
-  String name = "";
-  List<WarehouseStorageFilter>filters = tile.getFilters();
-//  String tileName = "what_to_do_with_this_field?";
-//  fr.drawString(tileName, 100-fr.getStringWidth(tileName)/2, 10, 0xffffffff);
-  //TODO draw parchment background layer?
-  for(int i = 0; i < 10 && i<filters.size(); i++)
-    {
-    filter = filters.get(i);
-    filterItem = filter.getFilterItem();
-    
-    if(filterItem!=null)
-      {
-      render.renderItemAndEffectIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), filter.getFilterItem(), 0+12, i*18+10);      
-      }
-    
-    name = filterItem==null? "Empty Filter" : filterItem.getDisplayName();
-    fr.drawString(name, 20+12, i*18+4+10, 0xffffffff);
-    
-    name = String.valueOf(0);//TODO
-    fr.drawString(name, 200-13-fr.getStringWidth(name), i*18+4+10, 0xffffffff);
-    
-    }
-    
-  GL11.glPopMatrix();  
+//  GL11.glPushMatrix();
+////  drawPointAtCurrentOrigin();
+//
+//  
+//  //adjust translation for sign-face, move right a little, down a 1/4 block, and out a little
+//  //this puts the origin at upper-left-hand corner of the sign-face
+////  GL11.glTranslatef(0, -0.25f, -0.042f);
+//  
+//
+//  GL11.glTranslatef(0, 0, -0.002f);//move out from block face slightly, for depth-buffer/z-fighting
+//  
+//  
+//  GL11.glScalef(-1, -1, -1);//rescale for gui rendering axis flip
+//  GL11.glScalef(0.0050f, 0.0050f, 0.0050f);//this scale puts it at 200 units(pixels) per block
+//  GL11.glScalef(1f, 1f, 0.0001f);//squash Z axis for 'flat' rendering of 3d blocks/items..LOLS
+//  FontRenderer fr = func_147498_b();
+//  
+//  ItemStack filterItem;
+//  WarehouseStorageFilter filter;
+//  String name = "";
+//  List<WarehouseStorageFilter>filters = tile.getFilters();
+////  String tileName = "what_to_do_with_this_field?";
+////  fr.drawString(tileName, 100-fr.getStringWidth(tileName)/2, 10, 0xffffffff);
+//  //TODO draw parchment background layer?
+//  for(int i = 0; i < 10 && i<filters.size(); i++)
+//    {
+//    filter = filters.get(i);
+//    filterItem = filter.getFilterItem();
+//    
+//    if(filterItem!=null)
+//      {
+//      render.renderItemAndEffectIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), filter.getFilterItem(), 0+12, i*18+10);      
+//      }
+//    
+//    name = filterItem==null? "Empty Filter" : filterItem.getDisplayName();
+//    fr.drawString(name, 20+12, i*18+4+10, 0xffffffff);
+//    
+//    name = String.valueOf(0);//TODO
+//    fr.drawString(name, 200-13-fr.getStringWidth(name), i*18+4+10, 0xffffffff);
+//    
+//    }
+//    
+//  GL11.glPopMatrix();  
   }
 
 private void drawPointAtCurrentOrigin()

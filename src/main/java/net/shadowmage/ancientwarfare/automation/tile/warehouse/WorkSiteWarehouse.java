@@ -14,6 +14,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.IWarehouseStorageTile;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
@@ -371,9 +373,9 @@ private void updateOutputTile(TileWarehouseOutput tile)
   {
   outputToFill.remove(tile);//remove it in case it was already present in the toFill set
   outputToCheck.remove(tile);
-  List<WarehouseItemFilter> filters = tile.getFilters();
+  List<WarehouseInterfaceFilter> filters = tile.getFilters();
   int count;
-  for(WarehouseItemFilter filter : filters)
+  for(WarehouseInterfaceFilter filter : filters)
     {
     if(filter.getFilterItem()==null){continue;}
     count = InventoryTools.getCountOf(tile, -1, filter.getFilterItem()); 
@@ -514,7 +516,7 @@ private void processInputWork()
 private void processOutputWork()
   {
   TileWarehouseOutput tile;
-  List<WarehouseItemFilter> filters;
+  List<WarehouseInterfaceFilter> filters;
   ItemStack toMerge;
   int filterQuantity, foundQuantity, transferQuantity, passXfer;
     
@@ -524,7 +526,7 @@ private void processOutputWork()
     tile = outputToFill.remove(0);
     tilesToUpdate.add(tile);
     filters = tile.getFilters();
-    for(WarehouseItemFilter filter : filters)
+    for(WarehouseInterfaceFilter filter : filters)
       {
       if(filter.getFilterItem()==null){continue;}
       filterQuantity = filter.getFilterQuantity();

@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.WorkSiteWarehouse;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
@@ -15,35 +15,24 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntr
 public class ContainerWarehouseControl extends ContainerBase
 {
 
-public WorkSiteWarehouse warehouse;
+public TileWarehouseBase warehouse;
 public ItemQuantityMap itemMap = new ItemQuantityMap();
+public ItemQuantityMap cache = new ItemQuantityMap();
 boolean shouldUpdate = true;
 
 public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
-  warehouse = (WorkSiteWarehouse) player.worldObj.getTileEntity(x, y, z);
-  warehouse.addViewer(this);  
-  int y2 = 8, x2=8+2*18;
-  int x1, y1;
-  for(int k = 0; k <9; k++)
-    {
-    x1 = (k%3)*18 + x2;
-    y1 = (k/3)*18 + y2;
-    addSlotToContainer(new Slot(warehouse.inventory, k, x1, y1));
-    }
-  
+  warehouse = (TileWarehouseBase) player.worldObj.getTileEntity(x, y, z);
   addPlayerSlots(player, 8, 156, 4);
+  warehouse.addViewer(this);
   }
 
 @Override
-public void sendInitData()
-  {  
-//  NBTTagCompound wtag = warehouse.inventoryMap.writeToNBT(new NBTTagCompound());
-//  itemMap.putAll(warehouse.inventoryMap);
-//  NBTTagCompound tag = new NBTTagCompound();
-//  tag.setTag("itemList", wtag);
-//  sendDataToServer(tag);
+public void onContainerClosed(EntityPlayer par1EntityPlayer)
+  {
+  warehouse.removeViewer(this);
+  super.onContainerClosed(par1EntityPlayer);
   }
 
 @Override
@@ -122,7 +111,9 @@ private void synchItemMaps()
    *    add any new entries to change-list    
    */
 
-  ItemQuantityMap warehouseItemMap = warehouse.inventoryMap;
+  cache.clear();
+  warehouse.getItems(cache);
+  ItemQuantityMap warehouseItemMap = cache;
   int qty;
   NBTTagList changeList = new NBTTagList();
   NBTTagCompound tag;
@@ -162,45 +153,9 @@ private void synchItemMaps()
   AWLog.logDebug("inventory synch time: "+t3+"ns ("+f1+"ms)");
   }
 
-@Override
-public void onContainerClosed(EntityPlayer par1EntityPlayer)
-  {
-  super.onContainerClosed(par1EntityPlayer);
-  warehouse.removeViewer(this);
-  }
-
 public void onWarehouseInventoryUpdated()
   {  
   shouldUpdate = true;
-  }
-
-/**
- * @return should always return null for normal implementation, not sure wtf the rest of the code is about
- */
-@Override
-public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
-  {
-  int slots = 9;
-  Slot slot = (Slot)this.inventorySlots.get(slotClickedIndex);
-  if(slot==null || !slot.getHasStack()){return null;}
-  ItemStack stackFromSlot = slot.getStack();
-  if(slotClickedIndex < slots)
-    {
-    this.mergeItemStack(stackFromSlot, slots, slots+36, false);
-    }
-  else
-    {
-    this.mergeItemStack(stackFromSlot, 0, slots, true);
-    }
-  if(stackFromSlot.stackSize == 0)
-    {
-    slot.putStack((ItemStack)null);
-    }
-  else
-    {
-    slot.onSlotChanged();
-    }
-  return null;  
   }
 
 }

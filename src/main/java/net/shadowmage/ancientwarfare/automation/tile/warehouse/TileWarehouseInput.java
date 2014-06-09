@@ -196,7 +196,7 @@ public boolean onBlockClicked(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_INPUT, xCoord, yCoord, zCoord);
+//    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_INPUT, xCoord, yCoord, zCoord);
     }
   return true;
   }

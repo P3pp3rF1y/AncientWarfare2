@@ -10,7 +10,6 @@ import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLo
 import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.torqueGeneratorSterling;
 import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.torqueGeneratorWaterwheel;
 import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.warehouseCrafting;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.warehouseInput;
 import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.warehouseOutput;
 import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteAnimalFarm;
 import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteAutoCrafting;
@@ -90,7 +89,7 @@ private int getItemPriority(Item item)
     else if(block==torqueGeneratorSterling || block==torqueGeneratorWaterwheel || block==handCrankedEngine){return 8;}
     else if(block==torqueDistributor || block==torqueConduit){return 7;}
     else if(block==mailbox){return 6;}
-    else if(block==warehouseInput || block==warehouseOutput || block==warehouseCrafting){return 5;}
+    else if(block==warehouseOutput || block==warehouseCrafting){return 5;}
     else if(block==worksiteWarehouse){return 4;}
     else if(block==worksiteAutoCrafting){return 3;}
     else if(block==worksiteQuarry || block==worksiteForestry || block==worksiteCropFarm || block==worksiteMushroomFarm

@@ -1,9 +1,9 @@
-package net.shadowmage.ancientwarfare.automation.tile.warehouse;
+package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 
 

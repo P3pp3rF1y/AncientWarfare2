@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile.warehouse;
+package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import java.util.List;
 
@@ -8,13 +8,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public final class WarehouseItemFilter extends ItemSlotFilter
+public final class WarehouseInterfaceFilter extends ItemSlotFilter
 {
 
 private ItemStack filterItem;
 private int quantity;
 
-public WarehouseItemFilter(){}
+public WarehouseInterfaceFilter(){}
 
 @Override
 public boolean isItemValid(ItemStack item)
@@ -64,31 +64,31 @@ public String toString()
   return "Filter item: "+filterItem + " quantity: "+quantity;
   }
 
-public static NBTTagList writeFilterList(List<WarehouseItemFilter> filters)
+public static NBTTagList writeFilterList(List<WarehouseInterfaceFilter> filters)
   {
   NBTTagList list = new NBTTagList();
-  for(WarehouseItemFilter filter : filters)
+  for(WarehouseInterfaceFilter filter : filters)
     {
     list.appendTag(filter.writeToNBT(new NBTTagCompound()));
     }
   return list;
   }
 
-public static List<WarehouseItemFilter> readFilterList(NBTTagList list, List<WarehouseItemFilter> filters)
+public static List<WarehouseInterfaceFilter> readFilterList(NBTTagList list, List<WarehouseInterfaceFilter> filters)
   {
-  WarehouseItemFilter filter;
+  WarehouseInterfaceFilter filter;
   for(int i = 0; i < list.tagCount(); i++)
     {
-    filter = new WarehouseItemFilter();
+    filter = new WarehouseInterfaceFilter();
     filter.readFromNBT(list.getCompoundTagAt(i));   
     filters.add(filter);    
     }
   return filters;
   }
 
-public WarehouseItemFilter copy()
+public WarehouseInterfaceFilter copy()
   {
-  WarehouseItemFilter filter = new WarehouseItemFilter();
+  WarehouseInterfaceFilter filter = new WarehouseInterfaceFilter();
   filter.filterItem = this.filterItem==null? null : this.filterItem.copy();
   filter.quantity = this.quantity;
   return filter;
