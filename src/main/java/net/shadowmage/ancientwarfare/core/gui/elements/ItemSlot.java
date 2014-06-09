@@ -113,9 +113,10 @@ public void render(int mouseX, int mouseY, float partialTick)
       GL11.glEnable(GL11.GL_DEPTH_TEST);//fix for chests / tile-renderers improper render stuff
       itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1);
       GL11.glDisable(GL11.GL_DEPTH_TEST);
-      if(renderItemQuantity && item.stackSize>0)
-        {
-        itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1, String.valueOf(item.stackSize));        
+      if(renderItemQuantity && item.stackSize>1)
+        {        
+        itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1, "");
+        renderStackSize(renderX+1, renderY, item);
         }
       GL11.glDisable(GL11.GL_LIGHTING);
       }    
@@ -151,6 +152,18 @@ public void render(int mouseX, int mouseY, float partialTick)
     GL11.glEnable(GL11.GL_DEPTH_TEST);
     GL11.glDisable(GL11.GL_LIGHTING);
     }  
+  }
+
+private void renderStackSize(int renderX, int renderY, ItemStack stack, FontRenderer fr)
+  {
+  String s1 = String.valueOf(stack.stackSize);
+  float w = fr.getStringWidth(s1);
+  GL11.glDisable(GL11.GL_LIGHTING);
+  GL11.glDisable(GL11.GL_DEPTH_TEST);
+  GL11.glDisable(GL11.GL_BLEND);
+  fr.drawStringWithShadow(s1, renderX + 19 - 2 - fr.getStringWidth(s1), renderY + 6 + 3, 16777215);
+  GL11.glEnable(GL11.GL_LIGHTING);
+  GL11.glEnable(GL11.GL_DEPTH_TEST);
   }
 
 public void onSlotClicked(ItemStack stack)

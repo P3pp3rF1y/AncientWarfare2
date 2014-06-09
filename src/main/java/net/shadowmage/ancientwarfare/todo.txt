@@ -56,7 +56,7 @@ TEXTURES
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
 * recipes for nearly everything
-* add warehouse storage block gui/container/ability to set filters
+* add ability to manipulate storage block inventory directly
 		
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
