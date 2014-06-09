@@ -55,6 +55,7 @@ public static final String VEHICLE_TEST = "vehicle_test";
 //TODO add gates?? where are they registered at?
 
 private static HashMap<String, EntityDeclaration> entityRegistrations = new HashMap<String, EntityDeclaration>();
+@SuppressWarnings("rawtypes")
 private static HashMap<Class, String> classToRegistration = new HashMap<Class, String>();
 
 public static void registerEntity(EntityDeclaration reg)
@@ -64,7 +65,7 @@ public static void registerEntity(EntityDeclaration reg)
   cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(reg.entityClass, reg.entityName, reg.id, reg.mod, reg.trackingRange, reg.updateFrequency, reg.sendsVelocityUpdates);
   }
 
-public static String getRegistryNameFor(Class clz)
+public static String getRegistryNameFor(@SuppressWarnings("rawtypes") Class clz)
   {
   return classToRegistration.get(clz);
   }

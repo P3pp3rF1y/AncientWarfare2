@@ -23,6 +23,7 @@ Label currentSelectionName;
 CompositeScrolled typeSelectionArea;
 CompositeScrolled attributesArea;
 
+@SuppressWarnings("rawtypes")
 private HashMap<Label, Class> labelToClass = new HashMap<Label, Class>();
 
 public GuiSpawnerPlacer(ContainerBase par1Container)
@@ -63,6 +64,7 @@ public void initElements()
   addGuiElement(attributesArea);  
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void setupElements()
   {

@@ -90,6 +90,7 @@ public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block 
 /**
  * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
  */
+@SuppressWarnings({ "unchecked", "deprecation", "rawtypes" })
 @Override
 public Multimap getItemAttributeModifiers()
   {
@@ -105,7 +106,8 @@ public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List 
   boolean mode = false;
   if(stack.hasTagCompound())
     {
-    mode = stack.getTagCompound().getBoolean("workMode");      
+    mode = stack.getTagCompound().getBoolean("workMode");
+    //TODO add info regarding what mode the hammer is in
     }
   super.addInformation(stack, par2EntityPlayer, par3List, par4);
   }

@@ -65,6 +65,7 @@ public void setupElements()
   area.clearElements();
   
   int totalHeight = 8;
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   Map<String, Class> mp = EntityList.stringToClassMapping;
   
   Button button;

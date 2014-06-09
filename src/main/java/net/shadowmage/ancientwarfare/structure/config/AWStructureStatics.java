@@ -53,7 +53,9 @@ public static int structureImageHeight = 288;
 public static Set<String> excludedSpawnerEntities = new HashSet<String>();
 private static HashSet<String> skippableWorldGenBlocks = new HashSet<String>();
 private static HashSet<String> worldGenTargetBlocks = new HashSet<String>();
+@SuppressWarnings("rawtypes")
 private static HashMap<Class, String> biomeAliasByClass = new HashMap<Class, String>();
+@SuppressWarnings("rawtypes")
 private static HashMap<String, Class> biomeAliasByName = new HashMap<String, Class>();
 
 private static String worldGenCategory = "a_world-gen_settings";
@@ -74,6 +76,7 @@ public void initializeCategories()
   this.config.addCustomCategoryComment(biomeMap, "Custom-mapped biome names to be used in templates.\nBiomes should be specified by their fully-qualifed class-name.\nThis alias list must be shared if you wish to share your templates that use these custom aliases.");
   }
 
+@SuppressWarnings("rawtypes")
 @Override
 public void initializeValues()
   {
@@ -489,6 +492,7 @@ public static BiomeGenBase getBiomeByName(String name)
   {
   if(biomeAliasByName.containsKey(name))
     {
+    @SuppressWarnings("rawtypes")
     Class clz = biomeAliasByName.get(name);
     for(BiomeGenBase b : BiomeGenBase.getBiomeGenArray())
       {
