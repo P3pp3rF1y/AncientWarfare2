@@ -10,10 +10,13 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCont
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeItemSlots;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
@@ -90,6 +93,20 @@ public void initElements()
   addGuiElement(input);
     
   area = new CompositeItemSlots(0, 82, 178, 3*18+16, this);
+  
+  Listener l = new Listener(Listener.MOUSE_DOWN)
+    {    
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(evt.mButton==0 && widget.isMouseOverElement(evt.mx, evt.my) && !area.isMouseOverSubElement(evt.mx, evt.my))
+        {
+        container.handleClientRequestSpecific(null);
+        }
+      return true;
+      }
+    };
+  area.addNewListener(l);  
   addGuiElement(area); 
   }
 

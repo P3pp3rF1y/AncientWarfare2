@@ -38,20 +38,20 @@ public void onContainerClosed(EntityPlayer par1EntityPlayer)
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  if(tag.hasKey("requestSpecific"))
+  if(tag.hasKey("slotClick"))
     {    
-    NBTTagCompound reqTag = tag.getCompoundTag("requestSpecific");
-    ItemStack item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
-    AWLog.logDebug("processing specific request..."+item);
-    warehouse.requestItem(item);
+    NBTTagCompound reqTag = tag.getCompoundTag("slotClick");
+    ItemStack item = null;
+    if(reqTag.hasKey("reqItem"))
+      {
+      item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
+      }    
+    AWLog.logDebug("processing slot click..."+item);
+    warehouse.handleSlotClick(player, item);
     }
   if(tag.hasKey("changeList"))
     {
     handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
-    }
-  if(tag.hasKey("itemList"))
-    {
-    itemMap.readFromNBT(tag.getCompoundTag("itemList"));
     }
   refreshGui();
   }
@@ -60,9 +60,12 @@ public void handleClientRequestSpecific(ItemStack stack)
   {    
   AWLog.logDebug("sending specific request for: "+stack);
   NBTTagCompound tag = new NBTTagCompound();
-  tag.setTag("reqItem", stack.writeToNBT(new NBTTagCompound()));  
+  if(stack!=null)
+    {
+    tag.setTag("reqItem", stack.writeToNBT(new NBTTagCompound()));    
+    }  
   NBTTagCompound pktTag = new NBTTagCompound();
-  pktTag.setTag("requestSpecific", tag);
+  pktTag.setTag("slotClick", tag);
   sendDataToServer(pktTag);
   }
 

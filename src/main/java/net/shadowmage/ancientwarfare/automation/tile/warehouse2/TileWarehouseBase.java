@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceEmptyRequest;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceFillRequest;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
@@ -27,6 +30,7 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public abstract class TileWarehouseBase extends TileEntity implements IOwnable, IWorkSite, ITorqueReceiver, IBoundedTile, IInteractableTile, IControllerTile
@@ -66,13 +70,113 @@ public TileWarehouseBase()
   
   }
 
-protected abstract boolean tryFillInterfaces();
+public abstract void handleSlotClick(EntityPlayer player, ItemStack filter);
 
-protected abstract boolean tryEmptyInterfaces();
+private boolean tryEmptyInterfaces()
+  {  
+  List<TileWarehouseInterface> toEmpty = new ArrayList<TileWarehouseInterface>(interfacesToEmpty);  
+  for(TileWarehouseInterface tile : toEmpty)
+    {
+    if(tryEmptyTile(tile))
+      {
+      tile.recalcRequests();
+      return true;
+      }
+    }   
+  return false;
+  }
 
-public abstract ItemStack requestItem(ItemStack filter);
+private boolean tryEmptyTile(TileWarehouseInterface tile)
+  {
+  List<InterfaceEmptyRequest> reqs = tile.getEmptyRequests();
+  for(InterfaceEmptyRequest req : reqs)
+    {
+    if(tryRemoveFromRequest(tile, req)){return true;}   
+    }
+  return false;
+  }
 
-public abstract ItemStack mergeItem(ItemStack item);
+private boolean tryRemoveFromRequest(TileWarehouseInterface tile, InterfaceEmptyRequest request)
+  {
+  ItemStack stack = tile.getStackInSlot(request.slotNum);
+  if(stack==null){return false;}
+  int stackSize = stack.stackSize;
+  int moved;
+  List<IWarehouseStorageTile> potentialStorage = new ArrayList<IWarehouseStorageTile>();
+  storageMap.getDestinations(stack, potentialStorage);
+  for(IWarehouseStorageTile dest : potentialStorage)
+    {
+    moved = dest.insertItem(stack, stack.stackSize);
+    if(moved>0)
+      {
+      cachedItemMap.addCount(stack, moved);
+      updateViewers();
+      }
+    stack.stackSize -= moved;
+    if(stack.stackSize!=stackSize)
+      {
+      if(stack.stackSize<=0)
+        {
+        tile.inventory.setInventorySlotContents(request.slotNum, null);
+        }
+      return true;
+      }
+    }  
+  return false;
+  }
+
+private boolean tryFillInterfaces()
+  {
+  List<TileWarehouseInterface> toFill = new ArrayList<TileWarehouseInterface>(interfacesToFill);
+  for(TileWarehouseInterface tile : toFill)
+    {
+    if(tryFillTile(tile))
+      {
+      tile.recalcRequests();
+      return true;
+      }
+    }
+  return false;
+  }
+
+private boolean tryFillTile(TileWarehouseInterface tile)
+  {
+  List<InterfaceFillRequest> reqs = tile.getFillRequests();
+  for(InterfaceFillRequest req : reqs)
+    {
+    if(tryFillFromRequest(tile, req)){return true;}
+    }
+  return false;
+  }
+
+private boolean tryFillFromRequest(TileWarehouseInterface tile, InterfaceFillRequest request)
+  {  
+  List<IWarehouseStorageTile> potentialStorage = new ArrayList<IWarehouseStorageTile>();
+  storageMap.getDestinations(request.requestedItem, potentialStorage);
+  int found, moved;
+  ItemStack stack;
+  int stackSize;
+  for(IWarehouseStorageTile source : potentialStorage)
+    {
+    found = source.getQuantityStored(request.requestedItem);
+    if(found>0)
+      {
+      stack = request.requestedItem.copy();
+      stack.stackSize = found>stack.getMaxStackSize() ? stack.getMaxStackSize() : found;
+      stackSize = stack.stackSize;
+      stack = InventoryTools.mergeItemStack(tile.inventory, stack, -1);
+      if(stack==null || stack.stackSize!=stackSize)
+        {        
+        moved = stack==null ? stackSize : stackSize-stack.stackSize;
+        source.extractItem(request.requestedItem, moved);
+        cachedItemMap.decreaseCount(request.requestedItem, moved);  
+        updateViewers();      
+        return true;
+        }
+      }
+    }
+  return false;
+  }
 
 public final void getItems(ItemQuantityMap map)
   {
@@ -87,7 +191,8 @@ public final boolean canUpdate()
 
 @Override
 public final void updateEntity()
-  {  
+  { 
+  if(worldObj.isRemote){return;}
   if(!init)
     {
     init=true;  
@@ -142,7 +247,11 @@ private void recountInventory()
     }
   }
 
-public final void addViewer(ContainerWarehouseControl viewer){viewers.add(viewer);}
+public final void addViewer(ContainerWarehouseControl viewer)
+  {
+  if(worldObj.isRemote){return;}
+  viewers.add(viewer);
+  }
 
 public final void removeViewer(ContainerWarehouseControl viewer){viewers.remove(viewer);}
 
@@ -150,6 +259,7 @@ public final void updateViewers(){for(ContainerWarehouseControl viewer : viewers
 
 public final void addStorageTile(IWarehouseStorageTile tile)
   {
+  if(worldObj.isRemote){return;}
   if(!storageTiles.contains(tile))
     {
     storageTiles.add(tile);    
@@ -159,7 +269,6 @@ public final void addStorageTile(IWarehouseStorageTile tile)
       }
     storageMap.addStorageTile(tile);
     tile.addItems(cachedItemMap);  
-    onStorageInventoryUpdated(tile);
     }
   AWLog.logDebug("added storage tile, set now contains: "+storageTiles);
   }
@@ -170,14 +279,9 @@ public final void removeStorageTile(IWarehouseStorageTile tile)
   storageMap.removeStorageTile(tile);
   }
 
-public final void onStorageInventoryUpdated(IWarehouseStorageTile tile)
-  {
-  //TODO examine interface blocks to see if tile can fulfill any filters
-  //if so, add interface block into toFill set for next update cycle/work cycle
-  }
-
 public final void addInterfaceTile(TileWarehouseInterface tile)
   {
+  if(worldObj.isRemote){return;}
   if(!interfaceTiles.contains(tile))
     {
     interfaceTiles.add(tile);  
@@ -203,6 +307,7 @@ public final void removeInterfaceTile(TileWarehouseInterface tile)
 
 public final void onIterfaceInventoryChanged(TileWarehouseInterface tile)
   {  
+  if(worldObj.isRemote){return;}
   AWLog.logDebug("receiving interface inventory changed update for: "+tile);
   interfacesToFill.remove(tile);
   interfacesToEmpty.remove(tile);
@@ -218,6 +323,7 @@ public final void onIterfaceInventoryChanged(TileWarehouseInterface tile)
 
 public final void onInterfaceFilterChanged(TileWarehouseInterface tile)
   {
+  if(worldObj.isRemote){return;}
   interfacesToFill.remove(tile);
   interfacesToEmpty.remove(tile);
   if(!tile.getEmptyRequests().isEmpty())
@@ -232,6 +338,7 @@ public final void onInterfaceFilterChanged(TileWarehouseInterface tile)
 
 public final void onStorageFilterChanged(IWarehouseStorageTile tile, List<WarehouseStorageFilter> oldFilters, List<WarehouseStorageFilter> newFilters)
   {
+  if(worldObj.isRemote){return;}
   storageMap.updateTileFilters(tile, oldFilters, newFilters);
   }
 

@@ -26,8 +26,16 @@ public ContainerWarehouseInterface(EntityPlayer player, int x, int y, int z)
     {
     addSlotToContainer(new Slot(tile, i, (i%3)*18+8+3*18, (i/3)*18+8+80+8));
     }  
+  tile.addViewer(this);
   filters.addAll(tile.getFilters());
   addPlayerSlots(player, 8, 8+8+3*18+80+8, 4);
+  }
+
+@Override
+public void onContainerClosed(EntityPlayer par1EntityPlayer)
+  {
+  tile.removeViewer(this);
+  super.onContainerClosed(par1EntityPlayer);
   }
 
 @Override
@@ -68,6 +76,8 @@ public void handlePacketData(NBTTagCompound tag)
 
 public void onInterfaceFiltersChanged()
   {
+  filters.clear();
+  filters.addAll(tile.getFilters());
   sendInitData();
   }
 

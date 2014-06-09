@@ -25,6 +25,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
 
 InventoryBasic inventory = new InventoryBasic(27);
   
+boolean init = false;
 List<InterfaceFillRequest> fillRequests = new ArrayList<InterfaceFillRequest>();
 List<InterfaceEmptyRequest> emptyRequests = new ArrayList<InterfaceEmptyRequest>();  
 List<WarehouseInterfaceFilter> filters = new ArrayList<WarehouseInterfaceFilter>();
@@ -37,6 +38,7 @@ public TileWarehouseInterface()
 
 public void addViewer(ContainerWarehouseInterface viewer)
   {
+  if(worldObj.isRemote){return;}
   viewers.add(viewer);
   }
 
@@ -59,14 +61,19 @@ public void setFilters(List<WarehouseInterfaceFilter> filters)
   {
   this.filters.clear();
   this.filters.addAll(filters);
-  onInventoryUpdated();
+  recalcRequests();
   updateViewers();
   }
 
 @Override
 protected void updateTile()
   {
-
+  if(worldObj.isRemote){return;}
+  if(!init)
+    {
+    init = true;
+    recalcRequests();
+    }
   }
 
 @Override
@@ -115,7 +122,7 @@ public ItemStack decrStackSize(int var1, int var2)
 public ItemStack getStackInSlotOnClosing(int var1)
   {
   ItemStack stack =  inventory.getStackInSlotOnClosing(var1);
-  onInventoryUpdated();
+  recalcRequests();
   return stack;
   }
 
@@ -123,7 +130,7 @@ public ItemStack getStackInSlotOnClosing(int var1)
 public void setInventorySlotContents(int var1, ItemStack var2)
   {
   inventory.setInventorySlotContents(var1, var2);
-  onInventoryUpdated();
+  recalcRequests();
   }
 
 @Override
@@ -176,17 +183,11 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setTag("filterList", WarehouseInterfaceFilter.writeFilterList(getFilters()));
   }
 
-protected void onInventoryUpdated()
-  {
-  recalcRequests();
-  }
-
 public void recalcRequests()
   {  
+  if(worldObj.isRemote){return;}
   fillRequests.clear();
-  emptyRequests.clear();
-  AWLog.logDebug("interface inventory marked dirty, recalculating requests...");
-  
+  emptyRequests.clear();  
   ItemStack stack;
   for(int i = 0; i< inventory.getSizeInventory(); i++)
     {
@@ -215,10 +216,6 @@ public void recalcRequests()
     {
     twb.onIterfaceInventoryChanged(this);
     }
-  else
-    {
-    AWLog.logDebug("interface block has no controller!!");
-    }  
   }
 
 protected boolean matchesFilter(ItemStack stack)

@@ -145,6 +145,15 @@ protected void updateElementPositions()
     }
   }
 
+public boolean isMouseOverSubElement(int mx, int my)
+  {
+  for(GuiElement el : this.elements)
+    {
+    if(el.isMouseOverElement(mx, my)){return true;}
+    }
+  return false;
+  }
+
 public void setSize(int width, int height)
   {
   this.width = width;

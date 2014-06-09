@@ -1,13 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceEmptyRequest;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceFillRequest;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 
 public class TileWarehouse extends TileWarehouseBase
@@ -19,125 +17,74 @@ public TileWarehouse()
   }
 
 @Override
-protected boolean tryEmptyInterfaces()
-  {  
-  List<TileWarehouseInterface> toEmpty = new ArrayList<TileWarehouseInterface>(interfacesToEmpty);  
-  for(TileWarehouseInterface tile : toEmpty)
-    {
-    if(tryEmptyTile(tile))
-      {
-      tile.recalcRequests();
-      return true;
-      }
-    }   
-  return false;
-  }
-
-private boolean tryEmptyTile(TileWarehouseInterface tile)
+public void handleSlotClick(EntityPlayer player, ItemStack filter)
   {
-  List<InterfaceEmptyRequest> reqs = tile.getEmptyRequests();
-  for(InterfaceEmptyRequest req : reqs)
+  if(filter!=null && player.inventory.getItemStack()==null)
     {
-    if(tryRemoveFromRequest(tile, req)){return true;}   
+    tryGetItem(player, filter);    
     }
-  return false;
+  else if(player.inventory.getItemStack()!=null)
+    {
+    tryAddItem(player, player.inventory.getItemStack());
+    }
   }
 
-private boolean tryRemoveFromRequest(TileWarehouseInterface tile, InterfaceEmptyRequest request)
+private void tryAddItem(EntityPlayer player, ItemStack cursorStack)
   {
-  ItemStack stack = tile.getStackInSlot(request.slotNum);
-  if(stack==null){return false;}
-  int stackSize = stack.stackSize;
+  List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
+  storageMap.getDestinations(cursorStack, destinations);
+  int stackSize = cursorStack.stackSize;
   int moved;
-  List<IWarehouseStorageTile> potentialStorage = new ArrayList<IWarehouseStorageTile>();
-  storageMap.getDestinations(stack, potentialStorage);
-  for(IWarehouseStorageTile dest : potentialStorage)
+  for(IWarehouseStorageTile tile : destinations)
     {
-    moved = dest.insertItem(stack, stack.stackSize);
-    if(moved>0)
+    moved = tile.insertItem(cursorStack, cursorStack.stackSize);
+    cursorStack.stackSize-=moved;    
+    cachedItemMap.addCount(cursorStack, moved);
+    updateViewers();
+    if(cursorStack.stackSize<=0){break;}
+    }
+  if(cursorStack.stackSize<=0)
+    {
+    player.inventory.setItemStack(null);
+    }
+  if(stackSize!=cursorStack.stackSize)
+    {
+    EntityPlayerMP playerMP = (EntityPlayerMP)player;
+    playerMP.updateHeldItem();
+    }
+  }
+
+private void tryGetItem(EntityPlayer player, ItemStack filter)
+  {
+  List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
+  ItemStack newCursorStack = filter.copy();
+  newCursorStack.stackSize=0;
+  storageMap.getDestinations(filter, destinations);
+  int count;
+  int toMove;
+  for(IWarehouseStorageTile tile : destinations)
+    {
+    count = tile.getQuantityStored(filter);
+    toMove = newCursorStack.getMaxStackSize()-newCursorStack.stackSize;
+    toMove = toMove>count? count : toMove;
+    if(toMove>0)
       {
-      cachedItemMap.addCount(stack, moved);
+      newCursorStack.stackSize+=toMove;
+      tile.extractItem(filter, toMove);
+      cachedItemMap.decreaseCount(filter, toMove);
       updateViewers();
-      }
-    stack.stackSize -= moved;
-    if(stack.stackSize!=stackSize)
+      }      
+    if(newCursorStack.stackSize>=newCursorStack.getMaxStackSize())
       {
-      if(stack.stackSize<=0)
-        {
-        tile.inventory.setInventorySlotContents(request.slotNum, null);
-        }
-      return true;
-      }
-    }  
-  return false;
-  }
-
-@Override
-protected boolean tryFillInterfaces()
-  {
-  List<TileWarehouseInterface> toFill = new ArrayList<TileWarehouseInterface>(interfacesToFill);
-  for(TileWarehouseInterface tile : toFill)
-    {
-    if(tryFillTile(tile))
-      {
-      tile.recalcRequests();
-      return true;
+      break;
       }
     }
-  return false;
-  }
-
-private boolean tryFillTile(TileWarehouseInterface tile)
-  {
-  List<InterfaceFillRequest> reqs = tile.getFillRequests();
-  for(InterfaceFillRequest req : reqs)
+  if(newCursorStack.stackSize>0)
     {
-    if(tryFillFromRequest(tile, req)){return true;}
+    player.inventory.setItemStack(newCursorStack);
+    EntityPlayerMP playerMP = (EntityPlayerMP)player;
+    playerMP.updateHeldItem();
     }
-  return false;
-  }
-
-private boolean tryFillFromRequest(TileWarehouseInterface tile, InterfaceFillRequest request)
-  {  
-  List<IWarehouseStorageTile> potentialStorage = new ArrayList<IWarehouseStorageTile>();
-  storageMap.getDestinations(request.requestedItem, potentialStorage);
-  int found, moved;
-  ItemStack stack;
-  int stackSize;
-  for(IWarehouseStorageTile source : potentialStorage)
-    {
-    found = source.getQuantityStored(request.requestedItem);
-    if(found>0)
-      {
-      stack = request.requestedItem.copy();
-      stack.stackSize = found>stack.getMaxStackSize() ? stack.getMaxStackSize() : found;
-      stackSize = stack.stackSize;
-      stack = InventoryTools.mergeItemStack(tile.inventory, stack, -1);
-      if(stack==null || stack.stackSize!=stackSize)
-        {        
-        moved = stack==null ? stackSize : stackSize-stack.stackSize;
-        source.extractItem(request.requestedItem, moved);
-        cachedItemMap.decreaseCount(request.requestedItem, moved);  
-        updateViewers();      
-        return true;
-        }
-      }
-    }
-  return false;
-  }
-
-@Override
-public ItemStack requestItem(ItemStack filter)
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
-
-@Override
-public ItemStack mergeItem(ItemStack item)
-  {
-  // TODO Auto-generated method stub
-  return null;
   }
 
 
