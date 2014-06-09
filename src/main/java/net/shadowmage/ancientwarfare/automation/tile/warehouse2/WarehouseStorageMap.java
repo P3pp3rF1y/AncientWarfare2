@@ -8,7 +8,7 @@ import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.IWarehouseStorageTile;
-import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap.ItemHashEntry;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
 public class WarehouseStorageMap
 {

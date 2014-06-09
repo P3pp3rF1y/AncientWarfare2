@@ -22,10 +22,10 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
 
 public class WorkSiteWarehouse extends TileWorksiteBase implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
 {

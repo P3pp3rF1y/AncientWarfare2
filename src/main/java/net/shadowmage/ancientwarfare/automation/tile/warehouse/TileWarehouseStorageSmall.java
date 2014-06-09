@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse;
 
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 
 
 

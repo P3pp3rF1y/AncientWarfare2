@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.core.util;
+package net.shadowmage.ancientwarfare.core.inventory;
 
 import java.util.Collection;
 import java.util.HashMap;

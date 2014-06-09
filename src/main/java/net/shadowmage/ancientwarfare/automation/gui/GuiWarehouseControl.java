@@ -17,10 +17,10 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
-import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap.ItemHashEntry;
 
 public class GuiWarehouseControl extends GuiContainerBase
 {

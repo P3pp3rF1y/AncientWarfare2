@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
-import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 
 
 

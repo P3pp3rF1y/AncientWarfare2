@@ -9,8 +9,8 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
-import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap.ItemHashEntry;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
 public class ContainerWarehouseControl extends ContainerBase
 {

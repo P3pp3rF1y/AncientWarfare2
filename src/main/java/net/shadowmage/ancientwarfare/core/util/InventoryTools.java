@@ -16,7 +16,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap.ItemHashEntry;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
 public class InventoryTools
 {

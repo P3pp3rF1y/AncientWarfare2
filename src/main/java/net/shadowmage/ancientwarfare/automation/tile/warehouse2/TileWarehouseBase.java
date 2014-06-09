@@ -22,10 +22,10 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public abstract class TileWarehouseBase extends TileEntity implements IOwnable, IWorkSite, ITorqueReceiver, IBoundedTile, IInteractableTile, IControllerTile

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.util.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
