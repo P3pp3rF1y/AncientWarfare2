@@ -34,7 +34,6 @@ CompositeScrolled area;
 ContainerWarehouseControl container;
 Button sortChange;
 Text input;
-Label sortTypeLabel;
 Checkbox sortOrderBox;
 SortType sortType = SortType.NAME;
 SortOrder sortOrder = SortOrder.DESCENDING;
@@ -50,22 +49,19 @@ public GuiWarehouseControl(ContainerBase par1Container)
 @Override
 public void initElements()
   {  
-  sortChange = new Button(xSize-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.automation.sort_type"))
+  sortChange = new Button(8, 8, 110, 12, StatCollector.translateToLocal("guistrings.automation.sort_type")+":"+StatCollector.translateToLocal(sortType.toString()))
     {
     @Override
     protected void onPressed()
       {
       sortType = sortType.next();
-      sortTypeLabel.setText(StatCollector.translateToLocal(sortType.toString()));
+      setText(StatCollector.translateToLocal("guistrings.automation.sort_type")+": "+StatCollector.translateToLocal(sortType.toString()));
       refreshGui();
       }
     };
   addGuiElement(sortChange);
   
-  sortTypeLabel = new Label(xSize-8-3*18+4, 22, StatCollector.translateToLocal(sortType.toString()));
-  addGuiElement(sortTypeLabel);
-  
-  sortOrderBox = new Checkbox(xSize-8-3*18+4, 22+12, 16, 16, StatCollector.translateToLocal("guistrings.automation.descending"))
+  sortOrderBox = new Checkbox(8+55+55+4, 6, 16, 16, StatCollector.translateToLocal("guistrings.automation.descending"))
     {
     @Override
     public void onToggled()
@@ -79,7 +75,7 @@ public void initElements()
     };
   addGuiElement(sortOrderBox);
   
-  input = new Text(8, 66, 178-16, "", this)
+  input = new Text(8, 8+12+4, 178-16, "", this)
     {
     @Override
     public void onTextUpdated(String oldText, String newText)
@@ -94,7 +90,7 @@ public void initElements()
     };
   addGuiElement(input);
     
-  area = new CompositeItemSlots(0, 82, 178, 3*18+16, this);
+  area = new CompositeItemSlots(0, 8+12+4+12+2, 178, 70+40, this);
   
   Listener l = new Listener(Listener.MOUSE_DOWN)
     {    
@@ -139,7 +135,7 @@ private void addInventoryViewElements()
   
   for(ItemStack displayStack : displayStacks)
     {
-    slot = new ItemSlot(8+x*18, 8+y*18, displayStack, this)
+    slot = new ItemSlot(4+x*18, 8+y*18, displayStack, this)
       {
       @Override
       public void onSlotClicked(ItemStack stack)

@@ -49,19 +49,14 @@ TEXTURES
 * basic construction/destruction tools -- set block in an area, clear blocks in an area (possibly same tool)	
 
 ****************************AUTOMATION MODULE TODO****************************	
+^ lots of testing/validation on warehouse system
 * Torque API:
 	Add input max/tick code to tiles, reset counter every tile-update.
 	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
 * recipes for nearly everything
-** warehouse needs to eject/limit item access when currentMaxStorage<currentStorage
-	how to handle partially loaded warehouses, e.g. some of its storage blocks may be in unloaded chunks?
-	--perhaps have different methods for tile.invalidate() and onBlockBroken
-	--or move back to storing actual items in the storage blocks 
-		control block merely aggregates all items in storage blocks
-		allow players to filter the contents of specific blocks? fill those first when inputing into warehouse?	
-	--check into status of the ISlotlessInventory pull-request		
+* add warehouse storage block gui/container/ability to set filters
 		
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
@@ -93,28 +88,9 @@ everything
 ****************************MEIM MODULE TODO****************************
 > who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
 
+
 *****************************************************************
 ****************************MISC INFO****************************
 *****************************************************************
-
-****warehouse info
-
-Controller block:
-	Provides gui access/view for the entire warehouse contents
-	acts as the work point for workers.
-	stores energy and processes work - actual moving of items
-
-Storage blocks
-	Stores items, non externally accessible
-	Has configurable filter-list for specialized storage
-		do a simple exact stack match filter -- allowing for nbt/dmg mismatch complicates the @#%^ out of the process
-		
-Interface block
-	allows for automation output, items specified via filter will attempt to remain stocked
-	allows for automation input, any items not matching filter, or in excess of filter qty will be removed and added to warehouse storage
-	
-	internally tracks what items it needs filled, and what slots need emptied
-	
-		
 //BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
