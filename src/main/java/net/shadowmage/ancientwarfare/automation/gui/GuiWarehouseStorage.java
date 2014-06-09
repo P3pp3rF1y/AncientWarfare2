@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.WarehouseItemFilter;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -24,7 +25,7 @@ CompositeScrolled area;
 
 ContainerWarehouseStorage container;
 
-List<WarehouseItemFilter> itemFilters = new ArrayList<WarehouseItemFilter>();
+List<WarehouseStorageFilter> itemFilters = new ArrayList<WarehouseStorageFilter>();
 
 public GuiWarehouseStorage(ContainerBase par1Container)
   {
@@ -47,7 +48,7 @@ public void setupElements()
   area.clearElements();
   itemFilters.clear();
   itemFilters.addAll(container.tile.getFilters());
-  List<WarehouseItemFilter> filters = itemFilters;
+  List<WarehouseStorageFilter> filters = itemFilters;
   
   int totalHeight = 8;
   
@@ -56,14 +57,14 @@ public void setupElements()
   Button button;  
   String name;
   
-  for(WarehouseItemFilter filter : filters)
+  for(WarehouseStorageFilter filter : filters)
     {    
     slot = new FilterItemSlot(8, totalHeight, filter, this);
     area.addGuiElement(slot);
     
     name = filter.getFilterItem()==null? "" : filter.getFilterItem().getDisplayName();
     
-    label = new Label(20+8, totalHeight+4, filter.getFilterQuantity()+" x "+name);
+    label = new Label(20+8, totalHeight+4, 0+" x "+name);//TODO
     area.addGuiElement(label);
     
     button = new FilterRemoveButton(xSize-16-12, totalHeight+3, filter);
@@ -79,8 +80,7 @@ public void setupElements()
       @Override
       protected void onPressed()
         {
-        WarehouseItemFilter filter = new WarehouseItemFilter();
-        filter.setFilterQuantity(0);
+        WarehouseStorageFilter filter = new WarehouseStorageFilter(null);
         itemFilters.add(filter);
         sendFiltersToServer();
         refreshGui();
@@ -96,16 +96,17 @@ public void setupElements()
 
 private void sendFiltersToServer()
   {
-  NBTTagList filterTagList = WarehouseItemFilter.writeFilterList(itemFilters);
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setTag("filterList", filterTagList);
-  sendDataToContainer(tag);
+  //TODO
+//  NBTTagList filterTagList = WarehouseItemFilter.writeFilterList(itemFilters);
+//  NBTTagCompound tag = new NBTTagCompound();
+//  tag.setTag("filterList", filterTagList);
+//  sendDataToContainer(tag);
   }
 
 private class FilterRemoveButton extends Button
 {
-WarehouseItemFilter filter;
-public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseItemFilter filter)
+WarehouseStorageFilter filter;
+public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseStorageFilter filter)
   {
   super(topLeftX, topLeftY, 12, 12, "-");
   this.filter = filter;
@@ -122,8 +123,8 @@ protected void onPressed()
 
 private class FilterItemSlot extends ItemSlot
 {
-WarehouseItemFilter filter;
-public FilterItemSlot(int topLeftX, int topLeftY, WarehouseItemFilter filter, ITooltipRenderer render)
+WarehouseStorageFilter filter;
+public FilterItemSlot(int topLeftX, int topLeftY, WarehouseStorageFilter filter, ITooltipRenderer render)
   {
   super(topLeftX, topLeftY, filter.getFilterItem(), render);
   this.filter = filter;
@@ -138,7 +139,6 @@ public void onSlotClicked(ItemStack stack)
     {
     in.stackSize = 1;
     }
-  filter.setFilterQuantity(0);
   filter.setFilterItem(in==null? null : in.copy());
   sendFiltersToServer();
   }

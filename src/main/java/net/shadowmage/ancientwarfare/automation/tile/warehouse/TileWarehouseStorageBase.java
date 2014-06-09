@@ -11,6 +11,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -23,7 +24,7 @@ public abstract class TileWarehouseStorageBase extends TileEntity implements IIn
 BlockPosition controllerPosition = null;
 private boolean init;
 int storageAdditionSize;
-List<WarehouseItemFilter> filters = new ArrayList<WarehouseItemFilter>();
+List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
 List<ContainerWarehouseStorage> viewers = new ArrayList<ContainerWarehouseStorage>();
 
 /**
@@ -74,36 +75,36 @@ private WorkSiteWarehouse getWarehouse()
 
 private void updateFilterCounts(boolean addBlockEvents)
   {
-  WarehouseItemFilter filter;
-  WorkSiteWarehouse warehouse = getWarehouse();
-  if(warehouse==null)
-    {
-    for(int i = 0; i <this.filters.size(); i++)
-      {
-      filter = filters.get(i);
-      filter.setFilterQuantity(0);
-      if(addBlockEvents)
-        {
-        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, 0);        
-        }
-      }
-    return;
-    }
-  int qty;
-  for(int i = 0; i <this.filters.size(); i++)
-    {
-    filter = filters.get(i);
-    if(filter.getFilterItem()==null){continue;}
-    qty = warehouse.getCountOf(filter.getFilterItem());
-    if(qty!=filter.getFilterQuantity())
-      {
-      filter.setFilterQuantity(qty);
-      if(addBlockEvents)
-        {
-        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, qty);
-        }
-      }
-    }
+//  WarehouseStorageFilter filter;
+//  WorkSiteWarehouse warehouse = getWarehouse();
+//  if(warehouse==null)
+//    {
+//    for(int i = 0; i <this.filters.size(); i++)
+//      {
+//      filter = filters.get(i);
+//      filter.setFilterQuantity(0);
+//      if(addBlockEvents)
+//        {
+//        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, 0);        
+//        }
+//      }
+//    return;
+//    }
+//  int qty;
+//  for(int i = 0; i <this.filters.size(); i++)
+//    {
+//    filter = filters.get(i);
+//    if(filter.getFilterItem()==null){continue;}
+//    qty = warehouse.getCountOf(filter.getFilterItem());
+//    if(qty!=filter.getFilterQuantity())
+//      {
+//      filter.setFilterQuantity(qty);
+//      if(addBlockEvents)
+//        {
+//        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, qty);
+//        }
+//      }
+//    }
   }
 
 @Override
@@ -181,7 +182,7 @@ public void updateEntity()
   }
 
 @Override
-public void setFilters(List<WarehouseItemFilter> filters)
+public void setFilters(List<WarehouseStorageFilter> filters)
   {
   this.filters.clear();
   this.filters.addAll(filters);
@@ -193,7 +194,7 @@ public void setFilters(List<WarehouseItemFilter> filters)
   }
 
 @Override
-public List<WarehouseItemFilter> getFilters()
+public List<WarehouseStorageFilter> getFilters()
   {
   return filters;
   }
@@ -204,50 +205,50 @@ public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);  
   filters.clear();
-  if(tag.hasKey("filterList"))
-    {
-    WarehouseItemFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);    
-    }
+//  if(tag.hasKey("filterList"))
+//    {
+//    WarehouseItemFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);    
+//    }
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
-  tag.setTag("filterList", WarehouseItemFilter.writeFilterList(filters));
+//  tag.setTag("filterList", WarehouseItemFilter.writeFilterList(filters));
   }
 
-@Override
-public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-  {  
-  NBTTagCompound tag = pkt.func_148857_g();
-  if(tag.hasKey("controllerPosition"))
-    {
-    controllerPosition = new BlockPosition(pkt.func_148857_g().getCompoundTag("controllerPosition"));
-    }
-  filters.clear();
-  if(tag.hasKey("filterList"))
-    {
-    WarehouseItemFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);    
-    }
-  updateViewers();
-  }
-
-@Override
-public Packet getDescriptionPacket()
-  {  
-  NBTTagCompound tag = new NBTTagCompound();
-  if(controllerPosition!=null)
-    {
-    tag.setTag("controllerPosition", controllerPosition.writeToNBT(new NBTTagCompound()));
-    }
-  if(!filters.isEmpty())
-    {
-    tag.setTag("filterList", WarehouseItemFilter.writeFilterList(filters));    
-    }
-  S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
-  return pkt;
-  }
+//@Override
+//public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+//  {  
+//  NBTTagCompound tag = pkt.func_148857_g();
+////  if(tag.hasKey("controllerPosition"))
+////    {
+////    controllerPosition = new BlockPosition(pkt.func_148857_g().getCompoundTag("controllerPosition"));
+////    }
+////  filters.clear();
+////  if(tag.hasKey("filterList"))
+////    {
+////    WarehouseItemFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);    
+////    }
+////  updateViewers();
+//  }
+//
+//@Override
+//public Packet getDescriptionPacket()
+//  {  
+//  NBTTagCompound tag = new NBTTagCompound();
+//  if(controllerPosition!=null)
+//    {
+//    tag.setTag("controllerPosition", controllerPosition.writeToNBT(new NBTTagCompound()));
+//    }
+//  if(!filters.isEmpty())
+//    {
+//    tag.setTag("filterList", WarehouseItemFilter.writeFilterList(filters));    
+//    }
+//  S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+//  return pkt;
+//  }
 
 @Override
 public boolean onBlockClicked(EntityPlayer player)
@@ -259,20 +260,20 @@ public boolean onBlockClicked(EntityPlayer player)
   return true;
   }
 
-@Override
-public boolean receiveClientEvent(int a, int b)
-  {
-  if(!worldObj.isRemote)
-    {
-    return true;
-    }
-  AWLog.logDebug("receiving client event: "+a+"::"+b+" client: "+worldObj.isRemote);
-  if(a>=0 && a<filters.size())
-    {
-    WarehouseItemFilter filter = filters.get(a);
-    filter.setFilterQuantity(b);
-    }
-  return false;
-  }
+//@Override
+//public boolean receiveClientEvent(int a, int b)
+//  {
+//  if(!worldObj.isRemote)
+//    {
+//    return true;
+//    }
+//  AWLog.logDebug("receiving client event: "+a+"::"+b+" client: "+worldObj.isRemote);
+//  if(a>=0 && a<filters.size())
+//    {
+//    WarehouseItemFilter filter = filters.get(a);
+//    filter.setFilterQuantity(b);
+//    }
+//  return false;
+//  }
 
 }

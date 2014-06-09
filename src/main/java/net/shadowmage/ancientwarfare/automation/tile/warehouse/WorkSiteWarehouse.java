@@ -96,12 +96,7 @@ public void updateEntity()
       }
     if(!tilesToUpdate.isEmpty())
       {
-      long t1 = System.nanoTime();
       updateTiles();
-      long t2 = System.nanoTime();
-      long t3 = (t2-t1);
-      float f1 = (float)((double)t3 / 1000000.d);
-//      AWLog.logDebug("tilesToUpdate update time: "+(t2-t1)+"ns ("+f1+"ms)");
       }
     if(hasWarehouseWork() && storedEnergy>=AWCoreStatics.energyPerWorkUnit)
       {
@@ -465,7 +460,6 @@ private boolean hasWarehouseWork()
 @Override
 protected boolean processWork()
   {
-  long t1 = System.nanoTime();  
   if(!inputToEmpty.isEmpty())
     {
     processInputWork();
@@ -476,10 +470,6 @@ protected boolean processWork()
     processOutputWork();
     return true;
     }
-  long t2 = System.nanoTime();
-  long t3 = (t2-t1);
-  float f1 = (float)((double)t3 / 1000000.d);
-//  AWLog.logDebug("work time: "+(t2-t1)+"ns ("+f1+"ms)");
   updateViewers();
   return false;
   }

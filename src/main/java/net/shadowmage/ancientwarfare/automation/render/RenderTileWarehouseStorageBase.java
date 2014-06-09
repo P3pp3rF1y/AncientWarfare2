@@ -15,6 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.IWarehouseStorageTile;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse.WarehouseItemFilter;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 
 import org.lwjgl.opengl.GL11;
 
@@ -101,9 +102,9 @@ private void renderSignContents(IWarehouseStorageTile tile, double x, double y, 
   FontRenderer fr = func_147498_b();
   
   ItemStack filterItem;
-  WarehouseItemFilter filter;
+  WarehouseStorageFilter filter;
   String name = "";
-  List<WarehouseItemFilter>filters = tile.getFilters();
+  List<WarehouseStorageFilter>filters = tile.getFilters();
 //  String tileName = "what_to_do_with_this_field?";
 //  fr.drawString(tileName, 100-fr.getStringWidth(tileName)/2, 10, 0xffffffff);
   //TODO draw parchment background layer?
@@ -120,7 +121,7 @@ private void renderSignContents(IWarehouseStorageTile tile, double x, double y, 
     name = filterItem==null? "Empty Filter" : filterItem.getDisplayName();
     fr.drawString(name, 20+12, i*18+4+10, 0xffffffff);
     
-    name = String.valueOf(filter.getFilterQuantity());
+    name = String.valueOf(0);//TODO
     fr.drawString(name, 200-13-fr.getStringWidth(name), i*18+4+10, 0xffffffff);
     
     }

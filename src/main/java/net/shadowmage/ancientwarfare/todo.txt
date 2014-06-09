@@ -96,6 +96,23 @@ everything
 *****************************************************************
 ****************************MISC INFO****************************
 *****************************************************************
+
+****warehouse info
+
+Controller block:
+	Provides gui access/view for the entire warehouse contents
+	acts as the work point for workers.
+	stores energy and processes work - actual moving of items
+
+Storage blocks
+	Stores items, non externally accessible
+	Has configurable filter-list for specialized storage
+		do a simple exact stack match filter -- allowing for nbt/dmg mismatch complicates the @#%^ out of the process
+		
+Interface block
+	allows for automation output, items specified via filter will attempt to remain stocked
+	allows for automation input, any items not matching filter, or in excess of filter qty will be removed and added to warehouse storage
+
 		
 //BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java

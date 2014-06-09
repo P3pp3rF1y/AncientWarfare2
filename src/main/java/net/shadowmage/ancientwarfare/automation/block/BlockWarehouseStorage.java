@@ -69,6 +69,7 @@ public TileEntity createTileEntity(World world, int metadata)
   }  
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void getSubBlocks(Item item, CreativeTabs p_149666_2_, List list)
   {

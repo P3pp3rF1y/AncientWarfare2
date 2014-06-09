@@ -36,11 +36,11 @@ public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z)
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  if(tag.hasKey("filterList"))
-    {
-    List<WarehouseItemFilter> filters = WarehouseItemFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), new ArrayList<WarehouseItemFilter>());    
-    tile.setFilters(filters);
-    }
+//  if(tag.hasKey("filterList"))
+//    {
+//    List<WarehouseItemFilter> filters = WarehouseItemFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), new ArrayList<WarehouseItemFilter>());    
+//    tile.setFilters(filters);
+//    }TODO
   super.handlePacketData(tag);
   }
 
