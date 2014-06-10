@@ -32,7 +32,14 @@
 	respawns faction-based npcs and attempts to keep them within the bounds designated in the block
 	controls only accessible to players in creative mode	
 ? add ability for npcs to occasionally 'speak' messages
-	
+? add npc-recruiting station -- worksite, crafting
+	has input slots for raw recruiting goods -- possibly just have input of player-owned raw npc-recruiting items to spawn/equip directly
+	has X queue slots for queuing npcs for recruiting
+	has X weapon/armor slots corresponding to queue slots
+	when work is completed, spawns an NPC equipped with the items from the corresponding queue spots
+	each input slot type has a different block-side to allow for automated item input
+	allow for auto-queue of npc type
+	-use is optional, players can always craft the raw npc items and equip manually
 ****************************STRUCTURE MODULE TODO****************************
 ? rework gates as a multi-block? (use controller TE TESR to render gate)
 	at that point, can use blocks for collision and interaction

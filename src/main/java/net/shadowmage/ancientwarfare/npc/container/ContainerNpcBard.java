@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBard;
 public class ContainerNpcBard extends ContainerBase
 {
 
-public int bardTuneNumber;
+public String bardTune="";
 public int bardPlayLength;//num of ticks for the tune
 public int bardPlayChance;//0-100, chance out of 100 to play a tune
 public int bardPlayRecheckDelay;//how many ticks should pass between rechecking the play-delay?
@@ -25,7 +25,7 @@ public void sendInitData()
   {
   super.sendInitData();
   NBTTagCompound tag = new NBTTagCompound();
-  tag.setInteger("tune", npc.bardTuneNumber);
+  tag.setString("tune", npc.bardTune);
   tag.setInteger("length", npc.bardPlayLength);
   tag.setInteger("chance", npc.bardPlayChance);
   tag.setInteger("delay", npc.bardPlayRecheckDelay);
@@ -37,8 +37,8 @@ public void handlePacketData(NBTTagCompound tag)
   {
   if(tag.hasKey("tune"))
     {
-    bardTuneNumber = tag.getInteger("tune");
-    if(!player.worldObj.isRemote){npc.bardTuneNumber=bardTuneNumber;}
+    bardTune = tag.getString("bardTune");
+    if(!player.worldObj.isRemote){npc.bardTune=bardTune;}
     }
   if(tag.hasKey("length"))
     {
@@ -63,13 +63,11 @@ public void detectAndSendChanges()
   {  
   super.detectAndSendChanges();
   NBTTagCompound tag = null;
-  if(bardTuneNumber!=npc.bardTuneNumber)
+  if(!bardTune.equals(npc.bardTune))
     {
     if(tag==null){tag=new NBTTagCompound();}
-    bardTuneNumber=npc.bardTuneNumber;
-    tag.setInteger("tune", npc.bardTuneNumber);
-    tag.setInteger("chance", npc.bardPlayChance);
-    tag.setInteger("delay", npc.bardPlayRecheckDelay);
+    bardTune=npc.bardTune;
+    tag.setString("tune", npc.bardTune);
     }
   if(bardPlayLength!=npc.bardPlayLength)
     {

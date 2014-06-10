@@ -6,13 +6,14 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
 
 public class GuiBard extends GuiContainerBase
 {
 
-NumberInput tuneInput;
+Text tuneInput;
 NumberInput lengthInput;
 NumberInput chanceInput;
 NumberInput delayInput;
@@ -26,7 +27,7 @@ public GuiBard(ContainerBase container)
   {
   super(container);
   this.container = (ContainerNpcBard)container;
-  this.xSize = 128;
+  this.xSize = 128+80;
   this.ySize = 4*12 + 16;
   }
 
@@ -40,17 +41,16 @@ public void initElements()
   
   label = new Label(buttonX, (totalHeight=8), StatCollector.translateToLocal("guistrings.npc.bard_tune"));
   addGuiElement(label);
-  tuneInput = new NumberInput(inputX, totalHeight, inputWidth, container.bardTuneNumber, this)
+  tuneInput = new Text(inputX, totalHeight, 120, container.bardTune, this)
     {
     @Override
-    public void onValueUpdated(float value)
+    public void onTextUpdated(String oldText, String newText)
       {
       NBTTagCompound tag = new NBTTagCompound();
-      tag.setInteger("tune", (int)value);
+      tag.setString("tune", newText);
       sendDataToContainer(tag);
       }
     };
-  tuneInput.setIntegerValue();
   addGuiElement(tuneInput);
   
   label = new Label(buttonX, totalHeight+=12, StatCollector.translateToLocal("guistrings.npc.bard_play_time"));
@@ -102,7 +102,7 @@ public void initElements()
 @Override
 public void setupElements()
   {  
-  tuneInput.setValue(container.bardTuneNumber);
+  tuneInput.setText(container.bardTune);
   lengthInput.setValue(container.bardPlayLength);
   chanceInput.setValue(container.bardPlayChance);
   delayInput.setValue(container.bardPlayRecheckDelay);  

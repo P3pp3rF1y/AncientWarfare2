@@ -314,6 +314,7 @@ guistrings.npc.health_override=Health Override
 guistrings.npc.damage_override=Damage Override
 guistrings.npc.armor_override=Armor Override
 guistrings.npc.allow_wander=Allow Wander
+guistrings.npc.creative_gui=Creative Gui
 route.fill.target=Fill Target
 route.fill.courier=Fill Courier
 route.deposit.match=Dep. Match

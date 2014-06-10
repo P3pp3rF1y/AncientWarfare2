@@ -52,13 +52,12 @@ public void updateTask()
     {
     if(lastExecuted<0 || npc.ticksExisted-lastExecuted>bard.bardPlayRecheckDelay)
       {
-      AWLog.logDebug("checking if bard should play...");
       lastExecuted = npc.ticksExisted;
       int rng = npc.getRNG().nextInt(100);
-      if(rng<bard.bardPlayChance)
+      if(!bard.bardTune.isEmpty() && rng<bard.bardPlayChance)
         {
-        int tune = bard.bardTuneNumber == -1? npc.getRNG().nextInt(10) : bard.bardTuneNumber;
-        AWLog.logDebug("playing tune: "+tune);
+        String tune = bard.bardTune;
+        npc.worldObj.playSoundAtEntity(npc, tune, 1.f, 1.f);
         playing = true;
         }
       }

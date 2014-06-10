@@ -30,7 +30,8 @@ public class NpcBard extends NpcPlayerOwned
  * bard tune playing stats.
  * server-only -- need synched to client in tune-select GUI
  */
-public int bardTuneNumber;
+//public int bardTuneNumber;
+public String bardTune="";
 public int bardPlayLength;//num of ticks for the tune
 public int bardPlayChance;//0-100, chance out of 100 to play a tune
 public int bardPlayRecheckDelay;//how many ticks should pass between rechecking the play-delay?
@@ -98,7 +99,7 @@ public void openAltGui(EntityPlayer player)
 public void readEntityFromNBT(NBTTagCompound tag)
   {
   super.readEntityFromNBT(tag);
-  bardTuneNumber = tag.getInteger("bardTuneNumber");
+  bardTune = tag.getString("bardTune");
   bardPlayLength = tag.getInteger("bardPlayLength");
   bardPlayChance = tag.getInteger("bardPlayChance");
   bardPlayRecheckDelay = tag.getInteger("bardPlayRecheckDelay");  
@@ -108,7 +109,7 @@ public void readEntityFromNBT(NBTTagCompound tag)
 public void writeEntityToNBT(NBTTagCompound tag)
   {
   super.writeEntityToNBT(tag);
-  tag.setInteger("bardTuneNumber", bardTuneNumber);  
+  tag.setString("bardTune", bardTune);
   tag.setInteger("bardPlayLength", bardPlayLength);
   tag.setInteger("bardPlayChance", bardPlayChance);
   tag.setInteger("bardPlayRecheckDelay", bardPlayRecheckDelay);

@@ -49,42 +49,25 @@ TEXTURES
 
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
+^ finish up storage block filter-setting ability, verify that it works properly (needs the above step to view storage-block inventory contents)
 * Torque API:
 	Add input max/tick code to tiles, reset counter every tile-update.
 	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
 * recipes for nearly everything
-* finish up storage block filter-setting ability, verify that it works properly (needs the above step to view storage-block inventory contents)
 * add a 'warehouse stock viewer panel' --sign that can be slapped on the side of storage/input/output blocks to view the stock level of specified items (items specified via gui)
 		
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
-* add npc-recruiting station -- worksite, crafting
-	has input slots for raw recruiting goods -- possibly just have input of player-owned raw npc-recruiting items to spawn/equip directly
-	has X queue slots for queuing npcs for recruiting
-	has X weapon/armor slots corresponding to queue slots
-	when work is completed, spawns an NPC equipped with the items from the corresponding queue spots
-	each input slot type has a different block-side to allow for automated item input
-	allow for auto-queue of npc type
-	-use is optional, players can always craft the raw npc items and equip manually
-* method for creative-mode players to access and alter faction-based NPCs -- equipment, owner-name??, other settings?
-	add a temp disable wander control -- non saved, used for map setup
-	allow them to follow creative players for positioning
-	-- add 'creative controls' button to normal NPC inventory (most stuff could be applicable to player-owned npcs as well)
-		this button is only available when viewer is in creative mode, and allows access to advanced controls.
+* texture for bard		
 * find default sound/music for bards
-* alter bard sound lookup to allow for user-specified string
-	needs testing to verify that users can add their own sounds.json file in resource packs in addition to the mod-shipped one
 * rework player owned trader gui to still allow access to inventory. (just add an 'inventory' button to gui?)
-* rework faction owned GUI to allow for creative-mode access to inventory (just add a 'inventory' button to gui when player is in creative mode?)
 * add item for priest holy-symbols (should I just make it a 'religious book'?)
 * faction owned archer default ranged attack	
 * add recipes and research requirements for npcs/items/blocks
-* add recipes to copy upkeep/work/combat/routing orders		
-* move custom tex ref and owner name into data-watcher for ease of synching--would not need entity packet handler for npcs at that point
-
+* add recipes to copy upkeep/work/combat/routing orders
 	
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
