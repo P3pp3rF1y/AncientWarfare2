@@ -18,8 +18,8 @@ String name;
 public ContainerNpcInventory(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
-  inventory = new InventoryNpcEquipment(npc);//weapon slot
-  addSlotToContainer(new Slot(inventory, 0, 8, 8)); 
+  inventory = new InventoryNpcEquipment(npc);
+  addSlotToContainer(new Slot(inventory, 0, 8, 8)); //weapon slot
   addSlotToContainer(new SlotArmor(inventory, 1, 8, 8+18*4, 3, npc));//helm
   addSlotToContainer(new SlotArmor(inventory, 2, 8, 8+18*3, 2, npc));//chest
   addSlotToContainer(new SlotArmor(inventory, 3, 8, 8+18*2, 1, npc));//legs

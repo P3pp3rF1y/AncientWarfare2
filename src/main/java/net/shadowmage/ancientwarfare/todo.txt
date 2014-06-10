@@ -65,8 +65,9 @@ TEXTURES
 * method for creative-mode players to access and alter faction-based NPCs -- equipment, owner-name??, other settings?
 	add a temp disable wander control -- non saved, used for map setup
 	allow them to follow creative players for positioning
-* add hint icons to npc gui for weapon/armor/orders slots (with hover/tooltip)	
 * find default sound/music for bards
+* alter bard sound lookup to allow for user-specified string
+	needs testing to verify that users can add their own sounds.json file in resource packs in addition to the mod-shipped one
 * rework trader / gui to still allow access to inventory for player-owned traders.
 * add item for priest holy-symbols (should I just make it a 'religious book'?)
 * faction owned archer default ranged attack	

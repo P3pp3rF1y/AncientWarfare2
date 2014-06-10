@@ -1,12 +1,17 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
+import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public class GuiNpcInventory extends GuiNpcBase
 {
@@ -101,6 +106,75 @@ public void initElements()
       };
     addGuiElement(button);  
     }
+  
+  ItemSlot slot;
+  Tooltip t;  
+  String text;
+  int tw;  
+  
+  slot = new ItemSlot(26, 8, new ItemStack(Items.iron_sword), this);
+  slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
+  text = StatCollector.translateToLocal("guistrings.npc.weapon_slot");
+  tw = fontRendererObj.getStringWidth(text);
+  t = new Tooltip(tw, 10);
+  t.addTooltipElement(new Label(0,0, text));
+  slot.setTooltip(t);  
+  addGuiElement(slot);
+
+  
+  slot = new ItemSlot(26, 8+18*1, new ItemStack(Items.iron_helmet), this);
+  slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
+  text = StatCollector.translateToLocal("guistrings.npc.helmet_slot");
+  tw = fontRendererObj.getStringWidth(text);
+  t = new Tooltip(tw, 10);
+  t.addTooltipElement(new Label(0,0, text));
+  slot.setTooltip(t);  
+  addGuiElement(slot);
+  
+  slot = new ItemSlot(26, 8+18*2, new ItemStack(Items.iron_chestplate), this);
+  slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
+  text = StatCollector.translateToLocal("guistrings.npc.chest_slot");
+  tw = fontRendererObj.getStringWidth(text);
+  t = new Tooltip(tw, 10);
+  t.addTooltipElement(new Label(0,0, text));
+  slot.setTooltip(t);  
+  addGuiElement(slot);
+  
+  slot = new ItemSlot(26, 8+18*3, new ItemStack(Items.iron_leggings), this);
+  slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
+  text = StatCollector.translateToLocal("guistrings.npc.legs_slot");
+  tw = fontRendererObj.getStringWidth(text);
+  t = new Tooltip(tw, 10);
+  t.addTooltipElement(new Label(0,0, text));
+  slot.setTooltip(t);  
+  addGuiElement(slot);
+  
+  slot = new ItemSlot(26, 8+18*4, new ItemStack(Items.iron_boots), this);
+  slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
+  text = StatCollector.translateToLocal("guistrings.npc.boots_slot");
+  tw = fontRendererObj.getStringWidth(text);
+  t = new Tooltip(tw, 10);
+  t.addTooltipElement(new Label(0,0, text));
+  slot.setTooltip(t);  
+  addGuiElement(slot);
+  
+  slot = new ItemSlot(28+18*2, 8+18*2, new ItemStack(AWNpcItemLoader.upkeepOrder), this);
+  slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
+  text = StatCollector.translateToLocal("guistrings.npc.upkeep_order_slot");
+  tw = fontRendererObj.getStringWidth(text);
+  t = new Tooltip(tw, 10);
+  t.addTooltipElement(new Label(0,0, text));
+  slot.setTooltip(t);  
+  addGuiElement(slot);
+  
+  slot = new ItemSlot(28+18*2, 8+18*3, new ItemStack(AWNpcItemLoader.routingOrder), this);
+  slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
+  text = StatCollector.translateToLocal("guistrings.npc.manual_order_slot");
+  tw = fontRendererObj.getStringWidth(text);
+  t = new Tooltip(tw, 10);
+  t.addTooltipElement(new Label(0,0, text));
+  slot.setTooltip(t);  
+  addGuiElement(slot);
   }
 
 @Override
