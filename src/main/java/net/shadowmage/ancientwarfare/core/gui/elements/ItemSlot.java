@@ -116,7 +116,7 @@ public void render(int mouseX, int mouseY, float partialTick)
       if(renderItemQuantity && item.stackSize>1)
         {        
         itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1, "");
-        renderStackSize(renderX+1, renderY, item);
+        renderStackSize(renderX+1, renderY, item.stackSize, font);
         }
       GL11.glDisable(GL11.GL_LIGHTING);
       }    
@@ -154,9 +154,9 @@ public void render(int mouseX, int mouseY, float partialTick)
     }  
   }
 
-private void renderStackSize(int renderX, int renderY, ItemStack stack, FontRenderer fr)
+private void renderStackSize(int renderX, int renderY, int stackSize, FontRenderer fr)
   {
-  String s1 = String.valueOf(stack.stackSize);
+  String s1 = String.valueOf(stackSize);
   float w = fr.getStringWidth(s1);
   GL11.glDisable(GL11.GL_LIGHTING);
   GL11.glDisable(GL11.GL_DEPTH_TEST);
