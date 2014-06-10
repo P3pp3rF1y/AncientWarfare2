@@ -54,6 +54,10 @@ public ItemStack upkeepStack;
 
 private boolean shouldWander = true;
 
+private int attackDamage = -1;//faction based only
+private int armorValue = -1;//faction based only
+private String customTexRef = "";//might as well allow for player-owned as well...
+
 public NpcBase(World par1World)
   {
   super(par1World);
@@ -64,6 +68,37 @@ public NpcBase(World par1World)
   this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
   this.width = 0.6f;
   this.func_110163_bv();//set persistence required==true
+  }
+
+public void setCustomTexRef(String customTexRef)
+  {
+  if(customTexRef==null){customTexRef="";}
+  this.customTexRef = customTexRef;
+  }
+
+public void setAttackDamageOverride(int attackDamage)
+  {
+  this.attackDamage = attackDamage;
+  }
+
+public void setArmorValueOverride(int armorValue)
+  {
+  this.armorValue = armorValue;
+  }
+
+public String getCustomTex()
+  {
+  return customTexRef;
+  }
+
+public int getArmorValueOverride()
+  {
+  return armorValue;
+  }
+
+public int getAttackDamageOverride()
+  {
+  return attackDamage;
   }
 
 @Override
@@ -629,7 +664,9 @@ public void readEntityFromNBT(NBTTagCompound tag)
     setHomeArea(ccia[0], ccia[1], ccia[2], ccia[3]);
     }
   if(tag.hasKey("levelingStats")){levelingStats.readFromNBT(tag.getCompoundTag("levelingStats"));}
-  //TODO
+  attackDamage = tag.getInteger("attackDamageOverride");
+  armorValue = tag.getInteger("armorValueOverride");
+  customTexRef = tag.getString("customTex");
   }
 
 @Override

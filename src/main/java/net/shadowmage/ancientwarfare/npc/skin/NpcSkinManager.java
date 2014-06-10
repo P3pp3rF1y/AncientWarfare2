@@ -37,16 +37,26 @@ private final String skinMainPath = "config/AWConfig/npc/skins/";
 private final String defaultSkinPack = "/assets/ancientwarfare/skin_pack/default_skin_pack.zip";
 
 public ResourceLocation getTextureFor(NpcBase npc)
-  {  
-  String type = npc.getNpcFullType();
+  { 
+  ResourceLocation loc = null;
+  if(!npc.getCustomTex().isEmpty())
+    {
+    loc = getNpcTexture(npc.getCustomTex(), npc.getIDForSkin());
+    }
+  if(loc==null)
+    {
+    loc = getNpcTexture(npc.getNpcFullType(), npc.getIDForSkin());
+    }
+  return loc;
+  }
+
+private ResourceLocation getNpcTexture(String type, long idlsb)
+  {
   SkinGroup group = skinGroups.get(type);
-//  AWLog.logDebug("looking up texture for name: "+fullTypeName);
   if(group!=null && !group.textures.isEmpty())
     {
-    long idlsb = npc.getIDForSkin();
     rng.setSeed(idlsb);
     int tex = rng.nextInt(group.textures.size());
-//    AWLog.logDebug("returning texture index: "+tex+" from size: "+group.textures.size());
     return group.getTexture(tex);
     }
   return null;
@@ -309,6 +319,12 @@ public SkinMeta(InputStream is) throws IOException
       imageMap.put(lineBits[0], lineBits[1]);
       }
     }
+  }
+
+@Override
+public String toString()
+  {
+  return "SkinPackMeta -- imageMap: ["+imageMap+"]";
   }
 
 }
