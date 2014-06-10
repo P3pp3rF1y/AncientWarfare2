@@ -114,13 +114,13 @@ public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List 
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  return true;
+  return key==ItemKey.KEY_0;
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
+public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
   if(player.worldObj.isRemote){return;}
   boolean mode = false;

@@ -29,6 +29,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -75,13 +76,13 @@ public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  return true;
+  return key==ItemKey.KEY_0;
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
+public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
   if(player==null || player.worldObj.isRemote)
     {

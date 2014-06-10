@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -27,7 +28,7 @@ public ItemBlockWorksite(Block p_i45328_1_)
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
+public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
   BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
   if(hit==null)
@@ -137,9 +138,9 @@ public int getDamage(ItemStack stack)
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  return true;
+  return key==ItemKey.KEY_0;
   }
 
 }

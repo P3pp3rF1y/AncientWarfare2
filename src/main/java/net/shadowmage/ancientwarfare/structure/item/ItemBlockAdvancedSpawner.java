@@ -14,6 +14,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;
@@ -57,24 +58,21 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  return keyIndex==0;
+  return key==ItemKey.KEY_0;
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
+public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  if(keyIndex==0 && !player.worldObj.isRemote)
+  if(player.isSneaking())
     {
-    if(player.isSneaking())
-      {
-      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, 0, 0, 0);      
-      }    
-    else
-      {
-      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED, 0, 0, 0);
-      }
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, 0, 0, 0);      
+    }    
+  else
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED, 0, 0, 0);
     }
   }
 

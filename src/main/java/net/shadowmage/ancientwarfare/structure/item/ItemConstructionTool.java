@@ -9,6 +9,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
@@ -173,7 +174,7 @@ public ConstructionType next()
 }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
   {
   // TODO Auto-generated method stub
   return false;
@@ -181,7 +182,7 @@ public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIn
 
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
+public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
   // TODO Auto-generated method stub
   

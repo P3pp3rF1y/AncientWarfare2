@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 
 public abstract class ItemOrders extends Item implements IItemClickable, IItemKeyInterface
 {
@@ -28,9 +29,9 @@ public void onLeftClick(EntityPlayer player, ItemStack stack)
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  return true;
+  return key==ItemKey.KEY_0;
   }
 
 @Override

@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
@@ -24,7 +25,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
+public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
   RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
   if(order!=null)

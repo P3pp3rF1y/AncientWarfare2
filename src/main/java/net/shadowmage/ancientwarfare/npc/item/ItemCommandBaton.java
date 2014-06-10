@@ -91,7 +91,7 @@ public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block 
 /**
  * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
 @Override
 public Multimap getItemAttributeModifiers()
   {
@@ -147,16 +147,44 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
+public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
   //noop ...or...??
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  MovingObjectPosition hit = new MovingObjectPosition(player);
-  NpcCommand.handleCommandClient(CommandType.CLEAR_COMMAND, hit);
+  //TODO finish the rest of this....
+  switch(key)
+  {
+  case KEY_0:
+    {
+    MovingObjectPosition hit = new MovingObjectPosition(player);
+    NpcCommand.handleCommandClient(CommandType.CLEAR_COMMAND, hit);
+    }
+    break;
+  case KEY_1:
+    {
+    
+    }
+    break;
+  case KEY_2:
+    {
+    
+    }
+    break;
+  case KEY_3:
+    {
+    
+    }
+    break;
+  case KEY_4:
+    {
+    
+    }
+    break;
+  }
   return false;
   }
 

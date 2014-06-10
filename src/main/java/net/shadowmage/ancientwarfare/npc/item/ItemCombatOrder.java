@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -23,7 +24,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
+public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
   CombatOrder order = CombatOrder.getCombatOrder(stack);
   if(order==null){return;}

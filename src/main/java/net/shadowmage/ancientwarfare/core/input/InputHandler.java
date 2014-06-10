@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.options.GuiOptions;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketItemInteraction;
 
@@ -28,7 +29,11 @@ public class InputHandler
 {
 
 public static final String KEY_OPTIONS = "keybind.options";
-public static final String KEY_ALT_ITEM_USE = "keybind.alt_item_use";
+public static final String KEY_ALT_ITEM_USE_0 = "keybind.alt_item_use_1";
+public static final String KEY_ALT_ITEM_USE_1 = "keybind.alt_item_use_2";
+public static final String KEY_ALT_ITEM_USE_2 = "keybind.alt_item_use_3";
+public static final String KEY_ALT_ITEM_USE_3 = "keybind.alt_item_use_4";
+public static final String KEY_ALT_ITEM_USE_4 = "keybind.alt_item_use_5";
 
 public static final String KEY_NPC_ATTACK = "keybind.npc_command.attack";
 public static final String KEY_NPC_MOVE = "keybind.npc_command.move";
@@ -49,8 +54,11 @@ public void loadConfig(Configuration config)
   {
   this.config = config;
   registerKeybind(KEY_OPTIONS, Keyboard.KEY_F7);
-  registerKeybind(KEY_ALT_ITEM_USE, Keyboard.KEY_Z);
-  
+  registerKeybind(KEY_ALT_ITEM_USE_0, Keyboard.KEY_Z);
+  registerKeybind(KEY_ALT_ITEM_USE_1, Keyboard.KEY_X);
+  registerKeybind(KEY_ALT_ITEM_USE_2, Keyboard.KEY_C);
+  registerKeybind(KEY_ALT_ITEM_USE_3, Keyboard.KEY_V);
+  registerKeybind(KEY_ALT_ITEM_USE_4, Keyboard.KEY_B);  
   InputCallback optionsCB = new InputCallback()
     {
     @Override
@@ -71,33 +79,11 @@ public void loadConfig(Configuration config)
     };
   addInputCallback(KEY_OPTIONS, optionsCB);
   
-  InputCallback itemUseCB = new InputCallback()
-    {
-    @Override
-    public void onKeyReleased()
-      {
-
-      }
-    @Override
-    public void onKeyPressed()
-      {
-      Minecraft minecraft = Minecraft.getMinecraft();
-      if(minecraft==null || minecraft.thePlayer==null || minecraft.currentScreen!=null)
-        {       
-        return;
-        }
-      ItemStack stack = minecraft.thePlayer.inventory.getCurrentItem();
-      if(stack!=null && stack.getItem() instanceof IItemKeyInterface)
-        {
-        if(((IItemKeyInterface)stack.getItem()).onKeyActionClient(minecraft.thePlayer, stack, 0))//TODO make the rest of the alt-item-key input handlers
-          {
-          PacketItemInteraction pkt = new PacketItemInteraction();
-          NetworkHandler.sendToServer(pkt);
-          }        
-        }
-      }
-    };
-  addInputCallback(KEY_ALT_ITEM_USE, itemUseCB);
+  addInputCallback(KEY_ALT_ITEM_USE_0, new ItemInputCallback(ItemKey.KEY_0));
+  addInputCallback(KEY_ALT_ITEM_USE_1, new ItemInputCallback(ItemKey.KEY_1));
+  addInputCallback(KEY_ALT_ITEM_USE_2, new ItemInputCallback(ItemKey.KEY_2));
+  addInputCallback(KEY_ALT_ITEM_USE_3, new ItemInputCallback(ItemKey.KEY_3));
+  addInputCallback(KEY_ALT_ITEM_USE_4, new ItemInputCallback(ItemKey.KEY_4)); 
   }
 
 @SubscribeEvent
@@ -232,6 +218,38 @@ public static abstract class InputCallback
 {
 public abstract void onKeyPressed();
 public abstract void onKeyReleased();
+}
+
+private static final class ItemInputCallback extends InputCallback
+{
+ItemKey key;
+public ItemInputCallback(ItemKey key)
+  {
+  this.key = key;
+  }
+
+@Override
+public void onKeyPressed()
+  {
+  Minecraft minecraft = Minecraft.getMinecraft();
+  if(minecraft==null || minecraft.thePlayer==null || minecraft.currentScreen!=null)
+    {       
+    return;
+    }
+  ItemStack stack = minecraft.thePlayer.inventory.getCurrentItem();
+  if(stack!=null && stack.getItem() instanceof IItemKeyInterface)
+    {
+    if(((IItemKeyInterface)stack.getItem()).onKeyActionClient(minecraft.thePlayer, stack, key))
+      {
+      PacketItemInteraction pkt = new PacketItemInteraction(0, key);
+      NetworkHandler.sendToServer(pkt);
+      }        
+    }
+  }
+
+@Override
+public void onKeyReleased(){}
+
 }
 
 }

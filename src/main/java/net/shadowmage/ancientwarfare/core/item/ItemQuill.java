@@ -11,14 +11,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import com.google.common.collect.Multimap;
 
-public class ItemQuill extends Item implements IItemKeyInterface, IItemClickable
+public class ItemQuill extends Item implements IItemClickable
 {
 
 double attackDamage = 5.d;
@@ -92,13 +91,13 @@ public Multimap getItemAttributeModifiers()
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
+public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
   {
   return true;
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
+public void onRightClick(EntityPlayer player, ItemStack stack)
   {
   BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
   if(pos!=null)
@@ -118,18 +117,6 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
         }
       }
     }
-  }
-
-@Override
-public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
-  {
-  return false;//TODO change to true once I figure out what the right-click action is for a quill...
-  }
-
-@Override
-public void onRightClick(EntityPlayer player, ItemStack stack)
-  {
-  //TODO what is the right-click action?
   }
 
 @Override
