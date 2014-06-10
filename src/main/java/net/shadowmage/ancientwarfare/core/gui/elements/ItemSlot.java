@@ -115,8 +115,8 @@ public void render(int mouseX, int mouseY, float partialTick)
       GL11.glDisable(GL11.GL_DEPTH_TEST);
       if(renderItemQuantity && item.stackSize>1)
         {        
-        itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1, "");
-        renderStackSize(renderX+1, renderY, item.stackSize, font);
+//        itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1, "");
+//        renderStackSize(renderX+1, renderY+1, item.stackSize, font);
         }
       GL11.glDisable(GL11.GL_LIGHTING);
       }    
@@ -154,16 +154,29 @@ public void render(int mouseX, int mouseY, float partialTick)
     }  
   }
 
-private void renderStackSize(int renderX, int renderY, int stackSize, FontRenderer fr)
-  {
-  String s1 = String.valueOf(stackSize);
-  float w = fr.getStringWidth(s1);
+public void renderStackSize(int renderX, int renderY, int stackSize, FontRenderer fr)
+  {    
+  GL11.glPushMatrix();
+  float ox = renderX+16, oy=renderY+8;
+  GL11.glTranslatef(ox+0.5f, oy+0.5f, 0);  
   GL11.glDisable(GL11.GL_LIGHTING);
   GL11.glDisable(GL11.GL_DEPTH_TEST);
   GL11.glDisable(GL11.GL_BLEND);
-  fr.drawStringWithShadow(s1, renderX + 19 - 2 - fr.getStringWidth(s1), renderY + 6 + 3, 16777215);
+  
+  String s1 = String.valueOf(stackSize);
+  
+  float w = fr.getStringWidth(s1);
+  float scale = stackSize>99? 0.5f : 1.f;
+  int oy1 = stackSize>99? 6 : 0;
+  
+//  w *= scale;
+  GL11.glScalef(scale, scale, scale);
+  
+  fr.drawStringWithShadow(s1, -(int)w, oy1, 16777215);
+  
   GL11.glEnable(GL11.GL_LIGHTING);
   GL11.glEnable(GL11.GL_DEPTH_TEST);
+  GL11.glPopMatrix();
   }
 
 public void onSlotClicked(ItemStack stack)

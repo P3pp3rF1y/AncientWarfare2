@@ -154,9 +154,10 @@ private void renderOverlay(ItemSlot slot, int mouseX, int mouseY)
   FontRenderer font = null;
   font = stack.getItem().getFontRenderer(stack);
   if (font == null){font = Minecraft.getMinecraft().fontRenderer;}
-  if(slot.renderItemQuantity && slot.getStack().stackSize>0)
+  if(slot.renderItemQuantity && slot.getStack().stackSize>1)
     {
-    itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), stack, slot.renderX+1, slot.renderY+1, String.valueOf(stack.stackSize));        
+    itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), stack, slot.renderX+1, slot.renderY+1, "");
+    slot.renderStackSize(slot.renderX+1, slot.renderY+1, stack.stackSize, font);
     }
   }
 
