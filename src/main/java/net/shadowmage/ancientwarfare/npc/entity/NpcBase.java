@@ -100,12 +100,13 @@ public void setCustomTexRef(String customTexRef)
       pkt.packetData=tag;
       NetworkHandler.sendToAllTracking(this, pkt);      
       }
+    this.customTexRef = customTexRef;
     }
   else
     {
+    this.customTexRef = customTexRef;
     this.updateTexture();
     }
-  this.customTexRef = customTexRef;
   }
 
 public void setAttackDamageOverride(int attackDamage)
@@ -600,6 +601,7 @@ public void readSpawnData(ByteBuf buffer)
   this.entityUniqueID = new UUID(l1, l2);
   ownerName=ByteBufUtils.readUTF8String(buffer);
   customTexRef=ByteBufUtils.readUTF8String(buffer);
+  this.updateTexture();
   }
 
 @Override
