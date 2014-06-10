@@ -155,7 +155,6 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
 @Override
 public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  //TODO finish the rest of this....
   switch(key)
   {
   case KEY_0:
@@ -164,24 +163,44 @@ public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey k
     NpcCommand.handleCommandClient(CommandType.CLEAR_COMMAND, hit);
     }
     break;
-  case KEY_1:
+  case KEY_1://attack
     {
-    
+    MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 120, 0);//new MovingObjectPosition(player);
+    if(hit!=null)
+      {
+      CommandType c = hit.typeOfHit==MovingObjectType.ENTITY ? CommandType.ATTACK : CommandType.ATTACK_AREA;
+      NpcCommand.handleCommandClient(c, hit);
+      }
     }
     break;
-  case KEY_2:
+  case KEY_2://move/guard
     {
-    
+    MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 120, 0);//new MovingObjectPosition(player);
+    if(hit!=null)
+      {
+      CommandType c = hit.typeOfHit==MovingObjectType.ENTITY ? CommandType.GUARD : CommandType.MOVE;
+      NpcCommand.handleCommandClient(c, hit);
+      }
     }
     break;
   case KEY_3:
     {
-    
+    MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 120, 0);//new MovingObjectPosition(player);
+    if(hit!=null && hit.typeOfHit==MovingObjectType.BLOCK)
+      {
+      CommandType c = player.isSneaking() ? CommandType.CLEAR_HOME : CommandType.SET_HOME;
+      NpcCommand.handleCommandClient(c, hit);
+      }
     }
     break;
   case KEY_4:
     {
-    
+    MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 120, 0);//new MovingObjectPosition(player);
+    if(hit!=null && hit.typeOfHit==MovingObjectType.BLOCK)
+      {
+      CommandType c = player.isSneaking() ? CommandType.CLEAR_UPKEEP : CommandType.SET_UPKEEP;
+      NpcCommand.handleCommandClient(c, hit);
+      }
     }
     break;
   }

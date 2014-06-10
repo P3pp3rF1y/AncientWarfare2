@@ -35,10 +35,10 @@ public static final String KEY_ALT_ITEM_USE_2 = "keybind.alt_item_use_3";
 public static final String KEY_ALT_ITEM_USE_3 = "keybind.alt_item_use_4";
 public static final String KEY_ALT_ITEM_USE_4 = "keybind.alt_item_use_5";
 
-public static final String KEY_NPC_ATTACK = "keybind.npc_command.attack";
-public static final String KEY_NPC_MOVE = "keybind.npc_command.move";
-public static final String KEY_NPC_HOME = "keybind.npc_command.home";
-public static final String KEY_NPC_UPKEEP = "keybind.npc_command.upkeep";
+//public static final String KEY_NPC_ATTACK = "keybind.npc_command.attack";
+//public static final String KEY_NPC_MOVE = "keybind.npc_command.move";
+//public static final String KEY_NPC_HOME = "keybind.npc_command.home";
+//public static final String KEY_NPC_UPKEEP = "keybind.npc_command.upkeep";
 
 private static InputHandler instance = new InputHandler();
 public static InputHandler instance(){return instance;}

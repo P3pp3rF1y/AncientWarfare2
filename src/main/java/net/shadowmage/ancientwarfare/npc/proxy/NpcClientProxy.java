@@ -1,12 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.proxy;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
-import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.input.InputHandler.InputCallback;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -20,16 +15,10 @@ import net.shadowmage.ancientwarfare.npc.gui.GuiRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiTownHallInventory;
 import net.shadowmage.ancientwarfare.npc.gui.GuiUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiWorkOrder;
-import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
-import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
-import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.render.RenderCommandOverlay;
 import net.shadowmage.ancientwarfare.npc.render.RenderNpcBase;
 import net.shadowmage.ancientwarfare.npc.render.RenderWorkLines;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
-
-import org.lwjgl.input.Keyboard;
-
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 
@@ -54,20 +43,6 @@ public void registerClient()
   FMLCommonHandler.instance().bus().register(RenderCommandOverlay.INSTANCE);//register overlay renderer
   MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register block/entity highlight renderer
   registerClientOptions();
-  registerKeybinds();
-  }
-
-private void registerKeybinds()
-  {
-  //TODO move all this input crap out to a separate input helper class
-  InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_ATTACK, Keyboard.KEY_X);
-  InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_MOVE, Keyboard.KEY_C);
-  InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_HOME, Keyboard.KEY_V);
-  InputHandler.instance().registerKeybind(InputHandler.KEY_NPC_UPKEEP, Keyboard.KEY_B);
-  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_ATTACK, new BatonInputCallbackAttack(CommandType.ATTACK));
-  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_MOVE, new BatonInputCallbackMove(CommandType.MOVE));
-  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_HOME, new BatonInputCallbackHome(CommandType.SET_HOME));
-  InputHandler.instance().addInputCallback(InputHandler.KEY_NPC_UPKEEP, new BatonInputCallbackUpkeep(CommandType.SET_UPKEEP));
   }
 
 private void registerClientOptions()
@@ -84,87 +59,5 @@ public void loadSkins()
   NpcSkinManager.INSTANCE.loadSkinPacks();
   }
 
-private abstract class BatonInputCallback extends InputCallback
-{
-CommandType type;
-private BatonInputCallback(CommandType type){this.type=type;}
-@Override
-public void onKeyReleased()
-  {  
-  }
-@Override
-public void onKeyPressed()
-  {
-  Minecraft mc = Minecraft.getMinecraft();
-  if(mc==null || mc.thePlayer==null || mc.currentScreen!=null || mc.thePlayer.getCurrentEquippedItem()==null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)){return;}
-  MovingObjectPosition pos = RenderCommandOverlay.INSTANCE.getClientTarget();
-  if(pos!=null)
-    {
-    handleCommand(pos);
-    }
-  }
-
-public abstract void handleCommand(MovingObjectPosition pos);
-}
-
-private class BatonInputCallbackMove extends BatonInputCallback
-{
-private BatonInputCallbackMove(CommandType type){super(type);}
-@Override
-public void handleCommand(MovingObjectPosition pos)
-  {
-  CommandType type = this.type;
-  if(pos.typeOfHit==MovingObjectType.ENTITY)
-    {
-    type = CommandType.GUARD;
-    }
-  NpcCommand.handleCommandClient(type, pos);
-  }
-}
-
-private class BatonInputCallbackAttack extends BatonInputCallback
-{
-private BatonInputCallbackAttack(CommandType type){super(type);}
-@Override
-public void handleCommand(MovingObjectPosition pos)
-  {
-  CommandType type = this.type;
-  if(pos.typeOfHit==MovingObjectType.BLOCK)
-    {
-    type = CommandType.ATTACK_AREA;
-    }
-  NpcCommand.handleCommandClient(type, pos);
-  }
-}
-
-private class BatonInputCallbackHome extends BatonInputCallback
-{
-private BatonInputCallbackHome(CommandType type){super(type);}
-@Override
-public void handleCommand(MovingObjectPosition pos)
-  {
-  CommandType type = this.type;
-  if(Minecraft.getMinecraft().thePlayer.isSneaking())
-    {
-    type = CommandType.CLEAR_HOME;
-    }    
-  NpcCommand.handleCommandClient(type, pos);
-  }
-}
-
-private class BatonInputCallbackUpkeep extends BatonInputCallback
-{
-private BatonInputCallbackUpkeep(CommandType type){super(type);}
-@Override
-public void handleCommand(MovingObjectPosition pos)
-  {
-  CommandType type = this.type;
-  if(Minecraft.getMinecraft().thePlayer.isSneaking())
-    {
-    type = CommandType.CLEAR_UPKEEP;
-    }    
-  NpcCommand.handleCommandClient(type, pos);
-  }
-}
 
 }
