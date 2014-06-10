@@ -52,6 +52,8 @@ public ItemStack ordersStack;
 
 public ItemStack upkeepStack;
 
+private boolean shouldWander = true;
+
 public NpcBase(World par1World)
   {
   super(par1World);
@@ -119,6 +121,9 @@ public boolean shouldBeAtHome()
   //TODO....
   return false;
   }
+
+public void setShouldWander(boolean val){this.shouldWander = val;}
+public boolean getShouldWander(){return shouldWander;}
 
 /**
  * should be implemented by any npc that wishes to open a GUI on interact<br>

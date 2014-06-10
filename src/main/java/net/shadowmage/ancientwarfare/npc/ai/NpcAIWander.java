@@ -13,6 +13,20 @@ public NpcAIWander(NpcBase npc, double par2)
   }
 
 @Override
+public boolean shouldExecute()
+  {
+  if(!npc.getShouldWander()){return false;}
+  return super.shouldExecute();
+  }
+
+@Override
+public boolean continueExecuting()
+  {
+  if(!npc.getShouldWander()){return false;}
+  return super.continueExecuting();
+  }
+
+@Override
 public void startExecuting()
   {
   npc.addAITask(NpcAI.TASK_WANDER+NpcAI.TASK_MOVE);
