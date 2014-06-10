@@ -25,7 +25,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack)
+public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   WorkOrder wo = WorkOrder.getWorkOrder(stack);
   if(wo!=null)

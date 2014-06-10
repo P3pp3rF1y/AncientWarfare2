@@ -57,15 +57,15 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
   {
-  return true;
+  return keyIndex==0;
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack)
+public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
   {
-  if(!player.worldObj.isRemote)
+  if(keyIndex==0 && !player.worldObj.isRemote)
     {
     if(player.isSneaking())
       {

@@ -23,7 +23,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack)
+public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   CombatOrder order = CombatOrder.getCombatOrder(stack);
   if(order==null){return;}

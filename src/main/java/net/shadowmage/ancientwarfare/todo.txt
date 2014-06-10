@@ -26,8 +26,12 @@ TEXTURES
 * crafting system--needs recipes from other modules
 * need LOTS of tooltips added to various elements in GUIs	
 * GUI - SHIFT-CLICK CODE
+* finish updating key-interface items with key-index tests
+* add the rest of key-interface item input handler callbacks
+
 	
 ****************************STRUCTURE MODULE TODO****************************
+> screenshots for all default-included structures
 > plugins / support for vehicle module
 > plugin support for automation module
 * alter structure scanner gui name-selection char validation
@@ -36,12 +40,9 @@ TEXTURES
 	npcs--done?
 	blocks--
 		town hall
-		recruiting station
-		structure-control block	
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
-* Scanner GUI needs some cleanup / make it look nice
-* screenshots for all default-included structures
+* Scanner GUI needs some cleanup / make it look nice(er)
 * add lake-filling item
 	needs basic pathfinding algorithm to find what blocks to fill
 * basic construction/destruction tools -- set block in an area, clear blocks in an area (possibly same tool)	
@@ -67,6 +68,7 @@ TEXTURES
 * faction owned archer default ranged attack	
 * add recipes and research requirements for npcs/items/blocks
 * add recipes to copy upkeep/work/combat/routing orders
+* move command baton over to new advanced key-interface setup
 	
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

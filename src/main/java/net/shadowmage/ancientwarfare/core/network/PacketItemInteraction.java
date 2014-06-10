@@ -9,6 +9,7 @@ public class PacketItemInteraction extends PacketBase
 {
 
 byte type = 0;
+byte key = 0;
 
 public PacketItemInteraction()
   {
@@ -20,16 +21,24 @@ public PacketItemInteraction(int type)
   this.type = (byte)type;
   }
 
+public PacketItemInteraction(int type, int key)
+  {
+  this.type = (byte)type;
+  this.key = (byte)key;
+  }
+
 @Override
 protected void writeToStream(ByteBuf data)
   {
   data.writeByte(type);
+  data.writeByte(key);
   }
 
 @Override
 protected void readFromStream(ByteBuf data)
   {
   type = data.readByte();
+  key = data.readByte();
   }
 
 @Override
@@ -43,7 +52,7 @@ protected void execute()
       if(stack.getItem() instanceof IItemKeyInterface)
         {
         IItemKeyInterface interf = (IItemKeyInterface)player.inventory.getCurrentItem().getItem();
-        interf.onKeyAction(player, player.inventory.getCurrentItem());      
+        interf.onKeyAction(player, player.inventory.getCurrentItem(), key);      
         }      
       }
     else if(type==1)//item left-click

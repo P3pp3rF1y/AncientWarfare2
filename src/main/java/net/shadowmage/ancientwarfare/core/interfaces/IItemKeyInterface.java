@@ -18,16 +18,18 @@ public interface IItemKeyInterface
  * return true to send packet
  * @param player
  * @param stack
- * @return
+ * @param keyIndex the number of alt-use key that is being pressed
+ * @return true to send activation packet to client
  */
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack);
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex);
 
 /**
  * called server-side when a client presses the key that is bound to alternate item-use function
  * 
  * @param player the player using the item
  * @param stack the item stack that is in-use
+ * @param keyIndex the number of alt-use key that is being pressed
  */
-public void onKeyAction(EntityPlayer player, ItemStack stack);
+public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex);
 
 }

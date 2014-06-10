@@ -89,7 +89,7 @@ public void loadConfig(Configuration config)
       ItemStack stack = minecraft.thePlayer.inventory.getCurrentItem();
       if(stack!=null && stack.getItem() instanceof IItemKeyInterface)
         {
-        if(((IItemKeyInterface)stack.getItem()).onKeyActionClient(minecraft.thePlayer, stack))
+        if(((IItemKeyInterface)stack.getItem()).onKeyActionClient(minecraft.thePlayer, stack, 0))//TODO make the rest of the alt-item-key input handlers
           {
           PacketItemInteraction pkt = new PacketItemInteraction();
           NetworkHandler.sendToServer(pkt);

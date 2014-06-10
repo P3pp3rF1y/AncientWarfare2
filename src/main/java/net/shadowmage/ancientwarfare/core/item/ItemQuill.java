@@ -92,13 +92,13 @@ public Multimap getItemAttributeModifiers()
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   return true;
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack)
+public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
   if(pos!=null)

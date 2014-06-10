@@ -28,7 +28,7 @@ public void onLeftClick(EntityPlayer player, ItemStack stack)
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   return true;
   }

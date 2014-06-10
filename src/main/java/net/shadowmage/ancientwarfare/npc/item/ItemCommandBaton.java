@@ -147,13 +147,13 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack)
+public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   //noop ...or...??
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   MovingObjectPosition hit = new MovingObjectPosition(player);
   NpcCommand.handleCommandClient(CommandType.CLEAR_COMMAND, hit);

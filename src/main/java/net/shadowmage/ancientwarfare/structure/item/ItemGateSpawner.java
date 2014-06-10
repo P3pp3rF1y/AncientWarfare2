@@ -203,13 +203,13 @@ protected boolean canSpawnGate(World world, BlockPosition pos1, BlockPosition po
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   return true;
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack)
+public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
   if(hit==null){return;}

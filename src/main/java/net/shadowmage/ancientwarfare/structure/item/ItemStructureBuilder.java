@@ -75,13 +75,13 @@ public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   return true;
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack)
+public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   if(player==null || player.worldObj.isRemote)
     {

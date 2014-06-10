@@ -27,7 +27,7 @@ public ItemBlockWorksite(Block p_i45328_1_)
   }
 
 @Override
-public void onKeyAction(EntityPlayer player, ItemStack stack)
+public void onKeyAction(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
   if(hit==null)
@@ -137,7 +137,7 @@ public int getDamage(ItemStack stack)
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack)
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, int keyIndex)
   {
   return true;
   }
