@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
@@ -34,7 +35,7 @@ public void initElements()
   int totalHeight = 8;
   Label label;
   
-  label = new Label(8, totalHeight+1 ,"foo.ownerName");
+  label = new Label(8, totalHeight+1 , StatCollector.translateToLocal("guistrings.npc.owner_name"));
   addGuiElement(label);
   
   ownerNameInput = new Text(100, totalHeight, 256-16-100, "", this)
@@ -49,7 +50,7 @@ public void initElements()
   addGuiElement(ownerNameInput);
   totalHeight+=12;
   
-  label = new Label(8, totalHeight+1 ,"foo.customTex");
+  label = new Label(8, totalHeight+1 , StatCollector.translateToLocal("guistrings.npc.custom_texture"));
   addGuiElement(label);
   
   customTexInput = new Text(100, totalHeight, 256-16-100, "", this)
@@ -64,10 +65,10 @@ public void initElements()
   addGuiElement(customTexInput);
   totalHeight+=12;  
   
-  label = new Label(8, totalHeight+1 ,"foo.healthOverride");
+  label = new Label(8, totalHeight+1 , StatCollector.translateToLocal("guistrings.npc.health_override"));
   addGuiElement(label);
   
-  maxHealthOverrideInput = new NumberInput(100, totalHeight, 256-16-100, 0, this)
+  maxHealthOverrideInput = new NumberInput(120, totalHeight, 60, 0, this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -80,10 +81,10 @@ public void initElements()
   maxHealthOverrideInput.setIntegerValue().setAllowNegative();
   totalHeight+=12;  
   
-  label = new Label(8, totalHeight+1 ,"foo.dmgOverride");
+  label = new Label(8, totalHeight+1 , StatCollector.translateToLocal("guistrings.npc.damage_override"));
   addGuiElement(label);
   
-  attackDamageOverrideInput = new NumberInput(100, totalHeight, 256-16-100, 0, this)
+  attackDamageOverrideInput = new NumberInput(120, totalHeight, 60, 0, this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -96,10 +97,10 @@ public void initElements()
   attackDamageOverrideInput.setIntegerValue().setAllowNegative();
   totalHeight+=12;  
   
-  label = new Label(8, totalHeight+1 ,"foo.armOverride");
+  label = new Label(8, totalHeight+1 , StatCollector.translateToLocal("guistrings.npc.armor_override"));
   addGuiElement(label);
   
-  armorValueOverrideInput = new NumberInput(100, totalHeight, 256-16-100, 0, this)
+  armorValueOverrideInput = new NumberInput(120, totalHeight, 60, 0, this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -112,7 +113,7 @@ public void initElements()
   armorValueOverrideInput.setIntegerValue().setAllowNegative();
   totalHeight+=12;    
   
-  wanderCheckbox = new Checkbox(8, totalHeight, 16, 16, "foo.wander")
+  wanderCheckbox = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal("guistrings.npc.allow_wander"))
     {
     @Override
     public void onToggled()
