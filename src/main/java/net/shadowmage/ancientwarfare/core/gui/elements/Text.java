@@ -21,12 +21,11 @@ import org.lwjgl.opengl.GL11;
 public class Text extends GuiElement
 {
 
+TextValidator textValidator = new TextValidator();
 IWidgetSelection selector;
 String text;
 int cursorIndex;
 FontRenderer fr;
-
-Set<Character> denotedAllowedChars = new HashSet<Character>();
 
 public Text(int topLeftX, int topLeftY, int width, String defaultText, IWidgetSelection selector)
   {
@@ -36,13 +35,16 @@ public Text(int topLeftX, int topLeftY, int width, String defaultText, IWidgetSe
   this.text = defaultText;
   this.cursorIndex = text.length();
   this.selector = selector;
-  this.addDefaultListeners();  
-  this.setAllowedChars(allowedChars);
-  for(char ch : allowedNums)
-    {
-    denotedAllowedChars.add(Character.valueOf(ch));
-    }
-  
+  this.addDefaultListeners(); 
+  addAllowedChars(); 
+  }
+
+protected void addAllowedChars()
+  {
+  this.textValidator.addValidChars(allowedChars);
+  this.textValidator.addValidChars(allowedCharSymbols);
+  this.textValidator.addValidChars(allowedNums);
+  this.textValidator.addValidChars(allowedNumSymbols);
   }
 
 protected void addDefaultListeners()
@@ -102,17 +104,12 @@ public void onTextUpdated(String oldText, String newText)
 
 public void setAllowedChars(Set<Character> allowedChars)
   {
-  this.denotedAllowedChars.clear();
-  this.denotedAllowedChars.addAll(allowedChars);
+  this.textValidator = new TextValidator(allowedChars);
   }
 
 public void setAllowedChars(char[] chars)
   {
-  this.denotedAllowedChars.clear();
-  for(char ch : chars)
-    {
-    this.denotedAllowedChars.add(ch);
-    }
+  this.textValidator = new TextValidator(chars);
   }
 
 protected void handleKeyInput(int keyCode, char ch)
@@ -324,12 +321,12 @@ public void setText(String text)
 
 public void addAllowedChar(char ch)
   {
-  denotedAllowedChars.add(Character.valueOf(ch));
+  this.textValidator.addValidChar(ch);
   }
 
 protected boolean isAllowedCharacter(char ch)
   {
-  return denotedAllowedChars.contains(Character.valueOf(ch));
+  return this.textValidator.isCharValid(ch);
   }
 
 public String getText()
@@ -337,23 +334,40 @@ public String getText()
   return text;
   }
 
-/**
- * TODO...unfinished
- * @author Shadowmage
- *
- */
-public abstract static class TextValidator
-{
-public abstract boolean isCharValid(char ch);
-}
 
-public static final TextValidator STANDARD_VALIDATOR = new TextValidator()
+public static class TextValidator
+{
+
+Set<Character> validChars = new HashSet<Character>();
+
+public TextValidator(){}
+
+public TextValidator(char[] chars)
   {
-  @Override
-  public boolean isCharValid(char ch)
-    {
-    return false;
-    }
-  };
+  for(char ch : chars){validChars.add(Character.valueOf(ch));}
+  }
+
+public TextValidator(Set<Character> chars)
+  {
+  for(Character ch : chars){validChars.add(ch);}  
+  }
+
+public void addValidChar(char ch)
+  {
+  validChars.add(Character.valueOf(ch));
+  }
+
+public void addValidChars(char[] chars)
+  {
+  for(char ch : chars){validChars.add(Character.valueOf(ch));}
+  }  
+
+public boolean isCharValid(char ch)
+  {
+  return validChars.contains(Character.valueOf(ch));
+  }
+
+public void clearAllowedChars(){validChars.clear();}
+}
 
 }

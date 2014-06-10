@@ -25,14 +25,13 @@ TEXTURES
 ^ (fixed) research table has some bug where it will stall out even with proper resources, perhaps a resource-meta-matching problem, or some issue with checking power levels
 * crafting system--needs recipes from other modules
 * need LOTS of tooltips added to various elements in GUIs	
-* Finish creating proper text-input validation stuff for Text and NumberInput widgets
-	need support for space, underscore, period.
-	need to setup validation per-input box...
 * GUI - SHIFT-CLICK CODE
 	
 ****************************STRUCTURE MODULE TODO****************************
 > plugins / support for vehicle module
-> plugin support for automation module	
+> plugin support for automation module
+* alter structure scanner gui name-selection char validation
+	--disallow invalid file-system chars (/?.'"<>[]{}!@#$%^&*()_+)
 * plugin support for npc module
 	npcs--done?
 	blocks--

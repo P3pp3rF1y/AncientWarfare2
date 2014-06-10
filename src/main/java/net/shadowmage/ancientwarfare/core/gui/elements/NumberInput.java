@@ -55,6 +55,13 @@ public NumberInput setIncrementAmount(float amount)
   }
 
 @Override
+protected void addAllowedChars()
+  {
+  this.textValidator.addValidChars(allowedNums);
+  this.textValidator.addValidChars(allowedNumSymbols);
+  }
+
+@Override
 protected void addDefaultListeners()
   {  
   this.addNewListener(new Listener(Listener.MOUSE_UP)
@@ -142,22 +149,12 @@ public NumberInput setValue(float val)
   return this;
   }
 
+@Override
 protected void handleCharacter(char ch)
   {  
-  boolean allowed = false;
-  if(ch=='.' && allowDecimal){allowed = true;}
-  else if(ch=='-' && allowNeg){allowed = true;}
-  if(!allowed)
-    {
-    for(char ch1 : allowedNums)
-      {
-      if(ch1==ch)
-        {
-        allowed = true;
-        break;
-        }
-      }    
-    }
+  boolean allowed = isAllowedCharacter(ch);
+  if(ch=='.'){allowed = allowDecimal;}  
+  else if(ch=='-'){allowed = allowNeg;}
   if(allowed)//is allowed character
     {
     String newText = "";
