@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
@@ -114,7 +115,7 @@ public void initElements()
       @Override
       protected void onPressed()
         {
-        //TODO display creative control GUI
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_CREATIVE, container.npc.getEntityId(), 0, 0);
         }
       };
     addGuiElement(button);  

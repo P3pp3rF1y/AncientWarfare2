@@ -86,40 +86,6 @@ public void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target)
   }
 
 @Override
-public boolean attackEntityAsMob(Entity target)
-  {
-  float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-  int knockback = 0;
-  if(target instanceof EntityLivingBase)
-    {
-    damage += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)target);
-    knockback += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)target);
-    }
-  boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
-  if(targetHit)
-    {
-    if(knockback > 0)
-      {
-      target.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F));
-      this.motionX *= 0.6D;
-      this.motionZ *= 0.6D;
-      }
-    int fireDamage = EnchantmentHelper.getFireAspectModifier(this);
-
-    if(fireDamage > 0)
-      {
-      target.setFire(fireDamage * 4);
-      }
-    if(target instanceof EntityLivingBase)
-      {
-      EnchantmentHelper.func_151384_a((EntityLivingBase)target, this);
-      }
-    EnchantmentHelper.func_151385_b(this, target);
-    }
-  return targetHit;
-  }
-
-@Override
 public boolean canBeCommandedBy(String playerName)
   {
   return false;

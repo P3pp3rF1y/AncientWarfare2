@@ -105,40 +105,7 @@ protected void applyEntityAttributes()
   this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(AWNPCStatics.npcAttackDamage);
   }
 
-@Override
-public boolean attackEntityAsMob(Entity target)
-  {
-  float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-  AWLog.logDebug("retrieved attack damage of: "+damage);
-  int knockback = 0;
-  if(target instanceof EntityLivingBase)
-    {
-    damage += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)target);
-    knockback += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)target);
-    }
-  boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
-  if(targetHit)
-    {
-    if(knockback > 0)
-      {
-      target.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F));
-      this.motionX *= 0.6D;
-      this.motionZ *= 0.6D;
-      }
-    int fireDamage = EnchantmentHelper.getFireAspectModifier(this);
 
-    if(fireDamage > 0)
-      {
-      target.setFire(fireDamage * 4);
-      }
-    if(target instanceof EntityLivingBase)
-      {
-      EnchantmentHelper.func_151384_a((EntityLivingBase)target, this);
-      }
-    EnchantmentHelper.func_151385_b(this, target);
-    }
-  return targetHit;
-  }
 
 @Override
 public boolean isValidOrdersStack(ItemStack stack)
@@ -163,20 +130,20 @@ public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack)
 public void onWeaponInventoryChanged()
   {
   super.onWeaponInventoryChanged();
-  AWLog.logDebug("weapon inventory changed, setting combat ai..");
-  this.tasks.removeTask(arrowAI);
-  this.tasks.removeTask(collideAI);
-  ItemStack stack = getEquipmentInSlot(0);
-  Item item = stack==null ? null : stack.getItem();
-  if(item==Items.bow)
+  if(!worldObj.isRemote)
     {
-    AWLog.logDebug("adding ranged attack task");
-    this.tasks.addTask(7, arrowAI);
-    }
-  else
-    {
-    AWLog.logDebug("adding melee attack task");
-    this.tasks.addTask(7, collideAI);
+    this.tasks.removeTask(arrowAI);
+    this.tasks.removeTask(collideAI);
+    ItemStack stack = getEquipmentInSlot(0);
+    Item item = stack==null ? null : stack.getItem();
+    if(item==Items.bow)
+      {
+      this.tasks.addTask(7, arrowAI);
+      }
+    else
+      {
+      this.tasks.addTask(7, collideAI);
+      }
     }
   }
 

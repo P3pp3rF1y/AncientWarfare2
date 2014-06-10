@@ -83,6 +83,7 @@ TEXTURES
 * faction owned archer default ranged attack	
 * add recipes and research requirements for npcs/items/blocks
 * add recipes to copy upkeep/work/combat/routing orders		
+* move custom tex ref and owner name into data-watcher for ease of synching--would not need entity packet handler for npcs at that point
 
 	
 ****************************VEHICLE MODULE TODO****************************

@@ -61,6 +61,18 @@ public void onDeath(DamageSource source)
   }
 
 @Override
+public int getArmorValueOverride()
+  {
+  return -1;
+  }
+
+@Override
+public int getAttackDamageOverride()
+  {
+  return -1;
+  }
+
+@Override
 public void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target)
   {
   if(alertAI!=null)

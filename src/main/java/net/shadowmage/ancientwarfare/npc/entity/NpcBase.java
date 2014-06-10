@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.UUID;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -17,11 +18,16 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -32,7 +38,7 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
-public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable
+public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler
 {
 
 private String ownerName = "";//the owner of this NPC, used for checking teams
@@ -56,6 +62,7 @@ private boolean shouldWander = true;
 
 private int attackDamage = -1;//faction based only
 private int armorValue = -1;//faction based only
+private int maxHealthOverride = -1;
 private String customTexRef = "";//might as well allow for player-owned as well...
 
 public NpcBase(World par1World)
@@ -70,9 +77,34 @@ public NpcBase(World par1World)
   this.func_110163_bv();//set persistence required==true
   }
 
+public int getMaxHealthOverride()
+  {
+  return maxHealthOverride;
+  }
+
+public void setMaxHealthOverride(int maxHealthOverride)
+  {
+  this.maxHealthOverride = maxHealthOverride;
+  }
+
 public void setCustomTexRef(String customTexRef)
   {
   if(customTexRef==null){customTexRef="";}
+  if(!worldObj.isRemote)
+    {
+    if(!customTexRef.equals(this.customTexRef))
+      {
+      PacketEntity pkt = new PacketEntity(this);
+      NBTTagCompound tag = new NBTTagCompound();
+      tag.setString("customTex", customTexRef);
+      pkt.packetData=tag;
+      NetworkHandler.sendToAllTracking(this, pkt);      
+      }
+    }
+  else
+    {
+    this.updateTexture();
+    }
   this.customTexRef = customTexRef;
   }
 
@@ -99,6 +131,52 @@ public int getArmorValueOverride()
 public int getAttackDamageOverride()
   {
   return attackDamage;
+  }
+
+@Override
+public boolean attackEntityAsMob(Entity target)
+  {
+  float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+  if(getAttackDamageOverride()>=0)
+    {
+    damage = (float)this.getAttackDamageOverride();
+    }
+  AWLog.logDebug("retrieved attack damage of: "+damage);
+  int knockback = 0;
+  if(target instanceof EntityLivingBase)
+    {
+    damage += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)target);
+    knockback += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)target);
+    }
+  boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+  if(targetHit)
+    {
+    if(knockback > 0)
+      {
+      target.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F));
+      this.motionX *= 0.6D;
+      this.motionZ *= 0.6D;
+      }
+    int fireDamage = EnchantmentHelper.getFireAspectModifier(this);
+
+    if(fireDamage > 0)
+      {
+      target.setFire(fireDamage * 4);
+      }
+    if(target instanceof EntityLivingBase)
+      {
+      EnchantmentHelper.func_151384_a((EntityLivingBase)target, this);
+      }
+    EnchantmentHelper.func_151385_b(this, target);
+    }
+  return targetHit;
+  }
+
+@Override
+public int getTotalArmorValue()
+  {
+  if(getArmorValueOverride()>=0){return getArmorValueOverride();}
+  return super.getTotalArmorValue();
   }
 
 @Override
@@ -364,6 +442,9 @@ public final void readAdditionalItemData(NBTTagCompound tag)
   if(tag.hasKey("health")){setHealth(tag.getFloat("health"));}
   if(tag.hasKey("name")){setCustomNameTag(tag.getString("name"));}
   if(tag.hasKey("food")){setFoodRemaining(tag.getInteger("food"));}
+  if(tag.hasKey("attackDamageOverride")){setAttackDamageOverride(tag.getInteger("attackDamageOverride"));}
+  if(tag.hasKey("armorValueOverride")){setArmorValueOverride(tag.getInteger("armorValueOverride"));}
+  if(tag.hasKey("customTex")){setCustomTexRef(tag.getString("customTex"));}
   ownerName=tag.getString("owner");
   }
 
@@ -411,6 +492,9 @@ public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag)
   tag.setInteger("food", getFoodRemaining());
   if(hasCustomNameTag()){tag.setString("name", getCustomNameTag());}
   tag.setString("owner", ownerName);
+  tag.setInteger("attackDamageOverride", attackDamage);
+  tag.setInteger("armorValueOverride", armorValue);
+  tag.setString("customTex", customTexRef);
   return tag;
   }
 
@@ -504,16 +588,18 @@ public void writeSpawnData(ByteBuf buffer)
   buffer.writeLong(getUniqueID().getMostSignificantBits());
   buffer.writeLong(getUniqueID().getLeastSignificantBits());
   ByteBufUtils.writeUTF8String(buffer, ownerName);
+  ByteBufUtils.writeUTF8String(buffer, customTexRef);
   }
 
 @Override
-public void readSpawnData(ByteBuf additionalData)
+public void readSpawnData(ByteBuf buffer)
   {
   long l1, l2;
-  l1 = additionalData.readLong();
-  l2 = additionalData.readLong();
+  l1 = buffer.readLong();
+  l2 = buffer.readLong();
   this.entityUniqueID = new UUID(l1, l2);
-  ownerName=ByteBufUtils.readUTF8String(additionalData);
+  ownerName=ByteBufUtils.readUTF8String(buffer);
+  customTexRef=ByteBufUtils.readUTF8String(buffer);
   }
 
 @Override
@@ -600,6 +686,15 @@ public boolean requiresUpkeep()
 @Override
 public void setOwnerName(String name)
   {
+  if(name==null){name="";}
+  if(!worldObj.isRemote && !name.equals(ownerName))
+    {
+    PacketEntity pkt = new PacketEntity(this);
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setString("ownerName", name);
+    pkt.packetData=tag;
+    NetworkHandler.sendToAllTracking(this, pkt);
+    }
   ownerName = name;
   }
 
@@ -667,6 +762,7 @@ public void readEntityFromNBT(NBTTagCompound tag)
   attackDamage = tag.getInteger("attackDamageOverride");
   armorValue = tag.getInteger("armorValueOverride");
   customTexRef = tag.getString("customTex");
+  //TODO
   }
 
 @Override
@@ -683,6 +779,9 @@ public void writeEntityToNBT(NBTTagCompound tag)
     tag.setIntArray("home", ccia);
     }
   tag.setTag("levelingStats", levelingStats.writeToNBT(new NBTTagCompound()));
+  tag.setInteger("attackDamageOverride", attackDamage);
+  tag.setInteger("armorValueOverride", armorValue);
+  tag.setString("customTex", customTexRef);
   //TODO
   }
 
@@ -698,6 +797,20 @@ public final ResourceLocation getTexture()
 public final void updateTexture()
   {
   currentTexture = NpcSkinManager.INSTANCE.getTextureFor(this);
+  }
+
+@Override
+public void handlePacketData(NBTTagCompound tag)
+  {
+  AWLog.logDebug("npc receiving packet: "+tag);
+  if(tag.hasKey("ownerName"))
+    {
+    setOwnerName(tag.getString("ownerName"));
+    }
+  else if(tag.hasKey("customTex"))
+    {
+    setCustomTexRef(tag.getString("customTex"));
+    }
   }
 
 }
