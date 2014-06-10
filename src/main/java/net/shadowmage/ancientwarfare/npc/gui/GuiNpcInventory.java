@@ -107,6 +107,19 @@ public void initElements()
     addGuiElement(button);  
     }
   
+  if(player.capabilities.isCreativeMode)
+    {
+    button = new Button(buttonX, 84, 75, 12, StatCollector.translateToLocal("guistrings.npc.creative_gui"))
+      {
+      @Override
+      protected void onPressed()
+        {
+        //TODO display creative control GUI
+        }
+      };
+    addGuiElement(button);  
+    }
+  
   ItemSlot slot;
   Tooltip t;  
   String text;

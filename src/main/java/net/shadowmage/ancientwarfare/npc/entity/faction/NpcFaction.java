@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -32,6 +33,47 @@ protected NpcAIAlertFaction alertAI;
 public NpcFaction(World par1World)
   {
   super(par1World);
+  }
+
+@Override
+protected boolean interact(EntityPlayer player)
+  {
+  if(player.worldObj.isRemote){return false;}
+  if(player.capabilities.isCreativeMode)
+    {
+    if(this.ridingEntity!=null)
+      {
+      this.dismountEntity(ridingEntity);
+      if(this.ridingEntity!=null){this.ridingEntity.riddenByEntity=null;}
+      this.ridingEntity=null;
+      }
+    else if(player.isSneaking())
+      {
+      if(this.followingPlayerName==null)
+        {
+        this.followingPlayerName = player.getCommandSenderName();   
+        }
+      else if(this.followingPlayerName.equals(player.getCommandSenderName()))
+        {
+        this.followingPlayerName = null;
+        }
+      else
+        {
+        this.followingPlayerName = player.getCommandSenderName();     
+        }
+      }
+    else
+      {
+      openGUI(player);
+      }
+    } 
+  return true;
+  }
+
+@Override
+public void openGUI(EntityPlayer player)
+  {
+  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);
   }
 
 @Override

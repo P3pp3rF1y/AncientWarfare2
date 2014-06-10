@@ -314,18 +314,15 @@ protected boolean interact(EntityPlayer player)
       {
       if(this.followingPlayerName==null)
         {
-        this.followingPlayerName = player.getCommandSenderName();
-        AWLog.logDebug("set following player name to: "+this.followingPlayerName);      
+        this.followingPlayerName = player.getCommandSenderName();    
         }
       else if(this.followingPlayerName.equals(player.getCommandSenderName()))
         {
         this.followingPlayerName = null;
-        AWLog.logDebug("set following player name to: "+this.followingPlayerName);  
         }
       else
         {
-        this.followingPlayerName = player.getCommandSenderName();   
-        AWLog.logDebug("set following player name to: "+this.followingPlayerName);     
+        this.followingPlayerName = player.getCommandSenderName();      
         }
       }
     else
