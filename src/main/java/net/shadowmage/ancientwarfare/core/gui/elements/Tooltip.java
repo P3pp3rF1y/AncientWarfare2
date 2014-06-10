@@ -49,12 +49,13 @@ public void renderTooltip(int mouseX, int mouseY, float partialTick)
     element.updateGuiPosition(mouseX, mouseY);
     }
   
+
+  GL11.glDisable(GL11.GL_DEPTH_TEST);
+  GL11.glDisable(GL11.GL_LIGHTING);
+  GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   drawBackground(mouseX, mouseY);   
   
-  GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   RenderHelper.disableStandardItemLighting();
-  GL11.glDisable(GL11.GL_LIGHTING);
-  GL11.glDisable(GL11.GL_DEPTH_TEST);
   for(GuiElement element : this.children)
     {
     element.render(-1000, -1000, partialTick);

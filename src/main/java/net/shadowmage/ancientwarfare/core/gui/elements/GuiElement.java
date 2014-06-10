@@ -188,7 +188,7 @@ public void postRender(int mouseX, int mouseY, float partialTick, long tick, ITo
       {
       hoverStart = tick;
       }
-    else if(tick-hoverStart>2000)//2 seconds
+    else if(tick-hoverStart>500)//0.5 seconds
       {
       rend.handleElementTooltipRender(tooltip);
       }

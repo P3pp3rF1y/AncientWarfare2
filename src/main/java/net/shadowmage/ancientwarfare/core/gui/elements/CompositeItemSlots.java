@@ -141,7 +141,14 @@ private void renderSlotHighlight(ItemSlot slot, int mouseX, int mouseY)
     GL11.glDisable(GL11.GL_BLEND);
     if(slot.renderTooltip && slot.getStack()!=null && render!=null)
       {
-      this.render.handleItemStackTooltipRender(slot.getStack());
+      if(slot.tooltip!=null)
+        {
+        this.render.handleElementTooltipRender(slot.tooltip);
+        }
+      else
+        {
+        this.render.handleItemStackTooltipRender(slot.getStack());          
+        }
       }
     }
   }
@@ -169,7 +176,7 @@ private void renderItemStack(ItemSlot slot, int mouseX, int mouseY)
   FontRenderer font = null;
   font = stack.getItem().getFontRenderer(stack);
   if (font == null){font = Minecraft.getMinecraft().fontRenderer;} 
-  itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), stack, slot.renderX+1, slot.renderY+1); 
+  itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), stack, slot.renderX+1, slot.renderY+1);
   }
 
 }
