@@ -36,34 +36,34 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 public abstract class TileWarehouseBase extends TileEntity implements IOwnable, IWorkSite, ITorqueReceiver, IBoundedTile, IInteractableTile, IControllerTile
 {
 
-BlockPosition min, max;
-String ownerName;
-double storedEnergy;
+private BlockPosition min, max;
+private String ownerName;
+private double storedEnergy;
 
-double maxEnergy = AWCoreStatics.energyPerWorkUnit*4;
-double maxInput = AWCoreStatics.energyPerWorkUnit;
+private double maxEnergy = AWCoreStatics.energyPerWorkUnit*4;
+private double maxInput = AWCoreStatics.energyPerWorkUnit;
 
-boolean init;
-boolean shouldRecount;
+private boolean init;
+private boolean shouldRecount;
 
-Set<TileWarehouseInterface> interfaceTiles = new HashSet<TileWarehouseInterface>();
-Set<IWarehouseStorageTile> storageTiles = new HashSet<IWarehouseStorageTile>();
+private Set<TileWarehouseInterface> interfaceTiles = new HashSet<TileWarehouseInterface>();
+private Set<IWarehouseStorageTile> storageTiles = new HashSet<IWarehouseStorageTile>();
 
 /**
  * interfaces that need filling, AND there are items available to fill.  anytime storage block inventories are updated, this list needs to be
  * rechecked to make sure items are still available
  */
-Set<TileWarehouseInterface> interfacesToFill = new HashSet<TileWarehouseInterface>();
+private Set<TileWarehouseInterface> interfacesToFill = new HashSet<TileWarehouseInterface>();
 
 /**
  * interfaces that have an excess of items or non-matching items will be in this set
  */
-Set<TileWarehouseInterface> interfacesToEmpty = new HashSet<TileWarehouseInterface>();
+private Set<TileWarehouseInterface> interfacesToEmpty = new HashSet<TileWarehouseInterface>();
 
-WarehouseStorageMap storageMap = new WarehouseStorageMap();
-ItemQuantityMap cachedItemMap = new ItemQuantityMap();
+protected WarehouseStorageMap storageMap = new WarehouseStorageMap();
+private ItemQuantityMap cachedItemMap = new ItemQuantityMap();
 
-Set<ContainerWarehouseControl> viewers = new HashSet<ContainerWarehouseControl>();
+private Set<ContainerWarehouseControl> viewers = new HashSet<ContainerWarehouseControl>();
 
 public TileWarehouseBase()
   {
@@ -71,6 +71,19 @@ public TileWarehouseBase()
   }
 
 public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick);
+
+public void changeCachedQuantity(ItemStack filter, int change)
+  {
+  if(change>0)
+    {
+    cachedItemMap.addCount(filter, change);
+    }
+  else
+    {
+    cachedItemMap.decreaseCount(filter, -change);
+    }
+  updateViewers();
+  }
 
 private boolean tryEmptyInterfaces()
   {  

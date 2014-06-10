@@ -39,8 +39,8 @@ private void tryAddItem(EntityPlayer player, ItemStack cursorStack)
   for(IWarehouseStorageTile tile : destinations)
     {
     moved = tile.insertItem(cursorStack, cursorStack.stackSize);
-    cursorStack.stackSize-=moved;    
-    cachedItemMap.addCount(cursorStack, moved);
+    cursorStack.stackSize-=moved;  
+    changeCachedQuantity(cursorStack, moved);
     updateViewers();
     if(cursorStack.stackSize<=0){break;}
     }
@@ -72,7 +72,7 @@ private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClic
       {
       newCursorStack.stackSize+=toMove;
       tile.extractItem(filter, toMove);
-      cachedItemMap.decreaseCount(filter, toMove);
+      changeCachedQuantity(filter, -toMove);
       updateViewers();
       }      
     if(newCursorStack.stackSize>=newCursorStack.getMaxStackSize())

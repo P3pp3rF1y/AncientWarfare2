@@ -29,7 +29,6 @@ TEXTURES
 	need support for space, underscore, period.
 	need to setup validation per-input box...
 * GUI - SHIFT-CLICK CODE
-* GUI - rendering of item stack quantities >99 -- need to do custom rendering of text, scaled down appropriately
 	
 ****************************STRUCTURE MODULE TODO****************************
 > plugins / support for vehicle module
@@ -49,16 +48,18 @@ TEXTURES
 * basic construction/destruction tools -- set block in an area, clear blocks in an area (possibly same tool)	
 
 ****************************AUTOMATION MODULE TODO****************************	
-^ lots of testing/validation on warehouse system
+^ lots of testing/validation on new warehouse system
 * Torque API:
 	Add input max/tick code to tiles, reset counter every tile-update.
 	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
 * recipes for nearly everything
-* add ability to manipulate storage block inventory directly
+* finish up storage block filter-setting ability, verify that it works properly (needs the above step to view storage-block inventory contents)
+* add a 'warehouse stock viewer panel' --sign that can be slapped on the side of storage/input/output blocks to view the stock level of specified items (items specified via gui)
 		
 ****************************NPC MODULE TODO****************************
+? add ability for npcs to occasionally 'speak' messages
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
 * method for creative-mode players to access and alter faction-based NPCs -- equipment, owner-name??, other settings?
@@ -69,7 +70,7 @@ TEXTURES
 * rework trader / gui to still allow access to inventory for player-owned traders.
 * add item for priest holy-symbols (should I just make it a 'religious book'?)
 * faction owned archer default ranged attack	
-* add recipes and research requirements for npcs and npc-related blocks
+* add recipes and research requirements for npcs/items/blocks
 * add recipes to copy upkeep/work/combat/routing orders		
 * add npc-recruiting station -- worksite, crafting
 	has input slots for raw recruiting goods -- possibly just have input of player-owned raw npc-recruiting items to spawn/equip directly

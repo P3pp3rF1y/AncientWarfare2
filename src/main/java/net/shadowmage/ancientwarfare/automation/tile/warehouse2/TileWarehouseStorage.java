@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -18,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public class TileWarehouseStorage extends TileControlled implements IWarehouseStorageTile, IInteractableTile
@@ -117,13 +119,17 @@ public int getAvailableSpaceFor(ItemStack filter)
 @Override
 public int extractItem(ItemStack filter, int amount)
   {
-  return inventory.extractItem(filter, amount);
+  int removed = inventory.extractItem(filter, amount);
+  updateViewersForInventory();
+  return removed;
   }
 
 @Override
 public int insertItem(ItemStack filter, int amount)
   {
-  return inventory.insertItem(filter, amount);
+  int inserted =  inventory.insertItem(filter, amount);
+  updateViewersForInventory();
+  return inserted;
   }
 
 @Override
@@ -163,6 +169,14 @@ protected void updateViewers()
     }
   }
 
+protected void updateViewersForInventory()
+  {
+  for(ContainerWarehouseStorage viewer : viewers)
+    {
+    viewer.onStorageInventoryUpdated();
+    }
+  }
+
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
@@ -171,6 +185,75 @@ public boolean onBlockClicked(EntityPlayer player)
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, xCoord, yCoord, zCoord);
     }
   return true;
+  }
+
+@Override
+public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick)
+  {
+  if(filter!=null && player.inventory.getItemStack()==null)
+    {
+    tryGetItem(player, filter, shiftClick);    
+    }
+  else if(player.inventory.getItemStack()!=null)
+    {
+    tryAddItem(player, player.inventory.getItemStack());
+    }
+  }
+
+private void tryAddItem(EntityPlayer player, ItemStack cursorStack)
+  {
+  int stackSize = cursorStack.stackSize;
+  int moved;
+  moved = insertItem(cursorStack, cursorStack.stackSize);
+  cursorStack.stackSize-=moved;   
+  TileWarehouseBase twb = (TileWarehouseBase) getController();
+  if(twb!=null)
+    {
+    twb.changeCachedQuantity(cursorStack, moved);
+    }
+  if(cursorStack.stackSize<=0)
+    {
+    player.inventory.setItemStack(null);
+    }
+  if(stackSize!=cursorStack.stackSize)
+    {
+    EntityPlayerMP playerMP = (EntityPlayerMP)player;
+    playerMP.updateHeldItem();
+    }
+  }
+
+private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick)
+  {
+  ItemStack newCursorStack = filter.copy();
+  newCursorStack.stackSize=0;
+  int count;
+  int toMove;  
+  count = getQuantityStored(filter);
+  toMove = newCursorStack.getMaxStackSize()-newCursorStack.stackSize;
+  toMove = toMove>count? count : toMove;
+  if(toMove>0)
+    {
+    newCursorStack.stackSize+=toMove;
+    extractItem(filter, toMove);
+    TileWarehouseBase twb = (TileWarehouseBase) getController();
+    if(twb!=null)
+      {
+      twb.changeCachedQuantity(filter, -toMove);
+      }
+    } 
+  if(newCursorStack.stackSize>0)
+    {
+    if(shiftClick)
+      {
+      newCursorStack = InventoryTools.mergeItemStack(player.inventory, newCursorStack, -1);
+      }
+    if(newCursorStack!=null)
+      {
+      player.inventory.setItemStack(newCursorStack);
+      EntityPlayerMP playerMP = (EntityPlayerMP)player;
+      playerMP.updateHeldItem();      
+      }
+    }
   }
 
 }
