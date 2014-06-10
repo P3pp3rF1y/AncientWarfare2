@@ -119,10 +119,13 @@ public void initElements()
     public void onToggled()
       {
       container.wander = checked();
+      hasChanged=true;
       }
     };
   addGuiElement(wanderCheckbox);
-  totalHeight+=12;
+  totalHeight+=16;
+  
+  this.ySize=totalHeight+8;  
   }
 
 @Override
@@ -140,12 +143,16 @@ public void setupElements()
 protected boolean onGuiCloseRequested()
   {
   /**
-   * force opening of normal gui (whatever that may be for the npc) when advanced controls is closed
+   * if changes were made while gui was open, send these to server
    */
   if(hasChanged)
     {
     container.sendChangesToServer();
     }
+
+  /**
+   * force opening of normal gui (whatever that may be for the npc) when advanced controls is closed
+   */
   container.npc.openGUI(player);
   return false;
   }
