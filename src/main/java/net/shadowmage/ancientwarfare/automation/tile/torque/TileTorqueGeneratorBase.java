@@ -40,12 +40,6 @@ public double getMaxOutput()
   return maxOutput;
   }
 
-@Override
-public double getEnergyDrainFactor()
-  {
-  return 1;
-  }
-
 @Optional.Method(modid="BuildCraft|Core")
 @Override
 public boolean canEmitPowerFrom(ForgeDirection side)

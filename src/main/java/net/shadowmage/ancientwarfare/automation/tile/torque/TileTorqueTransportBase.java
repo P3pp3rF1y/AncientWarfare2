@@ -29,12 +29,6 @@ public void updateEntity()
   }
 
 @Override
-public double getEnergyDrainFactor()
-  {
-  return 1;
-  }
-
-@Override
 public double addEnergy(ForgeDirection from, double energy)
   {
   if(canInput(from))
@@ -68,13 +62,13 @@ public double getMaxInput()
 @Override
 public boolean canInput(ForgeDirection from)
   {
-  return from!=ForgeDirection.getOrientation(getBlockMetadata());
+  return from!=orientation;
   }
 
 @Override
 public boolean canOutput(ForgeDirection towards)
   {
-  return towards==ForgeDirection.getOrientation(getBlockMetadata());
+  return towards==orientation;
   }
 
 @Optional.Method(modid="BuildCraft|Core")

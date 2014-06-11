@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
+import java.util.HashMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,12 +16,16 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class BlockTorqueBase extends Block implements IRotatableBlock
 {
 
-IconRotationMap iconMap = new IconRotationMap();
+HashMap<Integer, IconRotationMap> iconMaps = new HashMap<Integer, IconRotationMap>();
 
 @Override
 public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ)
@@ -40,18 +46,40 @@ protected BlockTorqueBase(Material material)
 @Override
 public void registerBlockIcons(IIconRegister register)
   {
-  iconMap.registerIcons(register);
+  for(IconRotationMap map : this.iconMaps.values())
+    {
+    map.registerIcons(register);
+    }
+  }
+
+@Override
+@SideOnly(Side.CLIENT)
+public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side)
+  {
+  int meta = block.getBlockMetadata(x, y, z);
+  TileEntity t = block.getTileEntity(x, y, z);
+  ITorqueTile tt = (ITorqueTile)t;
+  return iconMaps.get(meta).getIcon(this, tt.getOrientation().ordinal(), side);
   }
 
 @Override
 public IIcon getIcon(int side, int meta)
   {
-  return iconMap.getIcon(this, meta, side);
+  AWLog.logDebug("getting icon for: "+side+" :: "+meta+" :: "+this);
+  return iconMaps.get(meta).getIcon(this, 2, side);
   }
 
+@Override
 public BlockTorqueBase setIcon(RelativeSide side, String texName)
   {
-  iconMap.setIcon(this, side, texName);
+  setIcon(0, side, texName);
+  return this;
+  }
+
+public BlockTorqueBase setIcon(int meta, RelativeSide side, String texName)
+  {
+  if(!this.iconMaps.containsKey(meta)){this.iconMaps.put(meta, new IconRotationMap());}
+  iconMaps.get(meta).setIcon(this, side, texName);
   return this;
   }
 
@@ -91,11 +119,13 @@ public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
 @Override
 public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
   {
-  int meta = worldObj.getBlockMetadata(x, y, z);
+  TileEntity t = worldObj.getTileEntity(x, y, z);
+  TileTorqueBase tt = (TileTorqueBase)t;
+  int meta = tt.getOrientation().ordinal();
   int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
   if(rMeta!=meta)
     {
-    worldObj.setBlockMetadataWithNotify(x, y, z, rMeta, 3);
+    tt.setOrientation(ForgeDirection.getOrientation(rMeta));
     return true;
     }
   return false;

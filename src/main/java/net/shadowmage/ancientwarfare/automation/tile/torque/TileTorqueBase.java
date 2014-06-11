@@ -2,6 +2,9 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,6 +17,25 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
 protected TileEntity[] neighborTileCache = null;
 protected double maxEnergy = 1000;
 protected double storedEnergy = 0;
+protected double energyDrainFactor = 1;
+ForgeDirection orientation = ForgeDirection.NORTH;
+
+public void setOrientation(ForgeDirection d)
+  {
+  this.orientation = d;
+  }
+
+@Override
+public ForgeDirection getOrientation()
+  {
+  return orientation;
+  }
+
+@Override
+public double getEnergyDrainFactor()
+  {
+  return energyDrainFactor;
+  }
 
 public void onBlockUpdated()
   {
@@ -104,6 +126,21 @@ public boolean onBlockClicked(EntityPlayer player)
     player.addChatComponentMessage(chat);    
     }
   return false;
+  }
+
+@Override
+public Packet getDescriptionPacket()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setInteger("orientation", orientation.ordinal());
+  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
+  }
+
+@Override
+public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {  
+  super.onDataPacket(net, pkt);
+  orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));
   }
 
 }

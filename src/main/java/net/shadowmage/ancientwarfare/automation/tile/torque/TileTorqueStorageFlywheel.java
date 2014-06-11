@@ -61,7 +61,7 @@ public boolean canInput(ForgeDirection from)
 @Override
 public boolean canOutput(ForgeDirection towards)
   {
-  return towards==ForgeDirection.getOrientation(getBlockMetadata());
+  return towards==orientation;
   }
 
 }

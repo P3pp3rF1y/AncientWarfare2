@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
 import org.lwjgl.opengl.GL11;
 
@@ -20,7 +21,7 @@ public RenderTileTorqueGeneratorWaterwheel()
 public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick)
   {
   GL11.glPushMatrix();
-  ForgeDirection d = ForgeDirection.getOrientation(te.getBlockMetadata());
+  ForgeDirection d = ((ITorqueTile)te).getOrientation();
   GL11.glTranslated(x+0.5d, y+0.5d, z+0.5d);
   GL11.glRotatef(getRotation(d), 0, 1, 0);
   drawShaftLine(0,0,0,0,0,1);

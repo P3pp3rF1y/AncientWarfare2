@@ -9,13 +9,13 @@ public class TileTorqueTransportDistributor extends TileTorqueTransportBase
 @Override
 public boolean canInput(ForgeDirection from)
   {
-  return from==ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
+  return from==orientation.getOpposite();
   }
 
 @Override
 public boolean canOutput(ForgeDirection towards)
   {
-  return towards!=ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
+  return !canInput(towards);//towards!=orientation.getOpposite();
   }
 
 }

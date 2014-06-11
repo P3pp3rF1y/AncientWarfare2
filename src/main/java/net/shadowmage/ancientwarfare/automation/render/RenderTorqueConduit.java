@@ -30,7 +30,7 @@ public void renderInventoryBlock(Block block, int metadata, int modelId, RenderB
 
   Tessellator tessellator = Tessellator.instance;
   IIcon icon;
-  icon = block.getIcon(0, 2);
+  icon = block.getIcon(0, 0);//TODO change this to the 'sides' icon
   
   tessellator.startDrawingQuads();
   tessellator.setNormal(0.0F, -1F, 0.0F);
@@ -62,7 +62,6 @@ public void renderInventoryBlock(Block block, int metadata, int modelId, RenderB
   tessellator.setNormal(0.0F, 1.0F, 0.0F);
   renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, icon);
   tessellator.draw();
-  
 //  renderer.renderBlockAsItem(block, 3, 1.f);
   }
 

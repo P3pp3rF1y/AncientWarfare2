@@ -39,6 +39,12 @@ public TileWorksiteBase()
   
   }
 
+@Override
+public ForgeDirection getOrientation()
+  {
+  return ForgeDirection.getOrientation(getBlockMetadata());
+  }
+
 protected abstract boolean processWork();
 
 protected abstract boolean hasWorksiteWork();

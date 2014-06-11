@@ -49,6 +49,12 @@ public double getEnergyDrainFactor()
   }
 
 @Override
+public ForgeDirection getOrientation()
+  {
+  return ForgeDirection.getOrientation(getBlockMetadata());
+  }
+
+@Override
 public double addEnergy(ForgeDirection from, double energy)
   {
   if(canInput(from))

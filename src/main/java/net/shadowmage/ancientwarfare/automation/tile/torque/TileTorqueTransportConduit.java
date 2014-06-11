@@ -95,7 +95,8 @@ public boolean receiveClientEvent(int a, int b)
 public Packet getDescriptionPacket()
   {
   NBTTagCompound tag = new NBTTagCompound();
-  tag.setInteger("connections", getConnectionsInt());  
+  tag.setInteger("connections", getConnectionsInt());
+  tag.setInteger("orientation", orientation.ordinal());
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
   }
 
@@ -107,6 +108,7 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
     readConnectionsInt(pkt.func_148857_g().getInteger("connections"));
     }
+  orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));
   }
 
 }

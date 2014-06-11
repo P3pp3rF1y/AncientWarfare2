@@ -27,7 +27,7 @@ public void updateEntity()
   updateTick++;
   if(updateTick<20){return;}
   updateTick=0;  
-  ForgeDirection face = ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
+  ForgeDirection face = orientation;
   int x = xCoord+face.offsetX, y = yCoord+face.offsetY, z = zCoord+face.offsetZ;  
   Block blockMid = worldObj.getBlock(x, y, z);
   int metaMid, metaRight, metaLeft;
@@ -122,7 +122,7 @@ private int getWaterYLevel(int x, int y, int z)
 @Override
 public boolean canOutput(ForgeDirection towards)
   {
-  return towards==ForgeDirection.getOrientation(getBlockMetadata());
+  return towards==orientation;
   }
 
 @Override
