@@ -23,8 +23,8 @@ public static void load()
   townHall.iconMap.setIcon(townHall, RelativeSide.FRONT, "ancientwarfare:npc/town_hall_side");
   townHall.iconMap.setIcon(townHall, RelativeSide.REAR, "ancientwarfare:npc/town_hall_side");
   
-  GameRegistry.registerBlock(recruitingStation, ItemBlockOwnedRotatable.class, "recruiting_station");
-  GameRegistry.registerTileEntity(TileRecruitingStation.class, "recruiting_station_tile");
+//  GameRegistry.registerBlock(recruitingStation, ItemBlockOwnedRotatable.class, "recruiting_station");
+//  GameRegistry.registerTileEntity(TileRecruitingStation.class, "recruiting_station_tile");
   }
 
 }

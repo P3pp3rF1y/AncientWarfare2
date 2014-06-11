@@ -52,7 +52,6 @@ Licensing
 ^ check that 'flee hostiles' ai works as intended
 ^ verify that faction based mounted soldiers work as intended
 ^ verify functionality of mounted player-owned npcs (all)
-* finish recruiting station block/tile/gui/container/code
 * add recipes to copy upkeep/work/combat/routing orders
 	
 ****************************VEHICLE MODULE TODO****************************
