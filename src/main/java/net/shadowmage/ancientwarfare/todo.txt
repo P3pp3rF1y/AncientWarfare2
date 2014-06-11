@@ -7,7 +7,10 @@
 * Textures
 	bard
 	construction tool
-	sterling/waterwheel/hand cranged engines	
+	sterling/waterwheel/hand cranged engines
+	warehouse storage med/large	
+	recruiting station
+	warehouse stock viewer
 * Recipes
 	-lots-
 * Research
@@ -24,20 +27,7 @@
 Licensing
 	add bc license for using as libs
 	add general license for mod
-	
-****************************TEXTURES TODO****************************
-TEXTURES
-	core
-	automation
-		warehouse storage medium 
-		warehouse storage large
-		hand-cranked-generator
-		sterling generator
-		waterwheel generator	
-	npc
-		recruiting station
-	vehicle	
-	
+		
 ****************************CORE MODULE TODO****************************
 * need LOTS of tooltips added to various elements in GUIs	
 * GUI - SHIFT-CLICK CODE
@@ -62,8 +52,7 @@ TEXTURES
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
-* rework player owned trader gui to still allow access to inventory. (just add an 'inventory' button to gui?)
-* faction owned archer default ranged attack
+* finish recruiting station block/tile/gui/container/code
 * add recipes to copy upkeep/work/combat/routing orders
 	
 ****************************VEHICLE MODULE TODO****************************

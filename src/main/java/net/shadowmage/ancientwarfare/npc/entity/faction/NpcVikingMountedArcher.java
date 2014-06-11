@@ -12,12 +12,6 @@ public NpcVikingMountedArcher(World par1World)
   }
 
 @Override
-public void attackEntityWithRangedAttack(EntityLivingBase var1, float var2)
-  {
-
-  }
-
-@Override
 public String getNpcType()
   {
   return "viking.mounted_archer";

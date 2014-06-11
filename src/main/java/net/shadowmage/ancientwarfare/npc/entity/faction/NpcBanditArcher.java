@@ -17,10 +17,4 @@ public String getNpcType()
   return "bandit.archer";
   }
 
-@Override
-public void attackEntityWithRangedAttack(EntityLivingBase var1, float var2)
-  {
-  // TODO Auto-generated method stub  
-  }
-
 }
