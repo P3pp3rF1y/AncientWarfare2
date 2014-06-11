@@ -39,10 +39,8 @@ TEXTURES
 		town hall
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
+* Icon / texture for construction tool	
 * Scanner GUI needs some cleanup / make it look nice(er)
-* add lake-filling item
-	needs basic pathfinding algorithm to find what blocks to fill
-* basic construction/destruction tools -- set block in an area, clear blocks in an area (possibly same tool)	
 
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system

@@ -24,6 +24,7 @@ item.editor_opener.name=Model Editor
 item.structure_scanner.name=Structure Scanner
 item.structure_builder.name=Structure Builder
 item.spawner_placer.name=Mob Spawner Placement Tool
+item.construction_too.name=Construction Tool
 #automation
 #npc
 item.work_order.name=Work Order
@@ -210,6 +211,14 @@ guistrings.spawner.add_custom_tag_line=Add New Line
 guistrings.spawner.select_entity=Selected Entity
 guistrings.spawner.xp_to_drop=XP To Drop
 guistrings.spawner.block_hardness=Block Hardness (-1 for invulnerable)
+guistrings.construction.mode=Mode
+guistrings.construction.fill_block=Fill Block
+guistrings.construction.do_action=Do Selected Action
+guistrings.construction.toggle_mode=Change Mode
+guistrings.construction.set_fill_block=Set Fill Block
+guistrings.construction.set_pos_1=Set Pos 1
+guistrings.construction.set_pos_2=Set Pos 2
+guistrings.construction.clear_positions=Clear Pos1/Pos2
 guistrings.inventory.player=Player Inventory
 guistrings.inventory.setsides=Inv. Setup
 guistrings.inventory.side.top=Top

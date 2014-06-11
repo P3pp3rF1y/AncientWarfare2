@@ -1,14 +1,20 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
+import java.util.List;
 import java.util.Set;
 
+import org.lwjgl.input.Keyboard;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -45,6 +51,43 @@ public void onLeftClick(EntityPlayer player, ItemStack stack)
 
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
+@Override
+@SideOnly(Side.CLIENT)
+public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean wtf)
+  {
+  ConstructionSettings settings = getSettings(stack);
+  if(settings==null){return;}
+  String text = StatCollector.translateToLocal("guistrings.construction.mode")+": "+settings.type;
+  list.add(text);
+  text = StatCollector.translateToLocal("guistrings.construction.fill_block")+": "+Block.blockRegistry.getNameForObject(settings.block);
+  list.add(text);
+  
+  String keyText;
+  text = "RMB" + " = " + StatCollector.translateToLocal("guistrings.construction.do_action");
+  list.add(text);
+  
+  keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_0).getKeyCode());
+  text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.toggle_mode");
+  list.add(text);
+  
+  keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_1).getKeyCode());
+  text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.set_fill_block");
+  list.add(text);
+  
+  keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_2).getKeyCode());
+  text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.set_pos_1");
+  list.add(text);  
+  
+  keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_3).getKeyCode());
+  text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.set_pos_2");
+  list.add(text);
+  
+  keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_4).getKeyCode());
+  text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.clear_positions");
+  list.add(text);
+  }
+
 @Override
 public boolean onRightClickClient(EntityPlayer player, ItemStack stack){return true;}//return true for send packet to act on server-side
 
@@ -61,7 +104,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
     break;
   case BOX_FILL:
     {
-    
+    handleBoxFill(player, settings);
     }
     break;
   case LAKE_FILL:
