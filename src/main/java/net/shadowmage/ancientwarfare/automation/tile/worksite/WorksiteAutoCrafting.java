@@ -12,6 +12,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -27,14 +28,14 @@ public class WorksiteAutoCrafting extends TileWorksiteBase implements IInventory
 public InventoryBasic bookSlot;
 public InventoryBasic outputInventory;
 public InventoryBasic resourceInventory;
-public InventoryBasic outputSlot;
-public InventoryCrafting craftMatrix;
+public InventoryBasic outputSlot;//the templated output slot, non-pullable
+public InventoryCrafting craftMatrix;//the 3x3 recipe template/matrix
 
 int[] outputSlotIndices;
 int[] resourceSlotIndices;
 ItemStack[] matrixShadow = new ItemStack[9];//shadow copy of input matrix
 
-boolean hasResourcesForCraft;//set from onInventoryChanged() to check if there are enough resources in input inventory to craft the next item
+boolean hasResourcesForNext;//set from onInventoryChanged() to check if there are enough resources in input inventory to craft the next item
 boolean shouldUpdateInventory;
 
 public WorksiteAutoCrafting()
@@ -62,9 +63,33 @@ public WorksiteAutoCrafting()
       super.markDirty();
       }
     };
-  outputInventory = new InventoryBasic(9);
-  outputSlot = new InventoryBasic(1);
-  bookSlot = new InventoryBasic(1);
+  outputInventory = new InventoryBasic(9)
+    {
+    @Override
+    public void markDirty()
+      {
+      onInventoryUpdated();
+      super.markDirty();
+      }
+    };
+  outputSlot = new InventoryBasic(1)
+    {
+    @Override
+    public void markDirty()
+      {
+      onInventoryUpdated();
+      super.markDirty();
+      }
+    };
+  bookSlot = new InventoryBasic(1)
+    {
+    @Override
+    public void markDirty()
+      {
+      onInventoryUpdated();
+      super.markDirty();
+      }
+    };
   resourceSlotIndices = new int[18];
   for(int i = 0; i < 18; i++)
     {
@@ -79,11 +104,9 @@ public WorksiteAutoCrafting()
 
 private void onInventoryUpdated()
   {
-  if(!worldObj.isRemote)
-    {
-    this.hasResourcesForCraft = false;
-    this.shouldUpdateInventory = true;
-    }
+  this.hasResourcesForNext = false;
+  this.shouldUpdateInventory = true;
+  this.markDirty();
   }
 
 private void countResources()
@@ -123,7 +146,7 @@ private void countResources()
     }  
   if(found)
     {
-    hasResourcesForCraft = true;
+    hasResourcesForNext = true;
     }
   }
 
@@ -139,7 +162,7 @@ public final void setOwningPlayer(String name)
 
 public void craftItem()
   {
-  if(!hasResourcesForCraft){return;}
+  if(!hasResourcesForNext){return;}
   if(this.outputSlot.getStackInSlot(0)==null){return;}
   ItemStack stack = this.outputSlot.getStackInSlot(0).copy();
   useResources();
@@ -190,42 +213,26 @@ public boolean hasWorkBounds()
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  if(tag.hasKey("bookSlot")){this.bookSlot.readFromNBT(tag.getCompoundTag("bookSlot"));}
-  if(tag.hasKey("resourceInventory")){this.resourceInventory.readFromNBT(tag.getCompoundTag("resourceInventory"));}
-  if(tag.hasKey("outputInventory")){this.outputInventory.readFromNBT(tag.getCompoundTag("outputInventory"));}
-  if(tag.hasKey("outputSlot")){this.outputSlot.readFromNBT(tag.getCompoundTag("outputSlot"));}
-  if(tag.hasKey("craftMatrix")){InventoryTools.readInventoryFromNBT(craftMatrix, tag.getCompoundTag("craftMatrix"));}
-  hasResourcesForCraft = tag.getBoolean("hasResourcesForNext");
+  this.bookSlot.readFromNBT(tag.getCompoundTag("bookSlot"));
+  this.resourceInventory.readFromNBT(tag.getCompoundTag("resourceInventory"));
+  this.outputInventory.readFromNBT(tag.getCompoundTag("outputInventory"));
+  this.outputSlot.readFromNBT(tag.getCompoundTag("outputSlot"));
+  InventoryTools.readInventoryFromNBT(craftMatrix, tag.getCompoundTag("craftMatrix"));
+  hasResourcesForNext = tag.getBoolean("hasResourcesForNext");
   shouldUpdateInventory = tag.getBoolean("shouldUpdateInventory");
+  onLayoutMatrixChanged(craftMatrix);
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
-  super.writeToNBT(tag);
-  NBTTagCompound tag1;
-  
-  tag1 = new NBTTagCompound();
-  bookSlot.writeToNBT(tag1);
-  tag.setTag("bookSlot", tag1);
-  
-  tag1 = new NBTTagCompound();
-  resourceInventory.writeToNBT(tag1);
-  tag.setTag("resourceInventory", tag1);
-  
-  tag1 = new NBTTagCompound();
-  outputInventory.writeToNBT(tag1);
-  tag.setTag("outputInventory", tag1);
-  
-  tag1 = new NBTTagCompound();
-  outputSlot.writeToNBT(tag1);
-  tag.setTag("outputSlot", tag1);
-  
-  tag1 = new NBTTagCompound();
-  InventoryTools.writeInventoryToNBT(craftMatrix, tag1);
-  tag.setTag("craftMatrix", tag1);
-  
-  tag.setBoolean("hasResourcesForNext", hasResourcesForCraft);
+  super.writeToNBT(tag);    
+  tag.setTag("bookSlot", bookSlot.writeToNBT(new NBTTagCompound()));  
+  tag.setTag("resourceInventory", resourceInventory.writeToNBT(new NBTTagCompound()));
+  tag.setTag("outputInventory", outputInventory.writeToNBT(new NBTTagCompound()));
+  tag.setTag("outputSlot", outputSlot.writeToNBT(new NBTTagCompound()));
+  tag.setTag("craftMatrix", InventoryTools.writeInventoryToNBT(craftMatrix, new NBTTagCompound()));  
+  tag.setBoolean("hasResourcesForNext", hasResourcesForNext);
   tag.setBoolean("shouldUpdateInventory", shouldUpdateInventory);
   }
 
@@ -309,7 +316,6 @@ public int getInventoryStackLimit()
 public void markDirty()
   {
   super.markDirty();
-  this.onInventoryUpdated();
   }
 
 @Override
@@ -393,7 +399,7 @@ public void setBounds(BlockPosition p1, BlockPosition p2)
 @Override
 protected boolean processWork()
   {
-  if(hasResourcesForCraft && outputSlot.getStackInSlot(0)!=null)
+  if(hasResourcesForNext && outputSlot.getStackInSlot(0)!=null)
     {
     craftItem();
     shouldUpdateInventory = true;
@@ -405,7 +411,7 @@ protected boolean processWork()
 @Override
 protected boolean hasWorksiteWork()
   {
-  return hasResourcesForCraft && outputSlot.getStackInSlot(0)!=null;
+  return hasResourcesForNext && outputSlot.getStackInSlot(0)!=null;
   }
 
 @Override
@@ -435,7 +441,7 @@ protected void updateWorksite()
   worldObj.theProfiler.startSection("CraftingInventoryCheck");
   if(shouldUpdateInventory)
     {
-    hasResourcesForCraft = false;
+    hasResourcesForNext = false;
     countResources();
     shouldUpdateInventory = false;
     }
