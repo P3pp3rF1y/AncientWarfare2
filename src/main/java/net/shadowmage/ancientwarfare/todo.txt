@@ -3,25 +3,6 @@
 > = cannot do until later
 ? = optional / need to think on it
 
-****************************PRE FIRST TEST RELEASE TODO****************************
-* Textures
-	bard
-	construction tool
-	sterling/waterwheel/hand cranged engines
-	warehouse storage med/large	
-	recruiting station
-	warehouse stock viewer
-* Recipes
-	-lots-
-* Research
-	-lots-
-* Structure Module Plugins
-	npcs?? (should be mostly handled?)
-	town-hall block
-* Sounds
-	bard
-* Default held items for priest, trader
-
 ****************************LICENSING TODO****************************
 Licensing
 	add bc license for using as libs
@@ -30,13 +11,24 @@ Licensing
 ****************************CORE MODULE TODO****************************
 * need LOTS of tooltips added to various elements in GUIs	
 * GUI - SHIFT-CLICK CODE
+* Research
+	-lots-
 	
 ****************************STRUCTURE MODULE TODO****************************
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
 * Scanner GUI needs some cleanup / make it look nice(er)
 * move structure scanner over to multi-key item interface
-
+* Textures
+	construction tool
+* Structure Module Plugins
+	npcs?? (should be mostly handled?)
+	town-hall block
+	all automation-module blocks
+	--need worksite work-bounds rotation/manipulation code
+* Recipes
+	-lots-
+		
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
 ^ finish up storage block filter-setting ability, verify that it works properly (needs the above step to view storage-block inventory contents)
@@ -45,14 +37,26 @@ Licensing
 	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
-		
+* Textures
+	sterling/waterwheel/hand cranged engines
+	warehouse storage med/large	
+	recruiting station
+* Recipes
+	-lots-
+			
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
 ^ verify that faction based mounted soldiers work as intended
 ^ verify functionality of mounted player-owned npcs (all)
-* add recipes to copy upkeep/work/combat/routing orders
-	
+* Default held items for priest, trader
+* Sounds
+	bard
+* Textures
+	bard
+* Recipes
+	-lots-
+			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
 	examine collision detection for ender-dragon?
