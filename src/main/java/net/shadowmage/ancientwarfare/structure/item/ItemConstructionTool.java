@@ -30,27 +30,6 @@ public ItemConstructionTool(String regName)
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   }
 
-@Override
-public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
-  {
-  return true;
-  }
-
-@Override
-public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  return false;
-  }
-
-@Override
-public boolean onLeftClickClient(EntityPlayer player, ItemStack stack){return true;}
-
-@Override
-public void onLeftClick(EntityPlayer player, ItemStack stack)
-  {
-
-  }
-
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 @SideOnly(Side.CLIENT)
@@ -89,6 +68,18 @@ public void addInformation(ItemStack stack, EntityPlayer player, List list, bool
   }
 
 @Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack){return true;}
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack){return false;}
+
+@Override
+public boolean onLeftClickClient(EntityPlayer player, ItemStack stack){return true;}
+
+@Override
+public void onLeftClick(EntityPlayer player, ItemStack stack){}
+
+@Override
 public boolean onRightClickClient(EntityPlayer player, ItemStack stack){return true;}//return true for send packet to act on server-side
 
 @Override
@@ -122,7 +113,6 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
 
 private void handleSolidFill(EntityPlayer player, ConstructionSettings settings)
   {
-  AWLog.logDebug("attempting solid fill..."+settings.block);
   if(settings.pos1!=null && settings.pos2!=null && settings.block!=null)
     {
     BlockPosition min = BlockTools.getMin(settings.pos1, settings.pos2);
@@ -182,10 +172,7 @@ private void handleLayerFill(EntityPlayer player, ConstructionSettings settings)
   }
 
 @Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
-  {  
-  return true;
-  }
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key){return true;}
 
 @Override
 public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
