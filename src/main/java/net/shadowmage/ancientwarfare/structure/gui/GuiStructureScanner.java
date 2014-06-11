@@ -40,6 +40,7 @@ public void initElements()
   this.addGuiElement(label);
   
   nameInput = new Text(8, 8+12, 160, "", this);
+  nameInput.removeAllowedChars('/', '\\', '$', '!', '@','#','$','%','^','&','*','(',')',':',';','"', '\'', '+','=','<','>','?','.', ',', '[', ']', '{', '}', '|');
   this.addGuiElement(nameInput);
   
   Button button = new Button(256-55-8, 8, 55, 16, StatCollector.translateToLocal("guistrings.export"));

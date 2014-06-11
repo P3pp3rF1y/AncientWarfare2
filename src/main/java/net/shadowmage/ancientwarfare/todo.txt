@@ -32,11 +32,10 @@ Licensing
 * GUI - SHIFT-CLICK CODE
 	
 ****************************STRUCTURE MODULE TODO****************************
-* alter structure scanner gui name-selection char validation
-	--disallow invalid file-system chars (/?.'"<>[]{}!@#$%^&*()_+)
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
 * Scanner GUI needs some cleanup / make it look nice(er)
+* move structure scanner over to multi-key item interface
 
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system

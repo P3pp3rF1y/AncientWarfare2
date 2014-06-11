@@ -101,6 +101,14 @@ public void onTextUpdated(String oldText, String newText)
   {
   
   }
+  
+public void removeAllowedChars(char... chars)
+  {
+  for(char ch : chars)
+    {
+    this.textValidator.removeValidChar(ch);
+    }
+  }
 
 public void setAllowedChars(Set<Character> allowedChars)
   {
@@ -365,6 +373,11 @@ public void addValidChars(char[] chars)
 public boolean isCharValid(char ch)
   {
   return validChars.contains(Character.valueOf(ch));
+  }
+
+public void removeValidChar(char ch)
+  {
+  validChars.remove(Character.valueOf(ch));
   }
 
 public void clearAllowedChars(){validChars.clear();}
