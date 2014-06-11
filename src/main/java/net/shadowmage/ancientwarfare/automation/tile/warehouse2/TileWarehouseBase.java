@@ -32,6 +32,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 public abstract class TileWarehouseBase extends TileEntity implements IOwnable, IWorkSite, ITorqueReceiver, IBoundedTile, IInteractableTile, IControllerTile
 {
@@ -46,6 +47,7 @@ private double maxInput = AWCoreStatics.energyPerWorkUnit;
 private boolean init;
 private boolean shouldRecount;
 
+private Set<TileWarehouseStockViewer> stockViewers = new HashSet<TileWarehouseStockViewer>();
 private Set<TileWarehouseInterface> interfaceTiles = new HashSet<TileWarehouseInterface>();
 private Set<IWarehouseStorageTile> storageTiles = new HashSet<IWarehouseStorageTile>();
 
@@ -268,7 +270,17 @@ public final void addViewer(ContainerWarehouseControl viewer)
 
 public final void removeViewer(ContainerWarehouseControl viewer){viewers.remove(viewer);}
 
-public final void updateViewers(){for(ContainerWarehouseControl viewer : viewers){viewer.onWarehouseInventoryUpdated();}}
+public final void updateViewers()
+  {
+  for(ContainerWarehouseControl viewer : viewers)
+    {
+    viewer.onWarehouseInventoryUpdated();
+    }
+  for(TileWarehouseStockViewer viewer : stockViewers)
+    {
+    viewer.onWarehouseInventoryUpdated();
+    }
+  }
 
 public final void addStorageTile(IWarehouseStorageTile tile)
   {
@@ -355,11 +367,26 @@ public final void onStorageFilterChanged(IWarehouseStorageTile tile, List<Wareho
   storageMap.updateTileFilters(tile, oldFilters, newFilters);
   }
 
+public final void addStockViewer(TileWarehouseStockViewer viewer)
+  {
+  if(worldObj.isRemote){return;}
+  stockViewers.add(viewer);
+  viewer.setController(this);
+  viewer.onWarehouseInventoryUpdated();
+  AWLog.logDebug("added stock viewer tile, set now contains: "+stockViewers);
+  }
+
+public final void removeStockViewer(TileWarehouseStockViewer tile)
+  {
+  stockViewers.remove(tile);
+  }
+
 @Override
 public final void addControlledTile(IControlledTile tile)
   {
   if(tile instanceof IWarehouseStorageTile){addStorageTile((IWarehouseStorageTile) tile);}
   else if(tile instanceof TileWarehouseInterface){addInterfaceTile((TileWarehouseInterface) tile);}
+  else if(tile instanceof TileWarehouseStockViewer){addStockViewer((TileWarehouseStockViewer) tile);}
   }
 
 @Override
@@ -373,6 +400,7 @@ public final void removeControlledTile(IControlledTile tile)
   {  
   if(tile instanceof IWarehouseStorageTile){removeStorageTile((IWarehouseStorageTile) tile);}
   else if(tile instanceof TileWarehouseInterface){removeInterfaceTile((TileWarehouseInterface) tile);}
+  else if(tile instanceof TileWarehouseStockViewer){removeStockViewer((TileWarehouseStockViewer) tile);}
   }
 
 @Override
@@ -592,6 +620,7 @@ public void decreaseCountOf(ItemStack layoutStack, int i)
       if(i<=0){break;}
       }
     }
+  updateViewers();
   }
 
 }

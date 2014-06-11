@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportD
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteCropFarm;
@@ -115,6 +116,8 @@ public static final BlockWarehouseStorage warehouseStorageBlock = new BlockWareh
 public static final BlockWarehouseInterface warehouseInterface = new BlockWarehouseInterface("warehouse_interface");
 
 public static final BlockWarehouseCraftingStation warehouseCrafting = new BlockWarehouseCraftingStation("warehouse_crafting_station");
+
+public static final BlockWarehouseStockViewer warehouseStockViewer = new BlockWarehouseStockViewer("warehouse_stock_viewer");
 
 public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 
@@ -333,6 +336,9 @@ public static void load()
   chunkLoaderDeluxe.iconMap.setIconTexture(3, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
   chunkLoaderDeluxe.iconMap.setIconTexture(4, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
   chunkLoaderDeluxe.iconMap.setIconTexture(5, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
+  
+  GameRegistry.registerBlock(warehouseStockViewer, ItemBlockOwnedRotatable.class, "warehouse_stock_viewer");
+  GameRegistry.registerTileEntity(TileWarehouseStockViewer.class, "warehouse_stock_viewer_tile");
   }
 
 }

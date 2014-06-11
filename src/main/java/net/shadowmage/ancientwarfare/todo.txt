@@ -46,9 +46,7 @@ Licensing
 	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
-* add a 'warehouse stock viewer panel' --sign that can be slapped on the side of storage/input/output blocks to view the stock level of specified items (items specified via gui)
-* fix up auto-crafting station -- it is losing its input-grid items on load/save of world
-* finish removing old warehouse stuff (tiles/blocks/other code)
+* warehouse crafting gui needs cleanup (gui background too large)
 		
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
