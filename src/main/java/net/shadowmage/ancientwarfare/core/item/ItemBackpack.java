@@ -50,6 +50,18 @@ public void onLeftClick(EntityPlayer player, ItemStack stack)
   }
 
 @Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
+@Override
 public boolean getShareTag()
   {
   return false;
@@ -88,5 +100,6 @@ public static void writeBackpackToItem(InventoryBackpack pack, ItemStack stack)
   NBTTagCompound invTag = InventoryTools.writeInventoryToNBT(pack, new NBTTagCompound());
   stack.setTagInfo("backpackItems", invTag);
   }
+
 
 }

@@ -27,6 +27,18 @@ public ItemResearchNotes(String localizationKey)
   setTextureName("ancientwarfare:core/research_note");
   }
 
+@Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)

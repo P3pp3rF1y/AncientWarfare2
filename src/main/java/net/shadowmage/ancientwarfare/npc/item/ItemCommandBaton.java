@@ -49,6 +49,18 @@ public ItemCommandBaton(String name, ToolMaterial material)
   this.setMaxDamage(material.getMaxUses());
   }
 
+@Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
 /**
  * Return the enchantability factor of the item, most of the time is based on material.
  */

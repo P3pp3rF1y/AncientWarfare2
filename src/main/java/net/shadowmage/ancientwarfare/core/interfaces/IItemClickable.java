@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 
 public interface IItemClickable
 {
+
 /**
  * called on client before activation on server.<br>
  * do any client-side pre-processing/validation here.<br>
@@ -16,6 +17,8 @@ public interface IItemClickable
  * @return true to send activation packet to server
  */
 public boolean onRightClickClient(EntityPlayer player, ItemStack stack);
+
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack);
 
 /**
  * called server side if onRightClickClient returns true
@@ -35,6 +38,8 @@ public void onRightClick(EntityPlayer player, ItemStack stack);
  * @return true to send activation packet to server
  */
 public boolean onLeftClickClient(EntityPlayer player, ItemStack stack);
+
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack);
 
 /**
  * called server side if onLeftClickClient returns true

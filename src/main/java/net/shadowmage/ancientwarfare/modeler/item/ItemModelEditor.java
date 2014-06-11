@@ -23,6 +23,18 @@ public static final CreativeTabs editorTab = new CreativeTabs("tabs.editor")
     }
   };
 
+@Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
 public ItemModelEditor(String localizationKey)
   {
   this.setUnlocalizedName(localizationKey);

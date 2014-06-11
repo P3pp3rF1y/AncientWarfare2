@@ -202,11 +202,16 @@ private void renderConstructionToolBoxes(EntityPlayer player, ItemStack stack, f
   {
   ConstructionSettings settings = ItemConstructionTool.getSettings(stack);
   BlockPosition p1, p2;
-  p1 = settings.hasPos1() ? settings.pos1() : BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());  
-  p2 = settings.hasPos2() ? settings.pos2() : settings.hasPos1() ? BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking()) : p1;
+  BlockPosition p3 = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+  p1 = settings.hasPos1() ? settings.pos1() : p3;  
+  p2 = settings.hasPos2() ? settings.pos2() : p3;
   if(p1!=null && p2!=null)
     {
     renderBoundingBox(player, BlockTools.getMin(p1, p2), BlockTools.getMax(p1, p2), delta);
+    }
+  if(p3!=null)
+    {
+    renderBoundingBox(player, p3, p3, delta, 1, 0, 0);    
     }
   }
 
@@ -215,6 +220,13 @@ private void renderBoundingBox(EntityPlayer player, BlockPosition min, BlockPosi
   AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
   RenderTools.adjustBBForPlayerPos(bb, player, delta);
   RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
+  }
+
+private void renderBoundingBox(EntityPlayer player, BlockPosition min, BlockPosition max, float delta, float r, float g, float b)
+  {
+  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
+  RenderTools.adjustBBForPlayerPos(bb, player, delta);
+  RenderTools.drawOutlinedBoundingBox(bb, r, g, b);
   }
 
 }

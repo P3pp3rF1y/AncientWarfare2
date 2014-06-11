@@ -50,6 +50,18 @@ public ItemSpawnerPlacer(String itemName)
   this.setTextureName("ancientwarfare:structure/"+itemName);
   }
 
+@Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)

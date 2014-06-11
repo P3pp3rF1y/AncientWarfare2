@@ -43,6 +43,18 @@ public ItemHammer(String regName, ToolMaterial material)
   this.setMaxDamage(material.getMaxUses());
   }
 
+@Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
 public ToolMaterial getMaterial()
   {
   return material;

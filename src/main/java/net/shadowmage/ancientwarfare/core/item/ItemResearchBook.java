@@ -24,6 +24,18 @@ public ItemResearchBook(String localizationKey)
   this.setTextureName("ancientwarfare:core/research_book");
   }
 
+@Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 @SideOnly(Side.CLIENT)

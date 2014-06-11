@@ -56,6 +56,18 @@ public ItemGateSpawner(String name)
   }
 
 @Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
+@Override
 public IIcon getIconFromDamage(int par1)
   {
   return Gate.getGateByID(par1).getIconTexture();

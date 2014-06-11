@@ -12,14 +12,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.options.GuiOptions;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketItemInteraction;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -89,7 +92,27 @@ public void loadConfig(Configuration config)
 @SubscribeEvent
 public void onMouseInput(MouseInputEvent evt)
   {
-  
+  int button = Mouse.getEventButton();
+  if(button<0 || !Mouse.getEventButtonState()){return;}
+  AWLog.logDebug("mouse event: "+evt+" "+Mouse.getEventButton()+"::"+Mouse.getEventButtonState());
+  Minecraft minecraft = Minecraft.getMinecraft();
+  if(minecraft==null || minecraft.currentScreen!=null || minecraft.thePlayer==null || minecraft.theWorld==null){return;}
+  EntityPlayer player = minecraft.thePlayer;
+  ItemStack stack = player.getCurrentEquippedItem();
+  if(stack!=null && stack.getItem() instanceof IItemClickable)
+    {
+    IItemClickable click = (IItemClickable)stack.getItem();
+    if(button==1 && click.onRightClickClient(player, stack))
+      {
+      PacketItemInteraction pkt = new PacketItemInteraction(2);
+      NetworkHandler.sendToServer(pkt);
+      }
+    else if(button==2 && click.onLeftClickClient(player, stack))      
+      {
+      PacketItemInteraction pkt = new PacketItemInteraction(1);
+      NetworkHandler.sendToServer(pkt);
+      }
+    }
   }
 
 @SubscribeEvent

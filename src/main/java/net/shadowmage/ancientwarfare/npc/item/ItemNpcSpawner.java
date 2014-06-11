@@ -37,6 +37,18 @@ public ItemNpcSpawner(String regName)
   }
 
 @Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
+@Override
 public String getUnlocalizedName(ItemStack par1ItemStack)
   {  
   String npcName = getNpcType(par1ItemStack);

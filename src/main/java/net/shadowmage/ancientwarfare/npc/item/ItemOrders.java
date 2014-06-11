@@ -40,4 +40,16 @@ public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
   return true;
   }
 
+@Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
 }

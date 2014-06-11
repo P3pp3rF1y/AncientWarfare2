@@ -6,6 +6,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class FloodFillPathfinder
@@ -35,6 +36,7 @@ public FloodFillPathfinder(World world, int x, int y, int z, Block block, int me
   this.meta = meta;
   this.searchUpwards = up;
   this.searchDownwards = down;
+  AWLog.logDebug("set target flood fill block to: "+block.getUnlocalizedName());
   }
 
 public Set<BlockPosition> doFloodFill()

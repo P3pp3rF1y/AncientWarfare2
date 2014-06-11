@@ -37,6 +37,18 @@ public ItemStructureScanner(String localizationKey)
   this.setTextureName("ancientwarfare:structure/"+localizationKey);
   }
 
+@Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
+  }
+
 ItemStructureSettings viewSettings = new ItemStructureSettings();
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Override

@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -21,6 +22,18 @@ public ItemConstructionTool(String regName)
   this.setUnlocalizedName(regName);
   this.setTextureName("ancientwarfare:structure/"+regName);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
+  }
+
+@Override
+public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
+  {
+  return true;
+  }
+
+@Override
+public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
+  {
+  return false;
   }
 
 @Override
@@ -96,7 +109,6 @@ private void handleLakeFill(EntityPlayer player, ConstructionSettings settings)
     BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());    
     if(pos!=null)
       {
-      AWLog.logDebug("attempting lake fill..."+settings.block);
       Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
       int meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);      
       Set<BlockPosition> toFill  = new FloodFillPathfinder(player.worldObj, pos.x, pos.y, pos.z, block, meta, false, true).doFloodFill();
@@ -115,7 +127,6 @@ private void handleLayerFill(EntityPlayer player, ConstructionSettings settings)
     BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());    
     if(pos!=null)
       {
-      AWLog.logDebug("attempting layer fill..."+settings.block);
       Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
       int meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);      
       Set<BlockPosition> toFill  = new FloodFillPathfinder(player.worldObj, pos.x, pos.y, pos.z, block, meta, false, false).doFloodFill();
