@@ -32,6 +32,8 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.item.ItemConstructionTool;
+import net.shadowmage.ancientwarfare.structure.item.ItemConstructionTool.ConstructionSettings;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
@@ -45,6 +47,9 @@ public class StructureBoundingBoxRenderer
 private static StructureBoundingBoxRenderer INSTANCE = new StructureBoundingBoxRenderer();
 private StructureBoundingBoxRenderer(){}
 public static StructureBoundingBoxRenderer instance(){return INSTANCE;}
+
+
+BlockPosition p1 = new BlockPosition(), p2 = new BlockPosition(), min = new BlockPosition(), max = new BlockPosition();
 
 @SubscribeEvent
 public void handleRenderLastEvent(RenderWorldLastEvent evt)
@@ -81,6 +86,10 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
     {
     renderSurvivalBuilderBoundingBox(player, stack, evt.partialTicks);
     }
+  else if(item==AWStructuresItemLoader.constructionTool)
+    {
+    renderConstructionToolBoxes(player, stack, evt.partialTicks);
+    }
   }
 
 StructureBB bb = new StructureBB(new BlockPosition(), new BlockPosition()){};
@@ -110,7 +119,6 @@ private void renderScannerBoundingBox(EntityPlayer player, ItemStack stack, floa
     {
     min = BlockTools.getMin(pos1, pos2);
     max = BlockTools.getMax(pos1, pos2);
-    max.offset(1, 1, 1);
     renderBoundingBox(player, min, max, delta);
     }
   }
@@ -126,13 +134,11 @@ private void renderSurvivalBuilderBoundingBox(EntityPlayer player, ItemStack sta
   int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
   p1.reassign(hit.x, hit.y, hit.z);
   p2.reassign(hit.x, hit.y, hit.z);
-  p2.offset(1, 1, 1);
   renderBoundingBox(player, p1, p2, delta);
   p2.reassign(hit.x, hit.y, hit.z);
   p2.moveForward(face, t.zSize - 1 - t.zOffset + 1);
   bb.setFromStructure(p2.x, p2.y, p2.z, face, t.xSize, t.ySize, t.zSize, t.xOffset, t.yOffset, t.zOffset);
   p2.reassign(bb.max.x, bb.max.y, bb.max.z);
-  p2.offset(1, 1, 1);
   renderBoundingBox(player, bb.min, p2, delta);
   }
 
@@ -149,11 +155,9 @@ private void renderBuildBoundingBox(EntityPlayer player, ItemStack stack, float 
   bb.setFromStructure(hit.x, hit.y, hit.z, face, structure.xSize, structure.ySize, structure.zSize, structure.xOffset, structure.yOffset, structure.zOffset);
   BlockPosition pos1 = bb.min;
   BlockPosition pos2 = bb.max.copy();
-  pos2.offset(1, 1, 1);
   renderBoundingBox(player, pos1, pos2, delta);
   }
 
-BlockPosition p1 = new BlockPosition(), p2 = new BlockPosition(), min = new BlockPosition(), max = new BlockPosition();
 private void renderGateBoundingBox(EntityPlayer player, ItemStack stack, float delta)
   {
   NBTTagCompound tag = stack.getTagCompound();
@@ -191,13 +195,24 @@ private void renderGateBoundingBox(EntityPlayer player, ItemStack stack, float d
     }
   BlockTools.getMin(p1, p2, min);
   BlockTools.getMax(p1, p2, max);
-  max.offset(1, 1, 1);
   renderBoundingBox(player, min, max, delta);
+  }
+ 
+private void renderConstructionToolBoxes(EntityPlayer player, ItemStack stack, float delta)
+  {
+  ConstructionSettings settings = ItemConstructionTool.getSettings(stack);
+  BlockPosition p1, p2;
+  p1 = settings.hasPos1() ? settings.pos1() : BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());  
+  p2 = settings.hasPos2() ? settings.pos2() : settings.hasPos1() ? BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking()) : p1;
+  if(p1!=null && p2!=null)
+    {
+    renderBoundingBox(player, BlockTools.getMin(p1, p2), BlockTools.getMax(p1, p2), delta);
+    }
   }
 
 private void renderBoundingBox(EntityPlayer player, BlockPosition min, BlockPosition max, float delta)
   {
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x, max.y, max.z);
+  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
   RenderTools.adjustBBForPlayerPos(bb, player, delta);
   RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
   }

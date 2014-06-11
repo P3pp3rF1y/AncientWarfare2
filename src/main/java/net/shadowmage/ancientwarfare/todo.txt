@@ -26,9 +26,6 @@ TEXTURES
 * crafting system--needs recipes from other modules
 * need LOTS of tooltips added to various elements in GUIs	
 * GUI - SHIFT-CLICK CODE
-* finish updating key-interface items with key-index tests
-* add the rest of key-interface item input handler callbacks
-
 	
 ****************************STRUCTURE MODULE TODO****************************
 > screenshots for all default-included structures
@@ -68,7 +65,6 @@ TEXTURES
 * faction owned archer default ranged attack	
 * add recipes and research requirements for npcs/items/blocks
 * add recipes to copy upkeep/work/combat/routing orders
-* move command baton over to new advanced key-interface setup
 	
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

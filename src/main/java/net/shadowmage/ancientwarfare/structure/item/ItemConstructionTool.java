@@ -1,15 +1,15 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MovingObjectPosition;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
@@ -23,62 +23,13 @@ public ItemConstructionTool(String regName)
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   }
 
-/**
- * implement additional key functionality for item
- * right click = do fill / do offset fill
- * 
- * z = 
- * x =
- * c =
- * v =
- *  
- * layers based functionality
- *    right click         do fill
- *    shift right click   do fill (offset target side)
- *    key click           set block
- *    shift key click     noop
- *    
- * Bounds based
- *    right click         do fill
- *    shift right click   do fill (offset target side)
- *    key click           set position/block
- *    shift key click     toggle to next position/block
- *       
- * need ability to set pos1, pos2 and block for box type
- * 
- * need ability to set block type and replace block type for both types
- * 
- * need ability to clear bounds and change types
- * 
- * make four items:
- * lake fill
- *    
- * layer fill
- * solid fill
- * box fill
- */
-
 @Override
 public boolean onLeftClickClient(EntityPlayer player, ItemStack stack){return true;}
 
 @Override
 public void onLeftClick(EntityPlayer player, ItemStack stack)
   {
-  if(player.isSneaking())
-    {
-    ConstructionSettings settings = getSettings(stack);
-    settings.type = settings.type.next();
-    writeConstructionSettings(stack, settings);
-    AWLog.logDebug("set type to: "+settings.type);    
-    }
-  else
-    {
-    BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
-    if(pos==null){return;}
-    Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
-    int meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);
-    AWLog.logDebug("hit: "+pos+" block: "+block+" meta: "+meta);    
-    }
+
   }
 
 @Override
@@ -87,7 +38,160 @@ public boolean onRightClickClient(EntityPlayer player, ItemStack stack){return t
 @Override
 public void onRightClick(EntityPlayer player, ItemStack stack)
   {
-  //TODO
+  ConstructionSettings settings = getSettings(stack);
+  switch(settings.type)
+  {
+  case SOLID_FILL:
+    {
+    handleSolidFill(player, settings);
+    }
+    break;
+  case BOX_FILL:
+    {
+    
+    }
+    break;
+  case LAKE_FILL:
+    {
+    handleLakeFill(player, settings);
+    }
+    break;
+  case LAYER_FILL:
+    {
+    handleLayerFill(player, settings);
+    }
+    break;
+  }
+  }
+
+private void handleSolidFill(EntityPlayer player, ConstructionSettings settings)
+  {
+  AWLog.logDebug("attempting solid fill..."+settings.block);
+  if(settings.pos1!=null && settings.pos2!=null && settings.block!=null)
+    {
+    BlockPosition min = BlockTools.getMin(settings.pos1, settings.pos2);
+    BlockPosition max = BlockTools.getMax(settings.pos1, settings.pos2);
+    for(int x = min.x; x<=max.x; x++)
+      {
+      for(int z = min.z; z<=max.z; z++)
+        {
+        for(int y = min.y; y<=max.y; y++)
+          {
+          player.worldObj.setBlock(x, y, z, settings.block, settings.meta, 3);
+          }        
+        }
+      }
+    }
+  }
+
+private void handleBoxFill(EntityPlayer player, ConstructionSettings settings)
+  {
+
+  }
+
+private void handleLakeFill(EntityPlayer player, ConstructionSettings settings)
+  {
+  if(settings.block!=null)
+    {
+    BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());    
+    if(pos!=null)
+      {
+      AWLog.logDebug("attempting lake fill..."+settings.block);
+      Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
+      int meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);      
+      Set<BlockPosition> toFill  = new FloodFillPathfinder(player.worldObj, pos.x, pos.y, pos.z, block, meta, false, true).doFloodFill();
+      for(BlockPosition p1 : toFill)
+        {
+        player.worldObj.setBlock(p1.x, p1.y, p1.z, settings.block, settings.meta, 3);
+        }
+      }
+    }
+  }
+
+private void handleLayerFill(EntityPlayer player, ConstructionSettings settings)
+  {
+  if(settings.block!=null)
+    {
+    BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());    
+    if(pos!=null)
+      {
+      AWLog.logDebug("attempting layer fill..."+settings.block);
+      Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
+      int meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);      
+      Set<BlockPosition> toFill  = new FloodFillPathfinder(player.worldObj, pos.x, pos.y, pos.z, block, meta, false, false).doFloodFill();
+      for(BlockPosition p1 : toFill)
+        {
+        player.worldObj.setBlock(p1.x, p1.y, p1.z, settings.block, settings.meta, 3);
+        }
+      }
+    }
+  }
+
+@Override
+public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
+  {  
+  return true;
+  }
+
+@Override
+public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
+  {
+  switch(key)
+  {
+  case KEY_0://toggle mode
+    {
+    ConstructionSettings settings = getSettings(stack);
+    settings.type = settings.type.next();
+    writeConstructionSettings(stack, settings);
+    AWLog.logDebug("set type to: "+settings.type);    
+    }
+    break;
+  case KEY_1://source block
+    {
+    BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+    if(pos!=null)
+      {
+      ConstructionSettings settings = getSettings(stack);
+      settings.block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
+      settings.meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);      
+      writeConstructionSettings(stack, settings);
+      AWLog.logDebug("set block to: "+settings.block.getUnlocalizedName() +" meta: "+settings.meta);
+      }    
+    }
+    break;
+  case KEY_2://pos1
+    {
+    BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+    if(pos!=null)
+      {
+      ConstructionSettings settings = getSettings(stack);
+      settings.pos1 = pos;
+      writeConstructionSettings(stack, settings);
+      AWLog.logDebug("set settings pos1 to: "+settings.pos1);
+      }  
+    }
+    break;
+  case KEY_3://pos2
+    {
+    BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+    if(pos!=null)
+      {
+      ConstructionSettings settings = getSettings(stack);
+      settings.pos2 = pos;
+      writeConstructionSettings(stack, settings);
+      AWLog.logDebug("set settings pos2 to: "+settings.pos2);
+      }
+    }
+    break;
+  case KEY_4://clear pos 
+    {
+    ConstructionSettings settings = getSettings(stack);
+    settings.pos1 = null;
+    settings.pos2 = null;
+    writeConstructionSettings(stack, settings);
+    }
+    break;
+  }
   }
 
 public static ConstructionSettings getSettings(ItemStack item)
@@ -139,6 +243,19 @@ protected NBTTagCompound writeToNBT(NBTTagCompound tag)
   return tag;
   }
 
+public boolean hasPos1()
+  {
+  return pos1!=null;
+  }
+
+public boolean hasPos2()
+  {
+  return pos2!=null;
+  }
+
+public BlockPosition pos1(){return pos1;}
+public BlockPosition pos2(){return pos2;}
+
 }
 
 public static enum ConstructionType
@@ -172,20 +289,5 @@ public ConstructionType next()
   return values()[ordinal];
   }
 }
-
-@Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
-
-
-@Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  // TODO Auto-generated method stub
-  
-  }
 
 }
