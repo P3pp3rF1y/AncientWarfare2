@@ -1,21 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
-import java.util.List;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.model.ModelSign;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.TileWarehouseStorageBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.IWarehouseStorageTile;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 
 import org.lwjgl.opengl.GL11;
 

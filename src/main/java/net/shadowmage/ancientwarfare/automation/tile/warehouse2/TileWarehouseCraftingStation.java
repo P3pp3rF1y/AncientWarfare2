@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile.warehouse;
+package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -67,7 +67,7 @@ public void preItemCrafted()
 
 public void onItemCrafted()
   {
-  WorkSiteWarehouse warehouse = getWarehouse();
+  TileWarehouseBase warehouse = getWarehouse();
   if(warehouse==null)
     {
     return;
@@ -90,16 +90,16 @@ public void onItemCrafted()
     }
   }
 
-private WorkSiteWarehouse getWarehouse()
+private TileWarehouseBase getWarehouse()
   {
   if(yCoord<=1)//could not possibly be a warehouse below...
     {
     return null;
     }
   TileEntity te = worldObj.getTileEntity(xCoord, yCoord-1, zCoord);
-  if(te instanceof WorkSiteWarehouse)
+  if(te instanceof TileWarehouseBase)
     {
-    return (WorkSiteWarehouse) te;
+    return (TileWarehouseBase) te;
     }
   return null;
   }

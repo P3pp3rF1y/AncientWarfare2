@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySlotlessBasic;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
@@ -76,7 +75,7 @@ public int getStorageAdditionSize()
   }
 
 @Override
-public void onWarehouseInventoryUpdated(WorkSiteWarehouse warehouse)
+public void onWarehouseInventoryUpdated(TileWarehouseBase warehouse)
   {
   
   }

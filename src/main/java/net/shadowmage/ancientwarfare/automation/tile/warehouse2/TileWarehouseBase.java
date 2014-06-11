@@ -570,4 +570,28 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
   }
 
+public int getCountOf(ItemStack layoutStack)
+  {
+  return cachedItemMap.getCount(layoutStack);
+  }
+
+public void decreaseCountOf(ItemStack layoutStack, int i)
+  {
+  List<IWarehouseStorageTile> dest = new ArrayList<IWarehouseStorageTile>();
+  storageMap.getDestinations(layoutStack, dest);
+  int found = 0;
+  for(IWarehouseStorageTile tile : dest)
+    {
+    found =  tile.getQuantityStored(layoutStack);
+    if(found>0)
+      {
+      if(found>i){found=i;}
+      i-=found;
+      tile.extractItem(layoutStack, found);
+      cachedItemMap.decreaseCount(layoutStack, found);
+      if(i<=0){break;}
+      }
+    }
+  }
+
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse.WorkSiteWarehouse;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 
 
@@ -15,7 +14,7 @@ public interface IWarehouseStorageTile
 
 public int getStorageAdditionSize();
 
-public void onWarehouseInventoryUpdated(WorkSiteWarehouse warehouse);
+public void onWarehouseInventoryUpdated(TileWarehouseBase warehouse);
 
 public List<WarehouseStorageFilter> getFilters();
 

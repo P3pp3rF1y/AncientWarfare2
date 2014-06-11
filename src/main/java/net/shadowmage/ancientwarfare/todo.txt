@@ -20,7 +20,6 @@
 	town-hall block
 * Sounds
 	bard
-* Faction-based combat unit cleanup -- ranged attacks
 * Default held items for priest, trader
 
 ****************************LICENSING TODO****************************
@@ -48,10 +47,14 @@ Licensing
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
 * add a 'warehouse stock viewer panel' --sign that can be slapped on the side of storage/input/output blocks to view the stock level of specified items (items specified via gui)
+* fix up auto-crafting station -- it is losing its input-grid items on load/save of world
+* finish removing old warehouse stuff (tiles/blocks/other code)
 		
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
+^ verify that faction based mounted soldiers work as intended
+^ verify functionality of mounted player-owned npcs (all)
 * finish recruiting station block/tile/gui/container/code
 * add recipes to copy upkeep/work/combat/routing orders
 	

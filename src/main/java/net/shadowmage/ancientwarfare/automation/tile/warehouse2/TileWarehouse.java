@@ -95,5 +95,4 @@ private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClic
     }
   }
 
-
 }
