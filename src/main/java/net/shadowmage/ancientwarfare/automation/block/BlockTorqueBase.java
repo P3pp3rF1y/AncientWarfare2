@@ -126,6 +126,7 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
   if(rMeta!=meta)
     {
     tt.setOrientation(ForgeDirection.getOrientation(rMeta));
+    worldObj.markBlockForUpdate(x, y, z);
     return true;
     }
   return false;
