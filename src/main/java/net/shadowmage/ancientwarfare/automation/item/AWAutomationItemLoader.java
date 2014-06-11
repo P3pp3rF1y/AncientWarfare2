@@ -29,6 +29,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -87,7 +88,7 @@ private int getItemPriority(Item item)
     if(block==chunkLoaderSimple || block==chunkLoaderDeluxe){return 10;}
     else if(block==flywheel){return 9;}
     else if(block==torqueGeneratorSterling || block==torqueGeneratorWaterwheel || block==handCrankedEngine){return 8;}
-    else if(block==torqueDistributor || block==torqueConduit){return 7;}
+    else if(block==torqueDistributor || block==torqueConduit || block==AWAutomationBlockLoader.torqueConduitMedium || block==AWAutomationBlockLoader.torqueConduitHeavy){return 7;}
     else if(block==mailbox){return 6;}
     else if(block==warehouseInterface || block==warehouseCrafting){return 5;}
     else if(block==worksiteWarehouse){return 4;}

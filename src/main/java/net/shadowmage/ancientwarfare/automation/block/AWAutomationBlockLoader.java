@@ -13,6 +13,8 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorS
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheel;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitMedium;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributor;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
@@ -125,8 +127,14 @@ public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
  * POWER NETWORK BLOCKS
  */
 public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel");
+//med flywheel
+//heavy flywheel
 public static final BlockTorqueConduit torqueConduit = new BlockTorqueConduit("torque_conduit");
+public static final BlockTorqueConduitMedium torqueConduitMedium = new BlockTorqueConduitMedium("torque_conduit_medium");
+public static final BlockTorqueConduitHeavy torqueConduitHeavy = new BlockTorqueConduitHeavy("torque_conduit_heavy");
 public static final BlockTorqueDistributor torqueDistributor = new BlockTorqueDistributor("torque_distributor");
+//med dist
+//heavy dist
 public static final BlockHandCrankedEngine handCrankedEngine = new BlockHandCrankedEngine("hand_cranked_engine");
 public static final BlockTorqueGenerator torqueGeneratorSterling = new BlockTorqueGenerator("torque_generator_sterling")
   { 
@@ -283,17 +291,35 @@ public static void load()
   flywheel.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/flywheel_left");
   flywheel.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_right");  
   
+  //med flywheel
+  //heavy flywheel
+  
   GameRegistry.registerBlock(torqueConduit, ItemBlockOwnedRotatable.class, "torque_conduit");
   GameRegistry.registerTileEntity(TileTorqueTransportConduit.class, "torque_conduit_tile");
   torqueConduit.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_top");
   torqueConduit.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_bottom");
   torqueConduit.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_bottom");
   
+  GameRegistry.registerBlock(torqueConduitMedium, ItemBlockOwnedRotatable.class, "torque_conduit_medium");
+  GameRegistry.registerTileEntity(TileTorqueTransportConduitMedium.class, "torque_conduit_medium_tile");//TODO add proper tex refs
+  torqueConduitMedium.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_top");
+  torqueConduitMedium.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_bottom");
+  torqueConduitMedium.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_bottom");
+  
+  GameRegistry.registerBlock(torqueConduitHeavy, ItemBlockOwnedRotatable.class, "torque_conduit_heavy");
+  GameRegistry.registerTileEntity(TileTorqueTransportConduitHeavy.class, "torque_conduit_heavy_tile");//TODO add proper tex refs
+  torqueConduitHeavy.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_top");
+  torqueConduitHeavy.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_bottom");
+  torqueConduitHeavy.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_bottom");
+  
   GameRegistry.registerBlock(torqueDistributor, ItemBlockOwnedRotatable.class, "torque_distributor");
   GameRegistry.registerTileEntity(TileTorqueTransportDistributor.class, "torque_distributor_tile");
   torqueDistributor.setIcon(RelativeSide.TOP, "ancientwarfare:automation/torque_distributor_top");
   torqueDistributor.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/torque_distributor_bottom");
   torqueDistributor.setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_distributor_side");
+  
+  //med dist
+  //heavy dist
   
   GameRegistry.registerBlock(torqueGeneratorSterling, ItemBlockOwnedRotatable.class, "torque_generator_sterling");
   GameRegistry.registerTileEntity(TileTorqueGeneratorSterling.class, "torque_generator_sterling_tile");

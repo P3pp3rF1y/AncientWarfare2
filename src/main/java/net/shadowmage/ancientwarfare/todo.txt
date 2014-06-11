@@ -38,8 +38,11 @@ Licensing
 	sterling/waterwheel/hand cranged engines
 	warehouse storage med/large	
 	recruiting station
+* create med/large warehouse storage blocks	
 * Recipes
 	-lots-
+* balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
+* add redstone control to flywheel blocks	
 			
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
