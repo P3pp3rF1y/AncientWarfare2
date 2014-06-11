@@ -66,6 +66,12 @@ public double addEnergy(ForgeDirection from, double energy)
   }
 
 @Override
+public double getEnergyDrainFactor()
+  {
+  return 1;
+  }
+
+@Override
 public double getMaxEnergy()
   {
   return maxEnergyStored;

@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
@@ -208,6 +209,7 @@ public final boolean canUpdate()
 public final void updateEntity()
   { 
   if(worldObj.isRemote){return;}
+  ITorque.applyPowerDrain(this);
   if(!init)
     {
     init=true;  
@@ -452,6 +454,12 @@ public final double addEnergy(ForgeDirection from, double energy)
     return energy;    
     }
   return 0;
+  }
+
+@Override
+public double getEnergyDrainFactor()
+  {
+  return 1;
   }
 
 @Override

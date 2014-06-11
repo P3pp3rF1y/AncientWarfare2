@@ -31,12 +31,19 @@ public void updateEntity()
   {
   if(worldObj.isRemote){return;}  
   ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
+  ITorque.applyPowerDrain(this);
   }
 
 @Override
 public double getMaxOutput()
   {
   return maxOutput;
+  }
+
+@Override
+public double getEnergyDrainFactor()
+  {
+  return 1;
   }
 
 @Optional.Method(modid="BuildCraft|Core")

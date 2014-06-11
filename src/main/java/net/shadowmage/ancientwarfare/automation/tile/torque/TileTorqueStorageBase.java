@@ -25,6 +25,7 @@ public void updateEntity()
   {
   if(worldObj.isRemote){return;}  
   ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
+  ITorque.applyPowerDrain(this);
   }
 
 @Override
@@ -44,6 +45,12 @@ public double addEnergy(ForgeDirection from, double energy)
     return energy;    
     }
   return 0;
+  }
+
+@Override
+public double getEnergyDrainFactor()
+  {
+  return 1;
   }
 
 @Override

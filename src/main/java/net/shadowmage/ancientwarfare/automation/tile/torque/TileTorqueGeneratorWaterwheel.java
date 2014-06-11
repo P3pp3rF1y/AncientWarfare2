@@ -24,10 +24,6 @@ public void updateEntity()
   super.updateEntity();
   rotationAngle+=rotationSpeed*10.f;
   if(worldObj.isRemote){return;}
-  if(storedEnergy>1.f)
-    {
-    ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
-    }
   updateTick++;
   if(updateTick<20){return;}
   updateTick=0;  

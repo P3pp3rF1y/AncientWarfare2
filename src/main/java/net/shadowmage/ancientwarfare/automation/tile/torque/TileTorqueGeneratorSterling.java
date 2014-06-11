@@ -43,8 +43,9 @@ public void updateEntity()
       }
     }
   else if(burnTime>0)
-    {    
+    {
     storedEnergy++;
+    storedEnergy=storedEnergy>maxEnergy? maxEnergy : storedEnergy;
     burnTime--;
     }  
   }

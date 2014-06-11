@@ -32,10 +32,7 @@ Licensing
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
 ^ finish up storage block filter-setting ability, verify that it works properly (needs the above step to view storage-block inventory contents)
-* Torque API:
-	Add input max/tick code to tiles, reset counter every tile-update.
-	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
-		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
+* Torque API:	
 	Add high-quality blocks with higher capacity and less/no power loss.
 * Textures
 	sterling/waterwheel/hand cranged engines

@@ -17,7 +17,9 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -62,6 +64,12 @@ public final void setEnergy(double energy)
     {
     this.storedEnergy = this.maxEnergyStored;
     }
+  }
+
+@Override
+public double getEnergyDrainFactor()
+  {
+  return 1;
   }
 
 @Override
@@ -145,6 +153,7 @@ public void updateEntity()
   super.updateEntity();
   if(worldObj.isRemote){return;}  
   worldObj.theProfiler.startSection("AWWorksite");
+  ITorque.applyPowerDrain(this);
   worldObj.theProfiler.startSection("InventoryOverflow");
   if(!inventoryOverflow.isEmpty())
     {

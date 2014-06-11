@@ -14,6 +14,7 @@ public static interface ITorqueTile
 void setEnergy(double energy);
 double getMaxEnergy();
 double getEnergyStored();
+double getEnergyDrainFactor();
 }
 
 public static interface ITorqueGenerator extends ITorqueTile
@@ -40,6 +41,19 @@ public static interface ITorqueTransport extends ITorqueGenerator, ITorqueReceiv
 
 }
 
+public static void applyPowerDrain(ITorqueTile tile)
+  {
+  World world = ((TileEntity)tile).getWorldObj();
+  world.theProfiler.startSection("AWPowerDrain");
+  double e = tile.getEnergyStored();
+  double m = tile.getMaxEnergy();
+  double d = tile.getEnergyDrainFactor();
+  if(e < 0.01d || m <=0 || d <= 0){return;}
+  double p = e/m;
+  double edpt = p*d*0.05d;
+  tile.setEnergy(e-edpt);
+  world.theProfiler.endSection();
+  }
 
 public static void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
   {
@@ -107,7 +121,6 @@ public static void transferPower(World world, int x, int y, int z, ITorqueGenera
       request = target.addEnergy(ForgeDirection.getOrientation(i).getOpposite(), request);
       generator.setEnergy(generator.getEnergyStored()-request);
       if(target.getEnergyStored()>target.getMaxEnergy()){target.setEnergy(target.getMaxEnergy());}
-//      AWLog.logDebug("transferring: "+request+" from: "+generator+" to "+target);
       }
     }
   BCProxy.instance.transferPower(world, x, y, z, generator);

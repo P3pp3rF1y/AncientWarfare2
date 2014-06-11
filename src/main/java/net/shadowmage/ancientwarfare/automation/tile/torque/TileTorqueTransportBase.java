@@ -25,6 +25,13 @@ public void updateEntity()
   {
   if(worldObj.isRemote){return;}  
   ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
+  ITorque.applyPowerDrain(this);
+  }
+
+@Override
+public double getEnergyDrainFactor()
+  {
+  return 1;
   }
 
 @Override
