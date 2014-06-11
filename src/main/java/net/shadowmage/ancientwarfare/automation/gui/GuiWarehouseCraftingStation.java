@@ -11,7 +11,7 @@ public class GuiWarehouseCraftingStation extends GuiContainerBase
 
 public GuiWarehouseCraftingStation(ContainerBase par1Container)
   {
-  super(par1Container, 176, 192, defaultBackground);
+  super(par1Container, 176, 154, defaultBackground);
   }
 
 @Override
