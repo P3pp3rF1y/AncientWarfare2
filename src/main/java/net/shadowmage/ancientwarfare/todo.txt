@@ -3,6 +3,23 @@
 > = cannot do until later
 ? = optional / need to think on it
 
+****************************PRE FIRST TEST RELEASE TODO****************************
+* Textures
+	bard
+	construction tool
+	sterling/waterwheel/hand cranged engines	
+* Recipes
+	-lots-
+* Research
+	-lots-
+* Structure Module Plugins
+	npcs?? (should be mostly handled?)
+	town-hall block
+* Sounds
+	bard
+* Faction-based combat unit cleanup -- ranged attacks
+* Default held items for priest, trader
+
 ****************************LICENSING TODO****************************
 Licensing
 	add bc license for using as libs
@@ -22,24 +39,14 @@ TEXTURES
 	vehicle	
 	
 ****************************CORE MODULE TODO****************************
-^ (fixed) research table has some bug where it will stall out even with proper resources, perhaps a resource-meta-matching problem, or some issue with checking power levels
-* crafting system--needs recipes from other modules
 * need LOTS of tooltips added to various elements in GUIs	
 * GUI - SHIFT-CLICK CODE
 	
 ****************************STRUCTURE MODULE TODO****************************
-> screenshots for all default-included structures
-> plugins / support for vehicle module
-> plugin support for automation module
 * alter structure scanner gui name-selection char validation
 	--disallow invalid file-system chars (/?.'"<>[]{}!@#$%^&*()_+)
-* plugin support for npc module
-	npcs--done?
-	blocks--
-		town hall
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
-* Icon / texture for construction tool	
 * Scanner GUI needs some cleanup / make it look nice(er)
 
 ****************************AUTOMATION MODULE TODO****************************	
@@ -50,18 +57,13 @@ TEXTURES
 	Add power-loss to blocks.  The amount lost should be proportional to the amount stored.  Something about
 		drag from air resistance increasing with the speed of the object that is moving. Allow for higher-grade blocks to not lose power.			
 	Add high-quality blocks with higher capacity and less/no power loss.
-* recipes for nearly everything
 * add a 'warehouse stock viewer panel' --sign that can be slapped on the side of storage/input/output blocks to view the stock level of specified items (items specified via gui)
 		
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
-* texture for bard		
-* find default sound/music for bards
 * rework player owned trader gui to still allow access to inventory. (just add an 'inventory' button to gui?)
-* add item for priest holy-symbols (should I just make it a 'religious book'?)
-* faction owned archer default ranged attack	
-* add recipes and research requirements for npcs/items/blocks
+* faction owned archer default ranged attack
 * add recipes to copy upkeep/work/combat/routing orders
 	
 ****************************VEHICLE MODULE TODO****************************
