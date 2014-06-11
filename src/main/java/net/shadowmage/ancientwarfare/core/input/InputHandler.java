@@ -32,26 +32,30 @@ public class InputHandler
 {
 
 public static final String KEY_OPTIONS = "keybind.options";
+
 public static final String KEY_ALT_ITEM_USE_0 = "keybind.alt_item_use_1";
 public static final String KEY_ALT_ITEM_USE_1 = "keybind.alt_item_use_2";
 public static final String KEY_ALT_ITEM_USE_2 = "keybind.alt_item_use_3";
 public static final String KEY_ALT_ITEM_USE_3 = "keybind.alt_item_use_4";
 public static final String KEY_ALT_ITEM_USE_4 = "keybind.alt_item_use_5";
 
-//public static final String KEY_NPC_ATTACK = "keybind.npc_command.attack";
-//public static final String KEY_NPC_MOVE = "keybind.npc_command.move";
-//public static final String KEY_NPC_HOME = "keybind.npc_command.home";
-//public static final String KEY_NPC_UPKEEP = "keybind.npc_command.upkeep";
-
 private static InputHandler instance = new InputHandler();
 public static InputHandler instance(){return instance;}
 private InputHandler(){}
 
+/**
+ * map of keys by their registry-name
+ */
 private HashMap<String, Keybind> keybindMap = new HashMap<String, Keybind>();
+/**
+ * map of a -set- of keys by their key-id
+ */
 private HashMap<Integer, Set<Keybind>> bindsByKey = new HashMap<Integer, Set<Keybind>>();
 
 Configuration config;
 private static final String keybinds = AWCoreStatics.keybinds;
+
+private long lastMouseInput = -1;
 
 public void loadConfig(Configuration config)
   {
@@ -93,26 +97,30 @@ public void loadConfig(Configuration config)
 public void onMouseInput(MouseInputEvent evt)
   {
   int button = Mouse.getEventButton();
-  if(button<0 || !Mouse.getEventButtonState()){return;}
-  AWLog.logDebug("mouse event: "+evt+" "+Mouse.getEventButton()+"::"+Mouse.getEventButtonState());
+  if(button<0 || !Mouse.getEventButtonState()){return;} 
   Minecraft minecraft = Minecraft.getMinecraft();
   if(minecraft==null || minecraft.currentScreen!=null || minecraft.thePlayer==null || minecraft.theWorld==null){return;}
-  EntityPlayer player = minecraft.thePlayer;
-  ItemStack stack = player.getCurrentEquippedItem();
-  if(stack!=null && stack.getItem() instanceof IItemClickable)
+  long time = System.currentTimeMillis();
+  if(lastMouseInput==-1 || time-lastMouseInput>250)
     {
-    IItemClickable click = (IItemClickable)stack.getItem();
-    if(button==1 && click.onRightClickClient(player, stack))
+    lastMouseInput = time; 
+    EntityPlayer player = minecraft.thePlayer;    
+    ItemStack stack = player.getCurrentEquippedItem();
+    if(stack!=null && stack.getItem() instanceof IItemClickable)
       {
-      PacketItemInteraction pkt = new PacketItemInteraction(2);
-      NetworkHandler.sendToServer(pkt);
+      IItemClickable click = (IItemClickable)stack.getItem();
+      if(button==1 && click.onRightClickClient(player, stack))
+        {
+        PacketItemInteraction pkt = new PacketItemInteraction(2);
+        NetworkHandler.sendToServer(pkt);
+        }
+      else if(button==2 && click.onLeftClickClient(player, stack))      
+        {
+        PacketItemInteraction pkt = new PacketItemInteraction(1);
+        NetworkHandler.sendToServer(pkt);
+        }
       }
-    else if(button==2 && click.onLeftClickClient(player, stack))      
-      {
-      PacketItemInteraction pkt = new PacketItemInteraction(1);
-      NetworkHandler.sendToServer(pkt);
-      }
-    }
+    }    
   }
 
 @SubscribeEvent
@@ -141,6 +149,11 @@ public void onKeyInput(KeyInputEvent evt)
         }
       }
     }  
+  }
+
+public Keybind getKeybind(String name)
+  {
+  return keybindMap.get(name);
   }
 
 public void registerKeybind(String name, int keyCode)
