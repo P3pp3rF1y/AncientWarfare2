@@ -83,8 +83,7 @@ public Primitive copy()
 
 @Override
 protected void renderForDisplayList()
-  {
-  
+  {  
   float tw = parent.getModel().textureWidth;
   float th = parent.getModel().textureHeight;
   float px = 1.f/tw;
@@ -101,15 +100,16 @@ protected void renderForDisplayList()
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
   if(ry!=0){GL11.glRotatef(ry, 0, 1, 0);}
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);}  
-  
- 
+   
   GL11.glBegin(GL11.GL_QUADS);
   
   //front side  
   tx1 = (tx + l)*px;  
   ty1 = (th - (ty + l + h))*py;
   tx2 = (tx + l + w)*px;
-  ty2 = (th - (ty + l))*py;    
+  ty2 = (th - (ty + l))*py; 
+  ty1 = 1.f-ty1;
+  ty2 = 1.f-ty2;
   GL11.glNormal3f(0, 0, 1);
   GL11.glTexCoord2f(tx1, ty1);
   GL11.glVertex3f(x1, y1, z2);
@@ -124,7 +124,9 @@ protected void renderForDisplayList()
   tx1 = (tx + l + l + w)*px;  
   ty1 = (th - (ty + l + h))*py; 
   tx2 = (tx + l + w + l + w)*px;
-  ty2 = (th - (ty + l))*py;
+  ty2 = (th - (ty + l))*py;  
+  ty1 = 1.f-ty1;
+  ty2 = 1.f-ty2;
   GL11.glNormal3f(0, 0, -1);
   GL11.glTexCoord2f(tx1, ty1);
   GL11.glVertex3f(x2, y1, z1);
@@ -139,7 +141,9 @@ protected void renderForDisplayList()
   tx1 = (tx + l + w)*px;  
   ty1 = (th - (ty + l + h))*py;
   tx2 = (tx + l + w + l)*px;
-  ty2 = (th - (ty + l))*py; 
+  ty2 = (th - (ty + l))*py;   
+  ty1 = 1.f-ty1;
+  ty2 = 1.f-ty2;
   GL11.glNormal3f(1, 0, 0);
   GL11.glTexCoord2f(tx1, ty1);
   GL11.glVertex3f(x1, y1, z1);
@@ -154,7 +158,9 @@ protected void renderForDisplayList()
   tx1 = (tx)*px;  
   ty1 = (th - (ty + l + h))*py;
   tx2 = (tx + l)*px;
-  ty2 = (th - (ty + l))*py; 
+  ty2 = (th - (ty + l))*py;   
+  ty1 = 1.f-ty1;
+  ty2 = 1.f-ty2;
   GL11.glNormal3f(-1, 0, 0);
   GL11.glTexCoord2f(tx1, ty1);
   GL11.glVertex3f(x2, y1, z2);
@@ -169,7 +175,9 @@ protected void renderForDisplayList()
   tx1 = (tx + l)*px;  
   ty1 = (th - (ty + l))*py;
   tx2 = (tx + l + w)*px;
-  ty2 = (th - (ty))*py; 
+  ty2 = (th - (ty))*py;   
+  ty1 = 1.f-ty1;
+  ty2 = 1.f-ty2;
   GL11.glNormal3f(0, 1, 0);
   GL11.glTexCoord2f(tx1, ty1);
   GL11.glVertex3f(x2, y2, z1);
@@ -184,7 +192,9 @@ protected void renderForDisplayList()
   tx1 = (tx + l + w)*px;  
   ty1 = (th - (ty + l))*py;
   tx2 = (tx + l + w + w)*px;
-  ty2 = (th - (ty))*py; 
+  ty2 = (th - (ty))*py;   
+  ty1 = 1.f-ty1;
+  ty2 = 1.f-ty2;
   GL11.glNormal3f(0, -1, 0);
   GL11.glTexCoord2f(tx1, ty1);
   GL11.glVertex3f(x2, y1, z2);
@@ -239,49 +249,49 @@ public void addUVMapToImage(BufferedImage image)
   /**
    * front face
    */
-  for(x = u + l; x < u + l + w; x++)
+  for(x = u + l; x < u + l + w && x<image.getWidth(); x++)
     {
-    for(y = v + l; y< v+ l + h; y++)
+    for(y = v + l; y< v+ l + h && y<image.getHeight(); y++)
       {
       image.setRGB(x, y, 0xffff0000);
       }
     }
   //left face
-  for(x = u ; x< u + l; x++)
+  for(x = u ; x< u + l && x<image.getWidth(); x++)
     {
-    for(y = v+l; y< v+l+h; y++)
+    for(y = v+l; y< v+l+h && y<image.getHeight(); y++)
       {
       image.setRGB(x, y, 0xff00aa00);
       }
     }
   //right face
-  for(x = u + l + w ; x< u + l + w + l; x++)
+  for(x = u + l + w ; x< u + l + w + l && x<image.getWidth(); x++)
     {
-    for(y = v+l; y< v+l+h; y++)
+    for(y = v+l; y< v+l+h && y<image.getHeight(); y++)
       {
       image.setRGB(x, y, 0xff00ff00);
       }
     }
   //rear face
-  for(x = u + l + w + l ; x< u + l + w + l + w; x++)
+  for(x = u + l + w + l ; x< u + l + w + l + w && x<image.getWidth(); x++)
     {
-    for(y = v+l; y< v+l+h; y++)
+    for(y = v+l; y< v+l+h&& y<image.getHeight(); y++)
       {
       image.setRGB(x, y, 0xffaa0000);
       }
     }
   //top face
-  for(x = u + l; x< u +l +w; x++)
+  for(x = u + l; x< u +l +w && x<image.getWidth(); x++)
     {
-    for(y = v; y< v+l; y++)
+    for(y = v; y< v+l&& y<image.getHeight(); y++)
       {
       image.setRGB(x, y, 0xff0000ff);
       }
     }
   //bottom face
-  for(x = u + l + w; x < u + l + w + w; x++)
+  for(x = u + l + w; x < u + l + w + w && x<image.getWidth(); x++)
     {
-    for(y = v; y< v+l; y++)
+    for(y = v; y< v+l&& y<image.getHeight(); y++)
       {
       image.setRGB(x, y, 0xff0000aa);
       }

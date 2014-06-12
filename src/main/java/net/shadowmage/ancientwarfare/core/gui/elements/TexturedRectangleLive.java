@@ -1,16 +1,17 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
-import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 public class TexturedRectangleLive extends GuiElement
 {
 
-String textureName;
+ResourceLocation tex;
 int tx, ty, u, v, uw, vh;
 float u1, v1, u2, v2;
 
-public TexturedRectangleLive(int topLeftX, int topLeftY, int width, int height, int tx, int ty, int u, int v, int uw, int vh, String texName)
+public TexturedRectangleLive(int topLeftX, int topLeftY, int width, int height, int tx, int ty, int u, int v, int uw, int vh, ResourceLocation tex)
   {
   super(topLeftX, topLeftY, width, height);
   this.tx = tx;//texture X size
@@ -26,7 +27,7 @@ public TexturedRectangleLive(int topLeftX, int topLeftY, int width, int height, 
   v1 = ((float) v) * perY;
   u2 = (float)(u + uw) * perX;
   v2 = (float)(v + vh) * perY;
-  this.textureName = texName;
+  this.tex = tex;
   }
 
 @Override
@@ -34,7 +35,7 @@ public void render(int mouseX, int mouseY, float partialTick)
   {
   if(visible)
     {    
-    AWTextureManager.instance().bindTexture(textureName);
+    Minecraft.getMinecraft().renderEngine.bindTexture(tex);
     RenderTools.renderTexturedQuad(renderX, renderY, renderX+width, renderY+height, u1, v1, u2, v2);
     }
   }

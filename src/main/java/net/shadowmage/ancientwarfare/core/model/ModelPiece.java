@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 import org.lwjgl.opengl.GL11;
@@ -87,17 +88,20 @@ public ModelPiece(ModelBaseAW model, String name, float x, float y, float z, flo
     }
   }
 
+public void clearParent()
+  {
+  this.model.removePiece(this);
+  this.parent = null;
+  this.model.addPiece(this);
+  }
+
 public ModelPiece setParent(ModelPiece parent)
   {
   this.model.removePiece(this);
-  if(this.parent!=null)
+  if(this.parent!=null){this.parent.removeChild(this);}
+  if(parent!=null)
     {
-    this.parent.removeChild(this);
-    }
-  this.parent = parent;
-  if(this.parent!=null)
-    {
-    this.parent.addChild(this);
+    parent.addChild(this);
     }
   this.model.addPiece(this);
   return this;
@@ -160,10 +164,6 @@ public void removePrimitive(Primitive primitive)
 public void addChild(ModelPiece piece)
   {
   this.children.add(piece);
-  if(piece.parent!=null)
-    {
-    piece.parent.removeChild(piece);
-    }
   piece.parent = this;
   }
 

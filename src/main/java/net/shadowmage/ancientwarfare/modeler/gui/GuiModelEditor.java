@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -28,10 +29,14 @@ import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 public class GuiModelEditor extends GuiContainerBase
 {
 
-//STATIC block allocates a new blank (white) texture for model editor use
-//will reload this same texture next time the editor is opened
-static BufferedImage image;
-public final static String textureName = "editorTexture"; 
+/**
+ * the buffered image used by the UV editor for UV-Map
+ */
+static BufferedImage image; 
+static ResourceLocation uvMapTexture;
+public final static String uvMapTextureName = "editorTexture";
+static ModelBaseAW model;
+
 static
 {
 image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
@@ -42,10 +47,18 @@ for(int x = 0; x< 256; x++)
     image.setRGB(x, y, 0xffffffff);
     }
   }
-AWTextureManager.instance().loadTexture(textureName, image);
+uvMapTexture = AWTextureManager.instance().loadImageBasedTexture(uvMapTextureName, image);
+model = new ModelBaseAW();
+model.setTextureSize(256, 256);
+ModelPiece piece = new ModelPiece(model, "part1", 0, 0, 0, 0, 0, 0, null);
+PrimitiveBox box = new PrimitiveBox(piece);
+box.setOrigin(0, 0, 0);
+box.setRotation(0, 0, 0);
+box.setBounds(-0.5f, 0.f, -0.5f, 1, 1, 1);
+model.addPiece(piece);
+piece.addPrimitive(box);
 }
 
-static ModelBaseAW model;
 
 //map of elements by name of what they edit -- PRX, BRX, PX, BX, etc..
 private HashMap<String, GuiElement> widgetMap = new HashMap<String, GuiElement>();
@@ -65,8 +78,6 @@ CompositeScrolled partListArea;
 Label pieceNameLabel;
 Label primitiveNameLabel;
 
-private boolean useUVTexture;
-
 public GuiModelEditor(ContainerBase par1Container)
   {
   super(par1Container, 256, 240, defaultBackground);
@@ -84,16 +95,8 @@ public void initElements()
       }
     };
   modelWidget.setSelectable(true);
-  modelWidget.setImageName(textureName, true);
-  if(model!=null)//attempt to use existing client-side model, if it exists
-    {
-    modelWidget.setModel(model);
-    }
-  else
-    {
-    modelWidget.initModel(); 
-    model = modelWidget.getModel();
-    }
+  modelWidget.setModel(model); 
+  modelWidget.setTexture(uvMapTexture);
   this.addGuiElement(modelWidget);
   
   pieceControlArea = new CompositeScrolled(-guiLeft, -guiTop, ((width-xSize) / 2), height/2);
@@ -119,6 +122,8 @@ public void initElements()
 public void setupElements()
   {
   widgetMap.clear();
+  pieceMap.clear();
+  primitiveMap.clear();
   pieceControlArea.clearElements();
   primitiveControlArea.clearElements();
   fileControlArea.clearElements();
@@ -202,6 +207,8 @@ private void addFileControls()
         public void onFileSelected(File file)
           {
           modelWidget.loadModel(file);
+          model = modelWidget.getModel();
+          refreshGui();
           }
         };
       Minecraft.getMinecraft().displayGuiScreen(gui);      
@@ -284,7 +291,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      modelWidget.setImageName(GuiUVEditor.textureName, true);
+      modelWidget.setTexture(uvMapTexture);
       }
     };
   totalHeight+=12;
@@ -300,7 +307,8 @@ private void addFileControls()
       {
       refreshGui();
       }
-    };  
+    }; 
+  scaleInput.setDecimalPlaces(4);
   fileControlArea.addGuiElement(scaleInput);
   totalHeight+=12;
   
@@ -2220,6 +2228,8 @@ private int addQuadControls(int totalHeight)
 
 private void addPieceList()
   {
+  pieceMap.clear();
+  primitiveMap.clear();
   ArrayList<ModelPiece> pieces = new ArrayList<ModelPiece>();
   model.getPieces(pieces);
   

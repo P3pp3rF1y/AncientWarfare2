@@ -158,7 +158,6 @@ public void saveModel(ModelBaseAW model, File file)
     AWLog.logError("error exporting model for name: "+file.getName());
     e.printStackTrace();
     }
-
   }
 
 }

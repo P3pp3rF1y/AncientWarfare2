@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBox;
+import net.minecraft.client.model.ModelRenderer;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 public class ModelBaseAW
@@ -199,11 +202,7 @@ public void removePiece(String name)
   }
 
 public void removePiece(ModelPiece piece)
-  {
-  if(piece.getParent()!=null)
-    {
-    piece.getParent().removeChild(piece);    
-    }
+  {  
   this.pieces.remove(piece.getName());
   this.basePieces.remove(piece);
   }
@@ -228,4 +227,5 @@ public void recompilePrimitives()
 
 public int textureWidth(){return textureWidth;}
 public int textureHeight(){return textureHeight;}
+
 }

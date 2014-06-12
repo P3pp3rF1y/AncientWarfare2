@@ -54,6 +54,13 @@ public NumberInput setIncrementAmount(float amount)
   return this;
   }
 
+public NumberInput setDecimalPlaces(int places)
+  {
+  places = places<0 ? 0 : places;
+  this.decimalPlaces =places;
+  return this;
+  }
+
 @Override
 protected void addAllowedChars()
   {

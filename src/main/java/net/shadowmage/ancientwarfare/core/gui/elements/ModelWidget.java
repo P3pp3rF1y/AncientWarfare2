@@ -12,6 +12,8 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -73,8 +75,7 @@ float viewDistance = 5.f;
  */
 float viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ;
 
-String imageName;
-boolean internalImage;
+ResourceLocation texture;
 
 public ModelWidget(int topLeftX, int topLeftY, int width, int height)
   {
@@ -145,40 +146,12 @@ public ModelWidget(int topLeftX, int topLeftY, int width, int height)
     });
   
   viewPosZ = 5;
-  viewPosY = 5; 
-  
+  viewPosY = 5;   
   }
 
-/**
- * set the internal image name to be used by this widget.  Texture must already exist in order to function properly
- * AWTextureManager.loadTexture(name, image) should be called for the texName prior to assigning to a widget.
- * 
- * @param imageName
- * @param internal -- is the image an internal memory-only texture, e.g. the UV editor texture?
- */
-public void setImageName(String imageName, boolean internal)
-  {
-  this.internalImage = internal;
-  this.imageName = imageName;
-  if(!internal)
-    {
-    if(AWTextureManager.instance().getTexture(imageName)==null)
-      {
-      File file = new File(imageName);
-      if(file.exists())
-        {
-        try
-          {
-          BufferedImage image = ImageIO.read(file);
-          AWTextureManager.instance().loadTexture(imageName, image);
-          } 
-        catch (IOException e)
-          {
-          e.printStackTrace();
-          }
-        }
-      }
-    }  
+public void setTexture(ResourceLocation loc)
+  { 
+  this.texture = loc;
   }
 
 private void handleMouseDragged(int mx, int my)
@@ -254,21 +227,6 @@ public void setModel(ModelBaseAW model)
   selectedPrimitive = null;
   }
 
-public void initModel()
-  {
-  model = new ModelBaseAW();
-  model.setTextureSize(256, 256);
-  ModelPiece piece = new ModelPiece(model, "part1", 0, 0, 0, 0, 0, 0, null);
-  PrimitiveBox box = new PrimitiveBox(piece);
-  box.setOrigin(0, 0, 0);
-  box.setRotation(0, 0, 0);
-  box.setBounds(-0.5f, 0.f, -0.5f, 1, 1, 1);
-  model.addPiece(piece);
-  piece.addPrimitive(box);
-  selectedPiece = piece;
-  selectedPrimitive = box;
-  }
-
 @Override
 public void render(int mouseX, int mouseY, float partialTick)
   {
@@ -291,7 +249,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     enableModelLighting();      
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     
-    AWTextureManager.instance().bindTexture(imageName);
+    Minecraft.getMinecraft().renderEngine.bindTexture(texture);
     model.renderForEditor(selectedPiece, selectedPrimitive);
     }    
   
@@ -566,7 +524,7 @@ public void copyPrimitive()
  * @param newParent
  */
 public void swapPieceParent(ModelPiece newParent)
-  {
+  {  
   this.getSelectedPiece().setParent(newParent);
   }
 
@@ -588,6 +546,7 @@ public void loadModel(File file)
   if(model!=null)
     {
     this.model = model;
+    this.setSelection(null, null);
     }
   }
 
@@ -608,8 +567,7 @@ public void loadTexture(File file)
   try
     {
     BufferedImage image = ImageIO.read(file);
-    AWTextureManager.instance().updateTextureContents("editorTexture", image);
-    this.setImageName("editorTexture", true);
+    this.setTexture(AWTextureManager.instance().loadImageBasedTexture(file.getAbsolutePath(), image));
     } 
   catch (IOException e)
     {
@@ -631,7 +589,6 @@ public void importPieces(File file)
       }
     }
   }
-
 
 /**
  * implementations should override to provide a callback for piece selection

@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -29,9 +31,6 @@ import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 public class GuiUVEditor extends GuiContainerBase
 {
 
-
-public static final String textureName = "editorUVTexture";
-
 GuiModelEditor parent;
 
 TexturedRectangleLive textureRect;
@@ -47,6 +46,7 @@ static int textureXSize = 256;
 static int textureYSize = 256;
 
 BufferedImage image;
+ResourceLocation loc;
 
 //map of label-element combos, to select pieces through clicking on/in the piece list area
 private HashMap<Label, ModelPiece> pieceMap = new HashMap<Label, ModelPiece>();
@@ -57,15 +57,22 @@ public GuiUVEditor(GuiModelEditor parent)
   {
   super((ContainerBase) parent.inventorySlots, 256, 256, defaultBackground);
   this.parent = parent;
-  image = AWTextureManager.instance().getTexture("editorUVTexture").getImage();
-  this.shouldCloseOnVanillaKeys = false; 
+  image = GuiModelEditor.image;
+  loc = new ResourceLocation(GuiModelEditor.uvMapTextureName);
+  }
+
+@Override
+protected boolean onGuiCloseRequested()
+  {
+  Minecraft.getMinecraft().displayGuiScreen(parent);
+  return false;
   }
 
 @Override
 public void initElements()
   {
-  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, textureXSize, textureYSize, 0, 0, textureXSize, textureYSize, "editorTexture");
-  this.addGuiElement(textureRect);
+  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, textureXSize, textureYSize, 0, 0, textureXSize, textureYSize, loc);
+  addGuiElement(textureRect);
   
   textureControlArea = new CompositeScrolled(-guiLeft, -guiTop, (width - xSize)/2, height/2);
   addGuiElement(textureControlArea);
@@ -84,6 +91,8 @@ public void initElements()
   
   primitiveNameLabel = new Label(8, -guiTop + 10, "Primitive: No Selection");
   addGuiElement(primitiveNameLabel);
+  
+  updateTexture();
   }
 
 @Override
@@ -110,7 +119,7 @@ public void setupElements()
   widgetMap.clear();
   
   this.removeGuiElement(textureRect);
-  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, textureXSize, textureYSize, 0, 0, textureXSize, textureYSize, "editorTexture");
+  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, textureXSize, textureYSize, 0, 0, textureXSize, textureYSize, loc);
   this.addGuiElement(textureRect);
   
   addPieceList();
@@ -169,7 +178,7 @@ private void updateTexture()
       primitive.addUVMapToImage(image);
       }
     }
-  AWTextureManager.instance().updateTextureContents("editorTexture", image);
+  AWTextureManager.instance().updateImageBasedTexture(GuiModelEditor.uvMapTextureName, image);
   }
 
 private void addTextureControls()
