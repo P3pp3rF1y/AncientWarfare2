@@ -62,15 +62,13 @@ public void buildDisplayList()
     this.displayListNumber = GL11.glGenLists(1);
     }  
   GL11.glNewList(displayListNumber, GL11.GL_COMPILE);
+  GL11.glPushMatrix();
   if(x!=0 || y!=0 || z!=0){GL11.glTranslatef(x, y, z);}
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
   if(ry!=0){GL11.glRotatef(ry, 0, 1, 0);}
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);}  
   renderForDisplayList();
-  if(x!=0 || y!=0 || z!=0){GL11.glTranslatef(-x, -y, -z);}
-  if(rx!=0){GL11.glRotatef(-rx, 1, 0, 0);}
-  if(ry!=0){GL11.glRotatef(-ry, 0, 1, 0);}
-  if(rz!=0){GL11.glRotatef(-rz, 0, 0, 1);}  
+  GL11.glPopMatrix();
   GL11.glEndList();
   setCompiled(true);
   }

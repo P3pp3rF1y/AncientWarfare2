@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,6 +18,28 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 
 public class ModelLoader
 {
+
+public ModelBaseAW loadModel(InputStream is)
+  {  
+  Scanner scan = new Scanner(is);
+  ArrayList<String> lines = new ArrayList<String>();
+  while(scan.hasNext())
+    {
+    lines.add(scan.next());
+    }
+  scan.close();
+  try
+    {
+    is.close();
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
+  ModelBaseAW model = new ModelBaseAW();
+  model.parseFromLines(lines);
+  return model;   
+  }
 
 public ModelBaseAW loadModel(File file)
   {  

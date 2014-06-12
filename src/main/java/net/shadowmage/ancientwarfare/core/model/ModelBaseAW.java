@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -32,8 +34,8 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 public class ModelBaseAW
 {
 
-int textureWidth;
-int textureHeight;
+int textureWidth=256;
+int textureHeight=256;
 
 HashMap<Integer, Primitive> primitives = new HashMap<Integer, Primitive>();
 HashMap<String, ModelPiece> pieces = new HashMap<String, ModelPiece>();
@@ -56,12 +58,13 @@ public void renderForSelection()
     }
   }
 
-public void renderForEditor(ModelPiece piece, Primitive prim)
+public void renderForEditor(ModelPiece selectedPiece, Primitive selectedPrimitive, List<ModelPiece> selectedPieceParents)
   {
   for(ModelPiece piece2 : this.getBasePieces())
     {
-    piece2.renderForEditor(piece, prim);
+    piece2.renderForEditor(selectedPiece, selectedPrimitive, selectedPieceParents);
     }
+  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
   }
 
 public void setTextureSize(int width, int height)

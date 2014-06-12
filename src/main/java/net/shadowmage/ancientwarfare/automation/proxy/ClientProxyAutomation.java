@@ -22,11 +22,13 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
+import net.shadowmage.ancientwarfare.automation.render.RenderSterlingEngine;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWorksite;
 import net.shadowmage.ancientwarfare.automation.render.RenderTorqueConduit;
 import net.shadowmage.ancientwarfare.automation.render.WorkBoundingBoxRenderer;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
@@ -70,6 +72,7 @@ public void registerClient()
   ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new RenderTileWorksite());
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new RenderTileWorksite());
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new RenderTileWarehouseStockViewer());
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorSterling.class, new RenderSterlingEngine());
   RenderingRegistry.registerBlockHandler(new RenderTorqueConduit());
   registerClientOptions();
   }

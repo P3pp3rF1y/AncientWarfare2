@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -13,7 +15,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -21,7 +22,6 @@ import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 import net.shadowmage.ancientwarfare.core.model.Primitive;
-import net.shadowmage.ancientwarfare.core.model.PrimitiveBox;
 import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
@@ -250,12 +250,30 @@ public void render(int mouseX, int mouseY, float partialTick)
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     
     Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-    model.renderForEditor(selectedPiece, selectedPrimitive);
+    getParentTree();
+    model.renderForEditor(selectedPiece, selectedPrimitive, parents);
+    parents.clear();
     }    
   
   resetViewport();
   GL11.glDisable(GL11.GL_DEPTH_TEST);//re-disable for rendering of the rest of widgets
   GL11.glDisable(GL11.GL_LIGHTING);
+  }
+
+List<ModelPiece> parents = new ArrayList<ModelPiece>();
+
+private void getParentTree()
+  {
+  ModelPiece p;
+  if(selectedPiece!=null)
+    {
+    p = selectedPiece.getParent();
+    while(p!=null)
+      {
+      parents.add(p);
+      p = p.getParent();
+      }
+    }
   }
 
 private void enableModelLighting()

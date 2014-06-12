@@ -133,6 +133,13 @@ public void setRotation(float rx, float ry, float rz)
   this.rx = rx;
   this.ry = ry;
   this.rz = rz;
+//  recompilePiece();
+  }
+
+protected void recompilePiece()
+  {
+  for(Primitive p : primitives){p.setCompiled(false);}
+  for(ModelPiece p : children){p.recompilePiece();}
   }
 
 public void setPosition(float x, float y, float z)
@@ -195,14 +202,17 @@ public void render()
   GL11.glPopMatrix();
   }
 
-public void renderForEditor(ModelPiece piece, Primitive prim)
+public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> selectedPieceParents)
   {
+  
   GL11.glPushMatrix();
-  boolean selected = piece==this;
   if(x!=0 || y!=0 || z!=0){GL11.glTranslatef(x, y, z);}  
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
   if(ry!=0){GL11.glRotatef(ry, 0, 1, 0);}
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);} 
+  
+  boolean selected = piece==this;
+  boolean colored = selected || selectedPieceParents.contains(this); 
   if(selected)
     {
     GL11.glDisable(GL11.GL_LIGHTING);
@@ -212,41 +222,46 @@ public void renderForEditor(ModelPiece piece, Primitive prim)
     GL11.glPointSize(5.f);
     GL11.glBegin(GL11.GL_POINTS);    
     GL11.glVertex3f(0, 0, 0);
-    GL11.glEnd();
-    GL11.glColor4f(0.75f, 0.5f, 0.5f, 1.f);
+    GL11.glEnd();    
     GL11.glEnable(GL11.GL_LIGHTING);
     GL11.glEnable(GL11.GL_TEXTURE_2D);
-    }
+    }  
+  if(colored)
+    {
+    GL11.glColor4f(0.75f, 0.5f, 0.5f, 1.f);
+    }  
+  else
+    {
+    GL11.glColor4f(1.f, 1.f, 1.f, 1.f);      
+    }  
   for(Primitive primitive : this.primitives)
     {  
     if(primitive==prim)
       {
       GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glDisable(GL11.GL_TEXTURE_2D);
-
       GL11.glColor4f(1.0f, 0.f, 0.f, 1.f);
-      
-      
       GL11.glBegin(GL11.GL_POINTS);    
       GL11.glVertex3f(prim.x, prim.y, prim.z);
-      GL11.glEnd();
-      
+      GL11.glEnd();      
       GL11.glEnable(GL11.GL_LIGHTING);
-      GL11.glEnable(GL11.GL_TEXTURE_2D);    
-
+      GL11.glEnable(GL11.GL_TEXTURE_2D);
       GL11.glColor4f(1.0f, 0.5f, 0.5f, 1.f);
       }
-    primitive.render();
-    if(primitive==prim)
+    else if(colored)
       {
       GL11.glColor4f(0.75f, 0.5f, 0.5f, 1.f);
+      }  
+    else
+      {
+      GL11.glColor4f(1.f, 1.f, 1.f, 1.f);      
       }
+    primitive.render();      
     }  
   for(ModelPiece child : this.children)
     {
-    child.renderForEditor(selected ? child : null, prim);
-    }
-  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);    
+    child.renderForEditor(piece, prim, selectedPieceParents);
+    }  
   GL11.glPopMatrix();
   }
 

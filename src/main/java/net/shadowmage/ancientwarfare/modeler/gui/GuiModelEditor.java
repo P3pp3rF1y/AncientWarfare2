@@ -730,7 +730,7 @@ private void addPieceElements()
       ModelPiece piece = getModelPiece();
       if(piece!=null)
         {
-        piece.setPosition(piece.y(), piece.y(), value * scaleInput.getFloatValue());        
+        piece.setPosition(piece.x(), piece.y(), value * scaleInput.getFloatValue());        
         }
       }
     };
