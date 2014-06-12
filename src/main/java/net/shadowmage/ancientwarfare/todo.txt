@@ -36,10 +36,7 @@ Licensing
 	Add high-quality blocks with higher capacity and less/no power loss.
 * Textures
 	sterling/waterwheel/hand cranged engines
-	warehouse storage med/large	
-	recruiting station
-	med/heavy torque conduits
-	med/heavy torque distribs
+	warehouse storage med/large
 	med/heavy flywheel blocks
 * create med/large warehouse storage blocks	
 * Recipes
