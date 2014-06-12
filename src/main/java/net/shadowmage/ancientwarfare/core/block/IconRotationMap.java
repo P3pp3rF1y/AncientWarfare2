@@ -45,4 +45,9 @@ public IIcon getIcon(IRotatableBlock block, int meta, int side)
   RelativeSide rSide = RelativeSide.getSideViewed(block.getRotationType(), meta, side);
   return icons.get(rSide);
   }
+
+public IIcon getIcon(RelativeSide side)
+  {
+  return icons.get(side);
+  }
 }

@@ -139,8 +139,8 @@ public Packet getDescriptionPacket()
 @Override
 public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {  
-  super.onDataPacket(net, pkt);
   orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
 }

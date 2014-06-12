@@ -65,15 +65,16 @@ public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side)
 @Override
 public IIcon getIcon(int side, int meta)
   {
-  AWLog.logDebug("getting icon for: "+side+" :: "+meta+" :: "+this);
+//  AWLog.logDebug("getting icon for: "+side+" :: "+meta+" :: "+this);
   return iconMaps.get(meta).getIcon(this, 2, side);
   }
 
 @Override
 public BlockTorqueBase setIcon(RelativeSide side, String texName)
   {
-  setIcon(0, side, texName);
-  return this;
+  throw new UnsupportedOperationException("Cannot set side icons directly on torque block, need to use meta-sensitive version");
+//  setIcon(0, side, texName);
+//  return this;
   }
 
 public BlockTorqueBase setIcon(int meta, RelativeSide side, String texName)
@@ -81,6 +82,11 @@ public BlockTorqueBase setIcon(int meta, RelativeSide side, String texName)
   if(!this.iconMaps.containsKey(meta)){this.iconMaps.put(meta, new IconRotationMap());}
   iconMaps.get(meta).setIcon(this, side, texName);
   return this;
+  }
+
+public IIcon getIcon(int meta, RelativeSide side)
+  {
+  return iconMaps.get(meta).getIcon(side);
   }
 
 @Override
@@ -119,13 +125,21 @@ public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
 @Override
 public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
   {
+  if(worldObj.isRemote)
+    {
+    return false;
+    }
   TileEntity t = worldObj.getTileEntity(x, y, z);
   TileTorqueBase tt = (TileTorqueBase)t;
-  int meta = tt.getOrientation().ordinal();
+  int meta = tt.getOrientation().ordinal();  
   int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
+  AWLog.logDebug("base meta: "+meta);
+  AWLog.logDebug("rmeta    : "+rMeta);  
   if(rMeta!=meta)
     {
+    AWLog.logDebug("base or  :"+tt.getOrientation());
     tt.setOrientation(ForgeDirection.getOrientation(rMeta));
+    AWLog.logDebug("new or   :"+tt.getOrientation());
     worldObj.markBlockForUpdate(x, y, z);
     return true;
     }

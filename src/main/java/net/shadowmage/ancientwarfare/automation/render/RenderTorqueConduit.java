@@ -5,7 +5,9 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.shadowmage.ancientwarfare.automation.block.BlockTorqueBase;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -25,12 +27,14 @@ public RenderTorqueConduit()
 @Override
 public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
   {
+  BlockTorqueBase torque = (BlockTorqueBase)block;
   block.setBlockBoundsForItemRender();
   renderer.setRenderBoundsFromBlock(block);
 
   Tessellator tessellator = Tessellator.instance;
   IIcon icon;
-  icon = block.getIcon(0, 0);//TODO change this to the 'sides' icon
+  
+  icon = torque.getIcon(metadata, RelativeSide.ANY_SIDE);
   
   tessellator.startDrawingQuads();
   tessellator.setNormal(0.0F, -1F, 0.0F);
@@ -57,7 +61,7 @@ public void renderInventoryBlock(Block block, int metadata, int modelId, RenderB
   renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, icon);
   tessellator.draw();
 
-  icon = block.getIcon(0, 0);
+  icon = torque.getIcon(metadata, RelativeSide.TOP);
   tessellator.startDrawingQuads();
   tessellator.setNormal(0.0F, 1.0F, 0.0F);
   renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, icon);
@@ -77,17 +81,17 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
   renderer.setRenderBoundsFromBlock(block);
   renderer.renderStandardBlock(block, x, y, z);
   int meta = world.getBlockMetadata(x, y, z);  
-  
+  int or = tile.getOrientation().ordinal();
+  BlockTorqueBase torque = (BlockTorqueBase)block;
   if(sides[0])//down
     {
-    if(meta!=0)
+    if(or!=0)
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.ANY_SIDE));      
       }  
     else
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
-//      renderer.clearOverrideBlockTexture();
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.TOP));   
       block.setBlockBounds(min2, 0.f, min2, max2, min3, max2);      
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);
@@ -98,13 +102,13 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     }
   if(sides[1])//up
     {
-    if(meta!=1)
+    if(or!=1)
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.ANY_SIDE));      
       }  
     else
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.TOP));   
       block.setBlockBounds(min2, max3, min2, max2, 1.0f, max2);
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);
@@ -115,13 +119,13 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     }
   if(sides[2])//z-
     {
-    if(meta!=2)
+    if(or!=2)
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.ANY_SIDE));      
       }  
     else
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.TOP));   
       block.setBlockBounds(min2, min2, 0.f, max2, max2, min3);
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);      
@@ -132,13 +136,13 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     }
   if(sides[3])//z++
     {
-    if(meta!=3)
+    if(or!=3)
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.ANY_SIDE));      
       }  
     else
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.TOP));   
       block.setBlockBounds(min2, min2, max3, max2, max2, 1.f);
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);      
@@ -149,13 +153,13 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     }
   if(sides[4])//x--
     {
-    if(meta!=4)
+    if(or!=4)
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.ANY_SIDE));      
       }  
     else
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.TOP));   
       block.setBlockBounds(0.f, min2, min2, min3, max2, max2);
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);
@@ -166,13 +170,13 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
     }
   if(sides[5])
     {
-    if(meta!=5)
+    if(or!=5)
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0, 2));      
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.ANY_SIDE));      
       }  
     else
       {
-      renderer.setOverrideBlockTexture(block.getIcon(0,0));   
+      renderer.setOverrideBlockTexture(torque.getIcon(meta, RelativeSide.TOP));   
       block.setBlockBounds(max3, min2, min2, 1.f, max2, max2);
       renderer.setRenderBoundsFromBlock(block);
       renderer.renderStandardBlock(block, x, y, z);      
