@@ -44,5 +44,9 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   return val;
   }
 
-
+@Override
+public String getUnlocalizedName(ItemStack stack)
+  {
+  return super.getUnlocalizedName(stack)+"."+stack.getItemDamage();
+  }
 }

@@ -65,7 +65,6 @@ public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side)
 @Override
 public IIcon getIcon(int side, int meta)
   {
-//  AWLog.logDebug("getting icon for: "+side+" :: "+meta+" :: "+this);
   return iconMaps.get(meta).getIcon(this, 2, side);
   }
 
@@ -73,8 +72,6 @@ public IIcon getIcon(int side, int meta)
 public BlockTorqueBase setIcon(RelativeSide side, String texName)
   {
   throw new UnsupportedOperationException("Cannot set side icons directly on torque block, need to use meta-sensitive version");
-//  setIcon(0, side, texName);
-//  return this;
   }
 
 public BlockTorqueBase setIcon(int meta, RelativeSide side, String texName)
@@ -133,13 +130,9 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
   TileTorqueBase tt = (TileTorqueBase)t;
   int meta = tt.getOrientation().ordinal();  
   int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
-  AWLog.logDebug("base meta: "+meta);
-  AWLog.logDebug("rmeta    : "+rMeta);  
   if(rMeta!=meta)
     {
-    AWLog.logDebug("base or  :"+tt.getOrientation());
     tt.setOrientation(ForgeDirection.getOrientation(rMeta));
-    AWLog.logDebug("new or   :"+tt.getOrientation());
     worldObj.markBlockForUpdate(x, y, z);
     return true;
     }

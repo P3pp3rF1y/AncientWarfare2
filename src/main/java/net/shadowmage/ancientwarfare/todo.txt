@@ -46,7 +46,6 @@ Licensing
 	-lots-
 * balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
 * add redstone control to flywheel blocks
-* rework torque tiles to store orientation in tile, allow use of meta-data for sub-types(light/med/heavy?)	
 			
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
