@@ -49,7 +49,11 @@ public static void applyPowerDrain(ITorqueTile tile)
   double e = tile.getEnergyStored();
   double m = tile.getMaxEnergy();
   double d = tile.getEnergyDrainFactor();
-  if(e < 0.01d || m <=0 || d <= 0){return;}
+  if(e < 0.01d || m <=0 || d <= 0)
+    {
+    world.theProfiler.endSection();
+    return;    
+    }
   double p = e/m;
   double edpt = p*d*0.05d;
   tile.setEnergy(e-edpt);
