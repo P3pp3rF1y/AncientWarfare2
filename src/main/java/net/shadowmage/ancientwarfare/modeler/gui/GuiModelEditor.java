@@ -57,6 +57,17 @@ box.setRotation(0, 0, 0);
 box.setBounds(-0.5f, 0.f, -0.5f, 1, 1, 1);
 model.addPiece(piece);
 piece.addPrimitive(box);
+
+File file = new File(AWCoreStatics.configPath+"/AWConfig/meim/models");
+file.mkdirs();
+file = new File(AWCoreStatics.configPath+"/AWConfig/meim/uvmaps");
+file.mkdirs();
+file = new File(AWCoreStatics.configPath+"/AWConfig/meim/exportedmodels");
+file.mkdirs();
+file = new File(AWCoreStatics.configPath+"/AWConfig/meim/exportedtextures");
+file.mkdirs();
+file = new File(AWCoreStatics.configPath+"/AWConfig/meim/textures");
+file.mkdirs();
 }
 
 
@@ -201,7 +212,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath, false)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath+"/AWConfig/meim/models", false)
         {
         @Override
         public void onFileSelected(File file)
@@ -222,7 +233,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath, true)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath+"/AWConfig/meim/models", true)
         {
         @Override
         public void onFileSelected(File file)
@@ -241,7 +252,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath, false)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath+"/AWConfig/meim/models", false)
         {
         @Override
         public void onFileSelected(File file)
@@ -260,7 +271,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath, false)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath+"/AWConfig/meim/textures", false)
         {
         @Override
         public void onFileSelected(File file)
@@ -358,7 +369,7 @@ private void addPieceElements()
     @Override
     protected void onPressed()
       {
-      GuiPieceSelection gui = new GuiPieceSelection(GuiModelEditor.this)
+      GuiPieceSelection gui = new GuiPieceSelection(GuiModelEditor.this, modelWidget.getSelectedPiece())
         {
         @Override
         protected void onPieceSelected(ModelPiece piece)
@@ -367,6 +378,21 @@ private void addPieceElements()
           }
         };
       Minecraft.getMinecraft().displayGuiScreen(gui);
+      }
+    };
+  totalHeight+=12;
+  pieceControlArea.addGuiElement(b);
+  
+  b = new Button(3, totalHeight, w, h, "Clear Parent")
+    {
+    @Override
+    protected void onPressed()
+      {
+      if(modelWidget.getSelectedPiece()!=null)
+        {
+        modelWidget.getSelectedPiece().clearParent();
+        refreshGui();
+        }
       }
     };
   totalHeight+=12;

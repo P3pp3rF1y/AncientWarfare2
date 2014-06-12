@@ -91,7 +91,7 @@ public ModelPiece(ModelBaseAW model, String name, float x, float y, float z, flo
 public void clearParent()
   {
   this.model.removePiece(this);
-  this.parent = null;
+  if(this.parent!=null){this.parent.removeChild(this);}
   this.model.addPiece(this);
   }
 
@@ -198,11 +198,12 @@ public void render()
 public void renderForEditor(ModelPiece piece, Primitive prim)
   {
   GL11.glPushMatrix();
+  boolean selected = piece==this;
   if(x!=0 || y!=0 || z!=0){GL11.glTranslatef(x, y, z);}  
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
   if(ry!=0){GL11.glRotatef(ry, 0, 1, 0);}
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);} 
-  if(piece==this)
+  if(selected)
     {
     GL11.glDisable(GL11.GL_LIGHTING);
     GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -243,9 +244,9 @@ public void renderForEditor(ModelPiece piece, Primitive prim)
     }  
   for(ModelPiece child : this.children)
     {
-    child.renderForEditor(piece, prim);
+    child.renderForEditor(selected ? child : null, prim);
     }
-  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);    
   GL11.glPopMatrix();
   }
 

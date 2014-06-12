@@ -443,7 +443,7 @@ public void addNewPrimitive(Primitive p)
  */
 public void addNewPiece(String pieceName)
   {
-  ModelPiece pieceParent = this.selectedPiece==null ? null : this.selectedPiece.getParent();
+  ModelPiece pieceParent = this.selectedPiece==null ? null : this.selectedPiece;
   ModelPiece newPiece = new ModelPiece(model, pieceName, 0, 0, 0, 0, 0, 0, pieceParent);
   if(pieceParent!=null)
     {
@@ -462,6 +462,7 @@ public void deleteSelectedPiece()
   {
   if(selectedPiece!=null)
     {
+    selectedPiece.setParent(null);
     model.removePiece(selectedPiece);
     }
   this.selectedPiece = null;
@@ -596,6 +597,11 @@ public void importPieces(File file)
 protected void onSelection(ModelPiece piece, Primitive primitive)
   {
   //NOOP in base widget, implementation must be provided via anonymous inner-class overrides
+  }
+
+public void clearPieceParent(ModelPiece piece)
+  {
+  piece.clearParent();  
   }
 
 }

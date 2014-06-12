@@ -25,10 +25,19 @@ Label selectedPiece;
 
 Label selectedPieceDisplayLabel;
 
+ModelPiece excludedPiece;
+
 public GuiPieceSelection(GuiModelEditor parent)
   {
   super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);  
   this.parent = parent;
+  }
+
+public GuiPieceSelection(GuiModelEditor parent, ModelPiece excludedPiece)
+  {
+  super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);  
+  this.parent = parent;
+  this.excludedPiece = excludedPiece;
   }
 
 @Override
@@ -75,6 +84,7 @@ public void initElements()
   Label label;
   for(ModelPiece piece : pieces)
     {
+    if(piece==excludedPiece){continue;}
     label = new Label(3, totalHeight, piece.getName());
     label.addNewListener(new Listener(Listener.MOUSE_UP)
       {
