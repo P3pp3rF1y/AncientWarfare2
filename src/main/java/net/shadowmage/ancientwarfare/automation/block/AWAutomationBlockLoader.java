@@ -294,7 +294,7 @@ public static void load()
   flywheel.setIcon(0, RelativeSide.LEFT, "ancientwarfare:automation/flywheel_left");
   flywheel.setIcon(0, RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_right");  
   
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelMedium.class, "flywheel_tile");//TODO add proper tex refs
+  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelMedium.class, "flywheel_medium_tile");//TODO add proper tex refs
   flywheel.setIcon(1, RelativeSide.TOP, "ancientwarfare:automation/flywheel_top");
   flywheel.setIcon(1, RelativeSide.FRONT, "ancientwarfare:automation/flywheel_front");
   flywheel.setIcon(1, RelativeSide.REAR, "ancientwarfare:automation/flywheel_rear");  
@@ -302,7 +302,7 @@ public static void load()
   flywheel.setIcon(1, RelativeSide.LEFT, "ancientwarfare:automation/flywheel_left");
   flywheel.setIcon(1, RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_right"); 
   
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelLarge.class, "flywheel_tile");//TODO add proper tex refs
+  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelLarge.class, "flywheel_large_tile");//TODO add proper tex refs
   flywheel.setIcon(2, RelativeSide.TOP, "ancientwarfare:automation/flywheel_top");
   flywheel.setIcon(2, RelativeSide.FRONT, "ancientwarfare:automation/flywheel_front");
   flywheel.setIcon(2, RelativeSide.REAR, "ancientwarfare:automation/flywheel_rear");  
