@@ -38,9 +38,10 @@ public void renderTileEntityAt(TileEntity tile, double x, double y, double z, fl
   model.getPiece("flywheel2").setRotation(0, 0, rotation);
   calculateArmAngle(rotation);
   
-  model.getPiece("piston_move").setPosition((pistonPos-14)*0.0625f, 0, 0);
+  model.getPiece("flywheel_arm").setRotation(0, 0, -rotation);
   
-  model.getPiece("crank_rod").setRotation(0, 0, -rotation+armAngle);
+  model.getPiece("piston_crank").setRotation(0, 0, rotation);
+  model.getPiece("piston_arm").setRotation(0, 0, -rotation+armAngle);
   model.renderModel();
 
   GL11.glPopMatrix();
@@ -52,7 +53,7 @@ private void calculateArmAngle(float crankAngle)
   {
   float ra = crankAngle*Trig.TORADIANS;
   float crankDistance = 1.f;//side a
-  float crankLength = 12.f;//side b
+  float crankLength = 9.f;//side b
   calculatePistonPosition(ra, crankDistance, crankLength);
   calculateArmAngle(ra, crankLength, crankDistance, pistonPos);
   }
