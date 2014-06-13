@@ -1,8 +1,12 @@
 package net.shadowmage.ancientwarfare.modeler.gui;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
@@ -282,6 +286,23 @@ private void addTextureControls()
 
 private void addFileControls()
   {
+  Button button = new Button(8,8, 55, 12, "Export UV")
+    {
+    @Override
+    protected void onPressed()
+      {
+      File path = new File("config/AWConfig/meim/uvmaps/"+System.currentTimeMillis()+".png");
+      try
+        {
+        ImageIO.write(parent.image, "png", path);
+        }
+      catch (IOException e)
+        {
+        e.printStackTrace();
+        }
+      }
+    };
+  fileControlArea.addGuiElement(button);
   /**
    * TODO
    */
