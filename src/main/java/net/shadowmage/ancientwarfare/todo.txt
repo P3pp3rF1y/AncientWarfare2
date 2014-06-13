@@ -35,7 +35,7 @@ Licensing
 * Torque API:	
 	Add high-quality blocks with higher capacity and less/no power loss.
 * Textures
-	sterling/waterwheel/hand cranged engines
+	sterling/waterwheel/hand cranged engines (or models and uv maps)
 	warehouse storage med/large
 	med/heavy flywheel blocks
 * create med/large warehouse storage blocks	
@@ -62,8 +62,9 @@ figure out collision detection for large rectangular entities
 	examine collision detection for ender-dragon?
 everything
 		
-****************************MEIM MODULE TODO****************************
-> who knows.... will need to start using it to find out what is broken / not working, will need it in vehicle module
+****************************MODEL-EDITOR MODULE TODO****************************
+* UV editor GUI needs area positions re-set when GUI size changes
+* when you swap a primitive parent, the old parent is still selected with the primitive (modelWidget, selection error)
 
 
 *****************************************************************

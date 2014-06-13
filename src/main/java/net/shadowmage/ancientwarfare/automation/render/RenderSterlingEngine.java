@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -16,13 +17,14 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer
 ModelBaseAW model;
 
 float rotation;
-
+ResourceLocation texture;
 
 
 public RenderSterlingEngine()
   {
   ModelLoader loader = new ModelLoader();
-  model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/sterling_engine.mf2"));  
+  model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/sterling_engine.mf2"));
+  texture = new ResourceLocation("ancientwarfare:textures/model/automation/sterling_engine.png");
   }
 
 @Override
@@ -33,8 +35,7 @@ public void renderTileEntityAt(TileEntity tile, double x, double y, double z, fl
   
   RenderTools.setFullColorLightmap();
   GL11.glTranslated(x+0.5d, y+1, z+0.5d);
-  GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-  
+  bindTexture(texture);  
   model.getPiece("flywheel2").setRotation(0, 0, rotation);
   calculateArmAngle1(rotation);
   calculateArmAngle2(rotation-90);
@@ -96,9 +97,6 @@ private void calculatePistonPosition2(float crankAngleRadians, float radius, flo
   float cy = pistonPos2;
 
   float rlrA = (float) Math.atan2(cx-bx, cy-by);
-//  float rlrA = (float) Math.atan2(cy-by, cx-bx);
-//  float rlrA = (float) Math.atan2(cy-by, cx-bx);
-//  float rlrA = (float) Math.atan2(cx-bx, cy-by);
   armAngle2 = rlrA*Trig.TODEGREES;
   }
 
