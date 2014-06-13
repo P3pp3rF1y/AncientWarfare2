@@ -129,10 +129,9 @@ public void setRotation(float rx, float ry, float rz)
   this.rx = rx;
   this.ry = ry;
   this.rz = rz;
-//  recompilePiece();
   }
 
-protected void recompilePiece()
+public void recompilePiece()
   {
   for(Primitive p : primitives){p.setCompiled(false);}
   for(ModelPiece p : children){p.recompilePiece();}
@@ -317,6 +316,21 @@ public void addPieceLines(ArrayList<String> lines)
     {
     p.addPieceLines(lines);
     }
+  }
+
+public Primitive getPickedPrimitive(int num)
+  {   
+  for(Primitive p : primitives)
+    {
+    if(p.primitiveNumber==num){return p;}
+    }
+  Primitive p;
+  for(ModelPiece mp : children)
+    {
+    p = mp.getPickedPrimitive(num);
+    if(p!=null){return p;}
+    }
+  return null;
   }
 
 }

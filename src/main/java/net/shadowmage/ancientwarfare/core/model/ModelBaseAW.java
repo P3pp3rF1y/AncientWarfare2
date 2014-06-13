@@ -34,13 +34,8 @@ public class ModelBaseAW
 int textureWidth=256;
 int textureHeight=256;
 
-/**
- * used during piece-picking
- */
-HashMap<Integer, Primitive> primitives = new HashMap<Integer, Primitive>();
 HashMap<String, ModelPiece> pieces = new HashMap<String, ModelPiece>();
 private List<ModelPiece> basePieces = new ArrayList<ModelPiece>();
-int nextPrimitiveNumber = 0;
 
 public void renderModel()
   {
@@ -107,7 +102,6 @@ public void parseFromLines(List<String> lines)
       PrimitiveBox box = new PrimitiveBox(piece);
       box.readFromLine(bits);
       piece.addPrimitive(box);
-      addPrimitive(box);
       }
     else if(line.toLowerCase().startsWith("quad"))
       {
@@ -122,7 +116,6 @@ public void parseFromLines(List<String> lines)
       PrimitiveQuad box = new PrimitiveQuad(piece);
       box.readFromLine(bits);
       piece.addPrimitive(box);
-      addPrimitive(box);
       }
     else if(line.toLowerCase().startsWith("triangle"))
       {
@@ -137,7 +130,6 @@ public void parseFromLines(List<String> lines)
       PrimitiveTriangle box = new PrimitiveTriangle(piece);
       box.readFromLine(bits);
       piece.addPrimitive(box);
-      addPrimitive(box);
       }
     }
   }
@@ -151,21 +143,6 @@ public List<String> getModelLines()
     piece.addPieceLines(lines);
     }  
   return lines;
-  }
-
-/**
- * initialize a primitive and set its picking-color-number,
- * add it to the lookup list for aid in picking
- * @param primitive
- */
-public void addPrimitive(Primitive primitive)
-  {
-  if(primitive.primitiveNumber<=0)
-    {
-    primitive.primitiveNumber = this.nextPrimitiveNumber;
-    this.nextPrimitiveNumber++;    
-    }
-  primitives.put(primitive.primitiveNumber, primitive);
   }
 
 public void addPiece(ModelPiece piece)
@@ -197,11 +174,6 @@ public ModelPiece getPiece(String name)
   return this.pieces.get(name);
   }
 
-public void removePrimitive(Primitive primitive)
-  {
-  this.primitives.remove(primitive.primitiveNumber);
-  }
-
 public void removePiece(String name)
   {
   ModelPiece piece = this.getPiece(name);
@@ -221,14 +193,20 @@ public List<ModelPiece> getBasePieces()
 
 public Primitive getPrimitive(int num)
   {
-  return primitives.get(num);
+  Primitive prim;
+  for(ModelPiece p : basePieces)
+    {
+    prim = p.getPickedPrimitive(num);
+    if(prim!=null){return prim;}
+    }
+  return null;
   }
 
 public void recompilePrimitives()
   {
-  for(Primitive p : this.primitives.values())
+  for(ModelPiece p : this.basePieces)
     {
-    p.setCompiled(false);
+    p.recompilePiece();
     }
   }
 

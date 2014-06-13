@@ -441,7 +441,6 @@ public void addNewPrimitive(Primitive p)
     {    
     return;    
     }
-  model.addPrimitive(p);
   p.parent.addPrimitive(p);
   this.selectedPiece = p.parent;
   this.selectedPrimitive = p;
@@ -485,7 +484,6 @@ public void deleteSelectedPrimitive()
   if(this.selectedPrimitive!=null)
     {
     this.selectedPrimitive.parent.removePrimitive(selectedPrimitive);
-    this.model.removePrimitive(this.selectedPrimitive);
     }
   this.selectedPrimitive = null;
   this.onSelection(selectedPiece, selectedPrimitive);

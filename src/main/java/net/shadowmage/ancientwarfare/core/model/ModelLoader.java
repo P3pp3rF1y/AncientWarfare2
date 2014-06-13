@@ -140,7 +140,6 @@ private ModelBaseAW parseOldModelLines(List<String> lines)
       box.setTx(tx);
       box.setTy(ty);      
       piece.addPrimitive(box);
-      model.addPrimitive(box);
       }
     }
   return model;
