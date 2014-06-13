@@ -36,29 +36,32 @@ public void renderTileEntityAt(TileEntity tile, double x, double y, double z, fl
   GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
   
   model.getPiece("flywheel2").setRotation(0, 0, rotation);
-  calculateArmAngle(rotation);
+  calculateArmAngle1(rotation);
+  calculateArmAngle2(rotation-90);
   
   model.getPiece("flywheel_arm").setRotation(0, 0, -rotation);
   
   model.getPiece("piston_crank").setRotation(0, 0, rotation);
   model.getPiece("piston_arm").setRotation(0, 0, -rotation+armAngle);
+  
+  model.getPiece("piston_arm2").setRotation(0, 0, -rotation+armAngle2);
+  
   model.renderModel();
 
   GL11.glPopMatrix();
   }
 
-float pistonPos, armAngle;
+float pistonPos, armAngle, pistonPos2, armAngle2;
 
-private void calculateArmAngle(float crankAngle)
+private void calculateArmAngle1(float crankAngle)
   {
   float ra = crankAngle*Trig.TORADIANS;
   float crankDistance = 1.f;//side a
   float crankLength = 9.f;//side b
-  calculatePistonPosition(ra, crankDistance, crankLength);
-  calculateArmAngle(ra, crankLength, crankDistance, pistonPos);
+  calculatePistonPosition1(ra, crankDistance, crankLength);
   }
 
-private void calculatePistonPosition(float crankAngleRadians, float radius, float length)
+private void calculatePistonPosition1(float crankAngleRadians, float radius, float length)
   {
   float cA = MathHelper.cos(crankAngleRadians);
   float sA = MathHelper.sin(crankAngleRadians);
@@ -73,15 +76,30 @@ private void calculatePistonPosition(float crankAngleRadians, float radius, floa
   armAngle = rlrA*Trig.TODEGREES;
   }
 
-private float calculateArmAngle(float radAngleA, float sideA, float sideB, float sideC)
+private void calculateArmAngle2(float crankAngle)
   {
-  if(radAngleA==0.f){return 90.f;}
-  float shortSide = sideA<sideB? sideA : sideB;
-  shortSide = sideC<shortSide? sideC : shortSide;
-  float longSide = sideA>sideB ? sideA : sideB;
-  longSide = sideC>longSide ? sideC : longSide;
-  float a = (float)((Math.asin(radAngleA)*shortSide)/longSide);    
-  return a;
+  float ra = crankAngle*Trig.TORADIANS;
+  float crankDistance = 1.f;//side a
+  float crankLength = 7.f;//side b
+  calculatePistonPosition2(ra, crankDistance, crankLength);
+  }
+
+private void calculatePistonPosition2(float crankAngleRadians, float radius, float length)
+  {
+  float cA = MathHelper.cos(crankAngleRadians);
+  float sA = MathHelper.sin(crankAngleRadians);
+  pistonPos2 = radius*cA + MathHelper.sqrt_float( length*length-radius*radius*sA*sA );
+  
+  float bx = sA * radius;
+  float by = cA * radius;
+  float cx = 0;
+  float cy = pistonPos2;
+
+  float rlrA = (float) Math.atan2(cx-bx, cy-by);
+//  float rlrA = (float) Math.atan2(cy-by, cx-bx);
+//  float rlrA = (float) Math.atan2(cy-by, cx-bx);
+//  float rlrA = (float) Math.atan2(cx-bx, cy-by);
+  armAngle2 = rlrA*Trig.TODEGREES;
   }
 
 }
