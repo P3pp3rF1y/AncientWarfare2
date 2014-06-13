@@ -32,7 +32,6 @@ public class GuiUVEditor extends GuiContainerBase
 {
 
 GuiModelEditor parent;
-
 TexturedRectangleLive textureRect;
 
 CompositeScrolled primitiveControlArea;
@@ -166,7 +165,7 @@ private void updateTexture()
     {
     for(int y = 0; y< image.getHeight(); y++)
       {
-      image.setRGB(x, y, 0x00ffffff);//clear image to default  white 100% alpha (transparent)
+      image.setRGB(x, y, 0xff000000);//clear image to default  black 0% alpha (opaque)
       }
     }
   ArrayList<ModelPiece> pieces = new ArrayList<ModelPiece>();
@@ -1091,12 +1090,14 @@ private void addPieceList()
         if(pieceMap.containsKey(l))
           {
           ModelPiece piece = pieceMap.get(l);
-          parent.modelWidget.setSelection(piece, null);          
+          parent.modelWidget.setSelection(piece, null);  
+          refreshGui();        
           }
         else if(primitiveMap.containsKey(l))
           {
           Primitive p = primitiveMap.get(l);
           parent.modelWidget.setSelection(p.parent, p);
+          refreshGui();
           }
         }
       return true;

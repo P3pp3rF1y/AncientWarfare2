@@ -240,58 +240,60 @@ public void addUVMapToImage(BufferedImage image)
   {
   int u = (int) tx();
   int v = (int) ty();
-  int w = (int) (x2-x1)*16;
-  int h = (int) (y2-y1)*16;
-  int l = (int) (z2-z1)*16;
+  int w = (int) (x2*16-x1*16);
+  int h = (int) (y2*16-y1*16);
+  int l = (int) (z2*16-z1*16);
+   
+  
   int x, y;
   /**
    * front face
    */
-  for(x = u + l; x < u + l + w && x<image.getWidth(); x++)
+  for(x = u + l; x < u + l + w; x++)
     {
-    for(y = v + l; y< v+ l + h && y<image.getHeight(); y++)
+    for(y = v + l; y< v+ l + h; y++)
       {
-      image.setRGB(x, y, 0xffff0000);
+      setImagePixel(image, x, y, 0xffff0000);
       }
     }
   //left face
-  for(x = u ; x< u + l && x<image.getWidth(); x++)
+  for(x = u ; x< u + l; x++)
     {
-    for(y = v+l; y< v+l+h && y<image.getHeight(); y++)
+    for(y = v+l; y< v+l+h ; y++)
       {
-      image.setRGB(x, y, 0xff00aa00);
+      setImagePixel(image, x, y, 0xff00aa00);
       }
     }
   //right face
-  for(x = u + l + w ; x< u + l + w + l && x<image.getWidth(); x++)
+  for(x = u + l + w ; x< u + l + w + l ; x++)
     {
-    for(y = v+l; y< v+l+h && y<image.getHeight(); y++)
+    for(y = v+l; y< v+l+h ; y++)
       {
-      image.setRGB(x, y, 0xff00ff00);
+      setImagePixel(image, x, y, 0xff00ff00);
       }
     }
   //rear face
-  for(x = u + l + w + l ; x< u + l + w + l + w && x<image.getWidth(); x++)
+  for(x = u + l + w + l ; x< u + l + w + l + w ; x++)
     {
-    for(y = v+l; y< v+l+h&& y<image.getHeight(); y++)
+    for(y = v+l; y< v+l+h; y++)
       {
-      image.setRGB(x, y, 0xffaa0000);
+      setImagePixel(image, x, y, 0xffaa0000);
       }
     }
   //top face
-  for(x = u + l; x< u +l +w && x<image.getWidth(); x++)
+  for(x = u + l; x< u +l +w ; x++)
     {
-    for(y = v; y< v+l&& y<image.getHeight(); y++)
+    for(y = v; y< v+l; y++)
       {
-      image.setRGB(x, y, 0xff0000ff);
+      setImagePixel(image, x, y, 0xff0000ff);
       }
     }
   //bottom face
-  for(x = u + l + w; x < u + l + w + w && x<image.getWidth(); x++)
+  for(x = u + l + w; x < u + l + w + w ; x++)
     {
-    for(y = v; y< v+l&& y<image.getHeight(); y++)
+    for(y = v; y< v+l; y++)
       {
-      image.setRGB(x, y, 0xff0000aa);
+      setImagePixel(image, x, y, 0xff0000aa);
       }
     }
   }

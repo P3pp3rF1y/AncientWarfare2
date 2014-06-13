@@ -128,4 +128,12 @@ public void setCompiled(boolean isCompiled)
 
 public abstract void addUVMapToImage(BufferedImage image);
 
+protected void setImagePixel(BufferedImage image, int x, int y, int rgb)
+  {
+  if(x>=0 && x< image.getWidth() && y>=0 && y<image.getWidth())
+    {
+    image.setRGB(x, y, rgb);
+    }
+  }
+
 }
