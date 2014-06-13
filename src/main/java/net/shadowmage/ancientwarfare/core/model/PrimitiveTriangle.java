@@ -64,14 +64,12 @@ public float cx(){return cx;}
 public float cy(){return cy;}
 
 @Override
-protected void renderForDisplayList()
+protected void renderForDisplayList(float tw, float th)
   {   
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
   if(ry!=0){GL11.glRotatef(ry, 0, 1, 0);}
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);}  
   
-  float tw = parent.getModel().textureWidth;
-  float th = parent.getModel().textureHeight;
   float px = 1.f/tw;
   float py = 1.f/th;
   

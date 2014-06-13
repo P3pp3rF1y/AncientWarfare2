@@ -51,7 +51,6 @@ private float x, y, z;//manipulatable coordinates for this piece, relative to ei
 private float rx, ry, rz;//manipulatable rotation for this piece, relative to either model rotation or parent-piece rotation (if base piece or has parent)
 private Set<ModelPiece> children = new HashSet<ModelPiece>();//the children of this piece
 private List<Primitive> primitives = new ArrayList<Primitive>();//the list of boxes that make up this piece, really only used during first construction of display list
-private ModelBaseAW model;
 private ModelPiece parent;
 
 public ModelPiece(ModelBaseAW model, String line)
@@ -67,7 +66,6 @@ public ModelPiece(ModelBaseAW model, String line)
   float rz = StringTools.safeParseFloat(bits[7]);
   ModelPiece parent = parentName.equals("null")? null : model.getPiece(parentName);
   this.pieceName = pieceName;
-  this.model = model;
   this.setPosition(x, y, z);
   this.setRotation(rx, ry, rz);
   if(parent!=null)
@@ -76,10 +74,9 @@ public ModelPiece(ModelBaseAW model, String line)
     }
   }
 
-public ModelPiece(ModelBaseAW model, String name, float x, float y, float z, float rx, float ry, float rz, ModelPiece parent)
+public ModelPiece(String name, float x, float y, float z, float rx, float ry, float rz, ModelPiece parent)
   {
   this.pieceName = name;
-  this.model = model;
   this.setPosition(x, y, z);
   this.setRotation(rx, ry, rz);  
   if(parent!=null)
@@ -90,26 +87,25 @@ public ModelPiece(ModelBaseAW model, String name, float x, float y, float z, flo
 
 public void clearParent()
   {
-  this.model.removePiece(this);
-  if(this.parent!=null){this.parent.removeChild(this);}
-  this.model.addPiece(this);
+  if(this.parent!=null)
+    {
+    this.parent.removeChild(this);
+    }
   }
 
 public ModelPiece setParent(ModelPiece parent)
   {
-  this.model.removePiece(this);
   if(this.parent!=null){this.parent.removeChild(this);}
   if(parent!=null)
     {
     parent.addChild(this);
     }
-  this.model.addPiece(this);
   return this;
   }
 
 public ModelPiece copy()
   {
-  ModelPiece piece = new ModelPiece(model, pieceName, x, y, z, rx, ry, rz, parent);
+  ModelPiece piece = new ModelPiece(pieceName+"_copy", x, y, z, rx, ry, rz, parent);
   for(Primitive primitive : this.primitives)
     {
     piece.addPrimitive(primitive.copy());
@@ -156,14 +152,12 @@ public void setName(String name)
 
 public void addPrimitive(Primitive primitive)
   {
-  this.model.addPrimitive(primitive);
   this.primitives.add(primitive);  
   primitive.parent = this;
   }
 
 public void removePrimitive(Primitive primitive)
   {
-  this.model.removePrimitive(primitive);
   this.primitives.remove(primitive);
   primitive.parent = null;
   }
@@ -180,7 +174,7 @@ public void removeChild(ModelPiece piece)
   piece.parent = null;
   }
 
-public void render()
+public void render(float tw, float th)
   {
   if(!visible)
     {
@@ -193,18 +187,17 @@ public void render()
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);}  
   for(Primitive primitive : this.primitives)
     {  
-    primitive.render();   
+    primitive.render(tw, th);   
     }  
   for(ModelPiece child : this.children)
     {
-    child.render();
+    child.render(tw, th);
     }
   GL11.glPopMatrix();
   }
 
-public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> highlightedPieces)
-  {
-  
+public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> highlightedPieces, float tw, float th)
+  {  
   GL11.glPushMatrix();
   if(x!=0 || y!=0 || z!=0){GL11.glTranslatef(x, y, z);}  
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
@@ -256,16 +249,16 @@ public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> h
       {
       GL11.glColor4f(1.f, 1.f, 1.f, 1.f);      
       }
-    primitive.render();      
+    primitive.render(tw, th);      
     }  
   for(ModelPiece child : this.children)
     {
-    child.renderForEditor(piece, prim, highlightedPieces);
+    child.renderForEditor(piece, prim, highlightedPieces, tw, th);
     }  
   GL11.glPopMatrix();
   }
 
-public void renderForSelection()
+public void renderForSelection(float tw, float th)
   {
   GL11.glPushMatrix();
   if(x!=0 || y!=0 || z!=0)
@@ -284,13 +277,13 @@ public void renderForSelection()
     b = (byte)((primitive.primitiveNumber >> 0 ) & 0xff);
     GL11.glColor3b(r, g, b); 
     GL11.glPushMatrix();  
-    primitive.render();
+    primitive.render(tw, th);
     GL11.glPopMatrix();
     }
        
   for(ModelPiece child : this.children)
     {
-    child.renderForSelection();
+    child.renderForSelection(tw, th);
     }
   GL11.glPopMatrix();
   }
@@ -324,11 +317,6 @@ public void addPieceLines(ArrayList<String> lines)
     {
     p.addPieceLines(lines);
     }
-  }
-
-protected ModelBaseAW getModel()
-  {
-  return this.model;
   }
 
 }

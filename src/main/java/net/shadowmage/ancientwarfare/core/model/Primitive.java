@@ -46,16 +46,16 @@ public Primitive(ModelPiece parent)
   this.parent = parent;
   }
 
-public void render()
+public void render(float tw, float th)
   {
   if(!isCompiled)
     {   
-    buildDisplayList();
+    buildDisplayList(tw, th);
     }
   GL11.glCallList(displayListNumber);
   }
 
-public void buildDisplayList()
+public void buildDisplayList(float tw, float th)
   {
   if(this.displayListNumber<0)
     {
@@ -67,13 +67,13 @@ public void buildDisplayList()
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
   if(ry!=0){GL11.glRotatef(ry, 0, 1, 0);}
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);}  
-  renderForDisplayList();
+  renderForDisplayList(tw, th);
   GL11.glPopMatrix();
   GL11.glEndList();
   setCompiled(true);
   }
 
-protected abstract void renderForDisplayList();
+protected abstract void renderForDisplayList(float tw, float th);
 
 public abstract Primitive copy();
 

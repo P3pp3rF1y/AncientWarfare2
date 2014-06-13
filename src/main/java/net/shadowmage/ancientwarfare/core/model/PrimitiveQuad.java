@@ -38,10 +38,8 @@ public PrimitiveQuad(ModelPiece parent)
   }
 
 @Override
-protected void renderForDisplayList()
+protected void renderForDisplayList(float tw, float th)
   {
-  float tw = parent.getModel().textureWidth;
-  float th = parent.getModel().textureHeight;
   float px = 1.f/tw;
   float py = 1.f/th;
   float w = (x2-x1)*16.f;

@@ -50,7 +50,7 @@ for(int x = 0; x< 256; x++)
 uvMapTexture = AWTextureManager.instance().loadImageBasedTexture(uvMapTextureName, image);
 model = new ModelBaseAW();
 model.setTextureSize(256, 256);
-ModelPiece piece = new ModelPiece(model, "part1", 0, 0, 0, 0, 0, 0, null);
+ModelPiece piece = new ModelPiece("part1", 0, 0, 0, 0, 0, 0, null);
 PrimitiveBox box = new PrimitiveBox(piece);
 box.setOrigin(0, 0, 0);
 box.setRotation(0, 0, 0);
@@ -390,7 +390,7 @@ private void addPieceElements()
       {
       if(modelWidget.getSelectedPiece()!=null)
         {
-        modelWidget.getSelectedPiece().clearParent();
+        modelWidget.clearPieceParent();
         refreshGui();
         }
       }

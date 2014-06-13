@@ -34,6 +34,9 @@ public class ModelBaseAW
 int textureWidth=256;
 int textureHeight=256;
 
+/**
+ * used during piece-picking
+ */
 HashMap<Integer, Primitive> primitives = new HashMap<Integer, Primitive>();
 HashMap<String, ModelPiece> pieces = new HashMap<String, ModelPiece>();
 private List<ModelPiece> basePieces = new ArrayList<ModelPiece>();
@@ -43,7 +46,7 @@ public void renderModel()
   {
   for(ModelPiece piece : this.getBasePieces())
     {
-    piece.render();
+    piece.render(textureWidth, textureHeight);
     }
   }
 
@@ -51,7 +54,7 @@ public void renderForSelection()
   {
   for(ModelPiece piece : this.getBasePieces())
     {
-    piece.renderForSelection();
+    piece.renderForSelection(textureWidth, textureHeight);
     }
   }
 
@@ -59,7 +62,7 @@ public void renderForEditor(ModelPiece selectedPiece, Primitive selectedPrimitiv
   {
   for(ModelPiece piece2 : this.getBasePieces())
     {
-    piece2.renderForEditor(selectedPiece, selectedPrimitive, selectedPieceParents);
+    piece2.renderForEditor(selectedPiece, selectedPrimitive, selectedPieceParents, textureWidth, textureHeight);
     }
   GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
   }
@@ -89,6 +92,7 @@ public void parseFromLines(List<String> lines)
     else if(line.startsWith("part="))
       {      
       ModelPiece piece = new ModelPiece(this, line.split("=")[1]);
+      addPiece(piece);
       }
     else if(line.startsWith("box="))
       {
@@ -103,6 +107,7 @@ public void parseFromLines(List<String> lines)
       PrimitiveBox box = new PrimitiveBox(piece);
       box.readFromLine(bits);
       piece.addPrimitive(box);
+      addPrimitive(box);
       }
     else if(line.toLowerCase().startsWith("quad"))
       {
@@ -117,6 +122,7 @@ public void parseFromLines(List<String> lines)
       PrimitiveQuad box = new PrimitiveQuad(piece);
       box.readFromLine(bits);
       piece.addPrimitive(box);
+      addPrimitive(box);
       }
     else if(line.toLowerCase().startsWith("triangle"))
       {
@@ -131,6 +137,7 @@ public void parseFromLines(List<String> lines)
       PrimitiveTriangle box = new PrimitiveTriangle(piece);
       box.readFromLine(bits);
       piece.addPrimitive(box);
+      addPrimitive(box);
       }
     }
   }
@@ -147,10 +154,11 @@ public List<String> getModelLines()
   }
 
 /**
- * should only be called from ModelPiece
+ * initialize a primitive and set its picking-color-number,
+ * add it to the lookup list for aid in picking
  * @param primitive
  */
-protected void addPrimitive(Primitive primitive)
+public void addPrimitive(Primitive primitive)
   {
   if(primitive.primitiveNumber<=0)
     {

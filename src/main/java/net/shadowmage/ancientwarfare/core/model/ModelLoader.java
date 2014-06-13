@@ -108,7 +108,7 @@ private ModelBaseAW parseOldModelLines(List<String> lines)
       int tw = (int)StringTools.safeParseFloat(split[10]);
       int th = (int)StringTools.safeParseFloat(split[11]);
       model.setTextureSize(tw, th);      
-      ModelPiece piece = new ModelPiece(model, name, -x, -y, -z, rx, ry, rz, model.getPiece(parent));
+      ModelPiece piece = new ModelPiece(name, -x, -y, -z, rx, ry, rz, model.getPiece(parent));
       model.addPiece(piece);
       if(piece.getParent()==null)
         {
@@ -140,6 +140,7 @@ private ModelBaseAW parseOldModelLines(List<String> lines)
       box.setTx(tx);
       box.setTy(ty);      
       piece.addPrimitive(box);
+      model.addPrimitive(box);
       }
     }
   return model;
