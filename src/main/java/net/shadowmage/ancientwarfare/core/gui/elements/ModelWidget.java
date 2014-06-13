@@ -250,7 +250,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
     
     Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-    getParentTree();
+    calculateHighlightedPieces();
     model.renderForEditor(selectedPiece, selectedPrimitive, parents);
     parents.clear();
     }    
@@ -262,17 +262,12 @@ public void render(int mouseX, int mouseY, float partialTick)
 
 List<ModelPiece> parents = new ArrayList<ModelPiece>();
 
-private void getParentTree()
+private void calculateHighlightedPieces()
   {
-  ModelPiece p;
+  parents.clear();
   if(selectedPiece!=null)
     {
-    p = selectedPiece.getParent();
-    while(p!=null)
-      {
-      parents.add(p);
-      p = p.getParent();
-      }
+    selectedPiece.getPieces(parents);
     }
   }
 
@@ -574,6 +569,7 @@ public void setSelection(ModelPiece piece, Primitive p)
   this.selectedPiece = piece;
   this.selectedPrimitive = p;
   this.onSelection(piece, p);
+  calculateHighlightedPieces();
   }
 
 public void saveModel(File file)

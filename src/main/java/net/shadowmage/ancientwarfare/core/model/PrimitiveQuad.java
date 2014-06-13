@@ -138,9 +138,9 @@ public void addUVMapToImage(BufferedImage image)
   int w = (int) (x2-x1)*16;
   int h = (int) (y2-y1)*16;
   
-  for(int x = (int) tx(); x< tx()+w; x++)
+  for(int x = (int) tx(); x< tx()+w && x<image.getWidth(); x++)
     {
-    for(int y = (int) ty(); y < ty()+h; y++)
+    for(int y = (int) ty(); y < ty()+h && y<image.getHeight(); y++)
       {
       image.setRGB(x, y, 0xffff0000);
       }

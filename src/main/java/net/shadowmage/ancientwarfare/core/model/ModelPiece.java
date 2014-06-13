@@ -202,7 +202,7 @@ public void render()
   GL11.glPopMatrix();
   }
 
-public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> selectedPieceParents)
+public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> highlightedPieces)
   {
   
   GL11.glPushMatrix();
@@ -212,7 +212,7 @@ public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> s
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);} 
   
   boolean selected = piece==this;
-  boolean colored = selected || selectedPieceParents.contains(this); 
+  boolean colored = selected || highlightedPieces.contains(this); 
   if(selected)
     {
     GL11.glDisable(GL11.GL_LIGHTING);
@@ -260,7 +260,7 @@ public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> s
     }  
   for(ModelPiece child : this.children)
     {
-    child.renderForEditor(piece, prim, selectedPieceParents);
+    child.renderForEditor(piece, prim, highlightedPieces);
     }  
   GL11.glPopMatrix();
   }
@@ -295,7 +295,7 @@ public void renderForSelection()
   GL11.glPopMatrix();
   }
 
-protected void getPieces(List<ModelPiece> input)
+public void getPieces(List<ModelPiece> input)
   {
   input.add(this);
   for(ModelPiece piece : this.children)

@@ -24,12 +24,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelRenderer;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+
+import org.lwjgl.opengl.GL11;
 
 public class ModelBaseAW
 {
@@ -92,7 +89,6 @@ public void parseFromLines(List<String> lines)
     else if(line.startsWith("part="))
       {      
       ModelPiece piece = new ModelPiece(this, line.split("=")[1]);
-      addPiece(piece);          
       }
     else if(line.startsWith("box="))
       {
