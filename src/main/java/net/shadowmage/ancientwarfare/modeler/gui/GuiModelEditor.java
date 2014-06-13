@@ -94,6 +94,18 @@ public GuiModelEditor(ContainerBase par1Container)
   super(par1Container, 256, 240, defaultBackground);
   }
 
+public void initTexture()
+  {
+  image = new BufferedImage(model.textureWidth(), model.textureHeight(), BufferedImage.TYPE_INT_ARGB);
+  for(int x = 0; x< model.textureWidth(); x++)
+    {
+    for(int y = 0; y< model.textureHeight(); y++)
+      {
+      image.setRGB(x, y, 0xffffffff);
+      }
+    }
+  }
+
 @Override
 public void initElements()
   {  
@@ -219,6 +231,7 @@ private void addFileControls()
           {
           modelWidget.loadModel(file);
           model = modelWidget.getModel();
+          initTexture();
           refreshGui();
           }
         };

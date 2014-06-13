@@ -41,10 +41,6 @@ CompositeScrolled textureControlArea;//set texture x/y size
 Label pieceNameLabel;
 Label primitiveNameLabel;
 
-static int textureXSize = 256;
-static int textureYSize = 256;
-
-BufferedImage image;
 ResourceLocation loc;
 
 //map of label-element combos, to select pieces through clicking on/in the piece list area
@@ -56,7 +52,6 @@ public GuiUVEditor(GuiModelEditor parent)
   {
   super((ContainerBase) parent.inventorySlots, 256, 256, defaultBackground);
   this.parent = parent;
-  image = GuiModelEditor.image;
   loc = new ResourceLocation(GuiModelEditor.uvMapTextureName);
   }
 
@@ -70,7 +65,7 @@ protected boolean onGuiCloseRequested()
 @Override
 public void initElements()
   {
-  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, textureXSize, textureYSize, 0, 0, textureXSize, textureYSize, loc);
+  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, parent.model.textureWidth(), parent.model.textureHeight(), 0, 0, parent.model.textureWidth(), parent.model.textureHeight(), loc);
   addGuiElement(textureRect);
   
   textureControlArea = new CompositeScrolled(-guiLeft, -guiTop, (width - xSize)/2, height/2);
@@ -118,7 +113,7 @@ public void setupElements()
   widgetMap.clear();
   
   this.removeGuiElement(textureRect);
-  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, textureXSize, textureYSize, 0, 0, textureXSize, textureYSize, loc);
+  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, parent.model.textureWidth(), parent.model.textureHeight(), 0, 0, parent.model.textureWidth(), parent.model.textureHeight(), loc);
   this.addGuiElement(textureRect);
   
   addPieceList();
@@ -133,15 +128,13 @@ public void setupElements()
 
 private void setTextureXSize(int size)
   {  
-  textureXSize = size;
-  GuiModelEditor.model.setTextureSize(textureXSize, textureYSize);
+  GuiModelEditor.model.setTextureSize(size, parent.model.textureHeight());
   updateTextureSize();
   }
 
 private void setTextureYSize(int size)
   {
-  textureYSize = size;
-  GuiModelEditor.model.setTextureSize(textureXSize, textureYSize);
+  GuiModelEditor.model.setTextureSize(parent.model.textureWidth(), size);
   updateTextureSize();
   }
 
@@ -151,7 +144,7 @@ private void setTextureYSize(int size)
  */
 private void updateTextureSize()
   {  
-  this.image = new BufferedImage(textureXSize, textureYSize, BufferedImage.TYPE_INT_ARGB);
+  GuiModelEditor.image = new BufferedImage(parent.model.textureWidth(), parent.model.textureHeight(), BufferedImage.TYPE_INT_ARGB);
   updateTexture();
   refreshGui();
   }
@@ -161,11 +154,11 @@ private void updateTextureSize()
  */
 private void updateTexture()
   {
-  for(int x = 0; x< image.getWidth(); x++)
+  for(int x = 0; x< GuiModelEditor.image.getWidth(); x++)
     {
-    for(int y = 0; y< image.getHeight(); y++)
+    for(int y = 0; y< GuiModelEditor.image.getHeight(); y++)
       {
-      image.setRGB(x, y, 0xff000000);//clear image to default  black 0% alpha (opaque)
+      GuiModelEditor.image.setRGB(x, y, 0xff000000);//clear image to default  black 0% alpha (opaque)
       }
     }
   ArrayList<ModelPiece> pieces = new ArrayList<ModelPiece>();
@@ -174,10 +167,10 @@ private void updateTexture()
     {
     for(Primitive primitive : piece.getPrimitives())
       {
-      primitive.addUVMapToImage(image);
+      primitive.addUVMapToImage(GuiModelEditor.image);
       }
     }
-  AWTextureManager.instance().updateImageBasedTexture(GuiModelEditor.uvMapTextureName, image);
+  AWTextureManager.instance().updateImageBasedTexture(GuiModelEditor.uvMapTextureName, GuiModelEditor.image);
   }
 
 private void addTextureControls()
@@ -202,7 +195,7 @@ private void addTextureControls()
   label = new Label(c0, totalHeight, "X:");
   textureControlArea.addGuiElement(label);
   
-  input = new NumberInput(c2, totalHeight, w2, textureXSize, this)
+  input = new NumberInput(c2, totalHeight, w2, parent.model.textureWidth(), this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -218,9 +211,9 @@ private void addTextureControls()
     @Override
     protected void onPressed()
       {
-      if(textureXSize>1)
+      if(parent.model.textureWidth()>1)
         {
-        setTextureXSize(textureXSize-1);
+        setTextureXSize(parent.model.textureWidth()-1);
         }
       }
     };
@@ -231,9 +224,9 @@ private void addTextureControls()
     @Override
     protected void onPressed()
       {
-      if(textureXSize<1024)
+      if(parent.model.textureWidth()<1024)
         {
-        setTextureXSize(textureXSize+1);
+        setTextureXSize(parent.model.textureWidth()+1);
         }
       }
     };
@@ -245,7 +238,7 @@ private void addTextureControls()
   label = new Label(c0, totalHeight, "Y:");
   textureControlArea.addGuiElement(label);
   
-  input = new NumberInput(c2, totalHeight, w2, textureYSize, this)
+  input = new NumberInput(c2, totalHeight, w2, parent.model.textureHeight(), this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -261,9 +254,9 @@ private void addTextureControls()
     @Override
     protected void onPressed()
       {
-      if(textureYSize>1)
+      if(parent.model.textureHeight()>1)
         {
-        setTextureYSize(textureYSize-1);
+        setTextureYSize(parent.model.textureHeight()-1);
         }
       }
     };
@@ -274,9 +267,9 @@ private void addTextureControls()
     @Override
     protected void onPressed()
       {
-      if(textureYSize<1024)
+      if(parent.model.textureHeight()<1024)
         {
-        setTextureYSize(textureYSize+1);
+        setTextureYSize(parent.model.textureHeight()+1);
         }
       }
     };
@@ -364,7 +357,7 @@ private void addBoxControls()
     protected void onPressed()
       {      
       PrimitiveBox box = (PrimitiveBox)parent.getPrimitive();
-      if(box.tx()<image.getWidth()-1)
+      if(box.tx()<GuiModelEditor.image.getWidth()-1)
         {
         box.setTx(box.tx()+1);
         NumberInput num = (NumberInput)widgetMap.get("TX");
@@ -422,7 +415,7 @@ private void addBoxControls()
     protected void onPressed()
       {      
       PrimitiveBox box = (PrimitiveBox)parent.getPrimitive();
-      if(box.ty()<image.getHeight()-1)
+      if(box.ty()<GuiModelEditor.image.getHeight()-1)
         {
         box.setTx(box.ty()+1);
         NumberInput num = (NumberInput)widgetMap.get("TY");
@@ -495,7 +488,7 @@ private void addTriangleControls()
     protected void onPressed()
       {      
       PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
-      if(box.u1()<image.getWidth()-1)
+      if(box.u1()<GuiModelEditor.image.getWidth()-1)
         {
         box.setUV(box.u1()+1, box.v1(), box.u2()+1, box.v2(), box.u3()+1, box.v3());
         updateTexture();
@@ -532,7 +525,7 @@ private void addTriangleControls()
     protected void onPressed()
       {      
       PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
-      if(box.u1()<image.getWidth()-1)
+      if(box.u1()<GuiModelEditor.image.getWidth()-1)
         {
         box.setUV(box.u1(), box.v1()+1, box.u2(), box.v2()+1, box.u3(), box.v3()+1);
         updateTexture();
@@ -572,7 +565,7 @@ private void addTriangleControls()
     protected void onPressed()
       {      
       PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
-      if(box.u1()<image.getWidth()-1)
+      if(box.u1()<GuiModelEditor.image.getWidth()-1)
         {
         box.setUV(box.u1()+1, box.v1(), box.u2(), box.v2(), box.u3(), box.v3());
         NumberInput num = (NumberInput)widgetMap.get("U1");
@@ -631,7 +624,7 @@ private void addTriangleControls()
     protected void onPressed()
       {      
       PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
-      if(box.u1()<image.getWidth()-1)
+      if(box.u1()<GuiModelEditor.image.getWidth()-1)
         {
         box.setUV(box.u1(), box.v1()+1, box.u2(), box.v2(), box.u3(), box.v3());
         NumberInput num = (NumberInput)widgetMap.get("V1");
@@ -690,7 +683,7 @@ private void addTriangleControls()
     protected void onPressed()
       {      
       PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
-      if(box.u1()<image.getWidth()-1)
+      if(box.u1()<GuiModelEditor.image.getWidth()-1)
         {
         box.setUV(box.u1(), box.v1(), box.u2()+1, box.v2(), box.u3(), box.v3());
         NumberInput num = (NumberInput)widgetMap.get("U2");
@@ -749,7 +742,7 @@ private void addTriangleControls()
     protected void onPressed()
       {      
       PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
-      if(box.u1()<image.getWidth()-1)
+      if(box.u1()<GuiModelEditor.image.getWidth()-1)
         {
         box.setUV(box.u1(), box.v1(), box.u2(), box.v2()+1, box.u3(), box.v3());
         NumberInput num = (NumberInput)widgetMap.get("V2");
@@ -808,7 +801,7 @@ private void addTriangleControls()
     protected void onPressed()
       {      
       PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
-      if(box.u1()<image.getWidth()-1)
+      if(box.u1()<GuiModelEditor.image.getWidth()-1)
         {
         box.setUV(box.u1(), box.v1(), box.u2(), box.v2(), box.u3()+1, box.v3());
         NumberInput num = (NumberInput)widgetMap.get("U3");
@@ -867,7 +860,7 @@ private void addTriangleControls()
     protected void onPressed()
       {      
       PrimitiveTriangle box = (PrimitiveTriangle)parent.getPrimitive();
-      if(box.u1()<image.getWidth()-1)
+      if(box.u1()<GuiModelEditor.image.getWidth()-1)
         {
         box.setUV(box.u1(), box.v1(), box.u2(), box.v2(), box.u3(), box.v3()+1);
         NumberInput num = (NumberInput)widgetMap.get("V3");
@@ -980,7 +973,7 @@ private void addQuadControls()
     protected void onPressed()
       {      
       PrimitiveQuad box = (PrimitiveQuad)parent.getPrimitive();
-      if(box.tx()<image.getWidth()-1)
+      if(box.tx()<GuiModelEditor.image.getWidth()-1)
         {
         box.setTx(box.tx()+1);
         NumberInput num = (NumberInput)widgetMap.get("TX");
@@ -1038,7 +1031,7 @@ private void addQuadControls()
     protected void onPressed()
       {      
       PrimitiveQuad box = (PrimitiveQuad)parent.getPrimitive();
-      if(box.ty()<image.getHeight()-1)
+      if(box.ty()<GuiModelEditor.image.getHeight()-1)
         {
         box.setTx(box.ty()+1);
         NumberInput num = (NumberInput)widgetMap.get("TY");
