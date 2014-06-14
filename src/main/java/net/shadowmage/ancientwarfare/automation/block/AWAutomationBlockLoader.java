@@ -132,12 +132,8 @@ public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
  * POWER NETWORK BLOCKS
  */
 public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel");
-//med flywheel
-//heavy flywheel
 public static final BlockTorqueConduit torqueConduit = new BlockTorqueConduit("torque_conduit");
 public static final BlockTorqueDistributor torqueDistributor = new BlockTorqueDistributor("torque_distributor");
-//med dist
-//heavy dist
 public static final BlockHandCrankedEngine handCrankedEngine = new BlockHandCrankedEngine("hand_cranked_engine");
 public static final BlockTorqueGenerator torqueGeneratorSterling = new BlockTorqueGenerator("torque_generator_sterling")
   { 
@@ -146,6 +142,9 @@ public static final BlockTorqueGenerator torqueGeneratorSterling = new BlockTorq
     {
     return new TileTorqueGeneratorSterling();
     }
+  public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;};
+  public boolean isOpaqueCube() {return false;};
+  public boolean isNormalCube() {return false;};
   };
 public static final BlockTorqueGenerator torqueGeneratorWaterwheel = new BlockTorqueGenerator("torque_generator_waterwheel")
   { 

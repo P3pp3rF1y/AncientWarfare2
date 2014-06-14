@@ -4,6 +4,8 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -30,25 +32,28 @@ public RenderSterlingEngine()
 @Override
 public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTick)
   {
-  rotation+=0.4f;
+  ITorqueTile tt = (ITorqueTile)tile;
+  ForgeDirection d = tt.getOrientation();
+  float baseRotation = d==ForgeDirection.SOUTH? 180.f : d==ForgeDirection.WEST ? 270.f : d==ForgeDirection.EAST? 90.f : 0.f;  
+  rotation-=0.4f;
   GL11.glPushMatrix();
   
   RenderTools.setFullColorLightmap();
-  GL11.glTranslated(x+0.5d, y+1, z+0.5d);
+  GL11.glTranslated(x+0.5d, y, z+0.5d);
+  GL11.glRotatef(-baseRotation, 0, 1, 0);
   bindTexture(texture);  
+  
+    
   model.getPiece("flywheel2").setRotation(0, 0, rotation);
-  calculateArmAngle1(rotation);
-  calculateArmAngle2(rotation-90);
-  
+  model.getPiece("piston_crank2").setRotation(0, 0, rotation);
   model.getPiece("flywheel_arm").setRotation(0, 0, -rotation);
-  
-  model.getPiece("piston_crank").setRotation(0, 0, rotation);
-  model.getPiece("piston_arm").setRotation(0, 0, -rotation+armAngle);
-  
-  model.getPiece("piston_arm2").setRotation(0, 0, -rotation+armAngle2);
-  
-  model.renderModel();
 
+  calculateArmAngle1(-rotation);
+  calculateArmAngle2(-rotation-90);
+  model.getPiece("piston_crank").setRotation(0, 0, -rotation);
+  model.getPiece("piston_arm").setRotation(0, 0, rotation+armAngle);  
+  model.getPiece("piston_arm2").setRotation(0, 0, rotation+armAngle2);  
+  model.renderModel();
   GL11.glPopMatrix();
   }
 
