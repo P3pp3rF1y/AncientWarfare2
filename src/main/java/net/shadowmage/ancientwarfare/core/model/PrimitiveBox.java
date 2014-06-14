@@ -86,13 +86,16 @@ protected void renderForDisplayList(float tw, float th)
   {  
   float px = 1.f/tw;
   float py = 1.f/th;
-  float w = (x2-x1)*16.f;
-  float h = (y2-y1)*16.f;
-  float l = (z2-z1)*16.f;
+  float w = (float)Math.ceil((x2-x1)*16.f);
+  float h = (float)Math.ceil((y2-y1)*16.f);
+  float l = (float)Math.ceil((z2-z1)*16.f);
   float ty = this.ty();
   float tx = this.tx();
   
   float tx1, ty1, tx2, ty2;
+  if(w<1){w=1;}
+  if(h<1){h=1;}
+  if(l<1){l=1;}
   
 //render the cube. only called a single time when building the display list for a piece
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
@@ -240,10 +243,13 @@ public void addUVMapToImage(BufferedImage image)
   {
   int u = (int) tx();
   int v = (int) ty();
-  int w = (int) (x2*16-x1*16);
-  int h = (int) (y2*16-y1*16);
-  int l = (int) (z2*16-z1*16);
-   
+  int w = (int) (Math.ceil(x2*16-x1*16));
+  int h = (int) (Math.ceil(y2*16-y1*16));
+  int l = (int) (Math.ceil(z2*16-z1*16));
+
+  if(w<1){w=1;}
+  if(h<1){h=1;}
+  if(l<1){l=1;}
   
   int x, y;
   /**
