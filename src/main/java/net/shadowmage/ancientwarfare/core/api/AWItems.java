@@ -21,6 +21,8 @@ public static Item quillStone;
 public static Item quillIron;
 public static Item quillGold;
 public static Item quillDiamond;
+public static Item componentItem;
+public static Item steel_ingot;
 
 /**
  * NPC module
@@ -30,7 +32,6 @@ public static Item npcSpawner;
 public static Item workOrder;
 public static Item combatOrder;
 public static Item routingOrder;
-public static Item componentItem;
 
 /**
  * AUTOMATION module

@@ -20,22 +20,75 @@ public static void loadRecipes()
   RecipeResearched recipe;
 
   ItemStack woodenGear = new ItemStack(AWItems.componentItem,1,ItemComponent.WOODEN_GEAR_SET);
-  ItemStack ironGear = new ItemStack(AWItems.componentItem,1,ItemComponent.IRON_GEAR_SET);
+  ItemStack ironGear = new ItemStack(AWItems.componentItem,1,ItemComponent.IRON_GEAR_SET);  
+  ItemStack steelGear = new ItemStack(AWItems.componentItem,1,ItemComponent.STEEL_GEAR_SET);  
+  ItemStack woodenBushing = new ItemStack(AWItems.componentItem,1,ItemComponent.WOODEN_BUSHINGS);  
+  ItemStack ironBearing = new ItemStack(AWItems.componentItem,1,ItemComponent.IRON_BEARINGS);  
+  ItemStack steelBearing = new ItemStack(AWItems.componentItem,1,ItemComponent.STEEL_BEARINGS);  
+  ItemStack woodShaft = new ItemStack(AWItems.componentItem,1,ItemComponent.WOODEN_TORQUE_SHAFT);  
+  ItemStack ironShaft = new ItemStack(AWItems.componentItem,1,ItemComponent.IRON_TORQUE_SHAFT);  
+  ItemStack steelShaft = new ItemStack(AWItems.componentItem,1,ItemComponent.STEEL_TORQUE_SHAFT);  
   
   //wooden gear set
   recipe = AWCraftingManager.INSTANCE.addRecipe(woodenGear.copy(),
-      "_s_",
-      "sps",
-      "_s_",
+      "s_s",
+      "_p_",
+      "s_s",
       's', Items.stick,
-      'p', Blocks.planks);
-  
+      'p', Blocks.planks); 
   //iron gear
   recipe = AWCraftingManager.INSTANCE.addRecipe(ironGear.copy(),
+      "i_i",
+      "_i_",
+      "i_i",
+      'i', Items.iron_ingot);
+  //steel gear
+  recipe = AWCraftingManager.INSTANCE.addRecipe(steelGear.copy(),
+      "i_i",
+      "_i_",
+      "i_i",
+      'i', AWItems.steel_ingot);
+  
+  //wooden bushing set
+  recipe = AWCraftingManager.INSTANCE.addRecipe(woodenBushing.copy(),
+      "s_s",
+      "___",
+      "s_s",
+      's', Items.stick,
+      'p', Blocks.planks); 
+  //iron bearing
+  recipe = AWCraftingManager.INSTANCE.addRecipe(ironBearing.copy(),
       "_i_",
       "i_i",
       "_i_",
       'i', Items.iron_ingot);
+  //steel bearing
+  recipe = AWCraftingManager.INSTANCE.addRecipe(steelBearing.copy(),
+      "_i_",
+      "i_i",
+      "_i_",
+      'i', AWItems.steel_ingot);
+  
+  //wooden shaft
+  recipe = AWCraftingManager.INSTANCE.addRecipe(woodShaft.copy(),
+      "_p_",
+      "_p_",
+      "_p_",
+      'p', Blocks.planks); 
+  //iron shaft
+  recipe = AWCraftingManager.INSTANCE.addRecipe(ironShaft.copy(),
+      "_i_",
+      "_i_",
+      "_i_",
+      'i', Items.iron_ingot);
+  
+  //steel shaft
+  recipe = AWCraftingManager.INSTANCE.addRecipe(steelShaft.copy(),
+      "_i_",
+      "_i_",
+      "_i_",
+      'i', AWItems.steel_ingot);
+    
     
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.worksiteAutoCrafting), 
       "_c_",
@@ -200,7 +253,7 @@ public static void loadRecipes()
       "beb",
       "bbb",
       'b', Blocks.stonebrick,
-      'e', Items.ender_pearl);//TODO research
+      'e', Items.ender_pearl);//TODO research?
   
   //chunkloader deluxe
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderDeluxe),
@@ -208,15 +261,14 @@ public static void loadRecipes()
       "beb",
       "bbb",
       'b', Blocks.obsidian,
-      'e', Items.ender_pearl);//TODO research
+      'e', Items.ender_pearl);//TODO research?
     
   //torque conduit s/m/l
   //torque distributor s/m/l
   //torque flywheel s/m/l
   //torque generator hand
   //torque generator waterwheel
-  //torque generator sterling    
-  
+  //torque generator sterling     
   }
 
 

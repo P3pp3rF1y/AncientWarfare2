@@ -58,6 +58,13 @@ public static void load()
   {
   ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_GEAR_SET);
   ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_GEAR_SET);
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_GEAR_SET);
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_BUSHINGS);
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_BEARINGS);
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_BEARINGS);
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT);
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_TORQUE_SHAFT);
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_TORQUE_SHAFT);
   }
 
 private static final TabSorter sorter = new TabSorter();
