@@ -370,18 +370,18 @@ public static void load()
   
   GameRegistry.registerBlock(torqueGeneratorWaterwheel, ItemBlockTorqueTile.class, "torque_generator_waterwheel");
   GameRegistry.registerTileEntity(TileTorqueGeneratorWaterwheel.class, "torque_generator_waterwheel_tile");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.FRONT, "ancientwarfare:automation/torque_generator_waterwheel_top");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.REAR, "ancientwarfare:automation/torque_generator_waterwheel_bottom");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.LEFT, "ancientwarfare:automation/torque_generator_waterwheel_bottom");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.RIGHT, "ancientwarfare:automation/torque_generator_waterwheel_bottom");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/torque_generator_waterwheel_bottom");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_generator_waterwheel_bottom");
+  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.FRONT, "ancientwarfare:automation/waterwheel_front");
+  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.REAR, "ancientwarfare:automation/waterwheel_rear");
+  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.LEFT, "ancientwarfare:automation/waterwheel_left");
+  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.RIGHT, "ancientwarfare:automation/waterwheel_right");
+  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/waterwheel_top");
+  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/waterwheel_bottom");
   
   GameRegistry.registerBlock(handCrankedEngine, ItemBlockTorqueTile.class, "hand_cranked_engine");
   GameRegistry.registerTileEntity(TileTorqueGeneratorHandCranked.class, "hand_cranked_engine_tile");
-  handCrankedEngine.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/torque_generator_hand_top");
-  handCrankedEngine.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_generator_hand_bottom");
-  handCrankedEngine.setIcon(0, RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_generator_hand_side");
+  handCrankedEngine.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/hand_cranked_front");
+  handCrankedEngine.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/hand_cranked_top");
+  handCrankedEngine.setIcon(0, RelativeSide.ANY_SIDE, "ancientwarfare:automation/hand_cranked_top");
   
   GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");
   GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");

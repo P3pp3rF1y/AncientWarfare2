@@ -10,6 +10,7 @@ public ItemSteelIngot(String regName)
   {
   this.setUnlocalizedName(regName);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
+  this.setTextureName("ancientwarfare:core/steel_ingot");
   }
 
 }

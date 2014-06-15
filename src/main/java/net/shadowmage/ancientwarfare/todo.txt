@@ -3,6 +3,32 @@
 > = cannot do until later
 ? = optional / need to think on it
 
+****************************TODAY TODO****************************	
+* Textures
+	bard
+	upkeep order
+	
+* Recipes
+	engineering station
+	research station
+	research book
+	hammer
+	quill
+	backpack
+	steel ingot
+	worker npc
+	combat npc
+	command baton
+	upkeep order
+	routing order
+	combat order
+	work order
+	drum
+	lute
+	harp
+	flute
+
+	
 ****************************LICENSING TODO****************************
 Licensing
 	add bc license for using as libs
@@ -12,17 +38,22 @@ Licensing
 * need LOTS of tooltips added to various elements in GUIs	
 * GUI - SHIFT-CLICK CODE
 * Recipes
-	-lots-
-	-create generic 'component' item -- merely a subtyped item for functionless components
+	engineering station
+	research station
+	research book
+	hammer
+	quill
+	backpack
+	steel ingot
 * Research
-	-lots-
+	-lots still needs resources-
 * Textures
 	Steel Ingot
 	Component Item
 		* wood, iron, steel gear
 		* wood, iron, steel bushing
 		* wood, iron, steel shafts	
-	
+		
 ****************************STRUCTURE MODULE TODO****************************
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
 > Scanner GUI needs some cleanup / make it look nice(er)
@@ -41,12 +72,14 @@ Licensing
 * Torque API:	
 	set power capacity / power loss / power use for all torque blocks
 * Textures
-	waterwheel/hand cranged engines (or models and uv maps)
+	waterwheel
+	hand cranked engine
 * balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
 * add redstone control to flywheel blocks
 * figure out torque tile network updates
-	--how to make them appear active when there is energy traveling through even when they end at 0 energy?
-		rotation = energy stored + energy outputted?
+	--rotation speed will be (powerOutput)/(maxOutpout) + (storedEnergy)/(maxEnergy)
+		--
+	--or rotation speed gains half value from power transmitted, half value from energy stored (or other ratio)
 			
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
@@ -62,7 +95,17 @@ Licensing
 * Textures
 	bard
 * Recipes
-	-lots-
+	worker npc
+	combat npc
+	command baton
+	upkeep order
+	routing order
+	combat order
+	work order
+	drum
+	lute
+	harp
+	flute
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
@@ -73,6 +116,7 @@ everything
 * UV editor GUI needs area positions re-set when GUI size changes
 * when you swap a primitive parent, the old parent is still selected with the primitive (modelWidget, selection error)
 * sometimes pieces are unpickable -- this is likely related to primitive #'s / piece heirarchy
+* change models over to use a single display list per-piece, instead of per-box
 
 *****************************************************************
 ****************************MISC INFO****************************

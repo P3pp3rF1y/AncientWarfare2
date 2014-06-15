@@ -357,7 +357,7 @@ public static void loadRecipes()
       "igi",
       "gwg",
       "iwi",
-      'i', Items.iron_ingot,
+      'i', Blocks.planks,
       'g', ironGear.copy(),
       'w', woodenGear.copy());
   recipe.addResearch("theory_of_gravity");

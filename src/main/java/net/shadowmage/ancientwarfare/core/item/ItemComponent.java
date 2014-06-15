@@ -1,12 +1,13 @@
 package net.shadowmage.ancientwarfare.core.item;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 
 public class ItemComponent extends Item
@@ -33,7 +34,8 @@ public static int WORKER_EQUIPMENT_BUNDLE;
 public static int COMBAT_EQUIPMENT_BUNDLE;
 public static int NPC_FOOD_BUNDLE;
 
-Set<Integer> subItems = new HashSet<Integer>();
+HashMap<Integer, String> subItems = new HashMap<Integer, String>();
+HashMap<Integer, IIcon> subItemIcons = new HashMap<Integer, IIcon>();
 
 public ItemComponent(String regName)
   {
@@ -51,12 +53,30 @@ public String getUnlocalizedName(ItemStack par1ItemStack)
 @Override
 public void getSubItems(Item item, CreativeTabs p_150895_2_, List list)
   {
-  for(Integer num : subItems)
+  for(Integer num : subItems.keySet())
     {
     list.add(new ItemStack(item,1,num));
     }
   }
 
-public void addSubItem(int num){subItems.add(num);}
+@Override
+public IIcon getIconFromDamage(int par1)
+  {
+  return subItemIcons.get(par1);
+  }
+
+@Override
+public void registerIcons(IIconRegister par1IconRegister)
+  {
+  for(Integer num : subItems.keySet())
+    {
+    subItemIcons.put(num, par1IconRegister.registerIcon(subItems.get(num)));
+    }
+  }
+
+public void addSubItem(int num, String texture)
+  {
+  subItems.put(num, texture);
+  }
 
 }

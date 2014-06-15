@@ -56,15 +56,15 @@ public static final CreativeTabs automationTab = new CreativeTabs("tabs.automati
   
 public static void load()
   {
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_GEAR_SET);
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_GEAR_SET);
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_GEAR_SET);
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_BUSHINGS);
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_BEARINGS);
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_BEARINGS);
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT);
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_TORQUE_SHAFT);
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_TORQUE_SHAFT);
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_GEAR_SET, "ancientwarfare:automation/wooden_gear");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_GEAR_SET, "ancientwarfare:automation/iron_gear");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_GEAR_SET, "ancientwarfare:automation/steel_gear");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_BUSHINGS, "ancientwarfare:automation/wooden_bearings");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_BEARINGS, "ancientwarfare:automation/iron_bearings");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_BEARINGS, "ancientwarfare:automation/steel_bearings");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT, "ancientwarfare:automation/wooden_shaft");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "ancientwarfare:automation/iron_shaft");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "ancientwarfare:automation/steel_shaft");
   }
 
 private static final TabSorter sorter = new TabSorter();
