@@ -26,6 +26,8 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCra
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageLarge;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageMedium;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
@@ -247,14 +249,14 @@ public static void load()
   warehouseStorageBlock.setIcon(0, 3, "ancientwarfare:automation/warehouse_storage_small_side");
   warehouseStorageBlock.setIcon(0, 4, "ancientwarfare:automation/warehouse_storage_small_side");
   warehouseStorageBlock.setIcon(0, 5, "ancientwarfare:automation/warehouse_storage_small_side");
-  GameRegistry.registerTileEntity(TileWarehouseStorage.class, "warehouse_storage_medium_tile");
+  GameRegistry.registerTileEntity(TileWarehouseStorageMedium.class, "warehouse_storage_medium_tile");
   warehouseStorageBlock.setIcon(1, 0, "ancientwarfare:automation/warehouse_storage_medium_bottom");
   warehouseStorageBlock.setIcon(1, 1, "ancientwarfare:automation/warehouse_storage_medium_top");
   warehouseStorageBlock.setIcon(1, 2, "ancientwarfare:automation/warehouse_storage_medium_side");
   warehouseStorageBlock.setIcon(1, 3, "ancientwarfare:automation/warehouse_storage_medium_side");
   warehouseStorageBlock.setIcon(1, 4, "ancientwarfare:automation/warehouse_storage_medium_side");
   warehouseStorageBlock.setIcon(1, 5, "ancientwarfare:automation/warehouse_storage_medium_side");
-  GameRegistry.registerTileEntity(TileWarehouseStorage.class, "warehouse_storage_large_tile");
+  GameRegistry.registerTileEntity(TileWarehouseStorageLarge.class, "warehouse_storage_large_tile");
   warehouseStorageBlock.setIcon(2, 0, "ancientwarfare:automation/warehouse_storage_large_bottom");
   warehouseStorageBlock.setIcon(2, 1, "ancientwarfare:automation/warehouse_storage_large_top");
   warehouseStorageBlock.setIcon(2, 2, "ancientwarfare:automation/warehouse_storage_large_side");

@@ -13,6 +13,12 @@ Licensing
 * GUI - SHIFT-CLICK CODE
 * Research
 	-lots-
+* Textures
+	Steel Ingot
+	Component Item
+		* wood, iron, steel gear
+		* wood, iron, steel bushing
+		* wood, iron, steel shafts	
 	
 ****************************STRUCTURE MODULE TODO****************************
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
@@ -36,10 +42,7 @@ Licensing
 * Torque API:	
 	set power capacity / power loss / power use for all torque blocks
 * Textures
-	sterling/waterwheel/hand cranged engines (or models and uv maps)
-	warehouse storage med/large
-	med/heavy flywheel blocks
-* create med/large warehouse storage blocks	
+	waterwheel/hand cranged engines (or models and uv maps)
 * Recipes
 	-lots-
 * balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
