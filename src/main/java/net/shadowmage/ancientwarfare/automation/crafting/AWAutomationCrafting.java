@@ -2,18 +2,12 @@ package net.shadowmage.ancientwarfare.automation.crafting;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.core.item.ItemComponent;
 
 public class AWAutomationCrafting
 {
@@ -24,78 +18,104 @@ public class AWAutomationCrafting
 public static void loadRecipes()
   {
   RecipeResearched recipe;
+
+  ItemStack woodenGear = new ItemStack(AWItems.componentItem,1,ItemComponent.WOODEN_GEAR_SET);
+  ItemStack ironGear = new ItemStack(AWItems.componentItem,1,ItemComponent.IRON_GEAR_SET);
   
+  //wooden gear set
+  recipe = AWCraftingManager.INSTANCE.addRecipe(woodenGear.copy(),
+      "_s_",
+      "sps",
+      "_s_",
+      's', Items.stick,
+      'p', Blocks.planks);
+  
+  //iron gear
+  recipe = AWCraftingManager.INSTANCE.addRecipe(ironGear.copy(),
+      "_i_",
+      "i_i",
+      "_i_",
+      'i', Items.iron_ingot);
+    
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.worksiteAutoCrafting), 
       "_c_",
-      "_w_",
+      "gwg",
       "_i_",
       '_', Blocks.planks,
       'c', Blocks.chest,
       'w', Blocks.crafting_table,
-      'i', Items.iron_ingot);
+      'i', Items.iron_ingot,
+      'g', woodenGear.copy());
   recipe.addResearch("mass_production");
   
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.worksiteCropFarm), 
       "___",
-      "_w_",
+      "gwg",
       "_c_",
       '_', Blocks.planks,
       'w', Items.iron_hoe,
-      'c', Blocks.chest);
+      'c', Blocks.chest,
+      'g', woodenGear.copy());
   recipe.addResearch("farming");
   
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.worksiteReedFarm), 
       "___",
-      "_w_",
+      "gwg",
       "_c_",
       '_', Blocks.planks,
       'w', Items.iron_shovel,
-      'c', Blocks.chest);
+      'c', Blocks.chest,
+      'g', woodenGear.copy());
   recipe.addResearch("farming");
   
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.worksiteMushroomFarm),
       "___",
-      "_w_",
+      "gwg",
       "_c_",
       '_', Blocks.planks,
       'w', Items.wooden_shovel,
-      'c', Blocks.chest);
+      'c', Blocks.chest,
+      'g', woodenGear.copy());
   recipe.addResearch("farming");
   
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.worksiteAnimalFarm),
       "___",
-      "_w_",
+      "gwg",
       "_c_",
       '_', Blocks.planks,
       'w', Items.iron_sword,
-      'c', Blocks.chest);
+      'c', Blocks.chest,
+      'g', woodenGear.copy());
   recipe.addResearch("animal_husbandry");
   
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.worksiteQuarry), 
       "___",
-      "_w_",
+      "gwg",
       "_c_",
       '_', Blocks.planks,
       'w', Items.iron_pickaxe,
-      'c', Blocks.chest);
+      'c', Blocks.chest,
+      'g', woodenGear.copy());
   recipe.addResearch("mining");
   
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.worksiteForestry),
       "___",
-      "_w_",
+      "gwg",
       "_c_",
       '_', Blocks.planks,
       'w', Items.iron_axe,
-      'c', Blocks.chest);
+      'c', Blocks.chest,
+      'g', woodenGear.copy());
   recipe.addResearch("construction");
   
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.worksiteFishFarm), 
       "___",
-      "_w_",
+      "gwg",
       "_c_",
       '_', Blocks.planks,
       'w', Items.fishing_rod,
-      'c', Blocks.chest);
+      'c', Blocks.chest,
+      'g', woodenGear.copy());
   recipe.addResearch("fishing"); 
   
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.worksiteWarehouse),
@@ -107,25 +127,95 @@ public static void loadRecipes()
       'c', Blocks.chest);
   recipe.addResearch("trade");
   
-    
-  //warehouse crafting
   //warehouse interface
-  //warehouse small storage
-  //warehouse med storage
-  //warehouse large storage  
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.warehouseInterface),
+      "_p_",
+      "_c_",
+      "___",
+      '_', Blocks.planks,
+      'p', Items.paper,
+      'c', Blocks.chest);
+  recipe.addResearch("trade");
   
+  //warehouse crafting  
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.warehouseCrafting),
+      "_p_",
+      "_w_",
+      "_i_",
+      '_', Blocks.planks,
+      'p', Items.paper,
+      'w', Blocks.crafting_table,
+      'i', Items.iron_ingot);
+  recipe.addResearch("trade");
+  
+  //warehouse small storage
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.warehouseStorageBlock,1,0),
+      "p_p",
+      "_c_",
+      "p_p",
+      'p', Blocks.planks,
+      'c', Blocks.chest);
+  recipe.addResearch("trade");  
+  
+  //warehouse med storage
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.warehouseStorageBlock,1,1),
+      "pip",
+      "_c_",
+      "pip",
+      'p', Blocks.planks,
+      'c', Blocks.chest,
+      'i', Items.iron_ingot);
+  recipe.addResearch("trade");
+  
+  //warehouse large storage
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.warehouseStorageBlock,1,2),
+      "pip",
+      "ici",
+      "pip",
+      'p', Blocks.planks,
+      'c', Blocks.chest,
+      'i', Items.iron_ingot);
+  recipe.addResearch("trade");
+  
+  //warehouse stock-viewer
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.warehouseStockViewer),
+      "_p_",
+      "_s_",
+      's', Items.sign,
+      'p', Items.paper);
+  recipe.addResearch("trade");
+    
   //mailbox
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.mailbox),
+      "ici",
+      "i_i",
+      "ici",
+      'i', Items.iron_ingot,
+      'c', Blocks.chest);
+  recipe.addResearch("navigation");
   
   //chunkloader simple
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderSimple),
+      "bbb",
+      "beb",
+      "bbb",
+      'b', Blocks.stonebrick,
+      'e', Items.ender_pearl);//TODO research
+  
   //chunkloader deluxe
-  
-  //torque conduit
-  //torque distributor
-  //torque flywheel
-  //torque generator sterling
-  //torque generator waterwheel
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderDeluxe),
+      "bbb",
+      "beb",
+      "bbb",
+      'b', Blocks.obsidian,
+      'e', Items.ender_pearl);//TODO research
+    
+  //torque conduit s/m/l
+  //torque distributor s/m/l
+  //torque flywheel s/m/l
   //torque generator hand
-  
+  //torque generator waterwheel
+  //torque generator sterling    
   
   }
 

@@ -42,6 +42,9 @@ public void load()
   GameRegistry.registerItem(AWItems.quillGold, "gold_quill");  
   AWItems.quillDiamond = new ItemQuill("diamond_quill", ToolMaterial.EMERALD);
   GameRegistry.registerItem(AWItems.quillDiamond, "diamond_quill");
+  
+  AWItems.componentItem = new ItemComponent("component");
+  GameRegistry.registerItem(AWItems.componentItem, "component");
   }
 
 }

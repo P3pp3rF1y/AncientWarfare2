@@ -29,8 +29,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.item.ItemComponent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 public class AWAutomationItemLoader
@@ -56,6 +56,8 @@ public static final CreativeTabs automationTab = new CreativeTabs("tabs.automati
   
 public static void load()
   {
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_GEAR_SET);
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_GEAR_SET);
   }
 
 private static final TabSorter sorter = new TabSorter();

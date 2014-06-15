@@ -30,6 +30,7 @@ public static Item npcSpawner;
 public static Item workOrder;
 public static Item combatOrder;
 public static Item routingOrder;
+public static Item componentItem;
 
 /**
  * AUTOMATION module

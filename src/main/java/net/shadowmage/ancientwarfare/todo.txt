@@ -28,12 +28,13 @@ Licensing
 	--need worksite work-bounds rotation/manipulation code
 * Recipes
 	-lots-
+	-create generic 'component' item -- merely a subtyped item for functionless components
 		
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
 ^ finish up storage block filter-setting ability, verify that it works properly (needs the above step to view storage-block inventory contents)
 * Torque API:	
-	Add high-quality blocks with higher capacity and less/no power loss.
+	set power capacity / power loss / power use for all torque blocks
 * Textures
 	sterling/waterwheel/hand cranged engines (or models and uv maps)
 	warehouse storage med/large
@@ -43,6 +44,9 @@ Licensing
 	-lots-
 * balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
 * add redstone control to flywheel blocks
+* figure out torque tile network updates
+	--how to make them appear active when there is energy traveling through even when they end at 0 energy?
+		rotation = energy stored + energy outputted?
 			
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
