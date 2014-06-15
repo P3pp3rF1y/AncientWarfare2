@@ -45,6 +45,9 @@ public void load()
   
   AWItems.componentItem = new ItemComponent("component");
   GameRegistry.registerItem(AWItems.componentItem, "component");
+  
+  AWItems.steel_ingot = new ItemSteelIngot("steel_ingot");
+  GameRegistry.registerItem(AWItems.steel_ingot, "steel_ingot");
   }
 
 }
