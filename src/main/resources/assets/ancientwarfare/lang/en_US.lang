@@ -13,18 +13,34 @@ item.stone_hammer.name=Stone Hammer
 item.iron_hammer.name=Iron Hammer
 item.gold_hammer.name=Gold Hammer
 item.diamond_hammer.name=Diamond Hammer
+item.wooden_quill.name=Wooden Quill
+item.stone_quill.name=Stone Quill
+item.iron_quill.name=Iron Quill
+item.gold_quill.name=Gold Quil
+item.diamond_quill.name=Diamond Quill
 item.research_note.name=Research Note
 item.backpack.0.name=Small Pack
 item.backpack.1.name=Travel Pack
 item.backpack.2.name=Medium Pack
 item.backpack.3.name=Large Pack
+item.steel_ingot.name=Steel Ingot
+#component (shared)
+item.component.0.name=Wooden Gear Set
+item.component.1.name=Iron Gear Set
+item.component.2.name=Steel Gear Set
+item.component.3.name=Wooden Bushing Set
+item.component.4.name=Iron Bushing Set Set
+item.component.5.name=Steel Bushing Set
+item.component.6.name=Wooden Torque Shaft
+item.component.7.name=Iron Torque Shaft
+item.component.8.name=Steel Torque Shaft
 #modeler
 item.editor_opener.name=Model Editor
 #structure
 item.structure_scanner.name=Structure Scanner
 item.structure_builder.name=Structure Builder
 item.spawner_placer.name=Mob Spawner Placement Tool
-item.construction_too.name=Construction Tool
+item.construction_tool.name=Construction Tool
 #automation
 #npc
 item.work_order.name=Work Order
@@ -128,6 +144,7 @@ tile.warehouse_storage.2.name=Large Warehouse Storage
 tile.warehouse_input.name=Warehouse Input
 tile.warehouse_output.name=Warehouse Output
 tile.warehouse_crafting_station.name=Warehouse Crafting Station
+tile.warehouse_stock_viewer.name=Warehouse Stock Viewer
 tile.mailbox.name=Mailbox
 tile.flywheel.0.name=Small Flywheel Energy Storage
 tile.flywheel.1.name=Medium Flywheel Energy Storage

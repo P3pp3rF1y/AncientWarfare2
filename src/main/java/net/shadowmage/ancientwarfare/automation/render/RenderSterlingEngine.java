@@ -1,9 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
@@ -14,9 +19,13 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderSterlingEngine extends TileEntitySpecialRenderer
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+
+public class RenderSterlingEngine extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
 
+public static int renderID=-1;
 ModelBaseAW model;
 
 float rotation;
@@ -28,6 +37,7 @@ public RenderSterlingEngine()
   ModelLoader loader = new ModelLoader();
   model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/sterling_engine.mf2"));
   texture = new ResourceLocation("ancientwarfare:textures/model/automation/sterling_engine.png");
+  if(renderID==-1){renderID = RenderingRegistry.getNextAvailableRenderId();}
   }
 
 @Override
@@ -50,7 +60,6 @@ public void renderTileEntityAt(TileEntity tile, double x, double y, double z, fl
   GL11.glTranslated(x+0.5d, y, z+0.5d);
   GL11.glRotatef(-baseRotation, 0, 1, 0);
   bindTexture(texture);  
-  
     
   model.getPiece("flywheel2").setRotation(0, 0, rotation);
   model.getPiece("piston_crank2").setRotation(0, 0, rotation);
@@ -111,6 +120,46 @@ private void calculatePistonPosition2(float crankAngleRadians, float radius, flo
 
   float rlrA = (float) Math.atan2(cx-bx, cy-by);
   armAngle2 = rlrA*Trig.TODEGREES;
+  }
+
+@Override
+public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
+  {
+  GL11.glPushMatrix();  
+  RenderTools.setFullColorLightmap();
+  GL11.glTranslatef(0, -0.5f, 0);
+//  GL11.glRotatef(-baseRotation, 0, 1, 0);
+  bindTexture(texture);  
+    
+  model.getPiece("flywheel2").setRotation(0, 0, 0);
+  model.getPiece("piston_crank2").setRotation(0, 0, 0);
+  model.getPiece("flywheel_arm").setRotation(0, 0, 0);
+
+  calculateArmAngle1(-rotation);
+  calculateArmAngle2(-rotation-90);
+  model.getPiece("piston_crank").setRotation(0, 0, 0);
+  model.getPiece("piston_arm").setRotation(0, 0, 0);  
+  model.getPiece("piston_arm2").setRotation(0, 0, 0);  
+  model.renderModel();
+  GL11.glPopMatrix();
+  }
+
+@Override
+public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+  {
+  return false;
+  }
+
+@Override
+public boolean shouldRender3DInInventory(int modelId)
+  {
+  return true;
+  }
+
+@Override
+public int getRenderId()
+  {
+  return renderID;
   }
 
 }
