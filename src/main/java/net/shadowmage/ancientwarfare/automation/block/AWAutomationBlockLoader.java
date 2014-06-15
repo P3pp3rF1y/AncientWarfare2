@@ -247,6 +247,20 @@ public static void load()
   warehouseStorageBlock.setIcon(0, 3, "ancientwarfare:automation/warehouse_storage_small_side");
   warehouseStorageBlock.setIcon(0, 4, "ancientwarfare:automation/warehouse_storage_small_side");
   warehouseStorageBlock.setIcon(0, 5, "ancientwarfare:automation/warehouse_storage_small_side");
+  GameRegistry.registerTileEntity(TileWarehouseStorage.class, "warehouse_storage_medium_tile");
+  warehouseStorageBlock.setIcon(1, 0, "ancientwarfare:automation/warehouse_storage_medium_bottom");
+  warehouseStorageBlock.setIcon(1, 1, "ancientwarfare:automation/warehouse_storage_medium_top");
+  warehouseStorageBlock.setIcon(1, 2, "ancientwarfare:automation/warehouse_storage_medium_side");
+  warehouseStorageBlock.setIcon(1, 3, "ancientwarfare:automation/warehouse_storage_medium_side");
+  warehouseStorageBlock.setIcon(1, 4, "ancientwarfare:automation/warehouse_storage_medium_side");
+  warehouseStorageBlock.setIcon(1, 5, "ancientwarfare:automation/warehouse_storage_medium_side");
+  GameRegistry.registerTileEntity(TileWarehouseStorage.class, "warehouse_storage_large_tile");
+  warehouseStorageBlock.setIcon(2, 0, "ancientwarfare:automation/warehouse_storage_large_bottom");
+  warehouseStorageBlock.setIcon(2, 1, "ancientwarfare:automation/warehouse_storage_large_top");
+  warehouseStorageBlock.setIcon(2, 2, "ancientwarfare:automation/warehouse_storage_large_side");
+  warehouseStorageBlock.setIcon(2, 3, "ancientwarfare:automation/warehouse_storage_large_side");
+  warehouseStorageBlock.setIcon(2, 4, "ancientwarfare:automation/warehouse_storage_large_side");
+  warehouseStorageBlock.setIcon(2, 5, "ancientwarfare:automation/warehouse_storage_large_side");
     
   GameRegistry.registerBlock(warehouseInterface, "warehouse_interface");
   GameRegistry.registerTileEntity(TileWarehouseInterface.class, "warehouse_interface_tile");
