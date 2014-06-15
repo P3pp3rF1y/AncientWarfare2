@@ -80,8 +80,7 @@ public static void loadRecipes()
       "_i_",
       "_i_",
       "_i_",
-      'i', Items.iron_ingot);
-  
+      'i', Items.iron_ingot);  
   //steel shaft
   recipe = AWCraftingManager.INSTANCE.addRecipe(steelShaft.copy(),
       "_i_",
@@ -232,8 +231,8 @@ public static void loadRecipes()
   
   //warehouse stock-viewer
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.warehouseStockViewer),
-      "_p_",
-      "_s_",
+      "p",
+      "s",
       's', Items.sign,
       'p', Items.paper);
   recipe.addResearch("trade");
@@ -263,12 +262,114 @@ public static void loadRecipes()
       'b', Blocks.obsidian,
       'e', Items.ender_pearl);//TODO research?
     
-  //torque conduit s/m/l
-  //torque distributor s/m/l
-  //torque flywheel s/m/l
+  //torque conduit s
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,0),
+      "s",
+      "g",
+      "s",
+      's', woodShaft.copy(),
+      'g', woodenGear.copy());
+  recipe.addResearch("the_wheel");
+  
+//torque conduit m
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,1),
+      "s",
+      "g",
+      "s",
+      's', ironShaft.copy(),
+      'g', ironGear.copy());
+  recipe.addResearch("the_wheel");
+  
+//torque conduit l
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,2),
+      "s",
+      "g",
+      "s",
+      's', ironShaft.copy(),
+      'g', ironGear.copy());
+  recipe.addResearch("the_wheel", "refining");
+    
+  //torque distributor s
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.torqueDistributor,1,0),
+      "_s_",
+      "ggg",
+      "_s_",
+      's', woodShaft.copy(),
+      'g', woodenGear.copy());
+  recipe.addResearch("the_wheel");
+  
+  //torque distributor m
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.torqueDistributor,1,1),
+      "_s_",
+      "ggg",
+      "_s_",
+      's', ironShaft.copy(),
+      'g', ironGear.copy());
+  recipe.addResearch("the_wheel");
+  
+  //torque distributor l
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.torqueDistributor,1,2),
+      "_s_",
+      "ggg",
+      "_s_",
+      's', ironShaft.copy(),
+      'g', ironGear.copy());
+  recipe.addResearch("the_wheel", "refining");
+  
+  //torque flywheel s
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.flywheel,1,0),
+      "pgp",
+      "ppp",
+      "pgp",
+      'p', Blocks.planks,
+      'g', woodenGear.copy());
+  recipe.addResearch("theory_of_gravity");
+  
+  //torque flywheel m
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.flywheel,1,1),
+      "igi",
+      "iii",
+      "igi",
+      'i', Items.iron_ingot,
+      'g', ironGear.copy());
+  recipe.addResearch("theory_of_gravity");
+  
+  //torque flywheel l
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.flywheel,1,2),
+      "igi",
+      "iii",
+      "igi",
+      'i', AWItems.steel_ingot,
+      'g', steelGear.copy());
+  recipe.addResearch("theory_of_gravity", "refining");
+    
   //torque generator hand
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.handCrankedEngine),
+      "igi",
+      "gig",
+      "iii",
+      'i', Items.iron_ingot,
+      'g', ironGear.copy());
+  recipe.addResearch("the_wheel");
+  
   //torque generator waterwheel
-  //torque generator sterling     
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.torqueGeneratorWaterwheel),
+      "igi",
+      "gwg",
+      "iwi",
+      'i', Items.iron_ingot,
+      'g', ironGear.copy(),
+      'w', woodenGear.copy());
+  recipe.addResearch("theory_of_gravity");
+    
+  //torque generator sterling   
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWAutomationBlockLoader.torqueGeneratorSterling),
+      "iii",
+      "ggg",
+      "igi",
+      'i', Items.iron_ingot,
+      'g', ironGear.copy());
+  recipe.addResearch("machinery");
   }
 
 

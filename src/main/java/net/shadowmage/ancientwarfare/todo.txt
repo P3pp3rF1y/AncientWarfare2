@@ -11,6 +11,9 @@ Licensing
 ****************************CORE MODULE TODO****************************
 * need LOTS of tooltips added to various elements in GUIs	
 * GUI - SHIFT-CLICK CODE
+* Recipes
+	-lots-
+	-create generic 'component' item -- merely a subtyped item for functionless components
 * Research
 	-lots-
 * Textures
@@ -21,20 +24,16 @@ Licensing
 		* wood, iron, steel shafts	
 	
 ****************************STRUCTURE MODULE TODO****************************
+> add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
+> Scanner GUI needs some cleanup / make it look nice(er)
+> move structure scanner over to multi-key item interface
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
-* Scanner GUI needs some cleanup / make it look nice(er)
-* move structure scanner over to multi-key item interface
-* Textures
-	construction tool
 * Structure Module Plugins
 	npcs?? (should be mostly handled?)
 	town-hall block
 	all automation-module blocks
-	--need worksite work-bounds rotation/manipulation code
-* Recipes
-	-lots-
-	-create generic 'component' item -- merely a subtyped item for functionless components
+	--need worksite work-bounds rotation/manipulation code	
 		
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
@@ -43,8 +42,6 @@ Licensing
 	set power capacity / power loss / power use for all torque blocks
 * Textures
 	waterwheel/hand cranged engines (or models and uv maps)
-* Recipes
-	-lots-
 * balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
 * add redstone control to flywheel blocks
 * figure out torque tile network updates
@@ -57,6 +54,9 @@ Licensing
 ^ verify that faction based mounted soldiers work as intended
 ^ verify functionality of mounted player-owned npcs (all)
 * Default held items for priest, trader
+* fix sounds.json for bard sounds
+* test bard-sound loading and custom sound references
+* add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * Sounds
 	bard
 * Textures
