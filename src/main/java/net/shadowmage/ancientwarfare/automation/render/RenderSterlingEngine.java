@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -32,10 +33,17 @@ public RenderSterlingEngine()
 @Override
 public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTick)
   {
-  ITorqueTile tt = (ITorqueTile)tile;
+  TileTorqueGeneratorSterling tt = (TileTorqueGeneratorSterling)tile;
   ForgeDirection d = tt.getOrientation();
-  float baseRotation = d==ForgeDirection.SOUTH? 180.f : d==ForgeDirection.WEST ? 270.f : d==ForgeDirection.EAST? 90.f : 0.f;  
-  rotation-=0.4f;
+  float baseRotation = d==ForgeDirection.SOUTH? 180.f : d==ForgeDirection.WEST ? 270.f : d==ForgeDirection.EAST? 90.f : 0.f;
+  
+  
+  float pr = (float) tt.prevRotation;
+  float r = (float) tt.rotation;
+  float rd = r-pr;
+  
+  rotation = -(pr + rd*partialTick);
+    
   GL11.glPushMatrix();
   
   RenderTools.setFullColorLightmap();

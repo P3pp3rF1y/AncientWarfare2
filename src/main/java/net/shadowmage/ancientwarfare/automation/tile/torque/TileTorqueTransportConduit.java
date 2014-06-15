@@ -86,6 +86,7 @@ private void readConnectionsInt(int con)
 @Override
 public boolean receiveClientEvent(int a, int b)
   {
+  super.receiveClientEvent(a, b);
   if(!worldObj.isRemote){return true;}
   if(a==0){readConnectionsInt(b);}  
   return true;

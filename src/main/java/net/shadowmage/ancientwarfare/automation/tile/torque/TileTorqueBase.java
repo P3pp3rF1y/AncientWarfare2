@@ -8,6 +8,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
@@ -19,6 +21,47 @@ protected double maxEnergy = 1000;
 protected double storedEnergy = 0;
 protected double energyDrainFactor = 1;
 ForgeDirection orientation = ForgeDirection.NORTH;
+
+/**
+ * used by server to limit packet sending<br>
+ * used by client for lerp-ticks for lerping to new power state
+ */
+int networkUpdateTicks;
+/**
+ * used by server to determine last sent client power state<br>
+ * used by clients as their displayed power state
+ */
+int clientEnergy;
+/**
+ * used by clients to store what energy level they should be at.<br>
+ * used in combination with networkUpdateTicks to lerp from clientEnergy to clientDestEnergy
+ */
+int clientDestEnergy;
+
+public double rotation;
+public double prevRotation;
+
+protected void serverNetworkUpdate()
+  {
+  networkUpdateTicks--;
+  if(networkUpdateTicks<=0 && clientEnergy!=(int)storedEnergy)
+    {
+    clientEnergy = (int)storedEnergy;
+    networkUpdateTicks=AWAutomationStatics.energyMinNetworkUpdateFrequency;
+    this.worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, clientEnergy);
+    }
+  }
+
+protected void clientNetworkUpdate()
+  {
+  if(networkUpdateTicks>0)
+    {
+    int diff = clientDestEnergy-clientEnergy;
+    clientEnergy += diff/networkUpdateTicks;    
+    AWLog.logDebug("updating client energy: "+clientEnergy);
+    networkUpdateTicks--;
+    }
+  }
 
 public void setOrientation(ForgeDirection d)
   {
@@ -106,6 +149,7 @@ public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
   storedEnergy = tag.getDouble("storedEnergy");
+  clientEnergy = (int)storedEnergy;
   orientation = ForgeDirection.getOrientation(tag.getInteger("orientation"));
   }
 
@@ -143,6 +187,24 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {  
   orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));
   this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+  }
+
+/**
+ * 0==connections update, used by conduits
+ * 1==client-energy update
+ * 2==waterwheel wheel speed/direction 
+ */
+@Override
+public boolean receiveClientEvent(int a, int b)
+  {
+  AWLog.logDebug("receiving client event...."+a+"::"+b);
+  super.receiveClientEvent(a, b);
+  if(worldObj.isRemote && a==1)
+    {
+    clientDestEnergy=b;
+    networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
+    }  
+  return true;
   }
 
 }

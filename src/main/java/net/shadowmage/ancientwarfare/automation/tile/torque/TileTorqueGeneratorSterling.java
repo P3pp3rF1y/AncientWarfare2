@@ -27,7 +27,14 @@ int burnTimeBase = 0;
 public void updateEntity()
   {  
   super.updateEntity();
-  if(worldObj.isRemote){return;}
+  if(worldObj.isRemote)
+    {
+    clientNetworkUpdate();
+    prevRotation = rotation;
+    rotation += ((double)clientEnergy)*0.03d;
+    return;
+    }
+  serverNetworkUpdate();
   if(burnTime <= 0 && getEnergyStored() < getMaxEnergy())
     {
     if(fuelInventory.getStackInSlot(0)!=null)

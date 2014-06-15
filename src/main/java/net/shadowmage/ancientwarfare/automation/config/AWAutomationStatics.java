@@ -40,6 +40,14 @@ public static int mailboxTimePerBlock = 20;
  */
 public static int mailboxTimeForDimension = 1200;
 
+/**
+ * used to reduce network updates
+ */
+public static int energyMinNetworkUpdateFrequency = 5;//default 4 updates/sec max
+
+/**
+ * @param config
+ */
 public AWAutomationStatics(Configuration config)
   {
   super(config);

@@ -65,7 +65,7 @@ everything
 ****************************MODEL-EDITOR MODULE TODO****************************
 * UV editor GUI needs area positions re-set when GUI size changes
 * when you swap a primitive parent, the old parent is still selected with the primitive (modelWidget, selection error)
-
+* sometimes pieces are unpickable -- this is likely related to primitive #'s / piece heirarchy
 
 *****************************************************************
 ****************************MISC INFO****************************
