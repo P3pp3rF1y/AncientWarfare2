@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.NBTTools;
+import net.shadowmage.ancientwarfare.structure.template.build.LootGenerator;
 
 public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks
 {
@@ -97,11 +98,8 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
   te.readFromNBT(tag);
   if(inventory==null){return;}
   if(randomLootLevel>0)
-    {
-    /**
-     * TODO
-     */    
-//    LootGenerator.instance().generateLootFor(inventory, inventory.getSizeInventory(), randomLootLevel-1, world.rand);
+    {    
+    LootGenerator.INSTANCE.generateLootFor(inventory, randomLootLevel-1, world.rand);
     }
   else if(inventoryStacks!=null)
     {

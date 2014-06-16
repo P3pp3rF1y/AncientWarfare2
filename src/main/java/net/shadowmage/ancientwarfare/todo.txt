@@ -13,11 +13,19 @@ Licensing
 * GUI - SHIFT-CLICK CODE
 * Research
 	-lots still needs resources-
+* research station does not drop inventory on block break
+* engineering station drop inventory on block break?	
+* add a gui for research book that lets you know what items need what research
+	--not as complex as the 1.6.4 res book gui, but something to give people an idea on where to start
+	can loop through awcraftingmanager.recipes to get a direct recipe/research dependency list
 		
 ****************************STRUCTURE MODULE TODO****************************
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
 > Scanner GUI needs some cleanup / make it look nice(er)
 > move structure scanner over to multi-key item interface
+^ test structure-module plugins for civics, torque tiles, pretty much everything
+* add survival-mode resource/recipes for all applicable plugins
+* re-enable dungeon-loot generation
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
 					
@@ -38,7 +46,7 @@ Licensing
 ^ check that 'flee hostiles' ai works as intended
 ^ verify that faction based mounted soldiers work as intended
 ^ verify functionality of mounted player-owned npcs (all)
-* Default held items for priest, trader
+* Default held items for priest, trader, or at least some use for their item slot
 * fix sounds.json for bard sounds
 * test bard-sound loading and custom sound references
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
@@ -51,7 +59,7 @@ figure out collision detection for large rectangular entities
 everything
 		
 ****************************MODEL-EDITOR MODULE TODO****************************
-* UV editor GUI needs area positions re-set when GUI size changes
+* UV editor GUI needs area positions re-set when GUI size changes (gui-init)
 * when you swap a primitive parent, the old parent is still selected with the primitive (modelWidget, selection error)
 * sometimes pieces are unpickable -- this is likely related to primitive #'s / piece heirarchy
 
