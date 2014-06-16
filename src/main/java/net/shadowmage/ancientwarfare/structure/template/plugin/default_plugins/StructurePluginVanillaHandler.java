@@ -116,6 +116,8 @@ public void addHandledBlocks(IStructurePluginManager manager)
   manager.registerBlockHandler("vanillaInventory", Blocks.hopper, TemplateRuleBlockInventory.class);  
 
   manager.registerBlockHandler("awAdvancedSpawner", AWBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("awCoreLogic", AWBlocks.engineeringStation, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("awCoreLogic", AWBlocks.researchStation, TemplateRuleBlockLogic.class);
   }
 
 

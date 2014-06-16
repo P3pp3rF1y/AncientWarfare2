@@ -44,7 +44,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class AWAutomationBlockLoader
 {
 
-public static final BlockWorksiteBase worksiteQuarry = new BlockWorksiteBase(Material.rock,"civic_quarry")
+public static final BlockWorksiteBase worksiteQuarry = new BlockWorksiteBase(Material.rock, "civic_quarry")
   {
   public TileEntity createTileEntity(World world, int metadata) 
     {
@@ -284,6 +284,9 @@ public static void load()
   warehouseCrafting.setIcon(0, 4, "ancientwarfare:automation/warehouse_crafting_side");
   warehouseCrafting.setIcon(0, 5, "ancientwarfare:automation/warehouse_crafting_side");  
   
+  GameRegistry.registerBlock(warehouseStockViewer, ItemBlockOwnedRotatable.class, "warehouse_stock_viewer");
+  GameRegistry.registerTileEntity(TileWarehouseStockViewer.class, "warehouse_stock_viewer_tile");
+  
   GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockOwnedRotatable.class, "civic_auto_crafting");
   GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");
   worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:automation/auto_crafting_top");
@@ -401,8 +404,7 @@ public static void load()
   chunkLoaderDeluxe.iconMap.setIconTexture(4, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
   chunkLoaderDeluxe.iconMap.setIconTexture(5, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
   
-  GameRegistry.registerBlock(warehouseStockViewer, ItemBlockOwnedRotatable.class, "warehouse_stock_viewer");
-  GameRegistry.registerTileEntity(TileWarehouseStockViewer.class, "warehouse_stock_viewer_tile");
+
   }
 
 }

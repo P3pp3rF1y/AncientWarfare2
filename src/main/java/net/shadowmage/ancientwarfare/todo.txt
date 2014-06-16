@@ -30,31 +30,8 @@ Licensing
 > move structure scanner over to multi-key item interface
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
-* Structure Module Plugins
-	
-	
-	npcs?? (should be mostly handled?)
-	town-hall block
-	
-	research station
-	engineering station
-	
-	crop farm
-	mushroom farm
-	reed farm
-	tree farm
-	animal farm
-	quarry
-	fishery
-	warehouse
-	warehouse-storage
-	warehouse-interface
-	warehouse-stock-viewer
-	warehouse-crafting station
-	auto-crafting
-	
-	
-		
+* Structure Module Plugins	
+					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
 ^ finish up storage block filter-setting ability, verify that it works properly (needs the above step to view storage-block inventory contents)

@@ -22,8 +22,9 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleTorqueTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleWorksite;
 
 public class StructurePluginAutomation extends StructureContentPlugin
@@ -46,6 +47,22 @@ public void addHandledBlocks(IStructurePluginManager manager)
   manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteReedFarm, TemplateRuleWorksite.class);
   manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteQuarry, TemplateRuleWorksite.class);
   manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteWarehouse, TemplateRuleWorksite.class);
+  
+  manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueConduit, TemplateRuleTorqueTile.class);
+  manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueDistributor, TemplateRuleTorqueTile.class);
+  manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.flywheel, TemplateRuleTorqueTile.class);
+  manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueGeneratorSterling, TemplateRuleTorqueTile.class);
+  manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueGeneratorWaterwheel, TemplateRuleTorqueTile.class);
+  manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.handCrankedEngine, TemplateRuleTorqueTile.class);
+  
+  manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.warehouseCrafting, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.warehouseInterface, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.warehouseStockViewer, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.warehouseStorageBlock, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.chunkLoaderSimple, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.chunkLoaderDeluxe, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.mailbox, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.worksiteAutoCrafting, TemplateRuleBlockLogic.class);   
   }
 
 @Override
