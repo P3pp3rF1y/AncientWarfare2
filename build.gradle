@@ -44,25 +44,46 @@ dependencies {
   }
 }
 
+//task sourceJar(type: Jar) {
+//  from sourceSets.main.allSource
+//  classifier = 'sources'
+//}
+//
+//task deobfJar(type: Jar) {
+//    from sourceSets.main.output
+//    classifier = 'dev'
+//}
+//
+//task coreJar(type: Jar) {
+//  from sourceSets.main.output
+//  include 'core/'
+//  classifier = 'core'
+//}
+
+//jar.dependsOn sourceJar, deobfJar, coreJar
+
+//artifacts {
+//  // the default jar is already here by default
+//  archives sourceJar
+//  archives deobfJar
+//}
 
 task updateVersion(type:Copy){
-  ant.propertyfile(file: versionFile)
-  {
+  ant.propertyfile(file: versionFile) {
     entry(key: 'build', type: 'int', operation: '+', value: 001)
   }
-  from(sourceSets.main.java.srcDirs)
-  {
+  from(sourceSets.main.java.srcDirs){
     exclude 'mcmod.info'
   }
   into 'build/sources/java'
   filter(ReplaceTokens, tokens: [VERSION: project.version])
 }
 
+
 compileJava.dependsOn updateVersion
 
 
-processResources
-{
+processResources{
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
@@ -76,3 +97,6 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+
+
