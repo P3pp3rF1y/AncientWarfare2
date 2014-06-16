@@ -90,7 +90,7 @@ public void addHandledEntities(IStructurePluginManager manager)
   manager.registerEntityHandler("AWNpc", NpcWorker.class, TemplateRuleEntityNpc.class);
   manager.registerEntityHandler("AWNpc", NpcCourier.class, TemplateRuleEntityNpc.class);
   manager.registerEntityHandler("AWNpc", NpcTrader.class, TemplateRuleEntityNpc.class);
-  manager.registerEntityHandler("AWNpc", NpcPriest.class, TemplateRuleEntityLogic.class);
+  manager.registerEntityHandler("AWNpc", NpcPriest.class, TemplateRuleEntityNpc.class);
   manager.registerEntityHandler("AWNpc", NpcBard.class, TemplateRuleEntityNpc.class);
     
   manager.registerEntityHandler("AWNpc", NpcBanditArcher.class, TemplateRuleEntityNpc.class);

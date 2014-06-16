@@ -36,6 +36,12 @@ dependencies {
   compile files {
     "lib/buildcraft-6.0.13-dev.jar"
   }
+  compile files {
+    "lib/CodeChickenCore-1.7.2-1.0.0-dev.jar"
+  }
+  compile files {
+    "lib/NotEnoughItems-1.7.2-1.0.1-dev.jar"
+  }
 }
 
 
