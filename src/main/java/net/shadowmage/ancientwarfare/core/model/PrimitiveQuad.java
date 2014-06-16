@@ -38,7 +38,7 @@ public PrimitiveQuad(ModelPiece parent)
   }
 
 @Override
-protected void renderForDisplayList(float tw, float th)
+protected void renderPrimitive(float tw, float th)
   {
   float px = 1.f/tw;
   float py = 1.f/th;
@@ -122,7 +122,6 @@ public void setBounds(float x1, float y1, float width, float height)
   this.x2 = x1 + width;
   this.y1 = y1;
   this.y2 = y1 + height; 
-  this.setCompiled(false);
   }
 
 public float x1(){return x1;}

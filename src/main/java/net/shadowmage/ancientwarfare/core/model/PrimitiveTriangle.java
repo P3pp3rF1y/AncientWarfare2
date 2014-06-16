@@ -64,7 +64,7 @@ public float cx(){return cx;}
 public float cy(){return cy;}
 
 @Override
-protected void renderForDisplayList(float tw, float th)
+protected void renderPrimitive(float tw, float th)
   {   
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
   if(ry!=0){GL11.glRotatef(ry, 0, 1, 0);}
@@ -141,7 +141,6 @@ public void rotateTriangleUV(float degrees)
 //  AWLog.logDebug(String.format("orig: %.2f, %.2f, %.2f, %.2f, %.2f, %.2f  new: %.2f, %.2f, %.2f, %.2f, %.2f, %.2f", u1(), v1(), u2(), v2(), u3(), v3(), u1, v1, u2, v2, u3, v3));
   
   setUV(u1, v1, u2, v2, u3, v3);
-  setCompiled(false);
   }
 
 @Override
@@ -212,7 +211,6 @@ public void setBounds(float x1, float y1, float z1, float x2, float y2, float z2
   this.recalcUV();
   this.calcNormal();
   this.calcCenter(); 
-  this.setCompiled(false);
   }
 
 public void setUV(float u1, float v1, float u2, float v2, float u3, float v3)
@@ -224,7 +222,6 @@ public void setUV(float u1, float v1, float u2, float v2, float u3, float v3)
   this.u3 = u3;
   this.v3 = v3;    
   calcCenter();
-  this.setCompiled(false);
   }
 
 private void calcCenter()
@@ -254,7 +251,6 @@ private void calcNormal()
   normalX/=norm;
   normalY/=norm;
   normalZ/=norm;
-  this.setCompiled(false);
   }
 
 /**
@@ -290,7 +286,6 @@ protected void recalcUV()
   v3 = v1 + (float)(Math.cos(cosC*Trig.TORADIANS) * c);
     
   this.calcCenter();
-  this.setCompiled(false);
   }
 
 @Override

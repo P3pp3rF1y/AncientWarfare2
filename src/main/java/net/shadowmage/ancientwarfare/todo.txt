@@ -2,16 +2,6 @@
 ^ = to check
 > = cannot do until later
 ? = optional / need to think on it
-
-****************************TODAY TODO****************************
-* Textures
-	food bundle (ration icon?)
-	worker bundle
-	combat bundle
-	trader bundle
-	bard bundle
-	priest bundle
-	courier bundle
 	
 ****************************LICENSING TODO****************************
 Licensing
@@ -55,13 +45,6 @@ Licensing
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * Sounds
 	bard
-* Recipes
-	worker npc
-	combat npc
-	drum
-	lute
-	harp
-	flute
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
@@ -72,7 +55,6 @@ everything
 * UV editor GUI needs area positions re-set when GUI size changes
 * when you swap a primitive parent, the old parent is still selected with the primitive (modelWidget, selection error)
 * sometimes pieces are unpickable -- this is likely related to primitive #'s / piece heirarchy
-* change models over to use a single display list per-piece, instead of per-box
 
 *****************************************************************
 ****************************MISC INFO****************************

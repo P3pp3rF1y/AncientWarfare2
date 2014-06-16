@@ -66,7 +66,6 @@ public void setBounds(float x1, float y1, float z1, float width, float height, f
   this.y2 = y1 + height;
   this.z1 = z1;
   this.z2 = z1 + length;
-  this.setCompiled(false);
   }
 
 @Override
@@ -82,7 +81,7 @@ public Primitive copy()
   }
 
 @Override
-protected void renderForDisplayList(float tw, float th)
+protected void renderPrimitive(float tw, float th)
   {  
   float px = 1.f/tw;
   float py = 1.f/th;

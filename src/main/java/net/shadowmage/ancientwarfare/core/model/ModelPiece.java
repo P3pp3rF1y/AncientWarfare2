@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 import org.lwjgl.opengl.GL11;
@@ -52,6 +51,9 @@ private float rx, ry, rz;//manipulatable rotation for this piece, relative to ei
 private Set<ModelPiece> children = new HashSet<ModelPiece>();//the children of this piece
 private List<Primitive> primitives = new ArrayList<Primitive>();//the list of boxes that make up this piece, really only used during first construction of display list
 private ModelPiece parent;
+
+boolean compiled=false;
+int displayList=-1;
 
 public ModelPiece(ModelBaseAW model, String line)
   {  
@@ -133,7 +135,7 @@ public void setRotation(float rx, float ry, float rz)
 
 public void recompilePiece()
   {
-  for(Primitive p : primitives){p.setCompiled(false);}
+  this.compiled=false;
   for(ModelPiece p : children){p.recompilePiece();}
   }
 
@@ -184,10 +186,7 @@ public void render(float tw, float th)
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
   if(ry!=0){GL11.glRotatef(ry, 0, 1, 0);}
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);}  
-  for(Primitive primitive : this.primitives)
-    {  
-    primitive.render(tw, th);   
-    }  
+  renderPrimitives(tw, th);
   for(ModelPiece child : this.children)
     {
     child.render(tw, th);
@@ -331,6 +330,29 @@ public Primitive getPickedPrimitive(int num)
     if(p!=null){return p;}
     }
   return null;
+  }
+
+protected void renderPrimitives(float tw, float th)
+  {
+  if(!compiled)
+    {
+    compiled = true;
+    if(displayList<0)
+      {
+      displayList = GL11.glGenLists(1);
+      }
+    GL11.glNewList(displayList, GL11.GL_COMPILE);
+    for(Primitive p : primitives)
+      {
+      p.render(tw, th);
+      }    
+    GL11.glEndList();
+    GL11.glCallList(displayList);
+    }
+  else
+    {
+    GL11.glCallList(displayList);
+    }
   }
 
 }

@@ -29,18 +29,11 @@ public abstract class Primitive
 {
 
 private static int nextPrimitiveNumber=0;
-
 private float tx;//texture offsets, in texture space (0->1)
 private float ty;
 float x, y, z;//origin of this primitive, relative to parent origin and orientation
-
 float rx, ry, rz;//rotation of this primitive, relative to parent orientation
-
 int primitiveNumber = 0;
-
-private boolean isCompiled = false;
-int displayListNumber = -1;
-
 public ModelPiece parent;
 
 public Primitive(ModelPiece parent)
@@ -49,34 +42,23 @@ public Primitive(ModelPiece parent)
   this.primitiveNumber = nextPrimitiveNumber++;
   }
 
-public void render(float tw, float th)
+public final void render(float tw, float th)
   {
-  if(!isCompiled)
-    {   
-    buildDisplayList(tw, th);
-    }
-  GL11.glCallList(displayListNumber);
+  buildDisplayList(tw, th);
   }
 
-public void buildDisplayList(float tw, float th)
+protected void buildDisplayList(float tw, float th)
   {
-  if(this.displayListNumber<0)
-    {
-    this.displayListNumber = GL11.glGenLists(1);
-    }  
-  GL11.glNewList(displayListNumber, GL11.GL_COMPILE);
   GL11.glPushMatrix();
   if(x!=0 || y!=0 || z!=0){GL11.glTranslatef(x, y, z);}
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
   if(ry!=0){GL11.glRotatef(ry, 0, 1, 0);}
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);}  
-  renderForDisplayList(tw, th);
+  renderPrimitive(tw, th);
   GL11.glPopMatrix();
-  GL11.glEndList();
-  setCompiled(true);
   }
 
-protected abstract void renderForDisplayList(float tw, float th);
+protected abstract void renderPrimitive(float tw, float th);
 
 public abstract Primitive copy();
 
@@ -94,7 +76,6 @@ public void setOrigin(float x, float y, float z)
   this.x = x;
   this.y = y;
   this.z = z;
-  this.setCompiled(false);
   }
 
 public void setRotation(float rx, float ry, float rz)
@@ -102,7 +83,6 @@ public void setRotation(float rx, float ry, float rz)
   this.rx = rx;
   this.ry = ry;
   this.rz = rz;
-  this.setCompiled(false);
   }
 
 public void setTx(float tx)
@@ -120,11 +100,6 @@ public void setTy(float ty)
 public abstract void addPrimitiveLines(ArrayList<String> lines);
 
 public abstract void readFromLine(String[] lineBits);
-
-public void setCompiled(boolean isCompiled)
-  {
-  this.isCompiled = isCompiled;
-  }
 
 public abstract void addUVMapToImage(BufferedImage image);
 
