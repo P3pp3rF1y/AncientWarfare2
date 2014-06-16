@@ -340,7 +340,7 @@ public String getNameForBlock(Block block)
     {
     return blockToName.get(block);
     }
-  return null;
+  return Block.blockRegistry.getNameForObject(block);
   }
 
 /**
@@ -358,7 +358,8 @@ public Block getBlockForName(String name)
     {
     return blockUnlocalizedNameToBlock.get(name);
     }
-  return Blocks.air;
+  Block b = (Block) Block.blockRegistry.getObject(name);
+  return b==null ? Blocks.air : b;
   }
 
 /**

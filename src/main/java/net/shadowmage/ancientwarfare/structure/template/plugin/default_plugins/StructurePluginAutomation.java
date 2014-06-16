@@ -20,9 +20,11 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
+import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleWorksite;
 
 public class StructurePluginAutomation extends StructureContentPlugin
 {
@@ -36,18 +38,20 @@ public StructurePluginAutomation()
 @Override
 public void addHandledBlocks(IStructurePluginManager manager)
   {
-  // TODO Auto-generated method stub
+  manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteCropFarm, TemplateRuleWorksite.class);
+  manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteAnimalFarm, TemplateRuleWorksite.class);
+  manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteFishFarm, TemplateRuleWorksite.class);
+  manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteForestry, TemplateRuleWorksite.class);
+  manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteMushroomFarm, TemplateRuleWorksite.class);
+  manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteReedFarm, TemplateRuleWorksite.class);
+  manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteQuarry, TemplateRuleWorksite.class);
+  manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteWarehouse, TemplateRuleWorksite.class);
   }
 
 @Override
 public void addHandledEntities(IStructurePluginManager manager)
   {
-  // TODO Auto-generated method stub
-  }
-
-public static void load()
-  {
-  StructurePluginManager.instance().addPlugin(new StructurePluginAutomation());
+  //noop, no entities in automation module
   }
 
 }

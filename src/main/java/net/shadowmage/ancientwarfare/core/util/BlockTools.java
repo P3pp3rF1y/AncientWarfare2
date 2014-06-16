@@ -240,28 +240,30 @@ public static BlockPosition rotateAroundOrigin(BlockPosition pos)
   {
   int x = pos.x;
   int z = pos.z;
-  boolean xNeg = x<0;
-  boolean zNeg = z<0;
-  if(!xNeg && !zNeg)//first quadrant
-    {
-    pos.x = -z;
-    pos.z = x;
-    }
-  else if(xNeg && !zNeg)//second quadrant
-    {
-    pos.x = -z;
-    pos.z = x;
-    }
-  else if(xNeg && zNeg)
-    {
-    pos.x = -z;
-    pos.z = -x;
-    }
-  else//!xNeg && zNeg
-    {
-    pos.x = -z;
-    pos.z = x;
-    }  
+  pos.x = -z;
+  pos.z = x;
+//  boolean xNeg = x<0;
+//  boolean zNeg = z<0;
+//  if(!xNeg && !zNeg)//first quadrant
+//    {
+//    pos.x = -z;
+//    pos.z = x;
+//    }
+//  else if(xNeg && !zNeg)//second quadrant
+//    {
+//    pos.x = -z;
+//    pos.z = x;
+//    }
+//  else if(xNeg && zNeg)
+//    {
+//    pos.x = -z;
+//    pos.z = x;
+//    }
+//  else//!xNeg && zNeg
+//    {
+//    pos.x = -z;
+//    pos.z = x;
+//    }  
   return pos;
   }
 
