@@ -3,31 +3,15 @@
 > = cannot do until later
 ? = optional / need to think on it
 
-****************************TODAY TODO****************************	
+****************************TODAY TODO****************************
 * Textures
-	bard
-	upkeep order
-	
-* Recipes
-	engineering station
-	research station
-	research book
-	hammer
-	quill
-	backpack
-	steel ingot
-	worker npc
-	combat npc
-	command baton
-	upkeep order
-	routing order
-	combat order
-	work order
-	drum
-	lute
-	harp
-	flute
-
+	food bundle (ration icon?)
+	worker bundle
+	combat bundle
+	trader bundle
+	bard bundle
+	priest bundle
+	courier bundle
 	
 ****************************LICENSING TODO****************************
 Licensing
@@ -37,22 +21,8 @@ Licensing
 ****************************CORE MODULE TODO****************************
 * need LOTS of tooltips added to various elements in GUIs	
 * GUI - SHIFT-CLICK CODE
-* Recipes
-	engineering station
-	research station
-	research book
-	hammer
-	quill
-	backpack
-	steel ingot
 * Research
 	-lots still needs resources-
-* Textures
-	Steel Ingot
-	Component Item
-		* wood, iron, steel gear
-		* wood, iron, steel bushing
-		* wood, iron, steel shafts	
 		
 ****************************STRUCTURE MODULE TODO****************************
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
@@ -71,10 +41,7 @@ Licensing
 ^ finish up storage block filter-setting ability, verify that it works properly (needs the above step to view storage-block inventory contents)
 * Torque API:	
 	set power capacity / power loss / power use for all torque blocks
-* Textures
-	waterwheel
-	hand cranked engine
-* balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
+	balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
 * add redstone control to flywheel blocks
 * figure out torque tile network updates
 	--rotation speed will be (powerOutput)/(maxOutpout) + (storedEnergy)/(maxEnergy)
@@ -92,16 +59,9 @@ Licensing
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * Sounds
 	bard
-* Textures
-	bard
 * Recipes
 	worker npc
 	combat npc
-	command baton
-	upkeep order
-	routing order
-	combat order
-	work order
 	drum
 	lute
 	harp

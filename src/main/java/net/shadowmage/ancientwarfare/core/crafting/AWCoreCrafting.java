@@ -56,18 +56,6 @@ public static void loadRecipes()
       'm', Items.diamond,
       's', Items.stick);
   recipe.addResearch("engineering");
-  
-  
-  //hammer (engineering)
-  // .s.
-  // msm  
-  // .s.
-  
-  //quill
-  // ..f
-  // .s.
-  // m..
-  
 
   recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWItems.quillWood), 
       "__f",
@@ -117,7 +105,37 @@ public static void loadRecipes()
       'i', Items.iron_ingot);
   recipe.addResearch("refining");
   
-  
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWItems.backpack,1,0), 
+      "lwl",
+      "www",
+      "lwl",
+      'l', Items.leather,
+      'w', Blocks.wool);
+  recipe.addResearch("trade");
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWItems.backpack,1,1), 
+      "lwl",
+      "wcw",
+      "lwl",
+      'l', Items.leather,
+      'w', Blocks.wool,
+      'c', Blocks.chest);
+  recipe.addResearch("trade");
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWItems.backpack,1,2), 
+      "lcl",
+      "wcw",
+      "lwl",
+      'l', Items.leather,
+      'w', Blocks.wool,
+      'c', Blocks.chest);
+  recipe.addResearch("trade");
+  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWItems.backpack,1,3), 
+      "lcl",
+      "wcw",
+      "lcl",
+      'l', Items.leather,
+      'w', Blocks.wool,
+      'c', Blocks.chest);
+  recipe.addResearch("trade");
   }
 
 }

@@ -8,6 +8,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.item.ItemComponent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -61,6 +63,15 @@ public static void load()
   GameRegistry.registerItem(commandBatonGold, "gold_command_baton");
   GameRegistry.registerItem(commandBatonDiamond, "diamond_command_baton");
   GameRegistry.registerItem(bardInstrument, "bard_instrument");
+  
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.NPC_FOOD_BUNDLE, "ancientwarfare:npc/food_bundle");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WORKER_EQUIPMENT_BUNDLE, "ancientwarfare:npc/worker_bundle");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.COMBAT_EQUIPMENT_BUNDLE, "ancientwarfare:npc/combat_bundle");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.TRADER_EQUIPMENT_BUNDLE, "ancientwarfare:npc/trader_bundle");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.PRIEST_EQUIPMENT_BUNDLE, "ancientwarfare:npc/priest_bundle");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.COURIER_EQUIPMENT_BUNDLE, "ancientwarfare:npc/courier_bundle");
+  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.BARD_EQUIPMENT_BUNDLE, "ancientwarfare:npc/bard_bundle");
+  
   }
 
 
