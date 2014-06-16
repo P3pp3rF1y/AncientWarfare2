@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -18,6 +19,8 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseSto
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageMedium;
 import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -100,12 +103,18 @@ public void breakBlock(World world, int x, int y, int z, Block block, int fortun
   {
   if(!world.isRemote)
     {
-    // TODO 
-//    TileWarehouseStorageBase storage = (TileWarehouseStorageBase) world.getTileEntity(x, y, z);
-//    if(storage!=null)
-//      {
-//      InventoryTools.dropInventoryInWorld(world, storage, x, y, z);      
-//      }  
+    TileWarehouseStorage tile = (TileWarehouseStorage) world.getTileEntity(x, y, z);
+    if(tile!=null)
+      {
+      ItemQuantityMap qtm = new ItemQuantityMap();
+      tile.addItems(qtm);
+      ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+      qtm.getItems(list);
+      for(ItemStack stack : list)
+        {
+        InventoryTools.dropItemInWorld(world, stack, x, y, z);
+        }
+      }
     }
   super.breakBlock(world, x, y, z, block, fortune);  
   }
