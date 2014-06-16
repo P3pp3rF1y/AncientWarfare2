@@ -23,10 +23,18 @@ public TextureFileBased(ResourceLocation par1ResourceLocation, File file)
   }
 
 @Override
-public void loadTexture(IResourceManager par1ResourceManager) throws IOException
+public void loadTexture(IResourceManager par1ResourceManager)
   {
-  BufferedImage image = ImageIO.read(file);
-  TextureUtil.uploadTextureImage(getGlTextureId(), image);
+  BufferedImage image;
+  try
+    {
+    image = ImageIO.read(file);
+    TextureUtil.uploadTextureImage(getGlTextureId(), image);
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
   }
 
 }

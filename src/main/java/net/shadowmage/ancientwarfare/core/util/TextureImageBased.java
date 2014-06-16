@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
@@ -20,7 +19,7 @@ public TextureImageBased(ResourceLocation par1ResourceLocation, BufferedImage im
   }
 
 @Override
-public void loadTexture(IResourceManager par1ResourceManager) throws IOException
+public void loadTexture(IResourceManager par1ResourceManager)
   {
   TextureUtil.uploadTextureImage(getGlTextureId(), image);
   }
