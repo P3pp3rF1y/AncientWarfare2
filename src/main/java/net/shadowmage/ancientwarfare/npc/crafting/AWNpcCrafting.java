@@ -9,12 +9,12 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
 
 public class AWNpcCrafting
@@ -23,6 +23,7 @@ public class AWNpcCrafting
 /**
  * load any recipes for automation module recipes
  */
+@SuppressWarnings("unchecked")
 public static void loadRecipes()
   {
   CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWNpcItemLoader.upkeepOrder));
@@ -31,36 +32,33 @@ public static void loadRecipes()
   CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWNpcItemLoader.workOrder));
   
   
-  ItemStack foodBundle = new ItemStack(AWItems.componentItem, 1, ItemComponent.NPC_FOOD_BUNDLE);
-  ItemStack workerBundle = new ItemStack(AWItems.componentItem, 1, ItemComponent.WORKER_EQUIPMENT_BUNDLE);
-  ItemStack combatBundle = new ItemStack(AWItems.componentItem, 1, ItemComponent.COMBAT_EQUIPMENT_BUNDLE);
-  ItemStack courierBundle = new ItemStack(AWItems.componentItem, 1, ItemComponent.COURIER_EQUIPMENT_BUNDLE);
-  ItemStack traderBundle = new ItemStack(AWItems.componentItem, 1, ItemComponent.TRADER_EQUIPMENT_BUNDLE);
-  ItemStack priestBundle = new ItemStack(AWItems.componentItem, 1, ItemComponent.PRIEST_EQUIPMENT_BUNDLE);
-  ItemStack bardBundle = new ItemStack(AWItems.componentItem, 1, ItemComponent.BARD_EQUIPMENT_BUNDLE);    
+  ItemStack foodBundle = new ItemStack(AWItems.componentItem, 1, ItemComponent.NPC_FOOD_BUNDLE); 
   
   RecipeResearched recipe;
   
   //food bundle
   recipe = AWCraftingManager.INSTANCE.addRecipe(foodBundle.copy(), 
-      "a",
-      "b",
-      "w",
+      "ap",
+      "bb",
+      "wc",
       'a', Items.apple,
       'b', Items.bread,
-      'w', new ItemStack(Items.potionitem));
+      'w', new ItemStack(Items.potionitem),
+      'p', Items.cooked_porkchop,
+      'b', Items.cooked_beef,
+      'c', Items.cooked_chicken);
   recipe.addResearch("leadership");
   
-  //worker bundle
-  recipe = AWCraftingManager.INSTANCE.addRecipe(workerBundle.copy(), 
+  //worker spawner
+  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("worker", ""), 
       "gf",
       "gt",
       'f', foodBundle.copy(),
       't', Items.wooden_pickaxe,
       'g', Items.gold_ingot);
   recipe.addResearch("leadership");
-  //combat bundle
-  recipe = AWCraftingManager.INSTANCE.addRecipe(combatBundle.copy(), 
+  //combat spawner
+  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("combat", ""), 
       "gf",
       "gt",
       'f', foodBundle.copy(),
@@ -68,15 +66,15 @@ public static void loadRecipes()
       'g', Items.gold_ingot);
   recipe.addResearch("conscription");
   //courier bundle
-  recipe = AWCraftingManager.INSTANCE.addRecipe(courierBundle.copy(), 
+  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("courier", ""), 
       "gf",
       "gt",
       'f', foodBundle.copy(),
       't', Blocks.wool,
       'g', Items.gold_ingot);
   recipe.addResearch("trade");
-  //trader bundle
-  recipe = AWCraftingManager.INSTANCE.addRecipe(traderBundle.copy(), 
+  //trader spawner
+  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("trader", ""), 
       "gf_",
       "gtb",
       'f', foodBundle.copy(),
@@ -84,16 +82,16 @@ public static void loadRecipes()
       'g', Items.gold_ingot,
       'b', Items.book);
   recipe.addResearch("trade");
-  //priest bundle
-  recipe = AWCraftingManager.INSTANCE.addRecipe(priestBundle.copy(), 
+  //priest spawner
+  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("priest", ""), 
       "gf",
       "gb",
       'f', foodBundle.copy(),
       'g', Items.gold_ingot,
       'b', Items.book);
   recipe.addResearch("leadership");
-  //bard bundle
-  recipe = AWCraftingManager.INSTANCE.addRecipe(bardBundle.copy(), 
+  //bard spawner
+  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("bard", ""), 
       "gf",
       "gb",
       'f', foodBundle.copy(),

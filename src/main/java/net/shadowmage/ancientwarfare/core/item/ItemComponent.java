@@ -31,12 +31,6 @@ public static int STEEL_TORQUE_SHAFT = 8;
  * TODO
  */
 public static int NPC_FOOD_BUNDLE = 100;
-public static int WORKER_EQUIPMENT_BUNDLE = 101;
-public static int COMBAT_EQUIPMENT_BUNDLE = 102;
-public static int COURIER_EQUIPMENT_BUNDLE = 103;
-public static int TRADER_EQUIPMENT_BUNDLE = 104;
-public static int PRIEST_EQUIPMENT_BUNDLE = 105;
-public static int BARD_EQUIPMENT_BUNDLE = 106;
 
 HashMap<Integer, String> subItems = new HashMap<Integer, String>();
 HashMap<Integer, IIcon> subItemIcons = new HashMap<Integer, IIcon>();
