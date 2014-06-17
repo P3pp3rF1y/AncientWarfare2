@@ -1,42 +1,18 @@
-****************************AUTOMATION MODULE INFO****************************
-	**************TORQUE POWER SYSTEM**************
-	Power network:
-		Generators:
-			Solid Fuel (sterling) 1e/t gen, 1000 max, 10 out
-			Water (waterwheel) 0-0.2e/t gen, 100 max, 1 out
-			NPC (hand cranked engine) 50e/work, 100 max, 1 out
-		Storage:	
-			Flywheel 10000 max, 100 in, 100 out
-		Transport:
-			Conduit 100 max, 10 in, 10 out
-			ConduitHighGrade 1000 max, 100 in, 100 out
-			Junction (bc-compat) 1000 max, 100 in, 100 out
-			Distributor	(bc-compat) 1000 max, 100 in, 100 out			
-	
 ****************************NPC MODULE INFO****************************
 	**************TOWN HALL**************
-	Tracks nearby NPCs.
-	NPCs report to the nearest in range (allied) town-hall block when they are killed.
-		Player-owned priests use this dead-npc list to occasionally 'resurrect' a killed npc
-		--must have an 'altar' block, or some-such?
-	dead-npc list is saved in nbt, and clearable from player input.
-	live entity list is only temporarily cached, rebuilt every X seconds to drop references and prevent memory leaks			  
-
+	functions as an auto-assigned upkeep point for same team / owner npcs.
+	tracks deaths of nearby npcs, priests may resurrect these npcs
+	 
 	**************COMMAND BATON**************
-		persistent list of entities commanded.
-		stored in item-stack nbt as a list of UUIDs
-		list is looked client side from item-nbt
-		npcs must transmit UUID to client-side for lookup
-		players may add to / remove from list by right-click of item while targeting a commandable NPC
-		Commands -- move / guard / attack / attack area / set home / clear home / set upkeep / clear upkeep / clear command
-		Client renders list of commanded npcs for baton while equipped
-		Client renders under-cursor target while baton is equipped
-		Has 5 hotkeys to control commands
-			z-clear current command / openGUI (reg/sneak)
-			x-attack / attack area (entity/block)
-			c-move / guard (entity/block)
-			v-set/clear home (reg/sneak)(may be removed)
-			b-set/clear upkeep (reg/sneak)(may be removed)
+	functions as a sword, with no block ability
+	right click to add or remove an npc from the commanded npc list, which are displayed in the upper-left
+	commands are issued to the highlighted block or entity, which is displayed in the upper-right
+	use one of the following keys to issue commands to the current selected npcs (reassignable through keybinds gui (f7))
+		Z -- clear current command
+		X -- attack target (entity target), move to target while looking for things to attack (block target)
+		C -- follow/guard target (entity targe), move to target while ignoring potential attack targets (block target), mount target (horse target)
+		V -- set home point / (sneaking) clear home target
+		B -- set upkeep point / (sneaking) clear upkeep point
 		
 	**************TEAMS**************
 		All teams are derived from owning players team.
@@ -46,13 +22,13 @@
 		Combat npcs will attack other combat NPCS if the attacker has a team and the target has a team, and they are not the same team
 	
 	**************NPC INVENTORIES**************
-	all npcs will have full inventory accessibility for equipment slots
+	all npcs have full inventory accessibility for equipment slots
 		main-hand slot determines work/combat type/inventory-size for couriers/bonus effectiveness for bards
 		armor slots are used for actual armor
 		upkeep slot is for upkeep orders -- where to get the food
 		orders slot is for work/combat/route orders -- where to work / what to fight / what items to move	
 	
-	all npcs will have an 'upkeep order' slot
+	all npcs have an 'upkeep order' slot
 		simple work-order that denotes a single point for npc upkeep.
 		allows setting the amount of upkeep to withdraw
 		allows setting the block-side to withdraw from (in the case of sided inventories)
@@ -88,6 +64,21 @@
 	**************NPC HEALING**************		
 	all npcs will 'heal' over time on their own, slowly
 		player-owned NPCs will require upkeep be met in order to heal
+		
+	**************NPC SKIN PACKS**************
+	custom skin-packs may be placed into the config/AWConfig/npc/skin_pack/ folder
+	skin-packs should contain only minecraft skin-format .png files and a single skin-pack.meta file
+	the skin-pack.meta file is should be specified with one entry per line, in the format of:
+		npcType.npcSubType=image_name
+		
+		examples:
+		worker=worker1.png
+		worker=worker2.png
+		worker.farmer=farmer1.png
+		
+	each npc type may be specified multiple times with separate images
+	when multiple images are found for an npc, the npc will be assigned a random skin from those found for his type/subtype
+	custom npc types may be specified in the skin-pack.meta file, these custom npc types may be referenced in the npc gui 'custom texture' field
 	
 	**************NPC TYPES**************
 	npc types
@@ -228,3 +219,18 @@
 		**************FACTION OWNED ARCHER NPC**************
 		**************FACTION OWNED TRADER NPC**************
 		**************FACTION OWNED PRIEST NPC**************		
+
+****************************AUTOMATION MODULE INFO****************************
+	**************TORQUE POWER SYSTEM**************
+	Power network:
+		Generators:
+			Solid Fuel (sterling) 1e/t gen, 1000 max, 10 out
+			Water (waterwheel) 0-0.2e/t gen, 100 max, 1 out
+			NPC (hand cranked engine) 50e/work, 100 max, 1 out
+		Storage:	
+			Flywheel 10000 max, 100 in, 100 out
+		Transport:
+			Conduit 100 max, 10 in, 10 out
+			ConduitHighGrade 1000 max, 100 in, 100 out
+			Junction (bc-compat) 1000 max, 100 in, 100 out
+			Distributor	(bc-compat) 1000 max, 100 in, 100 out			
