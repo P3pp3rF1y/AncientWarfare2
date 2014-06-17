@@ -15,9 +15,8 @@ Licensing
 	-lots still needs resources-
 * research station does not drop inventory on block break
 * engineering station drop inventory on block break?	
-* add a gui for research book that lets you know what items need what research
-	--not as complex as the 1.6.4 res book gui, but something to give people an idea on where to start
-	can loop through awcraftingmanager.recipes to get a direct recipe/research dependency list
+* on research book, add toggle to swap between 'recipe' mode -- view research deps by recipe crafted
+* sort research book research goals
 		
 ****************************STRUCTURE MODULE TODO****************************
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency

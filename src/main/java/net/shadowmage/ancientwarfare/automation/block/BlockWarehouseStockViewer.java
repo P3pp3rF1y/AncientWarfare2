@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -30,7 +31,13 @@ public BlockWarehouseStockViewer(String regName)
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
-  this.setBlockTextureName("minecraft:oak_planks");
+  }
+
+@Override
+@SideOnly(Side.CLIENT)
+public void registerBlockIcons(IIconRegister p_149651_1_)
+  {
+  
   }
 
 @Override
