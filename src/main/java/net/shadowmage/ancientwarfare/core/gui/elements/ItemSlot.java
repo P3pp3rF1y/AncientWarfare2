@@ -116,7 +116,7 @@ public void render(int mouseX, int mouseY, float partialTick)
       if(renderItemQuantity && item.stackSize>1)
         {        
 //        itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1, "");
-//        renderStackSize(renderX+1, renderY+1, item.stackSize, font);
+        renderStackSize(renderX+1, renderY+1, item.stackSize, font);
         }
       GL11.glDisable(GL11.GL_LIGHTING);
       }    
