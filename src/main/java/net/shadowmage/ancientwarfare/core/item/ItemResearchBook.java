@@ -10,6 +10,7 @@ import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -85,7 +86,12 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   {  
   if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("researcherName"))
     {
+    //TODO add chat message stating book is bound
     stack.setTagInfo("researcherName", new NBTTagString(player.getCommandSenderName()));
+    }
+  else
+    {
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_BOOK, 0, 0, 0);
     }
   }
 

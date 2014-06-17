@@ -83,6 +83,7 @@ public static final int GUI_NPC_TOWN_HALL = 41;
 public static final int GUI_NPC_RECRUITING_STATION = 42;
 public static final int GUI_NPC_BARD = 43;
 public static final int GUI_NPC_CREATIVE = 44;
+public static final int GUI_RESEARCH_BOOK = 45;
 
 private FMLEventChannel channel;
 
