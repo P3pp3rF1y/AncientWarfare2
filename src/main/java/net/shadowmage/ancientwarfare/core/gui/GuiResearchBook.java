@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
@@ -19,6 +20,7 @@ public class GuiResearchBook extends GuiContainerBase
 {
 
 ResearchGoal selectedGoal = null;
+List<ItemSlot> slots = new ArrayList<ItemSlot>();
 
 CompositeScrolled area;
 public GuiResearchBook(ContainerBase container)
@@ -37,6 +39,11 @@ public void initElements()
 public void setupElements()
   {
   area.clearElements();
+  for(GuiElement el : slots)
+    {
+    removeGuiElement(el);
+    }
+  slots.clear();
   Collection<ResearchGoal> goals = ResearchGoal.getResearchGoals();
   
   int totalHeight = 8;
@@ -61,7 +68,7 @@ public void setupElements()
   addGuiElement(button);
   totalHeight+=16;
   
-  area.addGuiElement(new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.researched_items")));
+  area.addGuiElement(new Label(192, totalHeight, StatCollector.translateToLocal("guistrings.researched_items")));
   totalHeight+=14;
   
   if(selectedGoal!=null)
@@ -86,6 +93,7 @@ public void setupElements()
       y = totalHeight + 18*(i/9);
       slot = new ItemSlot(x, y, list.get(i).getRecipeOutput(), this);
       addGuiElement(slot);
+      slots.add(slot);
       }
     }
   }
