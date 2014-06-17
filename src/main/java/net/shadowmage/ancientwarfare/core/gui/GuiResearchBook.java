@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 
 public class GuiResearchBook extends GuiContainerBase
@@ -35,6 +36,7 @@ public void initElements()
 @Override
 public void setupElements()
   {
+  area.clearElements();
   Collection<ResearchGoal> goals = ResearchGoal.getResearchGoals();
   
   int totalHeight = 8;
@@ -57,7 +59,10 @@ public void setupElements()
   Button button;
   button = new GoalButton(192, totalHeight, 200, 12, selectedGoal);
   addGuiElement(button);
-  totalHeight+=12;
+  totalHeight+=16;
+  
+  area.addGuiElement(new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.researched_items")));
+  totalHeight+=14;
   
   if(selectedGoal!=null)
     {
