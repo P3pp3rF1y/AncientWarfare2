@@ -549,9 +549,9 @@ public final void setBounds(BlockPosition p1, BlockPosition p2)
 @Override
 public final AxisAlignedBB getRenderBoundingBox()
   {
-  AxisAlignedBB bb = super.getRenderBoundingBox();
-  if(hasWorkBounds())
+  if(hasWorkBounds() && getWorkBoundsMin()!=null && getWorkBoundsMax()!=null)
     {
+    AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+1, zCoord+1);
     BlockPosition min = getWorkBoundsMin();
     BlockPosition max = getWorkBoundsMax();
     bb.minX = min.x < bb.minX ? min.x : bb.minX;
@@ -560,7 +560,9 @@ public final AxisAlignedBB getRenderBoundingBox()
     bb.maxX = max.x+1 > bb.maxX ? max.x+1 : bb.maxX;
     bb.maxY = max.y+1 > bb.maxY ? max.y+1 : bb.maxY;
     bb.maxZ = max.z+1 > bb.maxZ ? max.z+1 : bb.maxZ;
+    return bb;
     }
+  AxisAlignedBB bb = super.getRenderBoundingBox();
   return bb;
   }
 
