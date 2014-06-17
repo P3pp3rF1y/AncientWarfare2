@@ -6,6 +6,7 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
@@ -24,17 +25,15 @@ public final RecipeResearched addResearch(String... names)
   ResearchGoal g;  
   for(String name : names)
     {
-    if(name.startsWith("research."))
-      {
-      g = ResearchGoal.getGoal(name);      
-      }
-    else
-      {
-      g = ResearchGoal.getGoal("resesarch."+name);
-      }
+    name = name.startsWith("research.") ? name : "research."+name;
+    g = ResearchGoal.getGoal(name);
     if(g!=null)
       {
       neededResearch.add(g.getId());
+      }
+    else
+      {
+      throw new IllegalArgumentException("COULD NOT LOCATE RESEARCH GOAL FOR NAME: "+name);
       }
     }
   return this;
@@ -67,5 +66,7 @@ public final boolean canPlayerCraft(World world, String playerName)
     }
   return canCraft;
   }
+
+public Set<Integer> getNeededResearch(){return neededResearch;}
 
 }
