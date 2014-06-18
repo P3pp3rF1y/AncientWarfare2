@@ -26,6 +26,7 @@ public static final ItemSpawnerPlacer spawner = new ItemSpawnerPlacer("spawner_p
 public static final Item gateSpawner = new ItemGateSpawner("gate_spawner");
 
 public static final ItemConstructionTool constructionTool = new ItemConstructionTool("construction_tool");
+public static final ItemBlockInfo blockInfo = new ItemBlockInfo("block_info_clicker");
 
 public static void load()
   {  
@@ -34,6 +35,7 @@ public static void load()
   GameRegistry.registerItem(spawner, "spawner_placer");    
   GameRegistry.registerItem(gateSpawner, "gate_spawner");
   GameRegistry.registerItem(constructionTool, "construction_tool");
+  GameRegistry.registerItem(blockInfo, "block_info_clicker");
   }
 
 }

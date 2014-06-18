@@ -58,6 +58,8 @@ Licensing
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * Sounds
 	bard
+* add 'placeholder' factions -- for use by map-makers for designing custom factions.
+	includes no custom textures, translations, etc -- these must be provided by the map-maker	
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

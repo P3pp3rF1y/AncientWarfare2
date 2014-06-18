@@ -139,7 +139,7 @@ private void loadBlockRotations(List<String> lines)
       info = new BlockInfo();   
       blockInfoMap.put(block, info);   
       }
-    info.rotations = rotations;    
+    info.setRotations(rotations);
     }
   }
 
@@ -498,7 +498,7 @@ private class BlockInfo
 {
 
 boolean singleItem = false;
-
+boolean hasRotation = false;
 /**
  * item-stack map, by block-meta.  if singleItem==true, will use index[0] instead of whatever is passed in
  */
@@ -508,8 +508,15 @@ boolean [] noItemFlags = new boolean[16];//flag will be true for a meta if it sh
 byte[] rotations = new byte[16];
 byte buildPriority = 0;
 
+public void setRotations(byte[] rotations)
+  {
+  this.rotations = rotations;
+  this.hasRotation = true;
+  }
+
 public int getRotatedMeta(int meta)
   {
+  if(!hasRotation){return meta;}
   return rotations[meta];
   }
 
