@@ -119,7 +119,9 @@ private void generateAt(int chunkX, int chunkZ, World world, IChunkProvider chun
   int y = getTargetY(world, x, z, false)+1;  
   if(y<=0){return;}
   int face = rng.nextInt(4);
-  StructureTemplate template = WorldGenStructureManager.instance().selectTemplateForGeneration(world, rng, x, y, z, face, AWStructureStatics.chunkSearchRadius);  
+  world.theProfiler.startSection("AWTemplateSelection");
+  StructureTemplate template = WorldGenStructureManager.instance().selectTemplateForGeneration(world, rng, x, y, z, face, AWStructureStatics.chunkSearchRadius);
+  world.theProfiler.endSection();
   int remainingClusterValue = WorldGenStructureManager.instance().getRemainingValue();//TODO use this to alter the random chance/range values to favor generating in clusters  
   if(AWCoreStatics.DEBUG)
     {
@@ -139,7 +141,7 @@ public static int getTargetY(World world, int x, int z, boolean skipWater)
   for(int y = world.provider.getActualHeight(); y >0 ; y--)
     {
     block = world.getBlock(x, y, z);
-    if(block==null){continue;}
+    if(block==null || block==Blocks.air){continue;}
     if(AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block))){continue;}
     if(skipWater && (block==Blocks.water || block==Blocks.flowing_water)){continue;}
     return y;

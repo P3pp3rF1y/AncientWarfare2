@@ -31,6 +31,7 @@ import java.util.Set;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -55,6 +56,7 @@ public void loadBiomeList()
     biome = BiomeGenBase.getBiomeGenArray()[i];
     if(biome==null){continue;}
     String name = AWStructureStatics.getBiomeName(biome);
+    AWLog.logDebug("loading biome names...: "+name);
     templatesByBiome.put(name, new HashSet<StructureTemplate>());    
     }
   }
@@ -69,8 +71,13 @@ public void registerWorldGenStructure(StructureTemplate template)
       {
       if(templatesByBiome.containsKey(biome.toLowerCase()))
         {
+        AWLog.logDebug("adding template to biome: "+biome.toLowerCase());
         templatesByBiome.get(biome.toLowerCase()).add(template);
         }      
+      else
+        {
+        AWLog.logError("Could not locate biome: "+biome+" while registering template: "+template.name+" for world generation.");
+        }
       }
     }
   else//blacklist, skip template-biomes
@@ -79,6 +86,7 @@ public void registerWorldGenStructure(StructureTemplate template)
       {
       if(!biomes.isEmpty() && biomes.contains(biome.toLowerCase())){continue;}
       templatesByBiome.get(biome).add(template);
+      AWLog.logDebug("adding template:"+template.name+" to biome: "+biome.toLowerCase());
       }
     }
   }
@@ -139,7 +147,7 @@ public StructureTemplate selectTemplateForGeneration(World world, Random rng, in
     }
   remainingValueCache = AWStructureStatics.maxClusterValue - foundValue;
   Collection<String> generatedUniques = map.getGeneratedUniques();
-  Set<StructureTemplate> potentialStructures = templatesByBiome.get(biomeName);
+  Set<StructureTemplate> potentialStructures = templatesByBiome.get(biomeName.toLowerCase());
   if(potentialStructures==null || potentialStructures.isEmpty()){return null;}
   StructureValidator settings;
   int dim = world.provider.dimensionId;
@@ -183,7 +191,10 @@ public StructureTemplate selectTemplateForGeneration(World world, Random rng, in
       }   
     trimmedPotentialStructures.add(template);
     }  
-  if(trimmedPotentialStructures.isEmpty()){return null;}
+  if(trimmedPotentialStructures.isEmpty())
+    {
+    return null;
+    }
   int totalWeight = 0;
   for(StructureTemplate t : trimmedPotentialStructures)
     {
@@ -193,12 +204,12 @@ public StructureTemplate selectTemplateForGeneration(World world, Random rng, in
   StructureTemplate toReturn = null;
   for(StructureTemplate t : trimmedPotentialStructures)
     {
+    toReturn = t;    
+    totalWeight -= t.getValidationSettings().getSelectionWeight();
     if(totalWeight<=0)
-      {
-      toReturn = t;
+      {      
       break;
-      }   
-    totalWeight -= t.getValidationSettings().getSelectionWeight();     
+      }     
     }
   distancesFound.clear();
   trimmedPotentialStructures.clear();

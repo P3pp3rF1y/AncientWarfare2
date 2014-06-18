@@ -26,6 +26,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -45,7 +46,12 @@ public boolean shouldIncludeForSelection(World world, int x, int y, int z, int f
   {
   Block block = world.getBlock(x, y-1, z);
   Set<String> validTargetBlocks = getTargetBlocks();
-  if(block==null || !validTargetBlocks.contains(BlockDataManager.instance().getNameForBlock(block))){return false;}
+  String name = BlockDataManager.instance().getNameForBlock(block);
+  if(block==null || !validTargetBlocks.contains(name))
+    {
+    AWLog.logDebug("rejecting due to target block mismatch of: "+name+" valid blocks are: "+validTargetBlocks);
+    return false;
+    }
   return true;
   }
 
@@ -88,7 +94,7 @@ protected void borderLeveling(World world, int x, int z, StructureTemplate templ
     }
   int y = bb.min.y + template.yOffset + step - 1;
   Block block = world.getBlock(x, y, z);
-  if(block!=null && block!= Blocks.flowing_water && block!=Blocks.water && !AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block)))
+  if(block!=null && block!=Blocks.air && block!= Blocks.flowing_water && block!=Blocks.water && !AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block)))
     {
     world.setBlock(x, y, z, fillBlock);
     }  

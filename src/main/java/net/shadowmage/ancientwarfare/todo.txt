@@ -25,6 +25,15 @@ Licensing
 * add survival-mode resource/recipes for all applicable plugins
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
+* structure generation is currently non-functional	
+* add a block-name dump feature to config file/startup
+* dimension-specification GUI is non-functional
+* meta lookup for wool is incorrect on export/scan, defaulting to white
+* values specified in validation GUI are not exported properly
+* validate weighted-selection algorithm in structure template selection--seems a bit off
+* structure gen can cut through bedrock
+* inverted slabs from old templates not being placed with proper meta
+* need to re-add the redstone/contraption handling code from 1.6.4
 					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system

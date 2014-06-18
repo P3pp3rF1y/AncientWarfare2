@@ -263,6 +263,7 @@ public void initializeValues()
             "snow",
             "web",
             "cocoa",
+            "double_plant",
             "tile.Coral4",
             "tile.Coral3",
             "tile.Coral2",
