@@ -9,6 +9,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -64,6 +65,19 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CRAFTING, x, y, z);    
     }
   return true;
+  }
+
+@Override
+public void breakBlock(World world, int x, int y, int z, Block block, int meta)
+  {
+  TileEngineeringStation tile = (TileEngineeringStation) world.getTileEntity(x, y, z);
+  if(tile!=null)
+    {
+    InventoryTools.dropInventoryInWorld(world, tile.bookInventory, x, y, z);
+    InventoryTools.dropInventoryInWorld(world, tile.extraSlots, x, y, z);
+    InventoryTools.dropInventoryInWorld(world, tile.layoutMatrix, x, y, z);
+    }
+  super.breakBlock(world, x, y, z, block, meta);
   }
 
 }

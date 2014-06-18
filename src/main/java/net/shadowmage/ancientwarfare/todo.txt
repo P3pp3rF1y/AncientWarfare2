@@ -13,8 +13,6 @@ Licensing
 * GUI - SHIFT-CLICK CODE
 * Research
 	-lots still needs resources-
-* research station does not drop inventory on block break
-* engineering station drop inventory on block break?	
 * on research book, add toggle to swap between 'recipe' mode -- view research deps by recipe crafted
 * sort research book research goals
 * add scroll-wheel functionality to the scroll-bar of scrollable areas
@@ -51,7 +49,6 @@ Licensing
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * Sounds
 	bard
-* translation key for death list in town-hall (needs translation lookup in gui as well)
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
