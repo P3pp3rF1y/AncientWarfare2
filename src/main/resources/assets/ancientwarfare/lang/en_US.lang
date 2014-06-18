@@ -345,6 +345,7 @@ guistrings.npc.helmet_slot=Helmet Slot
 guistrings.npc.chest_slot=Chest Slot
 guistrings.npc.legs_slot=Legs Slot
 guistrings.npc.boots_slot=Boots Slot
+guistrings.npc.shield_slot=Shield Slot
 guistrings.npc.upkeep_order_slot=Upkeep Order Slot
 guistrings.npc.manual_order_slot=Manual Order Slot
 guistrings.npc.owner_name=Owner Name
