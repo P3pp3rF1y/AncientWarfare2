@@ -29,7 +29,6 @@ Licensing
 * dimension-specification GUI is non-functional
 * values specified in validation GUI are not exported properly
 * validate weighted-selection algorithm in structure template selection--seems a bit off
-* structure gen can cut through bedrock
 * translation for survival mode ticked builder blocks
 					
 ****************************AUTOMATION MODULE TODO****************************	

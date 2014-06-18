@@ -123,6 +123,7 @@ protected void placeEntities()
 @Override
 public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
   {
+  if(y<=0 || y>=256){return;}
   if(priority==0)
     {
     world.setBlock(x, y, z, block, meta, 2);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
