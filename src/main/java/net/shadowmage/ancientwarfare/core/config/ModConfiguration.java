@@ -34,7 +34,6 @@ public abstract class ModConfiguration
 public Configuration config;
 public static boolean updatedVersion = false;
 public static boolean autoExportOnUpdate = false;
-public static boolean shouldExport = false;
 
 public ModConfiguration(Configuration config)
   {

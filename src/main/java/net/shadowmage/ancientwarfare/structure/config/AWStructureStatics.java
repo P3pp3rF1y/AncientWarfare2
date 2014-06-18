@@ -29,6 +29,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 
@@ -43,20 +44,20 @@ public AWStructureStatics(Configuration config)
 public static String templateExtension = "aws";
 public static boolean enableVillageGen = true;
 public static boolean enableStructureGeneration = true;
-public static int chunkSearchRadius = 16;
+private static boolean exportBlockNames = false;
+public static int clusterValueSearchRange = 16;
+public static int duplicateStructureSearchRange = 16;
 public static int maxClusterValue = 500;
-public static int randomChance = 75;
-public static int randomRange = 1000;
+public static float randomGenerationChance = 0.075f;
 public static int spawnProtectionRange = 12;
 public static int structureImageWidth = 512;
 public static int structureImageHeight = 288;
 public static Set<String> excludedSpawnerEntities = new HashSet<String>();
 private static HashSet<String> skippableWorldGenBlocks = new HashSet<String>();
 private static HashSet<String> worldGenTargetBlocks = new HashSet<String>();
-@SuppressWarnings("rawtypes")
-private static HashMap<Class, String> biomeAliasByClass = new HashMap<Class, String>();
-@SuppressWarnings("rawtypes")
-private static HashMap<String, Class> biomeAliasByName = new HashMap<String, Class>();
+
+private static HashMap<Class<? extends BiomeGenBase>, String> biomeAliasByClass = new HashMap<Class<? extends BiomeGenBase>, String>();
+private static HashMap<String, Class<? extends BiomeGenBase>> biomeAliasByName = new HashMap<String, Class<? extends BiomeGenBase>>();
 
 private static String worldGenCategory = "a_world-gen_settings";
 private static String villageGenCategory = "b_village-gen_settings";
@@ -76,179 +77,85 @@ public void initializeCategories()
   this.config.addCustomCategoryComment(biomeMap, "Custom-mapped biome names to be used in templates.\nBiomes should be specified by their fully-qualifed class-name.\nThis alias list must be shared if you wish to share your templates that use these custom aliases.");
   }
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings("unchecked")
 @Override
-public void initializeValues()
+protected void initializeValues()
   {
-  templateExtension = config.get(worldGenCategory, "template_extension", "aws").getString();
-  enableVillageGen = config.get(worldGenCategory, "enable_village_generation", enableVillageGen).getBoolean(enableVillageGen);
-  enableStructureGeneration = config.get(worldGenCategory, "enable_structure_generation", enableStructureGeneration).getBoolean(enableStructureGeneration);
-  chunkSearchRadius = config.get(worldGenCategory, "validation_chunk_radius", chunkSearchRadius).getInt(chunkSearchRadius);
-  maxClusterValue = config.get(worldGenCategory, "max_cluster_value", maxClusterValue).getInt(maxClusterValue);
-  randomChance = config.get(worldGenCategory, "random_chance", randomChance).getInt(randomChance);
-  randomRange = config.get(worldGenCategory, "random_range", randomRange).getInt(randomRange);
-  spawnProtectionRange = config.get(worldGenCategory, "spawn_protection_chunk_radius", spawnProtectionRange).getInt(spawnProtectionRange);
+  templateExtension = config.get(worldGenCategory, "template_extension", "aws","Default="+templateExtension+"\n" +
+  		"The template extension used when looking for and exporting templates.\n" +
+  		"Only files matching this extension will be examined.").getString();
+  enableVillageGen = config.get(worldGenCategory, "enable_village_feature_generation", enableVillageGen, "Default="+enableVillageGen+"\n" +
+  		"Enable or disable generation of additional village features.").getBoolean(enableVillageGen);
+  enableStructureGeneration = config.get(worldGenCategory, "enable_structure_generation", enableStructureGeneration, "Default="+enableStructureGeneration+"\n" +
+  		"Enable or disable structure generation entirely.").getBoolean(enableStructureGeneration);  
+  duplicateStructureSearchRange = config.get(worldGenCategory, "validation_duplicate_search_radius", duplicateStructureSearchRange, "Default="+duplicateStructureSearchRange+"\n" +
+  		"The minimum radius in chunks to be searched for duplicate structures.\n" +
+  		"This setting should generally not need to be adjusted unless you have templates with extremely\n" +
+  		"large 'minDuplicateDistance' values\n" +
+  		"Extremely large values may introduce extra lag during generation.  Lower values may reduce lag during generation,\n" +
+  		"at the cost of some accuracy in the min duplicate distance tests.").getInt(duplicateStructureSearchRange);
+  clusterValueSearchRange = config.get(worldGenCategory, "validation_cluster_value_search_radius", clusterValueSearchRange, "Default="+clusterValueSearchRange+"\n" +
+      "The minimum radius in chunks to be searched for structures when tallying cluster value in an area.\n" +
+      "This setting should be adjusted along with maxClusterValue and the clusterValue in templates to encourage\n" +
+      "or discourage specific structures to generate near eachother.\n" +
+      "Extremely large values may introduce extra lag during generation.  Lower values may reduce lag during generation,\n" +
+      "at the cost of some accuracy in the cluster value tests.").getInt(clusterValueSearchRange); 
+  maxClusterValue = config.get(worldGenCategory, "max_cluster_value", maxClusterValue, "Default="+maxClusterValue+"\n" +
+  		"The maximum allowed cluster value that may be present inside of 'validation_chunk_radius'.\n" +
+  		"").getInt(maxClusterValue);
+  randomGenerationChance = (float)config.get(worldGenCategory, "random_generation_chance", randomGenerationChance, "Default="+randomGenerationChance+"\n" +
+  		"Accepts values between 0 and 1.\n" +
+  		"Determines the chance that a structure will attempt to be generated in any given chunk.\n" +
+  		"Number is specified as a percentage -- e.g. 0.75 == 75% chance to attempt generation.\n" +
+  		"Higher values will result in more attempts to generate structures.  Actual number\n" +
+  		"generated will depend upon your specific templates and their validation settings.\n" +
+  		"Values of 0 or lower will result in no structures generating.  Values higher than 1\n" +
+  		"will result in a generation attempt in every chunk.").getDouble(randomGenerationChance);
+  spawnProtectionRange = config.get(worldGenCategory, "spawn_protection_chunk_radius", spawnProtectionRange, "Default="+spawnProtectionRange+"\n" +
+  		"Determines the area around the central spawn coordinate that will be excluded from random structure generation.\n" +
+  		"Larger values will see a larger area around spawn that is devoid of structures.").getInt(spawnProtectionRange);
+  exportBlockNames = config.get(AWCoreStatics.serverOptions, "export_block_name_list", exportBlockNames, "Default=false\n" +
+  		"If true, will export a list of all registered block names on startup.\n" +
+  		"Will toggle itself back to false after exporting the list a single time.\n" +
+  		"Block names be used to populate skippable and target blocks lists.\n" +
+  		"If false, no action will be taken.").getBoolean(exportBlockNames); 
+  initializeDefaultSkippableBlocks();
+  initializeDefaultSkippedEntities();
+  initializeDefaultAdditionalTargetBlocks();
+  loadBiomeAliases();
+  this.config.save();
+  }
 
-  shouldExport = config.get(worldGenCategory, "export_defaults", shouldExport, "If true, will re-export the included structure templates.\nShould be re-set after every update that adds or changes templates.").getBoolean(shouldExport);
-
-  String[] defaultExcludedEntities = new String[]
-        {
-            "EnderCrystal",
-            "EnderDragon",
-            "EyeOfEnderSignal",
-            "FallingSand",
-            "Fireball",
-            "FireworksRocketEntity",
-            "Item",
-            "ItemFrame",
-            "LeashKnot",
-            "Mob",
-            "Monster",
-            "Painting",
-            "PrimedTnt",
-            "SmallFireball",
-            "Snowball",
-            "ThrownEnderpearl",
-            "ThrownExpBottle",
-            "ThrownPotion",
-            "WitherBoss",
-            "WitherSkull",
-            "XPOrb",
-            "AncientWarfare.entity.npc",
-            "AncientWarfare.entity.missile",
-            "AncientWarfare.entity.vehicle",
-            "AncientWarfare.entity.gate",
-            "MinecraftFurnace",
-            "MinecartSpawner",
-            "MinecartHopper",
-            "MinecartFurnace",
-            "MinecartRideable",
-            "MinecartChest",
-            "MinecartTNT",
-            "Boat",
-            "LOTR.Marsh Wraith Ball",
-            "LOTR.Orc Bomb",
-            "LOTR.Spear",
-            "LOTR.Barrel",
-            "LOTR.Portal",
-            "LOTR.Wargskin Rug",
-            "LOTR.Crossbow Bolt",
-            "LOTR.Throwing Axe",
-            "LOTR.Thrown Rock",
-            "LOTR.Plate",
-            "LOTR.Mystery Web",
-            "LOTR.Gandalf Fireball",
-            "LOTR.Pebble",
-            "LOTR.Smoke Ring",
-            "LOTR.Gollum",
-            "LOTR.Trader Respawn",
-            "Metallurgy3Base.LargeTNTEntity",
-            "Metallurgy3Base.MinersTNTEntity",
-            "awger_Whitehall.EntityWhitehall",
-            "awger_SmallBoat.EntityBoatChest",
-            "awger_SmallBoat.EntityBoatPart",
-            "awger_SmallBoat.EntitySmallBoat",
-            "awger_Hoy.EntityHoy",
-            "awger_Punt.EntityPunt",
-            "BiomesOPlenty.PoisonDart",
-            "BiomesOPlenty.MudBall",
-            "BiomesOPlenty.Dart",
-            "KoadPirates.Tether",
-            "KoadPirates.Net",
-            "KoadPirates.Shot",
-            "KoadPirates.Cannon Ball",
-            "weaponmod.flail",
-            "weaponmod.boomerang",
-            "weaponmod.dart",
-            "weaponmod.bolt",
-            "weaponmod.dynamite",
-            "weaponmod.javelin",
-            "weaponmod.knife",
-            "weaponmod.spear",
-            "weaponmod.dummy",
-            "Arrow",
-            "Cannon",
-            "SonicBoom",
-            "witchery.spellEffect",
-            "witchery.corpse",
-            "witchery.brew",
-            "witchery.broom",
-            "witchery.mandrake",
-            "witchery.familiar",
-            "witchery.owl",
-            "witchery.eye",
-            "JungleMobs.ConcapedeSegment",
-            "DesertMobs.Mudshot",
-            "DesertMobs.ThrowingScythe",
-            "DemonMobs.Doomfireball",
-            "DemonMobs.DemonicBlast",
-            "DemonMobs.DemonicSpark",
-            "DemonMobs.Hellfireball",
-            "SwampMobs.VenomShot",
-            "SwampMobs.PoisonRayEnd",
-            "SwampMobs.PoisonRay",
-            "RopesPlus.Frost Arrow303",
-            "RopesPlus.Rope Arrow303",
-            "RopesPlus.Penetrating Arrow303",
-            "RopesPlus.Slime Arrow303",
-            "RopesPlus.Arrow303",
-            "RopesPlus.Redstonetorch Arrow303",
-            "RopesPlus.Fire Arrow303",
-            "RopesPlus.Exploding Arrow303",
-            "RopesPlus.GrapplingHook",
-            "RopesPlus.Confusing Arrow303",
-            "RopesPlus.Warp Arrow303",
-            "RopesPlus.Torch Arrow303",
-            "RopesPlus.Seed Arrow303",
-            "RopesPlus.Dirt Arrow303",
-            "RopesPlus.FreeFormRope",
-            "Goblins_mod.GArcaneball",
-            "Goblins_mod.MTNTPrimed",
-            "Goblins_mod.Bomb",
-            "Goblins_mod.orbR",
-            "Goblins_mod.Lightball",
-            "Goblins_mod.ETNTPrimed",
-            "Goblins_mod.GArcanebal",
-            "Goblins_mod.Arcaneball",
-            "Goblins_mod.orbY",
-            "Goblins_mod.orbB",
-            "Goblins_mod.orbG",
-            "MoCreatures.Egg",
-            "MoCreatures.MoCPlatform",
-            "MoCreatures.LitterBox",
-            "MoCreatures.FishBowl",
-            "MoCreatures.KittyBed",
-            "MoCreatures.PetScorpion",
-            "BiblioCraft.SeatEntity",
-            "minecolonies.pointer",
-            "minecolonies.arrow",
-            "minecolonies.citizen",
-            "minecolonies.stonemason",
-            "minecolonies.huntersdog",
-            "minecolonies.stonemason",
-            "minecolonies.farmer",
-            "minecolonies.blacksmith",
-            "minecolonies.builder",
-            "minecolonies.miner",
-            "minecolonies.baker",
-            "minecolonies.deliveryman",
-            "minecolonies.soldier",
-            "extrabiomes.scarecrow",
-            "Paleocraft.Bladeking68",
-            "Test",
-            "Petrified",
-            "BladeTrap",
-            "EyeRay",
-            "MagicMissile",
-            "RakshasaImage"
-        };  
-  defaultExcludedEntities = config.get(excludedEntitiesCategory, "excluded_entities", defaultExcludedEntities).getStringList();
-
-  for(String st : defaultExcludedEntities)
+@SuppressWarnings("unchecked")
+private void loadBiomeAliases()
+  {
+  ConfigCategory biomeAliasCategory = config.getCategory(biomeMap);
+  String fqcn;
+  Class<? extends BiomeGenBase> foundClass;
+  String alias;
+  for(Entry<String, Property> entry : biomeAliasCategory.entrySet())
     {
-    excludedSpawnerEntities.add(st);
-    }
+    fqcn = entry.getKey();
+    alias = entry.getValue().getString();
+    try
+      {
+      foundClass = (Class<? extends BiomeGenBase>)Class.forName(fqcn);
+      if(foundClass!=null)
+        {        
+        AWLog.logDebug("mapping alias for class: "+foundClass+"  alias: "+alias);
+        biomeAliasByClass.put(foundClass, alias);
+        biomeAliasByName.put(alias, foundClass);
+        }
+      } 
+    catch (ClassNotFoundException e)
+      {
+      e.printStackTrace();
+      }
+    } 
+  }
 
+private void initializeDefaultSkippableBlocks()
+  {
   String[] defaultSkippableBlocks = new String[]    
         {
             "cactus",
@@ -428,7 +335,172 @@ public void initializeValues()
     {
     skippableWorldGenBlocks.add(st);
     } 
+  }
 
+private void initializeDefaultSkippedEntities()
+  {
+  String[] defaultExcludedEntities = new String[]
+        {
+            "EnderCrystal",
+            "EnderDragon",
+            "EyeOfEnderSignal",
+            "FallingSand",
+            "Fireball",
+            "FireworksRocketEntity",
+            "Item",
+            "ItemFrame",
+            "LeashKnot",
+            "Mob",
+            "Monster",
+            "Painting",
+            "PrimedTnt",
+            "SmallFireball",
+            "Snowball",
+            "ThrownEnderpearl",
+            "ThrownExpBottle",
+            "ThrownPotion",
+            "WitherBoss",
+            "WitherSkull",
+            "XPOrb",
+            "AncientWarfare.entity.npc",
+            "AncientWarfare.entity.missile",
+            "AncientWarfare.entity.vehicle",
+            "AncientWarfare.entity.gate",
+            "MinecraftFurnace",
+            "MinecartSpawner",
+            "MinecartHopper",
+            "MinecartFurnace",
+            "MinecartRideable",
+            "MinecartChest",
+            "MinecartTNT",
+            "Boat",
+            "LOTR.Marsh Wraith Ball",
+            "LOTR.Orc Bomb",
+            "LOTR.Spear",
+            "LOTR.Barrel",
+            "LOTR.Portal",
+            "LOTR.Wargskin Rug",
+            "LOTR.Crossbow Bolt",
+            "LOTR.Throwing Axe",
+            "LOTR.Thrown Rock",
+            "LOTR.Plate",
+            "LOTR.Mystery Web",
+            "LOTR.Gandalf Fireball",
+            "LOTR.Pebble",
+            "LOTR.Smoke Ring",
+            "LOTR.Gollum",
+            "LOTR.Trader Respawn",
+            "Metallurgy3Base.LargeTNTEntity",
+            "Metallurgy3Base.MinersTNTEntity",
+            "awger_Whitehall.EntityWhitehall",
+            "awger_SmallBoat.EntityBoatChest",
+            "awger_SmallBoat.EntityBoatPart",
+            "awger_SmallBoat.EntitySmallBoat",
+            "awger_Hoy.EntityHoy",
+            "awger_Punt.EntityPunt",
+            "BiomesOPlenty.PoisonDart",
+            "BiomesOPlenty.MudBall",
+            "BiomesOPlenty.Dart",
+            "KoadPirates.Tether",
+            "KoadPirates.Net",
+            "KoadPirates.Shot",
+            "KoadPirates.Cannon Ball",
+            "weaponmod.flail",
+            "weaponmod.boomerang",
+            "weaponmod.dart",
+            "weaponmod.bolt",
+            "weaponmod.dynamite",
+            "weaponmod.javelin",
+            "weaponmod.knife",
+            "weaponmod.spear",
+            "weaponmod.dummy",
+            "Arrow",
+            "Cannon",
+            "SonicBoom",
+            "witchery.spellEffect",
+            "witchery.corpse",
+            "witchery.brew",
+            "witchery.broom",
+            "witchery.mandrake",
+            "witchery.familiar",
+            "witchery.owl",
+            "witchery.eye",
+            "JungleMobs.ConcapedeSegment",
+            "DesertMobs.Mudshot",
+            "DesertMobs.ThrowingScythe",
+            "DemonMobs.Doomfireball",
+            "DemonMobs.DemonicBlast",
+            "DemonMobs.DemonicSpark",
+            "DemonMobs.Hellfireball",
+            "SwampMobs.VenomShot",
+            "SwampMobs.PoisonRayEnd",
+            "SwampMobs.PoisonRay",
+            "RopesPlus.Frost Arrow303",
+            "RopesPlus.Rope Arrow303",
+            "RopesPlus.Penetrating Arrow303",
+            "RopesPlus.Slime Arrow303",
+            "RopesPlus.Arrow303",
+            "RopesPlus.Redstonetorch Arrow303",
+            "RopesPlus.Fire Arrow303",
+            "RopesPlus.Exploding Arrow303",
+            "RopesPlus.GrapplingHook",
+            "RopesPlus.Confusing Arrow303",
+            "RopesPlus.Warp Arrow303",
+            "RopesPlus.Torch Arrow303",
+            "RopesPlus.Seed Arrow303",
+            "RopesPlus.Dirt Arrow303",
+            "RopesPlus.FreeFormRope",
+            "Goblins_mod.GArcaneball",
+            "Goblins_mod.MTNTPrimed",
+            "Goblins_mod.Bomb",
+            "Goblins_mod.orbR",
+            "Goblins_mod.Lightball",
+            "Goblins_mod.ETNTPrimed",
+            "Goblins_mod.GArcanebal",
+            "Goblins_mod.Arcaneball",
+            "Goblins_mod.orbY",
+            "Goblins_mod.orbB",
+            "Goblins_mod.orbG",
+            "MoCreatures.Egg",
+            "MoCreatures.MoCPlatform",
+            "MoCreatures.LitterBox",
+            "MoCreatures.FishBowl",
+            "MoCreatures.KittyBed",
+            "MoCreatures.PetScorpion",
+            "BiblioCraft.SeatEntity",
+            "minecolonies.pointer",
+            "minecolonies.arrow",
+            "minecolonies.citizen",
+            "minecolonies.stonemason",
+            "minecolonies.huntersdog",
+            "minecolonies.stonemason",
+            "minecolonies.farmer",
+            "minecolonies.blacksmith",
+            "minecolonies.builder",
+            "minecolonies.miner",
+            "minecolonies.baker",
+            "minecolonies.deliveryman",
+            "minecolonies.soldier",
+            "extrabiomes.scarecrow",
+            "Paleocraft.Bladeking68",
+            "Test",
+            "Petrified",
+            "BladeTrap",
+            "EyeRay",
+            "MagicMissile",
+            "RakshasaImage"
+        };  
+  defaultExcludedEntities = config.get(excludedEntitiesCategory, "excluded_entities", defaultExcludedEntities).getStringList();
+
+  for(String st : defaultExcludedEntities)
+    {
+    excludedSpawnerEntities.add(st);
+    }
+  
+  }
+
+private void initializeDefaultAdditionalTargetBlocks()
+  {
   /**
    * TODO add initial default values for target blocks to this list...
    */
@@ -441,31 +513,6 @@ public void initializeValues()
     {
     worldGenTargetBlocks.add(st);
     }
-
-  ConfigCategory biomeAliasCategory = config.getCategory(biomeMap);
-  String fqcn;
-  Class foundClass;
-  String alias;
-  for(Entry<String, Property> entry : biomeAliasCategory.entrySet())
-    {
-    fqcn = entry.getKey();
-    alias = entry.getValue().getString();
-    try
-      {
-      foundClass = Class.forName(fqcn);
-      if(foundClass!=null)
-        {        
-        AWLog.logDebug("mapping alias for class: "+foundClass+"  alias: "+alias);
-        biomeAliasByClass.put(foundClass, alias);
-        biomeAliasByName.put(alias, foundClass);
-        }
-      } 
-    catch (ClassNotFoundException e)
-      {
-      e.printStackTrace();
-      }
-    } 
-  this.config.save();
   }
 
 public static boolean skippableBlocksContains(String blockName)
@@ -493,8 +540,7 @@ public static BiomeGenBase getBiomeByName(String name)
   {
   if(biomeAliasByName.containsKey(name))
     {
-    @SuppressWarnings("rawtypes")
-    Class clz = biomeAliasByName.get(name);
+    Class<? extends BiomeGenBase> clz = biomeAliasByName.get(name);
     for(BiomeGenBase b : BiomeGenBase.getBiomeGenArray())
       {
       if(b==null){continue;}
@@ -517,4 +563,15 @@ public static BiomeGenBase getBiomeByName(String name)
     }
   return null;
   }
+
+public void loadPostInitValues()
+  {
+  
+  }
+
+private void doBlockNameDump()
+  {
+  
+  }
+
 }

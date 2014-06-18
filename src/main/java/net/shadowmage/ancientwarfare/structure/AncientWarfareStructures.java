@@ -139,8 +139,8 @@ public void init(FMLInitializationEvent evt)
 public void postInit(FMLPostInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Structures Post-Init started"); 
+  statics.loadPostInitValues();//needs to be called prior to worldgen biome loading, as biome aliases are loaded in this stage
   StructurePluginManager.instance().loadPlugins();
-
   WorldGenStructureManager.instance().loadBiomeList();
   TemplateLoader.instance().loadTemplates();
   config.save();

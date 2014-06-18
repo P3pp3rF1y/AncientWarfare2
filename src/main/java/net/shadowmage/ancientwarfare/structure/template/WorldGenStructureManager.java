@@ -97,21 +97,10 @@ public void registerWorldGenStructure(StructureTemplate template)
 List<StructureEntry> searchCache = new ArrayList<StructureEntry>();
 List<StructureTemplate> trimmedPotentialStructures = new ArrayList<StructureTemplate>();
 HashMap<String, Integer> distancesFound = new HashMap<String, Integer>();
-int remainingValueCache;
 BlockPosition rearBorderPos = new BlockPosition(0,0,0);
 
-/**
- * returns the remaining value from cluster-value check from the last selected structure/attempt at structure selection
- * @return
- */
-public int getRemainingValue()
+public StructureTemplate selectTemplateForGeneration(World world, Random rng, int x, int y, int z, int face)
   {
-  return remainingValueCache;
-  }
-
-public StructureTemplate selectTemplateForGeneration(World world, Random rng, int x, int y, int z, int face, int chunkSearchRange)
-  {
-  remainingValueCache = 0;
   searchCache.clear();
   trimmedPotentialStructures.clear();
   distancesFound.clear();
@@ -122,10 +111,9 @@ public StructureTemplate selectTemplateForGeneration(World world, Random rng, in
    
   BiomeGenBase biome = world.getBiomeGenForCoords(x, z);  
   String biomeName = AWStructureStatics.getBiomeName(biome);
-  Collection<StructureEntry> genEntries = map.getEntriesNear(world, x, z, chunkSearchRange, false, searchCache);
-  
+  Collection<StructureEntry> duplicateSearchEntries = map.getEntriesNear(world, x, z, AWStructureStatics.duplicateStructureSearchRange, false, searchCache);    
   foundValue = 0;
-  for(StructureEntry entry : genEntries)
+  for(StructureEntry entry : duplicateSearchEntries)
     {
     foundValue += entry.getValue();
     mx = entry.getBB().getCenterX() - x;
@@ -144,8 +132,15 @@ public StructureTemplate selectTemplateForGeneration(World world, Random rng, in
       {
       distancesFound.put(entry.getName(), chunkDistance);
       }
-    }
-  remainingValueCache = AWStructureStatics.maxClusterValue - foundValue;
+    }  
+  
+  Collection<StructureEntry> clusterValueSearchEntries = map.getEntriesNear(world, x, z, AWStructureStatics.clusterValueSearchRange, false, searchCache);
+  for(StructureEntry entry : clusterValueSearchEntries)
+    {
+    foundValue += entry.getValue();
+    } 
+  
+  int remainingValueCache = AWStructureStatics.maxClusterValue - foundValue;
   Collection<String> generatedUniques = map.getGeneratedUniques();
   Set<StructureTemplate> potentialStructures = templatesByBiome.get(biomeName.toLowerCase());
   if(potentialStructures==null || potentialStructures.isEmpty()){return null;}

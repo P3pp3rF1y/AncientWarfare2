@@ -74,19 +74,18 @@ private Random rng = new Random();
 @Override
 public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
   {
+  if(!AWStructureStatics.enableStructureGeneration){return;}
   ChunkCoordinates cc = world.getSpawnPoint();
-  float distSq = cc.getDistanceSquared(chunkX*16, 70, chunkZ*16);
+  float distSq = cc.getDistanceSquared(chunkX*16, cc.posY, chunkZ*16);
   if(distSq < (AWStructureStatics.spawnProtectionRange*16)*(AWStructureStatics.spawnProtectionRange*16))
     {
     return;
     }
-  int rand = rng.nextInt(AWStructureStatics.randomRange);
-  if(rand>AWStructureStatics.randomChance)
+  float rand = rng.nextFloat();
+  if(rand>AWStructureStatics.randomGenerationChance)
     {
     return;
     }
-  if(!AWStructureStatics.enableStructureGeneration){return;}
-//  if(rng.nextInt(10)>0){return;}
   if(isGenerating)
     {
     delayedChunks.add(new DelayedGenerationEntry(chunkX, chunkZ, world, chunkGenerator, chunkProvider));
@@ -120,19 +119,17 @@ private void generateAt(int chunkX, int chunkZ, World world, IChunkProvider chun
   if(y<=0){return;}
   int face = rng.nextInt(4);
   world.theProfiler.startSection("AWTemplateSelection");
-  StructureTemplate template = WorldGenStructureManager.instance().selectTemplateForGeneration(world, rng, x, y, z, face, AWStructureStatics.chunkSearchRadius);
+  StructureTemplate template = WorldGenStructureManager.instance().selectTemplateForGeneration(world, rng, x, y, z, face);
   world.theProfiler.endSection();
-  int remainingClusterValue = WorldGenStructureManager.instance().getRemainingValue();//TODO use this to alter the random chance/range values to favor generating in clusters  
-  if(AWCoreStatics.DEBUG)
-    {
-    AWLog.logError("Template selection took: "+(System.currentTimeMillis()-t1)+" ms.");
-    }
+  AWLog.logDebug("Template selection took: "+(System.currentTimeMillis()-t1)+" ms.");
   if(template==null){return;} 
   StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
+  world.theProfiler.startSection("AWTemplateGeneration");
   if(attemptStructureGenerationAt(world, x, y, z, face, template, map))
     {
     AWLog.log(String.format("Generated structure: %s at %s, %s, %s", template.name, x, y, z));
     } 
+  world.theProfiler.endSection();
   }
 
 public static int getTargetY(World world, int x, int z, boolean skipWater)
