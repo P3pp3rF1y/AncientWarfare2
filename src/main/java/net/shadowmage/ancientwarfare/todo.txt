@@ -51,8 +51,6 @@ Licensing
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * Sounds
 	bard
-* Fix npc horse dismount code to use command baton mount/move/guard command while already mounted and horse is targeted
-* Resurrected NPCs should be 'naked'.	
 * translation key for death list in town-hall (needs translation lookup in gui as well)
 			
 ****************************VEHICLE MODULE TODO****************************
