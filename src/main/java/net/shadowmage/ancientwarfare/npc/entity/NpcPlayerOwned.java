@@ -316,13 +316,7 @@ protected boolean interact(EntityPlayer player)
   Team t1 = getTeam();
   if(t==t1 && this.canBeCommandedBy(player.getCommandSenderName()))
     {
-    if(this.ridingEntity!=null)
-      {
-      this.dismountEntity(ridingEntity);
-      if(this.ridingEntity!=null){this.ridingEntity.riddenByEntity=null;}
-      this.ridingEntity=null;
-      }
-    else if(player.isSneaking())
+    if(player.isSneaking())
       {
       if(this.followingPlayerName==null)
         {

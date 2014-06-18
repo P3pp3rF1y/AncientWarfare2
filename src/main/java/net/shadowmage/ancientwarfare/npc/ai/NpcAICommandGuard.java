@@ -93,6 +93,14 @@ public void updateTask()
         npc.handlePlayerCommand(null);
         }
       }
+    else if(npc.ridingEntity==target)
+      {
+      npc.dismountEntity(npc.ridingEntity);
+      npc.mountEntity(null);
+      command = null;
+      target = null;
+      npc.handlePlayerCommand(null);
+      }
     }
   }
 

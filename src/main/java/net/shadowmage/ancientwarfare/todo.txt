@@ -25,7 +25,6 @@ Licensing
 > move structure scanner over to multi-key item interface
 ^ test structure-module plugins for civics, torque tiles, pretty much everything
 * add survival-mode resource/recipes for all applicable plugins
-* resource stacks are not being calculated / compressed correctly for survival-mode structures
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
 					
@@ -54,6 +53,7 @@ Licensing
 	bard
 * Fix npc horse dismount code to use command baton mount/move/guard command while already mounted and horse is targeted
 * Resurrected NPCs should be 'naked'.	
+* translation key for death list in town-hall (needs translation lookup in gui as well)
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
