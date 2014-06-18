@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IBoundedTile, IOwnable, ITorqueReceiver
 {
@@ -207,12 +208,9 @@ public void writeToNBT(NBTTagCompound tag)
   if(!inventoryOverflow.isEmpty())
     {
     NBTTagList list = new NBTTagList();
-    NBTTagCompound stackTag;
     for(ItemStack item : inventoryOverflow)
       {
-      stackTag = new NBTTagCompound();
-      stackTag = item.writeToNBT(stackTag);
-      list.appendTag(stackTag);
+      list.appendTag(InventoryTools.writeItemStack(item, new NBTTagCompound()));
       }
     tag.setTag("inventoryOverflow", list);
     }
@@ -235,7 +233,7 @@ public void readFromNBT(NBTTagCompound tag)
     for(int i = 0; i < list.tagCount(); i++)
       {
       itemTag = list.getCompoundTagAt(i);
-      stack = ItemStack.loadItemStackFromNBT(itemTag);
+      stack = InventoryTools.readItemStack(itemTag);
       if(stack!=null)
         {
         inventoryOverflow.add(stack);

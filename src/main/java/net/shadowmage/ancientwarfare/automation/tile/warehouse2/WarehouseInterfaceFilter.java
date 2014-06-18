@@ -28,13 +28,13 @@ public boolean isItemValid(ItemStack item)
 public void readFromNBT(NBTTagCompound tag)
   {
   quantity = tag.getInteger("quantity");
-  if(tag.hasKey("filter")){filterItem = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("filter"));}
+  if(tag.hasKey("filter")){filterItem = InventoryTools.readItemStack(tag.getCompoundTag("filter"));}
   }
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
   tag.setInteger("quantity", quantity);
-  if(filterItem!=null){tag.setTag("filter", filterItem.writeToNBT(new NBTTagCompound()));}  
+  if(filterItem!=null){tag.setTag("filter", InventoryTools.writeItemStack(filterItem, new NBTTagCompound()));}  
   return tag;
   }
 
