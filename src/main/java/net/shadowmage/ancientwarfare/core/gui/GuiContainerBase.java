@@ -224,6 +224,9 @@ public void updateScreen()
 @Override
 protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
   {
+  GL11.glEnable(GL11.GL_TEXTURE_2D);
+  GL11.glDisable(GL11.GL_LIGHTING);
+  RenderTools.setFullColorLightmap();
   if(backgroundTexture!=null)
     {
     Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTexture);
