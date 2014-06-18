@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationProperty;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
@@ -103,7 +104,6 @@ public void initElements()
       {
       if(widget.isMouseOverElement(evt.mx, evt.my))
         {
-        updateValidationSettings();
         Minecraft.getMinecraft().displayGuiScreen(parent);
         }
       return true;
@@ -116,8 +116,6 @@ private void onTypeButtonPressed(Button button)
   {
   StructureValidationType type = buttonToValidationType.get(button);
   if(type==null){return;}//should never happen
-
-  this.updateValidationSettings();
   StructureValidator newValidator = type.getValidator();
   newValidator.inheritPropertiesFrom(parent.validator);
   parent.validationType = type;
@@ -125,7 +123,7 @@ private void onTypeButtonPressed(Button button)
   this.refreshGui();
   }
 
-private HashMap<GuiElement, String> elementToPropertyName = new HashMap<GuiElement, String>();
+//private HashMap<GuiElement, String> elementToPropertyName = new HashMap<GuiElement, String>();
 
 @Override
 public void setupElements()
@@ -134,7 +132,6 @@ public void setupElements()
  
   int totalHeight = 0;
   area.clearElements();
-  elementToPropertyName.clear();
   for(Button b : typeButtons)
     {
     area.addGuiElement(b);
@@ -163,17 +160,13 @@ public void setupElements()
     {
     case StructureValidationProperty.DATA_TYPE_INT:
       {
-      input = new NumberInput(200, totalHeight-1, 32, property.getDataInt(), this);
-      elementToPropertyName.put(input, propName); 
-      input.setIntegerValue();
+      input = new PropertyNumberInputInteger(200, totalHeight-1, 32, property, this);
       area.addGuiElement(input);
       }
     break;
     case StructureValidationProperty.DATA_TYPE_BOOLEAN:
       {
-      box = new Checkbox(200, totalHeight-3, 16, 16, "");
-      box.setChecked(property.getDataBoolean());
-      elementToPropertyName.put(box, propName);
+      box = new PropertyCheckbox(200, totalHeight-3, 16, 16, property);
       area.addGuiElement(box);
       }
     break;
@@ -184,37 +177,41 @@ public void setupElements()
   area.setAreaSize(totalHeight);
   }
 
-/**
- * finalizes current properties from elements
- * by setting those properties in parent validation settings
- * should be called before changing validation type
- * or before closing gui
- */
-protected void updateValidationSettings()
+private class PropertyCheckbox extends Checkbox
+{
+
+StructureValidationProperty prop;
+public PropertyCheckbox(int topLeftX, int topLeftY, int width, int height, StructureValidationProperty property)
   {
-  StructureValidationProperty property;
-  String propName;
-  for(GuiElement element : elementToPropertyName.keySet())
-    {
-    propName = elementToPropertyName.get(element);
-    property = parent.validator.getProperty(propName);
-    if(property==null){continue;}//should never happen..but meh
-    switch(property.getDataType())
-    {
-    case StructureValidationProperty.DATA_TYPE_INT:
-      {
-      NumberInput input = (NumberInput)element;
-      property.setValue(input.getIntegerValue());
-      }
-    break;
-    case StructureValidationProperty.DATA_TYPE_BOOLEAN:
-      {
-      Checkbox box = (Checkbox)element;
-      property.setValue(box.checked());
-      }
-    break;
-    }
-    }
+  super(topLeftX, topLeftY, width, height, "");  
+  this.prop = property;
+  setChecked(prop.getDataBoolean());
   }
+
+@Override
+public void onToggled()
+  {
+  prop.setValue(Boolean.valueOf(checked()));
+  }
+}
+
+private class PropertyNumberInputInteger extends NumberInput
+{
+
+StructureValidationProperty prop;
+public PropertyNumberInputInteger(int topLeftX, int topLeftY, int width, StructureValidationProperty property, IWidgetSelection selector)
+  {
+  super(topLeftX, topLeftY, width, property.getDataInt(), selector);
+  this.prop = property;
+  this.setIntegerValue();
+  }
+
+@Override
+public void onValueUpdated(float value)
+  {  
+  int val = (int)value;
+  prop.setValue(Integer.valueOf(val));
+  }
+}
 
 }
