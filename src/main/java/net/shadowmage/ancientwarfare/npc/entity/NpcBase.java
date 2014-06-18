@@ -448,9 +448,10 @@ public final void readAdditionalItemData(NBTTagCompound tag)
     equipmentTag = equipmentList.getCompoundTagAt(i);
     stack = InventoryTools.readItemStack(equipmentTag);
     if(equipmentTag.hasKey("slotNum")){setCurrentItemOrArmor(equipmentTag.getInteger("slotNum"), stack);}
-    else if(equipmentTag.hasKey("orders")){ordersStack=stack;}
-    else if(equipmentTag.hasKey("upkeep")){upkeepStack=stack;}
     }
+  if(tag.hasKey("ordersStack")){ordersStack = InventoryTools.readItemStack(tag.getCompoundTag("ordersStack"));}
+  if(tag.hasKey("upkeepStack")){upkeepStack = InventoryTools.readItemStack(tag.getCompoundTag("upkeepStack"));}
+  if(tag.hasKey("shieldStack")){setShieldStack(InventoryTools.readItemStack(tag.getCompoundTag("shieldStack")));}
   if(tag.hasKey("levelingStats")){getLevelingStats().readFromNBT(tag.getCompoundTag("levelingStats"));}
   if(tag.hasKey("maxHealth")){getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(tag.getFloat("maxHealth"));}
   if(tag.hasKey("health")){setHealth(tag.getFloat("health"));}
@@ -469,12 +470,6 @@ public final void readAdditionalItemData(NBTTagCompound tag)
  */
 public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag)
   {
-  /**
-   * write out:
-   * equipment (including orders items)
-   * leveling stats
-   * current health
-   */
   NBTTagList equipmentList = new NBTTagList();
   ItemStack stack;
   NBTTagCompound equipmentTag;
@@ -485,21 +480,11 @@ public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag)
     equipmentTag = InventoryTools.writeItemStack(stack, new NBTTagCompound());
     equipmentTag.setInteger("slotNum", i);
     equipmentList.appendTag(equipmentTag);
-    }
-  if(ordersStack!=null)
-    {
-    equipmentTag = InventoryTools.writeItemStack(ordersStack, new NBTTagCompound());
-    equipmentTag.setBoolean("orders", true);
-    equipmentList.appendTag(equipmentTag);
-    }
-  if(upkeepStack!=null)
-    {
-    equipmentTag = InventoryTools.writeItemStack(upkeepStack, new NBTTagCompound());
-    equipmentTag.setBoolean("upkeep", true);
-    equipmentList.appendTag(equipmentTag);
     }  
   tag.setTag("equipment", equipmentList);
-  
+  if(ordersStack!=null){tag.setTag("ordersStack", InventoryTools.writeItemStack(ordersStack, new NBTTagCompound()));}
+  if(upkeepStack!=null){tag.setTag("upkeepStack", InventoryTools.writeItemStack(upkeepStack, new NBTTagCompound()));}  
+  if(getShieldStack()!=null){tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack(), new NBTTagCompound()));}    
   tag.setTag("levelingStats", getLevelingStats().writeToNBT(new NBTTagCompound()));
   tag.setFloat("maxHealth", getMaxHealth());
   tag.setFloat("health", getHealth());
