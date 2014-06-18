@@ -7,6 +7,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIRideHorseFaction extends NpcAI
@@ -130,6 +131,17 @@ private void addHorseAI()
     horse.tasks.taskEntries.addAll(horseAI);
     }  
   horseAI.clear();
+  }
+
+public void readFromNBT(NBTTagCompound tag)
+  {
+  wasHorseKilled = tag.getBoolean("wasHorseKilled");
+  }
+
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
+  {
+  tag.setBoolean("wasHorseKilled", wasHorseKilled);
+  return tag;
   }
 
 }

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorseFaction;
@@ -8,6 +9,7 @@ public abstract class NpcFactionMounted extends NpcFaction
 {
 
 protected NpcAIRideHorseFaction horseAI;
+
 public NpcFactionMounted(World par1World)
   {
   super(par1World);
@@ -24,6 +26,20 @@ public void onDeath(DamageSource source)
       }
     }  
   super.onDeath(source);  
+  }
+
+@Override
+public void readEntityFromNBT(NBTTagCompound tag)
+  {
+  super.readEntityFromNBT(tag);
+  if(tag.hasKey("horseAI")){horseAI.readFromNBT(tag.getCompoundTag("horseAI"));}
+  }
+
+@Override
+public void writeEntityToNBT(NBTTagCompound tag)
+  {
+  super.writeEntityToNBT(tag);
+  if(horseAI!=null){tag.setTag("horseAI", horseAI.writeToNBT(new NBTTagCompound()));}
   }
 
 }
