@@ -218,13 +218,13 @@ public String toString()
 public void getItems(List<ItemStack> items)
   {
   ItemStack outStack;
-  int qty;
+  int qty, out;
   for(ItemHashEntry wrap1 : map.keySet())
     {
     qty = map.get(wrap1).count;
     while(qty>0)
       {
-      outStack = wrap1.getItemStack();
+      outStack = wrap1.getItemStack().copy();
       outStack.stackSize = qty>outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty;
       qty-=outStack.stackSize;
       items.add(outStack);

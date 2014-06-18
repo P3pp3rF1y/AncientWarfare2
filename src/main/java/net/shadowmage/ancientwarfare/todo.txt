@@ -17,6 +17,7 @@ Licensing
 * engineering station drop inventory on block break?	
 * on research book, add toggle to swap between 'recipe' mode -- view research deps by recipe crafted
 * sort research book research goals
+* add scroll-wheel functionality to the scroll-bar of scrollable areas
 		
 ****************************STRUCTURE MODULE TODO****************************
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency

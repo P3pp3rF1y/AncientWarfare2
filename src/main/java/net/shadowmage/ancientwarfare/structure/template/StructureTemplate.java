@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
@@ -132,7 +133,6 @@ public List<ItemStack> getResourceList()
   {
   if(resourceList==null)
     {
-    ItemQuantityMap map = new ItemQuantityMap();
     TemplateRule rule;
     List<ItemStack> stacks = new ArrayList<ItemStack>();
     for(int x = 0; x < this.xSize; x++)
@@ -144,18 +144,13 @@ public List<ItemStack> getResourceList()
           rule = getRuleAt(x, y, z);
           if(rule!=null)
             {
-            rule.addResources(stacks);
-            for(ItemStack stack : stacks)
-              {
-              map.addCount(stack, stack.stackSize);
-              }
-            stacks.clear();
+            rule.addResources(stacks);           
             }
           }
         }
-      }    
+      }     
     resourceList = new ArrayList<ItemStack>();
-    map.getItems(resourceList);
+    InventoryTools.compactStackList3(stacks, resourceList);
     }
   return resourceList;
   }
