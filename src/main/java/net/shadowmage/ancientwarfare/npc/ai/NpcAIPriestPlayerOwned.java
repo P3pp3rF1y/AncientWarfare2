@@ -80,6 +80,9 @@ protected void resurrectTarget()
   NpcBase resdNpc = ItemNpcSpawner.createNpcFromItem(npc.worldObj, stack);  
   if(resdNpc!=null)
     {
+    resdNpc.ordersStack=null;
+    resdNpc.upkeepStack=null;
+    for(int i = 0;i < 5; i++){npc.setCurrentItemOrArmor(i, null);}
     resdNpc.setHealth(resdNpc.getMaxHealth()/2);
     resdNpc.setPositionAndRotation(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
     npc.worldObj.spawnEntityInWorld(resdNpc);
