@@ -134,9 +134,17 @@ public void initElements()
   t.addTooltipElement(new Label(0,0, text));
   slot.setTooltip(t);  
   addGuiElement(slot);
-
   
-  slot = new ItemSlot(26, 8+18*1, new ItemStack(Items.iron_helmet), this);
+  slot = new ItemSlot(26, 8+18*1, new ItemStack(AWNpcItemLoader.upkeepOrder), this);
+  slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
+  text = StatCollector.translateToLocal("guistrings.npc.shield_slot");
+  tw = fontRendererObj.getStringWidth(text);
+  t = new Tooltip(tw, 10);
+  t.addTooltipElement(new Label(0,0, text));
+  slot.setTooltip(t);  
+  addGuiElement(slot);
+  
+  slot = new ItemSlot(26, 8+18*2, new ItemStack(Items.iron_helmet), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
   text = StatCollector.translateToLocal("guistrings.npc.helmet_slot");
   tw = fontRendererObj.getStringWidth(text);
@@ -145,7 +153,7 @@ public void initElements()
   slot.setTooltip(t);  
   addGuiElement(slot);
   
-  slot = new ItemSlot(26, 8+18*2, new ItemStack(Items.iron_chestplate), this);
+  slot = new ItemSlot(26, 8+18*3, new ItemStack(Items.iron_chestplate), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
   text = StatCollector.translateToLocal("guistrings.npc.chest_slot");
   tw = fontRendererObj.getStringWidth(text);
@@ -154,7 +162,7 @@ public void initElements()
   slot.setTooltip(t);  
   addGuiElement(slot);
   
-  slot = new ItemSlot(26, 8+18*3, new ItemStack(Items.iron_leggings), this);
+  slot = new ItemSlot(26, 8+18*4, new ItemStack(Items.iron_leggings), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
   text = StatCollector.translateToLocal("guistrings.npc.legs_slot");
   tw = fontRendererObj.getStringWidth(text);
@@ -163,7 +171,7 @@ public void initElements()
   slot.setTooltip(t);  
   addGuiElement(slot);
   
-  slot = new ItemSlot(26, 8+18*4, new ItemStack(Items.iron_boots), this);
+  slot = new ItemSlot(26, 8+18*5, new ItemStack(Items.iron_boots), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
   text = StatCollector.translateToLocal("guistrings.npc.boots_slot");
   tw = fontRendererObj.getStringWidth(text);
@@ -171,6 +179,7 @@ public void initElements()
   t.addTooltipElement(new Label(0,0, text));
   slot.setTooltip(t);  
   addGuiElement(slot);
+  
   
   slot = new ItemSlot(28+18*2, 8+18*2, new ItemStack(AWNpcItemLoader.upkeepOrder), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);

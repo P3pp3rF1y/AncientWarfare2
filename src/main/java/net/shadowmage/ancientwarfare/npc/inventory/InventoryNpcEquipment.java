@@ -10,6 +10,7 @@ public class InventoryNpcEquipment implements IInventory
 {
 
 NpcBase npc;
+
 public InventoryNpcEquipment(NpcBase npc)
   {
   this.npc = npc;
@@ -26,6 +27,7 @@ public ItemStack getStackInSlot(int var1)
   {
   if(var1==5){return npc.ordersStack;}
   if(var1==6){return npc.upkeepStack;}
+  if(var1==7){return npc.getShieldStack();}
   return npc.getEquipmentInSlot(var1);
   }
 
@@ -67,6 +69,10 @@ public void setInventorySlotContents(int var1, ItemStack var2)
   else if(var1==6)
     {
     npc.upkeepStack = var2;
+    }
+  else if(var1==7)
+    {
+    npc.setShieldStack(var2);
     }
   else
     {

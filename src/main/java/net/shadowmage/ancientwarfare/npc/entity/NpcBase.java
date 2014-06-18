@@ -77,6 +77,24 @@ public NpcBase(World par1World)
   this.func_110163_bv();//set persistence required==true
   }
 
+@Override
+protected void entityInit()
+  {
+  super.entityInit();
+  this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks
+  this.getDataWatcher().addObjectByDataType(21, 5);//5==itemStack?? (see EntityItemFrame)
+  }
+
+public ItemStack getShieldStack()
+  {
+  return this.getDataWatcher().getWatchableObjectItemStack(21);
+  }
+
+public void setShieldStack(ItemStack stack)
+  {
+  this.getDataWatcher().updateObject(21, stack);
+  }
+
 public int getMaxHealthOverride()
   {
   return maxHealthOverride;
@@ -196,12 +214,7 @@ public PathNavigate getNavigator()
   return super.getNavigator();
   }
 
-@Override
-protected void entityInit()
-  {
-  super.entityInit();
-  this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks
-  }
+
 
 public void setTownHallPosition(BlockPosition pos)
   {
@@ -753,8 +766,9 @@ public void readEntityFromNBT(NBTTagCompound tag)
   {
   super.readEntityFromNBT(tag);
   ownerName = tag.getString("owner");  
-  if(tag.hasKey("ordersItem")){ordersStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("ordersItem"));}
-  if(tag.hasKey("upkeepItem")){upkeepStack=ItemStack.loadItemStackFromNBT(tag.getCompoundTag("upkeepItem"));}
+  if(tag.hasKey("ordersStack")){ordersStack = InventoryTools.readItemStack(tag.getCompoundTag("ordersStack"));}
+  if(tag.hasKey("upkeepStack")){upkeepStack = InventoryTools.readItemStack(tag.getCompoundTag("upkeepStack"));}
+  if(tag.hasKey("shieldStack")){setShieldStack(InventoryTools.readItemStack(tag.getCompoundTag("shieldStack")));}
   if(tag.hasKey("home"))
     {
     int[] ccia = tag.getIntArray("home");
@@ -772,8 +786,9 @@ public void writeEntityToNBT(NBTTagCompound tag)
   {
   super.writeEntityToNBT(tag);
   tag.setString("owner", ownerName);
-  if(ordersStack!=null){tag.setTag("ordersItem", ordersStack.writeToNBT(new NBTTagCompound()));}
-  if(upkeepStack!=null){tag.setTag("upkeepItem", upkeepStack.writeToNBT(new NBTTagCompound()));}
+  if(ordersStack!=null){tag.setTag("ordersStack", InventoryTools.writeItemStack(ordersStack, new NBTTagCompound()));}
+  if(upkeepStack!=null){tag.setTag("upkeepStack", InventoryTools.writeItemStack(upkeepStack, new NBTTagCompound()));}
+  if(getShieldStack()!=null){tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack(), new NBTTagCompound()));}
   if(getHomePosition()!=null)
     {
     ChunkCoordinates cc = getHomePosition();

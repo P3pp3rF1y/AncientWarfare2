@@ -57,7 +57,8 @@ Licensing
 	bard
 * add 'placeholder' factions -- for use by map-makers for designing custom factions.
 	includes no custom textures, translations, etc -- these must be provided by the map-maker	
-* add left-hand item slot to npcs -- cosmetic/display only.	
+* add left-hand item slot to npcs -- cosmetic/display only.
+* the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
