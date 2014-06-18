@@ -80,6 +80,7 @@ public static int npcArcherAttackDamage = 3;//damage for npc archers...can be in
  * --SET VIA PROXY / ClientOptions.INSTANCE
  */
 public static final String clientSettings = "03_client_settings";
+public static boolean loadDefaultSkinPack = true;
 
 /**
  * what food items are edible, and the amount of food value an NPC will get from eating them
@@ -104,6 +105,8 @@ public static final String recipeSettings = "06_recipe_settings";
 public static final String factionSettings = "07_faction_settings";
 public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
 public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
+
+
 private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
 
 public AWNPCStatics(Configuration config)
@@ -190,6 +193,11 @@ public void initializeValues()
   factionGainOnTrade = config.get(factionSettings, "faction_gain_on_trade", 2, "Faction Gain On Trade : Default=2\n" +
   		"How much faction standing should be gained when you trade with a faction based trader.").getInt(2);
   //TODO add all the other normal config options -- faction gain/loss, follow range, work-ticks
+  
+  loadDefaultSkinPack = config.get(clientSettings, "load_default_skin_pack", loadDefaultSkinPack, "Default=true\n" +
+  		"If true, default skin pack will be loaded.\n" +
+  		"If false, default skin pack will NOT be loaded -- you will need to supply your own\n" +
+  		"skin packs or all npcs will use the default skin.").getBoolean(loadDefaultSkinPack);
   this.config.save();
   }
 

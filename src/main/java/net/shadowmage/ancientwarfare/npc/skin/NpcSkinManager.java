@@ -22,6 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcSkinManager
@@ -64,7 +65,10 @@ private ResourceLocation getNpcTexture(String type, long idlsb)
 
 public void loadSkinPacks()
   {
-  loadDefaultSkinPack();
+  if(AWNPCStatics.loadDefaultSkinPack)
+    {
+    loadDefaultSkinPack();    
+    }
   String path = skinMainPath;
   File file = new File(path);
   file.mkdirs();
