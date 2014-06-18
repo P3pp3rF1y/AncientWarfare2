@@ -104,7 +104,7 @@ public void initElements()
       {
       if(widget.isMouseOverElement(evt.mx, evt.my))
         {
-        Minecraft.getMinecraft().displayGuiScreen(parent);
+        closeGui();
         }
       return true;
       }    
@@ -175,6 +175,13 @@ public void setupElements()
     totalHeight+=16;
     }
   area.setAreaSize(totalHeight);
+  }
+
+@Override
+protected boolean onGuiCloseRequested()
+  {
+  Minecraft.getMinecraft().displayGuiScreen(parent);
+  return false;
   }
 
 private class PropertyCheckbox extends Checkbox

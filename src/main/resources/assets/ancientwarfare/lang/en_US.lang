@@ -205,6 +205,7 @@ guistrings.input=Input
 guistrings.output=Output
 guistrings.start=Start
 guistrings.stop=Stop
+guistrings.dimension=Dimension
 guistrings.spawner.delay=Delay
 guistrings.spawner.min_spawn_delay=Min Spawn Delay
 guistrings.spawner.max_spawn_delay=Max Spawn Delay

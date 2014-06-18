@@ -355,6 +355,18 @@ public final int[] getAcceptedDimensions()
   return properties.get(PROP_DIMENSION_LIST).getDataIntArray();
   }
 
+public final void setValidDimension(Set<Integer> dims)
+  {
+  int[] dimsa = new int[dims.size()];
+  int index = 0;
+  for(Integer dim : dims)
+    {
+    dimsa[index] = dim;
+    index++;
+    }
+  properties.get(PROP_DIMENSION_LIST).setValue(dimsa);
+  }
+
 public final int getMinDuplicateDistance()
   {
   return properties.get(PROP_MIN_DUPLICATE_DISTANCE).getDataInt();

@@ -7,6 +7,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 public class StructureValidationProperty
 {
@@ -93,6 +95,14 @@ public void setValue(Object value)
       }
     }
   break; 
+  case DATA_TYPE_INT_ARRAY:
+    {
+    if(int[].class.isAssignableFrom(value.getClass()))
+      {
+      data = value;
+      }
+    }
+    break;
   }
   this.data = value;
   }
@@ -108,11 +118,11 @@ public int getDataInt()
 
 public int[] getDataIntArray()
   {
-  if(dataType==DATA_TYPE_INT)
+  if(dataType==DATA_TYPE_INT_ARRAY)
     {
     return (int[])data;
     }
-  return new int[]{};
+  return new int[0];
   }
 
 public float getDataFloat()
@@ -240,8 +250,8 @@ public void writeToNBT(NBTTagCompound tag)
       names.appendTag(new NBTTagString(name));
       }
     tag.setTag(regName, names);
-    }
-  break;
+    }    
+  break;  
   }
   }
 

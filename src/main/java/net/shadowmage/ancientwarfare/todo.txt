@@ -26,8 +26,6 @@ Licensing
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
 * add a block-name dump feature to config file/startup
-* dimension-specification GUI is non-functional
-* values specified in validation GUI are not exported properly
 * validate weighted-selection algorithm in structure template selection--seems a bit off
 * translation for survival mode ticked builder blocks
 					
