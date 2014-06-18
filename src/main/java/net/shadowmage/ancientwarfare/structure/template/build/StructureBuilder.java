@@ -130,8 +130,8 @@ public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
   else
     {    
     Chunk chunk = world.getChunkFromBlockCoords(x, z);
-    int cx = x&15; //(bitwise-and to scrub all bits above 15
-    int cz = z&15;
+    int cx = x&15; //bitwise-and to scrub all bits above 15
+    int cz = z&15; //bitwise-and to scrub all bits above 15
     ExtendedBlockStorage[] st = chunk.getBlockStorageArray();
     ExtendedBlockStorage stc = st[y>>4];    
     if (stc == null)
