@@ -8,7 +8,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.block.BlockTorqueGeneratorSterling;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -23,7 +23,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 public class RenderSterlingEngine extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
 
-public static int renderID=-1;
 ModelBaseAW model;
 
 float rotation;
@@ -35,7 +34,7 @@ public RenderSterlingEngine()
   ModelLoader loader = new ModelLoader();
   model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/sterling_engine.mf2"));
   texture = new ResourceLocation("ancientwarfare:textures/model/automation/sterling_engine.png");
-  if(BlockTorqueGeneratorSterling.renderID==-1){BlockTorqueGeneratorSterling.renderID = RenderingRegistry.getNextAvailableRenderId();}
+  if(AWAutomationStatics.sterlingEngineRenderID==-1){AWAutomationStatics.sterlingEngineRenderID=RenderingRegistry.getNextAvailableRenderId();}
   }
 
 @Override
@@ -157,7 +156,7 @@ public boolean shouldRender3DInInventory(int modelId)
 @Override
 public int getRenderId()
   {
-  return renderID;
+  return AWAutomationStatics.sterlingEngineRenderID;
   }
 
 }

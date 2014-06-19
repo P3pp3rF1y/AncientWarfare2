@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.shadowmage.ancientwarfare.automation.block.BlockTorqueBase;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -14,13 +15,11 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 public class RenderTorqueConduit implements ISimpleBlockRenderingHandler
 {
 
-public static int renderID = -1;
-
 public RenderTorqueConduit()
   {
-  if(renderID==-1)
+  if(AWAutomationStatics.conduitRenderID==-1)
     {
-    renderID = RenderingRegistry.getNextAvailableRenderId();
+    AWAutomationStatics.conduitRenderID = RenderingRegistry.getNextAvailableRenderId();
     }
   }
 
@@ -198,7 +197,7 @@ public boolean shouldRender3DInInventory(int modelId)
 @Override
 public int getRenderId()
   {
-  return renderID;
+  return AWAutomationStatics.conduitRenderID;
   }
 
 }

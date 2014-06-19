@@ -26,6 +26,9 @@ import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 public class AWAutomationStatics extends ModConfiguration
 {
 
+public static int conduitRenderID=-1;
+public static int sterlingEngineRenderID=-1;
+
 public static int fishFarmRescanTicks = 200;
 public static int animalFarmRescanTicks = 200;
 
