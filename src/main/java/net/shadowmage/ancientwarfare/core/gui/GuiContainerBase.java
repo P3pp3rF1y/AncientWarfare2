@@ -345,13 +345,39 @@ public class ActivationEvent
  * 8=Mouse Wheel 
  */
 public final int type;
+
+/**
+ * what key was pressed?
+ */
 public int key;
-public boolean keyEvent;
+
+/**
+ * the mouse button number.
+ * -1 = none
+ * 0 = RMB
+ * 1 = LMB
+ * 2+= ?
+ */
 public int mButton;
+/**
+ * the state of the button or key.  true for pressed, false for released
+ */
 public boolean state;
+/**
+ * the input char, for keyboard events
+ */
 public char ch;
+/**
+ * mouse x position
+ */
 public int mx;
+/**
+ * mouse y position
+ */
 public int my;
+/**
+ * mouse-wheel delta movement
+ */
 public int mw;//mousewheel delta movement
 private ActivationEvent(int type, int button, boolean state, int mx, int my, int mw)
   {
@@ -361,7 +387,6 @@ private ActivationEvent(int type, int button, boolean state, int mx, int my, int
   this.mx = mx;
   this.my = my;
   this.mw = mw;
-  this.keyEvent = key!=0;
   }
 
 private ActivationEvent(int type, int key, char character, boolean state)

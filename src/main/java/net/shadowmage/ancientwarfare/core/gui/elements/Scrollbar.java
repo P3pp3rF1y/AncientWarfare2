@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
@@ -106,6 +107,20 @@ public Scrollbar(int topLeftX, int topLeftY, int width, int height, IScrollableC
       return true;
       }
     }); 
+  
+  this.addNewListener(new Listener(Listener.MOUSE_WHEEL)
+    {
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(widget.isMouseOverElement(evt.mx, evt.my))
+        {
+        handleTop -= (evt.mw/10);
+        updateHandlePosition();
+        }
+      return true;
+      }
+    });
   }
 
 protected boolean isMouseOverHandle(int mouseX, int mouseY)

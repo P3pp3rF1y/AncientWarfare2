@@ -18,7 +18,6 @@ Licensing
 	-lots still needs resources-
 * on research book, add toggle to swap between 'recipe' mode -- view research deps by recipe crafted
 * sort research book research goals
-* add scroll-wheel functionality to the scroll-bar of scrollable areas
 		
 ****************************STRUCTURE MODULE TODO****************************
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
@@ -32,11 +31,11 @@ Licensing
 * translation for survival mode ticked builder blocks
 * research and recipes for gates
 * clean up gate spawner tooltip
+* structure selection 'done' button non-functional in structure-builder selection gui
 					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
 ^ finish up storage block filter-setting ability, verify that it works properly
-* add recipe and research specific enable/disable toggles
 * Torque API:	
 	set power capacity / power loss / power use for all torque blocks
 	balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline

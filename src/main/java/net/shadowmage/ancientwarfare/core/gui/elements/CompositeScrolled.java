@@ -99,10 +99,17 @@ protected void addDefaultListeners()
         {
         if(isMouseOverElement(evt.mx, evt.my))
           {
+          boolean overElement = false;
           scrollbar.handleMouseInput(evt);
           for(GuiElement element : elements)
             {
+            if(element.isMouseOverElement(evt.mx, evt.my)){overElement=true;}
             element.handleMouseInput(evt);
+            }
+          if(!overElement && !scrollbar.isMouseOverElement(evt.mx, evt.my) && evt.mw!=0)
+            {
+            scrollbar.handleTop -= (evt.mw/10);
+            scrollbar.updateHandlePosition();           
             }
           }
         else
