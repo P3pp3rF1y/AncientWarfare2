@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
@@ -77,7 +78,6 @@ public void initializeCategories()
   this.config.addCustomCategoryComment(biomeMap, "Custom-mapped biome names to be used in templates.\nBiomes should be specified by their fully-qualifed class-name.\nThis alias list must be shared if you wish to share your templates that use these custom aliases.");
   }
 
-@SuppressWarnings("unchecked")
 @Override
 protected void initializeValues()
   {
@@ -566,12 +566,21 @@ public static BiomeGenBase getBiomeByName(String name)
 
 public void loadPostInitValues()
   {
-  
+  if(exportBlockNames)
+    {
+    config.get(AWCoreStatics.serverOptions, "export_block_name_list", false).set(false);
+    exportBlockNames=false;
+    doBlockNameDump();
+    }
   }
 
 private void doBlockNameDump()
   {
-  
+  AWLog.logError("Dumping block names to console log...");
+  for(Object key : Block.blockRegistry.getKeys())
+    {
+    AWLog.logError("Block name/key: "+key);
+    }
   }
 
 }
