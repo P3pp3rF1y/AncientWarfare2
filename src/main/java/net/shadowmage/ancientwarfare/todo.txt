@@ -19,6 +19,7 @@ Licensing
 * on research book, add toggle to swap between 'recipe' mode -- view research deps by recipe crafted
 * sort research book research goals
 * add scroll-wheel functionality to the scroll-bar of scrollable areas
+* add recipe and research specific enable/disable toggles
 		
 ****************************STRUCTURE MODULE TODO****************************
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
@@ -28,15 +29,16 @@ Licensing
 * add survival-mode resource/recipes for all applicable plugins
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
-* add a block-name dump feature to config file/startup
 * validate weighted-selection algorithm in structure template selection--seems a bit off
 * translation for survival mode ticked builder blocks
 * research and recipes for gates
 * clean up gate spawner tooltip
+* add recipe and research specific enable/disable toggles
 					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
-^ finish up storage block filter-setting ability, verify that it works properly (needs the above step to view storage-block inventory contents)
+^ finish up storage block filter-setting ability, verify that it works properly
+* add recipe and research specific enable/disable toggles
 * Torque API:	
 	set power capacity / power loss / power use for all torque blocks
 	balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
@@ -52,6 +54,8 @@ Licensing
 ^ verify that faction based mounted soldiers work as intended
 ^ verify functionality of mounted player-owned npcs (all)
 * Default held items for priest, trader, or at least some use for their item slot
+* shield item for npc shield-slot
+* clean up render positioning on npc shield slot items
 * fix sounds.json for bard sounds
 * test bard-sound loading and custom sound references
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
@@ -61,6 +65,7 @@ Licensing
 	includes no custom textures, translations, etc -- these must be provided by the map-maker	
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
 * icon for 'hungry with no upkeep site' npc-ai-task still uses the old vehicle-healing icon
+* add recipe and research specific enable/disable toggles
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

@@ -20,6 +20,9 @@
  */
 package net.shadowmage.ancientwarfare.structure.config;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -74,7 +77,7 @@ public void initializeCategories()
   this.config.addCustomCategoryComment(villageGenCategory, "Settings that effect the generation of vanilla villages.\nCurrently there are no village-generation options, and no structures will generate in villages.");
   this.config.addCustomCategoryComment(excludedEntitiesCategory, "Entities that will not show up in the Mob Spawner Placer entity selection list.\nAdd any mobs here that will crash if spawned via the vanilla mob-spawner (usually complex NBT-defined entities).");
   this.config.addCustomCategoryComment(worldGenBlocks, "Blocks that should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
-  this.config.addCustomCategoryComment(targetBlocks, "List of target blocks to add to the target-block selection GUI.\nVanilla block names should be listed as the 1.7 registered name. \nMod blocks should be listed as 'tile.'+registeredBlockName");
+  this.config.addCustomCategoryComment(targetBlocks, "List of target blocks to add to the target-block selection GUI.\nVanilla block names should be listed as the 1.7 registered name. \nMod blocks should be listed as their registered name");
   this.config.addCustomCategoryComment(biomeMap, "Custom-mapped biome names to be used in templates.\nBiomes should be specified by their fully-qualifed class-name.\nThis alias list must be shared if you wish to share your templates that use these custom aliases.");
   }
 
@@ -506,7 +509,7 @@ private void initializeDefaultAdditionalTargetBlocks()
    */
   String[] targetBlocks = new String[]
         {
-            "tile.bop.wood1"
+            "bop.wood1"
         };
   targetBlocks = config.get(AWStructureStatics.targetBlocks, "target_blocks", targetBlocks).getStringList();
   for(String st : targetBlocks)
@@ -576,10 +579,35 @@ public void loadPostInitValues()
 
 private void doBlockNameDump()
   {
-  AWLog.logError("Dumping block names to console log...");
-  for(Object key : Block.blockRegistry.getKeys())
+  File file = new File("config/AWConfig/structures");
+  file.mkdirs();
+  file = new File(file, "block_names.txt");
+  FileWriter fw = null;
+  try
     {
-    AWLog.logError("Block name/key: "+key);
+    fw = new FileWriter(file);
+    for(Object key : Block.blockRegistry.getKeys())
+      {
+      fw.write(String.valueOf(key)+"\n");
+      }
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }
+  finally
+    {
+    if(fw!=null)
+      {
+      try
+        {
+        fw.close();
+        } 
+      catch (IOException e)
+        {
+        e.printStackTrace();
+        }
+      }
     }
   }
 
