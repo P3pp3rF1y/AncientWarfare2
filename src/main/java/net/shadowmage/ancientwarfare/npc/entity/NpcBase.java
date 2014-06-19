@@ -308,7 +308,8 @@ public final boolean attackEntityFrom(DamageSource source, float par2)
   {
   if(source.getEntity() instanceof NpcBase)
     {
-    if(!isHostileTowards(source.getEntity()))
+    NpcBase npc = (NpcBase)source.getEntity();
+    if(!npc.isHostileTowards(this))
       {
       return false;
       }
@@ -321,7 +322,8 @@ public final void setRevengeTarget(EntityLivingBase par1EntityLivingBase)
   {
   if(par1EntityLivingBase instanceof NpcBase)
     {
-    if(!isHostileTowards(par1EntityLivingBase))
+    NpcBase npc = (NpcBase)par1EntityLivingBase;
+    if(!npc.isHostileTowards(this))
       {
       return;
       }
