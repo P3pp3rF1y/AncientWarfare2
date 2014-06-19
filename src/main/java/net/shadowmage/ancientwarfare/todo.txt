@@ -30,6 +30,7 @@ Licensing
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
 * validate weighted-selection algorithm in structure template selection--seems a bit off
 * structure selection 'done' button non-functional in structure-builder selection gui??
+* investigate moving towards fully-qualified block and item names -- e.g. 'minecraft:stone' instead of 'stone'
 					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
