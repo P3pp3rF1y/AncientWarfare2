@@ -56,7 +56,6 @@ public void loadBiomeList()
     biome = BiomeGenBase.getBiomeGenArray()[i];
     if(biome==null){continue;}
     String name = AWStructureStatics.getBiomeName(biome);
-    AWLog.logDebug("loading biome names...: "+name);
     templatesByBiome.put(name, new HashSet<StructureTemplate>());    
     }
   }
