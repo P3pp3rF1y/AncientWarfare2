@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.item;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -8,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
@@ -32,6 +35,13 @@ public ItemQuill(String regName, ToolMaterial material)
   this.maxStackSize = 1;
   this.setMaxDamage(material.getMaxUses());
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
+  }
+
+@Override
+public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4)
+  {
+  list.add(StatCollector.translateToLocal("guistrings.core.quill.work_mode_1"));
+  list.add(StatCollector.translateToLocal("guistrings.core.quill.work_mode_2"));
   }
 
 @Override

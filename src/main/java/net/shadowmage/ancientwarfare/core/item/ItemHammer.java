@@ -13,9 +13,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -114,15 +116,20 @@ public Multimap getItemAttributeModifiers()
 @SuppressWarnings("rawtypes")
 @Override
 @SideOnly(Side.CLIENT)
-public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4)
   {
-  boolean mode = false;
-  if(stack.hasTagCompound())
+  String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+  list.add(StatCollector.translateToLocalFormatted("guistrings.core.hammer.use_primary_item_key", key));  
+  if(stack.hasTagCompound() && stack.getTagCompound().getBoolean("workMode"))
     {
-    mode = stack.getTagCompound().getBoolean("workMode");
-    //TODO add info regarding what mode the hammer is in
+    list.add(StatCollector.translateToLocal("guistrings.core.hammer.work_mode_1"));
+    list.add(StatCollector.translateToLocal("guistrings.core.hammer.work_mode_2"));
     }
-  super.addInformation(stack, par2EntityPlayer, par3List, par4);
+  else
+    {
+    list.add(StatCollector.translateToLocal("guistrings.core.hammer.rotate_mode_1"));
+    list.add(StatCollector.translateToLocal("guistrings.core.hammer.rotate_mode_2"));
+    }
   }
 
 @Override

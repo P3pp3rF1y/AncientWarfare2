@@ -9,6 +9,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
@@ -64,7 +66,8 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
   if(known)
     {
     par3List.add(StatCollector.translateToLocal("guistrings.research.known_research"));
-    par3List.add(StatCollector.translateToLocal("guistrings.research.click_to_add_progress"));
+    par3List.add(StatCollector.translateToLocal("guistrings.research.click_to_add_progress1"));
+    par3List.add(StatCollector.translateToLocal("guistrings.research.click_to_add_progress2"));
     }
   else
     {
@@ -114,6 +117,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
         {
         if(ResearchTracker.instance().addResearchFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode)
           {
+          player.addChatMessage(new ChatComponentTranslation("guistrings.research.learned_from_item"));
           stack.stackSize--;
           if(stack.stackSize<=0)
             {
@@ -125,6 +129,7 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
         {
         if(ResearchTracker.instance().addProgressFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode)
           {
+          player.addChatMessage(new ChatComponentTranslation("guistrings.research.added_progress"));
           stack.stackSize--;
           if(stack.stackSize<=0)
             {

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,9 +19,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
@@ -47,6 +51,34 @@ public ItemCommandBaton(String name, ToolMaterial material)
   this.material = material;
   this.maxStackSize = 1;
   this.setMaxDamage(material.getMaxUses());
+  }
+
+@Override
+public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4)
+  {
+  String keyText, text;
+  text = "RMB" + " = " + StatCollector.translateToLocal("guistrings.npc.baton.add_remove");
+  list.add(text);
+  
+  keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_0).getKeyCode());
+  text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.clear");
+  list.add(text);
+  
+  keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_1).getKeyCode());
+  text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.attack");
+  list.add(text);
+  
+  keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_2).getKeyCode());
+  text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.move");
+  list.add(text);  
+  
+  keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_3).getKeyCode());
+  text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.home");
+  list.add(text);
+  
+  keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_4).getKeyCode());
+  text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.upkeep");
+  list.add(text);
   }
 
 @Override

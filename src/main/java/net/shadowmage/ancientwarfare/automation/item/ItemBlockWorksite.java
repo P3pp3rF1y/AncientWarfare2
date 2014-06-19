@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.item;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -7,14 +9,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.block.BlockWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -82,6 +85,24 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   }
 
 @Override
+public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4)
+  {
+  super.addInformation(stack, par2EntityPlayer, list, par4);
+  boolean p1, p2;
+  p1 = stack.hasTagCompound() && stack.getTagCompound().hasKey("pos1");
+  p2 = stack.hasTagCompound() && stack.getTagCompound().hasKey("pos2");
+  if(p1 && p2)
+    {
+    list.add(StatCollector.translateToLocal("guistrings.automation.right_click_to_place"));
+    }
+  else
+    { 
+    String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+    list.add(StatCollector.translateToLocalFormatted("guistrings.automation.use_primary_item_key", key));
+    }
+  }
+
+@Override
 public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
   {
   if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("pos1") || !stack.getTagCompound().hasKey("pos2"))
@@ -109,6 +130,7 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     }
   /**
    * TODO validate that block is not inside work bounds of any other nearby worksites ??
+   * TODO validate that worksite does not intersect any others
    */
   metadata = BlockRotationHandler.getMetaForPlacement(player, (IRotatableBlock) field_150939_a, side);
   

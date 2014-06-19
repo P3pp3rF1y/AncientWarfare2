@@ -1,8 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 
@@ -13,6 +17,14 @@ public ItemOrders(String name)
   {
   this.setUnlocalizedName(name);
   this.setCreativeTab(AWNpcItemLoader.npcTab);
+  }
+
+@Override
+public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4)
+  {
+  list.add(StatCollector.translateToLocal("guistrings.npc.orders.open_gui"));
+  String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+  list.add(StatCollector.translateToLocalFormatted("guistrings.npc.orders.add_position", key));
   }
 
 @Override

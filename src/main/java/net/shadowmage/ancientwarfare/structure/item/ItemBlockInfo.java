@@ -15,7 +15,7 @@ public class ItemBlockInfo extends Item implements IItemClickable
 
 public ItemBlockInfo(String regName)
   {
-  this.setUnlocalizedName("regName");
+  this.setUnlocalizedName(regName);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setTextureName("ancientwarfare:structure/block_info");
   }

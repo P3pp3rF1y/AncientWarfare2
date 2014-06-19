@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -34,6 +35,12 @@ public ItemNpcSpawner(String regName)
   this.setCreativeTab(AWNpcItemLoader.npcTab);
   this.setUnlocalizedName(regName);
   this.setTextureName("ancientwarfare:npc/spawner_miner");
+  }
+
+@Override
+public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4)
+  {
+  list.add(StatCollector.translateToLocal("guistrings.npc.spawner.right_click_to_place"));
   }
 
 @Override

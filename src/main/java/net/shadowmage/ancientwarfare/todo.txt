@@ -4,24 +4,7 @@
 ? = optional / need to think on it
 
 ****************************ITEM TOOLTIPS TODO****************************
-Worksites
-Warehouse Control Block
-Backpack
-Quill
-Hammer
-Research Book
-Research Notes
-Modeler Opener	
-Npc Spawner
-Combat Order
-Command Baton
-Routing Order
-Upkeep Order
-Work Order
-Spawner Placer
 Structure Builder
-Gate Spawner
-Structure Scanner
 	
 ****************************LICENSING TODO****************************
 Licensing
@@ -48,6 +31,8 @@ Licensing
 * add a block-name dump feature to config file/startup
 * validate weighted-selection algorithm in structure template selection--seems a bit off
 * translation for survival mode ticked builder blocks
+* research and recipes for gates
+* clean up gate spawner tooltip
 					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system

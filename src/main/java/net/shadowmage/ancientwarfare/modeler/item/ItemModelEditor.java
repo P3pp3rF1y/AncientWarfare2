@@ -1,10 +1,13 @@
 package net.shadowmage.ancientwarfare.modeler.item;
 
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.modeler.AncientWarfareModeler;
 import cpw.mods.fml.relauncher.Side;
@@ -22,6 +25,12 @@ public static final CreativeTabs editorTab = new CreativeTabs("tabs.editor")
     return Items.stick;
     }
   };
+  
+@Override
+public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+  {
+  par3List.add(StatCollector.translateToLocal("guistrings.modeler.right_click_to_open"));
+  }
 
 @Override
 public boolean cancelRightClick(EntityPlayer player, ItemStack stack)

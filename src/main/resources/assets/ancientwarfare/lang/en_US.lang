@@ -42,6 +42,7 @@ item.structure_scanner.name=Structure Scanner
 item.structure_builder.name=Structure Builder
 item.spawner_placer.name=Mob Spawner Placement Tool
 item.construction_tool.name=Construction Tool
+item.block_info_clicker.name=Block Info Tool
 #automation
 #npc
 item.work_order.name=Work Order
@@ -164,6 +165,7 @@ tile.chunk_loader_deluxe.name=Deluxe Chunk Loader
 #structure
 tile.advanced_spawner.name=Advanced Monster Spawner
 tile.drafting_station.name=Drafting Station
+tile.structure_builder_ticked.name=Survival Structure Builder
 #npc
 tile.town_hall.name=Town Hall
 tile.recruiting_station.name=Recruiting Station
@@ -206,6 +208,16 @@ guistrings.output=Output
 guistrings.start=Start
 guistrings.stop=Stop
 guistrings.dimension=Dimension
+guistrings.core.backpack.size=Backpack Size: %s Slots
+guistrings.core.backpack.click_to_open=Right Click To Open
+guistrings.core.hammer.use_primary_item_key=Press '%s' to Toggle Mode
+guistrings.core.hammer.work_mode_1=Work Mode
+guistrings.core.hammer.work_mode_2=Right Click to Work at Worksite
+guistrings.core.hammer.rotate_mode_1=Rotate Block Mode
+guistrings.core.hammer.rotate_mode_2=Right Click to rotate block
+guistrings.core.quill.work_mode_1=Right Click to Research
+guistrings.core.quill.work_mode_2=at Research Station
+guistrings.modeler.right_click_to_open=Right Click To Open GUI
 guistrings.spawner.delay=Delay
 guistrings.spawner.min_spawn_delay=Min Spawn Delay
 guistrings.spawner.max_spawn_delay=Max Spawn Delay
@@ -242,6 +254,15 @@ guistrings.spawner.xp_to_drop=XP To Drop
 guistrings.spawner.block_hardness=Block Hardness (-1 for invulnerable)
 guistrings.structure.select_structure=Select Structure
 guistrings.structure.no_selection=No Selection
+guistrings.structure.structure_name=Structure Name
+guistrings.structure.scanner.click_to_process=Right Click To Process
+guistrings.structure.scanner.select_first_pos=Select First Position
+guistrings.structure.scanner.select_second_pos=Select Second Position
+guistrings.structure.scanner.select_offset=Select Offset/Orientation
+guistrings.structure.scanner.set_first_pos=Set First Position (1/4)
+guistrings.structure.scanner.set_second_pos=Set Second Position (2/4)
+guistrings.structure.scanner.set_offset_pos=Set Offset/Orientation, Right click to Process (3/4)
+guistrings.structure.scanner.exporting=Initiating Scan (4/4)
 guistrings.construction.mode=Mode
 guistrings.construction.fill_block=Fill Block
 guistrings.construction.do_action=Do Selected Action
@@ -316,6 +337,12 @@ guistrings.automation.descending=Desc.
 guistrings.automation.energy_stored=Energy Stored
 guistrings.automation.current_energy=Energy Stored: %s
 guistrings.automation.craft=Craft
+guistrings.automation.right_click_to_place=Right Click To Place
+guistrings.automation.use_primary_item_key=Press '%s' Key To Set Bounds
+guistrings.automation.work_mode_change=Toggled Hammer Mode
+guistrings.automation.doing_player_work=Working at Worksite
+guistrings.automation.rotating_block=Rotating Block
+guistrings.automation.wrong_hammer_mode=Wrong Hammer Mode!
 
 #npc localization
 guistrings.npc.remove_upkeep_point=Remove
@@ -357,12 +384,25 @@ guistrings.npc.armor_override=Armor Override
 guistrings.npc.allow_wander=Allow Wander
 guistrings.npc.creative_gui=Creative Gui
 guistrings.npc.death_list=Death List
+guistrings.npc.spawner.right_click_to_place=Right Click To Spawn NPC
+guistrings.npc.baton.add_remove=Add or Remove target NPC
+guistrings.npc.baton.clear=Clear Command
+guistrings.npc.baton.attack=Attack/Move-Attack
+guistrings.npc.baton.move=Move/Guard/Mount
+guistrings.npc.baton.home=Set Home/(sneak)Clear Home
+guistrings.npc.baton.upkeep=Set Upkeep/(sneak)Clear Upkeep
+guistrings.npc.orders.open_gui=Right Click to Open GUI
+guistrings.npc.orders.add_position=Press '%s' to add target position.
+
+#routing order route-types
 route.fill.target=Fill Target
 route.fill.courier=Fill Courier
 route.deposit.match=Dep. Match
 route.withdraw.match=Take Match
 route.deposit.no_match=Dep. Non Match
 route.withdraw.no_match=Take Non Match
+
+#npc nameplate translations
 npc.trader.name=Trader
 npc.priest.name=Priest
 npc.bard.name=Bard
@@ -447,7 +487,12 @@ guistrings.research.known_research=Known Research
 guistrings.research.unknown_research=Unknown Research
 guistrings.research.click_to_learn=Right Click To Learn
 guistrings.research.researcher_name=Researcher Name
-guistrings.research.click_to_add_progress=Right Click To Add Progress To Current Research
+guistrings.research.click_to_add_progress1=Right Click To Add Progress
+guistrings.research.click_to_add_progress2=    To Current Research
+guistrings.research.learned_from_item=Learned %s from Research Notes!
+guistrings.research.added_progress=Added progress towards your current research from the research notes.
+guistrings.research.right_click_to_bind=Right Click To Assign
+guistrings.research.right_click_to_view=Right Click To View
 
 #npc
 entity.ancientwarfarenpc.aw_npc_worker.name=Worker

@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
@@ -22,6 +23,13 @@ public ItemBackpack(String regName)
   this.setUnlocalizedName(regName);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
   this.setTextureName("ancientwarfare:core/backpack");
+  }
+
+@Override
+public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4)
+  {
+  list.add(StatCollector.translateToLocalFormatted("guistrings.core.backpack.size", ((stack.getItemDamage()+1)*9)));
+  list.add(StatCollector.translateToLocal("guistrings.core.backpack.click_to_open"));
   }
 
 @Override

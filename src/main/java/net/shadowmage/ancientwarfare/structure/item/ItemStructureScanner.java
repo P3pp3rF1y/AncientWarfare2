@@ -8,9 +8,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -68,29 +71,26 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
       {
       tag = new NBTTagCompound();
       }
+    String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
     if(viewSettings.hasPos1() && viewSettings.hasPos2() && viewSettings.hasBuildKey())
       {
-      list.add("Right Click: Scan and Process (4/4)");
-      list.add("(Shift)Right Click: Cancel/clear");
+      list.add(key+" = "+StatCollector.translateToLocal("guistrings.structure.scanner.click_to_process"));
+      list.add("(4/4)");
       }        
     else if(!viewSettings.hasPos1())
       {
-      list.add("Left Click: Set first bound (1/4)");
-      list.add("Hold shift to offset for side hit");
-      list.add("(Shift)Right Click: Cancel/clear");
+      list.add(key+" = "+StatCollector.translateToLocal("guistrings.structure.scanner.select_first_pos"));
+      list.add("(1/4)");
       }
     else if(!viewSettings.hasPos2())
       {
-      list.add("Left Click: Set second bound (2/4)");
-      list.add("Hold shift to offset for side hit");
-      list.add("(Shift)Right Click: Cancel/clear");
+      list.add(key+" = "+StatCollector.translateToLocal("guistrings.structure.scanner.select_second_pos"));
+      list.add("(2/4)");
       }
     else if(!viewSettings.hasBuildKey())
       {
-      list.add("Left Click: Set build key and");
-      list.add("    direction (3/4)");
-      list.add("Hold shift to offset for side hit");
-      list.add("(Shift)Right Click: Cancel/clear");
+      list.add(key+" = "+StatCollector.translateToLocal("guistrings.structure.scanner.select_offset"));
+      list.add("(3/4)");
       }    
     }  
   }
@@ -102,7 +102,6 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
   ItemStructureSettings.getSettingsFor(stack, scanSettings);
   if(player.isSneaking())
     {
-    AWLog.logDebug("clearing item");
     scanSettings.clearSettings();
     ItemStructureSettings.setSettingsFor(stack, scanSettings);
     }
@@ -160,26 +159,22 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   ItemStructureSettings.getSettingsFor(stack, scanSettings);
   if(scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey())
     {
-    AWLog.logDebug("right click to process");
-//    player.addChatMessage("Right Click to Process");
+    player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.click_to_process"));
     }
   else if(!scanSettings.hasPos1())
     {
-    AWLog.logDebug("setting pos1");
     scanSettings.setPos1(hit.x, hit.y, hit.z);
-//    player.addChatMessage("Setting Scan Position 1 (Step 1/4)");
+    player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.set_first_pos"));
     }
   else if(!scanSettings.hasPos2())
     {
-    AWLog.logDebug("setting pos2");
     scanSettings.setPos2(hit.x, hit.y, hit.z);
-//    player.addChatMessage("Setting Scan Position 2 (Step 2/4)");
+    player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.set_second_pos"));
     }
   else if(!scanSettings.hasBuildKey())
     {
-    AWLog.logDebug("setting build key");
     scanSettings.setBuildKey(hit.x, hit.y, hit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw));
-//    player.addChatMessage("Setting Scan Build Position and Facing (Step 3/4)");
+    player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.set_offset_pos"));
     }
   ItemStructureSettings.setSettingsFor(stack, scanSettings);
   }

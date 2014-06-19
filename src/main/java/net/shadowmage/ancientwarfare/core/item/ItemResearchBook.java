@@ -47,10 +47,12 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
   if(name==null)
     {
     par3List.add(StatCollector.translateToLocal("guistrings.research.researcher_name")+": "+StatCollector.translateToLocal("guistrings.research.no_researcher"));
+    par3List.add(StatCollector.translateToLocal("guistrings.research.right_click_to_bind"));
     }
   else
     {
     par3List.add(StatCollector.translateToLocal("guistrings.research.researcher_name")+": "+name);
+    par3List.add(StatCollector.translateToLocal("guistrings.research.right_click_to_view"));
     }
   }
 
