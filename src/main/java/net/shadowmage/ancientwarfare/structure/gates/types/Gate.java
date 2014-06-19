@@ -384,6 +384,11 @@ public static ItemStack getItemToConstruct(int type)
   return getGateByID(type).getConstructingItem();
   }
 
+public static ItemStack getItemToConstruct(String typeName)
+  {
+  return getGateByName(typeName).getConstructingItem();
+  }
+
 public static void registerIconsForGates(IIconRegister reg)
   {
   for(IGateType t : gateTypes)

@@ -25,13 +25,12 @@ Licensing
 > move structure scanner over to multi-key item interface
 ^ test structure-module plugins for civics, torque tiles, pretty much everything
 * add survival-mode resource/recipes for all applicable plugins
+* ensure that 'mod default' plugin can actually scan/place most mod-added blocks
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
 * validate weighted-selection algorithm in structure template selection--seems a bit off
-* translation for survival mode ticked builder blocks
-* research and recipes for gates
 * clean up gate spawner tooltip
-* structure selection 'done' button non-functional in structure-builder selection gui
+* structure selection 'done' button non-functional in structure-builder selection gui??
 					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
@@ -50,8 +49,12 @@ Licensing
 ^ check that 'flee hostiles' ai works as intended
 ^ verify that faction based mounted soldiers work as intended
 ^ verify functionality of mounted player-owned npcs (all)
-* Default held items for priest, trader, or at least some use for their item slot
+* Default held items for priest, trader, or at least some use for their item slot ?
 * shield item for npc shield-slot
+	need to examine/fix positioning of shield-slot items first
+	--need to know what orientation is expected
+	allow players to use?
+	provide built-in projectile protection?
 * clean up render positioning on npc shield slot items
 * fix sounds.json for bard sounds
 * test bard-sound loading and custom sound references
@@ -63,6 +66,7 @@ Licensing
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
 * icon for 'hungry with no upkeep site' npc-ai-task still uses the old vehicle-healing icon
 * getting some error msg regarding the custom recipes for copying orders items
+* npc-targeting is supposedly fubar -- need to investigate thoroughly
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
