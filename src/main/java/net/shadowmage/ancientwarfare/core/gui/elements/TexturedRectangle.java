@@ -28,7 +28,7 @@ public TexturedRectangle(int topLeftX, int topLeftY, int width, int height, Stri
   v1 = ((float) v) * perY;
   u2 = (float)(u + uw) * perX;
   v2 = (float)(v + vh) * perY;
-  this.texture = new ResourceLocation(AWCoreStatics.coreModID, "textures/"+texture);
+  this.texture = new ResourceLocation("ancientwarfare", "textures/"+texture);
   }
 
 public TexturedRectangle(int topLeftX, int topLeftY, int width, int height, ResourceLocation texture, int tx, int ty, int u, int v, int uw, int vh)

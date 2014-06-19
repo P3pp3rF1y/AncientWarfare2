@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.config;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
@@ -8,9 +9,8 @@ public class AWCoreStatics
 
 public static final boolean DEBUG = true;
 public static String configPath;//the base AW config folder
-public static final String coreModID = "ancientwarfare";
 public static final String resourcePath = "/assets/ancientwarfare/resources/";
-
+private static Configuration config;
 /**
  * category names
  */
@@ -21,6 +21,8 @@ public static final String worldGenSettings = "04_world_gen_settings";
 public static final String keybinds = "05_keybinds";
 public static final String researchSettings = "06_research";
 public static final String researchDetailSettings = "07_research_details";
+public static final String recipeDetailSettings = "08_recipe_details";
+public static final String recipeResearchDetails = "09_recipe_research_details";
 /**
  * research options
  */
@@ -42,6 +44,7 @@ public static double energyPerWorkUnit = 50;
 public static void loadConfig(Configuration config)
   {
   setCategoryNames(config);
+  AWCoreStatics.config = config;
   /**
    * general options
    */
@@ -118,8 +121,20 @@ private static void setCategoryNames(Configuration config)
       "Affect both client and server.  These configs must match for client and server, or\n" +
       "strange and probably BAD things WILL happen.");
   
-  config.addCustomCategoryComment(researchDetailSettings, "Research DetailSettings Section\n" +
+  config.addCustomCategoryComment(researchDetailSettings, "Research Detail Settings Section\n" +
   		"Configure research times per research goal.\n" +
+      "Affect both client and server.  These configs must match for client and server, or\n" +
+      "strange and probably BAD things WILL happen.");
+  
+  config.addCustomCategoryComment(recipeDetailSettings, "Recipe Detail Settings Section\n" +
+      "Configure recipe enable/disable per item.\n" +
+      "Disabling the recipe effectively disables that item.\n" +
+      "Affect both client and server.  These configs must match for client and server, or\n" +
+      "strange and probably BAD things WILL happen.");
+  
+  config.addCustomCategoryComment(recipeResearchDetails, "Recipe Research Detail Settings Section\n" +
+      "Configure enable/disable research for specific recipes.\n" +
+      "Disabling the research removes all research requirements for that item.\n" +
       "Affect both client and server.  These configs must match for client and server, or\n" +
       "strange and probably BAD things WILL happen.");
   }
@@ -128,6 +143,18 @@ public static int getResearchTimeFor(String goalName, int defaultTime)
   {
   Configuration config = AncientWarfareCore.config;
   return config.get(researchDetailSettings, goalName, defaultTime).getInt(defaultTime);
+  }
+
+public static boolean isItemCraftable(Item item)
+  {
+  String name = Item.itemRegistry.getNameForObject(item);
+  return config.get(recipeDetailSettings, name, true).getBoolean(true);
+  }
+
+public static boolean isItemResearched(Item item)
+  {
+  String name = Item.itemRegistry.getNameForObject(item);
+  return config.get(recipeResearchDetails, name, true).getBoolean(true);
   }
 
 }

@@ -64,7 +64,7 @@ protected GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, St
   if(backgroundTexture!=null)
     {
     this.backgroundTextureName = backgroundTexture;
-    this.backgroundTexture = new ResourceLocation(AWCoreStatics.coreModID, "textures/gui/"+backgroundTextureName);    
+    this.backgroundTexture = new ResourceLocation("ancientwarfare", "textures/gui/"+backgroundTextureName);    
     }
   this.player = ((ContainerBase)par1Container).player;
   }
