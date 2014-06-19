@@ -2,6 +2,26 @@
 ^ = to check
 > = cannot do until later
 ? = optional / need to think on it
+
+****************************ITEM TOOLTIPS TODO****************************
+Worksites
+Warehouse Control Block
+Backpack
+Quill
+Hammer
+Research Book
+Research Notes
+Modeler Opener	
+Npc Spawner
+Combat Order
+Command Baton
+Routing Order
+Upkeep Order
+Work Order
+Spawner Placer
+Structure Builder
+Gate Spawner
+Structure Scanner
 	
 ****************************LICENSING TODO****************************
 Licensing
@@ -55,6 +75,7 @@ Licensing
 * add 'placeholder' factions -- for use by map-makers for designing custom factions.
 	includes no custom textures, translations, etc -- these must be provided by the map-maker	
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
+* icon for 'hungry with no upkeep site' npc-ai-task still uses the old vehicle-healing icon
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

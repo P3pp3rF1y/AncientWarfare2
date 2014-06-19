@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;

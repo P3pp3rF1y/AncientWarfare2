@@ -29,7 +29,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;

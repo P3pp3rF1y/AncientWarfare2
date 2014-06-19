@@ -5,11 +5,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.render.RenderSterlingEngine;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 
 public class BlockTorqueGeneratorSterling extends BlockTorqueGenerator
 {
+
+public static int renderID = 0;
 
 public BlockTorqueGeneratorSterling(String regName)
   {
@@ -22,13 +23,17 @@ public TileEntity createTileEntity(World world, int metadata)
   return new TileTorqueGeneratorSterling();
   }
 @Override
-public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;};
+public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
 @Override
-public boolean isOpaqueCube() {return false;};
+public boolean isOpaqueCube() {return false;}
 @Override
-public boolean isNormalCube() {return false;};
+public boolean isNormalCube() {return false;}
+
 @Override
-public int getRenderType() {return RenderSterlingEngine.renderID;};
+public int getRenderType() 
+  {
+  return renderID;
+  }
 
 @Override
 public void registerBlockIcons(IIconRegister register)

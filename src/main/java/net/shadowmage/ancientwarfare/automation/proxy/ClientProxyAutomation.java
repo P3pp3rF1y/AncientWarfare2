@@ -1,10 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
-import net.minecraft.item.Item;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.gui.GuiChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
 import net.shadowmage.ancientwarfare.automation.gui.GuiTorqueGeneratorSterling;

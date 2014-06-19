@@ -5,7 +5,6 @@ import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -13,7 +12,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
 public class GuiDimensionSelection extends GuiContainerBase

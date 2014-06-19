@@ -4,7 +4,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 

@@ -3,10 +3,6 @@ package net.shadowmage.ancientwarfare.structure.item;
 import java.util.List;
 import java.util.Set;
 
-import org.lwjgl.input.Keyboard;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -19,6 +15,11 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+
+import org.lwjgl.input.Keyboard;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemConstructionTool extends Item implements IItemClickable, IItemKeyInterface
 {

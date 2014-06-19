@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
 public class NpcDesertArcher extends NpcFactionArcher

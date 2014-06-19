@@ -3,8 +3,6 @@ package net.shadowmage.ancientwarfare.automation.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
@@ -12,7 +10,6 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorage
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
-import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeItemSlots;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
@@ -21,6 +18,8 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
+
+import org.lwjgl.input.Keyboard;
 
 public class GuiWarehouseStorage extends GuiContainerBase
 {

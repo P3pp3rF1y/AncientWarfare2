@@ -19,7 +19,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;

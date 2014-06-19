@@ -8,7 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 
 public class TileTorqueGeneratorWaterwheel extends TileTorqueGeneratorBase implements IInteractableTile
 {

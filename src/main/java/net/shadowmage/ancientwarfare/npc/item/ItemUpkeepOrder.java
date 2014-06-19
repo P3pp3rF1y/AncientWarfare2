@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;

@@ -33,7 +33,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 public abstract class TileWarehouseBase extends TileEntity implements IOwnable, IWorkSite, ITorqueReceiver, IBoundedTile, IInteractableTile, IControllerTile
 {

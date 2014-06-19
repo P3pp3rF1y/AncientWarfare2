@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.options.GuiOptions;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
@@ -154,6 +153,11 @@ public void onKeyInput(KeyInputEvent evt)
 public Keybind getKeybind(String name)
   {
   return keybindMap.get(name);
+  }
+
+public String getKeybindBinding(String name)
+  {
+  return Keyboard.getKeyName(getKeybind(name).getKeyCode());
   }
 
 public void registerKeybind(String name, int keyCode)

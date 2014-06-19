@@ -33,8 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,13 +40,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTrade;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTradeManager;
 import net.shadowmage.ancientwarfare.npc.trade.TradeParser;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class AWNPCStatics extends ModConfiguration
 {

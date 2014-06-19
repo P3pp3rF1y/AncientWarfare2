@@ -66,7 +66,6 @@ import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityNpc;
 
 public class StructurePluginNpcs extends StructureContentPlugin

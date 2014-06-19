@@ -3,15 +3,13 @@ package net.shadowmage.ancientwarfare.automation.render;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.block.BlockTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -37,7 +35,7 @@ public RenderSterlingEngine()
   ModelLoader loader = new ModelLoader();
   model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/sterling_engine.mf2"));
   texture = new ResourceLocation("ancientwarfare:textures/model/automation/sterling_engine.png");
-  if(renderID==-1){renderID = RenderingRegistry.getNextAvailableRenderId();}
+  if(BlockTorqueGeneratorSterling.renderID==-1){BlockTorqueGeneratorSterling.renderID = RenderingRegistry.getNextAvailableRenderId();}
   }
 
 @Override

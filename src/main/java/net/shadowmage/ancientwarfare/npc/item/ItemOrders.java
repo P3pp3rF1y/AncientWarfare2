@@ -5,7 +5,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 
 public abstract class ItemOrders extends Item implements IItemClickable, IItemKeyInterface
 {

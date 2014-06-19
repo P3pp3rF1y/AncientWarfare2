@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
@@ -13,19 +11,19 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
-import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeItemSlots;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
-import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
+
+import org.lwjgl.input.Keyboard;
 
 public class GuiWarehouseControl extends GuiContainerBase
 {

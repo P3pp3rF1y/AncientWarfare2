@@ -6,7 +6,6 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 

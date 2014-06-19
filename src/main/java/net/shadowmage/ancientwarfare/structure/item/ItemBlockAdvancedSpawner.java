@@ -14,7 +14,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;

@@ -6,7 +6,6 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockTorqueTile;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
-import net.shadowmage.ancientwarfare.automation.render.RenderSterlingEngine;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
