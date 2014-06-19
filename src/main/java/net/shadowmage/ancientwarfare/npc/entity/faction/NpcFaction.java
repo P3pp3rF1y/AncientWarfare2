@@ -104,6 +104,11 @@ public boolean isHostileTowards(Entity e)
     if("elite".equals(subType)){standing-=50;}
     return standing<0;
     }
+  else if(e instanceof NpcFaction)
+    {
+    NpcFaction npc = (NpcFaction)e;
+    return AncientWarfareNPC.statics.shouldFactionBeHostileTowards(getFaction(), npc.getFaction());
+    }
   else
     {
     List <String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), "");

@@ -109,13 +109,14 @@ public static final String recipeSettings = "06_recipe_settings";
 public static final String factionSettings = "07_faction_settings";
 public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
 public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
+private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
+private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings = new HashMap<String, HashMap<String, Boolean>>();
 
 public static final String factionNameSettings = "08_faction_and_type_names";
 public static final String[] factionNpcSubtypes = new String[]{"soldier","soldier.elite","cavalry","archer","archer.elite","mounted_archer","leader","leader.elite","priest","trader"};
 private HashMap<String, String> customNpcNames = new HashMap<String, String>();
 private String[] overridenLanguages = new String[]{};
 
-private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
 
 public AWNPCStatics(Configuration config)
   {
@@ -319,10 +320,24 @@ private void loadFoodValues()
 
 private void loadDefaultFactionStandings()
   {
+  String key;
+  boolean val;
   for(String name : FactionTracker.factionNames)
     {
-    this.defaultFactionStandings.put(name, config.get(factionSettings, name+".starting_faction_standing", 0, "Default faction standing for: ["+name+"s] for new players joining a game.").getInt(0));
-    }
+    if(!this.factionVsFactionStandings.containsKey(name))
+      {
+      this.factionVsFactionStandings.put(name, new HashMap<String, Boolean>());
+      }
+    this.defaultFactionStandings.put(name, config.get(factionSettings, name+".starting_faction_standing", 0, "Default faction standing for: ["+name+"] for new players joining a game.").getInt(0));
+    for(String name2 : FactionTracker.factionNames)
+      {
+      if(name.equals(name2)){continue;}
+      key = name+":"+name2;
+      val = config.get(factionSettings, key, false, "How does: "+name+" faction view: "+name2+" faction?\n" +
+      		"If true, "+name+"s will be hostile towards "+name2+"s").getBoolean(false);
+      this.factionVsFactionStandings.get(name).put(name2, val);
+      }
+    }  
   }
 
 /**
@@ -435,6 +450,15 @@ public void loadCustomNpcNames()
     {
     LanguageRegistry.instance().injectLanguage(lang, customNpcNames);
     }
+  }
+
+public boolean shouldFactionBeHostileTowards(String faction1, String faction2)
+  {
+  if(factionVsFactionStandings.containsKey(faction1) && factionVsFactionStandings.get(faction1).containsKey(faction2))
+    {
+    return factionVsFactionStandings.get(faction1).get(faction2);
+    }
+  return false;
   }
 
 }
