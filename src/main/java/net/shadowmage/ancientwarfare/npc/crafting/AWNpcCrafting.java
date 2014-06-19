@@ -191,8 +191,6 @@ public static void loadRecipes()
       'p', Blocks.planks,
       'l', Items.leather);
   
-  
-  
   }
 
 

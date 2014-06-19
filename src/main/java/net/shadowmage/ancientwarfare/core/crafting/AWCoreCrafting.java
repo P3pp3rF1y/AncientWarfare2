@@ -20,121 +20,119 @@ public static void loadRecipes()
   CraftingManager.getInstance().addRecipe(new ItemStack(AWBlocks.researchStation), new Object[]{"IWI", "GPG", "ICI", 'I', Items.iron_ingot, 'W', Blocks.planks, 'P', Blocks.crafting_table, 'C', Blocks.chest, 'G', Items.gold_ingot});
   
   RecipeResearched recipe;
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.automationHammerWood), 
-      "_s_",
-      "msm",
-      "_s_",
-      'm', Blocks.planks,
-      's', Items.stick);
-  recipe.addResearch("engineering");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.automationHammerStone), 
-      "_s_",
-      "msm",
-      "_s_",
-      'm', Blocks.stone,
-      's', Items.stick);
-  recipe.addResearch("engineering");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.automationHammerIron), 
-      "_s_",
-      "msm",
-      "_s_",
-      'm', Items.iron_ingot,
-      's', Items.stick);
-  recipe.addResearch("engineering");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.automationHammerGold), 
-      "_s_",
-      "msm",
-      "_s_",
-      'm', Items.gold_ingot,
-      's', Items.stick);
-  recipe.addResearch("engineering");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.automationHammerDiamond), 
-      "_s_",
-      "msm",
-      "_s_",
-      'm', Items.diamond,
-      's', Items.stick);
-  recipe.addResearch("engineering");
-
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.quillWood), 
-      "__f",
-      "_s_",
-      "m__",
-      'm', Blocks.planks,
-      's', Items.stick,
-      'f', Items.feather);
-  recipe.addResearch("engineering");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.quillStone), 
-      "__f",
-      "_s_",
-      "m__",
-      'm', Blocks.stone,
-      's', Items.stick,
-      'f', Items.feather);
-  recipe.addResearch("engineering");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.quillIron), 
-      "__f",
-      "_s_",
-      "m__",
-      'm', Items.iron_ingot,
-      's', Items.stick,
-      'f', Items.feather);
-  recipe.addResearch("engineering");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.quillGold), 
-      "__f",
-      "_s_",
-      "m__",
-      'm', Items.gold_ingot,
-      's', Items.stick,
-      'f', Items.feather);
-  recipe.addResearch("engineering");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.quillDiamond), 
-      "__f",
-      "_s_",
-      "m__",
-      'm', Items.diamond,
-      's', Items.stick,
-      'f', Items.feather);
-  recipe.addResearch("engineering");
   
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.steel_ingot), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.automationHammerWood),  "engineering",
+      "_s_",
+      "msm",
+      "_s_",
+      'm', Blocks.planks,
+      's', Items.stick);
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.automationHammerStone),  "engineering",
+      "_s_",
+      "msm",
+      "_s_",
+      'm', Blocks.stone,
+      's', Items.stick);
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.automationHammerIron),  "engineering",
+      "_s_",
+      "msm",
+      "_s_",
+      'm', Items.iron_ingot,
+      's', Items.stick);
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.automationHammerGold),  "engineering",
+      "_s_",
+      "msm",
+      "_s_",
+      'm', Items.gold_ingot,
+      's', Items.stick);
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.automationHammerDiamond),  "engineering",
+      "_s_",
+      "msm",
+      "_s_",
+      'm', Items.diamond,
+      's', Items.stick);
+
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.quillWood),  "engineering",
+      "__f",
+      "_s_",
+      "m__",
+      'm', Blocks.planks,
+      's', Items.stick,
+      'f', Items.feather);
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.quillStone),  "engineering",
+      "__f",
+      "_s_",
+      "m__",
+      'm', Blocks.stone,
+      's', Items.stick,
+      'f', Items.feather);
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.quillIron),  "engineering",
+      "__f",
+      "_s_",
+      "m__",
+      'm', Items.iron_ingot,
+      's', Items.stick,
+      'f', Items.feather);
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.quillGold),  "engineering",
+      "__f",
+      "_s_",
+      "m__",
+      'm', Items.gold_ingot,
+      's', Items.stick,
+      'f', Items.feather);
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.quillDiamond),  "engineering",
+      "__f",
+      "_s_",
+      "m__",
+      'm', Items.diamond,
+      's', Items.stick,
+      'f', Items.feather);
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.steel_ingot),  "refining",
       "c",
       "i",
       'c', Items.coal,
       'i', Items.iron_ingot);
-  recipe.addResearch("refining");
   
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.backpack,1,0), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.backpack,1,0),  "trade",
       "lwl",
       "www",
       "lwl",
       'l', Items.leather,
       'w', Blocks.wool);
-  recipe.addResearch("trade");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.backpack,1,1), 
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.backpack,1,1),  "trade",
       "lwl",
       "wcw",
       "lwl",
       'l', Items.leather,
       'w', Blocks.wool,
       'c', Blocks.chest);
-  recipe.addResearch("trade");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.backpack,1,2), 
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.backpack,1,2),  "trade",
       "lcl",
       "wcw",
       "lwl",
       'l', Items.leather,
       'w', Blocks.wool,
       'c', Blocks.chest);
-  recipe.addResearch("trade");
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.backpack,1,3), 
+  
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.backpack,1,3),  "trade",
       "lcl",
       "wcw",
       "lcl",
       'l', Items.leather,
       'w', Blocks.wool,
       'c', Blocks.chest);
-  recipe.addResearch("trade");
+  
   }
 
 }

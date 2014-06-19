@@ -21,6 +21,7 @@ private AWCraftingManager(){}
 
 List<RecipeResearched> recipes = new ArrayList<RecipeResearched>();
 private static final String[] emptyStringArray = new String[]{};
+private static final String[] singleInputArray = new String[]{""};
 
 /**
  * shameless copy of CraftingManager.findMatchingRecipe, with added param for player
@@ -71,14 +72,17 @@ private void addRecipe(RecipeResearched recipe)
     }
   }
 
-public RecipeResearched createRecipe(ItemStack result, Object ... inputArray)
-  {
-  return createRecipe(result, emptyStringArray, inputArray);
-  }
-
 public RecipeResearched createRecipe(ItemStack result, String research, Object ... inputArray)
   {
-  return createRecipe(result, research, inputArray);
+  if(research==null || research.equals(""))
+    {
+    return createRecipe(result, emptyStringArray, inputArray);
+    }
+  else
+    {
+    singleInputArray[0]=research;
+    return createRecipe(result, singleInputArray, inputArray);
+    }  
   }
 
 @SuppressWarnings("unchecked")

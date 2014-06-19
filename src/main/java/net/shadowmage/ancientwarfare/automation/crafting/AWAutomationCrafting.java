@@ -30,59 +30,59 @@ public static void loadRecipes()
   ItemStack steelShaft = new ItemStack(AWItems.componentItem,1,ItemComponent.STEEL_TORQUE_SHAFT);  
   
   //wooden gear set
-  recipe = AWCraftingManager.INSTANCE.createRecipe(woodenGear.copy(),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(woodenGear.copy(), "",
       "s_s",
       "_p_",
       "s_s",
       's', Items.stick,
       'p', Blocks.planks); 
   //iron gear
-  recipe = AWCraftingManager.INSTANCE.createRecipe(ironGear.copy(),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(ironGear.copy(), "",
       "i_i",
       "_i_",
       "i_i",
       'i', Items.iron_ingot);
   //steel gear
-  recipe = AWCraftingManager.INSTANCE.createRecipe(steelGear.copy(),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(steelGear.copy(), "",
       "i_i",
       "_i_",
       "i_i",
       'i', AWItems.steel_ingot);
   
   //wooden bushing set
-  recipe = AWCraftingManager.INSTANCE.createRecipe(woodenBushing.copy(),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(woodenBushing.copy(), "",
       "s_s",
       "___",
       "s_s",
       's', Items.stick,
       'p', Blocks.planks); 
   //iron bearing
-  recipe = AWCraftingManager.INSTANCE.createRecipe(ironBearing.copy(),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(ironBearing.copy(), "",
       "_i_",
       "i_i",
       "_i_",
       'i', Items.iron_ingot);
   //steel bearing
-  recipe = AWCraftingManager.INSTANCE.createRecipe(steelBearing.copy(),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(steelBearing.copy(), "",
       "_i_",
       "i_i",
       "_i_",
       'i', AWItems.steel_ingot);
   
   //wooden shaft
-  recipe = AWCraftingManager.INSTANCE.createRecipe(woodShaft.copy(),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(woodShaft.copy(), "",
       "_p_",
       "_p_",
       "_p_",
       'p', Blocks.planks); 
   //iron shaft
-  recipe = AWCraftingManager.INSTANCE.createRecipe(ironShaft.copy(),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(ironShaft.copy(), "",
       "_i_",
       "_i_",
       "_i_",
       'i', Items.iron_ingot);  
   //steel shaft
-  recipe = AWCraftingManager.INSTANCE.createRecipe(steelShaft.copy(),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(steelShaft.copy(), "",
       "_i_",
       "_i_",
       "_i_",
@@ -230,7 +230,7 @@ public static void loadRecipes()
       'c', Blocks.chest);
   
   //chunkloader simple
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderSimple),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderSimple), "",
       "bbb",
       "beb",
       "bbb",
@@ -238,7 +238,7 @@ public static void loadRecipes()
       'e', Items.ender_pearl);//TODO research?
   
   //chunkloader deluxe
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderDeluxe),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderDeluxe), "",
       "bbb",
       "beb",
       "bbb",
