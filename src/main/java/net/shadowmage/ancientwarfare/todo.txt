@@ -54,6 +54,8 @@ Licensing
 * Default held items for priest, trader, or at least some use for their item slot ?
 * clean up render positioning on npc shield slot items
 * shield item for npc shield-slot
+	needs texture/icon (model?)
+	possibly needs custom item-renderer
 	need to examine/fix positioning of shield-slot items first
 	--need to know what orientation is expected
 	allow players to use?

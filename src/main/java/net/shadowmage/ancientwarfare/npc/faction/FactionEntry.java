@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 
 public final class FactionEntry
 {
@@ -16,7 +17,7 @@ private HashMap<String, FactionStanding> factionStandings = new HashMap<String, 
 public FactionEntry(NBTTagCompound tag)
   {
   playerName = tag.getString("playerName");
-  for(String name : FactionTracker.factionNames)
+  for(String name : AWNPCStatics.factionNames)
     {
     factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
     }
@@ -26,7 +27,7 @@ public FactionEntry(NBTTagCompound tag)
 public FactionEntry(String playerName)
   {
   this.playerName = playerName;
-  for(String name : FactionTracker.factionNames)
+  for(String name : AWNPCStatics.factionNames)
     {
     factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
     }

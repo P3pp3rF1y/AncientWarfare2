@@ -113,7 +113,8 @@ private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, I
 private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings = new HashMap<String, HashMap<String, Boolean>>();
 
 public static final String factionNameSettings = "08_faction_and_type_names";
-public static final String[] factionNpcSubtypes = new String[]{"soldier","soldier.elite","cavalry","archer","archer.elite","mounted_archer","leader","leader.elite","priest","trader"};
+public static final String[] factionNames = new String[]{"bandit","viking","pirate","desert","native","custom_1","custom_2","custom_3"};
+public static final String[] factionNpcSubtypes = new String[]{"soldier","soldier.elite","cavalry","archer","archer.elite","mounted_archer","leader","leader.elite","priest","trader","civilian.male","civilian.female"};
 private HashMap<String, String> customNpcNames = new HashMap<String, String>();
 private String[] overridenLanguages = new String[]{};
 
@@ -242,7 +243,7 @@ private void loadTargetValues()
   targets = config.get(targetSettings, "combat.engineer.targets", defaultTargets, "Default targets for: player-owned engineer npc").getStringList();
   addTargetMapping("combat", "engineer", targets);
   
-  for(String name : FactionTracker.factionNames)
+  for(String name : factionNames)
     {
     targets = config.get(targetSettings, name+".archer.targets", defaultTargets, "Default targets for: "+name+" archers").getStringList();
     addTargetMapping(name, "archer", targets);
@@ -322,14 +323,14 @@ private void loadDefaultFactionStandings()
   {
   String key;
   boolean val;
-  for(String name : FactionTracker.factionNames)
+  for(String name : factionNames)
     {
     if(!this.factionVsFactionStandings.containsKey(name))
       {
       this.factionVsFactionStandings.put(name, new HashMap<String, Boolean>());
       }
     this.defaultFactionStandings.put(name, config.get(factionSettings, name+".starting_faction_standing", 0, "Default faction standing for: ["+name+"] for new players joining a game.").getInt(0));
-    for(String name2 : FactionTracker.factionNames)
+    for(String name2 : factionNames)
       {
       if(name.equals(name2)){continue;}
       key = name+":"+name2;
@@ -422,7 +423,7 @@ private void initializeCustomNpcNames()
   
   String key, fullKey;
   String value;
-  for(String faction : FactionTracker.factionNames)
+  for(String faction : factionNames)
     {
     for(String type : factionNpcSubtypes)
       {      
