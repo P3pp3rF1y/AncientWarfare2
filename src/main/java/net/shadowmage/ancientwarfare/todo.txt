@@ -29,7 +29,6 @@ Licensing
 * need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
 * validate weighted-selection algorithm in structure template selection--seems a bit off
-* clean up gate spawner tooltip
 * structure selection 'done' button non-functional in structure-builder selection gui??
 					
 ****************************AUTOMATION MODULE TODO****************************	

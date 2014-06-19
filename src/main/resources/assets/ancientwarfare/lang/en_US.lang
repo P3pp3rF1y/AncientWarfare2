@@ -295,10 +295,10 @@ guistrings.gate.invalid_position=Invalid Second Position, please re-select
 guistrings.gate.need_to_clear=The chosen area is not clear.  Please remove any blocks and try again.
 guistrings.gate.exists=Gate already exists in that location!
 guistrings.gate.too_far=You are too far away from the chosen gate coordinates.  Please move closer!.
-guistrings.gate.choose_pos_one=Press alt-item use to select first position.
-guistrings.gate.choose_pos_two=Press alt-item use to select second position.
+guistrings.gate.use_primary_item_key=Press '%s' to Set Bounds
 guistrings.gate.constuct=Right-Click: Construct Gate
 guistrings.gate.clear_item=(Sneak)Right-Click: Clear Item
+
 #automation
 guistrings.automation.ignore_damage=Ign. Dmg
 guistrings.automation.ignore_nbt=Ign. NBT

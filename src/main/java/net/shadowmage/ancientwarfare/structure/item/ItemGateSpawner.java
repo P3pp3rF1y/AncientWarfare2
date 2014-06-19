@@ -33,6 +33,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -98,12 +99,14 @@ public void addInformation(ItemStack stack, EntityPlayer player, List list, bool
     }
   else if(tag.hasKey("pos1"))
     {
-    list.add(StatCollector.translateToLocal("guistrings.gate.choose_pos_two"));
+    String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+    list.add(StatCollector.translateToLocalFormatted("guistrings.gate.use_primary_item_key", key));
     list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));    
     }
   else
     {
-    list.add(StatCollector.translateToLocal("guistrings.gate.choose_pos_one"));
+    String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+    list.add(StatCollector.translateToLocalFormatted("guistrings.gate.use_primary_item_key", key));
     list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));
     }
   }
