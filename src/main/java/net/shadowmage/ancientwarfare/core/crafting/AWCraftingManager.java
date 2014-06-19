@@ -10,15 +10,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 public class AWCraftingManager
 {
 
-List<RecipeResearched> recipes = new ArrayList<RecipeResearched>();
-
 public static final AWCraftingManager INSTANCE = new AWCraftingManager();
 private AWCraftingManager(){}
+
+List<RecipeResearched> recipes = new ArrayList<RecipeResearched>();
+private static final String[] emptyStringArray = new String[]{};
 
 /**
  * shameless copy of CraftingManager.findMatchingRecipe, with added param for player
@@ -52,85 +54,103 @@ public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, St
   return null;
   }
 
+private void addRecipe(RecipeResearched recipe)
+  {
+  Item item = recipe.getRecipeOutput().getItem();
+  boolean craftable = AWCoreStatics.isItemCraftable(item);
+  if(craftable)
+    {
+    if(!recipe.getNeededResearch().isEmpty() && AWCoreStatics.isItemResearched(item))
+      {
+      this.recipes.add(recipe);
+      }
+    else
+      {
+      CraftingManager.getInstance().getRecipeList().add(recipe);      
+      }
+    }
+  }
+
+public RecipeResearched createRecipe(ItemStack result, Object ... inputArray)
+  {
+  return createRecipe(result, emptyStringArray, inputArray);
+  }
+
+public RecipeResearched createRecipe(ItemStack result, String research, Object ... inputArray)
+  {
+  return createRecipe(result, research, inputArray);
+  }
+
 @SuppressWarnings("unchecked")
-public RecipeResearched addRecipe(ItemStack par1ItemStack, Object ... par2ArrayOfObj)
+public RecipeResearched createRecipe(ItemStack result, String[] research, Object ... inputArray)
   {
   String recipeCharactersAsSequence = "";
-  int i = 0;
-  int j = 0;
-  int k = 0;
+  int index = 0;
+  int recipeWidth = 0;
+  int recipeHeight = 0;
 
-  if (par2ArrayOfObj[i] instanceof String[])
+  if (inputArray[index] instanceof String[])
     {
-    String[] characterInputArray = (String[])((String[])par2ArrayOfObj[i++]);
+    String[] characterInputArray = (String[])((String[])inputArray[index++]);
 
     for (int l = 0; l < characterInputArray.length; ++l)
       {
       String recipeLine = characterInputArray[l];
-      ++k;
-      j = recipeLine.length();
+      ++recipeHeight;
+      recipeWidth = recipeLine.length();
       recipeCharactersAsSequence = recipeCharactersAsSequence + recipeLine;
       }
     }
   else
     {
-    while (par2ArrayOfObj[i] instanceof String)
+    while (inputArray[index] instanceof String)
       {
-      String s2 = (String)par2ArrayOfObj[i++];
-      ++k;
-      j = s2.length();
+      String s2 = (String)inputArray[index++];
+      ++recipeHeight;
+      recipeWidth = s2.length();
       recipeCharactersAsSequence = recipeCharactersAsSequence + s2;
       }
     }
 
-  HashMap<Character, ItemStack> charKeyToItem;
+  HashMap<Character, ItemStack> characterToStack;
 
-  for (charKeyToItem = new HashMap<Character, ItemStack>(); i < par2ArrayOfObj.length; i += 2)
+  for (characterToStack = new HashMap<Character, ItemStack>(); index < inputArray.length; index += 2)
     {
-    Character character = (Character)par2ArrayOfObj[i];
-    ItemStack itemstack1 = null;
-
-    if (par2ArrayOfObj[i + 1] instanceof Item)
+    Character itemCharacter = (Character)inputArray[index];
+    ItemStack stackForCharacter = null;
+    if (inputArray[index + 1] instanceof Item)
       {
-      itemstack1 = new ItemStack((Item)par2ArrayOfObj[i + 1]);
+      stackForCharacter = new ItemStack((Item)inputArray[index + 1]);
       }
-    else if (par2ArrayOfObj[i + 1] instanceof Block)
+    else if (inputArray[index + 1] instanceof Block)
       {
-      itemstack1 = new ItemStack((Block)par2ArrayOfObj[i + 1], 1, 32767);
+      stackForCharacter = new ItemStack((Block)inputArray[index + 1], 1, 32767);
       }
-    else if (par2ArrayOfObj[i + 1] instanceof ItemStack)
+    else if (inputArray[index + 1] instanceof ItemStack)
       {
-      itemstack1 = (ItemStack)par2ArrayOfObj[i + 1];
+      stackForCharacter = (ItemStack)inputArray[index + 1];
       }
-
-    charKeyToItem.put(character, itemstack1);
+    characterToStack.put(itemCharacter, stackForCharacter);
     }
 
-  ItemStack[] recipeItemArray = new ItemStack[j * k];
+  ItemStack[] recipeItemArray = new ItemStack[recipeWidth * recipeHeight];
 
-  for (int i1 = 0; i1 < j * k; ++i1)
+  for (int i1 = 0; i1 < recipeWidth * recipeHeight; ++i1)
     {
     char c0 = recipeCharactersAsSequence.charAt(i1);
 
-    if (charKeyToItem.containsKey(Character.valueOf(c0)))
+    if (characterToStack.containsKey(Character.valueOf(c0)))
       {
-      recipeItemArray[i1] = ((ItemStack)charKeyToItem.get(Character.valueOf(c0))).copy();
+      recipeItemArray[i1] = ((ItemStack)characterToStack.get(Character.valueOf(c0))).copy();
       }
     else
       {
       recipeItemArray[i1] = null;
       }
     }
-
-  RecipeResearched recipe = new RecipeResearched(j, k, recipeItemArray, par1ItemStack);  
-  if(AWCoreStatics.useResearchSystem)
-    {
-    this.recipes.add(recipe);
-    }
-  else
-    {
-    CraftingManager.getInstance().getRecipeList().add(recipe);    
-    }
+  RecipeResearched recipe = new RecipeResearched(recipeWidth, recipeHeight, recipeItemArray, result);
+  recipe.addResearch(research);
+  addRecipe(recipe);
   return recipe;
   }
 

@@ -19,7 +19,6 @@ Licensing
 * on research book, add toggle to swap between 'recipe' mode -- view research deps by recipe crafted
 * sort research book research goals
 * add scroll-wheel functionality to the scroll-bar of scrollable areas
-* add recipe and research specific enable/disable toggles
 		
 ****************************STRUCTURE MODULE TODO****************************
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
@@ -33,7 +32,6 @@ Licensing
 * translation for survival mode ticked builder blocks
 * research and recipes for gates
 * clean up gate spawner tooltip
-* add recipe and research specific enable/disable toggles
 					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
@@ -65,7 +63,7 @@ Licensing
 	includes no custom textures, translations, etc -- these must be provided by the map-maker	
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
 * icon for 'hungry with no upkeep site' npc-ai-task still uses the old vehicle-healing icon
-* add recipe and research specific enable/disable toggles
+* getting some error msg regarding the custom recipes for copying orders items
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

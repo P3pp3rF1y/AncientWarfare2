@@ -37,7 +37,7 @@ public static void loadRecipes()
   RecipeResearched recipe;
   
   //food bundle
-  recipe = AWCraftingManager.INSTANCE.addRecipe(foodBundle.copy(), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(foodBundle.copy(), "leadership",
       "ap",
       "bb",
       "wc",
@@ -47,169 +47,149 @@ public static void loadRecipes()
       'p', Items.cooked_porkchop,
       'b', Items.cooked_beef,
       'c', Items.cooked_chicken);
-  recipe.addResearch("leadership");
   
   //worker spawner
-  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("worker", ""), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("worker", ""), "leadership",
       "gf",
       "gt",
       'f', foodBundle.copy(),
       't', Items.wooden_pickaxe,
       'g', Items.gold_ingot);
-  recipe.addResearch("leadership");
   //combat spawner
-  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("combat", ""), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("combat", ""), "conscription",
       "gf",
       "gt",
       'f', foodBundle.copy(),
       't', Items.wooden_sword,
       'g', Items.gold_ingot);
-  recipe.addResearch("conscription");
   //courier bundle
-  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("courier", ""), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("courier", ""), "trade",
       "gf",
       "gt",
       'f', foodBundle.copy(),
       't', Blocks.wool,
       'g', Items.gold_ingot);
-  recipe.addResearch("trade");
   //trader spawner
-  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("trader", ""), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("trader", ""), "trade",
       "gf_",
       "gtb",
       'f', foodBundle.copy(),
       't', Blocks.wool,
       'g', Items.gold_ingot,
       'b', Items.book);
-  recipe.addResearch("trade");
   //priest spawner
-  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("priest", ""), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("priest", ""), "leadership",
       "gf",
       "gb",
       'f', foodBundle.copy(),
       'g', Items.gold_ingot,
       'b', Items.book);
-  recipe.addResearch("leadership");
   //bard spawner
-  recipe = AWCraftingManager.INSTANCE.addRecipe(ItemNpcSpawner.getStackForNpcType("bard", ""), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("bard", ""), "leadership",
       "gf",
       "gb",
       'f', foodBundle.copy(),
       'g', Items.gold_ingot,
       'b', new ItemStack(AWNpcItemLoader.bardInstrument,1,0));
-  recipe.addResearch("leadership");
     
   //command batons
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.commandBatonWood), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.commandBatonWood), "command",
       "__m",
       "_i_",
       "s__",
       'm', Blocks.planks,
       's', Items.stick,
       'i', Items.iron_ingot);
-  recipe.addResearch("command");
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.commandBatonStone), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.commandBatonStone), "command",
       "__m",
       "_i_",
       "s__",
       'm', Blocks.stone,
       's', Items.stick,
       'i', Items.iron_ingot);
-  recipe.addResearch("command");
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.commandBatonIron), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.commandBatonIron), "command",
       "__m",
       "_i_",
       "s__",
       'm', Items.iron_ingot,
       's', Items.stick,
       'i', Items.iron_ingot);
-  recipe.addResearch("command");
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.commandBatonGold), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.commandBatonGold), "command",
       "__m",
       "_i_",
       "s__",
       'm', Items.gold_ingot,
       's', Items.stick,
       'i', Items.iron_ingot);
-  recipe.addResearch("command");
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.commandBatonDiamond), 
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.commandBatonDiamond), "command",
       "__m",
       "_i_",
       "s__",
       'm', Items.diamond,
       's', Items.stick,
       'i', Items.iron_ingot);
-  recipe.addResearch("command");
   
   //upkeep order
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.upkeepOrder),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.upkeepOrder), "leadership",
       "d", 
       "p",
       "w",
       'd', new ItemStack(Items.dye,1,0),//black
       'w', Blocks.planks,
       'p', Items.paper);
-  recipe.addResearch("leadership");  
   //work order
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.workOrder),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.workOrder), "leadership",
       "d", 
       "p",
       "w",
       'd', new ItemStack(Items.dye,1,8),//gray
       'w', Blocks.planks,
-      'p', Items.paper);
-  recipe.addResearch("leadership");  
+      'p', Items.paper); 
   //route order
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.routingOrder),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.routingOrder), "leadership",
       "d", 
       "p",
       "w",
       'd', new ItemStack(Items.dye,1,7),//light gray
       'w', Blocks.planks,
-      'p', Items.paper);
-  recipe.addResearch("leadership");  
+      'p', Items.paper);  
   //combat order
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.combatOrder),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.combatOrder), "leadership",
       "d", 
       "p",
       "w",
       'd', new ItemStack(Items.dye,1,1),//red
       'w', Blocks.planks,
       'p', Items.paper);
-  recipe.addResearch("leadership"); 
   
   //lute
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.bardInstrument,1,0),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.bardInstrument,1,0), "leadership",
       "__s", 
       "pi_",
       "pp_",
       's', Items.stick,
       'p', Blocks.planks,
-      'i', Items.iron_ingot);
-  recipe.addResearch("leadership");   
+      'i', Items.iron_ingot); 
   //flute
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.bardInstrument,1,1),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.bardInstrument,1,1), "leadership",
       "__s", 
       "_s_",
       "i__",
       's', Items.stick,
-      'i', Items.iron_ingot);
-  recipe.addResearch("leadership");  
+      'i', Items.iron_ingot); 
   //harp
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.bardInstrument,1,2),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.bardInstrument,1,2), "leadership",
       "ss_", 
       "SSs",
       "ss_",
       's', Items.stick,
       'S', Items.string);
-  recipe.addResearch("leadership");  
   //drum
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWNpcItemLoader.bardInstrument,1,3),
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.bardInstrument,1,3), "leadership",
       "plp",
       "_p_",
       'p', Blocks.planks,
       'l', Items.leather);
-  recipe.addResearch("leadership");
   
   
   

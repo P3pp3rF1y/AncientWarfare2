@@ -19,7 +19,7 @@ public RecipeResearched(int par1, int par2, ItemStack[] par3ArrayOfItemStack, It
   super(par1, par2, par3ArrayOfItemStack, par4ItemStack);
   }
 
-public final RecipeResearched addResearch(String... names)
+protected final RecipeResearched addResearch(String... names)
   {
   ResearchGoal g;  
   for(String name : names)
@@ -38,7 +38,7 @@ public final RecipeResearched addResearch(String... names)
   return this;
   }
 
-public final RecipeResearched addResearch(int... nums)
+protected final RecipeResearched addResearch(int... nums)
   {
   ResearchGoal g;
   for(int k : nums)

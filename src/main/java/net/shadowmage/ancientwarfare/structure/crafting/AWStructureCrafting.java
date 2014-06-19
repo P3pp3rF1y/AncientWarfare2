@@ -17,12 +17,11 @@ public class AWStructureCrafting
 public static void loadRecipes()
   {
   RecipeResearched recipe;
-  recipe = AWCraftingManager.INSTANCE.addRecipe(new ItemStack(AWBlocks.draftingStation), new Object[]{
+  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWBlocks.draftingStation), "construction",
             "_p_",
             "_w_",
             "_s_",
-            '_',Blocks.planks, 'p', Items.paper, 'w', Blocks.crafting_table, 's', Blocks.stone});
-  recipe.addResearch("construction");    
+            '_',Blocks.planks, 'p', Items.paper, 'w', Blocks.crafting_table, 's', Blocks.stone);
   }
 
 }
