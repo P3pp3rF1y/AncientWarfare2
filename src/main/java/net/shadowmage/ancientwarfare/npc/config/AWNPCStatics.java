@@ -33,13 +33,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTrade;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTradeManager;
@@ -68,6 +73,7 @@ public static int npcXpFromMoveItem = 1;//TODO add to config
 public static int npcWorkTicks = 50;
 public static int npcCourierWorkTicks=50;//TODO add to config
 public static int npcDefaultUpkeepWithdraw = 6000;//5 minutes
+
 /**
  * TODO add these to config
  */
@@ -81,6 +87,7 @@ public static int npcArcherAttackDamage = 3;//damage for npc archers...can be in
  */
 public static final String clientSettings = "03_client_settings";
 public static boolean loadDefaultSkinPack = true;
+public static boolean overrideDefaultNames = false;
 
 /**
  * what food items are edible, and the amount of food value an NPC will get from eating them
@@ -106,6 +113,10 @@ public static final String factionSettings = "07_faction_settings";
 public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
 public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
 
+public static final String factionNameSettings = "08_faction_and_type_names";
+public static final String[] factionNpcSubtypes = new String[]{"soldier","soldier.elite","cavalry","archer","archer.elite","mounted_archer","leader","leader.elite","priest","trader"};
+private HashMap<String, String> customNpcNames = new HashMap<String, String>();
+private String[] overridenLanguages = new String[]{};
 
 private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
 
@@ -130,6 +141,8 @@ public void initializeCategories()
       "Server admins can ignore these settings.");
   
   config.addCustomCategoryComment(foodSettings, "Food Value Options\n" +
+  		"Only the food items here will be useable as food for NPCs.  The value specified is\n" +
+  		"the number of ticks that the food item will feed the NPC for.\n" +
       "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
       "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
   
@@ -148,6 +161,12 @@ public void initializeCategories()
       "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
       "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
   
+  config.addCustomCategoryComment(factionNameSettings, "Faction Naming Options\n" +
+  		"These settings effect the displayed name of NPCs and items in game.\n" +
+  		"Client-side only option.\n" +
+  		"These settings override the translation entries from language files for the currently\n" +
+  		"loaded language.  These custom settings only take effect if 'override_default_names'=true\n" +
+  		"and only apply to the language(s) specified in 'overriden_languages'(both are in 03_client_settings).");
   }
 
 @Override
@@ -156,48 +175,49 @@ public void initializeValues()
   loadFoodValues();
   loadTargetValues();
   loadDefaultFactionStandings();
+  initializeCustomNpcNames();
   
-  maxNpcLevel = config.get(serverSettings, "npc_max_level", maxNpcLevel, "Max NPC Level : Default="+maxNpcLevel+"\n" +
+  maxNpcLevel = config.get(serverSettings, "npc_max_level", maxNpcLevel, "Max NPC Level\nDefault="+maxNpcLevel+"\n" +
   		"How high can NPCs level up?  Npcs gain more health, attack damage, and overall\n" +
   		"improved stats with each level.  Levels can go very high, but higher values may\n" +
   		"result in overpowered NPCs once leveled up.").getInt(maxNpcLevel);
   
-  npcXpFromAttack = config.get(serverSettings, "npc_xp_per_attack", npcXpFromAttack, "XP Per Attack : Default="+npcXpFromAttack+"\n" +
+  npcXpFromAttack = config.get(serverSettings, "npc_xp_per_attack", npcXpFromAttack, "XP Per Attack\nDefault="+npcXpFromAttack+"\n" +
   		"How much xp should an NPC gain each time they damage but do not kill an enemy?\n" +
   		"Higher values will result in faster npc leveling.\n" +
   		"Applies to both player-owned and faction-based NPCs.").getInt(npcXpFromAttack);
   
-  npcXpFromKill = config.get(serverSettings, "npc_xp_per_kill", npcXpFromKill, "XP Per Kill : Default="+npcXpFromKill+"\n" +
+  npcXpFromKill = config.get(serverSettings, "npc_xp_per_kill", npcXpFromKill, "XP Per Killnefault="+npcXpFromKill+"\n" +
       "How much xp should an NPC gain each time they kill an enemy?\n" +
       "Higher values will result in faster npc leveling.\n" +
       "Applies to both player-owned and faction-based NPCs.").getInt(npcXpFromKill);
   
-  npcXpFromTrade = config.get(serverSettings, "npc_xp_per_trade", npcXpFromTrade, "XP Per Trade : Default="+npcXpFromTrade+"\n" +
+  npcXpFromTrade = config.get(serverSettings, "npc_xp_per_trade", npcXpFromTrade, "XP Per Trade\nDefault="+npcXpFromTrade+"\n" +
       "How much xp should an NPC gain each time are sucessfully traded with?\n" +
       "Higher values will result in faster npc leveling and unlock more trade recipes.\n" +
       "Applies to both player-owned and faction-based NPCs.").getInt(npcXpFromTrade);
   
-  npcXpFromWork = config.get(serverSettings, "npc_xp_per_work", npcXpFromWork, "XP Per Work: Default="+npcXpFromWork+"\n" +
+  npcXpFromWork = config.get(serverSettings, "npc_xp_per_work", npcXpFromWork, "XP Per Work\nDefault="+npcXpFromWork+"\n" +
       "How much xp should an NPC gain each time do work at a worksite?\n" +
       "Higher values will result in faster npc leveling.\n" +
       "Applies to player-owned NPCs only.").getInt(npcXpFromWork);
   
-  npcWorkTicks = config.get(serverSettings, "npc_work_ticks", npcWorkTicks, "Time Between Work Ticks: Default="+npcWorkTicks+"\n" +
+  npcWorkTicks = config.get(serverSettings, "npc_work_ticks", npcWorkTicks, "Time Between Work Ticks\nDefault="+npcWorkTicks+"\n" +
   		"How many game ticks should pass between workers' processing work at a work-site.\n" +
   		"Lower values result in more work output, higher values result in less work output.").getInt(npcWorkTicks);
   
-  factionLossOnDeath = config.get(factionSettings, "faction_loss_on_kill", 10, "Faction Loss On Kill : Default=10\n" +
+  factionLossOnDeath = config.get(factionSettings, "faction_loss_on_kill", 10, "Faction Loss On Kill\nDefault=10\n" +
   		"How much faction standing should be lost if you or one of your minions kills a faction\n" +
   		"based NPC.").getInt(10);
   
-  factionGainOnTrade = config.get(factionSettings, "faction_gain_on_trade", 2, "Faction Gain On Trade : Default=2\n" +
+  factionGainOnTrade = config.get(factionSettings, "faction_gain_on_trade", 2, "Faction Gain On Trade\nDefault=2\n" +
   		"How much faction standing should be gained when you trade with a faction based trader.").getInt(2);
-  //TODO add all the other normal config options -- faction gain/loss, follow range, work-ticks
-  
-  loadDefaultSkinPack = config.get(clientSettings, "load_default_skin_pack", loadDefaultSkinPack, "Default=true\n" +
+    
+  loadDefaultSkinPack = config.get(clientSettings, "load_default_skin_pack", loadDefaultSkinPack, "Load Default Skin Pack\nDefault=true\n" +
   		"If true, default skin pack will be loaded.\n" +
   		"If false, default skin pack will NOT be loaded -- you will need to supply your own\n" +
   		"skin packs or all npcs will use the default skin.").getBoolean(loadDefaultSkinPack);
+ 
   this.config.save();
   }
 
@@ -280,8 +300,8 @@ private void loadFoodValues()
   config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_beef), 6000);
   config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.chicken), 1500);
   config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_chicken), 4500);
-//  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.fish), 6);//TODO what to do about fish / item subtypes?
-//  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_fished), 6);
+//  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.fish), 6);//TODO what to do about raw fish item subtypes?
+  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_fished), 4500);
   config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.porkchop), 2250);
   config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_porkchop), 6000);
   config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cookie), 1500);
@@ -374,6 +394,50 @@ public int getDefaultFaction(String factionName)
     return defaultFactionStandings.get(factionName);
     }
   return 0;
+  }
+
+private void initializeCustomNpcNames()
+  {      
+  overrideDefaultNames = config.get(clientSettings, "override_default_names", overrideDefaultNames, "Override Default NPC Names\nDefault="+overrideDefaultNames+"\n" +
+      "If true, default npc names will be overridden with the names specified in "+factionNameSettings+" for\n" +
+      "the languages specified in overriden_languages").getBoolean(overrideDefaultNames);
+  
+  overridenLanguages = config.get(clientSettings, "overriden_languages", overridenLanguages, "Languages to Override With Custom Names\nDefault=>empty<\n" +
+      "Any languages specified here will be overriden with the custom npc names specified in "+factionNameSettings+".\n" +
+      "Only applicable if override_default_names=true.\n" +
+      "Example language codes are: en_US, en_UK, en_CA -- see more information regarding minecraft language packs\n" +
+      "for more codes.").getStringList();
+  
+  String key, fullKey;
+  String value;
+  for(String faction : FactionTracker.factionNames)
+    {
+    for(String type : factionNpcSubtypes)
+      {      
+      key = faction+"."+type;//this is the lookup key used for all stored values      
+      fullKey = "npc."+key+".name";
+      
+      value = StatCollector.translateToLocal(fullKey);//get the default value from MY lang file, use that as the base value          
+      value = config.get(factionNameSettings, key, value).getString();//initialize the default value, and/or return the configured value            
+      customNpcNames.put(fullKey, value);//set the returned value into the custom naming map for npc-type
+      
+     //update expanded key and set custom names for each of the other translation keys for spawner and registry name
+      fullKey = "item.npc_spawner."+key+".name";
+      customNpcNames.put(fullKey, value);      
+      fullKey = "entity.ancientwarfarenpc."+key+".name";
+      customNpcNames.put(fullKey, value);
+      }
+    }
+  loadCustomNpcNames();
+  }
+
+public void loadCustomNpcNames()
+  {
+  if(!overrideDefaultNames){return;}
+  for(String lang : overridenLanguages)
+    {
+    LanguageRegistry.instance().injectLanguage(lang, customNpcNames);
+    }
   }
 
 }
