@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -69,6 +71,7 @@ public static int npcXpFromMoveItem = 1;//TODO add to config
 public static int npcWorkTicks = 50;
 public static int npcCourierWorkTicks=50;//TODO add to config
 public static int npcDefaultUpkeepWithdraw = 6000;//5 minutes
+public static boolean exportEntityNames = false;
 
 /**
  * TODO add these to config
@@ -216,7 +219,47 @@ public void initializeValues()
   		"If false, default skin pack will NOT be loaded -- you will need to supply your own\n" +
   		"skin packs or all npcs will use the default skin.").getBoolean(loadDefaultSkinPack);
  
+  exportEntityNames = config.get(serverSettings, "export_entity_names", false, "Export entity name list\nDefault="+exportEntityNames+"\n" +
+  		"If true, a text file will be created in the main AWConfig directory containing a list of all registered in-game entity names.\n" +
+  		"These names may be used to populate the NPC target lists.").getBoolean(exportEntityNames);
   this.config.save();
+  }
+
+public void postInitCallback()
+  {
+  if(exportEntityNames)
+    {
+    File file = new File("config/AWConfig");
+    file.mkdirs();
+    file = new File(file, "entity_names.txt");
+    FileWriter wr = null;
+    try
+      {
+      wr = new FileWriter(file);
+      for(Object obj : EntityList.stringToClassMapping.keySet())
+        {
+        wr.write(String.valueOf(obj)+"\n");
+        }
+      } 
+    catch (IOException e)
+      {    
+      e.printStackTrace();
+      }
+    finally
+      {
+      if(wr!=null)
+        {
+        try
+          {
+          wr.close();
+          } 
+        catch (IOException e)
+          {
+          e.printStackTrace();
+          }
+        }
+      }    
+    }
   }
 
 private void loadTargetValues()
