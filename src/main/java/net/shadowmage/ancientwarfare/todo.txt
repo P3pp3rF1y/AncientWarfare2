@@ -17,6 +17,10 @@ Licensing
 * sort research book research goals
 * add translations for client-side options in options GUI
 * swap resource-station over to a basic 'has resources' check, instead of trying to cache the value -- caching is too prone to error
+* adjust tooltip positioning -- it is A: under mouse, B: going offscreen to the right
+	place it below the mouse
+	if it would go offscreen to the right, adjust to the left -just- enough to not go offscreen
+	--if tooltip is too wide...erm..fix the width of it
 		
 ****************************STRUCTURE MODULE TODO****************************
 > investigate moving towards fully-qualified block and item names -- e.g. 'minecraft:stone' instead of 'stone'

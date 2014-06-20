@@ -2,6 +2,8 @@ package net.shadowmage.ancientwarfare.core.gui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import net.minecraft.util.StatCollector;
@@ -11,7 +13,6 @@ import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
@@ -40,7 +41,7 @@ public void initElements()
   {
   area = new CompositeScrolled(0, 40, xSize/2, ySize-40);
   addGuiElement(area);
-  modeBox = new Checkbox(8, 8, 16, 16, "foo.mode")
+  modeBox = new Checkbox(8, 8, 16, 16, StatCollector.translateToLocal("guistrings.research.research_mode"))
     {
     @Override
     public void onToggled()
@@ -68,6 +69,7 @@ public void setupElements()
 private void addRecipeModeControsl()
   {
   int totalHeight = 8;
+  
   for(RecipeResearched recipe : AWCraftingManager.INSTANCE.getRecipes())
     {
     area.addGuiElement(new RecipeButton(8, totalHeight, recipe)
@@ -85,8 +87,9 @@ private void addRecipeModeControsl()
   
   totalHeight = 8;
   detailsArea.addGuiElement(new RecipeButton(8, totalHeight, selectedRecipe));
+  totalHeight += 12;
   
-  detailsArea.addGuiElement(new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.researched_needed")));
+  detailsArea.addGuiElement(new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.research_needed")));
   totalHeight+=14;
   
   if(selectedRecipe!=null)
@@ -98,7 +101,7 @@ private void addRecipeModeControsl()
       goal = ResearchGoal.getGoal(num);
       if(goal!=null)
         {
-        button = new GoalButton(192, totalHeight, goal);
+        button = new GoalButton(8, totalHeight, goal);
         detailsArea.addGuiElement(button);
         totalHeight+=12;
         }
@@ -108,8 +111,9 @@ private void addRecipeModeControsl()
 
 private void addResearchModeControls()
   {
-  Collection<ResearchGoal> goals = ResearchGoal.getResearchGoals();
-  
+  List<ResearchGoal> goals = new ArrayList<ResearchGoal>();
+  goals.addAll(ResearchGoal.getResearchGoals());
+  Collections.sort(goals, new ResearchSorter());
   int totalHeight = 8;
   for(ResearchGoal goal : goals)
     {
@@ -148,7 +152,7 @@ private void addResearchModeControls()
     int x,y;
     for(int i = 0; i< list.size(); i++)
       {
-      x = 192 + (18*(i%9));
+      x = 8 + (18*(i%9));
       y = totalHeight + 18*(i/9);
       slot = new ItemSlot(x, y, list.get(i).getRecipeOutput(), this);
       detailsArea.addGuiElement(slot);
@@ -178,5 +182,15 @@ public GoalButton(int topLeftX, int topLeftY, ResearchGoal goal)
   }
 }
 
+private class ResearchSorter implements Comparator<ResearchGoal>
+{
+@Override
+public int compare(ResearchGoal arg0, ResearchGoal arg1)
+  {
+  String nameA = StatCollector.translateToLocal(arg0.getName());
+  String nameB = StatCollector.translateToLocal(arg1.getName());
+  return nameA.compareTo(nameB);
+  }
+}
 
 }
