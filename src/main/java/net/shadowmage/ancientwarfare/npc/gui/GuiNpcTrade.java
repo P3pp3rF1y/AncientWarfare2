@@ -46,7 +46,7 @@ public void initElements()
       }
     }; 
   
-  inventoryButton = new Button(8+55,8,52,12, "foo.inv")
+  inventoryButton = new Button(8+55,8,52,12, StatCollector.translateToLocal("guistrings.npc.inventory"))
     {
     @Override
     protected void onPressed()

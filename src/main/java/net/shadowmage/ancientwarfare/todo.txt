@@ -19,6 +19,7 @@ Licensing
 * on research book, add toggle to swap between 'recipe' mode -- view research deps by recipe crafted
 * sort research book research goals
 * add translations for client-side options in options GUI
+* swap resource-station over to a basic 'has resources' check, instead of trying to cache the value -- caching is too prone to error
 		
 ****************************STRUCTURE MODULE TODO****************************
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
@@ -54,7 +55,6 @@ Licensing
 * test bard-sound loading and custom sound references
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
-* trader inventory button not translated (only show on faction trader if player is creative mode, only show on player owned if owner/team)
 * send packet to server on npc 'picked' to merge a spawner stack into player inventory
 * add armor value when shield is equipped and armor-override not set
 * add bonus damage when dual-wielding weapons

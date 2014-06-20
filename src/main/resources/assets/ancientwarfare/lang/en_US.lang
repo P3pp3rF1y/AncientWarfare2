@@ -398,6 +398,7 @@ guistrings.npc.baton.home=Set Home/(sneak)Clear Home
 guistrings.npc.baton.upkeep=Set Upkeep/(sneak)Clear Upkeep
 guistrings.npc.orders.open_gui=Right Click to Open GUI
 guistrings.npc.orders.add_position=Press '%s' to add target position.
+guistrings.npc.inventory=Inventory
 
 #routing order route-types
 route.fill.target=Fill Target
