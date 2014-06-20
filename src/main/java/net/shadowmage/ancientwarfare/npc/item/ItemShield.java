@@ -19,6 +19,10 @@ public ItemShield(String name, ToolMaterial material)
   this.armorValue = material.getHarvestLevel()*2 + 1;
   }
 
+public int getArmorBonusValue()
+  {
+  return armorValue;
+  }
 
 //block action does strange orientation/rendering -- can perhaps try and counter it in render somehow
 //

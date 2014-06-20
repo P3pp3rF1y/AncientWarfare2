@@ -32,9 +32,13 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
+import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
+
+import com.google.common.collect.Multimap;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -160,7 +164,14 @@ public boolean attackEntityAsMob(Entity target)
     {
     damage = (float)this.getAttackDamageOverride();
     }
-  AWLog.logDebug("retrieved attack damage of: "+damage);
+  else if(getShieldStack()!=null && getHeldItem()!=null)
+    {
+    if(getShieldStack().getAttributeModifiers().containsKey(SharedMonsterAttributes.attackDamage))
+      {
+      damage *= 1.5f;
+      //TODO verify that this works
+      }
+    }
   int knockback = 0;
   if(target instanceof EntityLivingBase)
     {
@@ -195,7 +206,13 @@ public boolean attackEntityAsMob(Entity target)
 public int getTotalArmorValue()
   {
   if(getArmorValueOverride()>=0){return getArmorValueOverride();}
-  return super.getTotalArmorValue();
+  int value = super.getTotalArmorValue();
+  if(getShieldStack()!=null && getShieldStack().getItem() instanceof ItemShield)
+    {
+    ItemShield shield = (ItemShield)getShieldStack().getItem();
+    value += shield.getArmorBonusValue();
+    }
+  return value;
   }
 
 @Override
@@ -577,11 +594,9 @@ public final long getIDForSkin()
 @Override
 public final ItemStack getPickedResult(MovingObjectPosition target)
   {
-  //TODO wtf to do about all the server-side only information? (players can always 'repack' instead of 'pick')
-  //TODO could send a packet to server stating to inject spawner item into player inventory?
-  // -- looks as if I could even just pass a MOP into ForgeHooks.onPickBlock on server-side to utilize the same inventory merge logic
-  // -- or, its pretty simple logic, could just copypasta/dupe it
-  return getItemToSpawn();
+  //TODO how/where to get a player ref for playerID?? might need to proxy a call to Minecraft.getMinecraft().thePlayer
+  
+  return null;
   }
 
 @Override
@@ -743,6 +758,7 @@ public final void repackEntity(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
     {
+    onRepack();
     ItemStack item = this.getItemToSpawn();
     item = InventoryTools.mergeItemStack(player.inventory, item, -1);
     if(item!=null)
@@ -751,6 +767,15 @@ public final void repackEntity(EntityPlayer player)
       }    
     setDead();
     }
+  }
+
+/**
+ * called when NPC is being repacked into item-form.  Called prior to item being created and prior to entity being set-dead.<br>
+ * Main function is for faction-mounted NPCs to disappear their mounts when repacked.
+ */
+protected void onRepack()
+  {
+  
   }
 
 @Override

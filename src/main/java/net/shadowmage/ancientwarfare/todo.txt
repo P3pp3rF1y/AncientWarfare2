@@ -62,7 +62,7 @@ Licensing
  	-- probably easiest to just check if the item has an attack-dmg modifier, rather than checking classes/subclasses/etc.
 * right-click on shield-slot repeatedly will disappear items, possibly other armor slots as well
 	-- make a fake intermediate inventory container, and only write out to npc once at container close 
-	
+* add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC	
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
