@@ -38,13 +38,7 @@ protected boolean interact(EntityPlayer player)
   if(player.worldObj.isRemote){return false;}
   if(player.capabilities.isCreativeMode)
     {
-    if(this.ridingEntity!=null)
-      {
-      this.dismountEntity(ridingEntity);
-      if(this.ridingEntity!=null){this.ridingEntity.riddenByEntity=null;}
-      this.ridingEntity=null;
-      }
-    else if(player.isSneaking())
+    if(player.isSneaking())
       {
       if(this.followingPlayerName==null)
         {
