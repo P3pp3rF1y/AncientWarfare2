@@ -115,15 +115,23 @@ public String getCrafterName()
 @Override
 public void updateEntity()
   {
-  if(worldObj.isRemote){return;}    
-  if(startCheckDelay>0)
+  if(worldObj.isRemote){return;}
+  String name = getCrafterName();
+  if(name==null){return;}
+  int goal = ResearchTracker.instance().getCurrentGoal(worldObj, name);
+  boolean started = goal>=0;
+  if(started && storedEnergy>=AWCoreStatics.energyPerResearchUnit)
+    {
+    workTick(name, goal, 1);
+    }
+  else if(!started)
     {
     startCheckDelay--;
-    }
-  if(storedEnergy>=AWCoreStatics.energyPerResearchUnit)
-    {
-    storedEnergy -= AWCoreStatics.energyPerResearchUnit;
-    workTick(1);
+    if(startCheckDelay<=0)
+      {
+      startCheckDelay = startCheckDelayMax;
+      tryStartNextResearch(name);      
+      }
     }
   }
 
@@ -153,40 +161,23 @@ public void writeToNBT(NBTTagCompound tag)
 public boolean hasWork()
   {
   return storedEnergy<maxEnergyStored;
-//  if(storedEnergy>=maxEnergyStored){return false;}
-//  String name = getCrafterName();
-//  if(name==null){return false;}
-//  int goal = ResearchTracker.instance().getCurrentGoal(worldObj, name);
-//  if(goal>=0){return true;}
-//  List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(worldObj, name);  
-//  if(!queue.isEmpty() && startCheckDelay==0){return true;}
-//  return false;
   }
 
-private void workTick(int tickCount)
+private void workTick(String name, int goal, int tickCount)
   {
-  String name = getCrafterName();
-  if(name==null){return;}
-  int goal = ResearchTracker.instance().getCurrentGoal(worldObj, name);
-  if(goal>=0)
+  ResearchGoal g1 = ResearchGoal.getGoal(goal);
+  int progress = ResearchTracker.instance().getProgress(worldObj, name);
+  progress+=tickCount;
+  if(progress>=g1.getTotalResearchTime())
     {
-    ResearchGoal g1 = ResearchGoal.getGoal(goal);
-    int progress = ResearchTracker.instance().getProgress(worldObj, name);
-    progress+=tickCount;
-    if(progress>=g1.getTotalResearchTime())
-      {
-      ResearchTracker.instance().finishResearch(worldObj, getCrafterName(), goal);
-      tryStartNextResearch(name);
-      }
-    else
-      {
-      ResearchTracker.instance().setProgress(worldObj, name, progress);
-      }
+    ResearchTracker.instance().finishResearch(worldObj, getCrafterName(), goal);
+    tryStartNextResearch(name);
     }
   else
     {
-    tryStartNextResearch(name);
-    }    
+    ResearchTracker.instance().setProgress(worldObj, name, progress);
+    }
+  storedEnergy-=AWCoreStatics.energyPerResearchUnit;
   }
 
 private void tryStartNextResearch(String name)
@@ -199,7 +190,7 @@ private void tryStartNextResearch(String name)
     if(g1==null){return;}
     if(g1.tryStart(resourceInventory, -1))
       {
-      ResearchTracker.instance().startResearch(worldObj, getCrafterName(), g);        
+      ResearchTracker.instance().startResearch(worldObj, name, g);        
       }
     else if(useAdjacentInventory)
       {

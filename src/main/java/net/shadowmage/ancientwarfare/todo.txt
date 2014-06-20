@@ -2,9 +2,6 @@
 ^ = to check
 > = cannot do until later
 ? = optional / need to think on it
-
-****************************ITEM TOOLTIPS TODO****************************
-Structure Builder
 	
 ****************************LICENSING TODO****************************
 Licensing
@@ -22,6 +19,7 @@ Licensing
 * swap resource-station over to a basic 'has resources' check, instead of trying to cache the value -- caching is too prone to error
 		
 ****************************STRUCTURE MODULE TODO****************************
+> investigate moving towards fully-qualified block and item names -- e.g. 'minecraft:stone' instead of 'stone'
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
 > Scanner GUI needs some cleanup / make it look nice(er)
 > move structure scanner over to multi-key item interface
@@ -32,7 +30,6 @@ Licensing
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
 * validate weighted-selection algorithm in structure template selection--seems a bit off
 * structure selection 'done' button non-functional in structure-builder selection gui??
-* investigate moving towards fully-qualified block and item names -- e.g. 'minecraft:stone' instead of 'stone'
 					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
@@ -57,7 +54,6 @@ Licensing
 * test bard-sound loading and custom sound references
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
-* send packet to server on npc 'picked' to merge a spawner stack into player inventory
 * add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC	
 			
 ****************************VEHICLE MODULE TODO****************************
