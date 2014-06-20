@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.proxy;
 
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -15,8 +17,10 @@ import net.shadowmage.ancientwarfare.npc.gui.GuiRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiTownHallInventory;
 import net.shadowmage.ancientwarfare.npc.gui.GuiUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiWorkOrder;
+import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.render.RenderCommandOverlay;
 import net.shadowmage.ancientwarfare.npc.render.RenderNpcBase;
+import net.shadowmage.ancientwarfare.npc.render.RenderShield;
 import net.shadowmage.ancientwarfare.npc.render.RenderWorkLines;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -38,10 +42,20 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_RECRUITING_STATION, GuiRecruitingStation.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_BARD, GuiBard.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_CREATIVE, GuiNpcCreativeControls.class);
+  
   RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, new RenderNpcBase());
-  MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);
+  
+  MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);//register render for orders items routes/block highlights
   FMLCommonHandler.instance().bus().register(RenderCommandOverlay.INSTANCE);//register overlay renderer
   MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register block/entity highlight renderer
+  
+  RenderShield shieldRender = new RenderShield();
+  MinecraftForgeClient.registerItemRenderer(AWNpcItemLoader.woodenShield, shieldRender);
+  MinecraftForgeClient.registerItemRenderer(AWNpcItemLoader.stoneShield, shieldRender);
+  MinecraftForgeClient.registerItemRenderer(AWNpcItemLoader.ironShield, shieldRender);
+  MinecraftForgeClient.registerItemRenderer(AWNpcItemLoader.goldShield, shieldRender);
+  MinecraftForgeClient.registerItemRenderer(AWNpcItemLoader.diamondShield, shieldRender);
+  
   registerClientOptions();
   }
 

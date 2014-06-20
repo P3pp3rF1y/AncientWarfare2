@@ -202,7 +202,7 @@ public static void renderOrientationPoints(float colorMult)
   GL11.glVertex3f(0, 0, 1);
   GL11.glEnd();
   
-  
+  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
   GL11.glPopAttrib();
   GL11.glPopMatrix();
   }

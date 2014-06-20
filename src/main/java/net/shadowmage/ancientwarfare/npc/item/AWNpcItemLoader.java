@@ -46,7 +46,11 @@ public static final ItemCommandBaton commandBatonIron = new ItemCommandBaton("ir
 public static final ItemCommandBaton commandBatonGold = new ItemCommandBaton("gold_command_baton", ToolMaterial.GOLD);
 public static final ItemCommandBaton commandBatonDiamond = new ItemCommandBaton("diamond_command_baton", ToolMaterial.EMERALD);
 public static final ItemBardInstrument bardInstrument = new ItemBardInstrument("bard_instrument");
-
+public static final ItemShield woodenShield = new ItemShield("wooden_shield", ToolMaterial.WOOD);
+public static final ItemShield stoneShield = new ItemShield("stone_shield", ToolMaterial.STONE);
+public static final ItemShield ironShield = new ItemShield("iron_shield", ToolMaterial.IRON);
+public static final ItemShield goldShield = new ItemShield("gold_shield", ToolMaterial.GOLD);
+public static final ItemShield diamondShield = new ItemShield("diamond_shield", ToolMaterial.EMERALD);
 
 private static final TabSorter sorter = new TabSorter();
   
@@ -63,6 +67,12 @@ public static void load()
   GameRegistry.registerItem(commandBatonGold, "gold_command_baton");
   GameRegistry.registerItem(commandBatonDiamond, "diamond_command_baton");
   GameRegistry.registerItem(bardInstrument, "bard_instrument");
+
+  GameRegistry.registerItem(woodenShield, "wooden_shield");
+  GameRegistry.registerItem(stoneShield, "stone_shield");
+  GameRegistry.registerItem(ironShield, "iron_shield");
+  GameRegistry.registerItem(goldShield, "gold_shield");
+  GameRegistry.registerItem(diamondShield, "diamond_shield");
   
   ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.NPC_FOOD_BUNDLE, "ancientwarfare:npc/food_bundle");  
   }

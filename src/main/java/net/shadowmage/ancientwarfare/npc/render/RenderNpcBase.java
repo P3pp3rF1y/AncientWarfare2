@@ -93,7 +93,6 @@ protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
   Item item;
   
   //TODO clean up this copypasta code
-  //TODO find proper translation offset for left-hand item rendering
   float f1;
   if (itemstack != null && itemstack.getItem() != null)
     {

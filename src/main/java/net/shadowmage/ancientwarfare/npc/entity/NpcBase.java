@@ -338,8 +338,10 @@ protected final void dropEquipment(boolean par1, int par2)
       }
     if(ordersStack!=null){entityDropItem(ordersStack, 0.f);}
     if(upkeepStack!=null){entityDropItem(upkeepStack, 0.f);}
+    if(getShieldStack()!=null){entityDropItem(getShieldStack(), 0.f);}
     ordersStack=null;
     upkeepStack=null;
+    setShieldStack(null);
     }
   }
 
