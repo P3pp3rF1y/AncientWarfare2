@@ -122,6 +122,17 @@ public boolean isHostileTowards(Entity e)
   }
 
 @Override
+public boolean canTarget(Entity e)
+  {
+  if(e instanceof NpcFaction)
+    {
+    NpcFaction npc = (NpcFaction)e;
+    return !npc.getFaction().equals(getFaction());
+    }
+  return e instanceof EntityLivingBase;
+  }
+
+@Override
 public void onDeath(DamageSource damageSource)
   {  
   super.onDeath(damageSource);

@@ -169,7 +169,7 @@ public void handlePlayerCommand(Command cmd)
   else if(cmd.type==CommandType.ATTACK)
     {
     Entity e = cmd.getEntityTarget(worldObj);
-    if(e instanceof EntityLivingBase && isHostileTowards(e))
+    if(e instanceof EntityLivingBase && canTarget(e))
       {
       setAttackTarget((EntityLivingBase)e);
       }
@@ -208,17 +208,17 @@ public boolean isHostileTowards(Entity e)
     {
     NpcPlayerOwned npc = (NpcPlayerOwned)e;
     Team t = npc.getTeam();
-    return isHostileTowards(t);
+    return t!=getTeam();
     }
   else if(e instanceof NpcFaction)
     {
     NpcFaction npc = (NpcFaction)e;
-    return npc.isHostileTowards(this);//cheap trick to determine if should be hostile or not
+    return npc.isHostileTowards(this);//cheap trick to determine if should be hostile or not using the faction-based npcs standing towards this players npcs...handled in NpcFaction
     }
   else if(e instanceof EntityPlayer)
     {
     Team t = worldObj.getScoreboard().getPlayersTeam(e.getCommandSenderName());
-    return isHostileTowards(t);
+    return t!=getTeam();
     }
   else
     {
@@ -230,6 +230,23 @@ public boolean isHostileTowards(Entity e)
       }
     }
   return false;
+  }
+
+@Override
+public boolean canTarget(Entity e)
+  {
+  if(e instanceof NpcPlayerOwned)
+    {
+    NpcPlayerOwned npc = (NpcPlayerOwned)e;
+    Team t = npc.getTeam();
+    return t!=getTeam();//do not allow npcs to target their own teams npcs
+    }
+  else if (e instanceof EntityPlayer)
+    {
+    Team t = worldObj.getScoreboard().getPlayersTeam(e.getCommandSenderName());
+    return t!=getTeam();//do not allow npcs to target their own teams players
+    }
+  return e instanceof EntityLivingBase;
   }
 
 protected boolean isHostileTowards(Team team)

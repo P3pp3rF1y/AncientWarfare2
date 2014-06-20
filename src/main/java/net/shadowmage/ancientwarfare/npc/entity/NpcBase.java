@@ -582,6 +582,10 @@ public final long getIDForSkin()
 @Override
 public final ItemStack getPickedResult(MovingObjectPosition target)
   {
+  //TODO wtf to do about all the server-side only information? (players can always 'repack' instead of 'pick')
+  //TODO could send a packet to server stating to inject spawner item into player inventory?
+  // -- looks as if I could even just pass a MOP into ForgeHooks.onPickBlock on server-side to utilize the same inventory merge logic
+  // -- or, its pretty simple logic, could just copypasta/dupe it
   return getItemToSpawn();
   }
 
@@ -715,6 +719,8 @@ public Team getTeam()
   }
 
 public abstract boolean isHostileTowards(Entity e);
+
+public abstract boolean canTarget(Entity e);
 
 public final EntityLivingBase getFollowingEntity()
   {
