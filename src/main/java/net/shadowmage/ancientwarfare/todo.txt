@@ -47,15 +47,11 @@ Licensing
 ****************************NPC MODULE TODO****************************
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
-^ verify that faction based mounted soldiers work as intended
 ^ verify functionality of mounted player-owned npcs (all)
 * Default held items for priest, trader, or at least some use for their item slot ?
-* clean up render positioning on npc shield slot items
 * shield item for npc shield-slot
 	needs texture/icon (model?)
-	possibly needs custom item-renderer
-	need to examine/fix positioning of shield-slot items first
-	--need to know what orientation is expected
+	needs custom item-renderer
 	allow players to use?
 	provide built-in projectile protection?
 * fix sounds.json for bard sounds
@@ -63,7 +59,6 @@ Licensing
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
 * icon for 'hungry with no upkeep site' npc-ai-task still uses the old vehicle-healing icon
-* npc-targeting is supposedly fubar -- need to investigate thoroughly
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

@@ -41,7 +41,6 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
-import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTrade;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTradeManager;
 import net.shadowmage.ancientwarfare.npc.trade.TradeParser;

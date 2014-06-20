@@ -69,7 +69,7 @@ protected boolean onGuiCloseRequested()
 @Override
 public void initElements()
   {
-  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, parent.model.textureWidth(), parent.model.textureHeight(), 0, 0, parent.model.textureWidth(), parent.model.textureHeight(), loc);
+  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, GuiModelEditor.model.textureWidth(), GuiModelEditor.model.textureHeight(), 0, 0, GuiModelEditor.model.textureWidth(), GuiModelEditor.model.textureHeight(), loc);
   addGuiElement(textureRect);
   
   textureControlArea = new CompositeScrolled(-guiLeft, -guiTop, (width - xSize)/2, height/2);
@@ -117,7 +117,7 @@ public void setupElements()
   widgetMap.clear();
   
   this.removeGuiElement(textureRect);
-  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, parent.model.textureWidth(), parent.model.textureHeight(), 0, 0, parent.model.textureWidth(), parent.model.textureHeight(), loc);
+  textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, GuiModelEditor.model.textureWidth(), GuiModelEditor.model.textureHeight(), 0, 0, GuiModelEditor.model.textureWidth(), GuiModelEditor.model.textureHeight(), loc);
   this.addGuiElement(textureRect);
   
   addPieceList();
@@ -132,13 +132,13 @@ public void setupElements()
 
 private void setTextureXSize(int size)
   {  
-  GuiModelEditor.model.setTextureSize(size, parent.model.textureHeight());
+  GuiModelEditor.model.setTextureSize(size, GuiModelEditor.model.textureHeight());
   updateTextureSize();
   }
 
 private void setTextureYSize(int size)
   {
-  GuiModelEditor.model.setTextureSize(parent.model.textureWidth(), size);
+  GuiModelEditor.model.setTextureSize(GuiModelEditor.model.textureWidth(), size);
   updateTextureSize();
   }
 
@@ -148,7 +148,7 @@ private void setTextureYSize(int size)
  */
 private void updateTextureSize()
   {  
-  GuiModelEditor.image = new BufferedImage(parent.model.textureWidth(), parent.model.textureHeight(), BufferedImage.TYPE_INT_ARGB);
+  GuiModelEditor.image = new BufferedImage(GuiModelEditor.model.textureWidth(), GuiModelEditor.model.textureHeight(), BufferedImage.TYPE_INT_ARGB);
   updateTexture();
   refreshGui();
   }
@@ -199,7 +199,7 @@ private void addTextureControls()
   label = new Label(c0, totalHeight, "X:");
   textureControlArea.addGuiElement(label);
   
-  input = new NumberInput(c2, totalHeight, w2, parent.model.textureWidth(), this)
+  input = new NumberInput(c2, totalHeight, w2, GuiModelEditor.model.textureWidth(), this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -215,9 +215,9 @@ private void addTextureControls()
     @Override
     protected void onPressed()
       {
-      if(parent.model.textureWidth()>1)
+      if(GuiModelEditor.model.textureWidth()>1)
         {
-        setTextureXSize(parent.model.textureWidth()-1);
+        setTextureXSize(GuiModelEditor.model.textureWidth()-1);
         }
       }
     };
@@ -228,9 +228,9 @@ private void addTextureControls()
     @Override
     protected void onPressed()
       {
-      if(parent.model.textureWidth()<1024)
+      if(GuiModelEditor.model.textureWidth()<1024)
         {
-        setTextureXSize(parent.model.textureWidth()+1);
+        setTextureXSize(GuiModelEditor.model.textureWidth()+1);
         }
       }
     };
@@ -242,7 +242,7 @@ private void addTextureControls()
   label = new Label(c0, totalHeight, "Y:");
   textureControlArea.addGuiElement(label);
   
-  input = new NumberInput(c2, totalHeight, w2, parent.model.textureHeight(), this)
+  input = new NumberInput(c2, totalHeight, w2, GuiModelEditor.model.textureHeight(), this)
     {
     @Override
     public void onValueUpdated(float value)
@@ -258,9 +258,9 @@ private void addTextureControls()
     @Override
     protected void onPressed()
       {
-      if(parent.model.textureHeight()>1)
+      if(GuiModelEditor.model.textureHeight()>1)
         {
-        setTextureYSize(parent.model.textureHeight()-1);
+        setTextureYSize(GuiModelEditor.model.textureHeight()-1);
         }
       }
     };
@@ -271,9 +271,9 @@ private void addTextureControls()
     @Override
     protected void onPressed()
       {
-      if(parent.model.textureHeight()<1024)
+      if(GuiModelEditor.model.textureHeight()<1024)
         {
-        setTextureYSize(parent.model.textureHeight()+1);
+        setTextureYSize(GuiModelEditor.model.textureHeight()+1);
         }
       }
     };
@@ -294,7 +294,7 @@ private void addFileControls()
       File path = new File("config/AWConfig/meim/uvmaps/"+System.currentTimeMillis()+".png");
       try
         {
-        ImageIO.write(parent.image, "png", path);
+        ImageIO.write(GuiModelEditor.image, "png", path);
         }
       catch (IOException e)
         {
