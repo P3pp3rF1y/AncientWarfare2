@@ -23,6 +23,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -36,9 +37,6 @@ import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
-
-import com.google.common.collect.Multimap;
-
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -594,8 +592,15 @@ public final long getIDForSkin()
 @Override
 public final ItemStack getPickedResult(MovingObjectPosition target)
   {
-  //TODO how/where to get a player ref for playerID?? might need to proxy a call to Minecraft.getMinecraft().thePlayer
-  
+  EntityPlayer player = AncientWarfareCore.proxy.getClientPlayer();
+  if(player!=null)
+    {
+    PacketEntity pkt = new PacketEntity(this);
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setInteger("playerID", player.getEntityId());
+    pkt.packetData.setTag("pickEntity", tag);
+    NetworkHandler.sendToServer(pkt);
+    }
   return null;
   }
 
@@ -845,6 +850,45 @@ public void handlePacketData(NBTTagCompound tag)
     {
     setCustomTexRef(tag.getString("customTex"));
     }
+  else if(tag.hasKey("pickEntity") && !worldObj.isRemote)
+    {
+    int id = tag.getCompoundTag("pickEntity").getInteger("playerID");
+    EntityPlayer player = (EntityPlayer) worldObj.getEntityByID(id);
+    if(player!=null)
+      {
+      handlePickEntity(player);      
+      }    
+    }
+  }
+
+private void handlePickEntity(EntityPlayer player)
+  {
+  ItemStack item = this.getItemToSpawn();  
+  boolean found = false;  
+  for(int i = 0; i < 9; i++)
+    {
+    if(ItemStack.areItemStacksEqual(player.inventory.getStackInSlot(i), item))
+      {
+      found=true;
+      return;
+      }
+    }     
+  if(!found)//attempt to merge into inventory
+    {
+    int slotNum = player.inventory.currentItem;
+    if(player.inventory.getCurrentItem()!=null)//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
+      {
+      for(int i = 0; i < 9; i++)
+        {
+        if(player.inventory.getStackInSlot(i)==null)
+          {
+          slotNum = i;
+          break;
+          }
+        }
+      }
+    player.inventory.setInventorySlotContents(slotNum, item);
+    }  
   }
 
 }
