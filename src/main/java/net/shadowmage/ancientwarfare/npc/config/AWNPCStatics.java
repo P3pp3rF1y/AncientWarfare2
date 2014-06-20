@@ -252,6 +252,9 @@ private void loadTargetValues()
     
     targets = config.get(targetSettings, name+".leader.targets", defaultTargets, "Default targets for: "+name+" leaders").getStringList();
     addTargetMapping(name, "leader", targets);  
+    
+    targets = config.get(targetSettings, name+".priest.targets", defaultTargets, "Default targets for: "+name+" priests").getStringList();
+    addTargetMapping(name, "priest", targets); 
     }  
   
   targets = config.get(targetSettings, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
