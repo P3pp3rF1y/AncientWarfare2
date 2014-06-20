@@ -311,10 +311,17 @@ public final boolean attackEntityFrom(DamageSource source, float par2)
   }
 
 @Override
-public final void setRevengeTarget(EntityLivingBase par1EntityLivingBase)
+public void setAttackTarget(EntityLivingBase entity)
   {
-  if(par1EntityLivingBase!=null && !canTarget(par1EntityLivingBase)){return;}
-  super.setRevengeTarget(par1EntityLivingBase);
+  if(entity!=null && !canTarget(entity)){return;}
+  super.setAttackTarget(entity);
+  }
+
+@Override
+public final void setRevengeTarget(EntityLivingBase entity)
+  {
+  if(entity!=null && !canTarget(entity)){return;}
+  super.setRevengeTarget(entity);
   }
 
 @Override

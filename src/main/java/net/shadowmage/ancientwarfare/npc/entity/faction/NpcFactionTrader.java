@@ -53,4 +53,10 @@ public boolean isHostileTowards(Entity e)
   return false;
   }
 
+@Override
+public boolean canTarget(Entity e)
+  {
+  return false;
+  }
+
 }
