@@ -28,6 +28,8 @@ public static final String OPTION_RENDER_NPC_AI = "render_npc_ai";
 public static final String OPTION_RENDER_NPC_ADDITIONAL_INFO = "render_nameplates";
 public static final String OPTION_RENDER_NPC_HOSTILE_NAMES = "render_hostile_names";
 public static final String OPTION_RENDER_NPC_FRIENDLY_NAMES = "render_friendly_names";
+public static final String OPTION_RENDER_HOSTILE_HEALTH = "render_hostile_health";
+public static final String OPTION_RENDER_FRIENDLY_HEALTH = "render_friendly_health";
 
 public void registerClientOption(String name, String comment, boolean val, Configuration config)
   {

@@ -65,6 +65,8 @@ private void registerClientOptions()
   ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_AI, "Render NPC AI Tasks", true, AncientWarfareNPC.config);
   ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_FRIENDLY_NAMES, "Render friendly/neutral NPC nameplates", true, AncientWarfareNPC.config);
   ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES, "Render hostile NPC nameplates", true, AncientWarfareNPC.config);
+  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_HOSTILE_HEALTH, "Render health values on hostile npc nameplates", true, AncientWarfareNPC.config);
+  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_FRIENDLY_HEALTH, "Render health values on friendly npc nameplates", true, AncientWarfareNPC.config);
   }
 
 @Override

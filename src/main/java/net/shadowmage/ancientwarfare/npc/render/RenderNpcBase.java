@@ -53,7 +53,7 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
       {
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES))
         {
-        String name = getNameForRender(npc);        
+        String name = getNameForRender(npc, true);        
         renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
         }
       }
@@ -61,7 +61,7 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
       {
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_FRIENDLY_NAMES))
         {
-        String name = getNameForRender(npc);  
+        String name = getNameForRender(npc, false);  
         renderColoredLabel(npc, name, x, y, z, 64, 0x20ffffff, 0xffffffff);
         }
       if(npc.canBeCommandedBy(renderManager.livingPlayer.getCommandSenderName()))
@@ -74,7 +74,6 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
       }
     }
   }
-
 
 @Override
 protected void func_82420_a(EntityLiving par1EntityLiving, ItemStack par2ItemStack)
@@ -190,8 +189,6 @@ protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     }
   }
 
-
-
 protected boolean func_110813_b(EntityLivingBase par1EntityLivingBase)
   {
   return false;
@@ -203,11 +200,16 @@ protected void func_147906_a(Entity p_147906_1_, String p_147906_2_, double p_14
   //noop to disable vanilla nameplate rendering, custom label rendering handled through custom rendering
   }
 
-private String getNameForRender(NpcBase npc)
+private String getNameForRender(NpcBase npc, boolean hostile)
   {
   String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : "npc."+npc.getNpcFullType()+".name";
-  customName = StatCollector.translateToLocal(customName);
-  return customName + " "+getHealthForRender(npc);
+  customName = StatCollector.translateToLocal(customName);  
+  boolean addHealth = (hostile && ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_HOSTILE_HEALTH)) || (!hostile && ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_FRIENDLY_HEALTH));
+  if(addHealth)
+    {
+    customName += " "+getHealthForRender(npc);    
+    }  
+  return customName;
   }
 
 private String getHealthForRender(NpcBase npc)
