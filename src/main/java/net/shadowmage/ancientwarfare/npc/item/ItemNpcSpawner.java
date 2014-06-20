@@ -82,10 +82,13 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
     npc.setPosition(hit.x+0.5d, hit.y, hit.z+0.5d);
     npc.setHomeArea(hit.x, hit.y, hit.z, 60);
     player.worldObj.spawnEntityInWorld(npc);  
-    stack.stackSize--;
-    if(stack.stackSize<=0)
+    if(!player.capabilities.isCreativeMode)
       {
-      player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+      stack.stackSize--;
+      if(stack.stackSize<=0)
+        {
+        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+        }      
       }
     }
   }
