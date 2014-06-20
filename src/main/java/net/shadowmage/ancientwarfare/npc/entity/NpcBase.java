@@ -462,6 +462,7 @@ public final void readAdditionalItemData(NBTTagCompound tag)
   if(tag.hasKey("attackDamageOverride")){setAttackDamageOverride(tag.getInteger("attackDamageOverride"));}
   if(tag.hasKey("armorValueOverride")){setArmorValueOverride(tag.getInteger("armorValueOverride"));}
   if(tag.hasKey("customTex")){setCustomTexRef(tag.getString("customTex"));}
+  if(tag.hasKey("wander")){shouldWander=tag.getBoolean("wander");}
   ownerName=tag.getString("owner");
   }
 
@@ -496,6 +497,7 @@ public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag)
   tag.setInteger("attackDamageOverride", attackDamage);
   tag.setInteger("armorValueOverride", armorValue);
   tag.setString("customTex", customTexRef);
+  tag.setBoolean("wander", shouldWander);
   return tag;
   }
 
