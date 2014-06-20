@@ -50,6 +50,8 @@ Licensing
 ^ check that medic AI works and that 'flee to medic' ai works
 ^ check that 'flee hostiles' ai works as intended
 ^ verify functionality of mounted player-owned npcs (all)
+^ check that the bonus damage from dual-wielding is applied correctly
+^ check that bonus armor for equipping shield in offhand slot is applied correctly
 * Default held items for priest, trader, or at least some use for their item slot ?
 * fix sounds.json for bard sounds
 * test bard-sound loading and custom sound references

@@ -48,6 +48,16 @@ public void handlePacketData(NBTTagCompound tag)
   if(tag.hasKey("clearHome")){npc.detachHome();}
   }
 
+@Override
+public void onContainerClosed(EntityPlayer par1EntityPlayer)
+  {
+  if(!par1EntityPlayer.worldObj.isRemote)
+    {
+    inventory.writeToNpc();  
+    }
+  super.onContainerClosed(par1EntityPlayer);
+  }
+
 public void handleNpcNameUpdate(String newName)
   {
   NBTTagCompound tag = new NBTTagCompound();

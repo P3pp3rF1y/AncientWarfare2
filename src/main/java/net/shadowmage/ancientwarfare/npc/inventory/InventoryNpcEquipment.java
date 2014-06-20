@@ -11,24 +11,31 @@ public class InventoryNpcEquipment implements IInventory
 
 NpcBase npc;
 
+ItemStack[] inventory;
+
 public InventoryNpcEquipment(NpcBase npc)
   {
   this.npc = npc;
+  inventory = new ItemStack[8];
+  for(int i = 0; i < 5; i++)
+    {
+    inventory[i] = npc.getEquipmentInSlot(i)==null? null : npc.getEquipmentInSlot(i).copy();
+    }
+  inventory[5]=npc.ordersStack==null ? null : npc.ordersStack.copy();
+  inventory[6]=npc.upkeepStack==null ? null : npc.upkeepStack.copy();
+  inventory[7]=npc.getShieldStack()==null ? null : npc.getShieldStack().copy();      
   }
 
 @Override
 public int getSizeInventory()
   {  
-  return 7;
+  return 8;
   }
 
 @Override
 public ItemStack getStackInSlot(int var1)
   {
-  if(var1==5){return npc.ordersStack;}
-  if(var1==6){return npc.upkeepStack;}
-  if(var1==7){return npc.getShieldStack();}
-  return npc.getEquipmentInSlot(var1);
+  return inventory[var1];
   }
 
 @Override
@@ -61,24 +68,7 @@ public ItemStack getStackInSlotOnClosing(int var1)
 @Override
 public void setInventorySlotContents(int var1, ItemStack var2)
   {
-  if(var1==5)
-    {
-    npc.ordersStack =var2;
-    npc.onOrdersInventoryChanged();
-    }
-  else if(var1==6)
-    {
-    npc.upkeepStack = var2;
-    }
-  else if(var1==7)
-    {
-    npc.setShieldStack(var2);
-    }
-  else
-    {
-    npc.setCurrentItemOrArmor(var1, var2);
-    if(var1==0){npc.onWeaponInventoryChanged();}  
-    }
+  inventory[var1]=var2;
   }
 
 @Override
@@ -144,8 +134,44 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
   case 5:
   return npc.isValidOrdersStack(var2);
   default:
-  return false;
+  return true;
   }
+  }
+
+/**
+ * should be called server-side when npc-inventory container closes
+ */
+public void writeToNpc()
+  {
+  ItemStack a, b;
+  for(int i = 0; i < 5; i++)
+    {
+    a = inventory[i];
+    b = npc.getEquipmentInSlot(i);
+    if(!ItemStack.areItemStacksEqual(a, b))
+      {
+      npc.setCurrentItemOrArmor(i, a);
+      if(i==0){npc.onWeaponInventoryChanged();}
+      }
+    }
+  b = npc.ordersStack;
+  a = inventory[5];
+  if(!ItemStack.areItemStacksEqual(a, b))
+    {
+    npc.ordersStack = a;
+    }
+  b = npc.upkeepStack;
+  a = inventory[6];
+  if(!ItemStack.areItemStacksEqual(a, b))
+    {
+    npc.ordersStack = a;
+    }
+  a = inventory[7];
+  b = npc.getShieldStack();
+  if(!ItemStack.areItemStacksEqual(a, b))
+    {
+    npc.setShieldStack(a);
+    }
   }
 
 }
