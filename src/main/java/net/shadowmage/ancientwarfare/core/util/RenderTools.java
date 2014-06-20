@@ -150,6 +150,64 @@ public static void drawCuboid(float x, float y, float z, float mx, float my, flo
   }
 
 /**
+ * Renders a white point in center, and RGB lines/points for X,Y,Z axis'
+ * @param colorMult
+ */
+public static void renderOrientationPoints(float colorMult)
+  {
+  GL11.glPushMatrix();
+  GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+  GL11.glDisable(GL11.GL_TEXTURE_2D);
+  GL11.glDisable(GL11.GL_LIGHTING);
+  GL11.glPointSize(3.f);
+    
+  GL11.glColor4f(colorMult,colorMult,colorMult, 1.f);
+  
+  //draw origin point
+  GL11.glBegin(GL11.GL_POINTS);
+  GL11.glVertex3f(0, 0, 0);
+  GL11.glEnd();
+  
+
+  
+  GL11.glColor4f(colorMult,0, 0, 1.f);//red for x axis
+  GL11.glBegin(GL11.GL_LINES);
+  GL11.glVertex3f(0, 0, 0);
+  GL11.glVertex3f(1, 0, 0);
+  GL11.glEnd();
+  
+  GL11.glBegin(GL11.GL_POINTS);
+  GL11.glVertex3f(1, 0, 0);
+  GL11.glEnd();
+  
+  
+  GL11.glColor4f(0, colorMult,0, 1.f);//green for y axis
+  GL11.glBegin(GL11.GL_LINES);
+  GL11.glVertex3f(0, 0, 0);
+  GL11.glVertex3f(0, 1, 0);
+  GL11.glEnd();
+  
+  GL11.glBegin(GL11.GL_POINTS);
+  GL11.glVertex3f(0, 1, 0);
+  GL11.glEnd();
+  
+  
+  GL11.glColor4f(0,0,colorMult, 1.f);//blue for z axis
+  GL11.glBegin(GL11.GL_LINES);
+  GL11.glVertex3f(0, 0, 0);
+  GL11.glVertex3f(0, 0, 1);
+  GL11.glEnd();
+  
+  GL11.glBegin(GL11.GL_POINTS);
+  GL11.glVertex3f(0, 0, 1);
+  GL11.glEnd();
+  
+  
+  GL11.glPopAttrib();
+  GL11.glPopMatrix();
+  }
+
+/**
  * draw a player-position-normalized bounding box (can only be called during worldRender)
  * @param bb
  */

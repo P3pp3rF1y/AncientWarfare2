@@ -99,7 +99,8 @@ protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
     item = itemstack.getItem();
     GL11.glPushMatrix();
-
+    
+        
     if (this.mainModel.isChild)
       {
       f1 = 0.5F;
@@ -107,9 +108,11 @@ protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
       GL11.glRotatef(-20.0F, -1.0F, 0.0F, 0.0F);
       GL11.glScalef(f1, f1, f1);
       }
+    
+    
 
     this.modelBipedMain.bipedLeftArm.postRender(0.0625F);
-    GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
+    GL11.glTranslatef(0, 0.5625F, 0);//translate down to the 'hand'
 
     IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, EQUIPPED);
     boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack, BLOCK_3D));
@@ -117,7 +120,7 @@ protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     if (item instanceof ItemBlock && (is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(item).getRenderType())))
       {
       f1 = 0.5F;
-      GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
+      GL11.glTranslatef(0.0625F, 0.0625f, -0.25F);
       f1 *= 0.75F;
       GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
       GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
@@ -126,11 +129,11 @@ protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     else if (item == Items.bow)
       {
       f1 = 0.625F;
-      GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
-      GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
+      GL11.glTranslatef(0.125F, 0.0F, 0.375F);
+      GL11.glRotatef(20.0F, 0.0F, 1.0F, 0.0F);
       GL11.glScalef(f1, -f1, f1);
       GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
-      GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+      GL11.glRotatef(35.0F, 0.0F, 1.0F, 0.0F);
       }
     else if (item.isFull3D())
       {
@@ -142,21 +145,22 @@ protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
         GL11.glTranslatef(0.0F, -0.125F, 0.0F);
         }
 
-      this.func_82422_c();
+      GL11.glTranslatef(0.125F, 0.0625f, 0.0625F);
       GL11.glScalef(f1, -f1, f1);
       GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
-      GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+      GL11.glRotatef(35.0F, 0.0F, 1.0F, 0.0F);
       }
     else
       {
       f1 = 0.375F;
-      GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
+      GL11.glTranslatef(0.1875F, 0.0F, -0.0625F);
       GL11.glScalef(f1, f1, f1);
       GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
       GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
       GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
+      GL11.glRotatef(20.f, 0, 1, 0);
       }
-
+    
     float f2;
     float f3;
     int i;
@@ -186,6 +190,8 @@ protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     GL11.glPopMatrix();
     }
   }
+
+
 
 protected boolean func_110813_b(EntityLivingBase par1EntityLivingBase)
   {
