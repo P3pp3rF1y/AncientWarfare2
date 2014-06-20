@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -40,6 +41,17 @@ public void writeEntityToNBT(NBTTagCompound tag)
   {
   super.writeEntityToNBT(tag);
   if(horseAI!=null){tag.setTag("horseAI", horseAI.writeToNBT(new NBTTagCompound()));}
+  }
+
+@Override
+protected void onRepack()
+  {
+  if(ridingEntity instanceof EntityHorse)
+    {
+    mountEntity(null);
+    EntityHorse horse = (EntityHorse)ridingEntity;
+    horse.setDead();    
+    }
   }
 
 }
