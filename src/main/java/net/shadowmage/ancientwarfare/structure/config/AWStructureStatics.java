@@ -579,7 +579,7 @@ public void loadPostInitValues()
 
 private void doBlockNameDump()
   {
-  File file = new File("config/AWConfig/structures");
+  File file = new File("config/AWConfig");
   file.mkdirs();
   file = new File(file, "block_names.txt");
   FileWriter fw = null;

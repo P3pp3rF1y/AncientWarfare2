@@ -54,7 +54,8 @@ Licensing
 * test bard-sound loading and custom sound references
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
-* add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC	
+* add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC
+* recipes for shields	
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
