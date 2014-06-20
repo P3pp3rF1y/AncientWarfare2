@@ -58,7 +58,6 @@ Licensing
 * test bard-sound loading and custom sound references
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
-* icon for 'hungry with no upkeep site' npc-ai-task still uses the old vehicle-healing icon
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
