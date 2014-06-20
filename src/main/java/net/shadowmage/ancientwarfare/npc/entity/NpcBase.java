@@ -306,28 +306,14 @@ public boolean canBeCommandedBy(String playerName)
 @Override
 public final boolean attackEntityFrom(DamageSource source, float par2)
   {
-  if(source.getEntity() instanceof NpcBase)
-    {
-    NpcBase npc = (NpcBase)source.getEntity();
-    if(!npc.isHostileTowards(this))
-      {
-      return false;
-      }
-    }
+  if(source.getEntity()!=null && !canBeAttackedBy(source.getEntity())){return false;}  
   return super.attackEntityFrom(source, par2);
   }
 
 @Override
 public final void setRevengeTarget(EntityLivingBase par1EntityLivingBase)
   {
-  if(par1EntityLivingBase instanceof NpcBase)
-    {
-    NpcBase npc = (NpcBase)par1EntityLivingBase;
-    if(!npc.isHostileTowards(this))
-      {
-      return;
-      }
-    }
+  if(par1EntityLivingBase!=null && !canTarget(par1EntityLivingBase)){return;}
   super.setRevengeTarget(par1EntityLivingBase);
   }
 
@@ -721,6 +707,8 @@ public Team getTeam()
 public abstract boolean isHostileTowards(Entity e);
 
 public abstract boolean canTarget(Entity e);
+
+public abstract boolean canBeAttackedBy(Entity e);
 
 public final EntityLivingBase getFollowingEntity()
   {

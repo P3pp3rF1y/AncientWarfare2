@@ -249,6 +249,17 @@ public boolean canTarget(Entity e)
   return e instanceof EntityLivingBase;
   }
 
+@Override
+public boolean canBeAttackedBy(Entity e)
+  {
+  if(e instanceof NpcPlayerOwned)
+    {
+    NpcPlayerOwned npc = (NpcPlayerOwned)e;
+    return npc.getTeam()!=getTeam();//can only be attacked by non-same team -- disable friendly fire and combat amongst neutrals
+    }
+  return true;
+  }
+
 protected boolean isHostileTowards(Team team)
   {
   Team a = getTeam();

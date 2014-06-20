@@ -133,6 +133,17 @@ public boolean canTarget(Entity e)
   }
 
 @Override
+public boolean canBeAttackedBy(Entity e)
+  {
+  if(e instanceof NpcFaction)
+    {
+    NpcFaction npc = (NpcFaction)e;
+    return !getFaction().equals(npc.getFaction());//can only be attacked by other factions, not your own...disable friendly fire
+    }
+  return true;
+  }
+
+@Override
 public void onDeath(DamageSource damageSource)
   {  
   super.onDeath(damageSource);
