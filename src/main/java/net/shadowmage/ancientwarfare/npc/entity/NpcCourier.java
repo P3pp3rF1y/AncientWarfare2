@@ -97,7 +97,7 @@ public void updateBackpackItemContents()
 @Override
 public String getNpcSubType()
   {
-  return "";//TODO make a liquid courier?? how to define liquid filters?
+  return "";
   }
 
 @Override

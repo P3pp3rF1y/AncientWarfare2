@@ -13,13 +13,7 @@ public NpcBanditLeaderElite(World par1World)
 @Override
 public String getNpcType()
   {
-  return "bandit.leader";
-  }
-
-@Override
-public String getNpcSubType()
-  {
-  return "elite";
+  return "bandit.leader.elite";
   }
 
 }

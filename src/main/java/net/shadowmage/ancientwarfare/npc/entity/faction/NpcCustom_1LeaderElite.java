@@ -13,13 +13,7 @@ public NpcCustom_1LeaderElite(World par1World)
 @Override
 public String getNpcType()
   {
-  return "custom_1.leader";
-  }
-
-@Override
-public String getNpcSubType()
-  {
-  return "elite";
+  return "custom_1.leader.elite";
   }
 
 }

@@ -13,13 +13,7 @@ public NpcNativeLeaderElite(World par1World)
 @Override
 public String getNpcType()
   {
-  return "native.leader";
-  }
-
-@Override
-public String getNpcSubType()
-  {
-  return "elite";
+  return "native.leader.elite";
   }
 
 }

@@ -13,13 +13,7 @@ public NpcDesertSoldierElite(World par1World)
 @Override
 public String getNpcType()
   {
-  return "desert.soldier";
-  }
-
-@Override
-public String getNpcSubType()
-  {
-  return "elite";
+  return "desert.soldier.elite";
   }
 
 }

@@ -13,13 +13,7 @@ public NpcPirateArcherElite(World par1World)
 @Override
 public String getNpcType()
   {
-  return "pirate.archer";
-  }
-
-@Override
-public String getNpcSubType()
-  {
-  return "elite";
+  return "pirate.archer.elite";
   }
 
 }

@@ -13,13 +13,7 @@ public NpcNativeArcherElite(World par1World)
 @Override
 public String getNpcType()
   {
-  return "native.archer";
-  }
-
-@Override
-public String getNpcSubType()
-  {
-  return "elite";
+  return "native.archer.elite";
   }
 
 }

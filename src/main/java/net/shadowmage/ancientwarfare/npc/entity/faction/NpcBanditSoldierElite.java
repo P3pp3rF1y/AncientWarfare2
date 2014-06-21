@@ -13,13 +13,7 @@ public NpcBanditSoldierElite(World par1World)
 @Override
 public String getNpcType()
   {
-  return "bandit.soldier";
-  }
-
-@Override
-public String getNpcSubType()
-  {
-  return "elite";
+  return "bandit.soldier.elite";
   }
 
 }

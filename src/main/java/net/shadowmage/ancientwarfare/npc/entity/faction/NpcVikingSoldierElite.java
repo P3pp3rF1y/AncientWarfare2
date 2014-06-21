@@ -13,13 +13,7 @@ public NpcVikingSoldierElite(World par1World)
 @Override
 public String getNpcType()
   {
-  return "viking.soldier";
-  }
-
-@Override
-public String getNpcSubType()
-  {
-  return "elite";
+  return "viking.soldier.elite";
   }
 
 }

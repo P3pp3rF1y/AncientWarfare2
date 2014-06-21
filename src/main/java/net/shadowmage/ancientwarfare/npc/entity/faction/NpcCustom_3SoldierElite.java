@@ -13,13 +13,7 @@ public NpcCustom_3SoldierElite(World par1World)
 @Override
 public String getNpcType()
   {
-  return "custom_3.soldier";
-  }
-
-@Override
-public String getNpcSubType()
-  {
-  return "elite";
+  return "custom_3.soldier.elite";
   }
 
 }

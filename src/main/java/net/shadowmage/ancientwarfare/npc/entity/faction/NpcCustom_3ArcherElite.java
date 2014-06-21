@@ -13,13 +13,7 @@ public NpcCustom_3ArcherElite(World par1World)
 @Override
 public String getNpcType()
   {
-  return "custom_3.archer";
-  }
-
-@Override
-public String getNpcSubType()
-  {
-  return "elite";
+  return "custom_3.archer.elite";
   }
 
 }

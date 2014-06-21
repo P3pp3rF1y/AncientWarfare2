@@ -175,7 +175,7 @@ protected WorkType getWorkTypeFromEquipment()
     else if(stack.getItem() instanceof ItemAxe){return WorkType.FORESTRY;}
     else if(stack.getItem() instanceof ItemPickaxe){return WorkType.MINING;}    
     else if(stack.getItem() instanceof ItemHammer){return WorkType.CRAFTING;}
-    else if(stack.getItem() instanceof ItemQuill){return WorkType.RESEARCH;}//TODO add researcher custom item -- quill?
+    else if(stack.getItem() instanceof ItemQuill){return WorkType.RESEARCH;}
     }
   return WorkType.NONE;
   }

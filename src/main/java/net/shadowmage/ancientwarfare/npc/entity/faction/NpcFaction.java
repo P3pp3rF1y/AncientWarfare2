@@ -83,14 +83,14 @@ public boolean isHostileTowards(Entity e)
   if(e instanceof EntityPlayer)
     {
     int standing = FactionTracker.INSTANCE.getStandingFor(worldObj, e.getCommandSenderName(), getFaction());
-    if("elite".equals(getNpcSubType())){standing-=50;}
+    if(getNpcFullType().endsWith("elite")){standing-=50;}
     return standing<0;
     }
   else if(e instanceof NpcPlayerOwned)
     {
     NpcBase npc = (NpcBase)e;
     int standing = FactionTracker.INSTANCE.getStandingFor(worldObj, npc.getOwnerName(), getFaction());
-    if("elite".equals(getNpcSubType())){standing-=50;}
+    if(getNpcFullType().endsWith("elite")){standing-=50;}
     return standing<0;
     }
   else if(e instanceof NpcFaction)
@@ -100,7 +100,7 @@ public boolean isHostileTowards(Entity e)
     }
   else
     {
-    List <String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), "");
+    List <String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcFullType(), "");
     String t = EntityList.getEntityString(e);
     if(targets.contains(t))
       {
