@@ -20,6 +20,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.scoreboard.Team;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
@@ -53,18 +56,41 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
       {
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES))
         {
-        String name = getNameForRender(npc, true);        
+        String name = getNameForRender(npc, true); 
+        if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_TEAM_COLORS))
+          {
+          ScorePlayerTeam playerTeam = renderManager.livingPlayer.worldObj.getScoreboard().getTeam(renderManager.livingPlayer.getCommandSenderName());
+          ScorePlayerTeam npcTeam = (ScorePlayerTeam)npc.getTeam();
+          if(npcTeam!=null && npcTeam!=playerTeam)
+            {
+            name = npcTeam.getColorPrefix()+name+npcTeam.getColorSuffix();
+            }
+          }
         renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
-        }
+        }      
       }
     else
       {
+      boolean canBeCommandedBy = npc.canBeCommandedBy(renderManager.livingPlayer.getCommandSenderName());
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_FRIENDLY_NAMES))
         {
-        String name = getNameForRender(npc, false);  
+        String name = getNameForRender(npc, false);
+        if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_TEAM_COLORS))
+          {
+          ScorePlayerTeam playerTeam = renderManager.livingPlayer.worldObj.getScoreboard().getTeam(renderManager.livingPlayer.getCommandSenderName());
+          ScorePlayerTeam npcTeam = (ScorePlayerTeam)npc.getTeam();
+          if(npcTeam!=null && npcTeam!=playerTeam)
+            {
+            name = npcTeam.getColorPrefix()+name+npcTeam.getColorSuffix();
+            }
+          }
+        else if(!canBeCommandedBy)
+          {
+          name = EnumChatFormatting.DARK_GRAY.toString()+name;
+          }
         renderColoredLabel(npc, name, x, y, z, 64, 0x20ffffff, 0xffffffff);
         }
-      if(npc.canBeCommandedBy(renderManager.livingPlayer.getCommandSenderName()))
+      if(canBeCommandedBy)
         {
         if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_AI))
           {

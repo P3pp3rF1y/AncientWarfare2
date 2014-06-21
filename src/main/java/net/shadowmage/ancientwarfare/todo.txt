@@ -31,6 +31,7 @@ Licensing
 	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
 * validate weighted-selection algorithm in structure template selection--seems a bit off
 * structure selection 'done' button non-functional in structure-builder selection gui??
+* clean up survival mode structure building -- validate area is clear before placing block
 					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
@@ -57,12 +58,15 @@ Licensing
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
 * add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC
 * recipes for shields	
-* faction status not saving -- investigate where to markDirty()
-* add coloring to nameplate rendering for other teams / players npcs
-	--use team color for other teams' npcs
-	--dim out npcs of the same team that you cannot command (neutral owned by others)
 * need to finish fixing npc-inventory interaction -- disallow 2nd interactor	
 * town hall drop inventory on block break
+* move custom texture field into user-accessible location
+* fix up npc alert AI
+	abstract it so that player owned and and faction npcs can use the same AI
+		create an 'is allied NPC' method in both PO and faction npcs to determine if
+			the input npc is an ally that should be alerted/alertable -- method return should be mutual and deterministic
+			e.g. a.isallied(b) == b.isallied(a) for all values of a/b, consistently between calls
+					 
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
