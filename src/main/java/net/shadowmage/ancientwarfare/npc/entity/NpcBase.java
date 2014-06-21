@@ -31,6 +31,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
@@ -85,6 +86,17 @@ protected void entityInit()
   super.entityInit();
   this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks
   this.getDataWatcher().addObjectByDataType(21, 5);//5==itemStack?? (see EntityItemFrame)
+  }
+
+@Override
+protected void applyEntityAttributes()
+  {
+  super.applyEntityAttributes();  
+  int health = AncientWarfareNPC.statics.getMaxHealthFor(getNpcType());
+  this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health);
+  this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);//TODO check what pathfinding range is really needed, perhaps allow config option for longer paths
+  this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.325D);//TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
+  this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
   }
 
 public ItemStack getShieldStack()
@@ -565,6 +577,7 @@ public final String getNpcFullType()
   {
   String type = getNpcType();
   String sub = getNpcSubType();
+  if(sub==null){throw new RuntimeException("Subtype must not be null...type: "+type);}
   if(!sub.isEmpty()){type = type+"."+sub;}
   return type;
   }
@@ -648,16 +661,6 @@ protected final boolean canDespawn()
 protected final boolean isAIEnabled()
   {
   return true;
-  }
-
-@Override
-protected void applyEntityAttributes()
-  {
-  super.applyEntityAttributes();  
-  this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.d);//TODO figure out dynamic changing of max-health based on level from levelingStats
-  this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);//TODO check what pathfinding range is really needed, perhaps allow config option for longer paths
-  this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.325D);//TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
-  this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
   }
 
 /**

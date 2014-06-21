@@ -13,10 +13,7 @@ Licensing
 * GUI - SHIFT-CLICK CODE
 * Research
 	-lots still needs resources-
-* on research book, add toggle to swap between 'recipe' mode -- view research deps by recipe crafted
-* sort research book research goals
 * add translations for client-side options in options GUI
-* swap resource-station over to a basic 'has resources' check, instead of trying to cache the value -- caching is too prone to error
 * adjust tooltip positioning -- it is A: under mouse, B: going offscreen to the right
 	place it below the mouse
 	if it would go offscreen to the right, adjust to the left -just- enough to not go offscreen
@@ -61,6 +58,11 @@ Licensing
 * add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC
 * recipes for shields	
 * faction status not saving -- investigate where to markDirty()
+* add coloring to nameplate rendering for other teams / players npcs
+	--use team color for other teams' npcs
+	--dim out npcs of the same team that you cannot command (neutral owned by others)
+* need to finish fixing npc-inventory interaction -- disallow 2nd interactor	
+* town hall drop inventory on block break
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

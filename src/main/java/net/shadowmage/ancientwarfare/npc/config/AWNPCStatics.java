@@ -120,6 +120,8 @@ public static final String[] factionNpcSubtypes = new String[]{"soldier","soldie
 private HashMap<String, String> customNpcNames = new HashMap<String, String>();
 private String[] overridenLanguages = new String[]{};
 
+public static final String npcDefaultHealthSettings = "09_npc_base_health";
+private HashMap<String, Integer> healthValues = new HashMap<String, Integer>();
 
 public AWNPCStatics(Configuration config)
   {
@@ -177,6 +179,7 @@ public void initializeValues()
   loadTargetValues();
   loadDefaultFactionStandings();
   initializeCustomNpcNames();
+  initializeCustomHealthValues();
   
   maxNpcLevel = config.get(serverSettings, "npc_max_level", maxNpcLevel, "Max NPC Level\nDefault="+maxNpcLevel+"\n" +
   		"How high can NPCs level up?  Npcs gain more health, attack damage, and overall\n" +
@@ -496,6 +499,29 @@ public void loadCustomNpcNames()
     {
     LanguageRegistry.instance().injectLanguage(lang, customNpcNames);
     }
+  }
+
+private void initializeCustomHealthValues()
+  {
+  String key;
+  for(String name : factionNames)
+    {
+    for(String type : factionNpcSubtypes)
+      {
+      key = name+"."+type;
+      healthValues.put(key, config.get(npcDefaultHealthSettings, key, 20).getInt(20));
+      }
+    }
+  healthValues.put("combat", config.get(npcDefaultHealthSettings, "combat", 20).getInt(20));
+  healthValues.put("worker",config.get(npcDefaultHealthSettings, "worker", 20).getInt(20));                                                                                                                      
+  healthValues.put("courier", config.get(npcDefaultHealthSettings, "courier", 20).getInt(20));
+  healthValues.put("trader", config.get(npcDefaultHealthSettings, "trader", 20).getInt(20));
+  healthValues.put("priest", config.get(npcDefaultHealthSettings, "priest", 20).getInt(20));  
+  }
+
+public int getMaxHealthFor(String type)
+  {
+  return healthValues.get(type);
   }
 
 public boolean shouldFactionBeHostileTowards(String faction1, String faction2)

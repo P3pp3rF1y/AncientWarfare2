@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
@@ -24,7 +25,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 public abstract class NpcFaction extends NpcBase
 {
 
-String subType = "";
+private String subType = "";
 protected NpcAIAlertFaction alertAI;
 
 public NpcFaction(World par1World)
@@ -189,7 +190,7 @@ public void writeEntityToNBT(NBTTagCompound tag)
 public void readEntityFromNBT(NBTTagCompound tag)
   {  
   super.readEntityFromNBT(tag);
-  subType = tag.getString("subType");
+  setSubtype(tag.getString("subType"));
   }
 
 @Override
@@ -202,8 +203,8 @@ public void writeSpawnData(ByteBuf buffer)
 @Override
 public void readSpawnData(ByteBuf additionalData)
   {
-  super.readSpawnData(additionalData);
-  subType = ByteBufUtils.readUTF8String(additionalData);
+  super.readSpawnData(additionalData);  
+  setSubtype(ByteBufUtils.readUTF8String(additionalData));
   this.updateTexture();
   }
 
