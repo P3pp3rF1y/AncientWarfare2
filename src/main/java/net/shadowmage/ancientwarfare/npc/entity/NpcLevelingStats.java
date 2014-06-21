@@ -6,6 +6,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 
 public class NpcLevelingStats
@@ -66,9 +67,10 @@ public void addExperience(String type, int xpGained)
 private void onBaseLevelGained(int newLevel)
   {
   level = newLevel;
-  if(newLevel<=AWNPCStatics.maxNpcLevel)
+  if(newLevel<=AWNPCStatics.maxNpcLevel && npc.getMaxHealthOverride()<=0)
     {
-    int health = 20 + newLevel;
+    int health = AncientWarfareNPC.statics.getMaxHealthFor(npc.getNpcType());
+    health += newLevel;
     npc.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health); 
     npc.updateDamageFromLevel();
     }

@@ -81,7 +81,6 @@ public void updateTask()
       float pwr = (float)(attackDistance / dist);
       pwr = pwr < 0.1f ? 0.1f : pwr>1.f ? 1.f : pwr;
       this.rangedAttacker.attackEntityWithRangedAttack(target, 1.f);
-      AWLog.logDebug("doing ranged attack against: "+target);
       this.attackDelay=35;
       }
     }  

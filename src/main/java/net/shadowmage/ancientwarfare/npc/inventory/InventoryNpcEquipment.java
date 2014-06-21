@@ -33,24 +33,56 @@ public int getSizeInventory()
   }
 
 @Override
-public ItemStack getStackInSlot(int var1)
+public ItemStack getStackInSlot(int slot)
   {
-  return inventory[var1];
+  if(npc.worldObj.isRemote)
+    {
+    return inventory[slot];
+    }
+  else
+    {
+    if(slot==7){return npc.getShieldStack();}
+    else if(slot==6){return npc.upkeepStack;}
+    else if(slot==5){return npc.ordersStack;}
+    else
+      {
+      return npc.getEquipmentInSlot(slot);
+      }
+    }
   }
 
 @Override
-public ItemStack decrStackSize(int var1, int var2)
+public void setInventorySlotContents(int slot, ItemStack stack)
   {
-  ItemStack item = getStackInSlot(var1);
+  if(npc.worldObj.isRemote)
+    {
+    inventory[slot]=stack;    
+    }
+  else
+    {
+    if(slot==7){npc.setShieldStack(stack);}
+    else if(slot==6){npc.upkeepStack=stack;}
+    else if(slot==5){npc.ordersStack=stack;}
+    else
+      {
+      npc.setCurrentItemOrArmor(slot, stack);
+      }
+    }
+  }
+
+@Override
+public ItemStack decrStackSize(int slot, int amount)
+  {
+  ItemStack item = getStackInSlot(slot);
   if(item!=null)
     {
-    if(var2>item.stackSize){var2=item.stackSize;}
+    if(amount>item.stackSize){amount=item.stackSize;}
     ItemStack copy = item.copy();
-    copy.stackSize=var2;
-    item.stackSize-=var2;
+    copy.stackSize=amount;
+    item.stackSize-=amount;
     if(item.stackSize<=0)
       {
-      setInventorySlotContents(var1, null);      
+      setInventorySlotContents(slot, null);      
       }
     return copy;
     }
@@ -63,12 +95,6 @@ public ItemStack getStackInSlotOnClosing(int var1)
   ItemStack item = getStackInSlot(var1);
   this.setInventorySlotContents(var1, null);
   return item;
-  }
-
-@Override
-public void setInventorySlotContents(int var1, ItemStack var2)
-  {
-  inventory[var1]=var2;
   }
 
 @Override
@@ -136,42 +162,6 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
   default:
   return true;
   }
-  }
-
-/**
- * should be called server-side when npc-inventory container closes
- */
-public void writeToNpc()
-  {
-  ItemStack a, b;
-  for(int i = 0; i < 5; i++)
-    {
-    a = inventory[i];
-    b = npc.getEquipmentInSlot(i);
-    if(!ItemStack.areItemStacksEqual(a, b))
-      {
-      npc.setCurrentItemOrArmor(i, a);
-      if(i==0){npc.onWeaponInventoryChanged();}
-      }
-    }
-  b = npc.ordersStack;
-  a = inventory[5];
-  if(!ItemStack.areItemStacksEqual(a, b))
-    {
-    npc.ordersStack = a;
-    }
-  b = npc.upkeepStack;
-  a = inventory[6];
-  if(!ItemStack.areItemStacksEqual(a, b))
-    {
-    npc.ordersStack = a;
-    }
-  a = inventory[7];
-  b = npc.getShieldStack();
-  if(!ItemStack.areItemStacksEqual(a, b))
-    {
-    npc.setShieldStack(a);
-    }
   }
 
 }

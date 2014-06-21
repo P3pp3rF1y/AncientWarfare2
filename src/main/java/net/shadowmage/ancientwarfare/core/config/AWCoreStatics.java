@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 public class AWCoreStatics
 {
 
-public static final boolean DEBUG = true;
+public static boolean DEBUG = true;
 public static String configPath;//the base AW config folder
 public static final String resourcePath = "/assets/ancientwarfare/resources/";
 private static Configuration config;
@@ -48,22 +48,24 @@ public static void loadConfig(Configuration config)
   /**
    * general options
    */
+  DEBUG = config.get(generalOptions, "debug_ouput", false, "Enable extra debug console output and runtime checks.\n" +
+  		"Can degrade performance if left on and lead to large log files.").getBoolean(false);
   
   /**
    * server options
    */
-  fireBlockBreakEvents = config.get(serverOptions, "fire_block_break_events", fireBlockBreakEvents, "Default = true\n" +
+  fireBlockBreakEvents = config.get(serverOptions, "fire_block_break_events", fireBlockBreakEvents, "Fire Block Break Events\nDefault = true\n" +
   		"If set to false, block-break-events will not be posted for _any_ operations\n" +
   		"effectively negating any block-protection mods/mechanims in place on the server.\n" +
   		"If left at true, block-break events will be posted for any automation or vehicles\n" +
   		"which are changing blocks in the world.  Most will use a reference to their owners-name\n" +
   		"for permissions systems.").getBoolean(fireBlockBreakEvents);
-  includeResearchInChests = config.get(serverOptions, "include_research_in_chests", includeResearchInChests, "Default=true\n" +
+  includeResearchInChests = config.get(serverOptions, "include_research_in_chests", includeResearchInChests, "Include Research In Dungeon Loot Chests\nDefault=true\n" +
   		"If set to true, Research Note items will be added to dungeon-chest loot tables.\n" +
   		"If set to false, no research will be added.\n" +
   		"This is the global setting.  Individual research may be toggled in the Research\n" +
   		"section of the config file.").getBoolean(includeResearchInChests);
-  energyPerWorkUnit = config.get(serverOptions, "energy_per_work_unit", energyPerWorkUnit, "Default = 50\n" +
+  energyPerWorkUnit = config.get(serverOptions, "energy_per_work_unit", energyPerWorkUnit, "Energy Per Work Unit\nDefault = 50\n" +
   		"How much Torque energy is generated per worker work tick.\n" +
   		"This is the base number and is further adjusted per worker by worker effectiveness.\n" +
   		"Setting to 0 or below effectively disables  workers.").getDouble(energyPerWorkUnit);
@@ -79,8 +81,9 @@ public static void loadConfig(Configuration config)
   /**
    * research settings
    */
-  energyPerResearchUnit = config.get(researchSettings, "energy_used per_research_tick", energyPerResearchUnit, "Default = 1\n" +
+  energyPerResearchUnit = config.get(researchSettings, "energy_used per_research_tick", energyPerResearchUnit, "Energy Per Research Unit\nDefault = 1\n" +
       "How much energy is consumed per research tick.\n" +
+      "Research generally ticks every game-tick if being worked at.\n" +
       "Setting to 0 will eliminate the energy/worker requirements for research.\n" +
       "Setting to higher than 1 will increase the amount of energy needed for research,\n" +
       "increasing the amount of time/resources required for all research.").getDouble(energyPerResearchUnit);
