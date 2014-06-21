@@ -63,7 +63,6 @@ public void updateTask()
 @SuppressWarnings("unchecked")
 protected void issueAlert()
   {
-  AWLog.logDebug("issuing alert from npc: "+npc);
   AxisAlignedBB bb = npc.boundingBox.expand(40.d, 20.d, 40.d);
   List<NpcPlayerOwned> ownedNpcs = npc.worldObj.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
   ownedNpcs.remove(npc);
@@ -86,7 +85,6 @@ public void handleAlert(NpcBase broadcaster, EntityLivingBase target)
   {
   if(alertDelay<=0)
     {
-    AWLog.logDebug("non-combat responding to alert from: "+broadcaster+ " target: "+target);
     alertDelay = 200;
     //default implementation is for non-combat...overriden in combat npc for combat-oriented implementation
     if(npc.getTownHallPosition()!=null)//try to go to town hall

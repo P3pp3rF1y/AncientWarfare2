@@ -61,11 +61,6 @@ Licensing
 * need to finish fixing npc-inventory interaction -- disallow 2nd interactor	
 * town hall drop inventory on block break
 * move custom texture field into user-accessible location
-* fix up npc alert AI
-	abstract it so that player owned and and faction npcs can use the same AI
-		create an 'is allied NPC' method in both PO and faction npcs to determine if
-			the input npc is an ally that should be alerted/alertable -- method return should be mutual and deterministic
-			e.g. a.isallied(b) == b.isallied(a) for all values of a/b, consistently between calls
 					 
 			
 ****************************VEHICLE MODULE TODO****************************

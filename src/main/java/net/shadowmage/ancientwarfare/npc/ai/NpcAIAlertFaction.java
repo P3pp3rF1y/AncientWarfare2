@@ -3,8 +3,8 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.AxisAlignedBB;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 
@@ -50,7 +50,6 @@ public void updateTask()
 @SuppressWarnings("unchecked")
 protected void issueAlert()
   {
-  AWLog.logDebug("issuing alert from npc: "+npc);
   AxisAlignedBB bb = npc.boundingBox.expand(40.d, 20.d, 40.d);
   List<NpcFaction> ownedNpcs = npc.worldObj.getEntitiesWithinAABB(NpcFaction.class, bb);
   ownedNpcs.remove(npc);
@@ -73,9 +72,9 @@ public void handleAlert(NpcBase broadcaster, EntityLivingBase target)
   {
   if(alertDelay<=0)
     {
-    AWLog.logDebug("faction npc responding to alert!!");
     alertDelay = 200;
-    if(npc.getAttackTarget()==null)
+    double fr = npc.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue();
+    if(npc.getAttackTarget()==null && npc.getDistanceSqToEntity(target) < fr*fr)
       {
       npc.setAttackTarget(target);
       }   

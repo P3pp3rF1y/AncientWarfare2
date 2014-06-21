@@ -531,7 +531,6 @@ private void initializeCustomHealthValues()
 
 public int getMaxHealthFor(String type)
   {
-  AWLog.logDebug("returning health value for: "+type+ " from map: "+healthValues);
   return healthValues.get(type);
   }
 
