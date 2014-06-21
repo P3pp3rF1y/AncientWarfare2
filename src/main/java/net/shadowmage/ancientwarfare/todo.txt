@@ -60,6 +60,7 @@ Licensing
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
 * add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC
 * recipes for shields	
+* faction status not saving -- investigate where to markDirty()
 			
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

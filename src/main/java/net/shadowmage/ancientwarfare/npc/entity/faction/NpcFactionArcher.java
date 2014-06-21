@@ -21,6 +21,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackRanged;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindCommanderFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
@@ -50,7 +51,7 @@ public NpcFactionArcher(World par1World)
   this.tasks.addTask(1, (alertAI = new NpcAIAlertFaction(this)));
   this.tasks.addTask(1, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAIMoveHome(this, 80.f, 20.f, 40.f, 5.f)); 
-  this.tasks.addTask(3, new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F));
+  this.tasks.addTask(3, new NpcAIAttackRanged(this));
   
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
   this.tasks.addTask(102, new NpcAIWander(this, 0.625D));

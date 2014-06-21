@@ -630,7 +630,7 @@ public void onUpdate()
   {
   worldObj.theProfiler.startSection("AWNpcTick");
   updateArmSwingProgress();
-  if(ticksExisted%200==0 && getHealth()<getMaxHealth() && (!requiresUpkeep() || getFoodRemaining()>0))
+  if(ticksExisted%200==0 && getHealth()<getMaxHealth() && getHealth()>0 && !isDead && (!requiresUpkeep() || getFoodRemaining()>0))
     {
     setHealth(getHealth()+1);
     }

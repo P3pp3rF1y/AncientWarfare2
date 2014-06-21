@@ -8,7 +8,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -29,6 +28,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwnedCombat;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackRanged;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindCommander;
@@ -56,7 +56,7 @@ public NpcCombat(World par1World)
   {
   super(par1World);
   collideAI = new NpcAIAttackMeleeLongRange(this);
-  arrowAI = new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F); 
+  arrowAI = new NpcAIAttackRanged(this); 
   
   IEntitySelector selector = new IEntitySelector()
     {
