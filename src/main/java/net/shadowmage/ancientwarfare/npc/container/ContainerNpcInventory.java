@@ -38,7 +38,6 @@ public void handlePacketData(NBTTagCompound tag)
   if(tag.hasKey("customName"))
     {    
     npc.setCustomNameTag(tag.getString("customName"));
-    AWLog.logDebug("setting npc custom name from packet input: "+npc.getCustomNameTag());
     }
   if(tag.hasKey("repack"))
     {
