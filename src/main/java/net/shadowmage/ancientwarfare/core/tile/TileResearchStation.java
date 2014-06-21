@@ -10,6 +10,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
@@ -117,9 +118,9 @@ public void updateEntity()
   {
   if(worldObj.isRemote){return;}
   String name = getCrafterName();
-  if(name==null){return;}
+  if(name==null){return;}  
   int goal = ResearchTracker.instance().getCurrentGoal(worldObj, name);
-  boolean started = goal>=0;
+  boolean started = goal>=0;  
   if(started && storedEnergy>=AWCoreStatics.energyPerResearchUnit)
     {
     workTick(name, goal, 1);
@@ -129,7 +130,6 @@ public void updateEntity()
     startCheckDelay--;
     if(startCheckDelay<=0)
       {
-      startCheckDelay = startCheckDelayMax;
       tryStartNextResearch(name);      
       }
     }
@@ -168,10 +168,10 @@ private void workTick(String name, int goal, int tickCount)
   ResearchGoal g1 = ResearchGoal.getGoal(goal);
   int progress = ResearchTracker.instance().getProgress(worldObj, name);
   progress+=tickCount;
-  if(progress>=g1.getTotalResearchTime())
+  if(progress >= g1.getTotalResearchTime())
     {
     ResearchTracker.instance().finishResearch(worldObj, getCrafterName(), goal);
-    tryStartNextResearch(name);
+    tryStartNextResearch(name);      
     }
   else
     {
@@ -182,7 +182,7 @@ private void workTick(String name, int goal, int tickCount)
 
 private void tryStartNextResearch(String name)
   {
-  List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(worldObj, name);    
+  List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(worldObj, name);   
   if(!queue.isEmpty())
     {
     int g = queue.get(0);
@@ -190,7 +190,7 @@ private void tryStartNextResearch(String name)
     if(g1==null){return;}
     if(g1.tryStart(resourceInventory, -1))
       {
-      ResearchTracker.instance().startResearch(worldObj, name, g);        
+      ResearchTracker.instance().startResearch(worldObj, name, g);
       }
     else if(useAdjacentInventory)
       {

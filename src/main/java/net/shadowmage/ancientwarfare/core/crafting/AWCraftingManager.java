@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
 public class AWCraftingManager
 {
@@ -35,23 +36,32 @@ public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, St
     {
     return item1;
     }  
+  if(playerName==null || playerName.isEmpty()){return null;}
   int recipeIndex;  
   for (recipeIndex = 0; recipeIndex < this.recipes.size(); ++recipeIndex)
     {
     RecipeResearched recipe = (RecipeResearched)this.recipes.get(recipeIndex);
-    if (recipe.matches(inventory, world))
+    if(recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName))
       {
-      if(recipe.canPlayerCraft(world, playerName))
-        {
-        return recipe.getCraftingResult(inventory);        
-        }
-      else
-        {
-        return null;
-        }
+      return recipe.getCraftingResult(inventory);
       }
     }
   return null;
+  }
+
+private boolean canPlayerCraft(RecipeResearched recipe, World world, String playerName)
+  {
+  if(playerName==null || playerName.isEmpty()){return false;}
+  boolean canCraft = true;
+  for(Integer i : recipe.getNeededResearch())
+    {
+    if(!ResearchTracker.instance().hasPlayerCompleted(world, playerName, i))
+      {
+      canCraft = false;
+      break;
+      }
+    }
+  return canCraft;
   }
 
 private void addRecipe(RecipeResearched recipe)

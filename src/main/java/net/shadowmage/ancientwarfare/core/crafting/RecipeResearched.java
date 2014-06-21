@@ -5,9 +5,7 @@ import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
-import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
 public class RecipeResearched extends ShapedRecipes
 {
@@ -50,20 +48,6 @@ protected final RecipeResearched addResearch(int... nums)
       }
     }
   return this;
-  }
-
-public final boolean canPlayerCraft(World world, String playerName)
-  {
-  boolean canCraft = true;
-  for(Integer i : this.neededResearch)
-    {
-    if(!ResearchTracker.instance().hasPlayerCompleted(world, playerName, i))
-      {
-      canCraft = false;
-      break;
-      }
-    }
-  return canCraft;
   }
 
 public Set<Integer> getNeededResearch(){return neededResearch;}

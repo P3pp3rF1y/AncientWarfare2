@@ -196,10 +196,19 @@ public boolean addProgress(String playerName, int amount)
   return false;
   }
 
+public boolean hasResearchStarted(String playerName)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    return playerResearchEntries.get(playerName).hasResearchStarted();
+    }
+  return false;
+  }
+
 private static final class ResearchEntry
 {
 private int currentResearch = -1;
-private int currentProgress;
+private int currentProgress = -1;
 private Set<Integer> completedResearch = new HashSet<Integer>();
 private List<Integer> queuedResearch = new ArrayList<Integer>();
 
@@ -227,16 +236,15 @@ public void finishResearch(int goal)
   if(goal==currentResearch)
     {
     completedResearch.add(goal);
-    currentProgress = 0;
+    currentProgress = -1;
     currentResearch = -1;
-    if(!queuedResearch.isEmpty())
-      {
-      Integer g = queuedResearch.remove(0);
-      currentResearch = g.intValue();
-      }
     }
   }
 
+/**
+ * should only be called after a goal from the queue has sucessfully been started -- items used/etc
+ * @param goal
+ */
 public void startResearch(int goal)
   {
   if(currentResearch>=0 || !queuedResearch.contains(Integer.valueOf(goal))){return;}
@@ -245,9 +253,11 @@ public void startResearch(int goal)
   currentProgress = 0;
   }
 
-/**
- * SERVER-ONLY -- values must be synched through container
- */
+public boolean hasResearchStarted()
+  {
+  return currentProgress>=0 && currentResearch>=0;
+  }
+
 private void setResearchProgress(int progress)
   {
   this.currentProgress = progress;
@@ -273,7 +283,7 @@ private void addResearch(int num)
   if(this.currentResearch==num)
     {
     this.currentResearch = -1;
-    this.currentProgress = 0;
+    this.currentProgress = -1;
     }
   }
 
