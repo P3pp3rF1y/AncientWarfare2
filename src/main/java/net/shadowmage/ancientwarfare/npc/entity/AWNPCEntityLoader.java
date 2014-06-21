@@ -12,69 +12,101 @@ import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditCivilian;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditArcherElite;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditCivilianFemale;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditCivilianMale;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditLeaderElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditMountedArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditPriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditSoldier;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditSoldierElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditTrader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Archer;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Civilian;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1ArcherElite;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1CivilianFemale;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1CivilianMale;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Leader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1LeaderElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1MountedArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1MountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Priest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Soldier;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1SoldierElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Trader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Archer;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Civilian;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2ArcherElite;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2CivilianFemale;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2CivilianMale;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Leader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2LeaderElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2MountedArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2MountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Priest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Soldier;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2SoldierElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Trader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Archer;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Civilian;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3ArcherElite;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3CivilianFemale;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3CivilianMale;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Leader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3LeaderElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3MountedArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3MountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Priest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Soldier;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3SoldierElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Trader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertCivilian;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertArcherElite;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertCivilianFemale;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertCivilianMale;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertLeaderElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertMountedArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertPriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertSoldier;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertSoldierElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertTrader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeCivilian;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeArcherElite;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeCivilianFemale;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeCivilianMale;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeLeaderElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeMountedArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativePriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeSoldier;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeSoldierElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeTrader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateCivilian;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateArcherElite;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateCivilianFemale;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateCivilianMale;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateLeaderElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateMountedArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPiratePriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateSoldier;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateSoldierElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateTrader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingCivilian;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingArcherElite;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingCivilianFemale;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingCivilianMale;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingLeaderElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingMountedArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingPriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingSoldier;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingSoldierElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingTrader;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
@@ -193,7 +225,6 @@ private static void addBandits()
       }
     };
   addNpcRegistration(reg, "bandit.archer", "ancientwarfare:npc/spawner_bandit_archer");
-  addNpcSubtypeEntry("bandit.archer", "elite", "ancientwarfare:npc/spawner_bandit_archer");
   
   reg = new NpcFactionDeclaration(NpcBanditSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.soldier")
     {    
@@ -204,7 +235,6 @@ private static void addBandits()
       }
     };
   addNpcRegistration(reg, "bandit.soldier", "ancientwarfare:npc/spawner_bandit_soldier");
-  addNpcSubtypeEntry("bandit.soldier", "elite", "ancientwarfare:npc/spawner_bandit_soldier");
   
   reg = new NpcFactionDeclaration(NpcBanditLeader.class, AWEntityRegistry.NPC_FACTION_BANDIT_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.leader")
     {    
@@ -215,7 +245,6 @@ private static void addBandits()
       }
     };
   addNpcRegistration(reg, "bandit.leader", "ancientwarfare:npc/spawner_bandit_leader");
-  addNpcSubtypeEntry("bandit.leader", "elite", "ancientwarfare:npc/spawner_bandit_leader");
   
   reg = new NpcFactionDeclaration(NpcBanditPriest.class, AWEntityRegistry.NPC_FACTION_BANDIT_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.priest")
     {    
@@ -257,18 +286,55 @@ private static void addBandits()
     };
   addNpcRegistration(reg, "bandit.mounted_archer", "ancientwarfare:npc/spawner_bandit_archer");
   
-  reg = new NpcFactionDeclaration(NpcBanditCivilian.class, AWEntityRegistry.NPC_FACTION_BANDIT_CIVILIAN, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.civilian")
+  reg = new NpcFactionDeclaration(NpcBanditCivilianMale.class, AWEntityRegistry.NPC_FACTION_BANDIT_CIVILIAN_MALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.civilian.male")
     {     
     @Override
     public Entity createEntity(World world)
       {
-      return new NpcBanditCivilian(world);
+      return new NpcBanditCivilianMale(world);
       }    
     };
-  addNpcRegistration(reg, "bandit.civilian", "ancientwarfare:npc/spawner_bandit_civilian_male");
-  addNpcSubtypeEntry("bandit.civilian", "male", "ancientwarfare:npc/spawner_bandit_civilian_male");
-  addNpcSubtypeEntry("bandit.civilian", "female", "ancientwarfare:npc/spawner_bandit_civilian_female");
-  reg.setCanSpawnBaseType(false);
+  addNpcRegistration(reg, "bandit.civilian.male", "ancientwarfare:npc/spawner_bandit_civilian_male");
+  
+  reg = new NpcFactionDeclaration(NpcBanditCivilianFemale.class, AWEntityRegistry.NPC_FACTION_BANDIT_CIVILIAN_FEMALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.civilian.female")
+    {     
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditCivilianFemale(world);
+      }    
+    };
+  addNpcRegistration(reg, "bandit.civilian.female", "ancientwarfare:npc/spawner_bandit_civilian_female");
+   
+  reg = new NpcFactionDeclaration(NpcBanditArcherElite.class, AWEntityRegistry.NPC_FACTION_BANDIT_ARCHER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.archer.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditArcherElite(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.archer.elite", "ancientwarfare:npc/spawner_bandit_archer"); 
+  
+  reg = new NpcFactionDeclaration(NpcBanditSoldierElite.class, AWEntityRegistry.NPC_FACTION_BANDIT_SOLDIER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.soldier.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditSoldierElite(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.soldier.elite", "ancientwarfare:npc/spawner_bandit_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcBanditLeaderElite.class, AWEntityRegistry.NPC_FACTION_BANDIT_LEADER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.leader.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditLeaderElite(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.leader.elite", "ancientwarfare:npc/spawner_bandit_leader");
   }
 
 private static void addDesertNatives()
@@ -286,7 +352,6 @@ private static void addDesertNatives()
       }
     };
   addNpcRegistration(reg, "desert.archer", "ancientwarfare:npc/spawner_desert_archer");
-  addNpcSubtypeEntry("desert.archer", "elite", "ancientwarfare:npc/spawner_desert_archer");
   
   reg = new NpcFactionDeclaration(NpcDesertSoldier.class, AWEntityRegistry.NPC_FACTION_DESERT_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.soldier")
     {    
@@ -297,7 +362,6 @@ private static void addDesertNatives()
       }
     };
   addNpcRegistration(reg, "desert.soldier", "ancientwarfare:npc/spawner_desert_soldier");
-  addNpcSubtypeEntry("desert.soldier", "elite", "ancientwarfare:npc/spawner_desert_soldier");
   
   reg = new NpcFactionDeclaration(NpcDesertLeader.class, AWEntityRegistry.NPC_FACTION_DESERT_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.leader")
     {    
@@ -308,7 +372,6 @@ private static void addDesertNatives()
       }
     };
   addNpcRegistration(reg, "desert.leader", "ancientwarfare:npc/spawner_desert_leader");
-  addNpcSubtypeEntry("desert.leader", "elite", "ancientwarfare:npc/spawner_desert_leader");
   
   reg = new NpcFactionDeclaration(NpcDesertPriest.class, AWEntityRegistry.NPC_FACTION_DESERT_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.priest")
     {    
@@ -350,18 +413,55 @@ private static void addDesertNatives()
     };
   addNpcRegistration(reg, "desert.mounted_archer", "ancientwarfare:npc/spawner_desert_archer");
   
-  reg = new NpcFactionDeclaration(NpcDesertCivilian.class, AWEntityRegistry.NPC_FACTION_DESERT_CIVILIAN, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.civilian")
+  reg = new NpcFactionDeclaration(NpcDesertCivilianMale.class, AWEntityRegistry.NPC_FACTION_DESERT_CIVILIAN_MALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.civilian.male")
     {     
     @Override
     public Entity createEntity(World world)
       {
-      return new NpcDesertCivilian(world);
+      return new NpcDesertCivilianMale(world);
       }    
     };
-  addNpcRegistration(reg, "desert.civilian", "ancientwarfare:npc/spawner_desert_civilian_male");
-  addNpcSubtypeEntry("desert.civilian", "male", "ancientwarfare:npc/spawner_desert_civilian_male");
-  addNpcSubtypeEntry("desert.civilian", "female", "ancientwarfare:npc/spawner_desert_civilian_female");
-  reg.setCanSpawnBaseType(false);
+  addNpcRegistration(reg, "desert.civilian.male", "ancientwarfare:npc/spawner_desert_civilian_male");
+  
+  reg = new NpcFactionDeclaration(NpcDesertCivilianFemale.class, AWEntityRegistry.NPC_FACTION_DESERT_CIVILIAN_FEMALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.civilian.female")
+    {     
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcDesertCivilianFemale(world);
+      }    
+    };
+  addNpcRegistration(reg, "desert.civilian.female", "ancientwarfare:npc/spawner_desert_civilian_female");
+   
+  reg = new NpcFactionDeclaration(NpcDesertArcherElite.class, AWEntityRegistry.NPC_FACTION_DESERT_ARCHER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.archer.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcDesertArcherElite(world);
+      }
+    };
+  addNpcRegistration(reg, "desert.archer.elite", "ancientwarfare:npc/spawner_desert_archer"); 
+  
+  reg = new NpcFactionDeclaration(NpcDesertSoldierElite.class, AWEntityRegistry.NPC_FACTION_DESERT_SOLDIER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.soldier.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcDesertSoldierElite(world);
+      }
+    };
+  addNpcRegistration(reg, "desert.soldier.elite", "ancientwarfare:npc/spawner_desert_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcDesertLeaderElite.class, AWEntityRegistry.NPC_FACTION_DESERT_LEADER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.leader.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcDesertLeaderElite(world);
+      }
+    };
+  addNpcRegistration(reg, "desert.leader.elite", "ancientwarfare:npc/spawner_desert_leader");
   }
 
 private static void addJungleNatives()
@@ -379,7 +479,6 @@ private static void addJungleNatives()
       }
     };
   addNpcRegistration(reg, "native.archer", "ancientwarfare:npc/spawner_native_archer");
-  addNpcSubtypeEntry("native.archer", "elite", "ancientwarfare:npc/spawner_native_archer");
   
   reg = new NpcFactionDeclaration(NpcNativeSoldier.class, AWEntityRegistry.NPC_FACTION_NATIVE_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.soldier")
     {    
@@ -390,7 +489,6 @@ private static void addJungleNatives()
       }
     };
   addNpcRegistration(reg, "native.soldier", "ancientwarfare:npc/spawner_native_soldier");
-  addNpcSubtypeEntry("native.soldier", "elite", "ancientwarfare:npc/spawner_native_soldier");
   
   reg = new NpcFactionDeclaration(NpcNativeLeader.class, AWEntityRegistry.NPC_FACTION_NATIVE_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.leader")
     {    
@@ -401,7 +499,6 @@ private static void addJungleNatives()
       }
     };
   addNpcRegistration(reg, "native.leader", "ancientwarfare:npc/spawner_native_leader");
-  addNpcSubtypeEntry("native.leader", "elite", "ancientwarfare:npc/spawner_native_leader");
   
   reg = new NpcFactionDeclaration(NpcNativePriest.class, AWEntityRegistry.NPC_FACTION_NATIVE_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.priest")
     {    
@@ -443,18 +540,55 @@ private static void addJungleNatives()
     };
   addNpcRegistration(reg, "native.mounted_archer", "ancientwarfare:npc/spawner_native_archer");
   
-  reg = new NpcFactionDeclaration(NpcNativeCivilian.class, AWEntityRegistry.NPC_FACTION_NATIVE_CIVILIAN, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.civilian")
+  reg = new NpcFactionDeclaration(NpcNativeCivilianMale.class, AWEntityRegistry.NPC_FACTION_NATIVE_CIVILIAN_MALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.civilian.male")
     {     
     @Override
     public Entity createEntity(World world)
       {
-      return new NpcNativeCivilian(world);
+      return new NpcNativeCivilianMale(world);
       }    
     };
-  addNpcRegistration(reg, "native.civilian", "ancientwarfare:npc/spawner_native_civilian_male");    
-  addNpcSubtypeEntry("native.civilian", "male", "ancientwarfare:npc/spawner_native_civilian_male");
-  addNpcSubtypeEntry("native.civilian", "female", "ancientwarfare:npc/spawner_native_civilian_female");
-  reg.setCanSpawnBaseType(false);
+  addNpcRegistration(reg, "native.civilian.male", "ancientwarfare:npc/spawner_native_civilian_male");
+  
+  reg = new NpcFactionDeclaration(NpcNativeCivilianFemale.class, AWEntityRegistry.NPC_FACTION_NATIVE_CIVILIAN_FEMALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.civilian.female")
+    {     
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcNativeCivilianFemale(world);
+      }    
+    };
+  addNpcRegistration(reg, "native.civilian.female", "ancientwarfare:npc/spawner_native_civilian_female");
+   
+  reg = new NpcFactionDeclaration(NpcNativeArcherElite.class, AWEntityRegistry.NPC_FACTION_NATIVE_ARCHER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.archer.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcNativeArcherElite(world);
+      }
+    };
+  addNpcRegistration(reg, "native.archer.elite", "ancientwarfare:npc/spawner_native_archer"); 
+  
+  reg = new NpcFactionDeclaration(NpcNativeSoldierElite.class, AWEntityRegistry.NPC_FACTION_NATIVE_SOLDIER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.soldier.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcNativeSoldierElite(world);
+      }
+    };
+  addNpcRegistration(reg, "native.soldier.elite", "ancientwarfare:npc/spawner_native_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcNativeLeaderElite.class, AWEntityRegistry.NPC_FACTION_NATIVE_LEADER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.leader.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcNativeLeaderElite(world);
+      }
+    };
+  addNpcRegistration(reg, "native.leader.elite", "ancientwarfare:npc/spawner_native_leader");
   }
 
 private static void addPirates()
@@ -472,7 +606,6 @@ private static void addPirates()
       }
     };
   addNpcRegistration(reg, "pirate.archer", "ancientwarfare:npc/spawner_pirate_archer");
-  addNpcSubtypeEntry("pirate.archer", "elite", "ancientwarfare:npc/spawner_pirate_archer");
   
   reg = new NpcFactionDeclaration(NpcPirateSoldier.class, AWEntityRegistry.NPC_FACTION_PIRATE_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.soldier")
     {    
@@ -483,7 +616,6 @@ private static void addPirates()
       }
     };
   addNpcRegistration(reg, "pirate.soldier", "ancientwarfare:npc/spawner_pirate_soldier");
-  addNpcSubtypeEntry("pirate.soldier", "elite", "ancientwarfare:npc/spawner_pirate_soldier");
   
   reg = new NpcFactionDeclaration(NpcPirateLeader.class, AWEntityRegistry.NPC_FACTION_PIRATE_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.leader")
     {    
@@ -494,7 +626,6 @@ private static void addPirates()
       }
     };
   addNpcRegistration(reg, "pirate.leader", "ancientwarfare:npc/spawner_pirate_leader");
-  addNpcSubtypeEntry("pirate.leader", "elite", "ancientwarfare:npc/spawner_pirate_leader");
   
   reg = new NpcFactionDeclaration(NpcPiratePriest.class, AWEntityRegistry.NPC_FACTION_PIRATE_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.priest")
     {    
@@ -536,18 +667,55 @@ private static void addPirates()
     };
   addNpcRegistration(reg, "pirate.mounted_archer", "ancientwarfare:npc/spawner_pirate_archer");
   
-  reg = new NpcFactionDeclaration(NpcPirateCivilian.class, AWEntityRegistry.NPC_FACTION_PIRATE_CIVILIAN, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.civilian")
+  reg = new NpcFactionDeclaration(NpcPirateCivilianMale.class, AWEntityRegistry.NPC_FACTION_PIRATE_CIVILIAN_MALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.civilian.male")
     {     
     @Override
     public Entity createEntity(World world)
       {
-      return new NpcPirateCivilian(world);
+      return new NpcPirateCivilianMale(world);
       }    
     };
-  addNpcRegistration(reg, "pirate.civilian", "ancientwarfare:npc/spawner_pirate_civilian_male");    
-  addNpcSubtypeEntry("pirate.civilian", "male", "ancientwarfare:npc/spawner_pirate_civilian_male");
-  addNpcSubtypeEntry("pirate.civilian", "female", "ancientwarfare:npc/spawner_pirate_civilian_female");
-  reg.setCanSpawnBaseType(false);
+  addNpcRegistration(reg, "pirate.civilian.male", "ancientwarfare:npc/spawner_pirate_civilian_male");
+  
+  reg = new NpcFactionDeclaration(NpcPirateCivilianFemale.class, AWEntityRegistry.NPC_FACTION_PIRATE_CIVILIAN_FEMALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.civilian.female")
+    {     
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcPirateCivilianFemale(world);
+      }    
+    };
+  addNpcRegistration(reg, "pirate.civilian.female", "ancientwarfare:npc/spawner_pirate_civilian_female");
+   
+  reg = new NpcFactionDeclaration(NpcPirateArcherElite.class, AWEntityRegistry.NPC_FACTION_PIRATE_ARCHER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.archer.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcPirateArcherElite(world);
+      }
+    };
+  addNpcRegistration(reg, "pirate.archer.elite", "ancientwarfare:npc/spawner_pirate_archer"); 
+  
+  reg = new NpcFactionDeclaration(NpcPirateSoldierElite.class, AWEntityRegistry.NPC_FACTION_PIRATE_SOLDIER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.soldier.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcPirateSoldierElite(world);
+      }
+    };
+  addNpcRegistration(reg, "pirate.soldier.elite", "ancientwarfare:npc/spawner_pirate_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcPirateLeaderElite.class, AWEntityRegistry.NPC_FACTION_PIRATE_LEADER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.leader.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcPirateLeaderElite(world);
+      }
+    };
+  addNpcRegistration(reg, "pirate.leader.elite", "ancientwarfare:npc/spawner_pirate_leader");
   }
 
 private static void addVikings()
@@ -565,7 +733,6 @@ private static void addVikings()
       }
     };
   addNpcRegistration(reg, "viking.archer", "ancientwarfare:npc/spawner_viking_archer");
-  addNpcSubtypeEntry("viking.archer", "elite", "ancientwarfare:npc/spawner_viking_archer");
   
   reg = new NpcFactionDeclaration(NpcVikingSoldier.class, AWEntityRegistry.NPC_FACTION_VIKING_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.soldier")
     {    
@@ -576,7 +743,6 @@ private static void addVikings()
       }
     };
   addNpcRegistration(reg, "viking.soldier", "ancientwarfare:npc/spawner_viking_soldier");
-  addNpcSubtypeEntry("viking.soldier", "elite", "ancientwarfare:npc/spawner_viking_soldier");
   
   reg = new NpcFactionDeclaration(NpcVikingLeader.class, AWEntityRegistry.NPC_FACTION_VIKING_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.leader")
     {    
@@ -587,7 +753,6 @@ private static void addVikings()
       }
     };
   addNpcRegistration(reg, "viking.leader", "ancientwarfare:npc/spawner_viking_leader");
-  addNpcSubtypeEntry("viking.leader", "elite", "ancientwarfare:npc/spawner_viking_leader");
   
   reg = new NpcFactionDeclaration(NpcVikingPriest.class, AWEntityRegistry.NPC_FACTION_VIKING_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.priest")
     {    
@@ -629,19 +794,55 @@ private static void addVikings()
     };
   addNpcRegistration(reg, "viking.mounted_archer", "ancientwarfare:npc/spawner_viking_archer");
   
-  reg = new NpcFactionDeclaration(NpcVikingCivilian.class, AWEntityRegistry.NPC_FACTION_VIKING_CIVILIAN, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.civilian")
+  reg = new NpcFactionDeclaration(NpcVikingCivilianMale.class, AWEntityRegistry.NPC_FACTION_VIKING_CIVILIAN_MALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.civilian.male")
     {     
     @Override
     public Entity createEntity(World world)
       {
-      return new NpcVikingCivilian(world);
+      return new NpcVikingCivilianMale(world);
       }    
     };
-    
-  addNpcRegistration(reg, "viking.civilian", "ancientwarfare:npc/spawner_viking_civilian_male");
-  addNpcSubtypeEntry("viking.civilian", "male", "ancientwarfare:npc/spawner_viking_civilian_male");
-  addNpcSubtypeEntry("viking.civilian", "female", "ancientwarfare:npc/spawner_viking_civilian_female");
-  reg.setCanSpawnBaseType(false);
+  addNpcRegistration(reg, "viking.civilian.male", "ancientwarfare:npc/spawner_viking_civilian_male");
+  
+  reg = new NpcFactionDeclaration(NpcVikingCivilianFemale.class, AWEntityRegistry.NPC_FACTION_VIKING_CIVILIAN_FEMALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.civilian.female")
+    {     
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcVikingCivilianFemale(world);
+      }    
+    };
+  addNpcRegistration(reg, "viking.civilian.female", "ancientwarfare:npc/spawner_viking_civilian_female");
+   
+  reg = new NpcFactionDeclaration(NpcVikingArcherElite.class, AWEntityRegistry.NPC_FACTION_VIKING_ARCHER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.archer.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcVikingArcherElite(world);
+      }
+    };
+  addNpcRegistration(reg, "viking.archer.elite", "ancientwarfare:npc/spawner_viking_archer"); 
+  
+  reg = new NpcFactionDeclaration(NpcVikingSoldierElite.class, AWEntityRegistry.NPC_FACTION_VIKING_SOLDIER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.soldier.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcVikingSoldierElite(world);
+      }
+    };
+  addNpcRegistration(reg, "viking.soldier.elite", "ancientwarfare:npc/spawner_viking_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcVikingLeaderElite.class, AWEntityRegistry.NPC_FACTION_VIKING_LEADER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.leader.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcVikingLeaderElite(world);
+      }
+    };
+  addNpcRegistration(reg, "viking.leader.elite", "ancientwarfare:npc/spawner_viking_leader");
   }
 
 private static void addCustom1()
@@ -659,7 +860,6 @@ private static void addCustom1()
       }
     };
   addNpcRegistration(reg, "custom_1.archer", "ancientwarfare:npc/spawner_custom_1_archer");
-  addNpcSubtypeEntry("custom_1.archer", "elite", "ancientwarfare:npc/spawner_custom_1_archer");
   
   reg = new NpcFactionDeclaration(NpcCustom_1Soldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.soldier")
     {    
@@ -670,7 +870,6 @@ private static void addCustom1()
       }
     };
   addNpcRegistration(reg, "custom_1.soldier", "ancientwarfare:npc/spawner_custom_1_soldier");
-  addNpcSubtypeEntry("custom_1.soldier", "elite", "ancientwarfare:npc/spawner_custom_1_soldier");
   
   reg = new NpcFactionDeclaration(NpcCustom_1Leader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.leader")
     {    
@@ -681,7 +880,6 @@ private static void addCustom1()
       }
     };
   addNpcRegistration(reg, "custom_1.leader", "ancientwarfare:npc/spawner_custom_1_leader");
-  addNpcSubtypeEntry("custom_1.leader", "elite", "ancientwarfare:npc/spawner_custom_1_leader");
   
   reg = new NpcFactionDeclaration(NpcCustom_1Priest.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.priest")
     {    
@@ -723,18 +921,55 @@ private static void addCustom1()
     };
   addNpcRegistration(reg, "custom_1.mounted_archer", "ancientwarfare:npc/spawner_custom_1_archer");
   
-  reg = new NpcFactionDeclaration(NpcCustom_1Civilian.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_CIVILIAN, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.civilian")
+  reg = new NpcFactionDeclaration(NpcCustom_1CivilianMale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_CIVILIAN_MALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.civilian.male")
     {     
     @Override
     public Entity createEntity(World world)
       {
-      return new NpcCustom_1Civilian(world);
+      return new NpcCustom_1CivilianMale(world);
       }    
     };
-  addNpcRegistration(reg, "custom_1.civilian", "ancientwarfare:npc/spawner_custom_1_civilian_male");
-  addNpcSubtypeEntry("custom_1.civilian", "male", "ancientwarfare:npc/spawner_custom_1_civilian_male");
-  addNpcSubtypeEntry("custom_1.civilian", "female", "ancientwarfare:npc/spawner_custom_1_civilian_female");
-  reg.setCanSpawnBaseType(false);
+  addNpcRegistration(reg, "custom_1.civilian.male", "ancientwarfare:npc/spawner_custom_1_civilian_male");
+  
+  reg = new NpcFactionDeclaration(NpcCustom_1CivilianFemale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_CIVILIAN_FEMALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.civilian.female")
+    {     
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_1CivilianFemale(world);
+      }    
+    };
+  addNpcRegistration(reg, "custom_1.civilian.female", "ancientwarfare:npc/spawner_custom_1_civilian_female");
+   
+  reg = new NpcFactionDeclaration(NpcCustom_1ArcherElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_ARCHER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.archer.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_1ArcherElite(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_1.archer.elite", "ancientwarfare:npc/spawner_custom_1_archer"); 
+  
+  reg = new NpcFactionDeclaration(NpcCustom_1SoldierElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_SOLDIER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.soldier.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_1SoldierElite(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_1.soldier.elite", "ancientwarfare:npc/spawner_custom_1_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcCustom_1LeaderElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_LEADER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.leader.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_1LeaderElite(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_1.leader.elite", "ancientwarfare:npc/spawner_custom_1_leader");
   }
 
 private static void addCustom2()
@@ -752,7 +987,6 @@ private static void addCustom2()
       }
     };
   addNpcRegistration(reg, "custom_2.archer", "ancientwarfare:npc/spawner_custom_2_archer");
-  addNpcSubtypeEntry("custom_2.archer", "elite", "ancientwarfare:npc/spawner_custom_2_archer");
   
   reg = new NpcFactionDeclaration(NpcCustom_2Soldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.soldier")
     {    
@@ -763,7 +997,6 @@ private static void addCustom2()
       }
     };
   addNpcRegistration(reg, "custom_2.soldier", "ancientwarfare:npc/spawner_custom_2_soldier");
-  addNpcSubtypeEntry("custom_2.soldier", "elite", "ancientwarfare:npc/spawner_custom_2_soldier");
   
   reg = new NpcFactionDeclaration(NpcCustom_2Leader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.leader")
     {    
@@ -774,7 +1007,6 @@ private static void addCustom2()
       }
     };
   addNpcRegistration(reg, "custom_2.leader", "ancientwarfare:npc/spawner_custom_2_leader");
-  addNpcSubtypeEntry("custom_2.leader", "elite", "ancientwarfare:npc/spawner_custom_2_leader");
   
   reg = new NpcFactionDeclaration(NpcCustom_2Priest.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.priest")
     {    
@@ -816,18 +1048,55 @@ private static void addCustom2()
     };
   addNpcRegistration(reg, "custom_2.mounted_archer", "ancientwarfare:npc/spawner_custom_2_archer");
   
-  reg = new NpcFactionDeclaration(NpcCustom_2Civilian.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_CIVILIAN, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.civilian")
+  reg = new NpcFactionDeclaration(NpcCustom_2CivilianMale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_CIVILIAN_MALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.civilian.male")
     {     
     @Override
     public Entity createEntity(World world)
       {
-      return new NpcCustom_2Civilian(world);
+      return new NpcCustom_2CivilianMale(world);
       }    
     };
-  addNpcRegistration(reg, "custom_2.civilian", "ancientwarfare:npc/spawner_custom_2_civilian_male");
-  addNpcSubtypeEntry("custom_2.civilian", "male", "ancientwarfare:npc/spawner_custom_2_civilian_male");
-  addNpcSubtypeEntry("custom_2.civilian", "female", "ancientwarfare:npc/spawner_custom_2_civilian_female");
-  reg.setCanSpawnBaseType(false);
+  addNpcRegistration(reg, "custom_2.civilian.male", "ancientwarfare:npc/spawner_custom_2_civilian_male");
+  
+  reg = new NpcFactionDeclaration(NpcCustom_2CivilianFemale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_CIVILIAN_FEMALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.civilian.female")
+    {     
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_2CivilianFemale(world);
+      }    
+    };
+  addNpcRegistration(reg, "custom_2.civilian.female", "ancientwarfare:npc/spawner_custom_2_civilian_female");
+   
+  reg = new NpcFactionDeclaration(NpcCustom_2ArcherElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_ARCHER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.archer.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_2ArcherElite(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_2.archer.elite", "ancientwarfare:npc/spawner_custom_2_archer"); 
+  
+  reg = new NpcFactionDeclaration(NpcCustom_2SoldierElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_SOLDIER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.soldier.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_2SoldierElite(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_2.soldier.elite", "ancientwarfare:npc/spawner_custom_2_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcCustom_2LeaderElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_LEADER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.leader.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_2LeaderElite(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_2.leader.elite", "ancientwarfare:npc/spawner_custom_2_leader");
   }
 
 private static void addCustom3()
@@ -846,7 +1115,6 @@ private static void addCustom3()
       }
     };
   addNpcRegistration(reg, "custom_3.archer", "ancientwarfare:npc/spawner_custom_3_archer");
-  addNpcSubtypeEntry("custom_3.archer", "elite", "ancientwarfare:npc/spawner_custom_3_archer");
   
   reg = new NpcFactionDeclaration(NpcCustom_3Soldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_SOLDIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.soldier")
     {    
@@ -857,7 +1125,6 @@ private static void addCustom3()
       }
     };
   addNpcRegistration(reg, "custom_3.soldier", "ancientwarfare:npc/spawner_custom_3_soldier");
-  addNpcSubtypeEntry("custom_3.soldier", "elite", "ancientwarfare:npc/spawner_custom_3_soldier");
   
   reg = new NpcFactionDeclaration(NpcCustom_3Leader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_COMMANDER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.leader")
     {    
@@ -868,7 +1135,6 @@ private static void addCustom3()
       }
     };
   addNpcRegistration(reg, "custom_3.leader", "ancientwarfare:npc/spawner_custom_3_leader");
-  addNpcSubtypeEntry("custom_3.leader", "elite", "ancientwarfare:npc/spawner_custom_3_leader");
   
   reg = new NpcFactionDeclaration(NpcCustom_3Priest.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.priest")
     {    
@@ -910,18 +1176,55 @@ private static void addCustom3()
     };
   addNpcRegistration(reg, "custom_3.mounted_archer", "ancientwarfare:npc/spawner_custom_3_archer");
   
-  reg = new NpcFactionDeclaration(NpcCustom_3Civilian.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_CIVILIAN, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.civilian")
+  reg = new NpcFactionDeclaration(NpcCustom_3CivilianMale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_CIVILIAN_MALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.civilian.male")
     {     
     @Override
     public Entity createEntity(World world)
       {
-      return new NpcCustom_3Civilian(world);
+      return new NpcCustom_3CivilianMale(world);
       }    
     };
-  addNpcRegistration(reg, "custom_3.civilian", "ancientwarfare:npc/spawner_custom_3_civilian_male");
-  addNpcSubtypeEntry("custom_3.civilian", "male", "ancientwarfare:npc/spawner_custom_3_civilian_male");
-  addNpcSubtypeEntry("custom_3.civilian", "female", "ancientwarfare:npc/spawner_custom_3_civilian_female");
-  reg.setCanSpawnBaseType(false);
+  addNpcRegistration(reg, "custom_3.civilian.male", "ancientwarfare:npc/spawner_custom_3_civilian_male");
+  
+  reg = new NpcFactionDeclaration(NpcCustom_3CivilianFemale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_CIVILIAN_FEMALE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.civilian.female")
+    {     
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_3CivilianFemale(world);
+      }    
+    };
+  addNpcRegistration(reg, "custom_3.civilian.female", "ancientwarfare:npc/spawner_custom_3_civilian_female");
+   
+  reg = new NpcFactionDeclaration(NpcCustom_3ArcherElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_ARCHER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.archer.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_3ArcherElite(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_3.archer.elite", "ancientwarfare:npc/spawner_custom_3_archer"); 
+  
+  reg = new NpcFactionDeclaration(NpcCustom_3SoldierElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_SOLDIER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.soldier.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_3SoldierElite(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_3.soldier.elite", "ancientwarfare:npc/spawner_custom_3_soldier");
+  
+  reg = new NpcFactionDeclaration(NpcCustom_3LeaderElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_LEADER_ELITE, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.leader.elite")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_3LeaderElite(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_3.leader.elite", "ancientwarfare:npc/spawner_custom_3_leader");
   }
 
 /**
@@ -1045,7 +1348,6 @@ public NpcFactionDeclaration(Class<? extends NpcFaction> entityClass, String ent
 public NpcFaction createEntity(World world, String subType)
   {
   NpcFaction npc = (NpcFaction) createEntity(world);
-  npc.setSubtype(subType);  
   return npc;
   }
 

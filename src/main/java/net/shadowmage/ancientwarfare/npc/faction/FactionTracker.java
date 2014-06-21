@@ -59,7 +59,7 @@ public int getStandingFor(World world, String playerName, String factionName)
       }
     else
       {
-      throw new IllegalArgumentException("player / world combination was invalid.  cannot query remote player faction on client!");
+      throw new IllegalArgumentException("player / world combination was invalid.  cannot query remote player faction on client!  player: "+playerName+" faction: "+factionName+" world: "+world);
       }
     }
   else

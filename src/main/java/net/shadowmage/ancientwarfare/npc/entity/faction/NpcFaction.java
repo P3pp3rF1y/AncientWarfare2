@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -9,10 +7,8 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
@@ -20,12 +16,10 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
-import cpw.mods.fml.common.network.ByteBufUtils;
 
 public abstract class NpcFaction extends NpcBase
 {
 
-private String subType = "";
 protected NpcAIAlertFaction alertAI;
 
 public NpcFaction(World par1World)
@@ -89,14 +83,14 @@ public boolean isHostileTowards(Entity e)
   if(e instanceof EntityPlayer)
     {
     int standing = FactionTracker.INSTANCE.getStandingFor(worldObj, e.getCommandSenderName(), getFaction());
-    if("elite".equals(subType)){standing-=50;}
+    if("elite".equals(getNpcSubType())){standing-=50;}
     return standing<0;
     }
   else if(e instanceof NpcPlayerOwned)
     {
     NpcBase npc = (NpcBase)e;
     int standing = FactionTracker.INSTANCE.getStandingFor(worldObj, npc.getOwnerName(), getFaction());
-    if("elite".equals(subType)){standing-=50;}
+    if("elite".equals(getNpcSubType())){standing-=50;}
     return standing<0;
     }
   else if(e instanceof NpcFaction)
@@ -160,16 +154,10 @@ public void onDeath(DamageSource damageSource)
     }
   }
 
-public void setSubtype(String subtype)
-  {
-  if(subtype==null){subtype="";}
-  this.subType = subtype;
-  }
-
 @Override
 public String getNpcSubType()
   {
-  return subType;
+  return "";
   }
 
 public String getFaction()
@@ -177,35 +165,6 @@ public String getFaction()
   String type = getNpcType();
   String faction = type.substring(0, type.indexOf("."));
   return faction;
-  }
-
-@Override
-public void writeEntityToNBT(NBTTagCompound tag)
-  {
-  super.writeEntityToNBT(tag);
-  tag.setString("subType", subType);
-  }
-
-@Override
-public void readEntityFromNBT(NBTTagCompound tag)
-  {  
-  super.readEntityFromNBT(tag);
-  setSubtype(tag.getString("subType"));
-  }
-
-@Override
-public void writeSpawnData(ByteBuf buffer)
-  {  
-  super.writeSpawnData(buffer);
-  ByteBufUtils.writeUTF8String(buffer, subType);
-  }
-
-@Override
-public void readSpawnData(ByteBuf additionalData)
-  {
-  super.readSpawnData(additionalData);  
-  setSubtype(ByteBufUtils.readUTF8String(additionalData));
-  this.updateTexture();
   }
 
 @Override

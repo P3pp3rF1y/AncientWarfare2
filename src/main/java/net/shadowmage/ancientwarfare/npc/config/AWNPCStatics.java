@@ -42,6 +42,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTrade;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTradeManager;
@@ -293,11 +294,20 @@ private void loadTargetValues()
     targets = config.get(targetSettings, name+".archer.targets", defaultTargets, "Default targets for: "+name+" archers").getStringList();
     addTargetMapping(name, "archer", targets);
     
+    targets = config.get(targetSettings, name+".archer.elite.targets", defaultTargets, "Default targets for: "+name+" elite archers").getStringList();
+    addTargetMapping(name, "archer.elite", targets);
+    
     targets = config.get(targetSettings, name+".soldier.targets", defaultTargets, "Default targets for: "+name+" soldiers").getStringList();
     addTargetMapping(name, "soldier", targets);
     
+    targets = config.get(targetSettings, name+".soldier.elite.targets", defaultTargets, "Default targets for: "+name+" elite soldiers").getStringList();
+    addTargetMapping(name, "soldier.elite", targets);
+    
     targets = config.get(targetSettings, name+".leader.targets", defaultTargets, "Default targets for: "+name+" leaders").getStringList();
     addTargetMapping(name, "leader", targets);  
+    
+    targets = config.get(targetSettings, name+".leader.elite.targets", defaultTargets, "Default targets for: "+name+" elite leaders").getStringList();
+    addTargetMapping(name, "leader.elite", targets);  
     
     targets = config.get(targetSettings, name+".priest.targets", defaultTargets, "Default targets for: "+name+" priests").getStringList();
     addTargetMapping(name, "priest", targets); 
@@ -521,6 +531,7 @@ private void initializeCustomHealthValues()
 
 public int getMaxHealthFor(String type)
   {
+  AWLog.logDebug("returning health value for: "+type+ " from map: "+healthValues);
   return healthValues.get(type);
   }
 

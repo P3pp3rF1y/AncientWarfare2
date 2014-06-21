@@ -92,7 +92,7 @@ protected void entityInit()
 protected void applyEntityAttributes()
   {
   super.applyEntityAttributes();  
-  int health = AncientWarfareNPC.statics.getMaxHealthFor(getNpcType());
+  int health = AncientWarfareNPC.statics.getMaxHealthFor(getNpcFullType());
   this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health);
   this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);//TODO check what pathfinding range is really needed, perhaps allow config option for longer paths
   this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.325D);//TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
@@ -577,7 +577,8 @@ public final String getNpcFullType()
   {
   String type = getNpcType();
   String sub = getNpcSubType();
-  if(sub==null){throw new RuntimeException("Subtype must not be null...type: "+type);}
+  if(type==null || type.isEmpty()){throw new RuntimeException("Type must not be null or empty:" +type);}
+  if(sub==null){throw new RuntimeException("Subtype must not be null...type: "+type+"::"+sub);}
   if(!sub.isEmpty()){type = type+"."+sub;}
   return type;
   }

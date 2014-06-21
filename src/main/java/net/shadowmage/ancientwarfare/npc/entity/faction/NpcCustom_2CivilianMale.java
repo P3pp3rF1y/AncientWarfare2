@@ -2,10 +2,10 @@ package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import net.minecraft.world.World;
 
-public class NpcCustom_3Civilian extends NpcFactionCivilian
+public class NpcCustom_2CivilianMale extends NpcFactionCivilian
 {
 
-public NpcCustom_3Civilian(World par1World)
+public NpcCustom_2CivilianMale(World par1World)
   {
   super(par1World);
   }
@@ -13,7 +13,6 @@ public NpcCustom_3Civilian(World par1World)
 @Override
 public String getNpcType()
   {
-  return "civilian_3.civilian";
+  return "civilian_2.civilian.male";
   }
-
 }
