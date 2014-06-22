@@ -4,13 +4,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
 import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 
 public class FactionTracker
@@ -19,8 +19,7 @@ public class FactionTracker
 private FactionTracker(){}
 public static final FactionTracker INSTANCE = new FactionTracker();
 
-
-FactionEntry clientEntry = null;
+FactionEntry clientEntry = new FactionEntry("client_entry");
 
 @SubscribeEvent
 public void onPlayerLogin(PlayerLoggedInEvent evt)
@@ -29,9 +28,15 @@ public void onPlayerLogin(PlayerLoggedInEvent evt)
   }
 
 @SubscribeEvent
+public void onClientConnect(ClientConnectedToServerEvent evt)
+  {
+  clientEntry = new FactionEntry("client_entry");
+  }
+
+@SubscribeEvent
 public void onClientDisconnect(ClientDisconnectionFromServerEvent evt)
   {
-  clientEntry = null;
+  clientEntry = new FactionEntry("client_entry");
   }
 
 private void onPlayerLogin(EntityPlayer player)
@@ -53,20 +58,13 @@ public int getStandingFor(World world, String playerName, String factionName)
   {
   if(world.isRemote)
     {
-    if(clientEntry!=null && clientEntry.playerName.equals(playerName))
+    if(clientEntry!=null)
       {
       return clientEntry.getStandingFor(factionName);
       }
     else
       {
-      if(clientEntry==null)
-        {
-        throw new RuntimeException("Client side faction data was null while attempting lookup for: "+playerName+" for faction: "+factionName+" for client world: "+world);
-        }
-      else
-        {
-        throw new RuntimeException("Cannot query remote player-faction status on client! Requested name: ["+playerName+"] name in client-entry: ["+clientEntry.playerName+"]  Faction requested: "+factionName+" from world: "+world);
-        }
+      throw new RuntimeException("Client side faction data was null while attempting lookup for: "+playerName+" for faction: "+factionName+" for client world: "+world);
       }
     }
   else
@@ -116,20 +114,14 @@ public void handlePacketData(NBTTagCompound tag)
 
 private void handleClientFactionUpdate(NBTTagCompound tag)
   {
-  AWLog.logDebug("receiving faction update...");
   String faction = tag.getString("faction");
   int standing = tag.getInteger("standing");
-  if(clientEntry!=null)
-    {
-    clientEntry.setStandingFor(faction, standing);
-    }
+  clientEntry.setStandingFor(faction, standing);
   }
 
 private void handleClientFactionInit(NBTTagCompound tag)
   {
-  AWLog.logDebug("receiving faction init data...");
-  FactionEntry entry = new FactionEntry(tag);
-  this.clientEntry = entry;
+  this.clientEntry = new FactionEntry(tag);
   }
 
 }

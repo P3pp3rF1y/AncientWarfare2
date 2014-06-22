@@ -66,7 +66,10 @@ public final void readFromNBT(NBTTagCompound tag)
     {
     entryTag = entryList.getCompoundTagAt(i);
     name = entryTag.getString("name");
-    if(!factionStandings.containsKey(name)){factionStandings.put(name, new FactionStanding(0));}
+    if(!factionStandings.containsKey(name))
+      {
+      factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
+      }
     factionStandings.get(name).standing = tag.getInteger("standing");
     }
   }
