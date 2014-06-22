@@ -7,6 +7,8 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -222,10 +224,13 @@ public void updateScreen()
 @SuppressWarnings("unchecked")
 @Override
 protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
-  {
+  {  
+  OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+  GL11.glDisable(GL11.GL_TEXTURE_2D);
+  OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
   GL11.glEnable(GL11.GL_TEXTURE_2D);
   GL11.glDisable(GL11.GL_LIGHTING);
-  RenderTools.setFullColorLightmap();
+  RenderHelper.disableStandardItemLighting();
   if(backgroundTexture!=null)
     {
     Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTexture);
