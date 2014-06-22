@@ -10,9 +10,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -226,14 +228,15 @@ private void unpackSkinPack(SkinPack pack)
   {
   AWLog.logDebug("Unpacking skin pack: "+pack);
   SkinMeta meta = pack.meta;
-  String img;
   for(String key : meta.imageMap.keySet())
     {    
-    img = meta.imageMap.get(key);
-    if(pack.textures.containsKey(img))
+    for(String img : meta.imageMap.get(key))
       {
-      AWLog.logDebug("Loading skin pack image: "+key+" :: "+img);
-      loadSkinImage(key, pack.textures.get(img));
+      if(pack.textures.containsKey(img))
+        {
+        AWLog.logDebug("Loading skin pack image: "+key+" :: "+img);
+        loadSkinImage(key, pack.textures.get(img));
+        }
       }
     }
   }
@@ -307,7 +310,7 @@ public SkinPack(SkinMeta meta, Map<String, ResourceLocation> textureMap)
 private class SkinMeta
 {
 //map of NpcType = imageName
-HashMap<String, String> imageMap = new HashMap<String, String>();
+HashMap<String, Set<String>> imageMap = new HashMap<String, Set<String>>();
 
 public SkinMeta(InputStream is) throws IOException
   {  
@@ -320,7 +323,8 @@ public SkinMeta(InputStream is) throws IOException
     lineBits = line.split("=");
     if(lineBits.length>1)
       {
-      imageMap.put(lineBits[0], lineBits[1]);
+      if(!imageMap.containsKey(lineBits[0])){imageMap.put(lineBits[0], new HashSet<String>());}
+      imageMap.get(lineBits[0]).add(lineBits[1]);
       }
     }
   }
