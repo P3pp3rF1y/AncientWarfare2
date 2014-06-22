@@ -59,7 +59,14 @@ public int getStandingFor(World world, String playerName, String factionName)
       }
     else
       {
-      throw new IllegalArgumentException("player / world combination was invalid.  cannot query remote player faction on client!  player: "+playerName+" faction: "+factionName+" world: "+world);
+      if(clientEntry==null)
+        {
+        throw new RuntimeException("Client side faction data was null while attempting lookup for: "+playerName+" for faction: "+factionName+" for client world: "+world);
+        }
+      else
+        {
+        throw new RuntimeException("Cannot query remote player-faction status on client! Requested name: ["+playerName+"] name in client-entry: ["+clientEntry.playerName+"]  Faction requested: "+factionName+" from world: "+world);
+        }
       }
     }
   else

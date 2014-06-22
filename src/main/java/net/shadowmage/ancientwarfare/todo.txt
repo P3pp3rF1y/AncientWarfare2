@@ -57,7 +57,8 @@ Licensing
 * add a 'known-sounds' selection list to bard gui to pick from known mc sounds
 * the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
 * add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC
-* recipes for shields	
+* recipes for shields
+* more shield types -- because apparently people want them
 * need to finish fixing npc-inventory interaction -- disallow 2nd interactor	
 * move custom texture field into user-accessible location
 		
