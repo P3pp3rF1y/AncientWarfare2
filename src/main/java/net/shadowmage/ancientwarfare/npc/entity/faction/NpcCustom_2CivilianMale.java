@@ -13,6 +13,6 @@ public NpcCustom_2CivilianMale(World par1World)
 @Override
 public String getNpcType()
   {
-  return "civilian_2.civilian.male";
+  return "custom_2.civilian.male";
   }
 }

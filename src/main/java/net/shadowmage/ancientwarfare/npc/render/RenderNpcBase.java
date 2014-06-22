@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -16,12 +17,12 @@ import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.scoreboard.Team;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -49,17 +50,18 @@ public RenderNpcBase()
 public void doRender(Entity par1Entity, double x, double y, double z, float par8, float par9)
   {  
   super.doRender(par1Entity, x, y, z, par8, par9);
+  EntityPlayer player = Minecraft.getMinecraft().thePlayer;
   if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_ADDITIONAL_INFO))
     {
     NpcBase npc = (NpcBase)par1Entity;
-    if(npc.isHostileTowards(renderManager.livingPlayer))
+    if(npc.isHostileTowards(player))
       {
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES))
         {
         String name = getNameForRender(npc, true); 
         if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_TEAM_COLORS))
           {
-          ScorePlayerTeam playerTeam = renderManager.livingPlayer.worldObj.getScoreboard().getTeam(renderManager.livingPlayer.getCommandSenderName());
+          ScorePlayerTeam playerTeam = player.worldObj.getScoreboard().getTeam(player.getCommandSenderName());
           ScorePlayerTeam npcTeam = (ScorePlayerTeam)npc.getTeam();
           if(npcTeam!=null && npcTeam!=playerTeam)
             {
@@ -71,13 +73,13 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
       }
     else
       {
-      boolean canBeCommandedBy = npc.canBeCommandedBy(renderManager.livingPlayer.getCommandSenderName());
+      boolean canBeCommandedBy = npc.canBeCommandedBy(player.getCommandSenderName());
       if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_FRIENDLY_NAMES))
         {
         String name = getNameForRender(npc, false);
         if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_TEAM_COLORS))
           {
-          ScorePlayerTeam playerTeam = renderManager.livingPlayer.worldObj.getScoreboard().getTeam(renderManager.livingPlayer.getCommandSenderName());
+          ScorePlayerTeam playerTeam = player.worldObj.getScoreboard().getTeam(player.getCommandSenderName());
           ScorePlayerTeam npcTeam = (ScorePlayerTeam)npc.getTeam();
           if(npcTeam!=null && npcTeam!=playerTeam)
             {
