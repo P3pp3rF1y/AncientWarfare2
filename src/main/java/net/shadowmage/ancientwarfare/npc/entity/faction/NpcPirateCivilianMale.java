@@ -13,7 +13,7 @@ public NpcPirateCivilianMale(World par1World)
 @Override
 public String getNpcType()
   {
-  return "priate.civilian.male";
+  return "pirate.civilian.male";
   }
 
 }
