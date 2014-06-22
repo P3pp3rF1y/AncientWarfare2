@@ -159,10 +159,18 @@ public final void setOwningPlayer(String name)
   this.owningPlayer = name;
   }
 
-public void craftItem()
+public boolean tryCraftItem()
   {
-  if(!hasResourcesForNext){return;}
-  if(this.outputSlot.getStackInSlot(0)==null){return;}
+  if(hasResourcesForNext && outputSlot.getStackInSlot(0)!=null && canHoldResult())
+    {
+    craftItem();
+    return true;
+    }
+  return false; 
+  }
+
+private void craftItem()
+  {
   ItemStack stack = this.outputSlot.getStackInSlot(0).copy();
   useResources();
   stack = InventoryTools.mergeItemStack(outputInventory, stack, -1);
@@ -173,6 +181,25 @@ public void craftItem()
   countResources();
   }
 
+private boolean canHoldResult()
+  {
+  ItemStack out = outputSlot.getStackInSlot(0);
+  if(out==null){return false;}
+  ItemStack slotStack;
+  int availCount = 0;
+  for(int i = 0; i< outputInventory.getSizeInventory(); i++)
+    {
+    slotStack = outputInventory.getStackInSlot(i);
+    if(slotStack==null){return true;}
+    if(InventoryTools.doItemStacksMatch(slotStack, out))
+      {
+      availCount+=slotStack.getMaxStackSize()-slotStack.stackSize;
+      }
+    if(availCount>=out.stackSize){return true;}
+    }  
+  return false;
+  }
+
 private void useResources()
   {
   ItemStack stack1;
@@ -180,7 +207,7 @@ private void useResources()
     {
     stack1 = craftMatrix.getStackInSlot(i);
     if(stack1==null){continue;}
-    InventoryTools.removeItems(resourceInventory, -1, stack1, stack1.stackSize);
+    InventoryTools.removeItems(resourceInventory, -1, stack1, 1);
     }
   }
 
@@ -398,13 +425,7 @@ public void setBounds(BlockPosition p1, BlockPosition p2)
 @Override
 protected boolean processWork()
   {
-  if(hasResourcesForNext && outputSlot.getStackInSlot(0)!=null)
-    {
-    craftItem();
-    shouldUpdateInventory = true;
-    return true;
-    }
-  return false;
+  return tryCraftItem();
   }
 
 @Override

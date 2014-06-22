@@ -96,7 +96,7 @@ public void handlePacketData(NBTTagCompound tag)
   {  
   if(!player.worldObj.isRemote && tag.hasKey("craft"))
     {
-    worksite.craftItem();
+    worksite.tryCraftItem();
     }
   }
 
