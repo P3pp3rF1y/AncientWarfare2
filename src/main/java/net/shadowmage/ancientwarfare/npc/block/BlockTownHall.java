@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
@@ -25,6 +26,14 @@ public BlockTownHall(String regName)
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWNpcItemLoader.npcTab);
+  }
+
+@Override
+public void breakBlock(World world, int x, int y, int z, Block block, int meta)
+  {
+  TileTownHall tile = (TileTownHall) world.getTileEntity(x, y, z);
+  if(tile!=null){InventoryTools.dropInventoryInWorld(world, tile, x, y, z);}
+  super.breakBlock(world, x, y, z, block, meta);
   }
 
 @Override

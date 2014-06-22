@@ -59,10 +59,8 @@ Licensing
 * add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC
 * recipes for shields	
 * need to finish fixing npc-inventory interaction -- disallow 2nd interactor	
-* town hall drop inventory on block break
 * move custom texture field into user-accessible location
-					 
-			
+		
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities
 	examine collision detection for ender-dragon?
