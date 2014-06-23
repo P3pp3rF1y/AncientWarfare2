@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 
 
 public class TileTorqueStorageFlywheel extends TileTorqueStorageBase
@@ -12,14 +13,17 @@ public class TileTorqueStorageFlywheel extends TileTorqueStorageBase
 
 private List<TileTorqueStorageFlywheel> wheelsToBalance = new ArrayList<TileTorqueStorageFlywheel>();
 
+
 @Override
 public void updateEntity()
   {
-  super.updateEntity();
-  if(!worldObj.isRemote)
+  if(worldObj.isRemote){return;}
+  if(!worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
     {
-    tryBalancingFlywheels();    
+    ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);    
     }
+  ITorque.applyPowerDrain(this);
+  tryBalancingFlywheels();    
   }
 
 private void tryBalancingFlywheels()
