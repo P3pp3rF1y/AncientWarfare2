@@ -29,7 +29,7 @@ public abstract class NpcFactionMountedSoldier extends NpcFactionMounted
 public NpcFactionMountedSoldier(World par1World)
   {
   super(par1World);
-  this.setCurrentItemOrArmor(0, new ItemStack(Items.iron_sword));  
+//  this.setCurrentItemOrArmor(0, new ItemStack(Items.iron_sword));  
   
   IEntitySelector selector = new IEntitySelector()
     {

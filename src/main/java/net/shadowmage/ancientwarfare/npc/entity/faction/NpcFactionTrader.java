@@ -23,7 +23,7 @@ public abstract class NpcFactionTrader extends NpcFaction
 public NpcFactionTrader(World par1World)
   {
   super(par1World);
-  setCurrentItemOrArmor(0, new ItemStack(Items.book));
+//  setCurrentItemOrArmor(0, new ItemStack(Items.book));
   
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));

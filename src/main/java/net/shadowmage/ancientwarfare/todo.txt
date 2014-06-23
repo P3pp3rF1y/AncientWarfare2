@@ -61,6 +61,7 @@ Licensing
 * more shield types -- because apparently people want them
 * need to finish fixing npc-inventory interaction -- disallow 2nd interactor	
 * move custom texture field into user-accessible location
+* randomize horse type/color/etc for faction-based NPCs
 		
 ****************************VEHICLE MODULE TODO****************************
 figure out collision detection for large rectangular entities

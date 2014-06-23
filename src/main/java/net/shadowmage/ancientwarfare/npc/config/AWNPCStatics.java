@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -56,12 +55,14 @@ public class AWNPCStatics extends ModConfiguration
  * shared settings:
  * NONE?
  */
+/************************************************shared SETTINGS*************************************************/
 public static final String sharedSettings = "01_shared_settings";
 
 /**
  * server settings:
  * npc worker tick rate / ticks per work unit
  */
+/************************************************SERVER SETTINGS*************************************************/
 public static final String serverSettings = "02_server_settings";
 public static int maxNpcLevel = 10;
 public static int npcXpFromWork = 1;
@@ -85,6 +86,7 @@ public static int npcArcherAttackDamage = 3;//damage for npc archers...can be in
  * client settings:
  * --SET VIA PROXY / ClientOptions.INSTANCE
  */
+/************************************************CLIENT SETTINGS*************************************************/
 public static final String clientSettings = "03_client_settings";
 public static boolean loadDefaultSkinPack = true;
 public static boolean overrideDefaultNames = false;
@@ -92,6 +94,7 @@ public static boolean overrideDefaultNames = false;
 /**
  * what food items are edible, and the amount of food value an NPC will get from eating them
  */
+/************************************************FOOD SETTINGS*************************************************/
 public static final String foodSettings = "04_food_settings";
 private HashMap<String, Integer> foodValues = new HashMap<String, Integer>();
 
@@ -99,6 +102,7 @@ private HashMap<String, Integer> foodValues = new HashMap<String, Integer>();
  * base aggro / target settings for combat NPCs.  Can be further
  * customized on a per-npc basis via config GUI.
  */
+/************************************************TARGET SETTINGS*************************************************/
 public static final String targetSettings = "05_target_settings";
 private HashMap<String, List<String>> entityTargetSettings = new HashMap<String, List<String>>();
 private List<String> entitiesToTargetNpcs = new ArrayList<String>();
@@ -107,22 +111,42 @@ private List<String> entitiesToTargetNpcs = new ArrayList<String>();
  * enable/disable specific recipes
  * enable/disable research for specific recipes
  */
+/************************************************RECIPE SETTINGS*************************************************/
 public static final String recipeSettings = "06_recipe_settings";
 
+/************************************************FACTION STARTING VALUE SETTINGS*************************************************/
 public static final String factionSettings = "07_faction_settings";
 public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
 public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
 private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
 private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings = new HashMap<String, HashMap<String, Boolean>>();
 
+
+/************************************************CUSTOM NAME SETTINGS*************************************************/
 public static final String factionNameSettings = "08_faction_and_type_names";
 public static final String[] factionNames = new String[]{"bandit","viking","pirate","desert","native","custom_1","custom_2","custom_3"};
 public static final String[] factionNpcSubtypes = new String[]{"soldier","soldier.elite","cavalry","archer","archer.elite","mounted_archer","leader","leader.elite","priest","trader","civilian.male","civilian.female"};
 private HashMap<String, String> customNpcNames = new HashMap<String, String>();
 private String[] overridenLanguages = new String[]{};
 
+
+/************************************************NPC HEALTH SETTINGS*************************************************/
 public static final String npcDefaultHealthSettings = "09_npc_base_health";
 private HashMap<String, Integer> healthValues = new HashMap<String, Integer>();
+
+
+/************************************************NPC WEAPON SETTINGS*************************************************/
+public static final String npcDefaultWeapons = "10_npc_weapons";
+public static final String npcOffhandItems = "11_npc_offhand";
+public static final String npcArmorHead = "12_npc_helmet";
+public static final String npcArmorChest = "13_npc_chest";
+public static final String npcArmorLegs = "14_npc_legs";
+public static final String npcArmorBoots= "15_npc_boots";
+public static final String npcWorkItem = "16_npc_work_slot";
+public static final String npcUpkeepItem = "17_npc_upkeep_slot";
+
+/************************************************NPC ARMOR SETTINGS*************************************************/
+
 
 public AWNPCStatics(Configuration config)
   {
@@ -181,6 +205,7 @@ public void initializeValues()
   loadDefaultFactionStandings();
   initializeCustomNpcNames();
   initializeCustomHealthValues();
+  initializeNpcEquipmentConfigs();
   
   maxNpcLevel = config.get(serverSettings, "npc_max_level", maxNpcLevel, "Max NPC Level\nDefault="+maxNpcLevel+"\n" +
   		"How high can NPCs level up?  Npcs gain more health, attack damage, and overall\n" +
@@ -541,6 +566,85 @@ public boolean shouldFactionBeHostileTowards(String faction1, String faction2)
     return factionVsFactionStandings.get(faction1).get(faction2);
     }
   return false;
+  }
+
+private HashMap<String, String[]> eqmp = new HashMap<String, String[]>();
+
+public void initializeNpcEquipmentConfigs()
+  {
+  String fullType;
+  for(String faction : factionNames)
+    {
+    for(String type : factionNpcSubtypes)
+      {
+      fullType = faction+"."+type;
+      eqmp.put(fullType, new String[8]);//allocate empty string array for each npc type to hold item names for their equipment
+      AWLog.logDebug("registering equipment for type: "+fullType);
+      }
+    eqmp.get(faction+".soldier")[0]="minecraft:iron_sword";
+    eqmp.get(faction+".soldier.elite")[0]="minecraft:iron_sword";
+    eqmp.get(faction+".cavalry")[0]="minecraft:iron_sword";
+    eqmp.get(faction+".archer")[0]="minecraft:bow";
+    eqmp.get(faction+".archer.elite")[0]="minecraft:bow";
+    eqmp.get(faction+".mounted_archer")[0]="minecraft:bow";
+    eqmp.get(faction+".leader")[0]="minecraft:diamond_sword";
+    eqmp.get(faction+".leader.elite")[0]="minecraft:diamond_sword";
+    eqmp.get(faction+".trader")[0]="minecraft:book";
+    eqmp.get(faction+".priest")[0]="minecraft:book";
+    }    
+    
+  String[] array;
+  String item;
+  for(String key : eqmp.keySet())
+    {
+    array = eqmp.get(key);
+    item = array[0];
+    item=item==null? "null" : item;
+    config.get(npcDefaultWeapons, key, item);
+    
+    item = array[4];
+    item=item==null? "null" : item;
+    config.get(npcArmorHead, key, item);
+    
+    item = array[3];
+    item=item==null? "null" : item;
+    config.get(npcArmorChest, key, item);
+    
+    item = array[2];
+    item=item==null? "null" : item;
+    config.get(npcArmorLegs, key, item);
+    
+    item = array[1];
+    item=item==null? "null" : item;
+    config.get(npcArmorBoots, key, item);
+    
+    item = array[5];
+    item=item==null? "null" : item;
+    config.get(npcWorkItem, key, item);
+    
+    item = array[6];
+    item=item==null? "null" : item;
+    config.get(npcUpkeepItem, key, item);
+    
+    item = array[7];
+    item=item==null? "null" : item;
+    config.get(npcOffhandItems, key, item);
+    }
+  }
+
+public ItemStack getStartingEquipmentForSlot(String type, int slot)
+  {
+  String itemName = null;  
+  if(eqmp.containsKey(type)){itemName = eqmp.get(type)[slot];}
+  if(itemName!=null && !itemName.isEmpty() && !itemName.equals("null"))
+    {
+    Item item = (Item) Item.itemRegistry.getObject(itemName);
+    if(item!=null)
+      {
+      return new ItemStack(item);
+      }
+    }
+  return null;
   }
 
 }

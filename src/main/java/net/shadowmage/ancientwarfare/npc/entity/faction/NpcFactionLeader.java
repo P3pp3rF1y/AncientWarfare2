@@ -27,7 +27,7 @@ public abstract class NpcFactionLeader extends NpcFaction
 public NpcFactionLeader(World par1World)
   {
   super(par1World);
-  this.setCurrentItemOrArmor(0, new ItemStack(Items.diamond_sword));
+//  this.setCurrentItemOrArmor(0, new ItemStack(Items.diamond_sword));
   
   IEntitySelector selector = new IEntitySelector()
     {

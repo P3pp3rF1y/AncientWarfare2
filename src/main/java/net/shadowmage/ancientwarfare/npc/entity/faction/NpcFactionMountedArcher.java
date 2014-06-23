@@ -33,7 +33,7 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
 public NpcFactionMountedArcher(World par1World)
   {
   super(par1World); 
-  this.setCurrentItemOrArmor(0, new ItemStack(Items.bow));
+//  this.setCurrentItemOrArmor(0, new ItemStack(Items.bow));
   IEntitySelector selector = new IEntitySelector()
     {
     @Override

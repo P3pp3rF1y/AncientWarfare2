@@ -28,7 +28,7 @@ public abstract class NpcFactionSoldier extends NpcFaction
 public NpcFactionSoldier(World par1World)
   {
   super(par1World);
-  this.setCurrentItemOrArmor(0, new ItemStack(Items.iron_sword));  
+//  this.setCurrentItemOrArmor(0, new ItemStack(Items.iron_sword));  
   
   IEntitySelector selector = new IEntitySelector()
     {

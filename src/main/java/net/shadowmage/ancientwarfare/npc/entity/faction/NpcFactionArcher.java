@@ -33,7 +33,7 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
 public NpcFactionArcher(World par1World)
   {
   super(par1World);
-  this.setCurrentItemOrArmor(0, new ItemStack(Items.bow));
+//  this.setCurrentItemOrArmor(0, new ItemStack(Items.bow));
   
   IEntitySelector selector = new IEntitySelector()
     {
