@@ -77,25 +77,3 @@ everything
 *****************************************************************
 //BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
-
-
-[16:36:43] [Client thread/ERROR] [AncientWarfare]: [DEBUG] creating skin pack...meta:SkinPackMeta -- imageMap: [{
-worker.farmer=po_worker_farmer.png,
- bandit.leader.elite=bandit_leader_elite.png,
-  bandit.civilian.male=bandit_civilian_male.png,
-   bandit.mounted_archer=bandit_mounted_archer.png,
-    worker.miner=po_worker_miner.png, 
-    bandit.civilian.female=bandit_civilian_female.png, 
-    bandit.priest=bandit_priest.png, courier=po_courier.png, 
-    bandit.archer.elite=bandit_archer_elite.png, 
-    bandit.archer=bandit_archer2.png, 
-    worker.craftsman=po_worker_craftsman.png, 
-    bandit.trader=bandit_trader.png, 
-    bandit.cavalry=bandit_cavalry.png, 
-    bandit.soldier.elite=bandit_soldier_elite.png, 
-    worker.researcher=po_worker_researcher.png, 
-    worker=po_worker.png, 
-    bandit.soldier=bandit_soldier.png, 
-    worker.lumberjack=po_worker_lumberjack.png, 
-    bandit.leader=bandit_leader.png
-    }]
