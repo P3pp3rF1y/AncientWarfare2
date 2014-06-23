@@ -22,6 +22,8 @@ Text nameInput;
 ContainerNpcInventory container;
 String name;
 
+Text textureInput;
+
 int buttonX = 8+18+18+18+18+4;
 public GuiNpcInventory(ContainerBase container)
   {
@@ -45,10 +47,10 @@ public void updateScreen()
 @Override
 public void initElements()
   {
-  Label label = new Label(70, 9, StatCollector.translateToLocal("guistrings.npc.npc_name"));
+  Label label = new Label(8+18+18+4, 9, StatCollector.translateToLocal("guistrings.npc.npc_name"));
   addGuiElement(label);
   
-  nameInput = new Text(70, 20, 100, container.npc.getCustomNameTag(), this)
+  nameInput = new Text(75, 8, 95, container.npc.getCustomNameTag(), this)
     {
     @Override
     public void onTextUpdated(String oldText, String newText)
@@ -57,6 +59,18 @@ public void initElements()
       }
     };
   addGuiElement(nameInput);
+  
+  label = new Label(8+18+18+4, 21, StatCollector.translateToLocal("guistrings.npc.npc_texture"));
+  addGuiElement(label);
+  textureInput = new Text(75, 20, 95, container.npc.getCustomTex(), this)
+    {
+    @Override
+    public void onTextUpdated(String oldText, String newText)
+      {
+      container.handleNpcTextureUpdate(newText);
+      }
+    };
+  addGuiElement(textureInput);
   
   repackButton = new Button(buttonX, 36, 75, 12, StatCollector.translateToLocal("guistrings.npc.repack"))
     {

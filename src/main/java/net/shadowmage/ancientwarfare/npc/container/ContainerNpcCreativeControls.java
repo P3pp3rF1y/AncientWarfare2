@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class ContainerNpcCreativeControls extends ContainerNpcBase
 {
@@ -55,7 +54,6 @@ public void sendInitData()
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  AWLog.logDebug("receiving packet data for npc stuffs...");
   if(tag.hasKey("ownerName")){ownerName = tag.getString("ownerName");}
   if(tag.hasKey("wander")){wander = tag.getBoolean("wander");}
   if(tag.hasKey("attackDamage")){attackDamage=tag.getInteger("attackDamage");}
@@ -71,7 +69,7 @@ public void onContainerClosed(EntityPlayer par1EntityPlayer)
   {
   if(hasChanged && !player.worldObj.isRemote)
     {
-    AWLog.logDebug("setting npc values to npc");
+    hasChanged=false;
     npc.setOwnerName(ownerName);
     npc.setCustomTexRef(customTexRef);
     npc.setAttackDamageOverride(attackDamage);

@@ -44,12 +44,23 @@ public void handlePacketData(NBTTagCompound tag)
     }
   if(tag.hasKey("setHome")){npc.setHomeArea(MathHelper.floor_double(npc.posX), MathHelper.floor_double(npc.posY), MathHelper.floor_double(npc.posZ), 40);}
   if(tag.hasKey("clearHome")){npc.detachHome();}
+  if(tag.hasKey("customTexture"))
+    {
+    npc.setCustomTexRef(tag.getString("customTexture"));
+    }
   }
 
 public void handleNpcNameUpdate(String newName)
   {
   NBTTagCompound tag = new NBTTagCompound();
   tag.setString("customName", newName);
+  sendDataToServer(tag);
+  }
+
+public void handleNpcTextureUpdate(String tex)
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setString("customTexture", tex);
   sendDataToServer(tag);
   }
 
