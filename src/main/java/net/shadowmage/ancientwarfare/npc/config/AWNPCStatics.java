@@ -83,75 +83,82 @@ public static int npcAttackDamage = 1;//base attack damage for npcs--further mul
 public static float npcLevelDamageMultiplier = 0.05f;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
 public static int npcArcherAttackDamage = 3;//damage for npc archers...can be increased via enchanted weapons
 
-/**
- * client settings:
- * --SET VIA PROXY / ClientOptions.INSTANCE
- */
+
 /************************************************CLIENT SETTINGS*************************************************/
 public static final String clientSettings = "03_client_settings";
-public static boolean loadDefaultSkinPack = true;
-public static boolean overrideDefaultNames = false;
 
-/**
- * what food items are edible, and the amount of food value an NPC will get from eating them
- */
+
+/************************************************RECIPE SETTINGS*************************************************/
+public static final String recipeSettings = "04_recipe_settings";
+
+/************************************************FOOD CONFIG*************************************************/
 /************************************************FOOD SETTINGS*************************************************/
-public static final String foodSettings = "04_food_settings";
+public static final String foodSettings = "01_food_settings";
 private HashMap<String, Integer> foodValues = new HashMap<String, Integer>();
 
-/**
- * base aggro / target settings for combat NPCs.  Can be further
- * customized on a per-npc basis via config GUI.
- */
+
+/************************************************TARGET CONFIG*************************************************/
 /************************************************TARGET SETTINGS*************************************************/
-public static final String targetSettings = "05_target_settings";
+public static final String targetSettings = "01_target_settings";
 private HashMap<String, List<String>> entityTargetSettings = new HashMap<String, List<String>>();
 private List<String> entitiesToTargetNpcs = new ArrayList<String>();
 
-/**
- * enable/disable specific recipes
- * enable/disable research for specific recipes
- */
-/************************************************RECIPE SETTINGS*************************************************/
-public static final String recipeSettings = "06_recipe_settings";
 
+/************************************************FACTIONS CONFIG*************************************************/
 /************************************************FACTION STARTING VALUE SETTINGS*************************************************/
-public static final String factionSettings = "07_faction_settings";
+public static final String factionSettings = "01_faction_settings";
 public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
 public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
 private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
 private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings = new HashMap<String, HashMap<String, Boolean>>();
 
 
+/************************************************NAMES CONFIG*************************************************/
 /************************************************CUSTOM NAME SETTINGS*************************************************/
-public static final String factionNameSettings = "08_faction_and_type_names";
+public static final String factionNameOverrideSettings = "01_faction_name_overrides";
+public static final String factionNameSettings = "02_faction_custom_names";
+public static boolean loadDefaultSkinPack = true;
+public static boolean overrideDefaultNames = false;
 public static final String[] factionNames = new String[]{"bandit","viking","pirate","desert","native","custom_1","custom_2","custom_3"};
 public static final String[] factionNpcSubtypes = new String[]{"soldier","soldier.elite","cavalry","archer","archer.elite","mounted_archer","leader","leader.elite","priest","trader","civilian.male","civilian.female"};
 private HashMap<String, String> customNpcNames = new HashMap<String, String>();
 private String[] overridenLanguages = new String[]{};
 
 
+/************************************************HEALTH CONFIG*************************************************/
 /************************************************NPC HEALTH SETTINGS*************************************************/
-public static final String npcDefaultHealthSettings = "09_npc_base_health";
+public static final String npcDefaultHealthSettings = "01_npc_base_health";
 private HashMap<String, Integer> healthValues = new HashMap<String, Integer>();
 
 
+/************************************************EQUIPMENT CONFIG*************************************************/
 /************************************************NPC WEAPON SETTINGS*************************************************/
-public static final String npcDefaultWeapons = "10_npc_weapons";
-public static final String npcOffhandItems = "11_npc_offhand";
-public static final String npcArmorHead = "12_npc_helmet";
-public static final String npcArmorChest = "13_npc_chest";
-public static final String npcArmorLegs = "14_npc_legs";
-public static final String npcArmorBoots= "15_npc_boots";
-public static final String npcWorkItem = "16_npc_work_slot";
-public static final String npcUpkeepItem = "17_npc_upkeep_slot";
 
-/************************************************NPC ARMOR SETTINGS*************************************************/
+public static final String npcDefaultWeapons = "01_npc_weapons";
+public static final String npcOffhandItems = "02_npc_offhand";
+public static final String npcArmorHead = "03_npc_helmet";
+public static final String npcArmorChest = "04_npc_chest";
+public static final String npcArmorLegs = "05_npc_legs";
+public static final String npcArmorBoots= "06_npc_boots";
+public static final String npcWorkItem = "07_npc_work_slot";
+public static final String npcUpkeepItem = "08_npc_upkeep_slot";
 
+public Configuration equipmentConfig;
+public Configuration nameConfig;
+public Configuration targetConfig;
+public Configuration healthConfig;
+public Configuration foodConfig;
+public Configuration factionConfig;
 
 public AWNPCStatics(Configuration config)
   {
   super(config);
+  equipmentConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcEquipment");
+  nameConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcFactionNames");
+  targetConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcTargeting");
+  healthConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcHealth");
+  foodConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcFood");
+  factionConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcFactionStandings");  
   }
 
 @Override
@@ -169,33 +176,46 @@ public void initializeCategories()
       "Affect only client-side operations.  Many of these options can be set from the in-game Options GUI.\n" +
       "Server admins can ignore these settings.");
   
-  config.addCustomCategoryComment(foodSettings, "Food Value Options\n" +
+  config.addCustomCategoryComment(recipeSettings, "Recipe Options\n" +
+      "Enable / Disable specific recipes, or remove the research requirements from specific recipes.\n" +
+      "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
+      "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
+  
+  foodConfig.addCustomCategoryComment(foodSettings, "Food Value Options\n" +
   		"Only the food items here will be useable as food for NPCs.  The value specified is\n" +
   		"the number of ticks that the food item will feed the NPC for.\n" +
       "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
       "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
   
-  config.addCustomCategoryComment(targetSettings, "Custom NPC Targeting Options\n" +
+  targetConfig.addCustomCategoryComment(targetSettings, "Custom NPC Targeting Options\n" +
   		"Add / remove vanilla / mod-added entities from the NPC targeting lists.\n" +
       "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
       "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
   
-  config.addCustomCategoryComment(recipeSettings, "Recipe Options\n" +
-  		"Enable / Disable specific recipes, or remove the research requirements from specific recipes.\n" +
-      "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
-      "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
-  
-  config.addCustomCategoryComment(factionSettings, "Faction Options\n" +
+  factionConfig.addCustomCategoryComment(factionSettings, "Faction Options\n" +
   		"Set starting faction values, and alter the amount of standing gained/lost from player actions.\n" +
       "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
       "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
   
-  config.addCustomCategoryComment(factionNameSettings, "Faction Naming Options\n" +
+  nameConfig.addCustomCategoryComment(factionNameOverrideSettings, "Faction Naming Options\n");//TODO comment
+  
+  nameConfig.addCustomCategoryComment(factionNameSettings, "Faction Naming Options\n" +
   		"These settings effect the displayed name of NPCs and items in game.\n" +
   		"Client-side only option.\n" +
   		"These settings override the translation entries from language files for the currently\n" +
   		"loaded language.  These custom settings only take effect if 'override_default_names'=true\n" +
-  		"and only apply to the language(s) specified in 'overriden_languages'(both are in 03_client_settings).");
+  		"and only apply to the language(s) specified in 'overriden_languages'(both are in "+factionNameOverrideSettings+").");
+  
+  
+  
+  equipmentConfig.addCustomCategoryComment(npcDefaultWeapons, "Default Equipped Weapons\n");//TODO comment
+  equipmentConfig.addCustomCategoryComment(npcOffhandItems, "Default Equipped Offhand Items\n");//TODO comment
+  equipmentConfig.addCustomCategoryComment(npcArmorHead, "Default Equipped Helmets\n");//TODO comment
+  equipmentConfig.addCustomCategoryComment(npcArmorChest, "Default Equipped Chest Armor\n");//TODO comment
+  equipmentConfig.addCustomCategoryComment(npcArmorLegs, "Default Equipped Leg Armor\n");//TODO comment
+  equipmentConfig.addCustomCategoryComment(npcArmorBoots, "Default Equipped Foot Armor\n");//TODO comment
+  equipmentConfig.addCustomCategoryComment(npcWorkItem, "Default Equipped Order Item (drop-on-death only)\n");//TODO comment
+  equipmentConfig.addCustomCategoryComment(npcUpkeepItem, "Default Equipped Upkeep Item (drop-on-death only)\n");//TODO comment
   }
 
 @Override
@@ -237,11 +257,11 @@ public void initializeValues()
   		"How many game ticks should pass between workers' processing work at a work-site.\n" +
   		"Lower values result in more work output, higher values result in less work output.").getInt(npcWorkTicks);
   
-  factionLossOnDeath = config.get(factionSettings, "faction_loss_on_kill", 10, "Faction Loss On Kill\nDefault=10\n" +
+  factionLossOnDeath = factionConfig.get(factionSettings, "faction_loss_on_kill", 10, "Faction Loss On Kill\nDefault=10\n" +
   		"How much faction standing should be lost if you or one of your minions kills a faction\n" +
   		"based NPC.").getInt(10);
   
-  factionGainOnTrade = config.get(factionSettings, "faction_gain_on_trade", 2, "Faction Gain On Trade\nDefault=2\n" +
+  factionGainOnTrade = factionConfig.get(factionSettings, "faction_gain_on_trade", 2, "Faction Gain On Trade\nDefault=2\n" +
   		"How much faction standing should be gained when you trade with a faction based trader.").getInt(2);
     
   loadDefaultSkinPack = config.get(clientSettings, "load_default_skin_pack", loadDefaultSkinPack, "Load Default Skin Pack\nDefault=true\n" +
@@ -297,49 +317,49 @@ private void loadTargetValues()
   String[] defaultTargets = new String[]{"Zombie","Skeleton","Slime"};
   String[] targets;
   
-  targets = config.get(targetSettings, "combat.targets", defaultTargets, "Default targets for: unassigned combat npc").getStringList();
+  targets = targetConfig.get(targetSettings, "combat.targets", defaultTargets, "Default targets for: unassigned combat npc").getStringList();
   addTargetMapping("combat", "", targets);
   
-  targets = config.get(targetSettings, "combat.archer.targets", defaultTargets, "Default targets for: player-owned archer").getStringList();
+  targets = targetConfig.get(targetSettings, "combat.archer.targets", defaultTargets, "Default targets for: player-owned archer").getStringList();
   addTargetMapping("combat", "archer", targets);
   
-  targets = config.get(targetSettings, "combat.soldier.targets", defaultTargets, "Default targets for: player-owned soldier").getStringList();
+  targets = targetConfig.get(targetSettings, "combat.soldier.targets", defaultTargets, "Default targets for: player-owned soldier").getStringList();
   addTargetMapping("combat", "soldier", targets);
   
-  targets = config.get(targetSettings, "combat.leader.targets", defaultTargets, "Default targets for: player-owned leader npc").getStringList();
+  targets = targetConfig.get(targetSettings, "combat.leader.targets", defaultTargets, "Default targets for: player-owned leader npc").getStringList();
   addTargetMapping("combat", "leader", targets);
   
-  targets = config.get(targetSettings, "combat.medic.targets", defaultTargets, "Default targets for: player-owned medic npc").getStringList();
+  targets = targetConfig.get(targetSettings, "combat.medic.targets", defaultTargets, "Default targets for: player-owned medic npc").getStringList();
   addTargetMapping("combat", "medic", targets);
   
-  targets = config.get(targetSettings, "combat.engineer.targets", defaultTargets, "Default targets for: player-owned engineer npc").getStringList();
+  targets = targetConfig.get(targetSettings, "combat.engineer.targets", defaultTargets, "Default targets for: player-owned engineer npc").getStringList();
   addTargetMapping("combat", "engineer", targets);
   
   for(String name : factionNames)
     {
-    targets = config.get(targetSettings, name+".archer.targets", defaultTargets, "Default targets for: "+name+" archers").getStringList();
+    targets = targetConfig.get(targetSettings, name+".archer.targets", defaultTargets, "Default targets for: "+name+" archers").getStringList();
     addTargetMapping(name, "archer", targets);
     
-    targets = config.get(targetSettings, name+".archer.elite.targets", defaultTargets, "Default targets for: "+name+" elite archers").getStringList();
+    targets = targetConfig.get(targetSettings, name+".archer.elite.targets", defaultTargets, "Default targets for: "+name+" elite archers").getStringList();
     addTargetMapping(name, "archer.elite", targets);
     
-    targets = config.get(targetSettings, name+".soldier.targets", defaultTargets, "Default targets for: "+name+" soldiers").getStringList();
+    targets = targetConfig.get(targetSettings, name+".soldier.targets", defaultTargets, "Default targets for: "+name+" soldiers").getStringList();
     addTargetMapping(name, "soldier", targets);
     
-    targets = config.get(targetSettings, name+".soldier.elite.targets", defaultTargets, "Default targets for: "+name+" elite soldiers").getStringList();
+    targets = targetConfig.get(targetSettings, name+".soldier.elite.targets", defaultTargets, "Default targets for: "+name+" elite soldiers").getStringList();
     addTargetMapping(name, "soldier.elite", targets);
     
-    targets = config.get(targetSettings, name+".leader.targets", defaultTargets, "Default targets for: "+name+" leaders").getStringList();
+    targets = targetConfig.get(targetSettings, name+".leader.targets", defaultTargets, "Default targets for: "+name+" leaders").getStringList();
     addTargetMapping(name, "leader", targets);  
     
-    targets = config.get(targetSettings, name+".leader.elite.targets", defaultTargets, "Default targets for: "+name+" elite leaders").getStringList();
+    targets = targetConfig.get(targetSettings, name+".leader.elite.targets", defaultTargets, "Default targets for: "+name+" elite leaders").getStringList();
     addTargetMapping(name, "leader.elite", targets);  
     
-    targets = config.get(targetSettings, name+".priest.targets", defaultTargets, "Default targets for: "+name+" priests").getStringList();
+    targets = targetConfig.get(targetSettings, name+".priest.targets", defaultTargets, "Default targets for: "+name+" priests").getStringList();
     addTargetMapping(name, "priest", targets); 
     }  
   
-  targets = config.get(targetSettings, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
+  targets = targetConfig.get(targetSettings, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
   		"Should work with any new-ai enabled mob type; vanilla or mod-added.").getStringList();
   
   for(String target : targets)
@@ -373,25 +393,24 @@ public List<String> getValidTargetsFor(String npcType, String npcSubtype)
 
 private void loadFoodValues()
   {  
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.apple), 3000);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.mushroom_stew), 4500);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.bread), 3750);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.carrot), 3000);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.potato), 1750);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.baked_potato), 4500);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.beef), 2250);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_beef), 6000);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.chicken), 1500);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_chicken), 4500);
-//  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.fish), 6);//TODO what to do about raw fish item subtypes?
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_fished), 4500);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.porkchop), 2250);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_porkchop), 6000);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cookie), 1500);
-  config.get(foodSettings, Item.itemRegistry.getNameForObject(Items.pumpkin_pie), 6000);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.apple), 3000);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.mushroom_stew), 4500);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.bread), 3750);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.carrot), 3000);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.potato), 1750);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.baked_potato), 4500);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.beef), 2250);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_beef), 6000);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.chicken), 1500);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_chicken), 4500);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_fished), 4500);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.porkchop), 2250);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_porkchop), 6000);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cookie), 1500);
+  foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.pumpkin_pie), 6000);
   
   
-  ConfigCategory category = config.getCategory(foodSettings);
+  ConfigCategory category = foodConfig.getCategory(foodSettings);
   
   String name;
   int value;
@@ -413,12 +432,12 @@ private void loadDefaultFactionStandings()
       {
       this.factionVsFactionStandings.put(name, new HashMap<String, Boolean>());
       }
-    this.defaultFactionStandings.put(name, config.get(factionSettings, name+".starting_faction_standing", 0, "Default faction standing for: ["+name+"] for new players joining a game.").getInt(0));
+    this.defaultFactionStandings.put(name, factionConfig.get(factionSettings, name+".starting_faction_standing", 0, "Default faction standing for: ["+name+"] for new players joining a game.").getInt(0));
     for(String name2 : factionNames)
       {
       if(name.equals(name2)){continue;}
       key = name+":"+name2;
-      val = config.get(factionSettings, key, false, "How does: "+name+" faction view: "+name2+" faction?\n" +
+      val = factionConfig.get(factionSettings, key, false, "How does: "+name+" faction view: "+name2+" faction?\n" +
       		"If true, "+name+"s will be hostile towards "+name2+"s").getBoolean(false);
       this.factionVsFactionStandings.get(name).put(name2, val);
       }
@@ -495,11 +514,11 @@ public int getDefaultFaction(String factionName)
 
 private void initializeCustomNpcNames()
   {      
-  overrideDefaultNames = config.get(clientSettings, "override_default_names", overrideDefaultNames, "Override Default NPC Names\nDefault="+overrideDefaultNames+"\n" +
+  overrideDefaultNames = nameConfig.get(factionNameOverrideSettings, "override_default_names", overrideDefaultNames, "Override Default NPC Names\nDefault="+overrideDefaultNames+"\n" +
       "If true, default npc names will be overridden with the names specified in "+factionNameSettings+" for\n" +
       "the languages specified in overriden_languages").getBoolean(overrideDefaultNames);
   
-  overridenLanguages = config.get(clientSettings, "overriden_languages", overridenLanguages, "Languages to Override With Custom Names\nDefault=>empty<\n" +
+  overridenLanguages = nameConfig.get(factionNameOverrideSettings, "overriden_languages", overridenLanguages, "Languages to Override With Custom Names\nDefault=>empty<\n" +
       "Any languages specified here will be overriden with the custom npc names specified in "+factionNameSettings+".\n" +
       "Only applicable if override_default_names=true.\n" +
       "Example language codes are: en_US, en_UK, en_CA -- see more information regarding minecraft language packs\n" +
@@ -515,7 +534,7 @@ private void initializeCustomNpcNames()
       fullKey = "npc."+key+".name";
       
       value = StatCollector.translateToLocal(fullKey);//get the default value from MY lang file, use that as the base value          
-      value = config.get(factionNameSettings, key, value).getString();//initialize the default value, and/or return the configured value            
+      value = nameConfig.get(factionNameSettings, key, value).getString();//initialize the default value, and/or return the configured value            
       customNpcNames.put(fullKey, value);//set the returned value into the custom naming map for npc-type
       
      //update expanded key and set custom names for each of the other translation keys for spawner and registry name
@@ -545,14 +564,14 @@ private void initializeCustomHealthValues()
     for(String type : factionNpcSubtypes)
       {
       key = name+"."+type;
-      healthValues.put(key, config.get(npcDefaultHealthSettings, key, 20).getInt(20));
+      healthValues.put(key, healthConfig.get(npcDefaultHealthSettings, key, 20).getInt(20));
       }
     }
-  healthValues.put("combat", config.get(npcDefaultHealthSettings, "combat", 20).getInt(20));
-  healthValues.put("worker",config.get(npcDefaultHealthSettings, "worker", 20).getInt(20));                                                                                                                      
-  healthValues.put("courier", config.get(npcDefaultHealthSettings, "courier", 20).getInt(20));
-  healthValues.put("trader", config.get(npcDefaultHealthSettings, "trader", 20).getInt(20));
-  healthValues.put("priest", config.get(npcDefaultHealthSettings, "priest", 20).getInt(20));  
+  healthValues.put("combat", healthConfig.get(npcDefaultHealthSettings, "combat", 20).getInt(20));
+  healthValues.put("worker",healthConfig.get(npcDefaultHealthSettings, "worker", 20).getInt(20));                                                                                                                      
+  healthValues.put("courier", healthConfig.get(npcDefaultHealthSettings, "courier", 20).getInt(20));
+  healthValues.put("trader", healthConfig.get(npcDefaultHealthSettings, "trader", 20).getInt(20));
+  healthValues.put("priest", healthConfig.get(npcDefaultHealthSettings, "priest", 20).getInt(20));  
   }
 
 public int getMaxHealthFor(String type)
@@ -601,35 +620,35 @@ public void initializeNpcEquipmentConfigs()
     array = eqmp.get(key);
     item = array[0];
     item=item==null? "null" : item;
-    config.get(npcDefaultWeapons, key, item);
+    equipmentConfig.get(npcDefaultWeapons, key, item);
     
     item = array[4];
     item=item==null? "null" : item;
-    config.get(npcArmorHead, key, item);
+    equipmentConfig.get(npcArmorHead, key, item);
     
     item = array[3];
     item=item==null? "null" : item;
-    config.get(npcArmorChest, key, item);
+    equipmentConfig.get(npcArmorChest, key, item);
     
     item = array[2];
     item=item==null? "null" : item;
-    config.get(npcArmorLegs, key, item);
+    equipmentConfig.get(npcArmorLegs, key, item);
     
     item = array[1];
     item=item==null? "null" : item;
-    config.get(npcArmorBoots, key, item);
+    equipmentConfig.get(npcArmorBoots, key, item);
     
     item = array[5];
     item=item==null? "null" : item;
-    config.get(npcWorkItem, key, item);
+    equipmentConfig.get(npcWorkItem, key, item);
     
     item = array[6];
     item=item==null? "null" : item;
-    config.get(npcUpkeepItem, key, item);
+    equipmentConfig.get(npcUpkeepItem, key, item);
     
     item = array[7];
     item=item==null? "null" : item;
-    config.get(npcOffhandItems, key, item);
+    equipmentConfig.get(npcOffhandItems, key, item);
     }
   }
 
@@ -646,6 +665,17 @@ public ItemStack getStartingEquipmentForSlot(String type, int slot)
       }
     }
   return null;
+  }
+
+public void save()
+  {
+  config.save();
+  equipmentConfig.save();
+  nameConfig.save();
+  targetConfig.save();
+  healthConfig.save();
+  foodConfig.save();
+  factionConfig.save();
   }
 
 }

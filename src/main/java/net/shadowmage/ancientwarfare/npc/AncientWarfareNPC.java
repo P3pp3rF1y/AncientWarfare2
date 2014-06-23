@@ -139,7 +139,7 @@ public void postInit(FMLPostInitializationEvent evt)
   statics.postInitCallback();
   proxy.loadSkins();
   AWNPCEntityLoader.loadNpcSubtypeEquipment();
-  config.save();
+  statics.save();
   AWLog.log("Ancient Warfare NPCs Post-Init completed.  Successfully completed all loading stages.");
   }
 
