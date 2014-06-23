@@ -58,15 +58,15 @@ box.setBounds(-0.5f, 0.f, -0.5f, 1, 1, 1);
 model.addPiece(piece);
 piece.addPrimitive(box);
 
-File file = new File(AWCoreStatics.configPath+"/AWConfig/meim/models");
+File file = new File(AWCoreStatics.configPathForFiles+"/meim/models");
 file.mkdirs();
-file = new File(AWCoreStatics.configPath+"/AWConfig/meim/uvmaps");
+file = new File(AWCoreStatics.configPathForFiles+"/meim/uvmaps");
 file.mkdirs();
-file = new File(AWCoreStatics.configPath+"/AWConfig/meim/exportedmodels");
+file = new File(AWCoreStatics.configPathForFiles+"/meim/exportedmodels");
 file.mkdirs();
-file = new File(AWCoreStatics.configPath+"/AWConfig/meim/exportedtextures");
+file = new File(AWCoreStatics.configPathForFiles+"/meim/exportedtextures");
 file.mkdirs();
-file = new File(AWCoreStatics.configPath+"/AWConfig/meim/textures");
+file = new File(AWCoreStatics.configPathForFiles+"/meim/textures");
 file.mkdirs();
 }
 
@@ -224,7 +224,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath+"/AWConfig/meim/models", false)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPathForFiles+"meim/models", false)
         {
         @Override
         public void onFileSelected(File file)
@@ -246,7 +246,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath+"/AWConfig/meim/models", true)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPathForFiles+"meim/models", true)
         {
         @Override
         public void onFileSelected(File file)
@@ -265,7 +265,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath+"/AWConfig/meim/models", false)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPathForFiles+"meim/models", false)
         {
         @Override
         public void onFileSelected(File file)
@@ -284,7 +284,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPath+"/AWConfig/meim/textures", false)
+      GuiFileSelect gui = new GuiFileSelect(GuiModelEditor.this, AWCoreStatics.configPathForFiles+"meim/textures", false)
         {
         @Override
         public void onFileSelected(File file)

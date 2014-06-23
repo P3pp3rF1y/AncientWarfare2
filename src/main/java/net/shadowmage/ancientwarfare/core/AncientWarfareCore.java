@@ -59,12 +59,10 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * setup config file and logger
    */
-  config = new Configuration(evt.getSuggestedConfigurationFile());
+  config = AWCoreStatics.getConfigFor("AncientWarfare");
   log = evt.getModLog();
   
-  AWLog.log("Ancient Warfare Core Pre-Init Started");
-  
-  AWCoreStatics.configPath = evt.getModConfigurationDirectory().getAbsolutePath();
+  AWLog.log("Ancient Warfare Core Pre-Init Started");  
   AWCoreStatics.loadConfig(config);
   
   

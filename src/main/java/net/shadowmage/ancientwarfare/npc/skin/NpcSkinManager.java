@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -36,7 +37,7 @@ private HashMap<String, SkinGroup> skinGroups = new HashMap<String, SkinGroup>()
 
 private Random rng = new Random();
 
-private final String skinMainPath = "config/AWConfig/npc/skins/";
+private final String skinMainPath = AWCoreStatics.configPathForFiles+"npc/skins/";
 private final String defaultSkinPack = "/assets/ancientwarfare/skin_pack/default_skin_pack.zip";
 
 public ResourceLocation getTextureFor(NpcBase npc)

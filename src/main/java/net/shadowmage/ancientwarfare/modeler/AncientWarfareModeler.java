@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.modeler;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.modeler.item.ItemModelEditor;
 import net.shadowmage.ancientwarfare.modeler.proxy.CommonProxyModeler;
@@ -48,13 +49,11 @@ public void preInit(FMLPreInitializationEvent evt)
   AWLog.log("Ancient Warfare Modeler Pre-Init started"); 
   ModuleStatus.modelerLoaded = true;
   log = AncientWarfareCore.log;
-  config = new Configuration(evt.getSuggestedConfigurationFile());
+  config = AWCoreStatics.getConfigFor("AncientWarfareModeler");
   
   /**
    * internal registry
-   */
-  
-  
+   */    
   editorOpener = new ItemModelEditor("editor_opener");
   editorOpener.setTextureName("ancientwarfare:modeler/editor_opener");
   GameRegistry.registerItem(editorOpener, "editor_opener");

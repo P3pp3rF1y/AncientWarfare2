@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.config;
 
+import java.io.File;
+
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -8,9 +10,10 @@ public class AWCoreStatics
 {
 
 public static boolean DEBUG = true;
-public static String configPath;//the base AW config folder
+public static String configPathForFiles = "config/ancientwarfare/";
 public static final String resourcePath = "/assets/ancientwarfare/resources/";
 private static Configuration config;
+
 /**
  * category names
  */
@@ -23,6 +26,7 @@ public static final String researchSettings = "06_research";
 public static final String researchDetailSettings = "07_research_details";
 public static final String recipeDetailSettings = "08_recipe_details";
 public static final String recipeResearchDetails = "09_recipe_research_details";
+
 /**
  * research options
  */
@@ -158,6 +162,11 @@ public static boolean isItemResearched(Item item)
   {
   String name = Item.itemRegistry.getNameForObject(item);
   return config.get(recipeResearchDetails, name, true).getBoolean(true);
+  }
+
+public static Configuration getConfigFor(String modID)
+  {
+  return new Configuration(new File(configPathForFiles, modID+".cfg"));
   }
 
 }

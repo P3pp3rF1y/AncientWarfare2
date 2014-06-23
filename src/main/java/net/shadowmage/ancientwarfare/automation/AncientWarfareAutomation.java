@@ -31,6 +31,7 @@ import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -88,7 +89,7 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * setup module-owned config file and config-access class
    */
-  config = new Configuration(evt.getSuggestedConfigurationFile());
+  config = AWCoreStatics.getConfigFor("AncientWarfareAutomation");
   statics = new AWAutomationStatics(config);  
     
   /**

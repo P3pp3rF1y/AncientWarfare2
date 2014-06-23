@@ -41,6 +41,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.npc.trade.NpcTrade;
@@ -249,7 +250,7 @@ public void initializeValues()
   		"skin packs or all npcs will use the default skin.").getBoolean(loadDefaultSkinPack);
  
   exportEntityNames = config.get(serverSettings, "export_entity_names", false, "Export entity name list\nDefault="+exportEntityNames+"\n" +
-  		"If true, a text file will be created in the main AWConfig directory containing a list of all registered in-game entity names.\n" +
+  		"If true, a text file will be created in the main ancientwarfare config directory containing a list of all registered in-game entity names.\n" +
   		"These names may be used to populate the NPC target lists.").getBoolean(exportEntityNames);
   this.config.save();
   }
@@ -258,7 +259,7 @@ public void postInitCallback()
   {
   if(exportEntityNames)
     {
-    File file = new File("config/AWConfig");
+    File file = new File("config/ancientwarfare");
     file.mkdirs();
     file = new File(file, "entity_names.txt");
     FileWriter wr = null;
@@ -429,7 +430,7 @@ private void loadDefaultFactionStandings()
  */
 public void loadDefaultTrades()
   {
-  File file = new File("config/AWConfig/npc/trades");
+  File file = new File(AWCoreStatics.configPathForFiles+"npc/trades");
   file.mkdirs();
   file = new File(file, "trades.cfg");
   if(!file.exists())

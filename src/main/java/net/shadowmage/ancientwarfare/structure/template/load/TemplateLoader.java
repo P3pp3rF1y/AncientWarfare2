@@ -46,6 +46,7 @@ import java.util.zip.ZipFile;
 
 import javax.imageio.ImageIO;
 
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -57,7 +58,6 @@ public class TemplateLoader
 public static final String defaultTemplateDirectory = "/assets/ancientwarfare/templates/";
 public static String outputDirectory = null;
 public static String includeDirectory = null;
-public static String configBaseDirectory = null;
 
 private List<File> probableStructureFiles = new ArrayList<File>();
 private List<File> probableZipFiles = new ArrayList<File>();
@@ -73,9 +73,8 @@ public static TemplateLoader instance(){return instance;}
 
 public void initializeAndExportDefaults(String path)
   {   
-  outputDirectory = path+"/AWConfig/structures/export/";
-  includeDirectory = path+"/AWConfig/structures/included/";
-  configBaseDirectory = path+"/AWConfig/"; 
+  outputDirectory = AWCoreStatics.configPathForFiles+"structures/export/";
+  includeDirectory = AWCoreStatics.configPathForFiles+"structures/included/";
 
   /**
    * create default dirs if they don't exist...

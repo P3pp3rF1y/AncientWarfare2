@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.vehicle;
 
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.crafting.AWVehicleCrafting;
@@ -50,7 +51,7 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * setup module-owned config file and config-access class
    */
-  config = new Configuration(evt.getSuggestedConfigurationFile());
+  config = AWCoreStatics.getConfigFor("AncientWarfareVehicle");
   statics = new AWVehicleStatics(config);
     
   /**

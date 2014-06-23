@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -291,7 +292,7 @@ private void addFileControls()
     @Override
     protected void onPressed()
       {
-      File path = new File("config/AWConfig/meim/uvmaps/"+System.currentTimeMillis()+".png");
+      File path = new File(AWCoreStatics.configPathForFiles+"meim/uvmaps/"+System.currentTimeMillis()+".png");
       try
         {
         ImageIO.write(GuiModelEditor.image, "png", path);

@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
@@ -105,7 +106,7 @@ public ResourceLocation getImageFor(String templateName)
 
 public void handleStructureImageNameList(Map<String, String> imageMap)
   {    
-  String pathBase = "config/AWConfig/structures/image_cache/";
+  String pathBase = AWCoreStatics.configPathForFiles+"structures/image_cache/";
   File dirBase = new File(pathBase);
   dirBase.mkdirs();
   Map<String, String> neededFiles = new HashMap<String, String>();
@@ -129,7 +130,7 @@ public void handleStructureImageNameList(Map<String, String> imageMap)
 
 private void loadTemplateImage(String imageName)
   {
-  String pathBase = "config/AWConfig/structures/image_cache/";
+  String pathBase = AWCoreStatics.configPathForFiles+"structures/image_cache/";
   File file = new File(pathBase+imageName);
   ResourceLocation loc = new ResourceLocation("ancientwarfare", pathBase+imageName);
   
@@ -202,7 +203,7 @@ private String getMD5(File file) throws IOException
 public void addStructureImage(String imageName, BufferedImage image)
   {
   AWLog.logDebug("Received client side image of: "+imageName+" saving to image cache, and loading texture");
-  String pathBase = "config/AWConfig/structures/image_cache/";
+  String pathBase = AWCoreStatics.configPathForFiles+"structures/image_cache/";
   File file;
   try
     {

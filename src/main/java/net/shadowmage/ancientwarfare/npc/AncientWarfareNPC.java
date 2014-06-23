@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -71,7 +72,7 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * setup module-owned config file and config-access class
    */
-  config = new Configuration(evt.getSuggestedConfigurationFile());
+  config = AWCoreStatics.getConfigFor("AncientWarfareNpc");
   statics = new AWNPCStatics(config);
     
   /**
