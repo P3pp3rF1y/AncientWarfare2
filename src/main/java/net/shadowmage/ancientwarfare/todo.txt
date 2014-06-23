@@ -39,6 +39,7 @@ Licensing
 * Torque API:	
 	set power capacity / power loss / power use for all torque blocks
 	balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
+	performance / caching 
 * figure out torque tile network updates
 	--rotation speed will be (powerOutput)/(maxOutpout) + (storedEnergy)/(maxEnergy)
 		--
