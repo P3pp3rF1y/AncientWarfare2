@@ -89,7 +89,7 @@ private void addRecipeModeControsl()
   detailsArea.addGuiElement(new RecipeButton(8, totalHeight, selectedRecipe));
   totalHeight += 12;
   
-  detailsArea.addGuiElement(new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.research_needed")));
+  detailsArea.addGuiElement(new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.research.research_needed")));
   totalHeight+=14;
   
   if(selectedRecipe!=null)
@@ -134,7 +134,7 @@ private void addResearchModeControls()
   detailsArea.addGuiElement(new GoalButton(8, totalHeight, selectedGoal));
   totalHeight+=16;
   
-  detailsArea.addGuiElement(new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.researched_items")));
+  detailsArea.addGuiElement(new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.research.researched_items")));
   totalHeight+=14;
   
   if(selectedGoal!=null)

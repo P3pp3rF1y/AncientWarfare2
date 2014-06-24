@@ -520,6 +520,9 @@ guistrings.research.learned_from_item=Learned %s from Research Notes!
 guistrings.research.added_progress=Added progress towards your current research from the research notes.
 guistrings.research.right_click_to_bind=Right Click To Assign
 guistrings.research.right_click_to_view=Right Click To View
+guistrings.research.research_mode=Research View Mode (or recipe view mode)?
+guistrings.research.researched_items=Researched Items
+guistrings.research.research_needed=Research Needed
 
 #npc
 entity.ancientwarfarenpc.aw_npc_worker.name=Worker
