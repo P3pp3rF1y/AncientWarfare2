@@ -13,6 +13,7 @@ import net.minecraftforge.oredict.RecipeSorter;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
+import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
@@ -190,6 +191,13 @@ public static void loadRecipes()
       'p', Blocks.planks,
       'l', Items.leather);
   
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNPCBlockLoader.townHall), "leadership",
+      "sgs",
+      "_c_",
+      "s_s",
+      '_', Blocks.log,
+      'c', Blocks.chest,
+      's', Blocks.stonebrick);
   }
 
 
