@@ -20,6 +20,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackRanged;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindCommanderFaction;
@@ -64,6 +65,10 @@ public NpcFactionArcher(World par1World)
 @Override
 public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
   {
+  AWLog.logDebug("Executing NPC Ranged attack.  Target: "+par1EntityLivingBase);
+  AWLog.logDebug("Target Info:  dead: "+par1EntityLivingBase.isDead+" loaded in world list: "+par1EntityLivingBase.worldObj.getLoadedEntityList().contains(par1EntityLivingBase));
+  AWLog.logDebug("Called from: ");
+  new Exception().printStackTrace();
   // TODO clean this up, increase max attack distance
   
   //TODO get attack damage to use from monster attributes
