@@ -620,35 +620,43 @@ public void initializeNpcEquipmentConfigs()
     array = eqmp.get(key);
     item = array[0];
     item=item==null? "null" : item;
-    equipmentConfig.get(npcDefaultWeapons, key, item);
+    item=equipmentConfig.get(npcDefaultWeapons, key, item).getString();
+    array[0]=item;
     
     item = array[4];
     item=item==null? "null" : item;
-    equipmentConfig.get(npcArmorHead, key, item);
+    item=equipmentConfig.get(npcArmorHead, key, item).getString();
+    array[4]=item;
     
     item = array[3];
     item=item==null? "null" : item;
-    equipmentConfig.get(npcArmorChest, key, item);
-    
+    item=equipmentConfig.get(npcArmorChest, key, item).getString();
+    array[3]=item;
+        
     item = array[2];
     item=item==null? "null" : item;
-    equipmentConfig.get(npcArmorLegs, key, item);
+    item=equipmentConfig.get(npcArmorLegs, key, item).getString();
+    array[2]=item;
     
     item = array[1];
     item=item==null? "null" : item;
-    equipmentConfig.get(npcArmorBoots, key, item);
+    item=equipmentConfig.get(npcArmorBoots, key, item).getString();
+    array[1]=item;
     
     item = array[5];
     item=item==null? "null" : item;
-    equipmentConfig.get(npcWorkItem, key, item);
+    item=equipmentConfig.get(npcWorkItem, key, item).getString();
+    array[5]=item;
     
     item = array[6];
     item=item==null? "null" : item;
-    equipmentConfig.get(npcUpkeepItem, key, item);
+    item=equipmentConfig.get(npcUpkeepItem, key, item).getString();
+    array[6]=item;
     
     item = array[7];
     item=item==null? "null" : item;
-    equipmentConfig.get(npcOffhandItems, key, item);
+    item=equipmentConfig.get(npcOffhandItems, key, item).getString();
+    array[7]=item;
     }
   }
 

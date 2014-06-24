@@ -18,6 +18,7 @@ Licensing
 	place it below the mouse
 	if it would go offscreen to the right, adjust to the left -just- enough to not go offscreen
 	--if tooltip is too wide...erm..fix the width of it
+* clean up inconsistencies in research-book GUI between modes -- spacing / layout	
 		
 ****************************STRUCTURE MODULE TODO****************************
 > investigate moving towards fully-qualified block and item names -- e.g. 'minecraft:stone' instead of 'stone'
