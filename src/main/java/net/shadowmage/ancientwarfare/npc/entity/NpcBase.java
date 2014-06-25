@@ -791,6 +791,10 @@ protected void onRepack()
 @Override
 public void readEntityFromNBT(NBTTagCompound tag)
   {
+  for(int i = 0; i<5; i++)
+    {
+    setCurrentItemOrArmor(i, null);
+    }
   super.readEntityFromNBT(tag);
   ownerName = tag.getString("owner");  
   if(tag.hasKey("ordersStack")){ordersStack = InventoryTools.readItemStack(tag.getCompoundTag("ordersStack"));}
