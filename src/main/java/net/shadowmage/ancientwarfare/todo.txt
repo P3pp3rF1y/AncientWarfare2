@@ -60,6 +60,8 @@ Licensing
 * add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC
 * recipes for shields
 * more shield types -- because apparently people want them
+	-- figure out way to have multiple styles of shields
+	-- use nbt?  how to allow for nbt-shields on npc default-equipment assignment?
 * randomize horse type/color/etc for faction-based NPCs
 		
 ****************************VEHICLE MODULE TODO****************************
