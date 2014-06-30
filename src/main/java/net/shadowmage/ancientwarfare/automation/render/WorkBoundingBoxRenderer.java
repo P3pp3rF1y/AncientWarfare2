@@ -64,10 +64,6 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
     {
     return;
     }
-  if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_WORK_BOUNDS))
-    {
-    renderWorkBounds(player, evt.partialTicks);
-    }
   ItemStack stack = player.inventory.getCurrentItem();
   if(stack!=null && stack.getItem() instanceof ItemBlockWorksite)
     {
@@ -166,35 +162,6 @@ public void onRenderTick(RenderTickEvent evt)
     fr.drawString("foo.x: "+x, 8, 8, 0xffffffff);
     fr.drawString("foo.y: "+y, 8, 18, 0xffffffff);
     fr.drawString("foo.z: "+z, 8, 28, 0xffffffff);
-    }
-  }
-
-@SuppressWarnings("unchecked")
-private void renderWorkBounds(EntityPlayer player, float delta)
-  {
-  World world = player.worldObj;
-  Iterator<TileEntity> it = world.loadedTileEntityList.iterator();
-  TileEntity te;
-  BlockPosition min;
-  BlockPosition max;
-  IWorkSite site;
-  while(it.hasNext() && (te = it.next())!=null)
-    {
-    if(te instanceof IWorkSite)
-      {      
-      site = (IWorkSite)te;
-      if(site.hasWorkBounds())
-        {
-        min = site.getWorkBoundsMin();
-        max = site.getWorkBoundsMax();
-        if(max==null)
-          {
-          max = min;
-          }
-        pos2Cache.reassign(max.x + 1, max.y + 1, max.z + 1);//using cached value so that the reference can be manipulated
-//        renderBoundingBox(player, min, pos2Cache, delta);
-        }
-      }
     }
   }
 
