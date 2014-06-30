@@ -19,6 +19,7 @@ public ItemOrders(String name)
   this.setCreativeTab(AWNpcItemLoader.npcTab);
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4)
   {

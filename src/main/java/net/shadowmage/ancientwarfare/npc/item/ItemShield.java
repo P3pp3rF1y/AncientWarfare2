@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
 
 public class ItemShield extends Item
 {

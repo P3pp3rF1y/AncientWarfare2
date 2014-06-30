@@ -48,6 +48,7 @@ public String getUnlocalizedName(ItemStack par1ItemStack)
   return super.getUnlocalizedName(par1ItemStack)+"."+par1ItemStack.getItemDamage();
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void getSubItems(Item item, CreativeTabs p_150895_2_, List list)
   {

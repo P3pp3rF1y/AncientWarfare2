@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.proxy;
 
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;

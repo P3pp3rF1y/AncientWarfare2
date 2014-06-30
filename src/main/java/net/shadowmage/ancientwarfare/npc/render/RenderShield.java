@@ -1,12 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.render;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
@@ -14,15 +9,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.RenderTools;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class RenderShield implements IItemRenderer
 {
 
 public RenderShield()
   {
-  ItemRenderer render = new ItemRenderer(Minecraft.getMinecraft());
   }
 
 @Override
@@ -40,10 +35,7 @@ public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRe
 @Override
 public void renderItem(ItemRenderType type, ItemStack item, Object... data)
   {  
-  RenderBlocks blocks = (RenderBlocks)data[0];
   EntityLivingBase entity = (EntityLivingBase)data[1];
-//  AWLog.logDebug("rendering...: "+item+" :: "+entity);
-//  Minecraft.getMinecraft().entityRenderer.itemRenderer.renderItem(entity, item, item.getItemDamage(), type);
   render(entity, item);
   }
 

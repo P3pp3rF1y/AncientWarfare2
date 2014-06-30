@@ -39,6 +39,7 @@ public TileEntity createTileEntity(World world, int metadata)
   return new TileTorqueStorageFlywheel();
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list)
   {

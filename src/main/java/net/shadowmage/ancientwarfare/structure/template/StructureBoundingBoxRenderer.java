@@ -61,11 +61,6 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
     {
     return;
     }
-//  if(item==AWStructuresItemLoader.structureBuilderCreative || item==AWStructuresItemLoader.structureGenerator)
-//    {
-//    renderBuildBoundingBox(player, stack, evt.partialTicks);
-//    }
-//  else
   if(item==AWStructuresItemLoader.scanner)
     {
     renderScannerBoundingBox(player, stack, evt.partialTicks);
@@ -102,23 +97,6 @@ private void renderScannerBoundingBox(EntityPlayer player, ItemStack stack, floa
     max.offset(1, 1, 1);
     renderBoundingBox(player, min, max, delta);
     }
-  }
-
-private void renderBuildBoundingBox(EntityPlayer player, ItemStack stack, float delta)
-  {
-  ItemStructureSettings.getSettingsFor(stack, settings);
-  if(!settings.hasName()){return;}
-  String name = settings.name();
-  StructureTemplateClient structure = StructureTemplateManagerClient.instance().getClientTemplate(name);
-  if(structure==null){return;}
-  BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
-  int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
-  if(hit==null){return;}
-  bb.setFromStructure(hit.x, hit.y, hit.z, face, structure.xSize, structure.ySize, structure.zSize, structure.xOffset, structure.yOffset, structure.zOffset);
-  BlockPosition pos1 = bb.min;
-  BlockPosition pos2 = bb.max.copy();
-  pos2.offset(1, 1, 1);
-  renderBoundingBox(player, pos1, pos2, delta);
   }
 
 private void renderBoundingBox(EntityPlayer player, BlockPosition min, BlockPosition max, float delta)

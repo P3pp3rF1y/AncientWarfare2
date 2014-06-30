@@ -32,6 +32,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
+import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -63,10 +64,10 @@ public void handleRenderLastEvent(RenderWorldLastEvent evt)
     {
     return;
     }
-//  if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_WORK_BOUNDS))
-//    {
-//    renderWorkBounds(player, evt.partialTicks);
-//    }
+  if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_WORK_BOUNDS))
+    {
+    renderWorkBounds(player, evt.partialTicks);
+    }
   ItemStack stack = player.inventory.getCurrentItem();
   if(stack!=null && stack.getItem() instanceof ItemBlockWorksite)
     {

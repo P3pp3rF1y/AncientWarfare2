@@ -113,7 +113,7 @@ public Multimap getItemAttributeModifiers()
   return multimap;
   }
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({ "rawtypes", "unchecked" })
 @Override
 @SideOnly(Side.CLIENT)
 public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4)

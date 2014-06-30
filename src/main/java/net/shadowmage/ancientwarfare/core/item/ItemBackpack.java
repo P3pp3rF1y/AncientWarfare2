@@ -25,6 +25,7 @@ public ItemBackpack(String regName)
   this.setTextureName("ancientwarfare:core/backpack");
   }
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 @Override
 public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4)
   {

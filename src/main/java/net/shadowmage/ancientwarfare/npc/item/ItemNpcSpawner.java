@@ -37,6 +37,7 @@ public ItemNpcSpawner(String regName)
   this.setTextureName("ancientwarfare:npc/spawner_miner");
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4)
   {

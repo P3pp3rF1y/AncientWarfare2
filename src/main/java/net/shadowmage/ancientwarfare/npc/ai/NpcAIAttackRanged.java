@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIAttackRanged extends NpcAI

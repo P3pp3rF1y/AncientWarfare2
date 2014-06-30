@@ -28,6 +28,7 @@ public ClickableArea(int topLeftX, int topLeftY, int width, int height)
       return true;
       }
     };
+  addNewListener(listener);
   }
 
 protected abstract void onClicked();

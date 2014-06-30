@@ -59,6 +59,7 @@ public void worldLoaded(WorldEvent.Load evt)
   if(evt.world.isRemote && !loaded) 
     {
     loaded = true;
+    @SuppressWarnings("rawtypes")
     Class clz;
     try
       {
@@ -66,6 +67,7 @@ public void worldLoaded(WorldEvent.Load evt)
       if(clz!=null)
         {
         AWLog.logDebug("NEI Detected, attempting load of NEI Plugin");
+        @SuppressWarnings("rawtypes")
         Class clz2 = Class.forName("net.shadowmage.ancientwarfare.nei_plugin.AWNeiProxyActual");
         try
           {

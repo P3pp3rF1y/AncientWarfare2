@@ -64,6 +64,7 @@ private boolean canPlayerCraft(RecipeResearched recipe, World world, String play
   return canCraft;
   }
 
+@SuppressWarnings("unchecked")
 private void addRecipe(RecipeResearched recipe)
   {
   Item item = recipe.getRecipeOutput().getItem();
@@ -94,7 +95,6 @@ public RecipeResearched createRecipe(ItemStack result, String research, Object .
     }  
   }
 
-@SuppressWarnings("unchecked")
 public RecipeResearched createRecipe(ItemStack result, String[] research, Object ... inputArray)
   {
   String recipeCharactersAsSequence = "";

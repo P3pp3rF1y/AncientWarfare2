@@ -5,7 +5,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
-import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 
 
@@ -17,14 +16,13 @@ public class AWStructureCrafting
  */
 public static void loadRecipes()
   {
-  RecipeResearched recipe;
-  recipe = AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWBlocks.draftingStation), "construction",
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWBlocks.draftingStation), "construction",
             "_p_",
             "_w_",
             "_s_",
             '_',Blocks.planks, 'p', Items.paper, 'w', Blocks.crafting_table, 's', Blocks.stone);
   
-  recipe = AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.verticalWooden"), "construction",
+  AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.verticalWooden"), "construction",
       "sps",
       "sps",
       "srs",
@@ -32,7 +30,7 @@ public static void loadRecipes()
       'r', Items.redstone,
       's', Blocks.stone);
   
-  recipe = AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.verticalIron"), "construction",
+  AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.verticalIron"), "construction",
       "sps",
       "sps",
       "srs",
@@ -40,7 +38,7 @@ public static void loadRecipes()
       'r', Items.redstone,
       's', Blocks.stone);
   
-  recipe = AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.singleWood"), "construction",
+  AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.singleWood"), "construction",
       "sss",
       "ppp",
       "srs",
@@ -48,7 +46,7 @@ public static void loadRecipes()
       'r', Items.redstone,
       's', Blocks.stone);
   
-  recipe = AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.singleIron"), "construction",
+  AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.singleIron"), "construction",
       "sss",
       "ppp",
       "srs",
@@ -56,7 +54,7 @@ public static void loadRecipes()
       'r', Items.redstone,
       's', Blocks.stone);
   
-  recipe = AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.doubleWood"), "construction",
+  AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.doubleWood"), "construction",
       "sss",
       "ppp",
       "prp",
@@ -64,7 +62,7 @@ public static void loadRecipes()
       'r', Items.redstone,
       's', Blocks.stone);
   
-  recipe = AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.doubleIron"), "construction",
+  AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.doubleIron"), "construction",
       "sss",
       "ppp",
       "prp",
@@ -72,7 +70,7 @@ public static void loadRecipes()
       'r', Items.redstone,
       's', Blocks.stone);
   
-  recipe = AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.drawbridge"), "construction",
+  AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.drawbridge"), "construction",
       "ppp",
       "ppp",
       "prp",

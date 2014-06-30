@@ -218,7 +218,7 @@ public String toString()
 public void getItems(List<ItemStack> items)
   {
   ItemStack outStack;
-  int qty, out;
+  int qty;
   for(ItemHashEntry wrap1 : map.keySet())
     {
     qty = map.get(wrap1).count;

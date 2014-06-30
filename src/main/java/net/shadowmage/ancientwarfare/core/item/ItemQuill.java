@@ -37,6 +37,7 @@ public ItemQuill(String regName, ToolMaterial material)
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4)
   {

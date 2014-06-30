@@ -77,6 +77,7 @@ public boolean invertFacing()
   return true;
   }
 
+@SuppressWarnings("rawtypes")
 @Override
 public void addCollisionBoxesToList(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_)
   {
@@ -125,11 +126,10 @@ public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 @Override
 public void setBlockBoundsForItemRender()
   {
-  float wmin = 0.125f;
   float wmax = 0.875f;
   float hmin = 0.375f;
   float hmax = 0.875f;
-  setBlockBounds(wmax, hmin, 0, 1.f, hmax, 1);
+  setBlockBounds(wmax, hmin, 0.f, 1.f, hmax, 1.f);
   }
 
 @Override

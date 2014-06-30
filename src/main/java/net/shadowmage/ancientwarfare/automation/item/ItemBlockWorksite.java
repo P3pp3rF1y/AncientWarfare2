@@ -84,6 +84,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
     }
   }
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Override
 public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4)
   {
