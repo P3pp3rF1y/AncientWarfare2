@@ -33,6 +33,7 @@ Licensing
 * validate weighted-selection algorithm in structure template selection--seems a bit off
 * structure selection 'done' button non-functional in structure-builder selection gui??
 * clean up survival mode structure building -- validate area is clear before placing block
+* lighting on gate entities
 					
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
