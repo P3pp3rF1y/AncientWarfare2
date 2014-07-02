@@ -101,7 +101,7 @@ private void renderScannerBoundingBox(EntityPlayer player, ItemStack stack, floa
 
 private void renderBoundingBox(EntityPlayer player, BlockPosition min, BlockPosition max, float delta)
   {
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x, max.y, max.z);
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
   RenderTools.adjustBBForPlayerPos(bb, player, delta);
   RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
   }

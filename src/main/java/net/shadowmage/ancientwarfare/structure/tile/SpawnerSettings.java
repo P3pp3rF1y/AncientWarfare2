@@ -188,7 +188,7 @@ private void spawnEntities()
     }
   if(playerRange>0)
     {
-    List<EntityPlayer> nearbyPlayers = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-playerRange, yCoord-playerRange, zCoord-playerRange, xCoord+playerRange+1, yCoord+playerRange+1, zCoord+playerRange+1));
+    List<EntityPlayer> nearbyPlayers = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord-playerRange, yCoord-playerRange, zCoord-playerRange, xCoord+playerRange+1, yCoord+playerRange+1, zCoord+playerRange+1));
     if(nearbyPlayers.isEmpty())
       {
       return;
@@ -208,7 +208,7 @@ private void spawnEntities()
   
   if(maxNearbyMonsters>0)
     {
-    List<Entity> nearbyEntities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-4, yCoord-4, zCoord-4, xCoord+5, yCoord+5, zCoord+5));
+    List<Entity> nearbyEntities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord-4, yCoord-4, zCoord-4, xCoord+5, yCoord+5, zCoord+5));
     int nearbyCount = 0;
     for(Entity e : nearbyEntities)
       {

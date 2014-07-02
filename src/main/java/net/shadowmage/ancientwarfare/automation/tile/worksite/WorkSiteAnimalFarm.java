@@ -168,7 +168,7 @@ private void rescan()
   
   BlockPosition min = getWorkBoundsMin();
   BlockPosition max = getWorkBoundsMax();
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
   
   List<EntityAnimal> entityList = worldObj.getEntitiesWithinAABB(EntityAnimal.class, bb);
   
@@ -445,7 +445,7 @@ private void pickupEggs()
   {
   BlockPosition p1 = getWorkBoundsMin();
   BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
   List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, bb);
   ItemStack stack;
   for(EntityItem item : items)

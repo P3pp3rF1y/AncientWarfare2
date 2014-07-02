@@ -45,7 +45,7 @@ private void renderBoundingBox(int x, int y, int z, BlockPosition min, BlockPosi
   {  
   GL11.glDisable(GL11.GL_LIGHTING);
   GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
   if(expansion!=0.f){bb = bb.expand(expansion, expansion, expansion);}
   bb.offset(-x, -y, -z);
   RenderTools.drawOutlinedBoundingBox2(bb, 1.f, 1.f, 1.f, 0.0625f);

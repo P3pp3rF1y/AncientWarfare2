@@ -167,7 +167,7 @@ public void onRenderTick(RenderTickEvent evt)
 
 private void renderBoundingBox(EntityPlayer player, BlockPosition min, BlockPosition max, float delta, float r, float g, float b, float expansion)
   {
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x, max.y, max.z);
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
   if(expansion!=0.f){bb = bb.expand(expansion, expansion, expansion);}
   RenderTools.adjustBBForPlayerPos(bb, player, delta);
   RenderTools.drawOutlinedBoundingBox(bb, r, g, b);

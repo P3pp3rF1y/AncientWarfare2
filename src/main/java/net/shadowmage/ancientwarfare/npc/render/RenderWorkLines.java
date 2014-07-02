@@ -116,7 +116,7 @@ public void renderCombatList(EntityPlayer player, ItemStack orderStack, float pa
 
 private void renderListOfPoints(EntityPlayer player, List<BlockPosition> points, float partialTick)
   {
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(0, 0, 0, 1, 1, 1);  
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);  
   BlockPosition prev = null;
   int index = 1;
   for(BlockPosition point : points)

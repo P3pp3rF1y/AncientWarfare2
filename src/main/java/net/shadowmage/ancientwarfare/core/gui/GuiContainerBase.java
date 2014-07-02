@@ -434,7 +434,7 @@ public static void pushViewport(int x, int y, int w, int h)
   h = bry - tly;
   
   Minecraft mc = Minecraft.getMinecraft();
-  ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+  ScaledResolution scaledRes = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
   int guiScale = scaledRes.getScaleFactor();
   GL11.glEnable(GL11.GL_SCISSOR_TEST);  
   
@@ -457,7 +457,7 @@ public static void popViewport()
   if(p!=null)
     {
     Minecraft mc = Minecraft.getMinecraft();
-    ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+    ScaledResolution scaledRes = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
     int guiScale = scaledRes.getScaleFactor();
     GL11.glEnable(GL11.GL_SCISSOR_TEST);  
     

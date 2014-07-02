@@ -217,14 +217,14 @@ private void renderConstructionToolBoxes(EntityPlayer player, ItemStack stack, f
 
 private void renderBoundingBox(EntityPlayer player, BlockPosition min, BlockPosition max, float delta)
   {
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
   RenderTools.adjustBBForPlayerPos(bb, player, delta);
   RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
   }
 
 private void renderBoundingBox(EntityPlayer player, BlockPosition min, BlockPosition max, float delta, float r, float g, float b)
   {
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
   RenderTools.adjustBBForPlayerPos(bb, player, delta);
   RenderTools.drawOutlinedBoundingBox(bb, r, g, b);
   }

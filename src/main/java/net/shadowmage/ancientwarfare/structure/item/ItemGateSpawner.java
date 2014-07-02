@@ -201,14 +201,14 @@ protected boolean canSpawnGate(World world, BlockPosition pos1, BlockPosition po
   {  
   BlockPosition min = BlockTools.getMin(pos1, pos2);
   BlockPosition max = BlockTools.getMax(pos1, pos2);
-  AxisAlignedBB newGateBB = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
+  AxisAlignedBB newGateBB = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
   AxisAlignedBB oldGateBB = null;
   List<EntityGate> gates = world.getEntitiesWithinAABB(EntityGate.class, newGateBB);
   for(EntityGate gate : gates)
     {  
     min = BlockTools.getMin(gate.pos1, gate.pos2);
     max = BlockTools.getMax(gate.pos1, gate.pos2);
-    oldGateBB = AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
+    oldGateBB = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1);
     if(oldGateBB.intersectsWith(newGateBB))
       {
       return false;

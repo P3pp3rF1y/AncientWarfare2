@@ -101,7 +101,7 @@ public void handleNpcDeath(NpcPlayerOwned npc, DamageSource source)
 
 private List<NpcPlayerOwned> getNpcsInArea()
   {
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(xCoord-broadcastRange, yCoord-broadcastRange/2, zCoord-broadcastRange, xCoord+broadcastRange+1, yCoord+broadcastRange/2+1, zCoord+broadcastRange+1);
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord-broadcastRange, yCoord-broadcastRange/2, zCoord-broadcastRange, xCoord+broadcastRange+1, yCoord+broadcastRange/2+1, zCoord+broadcastRange+1);
   @SuppressWarnings("unchecked")
   List<NpcPlayerOwned> npcs = worldObj.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
   return npcs;

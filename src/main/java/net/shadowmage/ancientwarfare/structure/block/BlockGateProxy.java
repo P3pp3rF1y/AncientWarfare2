@@ -90,7 +90,7 @@ public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, i
 @Override
 public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int x,  int y, int z)
   {
-  return AxisAlignedBB.getAABBPool().getAABB(x+0.5d,y+0.5d,z+0.5d,x+0.5d,y+0.5d,z+0.5d);
+  return AxisAlignedBB.getBoundingBox(x+0.5d,y+0.5d,z+0.5d,x+0.5d,y+0.5d,z+0.5d);
   }
 
 @Override

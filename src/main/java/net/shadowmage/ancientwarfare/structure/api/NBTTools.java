@@ -33,6 +33,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
@@ -348,7 +349,7 @@ public static NBTTagCompound readNBTTagCompound(DataInputStream data) throws IOE
     {
     byte[] var2 = new byte[var1];
     data.readFully(var2);
-    return CompressedStreamTools.decompress(var2);
+    return CompressedStreamTools.readCompressed(data);
     }
   }
 
@@ -370,7 +371,7 @@ public static NBTTagCompound readTagFromStream(ByteArrayDataInput data)
     data.readFully(var2);
     try
       {
-      return CompressedStreamTools.decompress(var2);
+      return CompressedStreamTools.func_152457_a(var2, NBTSizeTracker.field_152451_a);
       } 
     catch (IOException e)
       {

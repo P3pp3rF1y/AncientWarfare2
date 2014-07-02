@@ -56,19 +56,19 @@ public static MovingObjectPosition tracePathWithYawPitch(World world, float x, f
 @SuppressWarnings("unchecked")
 public static MovingObjectPosition tracePath(World world, double x, double y, double z, double tx, double ty, double tz, float borderSize, HashSet<Entity> excluded)
   {
-  Vec3 startVec = Vec3.fakePool.getVecFromPool(x, y, z);
-  Vec3 endVec = Vec3.fakePool.getVecFromPool(tx, ty, tz);
+  Vec3 startVec = Vec3.createVectorHelper(x, y, z);
+  Vec3 endVec = Vec3.createVectorHelper(tx, ty, tz);
   double minX = x < tx ? x : tx;
   double minY = y < ty ? y : ty;
   double minZ = z < tz ? z : tz;
   double maxX = x > tx ? x : tx;
   double maxY = y > ty ? y : ty; 
   double maxZ = z > tz ? z : tz;
-  AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(minX, minY, minZ, maxX, maxY, maxZ).expand(borderSize, borderSize, borderSize);
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ).expand(borderSize, borderSize, borderSize);
   List<Entity> allEntities = world.getEntitiesWithinAABBExcludingEntity(null, bb);  
   MovingObjectPosition blockHit = world.rayTraceBlocks(startVec, endVec);
-  startVec = Vec3.fakePool.getVecFromPool(x, y, z);
-  endVec = Vec3.fakePool.getVecFromPool(tx, ty, tz);
+  startVec = Vec3.createVectorHelper(x, y, z);
+  endVec = Vec3.createVectorHelper(tx, ty, tz);
   Entity closestHitEntity = null;
   float closestHit = Float.POSITIVE_INFINITY;
   float currentHit = 0.f;

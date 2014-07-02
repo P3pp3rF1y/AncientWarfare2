@@ -151,7 +151,7 @@ public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey k
 @Override
 public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {  
-  if(!MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(player.getCommandSenderName()))
+  if(!MinecraftServer.getServer().getConfigurationManager().func_152607_e(player.getGameProfile()))      
     {
     return;
     }

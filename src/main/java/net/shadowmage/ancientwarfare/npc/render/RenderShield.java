@@ -49,7 +49,7 @@ private void render(EntityLivingBase entity, ItemStack stack)
     }
   GL11.glPushMatrix();
   texturemanager.bindTexture(texturemanager.getResourceLocation(stack.getItemSpriteNumber()));
-  TextureUtil.func_147950_a(false, false);
+//  TextureUtil.func_147950_a(false, false);//TODO wtf was/is this?
   Tessellator tessellator = Tessellator.instance;
   float f = iicon.getMinU();
   float f1 = iicon.getMaxU();

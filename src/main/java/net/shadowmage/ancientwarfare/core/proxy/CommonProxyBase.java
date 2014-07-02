@@ -27,7 +27,7 @@ public EntityPlayer getFakePlayer(WorldServer world)
 
 public EntityPlayer getFakePlayer(WorldServer world, String name)
   {
-  return FakePlayerFactory.get(world, new GameProfile("", name));
+  return FakePlayerFactory.get(world, new GameProfile(null, name));
   }
 
 }

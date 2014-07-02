@@ -49,7 +49,7 @@ public boolean shouldExecute()
     }
   this.fleeTarget = (Entity)list.get(0);
   
-  Vec3 vec3 = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, 16, 7, this.npc.worldObj.getWorldVec3Pool().getVecFromPool(this.fleeTarget.posX, this.fleeTarget.posY, this.fleeTarget.posZ));
+  Vec3 vec3 = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, 16, 7, Vec3.createVectorHelper(this.fleeTarget.posX, this.fleeTarget.posY, this.fleeTarget.posZ));
 
   if (vec3 == null)
     {

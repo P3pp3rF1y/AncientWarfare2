@@ -99,7 +99,7 @@ public void onRenderTick(RenderTickEvent evt)
     } 
   EntityPlayer player = mc.thePlayer;
   if(player==null || player.getCurrentEquippedItem()==null || !(player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)){return;}
-  ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);  
+  ScaledResolution sr = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);  
   int x = sr.getScaledWidth()-10;
   String header = StatCollector.translateToLocal("guistrings.npc.target");
   gui.drawString(mc.fontRenderer, header, x-mc.fontRenderer.getStringWidth(header), 0, 0xffffffff);
@@ -131,7 +131,7 @@ public void onRenderLast(RenderWorldLastEvent evt)
     AxisAlignedBB bb=null;
     if(pos.typeOfHit==MovingObjectType.BLOCK)
       {
-      bb = AxisAlignedBB.getAABBPool().getAABB(pos.blockX, pos.blockY, pos.blockZ, pos.blockX+1.d, pos.blockY+1.d, pos.blockZ+1.d).expand(0.1d, 0.1d, 0.1d);
+      bb = AxisAlignedBB.getBoundingBox(pos.blockX, pos.blockY, pos.blockZ, pos.blockX+1.d, pos.blockY+1.d, pos.blockZ+1.d).expand(0.1d, 0.1d, 0.1d);
       }
     else if(pos.typeOfHit==MovingObjectType.ENTITY && pos.entityHit.boundingBox!=null && pos.entityHit instanceof EntityLivingBase)
       {

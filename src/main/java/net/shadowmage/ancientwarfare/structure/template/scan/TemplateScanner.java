@@ -155,7 +155,7 @@ public StructureTemplate scan(World world, BlockPosition min, BlockPosition max,
   TemplateRuleEntity scannedEntityRule;
   List<TemplateRuleEntity> scannedEntityRules = new ArrayList<TemplateRuleEntity>();
   int ex, ey, ez; 
-  List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1));          
+  List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1));          
   String entityPluginId = null; 
   nextRuleID = 0;
   for(Entity e : entitiesInAABB)
