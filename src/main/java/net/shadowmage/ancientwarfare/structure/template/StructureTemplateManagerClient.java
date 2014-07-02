@@ -197,6 +197,7 @@ private String getMD5(File file) throws IOException
     sb.append(String.format("%02x", b&0xff));
     }
   md5 = sb.toString();
+  fis.close();
   return md5;
   }
 
