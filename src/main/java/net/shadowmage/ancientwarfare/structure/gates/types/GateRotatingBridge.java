@@ -106,7 +106,7 @@ public boolean canActivate(EntityGate gate, boolean open)
     }
   else
     {
-    boolean wideOnXAxis = gate.pos1.x!=gate.pos2.x;  
+//    boolean wideOnXAxis = gate.pos1.x!=gate.pos2.x;  
     BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
     BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
     int heightAdj = max.y - min.y;
