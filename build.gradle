@@ -24,8 +24,8 @@ allprojects
   apply plugin: 'forge'
   minecraft
   {
-    version = "1.7.10-10.13.0.1160"
-    assetDir = "eclipse/assets"
+    version = "1.7.10-10.13.0.1180"
+    runDir = "eclipse/assets"
   }
   version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.releasetype + "-MC" +minecraft.version
   group = "shadowmage" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -34,39 +34,15 @@ allprojects
 
 dependencies {
   compile files {
-    "lib/buildcraft-6.0.13-dev.jar"
+    "lib/buildcraft-6.0.17-dev.jar"
   }
   compile files {
-    "lib/CodeChickenCore-1.7.2-1.0.0-dev.jar"
+    "lib/CodeChickenCore-1.7.10-1.0.2.9-dev.jar"
   }
   compile files {
-    "lib/NotEnoughItems-1.7.2-1.0.1-dev.jar"
+    "lib/NotEnoughItems-1.7.10-1.0.2.15-dev.jar"
   }
 }
-
-//task sourceJar(type: Jar) {
-//  from sourceSets.main.allSource
-//  classifier = 'sources'
-//}
-//
-//task deobfJar(type: Jar) {
-//    from sourceSets.main.output
-//    classifier = 'dev'
-//}
-//
-//task coreJar(type: Jar) {
-//  from sourceSets.main.output
-//  include 'core/'
-//  classifier = 'core'
-//}
-
-//jar.dependsOn sourceJar, deobfJar, coreJar
-
-//artifacts {
-//  // the default jar is already here by default
-//  archives sourceJar
-//  archives deobfJar
-//}
 
 task updateVersion(type:Copy){
   ant.propertyfile(file: versionFile) {
@@ -79,9 +55,7 @@ task updateVersion(type:Copy){
   filter(ReplaceTokens, tokens: [VERSION: project.version])
 }
 
-
 compileJava.dependsOn updateVersion
-
 
 processResources{
     // replace stuff in mcmod.info, nothing else
