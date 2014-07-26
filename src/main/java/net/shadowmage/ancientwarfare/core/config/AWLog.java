@@ -19,7 +19,10 @@ public static void logError(String message)
 
 public static void logDebug(String message)
   {
-  AncientWarfareCore.log.log(Level.ERROR, "[DEBUG] "+message);
+  if(AWCoreStatics.DEBUG)
+    {
+    AncientWarfareCore.log.log(Level.ERROR, "[DEBUG] "+message);    
+    }
   }
 
 }
