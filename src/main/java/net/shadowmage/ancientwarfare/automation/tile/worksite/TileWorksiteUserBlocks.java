@@ -46,6 +46,18 @@ public void removeUserBlock(BlockPosition pos)
   }
 
 @Override
+protected void onBoundsSet()
+  {
+  for(int x = bbMin.x; x<=bbMax.x; x++)
+    {
+    for(int z = bbMin.z; z<=bbMax.z; z++)
+      {
+      userTargetBlocks.add(new BlockPosition(x, bbMin.y, z));
+      }
+    }
+  }
+
+@Override
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);

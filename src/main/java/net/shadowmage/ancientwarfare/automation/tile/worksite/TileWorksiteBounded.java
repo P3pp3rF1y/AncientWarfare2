@@ -45,6 +45,12 @@ public final void setBounds(BlockPosition min, BlockPosition max)
   {  
   setWorkBoundsMin(BlockTools.getMin(min, max));
   setWorkBoundsMax(BlockTools.getMax(min, max));
+  onBoundsSet();
+  }
+
+protected void onBoundsSet()
+  {
+  
   }
 
 private final void setWorkBoundsMin(BlockPosition min)
