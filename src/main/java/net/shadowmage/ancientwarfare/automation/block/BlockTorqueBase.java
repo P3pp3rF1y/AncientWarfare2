@@ -40,6 +40,7 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
 protected BlockTorqueBase(Material material)
   {
   super(material);
+  setHardness(2.f);
   }
 
 @Override

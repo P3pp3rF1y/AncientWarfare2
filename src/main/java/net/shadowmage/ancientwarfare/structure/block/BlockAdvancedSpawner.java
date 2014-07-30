@@ -26,6 +26,7 @@ public BlockAdvancedSpawner(String regName)
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setBlockName(regName);
   this.setBlockTextureName("ancientwarfare:structure/advanced_spawner");
+  setHardness(2.f);
   }
 
 @Override

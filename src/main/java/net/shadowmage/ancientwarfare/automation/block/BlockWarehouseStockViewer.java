@@ -31,6 +31,7 @@ public BlockWarehouseStockViewer(String regName)
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
+  setHardness(2.f);
   }
 
 @Override

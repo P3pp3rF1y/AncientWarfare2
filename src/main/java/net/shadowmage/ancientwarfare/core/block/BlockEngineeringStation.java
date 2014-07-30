@@ -29,6 +29,7 @@ protected BlockEngineeringStation(String regName)
   iconMap.setIconTexture(3, 0, "ancientwarfare:core/engineering_station_front");
   iconMap.setIconTexture(4, 0, "ancientwarfare:core/engineering_station_side");
   iconMap.setIconTexture(5, 0, "ancientwarfare:core/engineering_station_side");
+  setHardness(2.f);
   }
 
 @Override

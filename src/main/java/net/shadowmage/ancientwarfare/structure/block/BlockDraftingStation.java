@@ -24,6 +24,7 @@ public BlockDraftingStation(String regName)
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
+  setHardness(2.f);
   }
 
 public BlockDraftingStation setIcon(int meta, int side, String texName)

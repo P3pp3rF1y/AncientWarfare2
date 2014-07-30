@@ -25,6 +25,7 @@ protected BlockChunkLoaderSimple(String regName)
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
+  setHardness(2.f);
   }
 
 public BlockChunkLoaderSimple setIcon(int meta, int side, String texName)

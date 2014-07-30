@@ -25,6 +25,7 @@ public BlockWarehouseInterface(String regName)
   super(Material.rock);
   this.setBlockName(regName);
   setCreativeTab(AWAutomationItemLoader.automationTab);
+  setHardness(2.f);
   }
 
 public BlockWarehouseInterface setIcon(int meta, int side, String texName)

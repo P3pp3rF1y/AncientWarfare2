@@ -25,6 +25,7 @@ public BlockRecruitingStation(String regName)
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWNpcItemLoader.npcTab);
+  setHardness(2.f);
   }
 
 @Override

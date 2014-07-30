@@ -25,6 +25,7 @@ public BlockWarehouseCraftingStation(String regName)
   super(Material.rock);
   this.setBlockName(regName);
   setCreativeTab(AWAutomationItemLoader.automationTab);
+  setHardness(2.f);
   }
 
 public BlockWarehouseCraftingStation setIcon(int meta, int side, String texName)

@@ -32,6 +32,7 @@ public BlockWorksiteBase(Material p_i45394_1_, String regName)
   super(p_i45394_1_);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
   this.setBlockName(regName);
+  setHardness(2.f);
   }
 
 public BlockWorksiteBase setIcon(RelativeSide relativeSide, String texName)
