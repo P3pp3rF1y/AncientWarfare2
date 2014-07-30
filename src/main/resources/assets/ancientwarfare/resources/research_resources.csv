@@ -1,15 +1,15 @@
 #research_name, item_name, item_damage, item_count
-invention,stick,0,24
-invention,string,0,8
+invention,stick,0,12
+invention,string,0,3
 invention,coal,1,4
 invention,torch,0,4
 agriculture,stick,0,24
-agriculture,string,0,8
+agriculture,string,0,3
 agriculture,wheat,0,4
 agriculture,torch,0,4
 leadership,paper,0,10
 leadership,stick,0,24
-leadership,string,0,8
+leadership,string,0,3
 leadership,torch,0,4
 engineering,paper,0,20
 engineering,stick,0,12
@@ -17,13 +17,13 @@ engineering,coal,1,4
 engineering,torch,0,4
 farming,wheat,0,12
 farming,stick,0,24
-farming,string,0,8
+farming,string,0,3
 farming,torch,0,4
 animal_husbandry,wheat,0,12
 animal_husbandry,leather,0,4
 animal_husbandry,string,0,12
 animal_husbandry,torch,0,4
-fishing,fish,0,8
+fishing,fish,0,5
 fishing,string,0,24
 fishing,stick,0,12
 fishing,torch,0,4
