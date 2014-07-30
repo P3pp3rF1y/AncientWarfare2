@@ -184,12 +184,12 @@ private void tryStartNextResearch(String name)
   List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(worldObj, name);   
   if(!queue.isEmpty())
     {
-    int g = queue.get(0);
-    ResearchGoal g1 = ResearchGoal.getGoal(g);
-    if(g1==null){return;}
-    if(g1.tryStart(resourceInventory, -1))
+    int goalId = queue.get(0);
+    ResearchGoal goalInstance = ResearchGoal.getGoal(goalId);
+    if(goalInstance==null){return;}
+    if(goalInstance.tryStart(resourceInventory, -1))
       {
-      ResearchTracker.instance().startResearch(worldObj, name, g);
+      ResearchTracker.instance().startResearch(worldObj, name, goalId);
       }
     else if(useAdjacentInventory)
       {
@@ -197,19 +197,23 @@ private void tryStartNextResearch(String name)
       boolean started = false;
       if((t=worldObj.getTileEntity(xCoord-1, yCoord, zCoord)) instanceof IInventory)
         {
-        started = g1.tryStart((IInventory)t, -1);
+        started = goalInstance.tryStart((IInventory)t, -1);
         }
       if(!started && (t=worldObj.getTileEntity(xCoord+1, yCoord, zCoord)) instanceof IInventory)
         {
-        started = g1.tryStart((IInventory)t, -1);
+        started = goalInstance.tryStart((IInventory)t, -1);
         }
       if(!started && (t=worldObj.getTileEntity(xCoord, yCoord, zCoord-1)) instanceof IInventory)
         {
-        started = g1.tryStart((IInventory)t, -1);
+        started = goalInstance.tryStart((IInventory)t, -1);
         }
       if(!started && (t=worldObj.getTileEntity(xCoord, yCoord, zCoord+1)) instanceof IInventory)
         {
-        started = g1.tryStart((IInventory)t, -1);
+        started = goalInstance.tryStart((IInventory)t, -1);
+        }
+      if(started)
+        {
+        ResearchTracker.instance().startResearch(worldObj, name, goalId);
         }
       }
     } 
