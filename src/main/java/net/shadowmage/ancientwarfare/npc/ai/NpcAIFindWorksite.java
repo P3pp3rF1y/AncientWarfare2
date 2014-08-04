@@ -83,7 +83,7 @@ private void findWorkTarget()
       //TODO validate canBeCommandedBy to check if owner is valid....
       site = (IWorkSite)te;
       if(site.getTeam()!=npc.getTeam()){continue;}
-      if(worker.canWorkAt(site.getWorkType()))
+      if(worker.canWorkAt(site.getWorkType()) && site.hasWork())
         {
         dist = npc.getDistanceSq(te.xCoord+0.5d, te.yCoord, te.zCoord+0.5d);
         if(closestDist==-1 || dist<closestDist)

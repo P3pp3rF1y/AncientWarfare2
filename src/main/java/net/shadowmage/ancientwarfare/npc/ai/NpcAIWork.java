@@ -80,17 +80,17 @@ public void updateTask()
   {
   BlockPosition pos = order.getEntries().get(workIndex).getPosition();
   double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
-  AWLog.logDebug("distance to site: "+dist);
+//  AWLog.logDebug("distance to site: "+dist);
   if(dist > 5.d*5.d)
     {
-    AWLog.logDebug("moving to worksite..."+pos);
+//    AWLog.logDebug("moving to worksite..."+pos);
     npc.addAITask(TASK_MOVE);
     ticksAtSite=0;
     moveToPosition(pos, dist);
     }
   else
     {
-    AWLog.logDebug("working at site....."+pos);
+//    AWLog.logDebug("working at site....."+pos);
     npc.getNavigator().clearPathEntity();
     npc.removeAITask(TASK_MOVE);
     workAtSite();
