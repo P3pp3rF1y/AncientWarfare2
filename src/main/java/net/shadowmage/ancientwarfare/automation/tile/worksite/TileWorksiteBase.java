@@ -139,7 +139,7 @@ public boolean canInput(ForgeDirection from)
 @Override
 public boolean hasWork()
   {
-  return storedEnergy<maxEnergyStored && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
+  return storedEnergy < maxEnergyStored && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
   }
 
 @Override
@@ -160,7 +160,7 @@ public void updateEntity()
   super.updateEntity();
   if(worldObj.isRemote){return;}  
   worldObj.theProfiler.startSection("AWWorksite");
-  ITorque.applyPowerDrain(this);
+//  ITorque.applyPowerDrain(this);
   worldObj.theProfiler.startSection("InventoryOverflow");
   if(!inventoryOverflow.isEmpty())
     {
