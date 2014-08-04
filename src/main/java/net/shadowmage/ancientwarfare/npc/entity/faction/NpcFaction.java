@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 
 public abstract class NpcFaction extends NpcBase
 {
@@ -46,7 +47,8 @@ public NpcFaction(World par1World)
 protected boolean interact(EntityPlayer player)
   {
   if(player.worldObj.isRemote){return false;}
-  if(player.capabilities.isCreativeMode)
+  boolean baton = player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
+  if(player.capabilities.isCreativeMode && !baton)
     {
     if(player.isSneaking())
       {

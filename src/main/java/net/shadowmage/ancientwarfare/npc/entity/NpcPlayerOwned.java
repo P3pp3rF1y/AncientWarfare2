@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
@@ -341,7 +342,8 @@ protected boolean interact(EntityPlayer player)
   if(player.worldObj.isRemote){return false;}
   Team t = player.getTeam();
   Team t1 = getTeam();
-  if(t==t1 && this.canBeCommandedBy(player.getCommandSenderName()))
+  boolean baton = player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
+  if(t==t1 && this.canBeCommandedBy(player.getCommandSenderName()) && !baton)
     {
     if(player.isSneaking())
       {

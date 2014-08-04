@@ -21,6 +21,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 
 public class NpcTrader extends NpcPlayerOwned
 {
@@ -74,11 +75,12 @@ public String getNpcType()
   }
 
 @Override
-protected boolean interact(EntityPlayer par1EntityPlayer)
+protected boolean interact(EntityPlayer player)
   {
-  if(!par1EntityPlayer.worldObj.isRemote && getFoodRemaining()>0)
+  boolean baton = player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
+  if(!player.worldObj.isRemote && getFoodRemaining()>0 && !baton)
     {
-    NetworkHandler.INSTANCE.openGui(par1EntityPlayer, NetworkHandler.GUI_NPC_TRADE, getEntityId(), 0, 0);
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE, getEntityId(), 0, 0);
     }
   return false;
   }

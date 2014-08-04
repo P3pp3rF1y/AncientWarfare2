@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 
 public abstract class NpcFactionTrader extends NpcFaction
 {
@@ -36,11 +37,12 @@ public NpcFactionTrader(World par1World)
   }
 
 @Override
-protected boolean interact(EntityPlayer par1EntityPlayer)
+protected boolean interact(EntityPlayer player)
   {
-  if(!par1EntityPlayer.worldObj.isRemote)
+  boolean baton = player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
+  if(!player.worldObj.isRemote && !baton)
     {
-    NetworkHandler.INSTANCE.openGui(par1EntityPlayer, NetworkHandler.GUI_NPC_TRADE, getEntityId(), 0, 0);
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE, getEntityId(), 0, 0);
     }
   return false;
   }
