@@ -54,8 +54,8 @@ public void startExecuting()
 public void updateTask()
   {
   ChunkCoordinates cc = npc.getHomePosition();
-  double dist = npc.getDistance(cc.posX+0.5d, cc.posY, cc.posZ+0.5d);
-  if(dist>5.d*5.d)
+  double dist = npc.getDistanceSq(cc.posX+0.5d, cc.posY, cc.posZ+0.5d);
+  if(dist>4.d*4.d)
     {
     npc.addAITask(TASK_MOVE);
     moveToPosition(cc.posX, cc.posY, cc.posZ, dist);
