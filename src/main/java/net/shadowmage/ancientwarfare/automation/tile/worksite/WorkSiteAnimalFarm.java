@@ -224,7 +224,7 @@ private void rescan()
   scanForCows(cows);
   scanForSheep(sheep);
   scanForAnimals(chickens, chickensToBreed, maxChickenCount);
-  scanForAnimals(sheep, sheepToBreed, maxSheepCount);  
+  scanForAnimals(pigs, pigsToBreed, maxPigCount);
   workerRescanDelay = 200;
   worldObj.theProfiler.endSection();
   }
