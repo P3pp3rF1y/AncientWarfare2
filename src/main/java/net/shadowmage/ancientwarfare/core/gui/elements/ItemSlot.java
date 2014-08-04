@@ -93,6 +93,7 @@ public void render(int mouseX, int mouseY, float partialTick)
   {
   if(visible)
     {
+    GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
     Minecraft mc = Minecraft.getMinecraft();    
     if(renderSlotBackground)
       {
@@ -158,6 +159,7 @@ public void render(int mouseX, int mouseY, float partialTick)
       }
     GL11.glEnable(GL11.GL_DEPTH_TEST);
     GL11.glDisable(GL11.GL_LIGHTING);
+    GL11.glPopAttrib();
     }  
   }
 

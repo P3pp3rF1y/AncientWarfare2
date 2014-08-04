@@ -30,15 +30,15 @@ public int getSlotStackLimit()
 @Override
 public boolean isItemValid(ItemStack par1ItemStack)
   {
-  if (par1ItemStack == null) return false;
+  if (par1ItemStack == null) {return false;}
   return par1ItemStack.getItem().isValidArmor(par1ItemStack, armorSlotID, entity);
   }
 
-@Override
-@SideOnly(Side.CLIENT)
-public IIcon getBackgroundIconIndex()
-  {
-  return ItemArmor.func_94602_b(armorSlotID);
-  }
+//@Override
+//@SideOnly(Side.CLIENT)
+//public IIcon getBackgroundIconIndex()
+//  {
+//  return ItemArmor.func_94602_b(armorSlotID);
+//  }
 
 }

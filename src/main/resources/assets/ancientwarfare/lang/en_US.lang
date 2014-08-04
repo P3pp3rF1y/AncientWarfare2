@@ -358,6 +358,8 @@ guistrings.automation.work_mode_change=Toggled Hammer Mode
 guistrings.automation.doing_player_work=Working at Worksite
 guistrings.automation.rotating_block=Rotating Block
 guistrings.automation.wrong_hammer_mode=Wrong Hammer Mode!
+guistrings.inventory.front=Resources
+guistrings.inventory.bottom=Special Resources
 
 #npc localization
 guistrings.npc.remove_upkeep_point=Remove

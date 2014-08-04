@@ -80,7 +80,7 @@ public WorkSiteTreeFarm()
       if(stack.getItem() instanceof ItemBlock)
         {
         ItemBlock item = (ItemBlock) stack.getItem();
-        return item.field_150939_a instanceof BlockSapling;//item.field_150939_a == ItemBlock.block
+        return item.field_150939_a instanceof BlockSapling;
         }
       return false;
       }
