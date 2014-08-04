@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -28,29 +29,27 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 public class WorkSiteAnimalFarm extends TileWorksiteBounded
 {
 
-int carrotCount;
-List<EntityPair> pigsToBreed = new ArrayList<EntityPair>();
-
-int seedCount;
-List<EntityPair> chickensToBreed = new ArrayList<EntityPair>();
-
-int wheatCount;
-int bucketCount;
-ItemStack shears = null;
-List<EntityPair> cowsToBreed = new ArrayList<EntityPair>();
-List<Integer> cowsToMilk = new ArrayList<Integer>();
-List<EntityPair> sheepToBreed = new ArrayList<EntityPair>();
-List<Integer> sheepToShear = new ArrayList<Integer>();
-
-int workerRescanDelay;
-boolean shouldCountResources;
+private int workerRescanDelay;
+private boolean shouldCountResources;
 
 public int maxPigCount = 6;
 public int maxCowCount = 6;
 public int maxChickenCount = 6;
 public int maxSheepCount = 6;
 
-List<Integer> entitiesToCull = new ArrayList<Integer>();
+private int wheatCount;
+private int bucketCount;
+private int carrotCount;
+private int seedCount;
+private ItemStack shears = null;
+
+private List<EntityPair> pigsToBreed = new ArrayList<EntityPair>();
+private List<EntityPair> chickensToBreed = new ArrayList<EntityPair>();
+private List<EntityPair> cowsToBreed = new ArrayList<EntityPair>();
+private List<Integer> cowsToMilk = new ArrayList<Integer>();
+private List<EntityPair> sheepToBreed = new ArrayList<EntityPair>();
+private List<Integer> sheepToShear = new ArrayList<Integer>();
+private List<Integer> entitiesToCull = new ArrayList<Integer>();
 
 public WorkSiteAnimalFarm()
   {
@@ -69,8 +68,8 @@ public WorkSiteAnimalFarm()
   int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
   int[] bottomIndices = InventoryTools.getIndiceArrayForSpread(30, 3);  
   this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
-  this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//saplings
-  this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//bonemeal
+  this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//feed
+  this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//buckets/shears
   ItemSlotFilter filter = new ItemSlotFilter()
     {
     @Override
@@ -114,8 +113,31 @@ public WorkSiteAnimalFarm()
   inventory.setFilterForSlots(filter, bottomIndices);
   }
 
+@Override
+protected boolean hasWorksiteWork()
+  {
+  return hasAnimalWork();
+  }
+
+@Override
+protected void updateWorksite()
+  {
+  worldObj.theProfiler.startSection("Count Resources");  
+  if(shouldCountResources){countResources();}
+  worldObj.theProfiler.endStartSection("Animal Rescan");
+  workerRescanDelay--;
+  if(workerRescanDelay<=0){rescan();}
+  worldObj.theProfiler.endStartSection("EggPickup");
+  if(worldObj.getWorldTime()%20==0)
+    {
+    pickupEggs();
+    }
+  worldObj.theProfiler.endSection();
+  }
+
 private void countResources()
   {
+  
   this.shouldCountResources = false;
   carrotCount = 0;
   seedCount = 0;
@@ -153,11 +175,13 @@ private void countResources()
       shears = stack;
       }
     }
+//  AWLog.logDebug("counting animal farm resources.."+wheatCount+","+seedCount+","+carrotCount+","+bucketCount+","+shears);
   }
 
 @SuppressWarnings("unchecked")
 private void rescan()
   {
+//  AWLog.logDebug("rescanning animal farm");
   worldObj.theProfiler.startSection("Animal Rescan");
   pigsToBreed.clear();
   cowsToBreed.clear();
@@ -285,10 +309,8 @@ private void scanForCows(List<EntityAnimal> animals)
 @Override
 protected boolean processWork()
   {
-  if(workerRescanDelay<=0)
-    {
-    rescan();
-    }
+//  AWLog.logDebug("processing animal farm work!");
+
   boolean didWork = false;
   if(!cowsToBreed.isEmpty() && wheatCount>=2)
     {
@@ -510,26 +532,5 @@ public Entity getEntityB(World world)
   return world.getEntityByID(idB);
   }
 }
-
-@Override
-protected boolean hasWorksiteWork()
-  {
-  return hasAnimalWork();
-  }
-
-@Override
-protected void updateWorksite()
-  {
-  worldObj.theProfiler.startSection("Count Resources");  
-  if(shouldCountResources){countResources();}
-  worldObj.theProfiler.endStartSection("Delay Update");
-  if(workerRescanDelay>0){workerRescanDelay--;}
-  worldObj.theProfiler.endStartSection("EggPickup");
-  if(worldObj.getWorldTime()%20==0)
-    {
-    pickupEggs();
-    }
-  worldObj.theProfiler.endSection();
-  }
 
 }

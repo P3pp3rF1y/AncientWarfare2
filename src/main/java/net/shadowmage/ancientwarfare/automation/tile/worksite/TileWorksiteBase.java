@@ -14,6 +14,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -183,9 +184,10 @@ public void updateEntity()
 
 @Override
 public void addEnergyFromWorker(IWorker worker)
-  {
+  {  
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
   if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
+//  AWLog.logDebug("adding energy from worker..."+storedEnergy);
   }
 
 @Override
