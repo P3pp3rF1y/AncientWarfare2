@@ -20,11 +20,12 @@ import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
 
-import net.minecraft.client.Minecraft;
+//import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -43,13 +44,14 @@ private final String defaultSkinPack = "/assets/ancientwarfare/skin_pack/default
 public ResourceLocation getTextureFor(NpcBase npc)
   { 
   ResourceLocation loc = null;
+  long id = npc.getIDForSkin();
   if(!npc.getCustomTex().isEmpty())
     {
-    loc = getNpcTexture(npc.getCustomTex(), npc.getIDForSkin());
+    loc = getNpcTexture(npc.getCustomTex(), id);
     }
   if(loc==null)
     {
-    loc = getNpcTexture(npc.getNpcFullType(), npc.getIDForSkin());
+    loc = getNpcTexture(npc.getNpcFullType(), id);
     }
   return loc;
   }
@@ -265,19 +267,7 @@ private SkinGroup getOrCreateSkinGroup(String npcType)
 
 private ResourceLocation loadSkinPackImage(String packName, String imageName, InputStream is)
   {
-  try
-    {
-    BufferedImage image = ImageIO.read(is);
-    ResourceLocation loc = new ResourceLocation("ancientwarfare:skinpack/"+packName+"/"+imageName);
-    TextureImageBased tex = new TextureImageBased(loc, image);
-    Minecraft.getMinecraft().renderEngine.loadTexture(loc, tex);
-    return loc;
-    } 
-  catch (IOException e)
-    {
-    e.printStackTrace();
-    } 
-  return null;
+  return AncientWarfareNPC.proxy.loadSkinPackImage(packName, imageName, is);
   }
 
 private boolean isProbableZip(File file)

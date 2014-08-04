@@ -1,9 +1,18 @@
 package net.shadowmage.ancientwarfare.npc.proxy;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.gui.GuiBard;
@@ -73,6 +82,23 @@ private void registerClientOptions()
 public void loadSkins()
   {
   NpcSkinManager.INSTANCE.loadSkinPacks();
+  }
+
+public ResourceLocation loadSkinPackImage(String packName, String imageName, InputStream is)
+  {
+  try
+    {
+    BufferedImage image = ImageIO.read(is);
+    ResourceLocation loc = new ResourceLocation("ancientwarfare:skinpack/"+packName+"/"+imageName);
+    TextureImageBased tex = new TextureImageBased(loc, image);
+    Minecraft.getMinecraft().renderEngine.loadTexture(loc, tex);
+    return loc;
+    } 
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    } 
+  return null;
   }
 
 
