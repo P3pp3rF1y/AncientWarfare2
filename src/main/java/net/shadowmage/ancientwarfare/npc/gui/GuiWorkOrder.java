@@ -109,7 +109,7 @@ public void setupElements()
         {
         int ticks = (int)(value*1200.f);
         entry.setWorkLength(ticks);
-        super.onValueUpdated(value);
+        hasChanged=true;
         }
       };
     
