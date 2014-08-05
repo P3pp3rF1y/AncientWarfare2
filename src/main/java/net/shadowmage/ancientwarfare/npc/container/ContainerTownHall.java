@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -103,6 +104,46 @@ private void sendDeathListToClient()
 public List<NpcDeathEntry> getDeathList()
   {
   return deathList;
+  }
+
+@Override
+public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
+  {
+  ItemStack slotStackCopy = null;
+  Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
+  if (theSlot != null && theSlot.getHasStack())
+    {
+    ItemStack slotStack = theSlot.getStack();
+    slotStackCopy = slotStack.copy();
+    if(slotClickedIndex < townHall.getSizeInventory())//book slot
+      {      
+      if(!this.mergeItemStack(slotStack, townHall.getSizeInventory(), townHall.getSizeInventory()+36, false))//merge into player inventory
+        {
+        return null;
+        }
+      }
+    else
+      {
+      if(!this.mergeItemStack(slotStack, 0, townHall.getSizeInventory(), false))//merge into player inventory
+        {
+        return null;
+        }
+      }
+    if (slotStack.stackSize == 0)
+      {
+      theSlot.putStack((ItemStack)null);
+      }
+    else
+      {
+      theSlot.onSlotChanged();
+      }
+    if (slotStack.stackSize == slotStackCopy.stackSize)
+      {
+      return null;
+      }
+    theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+    }
+  return slotStackCopy;
   }
 
 }

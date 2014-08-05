@@ -72,7 +72,45 @@ protected int addPlayerSlots(EntityPlayer player, int tx, int ty, int gap)
   return ty + (4*18) + gap;
   }
 
-
+@Override
+public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
+  {
+  ItemStack slotStackCopy = null;
+  Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
+  if (theSlot != null && theSlot.getHasStack())
+    {
+    ItemStack slotStack = theSlot.getStack();
+    slotStackCopy = slotStack.copy();
+    if(slotClickedIndex < inventory.getSizeInventory())//book slot
+      {      
+      if(!this.mergeItemStack(slotStack, inventory.getSizeInventory(), inventory.getSizeInventory()+36, false))//merge into player inventory
+        {
+        return null;
+        }
+      }
+    else
+      {
+      if(!this.mergeItemStack(slotStack, 0, inventory.getSizeInventory(), false))//merge into player inventory
+        {
+        return null;
+        }
+      }
+    if (slotStack.stackSize == 0)
+      {
+      theSlot.putStack((ItemStack)null);
+      }
+    else
+      {
+      theSlot.onSlotChanged();
+      }
+    if (slotStack.stackSize == slotStackCopy.stackSize)
+      {
+      return null;
+      }
+    theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+    }
+  return slotStackCopy;
+  }
 
 
 }

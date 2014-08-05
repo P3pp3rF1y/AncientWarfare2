@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.shadowmage.ancientwarfare.core.inventory.SlotArmor;
@@ -63,5 +64,7 @@ public void handleNpcTextureUpdate(String tex)
   tag.setString("customTexture", tex);
   sendDataToServer(tag);
   }
+
+
 
 }
