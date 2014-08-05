@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -17,6 +18,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -123,6 +125,17 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
     return true;
     }
   return false;
+  }
+
+@Override
+public void breakBlock(World world, int x, int y, int z, Block block, int meta)
+  {
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof IInventory)
+    {
+    InventoryTools.dropInventoryInWorld(world, (IInventory) te, x, y, z);
+    }
+  super.breakBlock(world, x, y, z, block, meta);
   }
 
 }

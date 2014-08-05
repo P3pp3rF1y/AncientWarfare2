@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -72,18 +73,13 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
   }
 
 @Override
-public void breakBlock(World world, int x, int y, int z, Block block, int fortune)
+public void breakBlock(World world, int x, int y, int z, Block block, int meta)
   {
-  if(!world.isRemote)
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof IInventory)
     {
-    TileWarehouseInterface storage = (TileWarehouseInterface) world.getTileEntity(x, y, z);
-    if(storage!=null)
-      {
-      InventoryTools.dropInventoryInWorld(world, storage, x, y, z);      
-      }    
+    InventoryTools.dropInventoryInWorld(world, (IInventory) te, x, y, z);
     }
-  super.breakBlock(world, x, y, z, block, fortune);  
+  super.breakBlock(world, x, y, z, block, meta);
   }
-
-
 }

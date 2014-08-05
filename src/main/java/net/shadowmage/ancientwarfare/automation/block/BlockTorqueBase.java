@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -18,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -150,6 +152,17 @@ public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int
 public boolean hasTileEntity(int metadata)
   {
   return true;
+  }
+
+@Override
+public void breakBlock(World world, int x, int y, int z, Block block, int meta)
+  {
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof IInventory)
+    {
+    InventoryTools.dropInventoryInWorld(world, (IInventory) te, x, y, z);
+    }
+  super.breakBlock(world, x, y, z, block, meta);
   }
 
 }
