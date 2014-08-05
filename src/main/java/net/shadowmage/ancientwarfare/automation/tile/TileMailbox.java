@@ -3,6 +3,9 @@ package net.shadowmage.ancientwarfare.automation.tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -15,7 +18,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
-public class TileMailbox extends TileEntity implements IOwnable
+public class TileMailbox extends TileEntity implements IOwnable, IInventory, ISidedInventory
 {
 
 private boolean autoExport;//should automatically try and export from output side
@@ -151,6 +154,90 @@ public void writeToNBT(NBTTagCompound tag)
   NBTTagCompound tag1 = new NBTTagCompound();
   inventory.writeToNBT(tag1);
   tag.setTag("inventory", tag1);
+  }
+
+@Override
+public int[] getAccessibleSlotsFromSide(int p_94128_1_)
+  {
+  return inventory.getAccessibleSlotsFromSide(p_94128_1_);
+  }
+
+@Override
+public boolean canInsertItem(int slot, ItemStack stack,int side)
+  {
+  return inventory.canInsertItem(slot, stack, side);
+  }
+
+@Override
+public boolean canExtractItem(int slot, ItemStack stack, int side)
+  {
+  return inventory.canExtractItem(slot, stack, side);
+  }
+
+@Override
+public int getSizeInventory()
+  {
+  return inventory.getSizeInventory();
+  }
+
+@Override
+public ItemStack getStackInSlot(int slot)
+  {
+  return inventory.getStackInSlot(slot);
+  }
+
+@Override
+public ItemStack decrStackSize(int slot, int amt)
+  {
+  return inventory.decrStackSize(slot, amt);
+  }
+
+@Override
+public ItemStack getStackInSlotOnClosing(int slot)
+  {
+  return inventory.getStackInSlotOnClosing(slot);
+  }
+
+@Override
+public void setInventorySlotContents(int slot, ItemStack stack)
+  {
+  inventory.setInventorySlotContents(slot, stack);
+  }
+
+@Override
+public String getInventoryName()
+  {
+  return inventory.getInventoryName();
+  }
+
+@Override
+public boolean hasCustomInventoryName()
+  {
+  return inventory.hasCustomInventoryName();
+  }
+
+@Override
+public int getInventoryStackLimit()
+  {
+  return inventory.getInventoryStackLimit();
+  }
+
+@Override
+public boolean isUseableByPlayer(EntityPlayer p_70300_1_)
+  {
+  return inventory.isUseableByPlayer(p_70300_1_);
+  }
+
+@Override
+public void openInventory(){}
+
+@Override
+public void closeInventory(){}
+
+@Override
+public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_)
+  {
+  return inventory.isItemValidForSlot(p_94041_1_, p_94041_2_);
   }
 
 }
