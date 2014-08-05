@@ -18,8 +18,7 @@ public NumberInput(int topLeftX, int topLeftY, int width, float defaultText, IWi
   {
   super(topLeftX, topLeftY, width, String.format("%.2f", defaultText), selector);
   this.value = defaultText;
-  this.setAllowedChars(allowedNums);
-  
+  this.setAllowedChars(allowedNums);  
   }
 
 public int getIntegerValue()
@@ -178,6 +177,7 @@ protected void handleCharacter(char ch)
       }
     text = newText;
     cursorIndex++;
+    setText(text);
     }
   }
 
