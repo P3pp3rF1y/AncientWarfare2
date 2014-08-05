@@ -35,7 +35,10 @@ public void renderTileEntityAt(TileEntity var1, double var2, double var4, double
       {
       max = min;
       }
-    renderBoundingBox(var1.xCoord, var1.yCoord, var1.zCoord, min, max, 1.f, 1.f, 1.f, 0.f);
+    if(min!=null && max!=null)
+      {
+      renderBoundingBox(var1.xCoord, var1.yCoord, var1.zCoord, min, max, 1.f, 1.f, 1.f, 0.f);      
+      }
     GL11.glPopAttrib();
     GL11.glPopMatrix();
     }
