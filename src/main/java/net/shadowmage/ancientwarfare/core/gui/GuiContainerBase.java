@@ -169,9 +169,10 @@ public void handleKeyboardInput()
       }
     if(sendTyped)
       {
-      this.keyTyped(ch, key);      
+      super.handleKeyboardInput();
+//      this.keyTyped(ch, key);      
       }
-    }  
+    }    
   }
 
 protected final void closeGui()
