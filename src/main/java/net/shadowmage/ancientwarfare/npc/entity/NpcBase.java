@@ -278,7 +278,7 @@ public boolean shouldBeAtHome()
     {
     return false;
     }
-  if(!worldObj.provider.isDaytime() || worldObj.isRaining())
+  if((!worldObj.provider.hasNoSky && !worldObj.provider.isDaytime()) || worldObj.isRaining())//if is at night (and not an underground world type), or if it is raining, return true
     { 
     return true;
     }

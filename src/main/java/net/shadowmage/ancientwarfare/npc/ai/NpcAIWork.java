@@ -49,7 +49,7 @@ public boolean shouldExecute()
       workIndex=0;
       }
     }
-  if(!npc.worldObj.provider.hasNoSky && !npc.worldObj.isDaytime() && npc.hasHome())//dont work at night if has home point
+  if(npc.shouldBeAtHome())//dont work when should be at home
     {
     return false;
     }
@@ -64,7 +64,7 @@ public boolean shouldExecute()
 public boolean continueExecuting()
   { 
   if(npc.getFoodRemaining()<=0){return false;}
-  if(!npc.worldObj.provider.hasNoSky && !npc.worldObj.isDaytime() && npc.hasHome())//dont work at night if has home point
+  if(npc.shouldBeAtHome())//dont work at night if has home point
     {
     return false;
     }
