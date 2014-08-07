@@ -38,7 +38,7 @@ public NpcAIWork(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {  
-  if(npc.getFoodRemaining()<=0){return false;} 
+  if(npc.getFoodRemaining()<=0 || npc.shouldBeAtHome()){return false;} 
   if(!init)
     {
     orderStack = npc.ordersStack;
@@ -48,10 +48,6 @@ public boolean shouldExecute()
       {
       workIndex=0;
       }
-    }
-  if(npc.shouldBeAtHome())//dont work when should be at home
-    {
-    return false;
     }
   if(orderStack!=null && order!=null && order.getEntries().size()>0)
     {
@@ -63,11 +59,7 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   { 
-  if(npc.getFoodRemaining()<=0){return false;}
-  if(npc.shouldBeAtHome())//dont work at night if has home point
-    {
-    return false;
-    }
+  if(npc.getFoodRemaining()<=0 || npc.shouldBeAtHome()){return false;} 
   if(orderStack!=null && order!=null && order.getEntries().size()>0)
     {
     return true;

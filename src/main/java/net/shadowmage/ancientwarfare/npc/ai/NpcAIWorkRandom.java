@@ -23,22 +23,14 @@ public NpcAIWorkRandom(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
-  if(npc.getFoodRemaining()<=0){return false;} 
-  if(!npc.worldObj.provider.hasNoSky && !npc.worldObj.isDaytime() && npc.hasHome())//dont work at night if has home point
-    {
-    return false;
-    }
+  if(npc.getFoodRemaining()<=0 || npc.shouldBeAtHome()){return false;} 
   return npc.ordersStack==null && worker.autoWorkTarget!=null;
   }
 
 @Override
 public boolean continueExecuting()
   {
-  if(npc.getFoodRemaining()<=0){return false;} 
-  if(!npc.worldObj.provider.hasNoSky && !npc.worldObj.isDaytime() && npc.hasHome())//dont work at night if has home point
-    {
-    return false;
-    }
+  if(npc.getFoodRemaining()<=0 || npc.shouldBeAtHome()){return false;} 
   return npc.ordersStack==null && worker.autoWorkTarget!=null;
   }
 
