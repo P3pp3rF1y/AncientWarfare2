@@ -81,6 +81,13 @@ public WorkSiteMushroomFarm()
   }
 
 @Override
+protected void onTargetBlocksSet()
+  {
+  blocksToPlantMushroom.clear();
+  blocksToPlantNetherWart.clear();
+  }
+
+@Override
 protected void updateBlockWorksite()
   {
   worldObj.theProfiler.startSection("Count Resources");  

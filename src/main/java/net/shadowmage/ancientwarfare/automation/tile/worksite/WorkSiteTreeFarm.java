@@ -98,6 +98,13 @@ public WorkSiteTreeFarm()
   this.inventory.setFilterForSlots(filter, bottomIndices);
   }
 
+@Override
+protected void onTargetBlocksSet()
+  {
+  blocksToPlant.clear();
+  blocksToFertilize.clear();  
+  }
+
 private void countResources()
   {
   shouldCountResources = false;

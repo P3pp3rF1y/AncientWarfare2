@@ -33,6 +33,8 @@ public void setUserSetTargets(Set<BlockPosition> targets)
   {
   userTargetBlocks.clear();
   userTargetBlocks.addAll(targets);
+  clearBlocksToUpdate();
+  onTargetBlocksSet();
   }
 
 public void addUserBlock(BlockPosition pos)
@@ -44,6 +46,8 @@ public void removeUserBlock(BlockPosition pos)
   {
   this.userTargetBlocks.remove(pos);
   }
+
+protected void onTargetBlocksSet(){}
 
 @Override
 protected void onBoundsSet()

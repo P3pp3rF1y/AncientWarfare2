@@ -27,6 +27,8 @@ protected void updateWorksite()
   updateBlockWorksite();
   }
 
+protected void clearBlocksToUpdate(){blocksToUpdate.clear();}
+
 protected void incrementalScan()
   {
   if(blocksToUpdate.isEmpty())

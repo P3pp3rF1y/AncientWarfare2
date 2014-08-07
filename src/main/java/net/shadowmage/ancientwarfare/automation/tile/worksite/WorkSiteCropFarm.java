@@ -89,6 +89,14 @@ public WorkSiteCropFarm()
   this.inventory.setFilterForSlots(filter, bottomIndices);  
   }
 
+@Override
+protected void onTargetBlocksSet()
+  {
+  blocksToTill.clear();
+  blocksToPlant.clear();
+  blocksToFertilize.clear();  
+  }
+
 private void countResources()
   {
   shouldCountResources = false;

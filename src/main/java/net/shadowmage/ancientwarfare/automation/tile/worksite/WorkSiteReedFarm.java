@@ -103,6 +103,13 @@ public WorkSiteReedFarm()
   this.inventory.setFilterForSlots(filter, bottomIndices);  
   }
 
+@Override
+protected void onTargetBlocksSet()
+  {
+  cocoaToPlant.clear();
+  cactusToPlant.clear();
+  reedToPlant.clear();  
+  }
 
 @Override
 protected boolean processWork()
