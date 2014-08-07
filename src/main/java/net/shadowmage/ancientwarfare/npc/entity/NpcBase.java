@@ -260,19 +260,28 @@ public TileTownHall getTownHall()
 
 public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position)
   {
-//NOOP on non-player owned npc
+  //NOOP on non-player owned npc
   }
 
 /**
- * implementations should vary for combat and non-combat npcs.<br>
- * should return true anytime the npc should be at his home point<br>
- * should allow for combat npcs to still attack targets<br>
+ * Return true if this NPC should be within his home range.<br>
+ * Should still allow for a combat NPC to attack targets outside his home range.
  * @return
  */
 public boolean shouldBeAtHome()
   {
-  if(!hasHome() || getAttackTarget()!=null){return false;}
-  //TODO....
+  if(getAttackTarget()!=null)
+    {
+    return false;
+    }
+  if(!hasHome())
+    {
+    return false;
+    }
+  if(!worldObj.provider.isDaytime() || worldObj.isRaining())
+    { 
+    return true;
+    }
   return false;
   }
 

@@ -15,14 +15,14 @@ public NpcAIWander(NpcBase npc, double par2)
 @Override
 public boolean shouldExecute()
   {
-  if(!npc.getShouldWander()){return false;}
+  if(!npc.getShouldWander() || npc.shouldBeAtHome()){return false;}
   return super.shouldExecute();
   }
 
 @Override
 public boolean continueExecuting()
   {
-  if(!npc.getShouldWander()){return false;}
+  if(!npc.getShouldWander() || npc.shouldBeAtHome()){return false;}
   return super.continueExecuting();
   }
 
