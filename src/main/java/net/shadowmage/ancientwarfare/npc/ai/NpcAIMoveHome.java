@@ -23,12 +23,12 @@ public NpcAIMoveHome(NpcBase npc, float dayRange, float nightRange, float dayLea
 public boolean shouldExecute()
   {
   if(!npc.hasHome()){return false;}
-  if(npc.getAttackTarget()!=null){return false;}
   ChunkCoordinates cc = npc.getHomePosition();
   float distSq = (float) npc.getDistanceSq(cc.posX+0.5d, cc.posY, cc.posZ+0.5d);
-  boolean isNight = !npc.worldObj.isDaytime() || npc.worldObj.isRaining();
-  float check = isNight ? nightRange : dayRange;
-  if(distSq >= check*check){return true;}
+  if(npc.shouldBeAtHome() || exceedsRange(distSq))
+    {
+    return true;
+    }
   return false;
   }
 
@@ -38,10 +38,33 @@ public boolean continueExecuting()
   if(!npc.hasHome()){return false;}
   ChunkCoordinates cc = npc.getHomePosition();
   float distSq = (float) npc.getDistanceSq(cc.posX+0.5d, cc.posY, cc.posZ+0.5d);
-  boolean isNight = !npc.worldObj.isDaytime() || npc.worldObj.isRaining();
-  float check = isNight ? nightLeash : dayLeash;
-  if(distSq >= check*check){return true;}
+  if(npc.shouldBeAtHome() || exceedsLeash(distSq))
+    {
+    return true;
+    }
   return false;
+  }
+
+protected boolean exceedsRange(float distSq)
+  {
+  float range = getRange() * getRange();
+  return distSq > range;
+  }
+
+protected boolean exceedsLeash(float distSq)  
+  {
+  float leash = getLeashRange() * getLeashRange();
+  return distSq > leash;
+  }
+
+protected float getLeashRange()
+  {
+  return npc.worldObj.isDaytime() && !npc.worldObj.isRaining() ? dayLeash : nightLeash;
+  }
+
+protected float getRange()
+  {
+  return npc.worldObj.isDaytime() && !npc.worldObj.isRaining() ? dayRange : nightRange;
   }
 
 @Override
@@ -55,7 +78,8 @@ public void updateTask()
   {
   ChunkCoordinates cc = npc.getHomePosition();
   double dist = npc.getDistanceSq(cc.posX+0.5d, cc.posY, cc.posZ+0.5d);
-  if(dist>4.d*4.d)
+  double leash = getLeashRange() * getLeashRange();
+  if(dist > leash)
     {
     npc.addAITask(TASK_MOVE);
     moveToPosition(cc.posX, cc.posY, cc.posZ, dist);
