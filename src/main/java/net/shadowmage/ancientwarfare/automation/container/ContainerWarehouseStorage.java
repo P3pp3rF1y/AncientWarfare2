@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -43,6 +44,19 @@ public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z)
   
   filters.addAll(tile.getFilters());
   addPlayerSlots(player, 8, playerSlotsY, 4);  
+  }
+
+@Override
+public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex)
+  {
+  if(player.worldObj.isRemote){return null;}
+  Slot slot = this.getSlot(slotClickedIndex);
+  if(slot==null || !slot.getHasStack()){return null;}
+  ItemStack stack = slot.getStack();
+  stack = tile.tryAdd(stack);
+  if(stack==null){slot.putStack(null);}
+  detectAndSendChanges();
+  return null;
   }
   
 public void handleClientRequestSpecific(ItemStack stack, boolean isShiftClick)

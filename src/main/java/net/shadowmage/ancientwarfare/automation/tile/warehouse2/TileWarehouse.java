@@ -31,7 +31,7 @@ public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shift
     {
     tryGetItem(player, filter, shiftClick);    
     }
-  else if(player.inventory.getItemStack()!=null)
+  else if(filter==null && player.inventory.getItemStack()!=null)
     {
     tryAddItem(player, player.inventory.getItemStack());
     }

@@ -632,4 +632,24 @@ public void decreaseCountOf(ItemStack layoutStack, int i)
   updateViewers();
   }
 
+public ItemStack tryAdd(ItemStack stack)
+  {
+  List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
+  storageMap.getDestinations(stack, destinations);
+  int moved = 0;
+  for(IWarehouseStorageTile tile : destinations)
+    {
+    moved = tile.insertItem(stack, stack.stackSize);
+    stack.stackSize-=moved;  
+    changeCachedQuantity(stack, moved);
+    updateViewers();
+    if(stack.stackSize<=0){break;}
+    }
+  if(stack.stackSize<=0)
+    {
+    return null;
+    }
+  return stack;
+  }
+
 }

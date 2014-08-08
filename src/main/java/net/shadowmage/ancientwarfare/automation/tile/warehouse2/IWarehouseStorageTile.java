@@ -36,4 +36,6 @@ public void removeViewer(ContainerWarehouseStorage containerWarehouseStorage);
 
 public void handleSlotClick(EntityPlayer player, ItemStack item, boolean isShiftClick);
 
+public ItemStack tryAdd(ItemStack stack);
+
 }

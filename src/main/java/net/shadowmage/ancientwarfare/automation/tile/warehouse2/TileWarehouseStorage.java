@@ -35,6 +35,23 @@ public TileWarehouseStorage()
   }
 
 @Override
+public ItemStack tryAdd(ItemStack cursorStack)
+  {
+  int moved = insertItem(cursorStack, cursorStack.stackSize);
+  cursorStack.stackSize -= moved;   
+  TileWarehouseBase twb = (TileWarehouseBase) getController();
+  if(twb!=null)
+    {
+    twb.changeCachedQuantity(cursorStack, moved);
+    }
+  if(cursorStack.stackSize<=0)
+    {
+    return null;
+    }
+  return cursorStack;
+  }
+
+@Override
 protected void updateTile()
   {
 

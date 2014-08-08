@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -32,6 +33,19 @@ public void onContainerClosed(EntityPlayer par1EntityPlayer)
   {
   warehouse.removeViewer(this);
   super.onContainerClosed(par1EntityPlayer);
+  }
+
+@Override
+public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex)
+  {
+  if(player.worldObj.isRemote){return null;}
+  Slot slot = this.getSlot(slotClickedIndex);
+  if(slot==null || !slot.getHasStack()){return null;}
+  ItemStack stack = slot.getStack();
+  stack = warehouse.tryAdd(stack);
+  if(stack==null){slot.putStack(null);}
+  detectAndSendChanges();
+  return null;
   }
 
 @Override
