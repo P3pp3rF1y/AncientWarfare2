@@ -41,7 +41,7 @@ public NpcFactionLeader(World par1World)
     this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
     this.tasks.addTask(1, (alertAI = new NpcAIAlertFaction(this)));
     this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-    this.tasks.addTask(2, new NpcAIMoveHome(this, 80.f, 20.f, 40.f, 5.f));   
+    this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f));   
     this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
 
     this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));

@@ -83,7 +83,7 @@ public NpcCombat(World par1World)
   this.tasks.addTask(8, new NpcAIMedic(this));
   this.tasks.addTask(9, (patrolAI = new NpcAIPatrol(this)));
   
-  this.tasks.addTask(10, new NpcAIMoveHome(this, 80.f, 20.f, 40.f, 5.f));
+  this.tasks.addTask(10, new NpcAIMoveHome(this, 50.f, 5.f, 20.f, 5.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));

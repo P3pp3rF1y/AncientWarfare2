@@ -48,7 +48,7 @@ public NpcCourier(World par1World)
   this.tasks.addTask(4, new NpcAIGetFood(this));  
   this.tasks.addTask(5, new NpcAIIdleWhenHungry(this)); 
   this.tasks.addTask(6, (courierAI=new NpcAICourier(this)));
-  this.tasks.addTask(7, new NpcAIMoveHome(this, 80.f, 8.f, 40.f, 3.f));
+  this.tasks.addTask(7, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
