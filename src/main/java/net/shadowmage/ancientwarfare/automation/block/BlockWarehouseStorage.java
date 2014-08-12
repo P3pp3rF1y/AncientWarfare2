@@ -121,6 +121,12 @@ public void breakBlock(World world, int x, int y, int z, Block block, int fortun
   }
 
 @Override
+public int damageDropped(int meta)
+  {
+  return meta;
+  }
+
+@Override
 public boolean onBlockEventReceived(World world, int x, int y, int z, int eventID, int eventParam)
   {
   super.onBlockEventReceived(world, x, y, z, eventID, eventParam);
