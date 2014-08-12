@@ -263,8 +263,8 @@ public static void loadRecipes()
       "s",
       "g",
       "s",
-      's', ironShaft.copy(),
-      'g', ironGear.copy());
+      's', steelShaft.copy(),
+      'g', steelGear.copy());
     
   //torque distributor s
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueDistributor,1,0), "the_wheel",
@@ -287,8 +287,8 @@ public static void loadRecipes()
       "_s_",
       "ggg",
       "_s_",
-      's', ironShaft.copy(),
-      'g', ironGear.copy());
+      's', steelShaft.copy(),
+      'g', steelGear.copy());
   
   //torque flywheel s
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheel,1,0), "theory_of_gravity",
