@@ -208,7 +208,6 @@ public final boolean canUpdate()
 public final void updateEntity()
   { 
   if(worldObj.isRemote){return;}
-  ITorque.applyPowerDrain(this);
   if(!init)
     {
     init=true;  
