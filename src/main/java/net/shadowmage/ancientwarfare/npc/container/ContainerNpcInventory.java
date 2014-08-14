@@ -5,6 +5,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.SlotArmor;
 import net.shadowmage.ancientwarfare.npc.inventory.InventoryNpcEquipment;
 
@@ -15,7 +16,9 @@ InventoryNpcEquipment inventory;
 public int guiHeight;
 String name;
 
-public ContainerNpcInventory(EntityPlayer player, int x, int y, int z)
+ItemStack orderStack;
+
+public ContainerNpcInventory(final EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
   inventory = new InventoryNpcEquipment(npc);
@@ -26,7 +29,18 @@ public ContainerNpcInventory(EntityPlayer player, int x, int y, int z)
   addSlotToContainer(new SlotArmor(inventory, 3, 8, 8+18*3, 1, npc));//chest
   addSlotToContainer(new SlotArmor(inventory, 4, 8, 8+18*2, 0, npc));//helm
   addSlotToContainer(new Slot(inventory, 6, 8+18*2, 8+18*2));//upkeep orders slot  TODO add slot validation
-  addSlotToContainer(new Slot(inventory, 5, 8+18*2, 8+18*3));//work/combat/route orders slot   TODO add slot validation
+  addSlotToContainer(new Slot(inventory, 5, 8+18*2, 8+18*3)
+    {
+    @Override
+    public void onSlotChanged()
+      {
+      if(!player.worldObj.isRemote)
+        {
+        npc.onOrdersInventoryChanged();
+        }
+      super.onSlotChanged();
+      }
+    });//work/combat/route orders slot   TODO add slot validation
   
   guiHeight = addPlayerSlots(player, 8, 8+5*18+8+18, 4)+8;
   name = npc.getCustomNameTag();
