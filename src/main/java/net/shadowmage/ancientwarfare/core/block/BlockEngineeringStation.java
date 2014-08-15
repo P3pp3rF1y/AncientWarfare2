@@ -2,48 +2,30 @@ package net.shadowmage.ancientwarfare.core.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockEngineeringStation extends Block
+public class BlockEngineeringStation extends BlockRotatableTile
 {
-
-BlockIconMap iconMap = new BlockIconMap();
 
 protected BlockEngineeringStation(String regName)
   {
   super(Material.rock);
   this.setBlockName(regName);
   this.setCreativeTab(AWCoreBlockLoader.coreTab);
-  iconMap.setIconTexture(0, 0, "ancientwarfare:core/engineering_station_bottom");
-  iconMap.setIconTexture(1, 0, "ancientwarfare:core/engineering_station_top");
-  iconMap.setIconTexture(2, 0, "ancientwarfare:core/engineering_station_front");
-  iconMap.setIconTexture(3, 0, "ancientwarfare:core/engineering_station_front");
-  iconMap.setIconTexture(4, 0, "ancientwarfare:core/engineering_station_side");
-  iconMap.setIconTexture(5, 0, "ancientwarfare:core/engineering_station_side");
+  iconMap.setIcon(this, RelativeSide.BOTTOM, "ancientwarfare:core/engineering_station_bottom");
+  iconMap.setIcon(this, RelativeSide.TOP, "ancientwarfare:core/engineering_station_bottom");
+  iconMap.setIcon(this, RelativeSide.FRONT, "ancientwarfare:core/engineering_station_bottom");
+  iconMap.setIcon(this, RelativeSide.REAR, "ancientwarfare:core/engineering_station_bottom");
+  iconMap.setIcon(this, RelativeSide.LEFT, "ancientwarfare:core/engineering_station_bottom");
+  iconMap.setIcon(this, RelativeSide.RIGHT, "ancientwarfare:core/engineering_station_bottom");
   setHardness(2.f);
-  }
-
-@Override
-@SideOnly(Side.CLIENT)
-public IIcon getIcon(int p_149691_1_, int p_149691_2_)
-  {
-  return iconMap.getIconFor(p_149691_1_, p_149691_2_);
-  }
-
-@Override
-@SideOnly(Side.CLIENT)
-public void registerBlockIcons(IIconRegister p_149651_1_)
-  {
-  iconMap.registerIcons(p_149651_1_);
   }
 
 @Override
@@ -79,6 +61,25 @@ public void breakBlock(World world, int x, int y, int z, Block block, int meta)
     InventoryTools.dropInventoryInWorld(world, tile.layoutMatrix, x, y, z);
     }
   super.breakBlock(world, x, y, z, block, meta);
+  }
+
+@Override
+public RotationType getRotationType()
+  {
+  return RotationType.FOUR_WAY;
+  }
+
+@Override
+public boolean invertFacing()
+  {
+  return true;
+  }
+
+@Override
+public Block setIcon(RelativeSide side, String texName)
+  {
+  iconMap.setIcon(this, side, texName);
+  return this;
   }
 
 }

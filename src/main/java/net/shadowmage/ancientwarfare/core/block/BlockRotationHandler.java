@@ -33,7 +33,12 @@ public static int getRotatedMeta(IRotatableBlock block, int meta, ForgeDirection
 
 public static int getMetaForPlacement(EntityLivingBase entity, IRotatableBlock block, int sideHit)
   {
-  if(block.getRotationType()==RotationType.NONE){return 0;}
+  return getFaceForPlacement(entity, block, sideHit).ordinal();
+  }
+
+public static ForgeDirection getFaceForPlacement(EntityLivingBase entity, IRotatableBlock block, int sideHit)
+  {
+  if(block.getRotationType()==RotationType.NONE){return ForgeDirection.NORTH;}
   int f = BlockTools.getPlayerFacingFromYaw(entity.rotationYaw);
   ForgeDirection face = BlockTools.getForgeDirectionFromFacing(f);
   if(block.getRotationType()==RotationType.SIX_WAY)
@@ -52,7 +57,7 @@ public static int getMetaForPlacement(EntityLivingBase entity, IRotatableBlock b
 //    face = face.getOpposite();
 //    }
   AWLog.logDebug("returning facing for block: "+face);
-  return face.ordinal();
+  return face;
   }
 
 public interface IRotatableBlock
@@ -60,6 +65,12 @@ public interface IRotatableBlock
 public RotationType getRotationType();
 public boolean invertFacing();
 public Block setIcon(RelativeSide side, String texName);
+}
+
+public interface IRotatableTile
+{
+public ForgeDirection getPrimaryFacing();
+public void setPrimaryFacing(ForgeDirection face);
 }
 
 public static enum RotationType

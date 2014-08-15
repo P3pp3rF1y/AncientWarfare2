@@ -8,12 +8,15 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileEngineeringStation extends TileEntity
+public class TileEngineeringStation extends TileEntity implements IRotatableTile
 {
 
 public InventoryCrafting layoutMatrix;
@@ -26,6 +29,8 @@ public InventoryBasic bookInventory = new InventoryBasic(1)
     };
   };
 public InventoryBasic extraSlots = new InventoryBasic(18);
+
+ForgeDirection facing = ForgeDirection.NORTH;
 
 public TileEngineeringStation()
   {
@@ -98,6 +103,7 @@ public void readFromNBT(NBTTagCompound tag)
   InventoryTools.readInventoryFromNBT(extraSlots, tag.getCompoundTag("extraInventory"));
   InventoryTools.readInventoryFromNBT(result, tag.getCompoundTag("resultInventory"));
   InventoryTools.readInventoryFromNBT(layoutMatrix, tag.getCompoundTag("layoutMatrix"));
+  facing = ForgeDirection.values()[tag.getInteger("facing")];
   }
 
 @Override
@@ -121,6 +127,20 @@ public void writeToNBT(NBTTagCompound tag)
   InventoryTools.writeInventoryToNBT(layoutMatrix, inventoryTag);
   tag.setTag("layoutMatrix", inventoryTag);
   
+  tag.setInteger("facing", facing.ordinal());
+  }
+
+@Override
+public ForgeDirection getPrimaryFacing()
+  {
+  return facing;
+  }
+
+@Override
+public void setPrimaryFacing(ForgeDirection face)
+  {
+  this.facing = face;
+  AWLog.logDebug("set facing to: "+face);
   }
 
 }

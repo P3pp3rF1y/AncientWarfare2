@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwned;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableTile;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -30,7 +31,7 @@ public static final CreativeTabs coreTab = new CreativeTabs("tabs.awcore")
 public void load()
   {
   AWBlocks.engineeringStation = new BlockEngineeringStation("engineering_station");
-  GameRegistry.registerBlock(AWBlocks.engineeringStation, "engineering_station");
+  GameRegistry.registerBlock(AWBlocks.engineeringStation, ItemBlockRotatableTile.class, "engineering_station");
   GameRegistry.registerTileEntity(TileEngineeringStation.class, "engineering_station_tile");
   
   AWBlocks.researchStation = new BlockResearchStation("research_station");
