@@ -104,17 +104,10 @@ public void breakBlock(World world, int x, int y, int z, Block block, int fortun
   {
   if(!world.isRemote)
     {
-    TileWarehouseStorage tile = (TileWarehouseStorage) world.getTileEntity(x, y, z);
+    TileWarehouseStorage tile = (TileWarehouseStorage) world.getTileEntity(x, y, z);    
     if(tile!=null)
       {
-      ItemQuantityMap qtm = new ItemQuantityMap();
-      tile.addItems(qtm);
-      ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-      qtm.getItems(list);
-      for(ItemStack stack : list)
-        {
-        InventoryTools.dropItemInWorld(world, stack, x, y, z);
-        }
+      tile.onTileBroken();
       }
     }
   super.breakBlock(world, x, y, z, block, fortune);  

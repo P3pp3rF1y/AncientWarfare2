@@ -57,6 +57,22 @@ protected void updateTile()
 
   }
 
+public void onTileBroken()
+  {
+  ItemQuantityMap qtm = new ItemQuantityMap();
+  addItems(qtm);
+  if(getController()!=null)
+    {
+    getController().removeControlledTile(this);
+    }  
+  ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+  qtm.getItems(list);
+  for(ItemStack stack : list)
+    {
+    InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
+    }
+  }
+
 @Override
 protected void searchForController()
   {

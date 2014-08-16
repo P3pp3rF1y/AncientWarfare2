@@ -300,8 +300,12 @@ public final void addStorageTile(IWarehouseStorageTile tile)
 
 public final void removeStorageTile(IWarehouseStorageTile tile)
   {
+  ItemQuantityMap iqm = new ItemQuantityMap();
+  tile.addItems(iqm);  
+  this.cachedItemMap.removeAll(iqm);
   storageTiles.remove(tile);
   storageMap.removeStorageTile(tile);
+  updateViewers();
   }
 
 public final void addInterfaceTile(TileWarehouseInterface tile)
