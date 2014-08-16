@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -184,6 +185,7 @@ private static void parseGoalResources(List<String> lines)
   String itemName;
   int meta, qty;
   Item item;
+  Block block;
   ItemStack stack;
   for(String line : lines)
     {
@@ -195,9 +197,20 @@ private static void parseGoalResources(List<String> lines)
     AWLog.logDebug("parsed item resource for research: "+name + " item: "+itemName + " qty: "+qty + " meta: "+meta);
     if(!goalsByName.containsKey(name)){continue;}
     item = (Item) Item.itemRegistry.getObject(itemName);    
-    if(item==null){continue;}
-    stack = new ItemStack(item, qty, meta);
-    goalsByName.get(name).addResource(stack);
+    if(item==null)
+      {
+      block = (Block) Block.blockRegistry.getObject(itemName);
+      if(block!=null)
+        {
+        stack = new ItemStack(block, qty, meta);
+        goalsByName.get(name).addResource(stack);
+        }
+      }
+    else
+      {
+      stack = new ItemStack(item, qty, meta);
+      goalsByName.get(name).addResource(stack);
+      }
     } 
   }
 

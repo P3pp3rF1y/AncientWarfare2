@@ -31,5 +31,12 @@ naval_warfare
 advanced_siege_warfare
 
 
+Mathematics: redstone, note block, bookshelf
+Construction: Fence gate, ladders, walls, tnt
+Wheel: Hopper, Dropper
+Mining: TNT cart, furnace cart, iron pickaxe, powered rail
+Siege Warfare: ladders, tnt cart, iron horse armor
+
+
 
 

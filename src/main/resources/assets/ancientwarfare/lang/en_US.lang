@@ -144,7 +144,7 @@ item.npc_spawner.viking.civilian.female.name=Viking Civilian Female
 #blocks
 #core
 tile.engineering_station.name=Engineering Station
-tile.research_station.name=Research Station
+tile.research_station.0.name=Research Station
 #automation
 tile.civic_auto_crafting.name=Auto Crafting Station
 tile.civic_quarry.name=Quarry
