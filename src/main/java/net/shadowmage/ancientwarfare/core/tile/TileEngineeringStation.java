@@ -7,6 +7,9 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -19,6 +22,8 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 public class TileEngineeringStation extends TileEntity implements IRotatableTile
 {
 
+ForgeDirection facing = ForgeDirection.NORTH;
+
 public InventoryCrafting layoutMatrix;
 public InventoryCraftResult result;
 public InventoryBasic bookInventory = new InventoryBasic(1)
@@ -29,8 +34,6 @@ public InventoryBasic bookInventory = new InventoryBasic(1)
     };
   };
 public InventoryBasic extraSlots = new InventoryBasic(18);
-
-ForgeDirection facing = ForgeDirection.NORTH;
 
 public TileEngineeringStation()
   {
@@ -93,6 +96,21 @@ public void onItemCrafted()
 private void onLayoutMatrixChanged(IInventory matrix)
   {
   this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, worldObj, getCrafterName()));
+  }
+
+@Override
+public Packet getDescriptionPacket()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setInteger("facing", facing.ordinal());
+  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
+  }
+
+@Override
+public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {  
+  facing = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("facing"));
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
 @Override

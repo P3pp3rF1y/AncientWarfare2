@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.model.crafting_table;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.tileentity.TileEntity;
 
 public class ModelCraftingBase extends ModelBase
 {
@@ -11,5 +12,7 @@ public ModelCraftingBase()
   }
 
 public void renderModel(){}//TODO
+
+public void renderModel(TileEntity te){}
 
 }
