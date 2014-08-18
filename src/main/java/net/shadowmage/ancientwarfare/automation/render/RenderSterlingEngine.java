@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -52,8 +53,8 @@ public void renderTileEntityAt(TileEntity tile, double x, double y, double z, fl
   rotation = -(pr + rd*partialTick);
     
   GL11.glPushMatrix();
-  
-  RenderTools.setFullColorLightmap();
+
+  GL11.glEnable(GL12.GL_RESCALE_NORMAL);
   GL11.glTranslated(x+0.5d, y, z+0.5d);
   GL11.glRotatef(-baseRotation, 0, 1, 0);
   bindTexture(texture);  
@@ -68,6 +69,7 @@ public void renderTileEntityAt(TileEntity tile, double x, double y, double z, fl
   model.getPiece("piston_arm").setRotation(0, 0, rotation+armAngle);  
   model.getPiece("piston_arm2").setRotation(0, 0, rotation+armAngle2);  
   model.renderModel();
+  GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   GL11.glPopMatrix();
   }
 

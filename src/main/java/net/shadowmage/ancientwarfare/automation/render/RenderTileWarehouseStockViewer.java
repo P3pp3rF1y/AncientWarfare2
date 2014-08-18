@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseSto
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer
 {
@@ -31,6 +32,8 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   TileWarehouseStockViewer tile = (TileWarehouseStockViewer)te;
   ForgeDirection d = ForgeDirection.getOrientation(te.getBlockMetadata()).getOpposite();
   float r = getRotationFromDirection(d);
+
+  GL11.glEnable(GL12.GL_RESCALE_NORMAL);
   RenderTools.setFullColorLightmap();
   GL11.glPushMatrix();
   GL11.glTranslated(x, y, z);
@@ -39,6 +42,8 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   GL11.glTranslatef(0.5f, 0, 0.5f);//translate to top-left corner
   GL11.glTranslatef(0, -0.125f, -0.127f);//move out and down for front-face of sign
   renderSignContents(tile);
+
+  GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   GL11.glPopMatrix();  
   }
 

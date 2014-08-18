@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelCraftingBase
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class TileCraftingTableRender extends TileEntitySpecialRenderer implements IItemRenderer
 {
@@ -56,13 +57,14 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   rot = ((IRotatableTile)te).getPrimaryFacing();
   
   GL11.glPushMatrix();
-  RenderTools.setFullColorLightmap();
+  GL11.glEnable(GL12.GL_RESCALE_NORMAL);
   GL11.glTranslated(x+0.5d, y, z+0.5d);
   float rotation = getRotation(rot); 
   GL11.glRotatef(rotation, 0, 1, 0);
   GL11.glScalef(-1, -1, 1);
   bindTexture(texture);
   model.renderModel();
+  GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   GL11.glPopMatrix();
   }
 
