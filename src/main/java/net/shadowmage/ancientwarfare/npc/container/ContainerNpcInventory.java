@@ -22,7 +22,18 @@ public ContainerNpcInventory(final EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
   inventory = new InventoryNpcEquipment(npc);
-  addSlotToContainer(new Slot(inventory, 0, 8, 8)); //weapon slot
+  addSlotToContainer(new Slot(inventory, 0, 8, 8)
+    {
+    @Override
+    public void onSlotChanged()
+      {
+      if(!player.worldObj.isRemote)
+        {
+        npc.onWeaponInventoryChanged();
+        }
+      super.onSlotChanged();
+      }
+    }); //weapon slot
   addSlotToContainer(new Slot(inventory, 7, 8, 8+18*1));//shield slot
   addSlotToContainer(new SlotArmor(inventory, 1, 8, 8+18*5, 3, npc));//boots
   addSlotToContainer(new SlotArmor(inventory, 2, 8, 8+18*4, 2, npc));//legs
