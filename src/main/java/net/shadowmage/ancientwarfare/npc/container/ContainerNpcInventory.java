@@ -90,6 +90,11 @@ public void handleNpcTextureUpdate(String tex)
   sendDataToServer(tag);
   }
 
-
+@Override
+public void onContainerClosed(EntityPlayer p_75134_1_)
+  {
+  super.onContainerClosed(p_75134_1_);
+  npc.updateTexture();
+  }
 
 }
