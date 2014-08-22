@@ -38,6 +38,14 @@ Licensing
 ****************************AUTOMATION MODULE TODO****************************	
 ^ lots of testing/validation on new warehouse system
 ^ finish up storage block filter-setting ability, verify that it works properly
+* rework of bounded worksite blocks (not warehouse, but worksites)
+	come with initial bounds set by orientation, probably 3x3 base
+	add ability to adjust bounds through GUI
+	add 'upgrade' slots to GUIs.  Possibly squash other inventories together
+		-- upgrades will allow for increasing the work-bounds area (6x6, 9x9, 16x16)
+		-- should have a 'speed' upgrade, decreases power needed per work unit
+		-- should have a 'production' upgrade, increases output from each work unit (similar to looting/fortune on a tool) (possible multiple tiers?)
+* add ore-processing 'upgrade' to the quarry -- 		
 * Torque API:	
 	set power capacity / power loss / power use for all torque blocks
 	balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
