@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.Team;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -37,6 +38,12 @@ public BlockPosition getWorkBoundsMin();
 public BlockPosition getWorkBoundsMax();
 
 public boolean hasWorkBounds();
+
+/**
+ * Called when an upgrade item is used on this worksite.  It is the responsibility of the worksite to query the upgrade item/upgrade type, and apply any necessary upgrades.
+ * @return true if the upgrade was valid and an item from the stack should be consumed.
+ */
+public boolean onUpgradeItemUsed(ItemStack stack);
 
 public static enum WorkType
 {

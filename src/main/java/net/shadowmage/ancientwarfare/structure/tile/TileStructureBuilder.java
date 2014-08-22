@@ -37,6 +37,13 @@ double maxInput = 100;
 private double storedEnergy;
 
 @Override
+public boolean onUpgradeItemUsed(ItemStack stack)
+  {
+  // TODO Auto-generated method stub
+  return false;
+  }
+
+@Override
 public void setEnergy(double energy)
   {
   this.storedEnergy = energy;

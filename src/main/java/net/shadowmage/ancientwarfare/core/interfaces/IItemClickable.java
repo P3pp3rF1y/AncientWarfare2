@@ -18,6 +18,12 @@ public interface IItemClickable
  */
 public boolean onRightClickClient(EntityPlayer player, ItemStack stack);
 
+/**
+ * Should the left-click action be cancelled (not trigger vanilla interaction)?
+ * @param player
+ * @param stack
+ * @return
+ */
 public boolean cancelRightClick(EntityPlayer player, ItemStack stack);
 
 /**
@@ -39,6 +45,12 @@ public void onRightClick(EntityPlayer player, ItemStack stack);
  */
 public boolean onLeftClickClient(EntityPlayer player, ItemStack stack);
 
+/**
+ * Should the left-click action be cancelled (not trigger vanilla interaction)?
+ * @param player
+ * @param stack
+ * @return
+ */
 public boolean cancelLeftClick(EntityPlayer player, ItemStack stack);
 
 /**

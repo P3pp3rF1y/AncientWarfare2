@@ -41,6 +41,13 @@ public TileWorksiteBase()
   }
 
 @Override
+public boolean onUpgradeItemUsed(ItemStack stack)
+  {
+  // TODO Auto-generated method stub
+  return false;
+  }
+
+@Override
 public ForgeDirection getOrientation()
   {
   return ForgeDirection.getOrientation(getBlockMetadata());

@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -18,6 +19,13 @@ String ownerName = "";
 public boolean canOutput(ForgeDirection towards)
   {
   return towards==orientation;
+  }
+
+@Override
+public boolean onUpgradeItemUsed(ItemStack stack)
+  {
+  // TODO Auto-generated method stub
+  return false;
   }
 
 @Override
