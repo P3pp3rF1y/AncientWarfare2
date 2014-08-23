@@ -64,7 +64,6 @@ public void handlePacketData(NBTTagCompound tag)
   refreshGui();
   if(tag.hasKey("userBlocks"))
     {
-    AWLog.logDebug("handling user block list..."+tag);
     Set<BlockPosition> set = new HashSet<BlockPosition>();
     NBTTagList list = tag.getTagList("userBlocks", Constants.NBT.TAG_COMPOUND);
     BlockPosition pos;
@@ -83,7 +82,15 @@ public void handlePacketData(NBTTagCompound tag)
   if(tag.hasKey("closeGUI"))
     {
     worksite.onBlockClicked(player);//hack to open the worksites GUI
-    }  
+    } 
+  if(tag.hasKey("moveBounds"))
+    {
+    BlockPosition pos = new BlockPosition(tag.getCompoundTag("moveBounds"));
+    }
+  if(tag.hasKey("adjustBounds"))
+    {
+    BlockPosition pos = new BlockPosition(tag.getCompoundTag("adjustBounds"));
+    }
   }
 
 public void removeTarget(BlockPosition target)

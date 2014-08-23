@@ -15,16 +15,7 @@ public void initElements()
   {
   addLabels();
   addSideSelectButton();
-  
-//  Button button = new Button(xSize/2, ySize-8-12, xSize/2-8, 12, StatCollector.translateToLocal("guistrings.automation.quarry_pattern"))    
-//    {
-//    @Override
-//    protected void onPressed()
-//      {
-//      //TODO open quarry-pattern-select GUI
-//      }
-//    };
-//  addGuiElement(button);
+  addBoundsAdjustButton();
   }
 
 @Override

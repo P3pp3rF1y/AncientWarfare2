@@ -15,7 +15,7 @@ public void initElements()
   {
   addLabels();
   addSideSelectButton();
-  addTargetSelectButton();
+  addBoundsAdjustButton();
   }
 
 @Override

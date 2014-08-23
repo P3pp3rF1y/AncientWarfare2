@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBlockSelection;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBoundsAdjust;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishFarm;
@@ -68,6 +69,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, GuiTorqueGeneratorSterling.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, GuiChunkLoaderDeluxe.class);  
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STOCK, GuiWarehouseStockViewer.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_BOUNDS, GuiWorksiteBoundsAdjust.class);
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel());  
   ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new RenderTileWorksite());
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new RenderTileWorksite());

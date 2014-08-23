@@ -84,6 +84,7 @@ public static final int GUI_NPC_RECRUITING_STATION = 42;
 public static final int GUI_NPC_BARD = 43;
 public static final int GUI_NPC_CREATIVE = 44;
 public static final int GUI_RESEARCH_BOOK = 45;
+public static final int GUI_WORKSITE_BOUNDS = 46;
 
 private FMLEventChannel channel;
 

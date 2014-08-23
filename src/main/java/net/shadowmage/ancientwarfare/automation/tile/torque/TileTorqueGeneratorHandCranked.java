@@ -15,6 +15,13 @@ public class TileTorqueGeneratorHandCranked extends TileTorqueGeneratorBase impl
 {
 
 String ownerName = "";
+
+@Override
+public int getBoundsMaxWidth(){return 0;}
+
+@Override
+public int getBoundsMaxHeight(){return 0;}
+
 @Override
 public boolean canOutput(ForgeDirection towards)
   {

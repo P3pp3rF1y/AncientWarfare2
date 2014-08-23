@@ -75,14 +75,14 @@ protected void addSideSelectButton()
   addGuiElement(button);
   }
 
-protected void addTargetSelectButton()
+protected void addBoundsAdjustButton()
   {
-  Button button = new Button(xSize/2, ySize-8-12, xSize/2-8, 12, StatCollector.translateToLocal("guistrings.automation.target_select"))    
+  Button button = new Button(xSize/2, ySize-8-12, xSize/2-8, 12, StatCollector.translateToLocal("guistrings.automation.adjust_bounds"))    
     {
     @Override
     protected void onPressed()
       {
-      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_SET_TARGETS, container.worksite.xCoord, container.worksite.yCoord, container.worksite.zCoord);
+      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, container.worksite.xCoord, container.worksite.yCoord, container.worksite.zCoord);
       }
     };
   addGuiElement(button);

@@ -14,11 +14,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
@@ -34,11 +32,22 @@ protected ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
 private double maxInput = maxEnergyStored;
 private double storedEnergy;
+private int upgradeBitfield;
 
 public TileWorksiteBase()
   {
   
   }
+
+public int getUpgradeBits(){return upgradeBitfield;}
+
+public void setUpgradeBits(int bits){upgradeBitfield = bits;}
+
+@Override
+public int getBoundsMaxWidth(){return 3;}
+
+@Override
+public int getBoundsMaxHeight(){return 1;}
 
 @Override
 public boolean onUpgradeItemUsed(ItemStack stack)

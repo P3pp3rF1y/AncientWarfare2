@@ -459,7 +459,7 @@ public boolean onBlockClicked(EntityPlayer player)
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, xCoord, yCoord, zCoord);
     return true;
     }
-  return false;
+  return true;
   }
 
 @SuppressWarnings("unchecked")

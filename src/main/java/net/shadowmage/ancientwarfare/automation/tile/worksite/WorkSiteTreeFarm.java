@@ -277,7 +277,7 @@ public boolean onBlockClicked(EntityPlayer player)
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_TREE_FARM, xCoord, yCoord, zCoord);
     return true;
     }
-  return false;
+  return true;
   }
 
 @Override

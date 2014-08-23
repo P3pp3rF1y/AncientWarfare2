@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnima
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBoundsAdjust;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishFarm;
@@ -127,6 +128,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, ContainerTorqueGeneratorSterling.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, ContainerChunkLoaderDeluxe.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STOCK, ContainerWarehouseStockViewer.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_BOUNDS, ContainerWorksiteBoundsAdjust.class);
   /**
    * register persistent game-data handlers
    */

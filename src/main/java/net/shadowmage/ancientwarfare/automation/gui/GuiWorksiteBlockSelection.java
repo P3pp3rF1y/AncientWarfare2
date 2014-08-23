@@ -14,6 +14,22 @@ public class GuiWorksiteBlockSelection extends GuiContainerBase
 
 Label label ;
 ContainerWorksiteBlockSelection container;
+
+/**
+ * Move bounds buttons
+ */
+Button mNorth, mSouth, mWest, mEast, mUp, mDown;
+/**
+ * Expand bounds buttons
+ */
+Button eNorth, eSouth, eWest, eEast, eUp, eDown;
+/**
+ * Shrink bounds buttons
+ */
+Button sNorth, sSouth, sWest, sEast, sUp, sDown;
+
+int leftRowX, rightRowX, topRowY, bottomRowY;
+
 public GuiWorksiteBlockSelection(ContainerBase par1Container)
   {
   super(par1Container, 256, 240, defaultBackground);
@@ -22,8 +38,8 @@ public GuiWorksiteBlockSelection(ContainerBase par1Container)
   BlockPosition max = container.worksite.getWorkBoundsMax();
   int xSize = (max.x-min.x)+1;
   int zSize = (max.z-min.z)+1;
-  this.xSize = (xSize*12) + 8 + 8 + 12 + 12;
-  this.ySize = (zSize*12) + 8 + 8 + 12 + 12;  
+  this.xSize = (xSize*12) + 8 + 8 + 12 + 12 + 24;
+  this.ySize = (zSize*12) + 8 + 8 + 12 + 12 + 24;  
   }
 
 @Override
@@ -49,15 +65,14 @@ public void setupElements()
   int workX = container.worksite.xCoord - min.x;
   int workZ = container.worksite.zCoord - min.z;
   
-  int tlx = 8+12;
-  int tly = 8+12;
+  int tlx = 8+12+12;
+  int tly = 8+12+12;
   
   Button siteButton = new Button(tlx + workX*12, tly + workZ*12, 12, 12, "W");  
   addGuiElement(siteButton);
   
   BlockPosition testPos = new BlockPosition();
   WorkSelectionButton button;
-  AWLog.logDebug("setting up worksite buttons...: "+container.targetBlocks);
   for(int x = 0; x<xSize; x++)
     {
     for(int z = 0; z<zSize; z++)

@@ -39,6 +39,10 @@ public BlockPosition getWorkBoundsMax();
 
 public boolean hasWorkBounds();
 
+public int getBoundsMaxWidth();
+
+public int getBoundsMaxHeight();
+
 /**
  * Called when an upgrade item is used on this worksite.  It is the responsibility of the worksite to query the upgrade item/upgrade type, and apply any necessary upgrades.
  * @return true if the upgrade was valid and an item from the stack should be consumed.

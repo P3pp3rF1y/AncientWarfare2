@@ -41,6 +41,12 @@ double maxInput = 100;
 private double storedEnergy;
 
 @Override
+public int getBoundsMaxWidth(){return 0;}
+
+@Override
+public int getBoundsMaxHeight(){return 0;}
+
+@Override
 public boolean onUpgradeItemUsed(ItemStack stack)
   {
   // TODO Auto-generated method stub

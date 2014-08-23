@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockTorqueTile;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
+import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteStatic;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
@@ -157,7 +158,7 @@ public static final BlockChunkLoaderDeluxe chunkLoaderDeluxe = new BlockChunkLoa
 
 public static void load()
   {      
-  GameRegistry.registerBlock(worksiteQuarry, ItemBlockWorksite.class, "civic_quarry");
+  GameRegistry.registerBlock(worksiteQuarry, ItemBlockWorksiteStatic.class, "civic_quarry");
   GameRegistry.registerTileEntity(WorkSiteQuarry.class, "civic_quarry_tile");
   worksiteQuarry.setIcon(RelativeSide.TOP, "ancientwarfare:automation/quarry_top");
   worksiteQuarry.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/quarry_bottom");
@@ -167,7 +168,7 @@ public static void load()
   worksiteQuarry.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/quarry_right");  
   worksiteQuarry.setWorkSize(64);
   
-  GameRegistry.registerBlock(worksiteForestry, ItemBlockWorksite.class, "civic_forestry");
+  GameRegistry.registerBlock(worksiteForestry, ItemBlockWorksiteStatic.class, "civic_forestry");
   GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "civic_forestry_tile");
   worksiteForestry.setIcon(RelativeSide.TOP, "ancientwarfare:automation/tree_farm_top");
   worksiteForestry.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/tree_farm_bottom");
@@ -176,7 +177,7 @@ public static void load()
   worksiteForestry.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/tree_farm_left");
   worksiteForestry.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/tree_farm_right");  
   
-  GameRegistry.registerBlock(worksiteCropFarm, ItemBlockWorksite.class, "civic_crop_farm");
+  GameRegistry.registerBlock(worksiteCropFarm, ItemBlockWorksiteStatic.class, "civic_crop_farm");
   GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "civic_crop_farm_tile");
   worksiteCropFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/crop_farm_top");
   worksiteCropFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/crop_farm_bottom");
@@ -185,7 +186,7 @@ public static void load()
   worksiteCropFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/crop_farm_left");
   worksiteCropFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/crop_farm_right");
   
-  GameRegistry.registerBlock(worksiteMushroomFarm, ItemBlockWorksite.class, "civic_mushroom_farm");
+  GameRegistry.registerBlock(worksiteMushroomFarm, ItemBlockWorksiteStatic.class, "civic_mushroom_farm");
   GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "civic_mushroom_farm_tile");
   worksiteMushroomFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/mushroom_farm_top");
   worksiteMushroomFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/mushroom_farm_bottom");
@@ -194,7 +195,7 @@ public static void load()
   worksiteMushroomFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/mushroom_farm_left");
   worksiteMushroomFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mushroom_farm_right");
   
-  GameRegistry.registerBlock(worksiteAnimalFarm, ItemBlockWorksite.class, "civic_animal_farm");
+  GameRegistry.registerBlock(worksiteAnimalFarm, ItemBlockWorksiteStatic.class, "civic_animal_farm");
   GameRegistry.registerTileEntity(WorkSiteAnimalFarm.class, "civic_animal_farm_tile");
   worksiteAnimalFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/animal_farm_top");
   worksiteAnimalFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/animal_farm_bottom");
@@ -203,7 +204,7 @@ public static void load()
   worksiteAnimalFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/animal_farm_left");
   worksiteAnimalFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/animal_farm_right");
     
-  GameRegistry.registerBlock(worksiteFishFarm, ItemBlockWorksite.class, "civic_fish_farm");
+  GameRegistry.registerBlock(worksiteFishFarm, ItemBlockWorksiteStatic.class, "civic_fish_farm");
   GameRegistry.registerTileEntity(WorkSiteFishFarm.class, "civic_fish_farm_tile");
   worksiteFishFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/fish_farm_top");
   worksiteFishFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/fish_farm_bottom");
@@ -212,7 +213,7 @@ public static void load()
   worksiteFishFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/fish_farm_left");
   worksiteFishFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/fish_farm_right");
   
-  GameRegistry.registerBlock(worksiteReedFarm, ItemBlockWorksite.class, "civic_reed_farm");
+  GameRegistry.registerBlock(worksiteReedFarm, ItemBlockWorksiteStatic.class, "civic_reed_farm");
   GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "civic_reed_farm_tile");
   worksiteReedFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/reed_farm_top");
   worksiteReedFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/reed_farm_bottom");

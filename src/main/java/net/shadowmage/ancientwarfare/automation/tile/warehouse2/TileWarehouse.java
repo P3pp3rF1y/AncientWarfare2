@@ -19,6 +19,12 @@ public TileWarehouse()
   }
 
 @Override
+public int getBoundsMaxWidth(){return 16;}
+
+@Override
+public int getBoundsMaxHeight(){return 4;}
+
+@Override
 public boolean onUpgradeItemUsed(ItemStack stack)
   {
   // TODO Auto-generated method stub

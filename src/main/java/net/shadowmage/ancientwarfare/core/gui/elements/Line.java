@@ -54,10 +54,10 @@ private void setColor()
   g = (color & 0x00ff0000)>>16;
   b = (color & 0x0000ff00)>>8;
   a = (color & 0x000000ff)>>0;
-  r = r/255;
-  g = g/255;
-  b = b/255;
-  a = a/255;
+  r = (float)r/255.f;
+  g = (float)g/255.f;
+  b = (float)b/255.f;
+  a = (float)a/255.f;
   GL11.glColor4f(r, g, b, a);
   }
 
