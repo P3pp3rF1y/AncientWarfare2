@@ -13,7 +13,6 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAutoCrafting;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBoundsAdjust;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishControl;
@@ -50,7 +49,6 @@ public void registerClient()
   MinecraftForge.EVENT_BUS.register(WorkBoundingBoxRenderer.instance());
   FMLCommonHandler.instance().bus().register(WorkBoundingBoxRenderer.instance());
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
-  NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_SET_TARGETS, GuiWorksiteBlockSelection.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, GuiWorksiteAutoCrafting.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, GuiWorksiteFishControl.class);

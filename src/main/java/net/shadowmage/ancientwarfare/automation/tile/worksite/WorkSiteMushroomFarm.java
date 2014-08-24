@@ -81,13 +81,6 @@ public WorkSiteMushroomFarm()
   }
 
 @Override
-protected void onTargetBlocksSet()
-  {
-  blocksToPlantMushroom.clear();
-  blocksToPlantNetherWart.clear();
-  }
-
-@Override
 protected void updateBlockWorksite()
   {
   worldObj.theProfiler.startSection("Count Resources");  
@@ -226,7 +219,21 @@ public boolean onBlockClicked(EntityPlayer player)
 @Override
 protected void fillBlocksToProcess(Collection<BlockPosition> targets)
   { 
-  targets.addAll(getUserSetTargets());  
+  int w = bbMax.x - bbMin.x + 1;
+  int h = bbMax.z - bbMin.z + 1;
+  BlockPosition p;
+  for(int x = 0; x < w; x++)
+    {
+    for(int z = 0; z< h; z++)
+      {
+      if(isTarget(bbMin.x+x, bbMin.z+z))
+        {
+        p = new BlockPosition(bbMin);
+        p.offset(x, 0, z);
+        targets.add(p);
+        }
+      }
+    }  
   }
 
 @Override
@@ -258,7 +265,7 @@ protected void scanBlockPosition(BlockPosition pos)
       TreeFinder.findAttachedTreeBlocks(block, worldObj, pos.x, pos.y, pos.z, harvestSet);
       for(BlockPosition tp : harvestSet)
         {
-        if(!getUserSetTargets().contains(tp) && !blocksToHarvest.contains(tp))//don't harvest user-set planting blocks...
+        if(!isTarget(tp) && !blocksToHarvest.contains(tp))//don't harvest user-set planting blocks...
           {
           blocksToHarvest.add(tp);
           }

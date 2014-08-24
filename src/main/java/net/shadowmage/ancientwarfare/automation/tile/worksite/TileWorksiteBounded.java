@@ -53,12 +53,17 @@ protected void onBoundsSet()
   
   }
 
-private final void setWorkBoundsMin(BlockPosition min)
+public void onBoundsAdjusted()
+  {
+  //TODO implement to check target blocks, clear invalid ones
+  }
+
+public final void setWorkBoundsMin(BlockPosition min)
   {
   bbMin = min;
   }
 
-private final void setWorkBoundsMax(BlockPosition max)
+public final void setWorkBoundsMax(BlockPosition max)
   {
   bbMax = max;
   }

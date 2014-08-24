@@ -118,7 +118,7 @@ public final void onPacketData(NBTTagCompound data)
     {
     if(this.gui!=null)
       {
-      this.gui.handlePacketData(data.getTag("gui"));
+      this.gui.handlePacketData(data.getCompoundTag("gui"));
       }
     }
   else

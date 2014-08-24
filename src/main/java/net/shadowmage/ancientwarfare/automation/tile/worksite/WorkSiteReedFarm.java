@@ -104,14 +104,6 @@ public WorkSiteReedFarm()
   }
 
 @Override
-protected void onTargetBlocksSet()
-  {
-  cocoaToPlant.clear();
-  cactusToPlant.clear();
-  reedToPlant.clear();  
-  }
-
-@Override
 protected boolean processWork()
   {
   if(!blocksToHarvest.isEmpty())
@@ -354,7 +346,21 @@ public boolean onBlockClicked(EntityPlayer player)
 @Override
 protected void fillBlocksToProcess(Collection<BlockPosition> targets)
   { 
-  targets.addAll(getUserSetTargets());  
+  int w = bbMax.x - bbMin.x + 1;
+  int h = bbMax.z - bbMin.z + 1;
+  BlockPosition p;
+  for(int x = 0; x < w; x++)
+    {
+    for(int z = 0; z< h; z++)
+      {
+      if(isTarget(bbMin.x+x, bbMin.z+z))
+        {
+        p = new BlockPosition(bbMin);
+        p.offset(x, 0, z);
+        targets.add(p);
+        }
+      }
+    }  
   }
 
 @Override

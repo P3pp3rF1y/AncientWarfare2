@@ -1,18 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 
 public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased
 {
 
-private Set<BlockPosition> userTargetBlocks = new HashSet<BlockPosition>();
+private byte[] targetMap = new byte[16*16];
 
 public TileWorksiteUserBlocks()
   {
@@ -24,39 +20,35 @@ public boolean hasUserSetTargets()
   return true;
   }
 
-public Set<BlockPosition> getUserSetTargets()
+protected boolean isTarget(BlockPosition p)
   {
-  return userTargetBlocks;
+  int x = p.x - bbMin.x;
+  int z = p.z - bbMin.z;
+  return targetMap[z*16 + x]==1;
   }
 
-public void setUserSetTargets(Set<BlockPosition> targets)
+protected boolean isTarget(int x1, int y1)
   {
-  userTargetBlocks.clear();
-  userTargetBlocks.addAll(targets);
-  clearBlocksToUpdate();
-  onTargetBlocksSet();
+  int x = x1 - bbMin.x;
+  int z = y1 - bbMin.z;
+  return targetMap[z*16 + x]==1;
   }
 
-public void addUserBlock(BlockPosition pos)
+public void onTargetsAdjusted()
   {
-  userTargetBlocks.add(pos);
+  //TODO implement to check target blocks, clear invalid ones
   }
-
-public void removeUserBlock(BlockPosition pos)
-  {
-  this.userTargetBlocks.remove(pos);
-  }
-
-protected void onTargetBlocksSet(){}
 
 @Override
 protected void onBoundsSet()
   {
-  for(int x = bbMin.x; x<=bbMax.x; x++)
+  int w = bbMax.x - bbMin.x + 1;
+  int h = bbMax.z - bbMin.z + 1;
+  for(int x = 0; x < w; x++)
     {
-    for(int z = bbMin.z; z<=bbMax.z; z++)
+    for(int z = 0; z< h; z++)
       {
-      userTargetBlocks.add(new BlockPosition(x, bbMin.y, z));
+      targetMap[z*16 + x] = (byte)1;
       }
     }
   }
@@ -65,35 +57,24 @@ protected void onBoundsSet()
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
-  if(!userTargetBlocks.isEmpty())
-    {
-    NBTTagList list = new NBTTagList();
-    NBTTagCompound posTag;
-    for(BlockPosition pos : userTargetBlocks)
-      {
-      posTag = new NBTTagCompound();
-      pos.writeToNBT(posTag);
-      list.appendTag(posTag);
-      }    
-    tag.setTag("userBlocks", list);
-    }
+  tag.setByteArray("targetMap", targetMap);
   }
 
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  if(tag.hasKey("userBlocks"))
-    {
-    NBTTagList list = tag.getTagList("userBlocks", Constants.NBT.TAG_COMPOUND);
-    BlockPosition pos;
-    for(int i = 0; i < list.tagCount(); i++)
-      {
-      pos = new BlockPosition(list.getCompoundTagAt(i));
-      userTargetBlocks.add(pos);
-      }
-    }
+  if(tag.hasKey("targetMap")){targetMap = tag.getByteArray("targetMap");}
   }
 
+public byte[] getTargetMap()
+  {
+  return targetMap;
+  }
+
+public void setTargetBlocks(byte[] targets)
+  {
+  targetMap = targets;
+  }
 
 }

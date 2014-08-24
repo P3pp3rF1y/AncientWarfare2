@@ -16,7 +16,6 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStor
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoCrafting;
-import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBlockSelection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBoundsAdjust;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
@@ -109,7 +108,6 @@ public void preInit(FMLPreInitializationEvent evt)
    * register containers
    */
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
-  NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_SET_TARGETS, ContainerWorksiteBlockSelection.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, ContainerWorksiteAnimalControl.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, ContainerWorksiteAutoCrafting.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, ContainerWorksiteFishControl.class);

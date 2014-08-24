@@ -307,7 +307,7 @@ public abstract void setupElements();
  * sub-classes should override this method to handle any expected packet data
  */
 @Override
-public void handlePacketData(Object data)
+public void handlePacketData(NBTTagCompound data)
   {
   
   }
