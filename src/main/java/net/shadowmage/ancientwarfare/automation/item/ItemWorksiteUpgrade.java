@@ -19,6 +19,14 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 public class ItemWorksiteUpgrade extends ItemBase implements IItemClickable
 {
 
+/**
+ * ea. upgrade map to a bit, for 32 possible upgrades
+ */
+public static int UPGRADE_SIZE_MEDIUM = 0;
+public static int UPGRADE_SIZE_LARGE = 1;
+public static int UPGRADE_MATERIAL_LEVEL_1 = 2;
+public static int UPGRADE_MATERIAL_LEVEL_2 = 4;
+
 HashMap<Integer, String> subItems = new HashMap<Integer, String>();
 HashMap<Integer, IIcon> subItemIcons = new HashMap<Integer, IIcon>();
 
