@@ -29,6 +29,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -46,12 +47,12 @@ int bonemealCount;
 Set<BlockPosition> blocksToChop;
 List<BlockPosition> blocksToPlant;
 List<BlockPosition> blocksToFertilize;
+
 /**
  * 
  */
 public WorkSiteTreeFarm()
-  {
-  
+  {  
   blocksToChop = new HashSet<BlockPosition>();
   blocksToPlant = new ArrayList<BlockPosition>();
   blocksToFertilize = new ArrayList<BlockPosition>();
@@ -98,6 +99,14 @@ public WorkSiteTreeFarm()
   this.inventory.setFilterForSlots(filter, bottomIndices);
   }
 
+@Override
+public void onBoundsAdjusted()
+  {
+  validateCollection(blocksToFertilize);
+  validateCollection(blocksToChop);
+  validateCollection(blocksToPlant);
+  }
+
 private void countResources()
   {
   shouldCountResources = false;
@@ -137,7 +146,8 @@ protected boolean processWork()
         {
         continue;
         }      
-      List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwnerName(), position.x, position.y, position.z, 0);
+      int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
+      List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwnerName(), position.x, position.y, position.z, fortune);
       for(ItemStack item : items)
         {
         addStackToInventory(item, RelativeSide.TOP);

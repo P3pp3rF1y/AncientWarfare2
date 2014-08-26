@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -104,6 +105,15 @@ public WorkSiteReedFarm()
   }
 
 @Override
+public void onBoundsAdjusted()
+  {
+  validateCollection(cocoaToPlant);
+  validateCollection(blocksToHarvest);
+  validateCollection(cactusToPlant);
+  validateCollection(reedToPlant);
+  }
+
+@Override
 protected boolean processWork()
   {
   if(!blocksToHarvest.isEmpty())
@@ -183,7 +193,8 @@ private boolean harvestBlock(BlockPosition p)
   Block block = worldObj.getBlock(p.x, p.y, p.z);
   if(block==Blocks.cactus || block==Blocks.reeds || block==Blocks.cocoa)
     {
-    List<ItemStack> items = BlockTools.breakBlock(worldObj, owningPlayer, p.x, p.y, p.z, 0);
+    int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
+    List<ItemStack> items = BlockTools.breakBlock(worldObj, owningPlayer, p.x, p.y, p.z, fortune);
     for(ItemStack item : items)
       {
       addStackToInventory(item, RelativeSide.FRONT, RelativeSide.TOP);

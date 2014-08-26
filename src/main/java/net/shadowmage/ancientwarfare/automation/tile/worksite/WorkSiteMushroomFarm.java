@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -78,6 +79,14 @@ public WorkSiteMushroomFarm()
       }
     };
   this.inventory.setFilterForSlots(filter, frontIndices);
+  }
+
+@Override
+public void onBoundsAdjusted()
+  {
+  validateCollection(blocksToPlantMushroom);
+  validateCollection(blocksToHarvest);
+  validateCollection(blocksToPlantNetherWart);
   }
 
 @Override
@@ -187,7 +196,8 @@ protected boolean processWork()
       block = worldObj.getBlock(pos.x, pos.y, pos.z);
       if(block==Blocks.nether_wart || block==Blocks.red_mushroom || block==Blocks.brown_mushroom_block)
         {
-        List<ItemStack> blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, pos.x, pos.y, pos.z, 0);
+        int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
+        List<ItemStack> blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, pos.x, pos.y, pos.z, fortune);
         for(ItemStack item : blockDrops)
           {
           addStackToInventory(item, RelativeSide.FRONT, RelativeSide.TOP);

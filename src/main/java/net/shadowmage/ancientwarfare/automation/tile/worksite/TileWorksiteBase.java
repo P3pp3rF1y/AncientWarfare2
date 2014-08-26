@@ -35,6 +35,7 @@ protected ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
 private double maxInput = maxEnergyStored;
 private double storedEnergy;
+private double efficiency;
 
 private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
 
@@ -71,14 +72,23 @@ public void onBlockBroken()
     {
     InventoryTools.dropItemInWorld(worldObj, ItemWorksiteUpgrade.getStack(ug), xCoord, yCoord, zCoord);
     }
+  efficiency = 0;
   upgrades.clear();
   }
 
 @Override
-public void addUpgrade(WorksiteUpgrade upgrade){upgrades.add(upgrade);}
+public void addUpgrade(WorksiteUpgrade upgrade)
+  {
+  upgrades.add(upgrade);
+  updateEfficiency();
+  }
 
 @Override
-public void removeUpgrade(WorksiteUpgrade upgrade){upgrades.remove(upgrade);}
+public void removeUpgrade(WorksiteUpgrade upgrade)
+  {
+  upgrades.remove(upgrade);
+  updateEfficiency();
+  }
 
 @Override
 public ForgeDirection getOrientation()
@@ -206,19 +216,35 @@ public void updateEntity()
     updateOverflowInventory();
     } 
   worldObj.theProfiler.endStartSection("Check For Work");
-  boolean hasWork = getEnergyStored() >= AWCoreStatics.energyPerWorkUnit && hasWorksiteWork();
+  boolean hasWork = getEnergyStored() >= getEnergyPerUse() && hasWorksiteWork();
   worldObj.theProfiler.endStartSection("Process Work");
   if(hasWork)
     {
     if(processWork())
       {
-      storedEnergy -= AWCoreStatics.energyPerWorkUnit;
+      storedEnergy -= getEnergyPerUse();
       if(storedEnergy<0){storedEnergy = 0.d;}
       }    
     }
-  worldObj.theProfiler.endSection();
+  worldObj.theProfiler.endStartSection("WorksiteBaseUpdate");
   updateWorksite();
   worldObj.theProfiler.endSection();
+  worldObj.theProfiler.endSection();
+  }
+
+protected double getEnergyPerUse()
+  {
+  return AWCoreStatics.energyPerWorkUnit * efficiency;
+  }
+
+protected void updateEfficiency()
+  {
+  efficiency = 0.d;
+  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)){efficiency+=0.05;}
+  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)){efficiency+=0.1;}
+  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_1)){efficiency+=0.05;}
+  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_2)){efficiency+=0.15;}
+  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_3)){efficiency+=0.25;}
   }
 
 @Override
@@ -293,6 +319,7 @@ public void readFromNBT(NBTTagCompound tag)
     {
     addUpgrade(WorksiteUpgrade.values()[i]);
     }
+  updateEfficiency();
   }
 
 @Override

@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -424,6 +425,7 @@ private boolean tryCulling(List<Integer> targets)
   int entityId;
   Entity entity;
   EntityAnimal animal;
+  int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
   while(!targets.isEmpty())
     {
     entityId = targets.remove(0);
@@ -441,6 +443,7 @@ private boolean tryCulling(List<Integer> targets)
       for(EntityItem item : animal.capturedDrops)
         {
         stack = item.getEntityItem();
+        if(fortune>0){stack.stackSize+=worldObj.rand.nextInt(fortune);}
         this.addStackToInventory(stack, RelativeSide.TOP);       
         item.setDead();
         }

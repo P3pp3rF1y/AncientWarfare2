@@ -37,6 +37,18 @@ public WorkSiteQuarry()
   }
 
 @Override
+public void onBoundsAdjusted()
+  {
+  currentX = bbMin.x;
+  currentY = bbMax.y;
+  currentZ = bbMin.z;
+  
+  validateX = currentX;
+  validateY = currentY;
+  validateZ = currentZ;
+  }
+
+@Override
 public EnumSet<WorksiteUpgrade> getValidUpgrades()
   {
   return EnumSet.of(
@@ -105,7 +117,8 @@ protected boolean processWork()
   /**
    * if made it this far, a valid position was found, break it and add blocks to inventory
    */  
-  List<ItemStack> drops = BlockTools.breakBlock(worldObj, owningPlayer, currentX, currentY, currentZ, 0);
+  int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
+  List<ItemStack> drops = BlockTools.breakBlock(worldObj, owningPlayer, currentX, currentY, currentZ, fortune);
   for(ItemStack stack : drops)
     {
     addStackToInventory(stack, RelativeSide.TOP);    
@@ -174,6 +187,15 @@ private void incrementValidationPosition()
 private boolean canHarvest(Block block)
   {
   //TODO add block-breaking exclusion list to config
+  int harvestLevel = block.getHarvestLevel(worldObj.getBlockMetadata(currentX, currentY, currentZ));  
+  if(harvestLevel>=2)
+    {
+    int toolLevel = 1;
+    if(getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_3)){toolLevel = Integer.MAX_VALUE;}
+    if(getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_2)){toolLevel = 3;}
+    if(getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_2)){toolLevel = 2;}
+    if(toolLevel<harvestLevel){return false;}//else is harvestable, check the rest of the checks
+    }
   return block.getMaterial()!=Material.lava && block.getMaterial()!=Material.water && block.getBlockHardness(worldObj, currentX, currentY, currentZ)>=0;
   }
 

@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySi
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -59,13 +60,18 @@ protected boolean processWork()
         else if(fishType<85){fishMeta = ItemFishFood.FishType.SALMON.func_150976_a();}
         else if(fishType<98){fishMeta = ItemFishFood.FishType.PUFFERFISH.func_150976_a();}
         else if(fishType<100){fishMeta = ItemFishFood.FishType.CLOWNFISH.func_150976_a();}
+        
         ItemStack fishStack = new ItemStack(Items.fish,1,fishMeta);
+        int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
+        if(fortune>0){fishStack.stackSize+=worldObj.rand.nextInt(fortune);}
         addStackToInventory(fishStack, RelativeSide.TOP);
         return true;
         }
       if(ink)
         {
         ItemStack inkItem = new ItemStack(Items.dye,1,0);
+        int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
+        if(fortune>0){inkItem.stackSize+=worldObj.rand.nextInt(fortune);}
         addStackToInventory(inkItem, RelativeSide.TOP);
         return true;
         }      

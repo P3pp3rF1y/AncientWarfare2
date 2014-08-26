@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import java.util.Collection;
 import java.util.EnumSet;
+import java.util.Iterator;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -65,6 +67,9 @@ public final void setBounds(BlockPosition min, BlockPosition max)
   onBoundsSet();
   }
 
+/**
+ * Used by user-set-blocks tile to set all default harvest-checks to true when bounds are FIRST set 
+ */
 protected void onBoundsSet()
   {
   
@@ -73,6 +78,21 @@ protected void onBoundsSet()
 public void onBoundsAdjusted()
   {
   //TODO implement to check target blocks, clear invalid ones
+  }
+
+public boolean isInBounds(BlockPosition pos)
+  {
+  return pos.x>=bbMin.x && pos.x<=bbMax.x && pos.z>=bbMin.z && pos.z<=bbMax.z;
+  }
+
+protected void validateCollection(Collection<BlockPosition> blocks)
+  {
+  Iterator<BlockPosition> it = blocks.iterator();
+  BlockPosition pos;
+  while(it.hasNext() && (pos=it.next())!=null)
+    {
+    if(!isInBounds(pos)){it.remove();}
+    }
   }
 
 public final void setWorkBoundsMin(BlockPosition min)
