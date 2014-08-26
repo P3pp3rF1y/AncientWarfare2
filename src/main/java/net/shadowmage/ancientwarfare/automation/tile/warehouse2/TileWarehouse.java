@@ -21,6 +21,12 @@ public TileWarehouse()
   }
 
 @Override
+public void onBlockBroken()
+  {
+  // TODO
+  }
+
+@Override
 public int getBoundsMaxWidth(){return 16;}
 
 @Override

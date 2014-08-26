@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -56,13 +57,21 @@ public EnumSet<WorksiteUpgrade> getValidUpgrades()
   {
   return EnumSet.of(
       WorksiteUpgrade.ENCHANTED_TOOLS_1,
-      WorksiteUpgrade.ENCHATNED_TOOLS_2,
-      WorksiteUpgrade.SIZE_MEDIUM,
-      WorksiteUpgrade.SIZE_LARGE,
+      WorksiteUpgrade.ENCHANTED_TOOLS_2,
       WorksiteUpgrade.TOOL_QUALITY_1,
       WorksiteUpgrade.TOOL_QUALITY_2,
       WorksiteUpgrade.TOOL_QUALITY_3
       );
+  }
+
+@Override
+public void onBlockBroken()
+  {
+  for(WorksiteUpgrade ug : this.upgrades)
+    {
+    InventoryTools.dropItemInWorld(worldObj, ItemWorksiteUpgrade.getStack(ug), xCoord, yCoord, zCoord);
+    }
+  upgrades.clear();
   }
 
 @Override

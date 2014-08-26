@@ -41,7 +41,7 @@ public EnumSet<WorksiteUpgrade> getValidUpgrades()
   {
   return EnumSet.of(
       WorksiteUpgrade.ENCHANTED_TOOLS_1,
-      WorksiteUpgrade.ENCHATNED_TOOLS_2,
+      WorksiteUpgrade.ENCHANTED_TOOLS_2,
       WorksiteUpgrade.QUARRY_MEDIUM,
       WorksiteUpgrade.QUARRY_LARGE,
       WorksiteUpgrade.TOOL_QUALITY_1,

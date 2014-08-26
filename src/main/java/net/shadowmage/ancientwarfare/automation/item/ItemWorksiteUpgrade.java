@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.item;
 
-import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -107,18 +107,21 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
       IWorkSite ws = (IWorkSite)te;
       WorksiteUpgrade upgrade = getUpgrade(stack);
       if(!ws.getValidUpgrades().contains(upgrade)){return;}
-      EnumSet<WorksiteUpgrade> wsug = ws.getUpgrades();
+      HashSet<WorksiteUpgrade> wsug = new HashSet<WorksiteUpgrade>(ws.getUpgrades());
       if(wsug.contains(upgrade)){return;}
-      for(WorksiteUpgrade ug : upgrade.exclusiveSet)
+      for(WorksiteUpgrade ug : wsug)
         {
-        if(wsug.contains(ug)){return;}
-        }
-      for(WorksiteUpgrade ug : upgrade.overrideSet)
-        {
-        if(wsug.contains(ug))
+        if(ug.exclusive(upgrade))
           {
+          return;//exclusive upgrade present, exit early
+          }        
+        }      
+      for(WorksiteUpgrade ug : wsug)
+        {
+        if(upgrade.overrides(ug))
+          {
+          InventoryTools.dropItemInWorld(player.worldObj, getStack(ug), te.xCoord, te.yCoord, te.zCoord);
           ws.removeUpgrade(ug);
-          InventoryTools.dropItemInWorld(player.worldObj, getStack(ug), te.xCoord, te.yCoord, te.zCoord);          
           }
         }
       ws.addUpgrade(upgrade);

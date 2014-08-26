@@ -44,6 +44,17 @@ item.spawner_placer.name=Mob Spawner Placement Tool
 item.construction_tool.name=Construction Tool
 item.block_info_clicker.name=Block Info Tool
 #automation
+item.worksite_upgrade.0=Medium Bounds Upgrade
+item.worksite_upgrade.1=Large Bounds Upgrade
+item.worksite_upgrade.2=Medium Quarry Upgrade
+item.worksite_upgrade.3=Large Quarry Upgrade
+item.worksite_upgrade.4=Lightly Enchanted Tools Upgrade
+item.worksite_upgrade.5=Highly Enchanted Tools Upgrade
+item.worksite_upgrade.6=Basic Tool Quality Upgrade
+item.worksite_upgrade.7=Intermediate Tool Quality Upgrade
+item.worksite_upgrade.8=Advanced Tool Quality Upgrade
+item.worksite_upgrade.9=Basic Chunkloader Upgrade
+item.worksite_upgrade.10=Quarry Chunkloader Upgrade
 #npc
 item.work_order.name=Work Order
 item.upkeep_order.name=Upkeep Order

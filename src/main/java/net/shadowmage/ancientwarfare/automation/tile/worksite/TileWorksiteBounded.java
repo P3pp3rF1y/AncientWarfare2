@@ -1,9 +1,12 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import java.util.EnumSet;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
@@ -21,6 +24,20 @@ BlockPosition bbMin;
  * maximum position of the work bounding box.  May be null
  */
 BlockPosition bbMax;
+
+@Override
+public EnumSet<WorksiteUpgrade> getValidUpgrades()
+{
+return EnumSet.of(
+    WorksiteUpgrade.ENCHANTED_TOOLS_1,
+    WorksiteUpgrade.ENCHANTED_TOOLS_2,
+    WorksiteUpgrade.SIZE_MEDIUM,
+    WorksiteUpgrade.SIZE_LARGE,
+    WorksiteUpgrade.TOOL_QUALITY_1,
+    WorksiteUpgrade.TOOL_QUALITY_2,
+    WorksiteUpgrade.TOOL_QUALITY_3
+    );
+}
 
 @Override
 public final boolean hasWorkBounds()

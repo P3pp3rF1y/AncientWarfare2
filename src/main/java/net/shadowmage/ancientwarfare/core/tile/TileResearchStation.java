@@ -30,6 +30,12 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
 
 protected String owningPlayer = "";
 
+@Override
+public void onBlockBroken()
+  {
+  // TODO
+  }
+
 public InventoryBasic bookInventory = new InventoryBasic(1);
 public InventoryBasic resourceInventory = new InventoryBasic(9);
 

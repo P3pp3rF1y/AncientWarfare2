@@ -31,7 +31,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
-import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -68,8 +67,18 @@ public static void load()
   ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "ancientwarfare:automation/iron_shaft");
   ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "ancientwarfare:automation/steel_shaft");
   
+  AWItems.worksiteUpgrade = new ItemWorksiteUpgrade("worksite_upgrade");
+  ItemWorksiteUpgrade item = (ItemWorksiteUpgrade)AWItems.worksiteUpgrade;
+  item.addSubItemIcon(0, "worksite_upgrade_size_medium");
+  item.addSubItemIcon(1, "worksite_upgrade_size_large");
+  item.addSubItemIcon(2, "worksite_upgrade_quarry_medium");
+  item.addSubItemIcon(3, "worksite_upgrade_quarry_large");
+  item.addSubItemIcon(4, "worksite_upgrade_enchant_1");
+  item.addSubItemIcon(5, "worksite_upgrade_enchant_2");
+  item.addSubItemIcon(6, "worksite_upgrade_quality_1");
+  item.addSubItemIcon(7, "worksite_upgrade_quality_2");
+  item.addSubItemIcon(8, "worksite_upgrade_quality_3");
   GameRegistry.registerItem(AWItems.worksiteUpgrade, "worksite_upgrade");
-  WorksiteUpgrade.init();
   }
 
 private static final TabSorter sorter = new TabSorter();

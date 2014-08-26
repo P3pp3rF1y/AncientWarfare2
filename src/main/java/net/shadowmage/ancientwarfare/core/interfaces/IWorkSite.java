@@ -49,9 +49,21 @@ public EnumSet<WorksiteUpgrade> getUpgrades();
 
 public EnumSet<WorksiteUpgrade> getValidUpgrades();
 
+/**
+ * Add the input upgrade to the present upgrade set.  Apply any necessary bonuses at this time.<br>
+ * Calling this method with an upgrade that is already present has undefined results.
+ * @param upgrade
+ */
 public void addUpgrade(WorksiteUpgrade upgrade);
 
+/**
+ * Remove the input upgrade from the present upgrade set.  Remove any bonuses that it had applied.<br>
+ * Calling this method with an upgrade that is not present has undefined results.
+ * @param upgrade
+ */
 public void removeUpgrade(WorksiteUpgrade upgrade);
+
+public void onBlockBroken();
 
 public static enum WorkType
 {
