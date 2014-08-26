@@ -152,7 +152,9 @@ public void writeToNBT(NBTTagCompound tag)
 @Override
 public final Packet getDescriptionPacket()
   {
-  NBTTagCompound tag = new NBTTagCompound();
+  S35PacketUpdateTileEntity pk = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
+//  if(pk==null){pk = new S35PacketUpdateTileEntity(xCoord, yCoord, yCoord, 0, new NBTTagCompound());} let it crash if this occurs...means bigger problems at hand
+  NBTTagCompound tag = pk.func_148857_g();
   if(bbMin!=null)
     {
     NBTTagCompound innerTag = new NBTTagCompound();
@@ -165,7 +167,7 @@ public final Packet getDescriptionPacket()
     bbMax.writeToNBT(innerTag);
     tag.setTag("bbMax", innerTag);
     }
-  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
+  return pk;
   }
 
 @Override

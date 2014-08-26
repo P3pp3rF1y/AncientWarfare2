@@ -9,6 +9,9 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -75,6 +78,7 @@ public void addUpgrade(WorksiteUpgrade upgrade)
   {
   upgrades.add(upgrade);
   updateEfficiency();
+  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
 @Override
@@ -82,6 +86,7 @@ public void removeUpgrade(WorksiteUpgrade upgrade)
   {
   upgrades.remove(upgrade);
   updateEfficiency();
+  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
 @Override
@@ -344,6 +349,36 @@ public final AxisAlignedBB getRenderBoundingBox()
     }
   AxisAlignedBB bb = super.getRenderBoundingBox();
   return bb;
+  }
+
+@Override
+public Packet getDescriptionPacket()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  int[] ugs = new int[upgrades.size()];
+  int i = 0;
+  for(WorksiteUpgrade ug : upgrades)
+    {
+    ugs[i] = ug.ordinal();
+    i++;
+    }
+  tag.setIntArray("upgrades", ugs);
+  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
+  }
+
+@Override
+public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {
+  super.onDataPacket(net, pkt);
+  if(pkt.func_148857_g().hasKey("upgrades"))
+    {
+    int[] ugs = pkt.func_148857_g().getIntArray("upgrades");
+    upgrades.clear();
+    for(int i = 0; i < ugs.length; i++)
+      {
+      upgrades.add(WorksiteUpgrade.values()[ugs[i]]);
+      }
+    }
   }
 
 }
