@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -20,6 +21,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -32,16 +34,13 @@ protected ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
 private double maxInput = maxEnergyStored;
 private double storedEnergy;
-private int upgradeBitfield;
+
+private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
 
 public TileWorksiteBase()
   {
   
   }
-
-public int getUpgradeBits(){return upgradeBitfield;}
-
-public void setUpgradeBits(int bits){upgradeBitfield = bits;}
 
 @Override
 public int getBoundsMaxWidth(){return 3;}
@@ -50,11 +49,27 @@ public int getBoundsMaxWidth(){return 3;}
 public int getBoundsMaxHeight(){return 1;}
 
 @Override
-public boolean onUpgradeItemUsed(ItemStack stack)
+public EnumSet<WorksiteUpgrade> getUpgrades(){return upgrades;}
+
+@Override
+public EnumSet<WorksiteUpgrade> getValidUpgrades()
   {
-  // TODO Auto-generated method stub
-  return false;
+  return EnumSet.of(
+      WorksiteUpgrade.ENCHANTED_TOOLS_1,
+      WorksiteUpgrade.ENCHATNED_TOOLS_2,
+      WorksiteUpgrade.SIZE_MEDIUM,
+      WorksiteUpgrade.SIZE_LARGE,
+      WorksiteUpgrade.TOOL_QUALITY_1,
+      WorksiteUpgrade.TOOL_QUALITY_2,
+      WorksiteUpgrade.TOOL_QUALITY_3
+      );
   }
+
+@Override
+public void addUpgrade(WorksiteUpgrade upgrade){upgrades.add(upgrade);}
+
+@Override
+public void removeUpgrade(WorksiteUpgrade upgrade){upgrades.remove(upgrade);}
 
 @Override
 public ForgeDirection getOrientation()
@@ -176,7 +191,6 @@ public void updateEntity()
   super.updateEntity();
   if(worldObj.isRemote){return;}  
   worldObj.theProfiler.startSection("AWWorksite");
-//  ITorque.applyPowerDrain(this);
   worldObj.theProfiler.startSection("InventoryOverflow");
   if(!inventoryOverflow.isEmpty())
     {
@@ -231,6 +245,14 @@ public void writeToNBT(NBTTagCompound tag)
       }
     tag.setTag("inventoryOverflow", list);
     }
+  int[] ug = new int[getUpgrades().size()];
+  int i = 0;
+  for(WorksiteUpgrade u : getUpgrades())
+    {
+    ug[i] = u.ordinal();
+    i++;
+    }
+  tag.setIntArray("upgrades", ug);
   }
 
 @Override
@@ -256,6 +278,11 @@ public void readFromNBT(NBTTagCompound tag)
         inventoryOverflow.add(stack);
         }
       }
+    }
+  int[] ug = tag.getIntArray("upgrades");
+  for(int i= 0; i < ug.length; i++)
+    {
+    addUpgrade(WorksiteUpgrade.values()[i]);
     }
   }
 

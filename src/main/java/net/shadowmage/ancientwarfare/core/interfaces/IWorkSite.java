@@ -1,9 +1,11 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
+import java.util.EnumSet;
+
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.Team;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public interface IWorkSite extends ITorqueTile
@@ -43,11 +45,13 @@ public int getBoundsMaxWidth();
 
 public int getBoundsMaxHeight();
 
-/**
- * Called when an upgrade item is used on this worksite.  It is the responsibility of the worksite to query the upgrade item/upgrade type, and apply any necessary upgrades.
- * @return true if the upgrade was valid and an item from the stack should be consumed.
- */
-public boolean onUpgradeItemUsed(ItemStack stack);
+public EnumSet<WorksiteUpgrade> getUpgrades();
+
+public EnumSet<WorksiteUpgrade> getValidUpgrades();
+
+public void addUpgrade(WorksiteUpgrade upgrade);
+
+public void removeUpgrade(WorksiteUpgrade upgrade);
 
 public static enum WorkType
 {

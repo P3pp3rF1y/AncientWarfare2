@@ -36,6 +36,7 @@ public static Item routingOrder;
 /**
  * AUTOMATION module
  */
+public static Item worksiteUpgrade;
 
 /**
  * STRUCTURE module

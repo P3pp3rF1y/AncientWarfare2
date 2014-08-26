@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 

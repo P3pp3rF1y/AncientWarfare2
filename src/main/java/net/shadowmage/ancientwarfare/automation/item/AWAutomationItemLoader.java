@@ -31,6 +31,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 public class AWAutomationItemLoader
@@ -65,6 +67,9 @@ public static void load()
   ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT, "ancientwarfare:automation/wooden_shaft");
   ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "ancientwarfare:automation/iron_shaft");
   ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "ancientwarfare:automation/steel_shaft");
+  
+  GameRegistry.registerItem(AWItems.worksiteUpgrade, "worksite_upgrade");
+  WorksiteUpgrade.init();
   }
 
 private static final TabSorter sorter = new TabSorter();

@@ -1,12 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 
@@ -25,10 +27,21 @@ public int getBoundsMaxWidth(){return 16;}
 public int getBoundsMaxHeight(){return 4;}
 
 @Override
-public boolean onUpgradeItemUsed(ItemStack stack)
+public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// TODO Auto-generated method stub
+
+@Override
+public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// TODO Auto-generated method stub
+
+@Override
+public void addUpgrade(WorksiteUpgrade upgrade)
   {
   // TODO Auto-generated method stub
-  return false;
+  }
+
+@Override
+public void removeUpgrade(WorksiteUpgrade upgrade)
+  {
+  // TODO Auto-generated method stub  
   }
 
 @Override

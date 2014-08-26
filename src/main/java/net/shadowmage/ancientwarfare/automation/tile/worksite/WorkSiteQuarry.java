@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -11,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySi
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -32,6 +34,20 @@ public WorkSiteQuarry()
   this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 27);
   int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
   this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
+  }
+
+@Override
+public EnumSet<WorksiteUpgrade> getValidUpgrades()
+  {
+  return EnumSet.of(
+      WorksiteUpgrade.ENCHANTED_TOOLS_1,
+      WorksiteUpgrade.ENCHATNED_TOOLS_2,
+      WorksiteUpgrade.QUARRY_MEDIUM,
+      WorksiteUpgrade.QUARRY_LARGE,
+      WorksiteUpgrade.TOOL_QUALITY_1,
+      WorksiteUpgrade.TOOL_QUALITY_2,
+      WorksiteUpgrade.TOOL_QUALITY_3
+      );
   }
 
 @Override

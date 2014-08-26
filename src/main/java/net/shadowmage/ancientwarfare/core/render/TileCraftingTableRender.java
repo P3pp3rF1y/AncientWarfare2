@@ -8,7 +8,6 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelCraftingBase;
-import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;

@@ -4,7 +4,6 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
 import net.shadowmage.ancientwarfare.core.gui.GuiResearchBook;
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
@@ -17,7 +16,6 @@ import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * client-proxy for AW-Core

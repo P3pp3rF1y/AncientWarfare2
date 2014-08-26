@@ -5,7 +5,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.SlotArmor;
 import net.shadowmage.ancientwarfare.npc.inventory.InventoryNpcEquipment;
 

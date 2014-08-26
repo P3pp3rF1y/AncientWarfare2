@@ -1,7 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
+import java.util.EnumSet;
+
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -9,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class TileTorqueGeneratorHandCranked extends TileTorqueGeneratorBase implements IWorkSite, IOwnable
@@ -29,10 +31,21 @@ public boolean canOutput(ForgeDirection towards)
   }
 
 @Override
-public boolean onUpgradeItemUsed(ItemStack stack)
+public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// TODO Auto-generated method stub
+
+@Override
+public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// TODO Auto-generated method stub
+
+@Override
+public void addUpgrade(WorksiteUpgrade upgrade)
   {
   // TODO Auto-generated method stub
-  return false;
+  }
+
+@Override
+public void removeUpgrade(WorksiteUpgrade upgrade)
+  {
+  // TODO Auto-generated method stub  
   }
 
 @Override

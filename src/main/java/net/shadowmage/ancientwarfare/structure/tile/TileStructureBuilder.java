@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import java.util.EnumSet;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -14,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
@@ -43,10 +46,23 @@ public int getBoundsMaxWidth(){return 0;}
 public int getBoundsMaxHeight(){return 0;}
 
 @Override
-public boolean onUpgradeItemUsed(ItemStack stack)
+public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}
+
+@Override
+public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}
+
+@Override
+public void addUpgrade(WorksiteUpgrade upgrade)
   {
   // TODO Auto-generated method stub
-  return false;
+  
+  }
+
+@Override
+public void removeUpgrade(WorksiteUpgrade upgrade)
+  {
+  // TODO Auto-generated method stub
+  
   }
 
 @Override

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.item;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,31 +11,40 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.item.ItemBase;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class ItemWorksiteUpgrade extends ItemBase implements IItemClickable
 {
 
-/**
- * ea. upgrade map to a bit, for 32 possible upgrades
- */
-public static int UPGRADE_SIZE_MEDIUM = 0;
-public static int UPGRADE_SIZE_LARGE = 1;
-public static int UPGRADE_MATERIAL_LEVEL_1 = 2;
-public static int UPGRADE_MATERIAL_LEVEL_2 = 4;
-
-HashMap<Integer, String> subItems = new HashMap<Integer, String>();
-HashMap<Integer, IIcon> subItemIcons = new HashMap<Integer, IIcon>();
+private HashMap<Integer, String> subItems = new HashMap<Integer, String>();
+private HashMap<Integer, IIcon> subItemIcons = new HashMap<Integer, IIcon>();
 
 public ItemWorksiteUpgrade(String localizationKey)
   {
   super(localizationKey);
   this.setHasSubtypes(true);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
+  }
+
+public static WorksiteUpgrade getUpgrade(ItemStack stack)
+  {
+  if(stack==null || stack.getItem()!=AWItems.worksiteUpgrade || stack.getItem()==null)
+    {
+    throw new RuntimeException("Cannot retrieve worksite upgrade type for: "+stack+".  Null stack, or item, or mismatched item!");
+    }
+  return WorksiteUpgrade.values()[stack.getItemDamage()];
+  }
+
+public static ItemStack getStack(WorksiteUpgrade upgrade)
+  {
+  return upgrade==null ? null : new ItemStack(AWItems.worksiteUpgrade, 1, upgrade.ordinal());
   }
 
 @Override
@@ -94,15 +104,30 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
     TileEntity te = player.worldObj.getTileEntity(pos.x, pos.y, pos.z);
     if(te instanceof IWorkSite)
       {
-      if(((IWorkSite) te).onUpgradeItemUsed(stack))
+      IWorkSite ws = (IWorkSite)te;
+      WorksiteUpgrade upgrade = getUpgrade(stack);
+      if(!ws.getValidUpgrades().contains(upgrade)){return;}
+      EnumSet<WorksiteUpgrade> wsug = ws.getUpgrades();
+      if(wsug.contains(upgrade)){return;}
+      for(WorksiteUpgrade ug : upgrade.exclusiveSet)
         {
-        stack.stackSize--;
-        if(stack.stackSize<=0)
-          {
-          player.destroyCurrentEquippedItem();          
-          }
-        player.openContainer.detectAndSendChanges();
+        if(wsug.contains(ug)){return;}
         }
+      for(WorksiteUpgrade ug : upgrade.overrideSet)
+        {
+        if(wsug.contains(ug))
+          {
+          ws.removeUpgrade(ug);
+          InventoryTools.dropItemInWorld(player.worldObj, getStack(ug), te.xCoord, te.yCoord, te.zCoord);          
+          }
+        }
+      ws.addUpgrade(upgrade);
+      stack.stackSize--;
+      if(stack.stackSize<=0)
+        {
+        player.destroyCurrentEquippedItem();          
+        }
+      player.openContainer.detectAndSendChanges();
       }
     }
   }
