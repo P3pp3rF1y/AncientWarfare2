@@ -44,17 +44,17 @@ item.spawner_placer.name=Mob Spawner Placement Tool
 item.construction_tool.name=Construction Tool
 item.block_info_clicker.name=Block Info Tool
 #automation
-item.worksite_upgrade.0=Medium Bounds Upgrade
-item.worksite_upgrade.1=Large Bounds Upgrade
-item.worksite_upgrade.2=Medium Quarry Upgrade
-item.worksite_upgrade.3=Large Quarry Upgrade
-item.worksite_upgrade.4=Lightly Enchanted Tools Upgrade
-item.worksite_upgrade.5=Highly Enchanted Tools Upgrade
-item.worksite_upgrade.6=Basic Tool Quality Upgrade
-item.worksite_upgrade.7=Intermediate Tool Quality Upgrade
-item.worksite_upgrade.8=Advanced Tool Quality Upgrade
-item.worksite_upgrade.9=Basic Chunkloader Upgrade
-item.worksite_upgrade.10=Quarry Chunkloader Upgrade
+item.worksite_upgrade.0.name=Medium Bounds Upgrade
+item.worksite_upgrade.1.name=Large Bounds Upgrade
+item.worksite_upgrade.2.name=Medium Quarry Upgrade
+item.worksite_upgrade.3.name=Large Quarry Upgrade
+item.worksite_upgrade.4.name=Lightly Enchanted Tools Upgrade
+item.worksite_upgrade.5.name=Highly Enchanted Tools Upgrade
+item.worksite_upgrade.6.name=Basic Tool Quality Upgrade
+item.worksite_upgrade.7.name=Intermediate Tool Quality Upgrade
+item.worksite_upgrade.8.name=Advanced Tool Quality Upgrade
+item.worksite_upgrade.9.name=Basic Chunkloader Upgrade
+item.worksite_upgrade.10.name=Quarry Chunkloader Upgrade
 #npc
 item.work_order.name=Work Order
 item.upkeep_order.name=Upkeep Order
@@ -155,7 +155,7 @@ item.npc_spawner.viking.civilian.female.name=Viking Civilian Female
 #blocks
 #core
 tile.engineering_station.name=Engineering Station
-tile.research_station.0.name=Research Station
+tile.research_station.name=Research Station
 #automation
 tile.civic_auto_crafting.name=Auto Crafting Station
 tile.civic_quarry.name=Quarry
