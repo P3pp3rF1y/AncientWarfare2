@@ -61,7 +61,7 @@ protected boolean processWork()
         else if(fishType<98){fishMeta = ItemFishFood.FishType.PUFFERFISH.func_150976_a();}
         else if(fishType<100){fishMeta = ItemFishFood.FishType.CLOWNFISH.func_150976_a();}
         
-        ItemStack fishStack = new ItemStack(Items.fish,1,fishMeta);
+        ItemStack fishStack = new ItemStack(Items.fish, 1, fishMeta);
         int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
         if(fortune>0){fishStack.stackSize+=worldObj.rand.nextInt(fortune);}
         addStackToInventory(fishStack, RelativeSide.TOP);

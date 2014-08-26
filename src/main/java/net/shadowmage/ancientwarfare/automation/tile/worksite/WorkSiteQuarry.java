@@ -63,6 +63,12 @@ public EnumSet<WorksiteUpgrade> getValidUpgrades()
   }
 
 @Override
+public int getBoundsMaxWidth()
+  {
+  return getUpgrades().contains(WorksiteUpgrade.QUARRY_MEDIUM)? 32 : getUpgrades().contains(WorksiteUpgrade.QUARRY_LARGE)? 64 : 16;
+  }
+
+@Override
 protected void updateWorksite()
   {
   if(!hasDoneInit)

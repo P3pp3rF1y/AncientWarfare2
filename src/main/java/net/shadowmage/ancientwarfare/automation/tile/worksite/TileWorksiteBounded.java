@@ -67,6 +67,15 @@ public final void setBounds(BlockPosition min, BlockPosition max)
   onBoundsSet();
   }
 
+@Override
+public int getBoundsMaxWidth()
+  {
+  return getUpgrades().contains(WorksiteUpgrade.SIZE_MEDIUM)? 9 : getUpgrades().contains(WorksiteUpgrade.SIZE_LARGE)? 16 : 5;
+  }
+
+@Override
+public int getBoundsMaxHeight(){return 1;}
+
 /**
  * Used by user-set-blocks tile to set all default harvest-checks to true when bounds are FIRST set 
  */

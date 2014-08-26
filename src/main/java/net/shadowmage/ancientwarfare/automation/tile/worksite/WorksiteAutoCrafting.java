@@ -468,4 +468,10 @@ protected void updateWorksite()
   worldObj.theProfiler.endSection();
   }
 
+@Override
+public int getBoundsMaxWidth(){return 0;}
+
+@Override
+public int getBoundsMaxHeight(){return 0;}
+
 }

@@ -45,12 +45,6 @@ public TileWorksiteBase()
   }
 
 @Override
-public int getBoundsMaxWidth(){return 3;}
-
-@Override
-public int getBoundsMaxHeight(){return 1;}
-
-@Override
 public EnumSet<WorksiteUpgrade> getUpgrades(){return upgrades;}
 
 @Override
