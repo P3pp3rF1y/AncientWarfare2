@@ -69,15 +69,17 @@ public static void load()
   
   AWItems.worksiteUpgrade = new ItemWorksiteUpgrade("worksite_upgrade");
   ItemWorksiteUpgrade item = (ItemWorksiteUpgrade)AWItems.worksiteUpgrade;
-  item.addSubItemIcon(0, "worksite_upgrade_size_medium");
-  item.addSubItemIcon(1, "worksite_upgrade_size_large");
-  item.addSubItemIcon(2, "worksite_upgrade_quarry_medium");
-  item.addSubItemIcon(3, "worksite_upgrade_quarry_large");
-  item.addSubItemIcon(4, "worksite_upgrade_enchant_1");
-  item.addSubItemIcon(5, "worksite_upgrade_enchant_2");
-  item.addSubItemIcon(6, "worksite_upgrade_quality_1");
-  item.addSubItemIcon(7, "worksite_upgrade_quality_2");
-  item.addSubItemIcon(8, "worksite_upgrade_quality_3");
+  item.addSubItemIcon(0, "ancientwarfare:automation/upgrade_bounds_medium");
+  item.addSubItemIcon(1, "ancientwarfare:automation/upgrade_bounds_large");
+  item.addSubItemIcon(2, "ancientwarfare:automation/upgrade_quarry_medium");
+  item.addSubItemIcon(3, "ancientwarfare:automation/upgrade_quarry_large");
+  item.addSubItemIcon(4, "ancientwarfare:automation/upgrade_enchanted_tools_1");
+  item.addSubItemIcon(5, "ancientwarfare:automation/upgrade_enchanted_tools_2");
+  item.addSubItemIcon(6, "ancientwarfare:automation/upgrade_quality_tools_1");
+  item.addSubItemIcon(7, "ancientwarfare:automation/upgrade_quality_tools_2");
+  item.addSubItemIcon(8, "ancientwarfare:automation/upgrade_quality_tools_3");
+  item.addSubItemIcon(9, "ancientwarfare:automation/upgrade_chunkloader_basic");
+  item.addSubItemIcon(10,"ancientwarfare:automation/upgrade_chunkloader_quarry");
   GameRegistry.registerItem(AWItems.worksiteUpgrade, "worksite_upgrade");
   }
 
