@@ -31,6 +31,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -68,17 +69,17 @@ public static void load()
   
   AWItems.worksiteUpgrade = new ItemWorksiteUpgrade("worksite_upgrade");
   ItemWorksiteUpgrade item = (ItemWorksiteUpgrade)AWItems.worksiteUpgrade;
-  item.addSubItemIcon(0, "ancientwarfare:automation/upgrade_bounds_medium");
-  item.addSubItemIcon(1, "ancientwarfare:automation/upgrade_bounds_large");
-  item.addSubItemIcon(2, "ancientwarfare:automation/upgrade_quarry_medium");
-  item.addSubItemIcon(3, "ancientwarfare:automation/upgrade_quarry_large");
-  item.addSubItemIcon(4, "ancientwarfare:automation/upgrade_enchanted_tools_1");
-  item.addSubItemIcon(5, "ancientwarfare:automation/upgrade_enchanted_tools_2");
-  item.addSubItemIcon(6, "ancientwarfare:automation/upgrade_quality_tools_1");
-  item.addSubItemIcon(7, "ancientwarfare:automation/upgrade_quality_tools_2");
-  item.addSubItemIcon(8, "ancientwarfare:automation/upgrade_quality_tools_3");
-  item.addSubItemIcon(9, "ancientwarfare:automation/upgrade_chunkloader_basic");
-  item.addSubItemIcon(10,"ancientwarfare:automation/upgrade_chunkloader_quarry");
+  item.addSubItemIcon(WorksiteUpgrade.SIZE_MEDIUM.flag(), "ancientwarfare:automation/upgrade_bounds_medium");
+  item.addSubItemIcon(WorksiteUpgrade.SIZE_LARGE.flag(), "ancientwarfare:automation/upgrade_bounds_large");
+  item.addSubItemIcon(WorksiteUpgrade.QUARRY_MEDIUM.flag(), "ancientwarfare:automation/upgrade_quarry_medium");
+  item.addSubItemIcon(WorksiteUpgrade.QUARRY_LARGE.flag(), "ancientwarfare:automation/upgrade_quarry_large");
+  item.addSubItemIcon(WorksiteUpgrade.ENCHANTED_TOOLS_1.flag(), "ancientwarfare:automation/upgrade_enchanted_tools_1");
+  item.addSubItemIcon(WorksiteUpgrade.ENCHANTED_TOOLS_2.flag(), "ancientwarfare:automation/upgrade_enchanted_tools_2");
+  item.addSubItemIcon(WorksiteUpgrade.TOOL_QUALITY_1.flag(), "ancientwarfare:automation/upgrade_quality_tools_1");
+  item.addSubItemIcon(WorksiteUpgrade.TOOL_QUALITY_2.flag(), "ancientwarfare:automation/upgrade_quality_tools_2");
+  item.addSubItemIcon(WorksiteUpgrade.TOOL_QUALITY_3.flag(), "ancientwarfare:automation/upgrade_quality_tools_3");
+  item.addSubItemIcon(WorksiteUpgrade.BASIC_CHUNK_LOADER.flag(), "ancientwarfare:automation/upgrade_chunkloader_basic");
+  item.addSubItemIcon(WorksiteUpgrade.QUARRY_CHUNK_LOADER.flag(),"ancientwarfare:automation/upgrade_chunkloader_quarry");
   GameRegistry.registerItem(AWItems.worksiteUpgrade, "worksite_upgrade");
   }
 

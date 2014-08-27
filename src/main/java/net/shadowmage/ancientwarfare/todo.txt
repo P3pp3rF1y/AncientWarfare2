@@ -42,11 +42,11 @@ Licensing
 * Add bounds adjust controls to warehouse, and remove the pre-set-by-item requirements
 	-- will require constantly validating storage/etc blocks every time bounds are adjusted
 * Add upgrade-handling code to:
-	Warehouse
+	Warehouse (efficiency and bounds upgrades only)
 	Research Station
 	Auto Crafting Station? (handled via worksite-base hierarchy?
-	Ore processing center
-	Construction site (w/e it is called, structure module)		
+	Construction site (w/e it is called, structure module)	
+	Ore processing center	
 	
 * Torque API:	
 	set power capacity / power loss / power use for all torque blocks
