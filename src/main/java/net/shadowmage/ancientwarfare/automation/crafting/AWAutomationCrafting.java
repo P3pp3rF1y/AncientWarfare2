@@ -431,7 +431,7 @@ public static void loadRecipes()
       'i', Items.iron_ingot,
       'c', AWAutomationBlockLoader.chunkLoaderSimple);
   
-  AWCraftingManager.INSTANCE.createRecipe(upgradeBasicChunkloader, "machinery",
+  AWCraftingManager.INSTANCE.createRecipe(upgradeQuarryChunkloader, "machinery",
       " i ",
       "ici",
       " i ",
