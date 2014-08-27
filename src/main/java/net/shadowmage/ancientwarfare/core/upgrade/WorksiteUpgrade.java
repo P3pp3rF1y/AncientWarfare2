@@ -57,4 +57,6 @@ public boolean overrides(WorksiteUpgrade ug){return overrides.contains(ug.flag);
  */
 public boolean exclusive(WorksiteUpgrade ug){return exclusive.contains(ug.flag);}
 
+public int flag(){return flag;}
+
 }

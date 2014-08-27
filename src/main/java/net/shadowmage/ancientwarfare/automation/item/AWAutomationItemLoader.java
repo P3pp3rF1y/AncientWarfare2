@@ -53,7 +53,6 @@ public static final CreativeTabs automationTab = new CreativeTabs("tabs.automati
     Collections.sort(par1List, sorter);    
     };
   };
-
   
 public static void load()
   {

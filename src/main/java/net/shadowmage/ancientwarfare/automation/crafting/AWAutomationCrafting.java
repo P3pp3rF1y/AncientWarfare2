@@ -1,12 +1,16 @@
 package net.shadowmage.ancientwarfare.automation.crafting;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
+import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 
 public class AWAutomationCrafting
 {
@@ -24,7 +28,7 @@ public static void loadRecipes()
   ItemStack steelBearing = new ItemStack(AWItems.componentItem,1,ItemComponent.STEEL_BEARINGS);  
   ItemStack woodShaft = new ItemStack(AWItems.componentItem,1,ItemComponent.WOODEN_TORQUE_SHAFT);  
   ItemStack ironShaft = new ItemStack(AWItems.componentItem,1,ItemComponent.IRON_TORQUE_SHAFT);  
-  ItemStack steelShaft = new ItemStack(AWItems.componentItem,1,ItemComponent.STEEL_TORQUE_SHAFT);  
+  ItemStack steelShaft = new ItemStack(AWItems.componentItem,1,ItemComponent.STEEL_TORQUE_SHAFT);   
   
   //wooden gear set
   AWCraftingManager.INSTANCE.createRecipe(woodenGear.copy(), "",
@@ -95,7 +99,7 @@ public static void loadRecipes()
       'i', Items.iron_ingot,
       'g', woodenGear.copy());
   
-  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteCropFarm), "farming", 
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteCropFarm), "agriculture", 
       "___",
       "gwg",
       "_c_",
@@ -131,7 +135,7 @@ public static void loadRecipes()
       'c', Blocks.chest,
       'g', woodenGear.copy());
   
-  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteQuarry), "mining",
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteQuarry), "engineering",
       "___",
       "gwg",
       "_c_",
@@ -140,7 +144,7 @@ public static void loadRecipes()
       'c', Blocks.chest,
       'g', woodenGear.copy());
   
-  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteForestry), "construction",
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteForestry), "farming",
       "___",
       "gwg",
       "_c_",
@@ -227,7 +231,7 @@ public static void loadRecipes()
       'c', Blocks.chest);
   
   //chunkloader simple
-  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderSimple), "",
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderSimple), "mathematics",
       "bbb",
       "beb",
       "bbb",
@@ -235,7 +239,7 @@ public static void loadRecipes()
       'e', Items.ender_pearl);//TODO research?
   
   //chunkloader deluxe
-  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderDeluxe), "",
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderDeluxe), "machinery",
       "bbb",
       "beb",
       "bbb",
@@ -259,7 +263,7 @@ public static void loadRecipes()
       'g', ironGear.copy());
   
 //torque conduit l
-  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,2), new String[]{"the_wheel", "refining"},
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,2), "mass_production",
       "s",
       "g",
       "s",
@@ -283,7 +287,7 @@ public static void loadRecipes()
       'g', ironGear.copy());
   
   //torque distributor l
-  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueDistributor,1,2), new String[]{"the_wheel", "refining"},
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueDistributor,1,2), "mass_production",
       "_s_",
       "ggg",
       "_s_",
@@ -307,7 +311,7 @@ public static void loadRecipes()
       'g', ironGear.copy());
   
   //torque flywheel l
-  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheel,1,2), new String[]{"theory_of_gravity", "refining"},
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheel,1,2), "mass_production",
       "igi",
       "iii",
       "igi",
@@ -338,6 +342,102 @@ public static void loadRecipes()
       "igi",
       'i', Items.iron_ingot,
       'g', ironGear.copy());
+    
+  ItemStack upgradeBoundsMed = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.SIZE_MEDIUM.flag());//engineering
+  ItemStack upgradeBoundsLarge = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.SIZE_LARGE.flag());//mathematics
+  ItemStack upgradeQuarryMed = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.QUARRY_MEDIUM.flag());//mining
+  ItemStack upgradeQuarryLarge = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.QUARRY_LARGE.flag());//machinery
+  ItemStack upgradeEnchantedTools1 = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.ENCHANTED_TOOLS_1.flag());//mathematics
+  ItemStack upgradeEnchantedTools2 = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.ENCHANTED_TOOLS_2.flag());//mass production
+  ItemStack upgradeQualityTools1 = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.TOOL_QUALITY_1.flag());//engineering
+  ItemStack upgradeQualityTools2 = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.TOOL_QUALITY_2.flag());//construction
+  ItemStack upgradeQualityTools3 = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.TOOL_QUALITY_3.flag());//refining
+  ItemStack upgradeBasicChunkloader = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.BASIC_CHUNK_LOADER.flag());//mathematics
+  ItemStack upgradeQuarryChunkloader = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.QUARRY_CHUNK_LOADER.flag());//machinery
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeBoundsMed, "engineering",
+      " s ",
+      "fff",
+      " s ",
+      's', Items.string,
+      'f', Blocks.fence);
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeBoundsLarge, "mathematics",
+      "fff",
+      "sss",
+      "fff",
+      's', Items.string,
+      'f', Blocks.fence);
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeQuarryMed, "mining",
+      "ppp",
+      "f f",
+      "f f",
+      'p', Blocks.planks,
+      'f', Blocks.fence);
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeQuarryLarge, "machinery",
+      "ppp",
+      "fif",
+      "fif",
+      'p', Blocks.planks,
+      'f', Blocks.fence,
+      'i', Items.iron_ingot);
+  
+  ItemStack enchantedBook = new ItemStack(Items.enchanted_book,1,0);
+  enchantedBook.addEnchantment(Enchantment.fortune, 1);
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeEnchantedTools1, "mathematics",
+      " b ",
+      "iii",
+      'b', enchantedBook,
+      'i', Items.iron_ingot);
+  
+  enchantedBook = new ItemStack(Items.enchanted_book,1,0);
+  enchantedBook.addEnchantment(Enchantment.fortune, 2);
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeEnchantedTools2, "mass_production",
+      " b ",
+      "iii",
+      'b', enchantedBook,
+      'i', Items.iron_ingot);
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeQualityTools1, "engineering",
+      "psa",
+      'p', Items.iron_pickaxe,
+      's', Items.iron_shovel,
+      'a', Items.iron_axe);
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeQualityTools2, "construction",
+      "psa",
+      'p', Items.diamond_pickaxe,
+      's', Items.diamond_shovel,
+      'a', Items.diamond_axe);
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeQualityTools3, "refining",
+      "oto",
+      "psa",
+      "oto",
+      't', AWItems.steel_ingot,
+      'o', Blocks.obsidian,
+      'p', Items.diamond_pickaxe,
+      's', Items.diamond_shovel,
+      'a', Items.diamond_axe);
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeBasicChunkloader, "mathematics",
+      " i ",
+      "ici",
+      " i ",
+      'i', Items.iron_ingot,
+      'c', AWAutomationBlockLoader.chunkLoaderSimple);
+  
+  AWCraftingManager.INSTANCE.createRecipe(upgradeBasicChunkloader, "machinery",
+      " i ",
+      "ici",
+      " i ",
+      'i', Items.iron_ingot,
+      'c', AWAutomationBlockLoader.chunkLoaderDeluxe);
+  
   }
 
 
