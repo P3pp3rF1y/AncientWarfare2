@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
@@ -88,7 +89,7 @@ public void initElements()
     };
   addGuiElement(input);
     
-  area = new CompositeItemSlots(0, 8+12+4+12+2, 178, 70+40, this);
+  area = new CompositeItemSlots(0, 8+12+4+12+2, 178, 96, this);
   
   Listener l = new Listener(Listener.MOUSE_DOWN)
     {    
@@ -104,6 +105,16 @@ public void initElements()
     };
   area.addNewListener(l);  
   addGuiElement(area); 
+  
+  Button b = new Button(8, 240-8-12, 40, 12, StatCollector.translateToLocal("guistrings.adjust_bounds"))
+    {
+    @Override
+    protected void onPressed()
+      {
+      NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, container.warehouse.xCoord, container.warehouse.yCoord, container.warehouse.zCoord);
+      }
+    };
+  addGuiElement(b);
   }
 
 @Override
@@ -133,7 +144,7 @@ private void addInventoryViewElements()
   
   for(ItemStack displayStack : displayStacks)
     {
-    slot = new ItemSlot(4+x*18, 8+y*18, displayStack, this)
+    slot = new ItemSlot(4+x*18, 3+y*18, displayStack, this)
       {
       @Override
       public void onSlotClicked(ItemStack stack)

@@ -24,7 +24,7 @@ public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
   warehouse = (TileWarehouseBase) player.worldObj.getTileEntity(x, y, z);
-  addPlayerSlots(player, 8, 156, 4);
+  addPlayerSlots(player, 8, 142, 4);
   warehouse.addViewer(this);
   }
 
