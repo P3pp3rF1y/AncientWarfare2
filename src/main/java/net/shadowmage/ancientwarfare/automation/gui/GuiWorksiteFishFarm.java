@@ -16,6 +16,7 @@ public void initElements()
   addLabels();
   addSideSelectButton();
   addBoundsAdjustButton();
+  addAltControlsButton();
   }
 
 @Override

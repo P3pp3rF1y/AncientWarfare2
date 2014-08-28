@@ -64,7 +64,7 @@ protected void addLabels()
 
 protected void addSideSelectButton()
   {
-  Button button = new Button(8, ySize-8-12, xSize/2-8, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
+  Button button = new Button(8, ySize-8-12, 50, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
     {
     @Override
     protected void onPressed()
@@ -77,12 +77,25 @@ protected void addSideSelectButton()
 
 protected void addBoundsAdjustButton()
   {
-  Button button = new Button(xSize/2, ySize-8-12, xSize/2-8, 12, StatCollector.translateToLocal("guistrings.automation.adjust_bounds"))    
+  Button button = new Button(58, ySize-8-12, 50, 12, StatCollector.translateToLocal("guistrings.automation.adjust_bounds"))    
     {
     @Override
     protected void onPressed()
       {
       NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, container.worksite.xCoord, container.worksite.yCoord, container.worksite.zCoord);
+      }
+    };
+  addGuiElement(button);
+  }
+
+protected void addAltControlsButton()
+  {
+  Button button = new Button(108, ySize-8-12, 50, 12, StatCollector.translateToLocal("guistrings.automation.alt_controls"))    
+    {
+    @Override
+    protected void onPressed()
+      {
+      worksite.openAltGui(player);
       }
     };
   addGuiElement(button);

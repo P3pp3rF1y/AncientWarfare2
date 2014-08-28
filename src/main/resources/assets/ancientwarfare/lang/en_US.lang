@@ -298,7 +298,7 @@ guistrings.construction.set_pos_1=Set Pos 1
 guistrings.construction.set_pos_2=Set Pos 2
 guistrings.construction.clear_positions=Clear Pos1/Pos2
 guistrings.inventory.player=Player Inventory
-guistrings.inventory.setsides=Inv. Setup
+guistrings.inventory.setsides=Sides
 guistrings.inventory.side.top=Top
 guistrings.inventory.side.bottom=Bottom
 guistrings.inventory.side.front=Front
@@ -369,6 +369,8 @@ guistrings.automation.work_mode_change=Toggled Hammer Mode
 guistrings.automation.doing_player_work=Working at Worksite
 guistrings.automation.rotating_block=Rotating Block
 guistrings.automation.wrong_hammer_mode=Wrong Hammer Mode!
+guistrings.automation.adjust_bounds=Bounds
+guistrings.automation.alt_controls=Other
 guistrings.inventory.front=Resources
 guistrings.inventory.bottom=Special Resources
 

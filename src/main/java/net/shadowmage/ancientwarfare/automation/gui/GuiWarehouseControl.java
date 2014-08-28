@@ -106,7 +106,7 @@ public void initElements()
   area.addNewListener(l);  
   addGuiElement(area); 
   
-  Button b = new Button(8, 240-8-12, 40, 12, StatCollector.translateToLocal("guistrings.adjust_bounds"))
+  Button b = new Button(8, 240-8-12, 40, 12, StatCollector.translateToLocal("guistrings.automation.adjust_bounds"))
     {
     @Override
     protected void onPressed()
