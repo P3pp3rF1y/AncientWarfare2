@@ -55,24 +55,31 @@ public int getBoundsMaxWidth(){return 0;}
 public int getBoundsMaxHeight(){return 0;}
 
 @Override
-public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}
+public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}//NOOP
 
 @Override
-public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}
+public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}//NOOP
 
 @Override
-public void addUpgrade(WorksiteUpgrade upgrade)
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void addUpgrade(WorksiteUpgrade upgrade){}//NOOP
 
 @Override
-public void removeUpgrade(WorksiteUpgrade upgrade)
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void removeUpgrade(WorksiteUpgrade upgrade){}//NOOP
+
+@Override
+public void setBounds(BlockPosition p1, BlockPosition p2){}//NOOP
+
+@Override
+public void setWorkBoundsMax(BlockPosition max){}//NOOP
+
+@Override
+public void setWorkBoundsMin(BlockPosition min){}//NOOP
+
+@Override
+public void onBoundsAdjusted(){}//NOOP
+
+@Override
+public boolean userAdjustableBlocks(){return false;}//NOOP
 
 @Override
 public void setEnergy(double energy)
@@ -393,18 +400,4 @@ public boolean onBlockClicked(EntityPlayer player)
   return false;
   }
 
-@Override
-public void setBounds(BlockPosition p1, BlockPosition p2){}//NOOP
-
-@Override
-public void setWorkBoundsMax(BlockPosition max){}//NOOP
-
-@Override
-public void setWorkBoundsMin(BlockPosition min){}//NOOP
-
-@Override
-public void onBoundsAdjusted(){}//NOOP
-
-@Override
-public boolean userAdjustableBlocks(){return false;}
 }
