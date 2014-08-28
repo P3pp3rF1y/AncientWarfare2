@@ -39,22 +39,31 @@ public boolean canOutput(ForgeDirection towards)
   }
 
 @Override
-public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// TODO Auto-generated method stub
+public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// NOOP
 
 @Override
-public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// TODO Auto-generated method stub
+public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// NOOP
 
 @Override
-public void addUpgrade(WorksiteUpgrade upgrade)
-  {
-  // TODO Auto-generated method stub
-  }
+public void addUpgrade(WorksiteUpgrade upgrade){}// NOOP
 
 @Override
-public void removeUpgrade(WorksiteUpgrade upgrade)
-  {
-  // TODO Auto-generated method stub  
-  }
+public void removeUpgrade(WorksiteUpgrade upgrade){}// NOOP
+
+@Override
+public void setBounds(BlockPosition p1, BlockPosition p2){}//NOOP
+
+@Override
+public void setWorkBoundsMax(BlockPosition max){}//NOOP
+
+@Override
+public void setWorkBoundsMin(BlockPosition min){}//NOOP
+
+@Override
+public void onBoundsAdjusted(){}//NOOP
+
+@Override
+public boolean userAdjustableBlocks(){return false;}// NOOP
 
 @Override
 public boolean hasWork()
@@ -132,20 +141,5 @@ public void writeToNBT(NBTTagCompound tag)
   super.writeToNBT(tag);
   if(ownerName!=null){tag.setString("owner", ownerName);}
   }
-
-@Override
-public void setBounds(BlockPosition p1, BlockPosition p2){}//NOOP
-
-@Override
-public void setWorkBoundsMax(BlockPosition max){}//NOOP
-
-@Override
-public void setWorkBoundsMin(BlockPosition min){}//NOOP
-
-@Override
-public void onBoundsAdjusted(){}//NOOP
-
-@Override
-public boolean userAdjustableBlocks(){return false;}
 
 }
