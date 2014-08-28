@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,11 +17,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
+import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceEmptyRequest;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceFillRequest;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
@@ -28,12 +29,13 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public abstract class TileWarehouseBase extends TileEntity implements IOwnable, IWorkSite, ITorqueReceiver, IBoundedTile, IInteractableTile, IControllerTile
+public abstract class TileWarehouseBase extends TileEntity implements IOwnable, IWorkSite, ITorqueReceiver, IInteractableTile, IControllerTile
 {
 
 private BlockPosition min, max;
@@ -66,9 +68,79 @@ private ItemQuantityMap cachedItemMap = new ItemQuantityMap();
 
 private Set<ContainerWarehouseControl> viewers = new HashSet<ContainerWarehouseControl>();
 
+private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
+private double efficiency;
+
 public TileWarehouseBase()
   {
   
+  }
+
+@Override
+public boolean userAdjustableBlocks(){return false;}
+
+@Override
+public EnumSet<WorksiteUpgrade> getUpgrades(){return upgrades;}
+
+@Override
+public EnumSet<WorksiteUpgrade> getValidUpgrades()
+  {
+  return EnumSet.of(
+      WorksiteUpgrade.SIZE_MEDIUM,
+      WorksiteUpgrade.SIZE_LARGE,
+      WorksiteUpgrade.ENCHANTED_TOOLS_1,
+      WorksiteUpgrade.ENCHANTED_TOOLS_2,
+      WorksiteUpgrade.TOOL_QUALITY_1,
+      WorksiteUpgrade.TOOL_QUALITY_2,
+      WorksiteUpgrade.TOOL_QUALITY_3,
+      WorksiteUpgrade.BASIC_CHUNK_LOADER
+      );
+  }
+
+@Override
+public int getBoundsMaxWidth()
+  {
+  return getUpgrades().contains(WorksiteUpgrade.SIZE_MEDIUM)? 9 : getUpgrades().contains(WorksiteUpgrade.SIZE_LARGE)? 16 : 5;
+  }
+
+@Override
+public int getBoundsMaxHeight(){return 4;}
+
+@Override
+public void onBlockBroken()
+  {
+  for(WorksiteUpgrade ug : this.upgrades)
+    {
+    InventoryTools.dropItemInWorld(worldObj, ItemWorksiteUpgrade.getStack(ug), xCoord, yCoord, zCoord);
+    }
+  efficiency = 0;
+  upgrades.clear();
+  }
+
+@Override
+public void addUpgrade(WorksiteUpgrade upgrade)
+  {
+  upgrades.add(upgrade);
+  updateEfficiency();
+  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+  }
+
+@Override
+public void removeUpgrade(WorksiteUpgrade upgrade)
+  {
+  upgrades.remove(upgrade);
+  updateEfficiency();
+  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+  }
+
+protected void updateEfficiency()
+  {
+  efficiency = 0.d;
+  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)){efficiency+=0.05;}
+  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)){efficiency+=0.1;}
+  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_1)){efficiency+=0.05;}
+  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_2)){efficiency+=0.15;}
+  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_3)){efficiency+=0.25;}
   }
 
 public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick);
@@ -577,14 +649,32 @@ public final boolean shouldRenderInPass(int pass)
 public Packet getDescriptionPacket()
   {
   NBTTagCompound tag = new NBTTagCompound();
+  int[] ugs = new int[upgrades.size()];
+  int i = 0;
+  for(WorksiteUpgrade ug : upgrades)
+    {
+    ugs[i] = ug.ordinal();
+    i++;
+    }
+  tag.setIntArray("upgrades", ugs);
   tag.setTag("min", min.writeToNBT(new NBTTagCompound()));
   tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
-  return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
   }
 
 @Override
 public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {
+  super.onDataPacket(net, pkt);
+  if(pkt.func_148857_g().hasKey("upgrades"))
+    {
+    int[] ugs = pkt.func_148857_g().getIntArray("upgrades");
+    upgrades.clear();
+    for(int i = 0; i < ugs.length; i++)
+      {
+      upgrades.add(WorksiteUpgrade.values()[ugs[i]]);
+      }
+    }
   min = new BlockPosition(pkt.func_148857_g().getCompoundTag("min"));
   max = new BlockPosition(pkt.func_148857_g().getCompoundTag("max"));
   }
@@ -597,6 +687,12 @@ public void readFromNBT(NBTTagCompound tag)
   ownerName = tag.getString("ownerName");
   min = new BlockPosition(tag.getCompoundTag("min"));
   max = new BlockPosition(tag.getCompoundTag("max"));
+  int[] ug = tag.getIntArray("upgrades");
+  for(int i= 0; i < ug.length; i++)
+    {
+    upgrades.add(WorksiteUpgrade.values()[i]);
+    }
+  updateEfficiency();
   }
 
 @Override
@@ -607,6 +703,14 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setString("ownerName", ownerName);
   tag.setTag("min", min.writeToNBT(new NBTTagCompound()));
   tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
+  int[] ug = new int[getUpgrades().size()];
+  int i = 0;
+  for(WorksiteUpgrade u : getUpgrades())
+    {
+    ug[i] = u.ordinal();
+    i++;
+    }
+  tag.setIntArray("upgrades", ug);
   }
 
 public int getCountOf(ItemStack layoutStack)
@@ -652,6 +756,24 @@ public ItemStack tryAdd(ItemStack stack)
     return null;
     }
   return stack;
+  }
+
+@Override
+public void setWorkBoundsMax(BlockPosition max)
+  {
+  this.max = max;
+  }
+
+@Override
+public void setWorkBoundsMin(BlockPosition min)
+  {
+  this.min = min;
+  }
+
+@Override
+public void onBoundsAdjusted()
+  {
+  // TODO
   }
 
 }

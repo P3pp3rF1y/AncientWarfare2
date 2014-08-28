@@ -222,7 +222,7 @@ public static void load()
   worksiteReedFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/reed_farm_left");
   worksiteReedFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/reed_farm_right");
   
-  GameRegistry.registerBlock(worksiteWarehouse, ItemBlockWorksite.class, "civic_warehouse");
+  GameRegistry.registerBlock(worksiteWarehouse, ItemBlockWorksiteStatic.class, "civic_warehouse");
   GameRegistry.registerTileEntity(TileWarehouse.class, "civic_warehouse_tile");
   worksiteWarehouse.setIcon(RelativeSide.TOP, "ancientwarfare:automation/warehouse_control_top");
   worksiteWarehouse.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/warehouse_control_bottom");

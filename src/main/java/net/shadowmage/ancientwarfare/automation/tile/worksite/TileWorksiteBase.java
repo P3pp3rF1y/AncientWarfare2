@@ -19,7 +19,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
@@ -29,7 +28,7 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IBoundedTile, IOwnable, ITorqueReceiver
+public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IOwnable, ITorqueReceiver
 {
 protected String owningPlayer = "";
 
@@ -316,7 +315,7 @@ public void readFromNBT(NBTTagCompound tag)
   int[] ug = tag.getIntArray("upgrades");
   for(int i= 0; i < ug.length; i++)
     {
-    addUpgrade(WorksiteUpgrade.values()[i]);
+    upgrades.add(WorksiteUpgrade.values()[i]);
     }
   updateEfficiency();
   }

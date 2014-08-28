@@ -474,4 +474,16 @@ public int getBoundsMaxWidth(){return 0;}
 @Override
 public int getBoundsMaxHeight(){return 0;}
 
+@Override
+public void setWorkBoundsMax(BlockPosition max){}//NOOP
+
+@Override
+public void setWorkBoundsMin(BlockPosition min){}//NOOP
+
+@Override
+public void onBoundsAdjusted(){}//NOOP
+
+@Override
+public boolean userAdjustableBlocks(){return false;}
+
 }

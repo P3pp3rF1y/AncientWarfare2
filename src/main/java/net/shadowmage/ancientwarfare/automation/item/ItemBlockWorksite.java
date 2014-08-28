@@ -16,9 +16,9 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
@@ -139,9 +139,9 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   if(val)
     {
     TileEntity worksite = world.getTileEntity(x, y, z);
-    if(worksite instanceof IBoundedTile)
+    if(worksite instanceof IWorkSite)
       {
-      ((IBoundedTile)worksite).setBounds(min, max);
+      ((IWorkSite)worksite).setBounds(min, max);
       }
     if(worksite instanceof IOwnable)
       {

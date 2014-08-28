@@ -14,7 +14,8 @@ public TileWorksiteUserBlocks()
   
   }
 
-public boolean hasUserSetTargets()
+@Override
+public boolean userAdjustableBlocks()
   {
   return true;
   }

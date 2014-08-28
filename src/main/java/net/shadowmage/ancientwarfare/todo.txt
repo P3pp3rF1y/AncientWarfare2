@@ -39,14 +39,15 @@ Licensing
 * Add ore-processing worksite.  Non-bounded, single-block.  Can use tools/enchanted/chunkloader upgrades only.  Input: Ore, Output: Dusts or Ingots?
 * Re-add advanced controls for fish and animal farms (where?)
 	-- change buttons to |Inv| |Bounds| |Other| ?
-* Add bounds adjust controls to warehouse, and remove the pre-set-by-item requirements
-	-- will require constantly validating storage/etc blocks every time bounds are adjusted
 * Add upgrade-handling code to:
 	Warehouse (efficiency and bounds upgrades only)
 	Research Station
 	Auto Crafting Station? (handled via worksite-base hierarchy?
 	Construction site (w/e it is called, structure module)	
 	Ore processing center	
+* Warehouse needs to update its block lists when bounds are changed.  
+	dump blocks no longer in bounds, pickup new blocks in bounds 
+	-- perhaps should just clear entirely and re-init as if it was freshly placed (would use existing code)	
 	
 * Torque API:	
 	set power capacity / power loss / power use for all torque blocks

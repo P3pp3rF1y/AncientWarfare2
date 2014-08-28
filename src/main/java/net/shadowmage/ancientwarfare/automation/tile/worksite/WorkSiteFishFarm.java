@@ -32,6 +32,12 @@ public WorkSiteFishFarm()
   }
 
 @Override
+public boolean userAdjustableBlocks()
+  {
+  return false;
+  }
+
+@Override
 protected boolean processWork()
   {
   if(waterBlockCount>0)

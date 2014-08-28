@@ -291,4 +291,19 @@ public void addEnergyFromPlayer(EntityPlayer player)
   if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
   }
 
+
+@Override
+public void setBounds(BlockPosition p1, BlockPosition p2){}//NOOP
+
+@Override
+public void setWorkBoundsMax(BlockPosition max){}//NOOP
+
+@Override
+public void setWorkBoundsMin(BlockPosition min){}//NOOP
+
+@Override
+public void onBoundsAdjusted(){}//NOOP
+
+@Override
+public boolean userAdjustableBlocks(){return false;}
 }

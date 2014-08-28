@@ -133,4 +133,19 @@ public void writeToNBT(NBTTagCompound tag)
   if(ownerName!=null){tag.setString("owner", ownerName);}
   }
 
+@Override
+public void setBounds(BlockPosition p1, BlockPosition p2){}//NOOP
+
+@Override
+public void setWorkBoundsMax(BlockPosition max){}//NOOP
+
+@Override
+public void setWorkBoundsMin(BlockPosition min){}//NOOP
+
+@Override
+public void onBoundsAdjusted(){}//NOOP
+
+@Override
+public boolean userAdjustableBlocks(){return false;}
+
 }

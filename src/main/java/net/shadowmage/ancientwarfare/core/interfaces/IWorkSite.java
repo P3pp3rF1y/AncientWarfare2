@@ -39,11 +39,21 @@ public BlockPosition getWorkBoundsMin();
 
 public BlockPosition getWorkBoundsMax();
 
+public boolean userAdjustableBlocks();
+
 public boolean hasWorkBounds();
 
 public int getBoundsMaxWidth();
 
 public int getBoundsMaxHeight();
+
+public void setBounds(BlockPosition p1, BlockPosition p2);
+
+public void setWorkBoundsMax(BlockPosition max);
+
+public void setWorkBoundsMin(BlockPosition min);
+
+public void onBoundsAdjusted();
 
 public EnumSet<WorksiteUpgrade> getUpgrades();
 

@@ -9,8 +9,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
-import net.shadowmage.ancientwarfare.core.interfaces.IBoundedTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
@@ -29,13 +29,12 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   BlockPosition pos2 = new BlockPosition(x, y, z);
   
   int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
-  ForgeDirection d = BlockTools.getForgeDirectionFromFacing(face);
   
   pos1.moveForward(face, 1);
-  pos1.moveLeft(face, 1);
+  pos1.moveLeft(face, 2);
   pos2.reassign(pos1.x, pos1.y, pos1.z);
-  pos2.moveForward(face, 2);
-  pos2.moveRight(face, 2);  
+  pos2.moveForward(face, 4);
+  pos2.moveRight(face, 4);  
   
   BlockPosition min = BlockTools.getMin(pos1, pos2);
   BlockPosition max = BlockTools.getMax(pos1, pos2);
@@ -49,9 +48,9 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   if(val)
     {
     TileEntity worksite = world.getTileEntity(x, y, z);
-    if(worksite instanceof IBoundedTile)
+    if(worksite instanceof IWorkSite)
       {
-      ((IBoundedTile)worksite).setBounds(min, max);
+      ((IWorkSite)worksite).setBounds(min, max);
       }
     if(worksite instanceof IOwnable)
       {

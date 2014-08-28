@@ -21,36 +21,6 @@ public TileWarehouse()
   }
 
 @Override
-public void onBlockBroken()
-  {
-  // TODO
-  }
-
-@Override
-public int getBoundsMaxWidth(){return 16;}
-
-@Override
-public int getBoundsMaxHeight(){return 4;}
-
-@Override
-public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// TODO Auto-generated method stub
-
-@Override
-public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// TODO Auto-generated method stub
-
-@Override
-public void addUpgrade(WorksiteUpgrade upgrade)
-  {
-  // TODO Auto-generated method stub
-  }
-
-@Override
-public void removeUpgrade(WorksiteUpgrade upgrade)
-  {
-  // TODO Auto-generated method stub  
-  }
-
-@Override
 public ForgeDirection getOrientation()
   {
   return ForgeDirection.getOrientation(getBlockMetadata());
@@ -133,5 +103,7 @@ private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClic
       }
     }
   }
+
+
 
 }

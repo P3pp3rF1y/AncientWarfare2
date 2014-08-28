@@ -37,6 +37,12 @@ public WorkSiteQuarry()
   }
 
 @Override
+public boolean userAdjustableBlocks()
+  {
+  return false;
+  }
+
+@Override
 public void onBoundsAdjusted()
   {
   currentX = bbMin.x;

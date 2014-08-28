@@ -114,6 +114,12 @@ public WorkSiteAnimalFarm()
   }
 
 @Override
+public boolean userAdjustableBlocks()
+  {
+  return false;
+  }
+
+@Override
 protected boolean hasWorksiteWork()
   {
   return hasAnimalWork();

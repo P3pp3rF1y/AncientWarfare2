@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 public class GuiWorksiteBoundsAdjust extends GuiContainerBase
 {
 
-boolean largeMode = false;
+boolean noTargetMode = false;
 ContainerWorksiteBoundsAdjust container;
 
 boolean boundsAdjusted = false, targetsAdjusted = false;;
@@ -27,12 +27,12 @@ public GuiWorksiteBoundsAdjust(ContainerBase container)
   super(container);
   this.container = (ContainerWorksiteBoundsAdjust) container;
   this.shouldCloseOnVanillaKeys = true;
-  if(this.container.worksite.getBoundsMaxWidth()>16){largeMode=true;}
+  if(!this.container.worksite.userAdjustableBlocks()){noTargetMode=true;}
   }
 
 private void setChecked(int x, int y, boolean checked)
   {
-  if(!largeMode)
+  if(!noTargetMode)
     {
     checkedMap[y*16+x] = checked? (byte)1 : (byte)0;    
     }
@@ -40,7 +40,7 @@ private void setChecked(int x, int y, boolean checked)
 
 private boolean isChecked(int x, int y)
   {
-  if(largeMode){return false;}
+  if(noTargetMode){return false;}
   return checkedMap[y*16+x]==1;
   }
 
@@ -273,7 +273,7 @@ private void addLayout()
         @Override
         public void clicked(ActivationEvent evt)
           {
-          if(!largeMode)
+          if(!noTargetMode)
             {
             super.clicked(evt);
             setChecked(x1, y1, checked);  
@@ -308,7 +308,7 @@ protected boolean onGuiCloseRequested()
     }
   if(targetsAdjusted && container.worksite instanceof TileWorksiteUserBlocks)
     {
-    if(!largeMode)
+    if(!noTargetMode)
       {
       tag.setByteArray("checkedMap", checkedMap);
       }
