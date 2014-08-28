@@ -77,6 +77,48 @@ public TileWarehouseBase()
   }
 
 @Override
+public void onBoundsAdjusted()
+  {
+  this.interfacesToEmpty.clear();
+  this.interfacesToFill.clear();
+  for(TileWarehouseInterface i : interfaceTiles)
+    {
+    i.setController(null);
+    }
+  this.interfaceTiles.clear();
+  for(TileWarehouseStockViewer i : stockViewers)
+    {
+    i.setController(null);
+    }
+  this.stockViewers.clear();
+  for(IWarehouseStorageTile i : storageTiles)
+    {
+    ((TileControlled) i).setController(null);
+    }
+  this.storageTiles.clear();
+  
+  storageMap = new WarehouseStorageMap();
+  cachedItemMap.clear();
+  
+  List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z);
+  for(TileEntity te : tiles)
+    {
+    if(te instanceof IWarehouseStorageTile)
+      {
+      addStorageTile((IWarehouseStorageTile) te);
+      }
+    else if(te instanceof TileWarehouseInterface)
+      {
+      addInterfaceTile((TileWarehouseInterface) te);
+      }
+    else if(te instanceof TileWarehouseStockViewer)
+      {
+      addStockViewer((TileWarehouseStockViewer) te);
+      }
+    }  
+  }
+
+@Override
 public boolean userAdjustableBlocks(){return false;}
 
 @Override
@@ -141,6 +183,11 @@ protected void updateEfficiency()
   if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_1)){efficiency+=0.05;}
   if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_2)){efficiency+=0.15;}
   if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_3)){efficiency+=0.25;}
+  }
+
+protected double getEnergyPerUse()
+  {
+  return AWCoreStatics.energyPerWorkUnit * efficiency;
   }
 
 public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick);
@@ -284,9 +331,9 @@ public final void updateEntity()
     init=true;  
     scanForInitialTiles();
     }
-  while(storedEnergy >= AWCoreStatics.energyPerWorkUnit && processWork())
+  while(storedEnergy >= getEnergyPerUse() && processWork())
     {
-    storedEnergy -= AWCoreStatics.energyPerWorkUnit;
+    storedEnergy -= getEnergyPerUse();
     }
   if(shouldRecount)
     {
@@ -320,6 +367,10 @@ private void scanForInitialTiles()
     else if(te instanceof TileWarehouseInterface)
       {
       addInterfaceTile((TileWarehouseInterface) te);
+      }
+    else if(te instanceof TileWarehouseStockViewer)
+      {
+      addStockViewer((TileWarehouseStockViewer) te);
       }
     }  
   }
@@ -770,10 +821,5 @@ public void setWorkBoundsMin(BlockPosition min)
   this.min = min;
   }
 
-@Override
-public void onBoundsAdjusted()
-  {
-  // TODO
-  }
 
 }

@@ -1,14 +1,12 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 
@@ -103,7 +101,5 @@ private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClic
       }
     }
   }
-
-
 
 }
