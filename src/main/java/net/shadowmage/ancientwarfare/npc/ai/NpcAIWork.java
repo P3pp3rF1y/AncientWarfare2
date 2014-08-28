@@ -167,7 +167,7 @@ protected void setMoveToNextSite()
     IWorker worker = (IWorker)npc;
     for(int i = 0; i < order.getEntries().size(); i++)
       {
-      entry = order.getEntries().get(workIndex);
+      entry = order.getEntries().get(i);
       pos = entry.getPosition();
       TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
       if(te instanceof IWorkSite)
