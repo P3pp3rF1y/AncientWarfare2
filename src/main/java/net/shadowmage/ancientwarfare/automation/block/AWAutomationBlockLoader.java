@@ -103,14 +103,7 @@ public static final BlockWorksiteBase worksiteReedFarm = new BlockWorksiteBase(M
     }
   };
   
-public static final BlockWorksiteBase worksiteAutoCrafting = new BlockWorksiteBase(Material.rock, "civic_auto_crafting")
-  {
-  @Override
-  public TileEntity createTileEntity(World world, int metadata)
-    {
-    return new TileAutoCrafting();
-    }
-  };
+public static final BlockAutoCrafting worksiteAutoCrafting = new BlockAutoCrafting(Material.rock, "civic_auto_crafting");
     
 public static final BlockWorksiteBase worksiteWarehouse = new BlockWorksiteBase(Material.rock, "civic_warehouse")
   {    

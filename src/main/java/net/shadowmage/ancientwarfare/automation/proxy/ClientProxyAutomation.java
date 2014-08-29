@@ -88,7 +88,7 @@ public void registerClient()
   
   TileCraftingTableRender tctr = new TileCraftingTableRender(new ModelAutoCraftingStation(), "textures/model/automation/tile_auto_crafting.png");
   ClientRegistry.bindTileEntitySpecialRenderer(TileAutoCrafting.class, tctr);
-  MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.worksiteAutoCrafting), tctr);
+//  MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.worksiteAutoCrafting), tctr);
   }
 
 private void registerClientOptions()
