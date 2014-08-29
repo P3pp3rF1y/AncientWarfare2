@@ -39,6 +39,7 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableTile;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class AWAutomationBlockLoader
@@ -269,7 +270,7 @@ public static void load()
   GameRegistry.registerBlock(warehouseStockViewer, ItemBlockOwnedRotatable.class, "warehouse_stock_viewer");
   GameRegistry.registerTileEntity(TileWarehouseStockViewer.class, "warehouse_stock_viewer_tile");
   
-  GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockOwnedRotatable.class, "civic_auto_crafting");
+  GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockRotatableTile.class, "civic_auto_crafting");
   GameRegistry.registerTileEntity(TileAutoCrafting.class, "civic_auto_crafting_tile");
   worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:automation/auto_crafting_top");
   worksiteAutoCrafting.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/auto_crafting_front");
