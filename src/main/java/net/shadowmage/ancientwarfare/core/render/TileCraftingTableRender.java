@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelCraftingBase;
 
 import org.lwjgl.opengl.GL11;
@@ -40,7 +41,6 @@ public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRe
 public void renderItem(ItemRenderType type, ItemStack item, Object... data)
   {
   GL11.glPushMatrix(); 
-//  RenderTools.setFullColorLightmap();
   GL11.glScalef(-1, -1, 1);
   GL11.glTranslatef(-0.5f, 0.0f, 0.5f);
   GL11.glRotatef(270, 0, 1, 0);

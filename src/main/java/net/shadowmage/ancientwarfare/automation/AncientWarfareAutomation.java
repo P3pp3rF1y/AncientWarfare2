@@ -95,7 +95,6 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * load pre-init
    */  
-  proxy.registerClient();
   statics.load();//load config settings
   
   /**
@@ -103,6 +102,11 @@ public void preInit(FMLPreInitializationEvent evt)
    */
   AWAutomationBlockLoader.load();
   AWAutomationItemLoader.load();
+  
+/**
+ * must be loaded after items/blocks, as it needs them registered
+ */
+  proxy.registerClient();
 
   /**
    * register containers
