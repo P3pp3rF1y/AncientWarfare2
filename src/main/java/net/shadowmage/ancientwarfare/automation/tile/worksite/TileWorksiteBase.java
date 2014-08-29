@@ -336,7 +336,7 @@ public final Team getTeam()
   }
 
 @Override
-public final AxisAlignedBB getRenderBoundingBox()
+public AxisAlignedBB getRenderBoundingBox()
   {
   if(hasWorkBounds() && getWorkBoundsMin()!=null && getWorkBoundsMax()!=null)
     {
@@ -351,8 +351,7 @@ public final AxisAlignedBB getRenderBoundingBox()
     bb.maxZ = max.z+1 > bb.maxZ ? max.z+1 : bb.maxZ;
     return bb;
     }
-  AxisAlignedBB bb = super.getRenderBoundingBox();
-  return bb;
+  return super.getRenderBoundingBox();
   }
 
 @Override

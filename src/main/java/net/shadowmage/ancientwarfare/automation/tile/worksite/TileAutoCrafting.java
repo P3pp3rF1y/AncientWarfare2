@@ -469,6 +469,12 @@ protected void updateWorksite()
   }
 
 @Override
+public boolean shouldRenderInPass(int pass)
+  {
+  return pass==0;
+  }
+
+@Override
 public int getBoundsMaxWidth(){return 0;}
 
 @Override
