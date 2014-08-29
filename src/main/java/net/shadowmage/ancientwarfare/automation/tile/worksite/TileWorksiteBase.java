@@ -18,6 +18,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -28,7 +29,7 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IOwnable, ITorqueReceiver
+public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IOwnable, ITorqueReceiver, IRotatableTile
 {
 protected String owningPlayer = "";
 
@@ -40,6 +41,8 @@ private double storedEnergy;
 private double efficiency;
 
 private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
+
+private ForgeDirection orientation = ForgeDirection.NORTH;
 
 public TileWorksiteBase()
   {
@@ -286,6 +289,7 @@ public void writeToNBT(NBTTagCompound tag)
     i++;
     }
   tag.setIntArray("upgrades", ug);
+  tag.setInteger("orientation", orientation.ordinal());
   }
 
 @Override
@@ -317,6 +321,7 @@ public void readFromNBT(NBTTagCompound tag)
     {
     upgrades.add(WorksiteUpgrade.values()[i]);
     }
+  if(tag.hasKey("orientation")){orientation = ForgeDirection.values()[tag.getInteger("orientation")];}
   updateEfficiency();
   }
 
@@ -362,6 +367,7 @@ public Packet getDescriptionPacket()
     i++;
     }
   tag.setIntArray("upgrades", ugs);
+  tag.setInteger("orientation", orientation.ordinal());
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
   }
 
@@ -378,6 +384,19 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
       upgrades.add(WorksiteUpgrade.values()[ugs[i]]);
       }
     }
+  orientation = ForgeDirection.values()[pkt.func_148857_g().getInteger("orientation")];
+  }
+
+@Override
+public ForgeDirection getPrimaryFacing()
+  {
+  return orientation;
+  }
+
+@Override
+public void setPrimaryFacing(ForgeDirection face)
+  {
+  orientation = face;
   }
 
 }

@@ -6,7 +6,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.WorksiteAutoCrafting;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
@@ -14,12 +14,12 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 public class ContainerWorksiteAutoCrafting extends ContainerBase
 {
 
-WorksiteAutoCrafting worksite;
+TileAutoCrafting worksite;
 
 public ContainerWorksiteAutoCrafting(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
-  worksite = (WorksiteAutoCrafting)player.worldObj.getTileEntity(x, y, z);
+  worksite = (TileAutoCrafting)player.worldObj.getTileEntity(x, y, z);
   
   IInventory inventory = worksite.craftMatrix;
   

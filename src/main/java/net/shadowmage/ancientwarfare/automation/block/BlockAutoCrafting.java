@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.block;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.WorksiteAutoCrafting;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 
 public class BlockAutoCrafting extends BlockWorksiteBase
 {
@@ -16,7 +16,7 @@ public BlockAutoCrafting(Material p_i45394_1_, String regName)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {
-  return new WorksiteAutoCrafting();
+  return new TileAutoCrafting();
   }
 
 @Override

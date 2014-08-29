@@ -12,6 +12,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -21,7 +22,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorksiteAutoCrafting extends TileWorksiteBase implements IInventory, IWorkSite, ISidedInventory, IInteractableTile
+public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IWorkSite, ISidedInventory, IInteractableTile
 {
 
 public InventoryBasic bookSlot;
@@ -37,7 +38,7 @@ ItemStack[] matrixShadow = new ItemStack[9];//shadow copy of input matrix
 boolean hasResourcesForNext;//set from onInventoryChanged() to check if there are enough resources in input inventory to craft the next item
 boolean shouldUpdateInventory;
 
-public WorksiteAutoCrafting()
+public TileAutoCrafting()
   {
   Container dummy = new Container()
     {

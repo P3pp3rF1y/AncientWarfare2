@@ -36,7 +36,7 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteMushroomFa
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteTreeFarm;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.WorksiteAutoCrafting;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -108,7 +108,7 @@ public static final BlockWorksiteBase worksiteAutoCrafting = new BlockWorksiteBa
   @Override
   public TileEntity createTileEntity(World world, int metadata)
     {
-    return new WorksiteAutoCrafting();
+    return new TileAutoCrafting();
     }
   };
     
@@ -277,7 +277,7 @@ public static void load()
   GameRegistry.registerTileEntity(TileWarehouseStockViewer.class, "warehouse_stock_viewer_tile");
   
   GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockOwnedRotatable.class, "civic_auto_crafting");
-  GameRegistry.registerTileEntity(WorksiteAutoCrafting.class, "civic_auto_crafting_tile");
+  GameRegistry.registerTileEntity(TileAutoCrafting.class, "civic_auto_crafting_tile");
   worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:automation/auto_crafting_top");
   worksiteAutoCrafting.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/auto_crafting_front");
   worksiteAutoCrafting.setIcon(RelativeSide.REAR, "ancientwarfare:automation/auto_crafting_side");  
