@@ -10,10 +10,12 @@ import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
 import net.shadowmage.ancientwarfare.core.gui.research.GuiResearchStation;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelEngineeringStation;
+import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelResearchStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketHandlerClient;
 import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
+import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 
@@ -39,6 +41,10 @@ public void registerClient()
   TileCraftingTableRender render = new TileCraftingTableRender(new ModelEngineeringStation(), "textures/model/core/tile_engineering_station.png");
   ClientRegistry.bindTileEntitySpecialRenderer(TileEngineeringStation.class, render);
   MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWBlocks.engineeringStation), render);
+  
+  render = new TileCraftingTableRender(new ModelResearchStation(), "textures/model/core/tile_research_station.png");
+  ClientRegistry.bindTileEntitySpecialRenderer(TileResearchStation.class, render);
+  MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWBlocks.researchStation), render);
   }
 
 }

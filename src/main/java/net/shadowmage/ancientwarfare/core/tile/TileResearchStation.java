@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -25,10 +26,11 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueReceiver, IOwnable, IInteractableTile
+public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueReceiver, IOwnable, IInteractableTile,  IRotatableTile
 {
 
 protected String owningPlayer = "";
+ForgeDirection orientation = ForgeDirection.NORTH;//default for old blocks
 
 @Override
 public void onBlockBroken()
@@ -184,6 +186,7 @@ public void readFromNBT(NBTTagCompound tag)
   InventoryTools.readInventoryFromNBT(resourceInventory, tag.getCompoundTag("resourceInventory"));
   this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
   this.storedEnergy = tag.getDouble("storedEnergy");
+  if(tag.hasKey("orientation")){this.orientation = ForgeDirection.values()[tag.getInteger("orientation")];}  
   }
 
 @Override
@@ -195,6 +198,7 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setTag("resourceInventory", InventoryTools.writeInventoryToNBT(resourceInventory, new NBTTagCompound()));  
   tag.setBoolean("useAdjacentInventory", useAdjacentInventory);  
   tag.setDouble("storedEnergy", storedEnergy);
+  tag.setInteger("orientation", orientation.ordinal());
   }
 
 @Override
@@ -398,6 +402,18 @@ public boolean onBlockClicked(EntityPlayer player)
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_STATION, xCoord, yCoord, zCoord);    
     }
   return false;
+  }
+
+@Override
+public ForgeDirection getPrimaryFacing()
+  {
+  return orientation;
+  }
+
+@Override
+public void setPrimaryFacing(ForgeDirection face)
+  {
+  this.orientation = face;
   }
 
 }

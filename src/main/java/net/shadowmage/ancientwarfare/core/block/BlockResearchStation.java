@@ -7,13 +7,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockResearchStation extends Block
+public class BlockResearchStation extends Block implements IRotatableBlock
 {
 
 BlockIconMap iconMap = new BlockIconMap();
@@ -80,4 +83,32 @@ public void breakBlock(World world, int x, int y, int z, Block block, int meta)
     }
   super.breakBlock(world, x, y, z, block, meta);
   }
+
+@Override
+public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
+
+@Override
+public boolean isOpaqueCube() {return false;}
+
+@Override
+public boolean isNormalCube() {return false;}
+
+@Override
+public RotationType getRotationType()
+  {
+  return RotationType.FOUR_WAY;
+  }
+
+@Override
+public boolean invertFacing()
+  {
+  return true;
+  }
+
+@Override
+public Block setIcon(RelativeSide side, String texName)
+  {
+  return this;
+  }
+
 }

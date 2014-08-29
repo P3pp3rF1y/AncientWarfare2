@@ -35,7 +35,7 @@ public void load()
   GameRegistry.registerTileEntity(TileEngineeringStation.class, "engineering_station_tile");
   
   AWBlocks.researchStation = new BlockResearchStation("research_station");
-  GameRegistry.registerBlock(AWBlocks.researchStation, ItemBlockOwned.class, "research_station");
+  GameRegistry.registerBlock(AWBlocks.researchStation, ItemBlockRotatableTile.class, "research_station");
   GameRegistry.registerTileEntity(TileResearchStation.class, "research_station_tile");
   }
 
