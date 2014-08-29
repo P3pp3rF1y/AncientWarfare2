@@ -42,7 +42,7 @@ public RenderSterlingEngine()
 public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTick)
   {
   TileTorqueGeneratorSterling tt = (TileTorqueGeneratorSterling)tile;
-  ForgeDirection d = tt.getOrientation();
+  ForgeDirection d = tt.getPrimaryFacing();
   float baseRotation = d==ForgeDirection.SOUTH? 180.f : d==ForgeDirection.WEST ? 270.f : d==ForgeDirection.EAST? 90.f : 0.f;
   
   

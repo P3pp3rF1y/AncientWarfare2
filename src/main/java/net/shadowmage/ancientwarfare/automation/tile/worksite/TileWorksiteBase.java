@@ -91,12 +91,6 @@ public void removeUpgrade(WorksiteUpgrade upgrade)
   worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
-@Override
-public ForgeDirection getOrientation()
-  {
-  return ForgeDirection.getOrientation(getBlockMetadata());
-  }
-
 protected abstract boolean processWork();
 
 protected abstract boolean hasWorksiteWork();

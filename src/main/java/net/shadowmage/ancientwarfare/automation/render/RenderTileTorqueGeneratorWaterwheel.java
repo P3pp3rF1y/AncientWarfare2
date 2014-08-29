@@ -21,7 +21,7 @@ public RenderTileTorqueGeneratorWaterwheel()
 public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick)
   {
   GL11.glPushMatrix();
-  ForgeDirection d = ((ITorqueTile)te).getOrientation();
+  ForgeDirection d = ((ITorqueTile)te).getPrimaryFacing();
   GL11.glTranslated(x+0.5d, y+0.5d, z+0.5d);
   GL11.glRotatef(getRotation(d), 0, 1, 0);
   drawShaftLine(0,0,0,0,0,1);

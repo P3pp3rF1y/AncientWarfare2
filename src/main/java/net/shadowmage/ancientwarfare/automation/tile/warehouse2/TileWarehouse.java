@@ -19,7 +19,7 @@ public TileWarehouse()
   }
 
 @Override
-public ForgeDirection getOrientation()
+public ForgeDirection getPrimaryFacing()
   {
   return ForgeDirection.getOrientation(getBlockMetadata());
   }

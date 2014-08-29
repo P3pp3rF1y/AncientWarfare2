@@ -80,7 +80,7 @@ public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block b
   renderer.setRenderBoundsFromBlock(block);
   renderer.renderStandardBlock(block, x, y, z);
   int meta = world.getBlockMetadata(x, y, z);  
-  int or = tile.getOrientation().ordinal();
+  int or = tile.getPrimaryFacing().ordinal();
   BlockTorqueBase torque = (BlockTorqueBase)block;
   if(sides[0])//down
     {

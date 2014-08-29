@@ -15,7 +15,7 @@ void setEnergy(double energy);
 double getMaxEnergy();
 double getEnergyStored();
 double getEnergyDrainFactor();
-public ForgeDirection getOrientation();
+public ForgeDirection getPrimaryFacing();
 }
 
 public static interface ITorqueGenerator extends ITorqueTile

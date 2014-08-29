@@ -28,7 +28,7 @@ public TemplateRuleTorqueTile(World world, int x, int y, int z, Block block, int
   TileTorqueBase tile = (TileTorqueBase)world.getTileEntity(x, y, z);
   this.blockName = BlockDataManager.instance().getNameForBlock(block);
   this.meta = meta;
-  this.orientation = BlockDataManager.instance().getRotatedMeta(block, tile.getOrientation().ordinal(), turns);
+  this.orientation = BlockDataManager.instance().getRotatedMeta(block, tile.getPrimaryFacing().ordinal(), turns);
   this.tag = new NBTTagCompound();
   tile.writeToNBT(tag);
   }

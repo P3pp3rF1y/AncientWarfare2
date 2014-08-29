@@ -69,7 +69,7 @@ public void setOrientation(ForgeDirection d)
   }
 
 @Override
-public ForgeDirection getOrientation()
+public ForgeDirection getPrimaryFacing()
   {
   return orientation;
   }

@@ -61,7 +61,7 @@ public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side)
   int meta = block.getBlockMetadata(x, y, z);
   TileEntity t = block.getTileEntity(x, y, z);
   ITorqueTile tt = (ITorqueTile)t;
-  return iconMaps.get(meta).getIcon(this, tt.getOrientation().ordinal(), side);
+  return iconMaps.get(meta).getIcon(this, tt.getPrimaryFacing().ordinal(), side);
   }
 
 @Override
@@ -130,7 +130,7 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
     }
   TileEntity t = worldObj.getTileEntity(x, y, z);
   TileTorqueBase tt = (TileTorqueBase)t;
-  int meta = tt.getOrientation().ordinal();  
+  int meta = tt.getPrimaryFacing().ordinal();  
   int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
   if(rMeta!=meta)
     {
