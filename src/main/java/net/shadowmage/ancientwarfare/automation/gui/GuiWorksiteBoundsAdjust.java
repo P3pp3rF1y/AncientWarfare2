@@ -56,7 +56,7 @@ public void setupElements()
   this.clearElements();  
   Button b;
   
-  b = new Button(12, 12, 40, 12, "NORTH")
+  b = new Button(48, 12, 40, 12, "NORTH")
     {
     @Override
     protected void onPressed()
@@ -72,7 +72,7 @@ public void setupElements()
     };
   addGuiElement(b);
   
-  b = new Button(12+40, 12, 40, 12, "SOUTH")
+  b = new Button(48+40, 12, 40, 12, "SOUTH")
     {
     @Override
     protected void onPressed()
@@ -88,7 +88,7 @@ public void setupElements()
     };
   addGuiElement(b);
   
-  b = new Button(12+40+40, 12, 40, 12, "WEST")
+  b = new Button(48+40+40, 12, 40, 12, "WEST")
     {
     @Override
     protected void onPressed()
@@ -104,7 +104,7 @@ public void setupElements()
     };
   addGuiElement(b);
   
-  b = new Button(12+40+40+40, 12, 40, 12, "EAST")
+  b = new Button(48+40+40+40, 12, 40, 12, "EAST")
     {
     @Override
     protected void onPressed()
@@ -120,7 +120,7 @@ public void setupElements()
     };
   addGuiElement(b);  
   
-  b = new Button(12, 24, 40, 12, "XSIZE-")
+  b = new Button(48, 24, 40, 12, "XSIZE-")
     {
     @Override
     protected void onPressed()
@@ -142,7 +142,7 @@ public void setupElements()
     };
   addGuiElement(b);
   
-  b = new Button(12+40, 24, 40, 12, "XSIZE+")
+  b = new Button(48+40, 24, 40, 12, "XSIZE+")
     {
     @Override
     protected void onPressed()
@@ -164,7 +164,7 @@ public void setupElements()
     };    
   addGuiElement(b);
   
-  b = new Button(12+80, 24, 40, 12, "ZSIZE-")
+  b = new Button(48+80, 24, 40, 12, "ZSIZE-")
     {
     @Override
     protected void onPressed()
@@ -186,7 +186,7 @@ public void setupElements()
     };
   addGuiElement(b);
   
-  b = new Button(12+120, 24, 40, 12, "ZSIZE+")
+  b = new Button(48+120, 24, 40, 12, "ZSIZE+")
     {
     @Override
     protected void onPressed()
@@ -207,45 +207,17 @@ public void setupElements()
       }
     };
   addGuiElement(b);
-  
-  Label label = new Label(12, 36, "YOFFSET");
-  addGuiElement(label);
-  
-  NumberInput input = new NumberInput(80, 36, 40, 0, this)
-    {
-    @Override
-    public void onValueUpdated(float value)
-      {
-      if(value>1.f)
-        {
-        value = 1.f;
-        setValue(value);
-        }
-      else if(value<-1.f)
-        {
-        value = -1.f;
-        setValue(value);
-        }
-      else
-        {
-        container.min.y = (int)value + container.y;
-        container.max.y = (int)value + container.y;
-        boundsAdjusted = true;
-        }
-      }
-    };
-  input.setIntegerValue();
-  input.setAllowNegative();
-  addGuiElement(input);
+    
   addLayout();
   }
 
 private void addLayout()
   {  
-  int size = (240-68) / (container.worksite.getBoundsMaxWidth()+2);
+  int bits = (container.worksite.getBoundsMaxWidth()+2);
+  int size = (240-56) / bits;
   
-  int tlx = 12 + size;
-  int tly = 48 + 8 + size;  
+  int tlx = (256 - (size*bits))/2 + size;
+  int tly = 36 + 8 + size;  
   
   
   BlockPosition p = new BlockPosition(container.x, container.y, container.z);
