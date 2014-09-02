@@ -43,8 +43,20 @@ public boolean userAdjustableBlocks()
   }
 
 @Override
+protected void onBoundsSet()
+  {
+  super.onBoundsSet();
+  bbMax.y = yCoord-1;
+  bbMin.y = 1;
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+  }
+
+@Override
 public void onBoundsAdjusted()
   {
+  bbMax.y = yCoord-1;
+  bbMin.y = 1;
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   currentX = bbMin.x;
   currentY = bbMax.y;
   currentZ = bbMin.z;
