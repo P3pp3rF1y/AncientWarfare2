@@ -38,6 +38,24 @@ public boolean userAdjustableBlocks()
   }
 
 @Override
+protected void onBoundsSet()
+  {
+  super.onBoundsSet();
+  bbMax.y = yCoord-1;
+  bbMin.y = yCoord-1;
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+  }
+
+@Override
+public void onBoundsAdjusted()
+  {
+  super.onBoundsAdjusted();
+  bbMax.y = yCoord-1;
+  bbMin.y = yCoord-1;
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+  }
+
+@Override
 protected boolean processWork()
   {
   if(waterBlockCount>0)
