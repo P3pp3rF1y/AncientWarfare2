@@ -26,23 +26,13 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
  */
 public class BlockDataManager
 {
-//actually used
-private HashMap<String, Block> blockNameToBlock = new HashMap<String, Block>();
+
+/**
+ * Mapping of old 1.6 names to block instances, and vice-versa.  Used to enable loading of pre 1.7 templates.
+ */
 private HashMap<Block, String> blockToName = new HashMap<Block, String>();
+private HashMap<String, Block> blockNameToBlock = new HashMap<String, Block>();
 private HashMap<String, Block> blockUnlocalizedNameToBlock = new HashMap<String, Block>();
-
-//unused
-//private HashMap<Integer, String> blockIDToName = new HashMap<Integer, String>();
-//private HashMap<Integer, Block> blockIDToBlock = new HashMap<Integer, Block>();
-//private HashMap<String, Integer> blockNameToID = new HashMap<String, Integer>();
-//private HashMap<Block, Integer> blockToID = new HashMap<Block, Integer>();
-//private HashMap<Integer, String> itemIDToName = new HashMap<Integer, String>();
-//private HashMap<Integer, Item> itemIDToItem = new HashMap<Integer, Item>();
-//private HashMap<String, Item> itemNameToItem = new HashMap<String, Item>();
-//private HashMap<String, Integer> itemNameToID = new HashMap<String, Integer>();
-//private HashMap<Item, Integer> itemToID = new HashMap<Item, Integer>();
-//private HashMap<Item, String> itemToName = new HashMap<Item, String>();
-
 
 private HashMap<Block, BlockInfo> blockInfoMap = new HashMap<Block, BlockInfo>();
 
