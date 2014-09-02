@@ -42,11 +42,9 @@ public void onTargetsAdjusted()
 @Override
 protected void onBoundsSet()
   {
-  int w = bbMax.x - bbMin.x + 1;
-  int h = bbMax.z - bbMin.z + 1;
-  for(int x = 0; x < w; x++)
+  for(int x = 0; x < 16; x++)
     {
-    for(int z = 0; z< h; z++)
+    for(int z = 0; z< 16; z++)
       {
       targetMap[z*16 + x] = (byte)1;
       }

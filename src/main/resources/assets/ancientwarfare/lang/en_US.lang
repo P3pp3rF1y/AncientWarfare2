@@ -157,7 +157,7 @@ item.npc_spawner.viking.civilian.female.name=Viking Civilian Female
 tile.engineering_station.name=Engineering Station
 tile.research_station.name=Research Station
 #automation
-tile.civic_auto_crafting.name=Auto Crafting Station
+tile.civic_auto_crafting.0.name=Auto Crafting Station
 tile.civic_quarry.name=Quarry
 tile.civic_forestry.name=Tree Farm
 tile.civic_crop_farm.name=Crop Farm
