@@ -187,7 +187,7 @@ protected void updateEfficiency()
 
 protected double getEnergyPerUse()
   {
-  return AWCoreStatics.energyPerWorkUnit * efficiency;
+  return AWCoreStatics.energyPerWorkUnit * (1.f - efficiency);
   }
 
 public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick);

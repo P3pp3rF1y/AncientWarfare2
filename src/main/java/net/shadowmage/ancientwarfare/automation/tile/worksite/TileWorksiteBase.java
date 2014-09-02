@@ -38,7 +38,7 @@ protected ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
 private double maxInput = maxEnergyStored;
 private double storedEnergy;
-private double efficiency;
+private double efficiencyBonusFactor = 0.f;
 
 private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
 
@@ -71,7 +71,7 @@ public void onBlockBroken()
     {
     InventoryTools.dropItemInWorld(worldObj, ItemWorksiteUpgrade.getStack(ug), xCoord, yCoord, zCoord);
     }
-  efficiency = 0;
+  efficiencyBonusFactor = 0;
   upgrades.clear();
   }
 
@@ -229,17 +229,17 @@ public void updateEntity()
 
 protected double getEnergyPerUse()
   {
-  return AWCoreStatics.energyPerWorkUnit * efficiency;
+  return AWCoreStatics.energyPerWorkUnit * 1.f - efficiencyBonusFactor;
   }
 
 protected void updateEfficiency()
   {
-  efficiency = 0.d;
-  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)){efficiency+=0.05;}
-  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)){efficiency+=0.1;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_1)){efficiency+=0.05;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_2)){efficiency+=0.15;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_3)){efficiency+=0.25;}
+  efficiencyBonusFactor = 0.d;
+  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)){efficiencyBonusFactor+=0.05;}
+  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)){efficiencyBonusFactor+=0.1;}
+  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_1)){efficiencyBonusFactor+=0.05;}
+  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_2)){efficiencyBonusFactor+=0.15;}
+  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_3)){efficiencyBonusFactor+=0.25;}
   }
 
 @Override

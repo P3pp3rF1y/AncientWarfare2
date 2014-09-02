@@ -8,8 +8,6 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
-import net.shadowmage.ancientwarfare.core.gui.elements.Label;
-import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.gui.elements.Rectangle;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -19,7 +17,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase
 boolean noTargetMode = false;
 ContainerWorksiteBoundsAdjust container;
 
-boolean boundsAdjusted = false, targetsAdjusted = false;;
+boolean boundsAdjusted = false, targetsAdjusted = false;
 byte[] checkedMap = new byte[16*16];
 
 public GuiWorksiteBoundsAdjust(ContainerBase container)
