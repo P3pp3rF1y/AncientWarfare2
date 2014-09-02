@@ -26,23 +26,23 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
  */
 public class BlockDataManager
 {
-
-
+//actually used
+private HashMap<String, Block> blockNameToBlock = new HashMap<String, Block>();
+private HashMap<Block, String> blockToName = new HashMap<Block, String>();
 private HashMap<String, Block> blockUnlocalizedNameToBlock = new HashMap<String, Block>();
 
-private HashMap<Integer, String> blockIDToName = new HashMap<Integer, String>();
-private HashMap<Integer, Block> blockIDToBlock = new HashMap<Integer, Block>();
-private HashMap<String, Block> blockNameToBlock = new HashMap<String, Block>();
-private HashMap<String, Integer> blockNameToID = new HashMap<String, Integer>();
-private HashMap<Block, Integer> blockToID = new HashMap<Block, Integer>();
-private HashMap<Block, String> blockToName = new HashMap<Block, String>();
+//unused
+//private HashMap<Integer, String> blockIDToName = new HashMap<Integer, String>();
+//private HashMap<Integer, Block> blockIDToBlock = new HashMap<Integer, Block>();
+//private HashMap<String, Integer> blockNameToID = new HashMap<String, Integer>();
+//private HashMap<Block, Integer> blockToID = new HashMap<Block, Integer>();
+//private HashMap<Integer, String> itemIDToName = new HashMap<Integer, String>();
+//private HashMap<Integer, Item> itemIDToItem = new HashMap<Integer, Item>();
+//private HashMap<String, Item> itemNameToItem = new HashMap<String, Item>();
+//private HashMap<String, Integer> itemNameToID = new HashMap<String, Integer>();
+//private HashMap<Item, Integer> itemToID = new HashMap<Item, Integer>();
+//private HashMap<Item, String> itemToName = new HashMap<Item, String>();
 
-private HashMap<Integer, String> itemIDToName = new HashMap<Integer, String>();
-private HashMap<Integer, Item> itemIDToItem = new HashMap<Integer, Item>();
-private HashMap<String, Item> itemNameToItem = new HashMap<String, Item>();
-private HashMap<String, Integer> itemNameToID = new HashMap<String, Integer>();
-private HashMap<Item, Integer> itemToID = new HashMap<Item, Integer>();
-private HashMap<Item, String> itemToName = new HashMap<Item, String>();
 
 private HashMap<Block, BlockInfo> blockInfoMap = new HashMap<Block, BlockInfo>();
 
@@ -57,7 +57,6 @@ public static BlockDataManager instance(){return instance;}
 public void load()
   {
   loadBlockNamesAndIDs(StringTools.getResourceLines(AWCoreStatics.resourcePath+"block_name_id.csv"));
-  loadItemNamesAndIDs(StringTools.getResourceLines(AWCoreStatics.resourcePath+"item_name_id.csv"));
   loadBlockRotations(StringTools.getResourceLines(AWCoreStatics.resourcePath+"block_rotations.csv"));
   loadBlockPriorities(StringTools.getResourceLines(AWCoreStatics.resourcePath+"block_priorities.csv"));
   loadBlockItems(StringTools.getResourceLines(AWCoreStatics.resourcePath+"block_items.csv"));
@@ -98,11 +97,7 @@ private void loadBlockNamesAndIDs(List<String> lines)
       AWLog.logError("ERROR parsing block name from name mapping: "+name+" id: "+id+" found: "+block);
       continue;
       }
-    blockIDToBlock.put(id, block);
-    blockIDToName.put(id, name);
     blockNameToBlock.put(name, block);
-    blockNameToID.put(name, id);
-    blockToID.put(block, id);
     blockToName.put(block, name);
     }
   }
@@ -196,14 +191,14 @@ private void loadBlockItems(List<String> lines)
       }
     else
       {
-      item = itemNameToItem.get(itemName);   
+      item = (Item)Item.itemRegistry.getObject("minecraft:"+itemName);   
       if(item!=null)
         {
         info.metaStacks[blockMeta] = new ItemStack(item, itemQuantity, itemDamage);
         }
       else
         {
-        block2 = blockNameToBlock.get(itemName);
+        block2 = blockNameToBlock.get("minecraft:"+itemName);
         info.metaStacks[blockMeta] = new ItemStack(block2, itemQuantity, itemDamage);
         }
       }
@@ -234,30 +229,6 @@ private void loadBlockPriorities(List<String> lines)
       blockInfoMap.put(block, info);   
       }
     info.buildPriority = (byte)priority;
-    }
-  }
-
-private void loadItemNamesAndIDs(List<String> lines)
-  {
-  String[] bits;
-  
-  Item item;
-  String name;
-  int id;
-  
-  for(String line : lines)
-    {
-    bits = line.split(",",-1);
-    name = bits[0];
-    id = StringTools.safeParseInt(bits[1]);
-    item = Item.getItemById(id);
-    
-    itemIDToItem.put(id, item);
-    itemIDToName.put(id, name);
-    itemNameToID.put(name, id);
-    itemNameToItem.put(name, item);
-    itemToID.put(item, id);
-    itemToName.put(item, name);    
     }
   }
 
@@ -302,45 +273,19 @@ public int getPriorityForBlock(Block block)
   }
 
 /**
- * get the Block for the input 1.6 block-id
- * @param id
- * @return
- */
-public Block getBlockForID(int id)
-  {
-  if(blockIDToBlock.containsKey(id))
-    {
-    return blockIDToBlock.get(id);
-    }
-  return Blocks.air;
-  }
-
-/**
- * get the 1.6 ID for the input Block
- * @param item
- * @return
- */
-public int getIDForBlock(Block block)
-  {
-  if(blockToID.containsKey(block))
-    {
-    return blockToID.get(block);
-    }
-  return 0;
-  }
-
-/**
  * get the 1.7 name for the input Block
  * @param item
  * @return
  */
 public String getNameForBlock(Block block)
   {
-  if(blockToName.containsKey(block))
+  String name = Block.blockRegistry.getNameForObject(block);
+  if(name==null)
     {
-    return blockToName.get(block);
+    name = blockToName.get(block);
+    if(name==null){throw new RuntimeException("Could not locate block name for: "+block.getUnlocalizedName());}
     }
-  return Block.blockRegistry.getNameForObject(block);
+  return name;
   }
 
 /**
@@ -350,128 +295,20 @@ public String getNameForBlock(Block block)
  */
 public Block getBlockForName(String name)
   {
-  if(blockNameToBlock.containsKey(name))
-    {
-    return blockNameToBlock.get(name);
-    }
-  else if(blockUnlocalizedNameToBlock.containsKey(name))
-    {
-    return blockUnlocalizedNameToBlock.get(name);
-    }
   Block b = (Block) Block.blockRegistry.getObject(name);
-  return b==null ? Blocks.air : b;
-  }
-
-/**
- * get the 1.7 name for the 1.6 id
- * @param id
- * @return
- */
-public String getNameBlockForID(int id)
-  {
-  if(blockIDToName.containsKey(id))
+  if(b==null)
     {
-    return blockIDToName.get(id);
+    if(blockNameToBlock.containsKey(name))
+      {
+      return blockNameToBlock.get(name);
+      }
+    else if(blockUnlocalizedNameToBlock.containsKey(name))
+      {
+      return blockUnlocalizedNameToBlock.get(name);
+      }
+    return Blocks.air;
     }
-  return null;
-  }
-
-/**
- * get the 1.6 ID for the 1.7 name
- * @param name
- * @return
- */
-public int getIDForBlockName(String name)
-  {
-  if(blockNameToID.containsKey(name))
-    {
-    return blockNameToID.get(name);
-    }
-  return 0;
-  }
-
-/**
- * get the Item for the input 1.6 item-id
- * @param id
- * @return
- */
-public Item getItemForID(int id)
-  {
-  if(itemIDToItem.containsKey(id))
-    {
-    return itemIDToItem.get(id);
-    }
-  return null;
-  }
-
-/**
- * get the 1.6 ID for the input Item
- * @param item
- * @return
- */
-public int getIDForItem(Item item)
-  {
-  if(itemToID.containsKey(item))
-    {
-    return itemToID.get(item);        
-    }
-  return 0;
-  }
-
-/**
- * get the 1.7 name for the input Item
- * @param item
- * @return
- */
-public String getNameForItem(Item item)
-  {
-  if(itemToName.containsKey(item))
-    {
-    return itemToName.get(item);
-    }
-  return null;
-  }
-
-/**
- * get the Item for the 1.7 name
- * @param name
- * @return
- */
-public Item getItemForName(String name)
-  {
-  if(itemNameToItem.containsKey(name))
-    {
-    return itemNameToItem.get(name);
-    }
-  return null;
-  }
-
-/**
- * get the 1.7 name for the 1.6 id
- * @param id
- * @return
- */
-public String getNameItemForID(int id)
-  {
-  if(itemIDToName.containsKey(id))
-    {
-    return itemIDToName.get(id);
-    }
-  return null;
-  }
-
-/**
- * get the 1.6 ID for the 1.7 name
- * @param name
- * @return
- */
-public int getIDForItemName(String name)
-  {
-  if(itemNameToID.containsKey(name))
-    {
-    return itemNameToID.get(name);
-    }
-  return 0;  
+  return b;  
   }
 
 /**
