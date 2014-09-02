@@ -102,7 +102,7 @@ protected void forceTicketChunks(Ticket tk)
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  return false;
+  return true;
   }
 
 @Override

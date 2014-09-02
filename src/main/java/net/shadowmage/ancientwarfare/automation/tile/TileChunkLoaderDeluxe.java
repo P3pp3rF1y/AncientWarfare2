@@ -35,7 +35,7 @@ public boolean onBlockClicked(EntityPlayer player)
     {
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CHUNK_LOADER_DELUXE, xCoord, yCoord, zCoord);
     }
-  return false;
+  return true;
   }
 
 public void addViewer(ContainerChunkLoaderDeluxe viewer){viewers.add(viewer);}
