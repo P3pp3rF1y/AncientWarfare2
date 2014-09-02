@@ -70,12 +70,10 @@ public void load()
     blockUnlocalizedNameToBlock.put(block.getUnlocalizedName(), block);
     }
   
-  //patches for borked 1.6 names
-  blockUnlocalizedNameToBlock.put("brick", Blocks.brick_block);
   }
 
 /**
- * for 1.6, will need to rewrite to load from Block.blocksList[] by block-ID read from file
+ * loads OLD (1.6) block names from file -- used to enable loading of older templates
  * @param lines
  */
 private void loadBlockNamesAndIDs(List<String> lines)
