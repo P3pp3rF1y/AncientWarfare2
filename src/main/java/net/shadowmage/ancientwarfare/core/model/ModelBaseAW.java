@@ -37,6 +37,8 @@ int textureHeight=256;
 HashMap<String, ModelPiece> pieces = new HashMap<String, ModelPiece>();
 private List<ModelPiece> basePieces = new ArrayList<ModelPiece>();
 
+public int iterationNum;
+
 public void renderModel()
   {
   for(ModelPiece piece : this.getBasePieces())
@@ -47,9 +49,10 @@ public void renderModel()
 
 public void renderForSelection()
   {
+  iterationNum = 0;
   for(ModelPiece piece : this.getBasePieces())
     {
-    piece.renderForSelection(textureWidth, textureHeight);
+    piece.renderForSelection(textureWidth, textureHeight, this);
     }
   }
 
@@ -194,9 +197,10 @@ public List<ModelPiece> getBasePieces()
 public Primitive getPrimitive(int num)
   {
   Primitive prim;
+  this.iterationNum = 0;
   for(ModelPiece p : basePieces)
     {
-    prim = p.getPickedPrimitive(num);
+    prim = p.getPickedPrimitive(num, this);
     if(prim!=null){return prim;}
     }
   return null;

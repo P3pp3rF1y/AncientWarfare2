@@ -28,18 +28,15 @@ import org.lwjgl.opengl.GL11;
 public abstract class Primitive
 {
 
-private static int nextPrimitiveNumber=0;
 private float tx;//texture offsets, in texture space (0->1)
 private float ty;
 float x, y, z;//origin of this primitive, relative to parent origin and orientation
 float rx, ry, rz;//rotation of this primitive, relative to parent orientation
-int primitiveNumber = 0;
 public ModelPiece parent;
 
 public Primitive(ModelPiece parent)
   {
   this.parent = parent;
-  this.primitiveNumber = nextPrimitiveNumber++;
   }
 
 public final void render(float tw, float th)

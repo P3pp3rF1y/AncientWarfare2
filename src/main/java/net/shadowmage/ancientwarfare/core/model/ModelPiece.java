@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 import org.lwjgl.opengl.GL11;
@@ -256,7 +257,7 @@ public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> h
   GL11.glPopMatrix();
   }
 
-public void renderForSelection(float tw, float th)
+public void renderForSelection(float tw, float th, ModelBaseAW model)
   {
   GL11.glPushMatrix();
   if(x!=0 || y!=0 || z!=0)
@@ -269,19 +270,23 @@ public void renderForSelection(float tw, float th)
  
   for(Primitive primitive : this.primitives)
     {
-    byte r, g, b;
-    r = (byte)((primitive.primitiveNumber >> 16) & 0xff);
-    g = (byte)((primitive.primitiveNumber >> 8 ) & 0xff);
-    b = (byte)((primitive.primitiveNumber >> 0 ) & 0xff);
-    GL11.glColor3b(r, g, b); 
+    int r, g, b;
+    r = ((model.iterationNum >> 16) & 0xff);
+    g = ((model.iterationNum >> 8 ) & 0xff);
+    b = ((model.iterationNum >> 0 ) & 0xff);
+    
+    AWLog.logDebug("rendering for selection: "+model.iterationNum+" :: "+r+","+g+","+b);
+    GL11.glColor3b((byte)r, (byte)g, (byte)b);
+
     GL11.glPushMatrix();  
     primitive.render(tw, th);
     GL11.glPopMatrix();
+    model.iterationNum++;
     }
        
   for(ModelPiece child : this.children)
     {
-    child.renderForSelection(tw, th);
+    child.renderForSelection(tw, th, model);
     }
   GL11.glPopMatrix();
   }
@@ -317,16 +322,17 @@ public void addPieceLines(ArrayList<String> lines)
     }
   }
 
-public Primitive getPickedPrimitive(int num)
+public Primitive getPickedPrimitive(int num, ModelBaseAW model)
   {   
   for(Primitive p : primitives)
     {
-    if(p.primitiveNumber==num){return p;}
+    if(model.iterationNum==num){return p;}
+    model.iterationNum++;
     }
   Primitive p;
   for(ModelPiece mp : children)
     {
-    p = mp.getPickedPrimitive(num);
+    p = mp.getPickedPrimitive(num, model);
     if(p!=null){return p;}
     }
   return null;
@@ -352,6 +358,15 @@ protected void renderPrimitives(float tw, float th)
   else
     {
     GL11.glCallList(displayList);
+    }
+  }
+
+@Override
+protected void finalize() throws Throwable
+  {
+  if(displayList>=0)
+    {
+    GL11.glDeleteLists(displayList, 1);
     }
   }
 

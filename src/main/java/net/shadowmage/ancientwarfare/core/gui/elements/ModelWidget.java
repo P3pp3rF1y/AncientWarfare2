@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -380,18 +381,20 @@ private void doSelection()
   byte[] pixelColorsb = new byte[3];
   ByteBuffer pixelColors = ByteBuffer.allocateDirect(3);
   GL11.glReadPixels(posX, posY, 1, 1, GL11.GL_RGB, GL11.GL_BYTE, pixelColors);
-
+  
   for(int i = 0; i < 3 ; i++)
     {
     pixelColorsb[i] = pixelColors.get(i);
     }
   
-  int r = pixelColorsb[0];
-  int g = pixelColorsb[1];
-  int b = pixelColorsb[2];
+  int r = pixelColorsb[0] &255;
+  int g = pixelColorsb[1] &255;
+  int b = pixelColorsb[2] &255;
 
   GL11.glEnable(GL11.GL_TEXTURE_2D);
   int color = (r<<16) | (g<<8) | b;
+  
+  AWLog.logDebug("picked color: "+color+" rgb: "+r+","+g+","+b);
   
   GL11.glClearColor(.2f, .2f, .2f, 1.f);
   GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
