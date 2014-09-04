@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
@@ -32,7 +33,7 @@ public TorqueMJBattery(ITorqueTile tile, IOMode mode, ForgeDirection dir)
 @Override
 public double getEnergyRequested()
   {
-  return 0;
+  return tile.getMaxEnergy()-tile.getEnergyStored();
   }
 
 @Override
@@ -44,6 +45,7 @@ public double addEnergy(double mj)
 @Override
 public double addEnergy(double mj, boolean ignoreCycleLimit)
   {
+  AWLog.logDebug("bc add energy...."+mj);
   /**
    * also, NOOP the ignoreCycleLimit -- theres fucking limits for a goddamn reason.
    * 
@@ -127,6 +129,7 @@ public boolean canReceive()
 @Override
 public IBatteryObject getBatteryObject(String kind, ITorqueTile tile, ForgeDirection dir)
   {
+//  AWLog.logDebug("creating battery object for: "+tile+" of kind: "+kind+" for direction: "+dir);
   boolean send = false, recieve = false;
   if(tile instanceof ITorqueReceiver){recieve = ((ITorqueReceiver) tile).canInput(dir);}
   if(tile instanceof ITorqueGenerator){send = ((ITorqueGenerator) tile).canOutput(dir);}
