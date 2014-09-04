@@ -6,19 +6,25 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class TileTorqueGeneratorHandCranked extends TileTorqueGeneratorBase implements IWorkSite, IOwnable
 {
 
 String ownerName = "";
+
+public TileTorqueGeneratorHandCranked()
+  {
+  energyDrainFactor = AWAutomationStatics.low_drain_factor;
+  maxEnergy = AWAutomationStatics.med_conduit_energy_max;
+  maxOutput = AWAutomationStatics.low_transfer_max;  
+  }
 
 @Override
 public void onBlockBroken()
@@ -74,14 +80,14 @@ public boolean hasWork()
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output_factor;
   if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
   }
 
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
-  storedEnergy+=AWCoreStatics.energyPerWorkUnit;
+  storedEnergy += AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output_factor;
   if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
   }
 

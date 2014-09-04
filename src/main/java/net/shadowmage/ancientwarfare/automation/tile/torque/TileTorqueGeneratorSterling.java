@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
@@ -18,16 +19,23 @@ InventoryBasic fuelInventory = new InventoryBasic(1)
     {
     return TileEntityFurnace.getItemBurnTime(var2)>0;
     }
-  };  
-
+  }; 
+  
 int burnTime = 0;
 int burnTimeBase = 0;
+
+public TileTorqueGeneratorSterling()
+  {
+  energyDrainFactor = AWAutomationStatics.low_drain_factor;
+  maxEnergy = AWAutomationStatics.med_conduit_energy_max;
+  maxOutput = AWAutomationStatics.low_transfer_max;  
+  }
 
 @Override
 public void updateEntity()
   {  
   super.updateEntity();
-  if(worldObj.isRemote)
+  if(worldObj.isRemote && AWAutomationStatics.enable_energy_client_updates)
     {
     clientNetworkUpdate();
     prevRotation = rotation;
@@ -51,7 +59,7 @@ public void updateEntity()
     }
   else if(burnTime>0)
     {
-    storedEnergy++;
+    storedEnergy += 1.d * AWAutomationStatics.sterling_generator_output_factor;
     storedEnergy=storedEnergy>maxEnergy? maxEnergy : storedEnergy;
     burnTime--;
     }  

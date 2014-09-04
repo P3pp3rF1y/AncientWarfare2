@@ -43,6 +43,7 @@ public double prevRotation;
 
 protected void serverNetworkUpdate()
   {
+  if(!AWAutomationStatics.enable_energy_network_updates){return;}
   networkUpdateTicks--;
   if(networkUpdateTicks<=0 && clientEnergy!=(int)storedEnergy)
     {
@@ -54,11 +55,12 @@ protected void serverNetworkUpdate()
 
 protected void clientNetworkUpdate()
   {
+  if(!AWAutomationStatics.enable_energy_client_updates){return;}
   if(networkUpdateTicks>0)
     {
     int diff = clientDestEnergy-clientEnergy;
     clientEnergy += diff/networkUpdateTicks;    
-    AWLog.logDebug("updating client energy: "+clientEnergy);
+//    AWLog.logDebug("updating client energy: "+clientEnergy);
     networkUpdateTicks--;
     }
   }

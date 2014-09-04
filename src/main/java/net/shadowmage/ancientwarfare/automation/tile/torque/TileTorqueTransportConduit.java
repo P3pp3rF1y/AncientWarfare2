@@ -6,6 +6,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
@@ -14,6 +15,14 @@ public class TileTorqueTransportConduit extends TileTorqueTransportBase
 {
 
 boolean[] connections;
+
+public TileTorqueTransportConduit()
+  {
+  energyDrainFactor = AWAutomationStatics.low_drain_factor;
+  maxEnergy = AWAutomationStatics.low_conduit_energy_max;
+  maxOutput = AWAutomationStatics.low_transfer_max;
+  maxInput = AWAutomationStatics.low_transfer_max;
+  }
 
 @Override
 protected void buildNeighborCache()

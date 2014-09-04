@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.automation.config;
 
 import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 
 public class AWAutomationStatics extends ModConfiguration
@@ -48,6 +49,29 @@ public static int mailboxTimeForDimension = 1200;
  */
 public static int energyMinNetworkUpdateFrequency = 5;//default 4 updates/sec max
 
+public static boolean enable_energy_network_updates = true;
+public static boolean enable_energy_client_updates = true;
+
+public static double low_drain_factor = 1.d;
+public static double med_drain_factor = 0.4d;
+public static double high_drain_factor = 0.1d;
+
+public static double low_transfer_max = 3.d;
+public static double med_transfer_max = 50.d;
+public static double high_transfer_max = 1000.d;
+
+public static double low_conduit_energy_max = 10.d;
+public static double med_conduit_energy_max = 100.d;
+public static double high_conduit_energy_max = 1000.f;
+
+public static double low_storage_energy_max = 1600.d;
+public static double med_storage_energy_max = 16000.d;
+public static double high_storage_energy_max = 160000.d;
+
+public static double sterling_generator_output_factor = 1.d;
+public static double waterwheel_generator_output_factor = 1.d;
+public static double hand_cranked_generator_output_factor = 1.d;
+
 /**
  * @param config
  */
@@ -59,12 +83,107 @@ public AWAutomationStatics(Configuration config)
 @Override
 public void initializeCategories()
   {
+  config.addCustomCategoryComment(AWCoreStatics.generalOptions, "General Options\n" +
+      "Affect both client and server.  These configs must match for client and server, or\n" +
+      "strange and probably BAD things WILL happen.");
   
+  config.addCustomCategoryComment(AWCoreStatics.serverOptions, "Server Options\n" +
+      "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
+      "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
+  
+  config.addCustomCategoryComment(AWCoreStatics.clientOptions, "Client Options\n" +
+      "Affect only client-side operations.  Many of these options can be set from the in-game Options GUI.\n" +
+      "Server admins can ignore these settings.");
   }
 
 @Override
 public void initializeValues()
   {
+  enable_energy_client_updates = config.get(AWCoreStatics.clientOptions, "enable_client_energy_animations", enable_energy_client_updates, "Enable client-side animation of power tiles.\n" +
+  		"Default = "+enable_energy_client_updates+"\n" +
+  		"Disabling may improve rendering performance on low-end machines").getBoolean(enable_energy_client_updates);
+  
+  energyMinNetworkUpdateFrequency = config.get(AWCoreStatics.generalOptions, "energy_network_update_frequency", energyMinNetworkUpdateFrequency, "Alter the frequency at which network updates are" +
+  		" sent to clients.\n" +
+  		"Default= "+energyMinNetworkUpdateFrequency+"\n" +
+  		"Lower values send data more often.  Higher values send less often.  0 or negative values send every tick.").getInt(energyMinNetworkUpdateFrequency);
+  
+  enable_energy_network_updates = config.get(AWCoreStatics.serverOptions, "enable_server_energy_network", enable_energy_network_updates, "Enable/Disable Sending network updates for energy tiles.\n" +
+  		"Default = "+enable_energy_network_updates+"\n" +
+  		"Disabling may improve server network performance on congested/low-bandwith deployments.").getBoolean(enable_energy_network_updates);
+  
+  mailboxTimePerBlock = config.get(AWCoreStatics.serverOptions, "mailbox_travel_time_per_block", mailboxTimePerBlock, "Ticks per block to be traveled for teleporting items.\n" +
+  		"Default= "+mailboxTimePerBlock+"\n" +
+  		"Higher values increase travel time for items.  Lower values reduce travel time.  Zero or negative values result in instant transfer.").getInt(mailboxTimePerBlock);
+  
+  mailboxTimeForDimension = config.get(AWCoreStatics.serverOptions, "mailbox_travel_time_per_dimension", mailboxTimeForDimension, "Ticks for dimensional travel for teleporting items.\n" +
+      "Default= "+mailboxTimeForDimension+"\n" +
+      "Higher values increase travel time for items.  Lower values reduce travel time.  Zero or negative values result in instant transfer.").getInt(mailboxTimeForDimension);
+  
+  low_drain_factor = config.get(AWCoreStatics.serverOptions, "low_quality_tile_energy_drain", low_drain_factor, "Factor applied to base drain algorithm to determine energy loss for low-quality torque tiles.\n" +
+  		"Default = "+low_drain_factor+"\n"+
+      "Higher values result in more energy drain.  Lower values result in less.  Negative values will result in a feedback loop of free/infinite power.").getDouble(low_drain_factor);
+  
+  med_drain_factor = config.get(AWCoreStatics.serverOptions, "med_quality_tile_energy_drain", med_drain_factor, "Factor applied to base drain algorithm to determine energy loss for medium-quality torque tiles.\n" +
+      "Default = "+med_drain_factor+"\n"+
+      "Higher values result in more energy drain.  Lower values result in less.  Negative values will result in a feedback loop of free/infinite power.").getDouble(med_drain_factor);
+
+  high_drain_factor = config.get(AWCoreStatics.serverOptions, "high_quality_tile_energy_drain", high_drain_factor, "Factor applied to base drain algorithm to determine energy loss for high-quality torque tiles.\n" +
+      "Default = "+high_drain_factor+"\n"+
+      "Higher values result in more energy drain.  Lower values result in less.  Negative values will result in a feedback loop of free/infinite power.").getDouble(high_drain_factor);
+  
+  
+  low_transfer_max = config.get(AWCoreStatics.serverOptions, "low_quality_tile_energy_transfer", low_transfer_max, "How much energy may be output per tick by low-quality torque tiles.\n" +
+      "Default = "+low_transfer_max+"\n"+
+      "Higher values result in more thoroughput of energy network.  Lower values result in less.  Negative values will cause energy transfer to cease functioning.").getDouble(low_transfer_max);
+  
+  med_transfer_max = config.get(AWCoreStatics.serverOptions, "med_quality_tile_energy_transfer", med_transfer_max, "How much energy may be output per tick by medium-quality torque tiles.\n" +
+      "Default = "+med_transfer_max+"\n"+
+      "Higher values result in more thoroughput of energy network.  Lower values result in less.  Negative values will cause energy transfer to cease functioning.").getDouble(med_transfer_max);
+  
+  high_transfer_max = config.get(AWCoreStatics.serverOptions, "high_quality_tile_energy_transfer", high_transfer_max, "How much energy may be output per tick by high-quality torque tiles.\n" +
+      "Default = "+high_transfer_max+"\n"+
+      "Higher values result in more thoroughput of energy network.  Lower values result in less.  Negative values will cause energy transfer to cease functioning.").getDouble(high_transfer_max);
+  
+  
+  low_conduit_energy_max = config.get(AWCoreStatics.serverOptions, "low_quality_conduit_energy_max", low_conduit_energy_max, "How much energy may be stored in low-quality energy transport tiles.\n" +
+      "Default = "+low_conduit_energy_max+"\n"+
+      "Directly sets the amount of torque/MJ that a trasport conduit may store internally.").getDouble(low_conduit_energy_max);
+  
+  med_conduit_energy_max = config.get(AWCoreStatics.serverOptions, "med_quality_conduit_energy_max", med_conduit_energy_max, "How much energy may be stored in medium-quality energy transport tiles.\n" +
+      "Default = "+med_conduit_energy_max+"\n"+
+      "Directly sets the amount of torque/MJ that a trasport conduit may store internally.").getDouble(med_conduit_energy_max);
+  
+  high_conduit_energy_max = config.get(AWCoreStatics.serverOptions, "med_quality_conduit_energy_max", high_conduit_energy_max, "How much energy may be stored in high-quality energy transport tiles.\n" +
+      "Default = "+high_conduit_energy_max+"\n"+
+      "Directly sets the amount of torque/MJ that a trasport conduit may store internally.").getDouble(high_conduit_energy_max);
+  
+  
+  low_storage_energy_max = config.get(AWCoreStatics.serverOptions, "low_quality_storage_energy_max", low_storage_energy_max, "How much energy may be stored in low-quality energy storage tiles.\n" +
+      "Default = "+low_storage_energy_max+"\n"+
+      "Directly sets the amount of torque/MJ that a storage tile may store internally.").getDouble(low_storage_energy_max);
+  
+  med_storage_energy_max = config.get(AWCoreStatics.serverOptions, "med_quality_storage_energy_max", med_storage_energy_max, "How much energy may be stored in medium-quality energy storage tiles.\n" +
+      "Default = "+med_storage_energy_max+"\n"+
+      "Directly sets the amount of torque/MJ that a storage tile may store internally.").getDouble(med_storage_energy_max);
+  
+  high_storage_energy_max = config.get(AWCoreStatics.serverOptions, "high_quality_storage_energy_max", high_storage_energy_max, "How much energy may be stored in high-quality energy storage tiles.\n" +
+      "Default = "+high_storage_energy_max+"\n"+
+      "Directly sets the amount of torque/MJ that a storage tile may store internally.").getDouble(high_storage_energy_max);
+  
+  
+  sterling_generator_output_factor = config.get(AWCoreStatics.serverOptions, "sterling_generator_output_factor", sterling_generator_output_factor, "Factor applied to energy output from sterling generator.\n" +
+      "Default = "+sterling_generator_output_factor+"\n"+
+      "Lower values reduce output, higher values increase output.  Zero or negative values will result in no energy output").getDouble(sterling_generator_output_factor);
+  
+  waterwheel_generator_output_factor = config.get(AWCoreStatics.serverOptions, "waterwheel_generator_output_factor", waterwheel_generator_output_factor, "Factor applied to energy output from waterwheel generator.\n" +
+      "Default = "+waterwheel_generator_output_factor+"\n"+
+      "Lower values reduce output, higher values increase output.  Zero or negative values will result in no energy output").getDouble(waterwheel_generator_output_factor);
+  
+  hand_cranked_generator_output_factor = config.get(AWCoreStatics.serverOptions, "hand_cranked_generator_output_factor", hand_cranked_generator_output_factor, "Factor applied to energy output from hand-cranked generator.\n" +
+      "Default = "+hand_cranked_generator_output_factor+"\n"+
+      "Lower values reduce output, higher values increase output.  Zero or negative values will result in no energy output").getDouble(hand_cranked_generator_output_factor);
+  
   this.config.save();
   }
 

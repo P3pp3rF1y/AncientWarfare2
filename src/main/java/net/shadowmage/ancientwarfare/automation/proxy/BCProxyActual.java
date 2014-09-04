@@ -45,7 +45,6 @@ public double addEnergy(double mj)
 @Override
 public double addEnergy(double mj, boolean ignoreCycleLimit)
   {
-  AWLog.logDebug("bc add energy...."+mj);
   /**
    * also, NOOP the ignoreCycleLimit -- theres fucking limits for a goddamn reason.
    * 

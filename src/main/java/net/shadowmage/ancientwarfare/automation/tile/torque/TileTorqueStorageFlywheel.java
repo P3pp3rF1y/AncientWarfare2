@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 
 
@@ -13,6 +14,13 @@ public class TileTorqueStorageFlywheel extends TileTorqueStorageBase
 
 private List<TileTorqueStorageFlywheel> wheelsToBalance = new ArrayList<TileTorqueStorageFlywheel>();
 
+public TileTorqueStorageFlywheel()
+  {
+  energyDrainFactor = AWAutomationStatics.low_drain_factor;
+  maxEnergy = AWAutomationStatics.low_storage_energy_max;
+  maxOutput = AWAutomationStatics.low_transfer_max;
+  maxInput = AWAutomationStatics.low_transfer_max;
+  }
 
 @Override
 public void updateEntity()

@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
 public class TileTorqueGeneratorWaterwheel extends TileTorqueGeneratorBase implements IInteractableTile
@@ -16,6 +17,13 @@ public float rotationAngle;
 public float rotationSpeed;
 private int updateTick;
 protected TileEntity[] neighborTileCache = null;
+
+public TileTorqueGeneratorWaterwheel()
+  {
+  energyDrainFactor = AWAutomationStatics.low_drain_factor;
+  maxEnergy = AWAutomationStatics.low_conduit_energy_max;
+  maxOutput = AWAutomationStatics.low_transfer_max;  
+  }
 
 @Override
 public void updateEntity()
@@ -83,7 +91,7 @@ public void updateEntity()
       if(rightY!=midY){diff+=1.f;}
 //      AWLog.logDebug("total diff: "+diff + "flowsLeft: "+flowsLeft);
       
-      storedEnergy+=diff;
+      storedEnergy += diff * AWAutomationStatics.waterwheel_generator_output_factor;
       if(storedEnergy>maxEnergy){storedEnergy=maxEnergy;}
       
       int speed = (int)(diff*1000.f);
