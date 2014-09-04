@@ -48,6 +48,10 @@ public boolean[] getConnections()
 
 private int getConnectionsInt()
   {
+  if(connections==null)
+    {
+    buildNeighborCache();
+    }  
   int con = 0;
   int c;
   for(int i = 0; i < 6; i++)
@@ -55,13 +59,13 @@ private int getConnectionsInt()
     c = connections[i]==true? 1: 0;
     con = con + (c<<i);
     }  
-  String out = "";
-  for(boolean val : connections)
-    {
-    out = out+val+",";
-    }
-  out = out.substring(0, out.length()-1);
-  AWLog.logDebug("connections out: "+out);
+//  String out = "";
+//  for(boolean val : connections)
+//    {
+//    out = out+val+",";
+//    }
+//  out = out.substring(0, out.length()-1);
+//  AWLog.logDebug("connections out: "+out);
   return con;
   }
 
