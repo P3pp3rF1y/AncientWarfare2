@@ -348,10 +348,8 @@ public AxisAlignedBB getRenderBoundingBox()
   return super.getRenderBoundingBox();
   }
 
-@Override
-public Packet getDescriptionPacket()
+protected NBTTagCompound getDescriptionPacketTag(NBTTagCompound tag)
   {
-  NBTTagCompound tag = new NBTTagCompound();
   int[] ugs = new int[upgrades.size()];
   int i = 0;
   for(WorksiteUpgrade ug : upgrades)
@@ -361,6 +359,13 @@ public Packet getDescriptionPacket()
     }
   tag.setIntArray("upgrades", ugs);
   tag.setInteger("orientation", orientation.ordinal());
+  return tag;
+  }
+
+@Override
+public final Packet getDescriptionPacket()
+  {
+  NBTTagCompound tag = getDescriptionPacketTag(new NBTTagCompound()); 
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
   }
 
