@@ -56,10 +56,10 @@ private ResourceLocation backgroundTexture;
 
 protected EntityPlayer player;
 
-protected GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, String backgroundTexture)
+protected GuiContainerBase(ContainerBase container, int xSize, int ySize, String backgroundTexture)
   {
-  super(par1Container);
-  par1Container.setGui(this);
+  super(container);
+  container.setGui(this);
   this.xSize = xSize;
   this.ySize = ySize;
   if(backgroundTexture!=null)
@@ -67,7 +67,7 @@ protected GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, St
     this.backgroundTextureName = backgroundTexture;
     this.backgroundTexture = new ResourceLocation("ancientwarfare", "textures/gui/"+backgroundTextureName);    
     }
-  this.player = ((ContainerBase)par1Container).player;
+  this.player = ((ContainerBase)container).player;
   }
 
 public GuiContainerBase(ContainerBase container)

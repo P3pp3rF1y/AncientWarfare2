@@ -11,13 +11,13 @@ public class ItemTradeOrder extends ItemOrders
 public ItemTradeOrder(String name)
   {
   super(name);
-  // TODO Auto-generated constructor stub
+  this.setTextureName("ancientwarfare:npc/combat_order");
   }
 
 @Override
 public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  return key==ItemKey.KEY_0 || key==ItemKey.KEY_1;
+  return key==ItemKey.KEY_0 || key==ItemKey.KEY_1 || key==ItemKey.KEY_2;
   }
 
 @Override
@@ -29,8 +29,18 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
 @Override
 public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  // TODO Auto-generated method stub
-
+  if(key==ItemKey.KEY_0)
+    {
+    //TODO add trader route point
+    }
+  else if(key==ItemKey.KEY_1)
+    {
+    //TODO set restock withdraw point and side
+    }
+  else if(key==ItemKey.KEY_2)
+    {
+    //TODO set restock deposit point and side
+    }
   }
 
 }
