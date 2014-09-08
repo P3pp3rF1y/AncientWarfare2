@@ -14,6 +14,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
@@ -23,6 +24,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
+import net.shadowmage.ancientwarfare.nei_plugin.AncientWarfareNEIPlugin;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -151,28 +153,27 @@ public void handleKeyboardInput()
     element.handleKeyboardInput(evt);
     }
   
-  if(!widgetSelected && state)
+  if(!widgetSelected)
+    {  
+    super.handleKeyboardInput();    
+    }
+  }
+
+@Override
+protected void keyTyped(char ch, int key)
+  {  
+  if(!widgetSelected)
     {
-    if(key == 87)
+    boolean isExitCommand = key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode();  
+    if(isExitCommand)
       {
-      this.mc.toggleFullscreen();
-      return;
+      if(shouldCloseOnVanillaKeys){closeGui();}
       }
-    boolean sendTyped = true;
-    if((key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()))
+    else
       {
-      sendTyped = false;
-      if(shouldCloseOnVanillaKeys)
-        {
-        closeGui();
-        }
+      super.keyTyped(ch, key);      
       }
-    if(sendTyped)
-      {
-      super.handleKeyboardInput();
-//      this.keyTyped(ch, key);      
-      }
-    }    
+    }  
   }
 
 protected final void closeGui()
