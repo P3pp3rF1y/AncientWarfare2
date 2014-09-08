@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.npc.gui.GuiNpcTrade;
 import net.shadowmage.ancientwarfare.npc.gui.GuiRecruitingStation;
 import net.shadowmage.ancientwarfare.npc.gui.GuiRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiTownHallInventory;
+import net.shadowmage.ancientwarfare.npc.gui.GuiTradeOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiWorkOrder;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
@@ -50,6 +51,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_RECRUITING_STATION, GuiRecruitingStation.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_BARD, GuiBard.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_CREATIVE, GuiNpcCreativeControls.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_TRADE_ORDER, GuiTradeOrder.class);
   
   RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, new RenderNpcBase());
   
