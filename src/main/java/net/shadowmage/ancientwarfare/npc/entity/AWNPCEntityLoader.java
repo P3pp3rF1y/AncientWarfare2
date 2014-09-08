@@ -754,25 +754,25 @@ private static void addVikings()
     };
   addNpcRegistration(reg, "viking.leader", "ancientwarfare:npc/spawner_viking_leader");
   
-//  reg = new NpcFactionDeclaration(NpcVikingPriest.class, AWEntityRegistry.NPC_FACTION_VIKING_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.priest")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcVikingPriest(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "viking.priest", "ancientwarfare:npc/spawner_viking_priest");
-  
-  reg = new NpcFactionDeclaration(NpcVikingTrader.class, AWEntityRegistry.NPC_FACTION_VIKING_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.trader")
+  reg = new NpcFactionDeclaration(NpcVikingPriest.class, AWEntityRegistry.NPC_FACTION_VIKING_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.priest")
     {    
     @Override
     public Entity createEntity(World world)
       {
-      return new NpcVikingTrader(world);
+      return new NpcVikingPriest(world);
       }
     };
-  addNpcRegistration(reg, "viking.trader", "ancientwarfare:npc/spawner_viking_trader");
+  addNpcRegistration(reg, "viking.priest", "ancientwarfare:npc/spawner_viking_priest");
+  
+//  reg = new NpcFactionDeclaration(NpcVikingTrader.class, AWEntityRegistry.NPC_FACTION_VIKING_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.trader")
+//    {    
+//    @Override
+//    public Entity createEntity(World world)
+//      {
+//      return new NpcVikingTrader(world);
+//      }
+//    };
+//  addNpcRegistration(reg, "viking.trader", "ancientwarfare:npc/spawner_viking_trader");
   
   reg = new NpcFactionDeclaration(NpcVikingMountedSoldier.class, AWEntityRegistry.NPC_FACTION_VIKING_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.cavalry")
     {    
