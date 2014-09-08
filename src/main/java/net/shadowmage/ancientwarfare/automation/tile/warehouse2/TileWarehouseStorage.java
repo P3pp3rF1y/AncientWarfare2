@@ -126,7 +126,10 @@ public void setFilters(List<WarehouseStorageFilter> filters)
   old.addAll(this.filters);
   this.filters.clear();
   this.filters.addAll(filters);
-  ((TileWarehouse)this.getController()).onStorageFilterChanged(this, old, this.filters);
+  if(this.getController()!=null)
+    {
+    ((TileWarehouseBase)this.getController()).onStorageFilterChanged(this, old, this.filters);    
+    }
   updateViewers();
   }
 

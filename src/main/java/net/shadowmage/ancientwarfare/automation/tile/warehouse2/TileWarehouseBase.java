@@ -79,6 +79,7 @@ public TileWarehouseBase()
 @Override
 public void onBoundsAdjusted()
   {
+  this.max.y = min.y + 3;
   this.interfacesToEmpty.clear();
   this.interfacesToFill.clear();
   for(TileWarehouseInterface i : interfaceTiles)
@@ -667,7 +668,7 @@ public final void setBounds(BlockPosition p1, BlockPosition p2)
   {
   min = BlockTools.getMin(p1, p2);
   max = BlockTools.getMax(p1, p2);
-  AWLog.logDebug("set bounds to: "+min+" :: "+max);
+  max.y = min.y+3;
   }
 
 @Override
@@ -686,8 +687,7 @@ public final AxisAlignedBB getRenderBoundingBox()
     bb.maxZ = max.z+1 > bb.maxZ ? max.z+1 : bb.maxZ;
     return bb;
     }
-  AxisAlignedBB bb = super.getRenderBoundingBox();
-  return bb;
+  return super.getRenderBoundingBox();
   }
 
 @Override
