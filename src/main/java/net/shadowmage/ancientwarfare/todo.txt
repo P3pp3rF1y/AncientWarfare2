@@ -9,19 +9,17 @@ Licensing
 	add general license for mod
 		
 ****************************CORE MODULE TODO****************************
-* need LOTS of tooltips added to various elements in GUIs	
-* GUI - SHIFT-CLICK CODE
-* Research
-	-lots still needs resources-
+* need LOTS of tooltips added to various elements in GUIs
 * add translations for client-side options in options GUI
+* translation of warehouse interface block is...incorrect
 * adjust tooltip positioning -- it is A: under mouse, B: going offscreen to the right
 	place it below the mouse
 	if it would go offscreen to the right, adjust to the left -just- enough to not go offscreen
 	--if tooltip is too wide...erm..fix the width of it
 * clean up inconsistencies in research-book GUI between modes -- spacing / layout	
+* icon for worksite upgrade (size) needs updated to fix numbers on the texture (15->6 (regular), 9->32 & 15->64 (quarry))
 		
 ****************************STRUCTURE MODULE TODO****************************
-> investigate moving towards fully-qualified block and item names -- e.g. 'minecraft:stone' instead of 'stone'
 > add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
 > Scanner GUI needs some cleanup / make it look nice(er)
 > move structure scanner over to multi-key item interface
@@ -37,22 +35,6 @@ Licensing
 					
 ****************************AUTOMATION MODULE TODO****************************	
 * Add ore-processing worksite.  Non-bounded, single-block.  Can use tools/enchanted/chunkloader upgrades only.  Input: Ore, Output: Dusts or Ingots?
-* Re-add advanced controls for fish and animal farms (where?)
-	-- change buttons to |Inv| |Bounds| |Other| ?
-* Add upgrade-handling code to:
-	Warehouse (efficiency and bounds upgrades only)
-	Research Station
-	Auto Crafting Station? (handled via worksite-base hierarchy?
-	Construction site (w/e it is called, structure module)	
-	Ore processing center	
-* Warehouse needs to update its block lists when bounds are changed.  
-	dump blocks no longer in bounds, pickup new blocks in bounds 
-	-- perhaps should just clear entirely and re-init as if it was freshly placed (would use existing code)	
-	
-* Torque API:	
-	set power capacity / power loss / power use for all torque blocks
-	balance the power system -- input/output/use/etc.  see what kind of input/etc BC stuff normally uses as a good baseline
-	performance / caching 
 * figure out torque tile network updates
 	--rotation speed will be (powerOutput)/(maxOutpout) + (storedEnergy)/(maxEnergy)
 		--
@@ -84,7 +66,6 @@ everything
 ****************************MODEL-EDITOR MODULE TODO****************************
 * UV editor GUI needs area positions re-set when GUI size changes (gui-init)
 * when you swap a primitive parent, the old parent is still selected with the primitive (modelWidget, selection error)
-* sometimes pieces are unpickable -- this is likely related to primitive #'s / piece heirarchy
 
 *****************************************************************
 ****************************MISC INFO****************************
