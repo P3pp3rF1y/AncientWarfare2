@@ -40,6 +40,7 @@ public static final ItemWorkOrder workOrder = new ItemWorkOrder("work_order");
 public static final ItemUpkeepOrder upkeepOrder = new ItemUpkeepOrder("upkeep_order");
 public static final ItemCombatOrder combatOrder = new ItemCombatOrder("combat_order");
 public static final ItemRoutingOrder routingOrder = new ItemRoutingOrder("routing_order");
+public static final ItemTradeOrder tradeOrder = new ItemTradeOrder("trade_order");
 public static final ItemCommandBaton commandBatonWood = new ItemCommandBaton("wooden_command_baton", ToolMaterial.WOOD);
 public static final ItemCommandBaton commandBatonStone = new ItemCommandBaton("stone_command_baton", ToolMaterial.STONE);
 public static final ItemCommandBaton commandBatonIron = new ItemCommandBaton("iron_command_baton", ToolMaterial.IRON);
@@ -61,6 +62,7 @@ public static void load()
   GameRegistry.registerItem(upkeepOrder, "upkeep_order");
   GameRegistry.registerItem(combatOrder, "combat_order");
   GameRegistry.registerItem(routingOrder, "routing_order");
+  GameRegistry.registerItem(tradeOrder, "trade_order");
   GameRegistry.registerItem(commandBatonWood, "wooden_command_baton");
   GameRegistry.registerItem(commandBatonStone, "stone_command_baton");
   GameRegistry.registerItem(commandBatonIron, "iron_command_baton");
