@@ -198,7 +198,6 @@ public void recalcRequests()
       emptyRequests.add(new InterfaceEmptyRequest(i));
       }
     }
-  AWLog.logDebug("calced empty request set of: "+emptyRequests);
   
   int count;
   for(WarehouseInterfaceFilter filter : filters)
@@ -210,7 +209,6 @@ public void recalcRequests()
       fillRequests.add(new InterfaceFillRequest(filter.getFilterItem().copy(), filter.getFilterQuantity()-count));
       }
     }
-  AWLog.logDebug("calced fill request set of: "+fillRequests);
   TileWarehouseBase twb = (TileWarehouseBase)getController();
   if(twb!=null)
     {
