@@ -516,7 +516,7 @@ private void initializeDefaultSkippableBlocks()
             "minecraft:redstone_ore",
             "minecraft:emerald_ore",
             "minecraft:quartz_ore",
-            "minecraft:clay",
+            "minecraft:clay"
         };
 
   defaultSkippableBlocks = config.get(worldGenBlocks, "skippable_blocks", defaultSkippableBlocks).getStringList();
