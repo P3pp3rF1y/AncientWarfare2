@@ -552,7 +552,7 @@ protected void borderLeveling(World world, int x, int z, StructureTemplate templ
     }
   int y = bb.min.y + template.yOffset + step - 1;
   Block block = world.getBlock(x, y, z);
-  if(block!=null && block!=Blocks.air && block.getMaterial()!=Material.water && !AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block)))
+  if(block!=null && block!=Blocks.air && block.getMaterial()!=Material.water && !AWStructureStatics.skippableBlocksContains(block))
     {
     world.setBlock(x, y, z, fillBlock);
     AWLog.logDebug("filling block during leveling operation: "+x+","+y+","+z+" :: "+block);
@@ -575,7 +575,7 @@ protected void borderFill(World world, int x, int z, StructureTemplate template,
   for(int y = maxFillY; y>1; y--)
     {
     block = world.getBlock(x, y, z);
-    if(block==null || block==Blocks.air || AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block)) || block==Blocks.water || block==Blocks.flowing_water)
+    if(block==null || block==Blocks.air || AWStructureStatics.skippableBlocksContains(block) || block==Blocks.water || block==Blocks.flowing_water)
       {
       world.setBlock(x, y, z, fillBlockID);
       }

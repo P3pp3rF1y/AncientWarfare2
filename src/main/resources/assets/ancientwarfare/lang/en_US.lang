@@ -154,8 +154,8 @@ item.npc_spawner.viking.civilian.female.name=Viking Civilian Female
 
 #blocks
 #core
-tile.engineering_station.name=Engineering Station
-tile.research_station.name=Research Station
+tile.engineering_station.0.name=Engineering Station
+tile.research_station.0.name=Research Station
 #automation
 tile.civic_auto_crafting.0.name=Auto Crafting Station
 tile.civic_quarry.name=Quarry
@@ -169,8 +169,7 @@ tile.civic_warehouse.name=Warehouse Control Block
 tile.warehouse_storage.0.name=Small Warehouse Storage
 tile.warehouse_storage.1.name=Medium Warehouse Storage
 tile.warehouse_storage.2.name=Large Warehouse Storage
-tile.warehouse_input.name=Warehouse Input
-tile.warehouse_output.name=Warehouse Output
+tile.warehouse_interface.name=Warehouse Interface
 tile.warehouse_crafting_station.name=Warehouse Crafting Station
 tile.warehouse_stock_viewer.name=Warehouse Stock Viewer
 tile.mailbox.name=Mailbox

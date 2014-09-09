@@ -12,12 +12,12 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
-public class ItemBlockRotatableTile extends ItemBlock
+public class ItemBlockRotatableMetaTile extends ItemBlock
 {
 
 IRotatableBlock rotatable;
 
-public ItemBlockRotatableTile(Block block)
+public ItemBlockRotatableMetaTile(Block block)
   {
   super(block);
   if(!(block instanceof IRotatableBlock))
