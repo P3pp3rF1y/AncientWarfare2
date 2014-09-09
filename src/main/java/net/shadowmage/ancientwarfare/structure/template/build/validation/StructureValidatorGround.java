@@ -94,7 +94,7 @@ protected void borderLeveling(World world, int x, int z, StructureTemplate templ
     }
   int y = bb.min.y + template.yOffset + step - 1;
   Block block = world.getBlock(x, y, z);
-  if(block!=null && block!=Blocks.air && block!= Blocks.flowing_water && block!=Blocks.water && !AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block)))
+  if(block!=null && block!=Blocks.air && block!= Blocks.flowing_water && block!=Blocks.water && !AWStructureStatics.skippableBlocksContains(block))
     {
     world.setBlock(x, y, z, fillBlock);
     }  
@@ -113,7 +113,7 @@ protected void borderLeveling(World world, int x, int z, StructureTemplate templ
       continue;
       }
     skipCount = 0;//if we didn't skip this block, reset skipped count
-    if(AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block)))
+    if(AWStructureStatics.skippableBlocksContains(block))
       {
       world.setBlockToAir(x, y1, z);      
       }      

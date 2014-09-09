@@ -139,7 +139,7 @@ public static int getTargetY(World world, int x, int z, boolean skipWater)
     {
     block = world.getBlock(x, y, z);
     if(block==null || block==Blocks.air){continue;}
-    if(AWStructureStatics.skippableBlocksContains(BlockDataManager.instance().getNameForBlock(block))){continue;}
+    if(AWStructureStatics.skippableBlocksContains(block)){continue;}
     if(skipWater && (block==Blocks.water || block==Blocks.flowing_water)){continue;}
     return y;
     }

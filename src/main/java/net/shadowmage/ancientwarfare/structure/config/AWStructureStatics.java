@@ -29,6 +29,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
@@ -36,6 +37,7 @@ import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class AWStructureStatics extends ModConfiguration
 {
@@ -762,11 +764,9 @@ private void initializeDefaultAdditionalTargetBlocks()
     }
   }
 
-public static boolean skippableBlocksContains(String blockName)
+public static boolean skippableBlocksContains(Block block)
   {
-  String tileName = blockName.startsWith("tile.") ? blockName : "tile."+blockName;
-  String noTileName = blockName.startsWith("tile.") ? blockName.substring(5): blockName;
-  return skippableWorldGenBlocks.contains(tileName) || skippableWorldGenBlocks.contains(noTileName);
+  return block==null ? true : block==Blocks.air ? true : skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block));
   }
 
 public static Set<String> getUserDefinedTargetBlocks()
