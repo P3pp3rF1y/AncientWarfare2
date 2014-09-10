@@ -36,6 +36,7 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock
 {
 
 public String blockName;
+public Block block;
 public int meta;
 public int buildPass = 0;
 
@@ -52,6 +53,7 @@ public TemplateRuleVanillaBlocks(World world, int x, int y, int z, Block block, 
   {
   super(world, x, y, z, block, meta, turns);
   this.blockName = BlockDataManager.instance().getNameForBlock(block);
+  this.block = block;
   this.meta = BlockDataManager.instance().getRotatedMeta(block, meta, turns);
   this.buildPass = BlockDataManager.instance().getPriorityForBlock(block);
   }
@@ -64,7 +66,6 @@ public TemplateRuleVanillaBlocks()
 @Override
 public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder)
   {
-  Block block = BlockDataManager.instance().getBlockForName(blockName);
   int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);  
   builder.placeBlock(x, y, z, block, localMeta, buildPass);
   }
@@ -72,13 +73,12 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
 @Override
 public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z)
   {
-  return block!=null && blockName.equals(BlockDataManager.instance().getNameForBlock(block)) && BlockDataManager.instance().getRotatedMeta(block, meta, turns) == this.meta;
+  return block!=null && block==this.block && BlockDataManager.instance().getRotatedMeta(block, meta, turns) == this.meta;
   }
 
 @Override
 public void addResources(List<ItemStack> resources)
   {
-  Block block = BlockDataManager.instance().getBlockForName(blockName);
   if(block==null || block==Blocks.air){return;}
   
   ItemStack stack = null;
@@ -114,6 +114,7 @@ public void writeRuleData(NBTTagCompound tag)
 public void parseRuleData(NBTTagCompound tag)
   {
   this.blockName = tag.getString("blockName");
+  this.block = BlockDataManager.instance().getBlockForName(blockName);
   this.meta = tag.getInteger("meta");
   this.buildPass = tag.getInteger("buildPass");
   }

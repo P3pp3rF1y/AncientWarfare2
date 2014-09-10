@@ -297,6 +297,7 @@ private TemplateRule parseOldBlockRule(List<String> lines)
     TemplateRuleVanillaBlocks rule = new TemplateRuleVanillaBlocks();
     rule.ruleNumber = number;
     rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+    rule.block = block;
     rule.meta = meta;
     rule.buildPass = buildPass;
     return rule;

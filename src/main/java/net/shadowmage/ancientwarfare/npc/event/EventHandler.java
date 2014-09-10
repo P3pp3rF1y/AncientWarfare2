@@ -19,6 +19,7 @@ public static final EventHandler INSTANCE = new EventHandler();
 @SubscribeEvent
 public void entitySpawnEvent(EntityJoinWorldEvent evt)
   {
+  if(evt.entity instanceof NpcBase){return;}
   String s = EntityList.getEntityString(evt.entity);
   if(AncientWarfareNPC.statics.shouldEntityTargetNpcs(s))
     {    
