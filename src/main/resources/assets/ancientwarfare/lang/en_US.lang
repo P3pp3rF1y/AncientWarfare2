@@ -197,6 +197,7 @@ tile.recruiting_station.name=Recruiting Station
 #vehicle
 
 #guistrings
+guistrings.keybinds=Keybinds
 guistrings.no_selection=No Selection
 guistrings.current_structure=Current Structure:
 guistrings.select_biomes=Select Biomes
