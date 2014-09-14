@@ -177,7 +177,7 @@ public static final StructureValidator parseValidator(List<String> lines)
   List<String> tagLines = new ArrayList<String>();
   Iterator<String> it = lines.iterator();
   String line;
-  boolean unique = false, worldGen = false, biome = false, dimension = false, blocks = false, survival = false;
+  boolean unique = false, worldGen = false, biome = false, dimension = false, blocks = false, survival = false, swap = false;
   int selectionWeight=1, clusterValue=1, duplicate=1, maxLeveling = 0, maxFill = 0, borderSize = 0;
   int[] dimensions = null;
   Set<String> biomes = new HashSet<String>();
@@ -197,10 +197,11 @@ public static final StructureValidator parseValidator(List<String> lines)
     else if(line.toLowerCase().startsWith("selectionweight=")){selectionWeight = StringTools.safeParseInt("=", line);}
     else if(line.toLowerCase().startsWith("clustervalue=")){clusterValue = StringTools.safeParseInt("=", line);}
     else if(line.toLowerCase().startsWith("minduplicatedistance=")){duplicate = StringTools.safeParseInt("=", line);}
-    if(line.toLowerCase().startsWith("leveling=")){maxLeveling = StringTools.safeParseInt("=", line);}
+    else if(line.toLowerCase().startsWith("leveling=")){maxLeveling = StringTools.safeParseInt("=", line);}
     else if(line.toLowerCase().startsWith("fill=")){maxFill = StringTools.safeParseInt("=", line);}
     else if(line.toLowerCase().startsWith("border=")){borderSize = StringTools.safeParseInt("=", line);}   
     else if(line.toLowerCase().startsWith("validtargetblocks=")){StringTools.safeParseStringsToSet(validTargetBlocks, "=", line, false);}
+    else if(line.toLowerCase().startsWith(StructureValidator.PROP_BLOCK_SWAP+"=")){swap = StringTools.safeParseBoolean("=", line);}
     else if(line.toLowerCase().startsWith("data:"))
       {
       tagLines.add(line);
@@ -242,7 +243,7 @@ public static final StructureValidator parseValidator(List<String> lines)
   validator.setProperty(PROP_MAX_LEVELING, maxLeveling);
   validator.setProperty(PROP_BORDER_SIZE, borderSize);
   validator.setProperty(PROP_BLOCK_LIST, validTargetBlocks); 
-  
+  validator.setProperty(PROP_BLOCK_SWAP, swap);
   return validator;
   }
 
@@ -280,6 +281,8 @@ public static final void writeValidator(BufferedWriter out, StructureValidator v
   out.newLine();
   out.write("validTargetBlocks="+StringTools.getCSVfor(validator.getTargetBlocks()));
   out.newLine(); 
+  out.write(StructureValidator.PROP_BLOCK_SWAP+"="+validator.isBlockSwap());
+  out.newLine();
   out.write("data:");
   out.newLine();
   validator.write(out);
