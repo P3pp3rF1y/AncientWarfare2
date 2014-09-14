@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.NBTTools;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
 public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity
 {
@@ -74,15 +75,17 @@ public TemplateRuleEntityLogic(World world, Entity entity, int turns, int x, int
   }
 
 @Override
-public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder)
+public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException
   {
   Entity e = createEntity(world, turns, x, y, z, builder);
-  world.spawnEntityInWorld(e);
+  world.spawnEntityInWorld(e);    
   }
 
-protected Entity createEntity(World world, int turns, int x, int y, int z, IStructureBuilder builder)
+protected Entity createEntity(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException
   {
-  Entity e = EntityList.createEntityByName(mobID, world);  
+  Entity e = EntityList.createEntityByName(mobID, world);
+  if(e==null){throw new EntityPlacementException("Could not create entity for name: "+mobID+" Entity skipped during structure creation.\n" +
+  		"Entity data: "+tag);}
   NBTTagList list = new NBTTagList();
   list.appendTag(new NBTTagDouble(x + BlockTools.rotateFloatX(xOffset, zOffset, turns)));
   list.appendTag(new NBTTagDouble(y));

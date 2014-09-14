@@ -32,6 +32,8 @@ import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
 public class TemplateRuleGates extends TemplateRuleEntity
 {
@@ -73,7 +75,7 @@ public TemplateRuleGates()
   }
 
 @Override
-public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder)
+public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException
   {
   BlockPosition p1 = pos1.copy();
   BlockPosition p2 = pos2.copy();
@@ -98,11 +100,8 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
     }
     
   EntityGate gate = Gate.constructGate(world, p1, p2, Gate.getGateByName(gateType), (byte)((orientation+turns)%4));
-  
-  if(gate!=null)
-    {
-    world.spawnEntityInWorld(gate);
-    }
+  if(gate==null){throw new StructureBuildingException.EntityPlacementException("Could not create gate for type: "+gateType);}
+  world.spawnEntityInWorld(gate);
   }
 
 @Override

@@ -32,6 +32,8 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
 /**
  * base template-rule class.  Plugins should define their own rule classes.
@@ -59,8 +61,9 @@ public TemplateRule()
  * @param x
  * @param y
  * @param z 
+ * @throws EntityPlacementException 
  */
-public abstract void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder);
+public abstract void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws StructureBuildingException;
 
 public abstract void parseRuleData(NBTTagCompound tag);
 public abstract void writeRuleData(NBTTagCompound tag);

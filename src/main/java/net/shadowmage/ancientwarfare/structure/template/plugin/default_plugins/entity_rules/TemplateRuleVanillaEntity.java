@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException;
 
 public class TemplateRuleVanillaEntity extends TemplateRuleEntity
 {
@@ -58,9 +59,10 @@ public TemplateRuleVanillaEntity()
   }
 
 @Override
-public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder)
+public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException
   {
   Entity e = EntityList.createEntityByName(mobID, world);
+  if(e==null){throw new StructureBuildingException.EntityPlacementException("Could not create entity for type: "+mobID);}
   float x1 = BlockTools.rotateFloatX(xOffset, zOffset, turns);
   float z1 = BlockTools.rotateFloatZ(xOffset, zOffset, turns);
   float yaw = (rotation + 90.f * turns)%360.f;

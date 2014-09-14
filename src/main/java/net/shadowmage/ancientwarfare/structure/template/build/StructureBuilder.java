@@ -31,6 +31,7 @@ import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
 public class StructureBuilder implements IStructureBuilder
 {
@@ -105,7 +106,14 @@ protected void placeEntities()
     destination.z = rule.z;
     BlockTools.rotateInArea(destination, destXSize, destZSize, turns);
     destination.offsetBy(bb.min);
-    rule.handlePlacement(world, turns, destination.x, destination.y, destination.z, this);
+    try
+      {
+      rule.handlePlacement(world, turns, destination.x, destination.y, destination.z, this);
+      }
+    catch (StructureBuildingException e)
+      {
+      e.printStackTrace();
+      }
     }
   }
 
@@ -186,7 +194,14 @@ protected void placeRule(TemplateRule rule)
   if(destination.y<=0){return;}
   if(rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority))
     {
-    rule.handlePlacement(world, turns, destination.x, destination.y, destination.z, this);    
+    try
+      {
+      rule.handlePlacement(world, turns, destination.x, destination.y, destination.z, this);
+      }
+    catch (StructureBuildingException e)
+      {
+      e.printStackTrace();
+      }    
     }
   }
 
