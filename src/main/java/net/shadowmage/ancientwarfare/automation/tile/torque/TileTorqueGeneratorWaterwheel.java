@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -135,6 +136,13 @@ public boolean canOutput(ForgeDirection towards)
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
+  if(!player.worldObj.isRemote)
+    {
+    String key = "guistrings.automation.current_energy";
+    String value = String.format("%.2f", storedEnergy);
+    ChatComponentTranslation chat = new ChatComponentTranslation(key, new Object[]{value});
+    player.addChatComponentMessage(chat);    
+    }
   return false;
   }
 
