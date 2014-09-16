@@ -3,17 +3,16 @@ package net.shadowmage.ancientwarfare.npc.gui;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 
-public class GuiRecruitingStation extends GuiContainerBase
+public class GuiNpcTrade2 extends GuiContainerBase
 {
 
-public GuiRecruitingStation(ContainerBase par1Container, int xSize,
-    int ySize, String backgroundTexture)
+public GuiNpcTrade2(ContainerBase container, int xSize, int ySize, String backgroundTexture)
   {
-  super(par1Container, xSize, ySize, backgroundTexture);
+  super(container, xSize, ySize, backgroundTexture);
   // TODO Auto-generated constructor stub
   }
 
-public GuiRecruitingStation(ContainerBase container)
+public GuiNpcTrade2(ContainerBase container)
   {
   super(container);
   // TODO Auto-generated constructor stub

@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
 
-public class GuiBard extends GuiContainerBase
+public class GuiNpcBard extends GuiContainerBase
 {
 
 Text tuneInput;
@@ -23,7 +23,7 @@ int inputX = 80;
 
 ContainerNpcBard container;
 
-public GuiBard(ContainerBase container)
+public GuiNpcBard(ContainerBase container)
   {
   super(container);
   this.container = (ContainerNpcBard)container;
