@@ -21,7 +21,8 @@ import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 public abstract class NpcFactionTrader extends NpcFaction
 {
 
-FactionTradeList tradeList = new FactionTradeList();
+private FactionTradeList tradeList = new FactionTradeList();
+public EntityPlayer trader = null;
 
 public NpcFactionTrader(World par1World)
   {
@@ -39,6 +40,8 @@ public NpcFactionTrader(World par1World)
   this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F)); 
   }
 
+public FactionTradeList getTradeList(){return tradeList;}
+
 @Override
 public void onUpdate()
   {
@@ -50,8 +53,9 @@ public void onUpdate()
 protected boolean interact(EntityPlayer player)
   {
   boolean baton = player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
-  if(!player.worldObj.isRemote && !baton)
+  if(!player.worldObj.isRemote && !baton && trader==null)
     {
+    trader = player;
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_TRADE_VIEW, getEntityId(), 0, 0);
     }
   return false;

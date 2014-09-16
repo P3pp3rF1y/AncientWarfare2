@@ -21,7 +21,7 @@ public FactionTradeList()
 public void incrementTradePosition(int num){}// TODO Auto-generated stub
 public void decrementTradePosition(int num){}// TODO Auto-generated stub
 public void deleteTrade(int num){}// TODO Auto-generated stub
-public void addNewTrade(){}// TODO Auto-generated stub
+public void addNewTrade(){tradeList.add(new FactionTrade());}
 
 public void tradeCompletedServer(FactionTrade trade){}// TODO Auto-generated stub
 public void tradeCompletedClient(FactionTrade trade){}// TODO Auto-generated stub
@@ -35,7 +35,7 @@ public void tick(){ticks++;}
  * Should be called on server PRIOR to opening the trades GUI/container.<br>
  * Will use the internal stored tick number value for updating the trades list.<br>
  */
-private void updateTradesForView()
+public void updateTradesForView()
   {
   for(int i = 0; i< tradeList.size(); i++){tradeList.get(i).updateTrade(ticks);}
   ticks = 0;
@@ -43,14 +43,10 @@ private void updateTradesForView()
 
 /**
  * Add all available trades to the passed in list.<br>
- * Will update trades prior to inclusion if necessary.
+ * Should be used on the client-side GUI to retrieve all trades.
  * @param trades
  */
-public void getTrades(List<FactionTrade> trades)
-  {
-  if(ticks>0){updateTradesForView();}
-  trades.addAll(tradeList);
-  }
+public void getTrades(List<FactionTrade> trades){trades.addAll(tradeList);}
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
