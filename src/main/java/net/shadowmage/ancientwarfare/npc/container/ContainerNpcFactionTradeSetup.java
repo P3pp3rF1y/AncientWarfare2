@@ -46,6 +46,11 @@ public void handlePacketData(NBTTagCompound tag)
 public void onContainerClosed(EntityPlayer p_75134_1_)
   {
   this.trader.trader = null;
+  super.onContainerClosed(p_75134_1_);
+  }
+
+public void onGuiClosed()
+  {
   if(player.worldObj.isRemote && tradesChanged)
     {
     NBTTagCompound tag = new NBTTagCompound();
@@ -53,8 +58,7 @@ public void onContainerClosed(EntityPlayer p_75134_1_)
     NBTTagCompound packetTag = new NBTTagCompound();
     packetTag.setTag("tradeData", tag);
     sendDataToServer(packetTag);
-    }
-  super.onContainerClosed(p_75134_1_);
+    }  
   }
 
 }

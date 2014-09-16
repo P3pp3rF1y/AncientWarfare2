@@ -197,6 +197,14 @@ tile.recruiting_station.name=Recruiting Station
 #vehicle
 
 #guistrings
+guistrings.trades_available=Available
+guistrings.trade=Trade
+guistrings.up=Up
+guistrings.down=Down
+guistrings.delete=Delete
+guistrings.max_trades=Max Trades
+guistrings.refill_frequency=Refill Freq
+guistrings.new_trade=Add New Trade
 guistrings.keybinds=Keybinds
 guistrings.no_selection=No Selection
 guistrings.current_structure=Current Structure:
@@ -215,7 +223,7 @@ guistrings.validation_type=Current Validation Type
 guistrings.setup_validation=Setup Validation
 guistrings.select_dimensions=Select Dimensions
 guistrings.current_selection=Current Selection
-guistrings.none=None
+guistrings.none=Non
 guistrings.corrupt_item=CORRUPT ITEM, MISSING NBT DATA
 guistrings.selected_mob=Selected Mob
 guistrings.next=Next

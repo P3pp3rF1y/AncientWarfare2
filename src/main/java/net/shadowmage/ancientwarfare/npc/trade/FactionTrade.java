@@ -1,9 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class FactionTrade
@@ -57,15 +61,13 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
   
   NBTTagList list = new NBTTagList();
   NBTTagCompound itemTag;
-  ItemStack stack;
   
   for(int i = 0; i < input.length; i++)
     {
     if(input[i]==null){continue;}
     itemTag = new NBTTagCompound();
-    stack = input[i];
-    InventoryTools.writeItemStack(stack, itemTag);
-    tag.setInteger("slot", i);
+    InventoryTools.writeItemStack(input[i], itemTag);
+    itemTag.setInteger("slot", i);
     list.appendTag(itemTag);
     }
   tag.setTag("inputItems", list);
@@ -75,9 +77,8 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
     if(output[i]==null){continue;}
     itemTag = new NBTTagCompound();
-    stack = output[i];
-    InventoryTools.writeItemStack(stack, itemTag);
-    tag.setInteger("slot", i);
+    InventoryTools.writeItemStack(output[i], itemTag);
+    itemTag.setInteger("slot", i);
     list.appendTag(itemTag);
     }
   tag.setTag("outputItems", list);
@@ -91,34 +92,77 @@ public void readFromNBT(NBTTagCompound tag)
   maxAvailable = tag.getInteger("maxAvailable");
   currentAvailable = tag.getInteger("currentAvailable");
     
-  ItemStack stack;
   NBTTagCompound itemTag;
   
   NBTTagList inputList = tag.getTagList("inputItems", Constants.NBT.TAG_COMPOUND);
   for(int i = 0; i < inputList.tagCount(); i++)
     {
     itemTag = inputList.getCompoundTagAt(i);
-    stack = InventoryTools.readItemStack(itemTag);
-    input[itemTag.getInteger("slot")]=stack;
+    input[itemTag.getInteger("slot")] = InventoryTools.readItemStack(itemTag);
+    AWLog.logDebug("reading trade. slot: "+itemTag.getInteger("slot")+" item: "+input[itemTag.getInteger("slot")]);
     }
   
   NBTTagList outputList = tag.getTagList("outputItems", Constants.NBT.TAG_COMPOUND);
   for(int i = 0; i < outputList.tagCount(); i++)
     {
     itemTag = outputList.getCompoundTagAt(i);
-    stack = InventoryTools.readItemStack(itemTag);
-    output[itemTag.getInteger("slot")]=stack;  
+    output[itemTag.getInteger("slot")] = InventoryTools.readItemStack(itemTag);  
     }
   }
 
 public void updateTrade(int ticks)
   {
   ticksTilRefill+=ticks;
-  while(ticksTilRefill>=refillFrequency)
+  if(refillFrequency>0)//update per freq period
     {
-    ticksTilRefill-=refillFrequency;
-    if(currentAvailable<maxAvailable){currentAvailable++;}
+    while(ticksTilRefill>=refillFrequency)
+      {
+      ticksTilRefill-=refillFrequency;
+      if(currentAvailable<maxAvailable){currentAvailable++;}
+      }
     }
+  else if(refillFrequency==0)//full refill automatically if frequency==0
+    {
+    currentAvailable=maxAvailable;
+    }  
+  else{}//dont refill if frequency<0
+  }
+
+public void performTrade(EntityPlayer player, IInventory inputInventory)
+  {
+  if(currentAvailable>0)
+    {
+    boolean found = true;
+    ItemStack inputStack, invStack;
+    for(int i = 0; i < input.length;i++)
+      {
+      inputStack = input[i];
+      if(inputStack==null){continue;}
+      invStack = inputInventory.getStackInSlot(i);
+      if(invStack==null || !InventoryTools.doItemStacksMatch(inputStack, invStack) || invStack.stackSize < inputStack.stackSize)
+        {
+        found = false;
+        break;
+        }
+      }
+    if(found)
+      {
+      if(refillFrequency>0){currentAvailable--;}
+      for(int i = 0; i < input.length; i++)
+        {
+        inputStack = input[i];
+        if(inputStack==null){continue;}
+        inputInventory.decrStackSize(i, inputStack.stackSize);
+        }
+      ItemStack outputStack;
+      for(int i = 0; i < output.length; i++)
+        {
+        outputStack = output[i];
+        if(outputStack==null){continue;}
+        InventoryTools.mergeItemStack(player.inventory, outputStack.copy(), -1);
+        }
+      }    
+    }  
   }
 
 }

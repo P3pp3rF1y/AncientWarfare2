@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.npc.trade;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -47,6 +49,11 @@ public void updateTradesForView()
  * @param trades
  */
 public void getTrades(List<FactionTrade> trades){trades.addAll(tradeList);}
+
+public void performTrade(EntityPlayer player, IInventory tradeInput, int tradeNum)
+  {
+  tradeList.get(tradeNum).performTrade(player, tradeInput);
+  }
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
