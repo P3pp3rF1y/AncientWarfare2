@@ -80,7 +80,8 @@ protected boolean interact(EntityPlayer player)
   boolean baton = player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
   if(!player.worldObj.isRemote && getFoodRemaining()>0 && !baton)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE, getEntityId(), 0, 0);
+    //TODO replace...
+//    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE, getEntityId(), 0, 0);
     }
   return false;
   }

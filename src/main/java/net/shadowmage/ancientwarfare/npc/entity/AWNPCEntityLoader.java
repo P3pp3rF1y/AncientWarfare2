@@ -256,15 +256,15 @@ private static void addBandits()
     };
   addNpcRegistration(reg, "bandit.priest", "ancientwarfare:npc/spawner_bandit_priest");
   
-//  reg = new NpcFactionDeclaration(NpcBanditTrader.class, AWEntityRegistry.NPC_FACTION_BANDIT_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.trader")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcBanditTrader(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "bandit.trader", "ancientwarfare:npc/spawner_bandit_trader");
+  reg = new NpcFactionDeclaration(NpcBanditTrader.class, AWEntityRegistry.NPC_FACTION_BANDIT_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.trader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditTrader(world);
+      }
+    };
+  addNpcRegistration(reg, "bandit.trader", "ancientwarfare:npc/spawner_bandit_trader");
   
   reg = new NpcFactionDeclaration(NpcBanditMountedSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bandit.cavalry")
     {    

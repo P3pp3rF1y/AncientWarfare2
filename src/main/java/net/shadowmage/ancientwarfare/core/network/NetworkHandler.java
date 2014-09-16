@@ -77,14 +77,15 @@ public static final int GUI_NPC_UPKEEP_ORDER = 35;
 public static final int GUI_NPC_COMBAT_ORDER = 36;
 public static final int GUI_NPC_ROUTING_ORDER = 37;
 public static final int GUI_NPC_COMMAND_BATON = 38;
-public static final int GUI_NPC_TRADE = 39;
+public static final int GUI_NPC_FACTION_TRADE_SETUP = 39;
 public static final int GUI_BACKPACK = 40;
 public static final int GUI_NPC_TOWN_HALL = 41;
-//public static final int GUI_NPC_RECRUITING_STATION = 42;//unused ID
+public static final int GUI_NPC_FACTION_TRADE_VIEW = 42;
 public static final int GUI_NPC_BARD = 43;
 public static final int GUI_NPC_CREATIVE = 44;
 public static final int GUI_RESEARCH_BOOK = 45;
 public static final int GUI_WORKSITE_BOUNDS = 46;
+public static final int GUI_NPC_PLAYER_OWNED_TRADE = 47;
 
 private FMLEventChannel channel;
 
