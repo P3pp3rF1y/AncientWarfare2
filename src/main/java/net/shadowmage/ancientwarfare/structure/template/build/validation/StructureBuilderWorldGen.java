@@ -42,8 +42,6 @@ public StructureBuilderWorldGen(World world, StructureTemplate template, int fac
   super(world, template, face, x, y, z);
   }
 
-
-
 @Override
 public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
   {
@@ -73,7 +71,6 @@ public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
     }
   super.placeBlock(x, y, z, block, meta, priority);
   }
-
 
 protected Block getBiomeSpecificBlock(Block par1, int par2, BiomeGenBase biome)
   {

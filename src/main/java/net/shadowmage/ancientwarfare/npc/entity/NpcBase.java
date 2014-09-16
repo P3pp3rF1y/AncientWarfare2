@@ -817,7 +817,10 @@ public void readEntityFromNBT(NBTTagCompound tag)
   attackDamage = tag.getInteger("attackDamageOverride");
   armorValue = tag.getInteger("armorValueOverride");
   customTexRef = tag.getString("customTex");
-  //TODO
+  
+  //TODO remove these when I figure out why JSON reads an empty string as ""
+  if("\"\"".equals(customTexRef)){customTexRef="";}
+  if("\"\"".equals(getCustomNameTag())){setCustomNameTag("");}
   }
 
 @Override
@@ -836,7 +839,7 @@ public void writeEntityToNBT(NBTTagCompound tag)
     }
   tag.setTag("levelingStats", levelingStats.writeToNBT(new NBTTagCompound()));
   tag.setInteger("attackDamageOverride", attackDamage);
-  tag.setInteger("armorValueOverride", armorValue);
+  tag.setInteger("armorValueOverride", armorValue);  
   tag.setString("customTex", customTexRef);
   //TODO
   }

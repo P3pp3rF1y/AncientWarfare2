@@ -30,9 +30,11 @@ import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.NBTTools;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
 public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity
 {
@@ -73,15 +75,17 @@ public TemplateRuleEntityLogic(World world, Entity entity, int turns, int x, int
   }
 
 @Override
-public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder)
+public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException
   {
   Entity e = createEntity(world, turns, x, y, z, builder);
-  world.spawnEntityInWorld(e);
+  world.spawnEntityInWorld(e);    
   }
 
-protected Entity createEntity(World world, int turns, int x, int y, int z, IStructureBuilder builder)
+protected Entity createEntity(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException
   {
-  Entity e = EntityList.createEntityByName(mobID, world);  
+  Entity e = EntityList.createEntityByName(mobID, world);
+  if(e==null){throw new EntityPlacementException("Could not create entity for name: "+mobID+" Entity skipped during structure creation.\n" +
+  		"Entity data: "+tag);}
   NBTTagList list = new NBTTagList();
   list.appendTag(new NBTTagDouble(x + BlockTools.rotateFloatX(xOffset, zOffset, turns)));
   list.appendTag(new NBTTagDouble(y));
@@ -93,7 +97,7 @@ protected Entity createEntity(World world, int turns, int x, int y, int z, IStru
     EntityLiving living = (EntityLiving)e;
     for(int i = 0; i < 5 ;i++)
       {
-      living.setCurrentItemOrArmor(i, inventory[i]==null ? null : inventory[i].copy());
+      living.setCurrentItemOrArmor(i, equipment[i]==null ? null : equipment[i].copy());
       }
     }
   if(inventory!=null && e instanceof IInventory)
@@ -156,6 +160,7 @@ public void writeRuleData(NBTTagCompound tag)
 @Override
 public void parseRuleData(NBTTagCompound tag)
   {
+  AWLog.logDebug("parsing entity rule!!");
   super.parseRuleData(tag);
   this.tag = tag.getCompoundTag("entityData");
   if(tag.hasKey("inventoryData"))
@@ -180,11 +185,11 @@ public void parseRuleData(NBTTagCompound tag)
     }
   if(tag.hasKey("equipmentData"))
     {
-    NBTTagCompound inventoryTag = tag.getCompoundTag("inventoryData");
+    NBTTagCompound inventoryTag = tag.getCompoundTag("equipmentData");
     int length = inventoryTag.getInteger("length");
     equipment = new ItemStack[length];
     NBTTagCompound itemTag;
-    NBTTagList list = tag.getTagList("equipmentContents", Constants.NBT.TAG_COMPOUND); 
+    NBTTagList list = inventoryTag.getTagList("equipmentContents", Constants.NBT.TAG_COMPOUND); 
     int slot;
     ItemStack stack;
     for(int i = 0; i < list.tagCount(); i++)
