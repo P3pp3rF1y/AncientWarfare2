@@ -5,7 +5,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -147,7 +146,7 @@ public void performTrade(EntityPlayer player, IInventory inputInventory)
       }
     if(found)
       {
-      if(refillFrequency>0){currentAvailable--;}
+      if(refillFrequency!=0){currentAvailable--;}//0 denotes instant restock, no reason to decrease qty if it will just be instantly restocked when GUI is opened next
       for(int i = 0; i < input.length; i++)
         {
         inputStack = input[i];
@@ -159,7 +158,8 @@ public void performTrade(EntityPlayer player, IInventory inputInventory)
         {
         outputStack = output[i];
         if(outputStack==null){continue;}
-        InventoryTools.mergeItemStack(player.inventory, outputStack.copy(), -1);
+        outputStack = InventoryTools.mergeItemStack(player.inventory, outputStack.copy(), -1);
+        if(outputStack!=null && !player.worldObj.isRemote){InventoryTools.dropItemInWorld(player.worldObj, outputStack, player.posX, player.posY, player.posZ);}
         }
       }    
     }  

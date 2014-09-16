@@ -58,6 +58,7 @@ public void initElements()
 public void setupElements()
   {
   clearElements();
+  addGuiElement(new Label(8+9*18+8+8, 240-4-8-4*18, StatCollector.translateToLocal("guistrings.input")));
   addGuiElement(area);
   if(player.capabilities.isCreativeMode)
     {
@@ -105,7 +106,9 @@ private int addTrade(final FactionTrade trade, final int tradeNum, int startHeig
     if(gridY>=3){break;}
     }
   
-  Button tradeButton = new Button(8+6*18+9+8, startHeight+21, 55, 12, StatCollector.translateToLocal("guistrings.trade"))
+  area.addGuiElement(new Label(8+3*18+1, startHeight+20, "="));
+  
+  Button tradeButton = new Button(8+6*18+9+8, startHeight+17, 70, 20, StatCollector.translateToLocal("guistrings.trade"))
     {
     @Override
     protected void onPressed()
