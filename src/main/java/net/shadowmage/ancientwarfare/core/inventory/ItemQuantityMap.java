@@ -232,6 +232,22 @@ public void getItems(List<ItemStack> items)
     } 
   }
 
+/**
+ * Return a list of the most compact item-stacks as possible.<br>
+ * Stack max size for a given item is ignored -- stack size may be >64 (and may actually be up to Integer.MAX_VALUE)
+ * @param items will be filled with the item-stacks from this map, must not be NULL
+ */
+public void getCompactItems(List<ItemStack> items)
+  {
+  ItemStack outStack;
+  for(ItemHashEntry wrap1 : map.keySet())
+    {
+    outStack = wrap1.getItemStack().copy();
+    outStack.stackSize = map.get(wrap1).count;
+    items.add(outStack);
+    } 
+  }
+
 public void readFromNBT(NBTTagCompound tag)
   {
   NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
