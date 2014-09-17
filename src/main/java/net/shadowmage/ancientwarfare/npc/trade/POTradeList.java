@@ -14,14 +14,28 @@ public class POTradeList
 
 List<POTrade> tradeList = new ArrayList<POTrade>();
 
-public POTradeList()
+public POTradeList(){}
+
+public void decrementTrade(int index)
   {
-  // TODO Auto-generated constructor stub
+  if(index<=0 || index>=tradeList.size()){return;}
+  POTrade t = tradeList.remove(index);
+  tradeList.add(index-1, t);
   }
 
-public void decrementTrade(int index){}//TODO
-public void incrementTrade(int index){}//TODO
-public void deleteTrade(int index){}//TODO
+public void incrementTrade(int index)
+  {
+  if(index<0 || index>=tradeList.size()-1){return;}
+  POTrade t = tradeList.remove(index);
+  tradeList.add(index+1, t);
+  }
+
+public void deleteTrade(int index)
+  {
+  if(index<0 || index>=tradeList.size()){return;}
+  tradeList.remove(index);
+  }
+
 public void addNewTrade(){tradeList.add(new POTrade());}
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
