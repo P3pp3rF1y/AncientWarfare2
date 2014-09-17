@@ -53,6 +53,7 @@ public void onGuiClosed()
   {
   if(player.worldObj.isRemote && tradesChanged)
     {
+    tradeList.removeEmptyTrades();
     NBTTagCompound tag = new NBTTagCompound();
     tradeList.writeToNBT(tag);
     NBTTagCompound packetTag = new NBTTagCompound();

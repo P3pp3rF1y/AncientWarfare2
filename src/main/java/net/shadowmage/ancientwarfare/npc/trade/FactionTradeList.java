@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,24 +10,47 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 
-public class FactionTradeList
+public final class FactionTradeList
 {
 
 private List<FactionTrade> tradeList = new ArrayList<FactionTrade>();
 int ticks = 0;
 
-public FactionTradeList()
+public FactionTradeList(){}
+
+/**
+ * decreases the index of a trade and moves it up in the trade list
+ * @param num the index position to move
+ */
+public void decrementTradePosition(int num)
   {
-  // TODO Auto-generated constructor stub
+  if(num<=0 || num>=tradeList.size()){return;}
+  FactionTrade trade = tradeList.remove(num);
+  tradeList.add(num-1, trade);
   }
 
-public void incrementTradePosition(int num){}// TODO Auto-generated stub
-public void decrementTradePosition(int num){}// TODO Auto-generated stub
-public void deleteTrade(int num){}// TODO Auto-generated stub
-public void addNewTrade(){tradeList.add(new FactionTrade());}
+/**
+ * increases the index of a trade and moves it down in the trade list
+ * @param num the index position to move
+ */
+public void incrementTradePosition(int num)
+  {
+  if(num>=tradeList.size()-1){return;}
+  FactionTrade trade = tradeList.remove(num);
+  tradeList.add(num+1, trade);
+  }
 
-public void tradeCompletedServer(FactionTrade trade){}// TODO Auto-generated stub
-public void tradeCompletedClient(FactionTrade trade){}// TODO Auto-generated stub
+/**
+ * deletes a trade from the trade list
+ * @param num the index of the trade to remove
+ */
+public void deleteTrade(int num)
+  {
+  if(num<0 || num>=tradeList.size()){return;}
+  tradeList.remove(num);
+  }
+
+public void addNewTrade(){tradeList.add(new FactionTrade());}
 
 /**
  * MUST be called from owning entity once per update tick.
@@ -41,6 +65,30 @@ public void updateTradesForView()
   {
   for(int i = 0; i< tradeList.size(); i++){tradeList.get(i).updateTrade(ticks);}
   ticks = 0;
+  }
+
+/**
+ * removes any trades that have no input or output items.<br>
+ * should be called before the changed list is sent from client->server from setup GUI.
+ */
+public void removeEmptyTrades()
+  {
+  Iterator<FactionTrade> it = tradeList.iterator();
+  FactionTrade t;
+  boolean hasItems = false;
+  while(it.hasNext() && (t=it.next())!=null)
+    {
+    hasItems = false;
+    for(int i = 0; i < 9; i++)
+      {
+      if(t.getInput()[i]!=null || t.getOutput()[i]!=null)
+        {
+        hasItems=true;
+        break;
+        }      
+      }    
+    if(!hasItems){it.remove();}
+    }
   }
 
 /**

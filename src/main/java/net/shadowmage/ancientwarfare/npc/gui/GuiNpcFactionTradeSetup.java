@@ -137,10 +137,12 @@ private void addTradeControls(final FactionTrade trade, int startHeight, final i
       }
     };
   area.addGuiElement(delete);
-    
-  area.addGuiElement(new Label(infoX + 55 + 4, startHeight, StatCollector.translateToLocal("guistrings.max_trades")));
   
-  area.addGuiElement(new Label(infoX + 55 + 4, startHeight+18, StatCollector.translateToLocal("guistrings.refill_frequency")));
+  area.addGuiElement(new Label(8+3*18+1, startHeight+20, "="));
+    
+  area.addGuiElement(new Label(infoX + 55 + 4, startHeight+1, StatCollector.translateToLocal("guistrings.max_trades")));
+  
+  area.addGuiElement(new Label(infoX + 55 + 4, startHeight+18+1, StatCollector.translateToLocal("guistrings.refill_frequency")));
   
   NumberInput tradeInput = new NumberInput(infoX+55+4+60, startHeight, 40, trade.getMaxAvailable(), this)
     {
