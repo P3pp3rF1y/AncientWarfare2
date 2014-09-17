@@ -23,7 +23,6 @@ public ContainerTradeOrder(EntityPlayer player, int x, int y, int z)
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  AWLog.logDebug("receiving container packet!! "+tag);
   if(tag.hasKey("tradeOrder"))
     {
     orders.readFromNBT(tag.getCompoundTag("tradeOrder"));
@@ -35,10 +34,7 @@ public void onContainerClosed(EntityPlayer par1EntityPlayer)
   {  
   if(!player.worldObj.isRemote)
     {
-    AWLog.logDebug("writing trade orders to orders item!");
     TradeOrder.writeTradeOrder(player.getCurrentEquippedItem(), orders);
-    AWLog.logDebug("new player stack: "+player.getCurrentEquippedItem());
-    AWLog.logDebug("stack tag: "+player.getCurrentEquippedItem().getTagCompound());
     }
   super.onContainerClosed(par1EntityPlayer);
   }
