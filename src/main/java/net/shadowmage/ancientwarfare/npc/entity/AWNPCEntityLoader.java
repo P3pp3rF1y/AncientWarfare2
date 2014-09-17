@@ -383,15 +383,15 @@ private static void addDesertNatives()
     };
   addNpcRegistration(reg, "desert.priest", "ancientwarfare:npc/spawner_desert_priest");
   
-//  reg = new NpcFactionDeclaration(NpcDesertTrader.class, AWEntityRegistry.NPC_FACTION_DESERT_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.trader")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcDesertTrader(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "desert.trader", "ancientwarfare:npc/spawner_desert_trader");
+  reg = new NpcFactionDeclaration(NpcDesertTrader.class, AWEntityRegistry.NPC_FACTION_DESERT_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.trader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcDesertTrader(world);
+      }
+    };
+  addNpcRegistration(reg, "desert.trader", "ancientwarfare:npc/spawner_desert_trader");
   
   reg = new NpcFactionDeclaration(NpcDesertMountedSoldier.class, AWEntityRegistry.NPC_FACTION_DESERT_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "desert.cavalry")
     {    
@@ -510,15 +510,15 @@ private static void addJungleNatives()
     };
   addNpcRegistration(reg, "native.priest", "ancientwarfare:npc/spawner_native_priest");
   
-//  reg = new NpcFactionDeclaration(NpcNativeTrader.class, AWEntityRegistry.NPC_FACTION_NATIVE_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.trader")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcNativeTrader(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "native.trader", "ancientwarfare:npc/spawner_native_trader");
+  reg = new NpcFactionDeclaration(NpcNativeTrader.class, AWEntityRegistry.NPC_FACTION_NATIVE_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.trader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcNativeTrader(world);
+      }
+    };
+  addNpcRegistration(reg, "native.trader", "ancientwarfare:npc/spawner_native_trader");
   
   reg = new NpcFactionDeclaration(NpcNativeMountedSoldier.class, AWEntityRegistry.NPC_FACTION_NATIVE_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "native.cavalry")
     {    
@@ -637,15 +637,15 @@ private static void addPirates()
     };
   addNpcRegistration(reg, "pirate.priest", "ancientwarfare:npc/spawner_pirate_priest");
   
-//  reg = new NpcFactionDeclaration(NpcPirateTrader.class, AWEntityRegistry.NPC_FACTION_PIRATE_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.trader")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcPirateTrader(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "pirate.trader", "ancientwarfare:npc/spawner_pirate_trader");
+  reg = new NpcFactionDeclaration(NpcPirateTrader.class, AWEntityRegistry.NPC_FACTION_PIRATE_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.trader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcPirateTrader(world);
+      }
+    };
+  addNpcRegistration(reg, "pirate.trader", "ancientwarfare:npc/spawner_pirate_trader");
   
   reg = new NpcFactionDeclaration(NpcPirateMountedSoldier.class, AWEntityRegistry.NPC_FACTION_PIRATE_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "pirate.cavalry")
     {    
@@ -764,15 +764,15 @@ private static void addVikings()
     };
   addNpcRegistration(reg, "viking.priest", "ancientwarfare:npc/spawner_viking_priest");
   
-//  reg = new NpcFactionDeclaration(NpcVikingTrader.class, AWEntityRegistry.NPC_FACTION_VIKING_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.trader")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcVikingTrader(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "viking.trader", "ancientwarfare:npc/spawner_viking_trader");
+  reg = new NpcFactionDeclaration(NpcVikingTrader.class, AWEntityRegistry.NPC_FACTION_VIKING_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.trader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcVikingTrader(world);
+      }
+    };
+  addNpcRegistration(reg, "viking.trader", "ancientwarfare:npc/spawner_viking_trader");
   
   reg = new NpcFactionDeclaration(NpcVikingMountedSoldier.class, AWEntityRegistry.NPC_FACTION_VIKING_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "viking.cavalry")
     {    
@@ -891,15 +891,15 @@ private static void addCustom1()
     };
   addNpcRegistration(reg, "custom_1.priest", "ancientwarfare:npc/spawner_custom_1_priest");
   
-//  reg = new NpcFactionDeclaration(NpcCustom_1Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.trader")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcCustom_1Trader(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "custom_1.trader", "ancientwarfare:npc/spawner_custom_1_trader");
+  reg = new NpcFactionDeclaration(NpcCustom_1Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.trader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_1Trader(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_1.trader", "ancientwarfare:npc/spawner_custom_1_trader");
   
   reg = new NpcFactionDeclaration(NpcCustom_1MountedSoldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_1.cavalry")
     {    
@@ -1018,15 +1018,15 @@ private static void addCustom2()
     };
   addNpcRegistration(reg, "custom_2.priest", "ancientwarfare:npc/spawner_custom_2_priest");
   
-//  reg = new NpcFactionDeclaration(NpcCustom_2Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.trader")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcCustom_2Trader(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "custom_2.trader", "ancientwarfare:npc/spawner_custom_2_trader");
+  reg = new NpcFactionDeclaration(NpcCustom_2Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.trader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_2Trader(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_2.trader", "ancientwarfare:npc/spawner_custom_2_trader");
   
   reg = new NpcFactionDeclaration(NpcCustom_2MountedSoldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_2.cavalry")
     {    
@@ -1146,15 +1146,15 @@ private static void addCustom3()
     };
   addNpcRegistration(reg, "custom_3.priest", "ancientwarfare:npc/spawner_custom_3_priest");
   
-//  reg = new NpcFactionDeclaration(NpcCustom_3Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.trader")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcCustom_3Trader(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "custom_3.trader", "ancientwarfare:npc/spawner_custom_3_trader");
+  reg = new NpcFactionDeclaration(NpcCustom_3Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.trader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_3Trader(world);
+      }
+    };
+  addNpcRegistration(reg, "custom_3.trader", "ancientwarfare:npc/spawner_custom_3_trader");
   
   reg = new NpcFactionDeclaration(NpcCustom_3MountedSoldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_CAVALRY, nextID++, AncientWarfareNPC.instance, 120, 3, true, "custom_3.cavalry")
     {    
