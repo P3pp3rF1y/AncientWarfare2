@@ -42,7 +42,7 @@ public Button(int topLeftX, int topLeftY, int width, int height, String text)
 public final void setText(String text)
   {
   this.text = StatCollector.translateToLocal(text);
-  int tw = fr.getStringWidth(text);
+  int tw = fr.getStringWidth(this.text);
   textX = (width - tw)/2;
   textY = (height - 8)/2;   
   }
