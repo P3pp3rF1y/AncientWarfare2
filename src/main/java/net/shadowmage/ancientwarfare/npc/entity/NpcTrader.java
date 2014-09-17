@@ -9,7 +9,9 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
@@ -21,9 +23,14 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
+import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 
 public class NpcTrader extends NpcPlayerOwned
 {
+
+public EntityPlayer trader;//used by guis/containers to prevent further interaction
+private POTradeList tradeList = new POTradeList();
 
 public NpcTrader(World par1World)
   {
@@ -52,13 +59,14 @@ public NpcTrader(World par1World)
 @Override
 public boolean isValidOrdersStack(ItemStack stack)
   {
-  return false;
+  return stack!=null && stack.getItem() instanceof ItemTradeOrder;
   }
 
 @Override
 public void onOrdersInventoryChanged()
   {
-  //NOOP
+  //TODO update cached trade-list / null out if item is removed
+  //TODO update trade patrol/movement AI (TODO create trade/movement AI)
   }
 
 @Override
@@ -77,18 +85,30 @@ public String getNpcType()
 protected boolean interact(EntityPlayer player)
   {
   boolean baton = player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
-  if(!player.worldObj.isRemote && getFoodRemaining()>0 && !baton)
+  if(!player.worldObj.isRemote && getFoodRemaining()>0 && !baton && trader==null)
     {
-    //TODO replace...
-//    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE, getEntityId(), 0, 0);
+    trader=player;
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_PLAYER_OWNED_TRADE, getEntityId(), 0, 0);
     }
-  return false;
+  return true;
   }
 
 @Override
 public boolean isHostileTowards(Entity e)
   {
   return false;
+  }
+
+public POTradeList getTradeList()
+  {
+  return tradeList;
+  }
+
+@Override
+public void readEntityFromNBT(NBTTagCompound tag)
+  {
+  super.readEntityFromNBT(tag);
+  //TODO read trade list from orders item, if it is present
   }
 
 }

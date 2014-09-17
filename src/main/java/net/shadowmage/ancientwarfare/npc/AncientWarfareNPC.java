@@ -139,7 +139,6 @@ public void postInit(FMLPostInitializationEvent evt)
    /**
     * save config for any changes that were made during loading stages
     */
-  statics.loadDefaultTrades();
   statics.postInitCallback();
   proxy.loadSkins();
   AWNPCEntityLoader.loadNpcSubtypeEquipment();

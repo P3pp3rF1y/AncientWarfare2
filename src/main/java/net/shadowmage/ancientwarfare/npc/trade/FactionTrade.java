@@ -17,6 +17,7 @@ private int refillFrequency;
 private int ticksTilRefill;
 private int maxAvailable;
 private int currentAvailable;
+//TODO add minLevel stat -- used to determine if trade should be available
 
 public FactionTrade()
   {

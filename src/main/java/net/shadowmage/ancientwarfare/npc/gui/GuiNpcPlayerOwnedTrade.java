@@ -6,15 +6,9 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 public class GuiNpcPlayerOwnedTrade extends GuiContainerBase
 {
 
-public GuiNpcPlayerOwnedTrade(ContainerBase container, int xSize, int ySize, String backgroundTexture)
-  {
-  super(container, xSize, ySize, backgroundTexture);
-  // TODO Auto-generated constructor stub
-  }
-
 public GuiNpcPlayerOwnedTrade(ContainerBase container)
   {
-  super(container);
+  super(container, 320, 240, defaultBackground);
   // TODO Auto-generated constructor stub
   }
 

@@ -59,7 +59,7 @@ public void sendInitData()
 public void handlePacketData(NBTTagCompound tag)
   {
   if(tag.hasKey("tradeData")){tradeList.readFromNBT(tag.getCompoundTag("tradeData"));}
-  if(tag.hasKey("doTrade")){tradeList.performTrade(player, tradeInput, tag.getInteger("doTrade"));}//TODO add inv ref
+  if(tag.hasKey("doTrade")){tradeList.performTrade(player, tradeInput, tag.getInteger("doTrade"));}
   refreshGui();
   }
 

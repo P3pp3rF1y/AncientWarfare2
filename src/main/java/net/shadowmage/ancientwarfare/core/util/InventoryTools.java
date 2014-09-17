@@ -468,9 +468,16 @@ public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, bool
     if(stack2==null){return stack1==null;}
     if(stack1.getItem()==stack2.getItem())
       {
-      int id = OreDictionary.getOreID(stack1);
-      int id2 = OreDictionary.getOreID(stack2);
-      return id>0 && id2>0 && id==id2;
+      int id[] = OreDictionary.getOreIDs(stack1);
+      int id2[] = OreDictionary.getOreIDs(stack2);
+      if(id==null || id2==null || id.length==0 || id2.length==0){return false;}
+      for(int i = 0; i <id.length; i++)
+        {
+        for(int k = 0; k < id2.length; k++)
+          {
+          if(id[i]==id2[k]){return true;}
+          }
+        }
       }
     }
   return false;
