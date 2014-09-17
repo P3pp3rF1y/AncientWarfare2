@@ -334,6 +334,9 @@ guistrings.gate.too_far=You are too far away from the chosen gate coordinates.  
 guistrings.gate.use_primary_item_key=Press '%s' to Set Bounds
 guistrings.gate.constuct=Right-Click: Construct Gate
 guistrings.gate.clear_item=(Sneak)Right-Click: Clear Item
+guistrings.npc.trades=Trades
+guistrings.npc.route=Route
+guistrings.npc.restock=Restock
 
 #automation
 guistrings.automation.ignore_damage=Ign. Dmg
