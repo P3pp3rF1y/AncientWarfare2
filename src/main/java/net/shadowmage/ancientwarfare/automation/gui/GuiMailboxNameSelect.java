@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.gui;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -42,7 +41,7 @@ public void initElements()
   nameInputArea = new Text(8, 8, 120, name? container.mailboxName : container.targetName, this);
   addGuiElement(nameInputArea);
   
-  addNameButton = new Button(8, 22, 55, 12, StatCollector.translateToLocal("guistrings.automation.add_mailbox"))
+  addNameButton = new Button(8, 22, 55, 12, "guistrings.automation.add_mailbox")
     {
     @Override
     protected void onPressed()
@@ -56,7 +55,7 @@ public void initElements()
     };
   addGuiElement(addNameButton);
   
-  selectButton = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.automation.select_mailbox"))
+  selectButton = new Button(256-8-55, 8, 55, 12, "guistrings.automation.select_mailbox")
     {
     @Override
     protected void onPressed()
@@ -74,7 +73,7 @@ public void initElements()
     };
   addGuiElement(selectButton);
     
-  deleteNameButton = new Button(8+55, 22, 55, 12, StatCollector.translateToLocal("guistrings.automation.delete_mailbox"))
+  deleteNameButton = new Button(8+55, 22, 55, 12, "guistrings.automation.delete_mailbox")
     {
     @Override
     protected void onPressed()

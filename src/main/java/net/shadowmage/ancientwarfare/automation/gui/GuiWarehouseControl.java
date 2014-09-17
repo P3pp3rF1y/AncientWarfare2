@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -60,7 +59,7 @@ public void initElements()
     };
   addGuiElement(sortChange);
   
-  sortOrderBox = new Checkbox(8+55+55+4, 6, 16, 16, StatCollector.translateToLocal("guistrings.automation.descending"))
+  sortOrderBox = new Checkbox(8+55+55+4, 6, 16, 16, "guistrings.automation.descending")
     {
     @Override
     public void onToggled()
@@ -79,10 +78,8 @@ public void initElements()
     @Override
     public void onTextUpdated(String oldText, String newText)
       {
-      AWLog.logDebug("text input detected...: "+newText);
       if(sortType==SortType.NAME_INPUT)
         {        
-        AWLog.logDebug("refreshing GUI for sort..");
         refreshGui();
         }
       }

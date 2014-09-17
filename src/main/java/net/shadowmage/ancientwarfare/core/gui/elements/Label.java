@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.util.StatCollector;
 
 public class Label extends GuiElement
 {
@@ -13,7 +14,7 @@ boolean renderCentered = false;
 public Label(int topLeftX, int topLeftY, String text)
   {
   super(topLeftX, topLeftY);
-  this.text = text;
+  this.text = StatCollector.translateToLocal(text);
   this.height = 8;
   fr = Minecraft.getMinecraft().fontRenderer;
   this.width = fr.getStringWidth(text);
@@ -45,7 +46,7 @@ public void render(int mouseX, int mouseY, float partialTick)
 public void setText(String text)
   {
   if(text==null){text = "";}
-  this.text = text;  
+  this.text = StatCollector.translateToLocal(text);  
   }
 
 public String getText()

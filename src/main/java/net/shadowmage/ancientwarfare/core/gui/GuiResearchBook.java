@@ -40,7 +40,7 @@ public void initElements()
   {
   area = new CompositeScrolled(0, 40, xSize/2, ySize-40);
   addGuiElement(area);
-  modeBox = new Checkbox(8, 8, 16, 16, StatCollector.translateToLocal("guistrings.research.research_mode"))
+  modeBox = new Checkbox(8, 8, 16, 16, "guistrings.research.research_mode")
     {
     @Override
     public void onToggled()
@@ -88,7 +88,7 @@ private void addRecipeModeControsl()
   detailsArea.addGuiElement(new RecipeButton(8, totalHeight, selectedRecipe));
   totalHeight += 12;
   
-  detailsArea.addGuiElement(new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.research.research_needed")));
+  detailsArea.addGuiElement(new Label(8, totalHeight, "guistrings.research.research_needed"));
   totalHeight+=14;
   
   if(selectedRecipe!=null)
@@ -133,7 +133,7 @@ private void addResearchModeControls()
   detailsArea.addGuiElement(new GoalButton(8, totalHeight, selectedGoal));
   totalHeight+=16;
   
-  detailsArea.addGuiElement(new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.research.researched_items")));
+  detailsArea.addGuiElement(new Label(8, totalHeight, "guistrings.research.researched_items"));
   totalHeight+=14;
   
   if(selectedGoal!=null)
@@ -166,7 +166,7 @@ public RecipeButton(int topLeftX, int topLeftY, RecipeResearched recipe)
   {
   super(topLeftX, topLeftY, 160, 12, "");
   this.recipe = recipe;
-  this.text = recipe==null ? StatCollector.translateToLocal("guistrings.no_selection") : recipe.getRecipeOutput().getDisplayName();
+  this.text = recipe==null ? "guistrings.no_selection" : recipe.getRecipeOutput().getDisplayName();
   this.setText(text);
   }
 }
@@ -176,7 +176,7 @@ private class GoalButton extends Button
 ResearchGoal goal;
 public GoalButton(int topLeftX, int topLeftY, ResearchGoal goal)
   {
-  super(topLeftX, topLeftY, 160, 10, goal==null? StatCollector.translateToLocal("guistrings.no_selection") : StatCollector.translateToLocal(goal.getName()));
+  super(topLeftX, topLeftY, 160, 10, goal==null? "guistrings.no_selection" : goal.getName());
   this.goal = goal;
   }
 }

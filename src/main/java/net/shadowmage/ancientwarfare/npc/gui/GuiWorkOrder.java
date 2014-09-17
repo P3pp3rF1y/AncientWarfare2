@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -87,7 +86,7 @@ public void setupElements()
       };
     area.addGuiElement(button);
       
-    button = new IndexedButton(8+20+12+12+20, totalHeight+10, 60, 12, StatCollector.translateToLocal("guistrings.npc.remove_work_point"), index)
+    button = new IndexedButton(8+20+12+12+20, totalHeight+10, 60, 12, "guistrings.npc.remove_work_point", index)
       {
       @Override
       protected void onPressed()
@@ -99,7 +98,7 @@ public void setupElements()
       };    
     area.addGuiElement(button);
     
-    label = new Label(8+20+12+12+60+40+20, totalHeight, StatCollector.translateToLocal("guistrings.npc.work_length"));
+    label = new Label(8+20+12+12+60+40+20, totalHeight, "guistrings.npc.work_length");
     area.addGuiElement(label);
     
     input = new WorkEntryNumberInput(8+20+12+12+60+40+20, totalHeight+10, 60, entry.getWorkLength()/1200, this, entry)

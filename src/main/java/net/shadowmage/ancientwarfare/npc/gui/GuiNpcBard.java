@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
@@ -39,7 +38,7 @@ public void initElements()
   
   int inputWidth=40;
   
-  label = new Label(buttonX, (totalHeight=8), StatCollector.translateToLocal("guistrings.npc.bard_tune"));
+  label = new Label(buttonX, (totalHeight=8), "guistrings.npc.bard_tune");
   addGuiElement(label);
   tuneInput = new Text(inputX, totalHeight, 120, container.bardTune, this)
     {
@@ -53,7 +52,7 @@ public void initElements()
     };
   addGuiElement(tuneInput);
   
-  label = new Label(buttonX, totalHeight+=12, StatCollector.translateToLocal("guistrings.npc.bard_play_time"));
+  label = new Label(buttonX, totalHeight+=12, "guistrings.npc.bard_play_time");
   addGuiElement(label);
   lengthInput = new NumberInput(inputX, totalHeight, inputWidth, container.bardPlayLength, this)
     {
@@ -68,7 +67,7 @@ public void initElements()
   lengthInput.setIntegerValue();
   addGuiElement(lengthInput);
   
-  label = new Label(buttonX, totalHeight+=12, StatCollector.translateToLocal("guistrings.npc.bard_play_chance"));
+  label = new Label(buttonX, totalHeight+=12, "guistrings.npc.bard_play_chance");
   addGuiElement(label);
   chanceInput = new NumberInput(inputX, totalHeight, inputWidth, container.bardPlayChance, this)
     {
@@ -83,7 +82,7 @@ public void initElements()
   chanceInput.setIntegerValue();
   addGuiElement(chanceInput);
   
-  label = new Label(buttonX, totalHeight+=12, StatCollector.translateToLocal("guistrings.npc.bard_play_delay"));
+  label = new Label(buttonX, totalHeight+=12, "guistrings.npc.bard_play_delay");
   addGuiElement(label);
   delayInput = new NumberInput(inputX, totalHeight, inputWidth, container.bardPlayRecheckDelay, this)
     {

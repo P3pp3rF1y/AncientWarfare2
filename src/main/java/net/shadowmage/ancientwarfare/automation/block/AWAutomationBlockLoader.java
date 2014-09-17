@@ -5,7 +5,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockTorqueTile;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
-import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteStatic;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
@@ -29,6 +28,7 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseSto
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageLarge;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageMedium;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
@@ -36,9 +36,7 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteMushroomFa
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteTreeFarm;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
 import cpw.mods.fml.common.registry.GameRegistry;

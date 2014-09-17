@@ -36,7 +36,7 @@ public void initElements()
   {
   int areaYSize = player.capabilities.isCreativeMode ? ySize - 24 - 16 - 4 - 4*18 : ySize - 16 - 4 - 4*18;
   area = new CompositeScrolled(0, player.capabilities.isCreativeMode? 24 : 0, xSize, areaYSize);
-  inventoryButton = new Button(8, 8, (256-16)/2, 12, StatCollector.translateToLocal("guistrings.inventory"))
+  inventoryButton = new Button(8, 8, (256-16)/2, 12, "guistrings.inventory")
     {
     @Override
     protected void onPressed()
@@ -44,7 +44,7 @@ public void initElements()
       NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, container.trader.getEntityId(), 0, 0);
       }
     };
-  setupButton = new Button(8+((256-16)/2), 8, (256-16)/2, 12, StatCollector.translateToLocal("guistrings.trade_setup"))
+  setupButton = new Button(8+((256-16)/2), 8, (256-16)/2, 12, "guistrings.trade_setup")
     {
     @Override
     protected void onPressed()
@@ -58,7 +58,7 @@ public void initElements()
 public void setupElements()
   {
   clearElements();
-  addGuiElement(new Label(8+9*18+8+8, 240-4-8-4*18, StatCollector.translateToLocal("guistrings.input")));
+  addGuiElement(new Label(8+9*18+8+8, 240-4-8-4*18, "guistrings.input"));
   addGuiElement(area);
   if(player.capabilities.isCreativeMode)
     {
@@ -108,7 +108,7 @@ private int addTrade(final FactionTrade trade, final int tradeNum, int startHeig
   
   area.addGuiElement(new Label(8+3*18+1, startHeight+20, "="));
   
-  Button tradeButton = new Button(8+6*18+9+8, startHeight+17, 70, 20, StatCollector.translateToLocal("guistrings.trade"))
+  Button tradeButton = new Button(8+6*18+9+8, startHeight+17, 70, 20, "guistrings.trade")
     {
     @Override
     protected void onPressed()

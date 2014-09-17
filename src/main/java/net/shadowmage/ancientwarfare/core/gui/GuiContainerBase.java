@@ -14,7 +14,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
@@ -24,7 +23,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
-import net.shadowmage.ancientwarfare.nei_plugin.AncientWarfareNEIPlugin;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;

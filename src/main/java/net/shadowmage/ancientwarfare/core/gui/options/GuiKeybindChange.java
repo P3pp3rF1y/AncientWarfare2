@@ -30,13 +30,13 @@ public void initElements()
   Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.keybind.select_key")+":");
   addGuiElement(label);
   
-  label = new Label(8, 8+12, StatCollector.translateToLocal(key.getName()));
+  label = new Label(8, 8+12, key.getName());
   addGuiElement(label);
   
   keyLabel = new Label(8, 8+12+12, Keyboard.getKeyName(key.getKeyCode()));
   addGuiElement(keyLabel);
   
-  Button button = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"))
+  Button button = new Button(256-8-55, 8, 55, 12, "guistrings.done")
     {
     @Override
     protected void onPressed()

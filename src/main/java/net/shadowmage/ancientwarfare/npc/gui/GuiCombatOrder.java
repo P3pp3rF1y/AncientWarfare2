@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -67,7 +66,7 @@ public void setupElements()
       };
     area.addGuiElement(button);
     
-    button = new IndexedButton(120+12+12, totalHeight, 60, 12, StatCollector.translateToLocal("guistrings.npc.remove_point"), i)
+    button = new IndexedButton(120+12+12, totalHeight, 60, 12, "guistrings.npc.remove_point", i)
       {
       @Override
       protected void onPressed()

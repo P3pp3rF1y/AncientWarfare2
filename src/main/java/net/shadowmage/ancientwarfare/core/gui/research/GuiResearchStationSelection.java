@@ -40,10 +40,10 @@ public void initElements()
   selectionArea = new CompositeScrolled(200, 40, 200, 200);
   addGuiElement(selectionArea);
   
-  Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.research.queued_research"));
+  Label label = new Label(8, 8, "guistrings.research.queued_research");
   addGuiElement(label);
   
-  label = new Label(240+8, 8, StatCollector.translateToLocal("guistrings.research.learnable_research"));
+  label = new Label(240+8, 8, "guistrings.research.learnable_research");
   addGuiElement(label);
   }
 
@@ -98,7 +98,7 @@ private int addQueuedGoal(int totalHeight, int goalNumber, boolean removeButton)
   
   Tooltip selectableGoalTooltip = new Tooltip(110, 75);
   selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocal("guistrings.research.research_time")+": "+g.getTotalResearchTime()));
-  selectableGoalTooltip.addTooltipElement(new Label(0, 10, StatCollector.translateToLocal("guistrings.research.resources_needed")));
+  selectableGoalTooltip.addTooltipElement(new Label(0, 10, "guistrings.research.resources_needed"));
   int x = 0, y = 0;
   for(ItemStack stack : g.getResources())
     {
@@ -126,7 +126,7 @@ private int addSelectableGoal(int totalHeight, int goalNumber)
   ResearchGoal g = ResearchGoal.getGoal(goalNumber);
   if(g==null){return totalHeight;}
 
-  Label label = new Label(8, totalHeight+1, StatCollector.translateToLocal(g.getName()));
+  Label label = new Label(8, totalHeight+1, g.getName());
   selectionArea.addGuiElement(label);
   
   GoalButton button = new GoalButton(200-8-12-12, totalHeight, 12, 12, g, true);  
@@ -134,7 +134,7 @@ private int addSelectableGoal(int totalHeight, int goalNumber)
   
   Tooltip selectableGoalTooltip = new Tooltip(110, 75);
   selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocal("guistrings.research.research_time")+": "+g.getTotalResearchTime()));
-  selectableGoalTooltip.addTooltipElement(new Label(0, 10, StatCollector.translateToLocal("guistrings.research.resources_needed")));
+  selectableGoalTooltip.addTooltipElement(new Label(0, 10, "guistrings.research.resources_needed"));
   int x = 0, y = 0;
   for(ItemStack stack : g.getResources())
     {

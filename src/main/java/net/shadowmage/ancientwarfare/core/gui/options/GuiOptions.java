@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.core.gui.options;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions.ClientOption;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -28,7 +27,7 @@ public GuiOptions(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  Button button = new Button(256-8-90, 8, 90, 12, StatCollector.translateToLocal("guistrings.keybinds"))
+  Button button = new Button(256-8-90, 8, 90, 12, "guistrings.keybinds")
     {
     @Override
     protected void onPressed()
@@ -54,7 +53,7 @@ public void initElements()
     
     if(o.isBooleanValue())
       {      
-      box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal(o.getName()))
+      box = new Checkbox(8, totalHeight, 16, 16, o.getName())
         {
         @Override
         public void onToggled()
@@ -68,7 +67,7 @@ public void initElements()
       }
     else if(o.isIntValue())
       {
-      label = new Label(8, totalHeight, StatCollector.translateToLocal(o.getName()));
+      label = new Label(8, totalHeight, o.getName());
       area.addGuiElement(label);
       input = new NumberInput(150, totalHeight, 35, o.getIntValue(), this)
         {

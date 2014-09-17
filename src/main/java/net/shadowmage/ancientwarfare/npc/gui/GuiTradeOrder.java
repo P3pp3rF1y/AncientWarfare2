@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
-import java.util.HashMap;
-
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -19,7 +17,7 @@ private Button currentMode;
 
 public GuiTradeOrder(ContainerBase container)
   {
-  super(container, 400, 240, defaultBackground);
+  super(container, 320, 240, defaultBackground);
   this.container = (ContainerTradeOrder)container;
   }
 

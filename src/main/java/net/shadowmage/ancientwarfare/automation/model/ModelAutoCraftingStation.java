@@ -5,8 +5,6 @@
  
 package net.shadowmage.ancientwarfare.automation.model;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelCraftingBase;

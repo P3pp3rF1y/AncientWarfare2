@@ -31,7 +31,6 @@ import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
 public class StructureBuilder implements IStructureBuilder
 {

@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -23,7 +22,7 @@ public GuiTownHallInventory(ContainerBase container)
 public void initElements()
   {
   this.container.addSlots();
-  Button button = new Button(8, 8, 75, 12, StatCollector.translateToLocal("guistrings.npc.death_list"))
+  Button button = new Button(8, 8, 75, 12, "guistrings.npc.death_list")
     {
     @Override
     protected void onPressed()

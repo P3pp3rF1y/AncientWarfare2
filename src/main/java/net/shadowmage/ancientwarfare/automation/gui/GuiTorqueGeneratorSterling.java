@@ -31,7 +31,7 @@ public void initElements()
   pg1 = new ProgressBar(8, 8, 178-16, 10);
   addGuiElement(pg1);
   
-  energyLabel = new Label(8,8,StatCollector.translateToLocal("guistrings.automation.energy_stored")+": "+container.energy);
+  energyLabel = new Label(8,8, StatCollector.translateToLocal("guistrings.automation.energy_stored")+": "+container.energy);
   addGuiElement(energyLabel);
   
   pg = new ProgressBar(8, 8+10+18+4, 178-16, 16);

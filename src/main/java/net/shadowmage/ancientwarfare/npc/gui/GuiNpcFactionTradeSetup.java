@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -53,7 +52,7 @@ public void setupElements()
     totalHeight = addTrade(trades.get(i), totalHeight, i);
     }
   
-  Button newTradeButton = new Button(8, totalHeight, xSize-8-16, 12, StatCollector.translateToLocal("guistrings.new_trade"))
+  Button newTradeButton = new Button(8, totalHeight, xSize-8-16, 12, "guistrings.new_trade")
     {
     @Override
     protected void onPressed()
@@ -102,7 +101,7 @@ private void addTradeControls(final FactionTrade trade, int startHeight, final i
   {  
   startHeight -= 1;//offset by 1 to lineup better with the item slot boxes, as they align to the inner slot rather than border
   int infoX = 6*18 + 8 + 9 + 4;
-  Button upButton = new Button(infoX, startHeight, 55, 12, StatCollector.translateToLocal("guistrings.up"))
+  Button upButton = new Button(infoX, startHeight, 55, 12, "guistrings.up")
     {
     @Override
     protected void onPressed()
@@ -114,7 +113,7 @@ private void addTradeControls(final FactionTrade trade, int startHeight, final i
     };
   area.addGuiElement(upButton);
   
-  Button downButton = new Button(infoX, startHeight + 3*18 - 12, 55, 12, StatCollector.translateToLocal("guistrings.down"))
+  Button downButton = new Button(infoX, startHeight + 3*18 - 12, 55, 12, "guistrings.down")
     {
     @Override
     protected void onPressed()
@@ -126,7 +125,7 @@ private void addTradeControls(final FactionTrade trade, int startHeight, final i
     };
   area.addGuiElement(downButton);
   
-  Button delete = new Button(infoX, startHeight + 21, 55, 12, StatCollector.translateToLocal("guistrings.delete"))
+  Button delete = new Button(infoX, startHeight + 21, 55, 12, "guistrings.delete")
     {
     @Override
     protected void onPressed()
@@ -140,9 +139,9 @@ private void addTradeControls(final FactionTrade trade, int startHeight, final i
   
   area.addGuiElement(new Label(8+3*18+1, startHeight+20, "="));
     
-  area.addGuiElement(new Label(infoX + 55 + 4, startHeight+1, StatCollector.translateToLocal("guistrings.max_trades")));
+  area.addGuiElement(new Label(infoX + 55 + 4, startHeight+1, "guistrings.max_trades"));
   
-  area.addGuiElement(new Label(infoX + 55 + 4, startHeight+18+1, StatCollector.translateToLocal("guistrings.refill_frequency")));
+  area.addGuiElement(new Label(infoX + 55 + 4, startHeight+18+1, "guistrings.refill_frequency"));
   
   NumberInput tradeInput = new NumberInput(infoX+55+4+60, startHeight, 40, trade.getMaxAvailable(), this)
     {

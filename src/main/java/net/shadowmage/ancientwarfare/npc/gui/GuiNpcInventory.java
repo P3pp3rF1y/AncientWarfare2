@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.gui;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
@@ -47,7 +46,7 @@ public void updateScreen()
 @Override
 public void initElements()
   {
-  Label label = new Label(8+18+18+4, 9, StatCollector.translateToLocal("guistrings.npc.npc_name"));
+  Label label = new Label(8+18+18+4, 9, "guistrings.npc.npc_name");
   addGuiElement(label);
   
   nameInput = new Text(75, 8, 95, container.npc.getCustomNameTag(), this)
@@ -60,7 +59,7 @@ public void initElements()
     };
   addGuiElement(nameInput);
   
-  label = new Label(8+18+18+4, 21, StatCollector.translateToLocal("guistrings.npc.npc_texture"));
+  label = new Label(8+18+18+4, 21, "guistrings.npc.npc_texture");
   addGuiElement(label);
   textureInput = new Text(75, 20, 95, container.npc.getCustomTex(), this)
     {
@@ -72,7 +71,7 @@ public void initElements()
     };
   addGuiElement(textureInput);
   
-  repackButton = new Button(buttonX, 36, 75, 12, StatCollector.translateToLocal("guistrings.npc.repack"))
+  repackButton = new Button(buttonX, 36, 75, 12, "guistrings.npc.repack")
     {
     @Override
     protected void onPressed()
@@ -85,7 +84,7 @@ public void initElements()
     };
   addGuiElement(repackButton);
   
-  Button button = new Button(buttonX, 48, 75, 12, StatCollector.translateToLocal("guistrings.npc.set_home"))
+  Button button = new Button(buttonX, 48, 75, 12, "guistrings.npc.set_home")
     {
     @Override
     protected void onPressed()
@@ -97,7 +96,7 @@ public void initElements()
     };
   addGuiElement(button);
   
-  button = new Button(buttonX, 60, 75, 12, StatCollector.translateToLocal("guistrings.npc.clear_home"))
+  button = new Button(buttonX, 60, 75, 12, "guistrings.npc.clear_home")
     {
     @Override
     protected void onPressed()
@@ -111,7 +110,7 @@ public void initElements()
   
   if(container.npc.hasAltGui())
     {
-    button = new Button(buttonX, 72, 75, 12, StatCollector.translateToLocal("guistrings.npc.alt_gui"))
+    button = new Button(buttonX, 72, 75, 12, "guistrings.npc.alt_gui")
       {
       @Override
       protected void onPressed()
@@ -124,7 +123,7 @@ public void initElements()
   
   if(player.capabilities.isCreativeMode)
     {
-    button = new Button(buttonX, 84, 75, 12, StatCollector.translateToLocal("guistrings.npc.creative_gui"))
+    button = new Button(buttonX, 84, 75, 12, "guistrings.npc.creative_gui")
       {
       @Override
       protected void onPressed()
@@ -142,7 +141,7 @@ public void initElements()
   
   slot = new ItemSlot(26, 8, new ItemStack(Items.iron_sword), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-  text = StatCollector.translateToLocal("guistrings.npc.weapon_slot");
+  text = "guistrings.npc.weapon_slot";
   tw = fontRendererObj.getStringWidth(text);
   t = new Tooltip(tw, 10);
   t.addTooltipElement(new Label(0,0, text));
@@ -151,7 +150,7 @@ public void initElements()
   
   slot = new ItemSlot(26, 8+18*1, new ItemStack(AWNpcItemLoader.upkeepOrder), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-  text = StatCollector.translateToLocal("guistrings.npc.shield_slot");
+  text = "guistrings.npc.shield_slot";
   tw = fontRendererObj.getStringWidth(text);
   t = new Tooltip(tw, 10);
   t.addTooltipElement(new Label(0,0, text));
@@ -160,7 +159,7 @@ public void initElements()
   
   slot = new ItemSlot(26, 8+18*2, new ItemStack(Items.iron_helmet), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-  text = StatCollector.translateToLocal("guistrings.npc.helmet_slot");
+  text = "guistrings.npc.helmet_slot";
   tw = fontRendererObj.getStringWidth(text);
   t = new Tooltip(tw, 10);
   t.addTooltipElement(new Label(0,0, text));
@@ -169,7 +168,7 @@ public void initElements()
   
   slot = new ItemSlot(26, 8+18*3, new ItemStack(Items.iron_chestplate), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-  text = StatCollector.translateToLocal("guistrings.npc.chest_slot");
+  text = "guistrings.npc.chest_slot";
   tw = fontRendererObj.getStringWidth(text);
   t = new Tooltip(tw, 10);
   t.addTooltipElement(new Label(0,0, text));
@@ -178,7 +177,7 @@ public void initElements()
   
   slot = new ItemSlot(26, 8+18*4, new ItemStack(Items.iron_leggings), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-  text = StatCollector.translateToLocal("guistrings.npc.legs_slot");
+  text = "guistrings.npc.legs_slot";
   tw = fontRendererObj.getStringWidth(text);
   t = new Tooltip(tw, 10);
   t.addTooltipElement(new Label(0,0, text));
@@ -187,7 +186,7 @@ public void initElements()
   
   slot = new ItemSlot(26, 8+18*5, new ItemStack(Items.iron_boots), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-  text = StatCollector.translateToLocal("guistrings.npc.boots_slot");
+  text = "guistrings.npc.boots_slot";
   tw = fontRendererObj.getStringWidth(text);
   t = new Tooltip(tw, 10);
   t.addTooltipElement(new Label(0,0, text));
@@ -197,7 +196,7 @@ public void initElements()
   
   slot = new ItemSlot(28+18*2, 8+18*2, new ItemStack(AWNpcItemLoader.upkeepOrder), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-  text = StatCollector.translateToLocal("guistrings.npc.upkeep_order_slot");
+  text = "guistrings.npc.upkeep_order_slot";
   tw = fontRendererObj.getStringWidth(text);
   t = new Tooltip(tw, 10);
   t.addTooltipElement(new Label(0,0, text));
@@ -206,7 +205,7 @@ public void initElements()
   
   slot = new ItemSlot(28+18*2, 8+18*3, new ItemStack(AWNpcItemLoader.routingOrder), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-  text = StatCollector.translateToLocal("guistrings.npc.manual_order_slot");
+  text = "guistrings.npc.manual_order_slot";
   tw = fontRendererObj.getStringWidth(text);
   t = new Tooltip(tw, 10);
   t.addTooltipElement(new Label(0,0, text));

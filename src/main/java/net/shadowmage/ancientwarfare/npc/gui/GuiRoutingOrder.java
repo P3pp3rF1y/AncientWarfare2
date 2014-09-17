@@ -68,7 +68,7 @@ public void setupElements()
     label = new Label(120, totalHeight, pos.toString());
     area.addGuiElement(label);
     
-    labelString = StatCollector.translateToLocal(Direction.getDirectionFor(point.getBlockSide()).getTranslationKey());
+    labelString = Direction.getDirectionFor(point.getBlockSide()).getTranslationKey();
     button = new IndexedButton(8, totalHeight+10, 55, 12, labelString, index)
       {
       @Override
@@ -81,7 +81,7 @@ public void setupElements()
       };
     area.addGuiElement(button);
       
-    labelString = StatCollector.translateToLocal(point.getRouteType().getTranslationKey());
+    labelString = point.getRouteType().getTranslationKey();
     button = new IndexedButton(8+55+2, totalHeight+10, 80, 12, labelString, index)
       {
       @Override
@@ -118,7 +118,7 @@ public void setupElements()
       };
     area.addGuiElement(button);
     
-    button = new IndexedButton(8+55+80+12+12+8, totalHeight+10, 55, 12, StatCollector.translateToLocal("guistrings.npc.remove_point"), index)
+    button = new IndexedButton(8+55+80+12+12+8, totalHeight+10, 55, 12, "guistrings.npc.remove_point", index)
       {
       @Override
       protected void onPressed()

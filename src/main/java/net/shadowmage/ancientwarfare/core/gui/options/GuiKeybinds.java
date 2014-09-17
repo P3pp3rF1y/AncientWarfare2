@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.core.gui.options;
 import java.util.Collection;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -38,7 +37,7 @@ public void initElements()
   int totalHeight = 8;
   for(Keybind k : keys)
     {
-    label = new Label(8, totalHeight+1, StatCollector.translateToLocal(k.getName()));
+    label = new Label(8, totalHeight+1, k.getName());
     area.addGuiElement(label);
     
     button = new KeybindButton(180, totalHeight, 55, 12, k);

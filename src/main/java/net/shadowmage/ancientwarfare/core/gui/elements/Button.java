@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -40,7 +41,7 @@ public Button(int topLeftX, int topLeftY, int width, int height, String text)
 
 public final void setText(String text)
   {
-  this.text = text;
+  this.text = StatCollector.translateToLocal(text);
   int tw = fr.getStringWidth(text);
   textX = (width - tw)/2;
   textY = (height - 8)/2;   
