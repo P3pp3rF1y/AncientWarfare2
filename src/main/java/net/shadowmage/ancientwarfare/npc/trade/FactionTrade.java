@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class FactionTrade
@@ -98,7 +97,6 @@ public void readFromNBT(NBTTagCompound tag)
     {
     itemTag = inputList.getCompoundTagAt(i);
     input[itemTag.getInteger("slot")] = InventoryTools.readItemStack(itemTag);
-    AWLog.logDebug("reading trade. slot: "+itemTag.getInteger("slot")+" item: "+input[itemTag.getInteger("slot")]);
     }
   
   NBTTagList outputList = tag.getTagList("outputItems", Constants.NBT.TAG_COMPOUND);
