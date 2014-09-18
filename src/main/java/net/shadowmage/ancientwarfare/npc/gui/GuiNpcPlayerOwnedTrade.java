@@ -74,7 +74,6 @@ private void addTrades()
   {
   ArrayList<POTrade> trades = new ArrayList<POTrade>();  
   container.tradeList.getTrades(trades);
-  AWLog.logDebug("Adding trades to GUI: "+trades.size());
   int totalHeight = 8;
   
   POTrade trade;
@@ -85,7 +84,6 @@ private void addTrades()
       {
       totalHeight = addTrade(trade, i, totalHeight);      
       }
-    else{AWLog.logDebug("Trade unavailable !!");}
     }
   area.setAreaSize(totalHeight);
   }
