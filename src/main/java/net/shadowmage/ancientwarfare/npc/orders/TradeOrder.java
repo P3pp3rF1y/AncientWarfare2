@@ -47,6 +47,9 @@ public POTradeRestockData getRestockData(){return restockEntry;}
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
+  tradeList = new POTradeList();
+  tradeRoute = new POTradeRoute();
+  restockEntry = new POTradeRestockData();
   tradeList.readFromNBT(tag.getCompoundTag("tradeList"));
   tradeRoute.readFromNBT(tag.getCompoundTag("tradeRoute"));
   restockEntry.readFromNBT(tag.getCompoundTag("restockEntry"));

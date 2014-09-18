@@ -197,6 +197,8 @@ tile.recruiting_station.name=Recruiting Station
 #vehicle
 
 #guistrings
+guistrings.side=Side
+guistrings.position=Position
 guistrings.deposit=Deposit
 guistrings.withdraw=Withdraw
 guistrings.new_deposit=Add Deposit Entry

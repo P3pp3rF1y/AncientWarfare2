@@ -364,11 +364,13 @@ private void setupRestockMode()
   int totalHeight=8;
 
   /********************************** DEPOSIT LIST **********************************************/
-  restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.deposit"));
+  restockArea.addGuiElement(new Label(120, totalHeight, "guistrings.deposit").setRenderCentered());
   totalHeight+=12;
-  restockArea.addGuiElement(new Label(8, totalHeight, restock.getDepositPoint()==null? "guistrings.none" : restock.getDepositPoint().toString()));
+  restockArea.addGuiElement(new Label(70, totalHeight, restock.getDepositPoint()==null? "guistrings.none" : restock.getDepositPoint().toString()));
+  restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.position"));
   totalHeight+=12;
-  restockArea.addGuiElement(new Button(9, totalHeight, 55, 12, Direction.getDirectionFor(restock.getDepositSide()).getTranslationKey())
+  restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.side"));
+  restockArea.addGuiElement(new Button(70, totalHeight, 55, 12, Direction.getDirectionFor(restock.getDepositSide()).getTranslationKey())
     {
     @Override
     protected void onPressed()
@@ -402,11 +404,13 @@ private void setupRestockMode()
   
   /********************************** WITHDRAW LIST **********************************************/
   
-  restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.withdraw"));
+  restockArea.addGuiElement(new Label(120, totalHeight, "guistrings.withdraw").setRenderCentered());
   totalHeight+=12;
-  restockArea.addGuiElement(new Label(8, totalHeight, restock.getWithdrawPoint()==null? "guistrings.none" : restock.getWithdrawPoint().toString()));
+  restockArea.addGuiElement(new Label(70, totalHeight, restock.getWithdrawPoint()==null? "guistrings.none" : restock.getWithdrawPoint().toString()));
+  restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.position"));
   totalHeight+=12;
-  restockArea.addGuiElement(new Button(9, totalHeight, 55, 12, Direction.getDirectionFor(restock.getWithdrawSide()).getTranslationKey())
+  restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.side"));
+  restockArea.addGuiElement(new Button(70, totalHeight, 55, 12, Direction.getDirectionFor(restock.getWithdrawSide()).getTranslationKey())
     {
     @Override
     protected void onPressed()

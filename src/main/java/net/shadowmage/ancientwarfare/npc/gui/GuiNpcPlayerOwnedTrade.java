@@ -44,6 +44,7 @@ public void initElements()
 @Override
 public void setupElements()
   {
+  area.clearElements();
   clearElements();
   if(owner)
     {
