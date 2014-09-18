@@ -179,15 +179,15 @@ private static void addPlayerOwnedNpcs()
     };
   addNpcRegistration(reg, "courier", "ancientwarfare:npc/spawner_courier");
   
-//  reg = new NpcDeclaration(NpcTrader.class, AWEntityRegistry.NPC_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "trader")
-//    {    
-//    @Override
-//    public Entity createEntity(World world)
-//      {
-//      return new NpcTrader(world);
-//      }
-//    };
-//  addNpcRegistration(reg, "trader", "ancientwarfare:npc/spawner_trader");
+  reg = new NpcDeclaration(NpcTrader.class, AWEntityRegistry.NPC_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "trader")
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcTrader(world);
+      }
+    };
+  addNpcRegistration(reg, "trader", "ancientwarfare:npc/spawner_trader");
   
   reg = new NpcDeclaration(NpcPriest.class, AWEntityRegistry.NPC_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "priest")
     {    
