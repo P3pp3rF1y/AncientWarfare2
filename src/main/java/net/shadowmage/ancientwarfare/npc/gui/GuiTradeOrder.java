@@ -4,14 +4,20 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Line;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
+import net.shadowmage.ancientwarfare.npc.orders.TradeOrder.TradePoint;
+import net.shadowmage.ancientwarfare.npc.orders.TradeOrder.TradePointRoute;
 import net.shadowmage.ancientwarfare.npc.trade.POTrade;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 
@@ -171,7 +177,8 @@ private int addTrade(final POTrade trade, final int tradeIndex, int startHeight)
       }
     if(gridY>=3){break;}
     }
-  
+
+  tradesArea.addGuiElement(new Label(8+3*18+1, startHeight+20, "="));
   addTradeControls(trade, startHeight, tradeIndex);
   
   startHeight += 18*3;
@@ -255,7 +262,94 @@ private void addTradeOutputSlot(final POTrade trade, int x, int y, final int slo
 
 private void setupRouteMode()
   {
+  routeArea.clearElements();
+  TradePointRoute route = container.orders.getRoute();  
+  int totalHeight = 8;  
+  for(int i = 0; i < route.size(); i++)
+    {
+    totalHeight = addRoutePoint(route.get(i), i, totalHeight);
+    }
+  routeArea.setAreaSize(totalHeight);
+  }
+
+private int addRoutePoint(final TradePoint point, final int index, int startHeight)
+  {
+  BlockPosition pos = point.getPosition();
+  Label blockName = new Label(8, startHeight, "Unknown Block");
+  Label posLabel = new Label(8, startHeight+12, pos.toString());
+  if(player.worldObj.blockExists(pos.x, pos.y, pos.z))
+    {
+    blockName.setText(player.worldObj.getBlock(pos.x, pos.y, pos.z).getUnlocalizedName());
+    }
+  routeArea.addGuiElement(blockName);
+  routeArea.addGuiElement(posLabel);
   
+  Button up = new Button(120, startHeight, 55, 12, "guistrings.up")
+    {
+    @Override
+    protected void onPressed()
+      {
+      TradePointRoute route = container.orders.getRoute();
+      route.decrementRoutePoint(index);
+      refreshGui();
+      }    
+    };
+  routeArea.addGuiElement(up);
+  
+  Button down = new Button(120, startHeight+12+12, 55, 12, "guistrings.down")
+    {
+    @Override
+    protected void onPressed()
+      {
+      TradePointRoute route = container.orders.getRoute();
+      route.incrementRoutePoint(index);
+      refreshGui();
+      } 
+    };
+  routeArea.addGuiElement(down);
+  
+  Button delete = new Button(120, startHeight+12, 55, 12, "guistrings.delete")
+    {
+    @Override
+    protected void onPressed()
+      {
+      TradePointRoute route = container.orders.getRoute();
+      route.deleteRoutePoint(index);
+      refreshGui();
+      }
+    };
+  routeArea.addGuiElement(delete);
+  
+  Checkbox upkeep = new Checkbox(120+55+4, startHeight, 12, 12, "guistrings.upkeep")
+    {
+    @Override
+    public void onToggled()
+      {
+      TradePointRoute route = container.orders.getRoute();
+      route.setUpkeep(index, checked());      
+      }
+    };
+  routeArea.addGuiElement(upkeep);
+  
+  Label delayLabel = new Label(120+55+4, startHeight+12+1, StatCollector.translateToLocal("guistrings.delay")+":");
+  routeArea.addGuiElement(delayLabel);
+  
+  NumberInput delayInput = new NumberInput(120+55+4, startHeight+24, 55, point.getDelay(), this)
+    {
+    @Override
+    public void onValueUpdated(float value)
+      {
+      TradePointRoute route = container.orders.getRoute();
+      route.setPointDelay(index, (int)value);
+      }
+    };
+  delayInput.setIntegerValue();
+  routeArea.addGuiElement(delayInput);
+    
+  startHeight += 12 + 12 + 12;
+  routeArea.addGuiElement(new Line(0, startHeight+2, xSize, startHeight+2, 1, 0x000000ff));
+  startHeight += 5;
+  return startHeight;
   }
 
 private void setupRestockMode()

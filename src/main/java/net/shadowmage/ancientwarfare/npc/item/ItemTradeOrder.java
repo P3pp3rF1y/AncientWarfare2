@@ -2,7 +2,13 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
+import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
 
 public class ItemTradeOrder extends ItemOrders
@@ -31,15 +37,33 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
   if(key==ItemKey.KEY_0)
     {
-    //TODO add trader route point
+    MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
+    if(hit==null || hit.typeOfHit!=MovingObjectType.BLOCK){return;}
+    TradeOrder order = TradeOrder.getTradeOrder(stack);
+    BlockPosition pos = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
+    order.getRoute().addRoutePoint(pos);
+    TradeOrder.writeTradeOrder(stack, order);
+    AWLog.logDebug("added route point: "+pos+" new route size: "+order.getRoute().size());
     }
   else if(key==ItemKey.KEY_1)
     {
-    //TODO set restock withdraw point and side
+    MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
+    if(hit==null || hit.typeOfHit!=MovingObjectType.BLOCK){return;}
+    TradeOrder order = TradeOrder.getTradeOrder(stack);
+    BlockPosition pos = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
+    order.getRestockData().setDepositPoint(pos, hit.sideHit);
+    TradeOrder.writeTradeOrder(stack, order);
+    AWLog.logDebug("set deposit point: "+pos);
     }
   else if(key==ItemKey.KEY_2)
     {
-    //TODO set restock deposit point and side
+    MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
+    if(hit==null || hit.typeOfHit!=MovingObjectType.BLOCK){return;}
+    TradeOrder order = TradeOrder.getTradeOrder(stack);
+    BlockPosition pos = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
+    order.getRestockData().setWithdrawPoint(pos, hit.sideHit);
+    TradeOrder.writeTradeOrder(stack, order);
+    AWLog.logDebug("set withdraw point: "+pos);
     }
   }
 
