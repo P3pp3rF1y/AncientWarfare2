@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +22,8 @@ import net.shadowmage.ancientwarfare.npc.trade.POTrade;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 import net.shadowmage.ancientwarfare.npc.trade.POTradePoint;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData.POTradeDepositEntry;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData.POTradeWithdrawEntry;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
 
 public class GuiTradeOrder extends GuiContainerBase
@@ -356,19 +359,43 @@ private int addRoutePoint(final POTradePoint point, final int index, int startHe
 
 private void setupRestockMode()
   {
-  POTradeRestockData restock = container.orders.getRestockData();
+  final POTradeRestockData restock = container.orders.getRestockData();
   restockArea.clearElements();
   int totalHeight=8;
 
-  /********************************** WITHDRAW LIST **********************************************/
+  /********************************** DEPOSIT LIST **********************************************/
   restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.deposit"));
   totalHeight+=12;
   restockArea.addGuiElement(new Label(8, totalHeight, restock.getDepositPoint()==null? "guistrings.none" : restock.getDepositPoint().toString()));
   totalHeight+=12;
-  restockArea.addGuiElement(new Label(9, totalHeight, Direction.getDirectionFor(restock.getDepositSide()).getTranslationKey()));
-  totalHeight+=12;
-  //TODO add the lines/area for adding more items to deposit
-  //TODO add delete button, add side-change button
+  restockArea.addGuiElement(new Button(9, totalHeight, 55, 12, Direction.getDirectionFor(restock.getDepositSide()).getTranslationKey())
+    {
+    @Override
+    protected void onPressed()
+      {
+      // TODO Auto-generated method stub
+      super.onPressed();
+      }
+    });
+  totalHeight+=16;
+  
+  List<POTradeDepositEntry> depositList = restock.getDepositList();
+  for(int i = 0; i < depositList.size(); i++)
+    {
+    totalHeight = addDepositEntry(depositList.get(i), i, totalHeight);
+    }
+  
+  Button newDepositButton = new Button(8, totalHeight, 120, 12, "guistrings.new_deposit")
+    {
+    @Override
+    protected void onPressed()
+      {
+      restock.addDepositEntry();
+      refreshGui();
+      }
+    };
+  restockArea.addGuiElement(newDepositButton);
+  totalHeight+=14;
   
   restockArea.addGuiElement(new Line(0, totalHeight, xSize, totalHeight, 2, 0x000000ff));
   totalHeight+=4;
@@ -379,11 +406,118 @@ private void setupRestockMode()
   totalHeight+=12;
   restockArea.addGuiElement(new Label(8, totalHeight, restock.getWithdrawPoint()==null? "guistrings.none" : restock.getWithdrawPoint().toString()));
   totalHeight+=12;
-  restockArea.addGuiElement(new Label(9, totalHeight, Direction.getDirectionFor(restock.getWithdrawSide()).getTranslationKey()));
-  totalHeight+=12;
-//TODO add the lines/area for adding more items to deposit
-  //TODO add delete button, add side-change button
+  restockArea.addGuiElement(new Button(9, totalHeight, 55, 12, Direction.getDirectionFor(restock.getWithdrawSide()).getTranslationKey())
+    {
+    @Override
+    protected void onPressed()
+      {
+      // TODO Auto-generated method stub
+      super.onPressed();
+      }
+    });
+  totalHeight+=16;
   
+  List<POTradeWithdrawEntry> withdrawList = restock.getWithdrawList();
+  for(int i = 0; i < withdrawList.size(); i++)
+    {
+    totalHeight = addWithdrawEntry(withdrawList.get(i), i, totalHeight);
+    }
+  
+  Button newWithdrawButton = new Button(8, totalHeight, 120, 12, "guistrings.new_withdraw")
+    {
+    @Override
+    protected void onPressed()
+      {
+      restock.addWithdrawEntry();
+      refreshGui();
+      }
+    };
+  restockArea.addGuiElement(newWithdrawButton);
+  totalHeight+=14;
+  
+  restockArea.setAreaSize(totalHeight);  
+  }
+
+private int addDepositEntry(final POTradeDepositEntry entry, final int index, int startHeight)
+  {
+  ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this)
+    {
+    @Override
+    public void onSlotClicked(ItemStack stack)
+      {
+      entry.setFilter(stack);
+      setItem(stack);
+      }
+    };
+  restockArea.addGuiElement(slot);
+  
+  Button typeButton = new Button(8+18+4, startHeight+3, 120, 12, entry.getType().toString())
+    {
+    @Override
+    protected void onPressed()
+      {
+      entry.toggleType();
+      setText(entry.getType().toString());
+      }
+    };
+  restockArea.addGuiElement(typeButton);
+  
+  Button deleteButton = new Button(8+18+4+4+120, startHeight+3, 55, 12, "guistrings.delete")
+    {
+    @Override
+    protected void onPressed()
+      {
+      container.orders.getRestockData().removeDepositEntry(index);
+      refreshGui();
+      }
+    };
+  restockArea.addGuiElement(deleteButton);
+  
+  startHeight+=18;
+//  restockArea.addGuiElement(new Line(0, startHeight+2, xSize, startHeight+2, 1, 0x000000ff));
+  startHeight+=5;
+  return startHeight;
+  }
+
+private int addWithdrawEntry(final POTradeWithdrawEntry entry, final int index, int startHeight)
+  {
+  ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this)
+    {
+    @Override
+    public void onSlotClicked(ItemStack stack)
+      {
+      entry.setFilter(stack);
+      setItem(stack);
+      }
+    };
+  restockArea.addGuiElement(slot);
+  
+  Button typeButton = new Button(8+18+4, startHeight+3, 120, 12, entry.getType().toString())
+    {
+    @Override
+    protected void onPressed()
+      {
+      entry.toggleType();
+      setText(entry.getType().toString());
+      }
+    };
+  restockArea.addGuiElement(typeButton);
+  
+  Button deleteButton = new Button(8+18+4+4+120, startHeight+3, 55, 12, "guistrings.delete")
+    {
+    @Override
+    protected void onPressed()
+      {
+      container.orders.getRestockData().removeWithdrawEntry(index);
+      refreshGui();
+      }
+    };
+  restockArea.addGuiElement(deleteButton);
+  
+  startHeight+=18;
+//  restockArea.addGuiElement(new Line(0, startHeight+2, xSize, startHeight+2, 1, 0x000000ff));
+  startHeight+=5;
+  return startHeight;
   }
 
 }

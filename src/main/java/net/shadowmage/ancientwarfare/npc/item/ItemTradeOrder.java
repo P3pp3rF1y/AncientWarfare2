@@ -35,35 +35,24 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
 @Override
 public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
+  MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
+  if(hit==null || hit.typeOfHit!=MovingObjectType.BLOCK){return;}
+  TradeOrder order = TradeOrder.getTradeOrder(stack);
+  BlockPosition pos = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
   if(key==ItemKey.KEY_0)
     {
-    MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
-    if(hit==null || hit.typeOfHit!=MovingObjectType.BLOCK){return;}
-    TradeOrder order = TradeOrder.getTradeOrder(stack);
-    BlockPosition pos = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
     order.getRoute().addRoutePoint(pos);
     TradeOrder.writeTradeOrder(stack, order);
-    AWLog.logDebug("added route point: "+pos+" new route size: "+order.getRoute().size());
     }
   else if(key==ItemKey.KEY_1)
     {
-    MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
-    if(hit==null || hit.typeOfHit!=MovingObjectType.BLOCK){return;}
-    TradeOrder order = TradeOrder.getTradeOrder(stack);
-    BlockPosition pos = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
     order.getRestockData().setDepositPoint(pos, hit.sideHit);
     TradeOrder.writeTradeOrder(stack, order);
-    AWLog.logDebug("set deposit point: "+pos);
     }
   else if(key==ItemKey.KEY_2)
-    {
-    MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
-    if(hit==null || hit.typeOfHit!=MovingObjectType.BLOCK){return;}
-    TradeOrder order = TradeOrder.getTradeOrder(stack);
-    BlockPosition pos = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
+    {  
     order.getRestockData().setWithdrawPoint(pos, hit.sideHit);
     TradeOrder.writeTradeOrder(stack, order);
-    AWLog.logDebug("set withdraw point: "+pos);
     }
   }
 

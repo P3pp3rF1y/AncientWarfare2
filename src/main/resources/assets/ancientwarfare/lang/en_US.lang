@@ -197,6 +197,10 @@ tile.recruiting_station.name=Recruiting Station
 #vehicle
 
 #guistrings
+guistrings.deposit=Deposit
+guistrings.withdraw=Withdraw
+guistrings.new_deposit=Add Deposit Entry
+guistrings.new_withdraw=Add Withdraw Entry
 guistrings.upkeep=Upkeep
 guistrings.delay=Delay
 guistrings.inventory=Inventory
