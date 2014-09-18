@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -57,6 +58,7 @@ public void setupElements()
       };
     addGuiElement(inventory);
     }
+  addGuiElement(new Label(8+9*18+8+8, 240-4-8-4*18, "guistrings.input"));
   addGuiElement(area);
   if(container.storage!=null)
     {
@@ -72,7 +74,7 @@ private void addTrades()
   {
   ArrayList<POTrade> trades = new ArrayList<POTrade>();  
   container.tradeList.getTrades(trades);
-  
+  AWLog.logDebug("Adding trades to GUI: "+trades.size());
   int totalHeight = 8;
   
   POTrade trade;
@@ -83,6 +85,7 @@ private void addTrades()
       {
       totalHeight = addTrade(trade, i, totalHeight);      
       }
+    else{AWLog.logDebug("Trade unavailable !!");}
     }
   area.setAreaSize(totalHeight);
   }

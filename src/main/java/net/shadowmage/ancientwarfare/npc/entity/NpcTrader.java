@@ -66,7 +66,13 @@ public boolean isValidOrdersStack(ItemStack stack)
 @Override
 public void onOrdersInventoryChanged()
   {
-  //TODO update cached trade-list / null out if item is removed
+  tradeList=null;
+  ItemStack order = ordersStack;
+  if(order!=null && order.getItem() instanceof ItemTradeOrder)
+    {
+    tradeList = TradeOrder.getTradeOrder(order).getTradeList();
+    }
+  
   //TODO update trade patrol/movement AI (TODO create trade/movement AI)
   }
 
@@ -109,10 +115,7 @@ public POTradeList getTradeList()
 public void readEntityFromNBT(NBTTagCompound tag)
   {
   super.readEntityFromNBT(tag);
-  if(getEquipmentInSlot(0)!=null && getEquipmentInSlot(0).getItem() instanceof ItemTradeOrder)
-    {
-    tradeList = TradeOrder.getTradeOrder(getEquipmentInSlot(0)).getTradeList();
-    }
+  onOrdersInventoryChanged();
   }
 
 }
