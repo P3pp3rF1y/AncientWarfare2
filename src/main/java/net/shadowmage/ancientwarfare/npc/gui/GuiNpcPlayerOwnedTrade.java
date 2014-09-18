@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -53,7 +52,7 @@ public void setupElements()
       @Override
       protected void onPressed()
         {
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.INSTANCE.GUI_NPC_INVENTORY, container.trader.getEntityId(), 0, 0);
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, container.trader.getEntityId(), 0, 0);
         }
       };
     addGuiElement(inventory);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -16,10 +17,11 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
-import net.shadowmage.ancientwarfare.npc.orders.TradeOrder.TradePoint;
-import net.shadowmage.ancientwarfare.npc.orders.TradeOrder.TradePointRoute;
 import net.shadowmage.ancientwarfare.npc.trade.POTrade;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
+import net.shadowmage.ancientwarfare.npc.trade.POTradePoint;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
 
 public class GuiTradeOrder extends GuiContainerBase
 {
@@ -263,7 +265,7 @@ private void addTradeOutputSlot(final POTrade trade, int x, int y, final int slo
 private void setupRouteMode()
   {
   routeArea.clearElements();
-  TradePointRoute route = container.orders.getRoute();  
+  POTradeRoute route = container.orders.getRoute();  
   int totalHeight = 8;  
   for(int i = 0; i < route.size(); i++)
     {
@@ -272,7 +274,7 @@ private void setupRouteMode()
   routeArea.setAreaSize(totalHeight);
   }
 
-private int addRoutePoint(final TradePoint point, final int index, int startHeight)
+private int addRoutePoint(final POTradePoint point, final int index, int startHeight)
   {
   BlockPosition pos = point.getPosition();
   Label blockName = new Label(8, startHeight, "Unknown Block");
@@ -289,7 +291,7 @@ private int addRoutePoint(final TradePoint point, final int index, int startHeig
     @Override
     protected void onPressed()
       {
-      TradePointRoute route = container.orders.getRoute();
+      POTradeRoute route = container.orders.getRoute();
       route.decrementRoutePoint(index);
       refreshGui();
       }    
@@ -301,7 +303,7 @@ private int addRoutePoint(final TradePoint point, final int index, int startHeig
     @Override
     protected void onPressed()
       {
-      TradePointRoute route = container.orders.getRoute();
+      POTradeRoute route = container.orders.getRoute();
       route.incrementRoutePoint(index);
       refreshGui();
       } 
@@ -313,7 +315,7 @@ private int addRoutePoint(final TradePoint point, final int index, int startHeig
     @Override
     protected void onPressed()
       {
-      TradePointRoute route = container.orders.getRoute();
+      POTradeRoute route = container.orders.getRoute();
       route.deleteRoutePoint(index);
       refreshGui();
       }
@@ -325,7 +327,7 @@ private int addRoutePoint(final TradePoint point, final int index, int startHeig
     @Override
     public void onToggled()
       {
-      TradePointRoute route = container.orders.getRoute();
+      POTradeRoute route = container.orders.getRoute();
       route.setUpkeep(index, checked());      
       }
     };
@@ -339,7 +341,7 @@ private int addRoutePoint(final TradePoint point, final int index, int startHeig
     @Override
     public void onValueUpdated(float value)
       {
-      TradePointRoute route = container.orders.getRoute();
+      POTradeRoute route = container.orders.getRoute();
       route.setPointDelay(index, (int)value);
       }
     };
@@ -354,6 +356,33 @@ private int addRoutePoint(final TradePoint point, final int index, int startHeig
 
 private void setupRestockMode()
   {
+  POTradeRestockData restock = container.orders.getRestockData();
+  restockArea.clearElements();
+  int totalHeight=8;
+
+  /********************************** WITHDRAW LIST **********************************************/
+  restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.deposit"));
+  totalHeight+=12;
+  restockArea.addGuiElement(new Label(8, totalHeight, restock.getDepositPoint()==null? "guistrings.none" : restock.getDepositPoint().toString()));
+  totalHeight+=12;
+  restockArea.addGuiElement(new Label(9, totalHeight, Direction.getDirectionFor(restock.getDepositSide()).getTranslationKey()));
+  totalHeight+=12;
+  //TODO add the lines/area for adding more items to deposit
+  //TODO add delete button, add side-change button
+  
+  restockArea.addGuiElement(new Line(0, totalHeight, xSize, totalHeight, 2, 0x000000ff));
+  totalHeight+=4;
+  
+  /********************************** WITHDRAW LIST **********************************************/
+  
+  restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.withdraw"));
+  totalHeight+=12;
+  restockArea.addGuiElement(new Label(8, totalHeight, restock.getWithdrawPoint()==null? "guistrings.none" : restock.getWithdrawPoint().toString()));
+  totalHeight+=12;
+  restockArea.addGuiElement(new Label(9, totalHeight, Direction.getDirectionFor(restock.getWithdrawSide()).getTranslationKey()));
+  totalHeight+=12;
+//TODO add the lines/area for adding more items to deposit
+  //TODO add delete button, add side-change button
   
   }
 
