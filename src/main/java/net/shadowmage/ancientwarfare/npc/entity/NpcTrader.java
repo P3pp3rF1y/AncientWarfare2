@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
+import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 
 public class NpcTrader extends NpcPlayerOwned
@@ -108,7 +109,10 @@ public POTradeList getTradeList()
 public void readEntityFromNBT(NBTTagCompound tag)
   {
   super.readEntityFromNBT(tag);
-  //TODO read trade list from orders item, if it is present
+  if(getEquipmentInSlot(0)!=null && getEquipmentInSlot(0).getItem() instanceof ItemTradeOrder)
+    {
+    tradeList = TradeOrder.getTradeOrder(getEquipmentInSlot(0)).getTradeList();
+    }
   }
 
 }

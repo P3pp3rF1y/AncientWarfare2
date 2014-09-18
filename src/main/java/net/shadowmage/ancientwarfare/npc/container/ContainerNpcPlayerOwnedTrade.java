@@ -19,7 +19,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerBase
 public POTradeList tradeList; 
 public final NpcTrader trader;
 public final IInventory tradeInput = new InventoryBasic(9);
-private InventoryBackpack storage;
+public final InventoryBackpack storage;
 
 public ContainerNpcPlayerOwnedTrade(EntityPlayer player, int x, int y, int z)
   {
@@ -59,6 +59,7 @@ public ContainerNpcPlayerOwnedTrade(EntityPlayer player, int x, int y, int z)
       addSlotToContainer(new Slot(storage, i, 100000, 100000));
       }
     }
+  else{storage=null;}
   }
 
 @Override
@@ -91,6 +92,10 @@ public void handlePacketData(NBTTagCompound tag)
 public void onContainerClosed(EntityPlayer player)
   {
   this.trader.trader = null;
+  if(storage!=null)
+    {
+    ItemBackpack.writeBackpackToItem(storage, this.trader.getEquipmentInSlot(0));    
+    }
   super.onContainerClosed(player);
   if(!player.worldObj.isRemote)
     {

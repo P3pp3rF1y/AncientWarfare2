@@ -197,6 +197,8 @@ tile.recruiting_station.name=Recruiting Station
 #vehicle
 
 #guistrings
+guistrings.upkeep=Upkeep
+guistrings.delay=Delay
 guistrings.inventory=Inventory
 guistrings.trade_setup=Setup Trades
 guistrings.trades_available=Available
