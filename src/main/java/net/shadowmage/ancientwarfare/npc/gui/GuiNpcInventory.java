@@ -148,7 +148,7 @@ public void initElements()
   slot.setTooltip(t);  
   addGuiElement(slot);
   
-  slot = new ItemSlot(26, 8+18*1, new ItemStack(AWNpcItemLoader.upkeepOrder), this);
+  slot = new ItemSlot(26, 8+18*1, new ItemStack(AWNpcItemLoader.woodenShield), this);
   slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
   text = "guistrings.npc.shield_slot";
   tw = fontRendererObj.getStringWidth(text);
