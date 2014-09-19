@@ -18,7 +18,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI
 {
 
 /**
- * psuedocode
+ * pseudo-code
  * 
  * Start:
  * if(night/raining){goto shelter code-path}
@@ -59,7 +59,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI
 /**
  * state flags, to track what state the AI is currently in
  */
-boolean upkeep, restock, deposit, moving, waiting;
+boolean upkeep, restock, deposit, moving, waiting, at_shelter, at_upkeep, at_deposit, at_withdraw, at_waypoint;
 /**
  * used to track how long to wait when in 'waiting' state
  */
@@ -110,6 +110,11 @@ public void onOrdersUpdated()
   deposit = false;
   moving = false;
   waiting = false;
+  at_deposit=false;
+  at_shelter=false;
+  at_upkeep=false;
+  at_waypoint=false;
+  at_withdraw=false;
   waypointIndex = 0;
   delayCounter = 0;
   if(orders!=null)
@@ -146,8 +151,33 @@ public boolean continueExecuting()
 @Override
 public void updateTask() 
   {
-  //TODO
+  if(npc.shouldBeAtHome()){updateShelter();}
+  else if(upkeep){updateUpkeep();}
+  else if(restock){updateRestock();}
+  else if(moving || waiting){updatePatrol();}
   }
+
+private void updateShelter()
+  {
+  if(shelter==null)
+    {
+    //find closest waypoint from routing list
+    }
+  else
+    {
+    //move towards shelter point if not in range
+    }
+  }
+
+private void updateUpkeep()
+  {
+  
+  }
+
+private void updateRestock(){}
+private void updatePatrol(){}
+
+private void setNextWaypoint(){}
 
 public void readFromNBT(NBTTagCompound tag){}//TODO
 public NBTTagCompound writeToNBT(NBTTagCompound tag){return tag;}//TODO

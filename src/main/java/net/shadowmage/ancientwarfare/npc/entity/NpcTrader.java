@@ -101,6 +101,16 @@ protected boolean interact(EntityPlayer player)
   }
 
 @Override
+public boolean shouldBeAtHome()
+  {
+  if((!worldObj.provider.hasNoSky && !worldObj.provider.isDaytime()) || worldObj.isRaining())
+    { 
+    return true;
+    }
+  return false;
+  }
+
+@Override
 public boolean isHostileTowards(Entity e)
   {
   return false;
