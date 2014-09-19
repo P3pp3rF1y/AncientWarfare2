@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -194,13 +195,19 @@ private static void parseGoalResources(List<String> lines)
     itemName = split[1];
     meta = StringTools.safeParseInt(split[2]);
     qty = StringTools.safeParseInt(split[3]);
-    AWLog.logDebug("parsed item resource for research: "+name + " item: "+itemName + " qty: "+qty + " meta: "+meta);
-    if(!goalsByName.containsKey(name)){continue;}
+    if(!goalsByName.containsKey(name))
+      {
+      throw new RuntimeException("Could not locate goal for name: "+name);      
+      }
     item = (Item) Item.itemRegistry.getObject(itemName);    
     if(item==null)
       {
       block = (Block) Block.blockRegistry.getObject(itemName);
-      if(block!=null)
+      if(block==null || block==Blocks.air)
+        {
+        throw new RuntimeException("Could not locate item for name: "+itemName);
+        }
+      else
         {
         stack = new ItemStack(block, qty, meta);
         goalsByName.get(name).addResource(stack);

@@ -64,7 +64,7 @@ combustion,coal,1,8
 combustion,iron_ingot,0,5
 combustion,netherrack,0,12
 chemistry,redstone,0,32
-chemistry,lapis,0,16
+chemistry,dye,4,16
 chemistry,gold_ingot,0,2
 chemistry,netherrack,0,8
 theory_of_gravity,iron_ingot,0,8
@@ -73,7 +73,7 @@ theory_of_gravity,book,0,1
 theory_of_gravity,apple,0,1
 seafaring,planks,0,12
 seafaring,iron_ingot,0,8
-seafaring,cloth,0,10
+seafaring,wool,0,10
 seafaring,string,0,12
 explosives,coal,0,12
 explosives,coal,1,8
@@ -83,10 +83,10 @@ refining,iron_ingot,0,12
 refining,paper,0,10
 refining,gold_ingot,0,2
 refining,coal,0,12
-machinery,steel_ingot,0,10
+machinery,AncientWarfare:steel_ingot,0,10
 machinery,iron_ingot,0,8
-machinery,component,1,3
-machinery,component,4,2
+machinery,AncientWarfare:component,1,3
+machinery,AncientWarfare:component,4,2
 navigation,compass,0,1
 navigation,map,0,1
 navigation,paper,0,12
@@ -99,11 +99,11 @@ gunpowder,gunpowder,0,16
 gunpowder,sand,0,12
 gunpowder,coal,1,12
 gunpowder,paper,0,8
-mass_production,steel_ingot,0,12
-mass_production,component,2,6
-mass_production,component,5,3
-mass_production,component,8,3
-flight,cloth,0,16
+mass_production,AncientWarfare:steel_ingot,0,12
+mass_production,AncientWarfare:component,2,6
+mass_production,AncientWarfare:component,5,3
+mass_production,AncientWarfare:component,8,3
+flight,wool,0,16
 flight,planks,0,12
 flight,string,0,12
 flight,paper,0,16
@@ -111,7 +111,7 @@ naval_warfare,gunpowder,0,16
 naval_warfare,planks,0,12
 naval_warfare,iron_ingot,0,16
 naval_warfare,paper,0,8
-advanced_siege_warfare,steel_ingot,0,8
+advanced_siege_warfare,AncientWarfare:steel_ingot,0,8
 advanced_siege_warfare,paper,0,12
 advanced_siege_warfare,planks,0,16
 advanced_siege_warfare,string,0,12
