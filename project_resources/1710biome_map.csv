@@ -1,0 +1,203 @@
+biomesoplenty.common.biome.overworld.BiomeGenAlps,Alps
+biomesoplenty.common.biome.overworld.sub.BiomeGenAlpsForest,Alps Forest
+biomesoplenty.common.biome.overworld.BiomeGenArctic,Arctic
+biomesoplenty.common.biome.overworld.BiomeGenBambooForest,Bamboo Forest
+biomesoplenty.common.biome.overworld.BiomeGenBayou,Bayou
+net.minecraft.world.biome.BiomeGenBeach,Beach
+biomesoplenty.common.biome.overridden.BiomeGenBOPBirchForest,Birch Forest
+biomesoplenty.common.biome.overridden.BiomeGenBOPBirchForest,Birch Forest Hills
+null,Birch Forest Hills M
+null,Birch Forest M
+biomesoplenty.common.biome.overworld.BiomeGenBog,Bog
+biomesoplenty.common.biome.nether.BiomeGenBoneyard,Boneyard
+biomesoplenty.common.biome.overworld.BiomeGenBorealForest,Boreal Forest
+biomesoplenty.common.biome.overworld.BiomeGenBrushland,Brushland
+biomesoplenty.common.biome.overworld.BiomeGenCanyon,Canyon
+biomesoplenty.common.biome.overworld.sub.BiomeGenCanyonRavine,Canyon Ravine
+biomesoplenty.common.biome.overworld.BiomeGenChaparral,Chaparral
+biomesoplenty.common.biome.overworld.BiomeGenCherryBlossomGrove,Cherry Blossom Grove
+net.minecraft.world.biome.BiomeGenBeach,Cold Beach
+biomesoplenty.common.biome.overridden.BiomeGenBOPTaiga,Cold Taiga
+biomesoplenty.common.biome.overridden.BiomeGenBOPTaiga,Cold Taiga Hills
+net.minecraft.world.biome.BiomeGenMutated,Cold Taiga M
+biomesoplenty.common.biome.overworld.BiomeGenConiferousForest,Coniferous Forest
+biomesoplenty.common.biome.overworld.ocean.BiomeGenCoralReef,Coral Reef
+biomesoplenty.common.biome.nether.BiomeGenCorruptedSands,Corrupted Sands
+biomesoplenty.common.biome.overworld.BiomeGenCrag,Crag
+twilightforest.biomes.TFBiomeDarkForest,Dark Forest
+twilightforest.biomes.TFBiomeDarkForestCenter,Dark Forest Center
+biomesoplenty.common.biome.overworld.BiomeGenDeadForest,Dead Forest
+biomesoplenty.common.biome.overworld.BiomeGenDeadSwamp,Dead Swamp
+biomesoplenty.common.biome.overworld.BiomeGenDeciduousForest,Deciduous Forest
+twilightforest.biomes.TFBiomeDeepMushrooms,Deep Mushroom Forest
+net.minecraft.world.biome.BiomeGenOcean,Deep Ocean
+twilightforest.biomes.TFBiomeTwilightForestVariant,Dense Twilight Forest
+biomesoplenty.common.biome.overridden.BiomeGenBOPDesert,Desert
+net.minecraft.world.biome.BiomeGenMutated,Desert M
+biomesoplenty.common.biome.overridden.BiomeGenBOPDesert,DesertHills
+biomesoplenty.common.biome.overworld.tech.BiomeGenDryRiver,Dry River
+twilightforest.biomes.TFBiomeEnchantedForest,Enchanted Forest
+biomesoplenty.common.biome.overridden.BiomeGenBOPExtremeHills,Extreme Hills
+biomesoplenty.common.biome.overridden.BiomeGenBOPExtremeHills,Extreme Hills Edge
+net.minecraft.world.biome.BiomeGenHills,Extreme Hills M
+net.minecraft.world.biome.BiomeGenHills,Extreme Hills+
+net.minecraft.world.biome.BiomeGenHills,Extreme Hills+ M
+biomesoplenty.common.biome.overworld.BiomeGenFen,Fen
+twilightforest.biomes.TFBiomeFireSwamp,Fire Swamp
+biomesoplenty.common.biome.overworld.BiomeGenFlowerField,Flower Field
+net.minecraft.world.biome.BiomeGenForest,Flower Forest
+biomesoplenty.common.biome.overridden.BiomeGenBOPForest,Forest
+biomesoplenty.common.biome.overridden.BiomeGenBOPForest,ForestHills
+biomesoplenty.common.biome.overworld.BiomeGenFrostForest,Frost Forest
+net.minecraft.world.biome.BiomeGenOcean,FrozenOcean
+net.minecraft.world.biome.BiomeGenRiver,FrozenRiver
+biomesoplenty.common.biome.overworld.BiomeGenFungiForest,Fungi Forest
+biomesoplenty.common.biome.overworld.BiomeGenGarden,Garden
+biomesoplenty.common.biome.overworld.sub.BiomeGenGlacier,Glacier
+biomesoplenty.common.biome.overworld.BiomeGenGrassland,Grassland
+biomesoplenty.common.biome.overworld.BiomeGenGrove,Grove
+com.hoopawolf.mam.biome.BiomeHauntedOcean,Haunted Ocean
+biomesoplenty.common.biome.overworld.BiomeGenHeathland,Heathland
+biomesoplenty.common.biome.overridden.BiomeGenBOPHell,Hell
+biomesoplenty.common.biome.overworld.BiomeGenHighland,Highland
+twilightforest.biomes.TFBiomeHighlands,Highlands
+twilightforest.biomes.TFBiomeHighlandsCenter,Highlands Center
+highlands.biome.BiomeGenAlps,Highlands_Alps
+highlands.biome.BiomeGenAutumnForest,Highlands_Autumn Forest
+highlands.biome.BiomeGenBadlands,Highlands_Badlands
+highlands.biome.BiomeGenBaldHill,Highlands_Bald Hill
+highlands.biome.BiomeGenBirchHills,Highlands_Birch Hills
+highlands.biome.BiomeGenBog,Highlands_Bog
+highlands.biome.BiomeGenOutback,Highlands_Canyon
+highlands.biome.BiomeGenCliffs,Highlands_Cliffs
+highlands.biome.BiomeGenDesertIsland,Highlands_Desert Island
+highlands.biome.BiomeGenDesertMountains,Highlands_Desert Mountains
+highlands.biome.BiomeGenDunes,Highlands_Dunes
+highlands.biome.BiomeGenEstuary,Highlands_Estuary
+highlands.biome.BiomeGenFlyingMountains,Highlands_Flying Mountains
+highlands.biome.BiomeGenWoodlands,Highlands_Forest Island
+highlands.biome.BiomeGenGlacier,Highlands_Glacier
+highlands.biome.BiomeGenHighlands,Highlands_Highlands
+net.minecraft.world.biome.BiomeGenJungle,Highlands_Jungle Island
+highlands.biome.BiomeGenLake,Highlands_Lake
+highlands.biome.BiomeGenLowlands,Highlands_Lowlands
+highlands.biome.BiomeGenMeadow,Highlands_Meadow
+highlands.biome.BiomeGenMesa,Highlands_Mesa
+highlands.biome.BiomeGenOasis,Highlands_Oasis
+highlands.biome.BiomeGenOcean2,Highlands_Ocean
+highlands.biome.BiomeGenOutback,Highlands_Outback
+highlands.biome.BiomeGenPinelands,Highlands_Pinelands
+highlands.biome.BiomeGenRainforest,Highlands_Rainforest
+highlands.biome.BiomeGenRedwoodForest,Highlands_Redwood Forest
+highlands.biome.BiomeGenRockIsland,Highlands_Rock Island
+highlands.biome.BiomeGenRockMountains,Highlands_Rock Mountains
+highlands.biome.BiomeGenSahel,Highlands_Sahel
+highlands.biome.BiomeGenSavannah,Highlands_Savannah
+highlands.biome.BiomeGenShrubland,Highlands_Shrubland
+net.minecraft.world.biome.BiomeGenTaiga,Highlands_Snow Island
+highlands.biome.BiomeGenSnowMountains,Highlands_Snow Mountains
+highlands.biome.BiomeGenSteppe,Highlands_Steppe
+highlands.biome.BiomeGenTallPineForest,Highlands_Tall Pine Forest
+highlands.biome.BiomeGenTropicalIslands,Highlands_Tropical Islands
+highlands.biome.BiomeGenTropics,Highlands_Tropics
+highlands.biome.BiomeGenTundra,Highlands_Tundra
+net.minecraft.world.biome.BiomeGenForest,Highlands_Valley
+highlands.biome.BiomeGenVolcanoIsland,Highlands_Volcano Island
+net.minecraft.world.biome.BiomeGenOcean,Highlands_Windy Island
+highlands.biome.BiomeGenWoodsMountains,Highlands_Woodland Mountains
+highlands.biome.BiomeGenWoodlands,Highlands_Woodlands
+net.minecraft.world.biome.BiomeGenSnow,Ice Mountains
+biomesoplenty.common.biome.overridden.BiomeGenBOPIcePlains,Ice Plains
+net.minecraft.world.biome.BiomeGenSnow,Ice Plains Spikes
+com.hoopawolf.mam.biome.BiomeIceSheet,Ice Sheet
+biomesoplenty.common.biome.overworld.BiomeGenJadeCliffs,Jade Cliffs
+biomesoplenty.common.biome.overridden.BiomeGenBOPJungle,Jungle
+net.minecraft.world.biome.BiomeGenMutated,Jungle M
+biomesoplenty.common.biome.overridden.BiomeGenBOPJungle,JungleEdge
+net.minecraft.world.biome.BiomeGenMutated,JungleEdge M
+biomesoplenty.common.biome.overridden.BiomeGenBOPJungle,JungleHills
+biomesoplenty.common.biome.overworld.ocean.BiomeGenKelpForest,Kelp Forest
+biomesoplenty.common.biome.overworld.BiomeGenLavenderFields,Lavender Fields
+twilightforest.biomes.TFBiomeLightedForest,Lighted Forest
+biomesoplenty.common.biome.overworld.BiomeGenLushDesert,Lush Desert
+biomesoplenty.common.biome.overworld.tech.BiomeGenLushRiver,Lush River
+biomesoplenty.common.biome.overworld.BiomeGenLushSwamp,Lush Swamp
+biomesoplenty.common.biome.overworld.sub.BiomeGenMangrove,Mangrove
+biomesoplenty.common.biome.overworld.BiomeGenMapleWoods,Maple Woods
+biomesoplenty.common.biome.overworld.BiomeGenMarsh,Marsh
+biomesoplenty.common.biome.overworld.BiomeGenMeadow,Meadow
+biomesoplenty.common.biome.overworld.sub.BiomeGenMeadowForest,Meadow Forest
+net.minecraft.world.biome.BiomeGenTaiga,Mega Spruce Taiga
+net.minecraft.world.biome.BiomeGenTaiga,Mega Taiga
+net.minecraft.world.biome.BiomeGenTaiga,Mega Taiga Hills
+biomesoplenty.common.biome.overridden.BiomeGenBOPMesa,Mesa
+net.minecraft.world.biome.BiomeGenMesa,Mesa (Bryce)
+biomesoplenty.common.biome.overridden.BiomeGenBOPMesa,Mesa Plateau
+biomesoplenty.common.biome.overridden.BiomeGenBOPMesa,Mesa Plateau F
+net.minecraft.world.biome.BiomeGenMesa,Mesa Plateau F M
+net.minecraft.world.biome.BiomeGenMesa,Mesa Plateau M
+biomesoplenty.common.biome.overworld.BiomeGenMoor,Moor
+biomesoplenty.common.biome.overworld.BiomeGenMountain,Mountain
+twilightforest.biomes.TFBiomeMushrooms,Mushroom Forest
+biomesoplenty.common.biome.overridden.BiomeGenBOPMushroomIsland,MushroomIsland
+biomesoplenty.common.biome.overridden.BiomeGenBOPMushroomIsland,MushroomIslandShore
+biomesoplenty.common.biome.overworld.BiomeGenMysticGrove,Mystic Grove
+twilightforest.biomes.TFBiomeOakSavanna,Oak Savanna
+biomesoplenty.common.biome.overworld.sub.BiomeGenOasis,Oasis
+biomesoplenty.common.biome.overridden.BiomeGenBOPOcean,Ocean
+biomesoplenty.common.biome.overworld.BiomeGenOminousWoods,Ominous Woods
+biomesoplenty.common.biome.overworld.sub.BiomeGenOrchard,Orchard
+biomesoplenty.common.biome.overworld.BiomeGenOriginValley,Origin Valley
+biomesoplenty.common.biome.overworld.BiomeGenOutback,Outback
+biomesoplenty.common.biome.nether.BiomeGenPhantasmagoricInferno,Phantasmagoric Inferno
+biomesoplenty.common.biome.overridden.BiomeGenBOPPlains,Plains
+biomesoplenty.common.biome.nether.BiomeGenPolarChasm,Polar Chasm
+biomesoplenty.common.biome.overworld.BiomeGenPrairie,Prairie
+biomesoplenty.common.biome.overworld.sub.BiomeGenQuagmire,Quagmire
+biomesoplenty.common.biome.overworld.BiomeGenRainforest,Rainforest
+biomesoplenty.common.biome.overworld.BiomeGenRedwoodForest,Redwood Forest
+biomesoplenty.common.biome.overridden.BiomeGenBOPRiver,River
+biomesoplenty.common.biome.overridden.BiomeGenBOPRoofedForest,Roofed Forest
+null,Roofed Forest M
+biomesoplenty.common.biome.overworld.BiomeGenSacredSprings,Sacred Springs
+biomesoplenty.common.biome.overridden.BiomeGenBOPSavanna,Savanna
+net.minecraft.world.biome.BiomeGenSavanna$Mutated,Savanna M
+biomesoplenty.common.biome.overridden.BiomeGenBOPSavanna,Savanna Plateau
+net.minecraft.world.biome.BiomeGenSavanna$Mutated,Savanna Plateau M
+biomesoplenty.common.biome.overworld.sub.BiomeGenScrubland,Scrubland
+biomesoplenty.common.biome.overworld.BiomeGenSeasonalForest,Seasonal Forest
+biomesoplenty.common.biome.overworld.BiomeGenShield,Shield
+biomesoplenty.common.biome.overworld.BiomeGenShrubland,Shrubland
+biomesoplenty.common.biome.overworld.sub.BiomeGenSilkglades,Silkglades
+net.minecraft.world.biome.BiomeGenEnd,Sky
+biomesoplenty.common.biome.overworld.BiomeGenSludgepit,Sludgepit
+biomesoplenty.common.biome.overworld.BiomeGenConiferousForestSnow,Snowy Coniferous Forest
+twilightforest.biomes.TFBiomeSnow,Snowy Forest
+biomesoplenty.common.biome.end.BiomeGenSpectralGarden,Spectral Garden
+biomesoplenty.common.biome.overworld.sub.BiomeGenSpruceWoods,Spruce Woods
+biomesoplenty.common.biome.overworld.BiomeGenSteppe,Steppe
+net.minecraft.world.biome.BiomeGenStoneBeach,Stone Beach
+net.minecraft.world.biome.BiomeGenPlains,Sunflower Plains
+biomesoplenty.common.biome.overridden.BiomeGenBOPSwamp,Swampland
+net.minecraft.world.biome.BiomeGenMutated,Swampland M
+biomesoplenty.common.biome.overridden.BiomeGenBOPTaiga,Taiga
+net.minecraft.world.biome.BiomeGenMutated,Taiga M
+biomesoplenty.common.biome.overridden.BiomeGenBOPTaiga,TaigaHills
+biomesoplenty.common.biome.overworld.BiomeGenTemperateRainforest,Temperate Rainforest
+biomesoplenty.common.biome.overworld.BiomeGenThicket,Thicket
+twilightforest.biomes.TFBiomeThornlands,Thornlands
+biomesoplenty.common.biome.overworld.BiomeGenTropicalRainforest,Tropical Rainforest
+biomesoplenty.common.biome.overworld.sub.BiomeGenTropics,Tropics
+biomesoplenty.common.biome.overworld.BiomeGenTundra,Tundra
+twilightforest.biomes.TFBiomeClearing,Twilight Clearing
+twilightforest.biomes.TFBiomeTwilightForest,Twilight Forest
+twilightforest.biomes.TFBiomeGlacier,Twilight Glacier
+twilightforest.biomes.TFBiomeTwilightLake,Twilight Lake
+twilightforest.biomes.TFBiomeStream,Twilight Stream
+twilightforest.biomes.TFBiomeSwamp,Twilight Swamp
+biomesoplenty.common.biome.nether.BiomeGenUndergarden,Undergarden
+biomesoplenty.common.biome.nether.BiomeGenVisceralHeap,Visceral Heap
+biomesoplenty.common.biome.overworld.sub.BiomeGenVolcano,Volcano
+biomesoplenty.common.biome.overworld.BiomeGenWasteland,Wasteland
+biomesoplenty.common.biome.overworld.BiomeGenWetland,Wetland
+biomesoplenty.common.biome.overworld.BiomeGenWoodland,Woodland
