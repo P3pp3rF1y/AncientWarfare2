@@ -472,6 +472,7 @@ public boolean onBlockClicked(EntityPlayer player)
 @SuppressWarnings("unchecked")
 private void pickupEggs()
   {
+  if(!inventoryOverflow.isEmpty()){return;}
   BlockPosition p1 = getWorkBoundsMin();
   BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
   AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
