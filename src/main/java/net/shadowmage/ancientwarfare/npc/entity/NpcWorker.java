@@ -144,7 +144,6 @@ public float getWorkEffectiveness(WorkType type)
       }        
     }
   else{effectiveness=0.f;}
-  AWLog.logDebug("getting worker effectiveness for: "+this.getNpcFullType()+" :: "+effectiveness);
   return effectiveness;
   }
 
