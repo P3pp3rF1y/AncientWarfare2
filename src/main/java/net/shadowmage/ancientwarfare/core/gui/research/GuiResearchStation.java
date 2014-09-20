@@ -4,7 +4,10 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -26,6 +29,7 @@ Label researcherLabel;
 Label researchGoalLabel;
 ProgressBar bar;
 Checkbox useAdjacentInventory;
+Button invDir, invSide;
 
 ItemSlot[] layoutSlots = new ItemSlot[9];
 
@@ -93,6 +97,39 @@ public void initElements()
       }
     };
   addGuiElement(useAdjacentInventory);
+  
+  invDir = button = new Button(80, 8+3*18+6, 40, 16, StatCollector.translateToLocal(Direction.getDirectionFor(container.tile.inventoryDirection.ordinal()).getTranslationKey()))
+    {
+    @Override
+    protected void onPressed()
+      {
+      int o = container.tile.inventoryDirection.ordinal();
+      o++;
+      if(o>6){o=0;}
+      NBTTagCompound tag = new NBTTagCompound();
+      tag.setInteger("inventoryDirection", o);
+      sendDataToContainer(tag);
+      container.tile.inventoryDirection = ForgeDirection.getOrientation(o);
+      refreshGui();
+      }
+    };
+  addGuiElement(button);
+  invSide = button = new Button(120, 8+3*18+6, 40, 16, StatCollector.translateToLocal(Direction.getDirectionFor(container.tile.inventorySide.ordinal()).getTranslationKey()))
+    {
+    @Override
+    protected void onPressed()
+      {
+      int o = container.tile.inventorySide.ordinal();
+      o++;
+      if(o>6){o=0;}
+      NBTTagCompound tag = new NBTTagCompound();
+      tag.setInteger("inventoryDirection", o);
+      sendDataToContainer(tag);
+      container.tile.inventorySide = ForgeDirection.getOrientation(o);
+      refreshGui();
+      }
+    };
+  addGuiElement(button);  
   }
 
 @Override
@@ -169,6 +206,8 @@ public void setupElements()
   researchGoalLabel.setText(StatCollector.translateToLocal(name));
   
   useAdjacentInventory.setChecked(container.useAdjacentInventory);
+  invDir.setText(StatCollector.translateToLocal(Direction.getDirectionFor(container.tile.inventoryDirection.ordinal()).getTranslationKey()));
+  invSide.setText(StatCollector.translateToLocal(Direction.getDirectionFor(container.tile.inventorySide.ordinal()).getTranslationKey()));
   }
 
 

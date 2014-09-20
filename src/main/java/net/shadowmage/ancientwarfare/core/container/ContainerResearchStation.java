@@ -142,6 +142,8 @@ public void sendInitData()
     tag.setIntArray("queuedResearch", queueData);
     }
   tag.setBoolean("useAdjacentInventory", useAdjacentInventory);
+  tag.setInteger("inventoryDirection", tile.inventoryDirection.ordinal());
+  tag.setInteger("inventorySide", tile.inventorySide.ordinal());
   this.sendDataToClient(tag);
   }
 
@@ -180,6 +182,14 @@ public void handlePacketData(NBTTagCompound tag)
       {
       tile.useAdjacentInventory = useAdjacentInventory;      
       }
+    }
+  if(tag.hasKey("inventoryDirection"))
+    {
+    tile.inventoryDirection = ForgeDirection.getOrientation(tag.getInteger("inventoryDirection"));
+    }
+  if(tag.hasKey("inventorySide"))
+    {
+    tile.inventorySide = ForgeDirection.getOrientation(tag.getInteger("inventorySide"));
     }
   this.refreshGui();
   }

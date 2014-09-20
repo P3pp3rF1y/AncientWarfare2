@@ -45,6 +45,8 @@ int startCheckDelay = 0;
 int startCheckDelayMax = 40;
 
 public boolean useAdjacentInventory;
+public ForgeDirection inventoryDirection = ForgeDirection.NORTH;
+public ForgeDirection inventorySide = ForgeDirection.NORTH;
 
 double maxEnergyStored = 1600;
 double maxInput = 100;
@@ -181,6 +183,8 @@ public void readFromNBT(NBTTagCompound tag)
   this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
   this.storedEnergy = tag.getDouble("storedEnergy");
   if(tag.hasKey("orientation")){this.orientation = ForgeDirection.values()[tag.getInteger("orientation")];}  
+  this.inventoryDirection = ForgeDirection.getOrientation(tag.getInteger("inventoryDirection"));
+  this.inventorySide = ForgeDirection.getOrientation(tag.getInteger("inventorySide"));
   }
 
 @Override
@@ -193,6 +197,8 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setBoolean("useAdjacentInventory", useAdjacentInventory);  
   tag.setDouble("storedEnergy", storedEnergy);
   tag.setInteger("orientation", orientation.ordinal());
+  tag.setInteger("inventoryDirection", inventoryDirection.ordinal());
+  tag.setInteger("inventorySide", inventorySide.ordinal());
   }
 
 @Override
@@ -234,21 +240,14 @@ private void tryStartNextResearch(String name)
       {
       TileEntity t;
       boolean started = false;
-      if((t=worldObj.getTileEntity(xCoord-1, yCoord, zCoord)) instanceof IInventory)
+      int x = xCoord + inventoryDirection.offsetX;
+      int y = yCoord + inventoryDirection.offsetY;
+      int z = zCoord + inventoryDirection.offsetZ;
+      int side = inventorySide.ordinal();
+      
+      if((t=worldObj.getTileEntity(x, y, z)) instanceof IInventory)
         {
-        started = goalInstance.tryStart((IInventory)t, -1);
-        }
-      if(!started && (t=worldObj.getTileEntity(xCoord+1, yCoord, zCoord)) instanceof IInventory)
-        {
-        started = goalInstance.tryStart((IInventory)t, -1);
-        }
-      if(!started && (t=worldObj.getTileEntity(xCoord, yCoord, zCoord-1)) instanceof IInventory)
-        {
-        started = goalInstance.tryStart((IInventory)t, -1);
-        }
-      if(!started && (t=worldObj.getTileEntity(xCoord, yCoord, zCoord+1)) instanceof IInventory)
-        {
-        started = goalInstance.tryStart((IInventory)t, -1);
+        started = goalInstance.tryStart((IInventory)t, side);
         }
       if(started)
         {
