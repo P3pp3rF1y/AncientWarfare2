@@ -375,8 +375,11 @@ private void setupRestockMode()
     @Override
     protected void onPressed()
       {
-      // TODO Auto-generated method stub
-      super.onPressed();
+      int dir = restock.getDepositSide();
+      dir++;
+      if(dir>=6){dir=0;}
+      setText(Direction.getDirectionFor(restock.getDepositSide()).getTranslationKey());
+      restock.setDepositPoint(restock.getDepositPoint(), dir);
       }
     });
   totalHeight+=16;
@@ -415,8 +418,11 @@ private void setupRestockMode()
     @Override
     protected void onPressed()
       {
-      // TODO Auto-generated method stub
-      super.onPressed();
+      int dir = restock.getDepositSide();
+      dir++;
+      if(dir>=6){dir=0;}
+      setText(Direction.getDirectionFor(restock.getWithdrawSide()).getTranslationKey());
+      restock.setWithdrawPoint(restock.getDepositPoint(), dir);
       }
     });
   totalHeight+=16;
