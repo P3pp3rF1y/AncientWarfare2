@@ -61,6 +61,15 @@ public TileAutoCrafting()
       onInventoryUpdated();
       super.markDirty();
       }
+    @Override
+    public void setInventorySlotContents(int var1, ItemStack var2)
+      {      
+      super.setInventorySlotContents(var1, var2);
+      if(worldObj!=null && !worldObj.isRemote)
+        {
+        onInventoryUpdated();
+        }
+      }
     };
   outputInventory = new InventoryBasic(9)
     {
