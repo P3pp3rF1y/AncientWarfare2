@@ -334,6 +334,7 @@ private int addRoutePoint(final POTradePoint point, final int index, int startHe
       route.setUpkeep(index, checked());      
       }
     };
+  upkeep.setChecked(point.shouldUpkeep());
   routeArea.addGuiElement(upkeep);
   
   Label delayLabel = new Label(120+55+4, startHeight+12+1, StatCollector.translateToLocal("guistrings.delay")+":");
