@@ -449,6 +449,7 @@ private int addDepositEntry(final POTradeDepositEntry entry, final int index, in
     @Override
     public void onSlotClicked(ItemStack stack)
       {
+      stack = stack==null? stack : stack.copy();
       entry.setFilter(stack);
       setItem(stack);
       }
@@ -490,6 +491,7 @@ private int addWithdrawEntry(final POTradeWithdrawEntry entry, final int index, 
     @Override
     public void onSlotClicked(ItemStack stack)
       {
+      stack = stack==null? stack : stack.copy();
       entry.setFilter(stack);
       setItem(stack);
       }
