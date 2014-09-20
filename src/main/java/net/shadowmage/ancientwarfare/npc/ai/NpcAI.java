@@ -46,32 +46,32 @@ public NpcAI(NpcBase npc)
   this.npc = npc;
   }
 
-protected void moveToPosition(int x, int y, int z, double dist)
+protected void moveToPosition(int x, int y, int z, double sqDist)
   {
   moveRetryDelay--;
   if(moveRetryDelay<=0)
     {
     npc.getNavigator().tryMoveToXYZ(x+0.5d, y, z+0.5d, moveSpeed);
     moveRetryDelay=10;//base .5 second retry delay
-    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
+    if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
+    if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
     }
   }
 
-protected void moveToPosition(BlockPosition pos, double dist)
+protected void moveToPosition(BlockPosition pos, double sqDist)
   {
-  moveToPosition(pos.x, pos.y, pos.z, dist);
+  moveToPosition(pos.x, pos.y, pos.z, sqDist);
   }
 
-protected void moveToEntity(Entity target, double dist)
+protected void moveToEntity(Entity target, double sqDist)
   {
   moveRetryDelay--;
   if(moveRetryDelay<=0)
     {
     npc.getNavigator().tryMoveToEntityLiving(target, moveSpeed);
     moveRetryDelay=10;//base .5 second retry delay
-    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
+    if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
+    if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
     }
   }
 

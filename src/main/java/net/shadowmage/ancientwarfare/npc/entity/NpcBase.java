@@ -861,7 +861,6 @@ public final void updateTexture()
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  AWLog.logDebug("npc receiving packet: "+tag);
   if(tag.hasKey("ownerName"))
     {
     setOwnerName(tag.getString("ownerName"));
@@ -911,4 +910,8 @@ private void handlePickEntity(EntityPlayer player)
     }  
   }
 
+public double getDistanceSq(BlockPosition pos)
+  {
+  return getDistanceSq(pos.x+0.5d, pos.y, pos.z+0.5d);
+  }
 }

@@ -20,6 +20,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIPlayerOwnedTrader;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
@@ -32,6 +33,7 @@ public class NpcTrader extends NpcPlayerOwned
 
 public EntityPlayer trader;//used by guis/containers to prevent further interaction
 private POTradeList tradeList = new POTradeList();
+private NpcAIPlayerOwnedTrader tradeAI;
 
 public NpcTrader(World par1World)
   {
@@ -46,8 +48,9 @@ public NpcTrader(World par1World)
   this.tasks.addTask(2, new NpcAICommandGuard(this));
   this.tasks.addTask(2, new NpcAICommandMove(this));
   this.tasks.addTask(3, new NpcAIFleeHostiles(this));
-  this.tasks.addTask(4, new NpcAIGetFood(this));  
-  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this)); 
+  this.tasks.addTask(4, tradeAI = new NpcAIPlayerOwnedTrader(this));
+  this.tasks.addTask(5, new NpcAIGetFood(this));  
+  this.tasks.addTask(6, new NpcAIIdleWhenHungry(this)); 
   //TODO swap move home ai to move home by default? home position is the npcs vendor-stall?
   this.tasks.addTask(7, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
   
@@ -72,8 +75,7 @@ public void onOrdersInventoryChanged()
     {
     tradeList = TradeOrder.getTradeOrder(order).getTradeList();
     }
-  
-  //TODO update trade patrol/movement AI (TODO create trade/movement AI)
+  tradeAI.onOrdersUpdated();
   }
 
 @Override
@@ -122,10 +124,18 @@ public POTradeList getTradeList()
   }
 
 @Override
+public void writeEntityToNBT(NBTTagCompound tag)
+  {
+  super.writeEntityToNBT(tag);
+  tag.setTag("tradeAI", tradeAI.writeToNBT(new NBTTagCompound()));
+  }
+
+@Override
 public void readEntityFromNBT(NBTTagCompound tag)
   {
   super.readEntityFromNBT(tag);
   onOrdersInventoryChanged();
+  tradeAI.readFromNBT(tag.getCompoundTag("tradeAI"));
   }
 
 }

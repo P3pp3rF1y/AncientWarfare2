@@ -1,7 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
@@ -59,38 +65,34 @@ public class NpcAIPlayerOwnedTrader extends NpcAI
 /**
  * state flags, to track what state the AI is currently in
  */
-boolean upkeep, restock, deposit, moving, waiting, at_shelter, at_upkeep, at_deposit, at_withdraw, at_waypoint;
+private boolean shelter, upkeep, restock, deposit, waiting, at_shelter, at_upkeep, at_deposit, at_withdraw, at_waypoint;
+
 /**
  * used to track how long to wait when in 'waiting' state
  */
-int delayCounter;
+private int delayCounter;
 
 /**
  * used to track waypoint index, to retrieve next waypoint and to retrieve upkeep status for current waypoint
  */
-int waypointIndex;
+private int waypointIndex;
 
 /**
  * the currently selected waypoint to move towards, should never be null if valid orders item is present
  */
-BlockPosition waypoint;
+private BlockPosition waypoint;
 
 /**
  * currently selected shelter position, used by shelter code, should be null when not in use
  */
-BlockPosition shelter;
-
-/**
- * currently selected move-to point for upkeep or restock state, should be null when not in use
- */
-BlockPosition upkeepPoint;
+private BlockPosition shelterPoint;
 
 /**
  * convenience access fields;
  * trade orders is set/updated when orders item is changed or when entity is loaded from NBT
  */
-TradeOrder orders;
-NpcPlayerOwned trader;
+private TradeOrder orders;
+private NpcPlayerOwned trader;
 
 public NpcAIPlayerOwnedTrader(NpcBase npc)
   {
@@ -103,12 +105,10 @@ public void onOrdersUpdated()
   {
   orders = TradeOrder.getTradeOrder(npc.ordersStack);
   waypoint = null;
-  shelter = null;
-  upkeepPoint = null;
+  shelterPoint = null;
   upkeep = false;
   restock = false;
   deposit = false;
-  moving = false;
   waiting = false;
   at_deposit=false;
   at_shelter=false;
@@ -120,7 +120,6 @@ public void onOrdersUpdated()
   if(orders!=null)
     {
     waypoint = orders.getRoute().get(waypointIndex).getPosition();
-    moving = true;
     }
   }
 
@@ -151,33 +150,154 @@ public boolean continueExecuting()
 @Override
 public void updateTask() 
   {
-  if(npc.shouldBeAtHome()){updateShelter();}
+  if(npc.shouldBeAtHome() || shelter){updateShelter();}
   else if(upkeep){updateUpkeep();}
   else if(restock){updateRestock();}
-  else if(moving || waiting){updatePatrol();}
+  else {updatePatrol();}
   }
 
 private void updateShelter()
   {
-  if(shelter==null)
+  npc.addAITask(TASK_GO_HOME);
+  shelter=true;
+  if(at_shelter)
     {
-    //find closest waypoint from routing list
+    if(!npc.shouldBeAtHome())
+      {
+      shelter=false;
+      at_shelter=false;
+      shelterPoint=null;
+      npc.removeAITask(TASK_GO_HOME);
+      }//end shelter code, return to whatever was going on previously
+    }
+  else if(shelterPoint==null)
+    {    
+    int index = waypointIndex-1;
+    if(index<0){index=orders.getRoute().size()-1;}
+    BlockPosition wp2 = orders.getRoute().get(index).getPosition();    
+    double d1 = npc.getDistanceSq(waypoint);
+    double d2 = npc.getDistanceSq(wp2);
+    shelterPoint = d1<d2? waypoint : wp2;
     }
   else
     {
-    //move towards shelter point if not in range
+    double d = npc.getDistanceSq(shelterPoint);
+    if(d < 9.d)
+      {
+      npc.addAITask(TASK_MOVE);
+      moveToPosition(shelterPoint, d);      
+      }
+    else
+      {
+      npc.removeAITask(TASK_MOVE);
+      at_shelter = true;      
+      }
     }
   }
 
 private void updateUpkeep()
   {
-  
+  npc.addAITask(TASK_UPKEEP);
+  if(at_upkeep)
+    {
+    if(tryWithdrawUpkeep())
+      {
+      at_upkeep=false;
+      upkeep = false;
+      restock = true;
+      deposit = true;
+      npc.removeAITask(TASK_UPKEEP);
+      npc.removeAITask(TASK_IDLE_HUNGRY);
+      }
+    }
+  else if(npc.getUpkeepPoint()!=null)
+    {
+    double d = npc.getDistanceSq(npc.getUpkeepPoint());
+    if(d>9.d)
+      {
+      npc.addAITask(TASK_MOVE);
+      moveToPosition(npc.getUpkeepPoint(), d);
+      }
+    else
+      {
+      npc.removeAITask(TASK_MOVE);
+      at_upkeep=true;
+      }
+    }
+  else//no upkeep point, display no upkeep task/state icon
+    {
+    npc.addAITask(TASK_IDLE_HUNGRY);
+    npc.removeAITask(TASK_UPKEEP);
+    }
   }
 
-private void updateRestock(){}
-private void updatePatrol(){}
+protected boolean tryWithdrawUpkeep()
+  {
+  BlockPosition p = npc.getUpkeepPoint();
+  TileEntity te = npc.worldObj.getTileEntity(p.x, p.y, p.z);
+  if(te instanceof IInventory)
+    {
+    return trader.withdrawFood((IInventory) te, npc.getUpkeepBlockSide());
+    }
+  return false;
+  }
 
-private void setNextWaypoint(){}
+private void updateRestock()
+  {
+  restock = false;//TODO
+  }
+
+private void updatePatrol()
+  {  
+  if(at_waypoint)
+    {
+    if(waiting)
+      {      
+      delayCounter++;
+      if(delayCounter>=orders.getRoute().get(waypointIndex).getDelay())
+        {
+        delayCounter=0;
+        waiting=false;
+        at_waypoint=false;
+        if(orders.getRoute().get(waypointIndex).shouldUpkeep())
+          {
+          upkeep=true;     
+          }
+        else
+          {
+          setNextWaypoint();
+          }
+        }
+      }
+    else
+      {
+      waiting = true;      
+      delayCounter=0;
+      }
+    }
+  else
+    {
+    npc.addAITask(TASK_MOVE);
+    double d = npc.getDistanceSq(waypoint);
+    if(d<9.d)
+      {
+      at_waypoint=true;
+      waiting=false;
+      npc.removeAITask(TASK_MOVE);
+      }
+    else
+      {
+      moveToPosition(waypoint, d);
+      }
+    }
+  }
+
+private void setNextWaypoint()
+  {
+  waypointIndex++;
+  if(waypointIndex>=orders.getRoute().size()){waypointIndex=0;}
+  waypoint = orders.getRoute().get(waypointIndex).getPosition();
+  }
 
 public void readFromNBT(NBTTagCompound tag){}//TODO
 public NBTTagCompound writeToNBT(NBTTagCompound tag){return tag;}//TODO
