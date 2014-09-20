@@ -3,12 +3,11 @@ package net.shadowmage.ancientwarfare.npc.trade;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class POTradeRestockData
 {
@@ -53,6 +52,22 @@ public void setWithdrawPoint(BlockPosition pos, int side)
   {
   withdrawPoint = pos;
   withdrawSide = side;
+  }
+
+public void doDeposit(IInventory storage, IInventory deposit, int side)
+  {
+  for(int i = 0; i < depositList.size(); i++)
+    {
+    depositList.get(i).process(storage, deposit, side);
+    }
+  }
+
+public void doWithdraw(IInventory storage, IInventory withdraw, int side)  
+  {
+  for(int i = 0; i < withdrawList.size(); i++)
+    {
+    withdrawList.get(i).process(storage, withdraw, side);
+    }
   }
 
 public void readFromNBT(NBTTagCompound tag)
@@ -119,7 +134,6 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
 public static enum POTradeWithdrawType
 {
 ALL_OF,
-QUANTITY,
 FILL_TO
 }
 
@@ -130,60 +144,5 @@ QUANTITY,
 DEPOSIT_EXCESS
 }
 
-public static final class POTradeWithdrawEntry
-{
-private POTradeWithdrawType type = POTradeWithdrawType.ALL_OF;
-private ItemStack filter;
-public ItemStack getFilter(){return filter;}
-public void setFilter(ItemStack stack){filter=stack;}
-public void setType(POTradeWithdrawType type){this.type=type==null? POTradeWithdrawType.ALL_OF : type;}
-public POTradeWithdrawType getType(){return type;}
-public void toggleType()
-  {
-  int o = type.ordinal();
-  o++;
-  if(o>=POTradeWithdrawType.values().length){o=0;}
-  this.type = POTradeWithdrawType.values()[o];
-  }
-public void readFromNBT(NBTTagCompound tag)
-  {
-  if(tag.hasKey("item")){filter = InventoryTools.readItemStack(tag.getCompoundTag("item"));}
-  type = POTradeWithdrawType.values()[tag.getInteger("type")];
-  }
-public NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  if(filter!=null){tag.setTag("item", InventoryTools.writeItemStack(filter, new NBTTagCompound()));}
-  tag.setInteger("type", type.ordinal());
-  return tag;
-  }
-}
-
-public static final class POTradeDepositEntry
-{
-private POTradeDepositType type = POTradeDepositType.ALL_OF;
-private ItemStack filter;
-public ItemStack getFilter(){return filter;}
-public void setFilter(ItemStack stack){filter=stack;}
-public void setType(POTradeDepositType type){this.type=type==null? POTradeDepositType.ALL_OF : type;}
-public POTradeDepositType getType(){return type;}
-public void toggleType()
-  {
-  int o = type.ordinal();
-  o++;
-  if(o>=POTradeDepositType.values().length){o=0;}
-  this.type = POTradeDepositType.values()[o];
-  }
-public void readFromNBT(NBTTagCompound tag)
-  {
-  if(tag.hasKey("item")){filter = InventoryTools.readItemStack(tag.getCompoundTag("item"));}
-  type = POTradeDepositType.values()[tag.getInteger("type")];
-  }
-public NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  if(filter!=null){tag.setTag("item", InventoryTools.writeItemStack(filter, new NBTTagCompound()));}
-  tag.setInteger("type", type.ordinal());
-  return tag;
-  }
-}
 
 }

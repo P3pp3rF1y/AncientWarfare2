@@ -19,12 +19,12 @@ import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
 import net.shadowmage.ancientwarfare.npc.trade.POTrade;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeDepositEntry;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 import net.shadowmage.ancientwarfare.npc.trade.POTradePoint;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
-import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData.POTradeDepositEntry;
-import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData.POTradeWithdrawEntry;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeWithdrawEntry;
 
 public class GuiTradeOrder extends GuiContainerBase
 {

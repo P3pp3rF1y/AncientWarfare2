@@ -1,13 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
+import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
@@ -244,7 +243,68 @@ protected boolean tryWithdrawUpkeep()
 
 private void updateRestock()
   {
-  restock = false;//TODO
+  if(deposit){updateDeposit();}
+  else{updateWithdraw();}
+  }
+
+private void updateDeposit()
+  {
+  if(at_deposit)
+    {
+    doDeposit();
+    deposit=false;
+    at_deposit=false;
+    }
+  else if(orders.getRestockData().getDepositPoint()!=null)
+    {
+    BlockPosition p = orders.getRestockData().getDepositPoint();
+    double d = npc.getDistanceSq(p);
+    if(d>9.d)
+      {
+      npc.addAITask(TASK_MOVE);
+      moveToPosition(p, d);
+      }
+    else
+      {
+      npc.removeAITask(TASK_MOVE);
+      at_deposit=true;
+      }
+    }
+  else//no deposit point
+    {
+    deposit = false;//kick into withdraw mode
+    }
+  }
+
+private void updateWithdraw()
+  {
+  if(at_withdraw)
+    {
+    doWithdraw();
+    setNextWaypoint();
+    restock = false;
+    at_withdraw=false;
+    }
+  else if(orders.getRestockData().getWithdrawPoint()!=null)
+    {
+    BlockPosition p = orders.getRestockData().getWithdrawPoint();
+    double d = npc.getDistanceSq(p);
+    if(d>9.d)
+      {
+      npc.addAITask(TASK_MOVE);
+      moveToPosition(p, d);
+      }
+    else
+      {
+      npc.removeAITask(TASK_MOVE);
+      at_withdraw=true;
+      }
+    }
+  else//no withdraw point
+    {
+    restock = false;
+    setNextWaypoint();
+    }
   }
 
 private void updatePatrol()
@@ -299,7 +359,49 @@ private void setNextWaypoint()
   waypoint = orders.getRoute().get(waypointIndex).getPosition();
   }
 
-public void readFromNBT(NBTTagCompound tag){}//TODO
-public NBTTagCompound writeToNBT(NBTTagCompound tag){return tag;}//TODO
+private void doDeposit()
+  {
+  ItemStack backpack = npc.getEquipmentInSlot(0);
+  if(backpack!=null && backpack.getItem() instanceof ItemBackpack)
+    {
+    InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
+    BlockPosition pos = orders.getRestockData().getDepositPoint();
+    TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+    if(te instanceof IInventory)
+      {
+      IInventory dep = (IInventory)te;
+      orders.getRestockData().doDeposit(inv, dep, orders.getRestockData().getDepositSide());
+      }
+    }
+  }
+
+private void doWithdraw()
+  {
+  ItemStack backpack = npc.getEquipmentInSlot(0);
+  if(backpack!=null && backpack.getItem() instanceof ItemBackpack)
+    {
+    InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
+    BlockPosition pos = orders.getRestockData().getWithdrawPoint();
+    TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+    if(te instanceof IInventory)
+      {
+      IInventory dep = (IInventory)te;
+      orders.getRestockData().doWithdraw(inv, dep, orders.getRestockData().getWithdrawSide());
+      }
+    }
+  }
+
+public void readFromNBT(NBTTagCompound tag)
+  {
+  orders = TradeOrder.getTradeOrder(npc.ordersStack);
+  waypointIndex = tag.getInteger("waypoint");
+  waypoint = orders==null? null : orders.getRoute().get(waypointIndex).getPosition();  
+  }
+
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
+  {
+  tag.setInteger("waypoint", waypointIndex);
+  return tag;
+  }
 
 }
