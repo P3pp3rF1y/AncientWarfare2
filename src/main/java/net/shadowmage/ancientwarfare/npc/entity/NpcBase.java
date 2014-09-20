@@ -495,6 +495,8 @@ public final void readAdditionalItemData(NBTTagCompound tag)
   if(tag.hasKey("customTex")){setCustomTexRef(tag.getString("customTex"));}
   if(tag.hasKey("wander")){shouldWander=tag.getBoolean("wander");}
   ownerName=tag.getString("owner");
+  onOrdersInventoryChanged();
+  onWeaponInventoryChanged();  
   }
 
 /**

@@ -45,6 +45,13 @@ public NpcPlayerOwned(World par1World)
   }
 
 @Override
+public void setCurrentItemOrArmor(int slot, ItemStack stack)
+  {
+  super.setCurrentItemOrArmor(slot, stack);
+  if(slot==0){onWeaponInventoryChanged();}
+  }
+
+@Override
 public void onDeath(DamageSource source)
   {
   if(!worldObj.isRemote)
