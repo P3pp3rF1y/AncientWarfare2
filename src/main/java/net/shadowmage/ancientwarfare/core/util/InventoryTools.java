@@ -37,49 +37,7 @@ public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, in
   if(side>=0 && inventory instanceof ISidedInventory)
     {    
     int[] slotIndices = ((ISidedInventory)inventory).getAccessibleSlotsFromSide(side);
-    if(slotIndices==null){return null;}
-    int index;
-    int toMove;
-    ItemStack slotStack;
-    for(int i = 0; i <slotIndices.length; i++)
-      {
-      toMove = stack.stackSize;
-      index = slotIndices[i];
-      slotStack = inventory.getStackInSlot(index);
-      if(doItemStacksMatch(stack, slotStack))
-        {
-        if(toMove > slotStack.getMaxStackSize() - slotStack.stackSize)
-          {
-          toMove = slotStack.getMaxStackSize() - slotStack.stackSize;
-          }
-        stack.stackSize-=toMove;
-        slotStack.stackSize+=toMove;
-        inventory.setInventorySlotContents(index, slotStack);
-        inventory.markDirty();
-        }      
-      if(stack.stackSize<=0)//merged stack fully;
-        {
-        return null;
-        }
-      }
-    if(stack.stackSize>0)
-      {
-      for(int i = 0; i <slotIndices.length; i++)
-        {        
-        index = slotIndices[i];
-        slotStack = inventory.getStackInSlot(index);
-        if(slotStack==null && inventory.isItemValidForSlot(index, stack))
-          {
-          inventory.setInventorySlotContents(index, stack);
-          inventory.markDirty();
-          return null;//successful merge
-          }
-        }
-      }
-    else
-      {
-      return null;//successful merge
-      }
+    return mergeItemStack(inventory, stack, slotIndices);    
     }
   else
     {
@@ -125,6 +83,54 @@ public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, in
       {
       return null;//successful merge
       }
+    }
+  return stack;//partial or unsuccessful merge
+  }
+
+public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, int[] slotIndices)
+  {
+  if(slotIndices==null){return null;}
+  int index;
+  int toMove;
+  ItemStack slotStack;
+  for(int i = 0; i <slotIndices.length; i++)
+    {
+    toMove = stack.stackSize;
+    index = slotIndices[i];
+    slotStack = inventory.getStackInSlot(index);
+    if(doItemStacksMatch(stack, slotStack))
+      {
+      if(toMove > slotStack.getMaxStackSize() - slotStack.stackSize)
+        {
+        toMove = slotStack.getMaxStackSize() - slotStack.stackSize;
+        }
+      stack.stackSize-=toMove;
+      slotStack.stackSize+=toMove;
+      inventory.setInventorySlotContents(index, slotStack);
+      inventory.markDirty();
+      }      
+    if(stack.stackSize<=0)//merged stack fully;
+      {
+      return null;
+      }
+    }
+  if(stack.stackSize>0)
+    {
+    for(int i = 0; i <slotIndices.length; i++)
+      {        
+      index = slotIndices[i];
+      slotStack = inventory.getStackInSlot(index);
+      if(slotStack==null && inventory.isItemValidForSlot(index, stack))
+        {
+        inventory.setInventorySlotContents(index, stack);
+        inventory.markDirty();
+        return null;//successful merge
+        }
+      }
+    }
+  else
+    {
+    return null;//successful merge
     }
   return stack;//partial or unsuccessful merge
   }

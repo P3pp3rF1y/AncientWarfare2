@@ -47,11 +47,11 @@ public void openAltGui(EntityPlayer player)
  */
 public final void addStackToInventory(ItemStack stack, RelativeSide... sides)
   {
-  int mcSide;
+  int[] slots;
   for(RelativeSide side: sides)
     {
-    mcSide = inventory.getAccessDirectionFor(side);
-    stack = InventoryTools.mergeItemStack(inventory, stack, mcSide);
+    slots = inventory.getRawIndices(side);
+    stack = InventoryTools.mergeItemStack(inventory, stack, slots);
     if(stack==null)
       {
       break;
