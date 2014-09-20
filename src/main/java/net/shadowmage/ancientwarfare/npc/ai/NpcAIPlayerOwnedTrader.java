@@ -371,6 +371,7 @@ private void doDeposit()
       {
       IInventory dep = (IInventory)te;
       orders.getRestockData().doDeposit(inv, dep, orders.getRestockData().getDepositSide());
+      ItemBackpack.writeBackpackToItem(inv, backpack);
       }
     }
   }
@@ -387,6 +388,7 @@ private void doWithdraw()
       {
       IInventory dep = (IInventory)te;
       orders.getRestockData().doWithdraw(inv, dep, orders.getRestockData().getWithdrawSide());
+      ItemBackpack.writeBackpackToItem(inv, backpack);
       }
     }
   }
