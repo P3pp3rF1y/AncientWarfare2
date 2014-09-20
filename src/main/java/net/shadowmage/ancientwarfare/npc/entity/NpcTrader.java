@@ -93,12 +93,57 @@ public String getNpcType()
 @Override
 protected boolean interact(EntityPlayer player)
   {
+  if(player.worldObj.isRemote){return true;}
   boolean baton = player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
-  if(!player.worldObj.isRemote && getFoodRemaining()>0 && !baton && trader==null)
+  if(baton){return true;}  
+  if(player.getCommandSenderName().equals(getOwnerName()))//owner
     {
-    trader=player;
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_PLAYER_OWNED_TRADE, getEntityId(), 0, 0);
+    if(player.isSneaking())
+      {
+      if(this.followingPlayerName==null)
+        {
+        this.followingPlayerName = player.getCommandSenderName();    
+        }
+      else if(this.followingPlayerName.equals(player.getCommandSenderName()))
+        {
+        this.followingPlayerName = null;
+        }
+      else
+        {
+        this.followingPlayerName = player.getCommandSenderName();      
+        }
+      }
+    else
+      {
+      openGUI(player);  
+      }    
     }
+  else//non-owner
+    {
+    if(!player.worldObj.isRemote && getFoodRemaining()>0 && trader==null)
+      {
+      trader=player;    
+      openAltGui(player);
+      }
+    }
+  return true;   
+  }
+
+@Override
+public void openGUI(EntityPlayer player)
+  {
+  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);  
+  }
+
+@Override
+public void openAltGui(EntityPlayer player)
+  {
+  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_PLAYER_OWNED_TRADE, getEntityId(), 0, 0);  
+  }
+
+@Override
+public boolean hasAltGui()
+  {
   return true;
   }
 
