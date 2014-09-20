@@ -97,7 +97,7 @@ public void readFromNBT(NBTTagCompound tag)
   for(int i = 0; i < withdraw.tagCount(); i++)
     {
     we = new POTradeWithdrawEntry();
-    we.readFromNBT(deposit.getCompoundTagAt(i));
+    we.readFromNBT(withdraw.getCompoundTagAt(i));
     this.withdrawList.add(we);
     }
   }
