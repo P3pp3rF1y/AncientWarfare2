@@ -298,6 +298,11 @@ public void setAccessibleSideDefault(RelativeSide rSide, RelativeSide iSide, int
   setInventoryIndices(iSide, indices);
   }
 
+public int[] getRawIndices(RelativeSide side)
+  {
+  return slotsByInventorySide.get(side);
+  }
+
 private void addValidSide(RelativeSide side)
   {
   validSides.add(side);
