@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
@@ -39,6 +40,13 @@ private BlockPosition upkeepAutoBlock;
 public NpcPlayerOwned(World par1World)
   {
   super(par1World);
+  }
+
+@Override
+public void setCurrentItemOrArmor(int slot, ItemStack stack)
+  {
+  super.setCurrentItemOrArmor(slot, stack);
+  if(slot==0){onWeaponInventoryChanged();}
   }
 
 @Override
