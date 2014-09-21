@@ -78,6 +78,30 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setTag("entryList", entryList);  
   }
 
+public void removeResearchFrom(String playerName, int research)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    playerResearchEntries.get(playerName).removeResearch(research);
+    }
+  }
+
+public void clearResearchFor(String playerName)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    playerResearchEntries.get(playerName).clearResearch();
+    }
+  }
+
+public void fillResearchFor(String playerName)
+  {
+  if(playerResearchEntries.containsKey(playerName))
+    {
+    playerResearchEntries.get(playerName).fillResearch();
+    }
+  }
+
 public Set<Integer> getResearchableGoals(String playerName)
   {  
   if(playerResearchEntries.containsKey(playerName))
@@ -284,6 +308,31 @@ private void addResearch(int num)
     {
     this.currentResearch = -1;
     this.currentProgress = -1;
+    }
+  }
+
+private void removeResearch(int num)
+  {
+  this.completedResearch.remove(Integer.valueOf(num));
+  }
+
+private void clearResearch()
+  {
+  this.completedResearch.clear();
+  this.currentProgress = -1;
+  this.currentResearch = -1;
+  this.queuedResearch.clear();
+  }
+
+private void fillResearch()
+  {
+  this.completedResearch.clear();
+  this.currentProgress = -1;
+  this.currentResearch = -1;
+  this.queuedResearch.clear();
+  for(ResearchGoal g : ResearchGoal.getResearchGoals())
+    {
+    completedResearch.add(g.getId());
     }
   }
 
