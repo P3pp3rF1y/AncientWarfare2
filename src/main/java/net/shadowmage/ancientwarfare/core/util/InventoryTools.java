@@ -202,7 +202,7 @@ public static ItemStack removeItems(IInventory inventory, int side, ItemStack fi
       if(slotStack==null || !doItemStacksMatch(slotStack, filter)){continue;}
       if(returnStack==null)
         {
-        returnStack = new ItemStack(filter.getItem());
+        returnStack = filter.copy();
         returnStack.stackSize = 0;
         }
       toMove = slotStack.stackSize;
@@ -232,7 +232,7 @@ public static ItemStack removeItems(IInventory inventory, int side, ItemStack fi
       if(slotStack==null || !doItemStacksMatch(slotStack, filter)){continue;}      
       if(returnStack==null)
         {
-        returnStack = new ItemStack(filter.getItem());
+        returnStack = filter.copy();
         returnStack.stackSize = 0;
         }      
       toMove = slotStack.stackSize;
