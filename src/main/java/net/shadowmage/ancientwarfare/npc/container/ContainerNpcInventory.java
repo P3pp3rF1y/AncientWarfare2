@@ -61,7 +61,7 @@ public void handlePacketData(NBTTagCompound tag)
   {
   if(tag.hasKey("customName"))
     {    
-    npc.setCustomNameTag(tag.getString("customName"));
+    this.name = tag.getString("customName");
     }
   if(tag.hasKey("repack"))
     {
@@ -77,9 +77,8 @@ public void handlePacketData(NBTTagCompound tag)
 
 public void handleNpcNameUpdate(String newName)
   {
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setString("customName", newName);
-  sendDataToServer(tag);
+  name = newName;
+  if(name==null){name="";}
   }
 
 public void handleNpcTextureUpdate(String tex)
@@ -92,7 +91,14 @@ public void handleNpcTextureUpdate(String tex)
 @Override
 public void onContainerClosed(EntityPlayer p_75134_1_)
   {
+  if(p_75134_1_.worldObj.isRemote)
+    {
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setString("customName", name);
+    sendDataToServer(tag);    
+    }
   super.onContainerClosed(p_75134_1_);
+  npc.setCustomNameTag(name);
   npc.updateTexture();
   }
 
