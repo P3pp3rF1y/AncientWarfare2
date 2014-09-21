@@ -60,6 +60,7 @@ item.work_order.name=Work Order
 item.upkeep_order.name=Upkeep Order
 item.combat_order.name=Combat Order
 item.routing_order.name=Routing Order
+item.trade_order.name=Trade Order
 item.wooden_command_baton.name=Wooden Command Baton
 item.stone_command_baton.name=Stone Command Baton
 item.iron_command_baton.name=Iron Command Baton
@@ -616,6 +617,7 @@ command.aw.structure.file_not_found=File could not be located: %s
 command.aw.structure.template_removed=Template was removed: %s
 command.aw.structure.file_deleted=File was deleted: %s
 command.aw.structure.built=Structure built: %s at: %s,%s,%s
+command.aw.research.usage=Usage: /awresearch (add:remove:fill:clear) playerName [goalname for add/remove]
 
 #research
 research.invention=Invention
