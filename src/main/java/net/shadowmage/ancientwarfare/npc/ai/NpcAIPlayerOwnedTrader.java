@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
+import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
 /**
@@ -52,12 +53,12 @@ private BlockPosition shelterPoint;
  * trade orders is set/updated when orders item is changed or when entity is loaded from NBT
  */
 private TradeOrder orders;
-private NpcPlayerOwned trader;
+private NpcTrader trader;
 
 public NpcAIPlayerOwnedTrader(NpcBase npc)
   {
   super(npc);
-  this.trader = (NpcPlayerOwned) npc;
+  this.trader = (NpcTrader) npc;
   setMutexBits(MOVE+ATTACK);
   }
 
@@ -110,7 +111,7 @@ public boolean continueExecuting()
 @Override
 public void updateTask() 
   {
-  if(npc.shouldBeAtHome() || shelter){updateShelter();}
+  if(trader.shouldBeAtHome() || shelter){updateShelter();}
   else if(upkeep){updateUpkeep();}
   else if(restock){updateRestock();}
   else {updatePatrol();}
@@ -122,13 +123,21 @@ private void updateShelter()
   shelter=true;
   if(at_shelter)
     {
-    if(!npc.shouldBeAtHome())
+    if(!trader.shouldBeAtHome())
       {
       shelter=false;
       at_shelter=false;
       shelterPoint=null;
+      upkeep=false;
+      at_upkeep=false;
+      deposit=false;
+      restock=false;
+      at_deposit=false;
+      at_withdraw=false;
+      waiting=false;
+      delayCounter=0;
       npc.removeAITask(TASK_GO_HOME);
-      }//end shelter code, return to whatever was going on previously
+      }//end shelter code, return to previously current route point - if was interruped in the middle of upkeep, will restart upkeep
     }
   else if(shelterPoint==null)
     {    
