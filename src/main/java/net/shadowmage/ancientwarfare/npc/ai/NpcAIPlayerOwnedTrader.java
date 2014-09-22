@@ -116,7 +116,7 @@ public void onOrdersUpdated()
   at_withdraw=false;
   waypointIndex = 0;
   delayCounter = 0;
-  if(orders!=null)
+  if(orders!=null && orders.getRoute().size()>0)
     {
     waypoint = orders.getRoute().get(waypointIndex).getPosition();
     }
@@ -125,7 +125,7 @@ public void onOrdersUpdated()
 @Override
 public boolean shouldExecute()
   {
-  return orders!=null;
+  return orders!=null && waypoint!=null;
   }
 
 @Override
