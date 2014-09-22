@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
+import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder.RoutePoint;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
@@ -60,6 +61,10 @@ public void renderLastEvent(RenderWorldLastEvent evt)
   else if(item==AWNpcItemLoader.combatOrder)
     {
     renderCombatList(player, stack, evt.partialTicks);
+    }
+  else if(item==AWNpcItemLoader.tradeOrder)
+    {
+    renderTradeList(player, stack, evt.partialTicks);
     }
   positionList.clear();
   }
@@ -113,6 +118,18 @@ public void renderCombatList(EntityPlayer player, ItemStack orderStack, float pa
     }
   }
 
+private void renderTradeList(EntityPlayer player, ItemStack orderStack, float partialTick)
+  {
+  TradeOrder order = TradeOrder.getTradeOrder(orderStack);
+  if(order!=null && order.getRoute().size()>0)
+    {
+    for(int i = 0; i < order.getRoute().size(); i++)
+      {
+      positionList.add(order.getRoute().get(i).getPosition());
+      }
+    renderListOfPoints(player, positionList, partialTick);
+    }
+  }
 
 private void renderListOfPoints(EntityPlayer player, List<BlockPosition> points, float partialTick)
   {
