@@ -22,6 +22,7 @@ public NpcAIMoveHome(NpcBase npc, float dayRange, float nightRange, float dayLea
 @Override
 public boolean shouldExecute()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   if(!npc.hasHome()){return false;}
   ChunkCoordinates cc = npc.getHomePosition();
   float distSq = (float) npc.getDistanceSq(cc.posX+0.5d, cc.posY, cc.posZ+0.5d);
@@ -35,6 +36,7 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   if(!npc.hasHome()){return false;}
   ChunkCoordinates cc = npc.getHomePosition();
   float distSq = (float) npc.getDistanceSq(cc.posX+0.5d, cc.posY, cc.posZ+0.5d);

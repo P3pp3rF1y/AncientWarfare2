@@ -23,6 +23,7 @@ public NpcAIWorkRandom(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   if(npc.getFoodRemaining()<=0 || npc.shouldBeAtHome()){return false;} 
   return npc.ordersStack==null && worker.autoWorkTarget!=null;
   }
@@ -30,6 +31,7 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   if(npc.getFoodRemaining()<=0 || npc.shouldBeAtHome()){return false;} 
   return npc.ordersStack==null && worker.autoWorkTarget!=null;
   }

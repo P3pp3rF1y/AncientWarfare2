@@ -40,20 +40,14 @@ public boolean shouldExecute()
     order = RoutingOrder.getRoutingOrder(routeStack);
     if((order!=null && routeIndex>=order.getEntries().size()) || order==null){routeIndex=0;}
     }
-  if(npc.shouldBeAtHome())//dont work at night if has home point
-    {
-    return false;
-    }
+  if(!npc.getIsAIEnabled() || npc.shouldBeAtHome()){return false;}
   return courier.backpackInventory!=null && order!=null && !order.getEntries().isEmpty();
   }
 
 @Override
 public boolean continueExecuting()
   {
-  if(npc.shouldBeAtHome())//dont work at night if has home point
-    {
-    return false;
-    }
+  if(!npc.getIsAIEnabled() || npc.shouldBeAtHome()){return false;}
   return courier.backpackInventory!=null && order!=null && !order.getEntries().isEmpty();
   }
 

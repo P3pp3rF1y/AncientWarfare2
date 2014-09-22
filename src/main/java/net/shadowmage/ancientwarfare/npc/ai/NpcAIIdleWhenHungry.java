@@ -17,12 +17,14 @@ public NpcAIIdleWhenHungry(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   return npc.getAttackTarget()==null && npc.requiresUpkeep() && npc.getFoodRemaining()==0;
   }
 
 @Override
 public boolean continueExecuting()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   return npc.getAttackTarget()==null && npc.requiresUpkeep() && npc.getFoodRemaining()==0;
   }
 

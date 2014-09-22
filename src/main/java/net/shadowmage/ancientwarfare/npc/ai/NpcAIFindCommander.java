@@ -49,6 +49,7 @@ public NpcAIFindCommander(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   return !npc.getNpcSubType().equals("commander") && (commander==null || commander.isDead || !npc.canBeCommandedBy(commander.getOwnerName())) && (lastExecuted==-1 || npc.ticksExisted-lastExecuted>200);
   }
 

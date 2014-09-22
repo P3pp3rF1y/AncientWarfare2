@@ -24,12 +24,14 @@ public NpcAIPriestPlayerOwned(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   return (lastCheckTicks==-1 || npc.ticksExisted-lastCheckTicks>200) && npc.getTownHall()!=null && !npc.getTownHall().getDeathList().isEmpty();
   }
 
 @Override
 public boolean continueExecuting()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   return npc.getTownHall()!=null && entryToRes!=null && !entryToRes.resurrected && entryToRes.beingResurrected;
   }
 

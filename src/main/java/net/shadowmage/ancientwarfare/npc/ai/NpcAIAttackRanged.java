@@ -22,7 +22,7 @@ public NpcAIAttackRanged(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
-  return npc.getAttackTarget()!=null && !npc.getAttackTarget().isDead;
+  return npc.getIsAIEnabled() && npc.getAttackTarget()!=null && !npc.getAttackTarget().isDead;
   }
 
 /**
@@ -31,7 +31,7 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   {
-  return target!=null && !target.isDead && target==npc.getAttackTarget();
+  return npc.getIsAIEnabled() && target!=null && !target.isDead && target==npc.getAttackTarget();
   }
 
 /**

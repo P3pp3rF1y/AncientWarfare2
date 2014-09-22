@@ -61,7 +61,7 @@ public ItemStack ordersStack;
 
 public ItemStack upkeepStack;
 
-private boolean shouldWander = true;
+private boolean aiEnabled = true;
 
 private int attackDamage = -1;//faction based only
 private int armorValue = -1;//faction based only
@@ -285,8 +285,8 @@ public boolean shouldBeAtHome()
   return false;
   }
 
-public void setShouldWander(boolean val){this.shouldWander = val;}
-public boolean getShouldWander(){return shouldWander;}
+public void setIsAIEnabled(boolean val){this.aiEnabled = val;}
+public boolean getIsAIEnabled(){return aiEnabled;}
 
 /**
  * should be implemented by any npc that wishes to open a GUI on interact<br>
@@ -493,7 +493,7 @@ public final void readAdditionalItemData(NBTTagCompound tag)
   if(tag.hasKey("attackDamageOverride")){setAttackDamageOverride(tag.getInteger("attackDamageOverride"));}
   if(tag.hasKey("armorValueOverride")){setArmorValueOverride(tag.getInteger("armorValueOverride"));}
   if(tag.hasKey("customTex")){setCustomTexRef(tag.getString("customTex"));}
-  if(tag.hasKey("wander")){shouldWander=tag.getBoolean("wander");}
+  if(tag.hasKey("aiEnabled")){aiEnabled=tag.getBoolean("aiEnabled");}
   ownerName=tag.getString("owner");
   onOrdersInventoryChanged();
   onWeaponInventoryChanged();  
@@ -530,7 +530,7 @@ public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag)
   tag.setInteger("attackDamageOverride", attackDamage);
   tag.setInteger("armorValueOverride", armorValue);
   tag.setString("customTex", customTexRef);
-  tag.setBoolean("wander", shouldWander);
+  tag.setBoolean("aiEnabled", aiEnabled);
   return tag;
   }
 
