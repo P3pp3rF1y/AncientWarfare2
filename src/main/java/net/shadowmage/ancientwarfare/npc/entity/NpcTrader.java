@@ -51,7 +51,6 @@ public NpcTrader(World par1World)
   this.tasks.addTask(4, tradeAI = new NpcAIPlayerOwnedTrader(this));
   this.tasks.addTask(5, new NpcAIGetFood(this));  
   this.tasks.addTask(6, new NpcAIIdleWhenHungry(this)); 
-  //TODO swap move home ai to move home by default? home position is the npcs vendor-stall?
   this.tasks.addTask(7, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
