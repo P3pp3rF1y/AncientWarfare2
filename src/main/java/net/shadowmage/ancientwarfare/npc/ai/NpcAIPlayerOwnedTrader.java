@@ -104,7 +104,7 @@ public void resetTask()
 @Override
 public boolean continueExecuting()
   {
-  return orders!=null;
+  return orders!=null && waypoint!=null;
   }
 
 @Override
