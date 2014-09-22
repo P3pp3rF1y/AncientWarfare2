@@ -69,7 +69,7 @@ public void renderLastEvent(RenderWorldLastEvent evt)
   positionList.clear();
   }
 
-public void renderUpkeepList(EntityPlayer player, ItemStack orderStack, float partialTick)
+private void renderUpkeepList(EntityPlayer player, ItemStack orderStack, float partialTick)
   {
   UpkeepOrder order = UpkeepOrder.getUpkeepOrder(orderStack);
   if(order!=null && order.getUpkeepPosition()!=null)
@@ -79,7 +79,7 @@ public void renderUpkeepList(EntityPlayer player, ItemStack orderStack, float pa
     }
   }
 
-public void renderWorkList(EntityPlayer player, ItemStack orderStack, float partialTick)
+private void renderWorkList(EntityPlayer player, ItemStack orderStack, float partialTick)
   {
   WorkOrder order = WorkOrder.getWorkOrder(orderStack);
   if(order!=null && order.getEntries().size()>0)
@@ -92,7 +92,7 @@ public void renderWorkList(EntityPlayer player, ItemStack orderStack, float part
     }
   }
 
-public void renderCourierList(EntityPlayer player, ItemStack orderStack, float partialTick)
+private void renderCourierList(EntityPlayer player, ItemStack orderStack, float partialTick)
   {
   RoutingOrder order = RoutingOrder.getRoutingOrder(orderStack);
   if(order!=null && order.getEntries().size()>0)
@@ -105,7 +105,7 @@ public void renderCourierList(EntityPlayer player, ItemStack orderStack, float p
     }
   }
 
-public void renderCombatList(EntityPlayer player, ItemStack orderStack, float partialTick)
+private void renderCombatList(EntityPlayer player, ItemStack orderStack, float partialTick)
   {
   CombatOrder order = CombatOrder.getCombatOrder(orderStack);
   if(order!=null && order.getPatrolSize()>0)
