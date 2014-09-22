@@ -22,16 +22,31 @@ public ContainerNpcBard(EntityPlayer player, int x, int y, int z)
 @Override
 public void sendInitData()
   {
-  super.sendInitData();
-  //TODO send tune data to client
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setTag("tuneData", data.writeToNBT(new NBTTagCompound()));
+  sendDataToClient(tag);
   }
 
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  //TODO read tune data, set into tune-data instance
-  //this will work for both directions....
+  if(tag.hasKey("tuneData"))
+    {
+    data.readFromNBT(tag.getCompoundTag("tuneData"));
+    }
   refreshGui();
+  }
+
+@Override
+public void onContainerClosed(EntityPlayer player)
+  {
+  if(player.worldObj.isRemote)//handles sending new/updated/changed data back to server on GUI close.  the last GUI to close will be the one whos data 'sticks'
+    {
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setTag("tuneData", data.writeToNBT(new NBTTagCompound()));
+    sendDataToServer(tag);
+    }
+  super.onContainerClosed(player);
   }
 
 }
