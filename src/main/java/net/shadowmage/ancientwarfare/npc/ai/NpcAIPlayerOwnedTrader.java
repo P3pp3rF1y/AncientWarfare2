@@ -23,45 +23,6 @@ public class NpcAIPlayerOwnedTrader extends NpcAI
 {
 
 /**
- * pseudo-code
- * 
- * Start:
- * if(night/raining){goto shelter code-path}
- * else if(doing_upkeep){goto upkeep code-path}
- * else if(doing restock){goto restock code-path}
- * else if(waiting)
- *  {
- *  if(wait<delay){keep waiting}
- *  else{select next waypoint}
- *  }
- * else if(moving){continue moving}
- * 
- * Shelter:
- * if(at_shelter){keep waiting}
- * else if(chosen_shelter){move towards shelter}
- * else{shelter = closest waypoint or home if no waypoints}
- *   
- * Upkeep:
- * if(at_upkeep){do upkeep, set doing_upkeep=false, set doing_restock=true, deposit=true}
- * else if(has upkeep point){move towards upkeep point}
- * else{do nothing}
- * 
- * Restock:
- * if(deposit)
- *  {
- *  if(at_deposit){do deposit, set deposit=false}
- *  else if(has deposit){move to deposit}
- *  else{set deposit=false}//has no deposit point, disregard
- *  }
- * else//must be withdraw
- *  {
- *  if(at_withdraw){do withdraw, set restock=false, set next waypoint}
- *  else if(has withdraw){move to withdraw}
- *  else{set restock=false, set next waypoint}//has no deposit point, disregard
- *  }
- */
-
-/**
  * state flags, to track what state the AI is currently in
  */
 private boolean shelter, upkeep, restock, deposit, waiting, at_shelter, at_upkeep, at_deposit, at_withdraw, at_waypoint;
@@ -397,7 +358,7 @@ public void readFromNBT(NBTTagCompound tag)
   {
   orders = TradeOrder.getTradeOrder(npc.ordersStack);
   waypointIndex = tag.getInteger("waypoint");
-  waypoint = orders==null? null : orders.getRoute().get(waypointIndex).getPosition();  
+  waypoint = (orders==null || orders.getRoute().size()==0) ? null : orders.getRoute().get(waypointIndex).getPosition();  
   }
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
