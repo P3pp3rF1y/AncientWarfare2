@@ -1,6 +1,4 @@
 Things to finish up:
-Player Owned Trader
-Faction Trader
 Player Owned Bard
 Vehicle Module?
 
