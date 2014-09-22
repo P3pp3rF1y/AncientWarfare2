@@ -113,20 +113,52 @@ public void writeEntityToNBT(NBTTagCompound tag)
 
 public static final class BardTuneData
 {
+private boolean random = false;
+private boolean playOnPlayerEntry = false;
+private int minDelay;
+private int maxDelay;
+private List<BardTuneEntry> tunes = new ArrayList<BardTuneEntry>();
 
-boolean playOnPlayerEntry = false;
-int minDelay;
-int maxDelay;
-List<BardTuneEntry> tunes = new ArrayList<BardTuneEntry>();
 public int size(){return tunes.size();}
 public BardTuneEntry get(int index){return tunes.get(index);}
+
 public void addNewEntry()
   {
   BardTuneEntry e = new BardTuneEntry();
-  e.name = "";
-  e.length = 0;
-  e.volume = 100;
+  tunes.add(e);
   }
+
+public void decrementEntry(int index)
+  {
+  if(index<=0 || index>=tunes.size()){return;}
+  BardTuneEntry e = tunes.remove(index);
+  index--;
+  tunes.add(index, e);
+  }
+
+public void incrementEntry(int index)
+  {
+  if(index<0 || index>=tunes.size()-1){return;}
+  BardTuneEntry e = tunes.remove(index);
+  index++;
+  tunes.add(index, e);
+  }
+
+public void deleteEntry(int index)
+  {
+  if(index<0 || index>=tunes.size()){return;}
+  tunes.remove(index);
+  }
+
+public int getMinDelay(){return minDelay;}
+public int getMaxDelay(){return maxDelay;}
+public boolean getPlayOnPlayerEntry(){return playOnPlayerEntry;}
+public boolean getIsRandom(){return random;}
+
+public void setMinDelay(int val){minDelay=val;}
+public void setMaxDelay(int val){maxDelay=val;}
+public void setPlayOnPlayerEntry(boolean val){playOnPlayerEntry=val;}
+public void setRandom(boolean val){random=val;}
 
 public void readFromNBT(NBTTagCompound tag)
   {
@@ -166,12 +198,25 @@ public BardTuneEntry()
   volume = 100;
   }
 
+public void setLength(int length){this.length = length;}
+
+public void setName(String name){this.name = name==null? "" : name;}
+
+public void setVolume(int volume){this.volume = volume;}
+
+public int volume(){return volume;}
+
+public String name(){return name;}
+
+public int length(){return length;}
+
 public void readFromNBT(NBTTagCompound tag)
   {
   name = tag.getString("name");
   length = tag.getInteger("length");
   volume = tag.getInteger("volume");
   }
+
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
   tag.setString("name", name);
@@ -179,6 +224,7 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
   tag.setInteger("volume", volume);
   return tag;
   }
+
 }
 
 }
