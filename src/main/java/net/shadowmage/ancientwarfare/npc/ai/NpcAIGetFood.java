@@ -20,12 +20,14 @@ public NpcAIGetFood(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining()==0 && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
   }
 
 @Override
 public boolean continueExecuting()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   return npc.requiresUpkeep() && npc.getUpkeepPoint()!=null && npc.getFoodRemaining() < npc.getUpkeepAmount() && npc.getUpkeepDimensionId()==npc.worldObj.provider.dimensionId;
   }
 

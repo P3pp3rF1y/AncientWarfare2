@@ -26,6 +26,7 @@ public NpcAIFindWorksite(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   return npc.ordersStack==null && ((NpcWorker)npc).autoWorkTarget==null && (lastExecuted==-1 || npc.ticksExisted-lastExecuted>200);
   }
 

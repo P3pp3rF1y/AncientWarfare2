@@ -51,6 +51,7 @@ public NpcAIMedic(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   if(!"medic".equals(npc.getNpcSubType())){return false;}
   injuredRecheckDelay--;
   if(injuredRecheckDelay>0){return false;}
@@ -67,6 +68,7 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   if(!"medic".equals(npc.getNpcSubType())){return false;}
   if(targetToHeal==null || targetToHeal.isDead || targetToHeal.getHealth()>=targetToHeal.getMaxHealth()){return false;}
   

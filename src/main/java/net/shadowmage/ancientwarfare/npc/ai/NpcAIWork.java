@@ -37,6 +37,7 @@ public NpcAIWork(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {  
+  if(!npc.getIsAIEnabled()){return false;}
   if(npc.getFoodRemaining()<=0 || npc.shouldBeAtHome()){return false;} 
   if(!init)
     {
@@ -58,6 +59,7 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   { 
+  if(!npc.getIsAIEnabled()){return false;}
   if(npc.getFoodRemaining()<=0 || npc.shouldBeAtHome()){return false;} 
   if(orderStack!=null && order!=null && order.getEntries().size()>0)
     {

@@ -19,13 +19,13 @@ public NpcAIAttackMeleeLongRange(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
-  return npc.getAttackTarget()!=null && !npc.getAttackTarget().isDead;
+  return npc.getIsAIEnabled() && npc.getAttackTarget()!=null && !npc.getAttackTarget().isDead;
   }
 
 @Override
 public boolean continueExecuting()
   {
-  return target!=null && target==npc.getAttackTarget() && !npc.getAttackTarget().isDead;
+  return npc.getIsAIEnabled() && target!=null && target==npc.getAttackTarget() && !npc.getAttackTarget().isDead;
   }
 
 @Override

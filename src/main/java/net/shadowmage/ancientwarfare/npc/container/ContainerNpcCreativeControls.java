@@ -20,7 +20,7 @@ public ContainerNpcCreativeControls(EntityPlayer player, int x, int y, int z)
   super(player, x, y, z);
   ownerName = npc.getOwnerName();
   customTexRef = npc.getCustomTex();
-  wander = npc.getShouldWander();
+  wander = npc.getIsAIEnabled();
   maxHealth = npc.getMaxHealthOverride();
   attackDamage = npc.getAttackDamageOverride();
   armorValue = npc.getArmorValueOverride();
@@ -74,7 +74,7 @@ public void onContainerClosed(EntityPlayer par1EntityPlayer)
     npc.setCustomTexRef(customTexRef);
     npc.setAttackDamageOverride(attackDamage);
     npc.setArmorValueOverride(armorValue);
-    npc.setShouldWander(wander);
+    npc.setIsAIEnabled(wander);
     npc.setMaxHealthOverride(maxHealth);
     }
   super.onContainerClosed(par1EntityPlayer);

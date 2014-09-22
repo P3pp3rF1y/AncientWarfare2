@@ -24,6 +24,7 @@ public NpcAICommandGuard(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   if(startRecheckDelay>0)
     {
     startRecheckDelay--;
@@ -53,6 +54,7 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   if(npc.getCurrentCommand()!=command)
     {
     command = null;

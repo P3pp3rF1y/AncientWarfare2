@@ -40,6 +40,7 @@ public boolean shouldExecute()
     order = RoutingOrder.getRoutingOrder(routeStack);
     if((order!=null && routeIndex>=order.getEntries().size()) || order==null){routeIndex=0;}
     }
+  if(!npc.getIsAIEnabled()){return false;}
   if(!npc.worldObj.provider.hasNoSky && !npc.worldObj.isDaytime() && npc.hasHome())//dont work at night if has home point
     {
     return false;
@@ -50,6 +51,7 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   if(!npc.worldObj.provider.hasNoSky && !npc.worldObj.isDaytime() && npc.hasHome())//dont work at night if has home point
     {
     return false;

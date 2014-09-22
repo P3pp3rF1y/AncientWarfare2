@@ -22,13 +22,13 @@ public NpcAIAlertFaction(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
-  return true;
+  return npc.getIsAIEnabled();
   }
 
 @Override
 public boolean continueExecuting()
   {
-  return true;
+  return npc.getIsAIEnabled();
   }
 
 @Override

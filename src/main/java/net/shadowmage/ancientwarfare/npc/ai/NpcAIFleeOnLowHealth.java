@@ -22,6 +22,7 @@ public NpcAIFleeOnLowHealth(NpcBase npc)
 @Override
 public boolean shouldExecute()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   if(npc.getLastAttacker()==null || npc.getHealth() > npc.getMaxHealth()*0.25f)
     {
     return false;
@@ -50,6 +51,7 @@ public boolean shouldExecute()
 @Override
 public boolean continueExecuting()
   {
+  if(!npc.getIsAIEnabled()){return false;}
   return !this.npc.getNavigator().noPath();
   }
 
