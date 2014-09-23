@@ -198,6 +198,13 @@ tile.recruiting_station.name=Recruiting Station
 #vehicle
 
 #guistrings
+guistrings.volume=Volume
+guistrings.length=Length
+guistrings.random=Random
+guistrings.min_delay=Min Delay
+guistrings.max_delay=Max Delay
+guistrings.play_on_player_entry=Play On Player Entry
+guistrings.new_tune=Add Tune
 guistrings.side=Side
 guistrings.position=Position
 guistrings.deposit=Deposit
