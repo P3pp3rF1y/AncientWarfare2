@@ -20,7 +20,6 @@ public class GuiNpcInventory extends GuiNpcBase
 Button repackButton;
 Text nameInput;
 ContainerNpcInventory container;
-String name;
 
 Text textureInput;
 
@@ -31,17 +30,6 @@ public GuiNpcInventory(ContainerBase container)
   this.xSize = 178;
   this.ySize = ((ContainerNpcInventory)container).guiHeight;
   this.container = (ContainerNpcInventory) container;
-  name = this.container.npc.getCustomNameTag();
-  }
-
-@Override
-public void updateScreen()
-  {
-  if(!name.equals(container.npc.getCustomNameTag()))
-    {
-    refreshGui();
-    }
-  super.updateScreen();
   }
 
 @Override
@@ -68,6 +56,7 @@ public void initElements()
     public void onTextUpdated(String oldText, String newText)
       {
       container.handleNpcTextureUpdate(newText);
+      container.npc.setCustomTexRef(newText);
       }
     };
   addGuiElement(textureInput);
@@ -212,6 +201,18 @@ public void initElements()
   t.addTooltipElement(new Label(0,0, text));
   slot.setTooltip(t);  
   addGuiElement(slot);
+  }
+
+@Override
+protected boolean onGuiCloseRequested()
+  { 
+  if(player.worldObj.isRemote)
+    {
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setString("customName", container.name);
+    sendDataToContainer(tag);    
+    }
+  return super.onGuiCloseRequested();
   }
 
 @Override
