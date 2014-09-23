@@ -26,12 +26,16 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.model.ModelAutoCraftingStation;
 import net.shadowmage.ancientwarfare.automation.render.RenderSterlingEngine;
+import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueConduit;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWorksite;
 import net.shadowmage.ancientwarfare.automation.render.RenderTorqueConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitMedium;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
@@ -48,7 +52,9 @@ public class ClientProxyAutomation extends ClientProxyBase
 
 @Override
 public void registerClient()
-  {
+  {  
+  registerClientOptions();
+  
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, GuiWorksiteAutoCrafting.class);
@@ -77,12 +83,16 @@ public void registerClient()
   RenderSterlingEngine sterlingRender = new RenderSterlingEngine();
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorSterling.class, sterlingRender);
   RenderingRegistry.registerBlockHandler(sterlingRender);
-  RenderingRegistry.registerBlockHandler(new RenderTorqueConduit());
-  registerClientOptions();
-  
+    
   TileCraftingTableRender tctr = new TileCraftingTableRender(new ModelAutoCraftingStation(), "textures/model/automation/tile_auto_crafting.png");
   ClientRegistry.bindTileEntitySpecialRenderer(TileAutoCrafting.class, tctr);
   MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.worksiteAutoCrafting), tctr);
+  
+  RenderTileTorqueConduit conduitRender = new RenderTileTorqueConduit();
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduit.class, conduitRender);
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitMedium.class, conduitRender);
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitHeavy.class, conduitRender);
+//  RenderingRegistry.registerBlockHandler(new RenderTorqueConduit());
   }
 
 private void registerClientOptions()

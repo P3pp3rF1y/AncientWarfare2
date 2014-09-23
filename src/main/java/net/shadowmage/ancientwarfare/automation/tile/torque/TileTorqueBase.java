@@ -18,6 +18,8 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
 
 protected TileEntity[] neighborTileCache = null;
 protected double maxEnergy = 1000;
+protected double maxInput = 100;
+protected double maxOutput = 100;
 protected double storedEnergy = 0;
 protected double energyDrainFactor = 1;
 ForgeDirection orientation = ForgeDirection.NORTH;
@@ -26,17 +28,23 @@ ForgeDirection orientation = ForgeDirection.NORTH;
  * used by server to limit packet sending<br>
  * used by client for lerp-ticks for lerping to new power state
  */
-int networkUpdateTicks;
+protected int networkUpdateTicks;
 /**
  * used by server to determine last sent client power state<br>
  * used by clients as their displayed power state
  */
-int clientEnergy;
+protected int clientEnergy;
 /**
  * used by clients to store what energy level they should be at.<br>
  * used in combination with networkUpdateTicks to lerp from clientEnergy to clientDestEnergy
  */
-int clientDestEnergy;
+protected int clientDestEnergy;
+
+protected double prevEnergy;
+protected double energyInput;
+protected double energyOutput;
+
+protected double maxRpm = 10;
 
 public double rotation;
 public double prevRotation;
@@ -45,24 +53,39 @@ protected void serverNetworkUpdate()
   {
   if(!AWAutomationStatics.enable_energy_network_updates){return;}
   networkUpdateTicks--;
-  if(networkUpdateTicks<=0 && clientEnergy!=(int)storedEnergy)
+  if(networkUpdateTicks<=0)
     {
-    clientEnergy = (int)storedEnergy;
+    double percentStored = storedEnergy/maxEnergy;
+    double percentTransferred = energyOutput/maxOutput;
+    int total = (int)((percentStored+percentTransferred)*100.d);
+    if(total>100){total=100;}
+    if(total!=clientEnergy)
+      {
+      clientEnergy = total;
+      this.worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, clientEnergy);
+      }
     networkUpdateTicks=AWAutomationStatics.energyMinNetworkUpdateFrequency;
-    this.worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, clientEnergy);
     }
   }
 
 protected void clientNetworkUpdate()
   {
   if(!AWAutomationStatics.enable_energy_client_updates){return;}
+  updateRotation();
   if(networkUpdateTicks>0)
     {
     int diff = clientDestEnergy-clientEnergy;
     clientEnergy += diff/networkUpdateTicks;    
-//    AWLog.logDebug("updating client energy: "+clientEnergy);
     networkUpdateTicks--;
     }
+  }
+
+protected void updateRotation()
+  {
+  double maxRpm = this.maxRpm;
+  double rpm = (double)clientEnergy * 0.01d * maxRpm;
+  prevRotation=rotation;
+  rotation += rpm * 360.d / 20.d / 60.d;
   }
 
 public void setOrientation(ForgeDirection d)
@@ -181,6 +204,7 @@ public Packet getDescriptionPacket()
   {
   NBTTagCompound tag = new NBTTagCompound();
   tag.setInteger("orientation", orientation.ordinal());
+  tag.setInteger("clientEnergy", clientEnergy);
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
   }
 
@@ -188,6 +212,8 @@ public Packet getDescriptionPacket()
 public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {  
   orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));
+  clientEnergy = pkt.func_148857_g().getInteger("clientEnergy");
+  clientDestEnergy = clientEnergy;
   this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
@@ -199,7 +225,6 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 @Override
 public boolean receiveClientEvent(int a, int b)
   {
-  AWLog.logDebug("receiving client event...."+a+"::"+b);
   super.receiveClientEvent(a, b);
   if(worldObj.isRemote && a==1)
     {
@@ -208,12 +233,5 @@ public boolean receiveClientEvent(int a, int b)
     }  
   return true;
   }
-
-//@Override
-//@SideOnly(Side.CLIENT)
-//public AxisAlignedBB getRenderBoundingBox()
-//  {
-//  return AxisAlignedBB.getAABBPool().getAABB(xCoord,  yCoord, zCoord , xCoord + 1, yCoord + 1, zCoord + 1);
-//  }
 
 }

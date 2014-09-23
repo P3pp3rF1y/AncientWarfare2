@@ -33,7 +33,7 @@ ResourceLocation texture;
 public RenderSterlingEngine()
   {
   ModelLoader loader = new ModelLoader();
-  model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/sterling_engine.mf2"));
+  model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/sterling_engine.m2f"));
   texture = new ResourceLocation("ancientwarfare:textures/model/automation/sterling_engine.png");
   if(AWAutomationStatics.sterlingEngineRenderID==-1){AWAutomationStatics.sterlingEngineRenderID=RenderingRegistry.getNextAvailableRenderId();}
   }

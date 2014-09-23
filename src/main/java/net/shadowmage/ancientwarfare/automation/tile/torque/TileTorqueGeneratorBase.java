@@ -18,20 +18,18 @@ import cpw.mods.fml.common.Optional;
 public abstract class TileTorqueGeneratorBase extends TileTorqueBase implements ITorqueGenerator, IPowerEmitter, ISidedBatteryProvider
 {
 
-protected double maxOutput = 100;
-
-@Override
-public String toString()
-  {
-  return "Torque Generator Tile["+storedEnergy+"]::"+getClass().getSimpleName();
-  }
-
 @Override
 public void updateEntity()
   {
   if(worldObj.isRemote){return;}  
   ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
   ITorque.applyPowerDrain(this);
+  }
+
+@Override
+public String toString()
+  {
+  return "Torque Generator Tile["+storedEnergy+"]::"+getClass().getSimpleName();
   }
 
 @Override

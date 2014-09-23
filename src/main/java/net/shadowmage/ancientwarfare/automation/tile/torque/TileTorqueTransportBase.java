@@ -17,15 +17,24 @@ import cpw.mods.fml.common.Optional;
 public abstract class TileTorqueTransportBase extends TileTorqueBase implements ITorqueTransport, IPowerEmitter, ISidedBatteryProvider
 {
 
-protected double maxInput = 100;
-protected double maxOutput = 100;
-
 @Override
 public void updateEntity()
   {
-  if(worldObj.isRemote){return;}  
+  if(worldObj.isRemote)
+    {
+    this.clientNetworkUpdate();
+    return;
+    }
+  else
+    {
+    this.serverNetworkUpdate();
+    }
+  this.energyInput = this.storedEnergy - this.prevEnergy;
+  double s = this.storedEnergy;
   ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
+  this.energyOutput = s - this.storedEnergy;
   ITorque.applyPowerDrain(this);
+  this.prevEnergy = this.storedEnergy;
   }
 
 @Override

@@ -40,6 +40,8 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
       {
       ((IOwnable)te).setOwnerName(name);
       }
+    te.onBlockUpdated();
+    world.func_147453_f(x,y,z, field_150939_a);
     }  
   return val;
   }

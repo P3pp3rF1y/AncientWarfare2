@@ -17,9 +17,6 @@ import cpw.mods.fml.common.Optional;
 public abstract class TileTorqueStorageBase extends TileTorqueBase implements ITorqueStorage, IPowerEmitter, ISidedBatteryProvider
 {
 
-protected double maxInput = 100;
-protected double maxOutput = 100;
-
 @Override
 public void updateEntity()
   {

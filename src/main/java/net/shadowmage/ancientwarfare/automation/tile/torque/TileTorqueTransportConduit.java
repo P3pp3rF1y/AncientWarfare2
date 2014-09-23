@@ -8,8 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 
 public class TileTorqueTransportConduit extends TileTorqueTransportBase
 {
@@ -25,21 +25,48 @@ public TileTorqueTransportConduit()
   }
 
 @Override
+public void updateEntity()
+  {
+  super.updateEntity();
+  }
+
+@Override
 protected void buildNeighborCache()
   {  
+  if(worldObj.isRemote){return;}
   connections = new boolean[6];
   neighborTileCache = new TileEntity[6];
   worldObj.theProfiler.startSection("AWPowerTileNeighborUpdate");
-  ForgeDirection d;
+  ForgeDirection d, face;
   TileEntity te;
+  face = getPrimaryFacing();
   for(int i = 0; i < 6; i++)
     {
     d = ForgeDirection.getOrientation(i);
-    te = worldObj.getTileEntity(xCoord+d.offsetX, yCoord+d.offsetY, zCoord+d.offsetZ);
-    if((te instanceof ITorqueGenerator || BCProxy.instance.isPowerPipe(worldObj, te)))
+    te = worldObj.getTileEntity(xCoord+d.offsetX, yCoord+d.offsetY, zCoord+d.offsetZ);  
+    if(BCProxy.instance.isPowerPipe(worldObj, te))//always connect to BC pipes, who knows what direction the power is flowing....
       {
-      connections[i]=true;
+      connections[i]=true;      
       }
+    else if(face==d)//output side, only connect to receivers
+      {
+      if(te instanceof ITorqueReceiver)
+        {
+        ITorqueReceiver gen = (ITorqueReceiver)te;
+        if(gen.canInput(d))
+          {
+          connections[i]=true;          
+          }         
+        }
+      }
+    else if(te instanceof ITorqueGenerator)//else an input side, only connect if the other tile is an output
+      {
+      ITorqueGenerator gen = (ITorqueGenerator)te;
+      if(gen.canOutput(d.getOpposite()))
+        {
+        connections[i]=true;        
+        }
+      }    
     this.neighborTileCache[i] = te;
     }
   worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -50,7 +77,7 @@ public boolean[] getConnections()
   {
   if(connections==null)
     {
-    buildNeighborCache();
+    connections = new boolean[6];
     }
   return connections;
   }
@@ -85,15 +112,15 @@ private void readConnectionsInt(int con)
   for(int i = 0; i < 6; i++)
     {
     c = (con>>i) & 0x1;
-    connections[i]=c==1;
+    connections[i] = c==1;
     }
-  String out = "";
-  for(boolean val : connections)
-    {
-    out = out+val+",";
-    }
-  out = out.substring(0, out.length()-1);
-  AWLog.logDebug("connections in: "+out);
+//  String out = "";
+//  for(boolean val : connections)
+//    {
+//    out = out+val+",";
+//    }
+//  out = out.substring(0, out.length()-1);
+//  AWLog.logDebug("connections in: "+out);
   }
 
 @Override

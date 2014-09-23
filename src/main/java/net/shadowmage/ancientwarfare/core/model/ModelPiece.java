@@ -77,6 +77,8 @@ public ModelPiece(ModelBaseAW model, String line)
     }
   }
 
+public void setVisible(boolean val){this.visible = val;}
+
 public ModelPiece(String name, float x, float y, float z, float rx, float ry, float rz, ModelPiece parent)
   {
   this.pieceName = name;
