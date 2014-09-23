@@ -313,7 +313,7 @@ public void readFromNBT(NBTTagCompound tag)
   int[] ug = tag.getIntArray("upgrades");
   for(int i= 0; i < ug.length; i++)
     {
-    upgrades.add(WorksiteUpgrade.values()[i]);
+    upgrades.add(WorksiteUpgrade.values()[ug[i]]);
     }
   if(tag.hasKey("orientation")){orientation = ForgeDirection.values()[tag.getInteger("orientation")];}
   updateEfficiency();
