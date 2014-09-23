@@ -13,7 +13,7 @@ public class ContainerNpcInventory extends ContainerNpcBase
 
 InventoryNpcEquipment inventory;
 public int guiHeight;
-String name;
+public String name;
 
 ItemStack orderStack;
 
@@ -91,12 +91,6 @@ public void handleNpcTextureUpdate(String tex)
 @Override
 public void onContainerClosed(EntityPlayer p_75134_1_)
   {
-  if(p_75134_1_.worldObj.isRemote)
-    {
-    NBTTagCompound tag = new NBTTagCompound();
-    tag.setString("customName", name);
-    sendDataToServer(tag);    
-    }
   super.onContainerClosed(p_75134_1_);
   npc.setCustomNameTag(name);
   npc.updateTexture();
