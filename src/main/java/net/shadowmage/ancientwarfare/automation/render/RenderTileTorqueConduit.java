@@ -26,8 +26,8 @@ public RenderTileTorqueConduit()
   {
   ModelLoader loader = new ModelLoader();
   model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/torque_conduit.m2f"));
-  regTex = new ResourceLocation("ancientwarfare", "foo1.png");
-  outTex = new ResourceLocation("ancientwarfare", "foo2.png");
+  regTex = new ResourceLocation("ancientwarfare", "textures/model/automation/tile_torque_conduit_light_reg.png");
+  outTex = new ResourceLocation("ancientwarfare", "textures/model/automation/tile_torque_conduit_light_out.png");
   
   rotationMatrices[0] = new float[]{ 0,-1, 0};//down
   rotationMatrices[1] = new float[]{ 0, 1, 0};//up
@@ -44,7 +44,10 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   
   ForgeDirection d = conduit.getPrimaryFacing();
   int d1 = d.ordinal();
-  float rotation = (float)conduit.rotation;
+  float pr = (float) conduit.prevRotation;
+  float r = (float) conduit.rotation;
+  float rd = r-pr;  
+  float rotation = (pr + rd*delta);
   
   boolean[] connections = conduit.getConnections();
   
