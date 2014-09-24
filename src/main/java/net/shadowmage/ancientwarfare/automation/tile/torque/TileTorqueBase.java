@@ -34,6 +34,7 @@ protected double storedEnergy = 0;
  * cached neighbor array for faster lookup during power transfers, only avail server side
  */
 protected TileEntity[] neighborTileCache = null;
+
 /**
  * cached connections list.  Built by buildConnection() during buildNeighborCache().<br>
  * Synched from server->client for those tiles with connectable sides (conduits, distributors)<br>
@@ -58,11 +59,13 @@ protected double energyOutput;
  * used by client for lerp-ticks for lerping to new power state
  */
 protected int networkUpdateTicks;
+
 /**
  * used by server to determine last sent client power state<br>
  * used by clients as their displayed power state
  */
 protected int clientEnergy;
+
 /**
  * used by clients to store what energy level they should be at.<br>
  * used in combination with networkUpdateTicks to lerp from clientEnergy to clientDestEnergy
@@ -107,8 +110,8 @@ protected void serverNetworkUpdate()
   networkUpdateTicks--;
   if(networkUpdateTicks<=0)
     {
-    double percentStored = storedEnergy/maxEnergy;
-    double percentTransferred = energyOutput/maxOutput;
+    double percentStored = storedEnergy / maxEnergy;
+    double percentTransferred = maxOutput>0 ? energyOutput / maxOutput : 0;
     int total = (int)((percentStored+percentTransferred)*100.d);
     if(total>100){total=100;}
     if(total!=clientEnergy)
