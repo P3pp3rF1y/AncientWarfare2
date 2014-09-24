@@ -28,6 +28,7 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.model.ModelAutoCraftingStation;
 import net.shadowmage.ancientwarfare.automation.render.RenderSterlingEngine;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueConduit;
+import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueConduit2;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueDistributor;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStockViewer;
@@ -99,7 +100,9 @@ public void registerClient()
   ModelLoader loader = new ModelLoader();
   ModelBaseAW model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/torque_conduit.m2f"));  
   
-  RenderTileTorqueConduit lightConduitRender = new RenderTileTorqueConduit(model, new ResourceLocation("ancientwarfare", "textures/model/automation/tile_torque_conduit_light_reg.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/tile_torque_conduit_light_out.png"));  
+    
+//  RenderTileTorqueConduit lightConduitRender = new RenderTileTorqueConduit(model, new ResourceLocation("ancientwarfare", "textures/model/automation/tile_torque_conduit_light_reg.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/tile_torque_conduit_light_out.png"));
+  RenderTileTorqueConduit2 lightConduitRender = new RenderTileTorqueConduit2();
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduit.class, lightConduitRender);
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitMedium.class, lightConduitRender);
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitHeavy.class, lightConduitRender);

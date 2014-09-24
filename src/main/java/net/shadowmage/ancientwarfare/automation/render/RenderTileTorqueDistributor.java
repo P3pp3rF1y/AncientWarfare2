@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributor;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 
@@ -39,6 +40,7 @@ public RenderTileTorqueDistributor(ModelBaseAW model, ResourceLocation reg, Reso
 @Override
 public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta)
   {
+//  long t1 = System.nanoTime();
   GL11.glPushMatrix();
   GL11.glTranslated(x+0.5d, y, z+0.5d);
   
@@ -89,7 +91,10 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   bindTexture(regTex);  
   model.renderModel();
   
+  
   GL11.glPopMatrix();
+//  long t2 = System.nanoTime();
+//  AWLog.logDebug("distributor render time: "+(t2-t1));  
   }
 
 }
