@@ -35,15 +35,6 @@ public TileTorqueGeneratorSterling()
 public void updateEntity()
   {  
   super.updateEntity();
-  if(worldObj.isRemote)
-    {
-    clientNetworkUpdate();
-    return;
-    }
-  else
-    {
-    serverNetworkUpdate();    
-    }
   if(burnTime <= 0 && getEnergyStored() < getMaxEnergy())
     {
     if(fuelInventory.getStackInSlot(0)!=null)

@@ -13,14 +13,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
-public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorqueReceiver
+public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorqueTile
 {
 
 protected String owningPlayer;
@@ -296,6 +296,24 @@ public void addEnergyFromPlayer(EntityPlayer player)
   {
   storedEnergy+=AWCoreStatics.energyPerWorkUnit;
   if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
+  }
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  return null;
+  }
+
+@Override
+public double getMaxOutput()
+  {
+  return 0;
+  }
+
+@Override
+public boolean canOutput(ForgeDirection towards)
+  {
+  return false;
   }
 
 }

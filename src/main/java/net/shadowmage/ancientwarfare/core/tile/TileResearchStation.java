@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableT
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -26,7 +26,7 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueReceiver, IOwnable, IInteractableTile,  IRotatableTile
+public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueTile, IOwnable, IInteractableTile,  IRotatableTile
 {
 
 protected String owningPlayer = "";
@@ -84,6 +84,24 @@ public void onBoundsAdjusted(){}//NOOP
 
 @Override
 public boolean userAdjustableBlocks(){return false;}//NOOP
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  return null;
+  }
+
+@Override
+public double getMaxOutput()
+  {
+  return 0;
+  }
+
+@Override
+public boolean canOutput(ForgeDirection towards)
+  {
+  return false;
+  }
 
 @Override
 public void setEnergy(double energy)

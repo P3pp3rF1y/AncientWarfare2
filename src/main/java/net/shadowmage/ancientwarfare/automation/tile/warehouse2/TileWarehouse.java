@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -16,6 +17,24 @@ public class TileWarehouse extends TileWarehouseBase
 public TileWarehouse()
   {
   
+  }
+
+@Override
+public TileEntity[] getNeighbors()
+  {
+  return null;
+  }
+
+@Override
+public double getMaxOutput()
+  {
+  return 0;
+  }
+
+@Override
+public boolean canOutput(ForgeDirection towards)
+  {
+  return false;
   }
 
 @Override

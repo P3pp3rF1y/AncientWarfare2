@@ -10,7 +10,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 
 public class TileTorqueGeneratorWaterwheel extends TileTorqueGeneratorBase implements IInteractableTile
 {
@@ -115,7 +114,6 @@ public boolean receiveClientEvent(int a, int b)
   if(a==2)
     {
     rotationSpeed = (float)b/1000.f;
-//    AWLog.logDebug("set speed to: "+rotationSpeed);
     }
   return true;
   }

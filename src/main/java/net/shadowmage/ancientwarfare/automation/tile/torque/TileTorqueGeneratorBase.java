@@ -2,8 +2,6 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 import buildcraft.api.mj.IBatteryObject;
 import buildcraft.api.mj.ISidedBatteryProvider;
 import buildcraft.api.power.IPowerEmitter;
@@ -15,32 +13,19 @@ import cpw.mods.fml.common.Optional;
   @Optional.Interface(iface="buildcraft.api.power.IPowerEmitter",modid="BuildCraft|Core",striprefs=true),
   @Optional.Interface(iface="buildcraft.api.mj.ISidedBatteryProvider",modid="BuildCraft|Core",striprefs=true)
   })
-public abstract class TileTorqueGeneratorBase extends TileTorqueBase implements ITorqueGenerator, IPowerEmitter, ISidedBatteryProvider
+public abstract class TileTorqueGeneratorBase extends TileTorqueBase implements IPowerEmitter, ISidedBatteryProvider
 {
 
 @Override
-public void updateEntity()
+public boolean canInput(ForgeDirection from)
   {
-  super.updateEntity();
-  if(worldObj.isRemote){return;}    
-  this.energyInput = this.storedEnergy - this.prevEnergy;
-  double s = this.storedEnergy;
-  ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
-  this.energyOutput = s - this.storedEnergy;
-  ITorque.applyPowerDrain(this);
-  this.prevEnergy = this.storedEnergy;  
+  return false;
   }
 
 @Override
 public String toString()
   {
   return "Torque Generator Tile["+storedEnergy+"]::"+getClass().getSimpleName();
-  }
-
-@Override
-public double getMaxOutput()
-  {
-  return maxOutput;
   }
 
 @Optional.Method(modid="BuildCraft|Core")

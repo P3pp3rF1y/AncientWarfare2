@@ -25,12 +25,8 @@ public TileTorqueStorageFlywheel()
 @Override
 public void updateEntity()
   {
-  if(worldObj.isRemote){return;}
-  if(!worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
-    {
-    ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);    
-    }
-  ITorque.applyPowerDrain(this);
+  super.updateEntity();
+  if(!worldObj.isRemote){tryBalancingFlywheels();}  
   tryBalancingFlywheels();    
   }
 
@@ -67,7 +63,7 @@ private void tryBalancingFlywheels()
 @Override
 public boolean canInput(ForgeDirection from)
   {
-  return !canOutput(from);
+  return from==orientation.getOpposite();
   }
 
 @Override

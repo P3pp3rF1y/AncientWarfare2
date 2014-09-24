@@ -148,4 +148,10 @@ public void writeToNBT(NBTTagCompound tag)
   if(ownerName!=null){tag.setString("owner", ownerName);}
   }
 
+@Override
+public boolean canInput(ForgeDirection from)
+  {
+  return false;
+  }
+
 }

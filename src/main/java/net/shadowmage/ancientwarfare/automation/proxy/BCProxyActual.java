@@ -3,8 +3,6 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import buildcraft.api.mj.IBatteryIOObject;
 import buildcraft.api.mj.IBatteryObject;
@@ -50,11 +48,7 @@ public double addEnergy(double mj, boolean ignoreCycleLimit)
    * ALSO  FUCK THIS STUPID BATTERY BULLSHIT __ IT SHOULD NOT BE THIS HARD TO CREATE A GODDAMN BATTERY INTERFACE
    * WHY THE FUCK DOES BC NOT DO PROPER SIDED ENERGY INPUT/OUTPUT HANDLING?
    */
-  if(tile instanceof ITorqueReceiver)
-    {
-    return ((ITorqueReceiver) tile).addEnergy(dir, mj);
-    }
-  return 0;
+  return tile.addEnergy(dir, mj);
   }
 
 @Override
@@ -84,11 +78,7 @@ public double minimumConsumption()
 @Override
 public double maxReceivedPerCycle()
   {
-  if(tile instanceof ITorqueReceiver)
-    {
-    return ((ITorqueReceiver) tile).getMaxInput();
-    }
-  return 0;
+  return tile.getMaxInput();
   }
 
 @Override
@@ -121,16 +111,14 @@ public boolean canReceive()
   {
   return mode.canReceive;
   }
-
 }
 
 @Override
 public IBatteryObject getBatteryObject(String kind, ITorqueTile tile, ForgeDirection dir)
   {
-//  AWLog.logDebug("creating battery object for: "+tile+" of kind: "+kind+" for direction: "+dir);
   boolean send = false, recieve = false;
-  if(tile instanceof ITorqueReceiver){recieve = ((ITorqueReceiver) tile).canInput(dir);}
-  if(tile instanceof ITorqueGenerator){send = ((ITorqueGenerator) tile).canOutput(dir);}
+  recieve = tile.canInput(dir);
+  send = tile.canOutput(dir);
   IOMode mode = send && recieve ? IOMode.Both : send ? IOMode.Send : recieve ? IOMode.Receive : IOMode.None;
   return new TorqueMJBattery(tile, mode, dir);
   }
@@ -151,8 +139,9 @@ public boolean isPowerPipe(World world, TileEntity te)
   }
 
 @Override
-public void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
+public void transferPower(World world, int x, int y, int z, ITorqueTile generator)
   {
+  if(generator.getMaxOutput()!=0){return;}
   if(!(generator instanceof IPowerEmitter)){return;}
   world.theProfiler.startSection("AW-BC-PowerUpdate");
   double[] requestedEnergy = new double[6];
@@ -179,7 +168,7 @@ public void transferPower(World world, int x, int y, int z, ITorqueGenerator gen
     d = ForgeDirection.getOrientation(i);
     if(!generator.canOutput(d)){continue;}
     te = tes[i];//world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
-    if(te instanceof ITorqueReceiver){continue;}
+    if(te instanceof ITorqueTile){continue;}//skip torque tiles, transfer is handled in torque tile power update
     target = MjAPI.getMjBattery(te);
     if(target==null){continue;}
     targets[d.ordinal()]=target;  

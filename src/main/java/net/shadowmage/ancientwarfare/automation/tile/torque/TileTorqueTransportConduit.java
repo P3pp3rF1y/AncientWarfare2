@@ -7,8 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
 public class TileTorqueTransportConduit extends TileTorqueTransportBase
 {
@@ -42,9 +41,9 @@ protected void buildNeighborCache()
       }
     else if(canOutput(d))
       {
-      if(te instanceof ITorqueReceiver)
+      if(te instanceof ITorqueTile)
         {
-        ITorqueReceiver rec = (ITorqueReceiver)te;
+        ITorqueTile rec = (ITorqueTile)te;
         if(rec.canInput(d.getOpposite()))
           {
           connections[i]=true;          
@@ -53,9 +52,9 @@ protected void buildNeighborCache()
       }
     else if(canInput(d))
       {
-      if(te instanceof ITorqueGenerator)
+      if(te instanceof ITorqueTile)
         {
-        ITorqueGenerator gen = (ITorqueGenerator)te;
+        ITorqueTile gen = (ITorqueTile)te;
         if(gen.canOutput(d.getOpposite()))
           {
           connections[i]=true;        
@@ -65,29 +64,6 @@ protected void buildNeighborCache()
     }
   worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   worldObj.theProfiler.endSection();
-  }
-
-@Override
-public NBTTagCompound getDescriptionTag()
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setInteger("connections", getConnectionsInt());
-  tag.setInteger("orientation", orientation.ordinal());
-  tag.setInteger("clientEnergy", clientEnergy);
-  return tag;
-  }
-
-@Override
-public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-  {  
-  if(pkt.func_148857_g().hasKey("connections"))
-    {
-    readConnectionsInt(pkt.func_148857_g().getInteger("connections"));
-    }
-  orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));
-  clientEnergy = pkt.func_148857_g().getInteger("clientEnergy");
-  clientDestEnergy = clientEnergy;
-  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
 }

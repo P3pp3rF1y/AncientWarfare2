@@ -11,35 +11,17 @@ private ITorque(){}//noop the class, it is just a container for the interfaces a
 
 public static interface ITorqueTile
 {
+public ForgeDirection getPrimaryFacing();
 void setEnergy(double energy);
 double getMaxEnergy();
 double getEnergyStored();
 double getEnergyDrainFactor();
-public ForgeDirection getPrimaryFacing();
-}
-
-public static interface ITorqueGenerator extends ITorqueTile
-{
 TileEntity[] getNeighbors();
 double getMaxOutput();
 boolean canOutput(ForgeDirection towards);
-}
-
-public static interface ITorqueReceiver extends ITorqueTile
-{
 double addEnergy(ForgeDirection from, double energy);
 double getMaxInput();
 boolean canInput(ForgeDirection from);
-}
-
-public static interface ITorqueStorage extends ITorqueGenerator, ITorqueReceiver
-{
-
-}
-
-public static interface ITorqueTransport extends ITorqueGenerator, ITorqueReceiver
-{
-
 }
 
 public static void applyPowerDrain(ITorqueTile tile)
@@ -60,14 +42,15 @@ public static void applyPowerDrain(ITorqueTile tile)
   world.theProfiler.endSection();
   }
 
-public static void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
+public static void transferPower(World world, int x, int y, int z, ITorqueTile generator)
   {
+  if(generator.getMaxOutput()<=0){return;}
   world.theProfiler.startSection("AWPowerTransfer");
   double[] requestedEnergy = new double[6];
   TileEntity[] tes = generator.getNeighbors();
-  ITorqueReceiver[] targets = new ITorqueReceiver[6];
+  ITorqueTile[] targets = new ITorqueTile[6];
   TileEntity te;
-  ITorqueReceiver target;
+  ITorqueTile target;
   
   double maxOutput = generator.getMaxOutput();
   if(maxOutput>generator.getEnergyStored()){maxOutput = generator.getEnergyStored();}
@@ -85,14 +68,14 @@ public static void transferPower(World world, int x, int y, int z, ITorqueGenera
     d = ForgeDirection.getOrientation(i);
     if(!generator.canOutput(d)){continue;}
     te = tes[i];//world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
-    if(te instanceof ITorqueReceiver)      
+    if(te instanceof ITorqueTile)      
       {
-      target = (ITorqueReceiver)te;
+      target = (ITorqueTile)te;
       if(target.canInput(d.getOpposite()))
         {
         targets[d.ordinal()]=target;  
         request = target.getMaxInput();
-        if(generator instanceof ITorqueTransport && target instanceof ITorqueTransport)
+        if(generator instanceof ITorqueTile && target instanceof ITorqueTile)
           {
           if(target.getEnergyStored()<generator.getEnergyStored())
             {

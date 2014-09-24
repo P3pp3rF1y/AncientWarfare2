@@ -10,6 +10,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
 public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile
@@ -46,6 +47,9 @@ protected double energyOutput;
 
 protected double maxRpm = 10;
 
+/**
+ * used by client-side for rendering animated tiles
+ */
 public double rotation;
 public double prevRotation;
 
@@ -83,6 +87,30 @@ protected void readConnectionsInt(int con)
     c = (con>>i) & 0x1;
     connections[i] = c==1;
     }
+  }
+
+@Override
+public void updateEntity()
+  {
+  super.updateEntity();
+  if(worldObj.isRemote)
+    {
+    clientNetworkUpdate();
+    return;
+    }  
+  else
+    {
+    serverNetworkUpdate();
+    }
+  this.energyInput = this.storedEnergy - this.prevEnergy;
+  if(this.getMaxOutput()>0)
+    {
+    double s = this.storedEnergy;
+    ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
+    this.energyOutput = s - this.storedEnergy;    
+    }
+  ITorque.applyPowerDrain(this);
+  this.prevEnergy = this.storedEnergy;  
   }
 
 protected void serverNetworkUpdate()
@@ -127,6 +155,31 @@ protected void updateRotation()
 public void setOrientation(ForgeDirection d)
   {
   this.orientation = d;
+  }
+
+@Override
+public double addEnergy(ForgeDirection from, double energy)
+  {
+  if(canInput(from))
+    {
+    if(energy>getMaxEnergy()-getEnergyStored()){energy=getMaxEnergy()-getEnergyStored();}
+    if(energy>getMaxInput()){energy=getMaxInput();}
+    setEnergy(getEnergyStored()+energy);
+    return energy;
+    }
+  return 0;
+  }
+
+@Override
+public double getMaxInput()
+  {
+  return maxInput;
+  }
+
+@Override
+public double getMaxOutput()
+  {
+  return maxOutput;
   }
 
 @Override
@@ -192,6 +245,7 @@ public TileEntity[] getNeighbors()
 
 protected void buildNeighborCache()
   {
+  if(worldObj.isRemote){return;}
   this.neighborTileCache = new TileEntity[6];
   worldObj.theProfiler.startSection("AWPowerTileNeighborUpdate");
   ForgeDirection d;
@@ -244,21 +298,26 @@ public final Packet getDescriptionPacket()
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
   }
 
+public NBTTagCompound getDescriptionTag()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setInteger("connections", getConnectionsInt());
+  tag.setInteger("orientation", orientation.ordinal());
+  tag.setInteger("clientEnergy", clientEnergy);
+  return tag;
+  }
+
 @Override
 public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {  
+  if(pkt.func_148857_g().hasKey("connections"))
+    {
+    readConnectionsInt(pkt.func_148857_g().getInteger("connections"));
+    }
   orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));
   clientEnergy = pkt.func_148857_g().getInteger("clientEnergy");
   clientDestEnergy = clientEnergy;
   this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  }
-
-public NBTTagCompound getDescriptionTag()
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setInteger("orientation", orientation.ordinal());
-  tag.setInteger("clientEnergy", clientEnergy);
-  return tag;
   }
 
 /**

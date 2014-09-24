@@ -5,7 +5,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
 public class BCProxy
@@ -34,7 +33,7 @@ public static void loadInstance()
     }
   }
 
-public void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
+public void transferPower(World world, int x, int y, int z, ITorqueTile generator)
   {
   
   }
