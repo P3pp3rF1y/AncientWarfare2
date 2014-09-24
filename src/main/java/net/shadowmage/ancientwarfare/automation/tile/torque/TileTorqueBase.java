@@ -174,7 +174,7 @@ public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
   storedEnergy = tag.getDouble("storedEnergy");
-  clientEnergy = (int)storedEnergy;
+  clientEnergy = tag.getInteger("clientEnergy");
   orientation = ForgeDirection.getOrientation(tag.getInteger("orientation"));
   }
 
@@ -184,6 +184,7 @@ public void writeToNBT(NBTTagCompound tag)
   super.writeToNBT(tag);
   tag.setDouble("storedEnergy", storedEnergy);
   tag.setInteger("orientation", orientation.ordinal());
+  tag.setInteger("clientEnergy", clientEnergy);
   }
 
 @Override

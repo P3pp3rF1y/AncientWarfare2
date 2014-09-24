@@ -21,9 +21,14 @@ public abstract class TileTorqueGeneratorBase extends TileTorqueBase implements 
 @Override
 public void updateEntity()
   {
-  if(worldObj.isRemote){return;}  
+  super.updateEntity();
+  if(worldObj.isRemote){return;}    
+  this.energyInput = this.storedEnergy - this.prevEnergy;
+  double s = this.storedEnergy;
   ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
+  this.energyOutput = s - this.storedEnergy;
   ITorque.applyPowerDrain(this);
+  this.prevEnergy = this.storedEnergy;  
   }
 
 @Override
