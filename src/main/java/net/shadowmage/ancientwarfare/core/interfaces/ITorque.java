@@ -11,7 +11,7 @@ private ITorque(){}//noop the class, it is just a container for the interfaces a
 
 public static interface ITorqueTile
 {
-public ForgeDirection getPrimaryFacing();
+ForgeDirection getPrimaryFacing();
 void setEnergy(double energy);
 double getMaxEnergy();
 double getEnergyStored();
@@ -42,18 +42,22 @@ public static void applyPowerDrain(ITorqueTile tile)
   world.theProfiler.endSection();
   }
 
+/**
+ * cached arrays used during tile updates, to remove per-tile-per-tick garbage creation
+ */
+private static double[] requestedEnergy = new double[6];
+private static ITorqueTile[] targets = new ITorqueTile[6];
+
 public static void transferPower(World world, int x, int y, int z, ITorqueTile generator)
   {
   if(generator.getMaxOutput()<=0){return;}
   world.theProfiler.startSection("AWPowerTransfer");
-  double[] requestedEnergy = new double[6];
   TileEntity[] tes = generator.getNeighbors();
-  ITorqueTile[] targets = new ITorqueTile[6];
   TileEntity te;
   ITorqueTile target;
   
   double maxOutput = generator.getMaxOutput();
-  if(maxOutput>generator.getEnergyStored()){maxOutput = generator.getEnergyStored();}
+  if(maxOutput > generator.getEnergyStored()){maxOutput = generator.getEnergyStored();}
   if(maxOutput<1)
     {
     world.theProfiler.endSection();
@@ -64,8 +68,10 @@ public static void transferPower(World world, int x, int y, int z, ITorqueTile g
   
   ForgeDirection d;
   for(int i = 0; i < 6; i++)
-    {
+    {    
     d = ForgeDirection.getOrientation(i);
+    targets[d.ordinal()]=null;
+    requestedEnergy[d.ordinal()]=0;
     if(!generator.canOutput(d)){continue;}
     te = tes[i];//world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
     if(te instanceof ITorqueTile)      
