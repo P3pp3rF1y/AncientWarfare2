@@ -108,9 +108,8 @@ public void registerClient()
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributor.class, lightDistributorRender);
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributorMedium.class, lightDistributorRender);
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributorHeavy.class, lightDistributorRender);
-  
-  
-//  RenderingRegistry.registerBlockHandler(new RenderTorqueConduit());
+    
+//  RenderingRegistry.registerBlockHandler(new RenderTorqueConduit());//TODO re-enable this on a configurable basis
   }
 
 private void registerClientOptions()
