@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
@@ -17,6 +16,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
 {
 
 protected TileEntity[] neighborTileCache = null;
+boolean[] connections;
 protected double maxEnergy = 1000;
 protected double maxInput = 100;
 protected double maxOutput = 100;
@@ -48,6 +48,42 @@ protected double maxRpm = 10;
 
 public double rotation;
 public double prevRotation;
+
+public boolean[] getConnections()
+  {
+  if(connections==null)
+    {
+    connections = new boolean[6];
+    }
+  return connections;
+  }
+
+protected int getConnectionsInt()
+  {
+  if(connections==null)
+    {
+    buildNeighborCache();
+    }  
+  int con = 0;
+  int c;
+  for(int i = 0; i < 6; i++)
+    {
+    c = connections[i]==true? 1: 0;
+    con = con + (c<<i);
+    }  
+  return con;
+  }
+
+protected void readConnectionsInt(int con)
+  {
+  int c;
+  if(connections==null){connections = new boolean[6];}
+  for(int i = 0; i < 6; i++)
+    {
+    c = (con>>i) & 0x1;
+    connections[i] = c==1;
+    }
+  }
 
 protected void serverNetworkUpdate()
   {
@@ -201,11 +237,10 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public Packet getDescriptionPacket()
+public final Packet getDescriptionPacket()
   {
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setInteger("orientation", orientation.ordinal());
-  tag.setInteger("clientEnergy", clientEnergy);
+  NBTTagCompound tag = getDescriptionTag();
+  if(tag==null){return null;}
   return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
   }
 
@@ -218,6 +253,14 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
+public NBTTagCompound getDescriptionTag()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  tag.setInteger("orientation", orientation.ordinal());
+  tag.setInteger("clientEnergy", clientEnergy);
+  return tag;
+  }
+
 /**
  * 0==connections update, used by conduits
  * 1==client-energy update
@@ -227,11 +270,15 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 public boolean receiveClientEvent(int a, int b)
   {
   super.receiveClientEvent(a, b);
-  if(worldObj.isRemote && a==1)
+  if(worldObj.isRemote)
     {
-    clientDestEnergy=b;
-    networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
-    }  
+    if(a==0){readConnectionsInt(b);}
+    else if(a==1)
+      {
+      clientDestEnergy=b;
+      networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
+      }
+    }
   return true;
   }
 

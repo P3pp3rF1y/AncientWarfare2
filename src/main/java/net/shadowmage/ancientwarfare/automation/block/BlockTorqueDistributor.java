@@ -7,8 +7,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributor;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributorHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributorMedium;
@@ -22,6 +26,12 @@ protected BlockTorqueDistributor(String regName)
   super(Material.rock);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
   this.setBlockName(regName);
+  }
+
+@Override
+public int getRenderType()
+  {
+  return AWAutomationStatics.conduitRenderID;
   }
 
 @Override
@@ -59,6 +69,50 @@ public boolean invertFacing()
   {
   return false;
   }
+@Override
+public boolean isOpaqueCube()
+  {
+  return false;
+  }
 
+@Override
+public boolean isNormalCube()
+  {
+  return false;
+  }
+
+@Override
+public void setBlockBoundsForItemRender()
+  {
+  float min = 0.1875f, max = 0.8125f;
+  setBlockBounds(min, 0, min, max, 1, max);
+  }
+
+@Override
+public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+  {
+  setBlockBoundsBasedOnState(world, x, y, z);
+  return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+  }
+
+@Override
+public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+  {
+  float min = 0.1875f, max = 0.8125f;
+  float x1=min, y1=min, z1=min, x2=max, y2=max, z2=max;
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof TileTorqueTransportConduit)
+    {
+    TileTorqueTransportConduit tile = (TileTorqueTransportConduit) world.getTileEntity(x, y, z);
+    boolean[] sides = tile.getConnections();
+    if(sides[0]){y1=0.f;}
+    if(sides[1]){y2=1.f;}
+    if(sides[2]){z1=0.f;}
+    if(sides[3]){z2=1.f;}
+    if(sides[4]){x1=0.f;}
+    if(sides[5]){x2=1.f;}
+    }  
+  setBlockBounds(x1, y1, z1, x2, y2, z2);
+  }
 
 }
