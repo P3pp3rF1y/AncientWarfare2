@@ -205,6 +205,7 @@ private void addTextureControls()
     @Override
     public void onValueUpdated(float value)
       {
+      if(value<1){value = 1;}
       setTextureXSize((int)value);
       }
     };
@@ -248,6 +249,7 @@ private void addTextureControls()
     @Override
     public void onValueUpdated(float value)
       {
+      if(value<1){value = 1;}
       setTextureYSize((int)value);
       }
     };

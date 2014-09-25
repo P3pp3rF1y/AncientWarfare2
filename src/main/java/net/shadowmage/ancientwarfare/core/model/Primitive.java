@@ -102,7 +102,7 @@ public abstract void addUVMapToImage(BufferedImage image);
 
 protected void setImagePixel(BufferedImage image, int x, int y, int rgb)
   {
-  if(x>=0 && x< image.getWidth() && y>=0 && y<image.getWidth())
+  if(x>=0 && x< image.getWidth() && y>=0 && y<image.getHeight())
     {
     image.setRGB(x, y, rgb);
     }
