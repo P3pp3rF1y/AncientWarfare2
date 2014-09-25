@@ -130,15 +130,23 @@ protected void addDefaultListeners()
 
 @Override
 public void setText(String text)
-  {
+  {  
+  if(text=="" || text==null)
+    {
+    this.setValue(0);
+    this.text = "";
+    return;
+    }  
   try
     {
     Float fl = Float.parseFloat(text);
     setValue(fl);    
+    this.text = text;
     }
   catch(NumberFormatException e)
     {
     this.setValue(0.f);
+    this.text = String.format("%."+decimalPlaces+"f", 0.f);  
     }
   }
 

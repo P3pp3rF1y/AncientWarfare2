@@ -229,9 +229,8 @@ protected void handleBackspaceAction()
         }
       newText = newText + text.charAt(i);
       }
-    String oldText = text;
     text = newText;
-    onTextUpdated(oldText, newText);
+    setText(newText);
     cursorIndex--;
     }
   }
