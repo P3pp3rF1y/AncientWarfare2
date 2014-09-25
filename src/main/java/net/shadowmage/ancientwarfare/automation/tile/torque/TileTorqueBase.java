@@ -228,13 +228,13 @@ public double getEnergyOutput()
 /************************************** NEIGHBOR UPDATE AND CONNECTION CODE ****************************************/
 
 @Override
-public double getClientRotation()
+public double getClientOutputRotation()
   {
   return rotation;
   }
 
 @Override
-public double getPrevClientRotation()
+public double getPrevClientOutputRotation()
   {
   return prevRotation;
   }
@@ -363,12 +363,12 @@ protected void readConnectionsInt(int con)
 /**
  * 0==connections update, used by conduits
  * 1==client-energy update
- * 2==waterwheel wheel speed/direction 
+ * 2==waterwheel wheel speed/direction (DEPRECATED -- REWORK TO USE REGULAR CLIENT-ENERGY DATA) 
+ * 3==powered status for flywheel
  */
 @Override
 public boolean receiveClientEvent(int a, int b)
   {
-  super.receiveClientEvent(a, b);
   if(worldObj.isRemote)
     {
     if(a==0){readConnectionsInt(b);}

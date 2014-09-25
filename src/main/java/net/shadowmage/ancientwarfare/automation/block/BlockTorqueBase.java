@@ -110,16 +110,16 @@ public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX,
   super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
   }
 
-//@Override
-//public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
-//  {
-//  TileEntity te = world.getTileEntity(x, y, z);
-//  if(te instanceof TileTorqueBase)
-//    {
-//    ((TileTorqueBase)te).onBlockUpdated();
-//    }
-//  super.onNeighborBlockChange(world, x, y, z, block);
-//  }
+@Override
+public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+  {
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof TileTorqueBase)
+    {
+    ((TileTorqueBase)te).onBlockUpdated();
+    }
+  super.onNeighborBlockChange(world, x, y, z, block);
+  }
 
 @Override
 public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)

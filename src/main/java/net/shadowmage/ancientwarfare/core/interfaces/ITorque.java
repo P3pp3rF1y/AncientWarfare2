@@ -26,8 +26,8 @@ boolean canInput(ForgeDirection from);
 boolean cascadedInput();
 TileEntity[] getNeighbors();
 ITorqueTile[] getNeighborTorqueTiles(); 
-double getClientRotation();
-double getPrevClientRotation();
+double getClientOutputRotation();
+double getPrevClientOutputRotation();
 boolean useClientRotation();
 }
 

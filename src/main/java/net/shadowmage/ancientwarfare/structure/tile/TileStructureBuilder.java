@@ -85,13 +85,13 @@ public ITorqueTile[] getNeighborTorqueTiles()
   }
 
 @Override
-public double getClientRotation()
+public double getClientOutputRotation()
   {
   return 0;
   }
 
 @Override
-public double getPrevClientRotation()
+public double getPrevClientOutputRotation()
   {
   return 0;
   }
