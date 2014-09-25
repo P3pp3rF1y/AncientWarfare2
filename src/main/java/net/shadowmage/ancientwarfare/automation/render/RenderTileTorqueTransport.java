@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportBase;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
@@ -72,11 +73,9 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   
   TileTorqueTransportBase conduit = (TileTorqueTransportBase)te;
   
+  ITorqueTile[] neighbors = conduit.getNeighborTorqueTiles();//TODO update speed of input shafts to match speed of the output shaft of neighbor
   boolean[] connections = conduit.getConnections();
-  float pr = (float) conduit.prevRotation;
-  float r = (float) conduit.rotation;
-  float rd = r-pr;  
-  float rotation = (pr + rd*delta);
+  float rotation = (float) getRotation(conduit.rotation, conduit.prevRotation, delta);
     
   float[] rotationArray;
   float rx, ry, rz;
@@ -92,15 +91,28 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
       {
       piece = gearHeads[i];
       rotationArray = headRotationDirectionMatrix[i];
-      rx = rotationArray[0]*rotation;
-      ry = rotationArray[1]*rotation;
-      rz = rotationArray[2]*rotation;
       if(conduit.canOutput(ForgeDirection.getOrientation(i)))
         {
+        rx = rotationArray[0]*rotation;
+        ry = rotationArray[1]*rotation;
+        rz = rotationArray[2]*rotation;
         piece.setRotation(rx, ry, rz);        
         }
       else
         {
+        if(neighbors!=null && neighbors[i]!=null && neighbors[i].useClientRotation())
+          {
+          float r = (float) getRotation(neighbors[i].getClientRotation(), neighbors[i].getPrevClientRotation(), delta);
+          rx = rotationArray[0]*r;
+          ry = rotationArray[1]*r;
+          rz = rotationArray[2]*r;
+          }
+        else
+          {
+          rx = rotationArray[0]*rotation;
+          ry = rotationArray[1]*rotation;
+          rz = rotationArray[2]*rotation;
+          }
         piece.setRotation(-rx, -ry, -rz);
         }
       piece.render(textureWidth, textureHeight);
@@ -114,6 +126,12 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   gearbox.render(textureWidth, textureHeight);
     
   GL11.glPopMatrix();
+  }
+
+private double getRotation(double rotation, double prevRotation, float delta)
+  {
+  double rd = rotation-prevRotation;  
+  return (prevRotation + rd*delta);
   }
 
 }

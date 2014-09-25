@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
@@ -29,6 +30,12 @@ public TileTorqueGeneratorSterling()
   energyDrainFactor = AWAutomationStatics.low_drain_factor;
   maxEnergy = AWAutomationStatics.med_conduit_energy_max;
   maxOutput = AWAutomationStatics.low_transfer_max;  
+  }
+
+@Override
+public boolean useClientRotation()
+  {
+  return true;
   }
 
 @Override

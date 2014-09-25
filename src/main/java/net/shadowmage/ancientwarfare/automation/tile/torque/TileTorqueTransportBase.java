@@ -65,9 +65,15 @@ protected boolean buildConnection(ForgeDirection d, TileEntity te)
   }
 
 @Override
+public boolean useClientRotation()
+  {
+  return true;
+  }
+
+@Override
 public boolean cascadedInput()
   {
-  return false;
+  return true;
   }
 
 }

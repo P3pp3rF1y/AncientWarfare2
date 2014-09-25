@@ -92,6 +92,31 @@ public boolean cascadedInput()
   }
 
 @Override
+public ITorqueTile[] getNeighborTorqueTiles()
+  {
+  return null;
+  }
+
+@Override
+public double getClientRotation()
+  {
+  return 0;
+  }
+
+@Override
+public double getPrevClientRotation()
+  {
+  return 0;
+  }
+
+@Override
+public boolean useClientRotation()
+  {
+  return false;
+  }
+
+
+@Override
 public TileEntity[] getNeighbors()
   {
   return null;
@@ -99,6 +124,12 @@ public TileEntity[] getNeighbors()
 
 @Override
 public double getMaxOutput()
+  {
+  return 0;
+  }
+
+@Override
+public double getEnergyOutput()
   {
   return 0;
   }

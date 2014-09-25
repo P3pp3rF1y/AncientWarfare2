@@ -47,7 +47,7 @@ public static int mailboxTimeForDimension = 1200;
 /**
  * used to reduce network updates
  */
-public static int energyMinNetworkUpdateFrequency = 5;//default 4 updates/sec max
+public static int energyMinNetworkUpdateFrequency = 5;//default 4 updates/sec max; less if not needed
 
 public static boolean enable_energy_network_updates = true;
 public static boolean enable_energy_client_updates = true;
@@ -57,8 +57,8 @@ public static double med_drain_factor = 0.4d;
 public static double high_drain_factor = 0.1d;
 
 public static double low_transfer_max = 3.d;
-public static double med_transfer_max = 50.d;
-public static double high_transfer_max = 1000.d;
+public static double med_transfer_max = 30.d;
+public static double high_transfer_max = 300.d;
 
 public static double low_conduit_energy_max = 10.d;
 public static double med_conduit_energy_max = 100.d;
@@ -154,7 +154,7 @@ public void initializeValues()
       "Default = "+med_conduit_energy_max+"\n"+
       "Directly sets the amount of torque/MJ that a trasport conduit may store internally.").getDouble(med_conduit_energy_max);
   
-  high_conduit_energy_max = config.get(AWCoreStatics.serverOptions, "med_quality_conduit_energy_max", high_conduit_energy_max, "How much energy may be stored in high-quality energy transport tiles.\n" +
+  high_conduit_energy_max = config.get(AWCoreStatics.serverOptions, "high_quality_conduit_energy_max", high_conduit_energy_max, "How much energy may be stored in high-quality energy transport tiles.\n" +
       "Default = "+high_conduit_energy_max+"\n"+
       "Directly sets the amount of torque/MJ that a trasport conduit may store internally.").getDouble(high_conduit_energy_max);
   

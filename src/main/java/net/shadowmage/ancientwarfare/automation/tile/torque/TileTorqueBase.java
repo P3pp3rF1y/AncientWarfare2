@@ -35,6 +35,8 @@ protected double storedEnergy = 0;
  */
 protected TileEntity[] neighborTileCache = null;
 
+protected ITorqueTile[] neighborTorqueTileCache = null;
+
 /**
  * cached connections list.  Built by buildConnection() during buildNeighborCache().<br>
  * Synched from server->client for those tiles with connectable sides (conduits, distributors)<br>
@@ -94,13 +96,13 @@ public void updateEntity()
     serverNetworkUpdate();
     }
   this.energyInput = this.storedEnergy - this.prevEnergy;
+  ITorque.applyPowerDrain(this);
   if(this.getMaxOutput()>0)
     {
     double s = this.storedEnergy;
     ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
     this.energyOutput = s - this.storedEnergy;    
     }
-  ITorque.applyPowerDrain(this);
   this.prevEnergy = this.storedEnergy;  
   }
 
@@ -110,7 +112,7 @@ protected void serverNetworkUpdate()
   networkUpdateTicks--;
   if(networkUpdateTicks<=0)
     {
-    double percentStored = storedEnergy / maxEnergy;
+    double percentStored = storedEnergy / getMaxEnergy();
     double percentTransferred = maxOutput>0 ? energyOutput / maxOutput : 0;
     int total = (int)((percentStored+percentTransferred)*100.d);
     if(total>100){total=100;}
@@ -217,7 +219,31 @@ public double getMaxEnergy()
   return maxEnergy;
   }
 
+@Override
+public double getEnergyOutput()
+  {
+  return energyOutput;
+  }
+
 /************************************** NEIGHBOR UPDATE AND CONNECTION CODE ****************************************/
+
+@Override
+public double getClientRotation()
+  {
+  return rotation;
+  }
+
+@Override
+public double getPrevClientRotation()
+  {
+  return prevRotation;
+  }
+
+@Override
+public boolean useClientRotation()
+  {
+  return false;
+  }
 
 @Override
 public void validate()
@@ -241,22 +267,30 @@ public void onBlockUpdated()
 /**
  * Return the set of tile-entities that neighbor this tile.  indexed by forge-direction.ordinal()
  */
+@Override
 public TileEntity[] getNeighbors()
   {
   if(neighborTileCache==null){buildNeighborCache();}
   return neighborTileCache;
   }
 
+@Override
+public ITorqueTile[] getNeighborTorqueTiles()
+  {
+  if(neighborTorqueTileCache==null){buildNeighborCache();}
+  return neighborTorqueTileCache;
+  }
+
 /**
  * Build the cache of neighboring tile-entities.
  */
-protected void buildNeighborCache()
+private void buildNeighborCache()
   {
-  if(worldObj.isRemote){return;}
+  worldObj.theProfiler.startSection("AWPowerTileNeighborUpdate");
   int conInt = connections==null ? 0 : getConnectionsInt();
   connections = new boolean[6];  
   neighborTileCache = new TileEntity[6];
-  worldObj.theProfiler.startSection("AWPowerTileNeighborUpdate");
+  neighborTorqueTileCache = new ITorqueTile[6];
   ForgeDirection d;
   TileEntity te;
   for(int i = 0; i < 6; i++)
@@ -264,12 +298,16 @@ protected void buildNeighborCache()
     d = ForgeDirection.getOrientation(i);
     te = worldObj.getTileEntity(xCoord+d.offsetX, yCoord+d.offsetY, zCoord+d.offsetZ);
     neighborTileCache[i] = te;
+    if(te instanceof ITorqueTile){neighborTorqueTileCache[i]=(ITorqueTile)te;}
     connections[i] = buildConnection(d, te);
     }
-  int conInt2 = getConnectionsInt();
-  if(conInt2!=conInt)
+  if(!worldObj.isRemote)
     {
-    worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, getConnectionsInt());    
+    int conInt2 = getConnectionsInt();
+    if(conInt2!=conInt)
+      {
+      worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, getConnectionsInt());    
+      }    
     } 
   worldObj.theProfiler.endSection();    
   }

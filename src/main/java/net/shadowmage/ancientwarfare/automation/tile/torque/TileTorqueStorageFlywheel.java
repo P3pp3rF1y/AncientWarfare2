@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 
 
 public class TileTorqueStorageFlywheel extends TileTorqueStorageBase
@@ -27,7 +26,6 @@ public void updateEntity()
   {
   super.updateEntity();
   if(!worldObj.isRemote){tryBalancingFlywheels();}  
-  tryBalancingFlywheels();    
   }
 
 private void tryBalancingFlywheels()

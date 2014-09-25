@@ -27,6 +27,7 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.model.ModelAutoCraftingStation;
 import net.shadowmage.ancientwarfare.automation.render.RenderSterlingEngine;
+import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueFlywheel;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueTransport;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueConduit2;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueDistributor;
@@ -35,6 +36,7 @@ import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStockV
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWorksite;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheel;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitMedium;
@@ -104,6 +106,7 @@ public void registerClient()
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributorMedium.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_medium.png")));
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributorHeavy.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_heavy.png")));
     
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueStorageFlywheel.class, new RenderTileTorqueFlywheel());
 //  RenderingRegistry.registerBlockHandler(new RenderTorqueConduit());//TODO re-enable this on a configurable basis
   }
 

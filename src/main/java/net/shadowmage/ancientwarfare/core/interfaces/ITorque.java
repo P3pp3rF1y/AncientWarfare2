@@ -4,6 +4,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public final class ITorque
 {
@@ -19,11 +20,15 @@ double addEnergy(ForgeDirection from, double energy);
 double getEnergyDrainFactor();
 double getMaxOutput();
 double getMaxInput();
+double getEnergyOutput();//return the energy output last tick
 boolean canOutput(ForgeDirection towards);
 boolean canInput(ForgeDirection from);
 boolean cascadedInput();
 TileEntity[] getNeighbors();
-//ITorqueTile[] getReceivers();//TODO clean up base implementation, add a cached array of ITorqueTile[], use that instead of instanceof checks... 
+ITorqueTile[] getNeighborTorqueTiles(); 
+double getClientRotation();
+double getPrevClientRotation();
+boolean useClientRotation();
 }
 
 public static void applyPowerDrain(ITorqueTile tile)
@@ -54,8 +59,8 @@ public static void transferPower(World world, int x, int y, int z, ITorqueTile g
   {
   if(generator.getMaxOutput()<=0){return;}
   world.theProfiler.startSection("AWPowerTransfer");
-  TileEntity[] tes = generator.getNeighbors();
-  TileEntity te;
+  ITorqueTile[] tes = generator.getNeighborTorqueTiles();
+  ITorqueTile te;
   ITorqueTile target;
   
   double maxOutput = generator.getMaxOutput();
@@ -75,27 +80,29 @@ public static void transferPower(World world, int x, int y, int z, ITorqueTile g
     targets[d.ordinal()]=null;
     requestedEnergy[d.ordinal()]=0;
     if(!generator.canOutput(d)){continue;}
-    te = tes[i];//world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
-    if(te instanceof ITorqueTile)      
+    te = tes[i];
+    if(te !=null)      
       {
-      target = (ITorqueTile)te;
+      target = te;
       if(target.canInput(d.getOpposite()))
         {
         targets[d.ordinal()]=target;  
         request = target.getMaxInput();
-        if(target.cascadedInput())
-          {
-          if(target.getEnergyStored()<generator.getEnergyStored())
+        if(target.cascadedInput() && generator.cascadedInput())
+          {          
+          double teo = target.getEnergyOutput()*0.5d;
+          if(target.getEnergyStored() - teo < generator.getEnergyStored())
             {
-            double diff = (generator.getEnergyStored() - target.getEnergyStored())*0.5d;
+            double diff = (generator.getEnergyStored() - target.getEnergyStored()) * 0.5d + teo;
             if(request>diff){request=diff;}
             }
           else
             {
             request = 0;
             }
+//          AWLog.logDebug("doing cascade transfer from "+generator+" to: "+target+" calcd req: "+request + " tout "+target.getEnergyOutput() +" tmax: "+target.getMaxEnergy());
           }
-        if(request +target.getEnergyStored() > target.getMaxEnergy()){request = target.getMaxEnergy()-target.getEnergyStored();}
+        if(request + target.getEnergyStored() > target.getMaxEnergy()){request = target.getMaxEnergy()-target.getEnergyStored();}
         if(request>0)
           {
           requestedEnergy[d.ordinal()]=request;

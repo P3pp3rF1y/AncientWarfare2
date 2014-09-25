@@ -32,6 +32,12 @@ public double getMaxOutput()
   }
 
 @Override
+public double getEnergyOutput()
+  {
+  return 0;
+  }
+
+@Override
 public boolean canOutput(ForgeDirection towards)
   {
   return false;
