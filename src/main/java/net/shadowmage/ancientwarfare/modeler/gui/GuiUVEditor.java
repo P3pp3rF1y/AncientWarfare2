@@ -111,7 +111,7 @@ public void setupElements()
   primitiveControlArea.clearElements();
   pieceListArea.clearElements();
   textureControlArea.clearElements();
-//fileControlArea.clearElements();
+  fileControlArea.clearElements();
   
   primitiveMap.clear();
   pieceMap.clear();
