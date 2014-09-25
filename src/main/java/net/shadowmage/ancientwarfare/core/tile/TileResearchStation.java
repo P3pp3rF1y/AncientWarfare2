@@ -86,6 +86,12 @@ public void onBoundsAdjusted(){}//NOOP
 public boolean userAdjustableBlocks(){return false;}//NOOP
 
 @Override
+public boolean cascadedInput()
+  {
+  return false;
+  }
+
+@Override
 public TileEntity[] getNeighbors()
   {
   return null;

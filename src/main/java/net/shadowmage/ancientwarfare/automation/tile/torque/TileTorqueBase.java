@@ -170,6 +170,12 @@ public double addEnergy(ForgeDirection from, double energy)
   }
 
 @Override
+public boolean cascadedInput()
+  {
+  return false;
+  }
+
+@Override
 public double getMaxInput()
   {
   return maxInput;
@@ -361,7 +367,7 @@ public boolean onBlockClicked(EntityPlayer player)
   if(!player.worldObj.isRemote)
     {
     String key = "guistrings.automation.current_energy";
-    String value = String.format("%.2f", storedEnergy);
+    String value = String.format("%.2f : %.2f : %.2f", prevEnergy, energyInput, energyOutput);
     ChatComponentTranslation chat = new ChatComponentTranslation(key, new Object[]{value});
     player.addChatComponentMessage(chat);    
     }

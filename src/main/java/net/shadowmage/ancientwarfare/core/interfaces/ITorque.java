@@ -15,13 +15,15 @@ ForgeDirection getPrimaryFacing();
 void setEnergy(double energy);
 double getMaxEnergy();
 double getEnergyStored();
-double getEnergyDrainFactor();
-TileEntity[] getNeighbors();
-double getMaxOutput();
-boolean canOutput(ForgeDirection towards);
 double addEnergy(ForgeDirection from, double energy);
+double getEnergyDrainFactor();
+double getMaxOutput();
 double getMaxInput();
+boolean canOutput(ForgeDirection towards);
 boolean canInput(ForgeDirection from);
+boolean cascadedInput();
+TileEntity[] getNeighbors();
+//ITorqueTile[] getReceivers();//TODO clean up base implementation, add a cached array of ITorqueTile[], use that instead of instanceof checks... 
 }
 
 public static void applyPowerDrain(ITorqueTile tile)
@@ -58,11 +60,11 @@ public static void transferPower(World world, int x, int y, int z, ITorqueTile g
   
   double maxOutput = generator.getMaxOutput();
   if(maxOutput > generator.getEnergyStored()){maxOutput = generator.getEnergyStored();}
-  if(maxOutput<1)
-    {
-    world.theProfiler.endSection();
-    return;
-    }  
+//  if(maxOutput<1)
+//    {
+//    world.theProfiler.endSection();
+//    return;
+//    }  
   double request;
   double totalRequest = 0;
   
@@ -81,7 +83,7 @@ public static void transferPower(World world, int x, int y, int z, ITorqueTile g
         {
         targets[d.ordinal()]=target;  
         request = target.getMaxInput();
-        if(generator instanceof ITorqueTile && target instanceof ITorqueTile)
+        if(target.cascadedInput())
           {
           if(target.getEnergyStored()<generator.getEnergyStored())
             {

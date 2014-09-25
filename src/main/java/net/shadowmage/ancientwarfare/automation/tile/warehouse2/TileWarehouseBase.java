@@ -77,6 +77,12 @@ public TileWarehouseBase()
   }
 
 @Override
+public boolean cascadedInput()
+  {
+  return false;
+  }
+
+@Override
 public void onBoundsAdjusted()
   {
   this.max.y = min.y + 3;

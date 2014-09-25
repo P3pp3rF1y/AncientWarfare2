@@ -63,4 +63,11 @@ protected boolean buildConnection(ForgeDirection d, TileEntity te)
     } 
   return false;
   }
+
+@Override
+public boolean cascadedInput()
+  {
+  return false;
+  }
+
 }

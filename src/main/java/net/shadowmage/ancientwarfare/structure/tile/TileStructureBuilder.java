@@ -73,6 +73,12 @@ public void onBoundsAdjusted(){}//NOOP
 public boolean userAdjustableBlocks(){return false;}//NOOP
 
 @Override
+public boolean cascadedInput()
+  {
+  return false;
+  }
+
+@Override
 public void setEnergy(double energy)
   {
   this.storedEnergy = energy;

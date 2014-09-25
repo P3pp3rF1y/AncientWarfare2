@@ -27,7 +27,7 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.model.ModelAutoCraftingStation;
 import net.shadowmage.ancientwarfare.automation.render.RenderSterlingEngine;
-import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueConduit;
+import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueTransport;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueConduit2;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueDistributor;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueGeneratorWaterwheel;
@@ -82,8 +82,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, GuiChunkLoaderDeluxe.class);  
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STOCK, GuiWarehouseStockViewer.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_BOUNDS, GuiWorksiteBoundsAdjust.class);
-  
-  
+    
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel());  
   ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new RenderTileWorksite());
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new RenderTileWorksite());
@@ -96,21 +95,14 @@ public void registerClient()
   TileCraftingTableRender tctr = new TileCraftingTableRender(new ModelAutoCraftingStation(), "textures/model/automation/tile_auto_crafting.png");
   ClientRegistry.bindTileEntitySpecialRenderer(TileAutoCrafting.class, tctr);
   MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.worksiteAutoCrafting), tctr);
-  
-  ModelLoader loader = new ModelLoader();
-  ModelBaseAW model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/torque_conduit.m2f"));  
-  
     
-//  RenderTileTorqueConduit lightConduitRender = new RenderTileTorqueConduit(model, new ResourceLocation("ancientwarfare", "textures/model/automation/tile_torque_conduit_light_reg.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/tile_torque_conduit_light_out.png"));
-  RenderTileTorqueConduit2 lightConduitRender = new RenderTileTorqueConduit2();
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduit.class, lightConduitRender);
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitMedium.class, lightConduitRender);
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitHeavy.class, lightConduitRender);
-  
-  RenderTileTorqueDistributor lightDistributorRender = new RenderTileTorqueDistributor(model, new ResourceLocation("ancientwarfare", "textures/model/automation/tile_torque_conduit_light_reg.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/tile_torque_conduit_light_out.png"));
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributor.class, lightDistributorRender);
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributorMedium.class, lightDistributorRender);
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributorHeavy.class, lightDistributorRender);
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduit.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_light.png")));
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitMedium.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_medium.png")));
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitHeavy.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_heavy.png")));
+    
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributor.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_light.png")));
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributorMedium.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_medium.png")));
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributorHeavy.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_heavy.png")));
     
 //  RenderingRegistry.registerBlockHandler(new RenderTorqueConduit());//TODO re-enable this on a configurable basis
   }

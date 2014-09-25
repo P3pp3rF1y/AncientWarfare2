@@ -1,8 +1,18 @@
 Things to finish up:
 Player Owned Bard
 Vehicle Module?
-
-
-
-
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
+
+torque fixing:
+* add flag to tiles to denote if they should use cascading input, to fix input into storage blocks
+
+torque optimization:
+* default to not doing/sending network update for most tiles, send to a noop bridge method, most do not use yet/at all
+
+
+torque renderer:
+* split model into at least 2 base pieces or models
+	gear heads
+	gear box
+* gear box will use rotation for displaying output side(s)
+* gear heads will use rotation only for power status

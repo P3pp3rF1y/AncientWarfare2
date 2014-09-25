@@ -100,6 +100,12 @@ protected abstract void updateOverflowInventory();
 protected abstract void updateWorksite();
 
 @Override
+public boolean cascadedInput()
+  {
+  return false;
+  }
+
+@Override
 public boolean shouldRenderInPass(int pass)
   {
   return pass==1;
