@@ -84,21 +84,16 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   rotation = (float) getRotation(flywheel.rotation, flywheel.prevRotation, delta);
   spindle.setRotation(0, rotation, 0);
   ITorqueTile inputNeighbor = neighbors[d.getOpposite().ordinal()];  
+  inputGear.setVisible(inputNeighbor!=null);
+  inputGear1.setVisible(inputNeighbor!=null); 
   if(inputNeighbor!=null)
     {
-    inputGear.setVisible(true);
-    inputGear1.setVisible(true); 
     if(inputNeighbor.useClientRotation())
       {
       rotation = (float) getRotation(inputNeighbor.getClientOutputRotation(), inputNeighbor.getPrevClientOutputRotation(), delta);
       }
     inputGear.setRotation(0, 0, -rotation);
     inputGear1.setRotation(0, -rotation*1.5f, 0);      
-    }
-  else
-    {
-    inputGear.setVisible(false);
-    inputGear1.setVisible(false); 
     }
   
   boolean upper = neighbors[1]!=null && neighbors[1].getClass()==flywheel.getClass();
