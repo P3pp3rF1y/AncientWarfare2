@@ -71,15 +71,11 @@ public double getPrevClientOutputRotation()
 protected void updateRotation()
   {
   super.updateRotation();
-  if(powered)
-    {
-    prevClientRotation = clientRotation;
-    }
-  else
+  prevClientRotation=clientRotation;
+  if(!powered)
     {
     double d = rotation - prevRotation;
-    clientRotation+=d;
-    prevClientRotation+=d;
+    clientRotation+=d;  
     }
   }
 
