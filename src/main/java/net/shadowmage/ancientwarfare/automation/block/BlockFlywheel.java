@@ -25,10 +25,7 @@ public BlockFlywheel(String regName)
   }
 
 @Override
-public int getRenderType()
-  {
-  return -1;
-  }
+public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
 
 @Override
 public boolean isOpaqueCube()
