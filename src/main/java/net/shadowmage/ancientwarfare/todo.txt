@@ -13,7 +13,12 @@ Worksite Cleanup
 	-iuserconfigurableboundedtile
 
 Torque Cleanup
+-rework how client-energy is updated
+	-use a running average over the last X ticks (where X is network update frequency)
+	-keep a tally of input, output, stored, and drain for the the duration
+	-on synch, send that average if it is different than what client supposedly has
 -change flywheel slightly
+	-it needs to know input, output, and stored energy on client-side
 	-basic flywheel, non-stackable.
 	-basic industrial flywheel, stackable.  requires control block on top or bottom of stack
 	-adv industrial flywheel, actual multiblock 3x3xX, control block on center/top 
