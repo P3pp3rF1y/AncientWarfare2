@@ -11,6 +11,7 @@ public TileTorqueTransportConduitMedium()
   maxEnergy = AWAutomationStatics.med_conduit_energy_max;
   maxOutput = AWAutomationStatics.med_transfer_max;
   maxInput = AWAutomationStatics.med_transfer_max;
+  maxRpm = 200;
   }
 
 }
