@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
@@ -157,20 +156,10 @@ public String toString()
   return "Torque Tile["+storedEnergy+"]::" +getClass().getSimpleName();
   }
 
-/************************************** ENERGY MANAGEMENT CODE ****************************************/
+//************************************** ENERGY MANAGEMENT CODE ****************************************//
 
 @Override
-public double addEnergy(ForgeDirection from, double energy)
-  {
-  if(canInput(from))
-    {
-    if(energy>getMaxEnergy()-getEnergyStored()){energy=getMaxEnergy()-getEnergyStored();}
-    if(energy>getMaxInput()){energy=getMaxInput();}
-    setEnergy(getEnergyStored()+energy);
-    return energy;
-    }
-  return 0;
-  }
+public double addEnergy(ForgeDirection from, double energy){return ITorque.addEnergy(this, from, energy);}
 
 @Override
 public boolean cascadedInput()

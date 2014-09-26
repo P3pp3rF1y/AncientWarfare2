@@ -1,18 +1,36 @@
 Things to finish up:
-Player Owned Bard
+Ore Processor
+Cleaning up Torque system -- models, power framework
+Chunkloader Worksite Upgrades
 Vehicle Module?
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
 
-torque fixing:
-* add flag to tiles to denote if they should use cascading input, to fix input into storage blocks
+Worksite Cleanup
+-split worksite stuff into a few more interfaces? might require more instanceof checks, but is -cleaner- code :: is clean code worth a performance hit (most sources say yes...and i agree...)
+	-iworksite
+	-iboundedtile
+	-iupgradeableworksite
+	-iuserconfigurableboundedtile
 
-torque optimization:
-* default to not doing/sending network update for most tiles, send to a noop bridge method, most do not use yet/at all
-
-
-torque renderer:
-* split model into at least 2 base pieces or models
-	gear heads
-	gear box
-* gear box will use rotation for displaying output side(s)
-* gear heads will use rotation only for power status
+Torque Cleanup
+-change flywheel slightly
+	-basic flywheel, non-stackable.
+	-basic industrial flywheel, stackable.  requires control block on top or bottom of stack
+	-adv industrial flywheel, actual multiblock 3x3xX, control block on center/top 
+-split into multiple interfaces, each defining a separate aspect of the interact
+	-itorqueoutput
+		-getmaxoutput(side)
+		-canoutput(side)
+		-cascadedOutput()
+		-getneighbors() (and torquetileneighbors)
+	-itorqueinput
+		-getmaxinput(side)
+		-caninput(side)
+		-cascadedInput()
+	-itorquestorage
+		-getenergy
+		-setenergy
+		-getmaxenergy
+	-itorquerotator
+		-getoutputrotation
+		-getoutputprevrotation

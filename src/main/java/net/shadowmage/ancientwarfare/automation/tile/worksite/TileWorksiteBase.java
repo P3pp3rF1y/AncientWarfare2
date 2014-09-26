@@ -181,8 +181,7 @@ public double getEnergyDrainFactor()
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
-  storedEnergy+=AWCoreStatics.energyPerWorkUnit;
-  if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
+  IWorkSite.WorksiteImplementation.addEnergyFromPlayer(this, player);
   }
 
 @Override
@@ -265,13 +264,14 @@ public void updateEntity()
     updateOverflowInventory();
     } 
   worldObj.theProfiler.endStartSection("Check For Work");
-  boolean hasWork = getEnergyStored() >= getEnergyPerUse() && hasWorksiteWork();
+  double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
+  boolean hasWork = getEnergyStored() >= ePerUse && hasWorksiteWork();
   worldObj.theProfiler.endStartSection("Process Work");
   if(hasWork)
     {
     if(processWork())
       {
-      storedEnergy -= getEnergyPerUse();
+      storedEnergy -= ePerUse;
       if(storedEnergy<0){storedEnergy = 0.d;}
       }    
     }
@@ -281,27 +281,15 @@ public void updateEntity()
   worldObj.theProfiler.endSection();
   }
 
-protected double getEnergyPerUse()
-  {
-  return AWCoreStatics.energyPerWorkUnit * 1.f - efficiencyBonusFactor;
-  }
-
 protected void updateEfficiency()
   {
-  efficiencyBonusFactor = 0.d;
-  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)){efficiencyBonusFactor+=0.05;}
-  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)){efficiencyBonusFactor+=0.1;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_1)){efficiencyBonusFactor+=0.05;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_2)){efficiencyBonusFactor+=0.15;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_3)){efficiencyBonusFactor+=0.25;}
+  efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
   }
 
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {  
-  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
-  if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
-//  AWLog.logDebug("adding energy from worker..."+storedEnergy);
+  IWorkSite.WorksiteImplementation.addEnergyFromWorker(this, worker);
   }
 
 @Override

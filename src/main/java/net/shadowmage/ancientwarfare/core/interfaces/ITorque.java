@@ -30,6 +30,18 @@ double getPrevClientOutputRotation();
 boolean useClientRotation();
 }
 
+public static double addEnergy(ITorqueTile tile, ForgeDirection from, double energy)
+  {
+  if(tile.canInput(from))
+    {
+    energy = energy > tile.getMaxInput() ? tile.getMaxInput() : energy;
+    energy = energy + tile.getEnergyStored() > tile.getMaxEnergy() ? tile.getMaxEnergy()-tile.getEnergyStored() : energy;
+    tile.setEnergy(tile.getEnergyStored()+energy);
+    return energy;
+    }
+  return 0;
+  }
+
 public static void applyPowerDrain(ITorqueTile tile)
   {
   World world = ((TileEntity)tile).getWorldObj();
@@ -64,11 +76,6 @@ public static void transferPower(World world, int x, int y, int z, ITorqueTile g
   
   double maxOutput = generator.getMaxOutput();
   if(maxOutput > generator.getEnergyStored()){maxOutput = generator.getEnergyStored();}
-//  if(maxOutput<1)
-//    {
-//    world.theProfiler.endSection();
-//    return;
-//    }  
   double request;
   double totalRequest = 0;
   
@@ -99,7 +106,6 @@ public static void transferPower(World world, int x, int y, int z, ITorqueTile g
             {
             request = 0;
             }
-//          AWLog.logDebug("doing cascade transfer from "+generator+" to: "+target+" calcd req: "+request + " tout "+target.getEnergyOutput() +" tmax: "+target.getMaxEnergy());
           }
         if(request + target.getEnergyStored() > target.getMaxEnergy()){request = target.getMaxEnergy()-target.getEnergyStored();}
         if(request>0)
