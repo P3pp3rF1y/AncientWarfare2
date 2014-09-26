@@ -6,28 +6,40 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class TileOreProcessor extends TileEntity implements IWorkSite, IInventory, ISidedInventory, ITorqueTile, IOwnable, IInteractableTile, IRotatableTile
 {
 
+private String owner = "";
+private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
+private double maxInput = maxEnergyStored;
+private double storedEnergy;
+private double efficiencyBonusFactor = 0.f;
+private ForgeDirection orientation = ForgeDirection.NORTH;
+private InventoryBasic inventory;
+
 public TileOreProcessor()
   {
-  
+  inventory = new InventoryBasic(2);//TODO override methods for oncallback for when items changed
   }
 
 @Override
-public void setPrimaryFacing(ForgeDirection face)
+public void onBlockBroken()
   {
   // TODO Auto-generated method stub
   
@@ -41,46 +53,25 @@ public boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public void setOwnerName(String name)
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void setPrimaryFacing(ForgeDirection face){orientation = face==null?ForgeDirection.NORTH : face;}
 
 @Override
-public String getOwnerName()
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public void setOwnerName(String name){owner = name==null ? "" : name;}
 
 @Override
-public ForgeDirection getPrimaryFacing()
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public String getOwnerName(){return owner;}
 
 @Override
-public void setEnergy(double energy)
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public ForgeDirection getPrimaryFacing(){return orientation;}
 
 @Override
-public double getMaxEnergy()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public void setEnergy(double energy){storedEnergy = energy>maxEnergyStored? maxEnergyStored : energy;}
 
 @Override
-public double getEnergyStored()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public double getMaxEnergy(){return maxEnergyStored;}
+
+@Override
+public double getEnergyStored(){return storedEnergy;}
 
 @Override
 public double addEnergy(ForgeDirection from, double energy)
@@ -90,88 +81,40 @@ public double addEnergy(ForgeDirection from, double energy)
   }
 
 @Override
-public double getEnergyDrainFactor()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public double getEnergyDrainFactor(){return 0;}
 
 @Override
-public double getMaxOutput()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public double getMaxOutput(){return 0;}
 
 @Override
-public double getMaxInput()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public double getMaxInput(){return AWAutomationStatics.low_transfer_max;}//TODO set from where?
 
 @Override
-public double getEnergyOutput()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public double getEnergyOutput(){return 0;}
 
 @Override
-public boolean canOutput(ForgeDirection towards)
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+public boolean canOutput(ForgeDirection towards){return false;}
 
 @Override
-public boolean canInput(ForgeDirection from)
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+public boolean canInput(ForgeDirection from){return true;}
 
 @Override
-public boolean cascadedInput()
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+public boolean cascadedInput(){return false;}
 
 @Override
-public TileEntity[] getNeighbors()
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public TileEntity[] getNeighbors(){return null;}
 
 @Override
-public ITorqueTile[] getNeighborTorqueTiles()
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public ITorqueTile[] getNeighborTorqueTiles(){return null;}
 
 @Override
-public double getClientOutputRotation()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public double getClientOutputRotation(){return 0;}
 
 @Override
-public double getPrevClientOutputRotation()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public double getPrevClientOutputRotation(){return 0;}
 
 @Override
-public boolean useClientRotation()
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+public boolean useClientRotation(){return false;}
 
 @Override
 public int[] getAccessibleSlotsFromSide(int p_94128_1_)
@@ -197,227 +140,108 @@ public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_,
   }
 
 @Override
-public int getSizeInventory()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public int getSizeInventory(){return inventory.getSizeInventory();}
 
 @Override
-public ItemStack getStackInSlot(int p_70301_1_)
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public ItemStack getStackInSlot(int slot){return inventory.getStackInSlot(slot);}
 
 @Override
-public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_)
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public ItemStack decrStackSize(int slot, int amt){return inventory.decrStackSize(slot, amt);}
 
 @Override
-public ItemStack getStackInSlotOnClosing(int p_70304_1_)
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public ItemStack getStackInSlotOnClosing(int slot){return inventory.getStackInSlotOnClosing(slot);}
 
 @Override
-public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_)
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void setInventorySlotContents(int slot, ItemStack stack){inventory.setInventorySlotContents(slot, stack);}
 
 @Override
-public String getInventoryName()
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public String getInventoryName(){return inventory.getInventoryName();}
 
 @Override
-public boolean hasCustomInventoryName()
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+public boolean hasCustomInventoryName(){return inventory.hasCustomInventoryName();}
 
 @Override
-public int getInventoryStackLimit()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public int getInventoryStackLimit(){return inventory.getInventoryStackLimit();}
 
 @Override
-public boolean isUseableByPlayer(EntityPlayer p_70300_1_)
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+public boolean isUseableByPlayer(EntityPlayer player){return inventory.isUseableByPlayer(player);}
 
 @Override
-public void openInventory()
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void openInventory(){}
 
 @Override
-public void closeInventory()
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void closeInventory(){}
 
 @Override
-public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_)
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+public boolean isItemValidForSlot(int slot, ItemStack stack){return true;}//TODO set from recipe list
 
 @Override
 public boolean hasWork()
   {
-  // TODO Auto-generated method stub
-  return false;
+  return storedEnergy < maxEnergyStored;
   }
 
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
-  // TODO Auto-generated method stub
-  
+  // TODO Auto-generated method stub  
   }
 
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
-  // TODO Auto-generated method stub
-  
+  // TODO Auto-generated method stub  
   }
 
 @Override
 public WorkType getWorkType()
   {
-  // TODO Auto-generated method stub
-  return null;
+  return WorkType.CRAFTING;
   }
 
 @Override
-public Team getTeam()
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public Team getTeam(){return worldObj.getScoreboard().getPlayersTeam(owner);}
 
 @Override
-public BlockPosition getWorkBoundsMin()
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public BlockPosition getWorkBoundsMin(){return null;}
 
 @Override
-public BlockPosition getWorkBoundsMax()
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public BlockPosition getWorkBoundsMax(){return null;}
 
 @Override
-public boolean userAdjustableBlocks()
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+public boolean userAdjustableBlocks(){return false;}
 
 @Override
-public boolean hasWorkBounds()
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+public boolean hasWorkBounds(){return false;}
 
 @Override
-public int getBoundsMaxWidth()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public int getBoundsMaxWidth(){return 0;}
 
 @Override
-public int getBoundsMaxHeight()
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
+public int getBoundsMaxHeight(){return 0;}
 
 @Override
-public void setBounds(BlockPosition p1, BlockPosition p2)
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void setBounds(BlockPosition p1, BlockPosition p2){}//NOOP
 
 @Override
-public void setWorkBoundsMax(BlockPosition max)
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void setWorkBoundsMax(BlockPosition max){}//NOOP
 
 @Override
-public void setWorkBoundsMin(BlockPosition min)
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void setWorkBoundsMin(BlockPosition min){}//NOOP
 
 @Override
-public void onBoundsAdjusted()
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void onBoundsAdjusted(){}//NOOP
 
 @Override
-public EnumSet<WorksiteUpgrade> getUpgrades()
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}
 
 @Override
-public EnumSet<WorksiteUpgrade> getValidUpgrades()
-  {
-  // TODO Auto-generated method stub
-  return null;
-  }
+public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}
 
 @Override
-public void addUpgrade(WorksiteUpgrade upgrade)
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void addUpgrade(WorksiteUpgrade upgrade){}
 
 @Override
-public void removeUpgrade(WorksiteUpgrade upgrade)
-  {
-  // TODO Auto-generated method stub
-  
-  }
-
-@Override
-public void onBlockBroken()
-  {
-  // TODO Auto-generated method stub
-  
-  }
+public void removeUpgrade(WorksiteUpgrade upgrade){}
 
 }

@@ -4,7 +4,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public final class ITorque
 {
