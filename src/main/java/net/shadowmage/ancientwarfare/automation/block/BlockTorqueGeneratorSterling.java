@@ -5,7 +5,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 
 public class BlockTorqueGeneratorSterling extends BlockTorqueGenerator
@@ -30,12 +29,6 @@ public boolean isOpaqueCube() {return false;}
 
 @Override
 public boolean isNormalCube() {return false;}
-
-@Override
-public int getRenderType() 
-  {
-  return AWAutomationStatics.sterlingEngineRenderID;
-  }
 
 @Override
 public void registerBlockIcons(IIconRegister register)

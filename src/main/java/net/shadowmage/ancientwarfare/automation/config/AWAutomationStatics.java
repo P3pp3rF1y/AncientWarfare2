@@ -56,13 +56,13 @@ public static double low_drain_factor = 1.d;
 public static double med_drain_factor = 0.4d;
 public static double high_drain_factor = 0.1d;
 
-public static double low_transfer_max = 3.d;
-public static double med_transfer_max = 30.d;
-public static double high_transfer_max = 300.d;
+public static double low_transfer_max = 32.d;
+public static double med_transfer_max = 256.d;
+public static double high_transfer_max = 1024.d;
 
-public static double low_conduit_energy_max = 10.d;
-public static double med_conduit_energy_max = 100.d;
-public static double high_conduit_energy_max = 1000.f;
+public static double low_conduit_energy_max = 32.d;
+public static double med_conduit_energy_max = 256.d;
+public static double high_conduit_energy_max = 1024.f;
 
 public static double low_storage_energy_max = 1600.d;
 public static double med_storage_energy_max = 16000.d;

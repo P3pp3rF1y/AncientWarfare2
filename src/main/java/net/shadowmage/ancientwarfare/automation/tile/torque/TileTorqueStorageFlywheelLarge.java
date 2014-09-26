@@ -10,5 +10,6 @@ public TileTorqueStorageFlywheelLarge()
   maxEnergy = AWAutomationStatics.high_storage_energy_max;
   maxOutput = AWAutomationStatics.high_transfer_max;
   maxInput = AWAutomationStatics.high_transfer_max;
+  maxRpm = 300;
   }
 }
