@@ -106,7 +106,6 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {
   super.onDataPacket(net, pkt);
   onBlockUpdated();
-//  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
   }
 
