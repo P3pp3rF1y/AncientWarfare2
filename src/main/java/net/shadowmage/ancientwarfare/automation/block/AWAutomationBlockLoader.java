@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaft;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheel;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelLarge;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelMedium;
@@ -128,7 +129,8 @@ public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
  * POWER NETWORK BLOCKS
  */
 public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel");
-public static final BlockTorqueConduit torqueConduit = new BlockTorqueConduit("torque_conduit");
+public static final BlockTorqueTransportConduit torqueConduit = new BlockTorqueTransportConduit("torque_conduit");
+public static final BlockTorqueTransportShaft torqueShaft = new BlockTorqueTransportShaft("torque_shaft");
 public static final BlockTorqueDistributor torqueDistributor = new BlockTorqueDistributor("torque_distributor");
 public static final BlockHandCrankedEngine handCrankedEngine = new BlockHandCrankedEngine("hand_cranked_engine");
 public static final BlockTorqueGenerator torqueGeneratorSterling = new BlockTorqueGeneratorSterling("torque_generator_sterling");
@@ -313,20 +315,14 @@ public static void load()
   flywheel.setIcon(2, RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_large_right"); 
   
   GameRegistry.registerBlock(torqueConduit, ItemBlockTorqueTile.class, "torque_conduit");
-  GameRegistry.registerTileEntity(TileTorqueTransportConduit.class, "torque_conduit_tile");
-  torqueConduit.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_top");
-  torqueConduit.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_side");
-  torqueConduit.setIcon(0, RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_side");
-  
-  GameRegistry.registerTileEntity(TileTorqueTransportConduitMedium.class, "torque_conduit_medium_tile");
-  torqueConduit.setIcon(1, RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_medium_top");
-  torqueConduit.setIcon(1, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_medium_side");
-  torqueConduit.setIcon(1, RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_medium_side");
-  
+  GameRegistry.registerTileEntity(TileTorqueTransportConduit.class, "torque_conduit_tile");  
+  GameRegistry.registerTileEntity(TileTorqueTransportConduitMedium.class, "torque_conduit_medium_tile");  
   GameRegistry.registerTileEntity(TileTorqueTransportConduitHeavy.class, "torque_conduit_heavy_tile");
-  torqueConduit.setIcon(2, RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_heavy_top");
-  torqueConduit.setIcon(2, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_heavy_side");
-  torqueConduit.setIcon(2, RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_heavy_side");
+
+  GameRegistry.registerBlock(torqueShaft, ItemBlockTorqueTile.class, "torque_shaft");
+  GameRegistry.registerTileEntity(TileTorqueTransportShaft.class, "torque_driveline_tile");
+//  GameRegistry.registerTileEntity(TileTorqueShaftMedium.class, "torque_driveline_medium_tile");
+//  GameRegistry.registerTileEntity(TileTorqueShaftHeavy.class, "torque_driveline_heavy_tile");
   
   GameRegistry.registerBlock(torqueDistributor, ItemBlockTorqueTile.class, "torque_distributor");
   GameRegistry.registerTileEntity(TileTorqueTransportDistributor.class, "torque_distributor_tile");

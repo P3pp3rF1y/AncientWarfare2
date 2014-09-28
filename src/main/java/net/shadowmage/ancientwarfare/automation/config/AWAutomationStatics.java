@@ -72,6 +72,10 @@ public static double sterling_generator_output_factor = 1.d;
 public static double waterwheel_generator_output_factor = 1.d;
 public static double hand_cranked_generator_output_factor = 1.d;
 
+public static double low_rpm_max = 100;
+public static double med_rpm_max = 200;
+public static double high_rpm_max = 300;
+
 /**
  * @param config
  */

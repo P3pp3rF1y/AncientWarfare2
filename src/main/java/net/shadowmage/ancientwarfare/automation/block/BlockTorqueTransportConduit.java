@@ -4,22 +4,25 @@ import java.util.List;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportBase;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitMedium;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
-public class BlockTorqueConduit extends BlockTorqueBase
+public class BlockTorqueTransportConduit extends BlockTorqueBase
 {
 
-protected BlockTorqueConduit(String regName)
+protected BlockTorqueTransportConduit(String regName)
   {
   super(Material.rock);
   this.setCreativeTab(AWAutomationItemLoader.automationTab);
@@ -55,28 +58,19 @@ public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list)
 public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
 
 @Override
-public boolean isOpaqueCube()
-  {
-  return false;
-  }
+public boolean isOpaqueCube(){return false;}
 
 @Override
-public boolean isNormalCube()
-  {
-  return false;
-  }
+public boolean isNormalCube(){return false;}
 
 @Override
-public RotationType getRotationType()
-  {
-  return RotationType.SIX_WAY;
-  }
+public RotationType getRotationType(){return RotationType.SIX_WAY;}
 
 @Override
-public boolean invertFacing()
-  {
-  return false;
-  }
+public boolean invertFacing(){return false;}
+
+@Override
+public IIcon getIcon(int side, int meta){return Blocks.stone.getIcon(side, meta);}
 
 @Override
 public void setBlockBoundsForItemRender()
@@ -98,9 +92,9 @@ public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
   float min = 0.1875f, max = 0.8125f;
   float x1=min, y1=min, z1=min, x2=max, y2=max, z2=max;
   TileEntity te = world.getTileEntity(x, y, z);
-  if(te instanceof TileTorqueTransportConduit)
+  if(te instanceof TileTorqueTransportBase)
     {
-    TileTorqueTransportConduit tile = (TileTorqueTransportConduit) world.getTileEntity(x, y, z);
+    TileTorqueTransportBase tile = (TileTorqueTransportBase) world.getTileEntity(x, y, z);
     boolean[] sides = tile.getConnections();
     if(sides[0]){y1=0.f;}
     if(sides[1]){y2=1.f;}

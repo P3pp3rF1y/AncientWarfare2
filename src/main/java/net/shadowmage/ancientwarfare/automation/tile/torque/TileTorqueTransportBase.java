@@ -32,30 +32,30 @@ public IBatteryObject getMjBattery(String kind, ForgeDirection direction)
   }
 
 @Override
-protected boolean buildConnection(ForgeDirection d, TileEntity te)
+protected boolean buildConnection(ForgeDirection side, TileEntity te)
   {
   if(te==null){return false;}
   if(BCProxy.instance.isPowerPipe(worldObj, te))//always connect to BC pipes, who knows what direction the power is flowing....
     {
     return true;      
     }
-  else if(canOutput(d))
+  else if(canOutput(side))
     {
     if(te instanceof ITorqueTile)
       {
       ITorqueTile rec = (ITorqueTile)te;
-      if(rec.canInput(d.getOpposite()))
+      if(rec.canInput(side.getOpposite()))
         {
         return true;
         }         
       }
     }
-  else if(canInput(d))
+  else if(canInput(side))
     {
     if(te instanceof ITorqueTile)
       {
       ITorqueTile gen = (ITorqueTile)te;
-      if(gen.canOutput(d.getOpposite()))
+      if(gen.canOutput(side.getOpposite()))
         {
         return true;        
         }

@@ -96,14 +96,24 @@ public void updateEntity()
     serverNetworkUpdate();
     }
   this.energyInput = this.storedEnergy - this.prevEnergy;
-  ITorque.applyPowerDrain(this);
+  applyPowerDrain();
   if(this.getMaxOutput()>0)
     {
     double s = this.storedEnergy;
-    ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);
+    outputPower();
     this.energyOutput = s - this.storedEnergy;    
     }
   this.prevEnergy = this.storedEnergy;  
+  }
+
+protected void outputPower()
+  {
+  ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);  
+  }
+
+protected void applyPowerDrain()
+  {
+  ITorque.applyPowerDrain(this);
   }
 
 protected void serverNetworkUpdate()
