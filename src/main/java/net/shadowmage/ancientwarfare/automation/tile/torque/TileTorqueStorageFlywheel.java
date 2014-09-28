@@ -99,14 +99,8 @@ protected void updateRotation()
   if(isHead)
     {
     super.updateRotation();
-    trySynchFlywheelRotation();    
+    trySynchFlywheelRotation(); 
     }
-  prevClientRotation=clientRotation;
-  if(!powered)
-    {
-    double d = rotation - prevRotation;
-    clientRotation+=d;  
-    }  
   }
 
 @Override
@@ -153,8 +147,11 @@ public void readFromNBT(NBTTagCompound tag)
 
 private void trySynchFlywheelRotation()
   {
+  double d = rotation-prevRotation;
   for(TileTorqueStorageFlywheel wheel : wheelsToBalance)
     {
+    wheel.prevClientRotation = wheel.clientRotation;
+    if(!wheel.powered){wheel.clientRotation+=d;}
     wheel.rotation = rotation;
     wheel.prevRotation = prevRotation;
     }
