@@ -82,7 +82,6 @@ protected void updateRotation()
     TileTorqueTransportShaft n = next;
     while(n!=null)
       {
-      AWLog.logDebug("updating rotation for: "+n.hashCode());
       n.rotation = rotation;
       n.prevRotation = prevRotation;
       n = n.next;
