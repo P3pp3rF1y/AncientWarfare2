@@ -48,8 +48,8 @@ public void onPostBlockPlaced(World world, int x, int y, int z, int meta)
 public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int p_149749_6_)
   {
   TileFlywheelStorage te = (TileFlywheelStorage) world.getTileEntity(x, y, z);
-  te.blockBroken();
   super.breakBlock(world, x, y, z, p_149749_5_, p_149749_6_);
+  te.blockBroken();//have to call post block-break so that the controller properly sees the block as gone
   }
 
 @Override

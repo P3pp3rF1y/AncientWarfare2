@@ -3,8 +3,6 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import java.util.HashSet;
 import java.util.Set;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,9 +14,10 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 
 public class TileTorqueStorageFlywheelController extends TileTorqueStorageBase
@@ -54,14 +53,10 @@ public AxisAlignedBB getRenderBoundingBox()
 
 protected void initializeController(int w, int l, int h, Set<BlockPosition> controlledSet, int type)
   {
-  AWLog.logDebug("initializing controller: "+controlledSet);
+  invalidateSetup();
   this.controlHeight = h;
   this.controlSize = w;
   this.controlType = type;
-  if(!controlSet.isEmpty())
-    {
-    invalidateSetup();
-    }
   controlSet.addAll(controlledSet);  
   for(BlockPosition pos : controlSet)
     {
@@ -86,7 +81,6 @@ public void initializeFromStoragePlaced()
 
 public void invalidateSetup()
   {
-  AWLog.logDebug("invalidating setup in controller..");
   if(controlSet!=null)
     {
     TileEntity te;
@@ -124,13 +118,11 @@ public void onBlockUpdated()
 
 public void blockBroken()
   {
-  AWLog.logDebug("controller broken...");
   invalidateSetup();  
   }
 
 public void blockPlaced()
   {
-  AWLog.logDebug("controller placed...");
   validateSetup();
   }
 
@@ -145,7 +137,6 @@ protected void validateSetup()
     return;
     }
   BlockFinder.findConnectedSixWay(worldObj, xCoord, yCoord-1, zCoord, block, meta, connectedPosSet);
-  AWLog.logDebug("found connected blocks: "+connectedPosSet);
   int minX=Integer.MAX_VALUE, minY=Integer.MAX_VALUE, minZ=Integer.MAX_VALUE, maxX=Integer.MIN_VALUE, maxY=Integer.MIN_VALUE, maxZ=Integer.MIN_VALUE;
   boolean valid = false;
   for(BlockPosition pos : connectedPosSet)
@@ -162,7 +153,6 @@ protected void validateSetup()
   int h = maxY-minY + 1;
   int cube = w*l*h;
   if(cube==connectedPosSet.size() && ((w==1 && l==1) || (w==3 && l==3)) ){valid = true;}
-  AWLog.logDebug("wlh: "+w+","+l+","+h+" c: "+cube+" a: "+connectedPosSet.size()+" valid: "+valid);
   if(valid)    
     {    
     int cx = w==1? minX : minX + 1;
@@ -170,34 +160,19 @@ protected void validateSetup()
     int cy = maxY + 1;    
     if(cx==xCoord && cy==yCoord && cz==zCoord)
       {
-      AWLog.logDebug("valid setup...");
-      AWLog.logDebug("control in proper position, initializing controller!");
       initializeController(w, l, h, connectedPosSet, meta);
       }
     }  
   }
 
+@Override
+public boolean useClientRotation(){return true;}
 
 @Override
-public boolean useClientRotation()
-  {
-  return true;
-  }
-
+public double getClientOutputRotation(){return clientRotation;}
 
 @Override
-public double getClientOutputRotation()
-  {
-  return clientRotation;
-  }
-
-
-@Override
-public double getPrevClientOutputRotation()
-  {
-  return prevClientRotation;
-  }
-
+public double getPrevClientOutputRotation(){return prevClientRotation;}
 
 @Override
 public boolean receiveClientEvent(int a, int b)
@@ -211,7 +186,6 @@ public boolean receiveClientEvent(int a, int b)
     }
   return super.receiveClientEvent(a, b);
   }
-
 
 @Override
 public NBTTagCompound getDescriptionTag()
@@ -311,15 +285,9 @@ public double getMaxOutput()
   }
 
 @Override
-public boolean canInput(ForgeDirection from)
-  {
-  return from==orientation.getOpposite();
-  }
+public boolean canInput(ForgeDirection from){return from==orientation.getOpposite();}
 
 @Override
-public boolean canOutput(ForgeDirection towards)
-  {
-  return towards==orientation;
-  }
+public boolean canOutput(ForgeDirection towards){return towards==orientation;}
 
 }

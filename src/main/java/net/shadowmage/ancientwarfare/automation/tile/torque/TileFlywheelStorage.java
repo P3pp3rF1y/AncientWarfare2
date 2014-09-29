@@ -8,7 +8,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -21,16 +21,32 @@ boolean init = false;//has run init code to check for controller tile from contr
 
 public void blockBroken()
   {
-  AWLog.logDebug("storage broken...");
   if(controller!=null)
     {
     controller.initializeFromStoragePlaced();
+    }
+  else
+    {
+    TileEntity te;
+    ForgeDirection d;
+    int x, y, z;
+    for(int i = 0; i < 6; i++)
+      {
+      d = ForgeDirection.getOrientation(i);
+      x = xCoord+d.offsetX;
+      y = yCoord+d.offsetY;
+      z = zCoord+d.offsetZ;
+      te = worldObj.getTileEntity(x, y, z);
+      if(te instanceof TileFlywheelStorage)
+        {
+        ((TileFlywheelStorage) te).blockPlaced();
+        }    
+      }
     }
   }
 
 public void blockPlaced()
   {
-  AWLog.logDebug("storage placed...");
   findConnectedBlocks();
   }
 
@@ -61,7 +77,24 @@ protected void findConnectedBlocks()
   int h = maxY-minY + 1;
   int cube = w*l*h;
   if(cube==connectedPosSet.size() && ((w==1 && l==1) || (w==3 && l==3)) ){valid = true;}
-  else{valid=false;}
+  else
+    {
+    valid=false;
+    TileEntity te;
+    TileFlywheelStorage st;
+    for(BlockPosition pos : connectedPosSet)
+      {
+      te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+      if(te instanceof TileFlywheelStorage)
+        {
+        st = (TileFlywheelStorage) te;
+        if(st.controller!=null)
+          {
+          st.controller.initializeFromStoragePlaced();
+          }
+        }
+      }
+    }
   if(valid)    
     {
     int cx = w==1? minX : minX + 1;

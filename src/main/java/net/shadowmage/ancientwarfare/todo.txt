@@ -23,15 +23,12 @@ Torque Models
 	* waterwheel generator
 	* windmill blades, 3x3, 5x5
 	* windmill controller
-	* flywheel controller
 
 Torque Textures
 	* flywheel small (3 grades)
 	* flywheel large (3 grades)
-	* torque conduit (3 grades)
-	* torque distributor (3 grades)
-	* torque shaft (3 grades)
 	* flywheel controller (3 grades)
+	* torque shaft (3 grades)
 
 Torque Cleanup
 -rendering of all TESRd torque blocks as items
