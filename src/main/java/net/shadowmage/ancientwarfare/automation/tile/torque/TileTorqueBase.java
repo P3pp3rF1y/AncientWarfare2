@@ -439,6 +439,8 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));
   clientEnergy = pkt.func_148857_g().getInteger("clientEnergy");
   clientDestEnergy = clientEnergy;
+  this.onBlockUpdated();
+  this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
   this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 

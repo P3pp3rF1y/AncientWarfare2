@@ -39,10 +39,10 @@ public void onBlockUpdated()
     prev = (TileTorqueTransportShaft) input;
     prev.next=this;
     }
-  String n = String.valueOf(next==null ? "null" : next.hashCode()+":"+next.orientation);
-  String p = String.valueOf(prev==null ? "null" : prev.hashCode()+":"+prev.orientation);
-  
-  AWLog.logDebug("prev: "+p+" this: "+this.hashCode()+":"+this.orientation+" next: "+n);
+//  String n = String.valueOf(next==null ? "null" : next.hashCode()+":"+next.orientation);
+//  String p = String.valueOf(prev==null ? "null" : prev.hashCode()+":"+prev.orientation);
+//  
+//  AWLog.logDebug("prev: "+p+" this: "+this.hashCode()+":"+this.orientation+" next: "+n);
   }
 
 @Override
@@ -99,14 +99,6 @@ public boolean canOutput(ForgeDirection towards)
 public boolean canInput(ForgeDirection from)
   {
   return from==orientation.getOpposite();
-  }
-
-@Override
-public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-  {
-  super.onDataPacket(net, pkt);
-  onBlockUpdated();
-  worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
   }
 
 }
