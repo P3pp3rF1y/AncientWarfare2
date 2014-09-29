@@ -3,12 +3,15 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import java.util.HashSet;
 import java.util.Set;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
@@ -39,6 +42,16 @@ public TileTorqueStorageFlywheelController()
   maxRpm = 100;
   }
 
+@Override
+@SideOnly(Side.CLIENT)
+public AxisAlignedBB getRenderBoundingBox()
+  {
+  AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+1, zCoord+1);
+  if(controlSize==3){bb=bb.expand(1, 0, 1);}
+  bb.minY -= controlHeight;
+  return bb;
+  }
+
 protected void initializeController(int w, int l, int h, Set<BlockPosition> controlledSet, int type)
   {
   AWLog.logDebug("initializing controller: "+controlledSet);
@@ -55,6 +68,14 @@ protected void initializeController(int w, int l, int h, Set<BlockPosition> cont
     TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
     if(te instanceof TileFlywheelStorage){((TileFlywheelStorage) te).setController(this);}
     }
+  }
+
+@Override
+protected void updateRotation()
+  {  
+  super.updateRotation();
+  prevClientRotation = clientRotation;
+  if(!powered){clientRotation += rotation -prevRotation;}
   }
 
 public void initializeFromStoragePlaced()
