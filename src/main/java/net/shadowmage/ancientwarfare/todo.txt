@@ -5,6 +5,12 @@ Chunkloader Worksite Upgrades
 Vehicle Module?
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
 
+colors for textures:
+wood: d5bf82
+iron: e3e6e6 (180/5/60 recolor from wood)
+steel: d7e4e4 (180/20/50 recolor from wood)
+gearhead: 535353
+
 Worksite Cleanup
 -split worksite stuff into a few more interfaces? might require more instanceof checks, but is -cleaner- code :: is clean code worth a performance hit (most sources say yes...and i agree...)
 	-iworksite
