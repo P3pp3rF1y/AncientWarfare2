@@ -11,8 +11,23 @@ Worksite Cleanup
 	-iboundedtile
 	-iupgradeableworksite
 	-iuserconfigurableboundedtile
+	
+	
+Torque Blocks
+Industrial sterling generator multiblock
+windmill control block	
+	
+Torque Models	
+	* reworked conduit / distributor model (3x3 shaft, 5x5 gearbox, same output gearheads)
+	* Hand Cranked Generator
+	* industrial sterling generator
+	* waterwheel generator
+	* flywheel controller
+	* 1x1 flywheel storage
+	* 3x3 flywheel storage
 
 Torque Cleanup
+-rendering of flywheel storage prior to multiblock being created
 -rework how client-energy is updated
 	-use a running average over the last X ticks (where X is network update frequency)
 	-keep a tally of input, output, stored, and drain for the the duration
@@ -22,20 +37,10 @@ Torque Cleanup
 	-basic flywheel, non-stackable.
 	-basic industrial flywheel, stackable.  requires control block on top or bottom of stack
 	-adv industrial flywheel, actual multiblock 3x3xX, control block on center/top 
--split into multiple interfaces, each defining a separate aspect of the interact
-	-itorqueoutput
-		-getmaxoutput(side)
-		-canoutput(side)
-		-cascadedOutput()
-		-getneighbors() (and torquetileneighbors)
-	-itorqueinput
-		-getmaxinput(side)
-		-caninput(side)
-		-cascadedInput()
-	-itorquestorage
-		-getenergy
-		-setenergy
-		-getmaxenergy
-	-itorquerotator
-		-getoutputrotation
-		-getoutputprevrotation
+
+??	
+-split torque interface up into a ITorqueProvider class with getTorqueData(ForgeDirection side) method
+	-has canInput()
+	-has canOutput()
+	-torque data can be per-block side
+	-will allow for much cleaner multi-sided energy interactions, by allowing full input into each block side, and full output from each block side
