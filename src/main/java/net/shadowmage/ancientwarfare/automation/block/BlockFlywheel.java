@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.block;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -9,9 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheel;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelLarge;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelControllerLarge;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelControllerMedium;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
 public class BlockFlywheel extends BlockTorqueBase
@@ -45,13 +46,13 @@ public TileEntity createTileEntity(World world, int metadata)
   switch(metadata)
   {
   case 0:
-  return new TileTorqueStorageFlywheel();
+  return new TileTorqueStorageFlywheelController();
   case 1:
-  return new TileTorqueStorageFlywheelMedium();
+  return new TileTorqueStorageFlywheelControllerMedium();
   case 2:
-  return new TileTorqueStorageFlywheelLarge();
+  return new TileTorqueStorageFlywheelControllerLarge();
   }  
-  return new TileTorqueStorageFlywheel();
+  return new TileTorqueStorageFlywheelController();
   }
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -73,6 +74,22 @@ public boolean invertFacing()
 public RotationType getRotationType()
   {
   return RotationType.FOUR_WAY;
+  }
+
+@Override
+public void onPostBlockPlaced(World world, int x, int y, int z, int meta)
+  {
+  super.onPostBlockPlaced(world, x, y, z, meta);
+  TileTorqueStorageFlywheelController te = (TileTorqueStorageFlywheelController) world.getTileEntity(x, y, z);
+  te.blockPlaced();
+  }
+
+@Override
+public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int p_149749_6_)
+  {
+  TileTorqueStorageFlywheelController te = (TileTorqueStorageFlywheelController) world.getTileEntity(x, y, z);
+  te.blockBroken();
+  super.breakBlock(world, x, y, z, p_149749_5_, p_149749_6_);
   }
 
 }

@@ -35,7 +35,7 @@ import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStockV
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWorksite;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitMedium;
@@ -107,7 +107,7 @@ public void registerClient()
 //  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitMedium.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_medium.png")));
 //  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitHeavy.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_heavy.png")));
   
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueStorageFlywheel.class, new RenderTileTorqueFlywheel());//TODO add textures/renders for other qualitites
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueStorageFlywheelController.class, new RenderTileTorqueFlywheel());//TODO add textures/renders for other qualitites
     
 //*********************************************GENERATOR RENDERS***************************************************************//
   

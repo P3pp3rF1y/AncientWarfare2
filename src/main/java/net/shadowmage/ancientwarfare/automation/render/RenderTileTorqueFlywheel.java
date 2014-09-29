@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -56,7 +56,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   GL11.glPushMatrix();
   GL11.glTranslated(x+0.5d, y, z+0.5d);
     
-  TileTorqueStorageFlywheel flywheel = (TileTorqueStorageFlywheel)te;
+  TileTorqueStorageFlywheelController flywheel = (TileTorqueStorageFlywheelController)te;
   
   ITorqueTile[] neighbors = flywheel.getNeighborTorqueTiles();
   ForgeDirection d = flywheel.getPrimaryFacing();
@@ -106,6 +106,19 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   bindTexture(tex);    
   model.renderModel();
   GL11.glPopMatrix();
+  
+  
+  GL11.glPushMatrix();
+  if(flywheel.controlType>=0 && flywheel.controlHeight>0)
+    {
+    GL11.glTranslated(x+0.5d, y-flywheel.controlHeight, z+0.5d);
+    if(flywheel.controlSize>1)
+      {
+      GL11.glScalef(3, flywheel.controlHeight, 3);
+      }
+    model.renderModel();
+    }  
+  GL11.glPopMatrix();  
   }
 
 private double getRotation(double rotation, double prevRotation, float delta)

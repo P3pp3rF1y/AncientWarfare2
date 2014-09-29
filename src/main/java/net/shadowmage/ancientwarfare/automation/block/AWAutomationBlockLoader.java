@@ -9,13 +9,14 @@ import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteStatic;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaft;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheel;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelLarge;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelControllerLarge;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelControllerMedium;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitMedium;
@@ -129,6 +130,7 @@ public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
  * POWER NETWORK BLOCKS
  */
 public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel");
+public static final BlockFlywheelStorage flywheelStorage = new BlockFlywheelStorage("flywheelStorage");
 public static final BlockTorqueTransportConduit torqueConduit = new BlockTorqueTransportConduit("torque_conduit");
 public static final BlockTorqueTransportShaft torqueShaft = new BlockTorqueTransportShaft("torque_shaft");
 public static final BlockTorqueDistributor torqueDistributor = new BlockTorqueDistributor("torque_distributor");
@@ -290,7 +292,7 @@ public static void load()
   mailbox.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mailbox_right");  
 
   GameRegistry.registerBlock(flywheel, ItemBlockTorqueTile.class, "flywheel");
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheel.class, "flywheel_tile");
+  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelController.class, "flywheel_tile");
   flywheel.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/flywheel_top");
   flywheel.setIcon(0, RelativeSide.FRONT, "ancientwarfare:automation/flywheel_front");
   flywheel.setIcon(0, RelativeSide.REAR, "ancientwarfare:automation/flywheel_rear");  
@@ -298,7 +300,7 @@ public static void load()
   flywheel.setIcon(0, RelativeSide.LEFT, "ancientwarfare:automation/flywheel_left");
   flywheel.setIcon(0, RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_right");  
   
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelMedium.class, "flywheel_medium_tile");
+  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelControllerMedium.class, "flywheel_medium_tile");
   flywheel.setIcon(1, RelativeSide.TOP, "ancientwarfare:automation/flywheel_medium_top");
   flywheel.setIcon(1, RelativeSide.FRONT, "ancientwarfare:automation/flywheel_medium_front");
   flywheel.setIcon(1, RelativeSide.REAR, "ancientwarfare:automation/flywheel_medium_rear");  
@@ -306,13 +308,16 @@ public static void load()
   flywheel.setIcon(1, RelativeSide.LEFT, "ancientwarfare:automation/flywheel_medium_left");
   flywheel.setIcon(1, RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_medium_right"); 
   
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelLarge.class, "flywheel_large_tile");
+  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelControllerLarge.class, "flywheel_large_tile");
   flywheel.setIcon(2, RelativeSide.TOP, "ancientwarfare:automation/flywheel_large_top");
   flywheel.setIcon(2, RelativeSide.FRONT, "ancientwarfare:automation/flywheel_large_front");
   flywheel.setIcon(2, RelativeSide.REAR, "ancientwarfare:automation/flywheel_large_rear");  
   flywheel.setIcon(2, RelativeSide.BOTTOM, "ancientwarfare:automation/flywheel_large_bottom");
   flywheel.setIcon(2, RelativeSide.LEFT, "ancientwarfare:automation/flywheel_large_left");
   flywheel.setIcon(2, RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_large_right"); 
+  
+  GameRegistry.registerBlock(flywheelStorage, "flywheel_storage");
+  GameRegistry.registerTileEntity(TileFlywheelStorage.class, "flywheel_storage_tile");
   
   GameRegistry.registerBlock(torqueConduit, ItemBlockTorqueTile.class, "torque_conduit");
   GameRegistry.registerTileEntity(TileTorqueTransportConduit.class, "torque_conduit_tile");  

@@ -2,9 +2,9 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 
-public class TileTorqueStorageFlywheelLarge extends TileTorqueStorageFlywheel
+public class TileTorqueStorageFlywheelControllerLarge extends TileTorqueStorageFlywheelController
 {
-public TileTorqueStorageFlywheelLarge()
+public TileTorqueStorageFlywheelControllerLarge()
   {
   energyDrainFactor = AWAutomationStatics.high_drain_factor;
   maxEnergy = AWAutomationStatics.high_storage_energy_max;
