@@ -42,6 +42,9 @@ dependencies {
   compile files {
     "lib/NotEnoughItems-1.7.10-1.0.2.15-dev.jar"
   }
+  compile files {
+    "lib/CoFHLib-[1.7.10]1.0.0B6-dev-26.jar"
+  }
 }
 
 task updateVersion(type:Copy){
