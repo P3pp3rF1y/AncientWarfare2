@@ -88,7 +88,7 @@ public void initElements()
   pieceNameLabel = new Label(8, -guiTop, "Piece: No Selection");
   addGuiElement(pieceNameLabel);
   
-  primitiveNameLabel = new Label(8, -guiTop + 10, "Primitive: No Selection");
+  primitiveNameLabel = new Label(8, -guiTop + 10, parent.getPrimitiveText());
   addGuiElement(primitiveNameLabel);
   
   updateTexture();
@@ -106,7 +106,7 @@ public void setupElements()
   primitiveNameLabel.setRenderPosition(8, -guiTop+10);
   
   pieceNameLabel.setText(parent.getModelPiece()==null? "Piece: No Selection" : "Piece: "+parent.getModelPiece().getName());
-  primitiveNameLabel.setText(parent.getPrimitive()==null? "Primitive: No Selection" : "Primitive: "+parent.getPrimitive().toString());
+  primitiveNameLabel.setText(parent.getPrimitiveText());
   
   primitiveControlArea.clearElements();
   pieceListArea.clearElements();

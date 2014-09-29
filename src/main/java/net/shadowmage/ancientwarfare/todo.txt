@@ -14,19 +14,22 @@ Worksite Cleanup
 	
 	
 Torque Blocks
-Industrial sterling generator multiblock
-windmill control block	
+	* Industrial sterling generator multiblock
+	* windmill control block	
 	
 Torque Models	
 	* reworked conduit / distributor model (3x3 shaft, 5x5 gearbox, same output gearheads)
 	* Hand Cranked Generator
 	* industrial sterling generator
 	* waterwheel generator
+	* windmill blades, 3x3, 5x5
+	* windmill controller
 	* flywheel controller
 	* 1x1 flywheel storage
 	* 3x3 flywheel storage
 
 Torque Cleanup
+-rendering of all TESRd torque blocks as items
 -rendering of flywheel storage prior to multiblock being created
 -rework how client-energy is updated
 	-use a running average over the last X ticks (where X is network update frequency)
