@@ -56,17 +56,17 @@ public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
     TileTorqueTransportBase tile = (TileTorqueTransportBase) world.getTileEntity(x, y, z);
     ForgeDirection d = tile.getPrimaryFacing();
     int s1 = d.ordinal();
-    if(s1==0 || s1==1)
+    if(s1==0 || s1==1)//up/down
       {
       y1 = 0;
       y2 = 1;
       }
-    if(s1==1 || s1==2)
+    if(s1==1 || s1==2)//north/south
       {
       z1 = 0;
       z2 = 1;
       }
-    if(s1==3 || s1==4)
+    if(s1==3 || s1==4)//east/west
       {
       x1 = 0;
       x2 = 1;
