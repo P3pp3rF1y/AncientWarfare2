@@ -35,7 +35,8 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 name = "Ancient Warfare Core",
 modid = "AncientWarfare",
 version = "@VERSION@",
-dependencies="after:BuildCraft|Core"
+dependencies="after:BuildCraft|Core;"
+            +"after:CoFHCore"
 )
 
 public class AncientWarfareCore 

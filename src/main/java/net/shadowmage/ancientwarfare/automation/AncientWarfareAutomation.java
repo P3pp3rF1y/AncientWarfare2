@@ -30,6 +30,7 @@ import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
+import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -83,8 +84,14 @@ public void preInit(FMLPreInitializationEvent evt)
     {
     ModuleStatus.buildCraftLoaded = true;
     AWLog.log("Detecting BuildCraft|Core is loaded, enabling BC Compatibility");
+    }
+  if(Loader.isModLoaded("CoFHCore"))
+    {
+    ModuleStatus.redstoneFluxEnabled = true;
+    AWLog.log("Detecting CoFHCore is loaded, enabling RF Compatibility");
     }   
   BCProxy.loadInstance();
+  RFProxy.loadInstance();
   
   /**
    * setup module-owned config file and config-access class
