@@ -1,76 +1,63 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
+import net.shadowmage.ancientwarfare.core.model.ModelLoader;
+import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 
 import org.lwjgl.opengl.GL11;
 
 public class RenderTileTorqueGeneratorWaterwheel extends TileEntitySpecialRenderer
 {
 
-public RenderTileTorqueGeneratorWaterwheel()
+private float[][] gearboxRotationMatrix = new float[6][];
+ModelBaseAW model;
+ResourceLocation tex;
+
+public RenderTileTorqueGeneratorWaterwheel(ResourceLocation tex)
   {
-  
+  this.tex = tex;
+  ModelLoader loader = new ModelLoader();
+  model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/waterwheel.m2f"));
+  gearboxRotationMatrix[0] = new float[]{ -90,   0,   0};//d
+  gearboxRotationMatrix[1] = new float[]{  90,   0,   0};//u
+  gearboxRotationMatrix[2] = new float[]{   0,   0,   0};//n
+  gearboxRotationMatrix[3] = new float[]{   0, 180,   0};//s
+  gearboxRotationMatrix[4] = new float[]{   0,  90,   0};//w
+  gearboxRotationMatrix[5] = new float[]{   0, 270,   0};//e
   }
 
 @Override
 public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick)
   {
   GL11.glPushMatrix();
-  ForgeDirection d = ((ITorqueTile)te).getPrimaryFacing();
-  GL11.glTranslated(x+0.5d, y+0.5d, z+0.5d);
-  GL11.glRotatef(getRotation(d), 0, 1, 0);
-  drawShaftLine(0,0,0,0,0,1);
-  GL11.glTranslatef(0, 0, 0.50f);
-  TileTorqueGeneratorWaterwheel wheel = (TileTorqueGeneratorWaterwheel)te;
-
-  OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)0 / 1.0F, (float)240 / 1.0F);
-  float speed = wheel.rotationSpeed;  
-  double angle = wheel.rotationAngle - (1.f-partialTick*speed);
+  TileTorqueGeneratorWaterwheel wheel = (TileTorqueGeneratorWaterwheel) te;
+  ForgeDirection d = wheel.getPrimaryFacing();
+  GL11.glTranslated(x+0.5d, y, z+0.5d);
   
-  GL11.glRotatef((float)-angle, 0, 0, 1);
-  drawBlade();
-  for(int i = 0; i < 3; i++)
-    {
-    GL11.glRotatef(90.f, 0, 0, 1);
-    drawBlade();
-    }
-  GL11.glTranslatef(0, 0.25f, 0);
-  drawPointAtCurrentOrigin();
+  float rot[] = gearboxRotationMatrix[d.ordinal()];
+  if(rot[0]!=0){GL11.glRotatef(rot[0], 1, 0, 0);}
+  if(rot[1]!=0){GL11.glRotatef(rot[1], 0, 1, 0);}
+  if(rot[2]!=0){GL11.glRotatef(rot[2], 0, 0, 1);}
+  bindTexture(tex);
+  ModelPiece p = model.getPiece("waterwheelSpindle");
+  p.setRotation(0, 0, (float)getRotation(wheel.wheelRotation, wheel.prevWheelRotation, partialTick));
+  p.setVisible(wheel.validSetup);
+  model.renderModel();
+  
+  
   GL11.glPopMatrix();
   }
 
-private float getRotation(ForgeDirection d)
+private double getRotation(double rotation, double prevRotation, float delta)
   {
-  float offset = 0.f;
-  return offset - (d==ForgeDirection.NORTH ? 0.f : d==ForgeDirection.EAST? 90.f :d==ForgeDirection.SOUTH? 180.f : 270.f);
-  }
-
-private void drawBlade()
-  {
-  drawShaftLine(0, 0, 0, 0, 0.25f, 0);
-  drawShaftLine(0, 0, 0.5f, 0, 0.25f, 0.5f);
-  drawShaftLine(0, 0.25f, 0, 0, 0.25f, 0.5f);
-  }
-
-private void drawShaftLine(float x1, float y1, float z1, float x2, float y2, float z2)
-  {
-  GL11.glDisable(GL11.GL_TEXTURE_2D);
-  GL11.glDisable(GL11.GL_LIGHTING);
-  
-  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-  GL11.glLineWidth(5.f);
-  GL11.glBegin(GL11.GL_LINE_LOOP);
-  GL11.glVertex3f(x1, y1, z1);
-  GL11.glVertex3f(x2, y2, z2);
-  GL11.glEnd();
-
-  GL11.glEnable(GL11.GL_TEXTURE_2D);
-  GL11.glEnable(GL11.GL_LIGHTING);
+  double rd = rotation-prevRotation;  
+  return (prevRotation + rd*delta);
   }
 
 private void drawPointAtCurrentOrigin()

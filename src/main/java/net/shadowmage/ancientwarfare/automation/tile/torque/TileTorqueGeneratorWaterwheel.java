@@ -1,12 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -14,135 +13,105 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 public class TileTorqueGeneratorWaterwheel extends TileTorqueGeneratorBase implements IInteractableTile
 {
 
-public float rotationAngle;
-public float rotationSpeed;
+public float wheelRotation;
+public float prevWheelRotation;
+
+private float maxWheelRpm;
+private float rotTick;
+private byte rotationDirection=1;
+
 private int updateTick;
 protected TileEntity[] neighborTileCache = null;
+
+public boolean validSetup = false;
 
 public TileTorqueGeneratorWaterwheel()
   {
   energyDrainFactor = AWAutomationStatics.low_drain_factor;
   maxEnergy = AWAutomationStatics.low_conduit_energy_max;
   maxOutput = AWAutomationStatics.low_transfer_max;  
+  
+  maxWheelRpm = 20;
+  rotTick = (maxWheelRpm * 360)/60/20;
   }
 
 @Override
 public void updateEntity()
   {
   super.updateEntity();
-  rotationAngle+=rotationSpeed*10.f;
-  if(worldObj.isRemote){return;}
-  updateTick++;
-  if(updateTick<20){return;}
-  updateTick=0;  
-  ForgeDirection face = orientation;
-  int x = xCoord+face.offsetX, y = yCoord+face.offsetY, z = zCoord+face.offsetZ;  
-  Block blockMid = worldObj.getBlock(x, y, z);
-  int metaMid, metaRight, metaLeft;
-  float mid, right, left;
-  int leftY = yCoord, rightY = yCoord, midY = yCoord;
-  Block blockRight, blockLeft;
-  boolean flowsLeft;
-  if(blockMid.getMaterial()==Material.water)
+  if(!worldObj.isRemote)
     {
-    metaMid = worldObj.getBlockMetadata(x, y, z);
-    mid = 1.f-BlockLiquid.getLiquidHeightPercent(metaMid);
-    
-    
-    face = face==ForgeDirection.NORTH ? ForgeDirection.EAST : face==ForgeDirection.EAST? ForgeDirection.SOUTH : face == ForgeDirection.SOUTH? ForgeDirection.WEST :ForgeDirection.NORTH;
-    rightY = getWaterYLevel(x+face.offsetX, y+face.offsetY, z+face.offsetZ);
-    
-    if(rightY>0)
+    updateTick--;
+    if(updateTick<=0)
       {
-      blockRight = worldObj.getBlock(x+face.offsetX, rightY, z+face.offsetZ);
-      metaRight = worldObj.getBlockMetadata(x+face.offsetX, rightY, z+face.offsetZ);
-      right = 1.f-BlockLiquid.getLiquidHeightPercent(metaRight);
-      }
-    else
-      {
-      blockRight = Blocks.air;
-      right = mid;
-      }
-    
-    face = face.getOpposite();
-    leftY = getWaterYLevel(x+face.offsetX, y+face.offsetY, z+face.offsetZ);
-    if(leftY>0)
-      {
-      blockLeft = worldObj.getBlock(x+face.offsetX, leftY, z+face.offsetZ);
-      metaLeft = worldObj.getBlockMetadata(x+face.offsetX, leftY, z+face.offsetZ);
-      left = 1.f-BlockLiquid.getLiquidHeightPercent(metaLeft);
-      }
-    else
-      {
-      left = mid;
-      blockLeft = Blocks.air;
-      }
-//    AWLog.logDebug("left, mid, right: "+left+" :: "+mid+" :: "+right);
-//    AWLog.logDebug("leftY, midY, rightY: "+leftY+" :: "+midY+" :: "+rightY);
-    if(blockRight.getMaterial()==Material.water && blockLeft.getMaterial()==Material.water && ((left>mid && right<=mid) || (right>mid && left<=mid) || leftY!=midY || rightY!=midY))
-      {
-      float diff = 0;
-      flowsLeft = right>mid || left<mid || leftY<midY || rightY>midY;
-      if(mid<0.5f){flowsLeft = !flowsLeft;}
-      if(left>mid){diff+=left-mid;}
-      if(right>mid){diff+=right-mid;}
-      if(left<mid){diff+=mid-left;}
-      if(right<mid){diff+=mid-right;}
-      if(leftY!=midY){diff+=1.f;}
-      if(rightY!=midY){diff+=1.f;}
-//      AWLog.logDebug("total diff: "+diff + "flowsLeft: "+flowsLeft);
-      
-      storedEnergy += diff * AWAutomationStatics.waterwheel_generator_output_factor;
-      if(storedEnergy>maxEnergy){storedEnergy=maxEnergy;}
-      
-      int speed = (int)(diff*1000.f);
-      if(!flowsLeft){speed*=-1;}
-      worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 2, speed);
+      updateTick=20;
+      boolean valid = validateBlocks();
+      if(valid!=validSetup)
+        {
+        validSetup = valid;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
       }
     }
-  else
+  else if(validSetup)
     {
-    worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 2, 0);
+    prevWheelRotation = wheelRotation;
+    wheelRotation += rotTick * (float)rotationDirection;
     }
-  
   }
 
 @Override
-public boolean receiveClientEvent(int a, int b)
+public NBTTagCompound getDescriptionTag()
   {
-  super.receiveClientEvent(a, b);
-  if(a==2)
-    {
-    rotationSpeed = (float)b/1000.f;
-    }
-  return true;
+  NBTTagCompound tag = super.getDescriptionTag();
+  tag.setBoolean("validSetup", validSetup);
+  tag.setByte("rotationDirection", rotationDirection);
+  return tag;
   }
 
-private int getWaterYLevel(int x, int y, int z)
+@Override
+public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {  
+  super.onDataPacket(net, pkt);
+  NBTTagCompound tag = pkt.func_148857_g();
+  validSetup = tag.getBoolean("validSetup");
+  rotationDirection = tag.getByte("rotationDirection");
+  }
+
+private boolean validateBlocks()
   {
-  if(worldObj.getBlock(x, y+1, z).getMaterial()==Material.water){return y+1;}
-  else if(worldObj.getBlock(x, y, z).getMaterial()==Material.water){return y;}
-  else if(worldObj.getBlock(x, y-1, z).getMaterial()==Material.water){return y-1;}
-  return -1;
+  ForgeDirection d = orientation.getOpposite();
+  ForgeDirection dr = d.getRotation(ForgeDirection.DOWN);
+  ForgeDirection dl = dr.getOpposite();  
+  int x = xCoord+d.offsetX;
+  int y = yCoord+d.offsetY;
+  int z = zCoord+d.offsetZ;
+  int x1 = x+dr.offsetX;
+  int z1 = z+dr.offsetZ;
+  int x2 = x+dl.offsetX;
+  int z2 = z+dl.offsetZ;
+  if(!worldObj.isAirBlock(x, y, z) || !worldObj.isAirBlock(x, y+1, z) ||
+     !worldObj.isAirBlock(x1, y, z1) || !worldObj.isAirBlock(x1, y+1, z1) ||
+     !worldObj.isAirBlock(x2, y, z2) || !worldObj.isAirBlock(x2, y+1, z2))
+    {
+    return false;
+    }
+  Block bl, bm, br;
+  bl = worldObj.getBlock(x2, y-1, z2);
+  bm = worldObj.getBlock(x, y-1, z);
+  br = worldObj.getBlock(x1, y-1, z1);
+  if(bl.getMaterial()!=Material.water || bm.getMaterial()!=Material.water || br.getMaterial()!=Material.water)
+    {
+    return false;
+    }  
+  //find rotation direction
+  return true;
   }
 
 @Override
 public boolean canOutput(ForgeDirection towards)
   {
   return towards==orientation;
-  }
-
-@Override
-public boolean onBlockClicked(EntityPlayer player)
-  {
-  if(!player.worldObj.isRemote)
-    {
-    String key = "guistrings.automation.current_energy";
-    String value = String.format("%.2f", storedEnergy);
-    ChatComponentTranslation chat = new ChatComponentTranslation(key, new Object[]{value});
-    player.addChatComponentMessage(chat);    
-    }
-  return false;
   }
 
 }

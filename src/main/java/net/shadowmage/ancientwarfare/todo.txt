@@ -25,16 +25,17 @@ Torque Blocks
 	
 Torque Models	
 	* Hand Cranked Generator
-	* industrial sterling generator
 	* waterwheel generator
 	* windmill blades, 3x3, 5x5
 	* windmill controller
+	* industrial sterling generator?
 
 Torque Textures
 	* flywheel small (3 grades)
 	* flywheel large (3 grades)
 	* flywheel controller (3 grades)
 	* torque shaft (3 grades)
+	* flywheel storage default texture (3 grades)
 
 Torque Cleanup
 -rendering of all TESRd torque blocks as items

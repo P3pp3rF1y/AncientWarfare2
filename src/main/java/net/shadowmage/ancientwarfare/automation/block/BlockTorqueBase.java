@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -67,6 +68,7 @@ public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side)
 @Override
 public IIcon getIcon(int side, int meta)
   {
+//  AWLog.logDebug("fetching texture for block: "+getUnlocalizedName());
   return iconMaps.get(meta).getIcon(this, 2, side);
   }
 

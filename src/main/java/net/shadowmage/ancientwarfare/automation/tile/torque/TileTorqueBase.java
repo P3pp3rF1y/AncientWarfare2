@@ -363,7 +363,7 @@ protected void readConnectionsInt(int con)
 /**
  * 0==connections update, used by conduits
  * 1==client-energy update
- * 2==waterwheel wheel speed/direction (DEPRECATED -- REWORK TO USE REGULAR CLIENT-ENERGY DATA) 
+ * 2==unused
  * 3==powered status for flywheel
  */
 @Override

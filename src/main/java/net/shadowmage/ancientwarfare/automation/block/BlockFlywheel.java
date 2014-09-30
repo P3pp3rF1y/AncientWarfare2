@@ -4,10 +4,13 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
@@ -62,6 +65,17 @@ public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list)
   list.add(new ItemStack(Item.getItemFromBlock(this),1,0));
   list.add(new ItemStack(Item.getItemFromBlock(this),1,1));
   list.add(new ItemStack(Item.getItemFromBlock(this),1,2));
+  }
+
+@Override
+public void registerBlockIcons(IIconRegister register)
+  {
+  }
+
+@Override
+public IIcon getIcon(int side, int meta)
+  {
+  return Blocks.iron_block.getIcon(0, 0);
   }
 
 @Override

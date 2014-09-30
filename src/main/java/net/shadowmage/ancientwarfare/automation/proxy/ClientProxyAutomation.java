@@ -27,12 +27,14 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.model.ModelAutoCraftingStation;
 import net.shadowmage.ancientwarfare.automation.render.RenderSterlingEngine;
+import net.shadowmage.ancientwarfare.automation.render.RenderTileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueFlywheel;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueShaft;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueTransport;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWorksite;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
@@ -83,7 +85,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STOCK, GuiWarehouseStockViewer.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_BOUNDS, GuiWorksiteBoundsAdjust.class);
     
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel());  
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel(new ResourceLocation("ancientwarfare", "textures/model/automation/waterwheel.png")));  
   ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new RenderTileWorksite());
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new RenderTileWorksite());
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new RenderTileWarehouseStockViewer());
@@ -108,6 +110,8 @@ public void registerClient()
 //  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitHeavy.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_heavy.png")));
   
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueStorageFlywheelController.class, new RenderTileTorqueFlywheel());//TODO add textures/renders for other qualitites
+  
+  ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, new RenderTileFlywheelStorage(new ResourceLocation("ancientwarfare", "textures/model/automation/cube.png")));
     
 //*********************************************GENERATOR RENDERS***************************************************************//
   

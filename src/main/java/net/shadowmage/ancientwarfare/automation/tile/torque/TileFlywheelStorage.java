@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 public class TileFlywheelStorage extends TileEntity
 {
 
-BlockPosition controllerPos;
+public BlockPosition controllerPos;
 TileTorqueStorageFlywheelController controller;
 boolean init = false;//has run init code to check for controller tile from controllerPos
 
