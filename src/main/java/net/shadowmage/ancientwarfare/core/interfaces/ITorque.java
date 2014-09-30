@@ -9,6 +9,52 @@ public final class ITorque
 {
 private ITorque(){}//noop the class, it is just a container for the interfaces and static methods
 
+////TODO re-implement torque tiles under these interfaces
+public static interface ITorqueProvider
+{
+ITorqueCell getTorqueCell(ForgeDirection blockSide);//may return different cell for each side, or same cell
+boolean canInput(ForgeDirection blockSide);//used for connection rules for rendering
+boolean canOutput(ForgeDirection blockSide);//used for connection rules for rendering
+}
+
+public static interface ITorqueOutputRender
+{
+boolean useClientOutputRotation(ForgeDirection blockSide);
+double getClientRotation();
+double getClientPrevRotation();
+}
+
+public static interface ITorqueCell
+{
+double getEnergyStored(ForgeDirection side);
+double getMaxEnergyStored(ForgeDirection side);
+double getMaxInput(ForgeDirection side);
+double getMaxOutput(ForgeDirection side);
+double addEnergy(ForgeDirection side, double energy);
+double extractEnergy(ForgeDirection side, double energy);
+double getEnergyLossPercentPerTick();
+boolean cascadedInput(ForgeDirection blockSide);
+boolean cascadedOutput(ForgeDirection blockSide);
+}
+
+public abstract static class TorqueCell implements ITorqueCell
+{
+
+double energy, maxEnergy;
+
+public TorqueCell(double maxEnergy)
+  {
+  this.maxEnergy = maxEnergy;
+  }
+
+@Override
+public double getMaxEnergyStored(ForgeDirection side){return maxEnergy;}
+
+@Override
+public double getEnergyStored(ForgeDirection side){return energy;}
+
+}
+
 public static interface ITorqueTile
 {
 ForgeDirection getPrimaryFacing();
