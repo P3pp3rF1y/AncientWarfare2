@@ -5,7 +5,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
@@ -17,6 +16,7 @@ public class RenderTileTorqueGeneratorWaterwheel extends TileEntitySpecialRender
 
 private float[][] gearboxRotationMatrix = new float[6][];
 ModelBaseAW model;
+ModelPiece waterwheel, outputGear;
 ResourceLocation tex;
 
 public RenderTileTorqueGeneratorWaterwheel(ResourceLocation tex)
@@ -24,6 +24,8 @@ public RenderTileTorqueGeneratorWaterwheel(ResourceLocation tex)
   this.tex = tex;
   ModelLoader loader = new ModelLoader();
   model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/waterwheel.m2f"));
+  waterwheel = model.getPiece("waterwheelSpindle");
+  outputGear = model.getPiece("outputGear");
   gearboxRotationMatrix[0] = new float[]{ -90,   0,   0};//d
   gearboxRotationMatrix[1] = new float[]{  90,   0,   0};//u
   gearboxRotationMatrix[2] = new float[]{   0,   0,   0};//n
@@ -45,9 +47,10 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   if(rot[1]!=0){GL11.glRotatef(rot[1], 0, 1, 0);}
   if(rot[2]!=0){GL11.glRotatef(rot[2], 0, 0, 1);}
   bindTexture(tex);
-  ModelPiece p = model.getPiece("waterwheelSpindle");
-  p.setRotation(0, 0, (float)getRotation(wheel.wheelRotation, wheel.prevWheelRotation, partialTick));
-  p.setVisible(wheel.validSetup);
+  
+  waterwheel.setRotation(0, 0, (float)getRotation(wheel.wheelRotation, wheel.prevWheelRotation, partialTick));  
+  waterwheel.setVisible(wheel.validSetup);
+  outputGear.setRotation(0, 0, -(float)getRotation(wheel.rotation, wheel.prevRotation, partialTick));
   model.renderModel();
   
   

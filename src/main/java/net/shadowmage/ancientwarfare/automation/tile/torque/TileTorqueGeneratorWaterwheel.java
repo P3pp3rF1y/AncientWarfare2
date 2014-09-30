@@ -8,6 +8,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
 public class TileTorqueGeneratorWaterwheel extends TileTorqueGeneratorBase implements IInteractableTile
@@ -29,9 +30,10 @@ public TileTorqueGeneratorWaterwheel()
   {
   energyDrainFactor = AWAutomationStatics.low_drain_factor;
   maxEnergy = AWAutomationStatics.low_conduit_energy_max;
-  maxOutput = AWAutomationStatics.low_transfer_max;  
+  maxOutput = 4;  
   
   maxWheelRpm = 20;
+  this.maxRpm = 100;
   rotTick = (maxWheelRpm * 360)/60/20;
   }
 
@@ -52,8 +54,13 @@ public void updateEntity()
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
       }
+    if(validSetup)//server, update power gen
+      {
+      storedEnergy += 1.d * AWAutomationStatics.waterwheel_generator_output_factor;
+      if(storedEnergy>maxEnergy){storedEnergy=maxEnergy;}
+      }
     }
-  else if(validSetup)
+  else if(validSetup)//client world, update for render
     {
     prevWheelRotation = wheelRotation;
     wheelRotation += rotTick * (float)rotationDirection;
@@ -78,10 +85,41 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   rotationDirection = tag.getByte("rotationDirection");
   }
 
+@Override
+public boolean useClientRotation()
+  {
+  return true;
+  }
+
+private ForgeDirection getRight(ForgeDirection in)
+  {
+  switch(in)
+  {
+  case NORTH:
+    {
+    return ForgeDirection.EAST;
+    }
+  case EAST:
+    {
+    return ForgeDirection.SOUTH;
+    }
+  case SOUTH:
+    {
+    return ForgeDirection.WEST;
+    }
+  case WEST:
+    {
+    return ForgeDirection.NORTH;
+    }
+  default:
+  return ForgeDirection.NORTH;
+  }
+  }
+
 private boolean validateBlocks()
   {
   ForgeDirection d = orientation.getOpposite();
-  ForgeDirection dr = d.getRotation(ForgeDirection.DOWN);
+  ForgeDirection dr = getRight(d);
   ForgeDirection dl = dr.getOpposite();  
   int x = xCoord+d.offsetX;
   int y = yCoord+d.offsetY;
@@ -103,8 +141,10 @@ private boolean validateBlocks()
   if(bl.getMaterial()!=Material.water || bm.getMaterial()!=Material.water || br.getMaterial()!=Material.water)
     {
     return false;
-    }  
-  //find rotation direction
+    }
+  int metaLeft = worldObj.getBlockMetadata(x2, y-1, z2);
+  int metaRight = worldObj.getBlockMetadata(x1, y-1, z1);
+  rotationDirection = (byte) (metaLeft<metaRight?-1 : metaRight<metaLeft ? 1 : 0);
   return true;
   }
 
