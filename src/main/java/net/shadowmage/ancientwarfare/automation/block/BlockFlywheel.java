@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.block;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -88,22 +87,6 @@ public boolean invertFacing()
 public RotationType getRotationType()
   {
   return RotationType.FOUR_WAY;
-  }
-
-@Override
-public void onPostBlockPlaced(World world, int x, int y, int z, int meta)
-  {
-  super.onPostBlockPlaced(world, x, y, z, meta);
-  TileTorqueStorageFlywheelController te = (TileTorqueStorageFlywheelController) world.getTileEntity(x, y, z);
-  te.blockPlaced();
-  }
-
-@Override
-public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int p_149749_6_)
-  {
-  TileTorqueStorageFlywheelController te = (TileTorqueStorageFlywheelController) world.getTileEntity(x, y, z);
-  te.blockBroken();
-  super.breakBlock(world, x, y, z, p_149749_5_, p_149749_6_);
   }
 
 }
