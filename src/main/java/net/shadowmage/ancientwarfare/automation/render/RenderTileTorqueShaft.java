@@ -51,15 +51,15 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   if(rotations[1]!=0){GL11.glRotatef(rotations[1], 0, 1, 0);}
   if(rotations[2]!=0){GL11.glRotatef(rotations[2], 0, 0, 1);}
   
-  this.inputHead.setVisible(shaft.prev==null);
-  this.gearbox.setVisible(shaft.prev==null);
-  this.outputHead.setVisible(shaft.next==null);
+  this.inputHead.setVisible(shaft.prev()==null);
+  this.gearbox.setVisible(shaft.prev()==null);
+  this.outputHead.setVisible(shaft.next()==null);
   
   float rotation = shaft.getClientOutputRotation(d, delta);
   this.shaft.setRotation(0, 0, -rotation);
   this.outputHead.setRotation(0, 0, -rotation);   
   
-  if(shaft.prev==null)//no prev shaft, render gearbox and input head at either shaft rpm or input rpm
+  if(shaft.prev()==null)//no prev shaft, render gearbox and input head at either shaft rpm or input rpm
     {
     ITorqueTile itt = shaft.getTorqueCache()[d.getOpposite().ordinal()];
     if(itt!=null && itt.canOutputTorque(d) && itt.useOutputRotation(null))

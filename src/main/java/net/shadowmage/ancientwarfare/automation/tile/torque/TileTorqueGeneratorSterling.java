@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -40,7 +42,7 @@ double clientEnergyState;
 double clientDestEnergyState;
 
 /**
- * used client side
+ * used client side for rendering
  */
 double rotation, prevRotation;
 
@@ -49,17 +51,19 @@ public TileTorqueGeneratorSterling()
   torqueCell = new TorqueCell(0, 4, 1600, 1.f);
   }
 
-
 @Override
 public void updateEntity()
   {  
   super.updateEntity();
   if(!worldObj.isRemote)
     {
-    if(burnTime <= 0 && getTorqueStored(null) < getMaxTorque(null))
+    AWLog.logDebug("running sterling generator server update!! "+torqueCell.getEnergy());
+    if(burnTime <= 0 && torqueCell.getEnergy() < torqueCell.getMaxEnergy())
       {
+      AWLog.logDebug("checking for starting burn!!");
       if(fuelInventory.getStackInSlot(0)!=null)
         {
+        AWLog.logDebug("fuel in slot, starting burn!!");
         //if fueled, consume one, set burn-ticks to fuel value
         int ticks = TileEntityFurnace.getItemBurnTime(fuelInventory.getStackInSlot(0));
         if(ticks>0)
@@ -72,11 +76,16 @@ public void updateEntity()
       }
     else if(burnTime>0)
       {
+      AWLog.logDebug("updating burn!!");
       torqueCell.setEnergy(torqueCell.getEnergy() + 1.d * AWAutomationStatics.sterling_generator_output_factor);
       burnTime--;
       }  
-    serverNetworkUpdate();
+    serverNetworkUpdate();    
+    torqueIn = torqueCell.getEnergy() - prevEnergy;
+    double d = torqueCell.getEnergy();
     transferPowerTo(getPrimaryFacing());
+    torqueOut = d-torqueCell.getEnergy();
+    prevEnergy = torqueCell.getEnergy();
     }
   else
     {
@@ -89,6 +98,8 @@ public void updateEntity()
 protected void serverNetworkSynch()
   {
   int percent = (int)(torqueCell.getPercentFull()*100.d);
+  percent += (int)(torqueOut / torqueCell.getMaxOutput());
+  if(percent>100){percent=100;}
   if(percent != clientDestEnergyState)
     {
     clientDestEnergyState = percent;
@@ -96,6 +107,7 @@ protected void serverNetworkSynch()
     }
   }
 
+@Override
 protected void updateRotation()
   {
   prevRotation = rotation;
@@ -106,6 +118,7 @@ protected void updateRotation()
     }
   }
 
+@Override
 protected void clientNetworkUpdate()
   {
   if(clientEnergyState != clientDestEnergyState)
@@ -227,6 +240,22 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
   }
 
 @Override
+public NBTTagCompound getDescriptionTag()
+  {
+  NBTTagCompound tag = super.getDescriptionTag();
+  tag.setInteger("clientEnergy", (int)(clientDestEnergyState * 100.d));
+  return tag;
+  }
+
+@Override
+public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {  
+  super.onDataPacket(net, pkt);
+  NBTTagCompound tag = pkt.func_148857_g();
+  clientDestEnergyState = ((double)tag.getInteger("clientEnergy")) / 100.d;
+  }
+
+@Override
 public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
@@ -276,13 +305,13 @@ public double drainTorque(ForgeDirection from, double energy)
 @Override
 public double getMaxTorqueOutput(ForgeDirection from)
   {
-  return torqueCell.getMaxOutput();
+  return torqueCell.getMaxTickOutput();
   }
 
 @Override
 public double getMaxTorqueInput(ForgeDirection from)
   {
-  return torqueCell.getMaxInput();
+  return torqueCell.getMaxTickInput();
   }
 
 @Override
@@ -295,6 +324,12 @@ public boolean useOutputRotation(ForgeDirection from)
 public float getClientOutputRotation(ForgeDirection from, float delta)
   {
   return getRotation(rotation, prevRotation, delta);
+  }
+
+@Override
+protected double getTotalTorque()
+  {
+  return torqueCell.getEnergy();
   }
 
 }

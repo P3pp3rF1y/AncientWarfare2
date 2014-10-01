@@ -128,24 +128,32 @@ public void setEnergy(double in){energy = Math.max(0, Math.min(in, maxEnergy));}
 
 public double addEnergy(double in)
   {
-  in = Math.min(getMaxInput(), in);
+  if(Double.isNaN(in)){throw new RuntimeException("Requested input may not be NAN");}
+  //TODO remove these when done with implementation
+  in = Math.min(getMaxTickInput(), in);
   energy += in;
   return in;
   }
 
 public double drainEnergy(double request)
   {
-  request = Math.min(getMaxOutput(), request);
+  if(Double.isNaN(request)){throw new RuntimeException("Requested drain may not be NAN");}
+  //TODO remove these when done with implementation
+  request = Math.min(getMaxTickOutput(), request);
   energy -= request;
   return request;
   }
 
-public double getMaxInput()
+public double getMaxInput(){return maxInput;}
+
+public double getMaxOutput(){return maxOutput;}
+
+public double getMaxTickInput()
   {
   return Math.min(maxInput, getMaxEnergy() - getEnergy());
   }
 
-public double getMaxOutput()
+public double getMaxTickOutput()
   {
   return Math.min(maxOutput, getEnergy());
   }
@@ -186,15 +194,15 @@ public SidedTorqueCell(double in, double out, double max, double eff, ForgeDirec
   }
 
 @Override
-public double getMaxInput()
+public double getMaxTickInput()
   {
-  return owner.canInputTorque(dir) ? super.getMaxInput() : 0;
+  return owner.canInputTorque(dir) ? super.getMaxTickInput() : 0;
   }
 
 @Override
-public double getMaxOutput()
+public double getMaxTickOutput()
   {
-  return owner.canOutputTorque(dir) ? super.getMaxOutput() : 0;
+  return owner.canOutputTorque(dir) ? super.getMaxTickOutput() : 0;
   }
 
 @Override

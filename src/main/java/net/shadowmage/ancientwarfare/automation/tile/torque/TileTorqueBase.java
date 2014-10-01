@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -30,7 +31,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
 {
 
 /**
- * The primary facing direction for this tile.
+ * The primary facing direction for this tile.  Default to north for uninitialized tiles (null is not a valid value)
  */
 protected ForgeDirection orientation = ForgeDirection.NORTH;
 
@@ -43,6 +44,17 @@ protected int networkUpdateTicks;
 private TileEntity[]bcCache;//cannot reference interface directly, but can cast directly...//only used when bc installed
 private TileEntity[]rfCache;//cannot reference interface directly, but can cast directly...//only used when cofh installed
 private ITorqueTile[]torqueCache;
+
+/**
+ * helper vars to be used by tiles during updating, to cache in/out/loss values<br>
+ * IMPORTANT: should NOT be relied upon for calculations, only for use for display purposes<br>
+ * E.G. A tile may choose to -not- update these vars.<br>
+ * However, best effort should be made to update these vars accurately.<br><br>
+ * Generated energy should be counted as 'in'<br>
+ * Any directly output energy should be counted as 'out'<br>
+ * Only direct power loss from transmission efficiency or per-tick loss should be counted for 'loss'
+ */
+protected double torqueIn, torqueOut, torqueLoss, prevEnergy;
 
 //*************************************** COFH RF METHODS ***************************************//
 @Optional.Method(modid="CoFHCore")
@@ -230,24 +242,48 @@ public final ForgeDirection getPrimaryFacing()
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  if(!worldObj.isRemote)
+  ItemStack stack = player.getCurrentEquippedItem();
+  if(stack==null)
     {
-    double d = 0;
-    for(int i = 0; i < 6; i++)
+    if(!worldObj.isRemote)
       {
-      d += getTorqueStored(ForgeDirection.values()[i]);
+      String e = String.format("Stored | In | Out | Loss :: %.2f | %.2f | %.2f | %.2f", getTotalTorque(), getTorqueIn(),  getTorqueOut(), getTorqueLoss());
+      player.addChatMessage(new ChatComponentText(e));    
       }
-    String e = String.format("%.2f", d);
-    player.addChatMessage(new ChatComponentText("Total Energy Stored: "+e));    
+    return true;
     }
   return false;
   }
 
 //*************************************** Utility Methods ***************************************//
 
-protected void serverNetworkSynch(){}
+protected void updateRotation(){throw new RuntimeException("Call on undeclared method!!");}
 
-protected void handleClientRotationData(ForgeDirection side, int value){}
+protected void clientNetworkUpdate(){throw new RuntimeException("Call on undeclared method!!");}
+
+protected void serverNetworkSynch(){throw new RuntimeException("Call on undeclared method!!");}
+
+protected void handleClientRotationData(ForgeDirection side, int value){throw new RuntimeException("Call on undeclared method!!");}
+
+/**
+ * @return the TOTAL amount stored in the entire tile (not just one side), used by on-right-click functionality
+ */
+protected abstract double getTotalTorque();
+
+/**
+ * @return the total output of torque for the tick
+ */
+protected double getTorqueOut(){return torqueOut;}
+
+/**
+ * @return the total input of torque for the tick
+ */
+protected double getTorqueIn(){return torqueIn;}
+
+/**
+ * @return the total torque lost (destroyed, gone completely) for the tick
+ */
+protected double getTorqueLoss(){return torqueLoss;}
 
 protected final void serverNetworkUpdate()
   {

@@ -77,6 +77,17 @@ public double getFlywheelPrevRotation()
 //  return storage==null ? 0 : storage.maxEnergyStored;
 //  }
 
+protected double getFlywheelEnergy()
+  {
+  return 0;//TODO
+  }
+
+@Override
+protected double getTotalTorque()
+  {
+  return inputCell.getEnergy()+outputCell.getEnergy()+getFlywheelEnergy();
+  }
+
 @Override
 public void onNeighborTileChanged()
   {
@@ -123,7 +134,7 @@ public boolean canOutputTorque(ForgeDirection towards){return towards==orientati
 public double getMaxTorqueOutput(ForgeDirection from)
   {
   if(powered){return 0;}
-  return outputCell.getMaxOutput();
+  return outputCell.getMaxTickOutput();
   }
 
 @Override
@@ -158,7 +169,7 @@ public double drainTorque(ForgeDirection from, double energy)
 public double getMaxTorqueInput(ForgeDirection from)
   {
   TorqueCell cell = getCell(from);
-  return cell==null ? 0 : cell.getMaxInput();
+  return cell==null ? 0 : cell.getMaxTickInput();
   }
 
 private TorqueCell getCell(ForgeDirection from)
