@@ -21,6 +21,13 @@ forgeDiretctionToRotationMatrix[4] = new float[]{   0,  90,   0};//w
 forgeDiretctionToRotationMatrix[5] = new float[]{   0, 270,   0};//e
 }
 
+public static interface foo1{}
+public static interface foo2{}
+
+public static interface foo3 extends foo1, foo2
+{
+}
+
 
 /**
  * Interface for implementation by torque tiles.  Tiles may handle their power internally by any means.<br>
@@ -96,6 +103,7 @@ double getClientOutputRotation(ForgeDirection from);
  * Return output shaft previous tick rotation for the given side.  Will only be called if useOutputRotation(from) returns true.
  */
 double getPrevClientOutputRotation(ForgeDirection from);
+
 }
 
 /**
@@ -127,25 +135,25 @@ public void setEnergy(double in){energy = Math.max(0, Math.min(in, maxEnergy));}
 public double addEnergy(double in)
   {
   in = Math.min(getMaxInput(), in);
-  energy+=in;
+  energy += in;
   return in;
   }
 
 public double drainEnergy(double request)
   {
   request = Math.min(getMaxOutput(), request);
-  energy-=request;
+  energy -= request;
   return request;
   }
 
 public double getMaxInput()
   {
-  return Math.min(maxInput, maxEnergy - energy);
+  return Math.min(maxInput, getMaxEnergy() - getEnergy());
   }
 
 public double getMaxOutput()
   {
-  return Math.min(maxOutput, energy);
+  return Math.min(maxOutput, getEnergy());
   }
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
@@ -160,109 +168,48 @@ public void readFromNBT(NBTTagCompound tag)
   }
 }
 
-//public static double addEnergy(ITorqueTile tile, ForgeDirection from, double energy)
-//  {
-//  if(tile.canInputTorque(from))
-//    {
-//    energy = energy > tile.getMaxTorqueInput(null) ? tile.getMaxTorqueInput(null) : energy;
-//    energy = energy + tile.getTorqueStored(null) > tile.getMaxTorque(null) ? tile.getMaxTorque(null)-tile.getTorqueStored(null) : energy;
-//    tile.setTorqueEnergy(tile.getTorqueStored(null)+energy);
-//    return energy;
-//    }
-//  return 0;
-//  }
-//
-//public static void applyPowerDrain(ITorqueTile tile)
-//  {
-//  World world = ((TileEntity)tile).getWorldObj();
-//  world.theProfiler.startSection("AWPowerDrain");
-//  double e = tile.getTorqueStored(null);
-//  double m = tile.getMaxTorque(null);
-//  double d = tile.getTorqueTransferLossPercent();
-//  if(e < 0.01d || m <=0 || d <= 0)
-//    {
-//    world.theProfiler.endSection();
-//    return;    
-//    }
-//  double p = e/m;
-//  double edpt = p*d*0.05d;
-//  tile.setTorqueEnergy(e-edpt);
-//  world.theProfiler.endSection();
-//  }
-//
-///**
-// * cached arrays used during tile updates, to remove per-tile-per-tick garbage creation
-// */
-//private static double[] requestedEnergy = new double[6];
-//private static ITorqueTile[] targets = new ITorqueTile[6];
-//
-//public static void transferPower(World world, int x, int y, int z, ITorqueTile generator)
-//  {
-//  if(generator.getMaxTorqueOutput(null)<=0){return;}
-//  world.theProfiler.startSection("AWPowerTransfer");
-//  ITorqueTile[] tes = generator.getNeighborTorqueTiles();
-//  ITorqueTile te;
-//  ITorqueTile target;
-//  
-//  double maxOutput = generator.getMaxTorqueOutput(null);
-//  if(maxOutput > generator.getTorqueStored(null)){maxOutput = generator.getTorqueStored(null);}
-//  double request;
-//  double totalRequest = 0;
-//  
-//  ForgeDirection d;
-//  for(int i = 0; i < 6; i++)
-//    {    
-//    d = ForgeDirection.getOrientation(i);
-//    targets[d.ordinal()]=null;
-//    requestedEnergy[d.ordinal()]=0;
-//    if(!generator.canOutputTorque(d)){continue;}
-//    te = tes[i];
-//    if(te !=null)      
-//      {
-//      target = te;
-//      if(target.canInputTorque(d.getOpposite()))
-//        {
-//        targets[d.ordinal()]=target;  
-//        request = target.getMaxTorqueInput(null);
-//        if(target.cascadedInput() && generator.cascadedInput())
-//          {          
-//          double teo = target.getTorqueOutput()*0.5d;
-//          if(target.getTorqueStored(null) - teo < generator.getTorqueStored(null))
-//            {
-//            double diff = (generator.getTorqueStored(null) - target.getTorqueStored(null)) * 0.5d + teo;
-//            if(request>diff){request=diff;}
-//            }
-//          else
-//            {
-//            request = 0;
-//            }
-//          }
-//        if(request + target.getTorqueStored(null) > target.getMaxTorque(null)){request = target.getMaxTorque(null)-target.getTorqueStored(null);}
-//        if(request>0)
-//          {
-//          requestedEnergy[d.ordinal()]=request;
-//          totalRequest += request;          
-//          }          
-//        }
-//      }  
-//    }
-//  if(totalRequest>0)
-//    {
-//    double percentFullfilled = maxOutput / totalRequest;  
-//    if(percentFullfilled>1.f){percentFullfilled=1.f;}
-//    for(int i = 0; i<6; i++)
-//      {
-//      if(targets[i]==null){continue;}
-//      target = targets[i];
-//      request = requestedEnergy[i];
-//      request *= percentFullfilled;
-//      request = target.addTorque(ForgeDirection.getOrientation(i).getOpposite(), request);
-//      generator.setTorqueEnergy(generator.getTorqueStored(null)-request);
-//      if(target.getTorqueStored(null)>target.getMaxTorque(null)){target.setTorqueEnergy(target.getMaxTorque(null));}
-//      }
-//    }
-//  BCProxy.instance.transferPower(world, x, y, z, generator);
-//  world.theProfiler.endSection();
-//  }
+/**
+ * Owner-sided aware torque storage cell.  Used by MIMO type torque tiles (conduit, distributor) to maintain a cell for each side
+ * without having to create new cells every time block orientation changes.<br>
+ * Caveat:  the side maintains energy level regardless of block orientation, the new 'input' side will have the energy from an old 'output' side.
+ * @author Shadowmage
+ */
+public static class SidedTorqueCell extends TorqueCell
+{
+
+ForgeDirection dir;
+ITorqueTile owner;
+public SidedTorqueCell(double in, double out, double max, double eff, ForgeDirection dir, ITorqueTile owner)
+  {
+  super(in, out, max, eff);
+  this.dir = dir;
+  this.owner = owner;
+  }
+
+@Override
+public double getMaxInput()
+  {
+  return owner.canInputTorque(dir) ? super.getMaxInput() : 0;
+  }
+
+@Override
+public double getMaxOutput()
+  {
+  return owner.canOutputTorque(dir) ? super.getMaxOutput() : 0;
+  }
+
+@Override
+public double addEnergy(double in)
+  {
+  return owner.canInputTorque(dir) ? super.addEnergy(in) : 0;
+  }
+
+@Override
+public double drainEnergy(double request)
+  {
+  return owner.canOutputTorque(dir) ? super.drainEnergy(request) : 0;
+  }
+
+}
 
 }

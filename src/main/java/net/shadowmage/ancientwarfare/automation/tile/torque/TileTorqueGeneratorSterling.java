@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -33,34 +34,31 @@ public TileTorqueGeneratorSterling()
   }
 
 @Override
-public boolean useOutputRotation(ForgeDirection from)
-  {
-  return true;
-  }
-
-@Override
 public void updateEntity()
   {  
   super.updateEntity();
-  if(burnTime <= 0 && getTorqueStored(null) < getMaxTorque(null))
+  if(!worldObj.isRemote)
     {
-    if(fuelInventory.getStackInSlot(0)!=null)
+    if(burnTime <= 0 && getTorqueStored(null) < getMaxTorque(null))
       {
-      //if fuel, consume one, set burn-ticks to fuel value
-      int ticks = TileEntityFurnace.getItemBurnTime(fuelInventory.getStackInSlot(0));
-      if(ticks>0)
+      if(fuelInventory.getStackInSlot(0)!=null)
         {
-        fuelInventory.decrStackSize(0, 1);
-        burnTime = ticks;
-        burnTimeBase = ticks;
+        //if fueled, consume one, set burn-ticks to fuel value
+        int ticks = TileEntityFurnace.getItemBurnTime(fuelInventory.getStackInSlot(0));
+        if(ticks>0)
+          {
+          fuelInventory.decrStackSize(0, 1);
+          burnTime = ticks;
+          burnTimeBase = ticks;
+          }
         }
       }
+    else if(burnTime>0)
+      {
+      torqueCell.setEnergy(torqueCell.getEnergy() + 1.d * AWAutomationStatics.sterling_generator_output_factor);
+      burnTime--;
+      }  
     }
-  else if(burnTime>0)
-    {
-    addTorque(getPrimaryFacing(), 1.d * AWAutomationStatics.sterling_generator_output_factor);
-    burnTime--;
-    }  
   }
 
 @Override
@@ -76,7 +74,7 @@ public boolean onBlockClicked(EntityPlayer player)
     {
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, xCoord, yCoord, zCoord);
     }
-  return false;
+  return true;
   }
 
 public int getBurnTime()
@@ -218,6 +216,12 @@ public double getMaxTorqueOutput(ForgeDirection from)
 public double getMaxTorqueInput(ForgeDirection from)
   {
   return torqueCell.getMaxInput();
+  }
+
+@Override
+public boolean useOutputRotation(ForgeDirection from)
+  {
+  return true;
   }
 
 @Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -35,6 +36,11 @@ public boolean isNormalCube(){return false;}
 
 @Override
 public IIcon getIcon(int p_149691_1_, int p_149691_2_){return Blocks.iron_block.getIcon(p_149691_1_, p_149691_2_);}
+
+@Override
+public void registerBlockIcons(IIconRegister register)
+  {
+  }
 
 @Override
 public void onPostBlockPlaced(World world, int x, int y, int z, int meta)

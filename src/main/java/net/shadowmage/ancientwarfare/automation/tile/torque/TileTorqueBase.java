@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
+import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
@@ -34,12 +35,12 @@ protected ForgeDirection orientation = ForgeDirection.NORTH;
 
 /**
  * used by server to limit packet sending<br>
- * used by client for lerp-ticks for lerping to new power state
+ * used by client for lerp-ticks for lerping between power states
  */
 protected int networkUpdateTicks;
 
-private TileEntity[]bcCache;//cannot reference interface directly, but can cast directly...
-private TileEntity[]rfCache;//cannot reference interface directly, but can cast directly...
+private TileEntity[]bcCache;//cannot reference interface directly, but can cast directly...//only used when bc installed
+private TileEntity[]rfCache;//cannot reference interface directly, but can cast directly...//only used when cofh installed
 private ITorqueTile[]torqueCache;
 
 //*************************************** COFH RF METHODS ***************************************//
@@ -235,8 +236,8 @@ public boolean onBlockClicked(EntityPlayer player)
       {
       d += getTorqueStored(ForgeDirection.values()[i]);
       }
-    String e = String.format(".2f", d);
-    player.addChatMessage(new ChatComponentText("Energy Stored: "+e));    
+    String e = String.format("%.2f", d);
+    player.addChatMessage(new ChatComponentText("Total Energy Stored: "+e));    
     }
   return false;
   }
@@ -249,6 +250,14 @@ protected final void transferPower(ForgeDirection from)
   if(tc[from.ordinal()]!=null && tc[from.ordinal()].canInputTorque(from.getOpposite()))
     {
     drainTorque(from, tc[from.ordinal()].addTorque(from.getOpposite(), getMaxTorqueOutput(from)));
+    }
+  if(ModuleStatus.buildCraftLoaded)
+    {
+    BCProxy.instance.transferPower(worldObj, xCoord, yCoord, zCoord, this, from);
+    }
+  if(ModuleStatus.redstoneFluxEnabled)
+    {
+    RFProxy.instance.transferPower(worldObj, xCoord, yCoord, zCoord, this, from);
     }
   }
 
