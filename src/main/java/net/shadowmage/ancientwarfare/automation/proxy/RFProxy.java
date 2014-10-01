@@ -1,7 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
 public class RFProxy
 {
@@ -29,9 +32,19 @@ public static void loadInstance()
     }
   }
 
-private RFProxy()
+protected RFProxy()
   {
   // TODO Auto-generated constructor stub
+  }
+
+public boolean isRFTile(TileEntity te)
+  {
+  return false;
+  }
+
+public void transferPower(World world, int x, int y, int z, ITorqueTile generator)
+  {
+  
   }
 
 }

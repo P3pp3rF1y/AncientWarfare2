@@ -1,11 +1,27 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
-public class RFProxyActual
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+
+public class RFProxyActual extends RFProxy
 {
 
-public RFProxyActual()
+protected RFProxyActual()
   {
-  // TODO Auto-generated constructor stub
+  
+  }
+
+@Override
+public boolean isRFTile(TileEntity te)
+  {
+  return false;
+  }
+
+@Override
+public void transferPower(World world, int x, int y, int z, ITorqueTile generator)
+  {
+  
   }
 
 }

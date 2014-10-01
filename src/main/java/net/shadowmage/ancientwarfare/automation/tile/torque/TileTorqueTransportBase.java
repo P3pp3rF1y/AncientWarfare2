@@ -37,49 +37,68 @@ public IBatteryObject getMjBattery(String kind, ForgeDirection direction)
 @Override
 public int getEnergyStored(ForgeDirection from)
   {
-  return (int) storedEnergy;
+  return (int) storedEnergy*10;
   }
 
 @Optional.Method(modid="CoFHCore")
 @Override
 public int getMaxEnergyStored(ForgeDirection from)
   {
-  return (int) maxEnergy;
+  return (int) maxEnergy*10;
   }
 
 @Optional.Method(modid="CoFHCore")
 @Override
 public boolean canConnectEnergy(ForgeDirection from)
   {
-  return canOutput(from.getOpposite());//TODO verify what this expects
+  return canOutput(from) || canInput(from);//TODO verify what this expects
   }
 
 @Optional.Method(modid="CoFHCore")
 @Override
 public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
   {
-  // TODO Auto-generated method stub
-  return 0;
+  if(!canOutput(from)){return 0;}  
+  double d = getEnergyStored();
+  double d1 = getMaxOutput();
+  double d2 = Math.min(d1, d);  
+  int d3 = (int)(d2*10.d);  
+  maxExtract = Math.min(d3, maxExtract);    
+  if(!simulate)
+    {
+    d2 = (double)maxExtract / 10.d;
+    setEnergy(d-d2);
+    }
+  return maxExtract;
   }
 
 @Optional.Method(modid="CoFHCore")
 @Override
 public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
   {
-  // TODO Auto-generated method stub
-  return 0;
+  if(!canInput(from)){return 0;}
+  double d = getEnergyStored();
+  double d1 = getMaxOutput();
+  double d2 = Math.min(d, d1);
+  int d3 = (int)(d2*10.d);
+  maxReceive = Math.min(d3, maxReceive);
+  if(!simulate)
+    {
+    d2 = (double)maxReceive / 10.d;  
+    }  
+  return maxReceive;
   }
 
 @Override
 protected boolean buildConnection(ForgeDirection side, TileEntity te)
   {
   if(te==null){return false;}
-  if(BCProxy.instance.isPowerPipe(worldObj, te))//always connect to BC pipes, who knows what direction the power is flowing....
+  if(canOutput(side))
     {
-    return true;      
-    }
-  else if(canOutput(side))
-    {
+    if(BCProxy.instance.isPowerPipe(worldObj, te))//always connect to BC pipes, who knows what direction the power is flowing....
+      {
+      return true;      
+      }
     if(te instanceof ITorqueTile)
       {
       ITorqueTile rec = (ITorqueTile)te;
@@ -91,6 +110,10 @@ protected boolean buildConnection(ForgeDirection side, TileEntity te)
     }
   else if(canInput(side))
     {
+    if(BCProxy.instance.isPowerPipe(worldObj, te))//always connect to BC pipes, who knows what direction the power is flowing....
+      {
+      return true;      
+      }
     if(te instanceof ITorqueTile)
       {
       ITorqueTile gen = (ITorqueTile)te;
