@@ -100,9 +100,9 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
         }
       else
         {
-        if(neighbors!=null && neighbors[i]!=null && neighbors[i].useClientRotation())
+        if(neighbors!=null && neighbors[i]!=null && neighbors[i].useOutputRotation(null))
           {
-          float r = (float) getRotation(neighbors[i].getClientOutputRotation(), neighbors[i].getPrevClientOutputRotation(), delta);
+          float r = (float) getRotation(neighbors[i].getClientOutputRotation(null), neighbors[i].getPrevClientOutputRotation(null), delta);
           rx = rotationArray[0]*r;
           ry = rotationArray[1]*r;
           rz = rotationArray[2]*r;

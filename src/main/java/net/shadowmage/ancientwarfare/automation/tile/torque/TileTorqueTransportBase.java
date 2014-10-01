@@ -127,7 +127,7 @@ protected boolean buildConnection(ForgeDirection side, TileEntity te)
   }
 
 @Override
-public boolean useClientRotation()
+public boolean useOutputRotation(ForgeDirection from)
   {
   return true;
   }

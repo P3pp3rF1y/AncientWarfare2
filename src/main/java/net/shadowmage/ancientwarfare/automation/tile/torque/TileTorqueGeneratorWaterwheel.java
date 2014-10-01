@@ -85,7 +85,7 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   }
 
 @Override
-public boolean useClientRotation()
+public boolean useOutputRotation(ForgeDirection from)
   {
   return true;
   }

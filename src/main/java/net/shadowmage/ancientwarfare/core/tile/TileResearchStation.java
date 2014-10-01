@@ -98,19 +98,19 @@ public ITorqueTile[] getNeighborTorqueTiles()
   }
 
 @Override
-public double getClientOutputRotation()
+public double getClientOutputRotation(ForgeDirection from)
   {
   return 0;
   }
 
 @Override
-public double getPrevClientOutputRotation()
+public double getPrevClientOutputRotation(ForgeDirection from)
   {
   return 0;
   }
 
 @Override
-public boolean useClientRotation()
+public boolean useOutputRotation(ForgeDirection from)
   {
   return false;
   }

@@ -135,7 +135,7 @@ public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection a
   int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
   if(rMeta!=meta)
     {
-    tt.setOrientation(ForgeDirection.getOrientation(rMeta));
+    tt.setPrimaryFacing(ForgeDirection.getOrientation(rMeta));
     worldObj.markBlockForUpdate(x, y, z);
     return true;
     }

@@ -33,7 +33,7 @@ public TileTorqueGeneratorSterling()
   }
 
 @Override
-public boolean useClientRotation()
+public boolean useOutputRotation(ForgeDirection from)
   {
   return true;
   }

@@ -9,12 +9,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
-public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile
+public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile
 {
+
+protected static final float rpmToRpt= (float)(360.d / 60.d / 20.d);
+protected static final float low_quality_rpm = 100;
+protected static final float med_quality_rpm = 200;
+protected static final float high_quality_rpm = 300;
+protected static final float low_rpt = low_quality_rpm * rpmToRpt;
+protected static final float med_rpt = med_quality_rpm * rpmToRpt;
+protected static final float high_rpt = high_quality_rpm * rpmToRpt;
 
 /**
  * per-tile (type) settings.  Should be set in tile constructor.
@@ -97,12 +106,11 @@ public void updateEntity()
     }
   this.energyInput = this.storedEnergy - this.prevEnergy;
   applyPowerDrain();
-  if(this.getMaxTorqueOutput(null)>0)
-    {
-    double s = this.storedEnergy;
-    outputPower();
-    this.energyOutput = s - this.storedEnergy;    
-    }
+  
+  double s = this.storedEnergy;
+  outputPower();
+  this.energyOutput = s - this.storedEnergy;   
+  
   this.prevEnergy = this.storedEnergy;  
   }
 
@@ -155,9 +163,11 @@ protected void updateRotation()
   rotation += rpm * 360.d / 20.d / 60.d;
   }
 
-public void setOrientation(ForgeDirection d)
+@Override
+public void setPrimaryFacing(ForgeDirection d)
   {
   this.orientation = d;
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
 @Override
@@ -228,19 +238,19 @@ public double getTorqueOutput()
 /************************************** NEIGHBOR UPDATE AND CONNECTION CODE ****************************************/
 
 @Override
-public double getClientOutputRotation()
+public double getClientOutputRotation(ForgeDirection from)
   {
   return rotation;
   }
 
 @Override
-public double getPrevClientOutputRotation()
+public double getPrevClientOutputRotation(ForgeDirection from)
   {
   return prevRotation;
   }
 
 @Override
-public boolean useClientRotation()
+public boolean useOutputRotation(ForgeDirection from)
   {
   return false;
   }

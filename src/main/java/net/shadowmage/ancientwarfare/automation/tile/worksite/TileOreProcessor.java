@@ -183,13 +183,13 @@ public TileEntity[] getNeighbors(){return null;}//NOOP
 public ITorqueTile[] getNeighborTorqueTiles(){return null;}//NOOP
 
 @Override
-public double getClientOutputRotation(){return 0;}//NOOP
+public double getClientOutputRotation(ForgeDirection from){return 0;}//NOOP
 
 @Override
-public double getPrevClientOutputRotation(){return 0;}//NOOP
+public double getPrevClientOutputRotation(ForgeDirection from){return 0;}//NOOP
 
 @Override
-public boolean useClientRotation(){return false;}//NOOP
+public boolean useOutputRotation(ForgeDirection from){return false;}//NOOP
 
 @Override
 public int getSizeInventory(){return inventory.getSizeInventory();}

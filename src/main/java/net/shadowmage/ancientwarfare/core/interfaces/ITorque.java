@@ -14,16 +14,17 @@ public static interface ITorqueTile
 double getMaxTorque(ForgeDirection from);
 double getTorqueStored(ForgeDirection from);
 double addTorque(ForgeDirection from, double energy);
-double getTorqueTransferLossPercent();
 double getMaxTorqueOutput(ForgeDirection from);
 double getMaxTorqueInput(ForgeDirection from);
 boolean canOutputTorque(ForgeDirection towards);
 boolean canInputTorque(ForgeDirection from);
 
-double getClientOutputRotation();
-double getPrevClientOutputRotation();
-boolean useClientRotation();
+double getClientOutputRotation(ForgeDirection from);
+double getPrevClientOutputRotation(ForgeDirection from);
+boolean useOutputRotation(ForgeDirection from);
 
+@Deprecated
+double getTorqueTransferLossPercent();
 @Deprecated
 double getTorqueOutput();//return the energy output last tick
 @Deprecated

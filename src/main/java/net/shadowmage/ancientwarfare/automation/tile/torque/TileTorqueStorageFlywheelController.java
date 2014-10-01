@@ -102,13 +102,13 @@ public void onBlockUpdated()
   }
 
 @Override
-public boolean useClientRotation(){return true;}
+public boolean useOutputRotation(ForgeDirection from){return true;}
 
 @Override
-public double getClientOutputRotation(){return clientRotation;}
+public double getClientOutputRotation(ForgeDirection from){return clientRotation;}
 
 @Override
-public double getPrevClientOutputRotation(){return prevClientRotation;}
+public double getPrevClientOutputRotation(ForgeDirection from){return prevClientRotation;}
 
 @Override
 public boolean receiveClientEvent(int a, int b)
