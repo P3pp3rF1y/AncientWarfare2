@@ -501,4 +501,11 @@ public void onBoundsAdjusted(){}//NOOP
 @Override
 public boolean userAdjustableBlocks(){return false;}
 
+@Override
+public double drainTorque(ForgeDirection from, double energy)
+  {
+  // TODO Auto-generated method stub
+  return 0;
+  }
+
 }

@@ -61,6 +61,8 @@ public TorqueCell(double in, double out, double max, double eff)
 
 public double getEnergy(){return energy;}
 
+public double getMaxEnergy(){return maxEnergy;}
+
 public void setEnergy(double in){energy = Math.max(0, Math.min(in, maxEnergy));}
 
 public double addEnergy(double in)

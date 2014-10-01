@@ -20,9 +20,9 @@ public TileWarehouse()
   }
 
 @Override
-public TileEntity[] getNeighbors()
+public double drainTorque(ForgeDirection from, double energy)
   {
-  return null;
+  return 0;
   }
 
 @Override
@@ -32,21 +32,9 @@ public double getMaxTorqueOutput(ForgeDirection from)
   }
 
 @Override
-public double getTorqueOutput()
-  {
-  return 0;
-  }
-
-@Override
 public boolean canOutputTorque(ForgeDirection towards)
   {
   return false;
-  }
-
-@Override
-public ForgeDirection getPrimaryFacing()
-  {
-  return ForgeDirection.getOrientation(getBlockMetadata());
   }
 
 @Override

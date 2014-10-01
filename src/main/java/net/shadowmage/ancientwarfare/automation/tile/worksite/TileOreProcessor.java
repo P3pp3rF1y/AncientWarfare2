@@ -13,11 +13,11 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
@@ -207,10 +207,24 @@ public void closeInventory(){}//NOOP
 public boolean hasWork(){return storedEnergy < maxEnergyStored;}
 
 @Override
-public void addEnergyFromWorker(IWorker worker){IWorkSite.WorksiteImplementation.addEnergyFromWorker(this, worker);}
+public void addEnergyFromWorker(IWorker worker)
+  {  
+  addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output_factor);
+  }
 
 @Override
-public void addEnergyFromPlayer(EntityPlayer player){IWorkSite.WorksiteImplementation.addEnergyFromPlayer(this, player);}
+public void addEnergyFromPlayer(EntityPlayer player)
+  {
+  addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output_factor);
+  }
+
+@Override
+public final double addTorque(ForgeDirection from, double energy)
+  {
+  energy = Math.min(getMaxTorqueInput(from), energy);
+  storedEnergy+=energy;
+  return energy;
+  }
 
 @Override
 public Team getTeam(){return worldObj.getScoreboard().getPlayersTeam(owner);}
@@ -256,5 +270,8 @@ public void addUpgrade(WorksiteUpgrade upgrade){}//NOOP
 
 @Override
 public void removeUpgrade(WorksiteUpgrade upgrade){}//NOOP
+
+@Override
+public double drainTorque(ForgeDirection from, double energy){return 0;}//NOOP
 
 }

@@ -5,20 +5,21 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
 
 public class TileTorqueStorageFlywheelController extends TileTorqueStorageBase
 {
 
 private boolean powered;
-
 double clientRotation;
 double prevClientRotation;
+TorqueCell inputCell, outputCell;
 
 public TileTorqueStorageFlywheelController()
   {
-  
+  inputCell = new TorqueCell(32, 32, 32, 1.f);//TODO set default values from config
+  outputCell = new TorqueCell(32, 32, 32, 1.f);//TODO set default values from config
   }
 
 public TileFlywheelStorage getControlledFlywheel()
@@ -77,9 +78,9 @@ public double getFlywheelPrevRotation()
 //  }
 
 @Override
-public void onBlockUpdated()
+public void onNeighborTileChanged()
   {
-  super.onBlockUpdated();
+  super.onNeighborTileChanged();
   if(!worldObj.isRemote)
     {
     boolean p = powered;
@@ -116,6 +117,62 @@ public boolean receiveClientEvent(int a, int b)
   }
 
 @Override
+public boolean canInputTorque(ForgeDirection from){return from==orientation.getOpposite();}
+
+@Override
+public boolean canOutputTorque(ForgeDirection towards){return towards==orientation;}
+
+@Override
+public double getMaxTorqueOutput(ForgeDirection from)
+  {
+  if(powered){return 0;}
+  return outputCell.getMaxOutput();
+  }
+
+@Override
+public double getMaxTorque(ForgeDirection from)
+  {
+  TorqueCell cell = getCell(from);
+  return cell==null ? 0 : cell.getMaxEnergy();
+  }
+
+@Override
+public double getTorqueStored(ForgeDirection from)
+  {
+  TorqueCell cell = getCell(from);
+  return cell==null ? 0 : cell.getEnergy();
+  }
+
+@Override
+public double addTorque(ForgeDirection from, double energy)
+  {
+  TorqueCell cell = getCell(from);
+  return cell==null ? 0 : cell.addEnergy(energy);
+  }
+
+@Override
+public double drainTorque(ForgeDirection from, double energy)
+  {
+  TorqueCell cell = getCell(from);
+  return cell==null ? 0 : cell.drainEnergy(energy);
+  }
+
+@Override
+public double getMaxTorqueInput(ForgeDirection from)
+  {
+  TorqueCell cell = getCell(from);
+  return cell==null ? 0 : cell.getMaxInput();
+  }
+
+private TorqueCell getCell(ForgeDirection from)
+  {
+  if(from==orientation){return outputCell;}
+  else if(from==orientation.getOpposite()){return inputCell;}
+  return null;
+  }
+
+//*************************************** NBT / DATA PACKET ***************************************//
+@Override
 public NBTTagCompound getDescriptionTag()
   {
   NBTTagCompound tag = super.getDescriptionTag();
@@ -136,6 +193,8 @@ public void writeToNBT(NBTTagCompound tag)
   {  
   super.writeToNBT(tag);
   tag.setBoolean("powered", powered);
+  tag.setDouble("torqueEnergyIn", inputCell.getEnergy());
+  tag.setDouble("torqueEnergyOut", outputCell.getEnergy());
   }
 
 @Override
@@ -143,19 +202,8 @@ public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
   powered = tag.getBoolean("powered");  
+  inputCell.setEnergy(tag.getDouble("torqueEnergyIn"));
+  outputCell.setEnergy(tag.getDouble("torqueEnergyOut"));
   }
-
-@Override
-public double getMaxTorqueOutput(ForgeDirection from)
-  {
-  if(powered){return 0;}
-  return super.getMaxTorqueOutput(from);
-  }
-
-@Override
-public boolean canInputTorque(ForgeDirection from){return from==orientation.getOpposite();}
-
-@Override
-public boolean canOutputTorque(ForgeDirection towards){return towards==orientation;}
 
 }

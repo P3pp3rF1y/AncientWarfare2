@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
@@ -139,29 +140,29 @@ public boolean canOutputTorque(ForgeDirection towards)
   }
 
 @Override
+public double drainTorque(ForgeDirection from, double energy)
+  {
+  return 0;
+  }
+
+@Override
+public void addEnergyFromWorker(IWorker worker)
+  {  
+  addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output_factor);
+  }
+
+@Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
-  IWorkSite.WorksiteImplementation.addEnergyFromPlayer(this, player);
+  addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output_factor);
   }
 
 @Override
 public final double addTorque(ForgeDirection from, double energy)
   {
-  if(canInputTorque(from))
-    {
-    if(energy+getTorqueStored(null)>getMaxTorque(null))
-      {
-      energy = getMaxTorque(null)-getTorqueStored(null);
-      }
-    if(energy>getMaxTorqueInput(null))
-      {
-      energy = getMaxTorqueInput(null);
-      }
-    storedEnergy+=energy;
-    if(storedEnergy>getMaxTorque(null)){storedEnergy=getMaxTorque(null);}
-    return energy;    
-    }
-  return 0;
+  energy = Math.min(getMaxTorqueInput(from), energy);
+  storedEnergy+=energy;
+  return energy;
   }
 
 @Override
@@ -244,12 +245,6 @@ public void updateEntity()
 protected void updateEfficiency()
   {
   efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
-  }
-
-@Override
-public void addEnergyFromWorker(IWorker worker)
-  {  
-  IWorkSite.WorksiteImplementation.addEnergyFromWorker(this, worker);
   }
 
 @Override

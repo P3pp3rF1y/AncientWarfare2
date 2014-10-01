@@ -42,7 +42,6 @@ private TileEntity[]bcCache;//cannot reference interface directly, but can cast 
 private TileEntity[]rfCache;//cannot reference interface directly, but can cast directly...
 private ITorqueTile[]torqueCache;
 
-
 //*************************************** COFH RF METHODS ***************************************//
 @Optional.Method(modid="CoFHCore")
 @Override
@@ -62,7 +61,7 @@ public final int getMaxEnergyStored(ForgeDirection from)
 @Override
 public final boolean canConnectEnergy(ForgeDirection from)
   {
-  return canOutputTorque(from) || canInputTorque(from);//TODO verify what this expects
+  return canOutputTorque(from) || canInputTorque(from);
   }
 
 @Optional.Method(modid="CoFHCore")
@@ -94,19 +93,19 @@ public IBatteryObject getMjBattery(String kind, ForgeDirection direction)
 
 //*************************************** NEIGHBOR CACHE UPDATING ***************************************//
 
-protected final ITorqueTile[] getTorqueCache()
+public final ITorqueTile[] getTorqueCache()
   {
   if(torqueCache==null){buildTorqueCache();}
   return torqueCache;
   }
 
-protected final TileEntity[] getRFCache()
+public final TileEntity[] getRFCache()
   {
   if(rfCache==null){buildRFCache();}
   return rfCache;
   }
 
-protected final TileEntity[] getBCCache()
+public final TileEntity[] getBCCache()
   {
   if(bcCache==null){buildBCCache();}
   return bcCache;
@@ -197,7 +196,7 @@ public void invalidate()
   invalidateNeighborCache();
   }
 
-public final void onNeighborTileChanged()
+public void onNeighborTileChanged()
   {
   invalidateNeighborCache();
   }

@@ -94,7 +94,7 @@ public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
   TileEntity te = world.getTileEntity(x, y, z);
   if(te instanceof TileTorqueTransportBase)
     {
-    TileTorqueTransportBase tile = (TileTorqueTransportBase) world.getTileEntity(x, y, z);
+    TileTorqueTransportConduit tile = (TileTorqueTransportConduit) world.getTileEntity(x, y, z);
     boolean[] sides = tile.getConnections();
     if(sides[0]){y1=0.f;}
     if(sides[1]){y2=1.f;}

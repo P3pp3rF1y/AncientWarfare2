@@ -310,4 +310,10 @@ public boolean canOutputTorque(ForgeDirection towards)
   return false;
   }
 
+@Override
+public double drainTorque(ForgeDirection from, double energy)
+  {
+  return 0;
+  }
+
 }

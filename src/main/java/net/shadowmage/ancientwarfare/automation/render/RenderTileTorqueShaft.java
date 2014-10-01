@@ -61,7 +61,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   
   if(shaft.prev==null)//no prev shaft, render gearbox and input head at either shaft rpm or input rpm
     {
-    ITorqueTile itt = shaft.getNeighborTorqueTiles()[d.getOpposite().ordinal()];
+    ITorqueTile itt = shaft.getTorqueCache()[d.getOpposite().ordinal()];
     if(itt!=null && itt.canOutputTorque(d) && itt.useOutputRotation(null))
       {
       rotation = (float) getRotation(itt.getClientOutputRotation(null), itt.getPrevClientOutputRotation(null), delta);

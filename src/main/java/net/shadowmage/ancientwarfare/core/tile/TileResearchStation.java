@@ -427,4 +427,10 @@ public void setPrimaryFacing(ForgeDirection face)
   this.orientation = face;
   }
 
+@Override
+public double drainTorque(ForgeDirection from, double energy)
+  {
+  return 0;
+  }
+
 }

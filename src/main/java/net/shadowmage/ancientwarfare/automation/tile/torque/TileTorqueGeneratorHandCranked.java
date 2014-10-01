@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -18,10 +19,11 @@ public class TileTorqueGeneratorHandCranked extends TileTorqueGeneratorBase impl
 {
 
 String ownerName = "";
+TorqueCell torqueCell;
 
 public TileTorqueGeneratorHandCranked()
   {
-  
+  torqueCell = new TorqueCell(0, 4, 1600, 1.f);
   }
 
 @Override
@@ -72,21 +74,19 @@ public boolean userAdjustableBlocks(){return false;}// NOOP
 @Override
 public boolean hasWork()
   {
-  return getTorqueStored(null)<getMaxTorque(null);
+  return torqueCell.getEnergy() < torqueCell.getMaxEnergy();
   }
 
 @Override
 public void addEnergyFromWorker(IWorker worker)
-  {
-  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output_factor;
-  if(storedEnergy>getMaxTorque(null)){storedEnergy = getMaxTorque(null);}
+  {  
+  torqueCell.addEnergy(AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output_factor);
   }
 
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
-  storedEnergy += AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output_factor;
-  if(storedEnergy>getMaxTorque(null)){storedEnergy=getMaxTorque(null);}
+  torqueCell.addEnergy(AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output_factor);
   }
 
 @Override
@@ -137,6 +137,7 @@ public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
   if(tag.hasKey("owner")){ownerName = tag.getString("owner");}
+  torqueCell.setEnergy(tag.getDouble("torqueEnergy"));  
   }
 
 @Override
@@ -144,10 +145,65 @@ public void writeToNBT(NBTTagCompound tag)
   {  
   super.writeToNBT(tag);
   if(ownerName!=null){tag.setString("owner", ownerName);}
+  tag.setDouble("torqueEnergy", torqueCell.getEnergy());
+  }
+
+@Override
+public double getMaxTorque(ForgeDirection from)
+  {
+  return torqueCell.getMaxEnergy();
+  }
+
+@Override
+public double getTorqueStored(ForgeDirection from)
+  {
+  return torqueCell.getEnergy();
+  }
+
+@Override
+public double addTorque(ForgeDirection from, double energy)
+  {
+  return torqueCell.addEnergy(energy);
+  }
+
+@Override
+public double drainTorque(ForgeDirection from, double energy)
+  {
+  return torqueCell.drainEnergy(energy);
+  }
+
+@Override
+public double getMaxTorqueOutput(ForgeDirection from)
+  {
+  return torqueCell.getMaxOutput();
+  }
+
+@Override
+public double getMaxTorqueInput(ForgeDirection from)
+  {
+  return torqueCell.getMaxInput();
   }
 
 @Override
 public boolean canInputTorque(ForgeDirection from)
+  {
+  return false;
+  }
+
+@Override
+public double getClientOutputRotation(ForgeDirection from)
+  {
+  return 0;
+  }
+
+@Override
+public double getPrevClientOutputRotation(ForgeDirection from)
+  {
+  return 0;
+  }
+
+@Override
+public boolean useOutputRotation(ForgeDirection from)
   {
   return false;
   }

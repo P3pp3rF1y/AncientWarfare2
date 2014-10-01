@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
@@ -21,12 +22,14 @@ InventoryBasic fuelInventory = new InventoryBasic(1)
     }
   }; 
   
+TorqueCell torqueCell;
+  
 int burnTime = 0;
 int burnTimeBase = 0;
 
 public TileTorqueGeneratorSterling()
   {
-  
+  torqueCell = new TorqueCell(0, 4, 1600, 1.f);
   }
 
 @Override
@@ -55,8 +58,7 @@ public void updateEntity()
     }
   else if(burnTime>0)
     {
-    storedEnergy += 1.d * AWAutomationStatics.sterling_generator_output_factor;
-    storedEnergy=storedEnergy>maxEnergy? maxEnergy : storedEnergy;
+    addTorque(getPrimaryFacing(), 1.d * AWAutomationStatics.sterling_generator_output_factor);
     burnTime--;
     }  
   }
@@ -169,6 +171,7 @@ public void readFromNBT(NBTTagCompound tag)
     {
     fuelInventory.readFromNBT(tag.getCompoundTag("inventory"));
     }
+  torqueCell.setEnergy(tag.getDouble("torqueEnergy"));
   }
 
 @Override
@@ -178,6 +181,57 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("burnTicks", burnTime);
   tag.setInteger("burnTicksBase", burnTimeBase);
   tag.setTag("inventory", fuelInventory.writeToNBT(new NBTTagCompound()));
+  tag.setDouble("torqueEnergy", torqueCell.getEnergy());
+  }
+
+@Override
+public double getMaxTorque(ForgeDirection from)
+  {
+  return torqueCell.getMaxEnergy();
+  }
+
+@Override
+public double getTorqueStored(ForgeDirection from)
+  {
+  return torqueCell.getEnergy();
+  }
+
+@Override
+public double addTorque(ForgeDirection from, double energy)
+  {
+  return torqueCell.addEnergy(energy);
+  }
+
+@Override
+public double drainTorque(ForgeDirection from, double energy)
+  {
+  return torqueCell.drainEnergy(energy);
+  }
+
+@Override
+public double getMaxTorqueOutput(ForgeDirection from)
+  {
+  return torqueCell.getMaxOutput();
+  }
+
+@Override
+public double getMaxTorqueInput(ForgeDirection from)
+  {
+  return torqueCell.getMaxInput();
+  }
+
+@Override
+public double getClientOutputRotation(ForgeDirection from)
+  {
+  // TODO Auto-generated method stub
+  return 0;
+  }
+
+@Override
+public double getPrevClientOutputRotation(ForgeDirection from)
+  {
+  // TODO Auto-generated method stub
+  return 0;
   }
 
 }

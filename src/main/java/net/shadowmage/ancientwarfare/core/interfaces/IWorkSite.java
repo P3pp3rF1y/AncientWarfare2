@@ -114,22 +114,6 @@ public static double getEfficiencyFactor(EnumSet<WorksiteUpgrade> upgrades)
   return efficiencyBonusFactor;
   }
 
-public static void addEnergyFromWorker(IWorkSite site, IWorker worker)
-  {
-  double e = site.getTorqueStored(null);
-  e += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(site.getWorkType());
-  if(e>site.getMaxTorque(null)){e = site.getMaxTorque(null);}
-  site.setTorqueEnergy(e);
-  }
-
-public static void addEnergyFromPlayer(IWorkSite site, EntityPlayer player)
-  {
-  double e = site.getTorqueStored(null);
-  e += AWCoreStatics.energyPerWorkUnit;
-  if(e>site.getMaxTorque(null)){e = site.getMaxTorque(null);}
-  site.setTorqueEnergy(e);
-  }
-
 }
 
 }
