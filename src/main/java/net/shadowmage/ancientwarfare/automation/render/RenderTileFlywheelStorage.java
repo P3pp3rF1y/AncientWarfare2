@@ -1,17 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelStorage;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
+
+import org.lwjgl.opengl.GL11;
 
 public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer
 {
