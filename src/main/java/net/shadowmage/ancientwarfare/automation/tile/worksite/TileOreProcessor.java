@@ -144,34 +144,34 @@ public String getOwnerName(){return owner;}
 public ForgeDirection getPrimaryFacing(){return orientation;}
 
 @Override
-public void setEnergy(double energy){storedEnergy = energy>maxEnergyStored? maxEnergyStored : energy;}
+public void setTorqueEnergy(double energy){storedEnergy = energy>maxEnergyStored? maxEnergyStored : energy;}
 
 @Override
-public double getMaxEnergy(){return maxEnergyStored;}
+public double getMaxTorque(){return maxEnergyStored;}
 
 @Override
-public double getEnergyStored(){return storedEnergy;}
+public double getTorqueStored(){return storedEnergy;}
 
 @Override
-public double addEnergy(ForgeDirection from, double energy){return ITorque.addEnergy(this, from, energy);}
+public double addTorque(ForgeDirection from, double energy){return ITorque.addEnergy(this, from, energy);}
 
 @Override
-public double getEnergyDrainFactor(){return 0;}//NOOP
+public double getTorqueTransferLossPercent(){return 0;}//NOOP
 
 @Override
-public double getMaxOutput(){return 0;}//NOOP
+public double getMaxTorqueOutput(){return 0;}//NOOP
 
 @Override
-public double getMaxInput(){return maxInput;}
+public double getMaxTorqueInput(){return maxInput;}
 
 @Override
-public double getEnergyOutput(){return 0;}//NOOP
+public double getTorqueOutput(){return 0;}//NOOP
 
 @Override
-public boolean canOutput(ForgeDirection towards){return false;}
+public boolean canOutputTorque(ForgeDirection towards){return false;}
 
 @Override
-public boolean canInput(ForgeDirection from){return true;}
+public boolean canInputTorque(ForgeDirection from){return true;}
 
 @Override
 public boolean cascadedInput(){return false;}//NOOP

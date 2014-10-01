@@ -28,13 +28,13 @@ public void onBlockUpdated()
   super.onBlockUpdated();
   prev = next = null;
   ITorqueTile output = neighborTorqueTileCache[orientation.ordinal()];
-  if(output !=null && output.getClass()==this.getClass() && output.canInput(orientation.getOpposite()))
+  if(output !=null && output.getClass()==this.getClass() && output.canInputTorque(orientation.getOpposite()))
     {
     next = (TileTorqueTransportShaft) output;
     next.prev=this;
     }
   ITorqueTile input = neighborTorqueTileCache[orientation.getOpposite().ordinal()];
-  if(input !=null && input.getClass()==this.getClass() && input.canOutput(orientation))
+  if(input !=null && input.getClass()==this.getClass() && input.canOutputTorque(orientation))
     {
     prev = (TileTorqueTransportShaft) input;
     prev.next=this;
@@ -90,13 +90,13 @@ protected void updateRotation()
   }
 
 @Override
-public boolean canOutput(ForgeDirection towards)
+public boolean canOutputTorque(ForgeDirection towards)
   {
   return towards==orientation;
   }
 
 @Override
-public boolean canInput(ForgeDirection from)
+public boolean canInputTorque(ForgeDirection from)
   {
   return from==orientation.getOpposite();
   }

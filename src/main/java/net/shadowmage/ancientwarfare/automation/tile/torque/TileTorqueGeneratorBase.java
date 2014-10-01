@@ -17,7 +17,7 @@ public abstract class TileTorqueGeneratorBase extends TileTorqueBase implements 
 {
 
 @Override
-public boolean canInput(ForgeDirection from)
+public boolean canInputTorque(ForgeDirection from)
   {
   return false;
   }
@@ -32,7 +32,7 @@ public String toString()
 @Override
 public boolean canEmitPowerFrom(ForgeDirection side)
   {
-  return canOutput(side);
+  return canOutputTorque(side);
   }
 
 @Optional.Method(modid="BuildCraft|Core")

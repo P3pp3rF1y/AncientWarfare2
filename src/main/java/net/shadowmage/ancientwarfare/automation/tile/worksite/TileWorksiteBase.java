@@ -145,25 +145,25 @@ public TileEntity[] getNeighbors()
   }
 
 @Override
-public double getMaxOutput()
+public double getMaxTorqueOutput()
   {
   return 0;
   }
 
 @Override
-public double getEnergyOutput()
+public double getTorqueOutput()
   {
   return 0;
   }
 
 @Override
-public boolean canOutput(ForgeDirection towards)
+public boolean canOutputTorque(ForgeDirection towards)
   {
   return false;
   }
 
 @Override
-public final void setEnergy(double energy)
+public final void setTorqueEnergy(double energy)
   {
   this.storedEnergy = energy;
   if(this.storedEnergy>this.maxEnergyStored)
@@ -173,7 +173,7 @@ public final void setEnergy(double energy)
   }
 
 @Override
-public double getEnergyDrainFactor()
+public double getTorqueTransferLossPercent()
   {
   return 1;
   }
@@ -185,20 +185,20 @@ public void addEnergyFromPlayer(EntityPlayer player)
   }
 
 @Override
-public final double addEnergy(ForgeDirection from, double energy)
+public final double addTorque(ForgeDirection from, double energy)
   {
-  if(canInput(from))
+  if(canInputTorque(from))
     {
-    if(energy+getEnergyStored()>getMaxEnergy())
+    if(energy+getTorqueStored()>getMaxTorque())
       {
-      energy = getMaxEnergy()-getEnergyStored();
+      energy = getMaxTorque()-getTorqueStored();
       }
-    if(energy>getMaxInput())
+    if(energy>getMaxTorqueInput())
       {
-      energy = getMaxInput();
+      energy = getMaxTorqueInput();
       }
     storedEnergy+=energy;
-    if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
+    if(storedEnergy>getMaxTorque()){storedEnergy=getMaxTorque();}
     return energy;    
     }
   return 0;
@@ -211,25 +211,25 @@ public String toString()
   }
 
 @Override
-public final double getMaxEnergy()
+public final double getMaxTorque()
   {
   return maxEnergyStored;
   }
 
 @Override
-public final double getEnergyStored()
+public final double getTorqueStored()
   {
   return storedEnergy;
   }
 
 @Override
-public final double getMaxInput()
+public final double getMaxTorqueInput()
   {
   return maxInput;
   }
 
 @Override
-public boolean canInput(ForgeDirection from)
+public boolean canInputTorque(ForgeDirection from)
   {
   return true;
   }
@@ -265,7 +265,7 @@ public void updateEntity()
     } 
   worldObj.theProfiler.endStartSection("Check For Work");
   double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
-  boolean hasWork = getEnergyStored() >= ePerUse && hasWorksiteWork();
+  boolean hasWork = getTorqueStored() >= ePerUse && hasWorksiteWork();
   worldObj.theProfiler.endStartSection("Process Work");
   if(hasWork)
     {

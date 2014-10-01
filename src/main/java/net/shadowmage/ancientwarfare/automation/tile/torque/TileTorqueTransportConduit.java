@@ -16,13 +16,13 @@ public TileTorqueTransportConduit()
   }
 
 @Override
-public boolean canInput(ForgeDirection from)
+public boolean canInputTorque(ForgeDirection from)
   {
   return from!=orientation;
   }
 
 @Override
-public boolean canOutput(ForgeDirection towards)
+public boolean canOutputTorque(ForgeDirection towards)
   {
   return towards==orientation;
   }

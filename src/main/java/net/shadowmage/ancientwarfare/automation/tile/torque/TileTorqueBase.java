@@ -97,7 +97,7 @@ public void updateEntity()
     }
   this.energyInput = this.storedEnergy - this.prevEnergy;
   applyPowerDrain();
-  if(this.getMaxOutput()>0)
+  if(this.getMaxTorqueOutput()>0)
     {
     double s = this.storedEnergy;
     outputPower();
@@ -122,7 +122,7 @@ protected void serverNetworkUpdate()
   networkUpdateTicks--;
   if(networkUpdateTicks<=0)
     {
-    double percentStored = storedEnergy / getMaxEnergy();
+    double percentStored = storedEnergy / getMaxTorque();
     double percentTransferred = maxOutput>0 ? energyOutput / maxOutput : 0;
     int total = (int)((percentStored+percentTransferred)*100.d);
     if(total>100){total=100;}
@@ -169,7 +169,7 @@ public String toString()
 //************************************** ENERGY MANAGEMENT CODE ****************************************//
 
 @Override
-public double addEnergy(ForgeDirection from, double energy){return ITorque.addEnergy(this, from, energy);}
+public double addTorque(ForgeDirection from, double energy){return ITorque.addEnergy(this, from, energy);}
 
 @Override
 public boolean cascadedInput()
@@ -178,13 +178,13 @@ public boolean cascadedInput()
   }
 
 @Override
-public double getMaxInput()
+public double getMaxTorqueInput()
   {
   return maxInput;
   }
 
 @Override
-public double getMaxOutput()
+public double getMaxTorqueOutput()
   {
   return maxOutput;
   }
@@ -196,31 +196,31 @@ public ForgeDirection getPrimaryFacing()
   }
 
 @Override
-public double getEnergyDrainFactor()
+public double getTorqueTransferLossPercent()
   {
   return energyDrainFactor;
   }
 
 @Override
-public void setEnergy(double energy)
+public void setTorqueEnergy(double energy)
   {
   this.storedEnergy = energy;
   }
 
 @Override
-public double getEnergyStored()
+public double getTorqueStored()
   {
   return storedEnergy;
   }
 
 @Override
-public double getMaxEnergy()
+public double getMaxTorque()
   {
   return maxEnergy;
   }
 
 @Override
-public double getEnergyOutput()
+public double getTorqueOutput()
   {
   return energyOutput;
   }

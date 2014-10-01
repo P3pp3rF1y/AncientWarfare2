@@ -23,7 +23,7 @@ public abstract class TileTorqueTransportBase extends TileTorqueBase implements 
 @Override
 public boolean canEmitPowerFrom(ForgeDirection side)
   {
-  return canOutput(side);
+  return canOutputTorque(side);
   }
 
 @Optional.Method(modid="BuildCraft|Core")
@@ -51,23 +51,23 @@ public int getMaxEnergyStored(ForgeDirection from)
 @Override
 public boolean canConnectEnergy(ForgeDirection from)
   {
-  return canOutput(from) || canInput(from);//TODO verify what this expects
+  return canOutputTorque(from) || canInputTorque(from);//TODO verify what this expects
   }
 
 @Optional.Method(modid="CoFHCore")
 @Override
 public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
   {
-  if(!canOutput(from)){return 0;}  
-  double d = getEnergyStored();
-  double d1 = getMaxOutput();
+  if(!canOutputTorque(from)){return 0;}  
+  double d = getTorqueStored();
+  double d1 = getMaxTorqueOutput();
   double d2 = Math.min(d1, d);  
   int d3 = (int)(d2*10.d);  
   maxExtract = Math.min(d3, maxExtract);    
   if(!simulate)
     {
     d2 = (double)maxExtract / 10.d;
-    setEnergy(d-d2);
+    setTorqueEnergy(d-d2);
     }
   return maxExtract;
   }
@@ -76,9 +76,9 @@ public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 @Override
 public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
   {
-  if(!canInput(from)){return 0;}
-  double d = getEnergyStored();
-  double d1 = getMaxOutput();
+  if(!canInputTorque(from)){return 0;}
+  double d = getTorqueStored();
+  double d1 = getMaxTorqueOutput();
   double d2 = Math.min(d, d1);
   int d3 = (int)(d2*10.d);
   maxReceive = Math.min(d3, maxReceive);
@@ -93,7 +93,7 @@ public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 protected boolean buildConnection(ForgeDirection side, TileEntity te)
   {
   if(te==null){return false;}
-  if(canOutput(side))
+  if(canOutputTorque(side))
     {
     if(BCProxy.instance.isPowerPipe(worldObj, te))//always connect to BC pipes, who knows what direction the power is flowing....
       {
@@ -102,13 +102,13 @@ protected boolean buildConnection(ForgeDirection side, TileEntity te)
     if(te instanceof ITorqueTile)
       {
       ITorqueTile rec = (ITorqueTile)te;
-      if(rec.canInput(side.getOpposite()))
+      if(rec.canInputTorque(side.getOpposite()))
         {
         return true;
         }         
       }
     }
-  else if(canInput(side))
+  else if(canInputTorque(side))
     {
     if(BCProxy.instance.isPowerPipe(worldObj, te))//always connect to BC pipes, who knows what direction the power is flowing....
       {
@@ -117,7 +117,7 @@ protected boolean buildConnection(ForgeDirection side, TileEntity te)
     if(te instanceof ITorqueTile)
       {
       ITorqueTile gen = (ITorqueTile)te;
-      if(gen.canOutput(side.getOpposite()))
+      if(gen.canOutputTorque(side.getOpposite()))
         {
         return true;        
         }

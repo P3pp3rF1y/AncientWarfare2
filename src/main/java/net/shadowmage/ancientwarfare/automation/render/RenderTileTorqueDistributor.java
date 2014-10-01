@@ -59,7 +59,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   for(int i = 0; i < 6; i++)
     {
     piece = model.getPiece(sideNames[i]);    
-    vis = (conduit.canOutput(ForgeDirection.getOrientation(i)) && connections[i]) || i==conduit.getPrimaryFacing().ordinal();
+    vis = (conduit.canOutputTorque(ForgeDirection.getOrientation(i)) && connections[i]) || i==conduit.getPrimaryFacing().ordinal();
     piece.setVisible(vis);
     if(vis)
       {
@@ -76,7 +76,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   for(int i = 0; i < 6; i++)
     {
     piece = model.getPiece(sideNames[i]);
-    vis = conduit.canInput(ForgeDirection.getOrientation(i)) && connections[i];
+    vis = conduit.canInputTorque(ForgeDirection.getOrientation(i)) && connections[i];
     piece.setVisible(vis);
     if(vis)
       {

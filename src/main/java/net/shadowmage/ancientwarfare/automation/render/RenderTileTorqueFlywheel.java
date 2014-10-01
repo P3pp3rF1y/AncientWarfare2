@@ -61,7 +61,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   float flywheelRotation = (float) getRotation(flywheel.getFlywheelRotation(), flywheel.getFlywheelPrevRotation(), delta);
 
   ITorqueTile inputNeighbor = neighbors[d.getOpposite().ordinal()];
-  if(inputNeighbor!=null && inputNeighbor.canOutput(d) && inputNeighbor.useClientRotation())
+  if(inputNeighbor!=null && inputNeighbor.canOutputTorque(d) && inputNeighbor.useClientRotation())
     {
     inputRotation = (float) getRotation(inputNeighbor.getClientOutputRotation(), inputNeighbor.getPrevClientOutputRotation(), delta);
     }

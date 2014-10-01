@@ -91,7 +91,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
       {
       piece = gearHeads[i];
       rotationArray = headRotationDirectionMatrix[i];
-      if(conduit.canOutput(ForgeDirection.getOrientation(i)))
+      if(conduit.canOutputTorque(ForgeDirection.getOrientation(i)))
         {
         rx = rotationArray[0]*rotation;
         ry = rotationArray[1]*rotation;

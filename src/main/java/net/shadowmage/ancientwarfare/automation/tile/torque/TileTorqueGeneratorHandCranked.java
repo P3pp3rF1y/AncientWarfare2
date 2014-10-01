@@ -39,7 +39,7 @@ public int getBoundsMaxWidth(){return 0;}
 public int getBoundsMaxHeight(){return 0;}
 
 @Override
-public boolean canOutput(ForgeDirection towards)
+public boolean canOutputTorque(ForgeDirection towards)
   {
   return towards==orientation;
   }
@@ -74,21 +74,21 @@ public boolean userAdjustableBlocks(){return false;}// NOOP
 @Override
 public boolean hasWork()
   {
-  return getEnergyStored()<getMaxEnergy();
+  return getTorqueStored()<getMaxTorque();
   }
 
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output_factor;
-  if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
+  if(storedEnergy>getMaxTorque()){storedEnergy = getMaxTorque();}
   }
 
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output_factor;
-  if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
+  if(storedEnergy>getMaxTorque()){storedEnergy=getMaxTorque();}
   }
 
 @Override
@@ -149,7 +149,7 @@ public void writeToNBT(NBTTagCompound tag)
   }
 
 @Override
-public boolean canInput(ForgeDirection from)
+public boolean canInputTorque(ForgeDirection from)
   {
   return false;
   }

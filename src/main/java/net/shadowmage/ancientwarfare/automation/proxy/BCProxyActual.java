@@ -30,7 +30,7 @@ public TorqueMJBattery(ITorqueTile tile, IOMode mode, ForgeDirection dir)
 @Override
 public double getEnergyRequested()
   {
-  return tile.getMaxEnergy()-tile.getEnergyStored();
+  return tile.getMaxTorque()-tile.getTorqueStored();
   }
 
 @Override
@@ -48,25 +48,25 @@ public double addEnergy(double mj, boolean ignoreCycleLimit)
    * ALSO  FUCK THIS STUPID BATTERY BULLSHIT __ IT SHOULD NOT BE THIS HARD TO CREATE A GODDAMN BATTERY INTERFACE
    * WHY THE FUCK DOES BC NOT DO PROPER SIDED ENERGY INPUT/OUTPUT HANDLING?
    */
-  return tile.addEnergy(dir, mj);
+  return tile.addTorque(dir, mj);
   }
 
 @Override
 public double getEnergyStored()
   {
-  return tile.getEnergyStored();
+  return tile.getTorqueStored();
   }
 
 @Override
 public void setEnergyStored(double mj)
   {
-  tile.setEnergy(mj);
+  tile.setTorqueEnergy(mj);
   }
 
 @Override
 public double maxCapacity()
   {
-  return tile.getMaxEnergy();
+  return tile.getMaxTorque();
   }
 
 @Override
@@ -78,7 +78,7 @@ public double minimumConsumption()
 @Override
 public double maxReceivedPerCycle()
   {
-  return tile.getMaxInput();
+  return tile.getMaxTorqueInput();
   }
 
 @Override
@@ -117,8 +117,8 @@ public boolean canReceive()
 public IBatteryObject getBatteryObject(String kind, ITorqueTile tile, ForgeDirection dir)
   {
   boolean send = false, recieve = false;
-  recieve = tile.canInput(dir);
-  send = tile.canOutput(dir);
+  recieve = tile.canInputTorque(dir);
+  send = tile.canOutputTorque(dir);
   IOMode mode = send && recieve ? IOMode.Both : send ? IOMode.Send : recieve ? IOMode.Receive : IOMode.None;
   return new TorqueMJBattery(tile, mode, dir);
   }
@@ -141,7 +141,7 @@ public boolean isPowerPipe(World world, TileEntity te)
 @Override
 public void transferPower(World world, int x, int y, int z, ITorqueTile generator)
   {
-  if(generator.getMaxOutput()!=0){return;}
+  if(generator.getMaxTorqueOutput()!=0){return;}
   if(!(generator instanceof IPowerEmitter)){return;}
   world.theProfiler.startSection("AW-BC-PowerUpdate");
   double[] requestedEnergy = new double[6];
@@ -152,8 +152,8 @@ public void transferPower(World world, int x, int y, int z, ITorqueTile generato
   
   IBatteryObject target;
   
-  double maxOutput = generator.getMaxOutput();
-  if(maxOutput>generator.getEnergyStored()){maxOutput = generator.getEnergyStored();}
+  double maxOutput = generator.getMaxTorqueOutput();
+  if(maxOutput>generator.getTorqueStored()){maxOutput = generator.getTorqueStored();}
   if(maxOutput<1)
     {
     world.theProfiler.endSection();
@@ -166,7 +166,7 @@ public void transferPower(World world, int x, int y, int z, ITorqueTile generato
   for(int i = 0; i < 6; i++)
     {
     d = ForgeDirection.getOrientation(i);
-    if(!generator.canOutput(d)){continue;}
+    if(!generator.canOutputTorque(d)){continue;}
     te = tes[i];//world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
     if(te instanceof ITorqueTile){continue;}//skip torque tiles, transfer is handled in torque tile power update
     target = MjAPI.getMjBattery(te);
@@ -190,7 +190,7 @@ public void transferPower(World world, int x, int y, int z, ITorqueTile generato
       request = requestedEnergy[i];
       request *= percentFullfilled;
       request = target.addEnergy(request);
-      generator.setEnergy(generator.getEnergyStored()-request);  
+      generator.setTorqueEnergy(generator.getTorqueStored()-request);  
       }
     }
   world.theProfiler.endSection();

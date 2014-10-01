@@ -123,41 +123,41 @@ public TileEntity[] getNeighbors()
   }
 
 @Override
-public double getMaxOutput()
+public double getMaxTorqueOutput()
   {
   return 0;
   }
 
 @Override
-public double getEnergyOutput()
+public double getTorqueOutput()
   {
   return 0;
   }
 
 @Override
-public boolean canOutput(ForgeDirection towards)
+public boolean canOutputTorque(ForgeDirection towards)
   {
   return false;
   }
 
 @Override
-public void setEnergy(double energy)
+public void setTorqueEnergy(double energy)
   {
   this.storedEnergy = energy;
   }
 
 @Override
-public double addEnergy(ForgeDirection from, double energy)
+public double addTorque(ForgeDirection from, double energy)
   {
-  if(canInput(from))
+  if(canInputTorque(from))
     {
-    if(energy+getEnergyStored()>getMaxEnergy())
+    if(energy+getTorqueStored()>getMaxTorque())
       {
-      energy = getMaxEnergy()-getEnergyStored();
+      energy = getMaxTorque()-getTorqueStored();
       }
-    if(energy>getMaxInput())
+    if(energy>getMaxTorqueInput())
       {
-      energy = getMaxInput();
+      energy = getMaxTorqueInput();
       }
     storedEnergy+=energy;
     return energy;    
@@ -166,31 +166,31 @@ public double addEnergy(ForgeDirection from, double energy)
   }
 
 @Override
-public double getEnergyDrainFactor()
+public double getTorqueTransferLossPercent()
   {
   return 1;
   }
 
 @Override
-public double getMaxEnergy()
+public double getMaxTorque()
   {
   return maxEnergyStored;
   }
 
 @Override
-public double getEnergyStored()
+public double getTorqueStored()
   {
   return storedEnergy;
   }
 
 @Override
-public double getMaxInput()
+public double getMaxTorqueInput()
   {
   return maxInput;
   }
 
 @Override
-public boolean canInput(ForgeDirection from)
+public boolean canInputTorque(ForgeDirection from)
   {
   return true;
   }
@@ -419,14 +419,14 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
-  if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
+  if(storedEnergy>getMaxTorque()){storedEnergy = getMaxTorque();}
   }
 
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
   storedEnergy+=AWCoreStatics.energyPerWorkUnit;
-  if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
+  if(storedEnergy>getMaxTorque()){storedEnergy=getMaxTorque();}
   }
 
 @Override

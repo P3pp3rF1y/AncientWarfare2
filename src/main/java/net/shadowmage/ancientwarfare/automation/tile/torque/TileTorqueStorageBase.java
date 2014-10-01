@@ -19,7 +19,7 @@ public abstract class TileTorqueStorageBase extends TileTorqueBase implements IP
 @Override
 public boolean canEmitPowerFrom(ForgeDirection side)
   {
-  return canOutput(side);
+  return canOutputTorque(side);
   }
 
 @Optional.Method(modid="BuildCraft|Core")

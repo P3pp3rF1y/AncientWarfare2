@@ -17,15 +17,15 @@ public TileTorqueTransportDistributor()
 
 
 @Override
-public boolean canInput(ForgeDirection from)
+public boolean canInputTorque(ForgeDirection from)
   {
   return from==orientation.getOpposite();
   }
 
 @Override
-public boolean canOutput(ForgeDirection towards)
+public boolean canOutputTorque(ForgeDirection towards)
   {
-  return !canInput(towards);//towards!=orientation.getOpposite();
+  return !canInputTorque(towards);//towards!=orientation.getOpposite();
   }
 
 }

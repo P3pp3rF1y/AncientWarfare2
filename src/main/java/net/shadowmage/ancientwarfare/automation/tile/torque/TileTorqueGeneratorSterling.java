@@ -42,7 +42,7 @@ public boolean useClientRotation()
 public void updateEntity()
   {  
   super.updateEntity();
-  if(burnTime <= 0 && getEnergyStored() < getMaxEnergy())
+  if(burnTime <= 0 && getTorqueStored() < getMaxTorque())
     {
     if(fuelInventory.getStackInSlot(0)!=null)
       {
@@ -65,7 +65,7 @@ public void updateEntity()
   }
 
 @Override
-public boolean canOutput(ForgeDirection towards)
+public boolean canOutputTorque(ForgeDirection towards)
   {
   return towards==orientation;
   }

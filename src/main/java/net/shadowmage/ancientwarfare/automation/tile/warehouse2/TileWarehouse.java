@@ -26,19 +26,19 @@ public TileEntity[] getNeighbors()
   }
 
 @Override
-public double getMaxOutput()
+public double getMaxTorqueOutput()
   {
   return 0;
   }
 
 @Override
-public double getEnergyOutput()
+public double getTorqueOutput()
   {
   return 0;
   }
 
 @Override
-public boolean canOutput(ForgeDirection towards)
+public boolean canOutputTorque(ForgeDirection towards)
   {
   return false;
   }

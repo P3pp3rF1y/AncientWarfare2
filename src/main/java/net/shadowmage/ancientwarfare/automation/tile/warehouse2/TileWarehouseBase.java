@@ -561,7 +561,7 @@ public final void removeControlledTile(IControlledTile tile)
   }
 
 @Override
-public final void setEnergy(double energy)
+public final void setTorqueEnergy(double energy)
   {
   this.storedEnergy = energy;
   if(this.storedEnergy>this.maxEnergy)
@@ -574,7 +574,7 @@ public final void setEnergy(double energy)
 public final void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
-  if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
+  if(storedEnergy>getMaxTorque()){storedEnergy = getMaxTorque();}
   }
 
 @Override
@@ -588,55 +588,55 @@ public final void setOwnerName(String name)
 public final void addEnergyFromPlayer(EntityPlayer player)
   {
   storedEnergy+=AWCoreStatics.energyPerWorkUnit;
-  if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
+  if(storedEnergy>getMaxTorque()){storedEnergy=getMaxTorque();}
   }
 
 @Override
-public final double addEnergy(ForgeDirection from, double energy)
+public final double addTorque(ForgeDirection from, double energy)
   {
-  if(canInput(from))
+  if(canInputTorque(from))
     {
-    if(energy+getEnergyStored()>getMaxEnergy())
+    if(energy+getTorqueStored()>getMaxTorque())
       {
-      energy = getMaxEnergy()-getEnergyStored();
+      energy = getMaxTorque()-getTorqueStored();
       }
-    if(energy>getMaxInput())
+    if(energy>getMaxTorqueInput())
       {
-      energy = getMaxInput();
+      energy = getMaxTorqueInput();
       }
     storedEnergy+=energy;
-    if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
+    if(storedEnergy>getMaxTorque()){storedEnergy=getMaxTorque();}
     return energy;    
     }
   return 0;
   }
 
 @Override
-public double getEnergyDrainFactor()
+public double getTorqueTransferLossPercent()
   {
   return 1;
   }
 
 @Override
-public final double getMaxEnergy()
+public final double getMaxTorque()
   {
   return maxEnergy;
   }
 
 @Override
-public final double getEnergyStored()
+public final double getTorqueStored()
   {
   return storedEnergy;
   }
 
 @Override
-public final double getMaxInput()
+public final double getMaxTorqueInput()
   {
   return maxInput;
   }
 
 @Override
-public final boolean canInput(ForgeDirection from)
+public final boolean canInputTorque(ForgeDirection from)
   {
   return true;
   }

@@ -58,7 +58,7 @@ public void updateProgressBar(int par1, int par2)
 public void detectAndSendChanges()
   {  
   super.detectAndSendChanges();
-  double g = tile.getEnergyStored();
+  double g = tile.getTorqueStored();
   if(g!=energy)
     {
     int e = (int)(g*100.d);

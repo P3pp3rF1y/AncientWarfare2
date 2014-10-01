@@ -149,7 +149,7 @@ private boolean validateBlocks()
   }
 
 @Override
-public boolean canOutput(ForgeDirection towards)
+public boolean canOutputTorque(ForgeDirection towards)
   {
   return towards==orientation;
   }
