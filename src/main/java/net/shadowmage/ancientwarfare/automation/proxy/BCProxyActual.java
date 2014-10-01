@@ -30,7 +30,7 @@ public TorqueMJBattery(ITorqueTile tile, IOMode mode, ForgeDirection dir)
 @Override
 public double getEnergyRequested()
   {
-  return tile.getMaxTorque()-tile.getTorqueStored();
+  return tile.getMaxTorque(null)-tile.getTorqueStored(null);
   }
 
 @Override
@@ -54,7 +54,7 @@ public double addEnergy(double mj, boolean ignoreCycleLimit)
 @Override
 public double getEnergyStored()
   {
-  return tile.getTorqueStored();
+  return tile.getTorqueStored(null);
   }
 
 @Override
@@ -66,7 +66,7 @@ public void setEnergyStored(double mj)
 @Override
 public double maxCapacity()
   {
-  return tile.getMaxTorque();
+  return tile.getMaxTorque(null);
   }
 
 @Override
@@ -78,7 +78,7 @@ public double minimumConsumption()
 @Override
 public double maxReceivedPerCycle()
   {
-  return tile.getMaxTorqueInput();
+  return tile.getMaxTorqueInput(null);
   }
 
 @Override
@@ -141,7 +141,7 @@ public boolean isPowerPipe(World world, TileEntity te)
 @Override
 public void transferPower(World world, int x, int y, int z, ITorqueTile generator)
   {
-  if(generator.getMaxTorqueOutput()!=0){return;}
+  if(generator.getMaxTorqueOutput(null)!=0){return;}
   if(!(generator instanceof IPowerEmitter)){return;}
   world.theProfiler.startSection("AW-BC-PowerUpdate");
   double[] requestedEnergy = new double[6];
@@ -152,8 +152,8 @@ public void transferPower(World world, int x, int y, int z, ITorqueTile generato
   
   IBatteryObject target;
   
-  double maxOutput = generator.getMaxTorqueOutput();
-  if(maxOutput>generator.getTorqueStored()){maxOutput = generator.getTorqueStored();}
+  double maxOutput = generator.getMaxTorqueOutput(null);
+  if(maxOutput>generator.getTorqueStored(null)){maxOutput = generator.getTorqueStored(null);}
   if(maxOutput<1)
     {
     world.theProfiler.endSection();
@@ -190,7 +190,7 @@ public void transferPower(World world, int x, int y, int z, ITorqueTile generato
       request = requestedEnergy[i];
       request *= percentFullfilled;
       request = target.addEnergy(request);
-      generator.setTorqueEnergy(generator.getTorqueStored()-request);  
+      generator.setTorqueEnergy(generator.getTorqueStored(null)-request);  
       }
     }
   world.theProfiler.endSection();

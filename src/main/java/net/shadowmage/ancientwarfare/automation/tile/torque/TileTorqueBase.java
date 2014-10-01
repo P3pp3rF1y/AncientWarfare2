@@ -97,7 +97,7 @@ public void updateEntity()
     }
   this.energyInput = this.storedEnergy - this.prevEnergy;
   applyPowerDrain();
-  if(this.getMaxTorqueOutput()>0)
+  if(this.getMaxTorqueOutput(null)>0)
     {
     double s = this.storedEnergy;
     outputPower();
@@ -122,7 +122,7 @@ protected void serverNetworkUpdate()
   networkUpdateTicks--;
   if(networkUpdateTicks<=0)
     {
-    double percentStored = storedEnergy / getMaxTorque();
+    double percentStored = storedEnergy / getMaxTorque(null);
     double percentTransferred = maxOutput>0 ? energyOutput / maxOutput : 0;
     int total = (int)((percentStored+percentTransferred)*100.d);
     if(total>100){total=100;}
@@ -178,13 +178,13 @@ public boolean cascadedInput()
   }
 
 @Override
-public double getMaxTorqueInput()
+public double getMaxTorqueInput(ForgeDirection from)
   {
   return maxInput;
   }
 
 @Override
-public double getMaxTorqueOutput()
+public double getMaxTorqueOutput(ForgeDirection from)
   {
   return maxOutput;
   }
@@ -208,13 +208,13 @@ public void setTorqueEnergy(double energy)
   }
 
 @Override
-public double getTorqueStored()
+public double getTorqueStored(ForgeDirection from)
   {
   return storedEnergy;
   }
 
 @Override
-public double getMaxTorque()
+public double getMaxTorque(ForgeDirection from)
   {
   return maxEnergy;
   }

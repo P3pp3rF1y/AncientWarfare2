@@ -574,7 +574,7 @@ public final void setTorqueEnergy(double energy)
 public final void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
-  if(storedEnergy>getMaxTorque()){storedEnergy = getMaxTorque();}
+  if(storedEnergy>getMaxTorque(null)){storedEnergy = getMaxTorque(null);}
   }
 
 @Override
@@ -588,7 +588,7 @@ public final void setOwnerName(String name)
 public final void addEnergyFromPlayer(EntityPlayer player)
   {
   storedEnergy+=AWCoreStatics.energyPerWorkUnit;
-  if(storedEnergy>getMaxTorque()){storedEnergy=getMaxTorque();}
+  if(storedEnergy>getMaxTorque(null)){storedEnergy=getMaxTorque(null);}
   }
 
 @Override
@@ -596,16 +596,16 @@ public final double addTorque(ForgeDirection from, double energy)
   {
   if(canInputTorque(from))
     {
-    if(energy+getTorqueStored()>getMaxTorque())
+    if(energy+getTorqueStored(null)>getMaxTorque(null))
       {
-      energy = getMaxTorque()-getTorqueStored();
+      energy = getMaxTorque(null)-getTorqueStored(null);
       }
-    if(energy>getMaxTorqueInput())
+    if(energy>getMaxTorqueInput(null))
       {
-      energy = getMaxTorqueInput();
+      energy = getMaxTorqueInput(null);
       }
     storedEnergy+=energy;
-    if(storedEnergy>getMaxTorque()){storedEnergy=getMaxTorque();}
+    if(storedEnergy>getMaxTorque(null)){storedEnergy=getMaxTorque(null);}
     return energy;    
     }
   return 0;
@@ -618,19 +618,19 @@ public double getTorqueTransferLossPercent()
   }
 
 @Override
-public final double getMaxTorque()
+public final double getMaxTorque(ForgeDirection from)
   {
   return maxEnergy;
   }
 
 @Override
-public final double getTorqueStored()
+public final double getTorqueStored(ForgeDirection from)
   {
   return storedEnergy;
   }
 
 @Override
-public final double getMaxTorqueInput()
+public final double getMaxTorqueInput(ForgeDirection from)
   {
   return maxInput;
   }

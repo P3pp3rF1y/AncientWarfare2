@@ -147,10 +147,10 @@ public ForgeDirection getPrimaryFacing(){return orientation;}
 public void setTorqueEnergy(double energy){storedEnergy = energy>maxEnergyStored? maxEnergyStored : energy;}
 
 @Override
-public double getMaxTorque(){return maxEnergyStored;}
+public double getMaxTorque(ForgeDirection from){return maxEnergyStored;}
 
 @Override
-public double getTorqueStored(){return storedEnergy;}
+public double getTorqueStored(ForgeDirection from){return storedEnergy;}
 
 @Override
 public double addTorque(ForgeDirection from, double energy){return ITorque.addEnergy(this, from, energy);}
@@ -159,10 +159,10 @@ public double addTorque(ForgeDirection from, double energy){return ITorque.addEn
 public double getTorqueTransferLossPercent(){return 0;}//NOOP
 
 @Override
-public double getMaxTorqueOutput(){return 0;}//NOOP
+public double getMaxTorqueOutput(ForgeDirection from){return 0;}//NOOP
 
 @Override
-public double getMaxTorqueInput(){return maxInput;}
+public double getMaxTorqueInput(ForgeDirection from){return maxInput;}
 
 @Override
 public double getTorqueOutput(){return 0;}//NOOP

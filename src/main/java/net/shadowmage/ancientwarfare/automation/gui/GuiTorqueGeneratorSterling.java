@@ -49,7 +49,7 @@ public void setupElements()
     }
   pg.setProgress(progress);
   
-  progress = (float)container.energy / (float)container.tile.getMaxTorque();
+  progress = (float)container.energy / (float)container.tile.getMaxTorque(null);
   pg1.setProgress(progress);
   }
 

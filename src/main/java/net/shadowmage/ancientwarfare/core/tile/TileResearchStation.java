@@ -123,7 +123,7 @@ public TileEntity[] getNeighbors()
   }
 
 @Override
-public double getMaxTorqueOutput()
+public double getMaxTorqueOutput(ForgeDirection from)
   {
   return 0;
   }
@@ -151,13 +151,13 @@ public double addTorque(ForgeDirection from, double energy)
   {
   if(canInputTorque(from))
     {
-    if(energy+getTorqueStored()>getMaxTorque())
+    if(energy+getTorqueStored(null)>getMaxTorque(null))
       {
-      energy = getMaxTorque()-getTorqueStored();
+      energy = getMaxTorque(null)-getTorqueStored(null);
       }
-    if(energy>getMaxTorqueInput())
+    if(energy>getMaxTorqueInput(null))
       {
-      energy = getMaxTorqueInput();
+      energy = getMaxTorqueInput(null);
       }
     storedEnergy+=energy;
     return energy;    
@@ -172,19 +172,19 @@ public double getTorqueTransferLossPercent()
   }
 
 @Override
-public double getMaxTorque()
+public double getMaxTorque(ForgeDirection from)
   {
   return maxEnergyStored;
   }
 
 @Override
-public double getTorqueStored()
+public double getTorqueStored(ForgeDirection from)
   {
   return storedEnergy;
   }
 
 @Override
-public double getMaxTorqueInput()
+public double getMaxTorqueInput(ForgeDirection from)
   {
   return maxInput;
   }
@@ -419,14 +419,14 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
-  if(storedEnergy>getMaxTorque()){storedEnergy = getMaxTorque();}
+  if(storedEnergy>getMaxTorque(null)){storedEnergy = getMaxTorque(null);}
   }
 
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
   storedEnergy+=AWCoreStatics.energyPerWorkUnit;
-  if(storedEnergy>getMaxTorque()){storedEnergy=getMaxTorque();}
+  if(storedEnergy>getMaxTorque(null)){storedEnergy=getMaxTorque(null);}
   }
 
 @Override

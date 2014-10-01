@@ -42,7 +42,7 @@ public boolean useClientRotation()
 public void updateEntity()
   {  
   super.updateEntity();
-  if(burnTime <= 0 && getTorqueStored() < getMaxTorque())
+  if(burnTime <= 0 && getTorqueStored(null) < getMaxTorque(null))
     {
     if(fuelInventory.getStackInSlot(0)!=null)
       {

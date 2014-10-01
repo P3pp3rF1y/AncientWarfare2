@@ -26,7 +26,7 @@ public TileEntity[] getNeighbors()
   }
 
 @Override
-public double getMaxTorqueOutput()
+public double getMaxTorqueOutput(ForgeDirection from)
   {
   return 0;
   }

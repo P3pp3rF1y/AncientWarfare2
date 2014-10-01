@@ -11,16 +11,21 @@ private ITorque(){}//noop the class, it is just a container for the interfaces a
 
 public static interface ITorqueTile
 {
-double getMaxTorque();
-double getTorqueStored();
+double getMaxTorque(ForgeDirection from);
+double getTorqueStored(ForgeDirection from);
 double addTorque(ForgeDirection from, double energy);
 double getTorqueTransferLossPercent();
-double getMaxTorqueOutput();
-double getMaxTorqueInput();
-double getTorqueOutput();//return the energy output last tick
+double getMaxTorqueOutput(ForgeDirection from);
+double getMaxTorqueInput(ForgeDirection from);
 boolean canOutputTorque(ForgeDirection towards);
 boolean canInputTorque(ForgeDirection from);
 
+double getClientOutputRotation();
+double getPrevClientOutputRotation();
+boolean useClientRotation();
+
+@Deprecated
+double getTorqueOutput();//return the energy output last tick
 @Deprecated
 TileEntity[] getNeighbors();
 @Deprecated
@@ -31,20 +36,15 @@ boolean cascadedInput();
 ForgeDirection getPrimaryFacing();
 @Deprecated
 void setTorqueEnergy(double energy);
-
-
-double getClientOutputRotation();
-double getPrevClientOutputRotation();
-boolean useClientRotation();
 }
 
 public static double addEnergy(ITorqueTile tile, ForgeDirection from, double energy)
   {
   if(tile.canInputTorque(from))
     {
-    energy = energy > tile.getMaxTorqueInput() ? tile.getMaxTorqueInput() : energy;
-    energy = energy + tile.getTorqueStored() > tile.getMaxTorque() ? tile.getMaxTorque()-tile.getTorqueStored() : energy;
-    tile.setTorqueEnergy(tile.getTorqueStored()+energy);
+    energy = energy > tile.getMaxTorqueInput(null) ? tile.getMaxTorqueInput(null) : energy;
+    energy = energy + tile.getTorqueStored(null) > tile.getMaxTorque(null) ? tile.getMaxTorque(null)-tile.getTorqueStored(null) : energy;
+    tile.setTorqueEnergy(tile.getTorqueStored(null)+energy);
     return energy;
     }
   return 0;
@@ -54,8 +54,8 @@ public static void applyPowerDrain(ITorqueTile tile)
   {
   World world = ((TileEntity)tile).getWorldObj();
   world.theProfiler.startSection("AWPowerDrain");
-  double e = tile.getTorqueStored();
-  double m = tile.getMaxTorque();
+  double e = tile.getTorqueStored(null);
+  double m = tile.getMaxTorque(null);
   double d = tile.getTorqueTransferLossPercent();
   if(e < 0.01d || m <=0 || d <= 0)
     {
@@ -76,14 +76,14 @@ private static ITorqueTile[] targets = new ITorqueTile[6];
 
 public static void transferPower(World world, int x, int y, int z, ITorqueTile generator)
   {
-  if(generator.getMaxTorqueOutput()<=0){return;}
+  if(generator.getMaxTorqueOutput(null)<=0){return;}
   world.theProfiler.startSection("AWPowerTransfer");
   ITorqueTile[] tes = generator.getNeighborTorqueTiles();
   ITorqueTile te;
   ITorqueTile target;
   
-  double maxOutput = generator.getMaxTorqueOutput();
-  if(maxOutput > generator.getTorqueStored()){maxOutput = generator.getTorqueStored();}
+  double maxOutput = generator.getMaxTorqueOutput(null);
+  if(maxOutput > generator.getTorqueStored(null)){maxOutput = generator.getTorqueStored(null);}
   double request;
   double totalRequest = 0;
   
@@ -101,13 +101,13 @@ public static void transferPower(World world, int x, int y, int z, ITorqueTile g
       if(target.canInputTorque(d.getOpposite()))
         {
         targets[d.ordinal()]=target;  
-        request = target.getMaxTorqueInput();
+        request = target.getMaxTorqueInput(null);
         if(target.cascadedInput() && generator.cascadedInput())
           {          
           double teo = target.getTorqueOutput()*0.5d;
-          if(target.getTorqueStored() - teo < generator.getTorqueStored())
+          if(target.getTorqueStored(null) - teo < generator.getTorqueStored(null))
             {
-            double diff = (generator.getTorqueStored() - target.getTorqueStored()) * 0.5d + teo;
+            double diff = (generator.getTorqueStored(null) - target.getTorqueStored(null)) * 0.5d + teo;
             if(request>diff){request=diff;}
             }
           else
@@ -115,7 +115,7 @@ public static void transferPower(World world, int x, int y, int z, ITorqueTile g
             request = 0;
             }
           }
-        if(request + target.getTorqueStored() > target.getMaxTorque()){request = target.getMaxTorque()-target.getTorqueStored();}
+        if(request + target.getTorqueStored(null) > target.getMaxTorque(null)){request = target.getMaxTorque(null)-target.getTorqueStored(null);}
         if(request>0)
           {
           requestedEnergy[d.ordinal()]=request;
@@ -135,8 +135,8 @@ public static void transferPower(World world, int x, int y, int z, ITorqueTile g
       request = requestedEnergy[i];
       request *= percentFullfilled;
       request = target.addTorque(ForgeDirection.getOrientation(i).getOpposite(), request);
-      generator.setTorqueEnergy(generator.getTorqueStored()-request);
-      if(target.getTorqueStored()>target.getMaxTorque()){target.setTorqueEnergy(target.getMaxTorque());}
+      generator.setTorqueEnergy(generator.getTorqueStored(null)-request);
+      if(target.getTorqueStored(null)>target.getMaxTorque(null)){target.setTorqueEnergy(target.getMaxTorque(null));}
       }
     }
   BCProxy.instance.transferPower(world, x, y, z, generator);

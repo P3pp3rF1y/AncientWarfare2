@@ -59,8 +59,8 @@ public boolean canConnectEnergy(ForgeDirection from)
 public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
   {
   if(!canOutputTorque(from)){return 0;}  
-  double d = getTorqueStored();
-  double d1 = getMaxTorqueOutput();
+  double d = getTorqueStored(null);
+  double d1 = getMaxTorqueOutput(null);
   double d2 = Math.min(d1, d);  
   int d3 = (int)(d2*10.d);  
   maxExtract = Math.min(d3, maxExtract);    
@@ -77,8 +77,8 @@ public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
   {
   if(!canInputTorque(from)){return 0;}
-  double d = getTorqueStored();
-  double d1 = getMaxTorqueOutput();
+  double d = getTorqueStored(null);
+  double d1 = getMaxTorqueOutput(null);
   double d2 = Math.min(d, d1);
   int d3 = (int)(d2*10.d);
   maxReceive = Math.min(d3, maxReceive);

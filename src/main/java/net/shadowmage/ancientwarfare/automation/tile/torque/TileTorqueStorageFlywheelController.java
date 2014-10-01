@@ -154,10 +154,10 @@ public void readFromNBT(NBTTagCompound tag)
   }
 
 @Override
-public double getMaxTorqueOutput()
+public double getMaxTorqueOutput(ForgeDirection from)
   {
   if(powered){return 0;}
-  return super.getMaxTorqueOutput();
+  return super.getMaxTorqueOutput(from);
   }
 
 @Override

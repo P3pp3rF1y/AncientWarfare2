@@ -74,21 +74,21 @@ public boolean userAdjustableBlocks(){return false;}// NOOP
 @Override
 public boolean hasWork()
   {
-  return getTorqueStored()<getMaxTorque();
+  return getTorqueStored(null)<getMaxTorque(null);
   }
 
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output_factor;
-  if(storedEnergy>getMaxTorque()){storedEnergy = getMaxTorque();}
+  if(storedEnergy>getMaxTorque(null)){storedEnergy = getMaxTorque(null);}
   }
 
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output_factor;
-  if(storedEnergy>getMaxTorque()){storedEnergy=getMaxTorque();}
+  if(storedEnergy>getMaxTorque(null)){storedEnergy=getMaxTorque(null);}
   }
 
 @Override
