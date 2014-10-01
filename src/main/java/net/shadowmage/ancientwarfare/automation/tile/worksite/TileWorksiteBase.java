@@ -110,13 +110,7 @@ public boolean shouldRenderInPass(int pass)
 public abstract boolean onBlockClicked(EntityPlayer player);
 
 @Override
-public double getClientOutputRotation(ForgeDirection from)
-  {
-  return 0;
-  }
-
-@Override
-public double getPrevClientOutputRotation(ForgeDirection from)
+public float getClientOutputRotation(ForgeDirection from, float delta)
   {
   return 0;
   }

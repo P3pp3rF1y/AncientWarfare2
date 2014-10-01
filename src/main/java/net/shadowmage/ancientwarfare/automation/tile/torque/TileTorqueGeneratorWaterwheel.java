@@ -202,14 +202,7 @@ public double getMaxTorqueInput(ForgeDirection from)
   }
 
 @Override
-public double getClientOutputRotation(ForgeDirection from)
-  {
-  // TODO Auto-generated method stub
-  return 0;
-  }
-
-@Override
-public double getPrevClientOutputRotation(ForgeDirection from)
+public float getClientOutputRotation(ForgeDirection from, float delta)
   {
   // TODO Auto-generated method stub
   return 0;

@@ -98,10 +98,7 @@ public void onNeighborTileChanged()
 public boolean useOutputRotation(ForgeDirection from){return true;}
 
 @Override
-public double getClientOutputRotation(ForgeDirection from){return clientRotation;}
-
-@Override
-public double getPrevClientOutputRotation(ForgeDirection from){return prevClientRotation;}
+public float getClientOutputRotation(ForgeDirection from, float delta){return getRotation(clientRotation, prevClientRotation, delta);}
 
 @Override
 public boolean receiveClientEvent(int a, int b)

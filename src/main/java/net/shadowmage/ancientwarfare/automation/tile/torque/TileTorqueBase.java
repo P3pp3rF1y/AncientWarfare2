@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import buildcraft.api.mj.IBatteryObject;
@@ -244,7 +245,29 @@ public boolean onBlockClicked(EntityPlayer player)
 
 //*************************************** Utility Methods ***************************************//
 
-protected final void transferPower(ForgeDirection from)
+protected void serverNetworkSynch(){}
+
+protected void handleClientRotationData(ForgeDirection side, int value){}
+
+protected final void serverNetworkUpdate()
+  {
+  networkUpdateTicks--;
+  if(networkUpdateTicks<=0)
+    {
+    networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
+    serverNetworkSynch();
+    }
+  }
+
+protected void sendSideRotation(ForgeDirection side, int value)
+  {
+  int sideBits = side.ordinal();
+  int valueBits = (value & 0x00ffffff) | ((sideBits & 0xff) << 24);
+  sendDataToClient(0, valueBits);
+  AWLog.logDebug("sending side rotation data: "+side+" :: "+value);
+  }
+
+protected final void transferPowerTo(ForgeDirection from)
   {
   ITorqueTile[] tc = getTorqueCache();
   if(tc[from.ordinal()]!=null && tc[from.ordinal()].canInputTorque(from.getOpposite()))
@@ -261,48 +284,31 @@ protected final void transferPower(ForgeDirection from)
     }
   }
 
-protected final int getConnectionsInt(boolean [] connections)
-  {  
-  int con = 0;
-  int c;
-  for(int i = 0; i < 6; i++)
-    {
-    c = connections[i]==true? 1: 0;
-    con = con + (c<<i);
-    }  
-  return con;
+protected final void sendDataToClient(int type, int data)
+  {
+  worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), type, data);
   }
 
-protected final boolean[] readConnectionsInt(int con, boolean[] connections)
+protected final float getRotation(double rotation, double prevRotation, float delta)
   {
-  int c;
-  if(connections==null){connections = new boolean[6];}
-  for(int i = 0; i < 6; i++)
-    {
-    c = (con>>i) & 0x1;
-    connections[i] = c==1;
-    }
-  return connections;
+  double rd = rotation-prevRotation;  
+  return (float)(prevRotation + rd*delta);
   }
 
-protected final int packClientEnergyStates(int[] halfByteDatas)
+@Override
+public boolean receiveClientEvent(int a, int b)
   {
-  int field = 0;
-  int len = halfByteDatas.length;
-  for(int i =0; i<len && i<8 ; i++)
+  if(worldObj.isRemote)
     {
-    field = field | ((halfByteDatas[i] & 16) << i*4);
+    if(a==0)
+      {
+      int side = (b & 0xff000000) >> 24;
+      int val = b & 0x00ffffff;
+      networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
+      handleClientRotationData(ForgeDirection.values()[side], val);
+      }    
     }
-  return field;
-  }
-
-protected final void unpackClientEnergyStates(int stateData, int[] halfByteStates)
-  {
-  int len = halfByteStates.length;
-  for(int i =0; i<len && i<8 ; i++)
-    {
-    halfByteStates[i]=(stateData >> i*4) & 16;
-    }
+  return true;//
   }
 
 //*************************************** NBT / DATA PACKET ***************************************//

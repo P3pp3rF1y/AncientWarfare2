@@ -85,7 +85,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STOCK, GuiWarehouseStockViewer.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_BOUNDS, GuiWorksiteBoundsAdjust.class);
     
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel(new ResourceLocation("ancientwarfare", "textures/model/automation/waterwheel.png")));  
+   
   ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new RenderTileWorksite());
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new RenderTileWorksite());
   ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new RenderTileWarehouseStockViewer());
@@ -105,19 +105,18 @@ public void registerClient()
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportDistributorHeavy.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_heavy.png")));
   
   
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportShaft.class, new RenderTileTorqueShaft(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_light.png")));
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportShaft.class, new RenderTileTorqueShaft(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_light.png")));//TODO add textures/renders for other qualitites
 //  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitMedium.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_medium.png")));
 //  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueTransportConduitHeavy.class, new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_heavy.png")));
   
+  //*********************************************STORAGE RENDERS***************************************************************//
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueStorageFlywheelController.class, new RenderTileTorqueFlywheel());//TODO add textures/renders for other qualitites
   
-  ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, new RenderTileFlywheelStorage(new ResourceLocation("ancientwarfare", "textures/model/automation/cube.png")));
+  ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, new RenderTileFlywheelStorage(new ResourceLocation("ancientwarfare", "textures/model/automation/cube.png")));//TODO add textures/renders for other qualitites
     
-//*********************************************GENERATOR RENDERS***************************************************************//
-  
-  RenderSterlingEngine sterlingRender = new RenderSterlingEngine();
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorSterling.class, sterlingRender);
-  RenderingRegistry.registerBlockHandler(sterlingRender);
+  //*********************************************GENERATOR RENDERS***************************************************************//  
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorSterling.class, new RenderSterlingEngine());
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel(new ResourceLocation("ancientwarfare", "textures/model/automation/waterwheel.png")));
   }
 
 private void registerClientOptions()

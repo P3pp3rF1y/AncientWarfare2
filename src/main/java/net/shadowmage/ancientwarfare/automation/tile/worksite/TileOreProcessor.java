@@ -162,10 +162,7 @@ public boolean canOutputTorque(ForgeDirection towards){return false;}
 public boolean canInputTorque(ForgeDirection from){return true;}
 
 @Override
-public double getClientOutputRotation(ForgeDirection from){return 0;}//NOOP
-
-@Override
-public double getPrevClientOutputRotation(ForgeDirection from){return 0;}//NOOP
+public float getClientOutputRotation(ForgeDirection from, float delta){return 0;}//NOOP
 
 @Override
 public boolean useOutputRotation(ForgeDirection from){return false;}//NOOP

@@ -51,7 +51,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   
   waterwheel.setRotation(0, 0, (float)getRotation(wheel.wheelRotation, wheel.prevWheelRotation, partialTick));  
   waterwheel.setVisible(wheel.validSetup);
-  outputGear.setRotation(0, 0, -(float)getRotation(wheel.getClientOutputRotation(wheel.getPrimaryFacing()), wheel.getPrevClientOutputRotation(wheel.getPrimaryFacing()), partialTick));
+  outputGear.setRotation(0, 0, -wheel.getClientOutputRotation(wheel.getPrimaryFacing(), partialTick));
   model.renderModel();  
   
   GL11.glPopMatrix();

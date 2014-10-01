@@ -97,13 +97,7 @@ boolean useOutputRotation(ForgeDirection from);
 /**
  * Return output shaft rotation for the given side.  Will only be called if useOutputRotation(from) returns true.
  */
-double getClientOutputRotation(ForgeDirection from);
-
-/**
- * Return output shaft previous tick rotation for the given side.  Will only be called if useOutputRotation(from) returns true.
- */
-double getPrevClientOutputRotation(ForgeDirection from);
-
+float getClientOutputRotation(ForgeDirection from, float delta);
 }
 
 /**
@@ -165,6 +159,11 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
 public void readFromNBT(NBTTagCompound tag)
   {
   energy = tag.getDouble("energy");
+  }
+
+public double getPercentFull()
+  {
+  return maxEnergy > 0.d ? energy/maxEnergy : 0.d;
   }
 }
 

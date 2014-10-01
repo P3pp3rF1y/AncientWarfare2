@@ -76,7 +76,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   
   ITorqueTile[] neighbors = conduit.getTorqueCache();//TODO update speed of input shafts to match speed of the output shaft of neighbor
   boolean[] connections = conduit.getConnections();
-  float rotation = (float) getRotation(conduit.getClientOutputRotation(conduit.getPrimaryFacing()), conduit.getPrevClientOutputRotation(conduit.getPrimaryFacing()), delta);
+  float rotation = conduit.getClientOutputRotation(conduit.getPrimaryFacing(), delta);
     
   float[] rotationArray;
   float rx, ry, rz;
@@ -103,7 +103,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
         {
         if(neighbors!=null && neighbors[i]!=null && neighbors[i].useOutputRotation(null))
           {
-          float r = (float) getRotation(neighbors[i].getClientOutputRotation(null), neighbors[i].getPrevClientOutputRotation(null), delta);
+          float r = (float) neighbors[i].getClientOutputRotation(ForgeDirection.values()[i].getOpposite(), delta);
           rx = rotationArray[0]*r;
           ry = rotationArray[1]*r;
           rz = rotationArray[2]*r;

@@ -77,13 +77,7 @@ public TileWarehouseBase()
   }
 
 @Override
-public double getClientOutputRotation(ForgeDirection from)
-  {
-  return 0;
-  }
-
-@Override
-public double getPrevClientOutputRotation(ForgeDirection from)
+public float getClientOutputRotation(ForgeDirection from, float delta)
   {
   return 0;
   }

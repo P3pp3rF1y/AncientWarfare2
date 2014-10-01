@@ -56,14 +56,14 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   if(rot[1]!=0){GL11.glRotatef(rot[1], 0, 1, 0);}
   if(rot[2]!=0){GL11.glRotatef(rot[2], 0, 0, 1);}
   
-  float outputRotation = (float) getRotation(flywheel.getClientOutputRotation(d), flywheel.getPrevClientOutputRotation(d), delta);
+  float outputRotation = flywheel.getClientOutputRotation(d, delta);
   float inputRotation = (float) getRotation(flywheel.getInputRotation(), flywheel.getInputPrevRotation(), delta);
   float flywheelRotation = (float) getRotation(flywheel.getFlywheelRotation(), flywheel.getFlywheelPrevRotation(), delta);
 
   ITorqueTile inputNeighbor = neighbors[d.getOpposite().ordinal()];
-  if(inputNeighbor!=null && inputNeighbor.canOutputTorque(d) && inputNeighbor.useOutputRotation(null))
+  if(inputNeighbor!=null && inputNeighbor.canOutputTorque(d) && inputNeighbor.useOutputRotation(d.getOpposite()))
     {
-    inputRotation = (float) getRotation(inputNeighbor.getClientOutputRotation(null), inputNeighbor.getPrevClientOutputRotation(null), delta);
+    inputRotation = inputNeighbor.getClientOutputRotation(d.getOpposite(), delta);
     }
   
   controlInput.setRotation(0, 0, -inputRotation);

@@ -28,10 +28,27 @@ TorqueCell torqueCell;
 int burnTime = 0;
 int burnTimeBase = 0;
 
+/**
+ * client side this == 0.0 -> 1.0
+ */
+double clientEnergyState;
+
+/**
+ * server side this == 0 -> 100 (integer percent)
+ * client side this == 0.0 -> 1.0 (actual percent)
+ */
+double clientDestEnergyState;
+
+/**
+ * used client side
+ */
+double rotation, prevRotation;
+
 public TileTorqueGeneratorSterling()
   {
   torqueCell = new TorqueCell(0, 4, 1600, 1.f);
   }
+
 
 @Override
 public void updateEntity()
@@ -58,7 +75,57 @@ public void updateEntity()
       torqueCell.setEnergy(torqueCell.getEnergy() + 1.d * AWAutomationStatics.sterling_generator_output_factor);
       burnTime--;
       }  
+    serverNetworkUpdate();
+    transferPowerTo(getPrimaryFacing());
     }
+  else
+    {
+    clientNetworkUpdate();
+    updateRotation();
+    }
+  }
+
+@Override
+protected void serverNetworkSynch()
+  {
+  int percent = (int)(torqueCell.getPercentFull()*100.d);
+  if(percent != clientDestEnergyState)
+    {
+    clientDestEnergyState = percent;
+    sendSideRotation(getPrimaryFacing(), percent);    
+    }
+  }
+
+protected void updateRotation()
+  {
+  prevRotation = rotation;
+  if(clientEnergyState > 0)
+    {
+    double r = AWAutomationStatics.low_rpt * clientEnergyState;
+    rotation += r;
+    }
+  }
+
+protected void clientNetworkUpdate()
+  {
+  if(clientEnergyState != clientDestEnergyState)
+    {
+    if(networkUpdateTicks>0)
+      {
+      clientEnergyState += (clientDestEnergyState - clientEnergyState) / (double)networkUpdateTicks;
+      }
+    else
+      {
+      clientEnergyState = clientDestEnergyState;
+      }
+    AWLog.logDebug("updated client energy state: "+clientEnergyState+" :: "+clientDestEnergyState);
+    }
+  }
+
+@Override
+protected void handleClientRotationData(ForgeDirection side, int value)
+  {
+  clientDestEnergyState = ((double)value) * 0.01d;
   }
 
 @Override
@@ -225,17 +292,9 @@ public boolean useOutputRotation(ForgeDirection from)
   }
 
 @Override
-public double getClientOutputRotation(ForgeDirection from)
+public float getClientOutputRotation(ForgeDirection from, float delta)
   {
-  // TODO Auto-generated method stub
-  return 0;
-  }
-
-@Override
-public double getPrevClientOutputRotation(ForgeDirection from)
-  {
-  // TODO Auto-generated method stub
-  return 0;
+  return getRotation(rotation, prevRotation, delta);
   }
 
 }

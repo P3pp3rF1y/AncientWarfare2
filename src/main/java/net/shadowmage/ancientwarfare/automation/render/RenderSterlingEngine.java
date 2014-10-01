@@ -10,6 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -21,7 +22,7 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-public class RenderSterlingEngine extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
+public class RenderSterlingEngine extends TileEntitySpecialRenderer
 {
 
 ModelBaseAW model;
@@ -44,14 +45,9 @@ public void renderTileEntityAt(TileEntity tile, double x, double y, double z, fl
   TileTorqueGeneratorSterling tt = (TileTorqueGeneratorSterling)tile;
   ForgeDirection d = tt.getPrimaryFacing();
   float baseRotation = d==ForgeDirection.SOUTH? 180.f : d==ForgeDirection.WEST ? 270.f : d==ForgeDirection.EAST? 90.f : 0.f;
-  
-  
-  float pr = (float) tt.getClientOutputRotation(d);
-  float r = (float) tt.getPrevClientOutputRotation(d);
-  float rd = r-pr;
-  
-  rotation = -(pr + rd*partialTick);
     
+  rotation = -(tt.getClientOutputRotation(d, partialTick));
+      
   GL11.glPushMatrix();
 
   GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -119,46 +115,6 @@ private void calculatePistonPosition2(float crankAngleRadians, float radius, flo
 
   float rlrA = (float) Math.atan2(cx-bx, cy-by);
   armAngle2 = rlrA*Trig.TODEGREES;
-  }
-
-@Override
-public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
-  {
-  GL11.glPushMatrix();  
-  RenderTools.setFullColorLightmap();
-  GL11.glTranslatef(0, -0.5f, 0);
-//  GL11.glRotatef(-baseRotation, 0, 1, 0);
-  bindTexture(texture);  
-    
-  model.getPiece("flywheel2").setRotation(0, 0, 0);
-  model.getPiece("piston_crank2").setRotation(0, 0, 0);
-  model.getPiece("flywheel_arm").setRotation(0, 0, 0);
-
-  calculateArmAngle1(-rotation);
-  calculateArmAngle2(-rotation-90);
-  model.getPiece("piston_crank").setRotation(0, 0, 0);
-  model.getPiece("piston_arm").setRotation(0, 0, 0);  
-  model.getPiece("piston_arm2").setRotation(0, 0, 0);  
-  model.renderModel();
-  GL11.glPopMatrix();
-  }
-
-@Override
-public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
-  {
-  return false;
-  }
-
-@Override
-public boolean shouldRender3DInInventory(int modelId)
-  {
-  return true;
-  }
-
-@Override
-public int getRenderId()
-  {
-  return AWAutomationStatics.sterlingEngineRenderID;
   }
 
 }

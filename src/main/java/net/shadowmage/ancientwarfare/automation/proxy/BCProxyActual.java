@@ -8,7 +8,6 @@ import buildcraft.api.mj.IBatteryIOObject;
 import buildcraft.api.mj.IBatteryObject;
 import buildcraft.api.mj.IOMode;
 import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerEmitter;
 import buildcraft.transport.PipeTransportPower;
 import buildcraft.transport.TileGenericPipe;
 

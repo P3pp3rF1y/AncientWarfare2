@@ -55,7 +55,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   this.gearbox.setVisible(shaft.prev==null);
   this.outputHead.setVisible(shaft.next==null);
   
-  float rotation = (float) getRotation(shaft.getClientOutputRotation(d), shaft.getPrevClientOutputRotation(d), delta);  
+  float rotation = shaft.getClientOutputRotation(d, delta);
   this.shaft.setRotation(0, 0, -rotation);
   this.outputHead.setRotation(0, 0, -rotation);   
   
@@ -64,7 +64,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
     ITorqueTile itt = shaft.getTorqueCache()[d.getOpposite().ordinal()];
     if(itt!=null && itt.canOutputTorque(d) && itt.useOutputRotation(null))
       {
-      rotation = (float) getRotation(itt.getClientOutputRotation(null), itt.getPrevClientOutputRotation(null), delta);
+      rotation = itt.getClientOutputRotation(d, delta);
       }
     inputHead.setRotation(0, 0, -rotation);
     }
