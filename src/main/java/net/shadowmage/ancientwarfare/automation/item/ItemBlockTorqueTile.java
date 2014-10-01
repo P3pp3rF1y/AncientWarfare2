@@ -35,13 +35,11 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     {
     String name = player.getCommandSenderName();
     TileTorqueBase te = (TileTorqueBase) player.worldObj.getTileEntity(x, y, z);
-    te.setPrimaryFacing(ForgeDirection.getOrientation(metadata));
     if(te instanceof IOwnable)
       {
       ((IOwnable)te).setOwnerName(name);
       }
-    te.onBlockUpdated();
-    world.func_147453_f(x,y,z, field_150939_a);
+    te.setPrimaryFacing(ForgeDirection.getOrientation(metadata));
     }  
   return val;
   }

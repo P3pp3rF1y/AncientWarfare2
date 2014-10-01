@@ -6,9 +6,6 @@ public class TileTorqueTransportDistributorMedium extends TileTorqueTransportDis
 {
 public TileTorqueTransportDistributorMedium()
   {
-  energyDrainFactor = AWAutomationStatics.med_drain_factor;
-  maxEnergy = AWAutomationStatics.med_conduit_energy_max;
-  maxOutput = AWAutomationStatics.med_transfer_max;
-  maxInput = AWAutomationStatics.med_transfer_max;
+  
   }
 }

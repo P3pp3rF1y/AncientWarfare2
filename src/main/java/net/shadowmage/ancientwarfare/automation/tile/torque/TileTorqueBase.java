@@ -6,52 +6,26 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
+import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import buildcraft.api.mj.IBatteryObject;
+import buildcraft.api.mj.ISidedBatteryProvider;
+import cofh.api.energy.IEnergyHandler;
+import cpw.mods.fml.common.Optional;
 
-public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile
+@Optional.InterfaceList(value=
+  {
+  @Optional.Interface(iface="cofh.api.energy.IEnergyHandler", modid="CoFHCore",striprefs=true),
+  @Optional.Interface(iface="buildcraft.api.mj.ISidedBatteryProvider",modid="BuildCraft|Core",striprefs=true),
+  })
+public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler, ISidedBatteryProvider
 {
-
-protected static final float rpmToRpt= (float)(360.d / 60.d / 20.d);
-protected static final float low_quality_rpm = 100;
-protected static final float med_quality_rpm = 200;
-protected static final float high_quality_rpm = 300;
-protected static final float low_rpt = low_quality_rpm * rpmToRpt;
-protected static final float med_rpt = med_quality_rpm * rpmToRpt;
-protected static final float high_rpt = high_quality_rpm * rpmToRpt;
-
-/**
- * per-tile (type) settings.  Should be set in tile constructor.
- */
-protected double maxEnergy = 1000;
-protected double maxInput = 100;
-protected double maxOutput = 100;
-protected double maxRpm = 10;
-protected double energyDrainFactor = 1;
-
-/**
- * Currently stored energy.  Should never exceed maxEnergy.  Should never be <0.
- */
-protected double storedEnergy = 0;
-
-/**
- * cached neighbor array for faster lookup during power transfers, only avail server side
- */
-protected TileEntity[] neighborTileCache = null;
-
-protected ITorqueTile[] neighborTorqueTileCache = null;
-
-/**
- * cached connections list.  Built by buildConnection() during buildNeighborCache().<br>
- * Synched from server->client for those tiles with connectable sides (conduits, distributors)<br>
- * Used by client-side for rendering of connections between tiles.
- */
-boolean[] connections;
 
 /**
  * The primary facing direction for this tile.
@@ -59,295 +33,228 @@ boolean[] connections;
 protected ForgeDirection orientation = ForgeDirection.NORTH;
 
 /**
- * Cached vars used for checking/updating client-side energy state.
- */
-protected double prevEnergy;
-protected double energyInput;
-protected double energyOutput;
-
-/**
  * used by server to limit packet sending<br>
  * used by client for lerp-ticks for lerping to new power state
  */
 protected int networkUpdateTicks;
 
-/**
- * used by server to determine last sent client power state<br>
- * used by clients as their displayed power state
- */
-protected int clientEnergy;
+private TileEntity[]bcCache;//cannot reference interface directly, but can cast directly...
+private TileEntity[]rfCache;//cannot reference interface directly, but can cast directly...
+private ITorqueTile[]torqueCache;
 
-/**
- * used by clients to store what energy level they should be at.<br>
- * used in combination with networkUpdateTicks to lerp from clientEnergy to clientDestEnergy
- */
-protected int clientDestEnergy;
 
-/**
- * used by client-side for rendering animated tiles
- */
-public double rotation;
-public double prevRotation;
-
-/************************************** UPDATE CODE ****************************************/
-
+//*************************************** COFH RF METHODS ***************************************//
+@Optional.Method(modid="CoFHCore")
 @Override
-public void updateEntity()
+public final int getEnergyStored(ForgeDirection from)
   {
-  super.updateEntity();
-  if(worldObj.isRemote)
-    {
-    clientNetworkUpdate();
-    return;
-    }  
-  else
-    {
-    serverNetworkUpdate();
-    }
-  this.energyInput = this.storedEnergy - this.prevEnergy;
-  applyPowerDrain();
-  
-  double s = this.storedEnergy;
-  outputPower();
-  this.energyOutput = s - this.storedEnergy;   
-  
-  this.prevEnergy = this.storedEnergy;  
+  return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
   }
 
-protected void outputPower()
+@Optional.Method(modid="CoFHCore")
+@Override
+public final int getMaxEnergyStored(ForgeDirection from)
   {
-  ITorque.transferPower(worldObj, xCoord, yCoord, zCoord, this);  
+  return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
   }
 
-protected void applyPowerDrain()
+@Optional.Method(modid="CoFHCore")
+@Override
+public final boolean canConnectEnergy(ForgeDirection from)
   {
-  ITorque.applyPowerDrain(this);
+  return canOutputTorque(from) || canInputTorque(from);//TODO verify what this expects
   }
 
-protected void serverNetworkUpdate()
+@Optional.Method(modid="CoFHCore")
+@Override
+public final int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
   {
-  if(!AWAutomationStatics.enable_energy_network_updates){return;}
-  networkUpdateTicks--;
-  if(networkUpdateTicks<=0)
+  if(!canOutputTorque(from)){return 0;}  
+  if(simulate){return Math.min(maxExtract, (int) (AWAutomationStatics.torqueToRf * getMaxTorqueOutput(from)));}
+  return (int) (AWAutomationStatics.torqueToRf * drainTorque(from, (double)maxExtract * AWAutomationStatics.rfToTorque));
+  }
+
+@Optional.Method(modid="CoFHCore")
+@Override
+public final int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+  {
+  if(!canInputTorque(from)){return 0;}
+  if(simulate){return Math.min(maxReceive, (int)(AWAutomationStatics.torqueToRf * getMaxTorqueInput(from)));}
+  return (int)(AWAutomationStatics.torqueToRf * addTorque(from, (double)maxReceive * AWAutomationStatics.rfToTorque));
+  }
+
+//*************************************** BC MJ METHODS ***************************************//
+
+@Optional.Method(modid="BuildCraft|Core")
+@Override
+public IBatteryObject getMjBattery(String kind, ForgeDirection direction)
+  {  
+  return (IBatteryObject) BCProxy.instance.getBatteryObject(kind, this, direction);
+  }
+
+//*************************************** NEIGHBOR CACHE UPDATING ***************************************//
+
+protected final ITorqueTile[] getTorqueCache()
+  {
+  if(torqueCache==null){buildTorqueCache();}
+  return torqueCache;
+  }
+
+protected final TileEntity[] getRFCache()
+  {
+  if(rfCache==null){buildRFCache();}
+  return rfCache;
+  }
+
+protected final TileEntity[] getBCCache()
+  {
+  if(bcCache==null){buildBCCache();}
+  return bcCache;
+  }
+
+private void buildTorqueCache()
+  {
+  torqueCache = new ITorqueTile[6];
+  ForgeDirection dir;
+  TileEntity te;
+  ITorqueTile itt;
+  int x, y, z;
+  for(int i = 0; i < 6; i++)
     {
-    double percentStored = storedEnergy / getMaxTorque(null);
-    double percentTransferred = maxOutput>0 ? energyOutput / maxOutput : 0;
-    int total = (int)((percentStored+percentTransferred)*100.d);
-    if(total>100){total=100;}
-    if(total!=clientEnergy)
+    dir = ForgeDirection.values()[i];
+    if(!canOutputTorque(dir) && !canInputTorque(dir)){continue;}
+    x = xCoord+dir.offsetX;
+    y = yCoord+dir.offsetY;
+    z = zCoord+dir.offsetZ;
+    if(!worldObj.blockExists(x, y, z)){continue;}
+    te = worldObj.getTileEntity(x, y, z);
+    if(te instanceof ITorqueTile)
       {
-      clientEnergy = total;
-      this.worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, clientEnergy);
+      itt = (ITorqueTile)te;
+      if((canOutputTorque(dir) && itt.canInputTorque(dir.getOpposite())) || canInputTorque(dir) && itt.canOutputTorque(dir.getOpposite()))
+        {
+        torqueCache[dir.ordinal()]=itt;
+        }
       }
-    networkUpdateTicks=AWAutomationStatics.energyMinNetworkUpdateFrequency;
     }
   }
 
-protected void clientNetworkUpdate()
+private void buildRFCache()
   {
-  if(!AWAutomationStatics.enable_energy_client_updates){return;}
-  updateRotation();
-  if(networkUpdateTicks>0)
+  rfCache = new TileEntity[6];
+  ForgeDirection dir;
+  TileEntity te;
+  int x, y, z;
+  for(int i = 0; i < 6; i++)
     {
-    int diff = clientDestEnergy-clientEnergy;
-    clientEnergy += diff/networkUpdateTicks;    
-    networkUpdateTicks--;
+    dir = ForgeDirection.values()[i];
+    if(!canOutputTorque(dir) && !canInputTorque(dir)){continue;}
+    x = xCoord+dir.offsetX;
+    y = yCoord+dir.offsetY;
+    z = zCoord+dir.offsetZ;
+    if(!worldObj.blockExists(x, y, z)){continue;}
+    te = worldObj.getTileEntity(x, y, z);
+    if(RFProxy.instance.isRFTile(te))
+      {
+      rfCache[dir.ordinal()]=te;
+      }
     }
   }
 
-protected void updateRotation()
+private void buildBCCache()
   {
-  double maxRpm = this.maxRpm;
-  double rpm = (double)clientEnergy * 0.01d * maxRpm;
-  prevRotation=rotation;
-  rotation += rpm * 360.d / 20.d / 60.d;
-  }
-
-@Override
-public void setPrimaryFacing(ForgeDirection d)
-  {
-  this.orientation = d;
-  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  }
-
-@Override
-public String toString()
-  {
-  return "Torque Tile["+storedEnergy+"]::" +getClass().getSimpleName();
-  }
-
-//************************************** ENERGY MANAGEMENT CODE ****************************************//
-
-@Override
-public double addTorque(ForgeDirection from, double energy){return ITorque.addEnergy(this, from, energy);}
-
-@Override
-public boolean cascadedInput()
-  {
-  return false;
-  }
-
-@Override
-public double getMaxTorqueInput(ForgeDirection from)
-  {
-  return maxInput;
-  }
-
-@Override
-public double getMaxTorqueOutput(ForgeDirection from)
-  {
-  return maxOutput;
-  }
-
-@Override
-public ForgeDirection getPrimaryFacing()
-  {
-  return orientation;
-  }
-
-@Override
-public double getTorqueTransferLossPercent()
-  {
-  return energyDrainFactor;
-  }
-
-@Override
-public void setTorqueEnergy(double energy)
-  {
-  this.storedEnergy = energy;
-  }
-
-@Override
-public double getTorqueStored(ForgeDirection from)
-  {
-  return storedEnergy;
-  }
-
-@Override
-public double getMaxTorque(ForgeDirection from)
-  {
-  return maxEnergy;
-  }
-
-@Override
-public double getTorqueOutput()
-  {
-  return energyOutput;
-  }
-
-/************************************** NEIGHBOR UPDATE AND CONNECTION CODE ****************************************/
-
-@Override
-public double getClientOutputRotation(ForgeDirection from)
-  {
-  return rotation;
-  }
-
-@Override
-public double getPrevClientOutputRotation(ForgeDirection from)
-  {
-  return prevRotation;
-  }
-
-@Override
-public boolean useOutputRotation(ForgeDirection from)
-  {
-  return false;
+  bcCache = new TileEntity[6];
+  ForgeDirection dir;
+  TileEntity te;
+  int x, y, z;
+  for(int i = 0; i < 6; i++)
+    {
+    dir = ForgeDirection.values()[i];
+    if(!canOutputTorque(dir) && !canInputTorque(dir)){continue;}
+    x = xCoord+dir.offsetX;
+    y = yCoord+dir.offsetY;
+    z = zCoord+dir.offsetZ;
+    if(!worldObj.blockExists(x, y, z)){continue;}
+    te = worldObj.getTileEntity(x, y, z);
+    if(BCProxy.instance.isPowerPipe(te))
+      {
+      bcCache[dir.ordinal()]=te;
+      }
+    }
   }
 
 @Override
 public void validate()
   {  
   super.validate();
-  neighborTileCache = null;
+  invalidateNeighborCache();
   }
 
 @Override
 public void invalidate()
   {  
   super.invalidate();
-  neighborTileCache = null;
+  invalidateNeighborCache();
   }
 
-public void onBlockUpdated()
+public final void onNeighborTileChanged()
   {
-  buildNeighborCache();
+  invalidateNeighborCache();
   }
 
-/**
- * Return the set of tile-entities that neighbor this tile.  indexed by forge-direction.ordinal()
- */
+protected final void invalidateNeighborCache()
+  {
+  torqueCache=null;
+  rfCache=null;
+  bcCache=null;
+  }
+
+//*************************************** generic stuff ***************************************//
+
 @Override
-public TileEntity[] getNeighbors()
+public final void setPrimaryFacing(ForgeDirection d)
   {
-  if(neighborTileCache==null){buildNeighborCache();}
-  return neighborTileCache;
+  this.orientation = d;
+  this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
+  this.invalidateNeighborCache();
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
 @Override
-public ITorqueTile[] getNeighborTorqueTiles()
+public final ForgeDirection getPrimaryFacing()
   {
-  if(neighborTorqueTileCache==null){buildNeighborCache();}
-  return neighborTorqueTileCache;
+  return orientation;
   }
 
-/**
- * Build the cache of neighboring tile-entities.
- */
-private void buildNeighborCache()
+@Override
+public boolean onBlockClicked(EntityPlayer player)
   {
-  worldObj.theProfiler.startSection("AWPowerTileNeighborUpdate");
-  int conInt = connections==null ? 0 : getConnectionsInt();
-  connections = new boolean[6];  
-  neighborTileCache = new TileEntity[6];
-  neighborTorqueTileCache = new ITorqueTile[6];
-  ForgeDirection d;
-  TileEntity te;
-  for(int i = 0; i < 6; i++)
-    {
-    d = ForgeDirection.getOrientation(i);
-    te = worldObj.getTileEntity(xCoord+d.offsetX, yCoord+d.offsetY, zCoord+d.offsetZ);
-    neighborTileCache[i] = te;
-    if(te instanceof ITorqueTile){neighborTorqueTileCache[i]=(ITorqueTile)te;}
-    connections[i] = buildConnection(d, te);
-    }
   if(!worldObj.isRemote)
     {
-    int conInt2 = getConnectionsInt();
-    if(conInt2!=conInt)
+    double d = 0;
+    for(int i = 0; i < 6; i++)
       {
-      worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, getConnectionsInt());    
-      }    
-    } 
-  worldObj.theProfiler.endSection();    
-  }
-
-/**
- * Update the cached 'connection' status for a given side.<br>
- * Should be overriden by those tiles that need neighbor connection cache
- * @param d
- * @param te
- */
-protected boolean buildConnection(ForgeDirection d, TileEntity te)
-  {
+      d += getTorqueStored(ForgeDirection.values()[i]);
+      }
+    String e = String.format(".2f", d);
+    player.addChatMessage(new ChatComponentText("Energy Stored: "+e));    
+    }
   return false;
   }
 
-public boolean[] getConnections()
+//*************************************** Utility Methods ***************************************//
+
+protected final void transferPower(ForgeDirection from)
   {
-  if(connections==null)
+  ITorqueTile[] tc = getTorqueCache();
+  if(tc[from.ordinal()]!=null && tc[from.ordinal()].canInputTorque(from.getOpposite()))
     {
-    connections = new boolean[6];
+    drainTorque(from, tc[from.ordinal()].addTorque(from.getOpposite(), getMaxTorqueOutput(from)));
     }
-  return connections;
   }
 
-protected int getConnectionsInt()
-  {
-  if(connections==null)
-    {
-    buildNeighborCache();
-    }  
+protected final int getConnectionsInt(boolean [] connections)
+  {  
   int con = 0;
   int c;
   for(int i = 0; i < 6; i++)
@@ -358,7 +265,7 @@ protected int getConnectionsInt()
   return con;
   }
 
-protected void readConnectionsInt(int con)
+protected final boolean[] readConnectionsInt(int con, boolean[] connections)
   {
   int c;
   if(connections==null){connections = new boolean[6];}
@@ -367,36 +274,35 @@ protected void readConnectionsInt(int con)
     c = (con>>i) & 0x1;
     connections[i] = c==1;
     }
+  return connections;
   }
 
-/************************************** NETWORK CODE ****************************************/
-/**
- * 0==connections update, used by conduits
- * 1==client-energy update
- * 2==unused
- * 3==powered status for flywheel
- */
-@Override
-public boolean receiveClientEvent(int a, int b)
+protected final int packClientEnergyStates(int[] halfByteDatas)
   {
-  if(worldObj.isRemote)
+  int field = 0;
+  int len = halfByteDatas.length;
+  for(int i =0; i<len && i<8 ; i++)
     {
-    if(a==0){readConnectionsInt(b);}
-    else if(a==1)
-      {
-      clientDestEnergy=b;
-      networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
-      }
+    field = field | ((halfByteDatas[i] & 16) << i*4);
     }
-  return true;
+  return field;
   }
+
+protected final void unpackClientEnergyStates(int stateData, int[] halfByteStates)
+  {
+  int len = halfByteStates.length;
+  for(int i =0; i<len && i<8 ; i++)
+    {
+    halfByteStates[i]=(stateData >> i*4) & 16;
+    }
+  }
+
+//*************************************** NBT / DATA PACKET ***************************************//
 
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
-  storedEnergy = tag.getDouble("storedEnergy");
-  clientEnergy = tag.getInteger("clientEnergy");
   orientation = ForgeDirection.getOrientation(tag.getInteger("orientation"));
   }
 
@@ -404,22 +310,7 @@ public void readFromNBT(NBTTagCompound tag)
 public void writeToNBT(NBTTagCompound tag)
   {  
   super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", storedEnergy);
   tag.setInteger("orientation", orientation.ordinal());
-  tag.setInteger("clientEnergy", clientEnergy);
-  }
-
-@Override
-public boolean onBlockClicked(EntityPlayer player)
-  {
-  if(!player.worldObj.isRemote)
-    {
-    String key = "guistrings.automation.current_energy";
-    String value = String.format("%.2f : %.2f : %.2f", prevEnergy, energyInput, energyOutput);
-    ChatComponentTranslation chat = new ChatComponentTranslation(key, new Object[]{value});
-    player.addChatComponentMessage(chat);    
-    }
-  return false;
   }
 
 @Override
@@ -433,25 +324,17 @@ public final Packet getDescriptionPacket()
 public NBTTagCompound getDescriptionTag()
   {
   NBTTagCompound tag = new NBTTagCompound();
-  tag.setInteger("connections", getConnectionsInt());
   tag.setInteger("orientation", orientation.ordinal());
-  tag.setInteger("clientEnergy", clientEnergy);
   return tag;
   }
 
 @Override
 public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {  
-  if(pkt.func_148857_g().hasKey("connections"))
-    {
-    readConnectionsInt(pkt.func_148857_g().getInteger("connections"));
-    }
-  orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));
-  clientEnergy = pkt.func_148857_g().getInteger("clientEnergy");
-  clientDestEnergy = clientEnergy;
-  this.onBlockUpdated();
+  orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));  
+  this.invalidateNeighborCache();
   this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
-  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);//uhh..why am i doing this on client?
   }
 
 }

@@ -72,9 +72,21 @@ public static double sterling_generator_output_factor = 1.d;
 public static double waterwheel_generator_output_factor = 1.d;
 public static double hand_cranked_generator_output_factor = 1.d;
 
-public static double low_rpm_max = 100;
-public static double med_rpm_max = 200;
-public static double high_rpm_max = 300;
+public static final float rpmToRpt= (float)(360.d / 60.d / 20.d);
+public static final float low_quality_rpm = 100;
+public static final float med_quality_rpm = 200;
+public static final float high_quality_rpm = 300;
+public static final float low_rpt = low_quality_rpm * rpmToRpt;
+public static final float med_rpt = med_quality_rpm * rpmToRpt;
+public static final float high_rpt = high_quality_rpm * rpmToRpt;
+
+public static final double rfConversionFactor = 10.d;
+
+public static final double rfToTorque = 1.d / rfConversionFactor;
+public static final double mjToTorque = 1.d;
+
+public static final double torqueToRf = 1.d * rfConversionFactor;
+public static final double torqueToMj = 1.d;
 
 /**
  * @param config

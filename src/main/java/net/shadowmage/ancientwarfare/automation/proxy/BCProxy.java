@@ -33,12 +33,12 @@ public static void loadInstance()
     }
   }
 
-public void transferPower(World world, int x, int y, int z, ITorqueTile generator)
+public void transferPower(World world, int x, int y, int z, ITorqueTile generator, ForgeDirection out)
   {
   
   }
 
-public boolean isPowerPipe(World world, TileEntity te)
+public boolean isPowerPipe(TileEntity te)
   {
   return false;
   }

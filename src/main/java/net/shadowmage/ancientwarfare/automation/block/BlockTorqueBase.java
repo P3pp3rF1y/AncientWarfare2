@@ -15,10 +15,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -34,9 +34,9 @@ public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p
   TileEntity te = world.getTileEntity(x, y, z);
   if(te instanceof IInteractableTile)
     {
-    ((IInteractableTile) te).onBlockClicked(player);
+    return ((IInteractableTile) te).onBlockClicked(player);
     }
-  return true;  
+  return false;  
   }
 
 protected BlockTorqueBase(Material material)
@@ -60,7 +60,7 @@ public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side)
   {
   int meta = block.getBlockMetadata(x, y, z);
   TileEntity t = block.getTileEntity(x, y, z);
-  ITorqueTile tt = (ITorqueTile)t;
+  IRotatableTile tt = (IRotatableTile)t;
   return iconMaps.get(meta).getIcon(this, tt.getPrimaryFacing().ordinal(), side);
   }
 
@@ -90,23 +90,12 @@ public IIcon getIcon(int meta, RelativeSide side)
   }
 
 @Override
-public void onPostBlockPlaced(World world, int x, int y, int z, int meta)
-  {
-  TileEntity te = world.getTileEntity(x, y, z);
-  if(te instanceof TileTorqueBase)
-    {
-    ((TileTorqueBase) te).onBlockUpdated();
-    }
-  super.onPostBlockPlaced(world, x, y, z,  meta);
-  }
-
-@Override
 public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ)
   {
   TileEntity te = world.getTileEntity(x, y, z);
   if(te instanceof TileTorqueBase)
     {
-    ((TileTorqueBase)te).onBlockUpdated();
+    ((TileTorqueBase)te).onNeighborTileChanged();
     }
   super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
   }
@@ -117,7 +106,7 @@ public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
   TileEntity te = world.getTileEntity(x, y, z);
   if(te instanceof TileTorqueBase)
     {
-    ((TileTorqueBase)te).onBlockUpdated();
+    ((TileTorqueBase)te).onNeighborTileChanged();
     }
   super.onNeighborBlockChange(world, x, y, z, block);
   }

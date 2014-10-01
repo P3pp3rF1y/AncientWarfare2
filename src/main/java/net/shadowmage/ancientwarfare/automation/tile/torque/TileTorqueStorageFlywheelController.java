@@ -18,11 +18,7 @@ double prevClientRotation;
 
 public TileTorqueStorageFlywheelController()
   {
-  energyDrainFactor = AWAutomationStatics.low_drain_factor;
-  maxEnergy = AWAutomationStatics.low_storage_energy_max;
-  maxOutput = AWAutomationStatics.low_transfer_max;
-  maxInput = AWAutomationStatics.low_transfer_max;
-  maxRpm = 100;
+  
   }
 
 public TileFlywheelStorage getControlledFlywheel()
@@ -48,6 +44,10 @@ public TileFlywheelStorage getControlledFlywheel()
     }
   return null;
   }
+
+public double getInputRotation(){return 0;}//TODO
+
+public double getInputPrevRotation(){return 0;}//TODO
 
 public double getFlywheelRotation()
   {
@@ -75,14 +75,6 @@ public double getFlywheelPrevRotation()
 //  TileFlywheelStorage storage = getControlledFlywheel();
 //  return storage==null ? 0 : storage.maxEnergyStored;
 //  }
-
-@Override
-protected void updateRotation()
-  {  
-  super.updateRotation();
-  prevClientRotation = clientRotation;
-  if(!powered){clientRotation += rotation -prevRotation;}
-  }
 
 @Override
 public void onBlockUpdated()

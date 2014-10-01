@@ -100,12 +100,6 @@ protected abstract void updateOverflowInventory();
 protected abstract void updateWorksite();
 
 @Override
-public boolean cascadedInput()
-  {
-  return false;
-  }
-
-@Override
 public boolean shouldRenderInPass(int pass)
   {
   return pass==1;
@@ -113,12 +107,6 @@ public boolean shouldRenderInPass(int pass)
 
 @Override
 public abstract boolean onBlockClicked(EntityPlayer player);
-
-@Override
-public ITorqueTile[] getNeighborTorqueTiles()
-  {
-  return null;
-  }
 
 @Override
 public double getClientOutputRotation(ForgeDirection from)
@@ -139,19 +127,7 @@ public boolean useOutputRotation(ForgeDirection from)
   }
 
 @Override
-public TileEntity[] getNeighbors()
-  {
-  return null;
-  }
-
-@Override
 public double getMaxTorqueOutput(ForgeDirection from)
-  {
-  return 0;
-  }
-
-@Override
-public double getTorqueOutput()
   {
   return 0;
   }
@@ -160,22 +136,6 @@ public double getTorqueOutput()
 public boolean canOutputTorque(ForgeDirection towards)
   {
   return false;
-  }
-
-@Override
-public final void setTorqueEnergy(double energy)
-  {
-  this.storedEnergy = energy;
-  if(this.storedEnergy>this.maxEnergyStored)
-    {
-    this.storedEnergy = this.maxEnergyStored;
-    }
-  }
-
-@Override
-public double getTorqueTransferLossPercent()
-  {
-  return 1;
   }
 
 @Override

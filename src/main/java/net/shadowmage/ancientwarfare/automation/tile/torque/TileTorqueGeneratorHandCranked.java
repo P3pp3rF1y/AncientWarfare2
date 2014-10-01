@@ -21,9 +21,7 @@ String ownerName = "";
 
 public TileTorqueGeneratorHandCranked()
   {
-  energyDrainFactor = AWAutomationStatics.low_drain_factor;
-  maxEnergy = AWAutomationStatics.med_conduit_energy_max;
-  maxOutput = AWAutomationStatics.low_transfer_max;  
+  
   }
 
 @Override

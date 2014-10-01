@@ -46,8 +46,8 @@ public void renderTileEntityAt(TileEntity tile, double x, double y, double z, fl
   float baseRotation = d==ForgeDirection.SOUTH? 180.f : d==ForgeDirection.WEST ? 270.f : d==ForgeDirection.EAST? 90.f : 0.f;
   
   
-  float pr = (float) tt.prevRotation;
-  float r = (float) tt.rotation;
+  float pr = (float) tt.getClientOutputRotation(d);
+  float r = (float) tt.getPrevClientOutputRotation(d);
   float rd = r-pr;
   
   rotation = -(pr + rd*partialTick);

@@ -55,7 +55,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   this.gearbox.setVisible(shaft.prev==null);
   this.outputHead.setVisible(shaft.next==null);
   
-  float rotation = (float) getRotation(shaft.rotation, shaft.prevRotation, delta);  
+  float rotation = (float) getRotation(shaft.getClientOutputRotation(d), shaft.getPrevClientOutputRotation(d), delta);  
   this.shaft.setRotation(0, 0, -rotation);
   this.outputHead.setRotation(0, 0, -rotation);   
   

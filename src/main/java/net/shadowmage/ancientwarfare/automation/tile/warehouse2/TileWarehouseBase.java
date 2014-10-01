@@ -77,18 +77,6 @@ public TileWarehouseBase()
   }
 
 @Override
-public boolean cascadedInput()
-  {
-  return false;
-  }
-
-@Override
-public ITorqueTile[] getNeighborTorqueTiles()
-  {
-  return null;
-  }
-
-@Override
 public double getClientOutputRotation(ForgeDirection from)
   {
   return 0;
@@ -561,16 +549,6 @@ public final void removeControlledTile(IControlledTile tile)
   }
 
 @Override
-public final void setTorqueEnergy(double energy)
-  {
-  this.storedEnergy = energy;
-  if(this.storedEnergy>this.maxEnergy)
-    {
-    this.storedEnergy = this.maxEnergy;
-    }
-  }
-
-@Override
 public final void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
@@ -609,12 +587,6 @@ public final double addTorque(ForgeDirection from, double energy)
     return energy;    
     }
   return 0;
-  }
-
-@Override
-public double getTorqueTransferLossPercent()
-  {
-  return 1;
   }
 
 @Override

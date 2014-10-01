@@ -26,13 +26,8 @@ protected TileEntity[] neighborTileCache = null;
 public boolean validSetup = false;
 
 public TileTorqueGeneratorWaterwheel()
-  {
-  energyDrainFactor = AWAutomationStatics.low_drain_factor;
-  maxEnergy = AWAutomationStatics.low_conduit_energy_max;
-  maxOutput = 4;  
-  
+  {  
   maxWheelRpm = 20;
-  this.maxRpm = 100;
   rotTick = (maxWheelRpm * 360)/60/20;
   }
 

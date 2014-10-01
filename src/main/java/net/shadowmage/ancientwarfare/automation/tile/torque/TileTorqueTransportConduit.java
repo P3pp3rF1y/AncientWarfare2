@@ -8,11 +8,7 @@ public class TileTorqueTransportConduit extends TileTorqueTransportBase
 
 public TileTorqueTransportConduit()
   {
-  energyDrainFactor = AWAutomationStatics.low_drain_factor;
-  maxEnergy = AWAutomationStatics.low_conduit_energy_max;
-  maxOutput = AWAutomationStatics.low_transfer_max;
-  maxInput = AWAutomationStatics.low_transfer_max;
-  maxRpm = AWAutomationStatics.low_rpm_max;;
+  
   }
 
 @Override
@@ -25,6 +21,12 @@ public boolean canInputTorque(ForgeDirection from)
 public boolean canOutputTorque(ForgeDirection towards)
   {
   return towards==orientation;
+  }
+
+public boolean[] getConnections()
+  {
+  // TODO Auto-generated method stub
+  return null;
   }
 
 }

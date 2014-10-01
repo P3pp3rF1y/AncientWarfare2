@@ -22,12 +22,6 @@ public boolean canInputTorque(ForgeDirection from)
   return false;
   }
 
-@Override
-public String toString()
-  {
-  return "Torque Generator Tile["+storedEnergy+"]::"+getClass().getSimpleName();
-  }
-
 @Optional.Method(modid="BuildCraft|Core")
 @Override
 public boolean canEmitPowerFrom(ForgeDirection side)

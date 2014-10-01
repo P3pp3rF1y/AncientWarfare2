@@ -6,10 +6,6 @@ public class TileTorqueStorageFlywheelControllerMedium extends TileTorqueStorage
 {
 public TileTorqueStorageFlywheelControllerMedium()
   {
-  energyDrainFactor = AWAutomationStatics.med_drain_factor;
-  maxEnergy = AWAutomationStatics.med_storage_energy_max;
-  maxOutput = AWAutomationStatics.med_transfer_max;
-  maxInput = AWAutomationStatics.med_transfer_max;
-  maxRpm = 200;
+  
   }
 }

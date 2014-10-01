@@ -144,19 +144,10 @@ public String getOwnerName(){return owner;}
 public ForgeDirection getPrimaryFacing(){return orientation;}
 
 @Override
-public void setTorqueEnergy(double energy){storedEnergy = energy>maxEnergyStored? maxEnergyStored : energy;}
-
-@Override
 public double getMaxTorque(ForgeDirection from){return maxEnergyStored;}
 
 @Override
 public double getTorqueStored(ForgeDirection from){return storedEnergy;}
-
-@Override
-public double addTorque(ForgeDirection from, double energy){return ITorque.addEnergy(this, from, energy);}
-
-@Override
-public double getTorqueTransferLossPercent(){return 0;}//NOOP
 
 @Override
 public double getMaxTorqueOutput(ForgeDirection from){return 0;}//NOOP
@@ -165,22 +156,10 @@ public double getMaxTorqueOutput(ForgeDirection from){return 0;}//NOOP
 public double getMaxTorqueInput(ForgeDirection from){return maxInput;}
 
 @Override
-public double getTorqueOutput(){return 0;}//NOOP
-
-@Override
 public boolean canOutputTorque(ForgeDirection towards){return false;}
 
 @Override
 public boolean canInputTorque(ForgeDirection from){return true;}
-
-@Override
-public boolean cascadedInput(){return false;}//NOOP
-
-@Override
-public TileEntity[] getNeighbors(){return null;}//NOOP
-
-@Override
-public ITorqueTile[] getNeighborTorqueTiles(){return null;}//NOOP
 
 @Override
 public double getClientOutputRotation(ForgeDirection from){return 0;}//NOOP

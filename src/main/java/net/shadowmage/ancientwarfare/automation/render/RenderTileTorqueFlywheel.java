@@ -49,15 +49,15 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
     
   TileTorqueStorageFlywheelController flywheel = (TileTorqueStorageFlywheelController)te;
   
-  ITorqueTile[] neighbors = flywheel.getNeighborTorqueTiles();
+  ITorqueTile[] neighbors = flywheel.getTorqueCache();
   ForgeDirection d = flywheel.getPrimaryFacing();
   float[] rot = gearboxRotationMatrix[d.ordinal()];
   if(rot[0]!=0){GL11.glRotatef(rot[0], 1, 0, 0);}
   if(rot[1]!=0){GL11.glRotatef(rot[1], 0, 1, 0);}
   if(rot[2]!=0){GL11.glRotatef(rot[2], 0, 0, 1);}
   
-  float outputRotation = (float) getRotation(flywheel.getClientOutputRotation(null), flywheel.getPrevClientOutputRotation(null), delta);
-  float inputRotation = (float) getRotation(flywheel.rotation, flywheel.prevRotation, delta);
+  float outputRotation = (float) getRotation(flywheel.getClientOutputRotation(d), flywheel.getPrevClientOutputRotation(d), delta);
+  float inputRotation = (float) getRotation(flywheel.getInputRotation(), flywheel.getInputPrevRotation(), delta);
   float flywheelRotation = (float) getRotation(flywheel.getFlywheelRotation(), flywheel.getFlywheelPrevRotation(), delta);
 
   ITorqueTile inputNeighbor = neighbors[d.getOpposite().ordinal()];

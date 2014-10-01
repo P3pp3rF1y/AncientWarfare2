@@ -86,18 +86,6 @@ public void onBoundsAdjusted(){}//NOOP
 public boolean userAdjustableBlocks(){return false;}//NOOP
 
 @Override
-public boolean cascadedInput()
-  {
-  return false;
-  }
-
-@Override
-public ITorqueTile[] getNeighborTorqueTiles()
-  {
-  return null;
-  }
-
-@Override
 public double getClientOutputRotation(ForgeDirection from)
   {
   return 0;
@@ -115,21 +103,8 @@ public boolean useOutputRotation(ForgeDirection from)
   return false;
   }
 
-
-@Override
-public TileEntity[] getNeighbors()
-  {
-  return null;
-  }
-
 @Override
 public double getMaxTorqueOutput(ForgeDirection from)
-  {
-  return 0;
-  }
-
-@Override
-public double getTorqueOutput()
   {
   return 0;
   }
@@ -138,12 +113,6 @@ public double getTorqueOutput()
 public boolean canOutputTorque(ForgeDirection towards)
   {
   return false;
-  }
-
-@Override
-public void setTorqueEnergy(double energy)
-  {
-  this.storedEnergy = energy;
   }
 
 @Override
@@ -163,12 +132,6 @@ public double addTorque(ForgeDirection from, double energy)
     return energy;    
     }
   return 0;
-  }
-
-@Override
-public double getTorqueTransferLossPercent()
-  {
-  return 1;
   }
 
 @Override

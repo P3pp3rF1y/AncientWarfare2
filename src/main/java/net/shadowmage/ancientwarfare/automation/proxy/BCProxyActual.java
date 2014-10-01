@@ -54,19 +54,19 @@ public double addEnergy(double mj, boolean ignoreCycleLimit)
 @Override
 public double getEnergyStored()
   {
-  return tile.getTorqueStored(null);
+  return tile.getTorqueStored(dir);
   }
 
 @Override
 public void setEnergyStored(double mj)
   {
-  tile.setTorqueEnergy(mj);
+  tile.addTorque(dir, mj);
   }
 
 @Override
 public double maxCapacity()
   {
-  return tile.getMaxTorque(null);
+  return tile.getMaxTorque(dir);
   }
 
 @Override
@@ -78,7 +78,7 @@ public double minimumConsumption()
 @Override
 public double maxReceivedPerCycle()
   {
-  return tile.getMaxTorqueInput(null);
+  return tile.getMaxTorqueInput(dir);
   }
 
 @Override
@@ -103,13 +103,13 @@ public IOMode mode()
 @Override
 public boolean canSend()
   {
-  return mode.canSend;
+  return tile.canOutputTorque(dir);
   }
 
 @Override
 public boolean canReceive()
   {
-  return mode.canReceive;
+  return tile.canInputTorque(dir);
   }
 }
 
@@ -124,7 +124,7 @@ public IBatteryObject getBatteryObject(String kind, ITorqueTile tile, ForgeDirec
   }
 
 @Override
-public boolean isPowerPipe(World world, TileEntity te)
+public boolean isPowerPipe(TileEntity te)
   {
   if(te==null){return false;}
   if(te instanceof TileGenericPipe)
@@ -139,61 +139,9 @@ public boolean isPowerPipe(World world, TileEntity te)
   }
 
 @Override
-public void transferPower(World world, int x, int y, int z, ITorqueTile generator)
+public void transferPower(World world, int x, int y, int z, ITorqueTile generator, ForgeDirection out)
   {
-  if(generator.getMaxTorqueOutput(null)!=0){return;}
-  if(!(generator instanceof IPowerEmitter)){return;}
-  world.theProfiler.startSection("AW-BC-PowerUpdate");
-  double[] requestedEnergy = new double[6];
   
-  IBatteryObject[] targets = new IBatteryObject[6];
-  TileEntity[] tes = generator.getNeighbors();
-  TileEntity te;
-  
-  IBatteryObject target;
-  
-  double maxOutput = generator.getMaxTorqueOutput(null);
-  if(maxOutput>generator.getTorqueStored(null)){maxOutput = generator.getTorqueStored(null);}
-  if(maxOutput<1)
-    {
-    world.theProfiler.endSection();
-    return;
-    }  
-  double request;
-  double totalRequest = 0;
-  
-  ForgeDirection d;
-  for(int i = 0; i < 6; i++)
-    {
-    d = ForgeDirection.getOrientation(i);
-    if(!generator.canOutputTorque(d)){continue;}
-    te = tes[i];//world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
-    if(te instanceof ITorqueTile){continue;}//skip torque tiles, transfer is handled in torque tile power update
-    target = MjAPI.getMjBattery(te);
-    if(target==null){continue;}
-    targets[d.ordinal()]=target;  
-    request = target.maxReceivedPerCycle();
-    if(request +target.getEnergyStored() > target.maxCapacity()){request = target.maxCapacity()-target.getEnergyStored();}
-    if(request>0)
-      {
-      requestedEnergy[d.ordinal()]=request;
-      totalRequest += request;          
-      } 
-    }
-  if(totalRequest>0)
-    {
-    double percentFullfilled = maxOutput / totalRequest;  
-    for(int i = 0; i<6; i++)
-      {
-      if(targets[i]==null){continue;}
-      target = targets[i];
-      request = requestedEnergy[i];
-      request *= percentFullfilled;
-      request = target.addEnergy(request);
-      generator.setTorqueEnergy(generator.getTorqueStored(null)-request);  
-      }
-    }
-  world.theProfiler.endSection();
   }
 
 }

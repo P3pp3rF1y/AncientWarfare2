@@ -73,18 +73,6 @@ public void onBoundsAdjusted(){}//NOOP
 public boolean userAdjustableBlocks(){return false;}//NOOP
 
 @Override
-public boolean cascadedInput()
-  {
-  return false;
-  }
-
-@Override
-public ITorqueTile[] getNeighborTorqueTiles()
-  {
-  return null;
-  }
-
-@Override
 public double getClientOutputRotation(ForgeDirection from)
   {
   return 0;
@@ -100,30 +88,6 @@ public double getPrevClientOutputRotation(ForgeDirection from)
 public boolean useOutputRotation(ForgeDirection from)
   {
   return false;
-  }
-
-@Override
-public double getTorqueOutput()
-  {
-  return 0;
-  }
-
-@Override
-public void setTorqueEnergy(double energy)
-  {
-  this.storedEnergy = energy;
-  }
-
-@Override
-public double getTorqueTransferLossPercent()
-  {
-  return 1;
-  }
-
-@Override
-public ForgeDirection getPrimaryFacing()
-  {
-  return ForgeDirection.getOrientation(getBlockMetadata());
   }
 
 @Override
@@ -332,12 +296,6 @@ public void addEnergyFromPlayer(EntityPlayer player)
   {
   storedEnergy+=AWCoreStatics.energyPerWorkUnit;
   if(storedEnergy>getMaxTorque(null)){storedEnergy=getMaxTorque(null);}
-  }
-
-@Override
-public TileEntity[] getNeighbors()
-  {
-  return null;
   }
 
 @Override
