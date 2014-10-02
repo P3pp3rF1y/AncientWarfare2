@@ -150,6 +150,21 @@ item.npc_spawner.viking.mounted_archer.name=Viking Mounted Archer
 item.npc_spawner.viking.cavalry.name=Viking Cavalry
 item.npc_spawner.viking.civilian.male.name=Viking Civilian Male
 item.npc_spawner.viking.civilian.female.name=Viking Civilian Female
+item.npc_spawner.custom_3.soldier.name=Yeoman Footsoldier
+item.npc_spawner.custom_3.soldier.elite.name=Imperial Church Knight
+item.npc_spawner.custom_3.cavalry.name=Imperial Knight
+item.npc_spawner.custom_3.archer.name=Peasant Archer
+item.npc_spawner.custom_3.archer.elite.name=Yeoman Archer
+item.npc_spawner.custom_3.mounted_archer.name=Imperial Yeoman
+item.npc_spawner.custom_3.leader.name=Imperial Champion
+item.npc_spawner.custom_3.leader.elite.name=Imperial Noble
+item.npc_spawner.custom_3.priest.name=Imperial Priest
+item.npc_spawner.custom_3.trader.name=Imperial Trader
+item.npc_spawner.custom_3.civilian.male.name=Imperial Man
+item.npc_spawner.custom_3.civilian.female.name=Imperial Woman
+
+
+
 #vehicle
 
 #blocks
@@ -511,6 +526,20 @@ npc.desert.cavalry.name=Desert Native Cavalry
 npc.desert.mounted_archer.name=Desert Native Mounted Archer
 npc.native.cavalry.name=Jungle Native Cavalry
 npc.native.mounted_archer.name=Jungle Native Mounted Archer
+npc.custom_3.soldier.name=Yeoman Footsoldier
+npc.custom_3.soldier.elite.name=Imperial Church Knight
+npc.custom_3.cavalry.name=Imperial Knight
+npc.custom_3.archer.name=Peasant Archer
+npc.custom_3.archer.elite.name=Yeoman Archer
+npc.custom_3.mounted_archer.name=Imperial Yeoman
+npc.custom_3.leader.name=Imperial Champion
+npc.custom_3.leader.elite.name=Imperial Noble
+npc.custom_3.priest.name=Imperial Priest
+npc.custom_3.trader.name=Imperial Trader
+npc.custom_3.civilian.male.name=Imperial Man
+npc.custom_3.civilian.female.name=Imperial Woman
+
+
 
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal
@@ -586,6 +615,19 @@ entity.ancientwarfarenpc.desert.cavalry.name=Desert Cavalry
 entity.ancientwarfarenpc.desert.mounted_archer.name=Desert Mounted Archer
 entity.ancientwarfarenpc.native.cavalry.name=Native Cavalry
 entity.ancientwarfarenpc.native.mounted_archer.name=Native Mounted Archer
+entity.ancientwarfarenpc.custom_3.soldier.name=Yeoman Footsoldier
+entity.ancientwarfarenpc.custom_3.soldier.elite.name=Imperial Church Knight
+entity.ancientwarfarenpc.custom_3.cavalry.name=Imperial Knight
+entity.ancientwarfarenpc.custom_3.archer.name=Peasant Archer
+entity.ancientwarfarenpc.custom_3.archer.elite.name=Yeoman Archer
+entity.ancientwarfarenpc.custom_3.mounted_archer.name=Imperial Yeoman
+entity.ancientwarfarenpc.custom_3.leader.name=Imperial Champion
+entity.ancientwarfarenpc.custom_3.leader.elite.name=Imperial Noble
+entity.ancientwarfarenpc.custom_3.priest.name=Imperial Priest
+entity.ancientwarfarenpc.custom_3.trader.name=Imperial Trader
+entity.ancientwarfarenpc.custom_3.civilian.male.name=Imperial Man
+entity.ancientwarfarenpc.custom_3.civilian.female.name=Imperial Woman
+
 
 
 #commands
