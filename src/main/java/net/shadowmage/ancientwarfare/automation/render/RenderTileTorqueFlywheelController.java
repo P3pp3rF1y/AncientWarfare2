@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderTileTorqueFlywheel extends TileEntitySpecialRenderer
+public class RenderTileTorqueFlywheelController extends TileEntitySpecialRenderer
 {
 
 private float[][] gearboxRotationMatrix = new float[6][];
@@ -21,7 +21,7 @@ ModelPiece controlInput, controlOutput, controlSpindle;
 
 ResourceLocation tex1, tex2, tex3;
 
-public RenderTileTorqueFlywheel()
+public RenderTileTorqueFlywheelController()
   {
   tex1 = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_controller_light.png");
   tex2 = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_controller_medium.png");
@@ -57,8 +57,8 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   if(rot[2]!=0){GL11.glRotatef(rot[2], 0, 0, 1);}
   
   float outputRotation = flywheel.getClientOutputRotation(d, delta);
-  float inputRotation = (float) getRotation(flywheel.getInputRotation(), flywheel.getInputPrevRotation(), delta);
-  float flywheelRotation = (float) getRotation(flywheel.getFlywheelRotation(), flywheel.getFlywheelPrevRotation(), delta);
+  float inputRotation = outputRotation;
+  float flywheelRotation = flywheel.getFlywheelRotation(delta);
 
   ITorqueTile inputNeighbor = neighbors[d.getOpposite().ordinal()];
   if(inputNeighbor!=null && inputNeighbor.canOutputTorque(d) && inputNeighbor.useOutputRotation(d.getOpposite()))
@@ -68,9 +68,8 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   
   controlInput.setRotation(0, 0, -inputRotation);
   controlOutput.setRotation(0, 0, -outputRotation);
-  
-  
-  controlSpindle.setRotation(0, flywheelRotation, 0);
+    
+  controlSpindle.setRotation(0, -flywheelRotation, 0);
   
   bindTexture(tex1);    
   controllerModel.renderModel();

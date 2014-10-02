@@ -20,7 +20,7 @@ public class TileFlywheelStorage extends TileEntity
 public BlockPosition controllerPos;
 public boolean isControl = false;//set to true if this is the control block for a setup
 public int setWidth, setHeight, setCube, setType;//validation params, only 'valid' in the control block.  used by rendering
-public double storedEnergy, maxEnergyStored, maxRpm;
+public double storedEnergy, maxEnergyStored, maxRpm = 100;
 public double rotation, prevRotation;//used in rendering
 private int clientEnergy, clientDestEnergy;
 private int networkUpdateTicks = 0;
@@ -37,6 +37,7 @@ public void updateEntity()
   super.updateEntity();
   if(isControl)
     {
+    AWLog.logDebug("updating control..");
     if(worldObj.isRemote)
       {
       clientNetworkUpdate();
@@ -48,26 +49,8 @@ public void updateEntity()
     }
   }
 
-//@Override
-//protected void clientNetworkUpdate()
-//  {
-//  if(clientEnergyState != clientDestEnergyState)
-//    {
-//    if(networkUpdateTicks>=0)
-//      {
-//      clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double)networkUpdateTicks+1.d);
-//      networkUpdateTicks--;
-//      }
-//    else
-//      {
-//      clientEnergyState = clientDestEnergyState;
-//      }
-//    }
-//  }
-
 protected void clientNetworkUpdate()
   {
-  if(!AWAutomationStatics.enable_energy_client_updates){return;}
   updateRotation();
   if(networkUpdateTicks>0)
     {
@@ -79,19 +62,35 @@ protected void clientNetworkUpdate()
 
 protected void serverNetworkUpdate()
   {
-  if(!AWAutomationStatics.enable_energy_network_updates){return;}
+//  if(!AWAutomationStatics.enable_energy_network_updates){return;}
   networkUpdateTicks--;
   if(networkUpdateTicks<=0)
     {
     double percentStored = storedEnergy / maxEnergyStored;
-    int total = (int)((percentStored)*100.d);
+    int total = (int)(percentStored*100.d);
+    AWLog.logDebug("storage p: "+percentStored+" : "+total);
     if(total!=clientEnergy)
       {
       clientEnergy = total;
       this.worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, clientEnergy);
+      AWLog.logDebug("added block event!");
       }
     networkUpdateTicks=AWAutomationStatics.energyMinNetworkUpdateFrequency;
     }
+  }
+
+@Override
+public boolean receiveClientEvent(int a, int b)
+  {
+  if(worldObj.isRemote)
+    {
+    if(a==1)
+      {
+      clientDestEnergy = b;
+      networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
+      }
+    }
+  return true;
   }
 
 protected void updateRotation()
@@ -244,11 +243,6 @@ private void informNeighborsToValidate()
     }
   }
 
-private boolean isController()
-  {
-  return controllerPos!=null && controllerPos.x==xCoord && controllerPos.y==yCoord && controllerPos.z==zCoord;
-  }
-
 public TileFlywheelStorage getController()
   {
   if(controllerPos!=null)
@@ -271,7 +265,8 @@ public Packet getDescriptionPacket()
       tag.setBoolean("isControl", true);
       tag.setInteger("setWidth", setWidth);
       tag.setInteger("setHeight", setHeight);
-      tag.setInteger("setType", setType);      
+      tag.setInteger("setType", setType);
+      tag.setInteger("clientEnergy", clientEnergy);
       }
     }
   return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
@@ -292,6 +287,7 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
       setWidth = tag.getInteger("setWidth");
       setCube = setWidth*setWidth*setHeight;
       setType = tag.getInteger("type");
+      clientEnergy = tag.getInteger("clientEnergy");
       }
     }
   }

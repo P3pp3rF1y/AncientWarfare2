@@ -1,10 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
 
@@ -12,14 +16,124 @@ public class TileTorqueStorageFlywheelController extends TileTorqueStorageBase
 {
 
 private boolean powered;
-double clientRotation;
-double prevClientRotation;
+
+/**
+ * client side this == 0.0 -> 1.0
+ */
+double clientEnergyState;
+
+/**
+ * server side this == 0 -> 100 (integer percent)
+ * client side this == 0.0 -> 1.0 (actual percent)
+ */
+double clientDestEnergyState;
+
+/**
+ * used client side for rendering
+ */
+double rotation, prevRotation;
 TorqueCell inputCell, outputCell;
 
 public TileTorqueStorageFlywheelController()
   {
   inputCell = new TorqueCell(32, 32, 32, 1.f);//TODO set default values from config
   outputCell = new TorqueCell(32, 32, 32, 1.f);//TODO set default values from config
+  }
+
+@Override
+public void updateEntity()
+  {
+  super.updateEntity();
+  if(!worldObj.isRemote)
+    {    
+    serverNetworkUpdate();    
+    torqueIn = getTotalTorque() - prevEnergy;
+    balancePower();
+    torqueOut = transferPowerTo(getPrimaryFacing());
+    prevEnergy = getTotalTorque();
+    }
+  else
+    {
+    clientNetworkUpdate();
+    updateRotation();
+    }
+  }
+
+protected void balancePower()
+  {
+  /**
+   * fill output from input
+   * fill output from storage
+   * fill storage from input
+   */
+  TileFlywheelStorage storage = getControlledFlywheel();
+  double in = inputCell.getEnergy();
+  double out = outputCell.getEnergy();
+  double transfer = outputCell.getMaxEnergy()-out;  
+  transfer = Math.min(in, transfer);
+  in-=transfer;
+  out+=transfer;
+  if(storage!=null)
+    {
+    double store = storage.storedEnergy;    
+    transfer = Math.min(store, outputCell.getMaxEnergy() - out);
+    store-=transfer;
+    out+=transfer;
+    
+    transfer = Math.min(in, storage.maxEnergyStored-store);
+    in-=transfer;
+    store+=transfer;
+    storage.storedEnergy=store;
+    }  
+  outputCell.setEnergy(out);
+  inputCell.setEnergy(in);  
+  }
+
+@Override
+protected void serverNetworkSynch()
+  {
+  int percent = (int)(outputCell.getPercentFull()*100.d);
+  int percent2 = (int)((torqueOut / outputCell.getMaxOutput())*100.d);
+  percent = Math.max(percent, percent2);  
+  if(percent != clientDestEnergyState)
+    {
+    clientDestEnergyState = percent;
+    sendSideRotation(getPrimaryFacing(), percent);    
+    }
+  }
+
+@Override
+protected void updateRotation()
+  {
+  prevRotation = rotation;
+  if(clientEnergyState > 0)
+    {
+    double r = AWAutomationStatics.low_rpt * clientEnergyState;
+    rotation += r;
+    }
+  }
+
+@Override
+protected void clientNetworkUpdate()
+  {
+  if(clientEnergyState != clientDestEnergyState)
+    {
+    if(networkUpdateTicks>=0)
+      {
+      clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double)networkUpdateTicks+1.d);
+      networkUpdateTicks--;
+      }
+    else
+      {
+      clientEnergyState = clientDestEnergyState;
+      }
+    }
+  }
+
+@Override
+protected void handleClientRotationData(ForgeDirection side, int value)
+  {
+  clientDestEnergyState = ((double)value) * 0.01d;
   }
 
 public TileFlywheelStorage getControlledFlywheel()
@@ -46,40 +160,16 @@ public TileFlywheelStorage getControlledFlywheel()
   return null;
   }
 
-public double getInputRotation(){return 0;}//TODO
-
-public double getInputPrevRotation(){return 0;}//TODO
-
-public double getFlywheelRotation()
+public float getFlywheelRotation(float delta)
   {
   TileFlywheelStorage storage = getControlledFlywheel();
-  return storage==null ? 0: storage.rotation;
+  return storage==null ? 0: getRotation(storage.rotation, storage.prevRotation, delta);
   }
-
-public double getFlywheelPrevRotation()
-  {
-  TileFlywheelStorage storage = getControlledFlywheel();
-  return storage==null ? 0: storage.prevRotation;
-  }
-
-//TODO clean these up, along with all other energy accessors?
-//@Override
-//public double getEnergyStored()
-//  {
-//  TileFlywheelStorage storage = getControlledFlywheel();
-//  return storage==null ? 0 : storage.storedEnergy;
-//  }
-//
-//@Override
-//public double getMaxEnergy()
-//  {
-//  TileFlywheelStorage storage = getControlledFlywheel();
-//  return storage==null ? 0 : storage.maxEnergyStored;
-//  }
 
 protected double getFlywheelEnergy()
   {
-  return 0;//TODO
+  TileFlywheelStorage storage = getControlledFlywheel();
+  return storage==null ? 0 : storage.storedEnergy;//TODO
   }
 
 @Override
@@ -109,7 +199,7 @@ public void onNeighborTileChanged()
 public boolean useOutputRotation(ForgeDirection from){return true;}
 
 @Override
-public float getClientOutputRotation(ForgeDirection from, float delta){return getRotation(clientRotation, prevClientRotation, delta);}
+public float getClientOutputRotation(ForgeDirection from, float delta){return getRotation(rotation, prevRotation, delta);}
 
 @Override
 public boolean receiveClientEvent(int a, int b)
@@ -185,6 +275,7 @@ public NBTTagCompound getDescriptionTag()
   {
   NBTTagCompound tag = super.getDescriptionTag();
   tag.setBoolean("powered", powered);  
+  tag.setInteger("clientEnergy", (int)clientDestEnergyState);
   return tag;
   }
 
@@ -194,6 +285,7 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   super.onDataPacket(net, pkt);
   NBTTagCompound tag = pkt.func_148857_g();
   powered = tag.getBoolean("powered");
+  clientDestEnergyState = ((double)tag.getInteger("clientEnergy")) / 100.d;
   }
 
 @Override

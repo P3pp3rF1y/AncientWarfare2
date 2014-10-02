@@ -26,6 +26,13 @@ public BlockFlywheelStorage(String regName)
   }
 
 @Override
+public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b)
+  {
+  TileEntity tileentity = world.getTileEntity(x, y, z);
+  return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
+  }
+
+@Override
 public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
 
 @Override

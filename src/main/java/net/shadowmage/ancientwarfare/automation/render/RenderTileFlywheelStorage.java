@@ -75,11 +75,11 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
       GL11.glTranslated(x+0.5d, y, z+0.5d);
       if(storage.setWidth>1)
         {
-        renderLargeModel(storage.setType, storage.setHeight, rotation);
+        renderLargeModel(storage.setType, storage.setHeight, -rotation);
         }
       else
         {
-        renderSmallModel(storage.setType, storage.setHeight, rotation);
+        renderSmallModel(storage.setType, storage.setHeight, -rotation);
         }
       }  
     GL11.glPopMatrix();  

@@ -60,7 +60,7 @@ protected void serverNetworkSynch()
   {
   if(prev()==null)
     {
-    AWLog.logDebug("shaft updating at: "+xCoord+","+yCoord+","+zCoord);
+//    AWLog.logDebug("shaft updating at: "+xCoord+","+yCoord+","+zCoord);
     TileTorqueTransportShaft last = this;
     TileTorqueTransportShaft n = next();
     double totalPower = torqueCell.getEnergy();
@@ -78,7 +78,7 @@ protected void serverNetworkSynch()
     
     int percent = (int)( perc * 100.d );
     int percent2 = (int)((torqueOut / last.torqueCell.getMaxOutput())*100.d);
-    AWLog.logDebug("shaft net synch, p1, p2: "+percent+" :: "+percent2 + " avg: "+avg+" avgper: "+perc+" lo: "+last.torqueOut);
+//    AWLog.logDebug("shaft net synch, p1, p2: "+percent+" :: "+percent2 + " avg: "+avg+" avgper: "+perc+" lo: "+last.torqueOut);
     percent = Math.max(percent, percent2);
     if(percent != (int)clientDestEnergyState)
       {
