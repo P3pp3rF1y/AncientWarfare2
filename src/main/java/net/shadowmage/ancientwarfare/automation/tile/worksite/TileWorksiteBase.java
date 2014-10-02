@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import cofh.api.energy.IEnergyHandler;
+import cpw.mods.fml.common.Optional;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,8 +31,13 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInteractableTile, IOwnable, ITorqueTile, IRotatableTile
+@Optional.InterfaceList(value=
+  {
+  @Optional.Interface(iface="cofh.api.energy.IEnergyHandler", modid="CoFHCore",striprefs=true)
+  })
+public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInteractableTile, IOwnable, ITorqueTile, IRotatableTile, IEnergyHandler
 {
+
 protected String owningPlayer = "";
 
 protected ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
@@ -47,6 +54,45 @@ public TileWorksiteBase()
   {
   torqueCell = new TorqueCell(32, 0, AWCoreStatics.energyPerWorkUnit*3, 1);
   }
+
+//*************************************** COFH RF METHODS ***************************************//
+@Optional.Method(modid="CoFHCore")
+@Override
+public final int getEnergyStored(ForgeDirection from)
+  {
+  return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
+  }
+
+@Optional.Method(modid="CoFHCore")
+@Override
+public final int getMaxEnergyStored(ForgeDirection from)
+  {
+  return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
+  }
+
+@Optional.Method(modid="CoFHCore")
+@Override
+public final boolean canConnectEnergy(ForgeDirection from)
+  {
+  return canOutputTorque(from) || canInputTorque(from);
+  }
+
+@Optional.Method(modid="CoFHCore")
+@Override
+public final int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+  {
+  return 0;
+  }
+
+@Optional.Method(modid="CoFHCore")
+@Override
+public final int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+  {
+  if(!canInputTorque(from)){return 0;}
+  if(simulate){return Math.min(maxReceive, (int)(AWAutomationStatics.torqueToRf * getMaxTorqueInput(from)));}
+  return (int)(AWAutomationStatics.torqueToRf * addTorque(from, (double)maxReceive * AWAutomationStatics.rfToTorque));
+  }
+//*************************************** UPGRADE HANDLING METHODS ***************************************//
 
 @Override
 public final EnumSet<WorksiteUpgrade> getUpgrades(){return upgrades;}
@@ -90,6 +136,8 @@ public final void removeUpgrade(WorksiteUpgrade upgrade)
   worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
+//*************************************** TILE UPDATE METHODS ***************************************//
+
 protected abstract boolean processWork();
 
 protected abstract boolean hasWorksiteWork();
@@ -99,13 +147,73 @@ protected abstract void updateOverflowInventory();
 protected abstract void updateWorksite();
 
 @Override
-public boolean shouldRenderInPass(int pass)
+public final boolean canUpdate()
   {
-  return pass==1;
+  return true;
   }
 
 @Override
+public void updateEntity()
+  {
+  super.updateEntity();
+  if(worldObj.isRemote){return;}  
+  worldObj.theProfiler.startSection("AWWorksite");
+  worldObj.theProfiler.startSection("InventoryOverflow");
+  if(!inventoryOverflow.isEmpty())
+    {
+    updateOverflowInventory();
+    } 
+  worldObj.theProfiler.endStartSection("Check For Work");
+  double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
+  boolean hasWork = getTorqueStored(null) >= ePerUse && hasWorksiteWork();
+  worldObj.theProfiler.endStartSection("Process Work");
+  if(hasWork)
+    {
+    if(processWork())
+      {
+      torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
+      }    
+    }
+  worldObj.theProfiler.endStartSection("WorksiteBaseUpdate");
+  updateWorksite();
+  worldObj.theProfiler.endSection();
+  worldObj.theProfiler.endSection();
+  }
+
+protected final void updateEfficiency()
+  {
+  efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
+  }
+
+//*************************************** TILE INTERACTION METHODS ***************************************//
+
+@Override
 public abstract boolean onBlockClicked(EntityPlayer player);
+
+@Override
+public final Team getTeam()
+  {  
+  if(owningPlayer!=null)
+    {
+    return worldObj.getScoreboard().getPlayersTeam(owningPlayer);
+    }
+  return null;
+  }
+
+@Override
+public final String getOwnerName()
+  {  
+  return owningPlayer;
+  }
+
+@Override
+public final void setOwnerName(String name)
+  {
+  if(name==null){name="";}
+  this.owningPlayer = name;  
+  }
+
+//*************************************** TORQUE INTERACTION METHODS ***************************************//
 
 @Override
 public final float getClientOutputRotation(ForgeDirection from, float delta)
@@ -156,12 +264,6 @@ public final double addTorque(ForgeDirection from, double energy)
   }
 
 @Override
-public String toString()
-  {
-  return "Worksite Base["+torqueCell.getEnergy()+"]";
-  }
-
-@Override
 public final double getMaxTorque(ForgeDirection from)
   {
   return torqueCell.getMaxEnergy();
@@ -185,6 +287,20 @@ public final boolean canInputTorque(ForgeDirection from)
   return true;
   }
 
+//*************************************** MISC METHODS ***************************************//
+
+@Override
+public boolean shouldRenderInPass(int pass)
+  {
+  return pass==1;
+  }
+
+@Override
+public String toString()
+  {
+  return "Worksite Base["+torqueCell.getEnergy()+"]";
+  }
+
 @Override
 public boolean hasWork()
   {
@@ -192,56 +308,20 @@ public boolean hasWork()
   }
 
 @Override
-public final String getOwnerName()
-  {  
-  return owningPlayer;
+public final ForgeDirection getPrimaryFacing()
+  {
+  return orientation;
   }
 
 @Override
-public final boolean canUpdate()
+public final void setPrimaryFacing(ForgeDirection face)
   {
-  return true;
+  orientation = face;
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+  this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
   }
 
-@Override
-public void updateEntity()
-  {
-  super.updateEntity();
-  if(worldObj.isRemote){return;}  
-  worldObj.theProfiler.startSection("AWWorksite");
-  worldObj.theProfiler.startSection("InventoryOverflow");
-  if(!inventoryOverflow.isEmpty())
-    {
-    updateOverflowInventory();
-    } 
-  worldObj.theProfiler.endStartSection("Check For Work");
-  double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
-  boolean hasWork = getTorqueStored(null) >= ePerUse && hasWorksiteWork();
-  worldObj.theProfiler.endStartSection("Process Work");
-  if(hasWork)
-    {
-    if(processWork())
-      {
-      torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
-      }    
-    }
-  worldObj.theProfiler.endStartSection("WorksiteBaseUpdate");
-  updateWorksite();
-  worldObj.theProfiler.endSection();
-  worldObj.theProfiler.endSection();
-  }
-
-protected final void updateEfficiency()
-  {
-  efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
-  }
-
-@Override
-public final void setOwnerName(String name)
-  {
-  if(name==null){name="";}
-  this.owningPlayer = name;  
-  }
+//*************************************** NBT AND PACKET DATA METHODS ***************************************//
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
@@ -306,16 +386,6 @@ public void readFromNBT(NBTTagCompound tag)
   }
 
 @Override
-public final Team getTeam()
-  {  
-  if(owningPlayer!=null)
-    {
-    return worldObj.getScoreboard().getPlayersTeam(owningPlayer);
-    }
-  return null;
-  }
-
-@Override
 public AxisAlignedBB getRenderBoundingBox()
   {
   if(hasWorkBounds() && getWorkBoundsMin()!=null && getWorkBoundsMax()!=null)
@@ -369,20 +439,6 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
       }
     }
   orientation = ForgeDirection.values()[pkt.func_148857_g().getInteger("orientation")];
-  this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
-  }
-
-@Override
-public final ForgeDirection getPrimaryFacing()
-  {
-  return orientation;
-  }
-
-@Override
-public final void setPrimaryFacing(ForgeDirection face)
-  {
-  orientation = face;
-  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
   }
 
