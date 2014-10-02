@@ -1,11 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
-import buildcraft.api.mj.BatteryObject;
 import buildcraft.api.mj.IBatteryIOObject;
 import buildcraft.api.mj.IBatteryObject;
 import buildcraft.api.mj.IOMode;

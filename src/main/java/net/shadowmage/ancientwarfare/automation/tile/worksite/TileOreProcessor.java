@@ -68,6 +68,7 @@ public boolean canExtractItem(int slot, ItemStack stack, int side){return true;}
 @Override
 public void onBlockBroken()
   {
+  super.onBlockBroken();
   if(!worldObj.isRemote){InventoryTools.dropInventoryInWorld(worldObj, inventory, xCoord, yCoord, zCoord);}
   }
 
