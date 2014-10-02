@@ -37,7 +37,6 @@ public void updateEntity()
   super.updateEntity();
   if(isControl)
     {
-    AWLog.logDebug("updating control..");
     if(worldObj.isRemote)
       {
       clientNetworkUpdate();
@@ -62,18 +61,16 @@ protected void clientNetworkUpdate()
 
 protected void serverNetworkUpdate()
   {
-//  if(!AWAutomationStatics.enable_energy_network_updates){return;}
+  if(!AWAutomationStatics.enable_energy_network_updates){return;}
   networkUpdateTicks--;
   if(networkUpdateTicks<=0)
     {
     double percentStored = storedEnergy / maxEnergyStored;
     int total = (int)(percentStored*100.d);
-    AWLog.logDebug("storage p: "+percentStored+" : "+total);
     if(total!=clientEnergy)
       {
       clientEnergy = total;
       this.worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, clientEnergy);
-      AWLog.logDebug("added block event!");
       }
     networkUpdateTicks=AWAutomationStatics.energyMinNetworkUpdateFrequency;
     }

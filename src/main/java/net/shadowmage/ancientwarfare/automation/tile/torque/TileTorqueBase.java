@@ -331,7 +331,7 @@ protected final double transferPowerTo(ForgeDirection from)
       }
     if(ModuleStatus.buildCraftLoaded)
       {
-      BCProxy.instance.transferPower(worldObj, xCoord, yCoord, zCoord, this, from);
+      transferred = BCProxy.instance.transferPower(this, from, getBCCache()[from.ordinal()]);
       if(transferred>0){return transferred;}
       }
     }
