@@ -6,8 +6,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 
@@ -17,24 +15,6 @@ public class TileWarehouse extends TileWarehouseBase
 public TileWarehouse()
   {
   
-  }
-
-@Override
-public double drainTorque(ForgeDirection from, double energy)
-  {
-  return 0;
-  }
-
-@Override
-public double getMaxTorqueOutput(ForgeDirection from)
-  {
-  return 0;
-  }
-
-@Override
-public boolean canOutputTorque(ForgeDirection towards)
-  {
-  return false;
   }
 
 @Override

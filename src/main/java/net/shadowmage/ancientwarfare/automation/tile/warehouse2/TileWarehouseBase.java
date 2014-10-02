@@ -54,18 +54,6 @@ public TileWarehouseBase()
   }
 
 @Override
-public float getClientOutputRotation(ForgeDirection from, float delta)
-  {
-  return 0;
-  }
-
-@Override
-public boolean useOutputRotation(ForgeDirection from)
-  {
-  return false;
-  }
-
-@Override
 protected void updateOverflowInventory(){}//NOOP
 
 @Override
@@ -479,12 +467,6 @@ public final void removeControlledTile(IControlledTile tile)
   if(tile instanceof IWarehouseStorageTile){removeStorageTile((IWarehouseStorageTile) tile);}
   else if(tile instanceof TileWarehouseInterface){removeInterfaceTile((TileWarehouseInterface) tile);}
   else if(tile instanceof TileWarehouseStockViewer){removeStockViewer((TileWarehouseStockViewer) tile);}
-  }
-
-@Override
-public final boolean canInputTorque(ForgeDirection from)
-  {
-  return true;
   }
 
 @Override
