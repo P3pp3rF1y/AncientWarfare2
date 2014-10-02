@@ -19,9 +19,9 @@ ModelBaseAW model;
 ModelPiece waterwheel, outputGear;
 ResourceLocation tex;
 
-public RenderTileTorqueGeneratorWaterwheel(ResourceLocation tex)
+public RenderTileTorqueGeneratorWaterwheel()
   {
-  this.tex = tex;
+  this.tex = new ResourceLocation("ancientwarfare", "textures/model/automation/waterwheel.png");
   ModelLoader loader = new ModelLoader();
   model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/waterwheel.m2f"));
   waterwheel = model.getPiece("waterwheelSpindle");

@@ -116,7 +116,7 @@ public void registerClient()
     
   //*********************************************GENERATOR RENDERS***************************************************************//  
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorSterling.class, new RenderSterlingEngine());
-  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel(new ResourceLocation("ancientwarfare", "textures/model/automation/waterwheel.png")));
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, new RenderTileTorqueGeneratorWaterwheel());
   }
 
 private void registerClientOptions()
