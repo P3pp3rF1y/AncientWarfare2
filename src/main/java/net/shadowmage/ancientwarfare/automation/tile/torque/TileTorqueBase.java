@@ -61,6 +61,7 @@ protected double torqueIn, torqueOut, torqueLoss, prevEnergy;
 @Override
 public final int getEnergyStored(ForgeDirection from)
   {
+//  AWLog.logDebug("cofh get stored: "+from);
   return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
   }
 
@@ -68,6 +69,7 @@ public final int getEnergyStored(ForgeDirection from)
 @Override
 public final int getMaxEnergyStored(ForgeDirection from)
   {
+//  AWLog.logDebug("cofh get max stored: "+from);
   return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
   }
 
@@ -75,6 +77,7 @@ public final int getMaxEnergyStored(ForgeDirection from)
 @Override
 public final boolean canConnectEnergy(ForgeDirection from)
   {
+//  AWLog.logDebug("cofh get can connect: "+from);
   return canOutputTorque(from) || canInputTorque(from);
   }
 
@@ -82,15 +85,18 @@ public final boolean canConnectEnergy(ForgeDirection from)
 @Override
 public final int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
   {
-  if(!canOutputTorque(from)){return 0;}  
-  if(simulate){return Math.min(maxExtract, (int) (AWAutomationStatics.torqueToRf * getMaxTorqueOutput(from)));}
-  return (int) (AWAutomationStatics.torqueToRf * drainTorque(from, (double)maxExtract * AWAutomationStatics.rfToTorque));
+//  AWLog.logDebug("cofh extract: "+from+" :: "+maxExtract);
+  return 0;
+//  if(!canOutputTorque(from)){return 0;}  
+//  if(simulate){return Math.min(maxExtract, (int) (AWAutomationStatics.torqueToRf * getMaxTorqueOutput(from)));}
+//  return (int) (AWAutomationStatics.torqueToRf * drainTorque(from, (double)maxExtract * AWAutomationStatics.rfToTorque));
   }
 
 @Optional.Method(modid="CoFHCore")
 @Override
 public final int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
   {
+//  AWLog.logDebug("cofh receive: "+from+" :: "+maxReceive);
   if(!canInputTorque(from)){return 0;}
   if(simulate){return Math.min(maxReceive, (int)(AWAutomationStatics.torqueToRf * getMaxTorqueInput(from)));}
   return (int)(AWAutomationStatics.torqueToRf * addTorque(from, (double)maxReceive * AWAutomationStatics.rfToTorque));
@@ -144,10 +150,7 @@ private void buildTorqueCache()
     if(te instanceof ITorqueTile)
       {
       itt = (ITorqueTile)te;
-      if((canOutputTorque(dir) && itt.canInputTorque(dir.getOpposite())) || canInputTorque(dir) && itt.canOutputTorque(dir.getOpposite()))
-        {
-        torqueCache[dir.ordinal()]=itt;
-        }
+      torqueCache[dir.ordinal()]=itt;
       }
     }
   }
@@ -300,24 +303,33 @@ protected void sendSideRotation(ForgeDirection side, int value)
   int sideBits = side.ordinal();
   int valueBits = (value & 0x00ffffff) | ((sideBits & 0xff) << 24);
   sendDataToClient(0, valueBits);
-  AWLog.logDebug("sending side rotation data: "+side+" :: "+value);
   }
 
-protected final void transferPowerTo(ForgeDirection from)
+protected final double transferPowerTo(ForgeDirection from)
   {
+  double transferred = 0;
   ITorqueTile[] tc = getTorqueCache();
-  if(tc[from.ordinal()]!=null && tc[from.ordinal()].canInputTorque(from.getOpposite()))
+  if(tc[from.ordinal()]!=null)
     {
-    drainTorque(from, tc[from.ordinal()].addTorque(from.getOpposite(), getMaxTorqueOutput(from)));
+    if(tc[from.ordinal()].canInputTorque(from.getOpposite()))
+      {
+      return drainTorque(from, tc[from.ordinal()].addTorque(from.getOpposite(), getMaxTorqueOutput(from)));      
+      }
     }
-  if(ModuleStatus.buildCraftLoaded)
+  else
     {
-    BCProxy.instance.transferPower(worldObj, xCoord, yCoord, zCoord, this, from);
+    if(ModuleStatus.redstoneFluxEnabled)
+      {
+      transferred = RFProxy.instance.transferPower(this, from, getRFCache()[from.ordinal()]);
+      if(transferred>0){return transferred;}
+      }
+    if(ModuleStatus.buildCraftLoaded)
+      {
+      BCProxy.instance.transferPower(worldObj, xCoord, yCoord, zCoord, this, from);
+      if(transferred>0){return transferred;}
+      }
     }
-  if(ModuleStatus.redstoneFluxEnabled)
-    {
-    RFProxy.instance.transferPower(worldObj, xCoord, yCoord, zCoord, this, from);
-    }
+  return transferred;
   }
 
 protected final void sendDataToClient(int type, int data)

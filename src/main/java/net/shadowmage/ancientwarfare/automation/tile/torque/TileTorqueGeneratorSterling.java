@@ -57,13 +57,10 @@ public void updateEntity()
   super.updateEntity();
   if(!worldObj.isRemote)
     {
-    AWLog.logDebug("running sterling generator server update!! "+torqueCell.getEnergy());
     if(burnTime <= 0 && torqueCell.getEnergy() < torqueCell.getMaxEnergy())
       {
-      AWLog.logDebug("checking for starting burn!!");
       if(fuelInventory.getStackInSlot(0)!=null)
         {
-        AWLog.logDebug("fuel in slot, starting burn!!");
         //if fueled, consume one, set burn-ticks to fuel value
         int ticks = TileEntityFurnace.getItemBurnTime(fuelInventory.getStackInSlot(0));
         if(ticks>0)
@@ -76,15 +73,12 @@ public void updateEntity()
       }
     else if(burnTime>0)
       {
-      AWLog.logDebug("updating burn!!");
       torqueCell.setEnergy(torqueCell.getEnergy() + 1.d * AWAutomationStatics.sterling_generator_output_factor);
       burnTime--;
       }  
     serverNetworkUpdate();    
     torqueIn = torqueCell.getEnergy() - prevEnergy;
-    double d = torqueCell.getEnergy();
-    transferPowerTo(getPrimaryFacing());
-    torqueOut = d-torqueCell.getEnergy();
+    torqueOut = transferPowerTo(getPrimaryFacing());
     prevEnergy = torqueCell.getEnergy();
     }
   else
@@ -98,8 +92,8 @@ public void updateEntity()
 protected void serverNetworkSynch()
   {
   int percent = (int)(torqueCell.getPercentFull()*100.d);
-  percent += (int)(torqueOut / torqueCell.getMaxOutput());
-  if(percent>100){percent=100;}
+  int percent2 = (int)((torqueOut / torqueCell.getMaxOutput())*100.d);
+  percent = Math.max(percent, percent2);  
   if(percent != clientDestEnergyState)
     {
     clientDestEnergyState = percent;
@@ -123,15 +117,15 @@ protected void clientNetworkUpdate()
   {
   if(clientEnergyState != clientDestEnergyState)
     {
-    if(networkUpdateTicks>0)
+    if(networkUpdateTicks>=0)
       {
-      clientEnergyState += (clientDestEnergyState - clientEnergyState) / (double)networkUpdateTicks;
+      clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double)networkUpdateTicks+1.d);
+      networkUpdateTicks--;
       }
     else
       {
       clientEnergyState = clientDestEnergyState;
       }
-    AWLog.logDebug("updated client energy state: "+clientEnergyState+" :: "+clientDestEnergyState);
     }
   }
 
@@ -243,7 +237,7 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 public NBTTagCompound getDescriptionTag()
   {
   NBTTagCompound tag = super.getDescriptionTag();
-  tag.setInteger("clientEnergy", (int)(clientDestEnergyState * 100.d));
+  tag.setInteger("clientEnergy", (int)clientDestEnergyState);
   return tag;
   }
 

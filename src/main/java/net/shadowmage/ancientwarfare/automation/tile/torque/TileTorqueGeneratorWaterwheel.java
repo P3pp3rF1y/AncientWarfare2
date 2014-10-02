@@ -120,15 +120,15 @@ protected void clientNetworkUpdate()
   {
   if(clientEnergyState != clientDestEnergyState)
     {
-    if(networkUpdateTicks>0)
+    if(networkUpdateTicks>=0)
       {
-      clientEnergyState += (clientDestEnergyState - clientEnergyState) / (double)networkUpdateTicks;
+      clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double)networkUpdateTicks+1.d);
+      networkUpdateTicks--;
       }
     else
       {
       clientEnergyState = clientDestEnergyState;
       }
-    AWLog.logDebug("updated client energy state: "+clientEnergyState+" :: "+clientDestEnergyState);
     }
   }
 
@@ -158,7 +158,7 @@ public NBTTagCompound getDescriptionTag()
   NBTTagCompound tag = super.getDescriptionTag();
   tag.setBoolean("validSetup", validSetup);
   tag.setByte("rotationDirection", rotationDirection);
-  tag.setInteger("clientEnergy", (int)(clientDestEnergyState * 100.d));
+  tag.setInteger("clientEnergy", (int)clientDestEnergyState);
   return tag;
   }
 

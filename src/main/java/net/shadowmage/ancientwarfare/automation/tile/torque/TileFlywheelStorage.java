@@ -48,6 +48,23 @@ public void updateEntity()
     }
   }
 
+//@Override
+//protected void clientNetworkUpdate()
+//  {
+//  if(clientEnergyState != clientDestEnergyState)
+//    {
+//    if(networkUpdateTicks>=0)
+//      {
+//      clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double)networkUpdateTicks+1.d);
+//      networkUpdateTicks--;
+//      }
+//    else
+//      {
+//      clientEnergyState = clientDestEnergyState;
+//      }
+//    }
+//  }
+
 protected void clientNetworkUpdate()
   {
   if(!AWAutomationStatics.enable_energy_client_updates){return;}

@@ -50,13 +50,11 @@ public void updateEntity()
   super.updateEntity();
   if(!worldObj.isRemote)
     { 
-    serverNetworkUpdate();   
-    double d = getTotalTorque(); 
-    torqueIn = d - prevEnergy;
-    transferPower();
-    torqueOut = d - getTotalTorque();
-    prevEnergy = getTotalTorque();
+    serverNetworkUpdate();
+    torqueIn = getTotalTorque() - prevEnergy;
     balanceStorage();
+    torqueOut = transferPower();
+    prevEnergy = getTotalTorque();
     }
   else
     {
@@ -65,9 +63,9 @@ public void updateEntity()
     }
   }
 
-protected void transferPower()
+protected double transferPower()
   {
-  transferPowerTo(getPrimaryFacing());
+  return transferPowerTo(getPrimaryFacing());
   }
 
 protected void balanceStorage()
@@ -75,33 +73,36 @@ protected void balanceStorage()
   int face = getPrimaryFacing().ordinal();
   TorqueCell out = storage[face];  
   double total = 0;  
-  TorqueCell in;
+  TorqueCell in;  
   for(int i = 0; i < 6; i++)
     {
     if(i==face){continue;}
-    in = storage[i];
-    total+=in.getEnergy();
+    total += storage[i].getEnergy();
     }  
   if(total>0)
     {
-    double transfer = Math.min(total, out.getMaxEnergy()-out.getEnergy());  
+    double transfer = Math.min(total, out.getMaxEnergy() - out.getEnergy());  
     double percent = transfer / total;
+    transfer = 0;
+    double fromEach;
     for(int i = 0; i < 6; i++)
       {
       if(i==face){continue;}
       in = storage[i];
-      in.setEnergy(in.getEnergy() - percent*transfer);
+      fromEach = in.getEnergy() * percent;
+      transfer+=fromEach;
+      in.setEnergy(in.getEnergy() - fromEach);
       }
-    out.setEnergy(out.getEnergy()+transfer);
-    }  
+    out.setEnergy(out.getEnergy() + transfer);
+    }    
   }
 
 @Override
 protected void serverNetworkSynch()
   {
   int percent = (int)(storage[getPrimaryFacing().ordinal()].getPercentFull()*100.d);
-  percent += (int)(torqueOut / storage[getPrimaryFacing().ordinal()].getMaxOutput());
-  if(percent>100){percent=100;}
+  int percent2 = (int)((torqueOut / storage[getPrimaryFacing().ordinal()].getMaxOutput())*100.d);
+  percent = Math.max(percent, percent2);
   if(percent != clientDestEnergyState)
     {
     clientDestEnergyState = percent;
@@ -125,9 +126,10 @@ protected void clientNetworkUpdate()
   {
   if(clientEnergyState != clientDestEnergyState)
     {
-    if(networkUpdateTicks>0)
+    if(networkUpdateTicks>=0)
       {
-      clientEnergyState += (clientDestEnergyState - clientEnergyState) / (double)networkUpdateTicks;
+      clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double)networkUpdateTicks+1.d);
+      networkUpdateTicks--;
       }
     else
       {
@@ -171,15 +173,21 @@ protected void buildConnections()
   {
   connections = new boolean[6];
   ITorqueTile[] cache = getTorqueCache();
+  ForgeDirection dir;
   for(int i = 0; i < 6; i++)
     {
-    if(cache[i]!=null){connections[i]=true;}
+    dir = ForgeDirection.values()[i];
+    if(cache[i]!=null)
+      {
+      connections[i]=(cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i].canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
+      }
     }
   if(ModuleStatus.buildCraftLoaded)
     {
     TileEntity[] tes = getBCCache();
     for(int i = 0; i < 6; i++)
       {
+      if(cache[i]!=null){continue;}//already examined that side..
       if(tes[i]!=null){connections[i]=true;}
       }
     }
@@ -188,6 +196,7 @@ protected void buildConnections()
     TileEntity[] tes = getRFCache();
     for(int i = 0; i < 6; i++)
       {
+      if(cache[i]!=null){continue;}//already examined that side..
       if(tes[i]!=null){connections[i]=true;}
       }
     }
@@ -245,7 +254,7 @@ public float getClientOutputRotation(ForgeDirection from, float delta)
 public NBTTagCompound getDescriptionTag()
   {
   NBTTagCompound tag = super.getDescriptionTag();
-  tag.setInteger("clientEnergy", (int)(clientDestEnergyState * 100.d));
+  tag.setInteger("clientEnergy", (int)clientDestEnergyState);
   return tag;
   }
 
