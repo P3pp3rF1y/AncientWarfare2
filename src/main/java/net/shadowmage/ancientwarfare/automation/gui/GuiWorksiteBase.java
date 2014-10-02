@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBase;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBasic;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBoundedInventory;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 public abstract class GuiWorksiteBase extends GuiContainerBase
 {
 
-TileWorksiteBasic worksite;
+TileWorksiteBoundedInventory worksite;
 ContainerWorksiteBase container;
 public GuiWorksiteBase(ContainerBase par1Container)
   {

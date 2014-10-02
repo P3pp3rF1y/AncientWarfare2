@@ -8,42 +8,21 @@ import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
-import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceEmptyRequest;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceFillRequest;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBounded;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public abstract class TileWarehouseBase extends TileEntity implements IOwnable, IWorkSite, ITorqueTile, IInteractableTile, IControllerTile
+public abstract class TileWarehouseBase extends TileWorksiteBounded implements IControllerTile
 {
-
-private BlockPosition min, max;
-private String ownerName;
-private double storedEnergy;
-
-private double maxEnergy = AWCoreStatics.energyPerWorkUnit*4;
-private double maxInput = AWCoreStatics.energyPerWorkUnit;
 
 private boolean init;
 private boolean shouldRecount;
@@ -68,8 +47,6 @@ private ItemQuantityMap cachedItemMap = new ItemQuantityMap();
 
 private Set<ContainerWarehouseControl> viewers = new HashSet<ContainerWarehouseControl>();
 
-private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
-private double efficiency;
 
 public TileWarehouseBase()
   {
@@ -89,9 +66,14 @@ public boolean useOutputRotation(ForgeDirection from)
   }
 
 @Override
+protected void updateOverflowInventory(){}//NOOP
+
+@Override
 public void onBoundsAdjusted()
   {
-  this.max.y = min.y + 3;
+  BlockPosition max = getWorkBoundsMax();
+  BlockPosition min = getWorkBoundsMin();
+  max.y = min.y + 3;
   this.interfacesToEmpty.clear();
   this.interfacesToFill.clear();
   for(TileWarehouseInterface i : interfaceTiles)
@@ -135,9 +117,6 @@ public void onBoundsAdjusted()
 public boolean userAdjustableBlocks(){return false;}
 
 @Override
-public EnumSet<WorksiteUpgrade> getUpgrades(){return upgrades;}
-
-@Override
 public EnumSet<WorksiteUpgrade> getValidUpgrades()
   {
   return EnumSet.of(
@@ -160,48 +139,6 @@ public int getBoundsMaxWidth()
 
 @Override
 public int getBoundsMaxHeight(){return 4;}
-
-@Override
-public void onBlockBroken()
-  {
-  for(WorksiteUpgrade ug : this.upgrades)
-    {
-    InventoryTools.dropItemInWorld(worldObj, ItemWorksiteUpgrade.getStack(ug), xCoord, yCoord, zCoord);
-    }
-  efficiency = 0;
-  upgrades.clear();
-  }
-
-@Override
-public void addUpgrade(WorksiteUpgrade upgrade)
-  {
-  upgrades.add(upgrade);
-  updateEfficiency();
-  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  }
-
-@Override
-public void removeUpgrade(WorksiteUpgrade upgrade)
-  {
-  upgrades.remove(upgrade);
-  updateEfficiency();
-  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  }
-
-protected void updateEfficiency()
-  {
-  efficiency = 0.d;
-  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)){efficiency+=0.05;}
-  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)){efficiency+=0.1;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_1)){efficiency+=0.05;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_2)){efficiency+=0.15;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_3)){efficiency+=0.25;}
-  }
-
-protected double getEnergyPerUse()
-  {
-  return AWCoreStatics.energyPerWorkUnit * (1.f - efficiency);
-  }
 
 public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick);
 
@@ -330,23 +267,14 @@ public final void getItems(ItemQuantityMap map)
   }
 
 @Override
-public final boolean canUpdate()
-  {
-  return true;
-  }
-
-@Override
 public final void updateEntity()
   { 
+  super.updateEntity();
   if(worldObj.isRemote){return;}
   if(!init)
     {
     init=true;  
     scanForInitialTiles();
-    }
-  while(storedEnergy >= getEnergyPerUse() && processWork())
-    {
-    storedEnergy -= getEnergyPerUse();
     }
   if(shouldRecount)
     {
@@ -355,7 +283,8 @@ public final void updateEntity()
     }
   }
 
-private boolean processWork()
+@Override
+protected boolean processWork()
   {
   if(!interfacesToEmpty.isEmpty())
     {
@@ -368,8 +297,22 @@ private boolean processWork()
   return false;
   }
 
+@Override
+protected boolean hasWorksiteWork()
+  {
+  return !interfacesToEmpty.isEmpty() || !interfacesToFill.isEmpty();
+  }
+
+@Override
+protected void updateWorksite()
+  {
+  
+  }
+
 private void scanForInitialTiles()
   {
+  BlockPosition max = getWorkBoundsMax();
+  BlockPosition min = getWorkBoundsMin();
   List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z);
   for(TileEntity te : tiles)
     {
@@ -430,7 +373,6 @@ public final void addStorageTile(IWarehouseStorageTile tile)
     storageMap.addStorageTile(tile);
     tile.addItems(cachedItemMap);  
     }
-  AWLog.logDebug("added storage tile, set now contains: "+storageTiles);
   }
 
 public final void removeStorageTile(IWarehouseStorageTile tile)
@@ -459,7 +401,6 @@ public final void addInterfaceTile(TileWarehouseInterface tile)
       interfacesToFill.add(tile);
       }
     }
-  AWLog.logDebug("added interface tile, set now contains: "+interfaceTiles);
   }
 
 public final void removeInterfaceTile(TileWarehouseInterface tile)
@@ -472,7 +413,6 @@ public final void removeInterfaceTile(TileWarehouseInterface tile)
 public final void onIterfaceInventoryChanged(TileWarehouseInterface tile)
   {  
   if(worldObj.isRemote){return;}
-  AWLog.logDebug("receiving interface inventory changed update for: "+tile);
   interfacesToFill.remove(tile);
   interfacesToEmpty.remove(tile);
   if(!tile.getEmptyRequests().isEmpty())
@@ -512,7 +452,6 @@ public final void addStockViewer(TileWarehouseStockViewer viewer)
   stockViewers.add(viewer);
   viewer.setController(this);
   viewer.onWarehouseInventoryUpdated();
-  AWLog.logDebug("added stock viewer tile, set now contains: "+stockViewers);
   }
 
 public final void removeStockViewer(TileWarehouseStockViewer tile)
@@ -543,104 +482,15 @@ public final void removeControlledTile(IControlledTile tile)
   }
 
 @Override
-public final void addEnergyFromWorker(IWorker worker)
-  {
-  storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
-  if(storedEnergy>getMaxTorque(null)){storedEnergy = getMaxTorque(null);}
-  }
-
-@Override
-public final void setOwnerName(String name)
-  {
-  if(name==null){name="";}
-  this.ownerName = name;  
-  }
-
-@Override
-public final void addEnergyFromPlayer(EntityPlayer player)
-  {
-  storedEnergy+=AWCoreStatics.energyPerWorkUnit;
-  if(storedEnergy>getMaxTorque(null)){storedEnergy=getMaxTorque(null);}
-  }
-
-@Override
-public final double addTorque(ForgeDirection from, double energy)
-  {
-  if(canInputTorque(from))
-    {
-    if(energy+getTorqueStored(null)>getMaxTorque(null))
-      {
-      energy = getMaxTorque(null)-getTorqueStored(null);
-      }
-    if(energy>getMaxTorqueInput(null))
-      {
-      energy = getMaxTorqueInput(null);
-      }
-    storedEnergy+=energy;
-    if(storedEnergy>getMaxTorque(null)){storedEnergy=getMaxTorque(null);}
-    return energy;    
-    }
-  return 0;
-  }
-
-@Override
-public final double getMaxTorque(ForgeDirection from)
-  {
-  return maxEnergy;
-  }
-
-@Override
-public final double getTorqueStored(ForgeDirection from)
-  {
-  return storedEnergy;
-  }
-
-@Override
-public final double getMaxTorqueInput(ForgeDirection from)
-  {
-  return maxInput;
-  }
-
-@Override
 public final boolean canInputTorque(ForgeDirection from)
   {
   return true;
   }
 
 @Override
-public final boolean hasWork()
-  {
-  return storedEnergy<maxEnergy;
-  }
-
-@Override
 public final WorkType getWorkType()
   {
   return WorkType.CRAFTING;
-  }
-
-@Override
-public final Team getTeam()
-  {  
-  return worldObj.getScoreboard().getPlayersTeam(ownerName);
-  }
-
-@Override
-public final BlockPosition getWorkBoundsMin()
-  {
-  return min;
-  }
-
-@Override
-public final BlockPosition getWorkBoundsMax()
-  {
-  return max;
-  }
-
-@Override
-public final boolean hasWorkBounds()
-  {
-  return true;
   }
 
 @Override
@@ -654,110 +504,9 @@ public final boolean onBlockClicked(EntityPlayer player)
   }
 
 @Override
-public final String getOwnerName()
-  {
-  return ownerName;
-  }
-
-@Override
-public final void setBounds(BlockPosition p1, BlockPosition p2)
-  {
-  min = BlockTools.getMin(p1, p2);
-  max = BlockTools.getMax(p1, p2);
-  max.y = min.y+3;
-  }
-
-@Override
-public final AxisAlignedBB getRenderBoundingBox()
-  {
-  if(hasWorkBounds() && getWorkBoundsMin()!=null && getWorkBoundsMax()!=null)
-    {
-    AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+1, zCoord+1);
-    BlockPosition min = getWorkBoundsMin();
-    BlockPosition max = getWorkBoundsMax();
-    bb.minX = min.x < bb.minX ? min.x : bb.minX;
-    bb.minY = min.y < bb.minY ? min.y : bb.minY;
-    bb.minZ = min.z < bb.minZ ? min.z : bb.minZ;
-    bb.maxX = max.x+1 > bb.maxX ? max.x+1 : bb.maxX;
-    bb.maxY = max.y+1 > bb.maxY ? max.y+1 : bb.maxY;
-    bb.maxZ = max.z+1 > bb.maxZ ? max.z+1 : bb.maxZ;
-    return bb;
-    }
-  return super.getRenderBoundingBox();
-  }
-
-@Override
 public final boolean shouldRenderInPass(int pass)
   {
-  return pass==1;
-  }
-
-@Override
-public Packet getDescriptionPacket()
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  int[] ugs = new int[upgrades.size()];
-  int i = 0;
-  for(WorksiteUpgrade ug : upgrades)
-    {
-    ugs[i] = ug.ordinal();
-    i++;
-    }
-  tag.setIntArray("upgrades", ugs);
-  tag.setTag("min", min.writeToNBT(new NBTTagCompound()));
-  tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
-  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
-  }
-
-@Override
-public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-  {
-  super.onDataPacket(net, pkt);
-  if(pkt.func_148857_g().hasKey("upgrades"))
-    {
-    int[] ugs = pkt.func_148857_g().getIntArray("upgrades");
-    upgrades.clear();
-    for(int i = 0; i < ugs.length; i++)
-      {
-      upgrades.add(WorksiteUpgrade.values()[ugs[i]]);
-      }
-    }
-  min = new BlockPosition(pkt.func_148857_g().getCompoundTag("min"));
-  max = new BlockPosition(pkt.func_148857_g().getCompoundTag("max"));
-  }
-
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  super.readFromNBT(tag);
-  storedEnergy=tag.getDouble("storedEnergy");
-  ownerName = tag.getString("ownerName");
-  min = new BlockPosition(tag.getCompoundTag("min"));
-  max = new BlockPosition(tag.getCompoundTag("max"));
-  int[] ug = tag.getIntArray("upgrades");
-  for(int i= 0; i < ug.length; i++)
-    {
-    upgrades.add(WorksiteUpgrade.values()[i]);
-    }
-  updateEfficiency();
-  }
-
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {  
-  super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", storedEnergy);
-  tag.setString("ownerName", ownerName);
-  tag.setTag("min", min.writeToNBT(new NBTTagCompound()));
-  tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
-  int[] ug = new int[getUpgrades().size()];
-  int i = 0;
-  for(WorksiteUpgrade u : getUpgrades())
-    {
-    ug[i] = u.ordinal();
-    i++;
-    }
-  tag.setIntArray("upgrades", ug);
+  return pass==1;//TODO can render in pass1?
   }
 
 public int getCountOf(ItemStack layoutStack)
@@ -803,18 +552,6 @@ public ItemStack tryAdd(ItemStack stack)
     return null;
     }
   return stack;
-  }
-
-@Override
-public void setWorkBoundsMax(BlockPosition max)
-  {
-  this.max = max;
-  }
-
-@Override
-public void setWorkBoundsMin(BlockPosition min)
-  {
-  this.min = min;
   }
 
 

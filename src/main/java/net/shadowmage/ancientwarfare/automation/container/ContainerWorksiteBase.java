@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBasic;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBoundedInventory;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
@@ -12,14 +12,14 @@ import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 public class ContainerWorksiteBase extends ContainerBase
 {
 
-public final TileWorksiteBasic worksite;
+public final TileWorksiteBoundedInventory worksite;
 public final InventorySided inventory;
 public int guiHeight, topLabel, frontLabel, bottomLabel, rearLabel, leftLabel, rightLabel, playerLabel;
 
 public ContainerWorksiteBase(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
-  worksite = (TileWorksiteBasic)player.worldObj.getTileEntity(x, y, z);
+  worksite = (TileWorksiteBoundedInventory)player.worldObj.getTileEntity(x, y, z);
   inventory = worksite.inventory;
   }
 

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,30 +22,33 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInventory, ISidedInventory, IInteractableTile, IOwnable, ITorqueTile, IRotatableTile
+public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInteractableTile, IOwnable, ITorqueTile, IRotatableTile
 {
 protected String owningPlayer = "";
 
 protected ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 
-private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
-private double maxInput = maxEnergyStored;
-private double storedEnergy;
+//private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
+//private double maxInput = maxEnergyStored;
+//private double storedEnergy;
 private double efficiencyBonusFactor = 0.f;
 
 private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
 
 private ForgeDirection orientation = ForgeDirection.NORTH;
 
+private TorqueCell torqueCell;
+
 public TileWorksiteBase()
   {
-  
+  torqueCell = new TorqueCell(32, 0, AWCoreStatics.energyPerWorkUnit*3, 1);
   }
 
 @Override
@@ -154,33 +155,31 @@ public void addEnergyFromPlayer(EntityPlayer player)
 @Override
 public final double addTorque(ForgeDirection from, double energy)
   {
-  energy = Math.min(getMaxTorqueInput(from), energy);
-  storedEnergy+=energy;
-  return energy;
+  return torqueCell.addEnergy(energy);
   }
 
 @Override
 public String toString()
   {
-  return "Worksite Base["+storedEnergy+"]";
+  return "Worksite Base["+torqueCell.getEnergy()+"]";
   }
 
 @Override
 public final double getMaxTorque(ForgeDirection from)
   {
-  return maxEnergyStored;
+  return torqueCell.getMaxEnergy();
   }
 
 @Override
 public final double getTorqueStored(ForgeDirection from)
   {
-  return storedEnergy;
+  return torqueCell.getEnergy();
   }
 
 @Override
 public final double getMaxTorqueInput(ForgeDirection from)
   {
-  return maxInput;
+  return torqueCell.getMaxTickInput();
   }
 
 @Override
@@ -192,7 +191,7 @@ public boolean canInputTorque(ForgeDirection from)
 @Override
 public boolean hasWork()
   {
-  return storedEnergy < maxEnergyStored && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
+  return torqueCell.getEnergy() < torqueCell.getMaxEnergy() && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
   }
 
 @Override
@@ -226,8 +225,7 @@ public void updateEntity()
     {
     if(processWork())
       {
-      storedEnergy -= ePerUse;
-      if(storedEnergy<0){storedEnergy = 0.d;}
+      torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
       }    
     }
   worldObj.theProfiler.endStartSection("WorksiteBaseUpdate");
@@ -252,7 +250,7 @@ public final void setOwnerName(String name)
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", storedEnergy);
+  tag.setDouble("storedEnergy", torqueCell.getEnergy());
   if(owningPlayer!=null)
     {
     tag.setString("owner", owningPlayer);
@@ -281,7 +279,7 @@ public void writeToNBT(NBTTagCompound tag)
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  storedEnergy = tag.getDouble("storedEnergy");
+  torqueCell.setEnergy(tag.getDouble("storedEnergy"));
   if(tag.hasKey("owner"))
     {
     owningPlayer = tag.getString("owner");
@@ -374,6 +372,7 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
       }
     }
   orientation = ForgeDirection.values()[pkt.func_148857_g().getInteger("orientation")];
+  this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
   }
 
 @Override
@@ -386,6 +385,7 @@ public ForgeDirection getPrimaryFacing()
 public void setPrimaryFacing(ForgeDirection face)
   {
   orientation = face;
+  this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
   }
 
 }

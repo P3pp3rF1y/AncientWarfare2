@@ -7,33 +7,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.scoreboard.Team;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileOreProcessor extends TileEntity implements IWorkSite, IInventory, ISidedInventory, ITorqueTile, IOwnable, IInteractableTile, IRotatableTile
+public class TileOreProcessor extends TileWorksiteBase implements IInventory, ISidedInventory
 {
 
-private String owner = "";
-private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
-private double maxInput = maxEnergyStored;
-private double storedEnergy;
-private ForgeDirection orientation = ForgeDirection.NORTH;
 private InventoryBasic inventory;
 
 public TileOreProcessor()
@@ -91,81 +72,35 @@ public void onBlockBroken()
   }
 
 @Override
-public void readFromNBT(NBTTagCompound tag)
+protected boolean processWork()
   {
-  super.readFromNBT(tag);
-  inventory.readFromNBT(tag.getCompoundTag("inventory"));
-  orientation = ForgeDirection.getOrientation(tag.getInteger("orientation"));
-  storedEnergy = tag.getDouble("storedEnergy");
-  owner = tag.getString("owner");
+  // TODO Auto-generated method stub
+  return false;
   }
 
 @Override
-public void writeToNBT(NBTTagCompound tag)
+protected boolean hasWorksiteWork()
   {
-  super.writeToNBT(tag);
-  tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
-  tag.setInteger("orientation", orientation.ordinal());
-  tag.setDouble("storedEnergy", storedEnergy);
-  tag.setString("owner", owner);
+  // TODO Auto-generated method stub
+  return false;
   }
 
 @Override
-public final Packet getDescriptionPacket()
+protected void updateOverflowInventory()
   {
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setInteger("orientation", orientation.ordinal());  
-  return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+  // TODO Auto-generated method stub  
   }
 
 @Override
-public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+protected void updateWorksite()
   {
-  super.onDataPacket(net, pkt);
-  NBTTagCompound tag = pkt.func_148857_g();
-  orientation = ForgeDirection.getOrientation(tag.getInteger("orientation"));
+  // TODO Auto-generated method stub  
   }
-
-/************************************** BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************/
 
 @Override
 public WorkType getWorkType(){return WorkType.CRAFTING;}
 
-@Override
-public void setPrimaryFacing(ForgeDirection face){orientation = face==null?ForgeDirection.NORTH : face;}
-
-@Override
-public void setOwnerName(String name){owner = name==null ? "" : name;}
-
-@Override
-public String getOwnerName(){return owner;}
-
-@Override
-public ForgeDirection getPrimaryFacing(){return orientation;}
-
-@Override
-public double getMaxTorque(ForgeDirection from){return maxEnergyStored;}
-
-@Override
-public double getTorqueStored(ForgeDirection from){return storedEnergy;}
-
-@Override
-public double getMaxTorqueOutput(ForgeDirection from){return 0;}//NOOP
-
-@Override
-public double getMaxTorqueInput(ForgeDirection from){return maxInput;}
-
-@Override
-public boolean canOutputTorque(ForgeDirection towards){return false;}
-
-@Override
-public boolean canInputTorque(ForgeDirection from){return true;}
-
-@Override
-public float getClientOutputRotation(ForgeDirection from, float delta){return 0;}//NOOP
-
-@Override
-public boolean useOutputRotation(ForgeDirection from){return false;}//NOOP
+//************************************** BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************//
 
 @Override
 public int getSizeInventory(){return inventory.getSizeInventory();}
@@ -199,32 +134,6 @@ public void openInventory(){}//NOOP
 
 @Override
 public void closeInventory(){}//NOOP
-
-@Override
-public boolean hasWork(){return storedEnergy < maxEnergyStored;}
-
-@Override
-public void addEnergyFromWorker(IWorker worker)
-  {  
-  addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output_factor);
-  }
-
-@Override
-public void addEnergyFromPlayer(EntityPlayer player)
-  {
-  addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output_factor);
-  }
-
-@Override
-public final double addTorque(ForgeDirection from, double energy)
-  {
-  energy = Math.min(getMaxTorqueInput(from), energy);
-  storedEnergy+=energy;
-  return energy;
-  }
-
-@Override
-public Team getTeam(){return worldObj.getScoreboard().getPlayersTeam(owner);}
 
 @Override
 public BlockPosition getWorkBoundsMin(){return null;}//NOOP
@@ -268,7 +177,19 @@ public void addUpgrade(WorksiteUpgrade upgrade){}//NOOP
 @Override
 public void removeUpgrade(WorksiteUpgrade upgrade){}//NOOP
 
+//************************************** STANDARD NBT / DATA PACKET METHODS ****************************************//
 @Override
-public double drainTorque(ForgeDirection from, double energy){return 0;}//NOOP
+public void readFromNBT(NBTTagCompound tag)
+  {
+  super.readFromNBT(tag);
+  inventory.readFromNBT(tag.getCompoundTag("inventory"));
+  }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {
+  super.writeToNBT(tag);
+  tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
+  }
 
 }

@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
@@ -22,12 +24,12 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
  * @author Shadowmage
  *
  */
-public abstract class TileWorksiteBasic extends TileWorksiteBase
+public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded implements IInventory, ISidedInventory
 {
 
 public InventorySided inventory;
 
-public TileWorksiteBasic()
+public TileWorksiteBoundedInventory()
   {
   
   }

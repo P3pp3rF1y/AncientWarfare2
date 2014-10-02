@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 
-public abstract class TileWorksiteBounded extends TileWorksiteBasic
+public abstract class TileWorksiteBounded extends TileWorksiteBase
 {
 
 /**
