@@ -46,7 +46,7 @@ double rotation, prevRotation;
 
 public TileTorqueGeneratorWaterwheel()
   {  
-  torqueCell = new TorqueCell(0, 4, 1600, 1.f);
+  torqueCell = new TorqueCell(0, 4, 32, 1.f);
   maxWheelRpm = 20;
   rotTick = (maxWheelRpm * 360)/60/20;
   }
@@ -70,13 +70,11 @@ public void updateEntity()
       }
     if(validSetup)//server, update power gen
       {
-      torqueCell.addEnergy(1.d * AWAutomationStatics.waterwheel_generator_output_factor);
+      torqueCell.setEnergy(torqueCell.getEnergy() + (1.d * AWAutomationStatics.waterwheel_generator_output_factor));
       }
     serverNetworkUpdate();    
-    torqueIn = torqueCell.getEnergy() - prevEnergy;
-    double d = torqueCell.getEnergy();
-    transferPowerTo(getPrimaryFacing());
-    torqueOut = d-torqueCell.getEnergy();
+    torqueIn = torqueCell.getEnergy() - prevEnergy;    
+    torqueOut = transferPowerTo(getPrimaryFacing());
     prevEnergy = torqueCell.getEnergy();
     }
   else
@@ -90,8 +88,8 @@ public void updateEntity()
 protected void serverNetworkSynch()
   {
   int percent = (int)(torqueCell.getPercentFull()*100.d);
-  percent += (int)(torqueOut / torqueCell.getMaxOutput());
-  if(percent>100){percent=100;}
+  int percent2 = (int)((torqueOut / torqueCell.getMaxOutput())*100.d);
+  percent = Math.max(percent, percent2);  
   if(percent != clientDestEnergyState)
     {
     clientDestEnergyState = percent;
