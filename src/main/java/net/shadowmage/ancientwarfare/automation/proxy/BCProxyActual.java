@@ -5,6 +5,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import buildcraft.api.mj.BatteryObject;
 import buildcraft.api.mj.IBatteryIOObject;
 import buildcraft.api.mj.IBatteryObject;
 import buildcraft.api.mj.IOMode;
@@ -124,7 +125,7 @@ public IBatteryObject getBatteryObject(String kind, ITorqueTile tile, ForgeDirec
   }
 
 @Override
-public boolean isPowerPipe(TileEntity te)
+public boolean isPowerTile(TileEntity te)
   {
   if(te==null){return false;}
   if(te instanceof TileGenericPipe)
@@ -136,7 +137,8 @@ public boolean isPowerPipe(TileEntity te)
       return true;
       }
     }
-  return false;
+  IBatteryObject bat = MjAPI.getMjBattery(te);
+  return bat!=null;
   }
 
 @Override
@@ -144,7 +146,11 @@ public double transferPower(ITorqueTile generator, ForgeDirection to, TileEntity
   {
   if(target!=null)
     {
-    AWLog.logDebug("processing power output towards: "+to);    
+    AWLog.logDebug("processing BC power output towards: "+to);
+    IBatteryObject ibo = MjAPI.getMjBattery(target, MjAPI.DEFAULT_POWER_FRAMEWORK, to.getOpposite());
+    if(ibo==null){return 0;}
+    double trans = generator.drainTorque(to, ibo.addEnergy(generator.getMaxTorqueOutput(to)));    
+    AWLog.logDebug("pushed energy: "+trans +" new e: "+ibo.getEnergyStored());
     }
   return 0;
   }

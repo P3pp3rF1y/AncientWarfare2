@@ -191,7 +191,7 @@ private void buildBCCache()
     z = zCoord+dir.offsetZ;
     if(!worldObj.blockExists(x, y, z)){continue;}
     te = worldObj.getTileEntity(x, y, z);
-    if(BCProxy.instance.isPowerPipe(te))
+    if(BCProxy.instance.isPowerTile(te))
       {
       bcCache[dir.ordinal()]=te;
       }

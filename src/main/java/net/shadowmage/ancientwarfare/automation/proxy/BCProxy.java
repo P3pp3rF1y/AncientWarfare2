@@ -38,7 +38,7 @@ public double transferPower(ITorqueTile generator, ForgeDirection from, TileEnti
   return 0;
   }
 
-public boolean isPowerPipe(TileEntity te)
+public boolean isPowerTile(TileEntity te)
   {
   return false;
   }
