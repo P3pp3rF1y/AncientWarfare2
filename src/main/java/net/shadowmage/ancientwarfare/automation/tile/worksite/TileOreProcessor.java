@@ -166,16 +166,8 @@ public void setWorkBoundsMin(BlockPosition min){}//NOOP
 public void onBoundsAdjusted(){}//NOOP
 
 @Override
-public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}//NOOP
-
-@Override
 public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}//NOOP
 
-@Override
-public void addUpgrade(WorksiteUpgrade upgrade){}//NOOP
-
-@Override
-public void removeUpgrade(WorksiteUpgrade upgrade){}//NOOP
 
 //************************************** STANDARD NBT / DATA PACKET METHODS ****************************************//
 @Override

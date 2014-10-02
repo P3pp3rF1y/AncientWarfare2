@@ -35,9 +35,6 @@ protected String owningPlayer = "";
 
 protected ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
 
-//private double maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
-//private double maxInput = maxEnergyStored;
-//private double storedEnergy;
 private double efficiencyBonusFactor = 0.f;
 
 private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
@@ -52,7 +49,7 @@ public TileWorksiteBase()
   }
 
 @Override
-public EnumSet<WorksiteUpgrade> getUpgrades(){return upgrades;}
+public final EnumSet<WorksiteUpgrade> getUpgrades(){return upgrades;}
 
 @Override
 public EnumSet<WorksiteUpgrade> getValidUpgrades()
@@ -78,7 +75,7 @@ public void onBlockBroken()
   }
 
 @Override
-public void addUpgrade(WorksiteUpgrade upgrade)
+public final void addUpgrade(WorksiteUpgrade upgrade)
   {
   upgrades.add(upgrade);
   updateEfficiency();
@@ -86,7 +83,7 @@ public void addUpgrade(WorksiteUpgrade upgrade)
   }
 
 @Override
-public void removeUpgrade(WorksiteUpgrade upgrade)
+public final void removeUpgrade(WorksiteUpgrade upgrade)
   {
   upgrades.remove(upgrade);
   updateEfficiency();
@@ -111,43 +108,43 @@ public boolean shouldRenderInPass(int pass)
 public abstract boolean onBlockClicked(EntityPlayer player);
 
 @Override
-public float getClientOutputRotation(ForgeDirection from, float delta)
+public final float getClientOutputRotation(ForgeDirection from, float delta)
   {
   return 0;
   }
 
 @Override
-public boolean useOutputRotation(ForgeDirection from)
+public final boolean useOutputRotation(ForgeDirection from)
   {
   return false;
   }
 
 @Override
-public double getMaxTorqueOutput(ForgeDirection from)
+public final double getMaxTorqueOutput(ForgeDirection from)
   {
   return 0;
   }
 
 @Override
-public boolean canOutputTorque(ForgeDirection towards)
+public final boolean canOutputTorque(ForgeDirection towards)
   {
   return false;
   }
 
 @Override
-public double drainTorque(ForgeDirection from, double energy)
+public final double drainTorque(ForgeDirection from, double energy)
   {
   return 0;
   }
 
 @Override
-public void addEnergyFromWorker(IWorker worker)
+public final void addEnergyFromWorker(IWorker worker)
   {  
   addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output_factor);
   }
 
 @Override
-public void addEnergyFromPlayer(EntityPlayer player)
+public final void addEnergyFromPlayer(EntityPlayer player)
   {
   addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output_factor);
   }
@@ -183,7 +180,7 @@ public final double getMaxTorqueInput(ForgeDirection from)
   }
 
 @Override
-public boolean canInputTorque(ForgeDirection from)
+public final boolean canInputTorque(ForgeDirection from)
   {
   return true;
   }
@@ -234,7 +231,7 @@ public void updateEntity()
   worldObj.theProfiler.endSection();
   }
 
-protected void updateEfficiency()
+protected final void updateEfficiency()
   {
   efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
   }
@@ -376,15 +373,16 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   }
 
 @Override
-public ForgeDirection getPrimaryFacing()
+public final ForgeDirection getPrimaryFacing()
   {
   return orientation;
   }
 
 @Override
-public void setPrimaryFacing(ForgeDirection face)
+public final void setPrimaryFacing(ForgeDirection face)
   {
   orientation = face;
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
   }
 
