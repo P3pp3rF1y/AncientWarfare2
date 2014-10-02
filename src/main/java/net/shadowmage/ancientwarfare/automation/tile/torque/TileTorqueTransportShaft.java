@@ -29,6 +29,9 @@ double clientDestEnergyState;
  */
 double rotation, prevRotation;
 
+private boolean prevNeighborInvalid = true;
+private boolean nextNeighborInvalid = true;
+
 public TileTorqueTransportShaft()
   {
   torqueCell = new TorqueCell(32, 32, 32, 1);
@@ -57,10 +60,27 @@ protected void serverNetworkSynch()
   {
   if(prev()==null)
     {
-    int percent = (int)(torqueCell.getPercentFull()*100.d);
-    percent += (int)(torqueOut / torqueCell.getMaxOutput());
-    if(percent>100){percent=100;}
-    if(percent != clientDestEnergyState)
+    AWLog.logDebug("shaft updating at: "+xCoord+","+yCoord+","+zCoord);
+    TileTorqueTransportShaft last = this;
+    TileTorqueTransportShaft n = next();
+    double totalPower = torqueCell.getEnergy();
+    double num = 1;
+    while(n!=null)
+      {
+      totalPower += n.torqueCell.getEnergy();
+      last = n;
+      num++;
+      n = n.next;      
+      }
+    double avg = totalPower / num;
+    double perc = avg / torqueCell.getMaxEnergy();
+    double torqueOut = last.torqueOut;     
+    
+    int percent = (int)( perc * 100.d );
+    int percent2 = (int)((torqueOut / last.torqueCell.getMaxOutput())*100.d);
+    AWLog.logDebug("shaft net synch, p1, p2: "+percent+" :: "+percent2 + " avg: "+avg+" avgper: "+perc+" lo: "+last.torqueOut);
+    percent = Math.max(percent, percent2);
+    if(percent != (int)clientDestEnergyState)
       {
       clientDestEnergyState = percent;
       sendSideRotation(getPrimaryFacing(), percent);    
@@ -112,32 +132,42 @@ protected void handleClientRotationData(ForgeDirection side, int value)
   clientDestEnergyState = ((double)value) * 0.01d;
   }
 
-@Override
-public void onNeighborTileChanged()
+protected void onNeighborCacheInvalidated()
   {
-  super.onNeighborTileChanged();
+  prevNeighborInvalid = true;
+  nextNeighborInvalid = true;
+  if(next!=null){next.prev=null;}
+  if(prev!=null){prev.next=null;}
   prev = next = null;
-  ITorqueTile output = getTorqueCache()[orientation.ordinal()];
-  if(output !=null && output.getClass()==this.getClass() && output.canInputTorque(orientation.getOpposite()))
-    {
-    next = (TileTorqueTransportShaft) output;
-    next.prev=this;
-    }
-  ITorqueTile input = getTorqueCache()[orientation.getOpposite().ordinal()];
-  if(input !=null && input.getClass()==this.getClass() && input.canOutputTorque(orientation))
-    {
-    prev = (TileTorqueTransportShaft) input;
-    prev.next=this;
-    }
   }
 
 public TileTorqueTransportShaft prev()
   {
+  if(prevNeighborInvalid)
+    {
+    prevNeighborInvalid = false;
+    ITorqueTile input = getTorqueCache()[orientation.getOpposite().ordinal()];
+    if(input !=null && input.getClass()==this.getClass() && input.canOutputTorque(orientation))
+      {
+      prev = (TileTorqueTransportShaft) input;
+      prev.next=this;
+      } 
+    }
   return prev;
   }
 
 public TileTorqueTransportShaft next()
   {
+  if(nextNeighborInvalid)
+    {
+    nextNeighborInvalid = false;
+    ITorqueTile output = getTorqueCache()[orientation.ordinal()];
+    if(output !=null && output.getClass()==this.getClass() && output.canInputTorque(orientation.getOpposite()))
+      {
+      next = (TileTorqueTransportShaft) output;
+      next.prev=this;
+      }
+    }
   return next;
   }
 

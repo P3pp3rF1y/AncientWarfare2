@@ -61,12 +61,12 @@ public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
       y1 = 0;
       y2 = 1;
       }
-    if(s1==1 || s1==2)//north/south
+    if(s1==2 || s1==3)//north/south
       {
       z1 = 0;
       z2 = 1;
       }
-    if(s1==3 || s1==4)//east/west
+    if(s1==4 || s1==5)//east/west
       {
       x1 = 0;
       x2 = 1;

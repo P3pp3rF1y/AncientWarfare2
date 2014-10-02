@@ -223,6 +223,12 @@ protected final void invalidateNeighborCache()
   torqueCache=null;
   rfCache=null;
   bcCache=null;
+  onNeighborCacheInvalidated();
+  }
+
+protected void onNeighborCacheInvalidated()
+  {
+  
   }
 
 //*************************************** generic stuff ***************************************//
