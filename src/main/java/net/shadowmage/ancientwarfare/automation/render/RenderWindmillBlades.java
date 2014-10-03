@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
@@ -14,20 +13,20 @@ import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderTileHandEngine extends TileEntitySpecialRenderer implements IItemRenderer
+public class RenderWindmillBlades extends TileEntitySpecialRenderer implements IItemRenderer
 {
 
 ResourceLocation texture;
 ModelBaseAW model;
-ModelPiece outputGear, inputGear;
+ModelPiece outputGear;
 
-public RenderTileHandEngine()
+public RenderWindmillBlades()
   {
   ModelLoader loader = new ModelLoader();
-  model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/hand_engine.m2f"));
+  model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/windmill_10.m2f"));
   outputGear = model.getPiece("outputGear");
-  inputGear = model.getPiece("inputGear");
-  texture = new ResourceLocation("ancientwarfare", "textures/model/automation/hand_engine.png");
+  
+  texture = new ResourceLocation("ancientwarfare", "textures/model/automation/windmill_10.png");
   }
 
 @Override
@@ -36,11 +35,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   GL11.glPushMatrix();
   bindTexture(texture);
   GL11.glTranslated(x+0.5d, y, z+0.5d);
-  
-  TileTorqueGeneratorHandCranked handEngine = (TileTorqueGeneratorHandCranked)te;
-  float outRotation = handEngine.getClientOutputRotation(handEngine.getPrimaryFacing(), delta);
-  float inRotation = -handEngine.getClientOutputRotation(ForgeDirection.UP, delta);//top side, not technically an 'output' rotation, but i'm lazy and not making a new method for it  
-  renderModel(inRotation, outRotation, ((TileTorqueGeneratorHandCranked)te).getPrimaryFacing().ordinal());
+  renderModel(0, 0, ((TileTorqueGeneratorHandCranked)te).getPrimaryFacing().ordinal());
   GL11.glPopMatrix();
   }
 
@@ -51,7 +46,6 @@ protected void renderModel(float inR, float outR, int face)
   if(rot[1]!=0){GL11.glRotatef(rot[1], 0, 1, 0);}
   if(rot[2]!=0){GL11.glRotatef(rot[2], 0, 0, 1);}  
   outputGear.setRotation(0, 0, outR);
-  inputGear.setRotation(0, inR, 0);
   model.renderModel();
   }
 
