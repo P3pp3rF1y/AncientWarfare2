@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderTileTorqueGeneratorWaterwheel extends TileEntitySpecialRenderer implements IItemRenderer
+public class RenderTileWaterwheel extends TileEntitySpecialRenderer implements IItemRenderer
 {
 
 private float[][] gearboxRotationMatrix = new float[6][];
@@ -21,7 +21,7 @@ ModelBaseAW model;
 ModelPiece waterwheel, outputGear;
 ResourceLocation tex;
 
-public RenderTileTorqueGeneratorWaterwheel()
+public RenderTileWaterwheel()
   {
   this.tex = new ResourceLocation("ancientwarfare", "textures/model/automation/waterwheel.png");
   ModelLoader loader = new ModelLoader();

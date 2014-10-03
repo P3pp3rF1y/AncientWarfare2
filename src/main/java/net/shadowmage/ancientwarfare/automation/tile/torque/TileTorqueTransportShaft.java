@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
@@ -11,7 +10,7 @@ public class TileTorqueTransportShaft extends TileTorqueTransportBase
 
 private TileTorqueTransportShaft prev, next;
 
-private TorqueCell torqueCell;
+protected TorqueCell torqueCell;
 
 /**
  * client side this == 0.0 -> 1.0

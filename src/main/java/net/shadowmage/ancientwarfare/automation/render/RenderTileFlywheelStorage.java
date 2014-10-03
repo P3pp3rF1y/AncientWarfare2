@@ -145,27 +145,6 @@ protected void renderSmallModel(int type, int height, float rotation, int pass)
     GL11.glDisable(GL11.GL_BLEND);    
     }
   GL11.glPopMatrix();
-  
-  
-//  bindTexture(smallTex[type]);
-//  GL11.glPushMatrix();
-//  spindleSmall.setRotation(0, rotation, 0);
-//  for(int i = 0; i <height; i++)
-//    {
-//    if(pass==0)
-//      {
-//      flywheelExtensionSmall.setVisible(i<height-1);//at every level less than highest
-//      upperShroudSmall.setVisible(i==height-1);//at highest level
-//      lowerShroudSmall.setVisible(i==0);//at ground level
-//      smallModel.renderModel();      
-//      }
-//    else
-//      {
-//      //render window
-//      }
-//    GL11.glTranslatef(0, 1, 0);
-//    }
-//  GL11.glPopMatrix();
   }
 
 protected void renderLargeModel(int type, int height, float rotation, int pass)

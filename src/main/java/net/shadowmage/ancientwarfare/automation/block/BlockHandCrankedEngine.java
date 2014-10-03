@@ -37,11 +37,26 @@ public void registerBlockIcons(IIconRegister register)
 @Override
 public RotationType getRotationType()
   {
-  return RotationType.SIX_WAY;
+  return RotationType.FOUR_WAY;
   }
 
 @Override
 public boolean invertFacing()
+  {
+  return false;
+  }
+
+@Override
+public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
+
+@Override
+public boolean isOpaqueCube()
+  {
+  return false;
+  }
+
+@Override
+public boolean isNormalCube()
   {
   return false;
   }

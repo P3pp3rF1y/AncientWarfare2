@@ -23,6 +23,8 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportD
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributorHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributorMedium;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaft;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaftHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaftMedium;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
@@ -130,8 +132,8 @@ public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 /**
  * POWER NETWORK BLOCKS
  */
-public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel");
-public static final BlockFlywheelStorage flywheelStorage = new BlockFlywheelStorage("flywheelStorage");
+public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel_controller");
+public static final BlockFlywheelStorage flywheelStorage = new BlockFlywheelStorage("flywheel_storage");
 public static final BlockTorqueTransportConduit torqueConduit = new BlockTorqueTransportConduit("torque_conduit");
 public static final BlockTorqueTransportShaft torqueShaft = new BlockTorqueTransportShaft("torque_shaft");
 public static final BlockTorqueDistributor torqueDistributor = new BlockTorqueDistributor("torque_distributor");
@@ -289,8 +291,8 @@ public static void load()
 
   GameRegistry.registerBlock(torqueShaft, ItemBlockTorqueTile.class, "torque_shaft");
   GameRegistry.registerTileEntity(TileTorqueTransportShaft.class, "torque_driveline_tile");
-//  GameRegistry.registerTileEntity(TileTorqueShaftMedium.class, "torque_driveline_medium_tile");
-//  GameRegistry.registerTileEntity(TileTorqueShaftHeavy.class, "torque_driveline_heavy_tile");
+  GameRegistry.registerTileEntity(TileTorqueTransportShaftMedium.class, "torque_driveline_medium_tile");
+  GameRegistry.registerTileEntity(TileTorqueTransportShaftHeavy.class, "torque_driveline_heavy_tile");
   
   GameRegistry.registerBlock(torqueDistributor, ItemBlockTorqueTile.class, "torque_distributor");
   GameRegistry.registerTileEntity(TileTorqueTransportDistributor.class, "torque_distributor_tile");
@@ -305,9 +307,6 @@ public static void load()
   
   GameRegistry.registerBlock(handCrankedEngine, ItemBlockTorqueTile.class, "hand_cranked_engine");
   GameRegistry.registerTileEntity(TileTorqueGeneratorHandCranked.class, "hand_cranked_engine_tile");
-  handCrankedEngine.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/hand_cranked_front");
-  handCrankedEngine.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/hand_cranked_top");
-  handCrankedEngine.setIcon(0, RelativeSide.ANY_SIDE, "ancientwarfare:automation/hand_cranked_top");
   
   GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");
   GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");

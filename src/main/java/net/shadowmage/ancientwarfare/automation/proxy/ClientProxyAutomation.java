@@ -29,12 +29,14 @@ import net.shadowmage.ancientwarfare.automation.model.ModelAutoCraftingStation;
 import net.shadowmage.ancientwarfare.automation.render.RenderSterlingEngine;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueFlywheelController;
-import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueGeneratorWaterwheel;
+import net.shadowmage.ancientwarfare.automation.render.RenderTileHandEngine;
+import net.shadowmage.ancientwarfare.automation.render.RenderTileWaterwheel;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueShaft;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueTransport;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWorksite;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelStorage;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
@@ -119,9 +121,13 @@ public void registerClient()
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorSterling.class, sterlingRender);
   MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueGeneratorSterling), sterlingRender);
   
-  RenderTileTorqueGeneratorWaterwheel waterwheelRender = new RenderTileTorqueGeneratorWaterwheel();
+  RenderTileWaterwheel waterwheelRender = new RenderTileWaterwheel();
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorWaterwheel.class, waterwheelRender);
   MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueGeneratorWaterwheel), waterwheelRender);
+  
+  RenderTileHandEngine handGeneratorRender = new RenderTileHandEngine();
+  ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorHandCranked.class, handGeneratorRender);
+  MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.handCrankedEngine), handGeneratorRender);
   }
 
 private void registerClientOptions()
