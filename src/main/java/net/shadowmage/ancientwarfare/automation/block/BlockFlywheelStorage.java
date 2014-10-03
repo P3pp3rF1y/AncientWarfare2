@@ -42,7 +42,26 @@ public boolean isOpaqueCube(){return false;}
 public boolean isNormalCube(){return false;}
 
 @Override
-public IIcon getIcon(int p_149691_1_, int p_149691_2_){return Blocks.iron_block.getIcon(p_149691_1_, p_149691_2_);}
+public IIcon getIcon(int side, int meta)
+  {
+  switch(meta)
+  {
+  case 0:
+    {
+    return Blocks.planks.getIcon(side, 0);
+    }
+  case 1:
+    {
+    return Blocks.iron_block.getIcon(side, 0);
+    }
+  case 2:
+    {
+    //TODO change this to steel block icon...once I make a steel block...
+    return Blocks.iron_block.getIcon(side, 0);
+    }
+  }
+  return Blocks.iron_block.getIcon(side, 0);
+  }
 
 @Override
 public void registerBlockIcons(IIconRegister register)

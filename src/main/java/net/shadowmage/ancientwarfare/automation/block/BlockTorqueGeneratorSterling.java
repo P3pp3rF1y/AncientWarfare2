@@ -38,7 +38,7 @@ public void registerBlockIcons(IIconRegister register)
 @Override
 public IIcon getIcon(int side, int meta)
   {
-  return Blocks.iron_block.getIcon(side, meta);
+  return Blocks.iron_block.getIcon(side, 0);
   }
 
 }

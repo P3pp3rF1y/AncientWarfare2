@@ -44,6 +44,6 @@ public void registerBlockIcons(IIconRegister register)
 @Override
 public IIcon getIcon(int side, int meta)
   {
-  return Blocks.iron_block.getIcon(0, 0);
+  return Blocks.planks.getIcon(side, 0);
   }
 }

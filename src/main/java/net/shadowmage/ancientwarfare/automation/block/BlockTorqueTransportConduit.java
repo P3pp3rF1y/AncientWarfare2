@@ -70,7 +70,26 @@ public RotationType getRotationType(){return RotationType.SIX_WAY;}
 public boolean invertFacing(){return false;}
 
 @Override
-public IIcon getIcon(int side, int meta){return Blocks.stone.getIcon(side, meta);}
+public IIcon getIcon(int side, int meta)
+  {
+  switch(meta)
+  {
+  case 0:
+    {
+    return Blocks.planks.getIcon(side, 0);
+    }
+  case 1:
+    {
+    return Blocks.iron_block.getIcon(side, 0);
+    }
+  case 2:
+    {
+    //TODO change this to steel block icon...once I make a steel block...
+    return Blocks.iron_block.getIcon(side, 0);
+    }
+  }
+  return Blocks.iron_block.getIcon(side, 0);
+  }
 
 @Override
 public void setBlockBoundsForItemRender()
