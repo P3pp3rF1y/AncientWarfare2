@@ -45,8 +45,8 @@ public RenderTileFlywheelStorage(ResourceLocation tex)
   smallTex[2] = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_small_light.png");
   
   largeTex[0] = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_large_light.png");
-  largeTex[1] = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_large_light.png");
-  largeTex[2] = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_large_light.png");
+  largeTex[1] = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_large_medium.png");
+  largeTex[2] = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_large_heavy.png");
   
   smallModel = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/flywheel_small.m2f"));
   spindleSmall = smallModel.getPiece("spindle");
