@@ -77,6 +77,12 @@ protected void serverNetworkUpdate()
   }
 
 @Override
+public boolean shouldRenderInPass(int pass)
+  {
+  return pass==0 || pass==1;
+  }
+
+@Override
 public boolean receiveClientEvent(int a, int b)
   {
   if(worldObj.isRemote)
