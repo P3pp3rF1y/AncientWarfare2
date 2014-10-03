@@ -35,6 +35,7 @@ import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueShaft;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueTransport;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWorksite;
+import net.shadowmage.ancientwarfare.automation.render.RenderWindmillBlades;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
@@ -43,6 +44,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFly
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributor;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaft;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
@@ -128,6 +130,10 @@ public void registerClient()
   RenderTileHandEngine handGeneratorRender = new RenderTileHandEngine();
   ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueGeneratorHandCranked.class, handGeneratorRender);
   MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.handCrankedEngine), handGeneratorRender);
+  
+  RenderWindmillBlades bladeRender = new RenderWindmillBlades();
+  ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillBlade.class, bladeRender);
+  MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.windmillBlade), bladeRender);
   }
 
 private void registerClientOptions()

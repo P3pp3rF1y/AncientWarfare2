@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -32,11 +33,15 @@ public RenderWindmillBlades()
 @Override
 public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta)
   {
-  GL11.glPushMatrix();
-  bindTexture(texture);
-  GL11.glTranslated(x+0.5d, y, z+0.5d);
-  renderModel(0, 0, ((TileTorqueGeneratorHandCranked)te).getPrimaryFacing().ordinal());
-  GL11.glPopMatrix();
+  TileWindmillBlade blade = (TileWindmillBlade)te;
+  if(blade.isControl)
+    {
+    GL11.glPushMatrix();
+    bindTexture(texture);
+    GL11.glTranslated(x+0.5d, y, z+0.5d);
+    renderModel(0, 0, blade.windmillDirection);
+    GL11.glPopMatrix();
+    }
   }
 
 protected void renderModel(float inR, float outR, int face)  

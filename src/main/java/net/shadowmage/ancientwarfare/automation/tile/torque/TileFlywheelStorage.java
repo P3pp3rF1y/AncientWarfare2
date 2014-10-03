@@ -26,12 +26,6 @@ private int clientEnergy, clientDestEnergy;
 private int networkUpdateTicks = 0;
 
 @Override
-public boolean canUpdate()
-  {
-  return true;
-  }
-
-@Override
 public void updateEntity()
   {
   super.updateEntity();

@@ -13,12 +13,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelStorage;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillBlade;
 
-public class BlockFlywheelStorage extends Block
+public class BlockWindmillBlade extends Block
 {
 
-public BlockFlywheelStorage(String regName)
+public BlockWindmillBlade(String regName)
   {
   super(Material.rock);
   this.setBlockName(regName);
@@ -32,35 +32,20 @@ public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int
   return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
   }
 
-@Override
-public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
-
-@Override
-public boolean isOpaqueCube(){return false;}
-
-@Override
-public boolean isNormalCube(){return false;}
+//TODO alter slightly to render a default icon when not a valid setup -- will need to query the TE
+//@Override
+//public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess access, int x, int y, int z, int side) {return false;}
+//
+//@Override
+//public boolean isOpaqueCube(){return false;}
+//
+//@Override
+//public boolean isNormalCube(){return false;}
 
 @Override
 public IIcon getIcon(int side, int meta)
   {
-  switch(meta)
-  {
-  case 0:
-    {
-    return Blocks.planks.getIcon(side, 0);
-    }
-  case 1:
-    {
-    return Blocks.iron_block.getIcon(side, 0);
-    }
-  case 2:
-    {
-    //TODO change this to steel block icon...once I make a steel block...
-    return Blocks.iron_block.getIcon(side, 0);
-    }
-  }
-  return Blocks.iron_block.getIcon(side, 0);
+  return Blocks.glass.getIcon(side, 0);
   }
 
 @Override
@@ -72,22 +57,22 @@ public void registerBlockIcons(IIconRegister register)
 public void onPostBlockPlaced(World world, int x, int y, int z, int meta)
   {
   super.onPostBlockPlaced(world, x, y, z, meta);
-  TileFlywheelStorage te = (TileFlywheelStorage) world.getTileEntity(x, y, z);
+  TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(x, y, z);
   te.blockPlaced();
   }
 
 @Override
 public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int p_149749_6_)
   {
-  TileFlywheelStorage te = (TileFlywheelStorage) world.getTileEntity(x, y, z);
+  TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(x, y, z);
   super.breakBlock(world, x, y, z, p_149749_5_, p_149749_6_);
-  te.blockBroken();//have to call post block-break so that the controller properly sees the block as gone
+  te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone
   }
 
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {  
-  return new TileFlywheelStorage();
+  return new TileWindmillBlade();
   }
 
 @Override
@@ -101,8 +86,6 @@ public boolean hasTileEntity(int metadata)
 public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list)
   {
   list.add(new ItemStack(Item.getItemFromBlock(this),1,0));
-  list.add(new ItemStack(Item.getItemFromBlock(this),1,1));
-  list.add(new ItemStack(Item.getItemFromBlock(this),1,2));
   }
 
 }
