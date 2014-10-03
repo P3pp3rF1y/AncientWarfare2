@@ -205,7 +205,25 @@ private void setAsController(int size, int height, int type)
   this.setHeight=height;
   this.setType = type;
   this.setCube = size*size*height;
-  double energyPerBlockForType = 1600;//TODO grab this value from somewhere....
+  double energyPerBlockForType = 1600;
+  switch(type)
+  {
+  case 0:
+    {
+    energyPerBlockForType = AWAutomationStatics.low_storage_energy_max ;
+    break;
+    }
+  case 1:
+    {
+    energyPerBlockForType = AWAutomationStatics.med_storage_energy_max;
+    break;
+    }
+  case 2:
+    {
+    energyPerBlockForType = AWAutomationStatics.high_storage_energy_max;
+    break;
+    }
+  }
   this.maxEnergyStored = (double)setCube * energyPerBlockForType;
   this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   AWLog.logDebug("set tile as controller: "+this+" w: "+setWidth+" h: "+setHeight+" c: "+setCube+" maxE: "+maxEnergyStored);

@@ -39,6 +39,7 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteTreeFarm;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockMeta;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -263,12 +264,6 @@ public static void load()
   
   GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockRotatableMetaTile.class, "civic_auto_crafting");
   GameRegistry.registerTileEntity(TileAutoCrafting.class, "civic_auto_crafting_tile");
-//  worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:automation/auto_crafting_top");
-//  worksiteAutoCrafting.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/auto_crafting_front");
-//  worksiteAutoCrafting.setIcon(RelativeSide.REAR, "ancientwarfare:automation/auto_crafting_side");  
-//  worksiteAutoCrafting.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/auto_crafting_side");
-//  worksiteAutoCrafting.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/auto_crafting_side");
-//  worksiteAutoCrafting.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/auto_crafting_side");  
   
   GameRegistry.registerBlock(mailbox, ItemBlockOwnedRotatable.class, "mailbox");
   GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");
@@ -284,7 +279,7 @@ public static void load()
   GameRegistry.registerTileEntity(TileTorqueStorageFlywheelControllerMedium.class, "flywheel_medium_tile");  
   GameRegistry.registerTileEntity(TileTorqueStorageFlywheelControllerLarge.class, "flywheel_large_tile");
   
-  GameRegistry.registerBlock(flywheelStorage, "flywheel_storage");
+  GameRegistry.registerBlock(flywheelStorage, ItemBlockMeta.class, "flywheel_storage");
   GameRegistry.registerTileEntity(TileFlywheelStorage.class, "flywheel_storage_tile");
   
   GameRegistry.registerBlock(torqueConduit, ItemBlockTorqueTile.class, "torque_conduit");

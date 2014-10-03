@@ -1,10 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportBase;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
@@ -13,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderTileTorqueTransport extends TileEntitySpecialRenderer
+public class RenderTileTorqueTransport extends TileEntitySpecialRenderer implements IItemRenderer
 {
 
 private static float[][] headRotationDirectionMatrix = new float[6][];
@@ -23,12 +24,15 @@ private static ModelPiece[] gearHeads = null;
 private static ModelPiece gearbox = null;
 private static float textureWidth, textureHeight;
 
-private ResourceLocation regTex;
 
-public RenderTileTorqueTransport(ResourceLocation reg)
+private ResourceLocation[] textures = new ResourceLocation[3];
+
+public RenderTileTorqueTransport(ResourceLocation light, ResourceLocation med, ResourceLocation heavy)
   {
-  constructModel();
-  this.regTex = reg; 
+  constructModel(); 
+  textures[0]=light;
+  textures[1]=med;
+  textures[2]=heavy;
   }
 
 /**
@@ -74,7 +78,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   
   TileTorqueTransportConduit conduit = (TileTorqueTransportConduit)te;
   
-  ITorqueTile[] neighbors = conduit.getTorqueCache();//TODO update speed of input shafts to match speed of the output shaft of neighbor
+  ITorqueTile[] neighbors = conduit.getTorqueCache();
   boolean[] connections = conduit.getConnections();
   float rotation = conduit.getClientOutputRotation(conduit.getPrimaryFacing(), delta);
     
@@ -85,7 +89,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   ModelPiece piece;
   
   //render heads
-  bindTexture(regTex);
+  bindTexture(textures[te.getBlockMetadata()]);
   for(int i = 0; i < 6; i++)
     {
     if(connections[i])
@@ -129,10 +133,32 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   GL11.glPopMatrix();
   }
 
-private double getRotation(double rotation, double prevRotation, float delta)
+@Override
+public boolean handleRenderType(ItemStack item, ItemRenderType type)
   {
-  double rd = rotation-prevRotation;  
-  return (prevRotation + rd*delta);
+  return true;
+  }
+
+@Override
+public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
+  {
+  return true;
+  }
+
+@Override
+public void renderItem(ItemRenderType type, ItemStack item, Object... data)
+  {
+  GL11.glPushMatrix();
+  GL11.glTranslated(0.5d, 0.5d, 0.5d);
+  bindTexture(textures[item.getItemDamage()]);
+  for(int i = 0; i < 2; i++)
+    {
+    gearHeads[i].setRotation(0, 0, 0);
+    gearHeads[i].render(textureWidth, textureHeight);
+    }
+  gearbox.setRotation(0, 0, 0);
+  gearbox.render(textureWidth, textureHeight);
+  GL11.glPopMatrix();
   }
 
 }

@@ -64,9 +64,9 @@ public static double low_conduit_energy_max = 32.d;
 public static double med_conduit_energy_max = 256.d;
 public static double high_conduit_energy_max = 1024.f;
 
-public static double low_storage_energy_max = 1600.d;
-public static double med_storage_energy_max = 16000.d;
-public static double high_storage_energy_max = 160000.d;
+public static double low_storage_energy_max = 9600.d;
+public static double med_storage_energy_max = 14400.d;
+public static double high_storage_energy_max = 24000.d;
 
 public static double sterling_generator_output_factor = 1.d;
 public static double waterwheel_generator_output_factor = 1.d;

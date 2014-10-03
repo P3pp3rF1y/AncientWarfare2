@@ -1,8 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
@@ -11,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderTileTorqueGeneratorWaterwheel extends TileEntitySpecialRenderer
+public class RenderTileTorqueGeneratorWaterwheel extends TileEntitySpecialRenderer implements IItemRenderer
 {
 
 private float[][] gearboxRotationMatrix = new float[6][];
@@ -76,6 +78,30 @@ private void drawPointAtCurrentOrigin()
   GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
   GL11.glEnable(GL11.GL_TEXTURE_2D);
   GL11.glEnable(GL11.GL_LIGHTING);
+  }
+
+@Override
+public boolean handleRenderType(ItemStack item, ItemRenderType type)
+  {
+  return true;
+  }
+
+@Override
+public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
+  {
+  return true;
+  }
+
+@Override
+public void renderItem(ItemRenderType type, ItemStack item, Object... data)
+  {
+  GL11.glPushMatrix();
+  GL11.glTranslatef(0.5f, 0, 0.5f);
+  bindTexture(tex);
+  waterwheel.setRotation(0, 0, 0);
+  outputGear.setRotation(0, 0, 0);
+  model.renderModel();
+  GL11.glPopMatrix();
   }
 
 }

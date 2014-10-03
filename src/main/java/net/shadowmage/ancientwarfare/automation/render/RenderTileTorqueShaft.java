@@ -1,8 +1,12 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaft;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
@@ -12,17 +16,19 @@ import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderTileTorqueShaft extends TileEntitySpecialRenderer
+public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements IItemRenderer
 {
 
 private float[][] gearboxRotationMatrix = new float[6][];
 private ModelBaseAW model = null;
 ModelPiece inputHead, outputHead, shaft, gearbox;
-ResourceLocation tex;
+ResourceLocation[] textures = new ResourceLocation[3];
 
-public RenderTileTorqueShaft(ResourceLocation tex)
+public RenderTileTorqueShaft(ResourceLocation light, ResourceLocation med, ResourceLocation heavy)
   {
-  this.tex = tex;
+  this.textures[0] = light;
+  this.textures[1] = med;
+  this.textures[2] = heavy;
   ModelLoader loader = new ModelLoader();
   model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/torque_shaft.m2f"));
   inputHead = model.getPiece("southShaft");
@@ -69,14 +75,45 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
     inputHead.setRotation(0, 0, -rotation);
     }
   
-  bindTexture(tex);
+  bindTexture(textures[te.getBlockMetadata()]);
   model.renderModel();  
   GL11.glPopMatrix();
   }
 
-private double getRotation(double rotation, double prevRotation, float delta)
+@Override
+public boolean handleRenderType(ItemStack item, ItemRenderType type)
   {
-  double rd = rotation-prevRotation;  
-  return (prevRotation + rd*delta);
+  return true;
   }
+
+@Override
+public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
+  {
+  return true;
+  }
+
+@Override
+public void renderItem(ItemRenderType type, ItemStack item, Object... data)
+  {
+  GL11.glPushMatrix();
+  GL11.glTranslatef(0.5f, 0.5f, 0.5f);
+
+  float[] rotations = gearboxRotationMatrix[1];//render as if facing upwards for items
+  if(rotations[0]!=0){GL11.glRotatef(rotations[0], 1, 0, 0);}
+  if(rotations[1]!=0){GL11.glRotatef(rotations[1], 0, 1, 0);}
+  if(rotations[2]!=0){GL11.glRotatef(rotations[2], 0, 0, 1);}
+  this.inputHead.setVisible(true);
+  this.gearbox.setVisible(true);
+  this.outputHead.setVisible(true);
+  
+  this.shaft.setRotation(0, 0, 0);
+  this.outputHead.setRotation(0, 0, 0);   
+  this.inputHead.setRotation(0, 0, 0);
+
+  bindTexture(textures[item.getItemDamage()]);
+  model.renderModel();
+  GL11.glPopMatrix();
+  }
+
+
 }
