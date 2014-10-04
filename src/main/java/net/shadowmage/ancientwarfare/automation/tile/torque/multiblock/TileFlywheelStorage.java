@@ -8,6 +8,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -344,6 +345,12 @@ public void writeToNBT(NBTTagCompound tag)
       }
     }
   tag.setDouble("storedEnergy", storedEnergy);
+  }
+
+@Override
+public AxisAlignedBB getRenderBoundingBox()
+  {
+  return AxisAlignedBB.getBoundingBox(xCoord-1, yCoord-1, zCoord-1, xCoord+2, yCoord+setHeight, zCoord+2);
   }
 
 }

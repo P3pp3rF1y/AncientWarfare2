@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -141,6 +142,12 @@ private boolean validateBlocks()
   int metaRight = worldObj.getBlockMetadata(x1, y-1, z1);
   rotationDirection = (byte) (metaLeft<metaRight?-1 : metaRight<metaLeft ? 1 : 0);
   return true;
+  }
+
+@Override
+public AxisAlignedBB getRenderBoundingBox()
+  {
+  return AxisAlignedBB.getBoundingBox(xCoord-3, yCoord-3, zCoord-3, xCoord+4, yCoord+4, zCoord+4);
   }
 
 }
