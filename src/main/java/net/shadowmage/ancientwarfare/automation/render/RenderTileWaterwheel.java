@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class RenderTileWaterwheel extends TileEntitySpecialRenderer implements IItemRenderer
 {
@@ -97,10 +98,14 @@ public void renderItem(ItemRenderType type, ItemStack item, Object... data)
   {
   GL11.glPushMatrix();
   GL11.glTranslatef(0.5f, 0, 0.5f);
+  GL11.glScalef(0.4f, 0.4f, 0.4f);
+  GL11.glPushAttrib(GL12.GL_RESCALE_NORMAL);
+  GL11.glEnable(GL12.GL_RESCALE_NORMAL);
   bindTexture(tex);
   waterwheel.setRotation(0, 0, 0);
   outputGear.setRotation(0, 0, 0);
   model.renderModel();
+  GL11.glPopAttrib();
   GL11.glPopMatrix();
   }
 

@@ -33,7 +33,8 @@ private boolean nextNeighborInvalid = true;
 
 public TileTorqueTransportShaft()
   {
-  torqueCell = new TorqueCell(32, 32, 32, 1);
+  double max = AWAutomationStatics.low_transfer_max;
+  torqueCell = new TorqueCell(max, max, max, 1);
   }
 
 @Override

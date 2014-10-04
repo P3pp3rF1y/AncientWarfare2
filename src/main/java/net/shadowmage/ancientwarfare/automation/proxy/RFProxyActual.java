@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
-import cofh.api.energy.IEnergyConnection;
-import cofh.api.energy.IEnergyHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import cofh.api.energy.IEnergyConnection;
+import cofh.api.energy.IEnergyHandler;
 
 public class RFProxyActual extends RFProxy
 {

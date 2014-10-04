@@ -10,7 +10,6 @@ import net.minecraft.scoreboard.Team;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -71,8 +70,6 @@ protected void balancePower()
   trans = Math.min(trans, inputCell.getEnergy());
   inputCell.setEnergy(inputCell.getEnergy()-trans);
   outputCell.setEnergy(outputCell.getEnergy()+trans);
-  
-  AWLog.logDebug("balanced power..in: "+inputCell.getEnergy() + " out: "+outputCell.getEnergy());
   }
 
 @Override

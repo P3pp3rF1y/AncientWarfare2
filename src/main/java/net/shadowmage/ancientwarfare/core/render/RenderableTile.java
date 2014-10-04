@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.core.render;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
+
+import org.lwjgl.opengl.GL11;
 
 public abstract class RenderableTile extends TileEntitySpecialRenderer implements IItemRenderer
 {

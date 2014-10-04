@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.SidedTorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -38,9 +37,10 @@ double rotation, prevRotation;
 
 public TileTorqueTransportConduit()
   {
+  double max = AWAutomationStatics.low_transfer_max;
   for(int i = 0; i <6; i++)
     {
-    storage[i] = new SidedTorqueCell(32, 32, 32, 1, ForgeDirection.values()[i], this);//TODO set from config
+    storage[i] = new SidedTorqueCell(max, max, max, 1, ForgeDirection.values()[i], this);//TODO set from config
     }
   }
 

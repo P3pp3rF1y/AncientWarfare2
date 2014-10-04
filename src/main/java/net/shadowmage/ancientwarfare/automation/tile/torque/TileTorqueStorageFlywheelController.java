@@ -1,12 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -36,8 +33,9 @@ TorqueCell inputCell, outputCell;
 
 public TileTorqueStorageFlywheelController()
   {
-  inputCell = new TorqueCell(32, 32, 32, 1.f);//TODO set default values from config
-  outputCell = new TorqueCell(32, 32, 32, 1.f);//TODO set default values from config
+  double max = AWAutomationStatics.low_transfer_max;
+  inputCell = new TorqueCell(max, max, max, 1.f);//TODO set default values from config
+  outputCell = new TorqueCell(max, max, max, 1.f);//TODO set default values from config
   }
 
 @Override

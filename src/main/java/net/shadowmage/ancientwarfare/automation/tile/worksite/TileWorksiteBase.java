@@ -3,8 +3,6 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import cofh.api.energy.IEnergyHandler;
-import cpw.mods.fml.common.Optional;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,6 +28,8 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import cofh.api.energy.IEnergyHandler;
+import cpw.mods.fml.common.Optional;
 
 @Optional.InterfaceList(value=
   {

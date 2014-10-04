@@ -25,8 +25,6 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportD
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaft;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaftHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaftMedium;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueWindmillController;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
@@ -312,11 +310,11 @@ public static void load()
   GameRegistry.registerBlock(handCrankedEngine, ItemBlockTorqueTile.class, "hand_cranked_engine");
   GameRegistry.registerTileEntity(TileTorqueGeneratorHandCranked.class, "hand_cranked_engine_tile");
   
-  GameRegistry.registerBlock(windmillBlade, "windmill_blade");
-  GameRegistry.registerTileEntity(TileWindmillBlade.class, "windmill_blade_tile");
-  
-  GameRegistry.registerBlock(windmillControl, "windmill_controll");
-  GameRegistry.registerTileEntity(TileTorqueWindmillController.class, "windmill_control_tile");
+//  GameRegistry.registerBlock(windmillBlade, "windmill_blade");
+//  GameRegistry.registerTileEntity(TileWindmillBlade.class, "windmill_blade_tile");
+//  
+//  GameRegistry.registerBlock(windmillControl, "windmill_controll");
+//  GameRegistry.registerTileEntity(TileTorqueWindmillController.class, "windmill_control_tile");
   
   GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");
   GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");
