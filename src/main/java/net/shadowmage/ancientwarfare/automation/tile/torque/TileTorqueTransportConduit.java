@@ -20,15 +20,15 @@ boolean connections[] = null;
 SidedTorqueCell[] storage = new SidedTorqueCell[6];
 
 /**
- * client side this == 0.0 -> 1.0
+ * client side this == 0.0 -> 100.0
  */
 double clientEnergyState;
 
 /**
  * server side this == 0 -> 100 (integer percent)
- * client side this == 0.0 -> 1.0 (actual percent)
+ * client side this == 0 -> 100 (integer percent)
  */
-double clientDestEnergyState;
+int clientDestEnergyState;
 
 /**
  * used client side for rendering
@@ -116,7 +116,7 @@ protected void updateRotation()
   prevRotation = rotation;
   if(clientEnergyState > 0)
     {
-    double r = AWAutomationStatics.low_rpt * clientEnergyState;
+    double r = AWAutomationStatics.low_rpt * clientEnergyState * 0.01d;
     rotation += r;
     }
   }
@@ -141,7 +141,7 @@ protected void clientNetworkUpdate()
 @Override
 protected void handleClientRotationData(ForgeDirection side, int value)
   {
-  clientDestEnergyState = ((double)value) * 0.01d;
+  clientDestEnergyState =value;
   }
 
 @Override
@@ -263,7 +263,7 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {  
   super.onDataPacket(net, pkt);
   NBTTagCompound tag = pkt.func_148857_g();
-  clientDestEnergyState = ((double)tag.getInteger("clientEnergy")) / 100.d;
+  clientDestEnergyState = tag.getInteger("clientEnergy");
   }
 
 @Override
@@ -275,6 +275,7 @@ public void readFromNBT(NBTTagCompound tag)
     {
     storage[i].readFromNBT(list.getCompoundTagAt(i));
     }
+  clientDestEnergyState = tag.getInteger("clientEnergy");
   }
 
 @Override
@@ -287,6 +288,7 @@ public void writeToNBT(NBTTagCompound tag)
     list.appendTag(storage[i].writeToNBT(new NBTTagCompound()));
     }
   tag.setTag("energyList", list);
+  tag.setInteger("clientEnergy", clientDestEnergyState);
   }
 
 @Override

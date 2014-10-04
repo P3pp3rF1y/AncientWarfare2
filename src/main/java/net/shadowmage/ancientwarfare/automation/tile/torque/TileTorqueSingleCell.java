@@ -99,6 +99,7 @@ protected void clientNetworkUpdate()
 @Override
 protected void handleClientRotationData(ForgeDirection side, int value)
   {
+  super.handleClientRotationData(side, value);
   if(side==orientation)
     {
     clientDestEnergyState = value;    
@@ -108,37 +109,43 @@ protected void handleClientRotationData(ForgeDirection side, int value)
 @Override
 public double getMaxTorque(ForgeDirection from)
   {
-  return from==orientation? torqueCell.getMaxEnergy() : 0;
+  return torqueCell.getMaxEnergy();
   }
 
 @Override
 public double getTorqueStored(ForgeDirection from)
   {
-  return from==orientation? torqueCell.getEnergy() : 0;
+  return torqueCell.getEnergy();
   }
 
 @Override
 public double addTorque(ForgeDirection from, double energy)
   {
-  return from==orientation.getOpposite() ? torqueCell.addEnergy(energy) : 0;
+  return torqueCell.addEnergy(energy);
   }
 
 @Override
 public double drainTorque(ForgeDirection from, double energy)
   {
-  return from==orientation? torqueCell.drainEnergy(energy) : 0;
+  return torqueCell.drainEnergy(energy);
   }
 
 @Override
 public double getMaxTorqueOutput(ForgeDirection from)
   {
-  return from==orientation? torqueCell.getMaxTickOutput() : 0;
+  return canOutputTorque(from) ? torqueCell.getMaxTickOutput() : 0;
   }
 
 @Override
 public double getMaxTorqueInput(ForgeDirection from)
   {
-  return from==orientation.getOpposite()? torqueCell.getMaxTickInput() : 0;
+  return canInputTorque(from) ? torqueCell.getMaxTickInput() : 0;
+  }
+
+@Override
+public boolean useOutputRotation(ForgeDirection from)
+  {
+  return true;
   }
 
 @Override
@@ -151,12 +158,6 @@ protected double getTotalTorque()
 public boolean canOutputTorque(ForgeDirection towards)
   {
   return towards==orientation;
-  }
-
-@Override
-public boolean useOutputRotation(ForgeDirection from)
-  {
-  return from==orientation;
   }
 
 @Override
