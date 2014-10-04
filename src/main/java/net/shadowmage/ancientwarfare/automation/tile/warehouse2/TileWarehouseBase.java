@@ -8,6 +8,7 @@ import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceEmptyRequest;
@@ -257,7 +258,7 @@ public final void getItems(ItemQuantityMap map)
 public final void updateEntity()
   { 
   super.updateEntity();
-  if(worldObj.isRemote){return;}
+  if(worldObj==null || worldObj.isRemote){return;}
   if(!init)
     {
     init=true;  
@@ -533,6 +534,25 @@ public ItemStack tryAdd(ItemStack stack)
     return null;
     }
   return stack;
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {
+  super.readFromNBT(tag);
+  if(getWorkBoundsMin()==null || getWorkBoundsMax()==null)
+    {
+    setBounds(new BlockPosition(xCoord+1, yCoord, zCoord), new BlockPosition(xCoord+4, yCoord+3, zCoord+4));
+    }
+  }
+
+/**
+ * Used by user-set-blocks tile to set all default harvest-checks to true when bounds are FIRST set 
+ */
+protected void onBoundsSet()
+  {
+  getWorkBoundsMax().y = getWorkBoundsMin().y+3;
+  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
 
