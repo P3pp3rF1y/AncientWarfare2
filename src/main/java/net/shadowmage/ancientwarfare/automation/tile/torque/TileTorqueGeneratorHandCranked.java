@@ -306,7 +306,6 @@ public float getClientOutputRotation(ForgeDirection from, float delta)
 @Override
 public boolean useOutputRotation(ForgeDirection from)
   {
-  // TODO Auto-generated method stub
   return true;
   }
 
