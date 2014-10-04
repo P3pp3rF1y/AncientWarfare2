@@ -25,6 +25,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportD
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaft;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaftHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaftMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueWindmillController;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
@@ -142,7 +143,8 @@ public static final BlockHandCrankedEngine handCrankedEngine = new BlockHandCran
 public static final BlockTorqueGenerator torqueGeneratorSterling = new BlockTorqueGeneratorSterling("torque_generator_sterling");
 public static final BlockTorqueGenerator torqueGeneratorWaterwheel = new BlockTorqueGeneratorWaterwheel("torque_generator_waterwheel");
 public static final BlockWindmillBlade windmillBlade = new BlockWindmillBlade("windmill_blade");
-  
+public static final BlockWindmillControll windmillControl = new BlockWindmillControll("windmill_controll");  
+
 public static final BlockChunkLoaderSimple chunkLoaderSimple = new BlockChunkLoaderSimple("chunk_loader_simple");
 public static final BlockChunkLoaderDeluxe chunkLoaderDeluxe = new BlockChunkLoaderDeluxe("chunk_loader_deluxe");
 
@@ -312,6 +314,9 @@ public static void load()
   
   GameRegistry.registerBlock(windmillBlade, "windmill_blade");
   GameRegistry.registerTileEntity(TileWindmillBlade.class, "windmill_blade_tile");
+  
+  GameRegistry.registerBlock(windmillControl, "windmill_controll");
+  GameRegistry.registerTileEntity(TileTorqueWindmillController.class, "windmill_control_tile");
   
   GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");
   GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");

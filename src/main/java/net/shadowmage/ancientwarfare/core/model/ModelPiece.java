@@ -178,7 +178,7 @@ public void removeChild(ModelPiece piece)
   piece.parent = null;
   }
 
-public void render(float tw, float th)
+public void render(float textureWidth, float textureHeight)
   {
   if(!visible)
     {
@@ -189,10 +189,10 @@ public void render(float tw, float th)
   if(rx!=0){GL11.glRotatef(rx, 1, 0, 0);}
   if(ry!=0){GL11.glRotatef(ry, 0, 1, 0);}
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);}  
-  renderPrimitives(tw, th);
+  renderPrimitives(textureWidth, textureHeight);
   for(ModelPiece child : this.children)
     {
-    child.render(tw, th);
+    child.render(textureWidth, textureHeight);
     }
   GL11.glPopMatrix();
   }

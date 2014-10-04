@@ -33,14 +33,14 @@ public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int
   }
 
 //TODO alter slightly to render a default icon when not a valid setup -- will need to query the TE
-//@Override
-//public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess access, int x, int y, int z, int side) {return false;}
-//
-//@Override
-//public boolean isOpaqueCube(){return false;}
-//
-//@Override
-//public boolean isNormalCube(){return false;}
+@Override
+public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess access, int x, int y, int z, int side) {return false;}
+
+@Override
+public boolean isOpaqueCube(){return false;}
+
+@Override
+public boolean isNormalCube(){return false;}
 
 @Override
 public IIcon getIcon(int side, int meta)
