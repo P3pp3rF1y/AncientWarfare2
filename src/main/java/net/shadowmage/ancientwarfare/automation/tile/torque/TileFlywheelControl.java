@@ -5,22 +5,19 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
 
-public class TileTorqueStorageFlywheelController extends TileTorqueSingleCell
+public abstract class TileFlywheelControl extends TileTorqueSingleCell
 {
 
 private boolean powered;
 
 TorqueCell inputCell;
 
-public TileTorqueStorageFlywheelController()
+public TileFlywheelControl()
   {
-  double max = AWAutomationStatics.low_transfer_max;
-  inputCell = new TorqueCell(max, max, max, 1.f);//TODO set default values from config
-  torqueCell = new TorqueCell(max, max, max, 1.f);//TODO set default values from config
   }
 
 @Override

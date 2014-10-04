@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
 
 public class BlockTorqueGeneratorSterling extends BlockTorqueGenerator
 {
@@ -18,7 +18,7 @@ public BlockTorqueGeneratorSterling(String regName)
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {
-  return new TileTorqueGeneratorSterling();
+  return new TileSterlingEngine();
   }
 
 @Override

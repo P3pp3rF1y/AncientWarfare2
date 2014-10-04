@@ -12,9 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelControllerLarge;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelControllerMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLarge;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlMedium;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
 public class BlockFlywheel extends BlockTorqueBase
@@ -48,13 +48,13 @@ public TileEntity createTileEntity(World world, int metadata)
   switch(metadata)
   {
   case 0:
-  return new TileTorqueStorageFlywheelController();
+  return new TileFlywheelControlLight();
   case 1:
-  return new TileTorqueStorageFlywheelControllerMedium();
+  return new TileFlywheelControlMedium();
   case 2:
-  return new TileTorqueStorageFlywheelControllerLarge();
+  return new TileFlywheelControlLarge();
   }  
-  return new TileTorqueStorageFlywheelController();
+  return new TileFlywheelControlLight();
   }
 
 @SuppressWarnings({ "unchecked", "rawtypes" })

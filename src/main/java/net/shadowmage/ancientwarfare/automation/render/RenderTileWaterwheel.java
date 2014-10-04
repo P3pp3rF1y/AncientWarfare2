@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheel;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
@@ -41,7 +41,7 @@ public RenderTileWaterwheel()
 public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick)
   {
   GL11.glPushMatrix();
-  TileTorqueGeneratorWaterwheel wheel = (TileTorqueGeneratorWaterwheel) te;
+  TileWaterwheel wheel = (TileWaterwheel) te;
   
   ForgeDirection d = wheel.getPrimaryFacing();
   GL11.glTranslated(x+0.5d, y, z+0.5d);
@@ -66,20 +66,20 @@ private double getRotation(double rotation, double prevRotation, float delta)
   return (prevRotation + rd*delta);
   }
 
-private void drawPointAtCurrentOrigin()
-  {
-  //debug point rendering
-  GL11.glDisable(GL11.GL_TEXTURE_2D);
-  GL11.glDisable(GL11.GL_LIGHTING);
-  GL11.glColor4f(1.f, 0.f, 0.f, 1.f);
-  GL11.glPointSize(10.f);
-  GL11.glBegin(GL11.GL_POINTS);
-  GL11.glVertex3f((float)0, (float)0, (float)0);
-  GL11.glEnd();
-  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-  GL11.glEnable(GL11.GL_TEXTURE_2D);
-  GL11.glEnable(GL11.GL_LIGHTING);
-  }
+//private void drawPointAtCurrentOrigin()
+//  {
+//  //debug point rendering
+//  GL11.glDisable(GL11.GL_TEXTURE_2D);
+//  GL11.glDisable(GL11.GL_LIGHTING);
+//  GL11.glColor4f(1.f, 0.f, 0.f, 1.f);
+//  GL11.glPointSize(10.f);
+//  GL11.glBegin(GL11.GL_POINTS);
+//  GL11.glVertex3f((float)0, (float)0, (float)0);
+//  GL11.glEnd();
+//  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+//  GL11.glEnable(GL11.GL_TEXTURE_2D);
+//  GL11.glEnable(GL11.GL_LIGHTING);
+//  }
 
 @Override
 public boolean handleRenderType(ItemStack item, ItemRenderType type)

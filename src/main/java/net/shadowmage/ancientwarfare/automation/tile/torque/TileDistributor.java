@@ -3,10 +3,10 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
-public class TileTorqueTransportDistributor extends TileTorqueTransportConduit
+public abstract class TileDistributor extends TileTorqueSidedCell
 {
 
-public TileTorqueTransportDistributor()
+public TileDistributor()
   {
   
   }

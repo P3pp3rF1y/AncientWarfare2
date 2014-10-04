@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile.torque;
+package net.shadowmage.ancientwarfare.automation.tile.torque.multiblock;
 
 import java.util.HashSet;
 import java.util.Set;

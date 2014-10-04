@@ -3,20 +3,17 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
-public class TileTorqueTransportShaft extends TileTorqueSingleCell
+public abstract class TileTorqueShaft extends TileTorqueSingleCell
 {
 
-private TileTorqueTransportShaft prev, next;
+private TileTorqueShaft prev, next;
 
 private boolean prevNeighborInvalid = true;
 private boolean nextNeighborInvalid = true;
 
-public TileTorqueTransportShaft()
+public TileTorqueShaft()
   {
-  double max = AWAutomationStatics.low_transfer_max;
-  torqueCell = new TorqueCell(max, max, max, 1);
   }
 
 @Override
@@ -24,8 +21,8 @@ protected void serverNetworkSynch()
   {
   if(prev()==null)
     {
-    TileTorqueTransportShaft last = this;
-    TileTorqueTransportShaft n = next();
+    TileTorqueShaft last = this;
+    TileTorqueShaft n = next();
     double totalPower = torqueCell.getEnergy();
     double num = 1;
     while(n!=null)
@@ -62,7 +59,7 @@ protected void updateRotation()
       double r = AWAutomationStatics.low_rpt * clientEnergyState * 0.01d;
       rotation += r;
       }   
-    TileTorqueTransportShaft n = next;
+    TileTorqueShaft n = next;
     while(n!=null)
       {
       n.rotation = rotation;
@@ -81,7 +78,7 @@ protected void onNeighborCacheInvalidated()
   prev = next = null;
   }
 
-public TileTorqueTransportShaft prev()
+public TileTorqueShaft prev()
   {
   if(prevNeighborInvalid)
     {
@@ -89,14 +86,14 @@ public TileTorqueTransportShaft prev()
     ITorqueTile input = getTorqueCache()[orientation.getOpposite().ordinal()];
     if(input !=null && input.getClass()==this.getClass() && input.canOutputTorque(orientation))
       {
-      prev = (TileTorqueTransportShaft) input;
+      prev = (TileTorqueShaft) input;
       prev.next=this;
       } 
     }
   return prev;
   }
 
-public TileTorqueTransportShaft next()
+public TileTorqueShaft next()
   {
   if(nextNeighborInvalid)
     {
@@ -104,7 +101,7 @@ public TileTorqueTransportShaft next()
     ITorqueTile output = getTorqueCache()[orientation.ordinal()];
     if(output !=null && output.getClass()==this.getClass() && output.canInputTorque(orientation.getOpposite()))
       {
-      next = (TileTorqueTransportShaft) output;
+      next = (TileTorqueShaft) output;
       next.prev=this;
       }
     }

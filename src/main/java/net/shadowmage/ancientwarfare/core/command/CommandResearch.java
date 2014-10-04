@@ -88,10 +88,10 @@ public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
   return par1ICommandSender.canCommandSenderUseCommand(this.permissionLevel, this.getCommandName());
   }
 
+@SuppressWarnings("rawtypes")
 @Override
 public List addTabCompletionOptions(ICommandSender sender, String[] p_71516_2_)
   {
-  // TODO Auto-generated method stub
   return null;
   }
 

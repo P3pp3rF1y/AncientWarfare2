@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
-public class TileTorqueGeneratorSterling extends TileTorqueSingleCell implements IInventory
+public class TileSterlingEngine extends TileTorqueSingleCell implements IInventory
 {
 
 InventoryBasic fuelInventory = new InventoryBasic(1)
@@ -25,7 +25,7 @@ InventoryBasic fuelInventory = new InventoryBasic(1)
 int burnTime = 0;
 int burnTimeBase = 0;
 
-public TileTorqueGeneratorSterling()
+public TileSterlingEngine()
   {
   torqueCell = new TorqueCell(0, 4, 1600, 1.f);
   }

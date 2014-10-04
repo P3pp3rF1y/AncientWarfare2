@@ -9,9 +9,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportBase;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaft;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftMedium;
 
 public class BlockTorqueTransportShaft extends BlockTorqueTransportConduit
 {
@@ -27,13 +28,13 @@ public TileEntity createTileEntity(World world, int metadata)
   switch(metadata)
   {
   case 0:
-  return new TileTorqueTransportShaft();
+  return new TileTorqueShaftLight();
   case 1:
-  return new TileTorqueTransportShaft();
+  return new TileTorqueShaftMedium();
   case 2:
-  return new TileTorqueTransportShaft();
+  return new TileTorqueShaftHeavy();
   }  
-  return new TileTorqueTransportConduit();
+  return new TileTorqueShaftLight();
   }
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -51,9 +52,9 @@ public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
   float min = 0.1875f, max = 0.8125f;
   float x1=min, y1=min, z1=min, x2=max, y2=max, z2=max;
   TileEntity te = world.getTileEntity(x, y, z);
-  if(te instanceof TileTorqueTransportBase)
+  if(te instanceof TileTorqueShaft)
     {
-    TileTorqueTransportBase tile = (TileTorqueTransportBase) world.getTileEntity(x, y, z);
+    TileTorqueShaft tile = (TileTorqueShaft) world.getTileEntity(x, y, z);
     ForgeDirection d = tile.getPrimaryFacing();
     int s1 = d.ordinal();
     if(s1==0 || s1==1)//up/down

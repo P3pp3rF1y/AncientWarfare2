@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -76,7 +76,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   GL11.glPushMatrix();
   GL11.glTranslated(x+0.5d, y+0.5d, z+0.5d);
   
-  TileTorqueTransportConduit conduit = (TileTorqueTransportConduit)te;
+  TileTorqueSidedCell conduit = (TileTorqueSidedCell)te;
   
   ITorqueTile[] neighbors = conduit.getTorqueCache();
   boolean[] connections = conduit.getConnections();

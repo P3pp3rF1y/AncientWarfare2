@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.SidedTorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
-public class TileTorqueTransportConduit extends TileTorqueTransportBase
+public abstract class TileTorqueSidedCell extends TileTorqueBase
 {
 
 boolean connections[] = null;
@@ -35,13 +35,9 @@ int clientDestEnergyState;
  */
 double rotation, prevRotation;
 
-public TileTorqueTransportConduit()
+public TileTorqueSidedCell()
   {
-  double max = AWAutomationStatics.low_transfer_max;
-  for(int i = 0; i <6; i++)
-    {
-    storage[i] = new SidedTorqueCell(max, max, max, 1, ForgeDirection.values()[i], this);//TODO set from config
-    }
+  
   }
 
 @Override

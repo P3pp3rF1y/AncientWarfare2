@@ -3,10 +3,10 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
-public class TileTorqueWindmillController extends TileTorqueSingleCell
+public class TileWindmillController extends TileTorqueSingleCell
 {
 
-public TileTorqueWindmillController()
+public TileWindmillController()
   {
   torqueCell = new TorqueCell(32,32,32,1);
   }

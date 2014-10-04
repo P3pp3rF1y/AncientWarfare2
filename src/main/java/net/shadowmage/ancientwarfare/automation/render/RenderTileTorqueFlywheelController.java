@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControl;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -49,7 +49,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   GL11.glPushMatrix();
   GL11.glTranslated(x+0.5d, y, z+0.5d);
 
-  TileTorqueStorageFlywheelController flywheel = (TileTorqueStorageFlywheelController)te;
+  TileFlywheelControl flywheel = (TileFlywheelControl)te;
 
   ITorqueTile[] neighbors = flywheel.getTorqueCache();
   ForgeDirection d = flywheel.getPrimaryFacing();

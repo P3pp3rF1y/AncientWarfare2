@@ -13,10 +13,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportBase;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitHeavy;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitMedium;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
 public class BlockTorqueTransportConduit extends BlockTorqueBase
@@ -36,13 +36,13 @@ public TileEntity createTileEntity(World world, int metadata)
   switch(metadata)
   {
   case 0:
-  return new TileTorqueTransportConduit();
+  return new TileConduitLight();
   case 1:
-  return new TileTorqueTransportConduitMedium();
+  return new TileConduitMedium();
   case 2:
-  return new TileTorqueTransportConduitHeavy();
+  return new TileConduitHeavy();
   }  
-  return new TileTorqueTransportConduit();
+  return new TileConduitLight();
   }
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -111,9 +111,9 @@ public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
   float min = 0.1875f, max = 0.8125f;
   float x1=min, y1=min, z1=min, x2=max, y2=max, z2=max;
   TileEntity te = world.getTileEntity(x, y, z);
-  if(te instanceof TileTorqueTransportBase)
+  if(te instanceof TileTorqueSidedCell)
     {
-    TileTorqueTransportConduit tile = (TileTorqueTransportConduit) world.getTileEntity(x, y, z);
+    TileTorqueSidedCell tile = (TileTorqueSidedCell) world.getTileEntity(x, y, z);
     boolean[] sides = tile.getConnections();
     if(sides[0]){y1=0.f;}
     if(sides[1]){y2=1.f;}

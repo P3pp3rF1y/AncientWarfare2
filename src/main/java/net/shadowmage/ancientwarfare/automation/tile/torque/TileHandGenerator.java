@@ -17,7 +17,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-public class TileTorqueGeneratorHandCranked extends TileTorqueSingleCell implements IWorkSite, IOwnable
+public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite, IOwnable
 {
 
 String ownerName = "";
@@ -38,7 +38,7 @@ int clientInputDestEnergy;
  */
 double inputRotation, prevInputRotation;
 
-public TileTorqueGeneratorHandCranked()
+public TileHandGenerator()
   {
   torqueCell = new TorqueCell(0, 32, 32, 1.f);
   inputCell = new TorqueCell(32, 0, 150, 1.f);

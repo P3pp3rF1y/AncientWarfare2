@@ -5,11 +5,11 @@ import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.SidedTorqueCell;
 
 
-public class TileTorqueTransportDistributorHeavy extends TileTorqueTransportDistributor
+public class TileDistributorMedium extends TileDistributor
 {
-public TileTorqueTransportDistributorHeavy()
+public TileDistributorMedium()
   {
-  double max = AWAutomationStatics.high_transfer_max;
+  double max = AWAutomationStatics.med_transfer_max;
   for(int i = 0; i <6; i++)
     {
     storage[i] = new SidedTorqueCell(max, max, max, 1, ForgeDirection.values()[i], this);//TODO set from config

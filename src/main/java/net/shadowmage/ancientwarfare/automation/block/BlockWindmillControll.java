@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueWindmillController;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
 public class BlockWindmillControll extends BlockTorqueBase
@@ -35,7 +35,7 @@ public boolean invertFacing()
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {
-  return new TileTorqueWindmillController();
+  return new TileWindmillController();
   }
 
 @Override

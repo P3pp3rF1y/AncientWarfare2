@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
-public class TileTorqueGeneratorWaterwheel extends TileTorqueSingleCell implements IInteractableTile
+public class TileWaterwheel extends TileTorqueSingleCell implements IInteractableTile
 {
 
 public float wheelRotation;
@@ -26,7 +26,7 @@ protected TileEntity[] neighborTileCache = null;
 
 public boolean validSetup = false;
 
-public TileTorqueGeneratorWaterwheel()
+public TileWaterwheel()
   {  
   torqueCell = new TorqueCell(0, 4, 32, 1.f);
   maxWheelRpm = 20;

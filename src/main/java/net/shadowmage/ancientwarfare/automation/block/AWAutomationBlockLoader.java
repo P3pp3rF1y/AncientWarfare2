@@ -9,22 +9,24 @@ import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteStatic;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelStorage;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelController;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelControllerLarge;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelControllerMedium;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitHeavy;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitMedium;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributor;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributorHeavy;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributorMedium;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaft;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaftHeavy;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportShaftMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributorHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributorLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributorMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLarge;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandGenerator;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
+import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
+import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
@@ -279,42 +281,42 @@ public static void load()
   mailbox.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mailbox_right");  
 
   GameRegistry.registerBlock(flywheel, ItemBlockTorqueTile.class, "flywheel");
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelController.class, "flywheel_tile");  
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelControllerMedium.class, "flywheel_medium_tile");  
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelControllerLarge.class, "flywheel_large_tile");
+  GameRegistry.registerTileEntity(TileFlywheelControlLight.class, "flywheel_tile");  
+  GameRegistry.registerTileEntity(TileFlywheelControlMedium.class, "flywheel_medium_tile");  
+  GameRegistry.registerTileEntity(TileFlywheelControlLarge.class, "flywheel_large_tile");
   
   GameRegistry.registerBlock(flywheelStorage, ItemBlockMeta.class, "flywheel_storage");
   GameRegistry.registerTileEntity(TileFlywheelStorage.class, "flywheel_storage_tile");
   
   GameRegistry.registerBlock(torqueConduit, ItemBlockTorqueTile.class, "torque_conduit");
-  GameRegistry.registerTileEntity(TileTorqueTransportConduit.class, "torque_conduit_tile");  
-  GameRegistry.registerTileEntity(TileTorqueTransportConduitMedium.class, "torque_conduit_medium_tile");  
-  GameRegistry.registerTileEntity(TileTorqueTransportConduitHeavy.class, "torque_conduit_heavy_tile");
+  GameRegistry.registerTileEntity(TileConduitLight.class, "torque_conduit_tile");  
+  GameRegistry.registerTileEntity(TileConduitMedium.class, "torque_conduit_medium_tile");  
+  GameRegistry.registerTileEntity(TileConduitHeavy.class, "torque_conduit_heavy_tile");
 
   GameRegistry.registerBlock(torqueShaft, ItemBlockTorqueTile.class, "torque_shaft");
-  GameRegistry.registerTileEntity(TileTorqueTransportShaft.class, "torque_driveline_tile");
-  GameRegistry.registerTileEntity(TileTorqueTransportShaftMedium.class, "torque_driveline_medium_tile");
-  GameRegistry.registerTileEntity(TileTorqueTransportShaftHeavy.class, "torque_driveline_heavy_tile");
+  GameRegistry.registerTileEntity(TileTorqueShaftLight.class, "torque_driveline_tile");
+  GameRegistry.registerTileEntity(TileTorqueShaftMedium.class, "torque_driveline_medium_tile");
+  GameRegistry.registerTileEntity(TileTorqueShaftHeavy.class, "torque_driveline_heavy_tile");
   
   GameRegistry.registerBlock(torqueDistributor, ItemBlockTorqueTile.class, "torque_distributor");
-  GameRegistry.registerTileEntity(TileTorqueTransportDistributor.class, "torque_distributor_tile");
-  GameRegistry.registerTileEntity(TileTorqueTransportDistributorMedium.class, "torque_distributor_medium_tile");
-  GameRegistry.registerTileEntity(TileTorqueTransportDistributorHeavy.class, "torque_distributor_heavy_tile");
+  GameRegistry.registerTileEntity(TileDistributorLight.class, "torque_distributor_tile");
+  GameRegistry.registerTileEntity(TileDistributorMedium.class, "torque_distributor_medium_tile");
+  GameRegistry.registerTileEntity(TileDistributorHeavy.class, "torque_distributor_heavy_tile");
     
   GameRegistry.registerBlock(torqueGeneratorSterling, ItemBlockTorqueTile.class, "torque_generator_sterling");
-  GameRegistry.registerTileEntity(TileTorqueGeneratorSterling.class, "torque_generator_sterling_tile");
+  GameRegistry.registerTileEntity(TileSterlingEngine.class, "torque_generator_sterling_tile");
   
   GameRegistry.registerBlock(torqueGeneratorWaterwheel, ItemBlockTorqueTile.class, "torque_generator_waterwheel");
-  GameRegistry.registerTileEntity(TileTorqueGeneratorWaterwheel.class, "torque_generator_waterwheel_tile");
+  GameRegistry.registerTileEntity(TileWaterwheel.class, "torque_generator_waterwheel_tile");
   
   GameRegistry.registerBlock(handCrankedEngine, ItemBlockTorqueTile.class, "hand_cranked_engine");
-  GameRegistry.registerTileEntity(TileTorqueGeneratorHandCranked.class, "hand_cranked_engine_tile");
+  GameRegistry.registerTileEntity(TileHandGenerator.class, "hand_cranked_engine_tile");
   
-//  GameRegistry.registerBlock(windmillBlade, "windmill_blade");
-//  GameRegistry.registerTileEntity(TileWindmillBlade.class, "windmill_blade_tile");
-//  
-//  GameRegistry.registerBlock(windmillControl, "windmill_controll");
-//  GameRegistry.registerTileEntity(TileTorqueWindmillController.class, "windmill_control_tile");
+  GameRegistry.registerBlock(windmillBlade, "windmill_blade");
+  GameRegistry.registerTileEntity(TileWindmillBlade.class, "windmill_blade_tile");
+  
+  GameRegistry.registerBlock(windmillControl, "windmill_control");
+  GameRegistry.registerTileEntity(TileWindmillController.class, "windmill_control_tile");
   
   GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");
   GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");
@@ -333,8 +335,6 @@ public static void load()
   chunkLoaderDeluxe.iconMap.setIconTexture(3, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
   chunkLoaderDeluxe.iconMap.setIconTexture(4, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
   chunkLoaderDeluxe.iconMap.setIconTexture(5, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
-  
-
   }
 
 }

@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheel;
 
 public class BlockTorqueGeneratorWaterwheel extends BlockTorqueGenerator
 {
@@ -24,7 +24,7 @@ public boolean invertFacing()
 @Override
 public TileEntity createTileEntity(World world, int metadata)
   {
-  return new TileTorqueGeneratorWaterwheel();
+  return new TileWaterwheel();
   }
 
 @Override
