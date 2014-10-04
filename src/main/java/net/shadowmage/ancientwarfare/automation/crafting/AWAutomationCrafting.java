@@ -246,25 +246,25 @@ public static void loadRecipes()
     
   //torque conduit s
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,0), "the_wheel",
-      "s",
-      "g",
-      "s",
+      "_s_",
+      "sgs",
+      "_s_",
       's', woodShaft.copy(),
       'g', woodenGear.copy());
   
 //torque conduit m
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,1), "the_wheel",
-      "s",
-      "g",
-      "s",
+      "_s_",
+      "sgs",
+      "_s_",
       's', ironShaft.copy(),
       'g', ironGear.copy());
   
 //torque conduit l
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,2), "mass_production",
-      "s",
-      "g",
-      "s",
+      "_s_",
+      "sgs",
+      "_s_",
       's', steelShaft.copy(),
       'g', steelGear.copy());
     
@@ -289,6 +289,30 @@ public static void loadRecipes()
       "_s_",
       "ggg",
       "_s_",
+      's', steelShaft.copy(),
+      'g', steelGear.copy());
+  
+  //torque shaft s
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft,1,0), "the_wheel",
+      "s",
+      "s",
+      "g",
+      's', woodShaft.copy(),
+      'g', woodenGear.copy());
+  
+//torque shaft m
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft,1,1), "the_wheel",
+      "s",
+      "s",
+      "g",
+      's', ironShaft.copy(),
+      'g', ironGear.copy());
+  
+//torque shaft l
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft,1,2), "mass_production",
+      "s",
+      "s",
+      "g",
       's', steelShaft.copy(),
       'g', steelGear.copy());
   
