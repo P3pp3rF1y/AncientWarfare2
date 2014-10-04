@@ -11,12 +11,6 @@ iron: e3e6e6 (180/5/60 recolor from wood)
 steel: d7e4e4 (180/20/50 recolor from wood)
 gearhead: 535353
 
-Worksite Cleanup
--split worksite stuff into a few more interfaces? might require more instanceof checks, but is -cleaner- code :: is clean code worth a performance hit (most sources say yes...and i agree...)
-	-iworksite
-	-iboundedtile
-	-iupgradeableworksite
-	-iuserconfigurableboundedtile
 	
 Torque Blocks
 	* Industrial sterling generator multiblock
@@ -38,7 +32,6 @@ Torque Cleanup
 	* render bounding box on waterhweel and flyweel storage needs adjusted by actual block bounds
 	* adjust waterwheel so one of its sides may be 'in' water blocks (for water flowing down onto the wheel)
 	* hand cranked engine - rotation is strange
-	* initial client-side energy for some tiles not sticking on reload
 	* on block rotate, notify neighbor of connection status change
 	* on neighbor invalidate, notify client of invalidation--what??
 	* animal farm animal gui not synching initial server values to client on gui open

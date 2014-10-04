@@ -17,31 +17,30 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-public class TileTorqueGeneratorHandCranked extends TileTorqueGeneratorBase implements IWorkSite, IOwnable
+public class TileTorqueGeneratorHandCranked extends TileTorqueSingleCell implements IWorkSite, IOwnable
 {
 
 String ownerName = "";
-TorqueCell outputCell, inputCell;
+TorqueCell inputCell;
 
 /**
- * client side this == 0.0 -> 1.0
+ * client side this == 0.0 -> 100.0 (integer percent)
  */
-double clientEnergyState, clientInputEnergy;
+double clientInputEnergy;
 
 /**
- * server side this == 0 -> 100 (integer percent)
- * client side this == 0.0 -> 1.0 (actual percent)
+ * client side this == 0 -> 100.0 (integer percent)
  */
-double clientDestEnergyState, clientInputDestEnergy;
+int clientInputDestEnergy;
 
 /**
  * used client side for rendering
  */
-double rotation, prevRotation, inputRotation, prevInputRotation;
+double inputRotation, prevInputRotation;
 
 public TileTorqueGeneratorHandCranked()
   {
-  outputCell = new TorqueCell(0, 32, 32, 1.f);
+  torqueCell = new TorqueCell(0, 32, 32, 1.f);
   inputCell = new TorqueCell(32, 0, 150, 1.f);
   }
 
@@ -51,66 +50,45 @@ public void updateEntity()
   super.updateEntity();
   if(!worldObj.isRemote)
     { 
-    torqueIn = getTotalTorque() - prevEnergy;
     balancePower();
-    torqueOut = transferPowerTo(getPrimaryFacing());
-    prevEnergy = getTotalTorque();
-    serverNetworkUpdate();    
-    }
-  else
-    {
-    clientNetworkUpdate();
-    updateRotation();
     }
   }
 
 protected void balancePower()
   {
-  double trans = Math.min(2.d, outputCell.getMaxEnergy()-outputCell.getEnergy());
+  double trans = Math.min(2.d, torqueCell.getMaxEnergy()-torqueCell.getEnergy());
   trans = Math.min(trans, inputCell.getEnergy());
   inputCell.setEnergy(inputCell.getEnergy()-trans);
-  outputCell.setEnergy(outputCell.getEnergy()+trans);
+  torqueCell.setEnergy(torqueCell.getEnergy()+trans);
   }
 
 @Override
 protected void serverNetworkSynch()
   {
-  int percent1 = (int)(outputCell.getPercentFull()*100.d);
-  int percent2 = (int)(torqueOut / outputCell.getMaxOutput());
-  percent1 = Math.max(percent1, percent2);
-  if(percent1 != clientDestEnergyState)
+  super.serverNetworkSynch();
+  int percent = (int)(inputCell.getPercentFull()*100d);
+  if(percent!=clientInputDestEnergy)
     {
-    clientDestEnergyState = percent1;
-    sendSideRotation(getPrimaryFacing(), percent1);    
-    }
-  percent1 = (int)(inputCell.getPercentFull()*100d);
-  if(percent1!=clientInputDestEnergy)
-    {
-    clientInputDestEnergy = percent1;
-    sendSideRotation(ForgeDirection.UP, percent1);
+    clientInputDestEnergy = percent;
+    sendSideRotation(ForgeDirection.UP, percent);
     }  
   }
 
 @Override
 protected void updateRotation()
   {
-  prevRotation = rotation;
-  if(clientEnergyState > 0)
-    {
-    double r = AWAutomationStatics.low_rpt * clientEnergyState;
-    rotation += r;
-    }
+  super.updateRotation();
   prevInputRotation = inputRotation;
   if(clientInputEnergy > 0)
     {
-    double r = AWAutomationStatics.low_rpt * clientInputEnergy;
+    double r = AWAutomationStatics.low_rpt * clientInputEnergy * 0.01d;
     inputRotation += r;
     }  
   }
 
 @Override
 protected void clientNetworkUpdate()
-  {
+  {  
   if(clientEnergyState != clientDestEnergyState || clientInputEnergy != clientInputDestEnergy)
     {
     if(networkUpdateTicks>=0)
@@ -130,13 +108,10 @@ protected void clientNetworkUpdate()
 @Override
 protected void handleClientRotationData(ForgeDirection side, int value)
   {
-  if(side==getPrimaryFacing())
+  super.handleClientRotationData(side, value);
+  if(side==ForgeDirection.UP)
     {
-    clientDestEnergyState = ((double)value) * 0.01d;    
-    }
-  else if(side==ForgeDirection.UP)
-    {
-    clientInputDestEnergy = ((double)value) * 0.01d;
+    clientInputDestEnergy = value;
     }
   }
 
@@ -148,12 +123,6 @@ public int getBoundsMaxWidth(){return 0;}//NOOP
 
 @Override
 public int getBoundsMaxHeight(){return 0;}//NOOP
-
-@Override
-public boolean canOutputTorque(ForgeDirection towards)
-  {
-  return towards==orientation;
-  }
 
 @Override
 public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}// NOOP
@@ -247,7 +216,6 @@ public String getOwnerName()
 public NBTTagCompound getDescriptionTag()
   {
   NBTTagCompound tag = super.getDescriptionTag();
-  tag.setInteger("clientEnergy", (int)clientDestEnergyState);
   tag.setInteger("clientInputDestEnergy", (int)clientInputDestEnergy);
   return tag;
   }
@@ -257,8 +225,7 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {  
   super.onDataPacket(net, pkt);
   NBTTagCompound tag = pkt.func_148857_g();
-  clientDestEnergyState = ((double)tag.getInteger("clientEnergy")) / 100.d;
-  clientInputDestEnergy = ((double)tag.getInteger("clientInputDestEnergy")) / 100.d;
+  clientInputDestEnergy = tag.getInteger("clientInputDestEnergy");
   }
 
 @Override
@@ -266,8 +233,8 @@ public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
   if(tag.hasKey("owner")){ownerName = tag.getString("owner");}
-  outputCell.setEnergy(tag.getDouble("torqueEnergy"));
   inputCell.setEnergy(tag.getDouble("inputEnergy"));
+  clientInputDestEnergy = tag.getInteger("clientInputEnergy");
   }
 
 @Override
@@ -275,20 +242,20 @@ public void writeToNBT(NBTTagCompound tag)
   {  
   super.writeToNBT(tag);
   if(ownerName!=null){tag.setString("owner", ownerName);}
-  tag.setDouble("torqueEnergy", outputCell.getEnergy());
   tag.setDouble("inputEnergy", inputCell.getEnergy());
+  tag.setInteger("clientInputEnergy", clientInputDestEnergy);
   }
 
 @Override
 public double getMaxTorque(ForgeDirection from)
   {
-  return inputCell.getMaxEnergy() + outputCell.getMaxEnergy();
+  return inputCell.getMaxEnergy() + torqueCell.getMaxEnergy();
   }
 
 @Override
 public double getTorqueStored(ForgeDirection from)
   {
-  return inputCell.getEnergy() + outputCell.getEnergy();
+  return inputCell.getEnergy() + torqueCell.getEnergy();
   }
 
 @Override
@@ -305,14 +272,14 @@ public double addTorque(ForgeDirection from, double energy)
 @Override
 public double drainTorque(ForgeDirection from, double energy)
   {
-  if(from==getPrimaryFacing()){return outputCell.drainEnergy(energy);}
+  if(from==getPrimaryFacing()){return torqueCell.drainEnergy(energy);}
   return 0;
   }
 
 @Override
 public double getMaxTorqueOutput(ForgeDirection from)
   {
-  if(from==getPrimaryFacing()){return outputCell.getMaxTickOutput();}
+  if(from==getPrimaryFacing()){return torqueCell.getMaxTickOutput();}
   return 0;
   }
 
@@ -339,13 +306,14 @@ public float getClientOutputRotation(ForgeDirection from, float delta)
 @Override
 public boolean useOutputRotation(ForgeDirection from)
   {
+  // TODO Auto-generated method stub
   return true;
   }
 
 @Override
 protected double getTotalTorque()
   {
-  return inputCell.getEnergy()+outputCell.getEnergy();
+  return inputCell.getEnergy()+torqueCell.getEnergy();
   }
 
 }

@@ -4,8 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -13,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
-public class TileTorqueGeneratorSterling extends TileTorqueGeneratorBase implements IInventory
+public class TileTorqueGeneratorSterling extends TileTorqueSingleCell implements IInventory
 {
 
 InventoryBasic fuelInventory = new InventoryBasic(1)
@@ -23,27 +21,9 @@ InventoryBasic fuelInventory = new InventoryBasic(1)
     return TileEntityFurnace.getItemBurnTime(var2)>0;
     }
   }; 
-  
-TorqueCell torqueCell;
-  
+    
 int burnTime = 0;
 int burnTimeBase = 0;
-
-/**
- * client side this == 0.0 -> 1.0
- */
-double clientEnergyState;
-
-/**
- * server side this == 0 -> 100 (integer percent)
- * client side this == 0.0 -> 1.0 (actual percent)
- */
-double clientDestEnergyState;
-
-/**
- * used client side for rendering
- */
-double rotation, prevRotation;
 
 public TileTorqueGeneratorSterling()
   {
@@ -75,69 +55,7 @@ public void updateEntity()
       torqueCell.setEnergy(torqueCell.getEnergy() + 1.d * AWAutomationStatics.sterling_generator_output_factor);
       burnTime--;
       }  
-    serverNetworkUpdate();    
-    torqueIn = torqueCell.getEnergy() - prevEnergy;
-    torqueOut = transferPowerTo(getPrimaryFacing());
-    prevEnergy = torqueCell.getEnergy();
     }
-  else
-    {
-    clientNetworkUpdate();
-    updateRotation();
-    }
-  }
-
-@Override
-protected void serverNetworkSynch()
-  {
-  int percent = (int)(torqueCell.getPercentFull()*100.d);
-  int percent2 = (int)((torqueOut / torqueCell.getMaxOutput())*100.d);
-  percent = Math.max(percent, percent2);  
-  if(percent != clientDestEnergyState)
-    {
-    clientDestEnergyState = percent;
-    sendSideRotation(getPrimaryFacing(), percent);    
-    }
-  }
-
-@Override
-protected void updateRotation()
-  {
-  prevRotation = rotation;
-  if(clientEnergyState > 0)
-    {
-    double r = AWAutomationStatics.low_rpt * clientEnergyState;
-    rotation += r;
-    }
-  }
-
-@Override
-protected void clientNetworkUpdate()
-  {
-  if(clientEnergyState != clientDestEnergyState)
-    {
-    if(networkUpdateTicks>=0)
-      {
-      clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double)networkUpdateTicks+1.d);
-      networkUpdateTicks--;
-      }
-    else
-      {
-      clientEnergyState = clientDestEnergyState;
-      }
-    }
-  }
-
-@Override
-protected void handleClientRotationData(ForgeDirection side, int value)
-  {
-  clientDestEnergyState = ((double)value) * 0.01d;
-  }
-
-@Override
-public boolean canOutputTorque(ForgeDirection towards)
-  {
-  return towards==orientation;
   }
 
 @Override
@@ -233,22 +151,6 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
   }
 
 @Override
-public NBTTagCompound getDescriptionTag()
-  {
-  NBTTagCompound tag = super.getDescriptionTag();
-  tag.setInteger("clientEnergy", (int)clientDestEnergyState);
-  return tag;
-  }
-
-@Override
-public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-  {  
-  super.onDataPacket(net, pkt);
-  NBTTagCompound tag = pkt.func_148857_g();
-  clientDestEnergyState = ((double)tag.getInteger("clientEnergy")) / 100.d;
-  }
-
-@Override
 public void readFromNBT(NBTTagCompound tag)
   {  
   super.readFromNBT(tag);
@@ -258,7 +160,6 @@ public void readFromNBT(NBTTagCompound tag)
     {
     fuelInventory.readFromNBT(tag.getCompoundTag("inventory"));
     }
-  torqueCell.setEnergy(tag.getDouble("torqueEnergy"));
   }
 
 @Override
@@ -268,61 +169,12 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("burnTicks", burnTime);
   tag.setInteger("burnTicksBase", burnTimeBase);
   tag.setTag("inventory", fuelInventory.writeToNBT(new NBTTagCompound()));
-  tag.setDouble("torqueEnergy", torqueCell.getEnergy());
   }
 
 @Override
-public double getMaxTorque(ForgeDirection from)
+public boolean canInputTorque(ForgeDirection from)
   {
-  return torqueCell.getMaxEnergy();
-  }
-
-@Override
-public double getTorqueStored(ForgeDirection from)
-  {
-  return torqueCell.getEnergy();
-  }
-
-@Override
-public double addTorque(ForgeDirection from, double energy)
-  {
-  return torqueCell.addEnergy(energy);
-  }
-
-@Override
-public double drainTorque(ForgeDirection from, double energy)
-  {
-  return torqueCell.drainEnergy(energy);
-  }
-
-@Override
-public double getMaxTorqueOutput(ForgeDirection from)
-  {
-  return torqueCell.getMaxTickOutput();
-  }
-
-@Override
-public double getMaxTorqueInput(ForgeDirection from)
-  {
-  return torqueCell.getMaxTickInput();
-  }
-
-@Override
-public boolean useOutputRotation(ForgeDirection from)
-  {
-  return true;
-  }
-
-@Override
-public float getClientOutputRotation(ForgeDirection from, float delta)
-  {
-  return getRotation(rotation, prevRotation, delta);
-  }
-
-@Override
-protected double getTotalTorque()
-  {
-  return torqueCell.getEnergy();
+  return false;
   }
 
 }
