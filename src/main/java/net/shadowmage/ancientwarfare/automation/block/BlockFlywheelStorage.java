@@ -85,6 +85,12 @@ public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int 
   }
 
 @Override
+public int damageDropped(int meta)
+  {
+  return meta;
+  }
+
+@Override
 public TileEntity createTileEntity(World world, int metadata)
   {  
   return new TileFlywheelStorage();
