@@ -34,3 +34,12 @@ Torque Textures
 
 Torque Cleanup
 	* distributor needs separate output speeds per-output head
+	* edit instructions regarding submitting bug reports/issues to not mention flagging for certain things
+	* render bounding box on waterhweel and flyweel storage needs adjusted by actual block bounds
+	* adjust waterwheel so one of its sides may be 'in' water blocks (for water flowing down onto the wheel)
+	* hand cranked engine - rotation is strange
+	* initial client-side energy for some tiles not sticking on reload
+	* on block rotate, notify neighbor of connection status change
+	* on neighbor invalidate, notify client of invalidation--what??
+	* animal farm animal gui not synching initial server values to client on gui open
+	* tree farm will pickup fences, whatever wood blocks are in the area, not just logs... check for initial block extends block-log on block-find query

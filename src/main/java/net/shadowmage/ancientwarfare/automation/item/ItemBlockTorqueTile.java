@@ -24,6 +24,7 @@ public ItemBlockTorqueTile(Block p_i45328_1_)
     throw new IllegalArgumentException("Must be a rotatable block!!");
     }
   rotatable = (IRotatableBlock)p_i45328_1_;
+  this.setHasSubtypes(true);
   }
 
 @Override
