@@ -38,7 +38,7 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
   GL11.glTranslated(x+0.5d, y, z+0.5d);
   
   TileTorqueGeneratorHandCranked handEngine = (TileTorqueGeneratorHandCranked)te;
-  float outRotation = handEngine.getClientOutputRotation(handEngine.getPrimaryFacing(), delta);
+  float outRotation = -handEngine.getClientOutputRotation(handEngine.getPrimaryFacing(), delta);
   float inRotation = -handEngine.getClientOutputRotation(ForgeDirection.UP, delta);//top side, not technically an 'output' rotation, but i'm lazy and not making a new method for it  
   renderModel(inRotation, outRotation, ((TileTorqueGeneratorHandCranked)te).getPrimaryFacing().ordinal());
   GL11.glPopMatrix();
