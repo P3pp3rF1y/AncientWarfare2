@@ -271,7 +271,7 @@ protected void clientNetworkUpdate(){throw new RuntimeException("Call on undecla
 
 protected void serverNetworkSynch(){throw new RuntimeException("Call on undeclared method!!");}
 
-protected void handleClientRotationData(ForgeDirection side, int value){throw new RuntimeException("Call on undeclared method!!");}
+protected abstract void handleClientRotationData(ForgeDirection side, int value);
 
 /**
  * @return the TOTAL amount stored in the entire tile (not just one side), used by on-right-click functionality

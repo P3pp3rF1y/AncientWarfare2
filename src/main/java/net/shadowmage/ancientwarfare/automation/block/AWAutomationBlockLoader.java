@@ -315,7 +315,7 @@ public static void load()
   GameRegistry.registerBlock(windmillBlade, "windmill_blade");
   GameRegistry.registerTileEntity(TileWindmillBlade.class, "windmill_blade_tile");
   
-  GameRegistry.registerBlock(windmillControl, "windmill_control");
+  GameRegistry.registerBlock(windmillControl, ItemBlockTorqueTile.class, "windmill_control");
   GameRegistry.registerTileEntity(TileWindmillController.class, "windmill_control_tile");
   
   GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");

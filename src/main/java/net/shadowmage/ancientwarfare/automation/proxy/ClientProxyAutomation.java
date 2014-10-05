@@ -36,6 +36,7 @@ import net.shadowmage.ancientwarfare.automation.render.RenderTileWarehouseStockV
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWaterwheel;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWorksite;
 import net.shadowmage.ancientwarfare.automation.render.RenderWindmillBlades;
+import net.shadowmage.ancientwarfare.automation.render.RenderWindmillControl;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheel;
@@ -43,6 +44,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControl;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributor;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
@@ -130,6 +132,10 @@ public void registerClient()
   RenderTileHandEngine handGeneratorRender = new RenderTileHandEngine();
   ClientRegistry.bindTileEntitySpecialRenderer(TileHandGenerator.class, handGeneratorRender);
   MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.handCrankedEngine), handGeneratorRender);
+  
+  RenderWindmillControl windmillControlRender = new RenderWindmillControl();
+  ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, windmillControlRender);
+  MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.windmillControl), windmillControlRender);
   
   RenderWindmillBlades bladeRender = new RenderWindmillBlades();
   ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillBlade.class, bladeRender);

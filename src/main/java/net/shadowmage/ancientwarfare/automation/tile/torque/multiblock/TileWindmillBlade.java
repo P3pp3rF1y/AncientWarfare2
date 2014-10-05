@@ -8,7 +8,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -16,9 +18,11 @@ public class TileWindmillBlade extends TileEntity
 {
 
 public BlockPosition controlPos;
+
+//TODO remove this spinner
+public boolean hasController = false;
 public boolean isControl = false;//set to true if this is the control block for a setup
 public double rotation, prevRotation;//used in rendering
-public double maxRpm = 100;
 
 /**
  * the raw size of the windmill in blocks tall
@@ -37,12 +41,25 @@ public TileWindmillBlade()
   
   }
 
+@Override
+public void updateEntity()
+  {
+  if(worldObj.isRemote)
+    {
+    updateRotation();
+    }
+  }
+
 protected void updateRotation()
   {
-  double maxRpm = this.maxRpm;
-  double rpm = maxRpm;//TODO vary this by 'wind factor'....uhh..yah...
-  prevRotation=rotation;
-  rotation += rpm * 360.d / 20.d / 60.d;
+  if(hasController)
+    {
+    hasController=false;
+    }
+  else
+    {
+    prevRotation=rotation;    
+    }
   }
 
 public void blockPlaced()
@@ -81,11 +98,11 @@ protected boolean validateSetup()
     }
   
   int min = 5;
-  int max = 15;
-  int w = maxX-minX + 1;
-  int l = maxZ-minZ + 1;
-  int h = maxY-minY + 1;
-  int cube = w*l*h;
+  int max = 17;
+  int xSize = maxX-minX + 1;
+  int zSize = maxZ-minZ + 1;
+  int ySize = maxY-minY + 1;
+  int cube = xSize*zSize*ySize;
   
   /**
    * if y size >= min
@@ -95,7 +112,7 @@ protected boolean validateSetup()
    * and h%2==1 (is an odd size, 5, 7, 9, etc)
    * and is full cube (all block spots filled) (will need to modify this check for those sizes with missing corner blocks, create bit mask 2d array to test for proper setup)
    */
-  boolean valid = h>=min && h<=max && (l==1 || w==1) && (l==h || w==h) && h%2==1 && cube==connectedPosSet.size();  
+  boolean valid = ySize>=min && ySize<=max && (zSize==1 || xSize==1) && (zSize==ySize || xSize==ySize) && ySize%2==1 && cube==connectedPosSet.size();  
   if(valid)    
     {
     /**
@@ -103,10 +120,10 @@ protected boolean validateSetup()
      */
     int controlX = minX, controlY=minY, controlZ=minZ, face=2;
     
-    int halfSize = (h-1)/2;
+    int halfSize = (ySize-1)/2;
 
     controlY = minY + halfSize;//should be the center
-    if(w>1)//widest on X axis
+    if(xSize>1)//widest on X axis
       {
       face = 2;//faces north/south
       controlX = minX + halfSize;//should be the center
@@ -118,7 +135,7 @@ protected boolean validateSetup()
       controlX = minX;//only 1 x-coordinatehould be the center
       controlZ = minZ + halfSize;//should be the center
       }
-    setValidSetup(connectedPosSet, controlX, controlY, controlZ, w, h, l, face);
+    setValidSetup(connectedPosSet, controlX, controlY, controlZ, xSize, ySize, zSize, face);
     }
   else
     {
@@ -179,7 +196,7 @@ private void setValidSetup(Set<BlockPosition> set, int cx, int cy, int cz, int x
   for(BlockPosition pos : set)
     {
     te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-    if(te instanceof TileFlywheelStorage)
+    if(te instanceof TileWindmillBlade)
       {
       ((TileWindmillBlade) te).setController(cp);
       }
@@ -201,6 +218,7 @@ private void setAsController(int xSize, int ySize, int zSize, int face)
   {
   windmillDirection = xSize==1 ? 4 : zSize==1? 2 : 0;
   windmillSize = ySize;
+  AWLog.logDebug("set size to: "+windmillSize);
   this.isControl = true;
   this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
@@ -212,7 +230,8 @@ public Packet getDescriptionPacket()
   tag.setBoolean("isControl", isControl); 
   if(controlPos!=null)
     {
-    tag.setTag("controllerPos", controlPos.writeToNBT(new NBTTagCompound()));
+    AWLog.logDebug("writing windmill control pos");
+    tag.setTag("controlPos", controlPos.writeToNBT(new NBTTagCompound()));
     }
   if(isControl)
     {
@@ -227,7 +246,7 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {
   super.onDataPacket(net, pkt);
   NBTTagCompound tag =pkt.func_148857_g();
-  controlPos = tag.hasKey("controllerPos") ? new BlockPosition(tag.getCompoundTag("controllerPos")) : null;
+  controlPos = tag.hasKey("controlPos") ? new BlockPosition(tag.getCompoundTag("controlPos")) : null;
   isControl = tag.getBoolean("isControl"); 
   if(isControl)
     {
@@ -240,8 +259,13 @@ public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  controlPos = tag.hasKey("controllerPos") ? new BlockPosition(tag.getCompoundTag("controllerPos")) : null;
+  controlPos = tag.hasKey("controlPos") ? new BlockPosition(tag.getCompoundTag("controlPos")) : null;
   isControl = tag.getBoolean("isControl");
+  if(isControl)
+    {
+    windmillSize = tag.getInteger("size");
+    windmillDirection = tag.getInteger("direction");
+    }
   }
 
 @Override
@@ -251,8 +275,24 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setBoolean("isControl", isControl);
   if(controlPos!=null)
     {
-    tag.setTag("controllerPos", controlPos.writeToNBT(new NBTTagCompound()));
+    tag.setTag("controlPos", controlPos.writeToNBT(new NBTTagCompound()));
+    }
+  if(isControl)
+    {
+    tag.setInteger("size", windmillSize);
+    tag.setInteger("direction", windmillDirection);
     }
   }
 
+@Override
+public AxisAlignedBB getRenderBoundingBox()
+  {
+  if(isControl)
+    {
+    int expand = (windmillSize-1) / 2;
+    AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord-expand, yCoord-expand, zCoord-expand, xCoord+1+expand, yCoord+1+expand, zCoord+1+expand);
+    return bb;
+    }
+  return super.getRenderBoundingBox();
+  }
 }

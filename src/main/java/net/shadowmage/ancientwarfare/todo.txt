@@ -11,21 +11,6 @@ iron: e3e6e6 (180/5/60 recolor from wood)
 steel: d7e4e4 (180/20/50 recolor from wood)
 gearhead: 535353
 
-	
-Torque Blocks
-	* Industrial sterling generator multiblock
-	* windmill control block	
-	* windmill blade block
-	
-Torque Models	
-	* windmill blades, 3x3, 5x5
-	* windmill controller
-	* industrial sterling generator?
-
-Torque Textures
-	* windmill blades
-	* windmill controller
-
 Torque Cleanup
 	* distributor needs separate output speeds per-output head
 	* edit instructions regarding submitting bug reports/issues to not mention flagging for certain things	
@@ -33,3 +18,6 @@ Torque Cleanup
 	* animal farm animal gui not synching initial server values to client on gui open
 	* tree farm will pickup fences, whatever wood blocks are in the area, not just logs... check for initial block extends block-log on block-find query
 	* tree farm still has efficiency issues as soon as it gets full -- kills server TPS
+	* fix gap in windmill model (and probably redo texture)
+	* torque conduits/etc can have mobs spawn on top/need lighting
+	* torque conduits trigger connection with fences/stone walls/etc

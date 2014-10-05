@@ -17,8 +17,8 @@ import org.lwjgl.opengl.GL12;
 public class RenderWindmillBlades extends TileEntitySpecialRenderer implements IItemRenderer
 {
 
-ResourceLocation texture;
-ModelBaseAW model;
+ResourceLocation texture, cubeTexture;
+ModelBaseAW model, cube;
 ModelPiece windmillShaft;
 ModelPiece blade, bladeJoint, bladeShaft;
 
@@ -26,11 +26,13 @@ public RenderWindmillBlades()
   {
   ModelLoader loader = new ModelLoader();
   model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/windmill_blade.m2f"));
+  cube = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/cube.m2f"));
   windmillShaft = model.getPiece("windmillShaft");
   blade = model.getPiece("blade");
   bladeJoint = model.getPiece("bladeJoint");
   bladeShaft = model.getPiece("bladeShaft");
   texture = new ResourceLocation("ancientwarfare", "textures/model/automation/windmill_blade.png");
+  cubeTexture = new ResourceLocation("ancientwarfare", "textures/model/automation/windmill_blade_cube.png");
   }
 
 @Override
@@ -42,12 +44,20 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
     GL11.glPushMatrix();
     bindTexture(texture);
     GL11.glTranslated(x+0.5d, y+0.5d, z+0.5d);
-    renderModel(0, 0, blade.windmillDirection, (blade.windmillSize-1)/2);
+    renderModel(-getRotation(blade.rotation, blade.prevRotation, delta), blade.windmillDirection, (blade.windmillSize-1)/2);
     GL11.glPopMatrix();
+    }
+  else if(blade.controlPos==null)
+    {
+    GL11.glPushMatrix();
+    bindTexture(cubeTexture);
+    GL11.glTranslated(x+0.5d, y+0.5d, z+0.5d);
+    cube.renderModel();
+    GL11.glPopMatrix();    
     }
   }
 
-protected void renderModel(float inR, float outR, int face, int height)  
+protected void renderModel(float bladeRotatation, int face, int height)  
   {
   float[] rot = ITorque.forgeDiretctionToRotationMatrix[face];
   if(rot[0]!=0){GL11.glRotatef(rot[0], 1, 0, 0);}
@@ -56,7 +66,7 @@ protected void renderModel(float inR, float outR, int face, int height)
   
   float textureWidth = model.textureWidth();
   float textureHeight = model.textureHeight();
-  windmillShaft.setRotation(0, 0, outR);
+  GL11.glRotatef(bladeRotatation, 0, 0, 1);
   windmillShaft.render(model.textureWidth(), model.textureHeight());
   
   for(int i = 0; i< 4; i++)
@@ -72,6 +82,12 @@ protected void renderModel(float inR, float outR, int face, int height)
       }    
     GL11.glPopMatrix();
     }
+  }
+
+protected final float getRotation(double rotation, double prevRotation, float delta)
+  {
+  double rd = rotation-prevRotation;  
+  return (float)(prevRotation + rd*delta);
   }
 
 @Override

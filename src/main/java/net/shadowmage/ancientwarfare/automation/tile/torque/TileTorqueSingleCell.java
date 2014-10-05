@@ -99,7 +99,6 @@ protected void clientNetworkUpdate()
 @Override
 protected void handleClientRotationData(ForgeDirection side, int value)
   {
-  super.handleClientRotationData(side, value);
   if(side==orientation)
     {
     clientDestEnergyState = value;    
