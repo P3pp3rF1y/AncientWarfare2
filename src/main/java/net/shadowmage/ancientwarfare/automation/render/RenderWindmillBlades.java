@@ -32,7 +32,7 @@ public RenderWindmillBlades()
   bladeJoint = model.getPiece("bladeJoint");
   bladeShaft = model.getPiece("bladeShaft");
   texture = new ResourceLocation("ancientwarfare", "textures/model/automation/windmill_blade.png");
-  cubeTexture = new ResourceLocation("ancientwarfare", "textures/model/automation/windmill_blade_cube.png");
+  cubeTexture = new ResourceLocation("ancientwarfare", "textures/model/automation/windmill_blade_block.png");
   }
 
 @Override

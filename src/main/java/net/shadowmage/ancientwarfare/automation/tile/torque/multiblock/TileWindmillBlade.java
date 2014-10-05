@@ -10,12 +10,16 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class TileWindmillBlade extends TileEntity
 {
+
+double bladeRpm = 20.d;
+double bladeRpt = bladeRpm * AWAutomationStatics.rpmToRpt;
 
 public BlockPosition controlPos;
 
@@ -28,6 +32,8 @@ public double rotation, prevRotation;//used in rendering
  * the raw size of the windmill in blocks tall
  */
 public int windmillSize = 0;
+
+public double energy = 0;
 
 /**
  * 0/1 == INVALID
@@ -48,17 +54,18 @@ public void updateEntity()
     {
     updateRotation();
     }
+  else if(isControl)
+    {
+    energy = windmillSize;    
+    }
   }
 
 protected void updateRotation()
   {
-  if(hasController)
+  prevRotation=rotation;
+  if(isControl)
     {
-    hasController=false;
-    }
-  else
-    {
-    prevRotation=rotation;    
+    rotation += bladeRpt;    
     }
   }
 
@@ -218,7 +225,6 @@ private void setAsController(int xSize, int ySize, int zSize, int face)
   {
   windmillDirection = xSize==1 ? 4 : zSize==1? 2 : 0;
   windmillSize = ySize;
-  AWLog.logDebug("set size to: "+windmillSize);
   this.isControl = true;
   this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
@@ -230,7 +236,6 @@ public Packet getDescriptionPacket()
   tag.setBoolean("isControl", isControl); 
   if(controlPos!=null)
     {
-    AWLog.logDebug("writing windmill control pos");
     tag.setTag("controlPos", controlPos.writeToNBT(new NBTTagCompound()));
     }
   if(isControl)
