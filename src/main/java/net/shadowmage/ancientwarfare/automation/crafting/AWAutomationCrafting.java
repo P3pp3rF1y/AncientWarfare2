@@ -234,7 +234,7 @@ public static void loadRecipes()
       "beb",
       "bbb",
       'b', Blocks.stonebrick,
-      'e', Items.ender_pearl);//TODO research?
+      'e', Items.ender_pearl);
   
   //chunkloader deluxe
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderDeluxe), "machinery",
@@ -242,7 +242,7 @@ public static void loadRecipes()
       "beb",
       "bbb",
       'b', Blocks.obsidian,
-      'e', Items.ender_pearl);//TODO research?
+      'e', Items.ender_pearl);
     
   //torque conduit s
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,0), "the_wheel",
@@ -388,6 +388,22 @@ public static void loadRecipes()
       "igi",
       'i', Items.iron_ingot,
       'g', ironGear.copy());
+  
+  //torque generator windmill control
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.windmillControl), "the_wheel",
+      "ppp",
+      "gpg",
+      "ppp",
+      'i', Blocks.planks,
+      'g', woodenGear.copy());
+  
+  //torque generator windmill blade
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.windmillBlade), "the_wheel",
+      "scs",
+      "csc",
+      "scs",
+      'c', Blocks.wool,
+      's', Items.stick);
     
   ItemStack upgradeBoundsMed = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.SIZE_MEDIUM.flag());//engineering
   ItemStack upgradeBoundsLarge = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.SIZE_LARGE.flag());//mathematics
