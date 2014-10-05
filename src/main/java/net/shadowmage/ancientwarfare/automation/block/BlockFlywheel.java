@@ -10,7 +10,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLarge;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLight;
@@ -31,16 +33,16 @@ public BlockFlywheel(String regName)
 public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
 
 @Override
-public boolean isOpaqueCube()
-  {
-  return false;
-  }
+public boolean isOpaqueCube(){return false;}
 
 @Override
-public boolean isNormalCube()
-  {
-  return false;
-  }
+public boolean isNormalCube(){return false;}
+
+@Override
+public boolean isNormalCube(IBlockAccess world, int x, int y, int z){return false;}
+
+@Override
+public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side){return true;}
 
 @Override
 public TileEntity createTileEntity(World world, int metadata)

@@ -46,6 +46,12 @@ protected BlockTorqueBase(Material material)
   }
 
 @Override
+public boolean isNormalCube(IBlockAccess world, int x, int y, int z){return false;}
+
+@Override
+public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side){return false;}
+
+@Override
 public void registerBlockIcons(IIconRegister register)
   {
   for(IconRotationMap map : this.iconMaps.values())

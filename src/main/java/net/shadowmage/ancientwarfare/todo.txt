@@ -12,6 +12,7 @@ steel: d7e4e4 (180/20/50 recolor from wood)
 gearhead: 535353
 
 Torque Cleanup
+	* texture for windmill blade default block
 	* distributor needs separate output speeds per-output head
 	* edit instructions regarding submitting bug reports/issues to not mention flagging for certain things	
 	* adjust waterwheel so one of its sides may be 'in' water blocks (for water flowing down onto the wheel)
@@ -21,3 +22,11 @@ Torque Cleanup
 	* fix gap in windmill model (and probably redo texture)
 	* torque conduits/etc can have mobs spawn on top/need lighting
 	* torque conduits trigger connection with fences/stone walls/etc
+	* add donators to credits in instruction manual	
+	* update instruction manual with information regarding new torque system
+	* update instruction manual with information regarding updated traders (screenshots, etc)
+	
+http://youtu.be/0SCxAk2o3co
+<iframe width="560" height="315" src="//www.youtube.com/embed/0SCxAk2o3co" frameborder="0" allowfullscreen></iframe>
+http://youtu.be/-w2A8EUVBZk
+<iframe width="560" height="315" src="//www.youtube.com/embed/-w2A8EUVBZk?list=UU0KIRvhgKvhOKyv1cghdpWQ" frameborder="0" allowfullscreen></iframe>
