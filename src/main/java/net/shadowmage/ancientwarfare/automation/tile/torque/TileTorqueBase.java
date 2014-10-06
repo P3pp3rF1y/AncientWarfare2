@@ -133,6 +133,8 @@ public final TileEntity[] getBCCache()
 private void buildTorqueCache()
   {
   torqueCache = new ITorqueTile[6];
+  if(torqueCache==null){throw new RuntimeException("torque cache was null for some reason!!");}
+  if(worldObj==null){throw new RuntimeException("Attempt to build neighbor cache on null world!!");}
   ForgeDirection dir;
   TileEntity te;
   ITorqueTile itt;
@@ -140,6 +142,7 @@ private void buildTorqueCache()
   for(int i = 0; i < 6; i++)
     {
     dir = ForgeDirection.values()[i];
+    if(dir==null){throw new RuntimeException("Forge direction direct lookup was null!");}
     if(!canOutputTorque(dir) && !canInputTorque(dir)){continue;}
     x = xCoord+dir.offsetX;
     y = yCoord+dir.offsetY;
@@ -149,7 +152,7 @@ private void buildTorqueCache()
     if(te instanceof ITorqueTile)
       {
       itt = (ITorqueTile)te;
-      torqueCache[dir.ordinal()]=itt;
+      torqueCache[i]=itt;
       }
     }
   }

@@ -170,6 +170,7 @@ protected void buildConnections()
   connections = new boolean[6];
   ITorqueTile[] cache = getTorqueCache();
   if(cache==null){throw new RuntimeException("CACHE WAS NULL FROM BUILDING, SOMETHING IS FUCKED...REALLY FUCKED...");}
+  if(worldObj==null){throw new RuntimeException("attempt to build neighbor connections on null world");}
   ForgeDirection dir;
   for(int i = 0; i < 6; i++)
     {
