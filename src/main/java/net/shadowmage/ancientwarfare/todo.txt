@@ -1,74 +1,27 @@
-* = todo
-^ = to check
-> = cannot do until later
-? = optional / need to think on it
-	
-****************************LICENSING TODO****************************
-Licensing
-	add bc license for using as libs
-	add general license for mod
-		
-****************************CORE MODULE TODO****************************
-* need LOTS of tooltips added to various elements in GUIs
-* add translations for client-side options in options GUI
-* translation of warehouse interface block is...incorrect
-* adjust tooltip positioning -- it is A: under mouse, B: going offscreen to the right
-	place it below the mouse
-	if it would go offscreen to the right, adjust to the left -just- enough to not go offscreen
-	--if tooltip is too wide...erm..fix the width of it
-* clean up inconsistencies in research-book GUI between modes -- spacing / layout	
-* icon for worksite upgrade (size) needs updated to fix numbers on the texture (15->6 (regular), 9->32 & 15->64 (quarry))
-		
-****************************STRUCTURE MODULE TODO****************************
-> add 'ambient sounds' block -- plays from input sounds either on selectable trigger or configurable/random frequency
-> Scanner GUI needs some cleanup / make it look nice(er)
-> move structure scanner over to multi-key item interface
-^ test structure-module plugins for civics, torque tiles, pretty much everything
-* add survival-mode resource/recipes for all applicable plugins
-* ensure that 'mod default' plugin can actually scan/place most mod-added blocks
-* need to examine all plugins for places when item-stacks are saved to the vanilla tile/entity nbt -- need to handle these special and sideline the
-	item-data to preserve the item-name rather than item-id.  All AW stuff should already be using saving stacks with item-name
-* validate weighted-selection algorithm in structure template selection--seems a bit off
-* structure selection 'done' button non-functional in structure-builder selection gui??
-* clean up survival mode structure building -- validate area is clear before placing block
-* lighting on gate entities
-					
-****************************AUTOMATION MODULE TODO****************************	
-* Add ore-processing worksite.  Non-bounded, single-block.  Can use tools/enchanted/chunkloader upgrades only.  Input: Ore, Output: Dusts or Ingots?
-* figure out torque tile network updates
-	--rotation speed will be (powerOutput)/(maxOutpout) + (storedEnergy)/(maxEnergy)
-		--
-	--or rotation speed gains half value from power transmitted, half value from energy stored (or other ratio)
-* balancing of flywheels amongst multiple sized flywheel blocks	
-			
-****************************NPC MODULE TODO****************************
-^ check that medic AI works and that 'flee to medic' ai works
-^ check that 'flee hostiles' ai works as intended
-^ verify functionality of mounted player-owned npcs (all)
-^ check that the bonus damage from dual-wielding is applied correctly
-^ check that bonus armor for equipping shield in offhand slot is applied correctly
-* fix sounds.json for bard sounds
-* test bard-sound loading and custom sound references
-* add a 'known-sounds' selection list to bard gui to pick from known mc sounds
-* the bottom bit of the npc-hat texture is reversed (damn skin-edit being backwards)	
-* add custom level-setting ability to npc creative controls GUI -- allow setting of base level type and any applicable sub-types for that NPC
-* recipes for shields
-* more shield types -- because apparently people want them
-	-- figure out way to have multiple styles of shields
-	-- use nbt?  how to allow for nbt-shields on npc default-equipment assignment?
-* randomize horse type/color/etc for faction-based NPCs
-		
-****************************VEHICLE MODULE TODO****************************
-figure out collision detection for large rectangular entities
-	examine collision detection for ender-dragon?
-everything
-		
-****************************MODEL-EDITOR MODULE TODO****************************
-* UV editor GUI needs area positions re-set when GUI size changes (gui-init)
-* when you swap a primitive parent, the old parent is still selected with the primitive (modelWidget, selection error)
-
-*****************************************************************
-****************************MISC INFO****************************
-*****************************************************************
-//BC Coal-Use: 1m20s/ea = 1mj/tick*20ticks*80seconds = 1600mj / ea
+Things to finish up:
+Ore Processor
+Cleaning up Torque system -- models, power framework
+Chunkloader Worksite Upgrades
+Vehicle Module?
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
+
+colors for textures:
+wood: d5bf82
+iron: e3e6e6 (180/5/60 recolor from wood)
+steel: d7e4e4 (180/20/50 recolor from wood)
+gearhead: 535353
+
+Torque Cleanup		
+	* add donators to credits in instruction manual	
+	* update instruction manual regarding submitting bug reports/issues to not mention flagging for certain things
+	* update instruction manual with information regarding new torque system
+	* update instruction manual with information regarding updated traders (screenshots, etc)
+	C distributor needs separate output speeds per-output head
+	C fix gap in windmill model (and probably redo texture)
+	
+	
+video links
+http://youtu.be/0SCxAk2o3co
+<iframe width="560" height="315" src="//www.youtube.com/embed/0SCxAk2o3co" frameborder="0" allowfullscreen></iframe>
+http://youtu.be/-w2A8EUVBZk
+<iframe width="560" height="315" src="//www.youtube.com/embed/-w2A8EUVBZk?list=UU0KIRvhgKvhOKyv1cghdpWQ" frameborder="0" allowfullscreen></iframe>

@@ -6,6 +6,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -375,6 +377,56 @@ protected boolean interact(EntityPlayer player)
     return true;
     }
   return true;
+  }
+
+public boolean withdrawFood(IInventory inventory, int side)
+  {
+  int amount = getUpkeepAmount() - getFoodRemaining();
+  if(amount<=0){return true;}
+  ItemStack stack;
+  int val;
+  int eaten = 0;
+  if(side>=0 && inventory instanceof ISidedInventory)
+    {
+    int[] ind = ((ISidedInventory)inventory).getAccessibleSlotsFromSide(side);
+    for(int i : ind)
+      {
+      stack = inventory.getStackInSlot(i);
+      val = AncientWarfareNPC.statics.getFoodValue(stack);
+      if(val<=0){continue;}
+      while(eaten < amount && stack.stackSize>0)
+        {
+        eaten+=val;
+        stack.stackSize--;
+        inventory.markDirty();
+        }
+      if(stack.stackSize<=0)
+        {
+        inventory.setInventorySlotContents(i, null);
+        }
+      }    
+    }
+  else
+    {
+    for(int i = 0 ; i<inventory.getSizeInventory();i++)
+      {
+      stack = inventory.getStackInSlot(i);
+      val = AncientWarfareNPC.statics.getFoodValue(stack);
+      if(val<=0){continue;}
+      while(eaten < amount && stack.stackSize>0)
+        {
+        eaten+=val;
+        stack.stackSize--;
+        inventory.markDirty();
+        }
+      if(stack.stackSize<=0)
+        {
+        inventory.setInventorySlotContents(i, null);
+        }
+      }    
+    }
+  setFoodRemaining(getFoodRemaining()+eaten);
+  return getFoodRemaining()>=getUpkeepAmount();
   }
 
 @Override

@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorkSiteFishFarm extends TileWorksiteBounded
+public class WorkSiteFishFarm extends TileWorksiteBoundedInventory
 {
 
 public boolean harvestFish = true;

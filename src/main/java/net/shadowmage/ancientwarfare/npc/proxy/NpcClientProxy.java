@@ -15,14 +15,16 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.gui.GuiBard;
 import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcBard;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcCreativeControls;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionTradeSetup;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionTradeView;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcInventory;
-import net.shadowmage.ancientwarfare.npc.gui.GuiNpcTrade;
-import net.shadowmage.ancientwarfare.npc.gui.GuiRecruitingStation;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcPlayerOwnedTrade;
 import net.shadowmage.ancientwarfare.npc.gui.GuiRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiTownHallInventory;
+import net.shadowmage.ancientwarfare.npc.gui.GuiTradeOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiWorkOrder;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
@@ -41,15 +43,17 @@ public class NpcClientProxy extends NpcCommonProxy
 public void registerClient()
   {
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_INVENTORY, GuiNpcInventory.class);
-  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_TRADE, GuiNpcTrade.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_FACTION_TRADE_SETUP, GuiNpcFactionTradeSetup.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_FACTION_TRADE_VIEW, GuiNpcFactionTradeView.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_WORK_ORDER, GuiWorkOrder.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_UPKEEP_ORDER, GuiUpkeepOrder.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_COMBAT_ORDER, GuiCombatOrder.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_ROUTING_ORDER, GuiRoutingOrder.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_TOWN_HALL, GuiTownHallInventory.class);  
-  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_RECRUITING_STATION, GuiRecruitingStation.class);
-  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_BARD, GuiBard.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_BARD, GuiNpcBard.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_CREATIVE, GuiNpcCreativeControls.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_TRADE_ORDER, GuiTradeOrder.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_PLAYER_OWNED_TRADE, GuiNpcPlayerOwnedTrade.class);
   
   RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, new RenderNpcBase());
   

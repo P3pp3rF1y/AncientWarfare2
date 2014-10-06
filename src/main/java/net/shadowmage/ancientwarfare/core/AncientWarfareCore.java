@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
+import net.shadowmage.ancientwarfare.core.command.CommandResearch;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ClientOptions;
@@ -27,13 +28,15 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 @Mod
 (
 name = "Ancient Warfare Core",
 modid = "AncientWarfare",
 version = "@VERSION@",
-dependencies="after:BuildCraft|Core"
+dependencies="after:BuildCraft|Core;"
+            +"after:CoFHCore"
 )
 
 public class AncientWarfareCore 
@@ -121,4 +124,9 @@ public void postInit(FMLPostInitializationEvent evt)
   AWLog.log("Ancient Warfare Core Post-Init Completed");
   }
 
+@EventHandler
+public void serverStartingEvent(FMLServerStartingEvent evt)
+  {
+  evt.registerServerCommand(new CommandResearch());
+  }
 }

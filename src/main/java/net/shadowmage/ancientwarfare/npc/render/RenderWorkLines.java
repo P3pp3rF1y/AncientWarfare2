@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder.RoutePoint;
+import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
@@ -61,10 +62,14 @@ public void renderLastEvent(RenderWorldLastEvent evt)
     {
     renderCombatList(player, stack, evt.partialTicks);
     }
+  else if(item==AWNpcItemLoader.tradeOrder)
+    {
+    renderTradeList(player, stack, evt.partialTicks);
+    }
   positionList.clear();
   }
 
-public void renderUpkeepList(EntityPlayer player, ItemStack orderStack, float partialTick)
+private void renderUpkeepList(EntityPlayer player, ItemStack orderStack, float partialTick)
   {
   UpkeepOrder order = UpkeepOrder.getUpkeepOrder(orderStack);
   if(order!=null && order.getUpkeepPosition()!=null)
@@ -74,7 +79,7 @@ public void renderUpkeepList(EntityPlayer player, ItemStack orderStack, float pa
     }
   }
 
-public void renderWorkList(EntityPlayer player, ItemStack orderStack, float partialTick)
+private void renderWorkList(EntityPlayer player, ItemStack orderStack, float partialTick)
   {
   WorkOrder order = WorkOrder.getWorkOrder(orderStack);
   if(order!=null && order.getEntries().size()>0)
@@ -87,7 +92,7 @@ public void renderWorkList(EntityPlayer player, ItemStack orderStack, float part
     }
   }
 
-public void renderCourierList(EntityPlayer player, ItemStack orderStack, float partialTick)
+private void renderCourierList(EntityPlayer player, ItemStack orderStack, float partialTick)
   {
   RoutingOrder order = RoutingOrder.getRoutingOrder(orderStack);
   if(order!=null && order.getEntries().size()>0)
@@ -100,7 +105,7 @@ public void renderCourierList(EntityPlayer player, ItemStack orderStack, float p
     }
   }
 
-public void renderCombatList(EntityPlayer player, ItemStack orderStack, float partialTick)
+private void renderCombatList(EntityPlayer player, ItemStack orderStack, float partialTick)
   {
   CombatOrder order = CombatOrder.getCombatOrder(orderStack);
   if(order!=null && order.getPatrolSize()>0)
@@ -113,6 +118,18 @@ public void renderCombatList(EntityPlayer player, ItemStack orderStack, float pa
     }
   }
 
+private void renderTradeList(EntityPlayer player, ItemStack orderStack, float partialTick)
+  {
+  TradeOrder order = TradeOrder.getTradeOrder(orderStack);
+  if(order!=null && order.getRoute().size()>0)
+    {
+    for(int i = 0; i < order.getRoute().size(); i++)
+      {
+      positionList.add(order.getRoute().get(i).getPosition());
+      }
+    renderListOfPoints(player, positionList, partialTick);
+    }
+  }
 
 private void renderListOfPoints(EntityPlayer player, List<BlockPosition> points, float partialTick)
   {

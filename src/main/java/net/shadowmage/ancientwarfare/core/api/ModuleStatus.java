@@ -13,4 +13,6 @@ public static boolean vehiclesLoaded;
 //checked in automation module pre-init
 public static boolean buildCraftLoaded;
 
+//checked...who knows where...
+public static boolean redstoneFluxEnabled;
 }

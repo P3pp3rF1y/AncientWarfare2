@@ -47,7 +47,7 @@ public static int mailboxTimeForDimension = 1200;
 /**
  * used to reduce network updates
  */
-public static int energyMinNetworkUpdateFrequency = 5;//default 4 updates/sec max
+public static int energyMinNetworkUpdateFrequency = 5;//default 4 updates/sec max; less if not needed
 
 public static boolean enable_energy_network_updates = true;
 public static boolean enable_energy_client_updates = true;
@@ -56,21 +56,37 @@ public static double low_drain_factor = 1.d;
 public static double med_drain_factor = 0.4d;
 public static double high_drain_factor = 0.1d;
 
-public static double low_transfer_max = 3.d;
-public static double med_transfer_max = 50.d;
-public static double high_transfer_max = 1000.d;
+public static double low_transfer_max = 32.d;
+public static double med_transfer_max = 256.d;
+public static double high_transfer_max = 1024.d;
 
-public static double low_conduit_energy_max = 10.d;
-public static double med_conduit_energy_max = 100.d;
-public static double high_conduit_energy_max = 1000.f;
+public static double low_conduit_energy_max = 32.d;
+public static double med_conduit_energy_max = 256.d;
+public static double high_conduit_energy_max = 1024.f;
 
-public static double low_storage_energy_max = 1600.d;
-public static double med_storage_energy_max = 16000.d;
-public static double high_storage_energy_max = 160000.d;
+public static double low_storage_energy_max = 9600.d;
+public static double med_storage_energy_max = 14400.d;
+public static double high_storage_energy_max = 24000.d;
 
 public static double sterling_generator_output_factor = 1.d;
 public static double waterwheel_generator_output_factor = 1.d;
 public static double hand_cranked_generator_output_factor = 1.d;
+
+public static final float rpmToRpt= (float)(360.d / 60.d / 20.d);
+public static final float low_quality_rpm = 100;
+public static final float med_quality_rpm = 200;
+public static final float high_quality_rpm = 300;
+public static final float low_rpt = low_quality_rpm * rpmToRpt;
+public static final float med_rpt = med_quality_rpm * rpmToRpt;
+public static final float high_rpt = high_quality_rpm * rpmToRpt;
+
+public static final double rfConversionFactor = 10.d;
+
+public static final double rfToTorque = 1.d / rfConversionFactor;
+public static final double mjToTorque = 1.d;
+
+public static final double torqueToRf = 1.d * rfConversionFactor;
+public static final double torqueToMj = 1.d;
 
 /**
  * @param config
@@ -154,7 +170,7 @@ public void initializeValues()
       "Default = "+med_conduit_energy_max+"\n"+
       "Directly sets the amount of torque/MJ that a trasport conduit may store internally.").getDouble(med_conduit_energy_max);
   
-  high_conduit_energy_max = config.get(AWCoreStatics.serverOptions, "med_quality_conduit_energy_max", high_conduit_energy_max, "How much energy may be stored in high-quality energy transport tiles.\n" +
+  high_conduit_energy_max = config.get(AWCoreStatics.serverOptions, "high_quality_conduit_energy_max", high_conduit_energy_max, "How much energy may be stored in high-quality energy transport tiles.\n" +
       "Default = "+high_conduit_energy_max+"\n"+
       "Directly sets the amount of torque/MJ that a trasport conduit may store internally.").getDouble(high_conduit_energy_max);
   

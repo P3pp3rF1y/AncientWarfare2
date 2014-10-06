@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
@@ -15,14 +16,17 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
+import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 
 public abstract class NpcFactionTrader extends NpcFaction
 {
 
+private FactionTradeList tradeList = new FactionTradeList();
+public EntityPlayer trader = null;
+
 public NpcFactionTrader(World par1World)
   {
   super(par1World);
-//  setCurrentItemOrArmor(0, new ItemStack(Items.book));
   
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
@@ -36,13 +40,23 @@ public NpcFactionTrader(World par1World)
   this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F)); 
   }
 
+public FactionTradeList getTradeList(){return tradeList;}
+
+@Override
+public void onUpdate()
+  {
+  super.onUpdate();
+  if(!worldObj.isRemote){tradeList.tick();}  
+  }
+
 @Override
 protected boolean interact(EntityPlayer player)
   {
   boolean baton = player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
-  if(!player.worldObj.isRemote && !baton)
+  if(!player.worldObj.isRemote && !baton && trader==null)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE, getEntityId(), 0, 0);
+    trader = player;
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_TRADE_VIEW, getEntityId(), 0, 0);
     }
   return false;
   }
@@ -59,4 +73,17 @@ public boolean canTarget(Entity e)
   return false;
   }
 
+@Override
+public void readEntityFromNBT(NBTTagCompound tag)
+  {
+  super.readEntityFromNBT(tag);
+  tradeList.readFromNBT(tag.getCompoundTag("tradeList"));
+  }
+
+@Override
+public void writeEntityToNBT(NBTTagCompound tag)
+  {  
+  super.writeEntityToNBT(tag);
+  tag.setTag("tradeList", tradeList.writeToNBT(new NBTTagCompound()));
+  }
 }

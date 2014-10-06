@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.gui;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -49,7 +48,7 @@ public void setupElements()
     label = new Label(8+18+4, 8, String.valueOf(pos));
     addGuiElement(label);
     
-    button = new Button(8+18+10, 8+10, 55,12, StatCollector.translateToLocal("guistrings.npc.remove_upkeep_point"))
+    button = new Button(8+18+10, 8+10, 55,12, "guistrings.npc.remove_upkeep_point")
       {
       @Override
       protected void onPressed()
@@ -62,20 +61,20 @@ public void setupElements()
 
     addGuiElement(button);
       
-    button = new Button(8+18+55+20, 8+10, 55, 12, StatCollector.translateToLocal(getSideName(container.upkeepOrder.getUpkeepBlockSide())))
+    button = new Button(8+18+55+20, 8+10, 55, 12, getSideName(container.upkeepOrder.getUpkeepBlockSide()))
       {
       @Override
       protected void onPressed()
         {
         container.upkeepOrder.changeBlockSide();
-        setText(StatCollector.translateToLocal(getSideName(container.upkeepOrder.getUpkeepBlockSide())));
+        setText(getSideName(container.upkeepOrder.getUpkeepBlockSide()));
         hasChanged = true;
         refreshGui();
         }
       };
     addGuiElement(button);   
     
-    label = new Label(8+18+55+55+30,8, StatCollector.translateToLocal("guistrings.npc.upkeep_time"));
+    label = new Label(8+18+55+55+30,8, "guistrings.npc.upkeep_time");
     addGuiElement(label);
     
     NumberInput input = new NumberInput(8+18+55+55+30, 8+10, 60, (float)container.upkeepOrder.getUpkeepAmount()/1200.f, this)
@@ -92,7 +91,7 @@ public void setupElements()
     }
   else
     {
-    label = new Label(8,8, StatCollector.translateToLocal("guistrings.npc.assign_upkeep_point"));
+    label = new Label(8,8, "guistrings.npc.assign_upkeep_point");
     addGuiElement(label);
     }
   }

@@ -53,7 +53,7 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
   tag.setInteger("y", y);
   tag.setInteger("z", z);
   tile.readFromNBT(tag);  
-  tile.setOrientation(ForgeDirection.getOrientation(BlockDataManager.instance().getRotatedMeta(block, orientation, turns)));  
+  tile.setPrimaryFacing(ForgeDirection.getOrientation(BlockDataManager.instance().getRotatedMeta(block, orientation, turns)));  
   world.markBlockForUpdate(x, y, z);
   }
 

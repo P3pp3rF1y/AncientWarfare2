@@ -7,7 +7,7 @@ import java.util.List;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 
-public abstract class TileWorksiteBlockBased extends TileWorksiteBounded
+public abstract class TileWorksiteBlockBased extends TileWorksiteBoundedInventory
 {
 
 private List<BlockPosition> blocksToUpdate = new ArrayList<BlockPosition>();

@@ -5,7 +5,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerTorqueGeneratorSterling extends ContainerBase
@@ -16,12 +16,12 @@ public double energy;
 public int burnTime;
 public int burnTimeBase;
 
-public TileTorqueGeneratorSterling tile;
+public TileSterlingEngine tile;
 
 public ContainerTorqueGeneratorSterling(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
-  tile = (TileTorqueGeneratorSterling)player.worldObj.getTileEntity(x,y,z);
+  tile = (TileSterlingEngine)player.worldObj.getTileEntity(x,y,z);
   addSlotToContainer(new Slot(tile,0, 8+4*18, 8+12)
     {
     @Override
@@ -58,7 +58,7 @@ public void updateProgressBar(int par1, int par2)
 public void detectAndSendChanges()
   {  
   super.detectAndSendChanges();
-  double g = tile.getEnergyStored();
+  double g = tile.getTorqueStored(tile.getPrimaryFacing());
   if(g!=energy)
     {
     int e = (int)(g*100.d);

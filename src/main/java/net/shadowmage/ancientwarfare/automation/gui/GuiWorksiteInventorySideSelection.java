@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.gui;
 import java.util.EnumSet;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -49,21 +48,21 @@ public void setupElements()
   RelativeSide accessed;
   int dir;
   
-  label = new Label(8, 6, StatCollector.translateToLocal("guistrings.automation.block_side"));  
+  label = new Label(8, 6, "guistrings.automation.block_side");  
   addGuiElement(label);
-  label = new Label(74, 6, StatCollector.translateToLocal("guistrings.automation.direction"));  
+  label = new Label(74, 6, "guistrings.automation.direction");  
   addGuiElement(label);
-  label = new Label(128, 6, StatCollector.translateToLocal("guistrings.automation.inventory_accessed"));  
+  label = new Label(128, 6, "guistrings.automation.inventory_accessed");  
   addGuiElement(label);
   
   int height = 18;
   for(RelativeSide side : RotationType.FOUR_WAY.getValidSides())
     {
-    label = new Label(8, height, StatCollector.translateToLocal(side.getTranslationKey()));
+    label = new Label(8, height, side.getTranslationKey());
     addGuiElement(label);
       
     dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, container.worksite.getBlockMetadata(), side);
-    label = new Label(74, height, StatCollector.translateToLocal(Direction.getDirectionFor(dir).getTranslationKey()));
+    label = new Label(74, height, Direction.getDirectionFor(dir).getTranslationKey());
     addGuiElement(label);
 
     accessed = container.sideMap.get(side);  
@@ -81,7 +80,7 @@ RelativeSide selection;//accessed side
 
 public SideButton(int topLeftX, int topLeftY, RelativeSide side, RelativeSide selection)
   {
-  super(topLeftX, topLeftY, 55, 12, StatCollector.translateToLocal(selection.getTranslationKey()));
+  super(topLeftX, topLeftY, 55, 12, selection.getTranslationKey());
   if(side==null)
     {
     throw new IllegalArgumentException("access side may not be null..");
@@ -111,7 +110,7 @@ protected void onPressed()
       }
     }
   container.sideMap.put(side, selection);
-  setText(StatCollector.translateToLocal(selection.getTranslationKey()));
+  setText(selection.getTranslationKey());
   container.sendSlotChange(side, selection);
   }
 

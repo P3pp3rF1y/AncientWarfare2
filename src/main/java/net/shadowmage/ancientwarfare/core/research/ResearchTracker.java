@@ -7,7 +7,6 @@ import java.util.Set;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketResearchInit;
@@ -35,6 +34,48 @@ public void playerLogInEvent(PlayerEvent.PlayerLoggedInEvent evt)
   getResearchData(evt.player.worldObj).onPlayerLogin(evt.player);
   PacketResearchInit init = new PacketResearchInit(getResearchData(evt.player.worldObj));
   NetworkHandler.sendToPlayer((EntityPlayerMP) evt.player, init);
+  }
+
+public void clearResearch(World world, String playerName)
+  {
+  if(world.isRemote)
+    {
+    clientData.clearResearchFor(playerName);
+    }
+  else
+    {
+    getResearchData(world).clearResearchFor(playerName);
+    PacketResearchInit pkt = new PacketResearchInit(getResearchData(world));
+    NetworkHandler.sendToAllPlayers(pkt);
+    }
+  }
+
+public void removeResearch(World world, String playerName, int research)
+  {
+  if(world.isRemote)
+    {
+    clientData.removeResearchFrom(playerName, research);
+    }
+  else
+    {
+    getResearchData(world).removeResearchFrom(playerName, research);
+    PacketResearchInit pkt = new PacketResearchInit(getResearchData(world));
+    NetworkHandler.sendToAllPlayers(pkt);
+    } 
+  }
+
+public void fillResearch(World world, String playerName)
+  {
+  if(world.isRemote)
+    {
+    clientData.fillResearchFor(playerName);
+    }
+  else
+    {
+    getResearchData(world).fillResearchFor(playerName);
+    PacketResearchInit pkt = new PacketResearchInit(getResearchData(world));
+    NetworkHandler.sendToAllPlayers(pkt);
+    } 
   }
 
 public void addResearch(World world, String playerName, int research)
@@ -140,7 +181,6 @@ private ResearchData getResearchData(World world)
  */
 public void onClientResearchReceived(NBTTagCompound researchDataTag)
   {
-  AWLog.logDebug("receiving client research set of: "+researchDataTag);
   this.clientData.readFromNBT(researchDataTag);
   }
 

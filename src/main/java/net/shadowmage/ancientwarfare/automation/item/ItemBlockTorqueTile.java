@@ -24,6 +24,7 @@ public ItemBlockTorqueTile(Block p_i45328_1_)
     throw new IllegalArgumentException("Must be a rotatable block!!");
     }
   rotatable = (IRotatableBlock)p_i45328_1_;
+  this.setHasSubtypes(true);
   }
 
 @Override
@@ -35,11 +36,11 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     {
     String name = player.getCommandSenderName();
     TileTorqueBase te = (TileTorqueBase) player.worldObj.getTileEntity(x, y, z);
-    te.setOrientation(ForgeDirection.getOrientation(metadata));
     if(te instanceof IOwnable)
       {
       ((IOwnable)te).setOwnerName(name);
       }
+    te.setPrimaryFacing(ForgeDirection.getOrientation(metadata));
     }  
   return val;
   }

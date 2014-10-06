@@ -5,11 +5,16 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
+/**
+ * AI template class with utility methods and member access for a non-specific NPC type
+ * @author Shadowmage
+ *
+ */
 public abstract class NpcAI extends EntityAIBase
 {
 /**
  * used during npc-ai task-rendering to determine how many bits to loop through
- * of the task bitfield
+ * of the task bitfield -- needs to be increased if more task types / bits are added
  */
 public static final int NUMBER_OF_TASKS = 10;
 public static final int TASK_ATTACK = 1;
@@ -23,6 +28,9 @@ public static final int TASK_FOLLOW = 128;
 public static final int TASK_WANDER = 256;
 public static final int TASK_MOVE = 512;
 
+/**
+ * internal flag used to determine exclusion types
+ */
 public static final int MOVE = 1;
 public static final int ATTACK = 2;
 public static final int SWIM = 4;
@@ -31,39 +39,39 @@ public static final int HUNGRY = 8;
 protected int moveRetryDelay;
 protected double moveSpeed = 1.d;
 
-NpcBase npc;
+protected NpcBase npc;
 
 public NpcAI(NpcBase npc)
   {
   this.npc = npc;
   }
 
-protected void moveToPosition(int x, int y, int z, double dist)
+protected void moveToPosition(int x, int y, int z, double sqDist)
   {
   moveRetryDelay--;
   if(moveRetryDelay<=0)
     {
     npc.getNavigator().tryMoveToXYZ(x+0.5d, y, z+0.5d, moveSpeed);
     moveRetryDelay=10;//base .5 second retry delay
-    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
+    if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
+    if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
     }
   }
 
-protected void moveToPosition(BlockPosition pos, double dist)
+protected void moveToPosition(BlockPosition pos, double sqDist)
   {
-  moveToPosition(pos.x, pos.y, pos.z, dist);
+  moveToPosition(pos.x, pos.y, pos.z, sqDist);
   }
 
-protected void moveToEntity(Entity target, double dist)
+protected void moveToEntity(Entity target, double sqDist)
   {
   moveRetryDelay--;
   if(moveRetryDelay<=0)
     {
     npc.getNavigator().tryMoveToEntityLiving(target, moveSpeed);
     moveRetryDelay=10;//base .5 second retry delay
-    if(dist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-    if(dist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
+    if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
+    if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
     }
   }
 

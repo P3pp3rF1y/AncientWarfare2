@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 
@@ -16,12 +15,6 @@ public class TileWarehouse extends TileWarehouseBase
 public TileWarehouse()
   {
   
-  }
-
-@Override
-public ForgeDirection getPrimaryFacing()
-  {
-  return ForgeDirection.getOrientation(getBlockMetadata());
   }
 
 @Override

@@ -66,6 +66,8 @@ public GuiElement(int topLeftX, int topLeftY, int width, int height)
   this.height = height;
   }
 
+public void setEnabled(boolean enabled){this.enabled = enabled;}
+
 /**
  * called to update the internal positioning of this element.
  * needs to be called anytime the parent gui layout is changed (resized / etc)

@@ -146,7 +146,7 @@ public static void loadRecipes()
       'w', Blocks.planks,
       'p', Items.paper); 
   //route order
-  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.routingOrder), "leadership",
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.routingOrder), "trade",
       "d", 
       "p",
       "w",
@@ -159,6 +159,14 @@ public static void loadRecipes()
       "p",
       "w",
       'd', new ItemStack(Items.dye,1,1),//red
+      'w', Blocks.planks,
+      'p', Items.paper);
+  //trade order
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.tradeOrder), "trade",
+      "d", 
+      "p",
+      "w",
+      'd', new ItemStack(Items.dye,1,2),//green
       'w', Blocks.planks,
       'p', Items.paper);
   

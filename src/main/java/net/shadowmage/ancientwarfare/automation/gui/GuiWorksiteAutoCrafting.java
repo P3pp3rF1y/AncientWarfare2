@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -24,7 +23,7 @@ public void initElements()
   bookSlotIcon.setRenderTooltip(false).setHighlightOnMouseOver(false).setRenderSlotBackground(false).setRenderItemQuantity(false);
   addGuiElement(bookSlotIcon);
   
-  Button button = new Button(143-18, 44, 36, 12, StatCollector.translateToLocal("guistrings.automation.craft"))
+  Button button = new Button(143-18, 44, 36, 12, "guistrings.automation.craft")
     {
     @Override
     protected void onPressed()

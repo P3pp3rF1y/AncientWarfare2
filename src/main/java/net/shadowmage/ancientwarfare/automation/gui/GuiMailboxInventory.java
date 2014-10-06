@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -30,7 +29,7 @@ public GuiMailboxInventory(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  inputNameSelect = new Button(178-8-75, 8, 75, 12, StatCollector.translateToLocal("guistrings.automation.mailbox_name_select"))
+  inputNameSelect = new Button(178-8-75, 8, 75, 12, "guistrings.automation.mailbox_name_select")
     {
     @Override
     protected void onPressed()
@@ -44,7 +43,7 @@ public void initElements()
     };
   addGuiElement(inputNameSelect);
   
-  outputNameSelect = new Button(178-8-75, 8+12+2*18, 75, 12, StatCollector.translateToLocal("guistrings.automation.mailbox_target_select"))
+  outputNameSelect = new Button(178-8-75, 8+12+2*18, 75, 12, "guistrings.automation.mailbox_target_select")
     {
     @Override
     protected void onPressed()
@@ -58,7 +57,7 @@ public void initElements()
     };
   addGuiElement(outputNameSelect);
   
-  sideSelectButton = new Button(178-8-75, ySize-8-12-12, 75, 12, StatCollector.translateToLocal("guistrings.inventory.setsides"))
+  sideSelectButton = new Button(178-8-75, ySize-8-12-12, 75, 12, "guistrings.inventory.setsides")
     {
     @Override
     protected void onPressed()
@@ -72,7 +71,7 @@ public void initElements()
     };
   addGuiElement(sideSelectButton);
   
-  autoExportFromRear = new Checkbox(8, ySize-12-12-8, 12, 12, StatCollector.translateToLocal("guistrings.automation.auto_output"))
+  autoExportFromRear = new Checkbox(8, ySize-12-12-8, 12, 12, "guistrings.automation.auto_output")
     {
     @Override
     public void onToggled()
@@ -83,7 +82,7 @@ public void initElements()
   autoExportFromRear.setChecked(container.autoExport);
   addGuiElement(autoExportFromRear);
   
-  privateBox = new Checkbox(8, ySize-12-8, 12, 12, StatCollector.translateToLocal("guistrings.automation.private_mailbox"))
+  privateBox = new Checkbox(8, ySize-12-8, 12, 12, "guistrings.automation.private_mailbox")
     {
     @Override
     public void onToggled()

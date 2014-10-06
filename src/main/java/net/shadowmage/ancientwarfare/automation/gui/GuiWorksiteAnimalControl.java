@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -29,7 +28,7 @@ public void initElements()
   {  
   Label label;
   
-  label = new Label(8, 8, StatCollector.translateToLocal("guistrings.automation.max_pigs"));
+  label = new Label(8, 8, "guistrings.automation.max_pigs");
   addGuiElement(label);
   pigCount = new NumberInput(130, 8, 30, this.container.maxPigs, this)
     {
@@ -42,7 +41,7 @@ public void initElements()
   pigCount.setIntegerValue();
   addGuiElement(pigCount);
   
-  label = new Label(8, 20, StatCollector.translateToLocal("guistrings.automation.max_sheep"));
+  label = new Label(8, 20, "guistrings.automation.max_sheep");
   addGuiElement(label);
   sheepCount = new NumberInput(130, 20, 30, this.container.maxSheep, this)
     {
@@ -55,7 +54,7 @@ public void initElements()
   sheepCount.setIntegerValue();
   addGuiElement(sheepCount);
   
-  label = new Label(8, 32, StatCollector.translateToLocal("guistrings.automation.max_cows"));
+  label = new Label(8, 32, "guistrings.automation.max_cows");
   addGuiElement(label);
   cowCount = new NumberInput(130, 32, 30, this.container.maxCows, this)
     {
@@ -68,7 +67,7 @@ public void initElements()
   cowCount.setIntegerValue();
   addGuiElement(cowCount);
   
-  label = new Label(8, 44, StatCollector.translateToLocal("guistrings.automation.max_chickens"));
+  label = new Label(8, 44, "guistrings.automation.max_chickens");
   addGuiElement(label);
   chickenCount = new NumberInput(130, 44, 30, this.container.maxChickens, this)
     {

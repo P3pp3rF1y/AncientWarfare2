@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
@@ -19,12 +20,20 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIPlayerOwnedTrader;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
+import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
+import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 
 public class NpcTrader extends NpcPlayerOwned
 {
+
+public EntityPlayer trader;//used by guis/containers to prevent further interaction
+private POTradeList tradeList = new POTradeList();
+private NpcAIPlayerOwnedTrader tradeAI;
 
 public NpcTrader(World par1World)
   {
@@ -39,9 +48,9 @@ public NpcTrader(World par1World)
   this.tasks.addTask(2, new NpcAICommandGuard(this));
   this.tasks.addTask(2, new NpcAICommandMove(this));
   this.tasks.addTask(3, new NpcAIFleeHostiles(this));
-  this.tasks.addTask(4, new NpcAIGetFood(this));  
-  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this)); 
-  //TODO swap move home ai to move home by default? home position is the npcs vendor-stall?
+  this.tasks.addTask(4, tradeAI = new NpcAIPlayerOwnedTrader(this));
+  this.tasks.addTask(5, new NpcAIGetFood(this));  
+  this.tasks.addTask(6, new NpcAIIdleWhenHungry(this)); 
   this.tasks.addTask(7, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
@@ -53,13 +62,19 @@ public NpcTrader(World par1World)
 @Override
 public boolean isValidOrdersStack(ItemStack stack)
   {
-  return false;
+  return stack!=null && stack.getItem() instanceof ItemTradeOrder;
   }
 
 @Override
 public void onOrdersInventoryChanged()
   {
-  //NOOP
+  tradeList=null;
+  ItemStack order = ordersStack;
+  if(order!=null && order.getItem() instanceof ItemTradeOrder)
+    {
+    tradeList = TradeOrder.getTradeOrder(order).getTradeList();
+    }
+  tradeAI.onOrdersUpdated();
   }
 
 @Override
@@ -77,10 +92,66 @@ public String getNpcType()
 @Override
 protected boolean interact(EntityPlayer player)
   {
+  if(player.worldObj.isRemote){return true;}
   boolean baton = player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
-  if(!player.worldObj.isRemote && getFoodRemaining()>0 && !baton)
+  if(baton){return true;}  
+  if(player.getCommandSenderName().equals(getOwnerName()))//owner
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE, getEntityId(), 0, 0);
+    if(player.isSneaking())
+      {
+      if(this.followingPlayerName==null)
+        {
+        this.followingPlayerName = player.getCommandSenderName();    
+        }
+      else if(this.followingPlayerName.equals(player.getCommandSenderName()))
+        {
+        this.followingPlayerName = null;
+        }
+      else
+        {
+        this.followingPlayerName = player.getCommandSenderName();      
+        }
+      }
+    else
+      {
+      openGUI(player);  
+      }    
+    }
+  else//non-owner
+    {
+    if(!player.worldObj.isRemote && getFoodRemaining()>0 && trader==null)
+      {
+      trader=player;    
+      openAltGui(player);
+      }
+    }
+  return true;   
+  }
+
+@Override
+public void openGUI(EntityPlayer player)
+  {
+  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);  
+  }
+
+@Override
+public void openAltGui(EntityPlayer player)
+  {
+  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_PLAYER_OWNED_TRADE, getEntityId(), 0, 0);  
+  }
+
+@Override
+public boolean hasAltGui()
+  {
+  return true;
+  }
+
+@Override
+public boolean shouldBeAtHome()
+  {
+  if((!worldObj.provider.hasNoSky && !worldObj.provider.isDaytime()) || worldObj.isRaining())
+    { 
+    return true;
     }
   return false;
   }
@@ -89,6 +160,26 @@ protected boolean interact(EntityPlayer player)
 public boolean isHostileTowards(Entity e)
   {
   return false;
+  }
+
+public POTradeList getTradeList()
+  {
+  return tradeList;
+  }
+
+@Override
+public void writeEntityToNBT(NBTTagCompound tag)
+  {
+  super.writeEntityToNBT(tag);
+  tag.setTag("tradeAI", tradeAI.writeToNBT(new NBTTagCompound()));
+  }
+
+@Override
+public void readEntityFromNBT(NBTTagCompound tag)
+  {
+  super.readEntityFromNBT(tag);
+  onOrdersInventoryChanged();
+  tradeAI.readFromNBT(tag.getCompoundTag("tradeAI"));
   }
 
 }

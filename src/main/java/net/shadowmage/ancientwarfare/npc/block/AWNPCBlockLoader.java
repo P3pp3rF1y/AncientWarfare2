@@ -9,7 +9,6 @@ public class AWNPCBlockLoader
 {
 
 public static final BlockTownHall townHall = new BlockTownHall("town_hall");
-public static final BlockRecruitingStation recruitingStation = new BlockRecruitingStation("recruiting_station");
 
 public static void load()
   {
@@ -21,9 +20,6 @@ public static void load()
   townHall.iconMap.setIcon(townHall, RelativeSide.RIGHT, "ancientwarfare:npc/town_hall_side");
   townHall.iconMap.setIcon(townHall, RelativeSide.FRONT, "ancientwarfare:npc/town_hall_side");
   townHall.iconMap.setIcon(townHall, RelativeSide.REAR, "ancientwarfare:npc/town_hall_side");
-  
-//  GameRegistry.registerBlock(recruitingStation, ItemBlockOwnedRotatable.class, "recruiting_station");
-//  GameRegistry.registerTileEntity(TileRecruitingStation.class, "recruiting_station_tile");
   }
 
 }

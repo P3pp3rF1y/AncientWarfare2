@@ -23,6 +23,43 @@ public class InventoryTools
 {
 
 /**
+ * Checks if the input inventory can hold all of the items.<br>
+ * <br>
+ * @param inventory the inventory to check
+ * @param side the side of the inventory to check
+ * @param stacks a list of item stacks, need not be compacted/optimal, must not contain null entries
+ * @return true if input inventory can hold ALL of the input items
+ */
+public static boolean canInventoryHold(IInventory inventory, int side, List<ItemStack> stacks)
+  {
+  
+  int[] slots = inventory instanceof ISidedInventory ? ((ISidedInventory)inventory).getAccessibleSlotsFromSide(side) : getIndiceArrayForSpread(0, inventory.getSizeInventory());
+  int slot;
+  int emptySlots = 0;
+  ItemStack stack;
+  ItemQuantityMap itemQuantities = new ItemQuantityMap();
+ 
+  for(int i = 0; i<stacks.size(); i++)
+    {
+    stack = stacks.get(i);
+    itemQuantities.addCount(stack, stack.stackSize);
+    }
+    
+  for(int i = 0; i < slots.length; i++)
+    {
+    slot = slots[i];
+    stack = inventory.getStackInSlot(slot);
+    if(stack==null){emptySlots++;}
+    else if(itemQuantities.contains(stack))
+      {
+      itemQuantities.decreaseCount(stack, stack.getMaxStackSize()-stack.stackSize);
+      }
+    }
+  
+  return emptySlots >= itemQuantities.keySet().size();
+  }
+
+/**
  * Attempt to merge stack into inventory via the given side, or general all-sides merge if side <0<br>
  * Resorts to default general merge if inventory is not a sided inventory.<br>
  * Double-pass merging.  First pass attempts to merge with partial stacks.  Second pass will place
@@ -437,9 +474,16 @@ public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, bool
     if(stack2==null){return stack1==null;}
     if(stack1.getItem()==stack2.getItem())
       {
-      int id = OreDictionary.getOreID(stack1);
-      int id2 = OreDictionary.getOreID(stack2);
-      return id>0 && id2>0 && id==id2;
+      int id[] = OreDictionary.getOreIDs(stack1);
+      int id2[] = OreDictionary.getOreIDs(stack2);
+      if(id==null || id2==null || id.length==0 || id2.length==0){return false;}
+      for(int i = 0; i <id.length; i++)
+        {
+        for(int k = 0; k < id2.length; k++)
+          {
+          if(id[i]==id2[k]){return true;}
+          }
+        }
       }
     }
   return false;

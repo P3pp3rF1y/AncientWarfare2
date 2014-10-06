@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WorkSiteQuarry extends TileWorksiteBounded
+public class WorkSiteQuarry extends TileWorksiteBoundedInventory
 {
 
 boolean finished;

@@ -1,27 +1,21 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
-import net.shadowmage.ancientwarfare.core.util.RenderTools;
+import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-
-public class RenderSterlingEngine extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
+public class RenderSterlingEngine extends TileEntitySpecialRenderer implements IItemRenderer
 {
 
 ModelBaseAW model;
@@ -29,47 +23,50 @@ ModelBaseAW model;
 float rotation;
 ResourceLocation texture;
 
+ModelPiece flywheel, pistonCrank, pistonCrank2, flywheel_arm, piston_arm, piston_arm2;
+
 
 public RenderSterlingEngine()
   {
   ModelLoader loader = new ModelLoader();
-  model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/sterling_engine.mf2"));
   texture = new ResourceLocation("ancientwarfare:textures/model/automation/sterling_engine.png");
-  if(AWAutomationStatics.sterlingEngineRenderID==-1){AWAutomationStatics.sterlingEngineRenderID=RenderingRegistry.getNextAvailableRenderId();}
+  model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/sterling_engine.m2f"));
+  flywheel = model.getPiece("flywheel2");
+  pistonCrank = model.getPiece("piston_crank");
+  pistonCrank2 = model.getPiece("piston_crank2");
+  
+  flywheel_arm = model.getPiece("flywheel_arm");
+  piston_arm = model.getPiece("piston_arm");
+  piston_arm2 = model.getPiece("piston_arm2");
   }
 
 @Override
 public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTick)
   {
-  TileTorqueGeneratorSterling tt = (TileTorqueGeneratorSterling)tile;
+  TileSterlingEngine tt = (TileSterlingEngine)tile;
   ForgeDirection d = tt.getPrimaryFacing();
   float baseRotation = d==ForgeDirection.SOUTH? 180.f : d==ForgeDirection.WEST ? 270.f : d==ForgeDirection.EAST? 90.f : 0.f;
-  
-  
-  float pr = (float) tt.prevRotation;
-  float r = (float) tt.rotation;
-  float rd = r-pr;
-  
-  rotation = -(pr + rd*partialTick);
     
+  rotation = -(tt.getClientOutputRotation(d, partialTick));
+      
   GL11.glPushMatrix();
 
-  GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+//  GL11.glEnable(GL12.GL_RESCALE_NORMAL);
   GL11.glTranslated(x+0.5d, y, z+0.5d);
   GL11.glRotatef(-baseRotation, 0, 1, 0);
   bindTexture(texture);  
     
-  model.getPiece("flywheel2").setRotation(0, 0, rotation);
-  model.getPiece("piston_crank2").setRotation(0, 0, rotation);
-  model.getPiece("flywheel_arm").setRotation(0, 0, -rotation);
+  flywheel.setRotation(0, 0, rotation);
+  pistonCrank2.setRotation(0, 0, rotation);
+  flywheel_arm.setRotation(0, 0, -rotation);
 
   calculateArmAngle1(-rotation);
   calculateArmAngle2(-rotation-90);
-  model.getPiece("piston_crank").setRotation(0, 0, -rotation);
-  model.getPiece("piston_arm").setRotation(0, 0, rotation+armAngle);  
-  model.getPiece("piston_arm2").setRotation(0, 0, rotation+armAngle2);  
+  pistonCrank.setRotation(0, 0, -rotation);
+  piston_arm.setRotation(0, 0, rotation+armAngle);  
+  piston_arm2.setRotation(0, 0, rotation+armAngle2);  
   model.renderModel();
-  GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+//  GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   GL11.glPopMatrix();
   }
 
@@ -121,44 +118,36 @@ private void calculatePistonPosition2(float crankAngleRadians, float radius, flo
   armAngle2 = rlrA*Trig.TODEGREES;
   }
 
-@Override
-public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
-  {
-  GL11.glPushMatrix();  
-  RenderTools.setFullColorLightmap();
-  GL11.glTranslatef(0, -0.5f, 0);
-//  GL11.glRotatef(-baseRotation, 0, 1, 0);
-  bindTexture(texture);  
-    
-  model.getPiece("flywheel2").setRotation(0, 0, 0);
-  model.getPiece("piston_crank2").setRotation(0, 0, 0);
-  model.getPiece("flywheel_arm").setRotation(0, 0, 0);
 
-  calculateArmAngle1(-rotation);
-  calculateArmAngle2(-rotation-90);
-  model.getPiece("piston_crank").setRotation(0, 0, 0);
-  model.getPiece("piston_arm").setRotation(0, 0, 0);  
-  model.getPiece("piston_arm2").setRotation(0, 0, 0);  
-  model.renderModel();
-  GL11.glPopMatrix();
-  }
 
 @Override
-public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
-  {
-  return false;
-  }
-
-@Override
-public boolean shouldRender3DInInventory(int modelId)
+public boolean handleRenderType(ItemStack item, ItemRenderType type)
   {
   return true;
   }
 
 @Override
-public int getRenderId()
+public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
   {
-  return AWAutomationStatics.sterlingEngineRenderID;
+  return true;
+  }
+
+@Override
+public void renderItem(ItemRenderType type, ItemStack item, Object... data)
+  {
+  GL11.glPushMatrix();
+  GL11.glTranslated(0.5d, 0, 0.5d);
+  bindTexture(texture);
+      
+  flywheel.setRotation(0, 0, 0);
+  pistonCrank2.setRotation(0, 0, 0);
+  flywheel_arm.setRotation(0, 0, 0);
+
+  pistonCrank.setRotation(0, 0, 0);
+  piston_arm.setRotation(0, 0, 0);  
+  piston_arm2.setRotation(0, 0, 0);  
+  model.renderModel();
+  GL11.glPopMatrix();
   }
 
 }

@@ -18,8 +18,6 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.network.PacketSound;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 public class SpawnerSettings
@@ -679,11 +677,11 @@ private final void decrementSpawnCounter(int numSpawned)
     }
   }
 
-private final void sendSoundPacket(World world, int x, int y, int z)
-  {
-  PacketSound packet = new PacketSound(x+0.5d, y, z+0.5d, "");
-  NetworkHandler.sendToAllNear(world, x, y, z, 60, packet);
-  }
+//private final void sendSoundPacket(World world, int x, int y, int z)
+//  {
+//  PacketSound packet = new PacketSound(x+0.5d, y, z+0.5d, "");
+//  NetworkHandler.sendToAllNear(world, x, y, z, 60, packet);
+//  }
 
 private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord, int grpIndex, int setIndex)
   {
@@ -721,9 +719,7 @@ private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord
       {
       spawnEntityAt(world, x, y, z);      
       }
-    }
-  
- 
+    } 
   }
 
 private final void spawnEntityAt(World world, int x, int y, int z)

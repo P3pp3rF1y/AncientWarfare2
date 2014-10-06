@@ -26,8 +26,6 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
 @Override
 public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   {
-  //TODO set upkeep position
-  //TODO open GUI so player may select block-side
   UpkeepOrder upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
   if(upkeepOrder!=null)
     {

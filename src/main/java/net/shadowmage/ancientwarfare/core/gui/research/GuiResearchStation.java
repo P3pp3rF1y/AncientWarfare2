@@ -43,7 +43,7 @@ public GuiResearchStation(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  String name = container.researcherName ==null? StatCollector.translateToLocal("guistrings.research.no_researcher") : container.researcherName;
+  String name = container.researcherName ==null? "guistrings.research.no_researcher" : container.researcherName;
   researcherLabel = new Label(8, 8, name);  
   addGuiElement(researcherLabel);
   
@@ -57,14 +57,14 @@ public void initElements()
       name = g.getName();
       }
     }
-  researchGoalLabel = new Label(80, 8+18*2, StatCollector.translateToLocal(name));
+  researchGoalLabel = new Label(80, 8+18*2, name);
   addGuiElement(researchGoalLabel);
   addGuiElement(new Label(8, 8+18*2, StatCollector.translateToLocal("guistrings.research.current_goal")+":"));
   
   bar = new ProgressBar(70, 8+18*2+12, 178-70-8, 12);
   addGuiElement(bar);
   
-  Button button = new Button(178-8-140, 8+12+4, 140, 12, StatCollector.translateToLocal("guistrings.research.research_queue"))
+  Button button = new Button(178-8-140, 8+12+4, 140, 12, "guistrings.research.research_queue")
     {
     @Override
     protected void onPressed()
@@ -83,11 +83,11 @@ public void initElements()
     layoutSlots[i] = new ItemSlot(x, y, null, this);
     addGuiElement(layoutSlots[i]);
     }  
-  addGuiElement(new Label(8, 8+18*2+12+1, StatCollector.translateToLocal("guistrings.research.progress")));
-  addGuiElement(new Label(8+18, 8+3*18+10+4+10, StatCollector.translateToLocal("guistrings.research.input")));
-  addGuiElement(new Label(8+5*18, 8+3*18+10+4+10, StatCollector.translateToLocal("guistrings.research.needed")));
+  addGuiElement(new Label(8, 8+18*2+12+1, "guistrings.research.progress"));
+  addGuiElement(new Label(8+18, 8+3*18+10+4+10, "guistrings.research.input"));
+  addGuiElement(new Label(8+5*18, 8+3*18+10+4+10, "guistrings.research.needed"));
   
-  useAdjacentInventory = new Checkbox(8, 8+3*18+6, 16, 16, StatCollector.translateToLocal("guistrings.research.use_adjacent_inventory"))
+  useAdjacentInventory = new Checkbox(8, 8+3*18+6, 16, 16, "guistrings.research.use_adjacent_inventory")
     {
     @Override
     public void onToggled()
@@ -135,7 +135,7 @@ public void initElements()
 @Override
 public void setupElements()
   {
-  String name = container.researcherName ==null? StatCollector.translateToLocal("guistrings.research.no_researcher") : container.researcherName;
+  String name = container.researcherName ==null? "guistrings.research.no_researcher" : container.researcherName;
   researcherLabel.setText(name);
   
   if(container.researcherName==null)
@@ -203,7 +203,7 @@ public void setupElements()
       }
     }
   bar.setProgress(progress);
-  researchGoalLabel.setText(StatCollector.translateToLocal(name));
+  researchGoalLabel.setText(name);
   
   useAdjacentInventory.setChecked(container.useAdjacentInventory);
   invDir.setText(StatCollector.translateToLocal(Direction.getDirectionFor(container.tile.inventoryDirection.ordinal()).getTranslationKey()));

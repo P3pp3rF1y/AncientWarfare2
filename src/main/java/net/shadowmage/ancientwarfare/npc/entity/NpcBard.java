@@ -1,5 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
@@ -9,7 +12,9 @@ import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIBard;
@@ -26,15 +31,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 public class NpcBard extends NpcPlayerOwned
 {
 
-/**
- * bard tune playing stats.
- * server-only -- need synched to client in tune-select GUI
- */
-//public int bardTuneNumber;
-public String bardTune="";
-public int bardPlayLength;//num of ticks for the tune
-public int bardPlayChance;//0-100, chance out of 100 to play a tune
-public int bardPlayRecheckDelay;//how many ticks should pass between rechecking the play-delay?
+BardTuneData tuneData = new BardTuneData();
 
 public NpcBard(World par1World)
   {
@@ -58,6 +55,11 @@ public NpcBard(World par1World)
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
   this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
   this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+  }
+
+public BardTuneData getTuneData()
+  {
+  return tuneData;
   }
 
 @Override
@@ -97,22 +99,132 @@ public void openAltGui(EntityPlayer player)
 
 @Override
 public void readEntityFromNBT(NBTTagCompound tag)
-  {
+  {  
   super.readEntityFromNBT(tag);
-  bardTune = tag.getString("bardTune");
-  bardPlayLength = tag.getInteger("bardPlayLength");
-  bardPlayChance = tag.getInteger("bardPlayChance");
-  bardPlayRecheckDelay = tag.getInteger("bardPlayRecheckDelay");  
+  tuneData.readFromNBT(tag.getCompoundTag("tuneData"));
   }
 
 @Override
 public void writeEntityToNBT(NBTTagCompound tag)
   {
   super.writeEntityToNBT(tag);
-  tag.setString("bardTune", bardTune);
-  tag.setInteger("bardPlayLength", bardPlayLength);
-  tag.setInteger("bardPlayChance", bardPlayChance);
-  tag.setInteger("bardPlayRecheckDelay", bardPlayRecheckDelay);
+  tag.setTag("tuneData", tuneData.writeToNBT(new NBTTagCompound()));
   }
+
+public static final class BardTuneData
+{
+private boolean random = false;
+private boolean playOnPlayerEntry = false;
+private int minDelay;
+private int maxDelay;
+private List<BardTuneEntry> tunes = new ArrayList<BardTuneEntry>();
+
+public int size(){return tunes.size();}
+public BardTuneEntry get(int index){return tunes.get(index);}
+
+public void addNewEntry()
+  {
+  BardTuneEntry e = new BardTuneEntry();
+  tunes.add(e);
+  }
+
+public void decrementEntry(int index)
+  {
+  if(index<=0 || index>=tunes.size()){return;}
+  BardTuneEntry e = tunes.remove(index);
+  index--;
+  tunes.add(index, e);
+  }
+
+public void incrementEntry(int index)
+  {
+  if(index<0 || index>=tunes.size()-1){return;}
+  BardTuneEntry e = tunes.remove(index);
+  index++;
+  tunes.add(index, e);
+  }
+
+public void deleteEntry(int index)
+  {
+  if(index<0 || index>=tunes.size()){return;}
+  tunes.remove(index);
+  }
+
+public int getMinDelay(){return minDelay;}
+public int getMaxDelay(){return maxDelay;}
+public boolean getPlayOnPlayerEntry(){return playOnPlayerEntry;}
+public boolean getIsRandom(){return random;}
+
+public void setMinDelay(int val){minDelay=val;}
+public void setMaxDelay(int val){maxDelay=val;}
+public void setPlayOnPlayerEntry(boolean val){playOnPlayerEntry=val;}
+public void setRandom(boolean val){random=val;}
+
+public void readFromNBT(NBTTagCompound tag)
+  {
+  tunes.clear();
+  BardTuneEntry d;
+  NBTTagList l = tag.getTagList("entries", Constants.NBT.TAG_COMPOUND);
+  for(int i = 0; i < l.tagCount(); i++)
+    {
+    d = new BardTuneEntry();
+    d.readFromNBT(l.getCompoundTagAt(i));
+    tunes.add(d);
+    }
+  }
+
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
+  {
+  NBTTagList l = new NBTTagList();
+  for(int i = 0; i < tunes.size(); i++)
+    {
+    l.appendTag(tunes.get(i).writeToNBT(new NBTTagCompound()));
+    }  
+  tag.setTag("entries", l);
+  return tag;
+  }
+}
+
+public static final class BardTuneEntry
+{
+String name;
+int length;//length in seconds, used to determine when count down for next tune should start
+int volume;// percentage, as integer 0 = 0%, 100=100%, 150=150%
+
+public BardTuneEntry()
+  {
+  name = "";
+  length = 0;
+  volume = 100;
+  }
+
+public void setLength(int length){this.length = length;}
+
+public void setName(String name){this.name = name==null? "" : name;}
+
+public void setVolume(int volume){this.volume = volume;}
+
+public int volume(){return volume;}
+
+public String name(){return name;}
+
+public int length(){return length;}
+
+public void readFromNBT(NBTTagCompound tag)
+  {
+  name = tag.getString("name");
+  length = tag.getInteger("length");
+  volume = tag.getInteger("volume");
+  }
+
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
+  {
+  tag.setString("name", name);
+  tag.setInteger("length", length);
+  tag.setInteger("volume", volume);
+  return tag;
+  }
+
+}
 
 }

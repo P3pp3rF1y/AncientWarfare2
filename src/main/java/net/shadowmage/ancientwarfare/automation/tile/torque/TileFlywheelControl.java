@@ -1,0 +1,227 @@
+package net.shadowmage.ancientwarfare.automation.tile.torque;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
+
+
+public abstract class TileFlywheelControl extends TileTorqueSingleCell
+{
+
+private boolean powered;
+
+TorqueCell inputCell;
+
+public TileFlywheelControl()
+  {
+  }
+
+@Override
+public void updateEntity()
+  {
+  super.updateEntity();
+  if(!worldObj.isRemote)
+    {    
+    balancePower();
+    }
+  }
+
+protected void balancePower()
+  {
+  /**
+   * fill output from input
+   * fill output from storage
+   * fill storage from input
+   */
+  TileFlywheelStorage storage = getControlledFlywheel();
+  double in = inputCell.getEnergy();
+  double out = torqueCell.getEnergy();
+  double transfer = torqueCell.getMaxEnergy()-out;  
+  transfer = Math.min(in, transfer);
+  in-=transfer;
+  out+=transfer;
+  if(storage!=null)
+    {
+    double store = storage.storedEnergy;    
+    transfer = Math.min(store, torqueCell.getMaxEnergy() - out);
+    store-=transfer;
+    out+=transfer;
+    
+    transfer = Math.min(in, storage.maxEnergyStored-store);
+    in-=transfer;
+    store+=transfer;
+    storage.storedEnergy=store;
+    }  
+  torqueCell.setEnergy(out);
+  inputCell.setEnergy(in);  
+  }
+
+@Override
+protected void updateRotation()
+  {
+  prevRotation = rotation;
+  if(!powered)
+    {
+    super.updateRotation();
+    }
+  }
+
+public TileFlywheelStorage getControlledFlywheel()
+  {
+  int x = xCoord;
+  int y = yCoord-1;
+  int z = zCoord;
+  TileEntity te = worldObj.getTileEntity(x, y, z);
+  if(te instanceof TileFlywheelStorage)
+    {
+    TileFlywheelStorage fs = (TileFlywheelStorage)te;
+    if(fs.controllerPos!=null)
+      {
+      x = fs.controllerPos.x;
+      y = fs.controllerPos.y;
+      z = fs.controllerPos.z;
+      te = worldObj.getTileEntity(x, y, z);
+      if(te instanceof TileFlywheelStorage)
+        {
+        return (TileFlywheelStorage) te;
+        }
+      }
+    }
+  return null;
+  }
+
+public float getFlywheelRotation(float delta)
+  {
+  TileFlywheelStorage storage = getControlledFlywheel();
+  return storage==null ? 0: getRotation(storage.rotation, storage.prevRotation, delta);
+  }
+
+protected double getFlywheelEnergy()
+  {
+  TileFlywheelStorage storage = getControlledFlywheel();
+  return storage==null ? 0 : storage.storedEnergy;//TODO
+  }
+
+@Override
+protected double getTotalTorque()
+  {
+  return inputCell.getEnergy()+torqueCell.getEnergy()+getFlywheelEnergy();
+  }
+
+@Override
+public void onNeighborTileChanged()
+  {
+  super.onNeighborTileChanged();
+  if(!worldObj.isRemote)
+    {
+    boolean p = powered;
+    powered = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord)>0;
+    if(p!=powered)
+      {
+      int a = 3;
+      int b = powered ? 1: 0;
+      worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), a, b);
+      }    
+    }
+  }
+
+@Override
+public boolean receiveClientEvent(int a, int b)
+  {  
+  if(worldObj.isRemote)
+    {
+    if(a==3)
+      {
+      powered = b==1;
+      }    
+    }
+  return super.receiveClientEvent(a, b);
+  }
+
+@Override
+public double getMaxTorqueOutput(ForgeDirection from)
+  {
+  if(powered){return 0;}
+  return torqueCell.getMaxTickOutput();
+  }
+
+@Override
+public double getMaxTorque(ForgeDirection from)
+  {
+  TorqueCell cell = getCell(from);
+  return cell==null ? 0 : cell.getMaxEnergy();
+  }
+
+@Override
+public double getTorqueStored(ForgeDirection from)
+  {
+  TorqueCell cell = getCell(from);
+  return cell==null ? 0 : cell.getEnergy();
+  }
+
+@Override
+public double addTorque(ForgeDirection from, double energy)
+  {
+  TorqueCell cell = getCell(from);
+  return cell==null ? 0 : cell.addEnergy(energy);
+  }
+
+@Override
+public double drainTorque(ForgeDirection from, double energy)
+  {
+  TorqueCell cell = getCell(from);
+  return cell==null ? 0 : cell.drainEnergy(energy);
+  }
+
+@Override
+public double getMaxTorqueInput(ForgeDirection from)
+  {
+  TorqueCell cell = getCell(from);
+  return cell==null ? 0 : cell.getMaxTickInput();
+  }
+
+private TorqueCell getCell(ForgeDirection from)
+  {
+  if(from==orientation){return torqueCell;}
+  else if(from==orientation.getOpposite()){return inputCell;}
+  return null;
+  }
+
+//*************************************** NBT / DATA PACKET ***************************************//
+@Override
+public NBTTagCompound getDescriptionTag()
+  {
+  NBTTagCompound tag = super.getDescriptionTag();
+  tag.setBoolean("powered", powered);  
+  return tag;
+  }
+
+@Override
+public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {
+  super.onDataPacket(net, pkt);
+  NBTTagCompound tag = pkt.func_148857_g();
+  powered = tag.getBoolean("powered");
+  }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {  
+  super.writeToNBT(tag);
+  tag.setBoolean("powered", powered);
+  tag.setDouble("torqueEnergyIn", inputCell.getEnergy());
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {  
+  super.readFromNBT(tag);
+  powered = tag.getBoolean("powered");  
+  inputCell.setEnergy(tag.getDouble("torqueEnergyIn"));
+  }
+
+}

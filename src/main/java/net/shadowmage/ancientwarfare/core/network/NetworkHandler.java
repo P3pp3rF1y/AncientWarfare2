@@ -44,7 +44,7 @@ public static final int GUI_BUILDER = 2;
 public static final int GUI_SPAWNER = 3;
 public static final int GUI_NPC_INVENTORY = 4;
 public static final int GUI_WORKSITE_INVENTORY_SIDE_ADJUST = 5;
-//public static final int GUI_WORKSITE_SET_TARGETS = 6;//unused id
+public static final int GUI_NPC_TRADE_ORDER = 6;
 public static final int GUI_SPAWNER_ADVANCED = 7;
 public static final int GUI_SPAWNER_ADVANCED_BLOCK = 8;
 public static final int GUI_SPAWNER_ADVANCED_INVENTORY = 9;
@@ -77,14 +77,15 @@ public static final int GUI_NPC_UPKEEP_ORDER = 35;
 public static final int GUI_NPC_COMBAT_ORDER = 36;
 public static final int GUI_NPC_ROUTING_ORDER = 37;
 public static final int GUI_NPC_COMMAND_BATON = 38;
-public static final int GUI_NPC_TRADE = 39;
+public static final int GUI_NPC_FACTION_TRADE_SETUP = 39;
 public static final int GUI_BACKPACK = 40;
 public static final int GUI_NPC_TOWN_HALL = 41;
-public static final int GUI_NPC_RECRUITING_STATION = 42;
+public static final int GUI_NPC_FACTION_TRADE_VIEW = 42;
 public static final int GUI_NPC_BARD = 43;
 public static final int GUI_NPC_CREATIVE = 44;
 public static final int GUI_RESEARCH_BOOK = 45;
 public static final int GUI_WORKSITE_BOUNDS = 46;
+public static final int GUI_NPC_PLAYER_OWNED_TRADE = 47;
 
 private FMLEventChannel channel;
 

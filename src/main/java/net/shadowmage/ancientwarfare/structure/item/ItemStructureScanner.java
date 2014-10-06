@@ -59,18 +59,6 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
   if(par1ItemStack!=null)
     {
     ItemStructureSettings.getSettingsFor(par1ItemStack, viewSettings);
-    /**
-     * TODO add info to tooltip from nbt-tag
-     */
-    NBTTagCompound tag;
-    if(par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("structData"))
-      {
-      tag = par1ItemStack.getTagCompound().getCompoundTag("structData");
-      }
-    else
-      {
-      tag = new NBTTagCompound();
-      }
     String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
     if(viewSettings.hasPos1() && viewSettings.hasPos2() && viewSettings.hasBuildKey())
       {

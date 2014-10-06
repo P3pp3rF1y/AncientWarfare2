@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -42,7 +43,7 @@ protected String label;
 public Checkbox(int topLeftX, int topLeftY, int width, int height, String label)
   {
   super(topLeftX, topLeftY, width, height);
-  this.label = label;
+  this.label = StatCollector.translateToLocal(label);
   this.addNewListener(new Listener(Listener.MOUSE_UP)
     {
     @Override

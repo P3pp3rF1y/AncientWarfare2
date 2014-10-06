@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -27,7 +26,7 @@ public GuiWorksiteFishControl(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  fishBox = new Checkbox(8, 8, 16, 16, StatCollector.translateToLocal("guistrings.automation.harvest_fish"))
+  fishBox = new Checkbox(8, 8, 16, 16, "guistrings.automation.harvest_fish")
     {
     @Override
     public void onToggled()
@@ -38,7 +37,7 @@ public void initElements()
     };
   addGuiElement(fishBox);
   
-  inkBox = new Checkbox(8, 8+16, 16, 16, StatCollector.translateToLocal("guistrings.automation.harvest_ink"))
+  inkBox = new Checkbox(8, 8+16, 16, 16, "guistrings.automation.harvest_ink")
     {
     @Override
     public void onToggled()

@@ -5,23 +5,28 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockTorqueTile;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
-import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksite;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteStatic;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorHandCranked;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorSterling;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueGeneratorWaterwheel;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheel;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelLarge;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueStorageFlywheelMedium;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduit;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitHeavy;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportConduitMedium;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributor;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributorHeavy;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueTransportDistributorMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributorHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributorLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributorMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLarge;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandGenerator;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
+import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
+import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
@@ -29,6 +34,7 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseSto
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageLarge;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageMedium;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
@@ -36,9 +42,8 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteMushroomFa
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteTreeFarm;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockMeta;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -129,25 +134,17 @@ public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 /**
  * POWER NETWORK BLOCKS
  */
-public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel");
-public static final BlockTorqueConduit torqueConduit = new BlockTorqueConduit("torque_conduit");
+public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel_controller");
+public static final BlockFlywheelStorage flywheelStorage = new BlockFlywheelStorage("flywheel_storage");
+public static final BlockTorqueTransportConduit torqueConduit = new BlockTorqueTransportConduit("torque_conduit");
+public static final BlockTorqueTransportShaft torqueShaft = new BlockTorqueTransportShaft("torque_shaft");
 public static final BlockTorqueDistributor torqueDistributor = new BlockTorqueDistributor("torque_distributor");
 public static final BlockHandCrankedEngine handCrankedEngine = new BlockHandCrankedEngine("hand_cranked_engine");
 public static final BlockTorqueGenerator torqueGeneratorSterling = new BlockTorqueGeneratorSterling("torque_generator_sterling");
-public static final BlockTorqueGenerator torqueGeneratorWaterwheel = new BlockTorqueGenerator("torque_generator_waterwheel")
-  { 
-  @Override
-  public TileEntity createTileEntity(World world, int metadata)
-    {
-    return new TileTorqueGeneratorWaterwheel();
-    }
-  @Override
-  public boolean invertFacing()
-    {
-    return true;
-    }
-  };
-  
+public static final BlockTorqueGenerator torqueGeneratorWaterwheel = new BlockTorqueGeneratorWaterwheel("torque_generator_waterwheel");
+public static final BlockWindmillBlade windmillBlade = new BlockWindmillBlade("windmill_blade");
+public static final BlockWindmillControll windmillControl = new BlockWindmillControll("windmill_controll");  
+
 public static final BlockChunkLoaderSimple chunkLoaderSimple = new BlockChunkLoaderSimple("chunk_loader_simple");
 public static final BlockChunkLoaderDeluxe chunkLoaderDeluxe = new BlockChunkLoaderDeluxe("chunk_loader_deluxe");
 
@@ -273,12 +270,6 @@ public static void load()
   
   GameRegistry.registerBlock(worksiteAutoCrafting, ItemBlockRotatableMetaTile.class, "civic_auto_crafting");
   GameRegistry.registerTileEntity(TileAutoCrafting.class, "civic_auto_crafting_tile");
-//  worksiteAutoCrafting.setIcon(RelativeSide.TOP, "ancientwarfare:automation/auto_crafting_top");
-//  worksiteAutoCrafting.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/auto_crafting_front");
-//  worksiteAutoCrafting.setIcon(RelativeSide.REAR, "ancientwarfare:automation/auto_crafting_side");  
-//  worksiteAutoCrafting.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/auto_crafting_side");
-//  worksiteAutoCrafting.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/auto_crafting_side");
-//  worksiteAutoCrafting.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/auto_crafting_side");  
   
   GameRegistry.registerBlock(mailbox, ItemBlockOwnedRotatable.class, "mailbox");
   GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");
@@ -290,85 +281,42 @@ public static void load()
   mailbox.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mailbox_right");  
 
   GameRegistry.registerBlock(flywheel, ItemBlockTorqueTile.class, "flywheel");
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheel.class, "flywheel_tile");
-  flywheel.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/flywheel_top");
-  flywheel.setIcon(0, RelativeSide.FRONT, "ancientwarfare:automation/flywheel_front");
-  flywheel.setIcon(0, RelativeSide.REAR, "ancientwarfare:automation/flywheel_rear");  
-  flywheel.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/flywheel_bottom");
-  flywheel.setIcon(0, RelativeSide.LEFT, "ancientwarfare:automation/flywheel_left");
-  flywheel.setIcon(0, RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_right");  
+  GameRegistry.registerTileEntity(TileFlywheelControlLight.class, "flywheel_tile");  
+  GameRegistry.registerTileEntity(TileFlywheelControlMedium.class, "flywheel_medium_tile");  
+  GameRegistry.registerTileEntity(TileFlywheelControlLarge.class, "flywheel_large_tile");
   
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelMedium.class, "flywheel_medium_tile");
-  flywheel.setIcon(1, RelativeSide.TOP, "ancientwarfare:automation/flywheel_medium_top");
-  flywheel.setIcon(1, RelativeSide.FRONT, "ancientwarfare:automation/flywheel_medium_front");
-  flywheel.setIcon(1, RelativeSide.REAR, "ancientwarfare:automation/flywheel_medium_rear");  
-  flywheel.setIcon(1, RelativeSide.BOTTOM, "ancientwarfare:automation/flywheel_medium_bottom");
-  flywheel.setIcon(1, RelativeSide.LEFT, "ancientwarfare:automation/flywheel_medium_left");
-  flywheel.setIcon(1, RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_medium_right"); 
-  
-  GameRegistry.registerTileEntity(TileTorqueStorageFlywheelLarge.class, "flywheel_large_tile");
-  flywheel.setIcon(2, RelativeSide.TOP, "ancientwarfare:automation/flywheel_large_top");
-  flywheel.setIcon(2, RelativeSide.FRONT, "ancientwarfare:automation/flywheel_large_front");
-  flywheel.setIcon(2, RelativeSide.REAR, "ancientwarfare:automation/flywheel_large_rear");  
-  flywheel.setIcon(2, RelativeSide.BOTTOM, "ancientwarfare:automation/flywheel_large_bottom");
-  flywheel.setIcon(2, RelativeSide.LEFT, "ancientwarfare:automation/flywheel_large_left");
-  flywheel.setIcon(2, RelativeSide.RIGHT, "ancientwarfare:automation/flywheel_large_right"); 
+  GameRegistry.registerBlock(flywheelStorage, ItemBlockMeta.class, "flywheel_storage");
+  GameRegistry.registerTileEntity(TileFlywheelStorage.class, "flywheel_storage_tile");
   
   GameRegistry.registerBlock(torqueConduit, ItemBlockTorqueTile.class, "torque_conduit");
-  GameRegistry.registerTileEntity(TileTorqueTransportConduit.class, "torque_conduit_tile");
-  torqueConduit.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_top");
-  torqueConduit.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_side");
-  torqueConduit.setIcon(0, RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_side");
-  
-  GameRegistry.registerTileEntity(TileTorqueTransportConduitMedium.class, "torque_conduit_medium_tile");
-  torqueConduit.setIcon(1, RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_medium_top");
-  torqueConduit.setIcon(1, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_medium_side");
-  torqueConduit.setIcon(1, RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_medium_side");
-  
-  GameRegistry.registerTileEntity(TileTorqueTransportConduitHeavy.class, "torque_conduit_heavy_tile");
-  torqueConduit.setIcon(2, RelativeSide.TOP, "ancientwarfare:automation/torque_conduit_heavy_top");
-  torqueConduit.setIcon(2, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_conduit_heavy_side");
-  torqueConduit.setIcon(2, RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_conduit_heavy_side");
+  GameRegistry.registerTileEntity(TileConduitLight.class, "torque_conduit_tile");  
+  GameRegistry.registerTileEntity(TileConduitMedium.class, "torque_conduit_medium_tile");  
+  GameRegistry.registerTileEntity(TileConduitHeavy.class, "torque_conduit_heavy_tile");
+
+  GameRegistry.registerBlock(torqueShaft, ItemBlockTorqueTile.class, "torque_shaft");
+  GameRegistry.registerTileEntity(TileTorqueShaftLight.class, "torque_driveline_tile");
+  GameRegistry.registerTileEntity(TileTorqueShaftMedium.class, "torque_driveline_medium_tile");
+  GameRegistry.registerTileEntity(TileTorqueShaftHeavy.class, "torque_driveline_heavy_tile");
   
   GameRegistry.registerBlock(torqueDistributor, ItemBlockTorqueTile.class, "torque_distributor");
-  GameRegistry.registerTileEntity(TileTorqueTransportDistributor.class, "torque_distributor_tile");
-  torqueDistributor.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/torque_distributor_side");
-  torqueDistributor.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_distributor_top");
-  torqueDistributor.setIcon(0, RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_distributor_side");  
-
-  GameRegistry.registerTileEntity(TileTorqueTransportDistributorMedium.class, "torque_distributor_medium_tile");
-  torqueDistributor.setIcon(1, RelativeSide.TOP, "ancientwarfare:automation/torque_distributor_medium_side");
-  torqueDistributor.setIcon(1, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_distributor_medium_top");
-  torqueDistributor.setIcon(1, RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_distributor_medium_side");  
-
-  GameRegistry.registerTileEntity(TileTorqueTransportDistributorHeavy.class, "torque_distributor_heavy_tile");
-  torqueDistributor.setIcon(2, RelativeSide.TOP, "ancientwarfare:automation/torque_distributor_heavy_side");
-  torqueDistributor.setIcon(2, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_distributor_heavy_top");
-  torqueDistributor.setIcon(2, RelativeSide.ANY_SIDE, "ancientwarfare:automation/torque_distributor_heavy_side");
+  GameRegistry.registerTileEntity(TileDistributorLight.class, "torque_distributor_tile");
+  GameRegistry.registerTileEntity(TileDistributorMedium.class, "torque_distributor_medium_tile");
+  GameRegistry.registerTileEntity(TileDistributorHeavy.class, "torque_distributor_heavy_tile");
     
   GameRegistry.registerBlock(torqueGeneratorSterling, ItemBlockTorqueTile.class, "torque_generator_sterling");
-  GameRegistry.registerTileEntity(TileTorqueGeneratorSterling.class, "torque_generator_sterling_tile");
-  torqueGeneratorSterling.setIcon(0, RelativeSide.FRONT, "ancientwarfare:automation/torque_generator_sterling_top");
-  torqueGeneratorSterling.setIcon(0, RelativeSide.REAR, "ancientwarfare:automation/torque_generator_sterling_bottom");
-  torqueGeneratorSterling.setIcon(0, RelativeSide.LEFT, "ancientwarfare:automation/torque_generator_sterling_bottom");
-  torqueGeneratorSterling.setIcon(0, RelativeSide.RIGHT, "ancientwarfare:automation/torque_generator_sterling_bottom");
-  torqueGeneratorSterling.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/torque_generator_sterling_bottom");
-  torqueGeneratorSterling.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/torque_generator_sterling_bottom");
+  GameRegistry.registerTileEntity(TileSterlingEngine.class, "torque_generator_sterling_tile");
   
   GameRegistry.registerBlock(torqueGeneratorWaterwheel, ItemBlockTorqueTile.class, "torque_generator_waterwheel");
-  GameRegistry.registerTileEntity(TileTorqueGeneratorWaterwheel.class, "torque_generator_waterwheel_tile");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.FRONT, "ancientwarfare:automation/waterwheel_front");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.REAR, "ancientwarfare:automation/waterwheel_rear");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.LEFT, "ancientwarfare:automation/waterwheel_left");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.RIGHT, "ancientwarfare:automation/waterwheel_right");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/waterwheel_top");
-  torqueGeneratorWaterwheel.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/waterwheel_bottom");
+  GameRegistry.registerTileEntity(TileWaterwheel.class, "torque_generator_waterwheel_tile");
   
   GameRegistry.registerBlock(handCrankedEngine, ItemBlockTorqueTile.class, "hand_cranked_engine");
-  GameRegistry.registerTileEntity(TileTorqueGeneratorHandCranked.class, "hand_cranked_engine_tile");
-  handCrankedEngine.setIcon(0, RelativeSide.TOP, "ancientwarfare:automation/hand_cranked_front");
-  handCrankedEngine.setIcon(0, RelativeSide.BOTTOM, "ancientwarfare:automation/hand_cranked_top");
-  handCrankedEngine.setIcon(0, RelativeSide.ANY_SIDE, "ancientwarfare:automation/hand_cranked_top");
+  GameRegistry.registerTileEntity(TileHandGenerator.class, "hand_cranked_engine_tile");
+  
+  GameRegistry.registerBlock(windmillBlade, "windmill_blade");
+  GameRegistry.registerTileEntity(TileWindmillBlade.class, "windmill_blade_tile");
+  
+  GameRegistry.registerBlock(windmillControl, ItemBlockTorqueTile.class, "windmill_control");
+  GameRegistry.registerTileEntity(TileWindmillController.class, "windmill_control_tile");
   
   GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");
   GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");
@@ -387,8 +335,6 @@ public static void load()
   chunkLoaderDeluxe.iconMap.setIconTexture(3, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
   chunkLoaderDeluxe.iconMap.setIconTexture(4, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
   chunkLoaderDeluxe.iconMap.setIconTexture(5, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
-  
-
   }
 
 }

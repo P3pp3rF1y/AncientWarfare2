@@ -13,14 +13,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
-public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorqueReceiver
+public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorqueTile
 {
 
 protected String owningPlayer;
@@ -73,35 +73,29 @@ public void onBoundsAdjusted(){}//NOOP
 public boolean userAdjustableBlocks(){return false;}//NOOP
 
 @Override
-public void setEnergy(double energy)
+public float getClientOutputRotation(ForgeDirection from, float delta)
   {
-  this.storedEnergy = energy;
+  return 0;
   }
 
 @Override
-public double getEnergyDrainFactor()
+public boolean useOutputRotation(ForgeDirection from)
   {
-  return 1;
+  return false;
   }
 
 @Override
-public ForgeDirection getPrimaryFacing()
+public double addTorque(ForgeDirection from, double energy)
   {
-  return ForgeDirection.getOrientation(getBlockMetadata());
-  }
-
-@Override
-public double addEnergy(ForgeDirection from, double energy)
-  {
-  if(canInput(from))
+  if(canInputTorque(from))
     {
-    if(energy+getEnergyStored()>getMaxEnergy())
+    if(energy+getTorqueStored(null)>getMaxTorque(null))
       {
-      energy = getMaxEnergy()-getEnergyStored();
+      energy = getMaxTorque(null)-getTorqueStored(null);
       }
-    if(energy>getMaxInput())
+    if(energy>getMaxTorqueInput(null))
       {
-      energy = getMaxInput();
+      energy = getMaxTorqueInput(null);
       }
     storedEnergy+=energy;
     return energy;    
@@ -110,25 +104,25 @@ public double addEnergy(ForgeDirection from, double energy)
   }
 
 @Override
-public double getMaxEnergy()
+public double getMaxTorque(ForgeDirection from)
   {
   return maxEnergyStored;
   }
 
 @Override
-public double getEnergyStored()
+public double getTorqueStored(ForgeDirection from)
   {
   return storedEnergy;
   }
 
 @Override
-public double getMaxInput()
+public double getMaxTorqueInput(ForgeDirection from)
   {
   return maxInput;
   }
 
 @Override
-public boolean canInput(ForgeDirection from)
+public boolean canInputTorque(ForgeDirection from)
   {
   return true;
   }
@@ -288,14 +282,32 @@ public boolean hasWorkBounds()
 public void addEnergyFromWorker(IWorker worker)
   {
   storedEnergy += AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType());
-  if(storedEnergy>getMaxEnergy()){storedEnergy = getMaxEnergy();}
+  if(storedEnergy>getMaxTorque(null)){storedEnergy = getMaxTorque(null);}
   }
 
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
   storedEnergy+=AWCoreStatics.energyPerWorkUnit;
-  if(storedEnergy>getMaxEnergy()){storedEnergy=getMaxEnergy();}
+  if(storedEnergy>getMaxTorque(null)){storedEnergy=getMaxTorque(null);}
+  }
+
+@Override
+public double getMaxTorqueOutput(ForgeDirection from)
+  {
+  return 0;
+  }
+
+@Override
+public boolean canOutputTorque(ForgeDirection towards)
+  {
+  return false;
+  }
+
+@Override
+public double drainTorque(ForgeDirection from, double energy)
+  {
+  return 0;
   }
 
 }

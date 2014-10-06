@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer.WarehouseStockFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -64,7 +63,7 @@ public void setupElements()
     }  
   if(container.filters.size()<4)
     {
-    button = new Button(8, totalHeight+4, 178-16-8, 12, StatCollector.translateToLocal("guistrings.automation.new_filter"))
+    button = new Button(8, totalHeight+4, 178-16-8, 12, "guistrings.automation.new_filter")
       {
       @Override
       protected void onPressed()

@@ -14,7 +14,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
@@ -24,7 +23,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
-import net.shadowmage.ancientwarfare.nei_plugin.AncientWarfareNEIPlugin;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -58,10 +56,10 @@ private ResourceLocation backgroundTexture;
 
 protected EntityPlayer player;
 
-protected GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, String backgroundTexture)
+protected GuiContainerBase(ContainerBase container, int xSize, int ySize, String backgroundTexture)
   {
-  super(par1Container);
-  par1Container.setGui(this);
+  super(container);
+  container.setGui(this);
   this.xSize = xSize;
   this.ySize = ySize;
   if(backgroundTexture!=null)
@@ -69,7 +67,7 @@ protected GuiContainerBase(ContainerBase par1Container, int xSize, int ySize, St
     this.backgroundTextureName = backgroundTexture;
     this.backgroundTexture = new ResourceLocation("ancientwarfare", "textures/gui/"+backgroundTextureName);    
     }
-  this.player = ((ContainerBase)par1Container).player;
+  this.player = ((ContainerBase)container).player;
   }
 
 public GuiContainerBase(ContainerBase container)

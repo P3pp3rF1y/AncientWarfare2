@@ -199,7 +199,7 @@ public void detectAndSendChanges()
   {
   super.detectAndSendChanges();
   if(player.worldObj.isRemote){return;}
-  tile.addEnergy(ForgeDirection.UNKNOWN, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
+  tile.addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
   NBTTagCompound tag = null;
   String name = tile.getCrafterName();
   

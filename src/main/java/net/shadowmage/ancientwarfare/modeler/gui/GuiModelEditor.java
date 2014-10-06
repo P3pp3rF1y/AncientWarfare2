@@ -106,6 +106,32 @@ public void initTexture()
     }
   }
 
+protected String getPrimitiveText()
+  {
+  String text = "Primitive: No Selection";  
+  if(getPrimitive()!=null)
+    {
+    String typePrefix = "BOX";
+    String pNum = "1";
+    ModelPiece p = getPrimitive().parent;
+    int i = 0;
+    for(Primitive pr : p.getPrimitives())
+      {
+      i++;
+      if(pr==getPrimitive())
+        {
+        if(pr instanceof PrimitiveBox){typePrefix = "BOX:";}
+        else if(pr instanceof PrimitiveTriangle){typePrefix="TRI:";}
+        else if(pr instanceof PrimitiveQuad){typePrefix="QUAD:";}
+        pNum = String.valueOf(i);
+        break;
+        }
+      }
+    text = "Primitive: "+typePrefix+pNum;
+    }
+  return text;
+  }
+
 @Override
 public void initElements()
   {  
@@ -137,7 +163,7 @@ public void initElements()
   pieceNameLabel = new Label(8, -guiTop, "Piece: No Selection");
   addGuiElement(pieceNameLabel);
   
-  primitiveNameLabel = new Label(8, -guiTop + 10, "Primitive: No Selection");
+  primitiveNameLabel = new Label(8, -guiTop + 10, getPrimitiveText());
   addGuiElement(primitiveNameLabel);
   }
 
@@ -168,7 +194,7 @@ public void setupElements()
   primitiveNameLabel.setRenderPosition(8, -guiTop+10);
   
   pieceNameLabel.setText(getModelPiece()==null? "Piece: No Selection" : "Piece: "+getModelPiece().getName());
-  primitiveNameLabel.setText(getPrimitive()==null? "Primitive: No Selection" : "Primitive: "+getPrimitive().toString());
+  primitiveNameLabel.setText(getPrimitiveText());
   
   addFileControls();
   addPieceList();

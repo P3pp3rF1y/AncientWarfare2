@@ -1,17 +1,12 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueGenerator;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueReceiver;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import buildcraft.api.mj.IBatteryIOObject;
 import buildcraft.api.mj.IBatteryObject;
 import buildcraft.api.mj.IOMode;
 import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerEmitter;
 import buildcraft.transport.PipeTransportPower;
 import buildcraft.transport.TileGenericPipe;
 
@@ -33,7 +28,7 @@ public TorqueMJBattery(ITorqueTile tile, IOMode mode, ForgeDirection dir)
 @Override
 public double getEnergyRequested()
   {
-  return tile.getMaxEnergy()-tile.getEnergyStored();
+  return tile.getMaxTorque(dir)-tile.getTorqueStored(dir);
   }
 
 @Override
@@ -51,29 +46,25 @@ public double addEnergy(double mj, boolean ignoreCycleLimit)
    * ALSO  FUCK THIS STUPID BATTERY BULLSHIT __ IT SHOULD NOT BE THIS HARD TO CREATE A GODDAMN BATTERY INTERFACE
    * WHY THE FUCK DOES BC NOT DO PROPER SIDED ENERGY INPUT/OUTPUT HANDLING?
    */
-  if(tile instanceof ITorqueReceiver)
-    {
-    return ((ITorqueReceiver) tile).addEnergy(dir, mj);
-    }
-  return 0;
+  return tile.addTorque(dir, mj);
   }
 
 @Override
 public double getEnergyStored()
   {
-  return tile.getEnergyStored();
+  return tile.getTorqueStored(dir);
   }
 
 @Override
 public void setEnergyStored(double mj)
   {
-  tile.setEnergy(mj);
+  tile.addTorque(dir, mj);
   }
 
 @Override
 public double maxCapacity()
   {
-  return tile.getMaxEnergy();
+  return tile.getMaxTorque(dir);
   }
 
 @Override
@@ -85,11 +76,7 @@ public double minimumConsumption()
 @Override
 public double maxReceivedPerCycle()
   {
-  if(tile instanceof ITorqueReceiver)
-    {
-    return ((ITorqueReceiver) tile).getMaxInput();
-    }
-  return 0;
+  return tile.getMaxTorqueInput(dir);
   }
 
 @Override
@@ -114,30 +101,28 @@ public IOMode mode()
 @Override
 public boolean canSend()
   {
-  return mode.canSend;
+  return tile.canOutputTorque(dir);
   }
 
 @Override
 public boolean canReceive()
   {
-  return mode.canReceive;
+  return tile.canInputTorque(dir);
   }
-
 }
 
 @Override
 public IBatteryObject getBatteryObject(String kind, ITorqueTile tile, ForgeDirection dir)
   {
-//  AWLog.logDebug("creating battery object for: "+tile+" of kind: "+kind+" for direction: "+dir);
   boolean send = false, recieve = false;
-  if(tile instanceof ITorqueReceiver){recieve = ((ITorqueReceiver) tile).canInput(dir);}
-  if(tile instanceof ITorqueGenerator){send = ((ITorqueGenerator) tile).canOutput(dir);}
+  recieve = tile.canInputTorque(dir);
+  send = tile.canOutputTorque(dir);
   IOMode mode = send && recieve ? IOMode.Both : send ? IOMode.Send : recieve ? IOMode.Receive : IOMode.None;
   return new TorqueMJBattery(tile, mode, dir);
   }
 
 @Override
-public boolean isPowerPipe(World world, TileEntity te)
+public boolean isPowerTile(TileEntity te)
   {
   if(te==null){return false;}
   if(te instanceof TileGenericPipe)
@@ -148,64 +133,20 @@ public boolean isPowerPipe(World world, TileEntity te)
       return true;
       }
     }
-  return false;
+  IBatteryObject bat = MjAPI.getMjBattery(te);
+  return bat!=null;
   }
 
 @Override
-public void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
+public double transferPower(ITorqueTile generator, ForgeDirection to, TileEntity target)
   {
-  if(!(generator instanceof IPowerEmitter)){return;}
-  world.theProfiler.startSection("AW-BC-PowerUpdate");
-  double[] requestedEnergy = new double[6];
-  
-  IBatteryObject[] targets = new IBatteryObject[6];
-  TileEntity[] tes = generator.getNeighbors();
-  TileEntity te;
-  
-  IBatteryObject target;
-  
-  double maxOutput = generator.getMaxOutput();
-  if(maxOutput>generator.getEnergyStored()){maxOutput = generator.getEnergyStored();}
-  if(maxOutput<1)
+  if(target!=null)
     {
-    world.theProfiler.endSection();
-    return;
-    }  
-  double request;
-  double totalRequest = 0;
-  
-  ForgeDirection d;
-  for(int i = 0; i < 6; i++)
-    {
-    d = ForgeDirection.getOrientation(i);
-    if(!generator.canOutput(d)){continue;}
-    te = tes[i];//world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
-    if(te instanceof ITorqueReceiver){continue;}
-    target = MjAPI.getMjBattery(te);
-    if(target==null){continue;}
-    targets[d.ordinal()]=target;  
-    request = target.maxReceivedPerCycle();
-    if(request +target.getEnergyStored() > target.maxCapacity()){request = target.maxCapacity()-target.getEnergyStored();}
-    if(request>0)
-      {
-      requestedEnergy[d.ordinal()]=request;
-      totalRequest += request;          
-      } 
+    IBatteryObject ibo = MjAPI.getMjBattery(target, MjAPI.DEFAULT_POWER_FRAMEWORK, to.getOpposite());
+    if(ibo==null){return 0;}
+    return generator.drainTorque(to, ibo.addEnergy(generator.getMaxTorqueOutput(to)));  
     }
-  if(totalRequest>0)
-    {
-    double percentFullfilled = maxOutput / totalRequest;  
-    for(int i = 0; i<6; i++)
-      {
-      if(targets[i]==null){continue;}
-      target = targets[i];
-      request = requestedEnergy[i];
-      request *= percentFullfilled;
-      request = target.addEnergy(request);
-      generator.setEnergy(generator.getEnergyStored()-request);  
-      }
-    }
-  world.theProfiler.endSection();
+  return 0;
   }
 
 }

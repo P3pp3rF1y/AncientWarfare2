@@ -1,12 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.crafting;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
-import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
@@ -236,7 +234,7 @@ public static void loadRecipes()
       "beb",
       "bbb",
       'b', Blocks.stonebrick,
-      'e', Items.ender_pearl);//TODO research?
+      'e', Items.ender_pearl);
   
   //chunkloader deluxe
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderDeluxe), "machinery",
@@ -244,29 +242,29 @@ public static void loadRecipes()
       "beb",
       "bbb",
       'b', Blocks.obsidian,
-      'e', Items.ender_pearl);//TODO research?
+      'e', Items.ender_pearl);
     
   //torque conduit s
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,0), "the_wheel",
-      "s",
-      "g",
-      "s",
+      "_s_",
+      "sgs",
+      "_s_",
       's', woodShaft.copy(),
       'g', woodenGear.copy());
   
 //torque conduit m
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,1), "the_wheel",
-      "s",
-      "g",
-      "s",
+      "_s_",
+      "sgs",
+      "_s_",
       's', ironShaft.copy(),
       'g', ironGear.copy());
   
 //torque conduit l
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit,1,2), "mass_production",
-      "s",
-      "g",
-      "s",
+      "_s_",
+      "sgs",
+      "_s_",
       's', steelShaft.copy(),
       'g', steelGear.copy());
     
@@ -294,7 +292,31 @@ public static void loadRecipes()
       's', steelShaft.copy(),
       'g', steelGear.copy());
   
-  //torque flywheel s
+  //torque shaft s
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft,1,0), "the_wheel",
+      "s",
+      "s",
+      "g",
+      's', woodShaft.copy(),
+      'g', woodenGear.copy());
+  
+//torque shaft m
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft,1,1), "the_wheel",
+      "s",
+      "s",
+      "g",
+      's', ironShaft.copy(),
+      'g', ironGear.copy());
+  
+//torque shaft l
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft,1,2), "mass_production",
+      "s",
+      "s",
+      "g",
+      's', steelShaft.copy(),
+      'g', steelGear.copy());
+  
+  //torque flywheel control s
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheel,1,0), "theory_of_gravity",
       "pgp",
       "ppp",
@@ -302,7 +324,7 @@ public static void loadRecipes()
       'p', Blocks.planks,
       'g', woodenGear.copy());
   
-  //torque flywheel m
+  //torque flywheel control m
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheel,1,1), "theory_of_gravity",
       "igi",
       "iii",
@@ -310,13 +332,37 @@ public static void loadRecipes()
       'i', Items.iron_ingot,
       'g', ironGear.copy());
   
-  //torque flywheel l
+  //torque flywheel control l
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheel,1,2), "mass_production",
       "igi",
       "iii",
       "igi",
       'i', AWItems.steel_ingot,
       'g', steelGear.copy());
+  
+  //torque flywheel s
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheelStorage,1,0), "theory_of_gravity",
+      "gpg",
+      "ppp",
+      "gpg",
+      'p', Blocks.planks,
+      'g', Blocks.glass_pane);
+  
+  //torque flywheel m
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheelStorage,1,1), "theory_of_gravity",
+      "gpg",
+      "ppp",
+      "ggg",
+      'p', Items.iron_ingot,
+      'g', Blocks.glass_pane);
+  
+  //torque flywheel l
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheelStorage,1,2), "mass_production",
+      "gpg",
+      "ppp",
+      "ggg",
+      'p', AWItems.steel_ingot,
+      'g', Blocks.glass_pane);
     
   //torque generator hand
   AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.handCrankedEngine), "the_wheel",
@@ -342,6 +388,22 @@ public static void loadRecipes()
       "igi",
       'i', Items.iron_ingot,
       'g', ironGear.copy());
+  
+  //torque generator windmill control
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.windmillControl), "the_wheel",
+      "ppp",
+      "gpg",
+      "ppp",
+      'i', Blocks.planks,
+      'g', woodenGear.copy());
+  
+  //torque generator windmill blade
+  AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.windmillBlade), "the_wheel",
+      "scs",
+      "csc",
+      "scs",
+      'c', Blocks.wool,
+      's', Items.stick);
     
   ItemStack upgradeBoundsMed = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.SIZE_MEDIUM.flag());//engineering
   ItemStack upgradeBoundsLarge = new ItemStack(AWItems.worksiteUpgrade,1, WorksiteUpgrade.SIZE_LARGE.flag());//mathematics

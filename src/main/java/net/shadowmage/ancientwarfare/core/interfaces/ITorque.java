@@ -1,135 +1,222 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 
 public final class ITorque
 {
 private ITorque(){}//noop the class, it is just a container for the interfaces and static methods
 
+/**
+ * Used for rendering of, well, anything that has a default north-oriented model
+ */
+public static final float[][] forgeDiretctionToRotationMatrix = new float[6][];
+static
+{
+forgeDiretctionToRotationMatrix[0] = new float[]{ -90,   0,   0};//d
+forgeDiretctionToRotationMatrix[1] = new float[]{  90,   0,   0};//u
+forgeDiretctionToRotationMatrix[2] = new float[]{   0,   0,   0};//n
+forgeDiretctionToRotationMatrix[3] = new float[]{   0, 180,   0};//s
+forgeDiretctionToRotationMatrix[4] = new float[]{   0,  90,   0};//w
+forgeDiretctionToRotationMatrix[5] = new float[]{   0, 270,   0};//e
+}
+
+public static interface foo1{}
+public static interface foo2{}
+
+public static interface foo3 extends foo1, foo2
+{
+}
+
+
+/**
+ * Interface for implementation by torque tiles.  Tiles may handle their power internally by any means.<br>
+ * Tiles are responsible for outputting their own power, but should not request power from other torque tiles
+ * (the other tiles will output power when ready).<br>
+ * @author Shadowmage
+ */
 public static interface ITorqueTile
 {
-void setEnergy(double energy);
-double getMaxEnergy();
-double getEnergyStored();
-double getEnergyDrainFactor();
-public ForgeDirection getPrimaryFacing();
+
+/**
+ * Return the maximum amount of energy store-able in the passed in block side
+ */
+double getMaxTorque(ForgeDirection from);
+
+/**
+ * Return the value of energy accessible from the passed in block side
+ */
+double getTorqueStored(ForgeDirection from);
+
+/**
+ * Add energy to the specified block side, up to the specified amount.<br>
+ * Return the value of energy actually added, or 0 for none.
+ */
+double addTorque(ForgeDirection from, double energy);
+
+/**
+ * Remove energy from the specified block side, up to the specified amount.<br>
+ * Return the value of energy actually removed, or 0 for none.
+ */
+double drainTorque(ForgeDirection from, double energy);
+
+/**
+ * Return the maximum amount of torque that the given side may output AT THIS TIME.<br>
+ * Analogous to the 'simulate' actions from other energy frameworks
+ */
+double getMaxTorqueOutput(ForgeDirection from);
+
+/**
+ * Return the maximum amount of torque that the given side may accept AT THIS TIME.<br>
+ * Analogous to the 'simulate' actions from other energy frameworks
+ */
+double getMaxTorqueInput(ForgeDirection from);
+
+/**
+ * Return true if this tile can output torque from the given block side.<br>
+ * Used by tiles for connection status.<br>
+ * Must return the same value between calls, or issue a neighbor-block update when the value changes.<br>
+ * You may return true from this method but return 0 for getMaxOutput() for 'toggleable' sides (side will connect but not always accept power)
+ */
+boolean canOutputTorque(ForgeDirection from);
+
+/**
+ * Return true if this tile can input torque into the given block side.<br>
+ * Used by tiles for connection status.<br>
+ * Must return the same value between calls, or issue a neighbor-block update when the value changes.
+ * You may return true from this method but return 0 for getMaxInput() for 'toggleable' sides (side will connect but not always accept power)
+ */
+boolean canInputTorque(ForgeDirection from);
+
+/**
+ * Used by client for rendering of torque tiles.  If TRUE this tiles neighbor will
+ * use this tiles output rotation values for rendering of the corresponding input side on the neighbor.
+ */
+boolean useOutputRotation(ForgeDirection from);
+
+/**
+ * Return output shaft rotation for the given side.  Will only be called if useOutputRotation(from) returns true.
+ */
+float getClientOutputRotation(ForgeDirection from, float delta);
 }
 
-public static interface ITorqueGenerator extends ITorqueTile
+/**
+ * default (simple) reference implementation of a torque delegate class<br>
+ * An ITorqueTile may have one or more of these for internal energy storage (or none, and handle energy entirely differently!).<br>
+ * This template class is merely included for convenience. 
+ * @author Shadowmage
+ *
+ */
+public static class TorqueCell
 {
-TileEntity[] getNeighbors();
-double getMaxOutput();
-boolean canOutput(ForgeDirection towards);
-}
+protected double maxInput, maxOutput, maxEnergy, efficiency;
+protected double energy;
 
-public static interface ITorqueReceiver extends ITorqueTile
-{
-double addEnergy(ForgeDirection from, double energy);
-double getMaxInput();
-boolean canInput(ForgeDirection from);
-}
-
-public static interface ITorqueStorage extends ITorqueGenerator, ITorqueReceiver
-{
-
-}
-
-public static interface ITorqueTransport extends ITorqueGenerator, ITorqueReceiver
-{
-
-}
-
-public static void applyPowerDrain(ITorqueTile tile)
+public TorqueCell(double in, double out, double max, double eff)
   {
-  World world = ((TileEntity)tile).getWorldObj();
-  world.theProfiler.startSection("AWPowerDrain");
-  double e = tile.getEnergyStored();
-  double m = tile.getMaxEnergy();
-  double d = tile.getEnergyDrainFactor();
-  if(e < 0.01d || m <=0 || d <= 0)
-    {
-    world.theProfiler.endSection();
-    return;    
-    }
-  double p = e/m;
-  double edpt = p*d*0.05d;
-  tile.setEnergy(e-edpt);
-  world.theProfiler.endSection();
+  maxInput = in;
+  maxOutput = out;
+  maxEnergy = max;
+  efficiency = eff;
   }
 
-public static void transferPower(World world, int x, int y, int z, ITorqueGenerator generator)
+public double getEnergy(){return energy;}
+
+public double getMaxEnergy(){return maxEnergy;}
+
+public void setEnergy(double in){energy = Math.max(0, Math.min(in, maxEnergy));}
+
+public double addEnergy(double in)
   {
-  world.theProfiler.startSection("AWPowerTransfer");
-  double[] requestedEnergy = new double[6];
-  TileEntity[] tes = generator.getNeighbors();
-  ITorqueReceiver[] targets = new ITorqueReceiver[6];
-  TileEntity te;
-  ITorqueReceiver target;
-  
-  double maxOutput = generator.getMaxOutput();
-  if(maxOutput>generator.getEnergyStored()){maxOutput = generator.getEnergyStored();}
-  if(maxOutput<1)
-    {
-    world.theProfiler.endSection();
-    return;
-    }  
-  double request;
-  double totalRequest = 0;
-  
-  ForgeDirection d;
-  for(int i = 0; i < 6; i++)
-    {
-    d = ForgeDirection.getOrientation(i);
-    if(!generator.canOutput(d)){continue;}
-    te = tes[i];//world.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
-    if(te instanceof ITorqueReceiver)      
-      {
-      target = (ITorqueReceiver)te;
-      if(target.canInput(d.getOpposite()))
-        {
-        targets[d.ordinal()]=target;  
-        request = target.getMaxInput();
-        if(generator instanceof ITorqueTransport && target instanceof ITorqueTransport)
-          {
-          if(target.getEnergyStored()<generator.getEnergyStored())
-            {
-            double diff = (generator.getEnergyStored() - target.getEnergyStored())*0.5d;
-            if(request>diff){request=diff;}
-            }
-          else
-            {
-            request = 0;
-            }
-          }
-        if(request +target.getEnergyStored() > target.getMaxEnergy()){request = target.getMaxEnergy()-target.getEnergyStored();}
-        if(request>0)
-          {
-          requestedEnergy[d.ordinal()]=request;
-          totalRequest += request;          
-          }          
-        }
-      }  
-    }
-  if(totalRequest>0)
-    {
-    double percentFullfilled = maxOutput / totalRequest;  
-    if(percentFullfilled>1.f){percentFullfilled=1.f;}
-    for(int i = 0; i<6; i++)
-      {
-      if(targets[i]==null){continue;}
-      target = targets[i];
-      request = requestedEnergy[i];
-      request *= percentFullfilled;
-      request = target.addEnergy(ForgeDirection.getOrientation(i).getOpposite(), request);
-      generator.setEnergy(generator.getEnergyStored()-request);
-      if(target.getEnergyStored()>target.getMaxEnergy()){target.setEnergy(target.getMaxEnergy());}
-      }
-    }
-  BCProxy.instance.transferPower(world, x, y, z, generator);
-  world.theProfiler.endSection();
+  if(Double.isNaN(in)){throw new RuntimeException("Requested input may not be NAN");}
+  //TODO remove these when done with implementation
+  in = Math.min(getMaxTickInput(), in);
+  energy += in;
+  return in;
   }
+
+public double drainEnergy(double request)
+  {
+  if(Double.isNaN(request)){throw new RuntimeException("Requested drain may not be NAN");}
+  //TODO remove these when done with implementation
+  request = Math.min(getMaxTickOutput(), request);
+  energy -= request;
+  return request;
+  }
+
+public double getMaxInput(){return maxInput;}
+
+public double getMaxOutput(){return maxOutput;}
+
+public double getMaxTickInput()
+  {
+  return Math.min(maxInput, getMaxEnergy() - getEnergy());
+  }
+
+public double getMaxTickOutput()
+  {
+  return Math.min(maxOutput, getEnergy());
+  }
+
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
+  {
+  tag.setDouble("energy", energy);
+  return tag;
+  }
+
+public void readFromNBT(NBTTagCompound tag)
+  {
+  energy = tag.getDouble("energy");
+  }
+
+public double getPercentFull()
+  {
+  return maxEnergy > 0.d ? energy/maxEnergy : 0.d;
+  }
+}
+
+/**
+ * Owner-sided aware torque storage cell.  Used by MIMO type torque tiles (conduit, distributor) to maintain a cell for each side
+ * without having to create new cells every time block orientation changes.<br>
+ * Caveat:  the side maintains energy level regardless of block orientation, the new 'input' side will have the energy from an old 'output' side.
+ * @author Shadowmage
+ */
+public static class SidedTorqueCell extends TorqueCell
+{
+
+ForgeDirection dir;
+ITorqueTile owner;
+public SidedTorqueCell(double in, double out, double max, double eff, ForgeDirection dir, ITorqueTile owner)
+  {
+  super(in, out, max, eff);
+  this.dir = dir;
+  this.owner = owner;
+  }
+
+@Override
+public double getMaxTickInput()
+  {
+  return owner.canInputTorque(dir) ? super.getMaxTickInput() : 0;
+  }
+
+@Override
+public double getMaxTickOutput()
+  {
+  return owner.canOutputTorque(dir) ? super.getMaxTickOutput() : 0;
+  }
+
+@Override
+public double addEnergy(double in)
+  {
+  return owner.canInputTorque(dir) ? super.addEnergy(in) : 0;
+  }
+
+@Override
+public double drainEnergy(double request)
+  {
+  return owner.canOutputTorque(dir) ? super.drainEnergy(request) : 0;
+  }
+
+}
 
 }
