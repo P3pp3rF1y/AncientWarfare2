@@ -169,6 +169,7 @@ protected void buildConnections()
   {
   connections = new boolean[6];
   ITorqueTile[] cache = getTorqueCache();
+  if(cache==null){throw new RuntimeException("CACHE WAS NULL FROM BUILDING, SOMETHING IS FUCKED...REALLY FUCKED...");}
   ForgeDirection dir;
   for(int i = 0; i < 6; i++)
     {
