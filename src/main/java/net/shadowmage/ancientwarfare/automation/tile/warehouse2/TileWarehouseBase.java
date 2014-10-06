@@ -540,10 +540,8 @@ public ItemStack tryAdd(ItemStack stack)
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  if(getWorkBoundsMin()==null || getWorkBoundsMax()==null)
-    {
-    setBounds(new BlockPosition(xCoord+1, yCoord, zCoord), new BlockPosition(xCoord+4, yCoord+3, zCoord+4));
-    }
+  if(tag.hasKey("min")){setWorkBoundsMin(new BlockPosition(tag.getCompoundTag("min")));}
+  if(tag.hasKey("max")){setWorkBoundsMax(new BlockPosition(tag.getCompoundTag("max")));}
   }
 
 /**
@@ -554,6 +552,5 @@ protected void onBoundsSet()
   getWorkBoundsMax().y = getWorkBoundsMin().y+3;
   worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
-
 
 }
