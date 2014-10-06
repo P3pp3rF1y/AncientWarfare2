@@ -24,7 +24,7 @@ allprojects
   apply plugin: 'forge'
   minecraft
   {
-    version = "1.7.10-10.13.0.1208"
+    version = "1.7.10-10.13.1.1219"
     runDir = "eclipse/assets"
   }
   version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.releasetype + "-MC" +minecraft.version
