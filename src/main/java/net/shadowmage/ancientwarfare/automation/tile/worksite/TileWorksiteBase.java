@@ -212,7 +212,7 @@ public void updateEntity()
     updateOverflowInventory();
     } 
   worldObj.theProfiler.endStartSection("Check For Work");
-  boolean hasWork = getEnergyStored() >= getEnergyPerUse() && hasWorksiteWork();
+  boolean hasWork = inventoryOverflow.isEmpty() && getEnergyStored() >= getEnergyPerUse() && hasWorksiteWork();
   worldObj.theProfiler.endStartSection("Process Work");
   if(hasWork)
     {
