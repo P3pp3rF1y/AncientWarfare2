@@ -22,8 +22,7 @@ Torque Cleanup
 
 Other cleanup
 	* stalled out traders
-	* workers idling when nearby enemies / enemies killed	
-	
+	* workers idling when nearby enemies / enemies killed		
 	
 video links
 http://youtu.be/0SCxAk2o3co
