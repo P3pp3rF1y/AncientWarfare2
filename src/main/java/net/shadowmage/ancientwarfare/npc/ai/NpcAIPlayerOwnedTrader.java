@@ -4,6 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -122,8 +123,10 @@ private void updateShelter()
   shelter=true;
   if(at_shelter)
     {
+//    AWLog.logDebug("at shelter...");
     if(!trader.shouldBeAtHome())
       {
+//      AWLog.logDebug("should not be at shelter anymore, exiting");
       shelter=false;
       at_shelter=false;
       shelterPoint=null;
@@ -150,7 +153,7 @@ private void updateShelter()
   else
     {
     double d = npc.getDistanceSq(shelterPoint);
-    if(d < 9.d)
+    if(d > 9.d)
       {
       npc.addAITask(TASK_MOVE);
       moveToPosition(shelterPoint, d);      
