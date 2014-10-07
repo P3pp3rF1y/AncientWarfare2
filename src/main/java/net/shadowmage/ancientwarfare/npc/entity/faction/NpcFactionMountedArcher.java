@@ -7,7 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
@@ -17,12 +16,14 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindCommanderFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorseFaction;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 
 public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob
@@ -37,7 +38,15 @@ public NpcFactionMountedArcher(World par1World)
     @Override
     public boolean isEntityApplicable(Entity entity)
       {
-      return isHostileTowards(entity);
+//      if(!canEntityBeSeen(entity)){return false;}
+      if(!isHostileTowards(entity)){return false;}
+      if(hasHome())
+        {
+        ChunkCoordinates home = getHomePosition();
+        double dist = entity.getDistanceSq(home.posX+0.5d, home.posY, home.posZ+0.5d);
+        if(dist>30*30){return false;}
+        }
+      return true;
       }    
     };
     
@@ -48,8 +57,10 @@ public NpcFactionMountedArcher(World par1World)
   this.tasks.addTask(1, new NpcAIFindCommanderFaction(this));  
   this.tasks.addTask(1, (alertAI = new NpcAIAlertFaction(this)));
   this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); 
-  this.tasks.addTask(3, new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F));
+  this.tasks.addTask(2, new NpcAIStayAtHome(this));
+  this.tasks.addTask(3, new NpcAIFactionRangedAttack(this));
+//  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); 
+//  this.tasks.addTask(3, new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F));
   
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
   this.tasks.addTask(102, new NpcAIWander(this, 0.625D));

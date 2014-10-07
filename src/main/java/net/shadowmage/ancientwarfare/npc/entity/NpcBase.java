@@ -240,7 +240,12 @@ public PathNavigate getNavigator()
   return super.getNavigator();
   }
 
-
+public double getDistanceSqFromHome()
+  {
+  if(!hasHome()){return 0;}
+  ChunkCoordinates home = getHomePosition();
+  return getDistanceSq(home.posX+0.5d, home.posY, home.posZ+0.5d);
+  }
 
 public void setTownHallPosition(BlockPosition pos)
   {
