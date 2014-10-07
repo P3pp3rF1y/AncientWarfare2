@@ -123,10 +123,8 @@ private void updateShelter()
   shelter=true;
   if(at_shelter)
     {
-//    AWLog.logDebug("at shelter...");
     if(!trader.shouldBeAtHome())
       {
-//      AWLog.logDebug("should not be at shelter anymore, exiting");
       shelter=false;
       at_shelter=false;
       shelterPoint=null;
