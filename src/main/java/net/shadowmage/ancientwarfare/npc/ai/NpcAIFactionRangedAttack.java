@@ -75,7 +75,7 @@ public void updateTask()
   else
     {    
     double homeDist = npc.getDistanceSqFromHome();
-    if(dist < attackDistanceSq && npc.getDistanceSqFromHome() > 9 && dist < 8*8)
+    if(npc.getDistanceSqFromHome() > 9 && dist < 8*8)
       {
       npc.addAITask(TASK_MOVE);
       ChunkCoordinates home = npc.getHomePosition();      
