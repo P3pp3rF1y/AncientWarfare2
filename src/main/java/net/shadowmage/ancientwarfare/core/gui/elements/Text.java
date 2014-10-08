@@ -341,7 +341,6 @@ public String getText()
   return text;
   }
 
-
 public static class TextValidator
 {
 
