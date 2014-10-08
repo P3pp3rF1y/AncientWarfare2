@@ -48,9 +48,12 @@ protected void onRepack()
   {
   if(ridingEntity instanceof EntityHorse)
     {
-    mountEntity(null);
     EntityHorse horse = (EntityHorse)ridingEntity;
-    horse.setDead();    
+    if(horse!=null)
+      {
+      horse.setDead();      
+      }
+    mountEntity(null);    
     }
   }
 
