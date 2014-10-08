@@ -122,9 +122,9 @@ protected void clientNetworkUpdate()
   {
   if(clientEnergyState != clientDestEnergyState)
     {
-    if(networkUpdateTicks>=0)
+    if(networkUpdateTicks>0)
       {
-      clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double)networkUpdateTicks+1.d);
+      clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double)networkUpdateTicks);
       networkUpdateTicks--;
       }
     else
@@ -137,7 +137,8 @@ protected void clientNetworkUpdate()
 @Override
 protected void handleClientRotationData(ForgeDirection side, int value)
   {
-  clientDestEnergyState =value;
+  clientDestEnergyState = value;
+  this.networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
   }
 
 @Override

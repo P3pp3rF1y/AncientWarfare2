@@ -19,6 +19,7 @@ Torque Cleanup
 	C distributor needs separate output speeds per-output head
 	C fix gap in windmill model (and probably redo texture)
 	C rename 'conduit' to 'junction'
+	* mobs can spawn on windmill blocks ~!
 
 Other cleanup
 	* stalled out traders
