@@ -230,8 +230,8 @@ protected void handleBackspaceAction()
       newText = newText + text.charAt(i);
       }
     text = newText;
-    setText(newText);
     cursorIndex--;
+    setText(newText);
     }
   }
 
@@ -323,7 +323,7 @@ public void setText(String text)
       }
     }
   this.text = text;
-  this.cursorIndex = text.length();
+  if(cursorIndex>text.length()){cursorIndex=text.length();}
   }
 
 public void addAllowedChar(char ch)
