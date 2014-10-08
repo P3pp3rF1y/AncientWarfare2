@@ -36,7 +36,8 @@ name = "Ancient Warfare Core",
 modid = "AncientWarfare",
 version = "@VERSION@",
 dependencies="after:BuildCraft|Core;"
-            +"after:CoFHCore"
+            +"after:CoFHCore",
+guiFactory="net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory"
 )
 
 public class AncientWarfareCore 
