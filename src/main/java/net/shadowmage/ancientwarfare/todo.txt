@@ -13,7 +13,7 @@ gearhead: 535353
 
 Torque Cleanup		
 	* add donators to credits in instruction manual	
-	* update instruction manual regarding submitting bug reports/issues to not mention flagging for certain things
+	* update forum post and curst site with info regarding bug reports/issues/enhancements (not flagging)
 	* update instruction manual with information regarding new torque system
 	* update instruction manual with information regarding updated traders (screenshots, etc)
 	C distributor needs separate output speeds per-output head

@@ -48,34 +48,28 @@ public void sendInitData()
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  int cows = tag.getInteger("cows");
-  int pigs = tag.getInteger("pigs");
-  int chickens = tag.getInteger("chickens");
-  int sheep = tag.getInteger("sheep");
-  maxCows = cows;
-  maxPigs = pigs;
-  maxSheep = sheep;
-  maxChickens = chickens;
-  if(player.worldObj.isRemote)
+  maxCows = tag.getInteger("cows");
+  maxPigs = tag.getInteger("pigs");
+  maxChickens = tag.getInteger("chickens");
+  maxSheep = tag.getInteger("sheep");
+  if(!player.worldObj.isRemote)
     {
-    refreshGui();
-    }
-  else
-    {
-    worksite.maxChickenCount = chickens;
-    worksite.maxCowCount = cows;
-    worksite.maxPigCount = pigs;
-    worksite.maxSheepCount = sheep;
-    }      
+    worksite.maxCowCount = maxCows;
+    worksite.maxPigCount = maxPigs;
+    worksite.maxChickenCount = maxChickens;
+    worksite.maxSheepCount = maxSheep;
+    worksite.markDirty();//mark dirty so it get saved to nbt
+    }  
+  refreshGui();
   }
 
 public void sendSettingsToServer()
   {
   NBTTagCompound tag = new NBTTagCompound();
-  tag.setInteger("pigs", maxPigs);
   tag.setInteger("cows", maxCows);
-  tag.setInteger("sheep", maxSheep);
+  tag.setInteger("pigs", maxPigs);
   tag.setInteger("chickens", maxChickens);
+  tag.setInteger("sheep", maxSheep);
   sendDataToServer(tag);
   }
 

@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -510,6 +511,26 @@ public WorkType getWorkType()
 public void openAltGui(EntityPlayer player)
   {
   NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, xCoord, yCoord, zCoord);
+  }
+
+@Override
+public void readFromNBT(NBTTagCompound tag)
+  {
+  super.readFromNBT(tag);
+  maxChickenCount = tag.getInteger("maxChickens");
+  maxCowCount = tag.getInteger("maxCows");
+  maxPigCount = tag.getInteger("maxPigs");
+  maxSheepCount = tag.getInteger("maxSheep");
+  }
+
+@Override
+public void writeToNBT(NBTTagCompound tag)
+  {
+  super.writeToNBT(tag);
+  if(tag.hasKey("maxChickens")){tag.setInteger("maxChickens", maxChickenCount);}
+  if(tag.hasKey("maxCows")){tag.setInteger("maxCows", maxCowCount);}
+  if(tag.hasKey("maxPigs")){tag.setInteger("maxPigs", maxPigCount);}
+  if(tag.hasKey("maxSheep")){tag.setInteger("maxSheep", maxSheepCount);}
   }
 
 private static class EntityPair
