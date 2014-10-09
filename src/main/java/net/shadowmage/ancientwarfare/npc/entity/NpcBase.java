@@ -240,6 +240,20 @@ public PathNavigate getNavigator()
   return super.getNavigator();
   }
 
+@Override
+public void onEntityUpdate()
+  {
+  /**
+   * this is pushOutOfBlocks ... 
+   * need to test how well it works for an npc (perhaps drop sand on their head?)
+   */
+  if(!worldObj.isRemote)
+    {
+    this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);    
+    }
+  super.onEntityUpdate();
+  }
+
 public double getDistanceSqFromHome()
   {
   if(!hasHome()){return 0;}
