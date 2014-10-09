@@ -22,6 +22,25 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntr
 public class InventoryTools
 {
 
+public static boolean canInventoryHold(IInventory inventory, int side, ItemStack stack)
+  {
+  return canInventoryHold(inventory, getSlotsForSide(inventory, side), stack);
+  }
+
+public static boolean canInventoryHold(IInventory inventory, int[] slots, ItemStack stack)
+  {
+  int toMerge = stack.stackSize;
+  ItemStack existing = null;
+  for(int index : slots)
+    {
+    existing = inventory.getStackInSlot(index);
+    if(existing==null){return true;}
+    else if(doItemStacksMatch(existing, stack)){toMerge -= existing.getMaxStackSize()-existing.stackSize;}
+    if(toMerge<=0){break;}
+    }
+  return toMerge<=0;
+  }
+
 /**
  * Checks if the input inventory can hold all of the items.<br>
  * <br>
@@ -32,8 +51,7 @@ public class InventoryTools
  */
 public static boolean canInventoryHold(IInventory inventory, int side, List<ItemStack> stacks)
   {  
-  int[] slots = inventory instanceof ISidedInventory ? ((ISidedInventory)inventory).getAccessibleSlotsFromSide(side) : getIndiceArrayForSpread(0, inventory.getSizeInventory());
-  return canInventoryHold(inventory, slots, stacks);
+  return canInventoryHold(inventory, getSlotsForSide(inventory, side), stacks);
   }
 
 public static boolean canInventoryHold(IInventory inventory, int[] slots, List<ItemStack> stacks)
@@ -903,6 +921,15 @@ public static int[] getIndiceArrayForSpread(int start, int len)
     array[i]=k;
     }
   return array;
+  }
+
+public static int[] getSlotsForSide(IInventory inventory, int side)
+  {
+  if(side >= 0 && inventory instanceof ISidedInventory)
+    {
+    return ((ISidedInventory) inventory).getAccessibleSlotsFromSide(side);
+    }
+  return getIndiceArrayForSpread(0, inventory.getSizeInventory());
   }
 
 
