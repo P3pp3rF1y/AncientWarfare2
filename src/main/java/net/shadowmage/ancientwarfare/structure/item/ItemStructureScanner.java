@@ -139,6 +139,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
     return;
     }
   BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+  if(hit==null){return;}
   ItemStructureSettings.getSettingsFor(stack, scanSettings);
   if(scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey())
     {
