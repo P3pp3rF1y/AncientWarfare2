@@ -103,7 +103,7 @@ protected void placeEntities()
     destination.x = rule.x;
     destination.y = rule.y;
     destination.z = rule.z;
-    BlockTools.rotateInArea(destination, destXSize, destZSize, turns);
+    BlockTools.rotateInArea(destination, template.xSize, template.zSize, turns);
     destination.offsetBy(bb.min);
     try
       {
