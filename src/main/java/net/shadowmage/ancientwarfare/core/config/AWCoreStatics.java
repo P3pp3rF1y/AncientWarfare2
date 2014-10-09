@@ -98,7 +98,7 @@ public static void loadConfig(Configuration config)
   
   enableResearchResourceUse = config.get(researchSettings, "use_research_resources", useResearchSystem, "Default = true\n" +
       "If set to false, research system will not use resources for research.").getBoolean(useResearchSystem);
-  config.save();
+  config.save();  
   }
 
 private static void setCategoryNames(Configuration config)

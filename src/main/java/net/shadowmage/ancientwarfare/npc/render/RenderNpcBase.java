@@ -28,9 +28,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import org.lwjgl.opengl.GL11;
@@ -51,53 +51,51 @@ public void doRender(Entity par1Entity, double x, double y, double z, float par8
   {  
   super.doRender(par1Entity, x, y, z, par8, par9);
   EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-  if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_ADDITIONAL_INFO))
+
+  NpcBase npc = (NpcBase)par1Entity;
+  if(npc.isHostileTowards(player))
     {
-    NpcBase npc = (NpcBase)par1Entity;
-    if(npc.isHostileTowards(player))
+    if(AWNPCStatics.renderHostileNames.getBoolean())
       {
-      if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES))
+      String name = getNameForRender(npc, true); 
+      if(AWNPCStatics.renderTeamColors.getBoolean())
         {
-        String name = getNameForRender(npc, true); 
-        if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_TEAM_COLORS))
+        ScorePlayerTeam playerTeam = player.worldObj.getScoreboard().getTeam(player.getCommandSenderName());
+        ScorePlayerTeam npcTeam = (ScorePlayerTeam)npc.getTeam();
+        if(npcTeam!=null && npcTeam!=playerTeam)
           {
-          ScorePlayerTeam playerTeam = player.worldObj.getScoreboard().getTeam(player.getCommandSenderName());
-          ScorePlayerTeam npcTeam = (ScorePlayerTeam)npc.getTeam();
-          if(npcTeam!=null && npcTeam!=playerTeam)
-            {
-            name = npcTeam.getColorPrefix()+name+npcTeam.getColorSuffix();
-            }
+          name = npcTeam.getColorPrefix()+name+npcTeam.getColorSuffix();
           }
-        renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
-        }      
-      }
-    else
-      {
-      boolean canBeCommandedBy = npc.canBeCommandedBy(player.getCommandSenderName());
-      if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_FRIENDLY_NAMES))
-        {
-        String name = getNameForRender(npc, false);
-        if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_TEAM_COLORS))
-          {
-          ScorePlayerTeam playerTeam = player.worldObj.getScoreboard().getTeam(player.getCommandSenderName());
-          ScorePlayerTeam npcTeam = (ScorePlayerTeam)npc.getTeam();
-          if(npcTeam!=null && npcTeam!=playerTeam)
-            {
-            name = npcTeam.getColorPrefix()+name+npcTeam.getColorSuffix();
-            }
-          }
-        else if(!canBeCommandedBy)
-          {
-          name = EnumChatFormatting.DARK_GRAY.toString()+name;
-          }
-        renderColoredLabel(npc, name, x, y, z, 64, 0x20ffffff, 0xffffffff);
         }
-      if(canBeCommandedBy)
+      renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
+      }      
+    }
+  else
+    {
+    boolean canBeCommandedBy = npc.canBeCommandedBy(player.getCommandSenderName());
+    if(AWNPCStatics.renderFriendlyNames.getBoolean())
+      {
+      String name = getNameForRender(npc, false);
+      if(AWNPCStatics.renderTeamColors.getBoolean())
         {
-        if(ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_NPC_AI))
+        ScorePlayerTeam playerTeam = player.worldObj.getScoreboard().getTeam(player.getCommandSenderName());
+        ScorePlayerTeam npcTeam = (ScorePlayerTeam)npc.getTeam();
+        if(npcTeam!=null && npcTeam!=playerTeam)
           {
-          renderNpcAITasks(npc, x, y, z, 64);
+          name = npcTeam.getColorPrefix()+name+npcTeam.getColorSuffix();
           }
+        }
+      else if(!canBeCommandedBy)
+        {
+        name = EnumChatFormatting.DARK_GRAY.toString()+name;
+        }
+      renderColoredLabel(npc, name, x, y, z, 64, 0x20ffffff, 0xffffffff);
+      }
+    if(canBeCommandedBy)
+      {
+      if(AWNPCStatics.renderAI.getBoolean())
+        {
+        renderNpcAITasks(npc, x, y, z, 64);
         }
       }
     }
@@ -232,7 +230,7 @@ private String getNameForRender(NpcBase npc, boolean hostile)
   {
   String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : "npc."+npc.getNpcFullType()+".name";
   customName = StatCollector.translateToLocal(customName);  
-  boolean addHealth = (hostile && ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_HOSTILE_HEALTH)) || (!hostile && ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_FRIENDLY_HEALTH));
+  boolean addHealth = (hostile && AWNPCStatics.renderHostileHealth.getBoolean()) || (!hostile && AWNPCStatics.renderFriendlyHealth.getBoolean());
   if(addHealth)
     {
     customName += " "+getHealthForRender(npc);    

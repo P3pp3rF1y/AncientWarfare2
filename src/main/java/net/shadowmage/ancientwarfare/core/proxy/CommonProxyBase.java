@@ -30,4 +30,9 @@ public EntityPlayer getFakePlayer(WorldServer world, String name)
   return FakePlayerFactory.get(world, new GameProfile(null, name));
   }
 
+public void onConfigChanged()
+  {
+  
+  }
+
 }

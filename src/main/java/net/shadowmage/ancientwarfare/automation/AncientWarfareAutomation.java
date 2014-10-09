@@ -31,12 +31,14 @@ import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
+import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -46,6 +48,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 @Mod
 (
@@ -147,6 +150,7 @@ public void preInit(FMLPreInitializationEvent evt)
    * register tick-handlers
    */
   FMLCommonHandler.instance().bus().register(new MailboxTicker());
+  FMLCommonHandler.instance().bus().register(this);
   
   ForgeChunkManager.setForcedChunkLoadingCallback(this, new AWChunkLoader());
   
@@ -175,4 +179,12 @@ public void postInit(FMLPostInitializationEvent evt)
   AWLog.log("Ancient Warfare Automation Post-Init completed.  Successfully completed all loading stages.");
   }
 
+@SubscribeEvent
+public void onConfigChanged(OnConfigChangedEvent evt)
+  {
+  if(AncientWarfareCore.modID.equals(evt.modID))
+    {
+    proxy.onConfigChanged();    
+    }
+  }
 }

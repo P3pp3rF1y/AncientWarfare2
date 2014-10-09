@@ -143,6 +143,8 @@ public Configuration healthConfig;
 public Configuration foodConfig;
 public Configuration factionConfig;
 
+public static Property renderAI, renderWorkPoints, renderFriendlyNames, renderHostileNames, renderFriendlyHealth, renderHostileHealth, renderTeamColors;
+
 public AWNPCStatics(Configuration config)
   {
   super(config);
@@ -265,6 +267,14 @@ public void initializeValues()
   exportEntityNames = config.get(serverSettings, "export_entity_names", false, "Export entity name list\nDefault="+exportEntityNames+"\n" +
   		"If true, a text file will be created in the main ancientwarfare config directory containing a list of all registered in-game entity names.\n" +
   		"These names may be used to populate the NPC target lists.").getBoolean(exportEntityNames);
+  
+  renderAI = config.get(clientSettings, "render_npc_ai", true);
+  renderWorkPoints = config.get(clientSettings, "render_work_points", true);  
+  renderFriendlyNames = config.get(clientSettings, "render_friendly_nameplates", true);
+  renderHostileNames = config.get(clientSettings, "render_hostile_nameplates", true);
+  renderFriendlyHealth = config.get(clientSettings, "render_friendly_health", true);
+  renderHostileHealth = config.get(clientSettings, "render_hostile_health", true);
+  renderTeamColors = config.get(clientSettings, "render_team_colors", true);
   this.config.save();
   }
 

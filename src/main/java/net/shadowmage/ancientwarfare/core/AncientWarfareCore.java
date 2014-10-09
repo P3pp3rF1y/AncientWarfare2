@@ -6,7 +6,6 @@ import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
@@ -20,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.core.research.ResearchData;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
+import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -29,11 +29,12 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 @Mod
 (
 name = "Ancient Warfare Core",
-modid = "AncientWarfare",
+modid = AncientWarfareCore.modID,
 version = "@VERSION@",
 dependencies="after:BuildCraft|Core;"
             +"after:CoFHCore",
@@ -43,7 +44,9 @@ guiFactory="net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory"
 public class AncientWarfareCore 
 {
 
-@Instance(value="AncientWarfare")
+public static final String modID = "AncientWarfare";
+
+@Instance(value=AncientWarfareCore.modID)
 public static AncientWarfareCore instance;
 
 @SidedProxy
@@ -77,6 +80,7 @@ public void preInit(FMLPreInitializationEvent evt)
   MinecraftForge.EVENT_BUS.register(AWGameData.INSTANCE);
   MinecraftForge.EVENT_BUS.register(new ItemEventHandler());
   FMLCommonHandler.instance().bus().register(ResearchTracker.instance());
+  FMLCommonHandler.instance().bus().register(this);
    
   /**
    * register blocks, items, tile entities, and entities
@@ -109,11 +113,10 @@ public void preInit(FMLPreInitializationEvent evt)
 public void init(FMLInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Core Init Started");
-  AWCoreCrafting.loadRecipes();
-  ClientOptions.INSTANCE.loadClientOptions();
   /**
    * register recipes
    */
+  AWCoreCrafting.loadRecipes();
   AWLog.log("Ancient Warfare Core Init Completed");
   }
 
@@ -130,4 +133,16 @@ public void serverStartingEvent(FMLServerStartingEvent evt)
   {
   evt.registerServerCommand(new CommandResearch());
   }
+
+@SubscribeEvent
+public void configChangedEvent(OnConfigChangedEvent evt)
+  {
+  if(modID.equals(evt.modID))
+    {
+    config.save();
+    proxy.onConfigChanged();
+    }
+  }
+
+
 }

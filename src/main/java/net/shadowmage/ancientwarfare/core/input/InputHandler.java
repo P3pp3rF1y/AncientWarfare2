@@ -11,9 +11,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.options.GuiOptions;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
@@ -29,8 +29,6 @@ import cpw.mods.fml.common.gameevent.InputEvent.MouseInputEvent;
 
 public class InputHandler
 {
-
-public static final String KEY_OPTIONS = "keybind.options";
 
 public static final String KEY_ALT_ITEM_USE_0 = "keybind.alt_item_use_1";
 public static final String KEY_ALT_ITEM_USE_1 = "keybind.alt_item_use_2";
@@ -59,37 +57,35 @@ private long lastMouseInput = -1;
 public void loadConfig(Configuration config)
   {
   this.config = config;
-  registerKeybind(KEY_OPTIONS, Keyboard.KEY_F7);
-  registerKeybind(KEY_ALT_ITEM_USE_0, Keyboard.KEY_Z);
-  registerKeybind(KEY_ALT_ITEM_USE_1, Keyboard.KEY_X);
-  registerKeybind(KEY_ALT_ITEM_USE_2, Keyboard.KEY_C);
-  registerKeybind(KEY_ALT_ITEM_USE_3, Keyboard.KEY_V);
-  registerKeybind(KEY_ALT_ITEM_USE_4, Keyboard.KEY_B);  
-  InputCallback optionsCB = new InputCallback()
-    {
-    @Override
-    public void onKeyReleased()
-      {
-     
-      }
-    @Override
-    public void onKeyPressed()
-      {
-      Minecraft minecraft = Minecraft.getMinecraft();
-      if(minecraft==null || minecraft.thePlayer==null || minecraft.currentScreen!=null)
-        {       
-        return;
-        }
-      minecraft.displayGuiScreen(new GuiOptions(new ContainerBase(minecraft.thePlayer, 0, 0, 0))); 
-      }
-    };
-  addInputCallback(KEY_OPTIONS, optionsCB);
   
-  addInputCallback(KEY_ALT_ITEM_USE_0, new ItemInputCallback(ItemKey.KEY_0));
-  addInputCallback(KEY_ALT_ITEM_USE_1, new ItemInputCallback(ItemKey.KEY_1));
-  addInputCallback(KEY_ALT_ITEM_USE_2, new ItemInputCallback(ItemKey.KEY_2));
-  addInputCallback(KEY_ALT_ITEM_USE_3, new ItemInputCallback(ItemKey.KEY_3));
-  addInputCallback(KEY_ALT_ITEM_USE_4, new ItemInputCallback(ItemKey.KEY_4)); 
+  registerKeybind(KEY_ALT_ITEM_USE_0, Keyboard.KEY_Z, new ItemInputCallback(ItemKey.KEY_0));
+  registerKeybind(KEY_ALT_ITEM_USE_1, Keyboard.KEY_X, new ItemInputCallback(ItemKey.KEY_1));
+  registerKeybind(KEY_ALT_ITEM_USE_2, Keyboard.KEY_C, new ItemInputCallback(ItemKey.KEY_2));
+  registerKeybind(KEY_ALT_ITEM_USE_3, Keyboard.KEY_V, new ItemInputCallback(ItemKey.KEY_3));
+  registerKeybind(KEY_ALT_ITEM_USE_4, Keyboard.KEY_B, new ItemInputCallback(ItemKey.KEY_4)); 
+  }
+
+public void updateFromConfig()
+  {
+  updateKeybind(KEY_ALT_ITEM_USE_0);
+  updateKeybind(KEY_ALT_ITEM_USE_1);
+  updateKeybind(KEY_ALT_ITEM_USE_2);
+  updateKeybind(KEY_ALT_ITEM_USE_3);
+  updateKeybind(KEY_ALT_ITEM_USE_4);
+  }
+
+private void updateKeybind(String name)
+  {
+  Keybind k = getKeybind(name);  
+  if(k!=null)//could be null if the keybind was added by a child-mod that is not currently present
+    {
+    reassignKeyCode(k, getKeybindProp(name, k.key).getInt(k.key));    
+    }
+  }
+
+private Property getKeybindProp(String keyName, int defaultVal)
+  {
+  return config.get(keybinds, keyName, defaultVal);
   }
 
 @SubscribeEvent
@@ -160,7 +156,7 @@ public String getKeybindBinding(String name)
   return Keyboard.getKeyName(getKeybind(name).getKeyCode());
   }
 
-public void registerKeybind(String name, int keyCode)
+public void registerKeybind(String name, int keyCode, InputCallback cb)
   {
   if(!keybindMap.containsKey(name))
     {    
@@ -172,6 +168,14 @@ public void registerKeybind(String name, int keyCode)
       bindsByKey.put(key, new HashSet<Keybind>());      
       }
     bindsByKey.get(key).add(k);
+    }
+  else
+    {
+    throw new RuntimeException("Attempt to register duplicate keybind: "+name);
+    }
+  if(cb!=null)
+    {
+    keybindMap.get(name).inputHandlers.add(cb);
     }
   config.save();  
   }

@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -30,6 +31,7 @@ import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
+import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -38,6 +40,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 @Mod
 (
@@ -80,9 +83,10 @@ public void preInit(FMLPreInitializationEvent evt)
   /**
    * load pre-init
    */  
-  proxy.registerClient();
   statics.load();//load config settings
+  proxy.registerClient();//must be loaded after configs
   FMLCommonHandler.instance().bus().register(FactionTracker.INSTANCE);
+  FMLCommonHandler.instance().bus().register(this);
   MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
   
   /**
@@ -146,5 +150,13 @@ public void postInit(FMLPostInitializationEvent evt)
   AWLog.log("Ancient Warfare NPCs Post-Init completed.  Successfully completed all loading stages.");
   }
 
+@SubscribeEvent
+public void onConfigChanged(OnConfigChangedEvent evt)
+  {
+  if(AncientWarfareCore.modID.equals(evt.modID))
+    {
+    proxy.onConfigChanged();    
+    }
+  }
 
 }

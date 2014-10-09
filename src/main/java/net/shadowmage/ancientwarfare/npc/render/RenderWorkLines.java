@@ -9,9 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.shadowmage.ancientwarfare.core.config.ClientOptions;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
@@ -35,7 +35,7 @@ private List<BlockPosition> positionList = new ArrayList<BlockPosition>();
 @SubscribeEvent
 public void renderLastEvent(RenderWorldLastEvent evt)
   {
-  boolean render = ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_WORK_POINTS);
+  boolean render = AWNPCStatics.renderWorkPoints.getBoolean();
   if(!render){return;}
   Minecraft mc = Minecraft.getMinecraft();
   if(mc==null){return;}

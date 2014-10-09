@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.automation.config;
 
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 
@@ -87,6 +88,8 @@ public static final double mjToTorque = 1.d;
 
 public static final double torqueToRf = 1.d * rfConversionFactor;
 public static final double torqueToMj = 1.d;
+
+public static Property renderWorkBounds;
 
 /**
  * @param config
@@ -200,6 +203,7 @@ public void initializeValues()
       "Default = "+hand_cranked_generator_output_factor+"\n"+
       "Lower values reduce output, higher values increase output.  Zero or negative values will result in no energy output").getDouble(hand_cranked_generator_output_factor);
   
+  renderWorkBounds = config.get(AWCoreStatics.clientOptions, "render_work_bounds", true);
   this.config.save();
   }
 

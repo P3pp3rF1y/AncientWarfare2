@@ -3,17 +3,25 @@ package net.shadowmage.ancientwarfare.npc.proxy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
-import net.shadowmage.ancientwarfare.core.config.ClientOptions;
+import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcBard;
@@ -33,6 +41,11 @@ import net.shadowmage.ancientwarfare.npc.render.RenderNpcBase;
 import net.shadowmage.ancientwarfare.npc.render.RenderShield;
 import net.shadowmage.ancientwarfare.npc.render.RenderWorkLines;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
+import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
+import cpw.mods.fml.client.config.GuiConfig;
+import cpw.mods.fml.client.config.GuiConfigEntries;
+import cpw.mods.fml.client.config.IConfigElement;
+import cpw.mods.fml.client.config.GuiConfigEntries.CategoryEntry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 
@@ -73,13 +86,14 @@ public void registerClient()
 
 private void registerClientOptions()
   {
-  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_ADDITIONAL_INFO, "Main control for additional npc-related rendering", true, AncientWarfareNPC.config);
-  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_AI, "Render NPC AI Tasks", true, AncientWarfareNPC.config);
-  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_FRIENDLY_NAMES, "Render friendly/neutral NPC nameplates", true, AncientWarfareNPC.config);
-  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_NPC_HOSTILE_NAMES, "Render hostile NPC nameplates", true, AncientWarfareNPC.config);
-  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_HOSTILE_HEALTH, "Render health values on hostile npc nameplates", true, AncientWarfareNPC.config);
-  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_FRIENDLY_HEALTH, "Render health values on friendly npc nameplates", true, AncientWarfareNPC.config);
-  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_TEAM_COLORS, "Render team colors for nameplate names", true, AncientWarfareNPC.config);
+  ConfigManager.registerConfigCategory(new NpcCategory("NPC Module Options", "tooltip.translation.key.goes.here"));
+  }
+
+@Override
+public void onConfigChanged()
+  {
+  AncientWarfareNPC.config.save();
+  super.onConfigChanged();
   }
 
 @Override
@@ -105,5 +119,26 @@ public ResourceLocation loadSkinPackImage(String packName, String imageName, Inp
   return null;
   }
 
+public static final class NpcCategory extends DummyCategoryElement
+{
+
+public NpcCategory(String arg0, String arg1)
+  {
+  super(arg0, arg1, getElementList());
+  }
+
+private static List<IConfigElement> getElementList()
+  {
+  ArrayList<IConfigElement> list = new ArrayList<IConfigElement>();
+  list.add(new ConfigElement(AWNPCStatics.renderAI));
+  list.add(new ConfigElement(AWNPCStatics.renderFriendlyNames));
+  list.add(new ConfigElement(AWNPCStatics.renderFriendlyHealth));
+  list.add(new ConfigElement(AWNPCStatics.renderHostileNames));
+  list.add(new ConfigElement(AWNPCStatics.renderHostileHealth));
+  list.add(new ConfigElement(AWNPCStatics.renderTeamColors));
+  list.add(new ConfigElement(AWNPCStatics.renderWorkPoints));  
+  return list;
+  }
+}
 
 }

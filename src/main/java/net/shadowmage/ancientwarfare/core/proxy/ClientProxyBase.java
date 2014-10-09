@@ -17,5 +17,4 @@ public final EntityPlayer getClientPlayer()
   return Minecraft.getMinecraft().thePlayer;
   }
 
-
 }

@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.shadowmage.ancientwarfare.core.config.ClientOptions;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -24,7 +24,7 @@ public void renderTileEntityAt(TileEntity var1, double var2, double var4, double
   {
   IWorkSite worksite = (IWorkSite)var1;
   OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0.f, 240.f);
-  if(worksite.hasWorkBounds() && ClientOptions.INSTANCE.getBooleanValue(ClientOptions.OPTION_RENDER_WORK_BOUNDS))
+  if(worksite.hasWorkBounds() && AWAutomationStatics.renderWorkBounds.getBoolean())
     {
     GL11.glPushMatrix();
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);

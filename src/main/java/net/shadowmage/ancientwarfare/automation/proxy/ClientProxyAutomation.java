@@ -1,10 +1,17 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.GuiChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
 import net.shadowmage.ancientwarfare.automation.gui.GuiTorqueGeneratorSterling;
@@ -37,13 +44,13 @@ import net.shadowmage.ancientwarfare.automation.render.RenderTileWaterwheel;
 import net.shadowmage.ancientwarfare.automation.render.RenderTileWorksite;
 import net.shadowmage.ancientwarfare.automation.render.RenderWindmillBlades;
 import net.shadowmage.ancientwarfare.automation.render.RenderWindmillControl;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributor;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControl;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheel;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControl;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributor;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheel;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
@@ -51,10 +58,18 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBas
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
-import net.shadowmage.ancientwarfare.core.config.ClientOptions;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.proxy.ClientProxy.KeybindCategoryEntry;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
 import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
+import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
+import cpw.mods.fml.client.config.GuiConfig;
+import cpw.mods.fml.client.config.GuiConfigEntries;
+import cpw.mods.fml.client.config.GuiConfigEntries.CategoryEntry;
+import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
 public class ClientProxyAutomation extends ClientProxyBase
@@ -144,8 +159,30 @@ public void registerClient()
 
 private void registerClientOptions()
   {
-  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_WORK_BOUNDS, "Should work-bounds be rendered for work-sites.", true, AncientWarfareAutomation.config);
-  ClientOptions.INSTANCE.registerClientOption(ClientOptions.OPTION_RENDER_WORK_POINTS, "Should individual work-targets be rendered for work-sites.", true, AncientWarfareAutomation.config);
+  ConfigManager.registerConfigCategory(new AutomationCategory("Automation Module Options", "tooltip.translation.key.goes.here"));  
   }
+
+@Override
+public void onConfigChanged()
+  {
+  AncientWarfareAutomation.config.save();
+  }
+
+public static final class AutomationCategory extends DummyCategoryElement
+{
+
+public AutomationCategory(String name, String tooltipkey)
+  {
+  super(name, tooltipkey, getElementList());
+  }
+
+private static List<IConfigElement> getElementList()
+  {
+  ArrayList<IConfigElement> list = new ArrayList<IConfigElement>();
+  list.add(new ConfigElement(AWAutomationStatics.renderWorkBounds));  
+  return list;
+  }
+}
+
 
 }
