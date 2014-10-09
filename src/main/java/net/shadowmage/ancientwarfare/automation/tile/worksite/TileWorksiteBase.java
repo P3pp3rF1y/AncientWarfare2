@@ -50,6 +50,8 @@ private ForgeDirection orientation = ForgeDirection.NORTH;
 
 private TorqueCell torqueCell;
 
+private int workRetryDelay = 20;
+
 public TileWorksiteBase()
   {
   torqueCell = new TorqueCell(32, 0, AWCoreStatics.energyPerWorkUnit*3, 1);
@@ -163,18 +165,28 @@ public void updateEntity()
     {
     updateOverflowInventory();
     } 
-  worldObj.theProfiler.endStartSection("Check For Work");
-
-  double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
-  boolean hasWork = inventoryOverflow.isEmpty() && getTorqueStored(ForgeDirection.UNKNOWN) >= ePerUse && hasWorksiteWork();
-  worldObj.theProfiler.endStartSection("Process Work");
-  if(hasWork)
+  if(workRetryDelay>0)
     {
-    if(processWork())
-      {
-      torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
-      }    
+    workRetryDelay--;    
     }
+  else
+    {
+    worldObj.theProfiler.endStartSection("Check For Work");
+    double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
+    boolean hasWork = inventoryOverflow.isEmpty() && getTorqueStored(ForgeDirection.UNKNOWN) >= ePerUse && hasWorksiteWork();
+    worldObj.theProfiler.endStartSection("Process Work");
+    if(hasWork)
+      {
+      if(processWork())
+        {
+        torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
+        } 
+      else
+        {
+        workRetryDelay = 20;
+        }
+      }
+    }  
   worldObj.theProfiler.endStartSection("WorksiteBaseUpdate");
   updateWorksite();
   worldObj.theProfiler.endSection();
