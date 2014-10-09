@@ -203,7 +203,6 @@ private String getMD5(File file) throws IOException
 
 public void addStructureImage(String imageName, BufferedImage image)
   {
-  AWLog.logDebug("Received client side image of: "+imageName+" saving to image cache, and loading texture");
   String pathBase = AWCoreStatics.configPathForFiles+"structures/image_cache/";
   File file;
   try

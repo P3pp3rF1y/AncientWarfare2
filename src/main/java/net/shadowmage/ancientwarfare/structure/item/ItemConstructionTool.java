@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -184,8 +183,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
     {
     ConstructionSettings settings = getSettings(stack);
     settings.type = settings.type.next();
-    writeConstructionSettings(stack, settings);
-    AWLog.logDebug("set type to: "+settings.type);    
+    writeConstructionSettings(stack, settings); 
     }
     break;
   case KEY_1://source block
@@ -197,7 +195,6 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
       settings.block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
       settings.meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);      
       writeConstructionSettings(stack, settings);
-      AWLog.logDebug("set block to: "+settings.block.getUnlocalizedName() +" meta: "+settings.meta);
       }    
     }
     break;
@@ -209,7 +206,6 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
       ConstructionSettings settings = getSettings(stack);
       settings.pos1 = pos;
       writeConstructionSettings(stack, settings);
-      AWLog.logDebug("set settings pos1 to: "+settings.pos1);
       }  
     }
     break;
@@ -221,7 +217,6 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
       ConstructionSettings settings = getSettings(stack);
       settings.pos2 = pos;
       writeConstructionSettings(stack, settings);
-      AWLog.logDebug("set settings pos2 to: "+settings.pos2);
       }
     }
     break;

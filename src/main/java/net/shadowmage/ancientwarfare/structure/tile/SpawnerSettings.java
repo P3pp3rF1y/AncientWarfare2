@@ -178,7 +178,7 @@ private void spawnEntities()
     l1 = worldObj.getFullBlockLightValue(xCoord, yCoord, zCoord-1);
     if(l1>light){light = l1;}
         
-    AWLog.logDebug("light value: "+light);
+    //TODO this light calculation stuff is -not- correct...
     if(light>=8)
       {
       return;

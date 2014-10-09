@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
@@ -36,9 +35,7 @@ public ContainerDraftingStation(EntityPlayer player, int x, int y, int z)
   isFinished = tile.isFinished();
   remainingTime = tile.getRemainingTime();
   totalTime = tile.getTotalTime();
-  
-  AWLog.logDebug("set structure name to: "+structureName);
-  
+    
   int y2 = 94;
   
   int xp;
@@ -182,7 +179,6 @@ public void handlePacketData(NBTTagCompound tag)
     if(player.worldObj.isRemote)
       {
       this.structureName = tag.getString("structName");
-      AWLog.logDebug("receieved structure name from server: "+structureName);
       }
     else
       {
@@ -262,7 +258,6 @@ public void detectAndSendChanges()
   if(!neededResources.equals(tile.getNeededResources()))
     {
     if(tag==null){tag = new NBTTagCompound();}
-    AWLog.logDebug("detecting mismatched resource-lists....sending resource list to client...");
     neededResources.clear();
     neededResources.addAll(tile.getNeededResources());
     NBTTagList list = getResourceListTag(neededResources);

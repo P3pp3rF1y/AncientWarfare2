@@ -110,7 +110,6 @@ private SkinPack loadPackFromZip(String fileName, ZipInputStream zis)
   SkinMeta metaFile = null;
   SkinPack pack = null;  
   ZipEntry entry;  
-  int parsed = 0;
   try
     {
     while((entry = zis.getNextEntry())!=null)
@@ -126,13 +125,13 @@ private SkinPack loadPackFromZip(String fileName, ZipInputStream zis)
         if(loc!=null)
           {
           parsedImages.put(entry.getName(), loc);
-          parsed++;
           }
         }
       }
     if(metaFile!=null)
       {
-      pack = new SkinPack(metaFile, parsedImages);        
+      pack = new SkinPack(metaFile, parsedImages);
+      AWLog.log("Loaded Skin pack: "+fileName+" containing: "+parsedImages.size()+" skins.");
       }
     } 
   catch (IOException e1)
@@ -147,7 +146,6 @@ private SkinPack loadPackFromZip(String fileName, ZipInputStream zis)
     {
     e.printStackTrace();
     }
-  AWLog.logDebug("Parsed skin pack: "+fileName+" found: "+parsed+" skins.");
   return pack;
   }
 
@@ -224,7 +222,6 @@ private void unpackSkinPacks(List<SkinPack> packs)
 
 private void unpackSkinPack(SkinPack pack)
   {
-  AWLog.logDebug("Unpacking skin pack: "+pack);
   SkinMeta meta = pack.meta;
   for(String key : meta.imageMap.keySet())
     {    
@@ -232,7 +229,6 @@ private void unpackSkinPack(SkinPack pack)
       {
       if(pack.textures.containsKey(img))
         {
-        AWLog.logDebug("Loading skin pack image: "+key+" :: "+img);
         loadSkinImage(key, pack.textures.get(img));
         }
       }
@@ -288,8 +284,6 @@ public SkinPack(SkinMeta meta, Map<String, ResourceLocation> textureMap)
   {
   this.meta = meta;
   this.textures.putAll(textureMap);
-  AWLog.logDebug("creating skin pack...meta:"+meta);
-  AWLog.logDebug("map: "+textures);
   }
 }
 

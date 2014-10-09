@@ -9,7 +9,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
@@ -37,7 +36,6 @@ protected void writeToStream(ByteBuf data)
   ByteBufOutputStream bbos = new ByteBufOutputStream(data);    
   try
     {
-    AWLog.logDebug("writing image of: "+image);
     ImageIO.write(image, "png", bbos);
     } 
   catch (IOException e1)
@@ -58,16 +56,13 @@ protected void writeToStream(ByteBuf data)
 @Override
 protected void readFromStream(ByteBuf data)
   {
-  AWLog.logDebug("reading image packet from stream....");
 
   imageName = StringTools.readString(data);
-  AWLog.logDebug("read image name of: "+imageName);
   
   ByteBufInputStream bbis = new ByteBufInputStream(data);
   try
     {
     image = ImageIO.read(bbis);
-    AWLog.logDebug("read image of: "+image);
     } 
   catch (IOException e1)
     {

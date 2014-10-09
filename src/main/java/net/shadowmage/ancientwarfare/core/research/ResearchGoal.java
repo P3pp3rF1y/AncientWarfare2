@@ -145,7 +145,6 @@ private static void parseGoalNames(List<String> lines)
       split = StringTools.parseStringArray(line);
       id = StringTools.safeParseInt(split[0]);
       name = split[1].startsWith("research.") ? split[1] : "research."+split[1];
-      AWLog.logDebug("parsed research goal name of: "+name);
       time = StringTools.safeParseInt(split[2]);
       time = AWCoreStatics.getResearchTimeFor(name, time);
       goal = new ResearchGoal(id, name);
@@ -157,7 +156,7 @@ private static void parseGoalNames(List<String> lines)
     } 
   catch(Exception e)
     {
-    AWLog.logDebug("Caught error parsing research goal data, line number (ignoring comment lines): "+lineNumber + " line: "+lines.get(lineNumber-1));
+    AWLog.logError("Caught error parsing research goal data, line number (ignoring comment lines): "+lineNumber + " line: "+lines.get(lineNumber-1));
     e.printStackTrace();
     }
   }

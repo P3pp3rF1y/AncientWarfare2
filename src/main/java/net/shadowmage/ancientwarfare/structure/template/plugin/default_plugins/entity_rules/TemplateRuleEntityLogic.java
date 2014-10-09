@@ -30,7 +30,6 @@ import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.NBTTools;
@@ -160,7 +159,6 @@ public void writeRuleData(NBTTagCompound tag)
 @Override
 public void parseRuleData(NBTTagCompound tag)
   {
-  AWLog.logDebug("parsing entity rule!!");
   super.parseRuleData(tag);
   this.tag = tag.getCompoundTag("entityData");
   if(tag.hasKey("inventoryData"))

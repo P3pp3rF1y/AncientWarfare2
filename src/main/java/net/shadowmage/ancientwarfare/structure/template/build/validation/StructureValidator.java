@@ -558,7 +558,6 @@ protected void borderLeveling(World world, int x, int z, StructureTemplate templ
   if(block!=null && block!=Blocks.air && block.getMaterial()!=Material.water && !AWStructureStatics.skippableBlocksContains(block))
     {
     world.setBlock(x, y, z, fillBlock);
-    AWLog.logDebug("filling block during leveling operation: "+x+","+y+","+z+" :: "+block);
     }  
   }
 

@@ -7,7 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBoundedInventory;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerWorksiteInventorySideSelection extends ContainerBase
@@ -23,12 +22,9 @@ public ContainerWorksiteInventorySideSelection(EntityPlayer player, int x, int y
   worksite = (TileWorksiteBoundedInventory) player.worldObj.getTileEntity(x, y, z);
   inventory = worksite.inventory;
   
-  RelativeSide rSide2;
   for(RelativeSide rSide : inventory.rType.getValidSides())
     {
-    rSide2 = inventory.getRemappedSide(rSide);
     sideMap.put(rSide, inventory.getRemappedSide(rSide));
-    AWLog.logDebug("adding inventory side mapping: "+rSide+" :: "+rSide2);
     }    
   }
 
@@ -70,7 +66,6 @@ private void handleAccessMapTag(NBTTagCompound tag)
       rSide = RelativeSide.values()[rMap[i]];
       iSide = RelativeSide.values()[rMap2[i]];
       sideMap.put(rSide, iSide);
-      AWLog.logDebug("reading access map..."+rSide+" :: "+iSide);
       }
     }
   if(tag.hasKey("accessChange"))
@@ -81,7 +76,6 @@ private void handleAccessMapTag(NBTTagCompound tag)
     sideMap.put(base, access);
     if(!player.worldObj.isRemote)
       {
-      AWLog.logDebug("remapping slot on server..."+base+"::"+access);
       worksite.inventory.remapSideAccess(base, access);      
       }
     }
@@ -97,7 +91,6 @@ private void sendAccessMap()
     {
     rMap[index]=rSide.ordinal();
     iMap[index]=sideMap.get(rSide).ordinal();
-    AWLog.logDebug("writing access map..."+rSide+" :: "+sideMap.get(rSide));
     index++;
     }
   NBTTagCompound accessTag = new NBTTagCompound();
@@ -120,7 +113,6 @@ private void synchAccessMap()
     rSide3 = sideMap.get(rSide);
     if(rSide2!=rSide3)
       {
-      AWLog.logDebug("detecting side map unsynch: "+rSide+" :: "+rSide2+" :: "+rSide3);
       sideMap.put(rSide, rSide2);  
       
       tag = new NBTTagCompound();

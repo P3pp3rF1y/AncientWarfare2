@@ -9,14 +9,10 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.common.config.Configuration;
-import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
@@ -42,10 +38,7 @@ import net.shadowmage.ancientwarfare.npc.render.RenderShield;
 import net.shadowmage.ancientwarfare.npc.render.RenderWorkLines;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
-import cpw.mods.fml.client.config.GuiConfig;
-import cpw.mods.fml.client.config.GuiConfigEntries;
 import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.client.config.GuiConfigEntries.CategoryEntry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 

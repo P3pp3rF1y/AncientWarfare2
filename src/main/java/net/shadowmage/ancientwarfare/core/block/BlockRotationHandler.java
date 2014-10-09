@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.IInventorySaveable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -52,11 +51,6 @@ public static ForgeDirection getFaceForPlacement(EntityLivingBase entity, IRotat
     {
     face = face.getOpposite();
     }
-//  if(entity.isSneaking())
-//    {
-//    face = face.getOpposite();
-//    }
-  AWLog.logDebug("returning facing for block: "+face);
   return face;
   }
 

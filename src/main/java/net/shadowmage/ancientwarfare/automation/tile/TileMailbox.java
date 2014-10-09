@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData.Deliverable
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
@@ -101,14 +100,12 @@ public void setMailboxName(String name)
   {
   if(worldObj.isRemote){return;}
   mailboxName = name;
-  AWLog.logDebug("set mailbox name to: "+name);
   }
 
 public void setTargetName(String name)
   {
   if(worldObj.isRemote){return;}
   destinationName = name;
-  AWLog.logDebug("set target name to: "+name);
   }
 
 public boolean isAutoExport(){return autoExport;}
@@ -118,7 +115,6 @@ public void setAutoExport(boolean val){autoExport = val;}
 public void setPrivateBox(boolean val)
   {
   if(worldObj.isRemote){return;}
-  AWLog.logDebug("setting private box: "+val);
   if(val!=privateBox)
     {
     mailboxName = null;

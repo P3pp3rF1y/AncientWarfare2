@@ -8,11 +8,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -26,7 +25,6 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.Structu
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 public class ItemStructureScanner extends Item implements IItemKeyInterface, IItemClickable
 {
@@ -98,14 +96,11 @@ public void onRightClick(EntityPlayer player, ItemStack stack)
     BlockPosition key = scanSettings.key;
     if(player.getDistance(key.x+0.5d, key.y, key.z+0.5d) > 10)
       {
-      AWLog.logDebug("too far from scan build key");
-//      player.addChatMessage("You are too far away to scan that building, move closer to chosen build-key position");
+      player.addChatMessage(new ChatComponentText("You are too far away to scan that building, move closer to chosen build-key position"));
       return;
       }
-//    player.addChatMessage("Initiating Scan (4/4)");
-    AWLog.logDebug("should open scan GUI==true");
-    FMLNetworkHandler.openGui(player, AncientWarfareCore.instance, NetworkHandler.GUI_SCANNER, player.worldObj, 0, 0, 0);
-//    GUIHandler.instance().openGUI(Statics.guiStructureScannerCreative, player, 0,0,0);   
+    player.addChatMessage(new ChatComponentText("Initiating Scan"));
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SCANNER, 0, 0, 0);
     } 
   }
 

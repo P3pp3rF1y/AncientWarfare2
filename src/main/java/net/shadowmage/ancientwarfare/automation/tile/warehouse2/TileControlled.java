@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public abstract class TileControlled extends TileEntity implements IControlledTile
@@ -76,7 +75,6 @@ public final void validate()
 public final void setController(IControllerTile tile)
   {
   this.controller = tile;
-  AWLog.logDebug("set controller for: "+this+" to: "+tile);  
   this.controllerPosition = tile==null ? null : tile.getPosition();
   }
 

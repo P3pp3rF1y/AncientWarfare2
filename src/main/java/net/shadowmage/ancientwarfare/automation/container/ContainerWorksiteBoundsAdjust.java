@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteUserBlocks;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -43,12 +42,10 @@ public void sendInitData()
 @Override
 public void handlePacketData(NBTTagCompound tag)
   {
-  AWLog.logDebug("receiving packet on container...server: "+!player.worldObj.isRemote);
   if(tag.hasKey("guiClosed"))
     {    
     if(tag.hasKey("min") && tag.hasKey("max"))
       {
-      AWLog.logDebug("setting bounds");
       BlockPosition min = new BlockPosition(tag.getCompoundTag("min"));
       BlockPosition max = new BlockPosition(tag.getCompoundTag("max"));
       worksite.setWorkBoundsMin(min);
@@ -57,7 +54,6 @@ public void handlePacketData(NBTTagCompound tag)
       }
     if(tag.hasKey("checkedMap") && worksite instanceof TileWorksiteUserBlocks)
       {
-      AWLog.logDebug("setting target blocks");
       TileWorksiteUserBlocks twub = (TileWorksiteUserBlocks)worksite;
       byte[] map = tag.getByteArray("checkedMap");
       twub.setTargetBlocks(map);

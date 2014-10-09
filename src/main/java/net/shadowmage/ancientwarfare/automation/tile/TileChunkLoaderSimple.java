@@ -8,7 +8,6 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
 public class TileChunkLoaderSimple extends TileEntity implements IInteractableTile
@@ -95,8 +94,8 @@ protected void forceTicketChunks(Ticket tk)
       ForgeChunkManager.forceChunk(tk, ccip);
       }
     }
-  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
-  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(worldObj));
+//  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
+//  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(worldObj));
   }
 
 @Override

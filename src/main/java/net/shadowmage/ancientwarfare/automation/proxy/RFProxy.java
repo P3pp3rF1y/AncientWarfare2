@@ -18,7 +18,7 @@ public static void loadInstance()
     try
       {
       instance = (RFProxy) Class.forName("net.shadowmage.ancientwarfare.automation.proxy.RFProxyActual").newInstance();
-      AWLog.logDebug("Set rf proxy to rf-proxy actual");
+      AWLog.log("RF Compatability loaded successfully");
       } 
     catch (Exception e)
       {    

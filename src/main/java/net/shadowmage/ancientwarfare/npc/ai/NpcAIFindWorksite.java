@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
@@ -39,7 +38,6 @@ public boolean continueExecuting()
 @Override
 public void startExecuting()
   {
-  AWLog.logDebug("executing worksite find operation..");
   lastExecuted = npc.ticksExisted;
   NpcWorker worker = (NpcWorker)npc;
   if(worker.autoWorkTarget!=null)//validate existing position
@@ -57,7 +55,6 @@ public void startExecuting()
       }
     else{worker.autoWorkTarget=null;}
     }  
-  AWLog.logDebug("checking for worker site...current: "+worker.autoWorkTarget);
   if(worker.autoWorkTarget==null)
     {
     findWorkTarget();
@@ -66,8 +63,6 @@ public void startExecuting()
 
 private void findWorkTarget()
   {
-  AWLog.logDebug("executing worksite find operation2..");
-  long t1 = System.nanoTime();
   int x=MathHelper.floor_double(npc.posX);
   int y=MathHelper.floor_double(npc.posY);
   int z=MathHelper.floor_double(npc.posZ);
@@ -99,8 +94,6 @@ private void findWorkTarget()
     {
     worker.autoWorkTarget=new BlockPosition(closestSite.xCoord, closestSite.yCoord, closestSite.zCoord);
     }
-  long t2 = System.nanoTime();
-  AWLog.logDebug("worksite find time: "+(t2-t1));
   }
 
 }

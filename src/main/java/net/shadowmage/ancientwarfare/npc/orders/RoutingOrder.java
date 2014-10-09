@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
@@ -55,7 +54,6 @@ public void addRoutePoint(World world, int x, int y, int z)
   {
   RoutePoint p = new RoutePoint(x, y, z);
   routingPoints.add(p);
-  AWLog.logDebug("added route point, list now contains: "+routingPoints);
   }
 
 public void changeRouteType(int index)

@@ -33,14 +33,11 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class AWNPCStatics extends ModConfiguration
 {
@@ -79,7 +76,7 @@ public static int npcArcherAttackDamage = 3;//damage for npc archers...can be in
 
 /************************************************CLIENT SETTINGS*************************************************/
 public static final String clientSettings = "03_client_settings";
-
+public static boolean loadDefaultSkinPack = true;
 
 /************************************************RECIPE SETTINGS*************************************************/
 public static final String recipeSettings = "04_recipe_settings";
@@ -108,14 +105,9 @@ private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings = ne
 
 /************************************************NAMES CONFIG*************************************************/
 /************************************************CUSTOM NAME SETTINGS*************************************************/
-public static final String factionNameOverrideSettings = "01_faction_name_overrides";
-public static final String factionNameSettings = "02_faction_custom_names";
-public static boolean loadDefaultSkinPack = true;
-public static boolean overrideDefaultNames = false;
+
 public static final String[] factionNames = new String[]{"bandit","viking","pirate","desert","native","custom_1","custom_2","custom_3"};
 public static final String[] factionNpcSubtypes = new String[]{"soldier","soldier.elite","cavalry","archer","archer.elite","mounted_archer","leader","leader.elite","priest","trader","civilian.male","civilian.female"};
-private HashMap<String, String> customNpcNames = new HashMap<String, String>();
-private String[] overridenLanguages = new String[]{};
 
 
 /************************************************HEALTH CONFIG*************************************************/
@@ -137,7 +129,6 @@ public static final String npcWorkItem = "07_npc_work_slot";
 public static final String npcUpkeepItem = "08_npc_upkeep_slot";
 
 public Configuration equipmentConfig;
-public Configuration nameConfig;
 public Configuration targetConfig;
 public Configuration healthConfig;
 public Configuration foodConfig;
@@ -149,7 +140,6 @@ public AWNPCStatics(Configuration config)
   {
   super(config);
   equipmentConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcEquipment");
-  nameConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcFactionNames");
   targetConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcTargeting");
   healthConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcHealth");
   foodConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcFood");
@@ -192,17 +182,6 @@ public void initializeCategories()
       "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
       "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
   
-  nameConfig.addCustomCategoryComment(factionNameOverrideSettings, "Faction Naming Options\n");//TODO comment
-  
-  nameConfig.addCustomCategoryComment(factionNameSettings, "Faction Naming Options\n" +
-  		"These settings effect the displayed name of NPCs and items in game.\n" +
-  		"Client-side only option.\n" +
-  		"These settings override the translation entries from language files for the currently\n" +
-  		"loaded language.  These custom settings only take effect if 'override_default_names'=true\n" +
-  		"and only apply to the language(s) specified in 'overriden_languages'(both are in "+factionNameOverrideSettings+").");
-  
-  
-  
   equipmentConfig.addCustomCategoryComment(npcDefaultWeapons, "Default Equipped Weapons\n");//TODO comment
   equipmentConfig.addCustomCategoryComment(npcOffhandItems, "Default Equipped Offhand Items\n");//TODO comment
   equipmentConfig.addCustomCategoryComment(npcArmorHead, "Default Equipped Helmets\n");//TODO comment
@@ -219,7 +198,6 @@ public void initializeValues()
   loadFoodValues();
   loadTargetValues();
   loadDefaultFactionStandings();
-  initializeCustomNpcNames();
   initializeCustomHealthValues();
   initializeNpcEquipmentConfigs();
   
@@ -473,50 +451,6 @@ public int getDefaultFaction(String factionName)
   return 0;
   }
 
-private void initializeCustomNpcNames()
-  {      
-  overrideDefaultNames = nameConfig.get(factionNameOverrideSettings, "override_default_names", overrideDefaultNames, "Override Default NPC Names\nDefault="+overrideDefaultNames+"\n" +
-      "If true, default npc names will be overridden with the names specified in "+factionNameSettings+" for\n" +
-      "the languages specified in overriden_languages").getBoolean(overrideDefaultNames);
-  
-  overridenLanguages = nameConfig.get(factionNameOverrideSettings, "overriden_languages", overridenLanguages, "Languages to Override With Custom Names\nDefault=>empty<\n" +
-      "Any languages specified here will be overriden with the custom npc names specified in "+factionNameSettings+".\n" +
-      "Only applicable if override_default_names=true.\n" +
-      "Example language codes are: en_US, en_UK, en_CA -- see more information regarding minecraft language packs\n" +
-      "for more codes.").getStringList();
-  
-  String key, fullKey;
-  String value;
-  for(String faction : factionNames)
-    {
-    for(String type : factionNpcSubtypes)
-      {      
-      key = faction+"."+type;//this is the lookup key used for all stored values      
-      fullKey = "npc."+key+".name";
-      
-      value = StatCollector.translateToLocal(fullKey);//get the default value from MY lang file, use that as the base value          
-      value = nameConfig.get(factionNameSettings, key, value).getString();//initialize the default value, and/or return the configured value            
-      customNpcNames.put(fullKey, value);//set the returned value into the custom naming map for npc-type
-      
-     //update expanded key and set custom names for each of the other translation keys for spawner and registry name
-      fullKey = "item.npc_spawner."+key+".name";
-      customNpcNames.put(fullKey, value);      
-      fullKey = "entity.ancientwarfarenpc."+key+".name";
-      customNpcNames.put(fullKey, value);
-      }
-    }
-  loadCustomNpcNames();
-  }
-
-public void loadCustomNpcNames()
-  {
-  if(!overrideDefaultNames){return;}
-  for(String lang : overridenLanguages)
-    {
-    LanguageRegistry.instance().injectLanguage(lang, customNpcNames);
-    }
-  }
-
 private void initializeCustomHealthValues()
   {
   String key;
@@ -561,7 +495,6 @@ public void initializeNpcEquipmentConfigs()
       {
       fullType = faction+"."+type;
       eqmp.put(fullType, new String[8]);//allocate empty string array for each npc type to hold item names for their equipment
-      AWLog.logDebug("registering equipment for type: "+fullType);
       }
     eqmp.get(faction+".soldier")[0]="minecraft:iron_sword";
     eqmp.get(faction+".soldier.elite")[0]="minecraft:iron_sword";
@@ -641,7 +574,6 @@ public void save()
   {
   config.save();
   equipmentConfig.save();
-  nameConfig.save();
   targetConfig.save();
   healthConfig.save();
   foodConfig.save();

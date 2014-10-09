@@ -11,7 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -221,7 +220,6 @@ private void setAsController(int size, int height, int type)
   }
   this.maxEnergyStored = (double)setCube * energyPerBlockForType;
   this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  AWLog.logDebug("set tile as controller: "+this+" w: "+setWidth+" h: "+setHeight+" c: "+setCube+" maxE: "+maxEnergyStored);
   }
 
 private void setInvalidSetup(Set<BlockPosition> set)

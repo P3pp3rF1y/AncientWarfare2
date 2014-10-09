@@ -13,7 +13,6 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple
@@ -100,8 +99,8 @@ protected void forceTicketChunks(Ticket tk)
     {
     ForgeChunkManager.forceChunk(tk, ccip);    
     }
-  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
-  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(worldObj));
+//  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
+//  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(worldObj));
   }
 
 @Override

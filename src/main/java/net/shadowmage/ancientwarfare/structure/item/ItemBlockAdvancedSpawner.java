@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
@@ -35,7 +34,6 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
   {
   if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerSettings"))
     {
-    AWLog.logDebug("no tag exists for spawner item... adding default tag");
     SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
     NBTTagCompound defaultTag = new NBTTagCompound();
     settings.writeToNBT(defaultTag);

@@ -66,13 +66,14 @@ public void worldLoaded(WorldEvent.Load evt)
       clz = Class.forName("codechicken.nei.api.API");
       if(clz!=null)
         {
-        AWLog.logDebug("NEI Detected, attempting load of NEI Plugin");
+        AWLog.log("NEI Detected, attempting load of NEI Plugin");
         @SuppressWarnings("rawtypes")
         Class clz2 = Class.forName("net.shadowmage.ancientwarfare.nei_plugin.AWNeiProxyActual");
         try
           {
           AWNeiProxyBase proxy = (AWNeiProxyBase) clz2.newInstance();
           proxy.load();
+          AWLog.log("NEI Plugin loaded successfully");
           } 
         catch (InstantiationException e)
           {

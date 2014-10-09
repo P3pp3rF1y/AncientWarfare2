@@ -7,7 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
@@ -59,7 +58,6 @@ public void handlePacketData(NBTTagCompound tag)
       {
       item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
       }    
-    AWLog.logDebug("processing slot click..."+item);
     warehouse.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
     }
   if(tag.hasKey("changeList"))
@@ -71,7 +69,6 @@ public void handlePacketData(NBTTagCompound tag)
 
 public void handleClientRequestSpecific(ItemStack stack, boolean isShiftClick)
   {    
-  AWLog.logDebug("sending specific request for: "+stack);
   NBTTagCompound tag = new NBTTagCompound();
   if(stack!=null)
     {
@@ -113,13 +110,10 @@ private void handleChangeList(NBTTagList changeList)
       itemMap.put(wrap, qty);      
       }
     }
-  AWLog.logDebug("Client item map now contains:\n"+itemMap);
   }
 
 private void synchItemMaps()
   {
-  long t1, t2, t3;
-  t1 = System.nanoTime();
   /**
    * 
    * need to loop through this.itemMap and compare quantities to warehouse.itemMap
@@ -157,17 +151,12 @@ private void synchItemMaps()
       this.itemMap.put(entry, qty);
       }
     }
-  AWLog.logDebug("Warehouse item map contains:\n"+warehouseItemMap);
   if(changeList.tagCount()>0)
     {
     tag = new NBTTagCompound();
     tag.setTag("changeList", changeList);
     sendDataToClient(tag);    
     }
-  t2 = System.nanoTime();
-  t3 = t2-t1;
-  float f1 = (float)((double)t3/1000000d);
-  AWLog.logDebug("inventory synch time: "+t3+"ns ("+f1+"ms)");
   }
 
 public void onWarehouseInventoryUpdated()

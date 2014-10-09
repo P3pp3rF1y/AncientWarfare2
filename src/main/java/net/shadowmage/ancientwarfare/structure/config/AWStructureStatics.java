@@ -23,19 +23,14 @@ package net.shadowmage.ancientwarfare.structure.config;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
@@ -62,15 +57,11 @@ public static Set<String> excludedSpawnerEntities = new HashSet<String>();
 private static HashSet<String> skippableWorldGenBlocks = new HashSet<String>();
 private static HashSet<String> worldGenTargetBlocks = new HashSet<String>();
 
-private static HashMap<Class<? extends BiomeGenBase>, String> biomeAliasByClass = new HashMap<Class<? extends BiomeGenBase>, String>();
-private static HashMap<String, Class<? extends BiomeGenBase>> biomeAliasByName = new HashMap<String, Class<? extends BiomeGenBase>>();
-
 private static String worldGenCategory = "a_world-gen_settings";
 private static String villageGenCategory = "b_village-gen_settings";
 private static String excludedEntitiesCategory = "c_excluded_spawner_entities";
 private static String worldGenBlocks = "d_world_gen_skippable_blocks";
 private static String targetBlocks = "e_world_gen_target_blocks";
-private static String biomeMap = "f_biome_aliases";
 
 @Override
 public void initializeCategories()
@@ -80,7 +71,6 @@ public void initializeCategories()
   this.config.addCustomCategoryComment(excludedEntitiesCategory, "Entities that will not show up in the Mob Spawner Placer entity selection list.\nAdd any mobs here that will crash if spawned via the vanilla mob-spawner (usually complex NBT-defined entities).");
   this.config.addCustomCategoryComment(worldGenBlocks, "Blocks that should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
   this.config.addCustomCategoryComment(targetBlocks, "List of target blocks to add to the target-block selection GUI.\nVanilla block names should be listed as the 1.7 registered name. \nMod blocks should be listed as their registered name");
-  this.config.addCustomCategoryComment(biomeMap, "Custom-mapped biome names to be used in templates.\nBiomes should be specified by their fully-qualifed class-name.\nThis alias list must be shared if you wish to share your templates that use these custom aliases.");
   }
 
 @Override
@@ -127,36 +117,7 @@ protected void initializeValues()
   initializeDefaultSkippableBlocks();
   initializeDefaultSkippedEntities();
   initializeDefaultAdditionalTargetBlocks();
-  loadBiomeAliases();
   this.config.save();
-  }
-
-@SuppressWarnings("unchecked")
-private void loadBiomeAliases()
-  {
-  ConfigCategory biomeAliasCategory = config.getCategory(biomeMap);
-  String fqcn;
-  Class<? extends BiomeGenBase> foundClass;
-  String alias;
-  for(Entry<String, Property> entry : biomeAliasCategory.entrySet())
-    {
-    fqcn = entry.getKey();
-    alias = entry.getValue().getString();
-    try
-      {
-      foundClass = (Class<? extends BiomeGenBase>)Class.forName(fqcn);
-      if(foundClass!=null)
-        {        
-        AWLog.logDebug("mapping alias for class: "+foundClass+"  alias: "+alias);
-        biomeAliasByClass.put(foundClass, alias);
-        biomeAliasByName.put(alias, foundClass);
-        }
-      } 
-    catch (ClassNotFoundException e)
-      {
-      e.printStackTrace();
-      }
-    } 
   }
 
 private void initializeDefaultSkippableBlocks()
@@ -776,39 +737,7 @@ public static Set<String> getUserDefinedTargetBlocks()
 
 public static String getBiomeName(BiomeGenBase biome)
   {
-  if(biomeAliasByClass.containsKey(biome.getClass()))
-    {
-    return biomeAliasByClass.get(biome.getClass());
-    }
-  return biome.biomeName.toLowerCase();
-  }
-
-public static BiomeGenBase getBiomeByName(String name)
-  {
-  if(biomeAliasByName.containsKey(name))
-    {
-    Class<? extends BiomeGenBase> clz = biomeAliasByName.get(name);
-    for(BiomeGenBase b : BiomeGenBase.getBiomeGenArray())
-      {
-      if(b==null){continue;}
-      if(clz.equals(b.getClass()))
-        {
-        return b;
-        }
-      }
-    }
-  else
-    {
-    for(BiomeGenBase b : BiomeGenBase.getBiomeGenArray())
-      {
-      if(b==null){continue;}
-      if(b.biomeName.equals(name))
-        {
-        return b;
-        }
-      }
-    }
-  return null;
+  return biome==null ? "null" : biome.biomeName.toLowerCase();
   }
 
 public void loadPostInitValues()

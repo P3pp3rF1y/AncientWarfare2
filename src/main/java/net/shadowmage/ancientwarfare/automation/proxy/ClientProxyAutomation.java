@@ -3,12 +3,10 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -58,17 +56,11 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBas
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.proxy.ClientProxy.KeybindCategoryEntry;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
 import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
-import cpw.mods.fml.client.config.GuiConfig;
-import cpw.mods.fml.client.config.GuiConfigEntries;
-import cpw.mods.fml.client.config.GuiConfigEntries.CategoryEntry;
 import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.client.registry.ClientRegistry;
 

@@ -100,18 +100,18 @@ public void loadTemplates()
   StructureTemplate template;
   int loadedCount = 0;
   for(File f : this.probableStructureFiles)
-    {
-    AWLog.logDebug("Loading template: "+f.getName());
+    {    
     template = loadTemplateFromFile(f);
     if(template!=null)
-      { 
+      {
+      AWLog.log("Loaded Structure Template: "+f.getName()+" world gen: "+template.getValidationSettings().isWorldGenEnabled());
       StructureTemplateManager.instance().addTemplate(template);
       loadedStructureNames.add(template.name);
       loadedCount++;
       }
     }  
   loadedCount+=this.loadTemplatesFromZip();
-  AWLog.log("Loaded "+loadedCount+" structure(s).");
+  AWLog.log("Loaded a total of: "+loadedCount+" structure(s).");
   this.validateAndLoadImages();
   this.probableStructureFiles.clear();
   this.probableZipFiles.clear();
@@ -129,7 +129,6 @@ private void validateAndLoadImages()
     {
     if(!loadedStructureNames.contains(name.substring(0, name.length()-4)))
       {
-      AWLog.logDebug("Skipping loading of image: "+name+" because no corresponding structure was loaded!.");
       it.remove();
       continue;
       }
@@ -218,7 +217,7 @@ private int loadTemplatesFromZip()
   for(File f : this.probableZipFiles)
     {
     parsed = 0;
-    AWLog.logDebug("Parsing templates from zip file: "+f.getName());
+    AWLog.log("Loading templates from zip file: "+f.getName());
     try
       {
       z = new ZipFile(f);
@@ -236,10 +235,10 @@ private int loadTemplatesFromZip()
           {
           continue;
           }
-        AWLog.logDebug("Loading template ("+f.getName()+"): "+entry.getName());
         template = loadTemplateFromZip(entry, z.getInputStream(entry));
         if(template!=null)
           {
+          AWLog.log("Loaded Structure Template: "+template.name+" world gen: "+template.getValidationSettings().isWorldGenEnabled());
           StructureTemplateManager.instance().addTemplate(template);
           loadedStructureNames.add(template.name);
           parsed++;
@@ -255,7 +254,7 @@ private int loadTemplatesFromZip()
       {
       e.printStackTrace();
       }
-    AWLog.logDebug("Parsed total of "+parsed+" template(s) from zip file: "+f.getName());
+    AWLog.log("Loaded a total of "+parsed+" template(s) from zip file: "+f.getName());
     totalParsed+=parsed;
     }
   return totalParsed;

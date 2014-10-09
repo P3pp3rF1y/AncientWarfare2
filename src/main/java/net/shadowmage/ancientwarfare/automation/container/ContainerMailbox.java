@@ -15,7 +15,6 @@ import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
@@ -43,12 +42,9 @@ public ContainerMailbox(EntityPlayer player, int x, int y, int z)
   worksite = (TileMailbox) player.worldObj.getTileEntity(x, y, z);
   InventorySided inventory = worksite.inventory;
   
-  RelativeSide rSide2;
   for(RelativeSide rSide : inventory.rType.getValidSides())
     {
-    rSide2 = inventory.getRemappedSide(rSide);
     sideMap.put(rSide, inventory.getRemappedSide(rSide));
-    AWLog.logDebug("adding inventory side mappiong: "+rSide+" :: "+rSide2);
     }    
   
   int xPos, yPos, x1, y1;
@@ -160,7 +156,6 @@ public void handlePacketData(NBTTagCompound tag)
       {
       publicBoxNames.add(nameList.getStringTagAt(i));
       }
-    AWLog.logDebug("received public box list set of: "+publicBoxNames);
     }
   if(tag.hasKey("privateBoxNames"))
     {
@@ -170,7 +165,6 @@ public void handlePacketData(NBTTagCompound tag)
       {
       privateBoxNames.add(nameList.getStringTagAt(i));
       }
-    AWLog.logDebug("received private box list set of: "+privateBoxNames);
     }
   if(tag.hasKey("addMailbox"))
     {
@@ -197,7 +191,6 @@ private void sendAccessMap()
     {
     rMap[index]=rSide.ordinal();
     iMap[index]=sideMap.get(rSide).ordinal();
-    AWLog.logDebug("writing access map..."+rSide+" :: "+sideMap.get(rSide));
     index++;
     }
   NBTTagCompound accessTag = new NBTTagCompound();
@@ -222,7 +215,6 @@ private void handleAccessMapTag(NBTTagCompound tag)
       rSide = RelativeSide.values()[rMap[i]];
       iSide = RelativeSide.values()[rMap2[i]];
       sideMap.put(rSide, iSide);
-      AWLog.logDebug("reading access map..."+rSide+" :: "+iSide);
       }
     }
   if(tag.hasKey("accessChange"))
@@ -233,7 +225,6 @@ private void handleAccessMapTag(NBTTagCompound tag)
     sideMap.put(base, access);
     if(!player.worldObj.isRemote)
       {
-      AWLog.logDebug("remapping slot on server..."+base+"::"+access);
       worksite.inventory.remapSideAccess(base, access);      
       }
     }
@@ -251,7 +242,6 @@ private void synchAccessMap()
     rSide3 = sideMap.get(rSide);
     if(rSide2!=rSide3)
       {
-      AWLog.logDebug("detecting side map unsynch: "+rSide+" :: "+rSide2+" :: "+rSide3);
       sideMap.put(rSide, rSide2);  
       
       tag = new NBTTagCompound();

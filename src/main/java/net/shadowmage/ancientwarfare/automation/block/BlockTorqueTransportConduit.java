@@ -13,10 +13,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitLight;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
 public class BlockTorqueTransportConduit extends BlockTorqueBase

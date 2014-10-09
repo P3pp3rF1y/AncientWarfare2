@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
@@ -63,7 +62,6 @@ public boolean addWorkPosition(World world, BlockPosition position, int length)
   if(entries.size()<8)
     {
     entries.add(new WorkEntry(world, position, world.provider.dimensionId, length));
-    AWLog.logDebug("added new work entry (call from WorkOrder)");
     return true;
     }
   return false;//return true if successfully added

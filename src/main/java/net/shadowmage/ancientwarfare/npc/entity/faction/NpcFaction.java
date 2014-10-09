@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
@@ -34,7 +33,6 @@ public NpcFaction(World par1World)
     eqs = AncientWarfareNPC.statics.getStartingEquipmentForSlot(type, i);
     if(eqs!=null)
       {
-      AWLog.logDebug("setting npc equipment to: "+eqs);
       if(i<5){setCurrentItemOrArmor(i, eqs);}
       else if(i==5){ordersStack = eqs;}
       else if(i==6){upkeepStack = eqs;}

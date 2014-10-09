@@ -13,7 +13,6 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
@@ -158,7 +157,7 @@ public ForgeDirection getPrimaryFacing()
 public void setPrimaryFacing(ForgeDirection face)
   {
   this.facing = face;
-  AWLog.logDebug("set facing to: "+face);
+  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
   }
 
 }
