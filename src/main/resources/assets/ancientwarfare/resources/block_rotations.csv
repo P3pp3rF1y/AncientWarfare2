@@ -24,8 +24,8 @@ piston,0,1,5,4,2,3,,,8,9,13,12,10,11,,
 piston_head,0,1,5,4,2,3,,,,,,,,,,
 piston_extension,,,,,,,,,,,,,,,,
 lever,7,3,4,2,1,6,5,0,15,11,12,10,9,14,13,8
-redstone_torch,,3,4,2,1,,5,,,,,,,,,
-unlit_redstone_torch,,3,4,2,1,,5,,,,,,,,,
+redstone_torch,,3,4,2,1,5,,,,,,,,,,
+unlit_redstone_torch,,3,4,2,1,5,,,,,,,,,,
 wooden_button,,3,4,2,1,,,,,11,12,10,9,,,
 stone_button,,3,4,2,1,,,,,11,12,10,9,,,
 tripwire_hook,1,2,3,0,5,6,7,4,,,,,13,14,15,12
@@ -56,7 +56,8 @@ unpowered_repeater,1,2,3,0,5,6,7,4,9,10,11,8,13,14,15,12
 powered_repeater,1,2,3,0,5,6,7,4,9,10,11,8,13,14,15,12
 log,0,1,2,3,8,9,10,11,4,5,6,7,,,,
 log2,0,1,2,3,8,9,10,11,4,5,6,7,,,,
-#remapped meta-aware subtyped blocks (need mapping because a base mapping was added for inventory items)
+trapdoor,3,2,0,1,7,6,4,5,11,10,8,9,15,14,12,13
+#remapped meta-aware subtyped blocks (need mapping because a base mapping was added for inventory items),,,,,,,,,,,,,,,,
 wool,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 stone_slab,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 leaves,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15

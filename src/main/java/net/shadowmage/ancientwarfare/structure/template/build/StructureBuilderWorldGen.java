@@ -18,7 +18,7 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.shadowmage.ancientwarfare.structure.template.build.validation;
+package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -31,7 +31,7 @@ import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID;
 import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockMeta;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class StructureBuilderWorldGen extends StructureBuilder
@@ -133,6 +133,7 @@ protected int getBiomeSpecificBlockMetadata(Block par1, int par2, BiomeGenBase b
   return par2;
   }
 
+@Override
 public void instantConstruction()
   {
   template.getValidationSettings().preGeneration(world, buildOrigin.x, buildOrigin.y, buildOrigin.z, buildFace, template, bb);
