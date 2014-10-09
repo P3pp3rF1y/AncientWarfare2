@@ -31,9 +31,13 @@ public class InventoryTools
  * @return true if input inventory can hold ALL of the input items
  */
 public static boolean canInventoryHold(IInventory inventory, int side, List<ItemStack> stacks)
-  {
-  
+  {  
   int[] slots = inventory instanceof ISidedInventory ? ((ISidedInventory)inventory).getAccessibleSlotsFromSide(side) : getIndiceArrayForSpread(0, inventory.getSizeInventory());
+  return canInventoryHold(inventory, slots, stacks);
+  }
+
+public static boolean canInventoryHold(IInventory inventory, int[] slots, List<ItemStack> stacks)
+  {
   int slot;
   int emptySlots = 0;
   ItemStack stack;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -11,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 /**
@@ -63,6 +65,28 @@ public final void addStackToInventory(ItemStack stack, RelativeSide... sides)
     {
     inventoryOverflow.add(stack);  
     }
+  }
+
+protected boolean harvestBlock(int x, int y, int z, int fortune, RelativeSide...relativeSides)
+  {
+  int[] combindedIndices = inventory.getRawIndicesCombined(relativeSides);
+  Block block = worldObj.getBlock(x, y, z);
+  int meta = worldObj.getBlockMetadata(x, y, z);  
+  List<ItemStack> stacks = block.getDrops(worldObj, x, y, z, meta, fortune);
+  if(!InventoryTools.canInventoryHold(inventory, combindedIndices, stacks))
+    {
+    return false;
+    }
+  if(!BlockTools.canBreakBlock(worldObj, getOwnerName(), x, y, z, block, meta))
+    {
+    return false;
+    }  
+  worldObj.setBlockToAir(x, y, z);
+  for(ItemStack stack : stacks)
+    {
+    InventoryTools.mergeItemStack(inventory, stack, combindedIndices);//was already validated that items would fit via canInventoryHold call
+    }
+  return true;
   }
 
 @Override

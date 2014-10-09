@@ -303,6 +303,32 @@ public int[] getRawIndices(RelativeSide side)
   return slotsByInventorySide.get(side);
   }
 
+public int[] getRawIndicesCombined(RelativeSide... sides)
+  {
+  int len = 0;
+  int [] indices, combindedIndices;
+  for(RelativeSide side :sides)
+    {
+    indices = getRawIndices(side);
+    if(indices!=null){len+=indices.length;}
+    }
+  combindedIndices = new int[len];
+  int index = 0;
+  for(RelativeSide side :sides)
+    {
+    indices = getRawIndices(side);
+    if(indices!=null)
+      {
+      for(int i : indices)
+        {
+        combindedIndices[index] = i;
+        index++;
+        }
+      }    
+    }  
+  return combindedIndices;
+  }
+
 private void addValidSide(RelativeSide side)
   {
   validSides.add(side);

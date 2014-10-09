@@ -19,6 +19,7 @@ Torque Cleanup
 	C fix gap in windmill model (and probably redo texture)	
 
 Other cleanup
+	* cleanup options GUI translation keys / tooltip stuff (need to figure out how it is supposed to work)
 	* LOTS of instances of Tiles needing setDirty called when values are changed
 	* workers idling when nearby enemies / enemies killed
 	* clean up shield types -- remove the various material tiers, in lieu of a few cosmetic types of different sizes (buckler, mid, tower)

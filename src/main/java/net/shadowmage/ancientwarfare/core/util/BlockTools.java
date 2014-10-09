@@ -504,4 +504,10 @@ public static List<ItemStack> breakBlock(World world, String playerName, int x, 
   return Collections.emptyList();
   }
 
+
+public static boolean canBreakBlock(World world, String playerName, int x, int y, int z, Block block, int meta)
+  {
+  return !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(x, y, z, world, block, meta, AncientWarfareCore.proxy.getFakePlayer((WorldServer)world, playerName)));
+  }
+
 }
