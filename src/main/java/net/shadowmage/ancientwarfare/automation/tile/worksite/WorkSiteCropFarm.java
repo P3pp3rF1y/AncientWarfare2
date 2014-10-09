@@ -229,7 +229,6 @@ protected boolean processWork()
     }
   else if(!blocksToHarvest.isEmpty())
     {
-    List<ItemStack> blockDrops;
     it = blocksToHarvest.iterator();
     while(it.hasNext() && (position=it.next())!=null)
       {
@@ -237,29 +236,15 @@ protected boolean processWork()
       block = worldObj.getBlock(position.x, position.y, position.z);
       if(block==Blocks.wheat || block==Blocks.carrots || block==Blocks.potatoes)
         {
+        int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
         meta = worldObj.getBlockMetadata(position.x, position.y, position.z);
         if(meta<7){continue;}
-        blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, position.x, position.y, position.z, 0);
-        for(ItemStack item : blockDrops)
-          {
-          addStackToInventory(item, RelativeSide.BOTTOM, RelativeSide.FRONT, RelativeSide.TOP);
-          }
-        return true;
+        return harvestBlock(position.x, position.y, position.z, fortune, RelativeSide.FRONT, RelativeSide.TOP);
         }
       else if(block==Blocks.pumpkin || block==Blocks.melon_block)
         {
         int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
-        blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, position.x, position.y, position.z, fortune);
-        for(ItemStack item : blockDrops)
-          {
-          addStackToInventory(item, RelativeSide.BOTTOM, RelativeSide.FRONT, RelativeSide.TOP);
-          item = InventoryTools.mergeItemStack(inventory, item, inventory.getAccessDirectionFor(RelativeSide.TOP));
-          if(item!=null)
-            {
-            InventoryTools.dropItemInWorld(worldObj, item, xCoord, yCoord, zCoord);
-            }
-          }
-        return true;
+        return harvestBlock(position.x, position.y, position.z, fortune, RelativeSide.FRONT, RelativeSide.TOP);
         }
       }
     }

@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -170,7 +168,7 @@ public final void setOwningPlayer(String name)
 
 public boolean tryCraftItem()
   {
-  if(hasResourcesForNext && outputSlot.getStackInSlot(0)!=null && canHoldResult())
+  if(hasResourcesForNext && outputSlot.getStackInSlot(0)!=null && InventoryTools.canInventoryHold(outputInventory, -1, this.outputSlot.getStackInSlot(0)))
     {
     craftItem();
     return true;
@@ -185,28 +183,9 @@ private void craftItem()
   stack = InventoryTools.mergeItemStack(outputInventory, stack, -1);
   if(stack!=null)
     {
-    inventoryOverflow.add(stack);
+    InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
     }  
   countResources();
-  }
-
-private boolean canHoldResult()
-  {
-  ItemStack out = outputSlot.getStackInSlot(0);
-  if(out==null){return false;}
-  ItemStack slotStack;
-  int availCount = 0;
-  for(int i = 0; i< outputInventory.getSizeInventory(); i++)
-    {
-    slotStack = outputInventory.getStackInSlot(i);
-    if(slotStack==null){return true;}
-    if(InventoryTools.doItemStacksMatch(slotStack, out))
-      {
-      availCount+=slotStack.getMaxStackSize()-slotStack.stackSize;
-      }
-    if(availCount>=out.stackSize){return true;}
-    }  
-  return false;
   }
 
 private void useResources()
@@ -441,27 +420,6 @@ protected boolean processWork()
 protected boolean hasWorksiteWork()
   {
   return hasResourcesForNext && outputSlot.getStackInSlot(0)!=null;
-  }
-
-@Override
-protected void updateOverflowInventory()
-  {
-  List<ItemStack> notMerged = new ArrayList<ItemStack>();
-  Iterator<ItemStack> it = inventoryOverflow.iterator();
-  ItemStack stack;
-  while(it.hasNext() && (stack=it.next())!=null)
-    {
-    it.remove();
-    stack = InventoryTools.mergeItemStack(resourceInventory, stack, -1);
-    if(stack!=null)
-      {
-      notMerged.add(stack);
-      }      
-    }
-  if(!notMerged.isEmpty())
-    {
-    inventoryOverflow.addAll(notMerged);    
-    }
   }
 
 @Override

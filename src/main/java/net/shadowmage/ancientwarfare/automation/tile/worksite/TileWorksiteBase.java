@@ -40,8 +40,6 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
 protected String owningPlayer = "";
 
-protected ArrayList<ItemStack> inventoryOverflow = new ArrayList<ItemStack>();
-
 private double efficiencyBonusFactor = 0.f;
 
 private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
@@ -144,8 +142,6 @@ protected abstract boolean processWork();
 
 protected abstract boolean hasWorksiteWork();
 
-protected abstract void updateOverflowInventory();
-
 protected abstract void updateWorksite();
 
 @Override
@@ -160,11 +156,6 @@ public void updateEntity()
   super.updateEntity();
   if(worldObj.isRemote){return;}  
   worldObj.theProfiler.startSection("AWWorksite");
-  worldObj.theProfiler.startSection("InventoryOverflow");
-  if(!inventoryOverflow.isEmpty())
-    {
-    updateOverflowInventory();
-    } 
   if(workRetryDelay>0)
     {
     workRetryDelay--;    
@@ -173,7 +164,7 @@ public void updateEntity()
     {
     worldObj.theProfiler.endStartSection("Check For Work");
     double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
-    boolean hasWork = inventoryOverflow.isEmpty() && getTorqueStored(ForgeDirection.UNKNOWN) >= ePerUse && hasWorksiteWork();
+    boolean hasWork = getTorqueStored(ForgeDirection.UNKNOWN) >= ePerUse && hasWorksiteWork();
     worldObj.theProfiler.endStartSection("Process Work");
     if(hasWork)
       {
@@ -317,7 +308,7 @@ public String toString()
 @Override
 public boolean hasWork()
   {
-  return torqueCell.getEnergy() < torqueCell.getMaxEnergy() && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && inventoryOverflow.isEmpty();  
+  return torqueCell.getEnergy() < torqueCell.getMaxEnergy() && worldObj.getBlockPowerInput(xCoord, yCoord, zCoord)==0;  
   }
 
 @Override
@@ -345,15 +336,6 @@ public void writeToNBT(NBTTagCompound tag)
     {
     tag.setString("owner", owningPlayer);
     }
-  if(!inventoryOverflow.isEmpty())
-    {
-    NBTTagList list = new NBTTagList();
-    for(ItemStack item : inventoryOverflow)
-      {
-      list.appendTag(InventoryTools.writeItemStack(item, new NBTTagCompound()));
-      }
-    tag.setTag("inventoryOverflow", list);
-    }
   int[] ug = new int[getUpgrades().size()];
   int i = 0;
   for(WorksiteUpgrade u : getUpgrades())
@@ -373,21 +355,6 @@ public void readFromNBT(NBTTagCompound tag)
   if(tag.hasKey("owner"))
     {
     owningPlayer = tag.getString("owner");
-    }
-  if(tag.hasKey("inventoryOverflow"))
-    {
-    NBTTagList list = tag.getTagList("inventoryOverflow", Constants.NBT.TAG_COMPOUND);
-    NBTTagCompound itemTag;
-    ItemStack stack;
-    for(int i = 0; i < list.tagCount(); i++)
-      {
-      itemTag = list.getCompoundTagAt(i);
-      stack = InventoryTools.readItemStack(itemTag);
-      if(stack!=null)
-        {
-        inventoryOverflow.add(stack);
-        }
-      }
     }
   int[] ug = tag.getIntArray("upgrades");
   for(int i= 0; i < ug.length; i++)

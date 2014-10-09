@@ -194,12 +194,7 @@ private boolean harvestBlock(BlockPosition p)
   if(block==Blocks.cactus || block==Blocks.reeds || block==Blocks.cocoa)
     {
     int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
-    List<ItemStack> items = BlockTools.breakBlock(worldObj, owningPlayer, p.x, p.y, p.z, fortune);
-    for(ItemStack item : items)
-      {
-      addStackToInventory(item, RelativeSide.FRONT, RelativeSide.TOP);
-      }
-    return true;
+    return harvestBlock(p.x, p.y, p.z, fortune, RelativeSide.FRONT, RelativeSide.TOP);
     }  
   return false;
   }

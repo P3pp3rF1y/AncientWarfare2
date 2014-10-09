@@ -54,9 +54,6 @@ public TileWarehouseBase()
   }
 
 @Override
-protected void updateOverflowInventory(){}//NOOP
-
-@Override
 public void onBoundsAdjusted()
   {
   BlockPosition max = getWorkBoundsMax();

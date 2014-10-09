@@ -142,13 +142,7 @@ protected boolean processWork()
    * if made it this far, a valid position was found, break it and add blocks to inventory
    */  
   int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
-  List<ItemStack> drops = BlockTools.breakBlock(worldObj, owningPlayer, currentX, currentY, currentZ, fortune);
-  for(ItemStack stack : drops)
-    {
-    addStackToInventory(stack, RelativeSide.TOP);    
-    }  
-  worldObj.setBlockToAir(currentX, currentY, currentZ); 
-  return true;
+  return harvestBlock(currentX, currentY, currentZ, fortune, RelativeSide.TOP);
   }
 
 private boolean validatePosition(int x, int y, int z)

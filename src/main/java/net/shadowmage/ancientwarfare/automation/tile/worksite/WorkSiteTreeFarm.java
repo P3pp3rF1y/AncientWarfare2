@@ -32,7 +32,6 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteTreeFarm extends TileWorksiteUserBlocks
@@ -143,17 +142,8 @@ protected boolean processWork()
     while(it.hasNext() && (position=it.next())!=null)
       {
       it.remove();
-      if(worldObj.getBlock(position.x, position.y, position.z).getMaterial()!=Material.wood)
-        {
-        continue;
-        }      
       int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
-      List<ItemStack> items = BlockTools.breakBlock(worldObj, getOwnerName(), position.x, position.y, position.z, fortune);
-      for(ItemStack item : items)
-        {
-        addStackToInventory(item, RelativeSide.TOP);
-        }
-      return true;      
+      return harvestBlock(position.x, position.y, position.z, fortune, RelativeSide.TOP);   
       }
     }
   else if(saplingCount>0 && !blocksToPlant.isEmpty())
@@ -250,9 +240,13 @@ private void pickupSaplings()
       }
     if(stack.getItem() instanceof ItemBlock)
       {
-      ItemBlock ib = (ItemBlock)stack.getItem();
+      ItemBlock ib = (ItemBlock)stack.getItem();      
       if(ib.field_150939_a instanceof BlockSapling)
         {
+        if(!InventoryTools.canInventoryHold(inventory, inventory.getRawIndicesCombined(RelativeSide.FRONT, RelativeSide.TOP), stack))
+          {
+          break;
+          }
         item.setDead();
         addStackToInventory(stack, RelativeSide.FRONT, RelativeSide.TOP);
         }

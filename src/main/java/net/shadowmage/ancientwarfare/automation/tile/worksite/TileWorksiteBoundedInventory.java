@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -51,19 +49,11 @@ public void openAltGui(EntityPlayer player)
  */
 public final void addStackToInventory(ItemStack stack, RelativeSide... sides)
   {
-  int[] slots;
-  for(RelativeSide side: sides)
-    {
-    slots = inventory.getRawIndices(side);
-    stack = InventoryTools.mergeItemStack(inventory, stack, slots);
-    if(stack==null)
-      {
-      break;
-      }
-    }
+  int[] slots = inventory.getRawIndicesCombined(sides);
+  stack = InventoryTools.mergeItemStack(inventory, stack, slots);
   if(stack!=null)
     {
-    inventoryOverflow.add(stack);  
+    InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
     }
   }
 
@@ -84,35 +74,19 @@ protected boolean harvestBlock(int x, int y, int z, int fortune, RelativeSide...
   worldObj.setBlockToAir(x, y, z);
   for(ItemStack stack : stacks)
     {
-    InventoryTools.mergeItemStack(inventory, stack, combindedIndices);//was already validated that items would fit via canInventoryHold call
+    stack = InventoryTools.mergeItemStack(inventory, stack, combindedIndices);//was already validated that items would fit via canInventoryHold call
+    if(stack!=null)//but just in case, drop into world anyway if not null..
+      {
+      InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
+      }
     }
   return true;
   }
 
-@Override
-protected void updateOverflowInventory()
-  {
-  List<ItemStack> notMerged = new ArrayList<ItemStack>();
-  Iterator<ItemStack> it = inventoryOverflow.iterator();
-  ItemStack stack;
-  while(it.hasNext() && (stack=it.next())!=null)
-    {
-    it.remove();
-    stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getAccessDirectionFor(RelativeSide.TOP));
-    if(stack!=null)
-      {
-      notMerged.add(stack);
-      }      
-    }
-  if(!notMerged.isEmpty())
-    {
-    inventoryOverflow.addAll(notMerged);    
-    }
-  }
-
+@Deprecated
 public final boolean canWork()
   {
-  return inventoryOverflow.isEmpty();
+  return true;//TODO this basically does nothing now, remove it...
   }
 
 @Override

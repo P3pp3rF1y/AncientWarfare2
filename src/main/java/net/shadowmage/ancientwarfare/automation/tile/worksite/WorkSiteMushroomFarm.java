@@ -197,12 +197,7 @@ protected boolean processWork()
       if(block==Blocks.nether_wart || block==Blocks.red_mushroom || block==Blocks.brown_mushroom_block)
         {
         int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
-        List<ItemStack> blockDrops = BlockTools.breakBlock(worldObj, owningPlayer, pos.x, pos.y, pos.z, fortune);
-        for(ItemStack item : blockDrops)
-          {
-          addStackToInventory(item, RelativeSide.FRONT, RelativeSide.TOP);
-          }
-        return true;
+        return harvestBlock(pos.x, pos.y, pos.z, fortune, RelativeSide.FRONT, RelativeSide.TOP);
         }
       }
     }

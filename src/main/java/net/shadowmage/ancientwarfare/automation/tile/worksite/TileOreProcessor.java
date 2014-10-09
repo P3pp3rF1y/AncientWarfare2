@@ -87,12 +87,6 @@ protected boolean hasWorksiteWork()
   }
 
 @Override
-protected void updateOverflowInventory()
-  {
-  // TODO Auto-generated method stub  
-  }
-
-@Override
 protected void updateWorksite()
   {
   // TODO Auto-generated method stub  
