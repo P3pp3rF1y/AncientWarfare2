@@ -11,7 +11,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 
@@ -41,6 +43,9 @@ public boolean isOpaqueCube(){return false;}
 
 @Override
 public boolean isNormalCube(){return false;}
+
+@Override
+public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side){return false;}
 
 @Override
 public IIcon getIcon(int side, int meta)
