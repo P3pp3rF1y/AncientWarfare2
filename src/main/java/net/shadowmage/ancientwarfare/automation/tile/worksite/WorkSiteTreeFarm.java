@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
@@ -355,7 +356,7 @@ protected void scanBlockPosition(BlockPosition pos)
       {
       blocksToFertilize.add(pos.copy().reassign(pos.x, pos.y, pos.z));
       }
-    else if(block.getMaterial()==Material.wood && !blocksToChop.contains(pos))
+    else if(block instanceof BlockLog && !blocksToChop.contains(pos))
       {
       BlockPosition p1 = pos.copy().reassign(pos.x, pos.y, pos.z);
       if(!blocksToChop.contains(p1))
