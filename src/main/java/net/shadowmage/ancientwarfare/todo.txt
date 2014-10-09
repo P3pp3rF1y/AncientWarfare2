@@ -18,7 +18,6 @@ Torque Cleanup
 	* update instruction manual with information regarding updated traders (screenshots, etc)
 	C distributor needs separate output speeds per-output head
 	C fix gap in windmill model (and probably redo texture)
-	C rename 'conduit' to 'junction'
 
 Other cleanup
 	* stalled out traders
