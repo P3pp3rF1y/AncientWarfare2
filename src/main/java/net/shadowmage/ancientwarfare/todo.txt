@@ -19,11 +19,6 @@ Torque Cleanup
 	C fix gap in windmill model (and probably redo texture)	
 
 Other cleanup
-	* add long-range pathfinding ability to NPC
-		-- implement into npc ai base class.
-			if requested move range > PF range, clip the vector at 85% of max range and PF towards that coordinate
-				hopefully the vanilla pathfinder is intelligent enough to do a 'closest path' partial path in case
-				the selected target coordinate is inside a block or otherwise unpathable 
 	* cleanup options GUI translation keys / tooltip stuff (need to figure out how it is supposed to work)
 	* LOTS of instances of Tiles needing setDirty called when values are changed
 	* workers idling when nearby enemies / enemies killed
