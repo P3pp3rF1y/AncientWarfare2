@@ -72,7 +72,7 @@ public static boolean exportEntityNames = false;
 public static int npcAttackDamage = 1;//base attack damage for npcs--further multiplied by their equipped weapon
 public static float npcLevelDamageMultiplier = 0.05f;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
 public static int npcArcherAttackDamage = 3;//damage for npc archers...can be increased via enchanted weapons
-
+public static double npcPathfindRange = 60.d;//max pathfind range
 
 /************************************************CLIENT SETTINGS*************************************************/
 public static final String clientSettings = "03_client_settings";

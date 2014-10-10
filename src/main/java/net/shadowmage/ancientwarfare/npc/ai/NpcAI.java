@@ -2,7 +2,9 @@ package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 /**
@@ -38,12 +40,18 @@ public static final int HUNGRY = 8;
 
 protected int moveRetryDelay;
 protected double moveSpeed = 1.d;
+private double maxPFDist;
+private double maxPFDistSq;
+
 
 protected NpcBase npc;
 
 public NpcAI(NpcBase npc)
   {
   this.npc = npc;
+  maxPFDist = AWNPCStatics.npcPathfindRange * 0.90d;
+  
+  maxPFDistSq = maxPFDist * maxPFDist;
   }
 
 protected void moveToPosition(int x, int y, int z, double sqDist)
@@ -51,10 +59,18 @@ protected void moveToPosition(int x, int y, int z, double sqDist)
   moveRetryDelay--;
   if(moveRetryDelay<=0)
     {
-    npc.getNavigator().tryMoveToXYZ(x+0.5d, y, z+0.5d, moveSpeed);
-    moveRetryDelay=10;//base .5 second retry delay
-    if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-    if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
+    if(sqDist > maxPFDistSq)
+      {
+      moveLongDistance(x+0.5d, y, z+0.5d);
+      moveRetryDelay = 60;//3 second delay between PF attempts, give the entity time to get a bit closer to target
+      }
+    else
+      {
+      npc.getNavigator().tryMoveToXYZ(x+0.5d, y, z+0.5d, moveSpeed);
+      moveRetryDelay=10;//base .5 second retry delay
+      if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
+      if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32 (delay will be 2 seconds total at this point)
+      }
     }
   }
 
@@ -68,11 +84,46 @@ protected void moveToEntity(Entity target, double sqDist)
   moveRetryDelay--;
   if(moveRetryDelay<=0)
     {
-    npc.getNavigator().tryMoveToEntityLiving(target, moveSpeed);
-    moveRetryDelay=10;//base .5 second retry delay
-    if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-    if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32    
+    if(sqDist > maxPFDistSq)
+      {
+      moveLongDistance(target.posX, target.boundingBox.minY, target.posZ);
+      moveRetryDelay = 60;//3 second delay between PF attempts, give the entity time to get a bit closer to target
+      }
+    else
+      {
+      npc.getNavigator().tryMoveToEntityLiving(target, moveSpeed);
+      moveRetryDelay=10;//base .5 second retry delay
+      if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
+      if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32 (delay will be 2 seconds total at this point)
+      }    
     }
+  }
+
+protected void moveLongDistance(double x, double y, double z)
+  {
+  Vec3 vec = Vec3.createVectorHelper(x - npc.posX, y - npc.posY, z - npc.posZ);
+  
+  //normalize vector to a -1 <-> 1 value range
+  double w = Math.sqrt(vec.xCoord*vec.xCoord + vec.yCoord*vec.yCoord + vec.zCoord*vec.zCoord);
+  if(w!=0)
+    {
+    vec.xCoord /= w;
+    vec.yCoord /= w;
+    vec.zCoord /= w;
+    }
+  
+  //then mult by PF distance to find the proper vector for our PF length
+  vec.xCoord *= maxPFDist;
+  vec.yCoord *= maxPFDist;
+  vec.zCoord *= maxPFDist;
+  
+  //finally re-offset by npc position to get an actual target position
+  vec.xCoord += npc.posX;
+  vec.yCoord += npc.posY;
+  vec.zCoord += npc.posZ;
+  
+  //move npc towards the calculated partial target
+  npc.getNavigator().tryMoveToXYZ(vec.xCoord, vec.yCoord, vec.zCoord, moveSpeed);
   }
 
 }

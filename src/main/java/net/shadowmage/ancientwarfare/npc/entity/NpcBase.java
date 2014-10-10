@@ -93,7 +93,7 @@ protected void applyEntityAttributes()
   super.applyEntityAttributes();  
   int health = AncientWarfareNPC.statics.getMaxHealthFor(getNpcType());
   this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health);
-  this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(60.0D);//TODO check what pathfinding range is really needed, perhaps allow config option for longer paths
+  this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(AWNPCStatics.npcPathfindRange);
   this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.325D);//TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
   this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
   }
