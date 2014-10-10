@@ -6,6 +6,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerTorqueGeneratorSterling extends ContainerBase
@@ -27,6 +28,7 @@ public ContainerTorqueGeneratorSterling(EntityPlayer player, int x, int y, int z
     @Override
     public boolean isItemValid(ItemStack par1ItemStack)
       {
+      AWLog.logDebug("checking if item is fuel: "+par1ItemStack+" val: "+TileEntityFurnace.isItemFuel(par1ItemStack));
       return TileEntityFurnace.isItemFuel(par1ItemStack);
       }
     });
@@ -95,13 +97,13 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
   Slot slot = (Slot)this.inventorySlots.get(slotClickedIndex);
   if(slot==null || !slot.getHasStack()){return null;}
   ItemStack stackFromSlot = slot.getStack();
-  if(slotClickedIndex < slots)
+  if(slotClickedIndex == 0)//click on input slot, merge into player inventory
     {
     this.mergeItemStack(stackFromSlot, slots, slots+36, false);
     }
-  else
+  else//click on player slot, attempt merge into te inventory
     {
-    this.mergeItemStack(stackFromSlot, 0, slots, true);
+    this.mergeItemStack(stackFromSlot, 0, 1, false);
     }
   if(stackFromSlot.stackSize == 0)
     {

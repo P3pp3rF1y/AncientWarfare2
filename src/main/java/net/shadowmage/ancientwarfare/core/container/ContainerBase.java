@@ -215,8 +215,8 @@ protected boolean mergeItemStack(ItemStack incomingStack, int startIndex, int en
   ItemStack stackFromSlot;
   int currentIndex, start, stop, transferAmount;
   int iterator = iterateBackwards? -1 : 1;
-  start = iterateBackwards ? endBeforeIndex-1 : startIndex;
-  stop = iterateBackwards ? startIndex : endBeforeIndex-1;
+  start = iterateBackwards ? endBeforeIndex : startIndex;
+  stop = iterateBackwards ? startIndex : endBeforeIndex;
   if(incomingStack.isStackable())
     {
     for(currentIndex = start; incomingStack.stackSize>0 && currentIndex!=stop; currentIndex+=iterator)
