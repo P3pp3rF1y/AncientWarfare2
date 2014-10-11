@@ -77,20 +77,22 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
   {
   ItemStack slotStackCopy = null;
   Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
+  int size = inventory.getSizeInventory();
+  int playerSize = 35;// skipped one due to backpack slot
   if (theSlot != null && theSlot.getHasStack())
     {
     ItemStack slotStack = theSlot.getStack();
     slotStackCopy = slotStack.copy();
-    if(slotClickedIndex < inventory.getSizeInventory())//book slot
+    if(slotClickedIndex < size)//clicked in backpack
       {      
-      if(!this.mergeItemStack(slotStack, inventory.getSizeInventory(), inventory.getSizeInventory()+36, false))//merge into player inventory
+      if(!this.mergeItemStack(slotStack, size, size+playerSize, false))//merge into player inventory
         {
         return null;
         }
       }
     else
       {
-      if(!this.mergeItemStack(slotStack, 0, inventory.getSizeInventory(), false))//merge into player inventory
+      if(!this.mergeItemStack(slotStack, 0, size, false))//merge into player inventory
         {
         return null;
         }
