@@ -69,8 +69,8 @@ public NpcFactionArcher(World par1World)
 @Override
 public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
   {
-  AWLog.logDebug("Executing NPC Ranged attack.  Target: "+par1EntityLivingBase);
-  AWLog.logDebug("Target Info:  dead: "+par1EntityLivingBase.isDead+" loaded in world list: "+par1EntityLivingBase.worldObj.getLoadedEntityList().contains(par1EntityLivingBase));
+//  AWLog.logDebug("Executing NPC Ranged attack.  Target: "+par1EntityLivingBase);
+//  AWLog.logDebug("Target Info:  dead: "+par1EntityLivingBase.isDead+" loaded in world list: "+par1EntityLivingBase.worldObj.getLoadedEntityList().contains(par1EntityLivingBase));
 //  AWLog.logDebug("Called from: ");
 //  new Exception().printStackTrace();
   // TODO clean this up, increase max attack distance
