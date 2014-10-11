@@ -117,7 +117,7 @@ public void onBlockBroken()
   }
 
 @Override
-public final void addUpgrade(WorksiteUpgrade upgrade)
+public void addUpgrade(WorksiteUpgrade upgrade)
   {
   upgrades.add(upgrade);
   updateEfficiency();
