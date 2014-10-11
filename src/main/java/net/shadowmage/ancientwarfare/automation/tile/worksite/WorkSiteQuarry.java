@@ -115,6 +115,19 @@ private void incrementalScan()
   }
 
 @Override
+public void addUpgrade(WorksiteUpgrade upgrade)
+  {
+  super.addUpgrade(upgrade);
+  this.currentY = this.getWorkBoundsMax().y;
+  this.currentX = this.getWorkBoundsMin().x;
+  this.currentZ = this.getWorkBoundsMin().z;
+  this.validateX = this.currentX;
+  this.validateY = this.currentY;
+  this.validateZ = this.currentZ;
+  this.finished = false;
+  }
+
+@Override
 protected boolean processWork()
   {
   if(!hasDoneInit)
