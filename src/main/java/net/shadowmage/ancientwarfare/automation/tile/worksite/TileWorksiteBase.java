@@ -405,10 +405,10 @@ public final Packet getDescriptionPacket()
 public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
   {
   super.onDataPacket(net, pkt);
+  upgrades.clear();
   if(pkt.func_148857_g().hasKey("upgrades"))
     {
     int[] ugs = pkt.func_148857_g().getIntArray("upgrades");
-    upgrades.clear();
     for(int i = 0; i < ugs.length; i++)
       {
       upgrades.add(WorksiteUpgrade.values()[ugs[i]]);
