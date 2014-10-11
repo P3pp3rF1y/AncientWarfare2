@@ -217,7 +217,7 @@ private boolean canHarvest(Block block)
     int toolLevel = 1;
     if(getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_3)){toolLevel = Integer.MAX_VALUE;}
     if(getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_2)){toolLevel = 3;}
-    if(getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_2)){toolLevel = 2;}
+    if(getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_1)){toolLevel = 2;}
     if(toolLevel<harvestLevel){return false;}//else is harvestable, check the rest of the checks
     }
   return block.getMaterial()!=Material.lava && block.getMaterial()!=Material.water && block.getBlockHardness(worldObj, currentX, currentY, currentZ)>=0;
