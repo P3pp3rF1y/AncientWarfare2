@@ -22,6 +22,8 @@ package net.shadowmage.ancientwarfare.structure.gates.types;
 
 import java.util.HashMap;
 
+import codechicken.nei.WorldOverlayRenderer;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
@@ -31,6 +33,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
@@ -338,7 +341,6 @@ public void onGateFinishClose(EntityGate gate)
  */
 public static EntityGate constructGate(World world, BlockPosition pos1, BlockPosition pos2, Gate type, byte facing)
   {
-  EntityGate ent = new EntityGate(world);
   BlockPosition min = BlockTools.getMin(pos1, pos2);
   BlockPosition max = BlockTools.getMax(pos1, pos2);
   for(int x = min.x; x <=max.x ;x++)
@@ -349,13 +351,13 @@ public static EntityGate constructGate(World world, BlockPosition pos1, BlockPos
         {
         if(!world.isAirBlock(x, y, z))
           {
+          AWLog.logDebug("could not create gate for non-air block at: "+x+","+y+","+z+" block: "+world.getBlock(x, y, z));
           return null;
           }
         }
       }
     }
-  ent.setGateType(type);
-  ent.setHealth(type.getMaxHealth());
+  
   if(pos1.x==pos2.x)
     {
     if(facing==0 || facing==2)
@@ -372,10 +374,13 @@ public static EntityGate constructGate(World world, BlockPosition pos1, BlockPos
       facing %= 4;
       }
     }  
+
+  EntityGate ent = new EntityGate(world);
+  ent.setGateType(type);
+  ent.setHealth(type.getMaxHealth());
   ent.gateOrientation = facing;
   type.setInitialBounds(ent, pos1, pos2);
-  type.onGateFinishClose(ent);
-  
+  type.onGateFinishClose(ent);  
   return ent;
   }
 

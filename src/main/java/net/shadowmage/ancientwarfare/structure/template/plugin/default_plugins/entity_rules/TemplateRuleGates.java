@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -86,15 +87,15 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
   p1.offset(x, y, z);
   p2.offset(x, y, z);
     
-  BlockPosition min = BlockTools.getMin(pos1, pos2);
-  BlockPosition max = BlockTools.getMax(pos1, pos2);
+  BlockPosition min = BlockTools.getMin(p1, p2);
+  BlockPosition max = BlockTools.getMax(p1, p2);
   for(int x1 = min.x; x1 <=max.x ;x1++)
     {
     for(int y1 = min.y; y1 <=max.y ;y1++)
       {
       for(int z1 = min.z; z1 <=max.z ;z1++)
         {
-        world.setBlockToAir(x1, y1, z1);
+        world.setBlock(x1, y1, z1, Blocks.air);
         }
       }
     }
