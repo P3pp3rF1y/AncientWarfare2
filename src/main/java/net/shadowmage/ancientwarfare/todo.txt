@@ -11,8 +11,6 @@ iron: e3e6e6 (180/5/60 recolor from wood)
 steel: d7e4e4 (180/20/50 recolor from wood)
 gearhead: 535353
 
-
-	* re-add power loss to torque tiles
 	* update forum post and curse site with info regarding bug reports/issues/enhancements (not flagging)
 	* update instruction manual with information regarding new torque system
 	* update instruction manual with information regarding updated traders (screenshots, etc)

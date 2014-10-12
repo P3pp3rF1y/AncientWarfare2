@@ -21,6 +21,7 @@ public BlockPosition controllerPos;
 public boolean isControl = false;//set to true if this is the control block for a setup
 public int setWidth, setHeight, setCube, setType;//validation params, only 'valid' in the control block.  used by rendering
 public double storedEnergy, maxEnergyStored, maxRpm = 100;
+public double torqueLoss;
 public double rotation, prevRotation;//used in rendering
 private int clientEnergy, clientDestEnergy;
 private int networkUpdateTicks = 0;
@@ -51,6 +52,29 @@ protected void clientNetworkUpdate()
     clientEnergy += diff/networkUpdateTicks;    
     networkUpdateTicks--;
     }
+  }
+
+protected void applyPowerLoss()
+  {
+  double eff = 1.d - getEfficiency();  
+  torqueLoss = storedEnergy * eff;
+  storedEnergy -= torqueLoss;
+  }
+
+protected double getEfficiency()
+  {
+  int meta = getBlockMetadata();
+  switch(meta)
+  {
+  case 0:
+  return AWAutomationStatics.low_efficiency_factor;
+  case 1:
+  return AWAutomationStatics.med_efficiency_factor;
+  case 2:
+  return AWAutomationStatics.high_efficiency_factor;
+  default:
+  return AWAutomationStatics.low_efficiency_factor;
+  }
   }
 
 protected void serverNetworkUpdate()
