@@ -79,7 +79,7 @@ public void registerClient()
 
 private void registerClientOptions()
   {
-  ConfigManager.registerConfigCategory(new NpcCategory("NPC Module Options", "tooltip.translation.key.goes.here"));
+  ConfigManager.registerConfigCategory(new NpcCategory("awconfig.npc_config", "awconfig.npc_config"));
   }
 
 @Override
@@ -112,9 +112,11 @@ public ResourceLocation loadSkinPackImage(String packName, String imageName, Inp
   return null;
   }
 
+@SuppressWarnings("rawtypes")
 public static final class NpcCategory extends DummyCategoryElement
 {
 
+@SuppressWarnings("unchecked")
 public NpcCategory(String arg0, String arg1)
   {
   super(arg0, arg1, getElementList());

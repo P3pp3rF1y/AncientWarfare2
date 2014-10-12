@@ -40,6 +40,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 public class ClientProxy extends ClientProxyBase
 {
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 @Override
 public void registerClient()
   {
@@ -59,7 +60,7 @@ public void registerClient()
   ClientRegistry.bindTileEntitySpecialRenderer(TileResearchStation.class, render);
   MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWBlocks.researchStation), render);
   
-  ConfigManager.registerConfigCategory(new DummyCategoryElement("Core Keybinds", "tooltip.translation.key.goes.here", KeybindCategoryEntry.class));
+  ConfigManager.registerConfigCategory(new DummyCategoryElement("awconfig.core_keybinds", "awconfig.core_keybinds", KeybindCategoryEntry.class));
   }
 
 public void onConfigChanged()
@@ -70,6 +71,7 @@ public void onConfigChanged()
 public static final class KeybindCategoryEntry extends CategoryEntry
 {
 
+@SuppressWarnings("rawtypes")
 public KeybindCategoryEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement)
   {
   super(owningScreen, owningEntryList, configElement);
@@ -84,6 +86,7 @@ protected GuiScreen buildChildScreen()
       ((this.owningScreen.titleLine2 == null ? "" : this.owningScreen.titleLine2) + " > " + this.name));
   }
 
+@SuppressWarnings("rawtypes")
 private static List<IConfigElement> getKeybindElements()
   {
   List<IConfigElement> list = new ArrayList<IConfigElement>();

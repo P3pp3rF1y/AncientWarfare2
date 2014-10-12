@@ -1,5 +1,15 @@
 #Ancient Warfare language file
 
+#config stuff
+awconfig.mod_name=Ancient Warfare
+awconfig.config_name=Client Side Options
+awconfig.core_keybinds=Core Keybinds
+awconfig.core_keybinds.tooltip=Keybinds for Core Module
+awconfig.automation_config=Automation Module Config
+awconfig.automation_config.tooltip=Client side options for Automation Module
+awconfig.npc_config=Npc Module Config
+awconfig.npc_config.tooltip=Client side options for Npc Module
+
 #items
 itemGroup.tabs.awcore=Ancient Warfare Core
 itemGroup.tabs.structures=Ancient Warfare Structures

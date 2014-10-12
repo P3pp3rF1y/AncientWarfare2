@@ -151,7 +151,7 @@ public void registerClient()
 
 private void registerClientOptions()
   {
-  ConfigManager.registerConfigCategory(new AutomationCategory("Automation Module Options", "tooltip.translation.key.goes.here"));  
+  ConfigManager.registerConfigCategory(new AutomationCategory("awconfig.automation_config", "awconfig.automation_config"));  
   }
 
 @Override
@@ -160,9 +160,11 @@ public void onConfigChanged()
   AncientWarfareAutomation.config.save();
   }
 
+@SuppressWarnings("rawtypes")
 public static final class AutomationCategory extends DummyCategoryElement
 {
 
+@SuppressWarnings("unchecked")
 public AutomationCategory(String name, String tooltipkey)
   {
   super(name, tooltipkey, getElementList());

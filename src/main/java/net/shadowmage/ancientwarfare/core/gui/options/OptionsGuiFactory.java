@@ -47,7 +47,7 @@ public static final class OptionsGui extends GuiConfig
 {
 public OptionsGui(GuiScreen parentScreen)
   {
-  super(parentScreen, ConfigManager.getConfigElements(), AncientWarfareCore.modID, "AWConfig", false, false, "Ancient Warfare", "Client Side Config Options");
+  super(parentScreen, ConfigManager.getConfigElements(), AncientWarfareCore.modID, "AWConfig", false, false, "awconfig.mod_name", "awconfig.config_name");
   }
 }
 
