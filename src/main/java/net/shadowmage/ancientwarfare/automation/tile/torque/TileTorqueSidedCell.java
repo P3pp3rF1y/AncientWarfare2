@@ -50,6 +50,7 @@ public void updateEntity()
     torqueIn = getTotalTorque() - prevEnergy;
     balanceStorage();
     torqueOut = transferPower();
+    torqueLoss = applyPowerLoss();
     prevEnergy = getTotalTorque();
     }
   else
@@ -57,6 +58,16 @@ public void updateEntity()
     clientNetworkUpdate();
     updateRotation();
     }
+  }
+
+protected double applyPowerLoss()
+  {
+  double loss = 0;
+  for(int i = 0; i < 6; i++)
+    {
+    loss += applyPowerDrain(storage[i]);
+    }
+  return loss;
   }
 
 protected double transferPower()

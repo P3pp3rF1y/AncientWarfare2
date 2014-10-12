@@ -47,6 +47,7 @@ public void updateEntity()
     serverNetworkUpdate();    
     torqueIn = torqueCell.getEnergy() - prevEnergy;
     torqueOut = transferPowerTo(getPrimaryFacing());
+    torqueLoss = applyPowerDrain(torqueCell);
     prevEnergy = torqueCell.getEnergy();
     }
   else
@@ -54,6 +55,11 @@ public void updateEntity()
     clientNetworkUpdate();
     updateRotation();
     }
+  }
+
+protected double applyPowerLoss()
+  {
+  return applyPowerDrain(torqueCell);
   }
 
 @Override

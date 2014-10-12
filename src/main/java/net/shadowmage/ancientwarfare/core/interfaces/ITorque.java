@@ -120,6 +120,8 @@ public TorqueCell(double in, double out, double max, double eff)
   efficiency = eff;
   }
 
+public double getEfficiency(){return efficiency;}
+
 public double getEnergy(){return energy;}
 
 public double getMaxEnergy(){return maxEnergy;}

@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import buildcraft.api.mj.IBatteryObject;
 import buildcraft.api.mj.ISidedBatteryProvider;
 import cofh.api.energy.IEnergyHandler;
@@ -339,6 +340,16 @@ protected final double transferPowerTo(ForgeDirection from)
       }
     }
   return transferred;
+  }
+
+protected final double applyPowerDrain(TorqueCell cell)
+  {
+  double e = cell.getEnergy();  
+  double eff = 1.d - cell.getEfficiency();
+  double drain = eff * e;
+  e -= drain;
+  cell.setEnergy(e);  
+  return drain;
   }
 
 protected final void sendDataToClient(int type, int data)
