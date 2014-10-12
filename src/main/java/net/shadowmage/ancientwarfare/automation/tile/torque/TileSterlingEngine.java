@@ -27,7 +27,7 @@ int burnTimeBase = 0;
 
 public TileSterlingEngine()
   {
-  torqueCell = new TorqueCell(0, 4, 1600, 1.f);
+  torqueCell = new TorqueCell(0, 4, 1600, AWAutomationStatics.med_efficiency_factor);
   }
 
 @Override
@@ -52,7 +52,7 @@ public void updateEntity()
       }
     else if(burnTime>0)
       {
-      torqueCell.setEnergy(torqueCell.getEnergy() + 1.d * AWAutomationStatics.sterling_generator_output_factor);
+      torqueCell.setEnergy(torqueCell.getEnergy() + AWAutomationStatics.sterling_generator_output);
       burnTime--;
       }  
     }

@@ -55,7 +55,7 @@ public void updateEntity()
     }
   else if(isControl)
     {
-    energy = windmillSize;    
+    energy = windmillSize * AWAutomationStatics.windmill_per_size_output;    
     }
   }
 

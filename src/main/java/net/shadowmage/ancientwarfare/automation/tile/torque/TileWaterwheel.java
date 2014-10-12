@@ -31,7 +31,8 @@ private byte[] validationGrid;
 
 public TileWaterwheel()
   {  
-  torqueCell = new TorqueCell(0, 4, 32, 1.f);
+  double max = AWAutomationStatics.low_transfer_max;
+  torqueCell = new TorqueCell(0, 4, max, AWAutomationStatics.low_efficiency_factor);
   maxWheelRpm = 20;
   rotTick = (maxWheelRpm * 360)/60/20;
   validationGrid = new byte[9];
@@ -56,7 +57,7 @@ public void updateEntity()
       }
     if(validSetup)//server, update power gen
       {
-      torqueCell.setEnergy(torqueCell.getEnergy() + (1.d * AWAutomationStatics.waterwheel_generator_output_factor));
+      torqueCell.setEnergy(torqueCell.getEnergy() + (AWAutomationStatics.waterwheel_generator_output));
       }
     }
   }

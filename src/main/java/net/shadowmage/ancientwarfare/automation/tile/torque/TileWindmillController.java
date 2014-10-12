@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
@@ -10,7 +11,8 @@ public class TileWindmillController extends TileTorqueSingleCell
 
 public TileWindmillController()
   {
-  torqueCell = new TorqueCell(32,32,32,1);
+  double max = AWAutomationStatics.low_transfer_max;
+  torqueCell = new TorqueCell(max, max, max, AWAutomationStatics.low_efficiency_factor);
   }
 
 @Override

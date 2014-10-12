@@ -10,7 +10,7 @@ public class TileTorqueShaftHeavy extends TileTorqueShaft
 public TileTorqueShaftHeavy()
   {
   double max = AWAutomationStatics.high_transfer_max;
-  torqueCell = new TorqueCell(max, max, max, 1);
+  torqueCell = new TorqueCell(max, max, max, AWAutomationStatics.high_efficiency_factor);
   }
 
 }

@@ -9,7 +9,8 @@ public class TileFlywheelControlLarge extends TileFlywheelControl
 public TileFlywheelControlLarge()
   {
   double max = AWAutomationStatics.high_transfer_max;
-  inputCell = new TorqueCell(max, max, max, 1.f);//TODO set default values from config
-  torqueCell = new TorqueCell(max, max, max, 1.f);//TODO set default values from config
+  double eff = AWAutomationStatics.high_efficiency_factor;
+  inputCell = new TorqueCell(max, max, max, eff);
+  torqueCell = new TorqueCell(max, max, max, eff);
   }
 }

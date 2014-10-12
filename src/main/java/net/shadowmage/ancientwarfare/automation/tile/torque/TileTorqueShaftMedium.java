@@ -10,6 +10,6 @@ public class TileTorqueShaftMedium extends TileTorqueShaft
 public TileTorqueShaftMedium()
   {
   double max = AWAutomationStatics.med_transfer_max;
-  torqueCell = new TorqueCell(max, max, max, 1);
+  torqueCell = new TorqueCell(max, max, max, AWAutomationStatics.med_efficiency_factor);
   }
 }

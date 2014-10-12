@@ -53,33 +53,30 @@ public static int energyMinNetworkUpdateFrequency = 5;//default 4 updates/sec ma
 public static boolean enable_energy_network_updates = true;
 public static boolean enable_energy_client_updates = true;
 
-public static double low_drain_factor = 1.d;
-public static double med_drain_factor = 0.4d;
-public static double high_drain_factor = 0.1d;
+public static double low_efficiency_factor = 0.9995d;
+public static double med_efficiency_factor = 0.9997d;
+public static double high_efficiency_factor = 0.9999d;
 
 public static double low_transfer_max = 32.d;
-public static double med_transfer_max = 256.d;
+public static double med_transfer_max = 192.d;
 public static double high_transfer_max = 1024.d;
 
 public static double low_conduit_energy_max = 32.d;
-public static double med_conduit_energy_max = 256.d;
+public static double med_conduit_energy_max = 192.d;
 public static double high_conduit_energy_max = 1024.f;
 
 public static double low_storage_energy_max = 9600.d;
 public static double med_storage_energy_max = 14400.d;
 public static double high_storage_energy_max = 24000.d;
 
-public static double sterling_generator_output_factor = 1.d;
-public static double waterwheel_generator_output_factor = 1.d;
-public static double hand_cranked_generator_output_factor = 1.d;
+public static double sterling_generator_output = 1.d;
+public static double waterwheel_generator_output = 1.d;
+public static double hand_cranked_generator_output = 1.d;
+public static double windmill_per_size_output = 1.d;
 
 public static final float rpmToRpt= (float)(360.d / 60.d / 20.d);
 public static final float low_quality_rpm = 100;
-public static final float med_quality_rpm = 200;
-public static final float high_quality_rpm = 300;
 public static final float low_rpt = low_quality_rpm * rpmToRpt;
-public static final float med_rpt = med_quality_rpm * rpmToRpt;
-public static final float high_rpt = high_quality_rpm * rpmToRpt;
 
 public static final double rfConversionFactor = 10.d;
 
@@ -139,17 +136,17 @@ public void initializeValues()
       "Default= "+mailboxTimeForDimension+"\n" +
       "Higher values increase travel time for items.  Lower values reduce travel time.  Zero or negative values result in instant transfer.").getInt(mailboxTimeForDimension);
   
-  low_drain_factor = config.get(AWCoreStatics.serverOptions, "low_quality_tile_energy_drain", low_drain_factor, "Factor applied to base drain algorithm to determine energy loss for low-quality torque tiles.\n" +
-  		"Default = "+low_drain_factor+"\n"+
-      "Higher values result in more energy drain.  Lower values result in less.  Negative values will result in a feedback loop of free/infinite power.").getDouble(low_drain_factor);
+  low_efficiency_factor = config.get(AWCoreStatics.serverOptions, "low_quality_tile_energy_drain", low_efficiency_factor, "Factor applied to base drain algorithm to determine energy loss for low-quality torque tiles.\n" +
+  		"Default = "+low_efficiency_factor+"\n"+
+      "Higher values result in more energy drain.  Lower values result in less.  Negative values will result in a feedback loop of free/infinite power.").getDouble(low_efficiency_factor);
   
-  med_drain_factor = config.get(AWCoreStatics.serverOptions, "med_quality_tile_energy_drain", med_drain_factor, "Factor applied to base drain algorithm to determine energy loss for medium-quality torque tiles.\n" +
-      "Default = "+med_drain_factor+"\n"+
-      "Higher values result in more energy drain.  Lower values result in less.  Negative values will result in a feedback loop of free/infinite power.").getDouble(med_drain_factor);
+  med_efficiency_factor = config.get(AWCoreStatics.serverOptions, "med_quality_tile_energy_drain", med_efficiency_factor, "Factor applied to base drain algorithm to determine energy loss for medium-quality torque tiles.\n" +
+      "Default = "+med_efficiency_factor+"\n"+
+      "Higher values result in more energy drain.  Lower values result in less.  Negative values will result in a feedback loop of free/infinite power.").getDouble(med_efficiency_factor);
 
-  high_drain_factor = config.get(AWCoreStatics.serverOptions, "high_quality_tile_energy_drain", high_drain_factor, "Factor applied to base drain algorithm to determine energy loss for high-quality torque tiles.\n" +
-      "Default = "+high_drain_factor+"\n"+
-      "Higher values result in more energy drain.  Lower values result in less.  Negative values will result in a feedback loop of free/infinite power.").getDouble(high_drain_factor);
+  high_efficiency_factor = config.get(AWCoreStatics.serverOptions, "high_quality_tile_energy_drain", high_efficiency_factor, "Factor applied to base drain algorithm to determine energy loss for high-quality torque tiles.\n" +
+      "Default = "+high_efficiency_factor+"\n"+
+      "Higher values result in more energy drain.  Lower values result in less.  Negative values will result in a feedback loop of free/infinite power.").getDouble(high_efficiency_factor);
   
   
   low_transfer_max = config.get(AWCoreStatics.serverOptions, "low_quality_tile_energy_transfer", low_transfer_max, "How much energy may be output per tick by low-quality torque tiles.\n" +
@@ -191,17 +188,17 @@ public void initializeValues()
       "Directly sets the amount of torque/MJ that a storage tile may store internally.").getDouble(high_storage_energy_max);
   
   
-  sterling_generator_output_factor = config.get(AWCoreStatics.serverOptions, "sterling_generator_output_factor", sterling_generator_output_factor, "Factor applied to energy output from sterling generator.\n" +
-      "Default = "+sterling_generator_output_factor+"\n"+
-      "Lower values reduce output, higher values increase output.  Zero or negative values will result in no energy output").getDouble(sterling_generator_output_factor);
+  sterling_generator_output = config.get(AWCoreStatics.serverOptions, "sterling_generator_output_factor", sterling_generator_output, "Factor applied to energy output from sterling generator.\n" +
+      "Default = "+sterling_generator_output+"\n"+
+      "Lower values reduce output, higher values increase output.  Zero or negative values will result in no energy output").getDouble(sterling_generator_output);
   
-  waterwheel_generator_output_factor = config.get(AWCoreStatics.serverOptions, "waterwheel_generator_output_factor", waterwheel_generator_output_factor, "Factor applied to energy output from waterwheel generator.\n" +
-      "Default = "+waterwheel_generator_output_factor+"\n"+
-      "Lower values reduce output, higher values increase output.  Zero or negative values will result in no energy output").getDouble(waterwheel_generator_output_factor);
+  waterwheel_generator_output = config.get(AWCoreStatics.serverOptions, "waterwheel_generator_output_factor", waterwheel_generator_output, "Factor applied to energy output from waterwheel generator.\n" +
+      "Default = "+waterwheel_generator_output+"\n"+
+      "Lower values reduce output, higher values increase output.  Zero or negative values will result in no energy output").getDouble(waterwheel_generator_output);
   
-  hand_cranked_generator_output_factor = config.get(AWCoreStatics.serverOptions, "hand_cranked_generator_output_factor", hand_cranked_generator_output_factor, "Factor applied to energy output from hand-cranked generator.\n" +
-      "Default = "+hand_cranked_generator_output_factor+"\n"+
-      "Lower values reduce output, higher values increase output.  Zero or negative values will result in no energy output").getDouble(hand_cranked_generator_output_factor);
+  hand_cranked_generator_output = config.get(AWCoreStatics.serverOptions, "hand_cranked_generator_output_factor", hand_cranked_generator_output, "Factor applied to energy output from hand-cranked generator.\n" +
+      "Default = "+hand_cranked_generator_output+"\n"+
+      "Lower values reduce output, higher values increase output.  Zero or negative values will result in no energy output").getDouble(hand_cranked_generator_output);
   
   renderWorkBounds = config.get(AWCoreStatics.clientOptions, "render_work_bounds", true);
   this.config.save();

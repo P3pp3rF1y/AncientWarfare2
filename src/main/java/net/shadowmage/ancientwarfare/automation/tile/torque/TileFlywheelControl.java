@@ -23,10 +23,20 @@ public TileFlywheelControl()
 @Override
 public void updateEntity()
   {
-  super.updateEntity();
   if(!worldObj.isRemote)
-    {    
+    { 
+    serverNetworkUpdate();    
+    torqueIn = torqueCell.getEnergy() - prevEnergy;
     balancePower();
+    torqueOut = transferPowerTo(getPrimaryFacing());
+    torqueLoss = applyPowerDrain(torqueCell);
+    torqueLoss += applyPowerDrain(inputCell);
+    prevEnergy = torqueCell.getEnergy();
+    }
+  else
+    {
+    clientNetworkUpdate();
+    updateRotation();
     }
   }
 

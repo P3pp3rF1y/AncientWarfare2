@@ -9,7 +9,7 @@ public class TileTorqueShaftLight extends TileTorqueShaft
 public TileTorqueShaftLight()
   {
   double max = AWAutomationStatics.low_transfer_max;
-  torqueCell = new TorqueCell(max, max, max, 1);
+  torqueCell = new TorqueCell(max, max, max, AWAutomationStatics.low_efficiency_factor);
   }
 
 }

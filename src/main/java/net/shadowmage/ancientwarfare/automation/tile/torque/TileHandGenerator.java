@@ -40,17 +40,28 @@ double inputRotation, prevInputRotation;
 
 public TileHandGenerator()
   {
-  torqueCell = new TorqueCell(0, 32, 32, 1.f);
-  inputCell = new TorqueCell(32, 0, 150, 1.f);
+  double eff = AWAutomationStatics.low_efficiency_factor;
+  torqueCell = new TorqueCell(0, 32, 32, eff);
+  inputCell = new TorqueCell(32, 0, 150, eff);
   }
 
 @Override
 public void updateEntity()
   {
-  super.updateEntity();
   if(!worldObj.isRemote)
     { 
+    serverNetworkUpdate();    
+    torqueIn = torqueCell.getEnergy() - prevEnergy;
     balancePower();
+    torqueOut = transferPowerTo(getPrimaryFacing());
+    torqueLoss = applyPowerDrain(torqueCell);
+    torqueLoss += applyPowerDrain(inputCell);
+    prevEnergy = torqueCell.getEnergy();
+    }
+  else
+    {
+    clientNetworkUpdate();
+    updateRotation();
     }
   }
 
@@ -160,13 +171,13 @@ public boolean hasWork()
 @Override
 public void addEnergyFromWorker(IWorker worker)
   {  
-  inputCell.setEnergy(inputCell.getEnergy()+AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output_factor);
+  inputCell.setEnergy(inputCell.getEnergy()+AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output);
   }
 
 @Override
 public void addEnergyFromPlayer(EntityPlayer player)
   {
-  inputCell.setEnergy(inputCell.getEnergy()+AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output_factor);
+  inputCell.setEnergy(inputCell.getEnergy()+AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output);
   }
 
 @Override
