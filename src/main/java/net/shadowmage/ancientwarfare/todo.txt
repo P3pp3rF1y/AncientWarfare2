@@ -15,7 +15,7 @@ gearhead: 535353
 	* update instruction manual with information regarding new torque system
 	* update instruction manual with information regarding updated traders (screenshots, etc)
 	* update instruction manual with information regarding in-game config menu
-	C distributor needs separate output speeds per-output head
+	C distributor needs separate output speeds per-output head, and network code to accomodate
 	C fix gap in windmill model (and probably redo texture)
 	* add 'clean' SS option to model editor
 	* LOTS of instances of Tiles needing setDirty called when values are changed

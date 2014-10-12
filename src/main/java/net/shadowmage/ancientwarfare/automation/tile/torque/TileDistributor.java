@@ -36,7 +36,7 @@ protected void balanceStorage()
     {
     if(i==in){continue;}
     out = storage[i];
-    
+    if(!getConnections()[i]){continue;}
     totalRequested += out.getMaxEnergy() - out.getEnergy();
     }  
   if(totalRequested>0 && input.getEnergy()>0)
@@ -48,6 +48,7 @@ protected void balanceStorage()
     for(int i = 0; i < 6; i++)
       {
       if(i==in){continue;}
+      if(!getConnections()[i]){continue;}
       out = storage[i];
       request = out.getMaxEnergy() - out.getEnergy();
       trans = request * percent;      
