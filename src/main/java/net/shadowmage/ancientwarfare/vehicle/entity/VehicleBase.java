@@ -29,7 +29,11 @@ protected void entityInit()
  * Bounding Box is used for collision with a solid-object entity
  */
 @Override
-public AxisAlignedBB getBoundingBox(){return boundingBox;}
+public AxisAlignedBB getBoundingBox()
+  {
+  AWLog.logDebug("getBoundingBox! "+boundingBox);
+  return boundingBox;
+  }
 
 @Override
 public void applyEntityCollision(Entity collider)
@@ -42,7 +46,6 @@ public void applyEntityCollision(Entity collider)
 public void onCollideWithPlayer(EntityPlayer player)
   {
   AWLog.logDebug("collide with player!! "+player);
-  // TODO Auto-generated method stub
   super.onCollideWithPlayer(player);
   }
 
