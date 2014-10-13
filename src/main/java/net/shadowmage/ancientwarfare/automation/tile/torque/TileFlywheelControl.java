@@ -133,7 +133,7 @@ public void onNeighborTileChanged()
     powered = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord)>0;
     if(p!=powered)
       {
-      int a = 3;
+      int a = 7;
       int b = powered ? 1: 0;
       worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), a, b);
       }    
@@ -145,7 +145,7 @@ public boolean receiveClientEvent(int a, int b)
   {  
   if(worldObj.isRemote)
     {
-    if(a==3)
+    if(a==7)
       {
       powered = b==1;
       }    

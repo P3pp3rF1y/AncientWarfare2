@@ -6,7 +6,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerTorqueGeneratorSterling extends ContainerBase
@@ -28,7 +27,6 @@ public ContainerTorqueGeneratorSterling(EntityPlayer player, int x, int y, int z
     @Override
     public boolean isItemValid(ItemStack par1ItemStack)
       {
-      AWLog.logDebug("checking if item is fuel: "+par1ItemStack+" val: "+TileEntityFurnace.isItemFuel(par1ItemStack));
       return TileEntityFurnace.isItemFuel(par1ItemStack);
       }
     });
@@ -41,7 +39,9 @@ public void updateProgressBar(int par1, int par2)
   {
   if(par1==0)
     {
-    energy = (double)par2 / 100.d;
+    double e = (double)par2;
+    energy = e * 0.001d * tile.getMaxTorque(tile.getPrimaryFacing());
+    energy = (int)energy;
     refreshGui();
     }  
   if(par1==1)
@@ -63,7 +63,9 @@ public void detectAndSendChanges()
   double g = tile.getTorqueStored(tile.getPrimaryFacing());
   if(g!=energy)
     {
-    int e = (int)(g*100.d);
+    energy = g;
+    g = g / tile.getMaxTorque(tile.getPrimaryFacing());
+    int e = (int)(g * 1000.d);
     for (int j = 0; j < this.crafters.size(); ++j)
       {
       ((ICrafting)this.crafters.get(j)).sendProgressBarUpdate(this, 0, e);
@@ -72,6 +74,7 @@ public void detectAndSendChanges()
   int b = tile.getBurnTime();
   if(b!=burnTime)
     {
+    burnTime=b;
     for (int j = 0; j < this.crafters.size(); ++j)
       {
       ((ICrafting)this.crafters.get(j)).sendProgressBarUpdate(this, 1, b);
@@ -80,6 +83,7 @@ public void detectAndSendChanges()
   b = tile.getBurnTimeBase();
   if(b!=burnTimeBase)
     {
+    burnTimeBase=b;
     for (int j = 0; j < this.crafters.size(); ++j)
       {
       ((ICrafting)this.crafters.get(j)).sendProgressBarUpdate(this, 2, b);

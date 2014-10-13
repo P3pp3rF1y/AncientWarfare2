@@ -310,9 +310,8 @@ protected final void serverNetworkUpdate()
 
 protected void sendSideRotation(ForgeDirection side, int value)
   {
-  int sideBits = side.ordinal();
-  int valueBits = (value & 0x00ffffff) | ((sideBits & 0xff) << 24);
-  sendDataToClient(0, valueBits);
+  int valueBits = (value & 0xff);
+  sendDataToClient(side.ordinal(), valueBits); 
   }
 
 protected final double transferPowerTo(ForgeDirection from)
@@ -368,10 +367,10 @@ public boolean receiveClientEvent(int a, int b)
   {
   if(worldObj.isRemote)
     {
-    if(a==0)
+    if(a < 6)
       {
-      int side = (b & 0xff000000) >> 24;
-      int val = b & 0x00ffffff;
+      int side = a;
+      int val = b;      
       networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
       handleClientRotationData(ForgeDirection.values()[side], val);
       }    
