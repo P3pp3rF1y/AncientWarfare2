@@ -53,6 +53,20 @@ public TileWarehouseBase()
   
   }
 
+/**
+ * SERVER ONLY
+ * @return max allowed storage by item quantity
+ */
+public int getMaxStorage()
+  {  
+  int max = 0;  
+  for(IWarehouseStorageTile t : storageTiles)
+    {
+    max += t.getStorageAdditionSize();
+    }
+  return max;
+  }
+
 @Override
 public void onBoundsAdjusted()
   {

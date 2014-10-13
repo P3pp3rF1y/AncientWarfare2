@@ -385,6 +385,7 @@ guistrings.gate.clear_item=(Sneak)Right-Click: Clear Item
 guistrings.npc.trades=Trades
 guistrings.npc.route=Route
 guistrings.npc.restock=Restock
+guistrings.warehouse.storage=Stored
 
 #automation
 guistrings.automation.ignore_damage=Ign. Dmg

@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeItemSlots;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -36,6 +37,7 @@ Checkbox sortOrderBox;
 SortType sortType = SortType.NAME;
 SortOrder sortOrder = SortOrder.DESCENDING;
 ComparatorItemStack sorter;
+private Label storedLabel;
 
 public GuiWarehouseControl(ContainerBase par1Container)
   {
@@ -112,6 +114,9 @@ public void initElements()
       }
     };
   addGuiElement(b);
+  
+  storedLabel = new Label(8+40+4, 240-8-11, StatCollector.translateToLocal("guistrings.warehouse.storage")+": "+container.currentStored+"/"+container.maxStorage);
+  addGuiElement(storedLabel);
   }
 
 @Override
@@ -119,6 +124,7 @@ public void setupElements()
   {
   area.clearElements();
   addInventoryViewElements();
+  storedLabel.setText(StatCollector.translateToLocal("guistrings.warehouse.storage")+": "+container.currentStored+"/"+container.maxStorage);
   }
 
 private void addInventoryViewElements()

@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
@@ -18,6 +19,9 @@ public TileWarehouseBase warehouse;
 public ItemQuantityMap itemMap = new ItemQuantityMap();
 public ItemQuantityMap cache = new ItemQuantityMap();
 boolean shouldUpdate = true;
+public int maxStorage = 0;
+public int currentStored = 0;
+
 
 public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z)
   {
@@ -64,6 +68,12 @@ public void handlePacketData(NBTTagCompound tag)
     {
     handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
     }
+  if(tag.hasKey("maxStorage"))
+    {    
+    maxStorage = tag.getInteger("maxStorage");
+    AWLog.logDebug("warehouse receiving max quantity value of: "+maxStorage);
+    }
+  currentStored = itemMap.getTotalItemCount();
   refreshGui();
   }
 
@@ -88,6 +98,13 @@ public void detectAndSendChanges()
     {
     synchItemMaps();    
     shouldUpdate = false;
+    }
+  if(maxStorage!=warehouse.getMaxStorage())
+    {
+    maxStorage = warehouse.getMaxStorage();
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setInteger("maxStorage", maxStorage);
+    sendDataToClient(tag);
     }
   }
 
