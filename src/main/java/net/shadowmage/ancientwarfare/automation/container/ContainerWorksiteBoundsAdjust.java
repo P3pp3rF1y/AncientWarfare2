@@ -51,6 +51,7 @@ public void handlePacketData(NBTTagCompound tag)
       worksite.setWorkBoundsMin(min);
       worksite.setWorkBoundsMax(max);
       worksite.onBoundsAdjusted();
+      worksite.onPostBoundsAdjusted();
       }
     if(tag.hasKey("checkedMap") && worksite instanceof TileWorksiteUserBlocks)
       {

@@ -8,9 +8,10 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
+import net.shadowmage.ancientwarfare.core.interfaces.IChunkLoaderTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
-public class TileChunkLoaderSimple extends TileEntity implements IInteractableTile
+public class TileChunkLoaderSimple extends TileEntity implements IInteractableTile, IChunkLoaderTile
 {
 
 Ticket chunkTicket = null;
@@ -52,14 +53,18 @@ public void invalidate()
   releaseTicket();
   }
 
-public void setTicketFromCallback(Ticket tk)
+@Override
+public void setTicket(Ticket tk)
   {
   if(this.chunkTicket!=null)
     {
     ForgeChunkManager.releaseTicket(chunkTicket);
     }
   this.chunkTicket = tk;
-  forceTicketChunks(tk);
+  if(tk!=null)
+    {
+    forceTicketChunks(tk);
+    }
   }
 
 public void setupInitialTicket()

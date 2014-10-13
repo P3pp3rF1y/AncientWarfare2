@@ -60,7 +60,7 @@ public void onBoundsAdjusted()
   
   validateX = currentX;
   validateY = currentY;
-  validateZ = currentZ;
+  validateZ = currentZ;  
   }
 
 @Override
@@ -73,7 +73,8 @@ public EnumSet<WorksiteUpgrade> getValidUpgrades()
       WorksiteUpgrade.QUARRY_LARGE,
       WorksiteUpgrade.TOOL_QUALITY_1,
       WorksiteUpgrade.TOOL_QUALITY_2,
-      WorksiteUpgrade.TOOL_QUALITY_3
+      WorksiteUpgrade.TOOL_QUALITY_3,
+      WorksiteUpgrade.QUARRY_CHUNK_LOADER
       );
   }
 

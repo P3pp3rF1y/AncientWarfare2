@@ -65,6 +65,9 @@ public EnumSet<WorksiteUpgrade> getUpgrades(){return EnumSet.noneOf(WorksiteUpgr
 public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}//NOOP
 
 @Override
+public void onPostBoundsAdjusted(){}//NOOP
+
+@Override
 public void addUpgrade(WorksiteUpgrade upgrade){}//NOOP
 
 @Override

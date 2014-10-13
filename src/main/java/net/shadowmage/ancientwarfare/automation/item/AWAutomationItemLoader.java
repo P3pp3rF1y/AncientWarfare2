@@ -78,8 +78,8 @@ public static void load()
   item.addSubItemIcon(WorksiteUpgrade.TOOL_QUALITY_1.flag(), "ancientwarfare:automation/upgrade_quality_tools_1");
   item.addSubItemIcon(WorksiteUpgrade.TOOL_QUALITY_2.flag(), "ancientwarfare:automation/upgrade_quality_tools_2");
   item.addSubItemIcon(WorksiteUpgrade.TOOL_QUALITY_3.flag(), "ancientwarfare:automation/upgrade_quality_tools_3");
-//  item.addSubItemIcon(WorksiteUpgrade.BASIC_CHUNK_LOADER.flag(), "ancientwarfare:automation/upgrade_chunkloader_basic");
-//  item.addSubItemIcon(WorksiteUpgrade.QUARRY_CHUNK_LOADER.flag(),"ancientwarfare:automation/upgrade_chunkloader_quarry");
+  item.addSubItemIcon(WorksiteUpgrade.BASIC_CHUNK_LOADER.flag(), "ancientwarfare:automation/upgrade_chunkloader_basic");
+  item.addSubItemIcon(WorksiteUpgrade.QUARRY_CHUNK_LOADER.flag(),"ancientwarfare:automation/upgrade_chunkloader_quarry");
   GameRegistry.registerItem(AWItems.worksiteUpgrade, "worksite_upgrade");
   }
 

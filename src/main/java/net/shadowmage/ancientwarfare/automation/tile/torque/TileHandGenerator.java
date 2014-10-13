@@ -127,6 +127,9 @@ protected void handleClientRotationData(ForgeDirection side, int value)
   }
 
 @Override
+public void onPostBoundsAdjusted(){}//NOOP
+
+@Override
 public void onBlockBroken(){}//NOOP
 
 @Override

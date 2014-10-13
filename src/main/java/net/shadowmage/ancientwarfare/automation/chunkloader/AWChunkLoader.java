@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
+import net.shadowmage.ancientwarfare.core.interfaces.IChunkLoaderTile;
 
 public class AWChunkLoader implements LoadingCallback
 {
@@ -29,12 +29,21 @@ public void ticketsLoaded(List<Ticket> tickets, World world)
       int y = posTag.getInteger("y");
       int z = posTag.getInteger("z");
       TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileChunkLoaderSimple)
+      if(te instanceof IChunkLoaderTile)
         {
-        ((TileChunkLoaderSimple)te).setTicketFromCallback(tk);
+        ((IChunkLoaderTile)te).setTicket(tk);
         }
       }
     }
+  }
+
+public static void writeDataToTicket(Ticket tk, int x, int y, int z)
+  {
+  NBTTagCompound posTag = new NBTTagCompound();
+  posTag.setInteger("x", x);
+  posTag.setInteger("y", y);
+  posTag.setInteger("z", z);
+  tk.getModData().setTag("tilePosition", posTag);
   }
 
 }
