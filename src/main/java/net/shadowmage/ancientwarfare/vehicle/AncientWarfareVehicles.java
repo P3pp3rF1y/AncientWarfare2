@@ -1,12 +1,14 @@
 package net.shadowmage.ancientwarfare.vehicle;
 
 import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.crafting.AWVehicleCrafting;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
+import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItemLoader;
 import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -21,7 +23,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 name = "Ancient Warfare Vehicles",
 modid = "AncientWarfareVehicle",
 version = "@VERSION@",
-dependencies = "required-after:AncientWarfare"
+dependencies = "required-after:"+AncientWarfareCore.modID
 )
 
 public class AncientWarfareVehicles 
@@ -60,6 +62,7 @@ public void preInit(FMLPreInitializationEvent evt)
   proxy.registerClient();
   statics.load();//load config settings
   AWVehicleEntityLoader.load();
+  AWVehicleItemLoader.load();
       
   /**
    * register tick-handlers

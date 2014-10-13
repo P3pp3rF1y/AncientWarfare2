@@ -10,6 +10,19 @@ public class VehicleBase extends Entity
 public VehicleBase(World par1World)
   {
   super(par1World);
+  
+  }
+
+@Override
+public boolean canBeCollidedWith()
+  {
+  return true;
+  }
+
+@Override
+public boolean canBePushed()
+  {
+  return true;
   }
 
 @Override
@@ -21,13 +34,13 @@ protected void entityInit()
 @Override
 protected void readEntityFromNBT(NBTTagCompound var1)
   {
-
+  
   }
 
 @Override
 protected void writeEntityToNBT(NBTTagCompound var1)
   {
-
+  
   }
 
 }

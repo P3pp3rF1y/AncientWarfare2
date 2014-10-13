@@ -1,5 +1,9 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
@@ -11,6 +15,9 @@ public class AWVehicleEntityLoader
 
 private static int nextID = 0;
 
+private static List<String> vehicleTypes = new ArrayList<String>();
+private static HashMap<String, String> regNameToIcon = new HashMap<String, String>();
+
 public static void load()
   {
   EntityDeclaration reg = new EntityDeclaration(VehicleBase.class, AWEntityRegistry.VEHICLE_TEST, nextID++, AncientWarfareVehicles.instance, 120, 3, true)
@@ -21,7 +28,24 @@ public static void load()
       return new VehicleBase(world);
       }
     };
+  registerEntity(reg, "fooicon");
+  }
+
+private static void registerEntity(EntityDeclaration reg, String icon)
+  {
+  if(!vehicleTypes.contains(reg.getEntityName())){vehicleTypes.add(reg.getEntityName());}
   AWEntityRegistry.registerEntity(reg);
+  regNameToIcon.put(reg.getEntityName(), icon);
+  }
+
+public static List<String> getVehicleTypes()
+  {
+  return vehicleTypes;
+  }
+
+public static String getIcon(String vehicleType)
+  {
+  return regNameToIcon.get(vehicleType);
   }
 
 }
