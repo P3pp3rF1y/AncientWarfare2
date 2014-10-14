@@ -40,8 +40,8 @@ public void doRender(Entity entity, double x, double y,  double z, float yaw, fl
   GL11.glTranslated(x, y, z);
   
   GL11.glRotatef(yaw, 0, 1, 0);
-  float hw = entity.width/2;
-  float hl = vehicle.length/2;
+  float hw = entity.width / 2.f;
+  float hl = vehicle.length / 2.f;
   renderOBB.setBounds(-hw, 0, -hl, hw, entity.height, hl);
   renderAABB(renderOBB);
   
