@@ -435,7 +435,10 @@ protected void writeEntityToNBT(NBTTagCompound tag)
   tag.setTag("pos1", pos1.writeToNBT(new NBTTagCompound()));
   tag.setTag("pos2", pos2.writeToNBT(new NBTTagCompound()));
   tag.setInteger("type", this.gateType.getGlobalID());
-  tag.setString("owner", ownerName);
+  if(!"".equals(ownerName))
+    {
+    tag.setString("owner", ownerName);    
+    }
   tag.setFloat("edge", this.edgePosition);
   tag.setFloat("edgeMax", this.edgeMax);
   tag.setInteger("health", this.getHealth());
