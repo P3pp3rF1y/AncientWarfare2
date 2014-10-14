@@ -5,6 +5,9 @@ Chunkloader Worksite Upgrades
 Vehicle Module?
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
 //http://asawicki.info/news_1376_calculating_aabb_of_a_rotated_2d_rectangle.html
+//http://www.jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf
+//http://www.geometrictools.com/Documentation/DynamicCollisionDetection.pdf
+//http://www.gamedev.net/page/resources/_/technical/game-programming/2d-rotated-rectangle-collision-r2604
 
 colors for textures:
 wood: d5bf82

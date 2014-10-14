@@ -55,11 +55,6 @@ public void updateForRotation(float yaw)
   float x2 = halfWidth;
   float z2 = -halfLength; 
   
-//  float x1 = -(width/2.f);
-//  float z1 = -(length/2.f);
-//  float x2 = -x1;
-//  float z2 = z1;
-  
   float tx1 = x1 * cos - z1 * sin;
   float tz1 = x1 * sin + z1 * cos;
   float tx2 = x2 * cos - z2 * sin;
