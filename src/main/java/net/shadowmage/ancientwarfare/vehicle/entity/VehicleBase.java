@@ -83,7 +83,7 @@ public AxisAlignedBB getBoundingBox()
 @Override
 public void applyEntityCollision(Entity collider)
   {
-  AWLog.logDebug("applyEntityCollision: "+collider);
+  AWLog.logDebug("applyEntityCollision: "+collider+" collides: "+obb.collides(collider.boundingBox));  
   super.applyEntityCollision(collider);
   }
 

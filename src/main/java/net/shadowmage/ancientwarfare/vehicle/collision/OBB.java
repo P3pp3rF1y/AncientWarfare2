@@ -23,8 +23,14 @@ public final class OBB
 public final float width, height, length;
 public final float halfWidth, halfLength;
 
-private float widthExtent, lengthExtent;//cached values for max width/length
+/**
+ * cached values for max width/length extents, used to set an input AABB to cover the extents of this OBB
+ */
+private float widthExtent, lengthExtent;
 
+/**
+ * corners of a entity-origin OBB
+ */
 private Vec3[] lowerCorners = new Vec3[4];//upper corners would be the same thing, with y=height...so too boring to implement
 
 private float yaw = 0;
@@ -78,6 +84,11 @@ public void updateForRotation(float yaw)
   //rear-left corner
   lowerCorners[3].xCoord = -lowerCorners[1].xCoord;
   lowerCorners[3].zCoord = -lowerCorners[1].zCoord;
+  }
+
+public boolean collides(AxisAlignedBB bb)
+  {
+  return false;
   }
 
 /**
