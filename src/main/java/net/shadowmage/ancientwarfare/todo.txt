@@ -4,6 +4,7 @@ Cleaning up Torque system -- models, power framework
 Chunkloader Worksite Upgrades
 Vehicle Module?
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
+//http://asawicki.info/news_1376_calculating_aabb_of_a_rotated_2d_rectangle.html
 
 colors for textures:
 wood: d5bf82
