@@ -9,6 +9,8 @@ Vehicle Module?
 //http://www.geometrictools.com/Documentation/DynamicCollisionDetection.pdf
 //http://www.gamedev.net/page/resources/_/technical/game-programming/2d-rotated-rectangle-collision-r2604
 
+//http://www.videogamesblogger.com/2014/10/13/borderlands-the-pre-sequel-cheats.htm
+
 colors for textures:
 wood: d5bf82
 iron: e3e6e6 (180/5/60 recolor from wood)

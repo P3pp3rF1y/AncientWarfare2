@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.vehicle.collision;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 /**
@@ -87,9 +86,17 @@ public void updateForRotation(float yaw)
   corners[3].zCoord = -corners[1].zCoord;
   }
 
-public boolean collides(AxisAlignedBB bb)
+public boolean collides(Vec3[] inCorners)
   {
-//  long t1 = System.nanoTime();
+  /**
+   * basic SAT test for OBBs.
+   */
+  
+  Vec3 inCorner1 = inCorners[0];
+  Vec3 inCorner2 = inCorners[1];
+  Vec3 inCorner3 = inCorners[2];
+  Vec3 inCorner4 = inCorners[3];
+  //long t1 = System.nanoTime();
   //scratch values
   double s1, s2, s3, s4;
   //x-axis for this OBB
@@ -97,14 +104,9 @@ public boolean collides(AxisAlignedBB bb)
   //z-axis for this OBB
   Vec3 axis2 = Vec3.createVectorHelper(corners[2].xCoord - corners[1].xCoord , 0, corners[2].zCoord - corners[1].zCoord);
   //x-axis for input AABB
-  Vec3 axis3 = Vec3.createVectorHelper(1, 0, 0);
+  Vec3 axis3 = Vec3.createVectorHelper(inCorner2.xCoord - inCorner1.xCoord, 0, inCorner2.zCoord - inCorner1.zCoord);
   //z-axis for input AABB
-  Vec3 axis4 = Vec3.createVectorHelper(0, 0, 1);  
-  
-  Vec3 aabbc1 = Vec3.createVectorHelper(bb.minX, 0, bb.minZ);
-  Vec3 aabbc2 = Vec3.createVectorHelper(bb.maxX, 0, bb.minZ);
-  Vec3 aabbc3 = Vec3.createVectorHelper(bb.maxX, 0, bb.maxZ);
-  Vec3 aabbc4 = Vec3.createVectorHelper(bb.minX, 0, bb.maxZ);
+  Vec3 axis4 = Vec3.createVectorHelper(inCorner3.xCoord - inCorner2.xCoord, 0, inCorner3.zCoord - inCorner2.zCoord);  
   /**
    * Axis 1
    */
@@ -122,15 +124,15 @@ public boolean collides(AxisAlignedBB bb)
   s4 = projectScalar(a4, axis1);
   double minA = Math.min(Math.min(s1, s2), Math.min(s3, s4));
   double maxA = Math.max(Math.max(s1, s2), Math.max(s3, s4));
-  
+
   //upper-left of the input aabb on axis1
-  Vec3 b1 = projectPoint(aabbc1, axis1);
+  Vec3 b1 = projectPoint(inCorner1, axis1);
   //upper-right of the input aabb on axis1
-  Vec3 b2 = projectPoint(aabbc2, axis1);
+  Vec3 b2 = projectPoint(inCorner2, axis1);
   //lower-right of aabb on axis1
-  Vec3 b3 = projectPoint(aabbc3, axis1);
+  Vec3 b3 = projectPoint(inCorner3, axis1);
   //lower-left of aabb on axis1
-  Vec3 b4 = projectPoint(aabbc4, axis1);
+  Vec3 b4 = projectPoint(inCorner4, axis1);
   s1 = projectScalar(b1, axis1);
   s2 = projectScalar(b2, axis1);
   s3 = projectScalar(b3, axis1);
@@ -141,8 +143,7 @@ public boolean collides(AxisAlignedBB bb)
     {
     return false;
     }
-//  AWLog.logDebug("axis 1 overlap!");
-  
+
   /**
    * Axis 2
    */
@@ -156,11 +157,11 @@ public boolean collides(AxisAlignedBB bb)
   s4 = projectScalar(a4, axis2);
   minA = Math.min(Math.min(s1, s2), Math.min(s3, s4));
   maxA = Math.max(Math.max(s1, s2), Math.max(s3, s4));
-    
-  b1 = projectPoint(aabbc1, axis2);  
-  b2 = projectPoint(aabbc2, axis2);
-  b3 = projectPoint(aabbc3, axis2);
-  b4 = projectPoint(aabbc4, axis2);
+
+  b1 = projectPoint(inCorner1, axis2);  
+  b2 = projectPoint(inCorner2, axis2);
+  b3 = projectPoint(inCorner3, axis2);
+  b4 = projectPoint(inCorner4, axis2);
   s1 = projectScalar(b1, axis2);
   s2 = projectScalar(b2, axis2);
   s3 = projectScalar(b3, axis2);
@@ -171,8 +172,7 @@ public boolean collides(AxisAlignedBB bb)
     {
     return false;
     }
-//  AWLog.logDebug("axis 2 overlap!");
-  
+
   /**
    * Axis 3
    */
@@ -186,11 +186,11 @@ public boolean collides(AxisAlignedBB bb)
   s4 = projectScalar(a4, axis3);
   minA = Math.min(Math.min(s1, s2), Math.min(s3, s4));
   maxA = Math.max(Math.max(s1, s2), Math.max(s3, s4));
-    
-  b1 = projectPoint(aabbc1, axis3);  
-  b2 = projectPoint(aabbc2, axis3);
-  b3 = projectPoint(aabbc3, axis3);
-  b4 = projectPoint(aabbc4, axis3);
+
+  b1 = projectPoint(inCorner1, axis3);  
+  b2 = projectPoint(inCorner2, axis3);
+  b3 = projectPoint(inCorner3, axis3);
+  b4 = projectPoint(inCorner4, axis3);
   s1 = projectScalar(b1, axis3);
   s2 = projectScalar(b2, axis3);
   s3 = projectScalar(b3, axis3);
@@ -201,8 +201,7 @@ public boolean collides(AxisAlignedBB bb)
     {
     return false;
     }
-//  AWLog.logDebug("axis 3 overlap!");
-  
+
   /**
    * Axis 3
    */
@@ -216,11 +215,11 @@ public boolean collides(AxisAlignedBB bb)
   s4 = projectScalar(a4, axis4);
   minA = Math.min(Math.min(s1, s2), Math.min(s3, s4));
   maxA = Math.max(Math.max(s1, s2), Math.max(s3, s4));
-    
-  b1 = projectPoint(aabbc1, axis4);  
-  b2 = projectPoint(aabbc2, axis4);
-  b3 = projectPoint(aabbc3, axis4);
-  b4 = projectPoint(aabbc4, axis4);
+
+  b1 = projectPoint(inCorner1, axis4);  
+  b2 = projectPoint(inCorner2, axis4);
+  b3 = projectPoint(inCorner3, axis4);
+  b4 = projectPoint(inCorner4, axis4);
   s1 = projectScalar(b1, axis4);
   s2 = projectScalar(b2, axis4);
   s3 = projectScalar(b3, axis4);
@@ -231,11 +230,21 @@ public boolean collides(AxisAlignedBB bb)
     {
     return false;
     }
-//  AWLog.logDebug("axis 4 overlap!");
-//  long t2 = System.nanoTime();
-//  AWLog.logDebug("Collision!");
-//  AWLog.logDebug("time: "+(t2-t1));
   return true;
+  }
+
+public boolean collides(AxisAlignedBB bb)
+  {  
+  Vec3 c1 = Vec3.createVectorHelper(bb.minX, 0, bb.minZ);
+  Vec3 c2 = Vec3.createVectorHelper(bb.maxX, 0, bb.minZ);
+  Vec3 c3 = Vec3.createVectorHelper(bb.maxX, 0, bb.maxZ);
+  Vec3 c4 = Vec3.createVectorHelper(bb.minX, 0, bb.maxZ);
+  return collides(new Vec3[]{c1, c2, c3, c4});
+  }
+
+public boolean collides(OBB bb)
+  {
+  return collides(bb.corners);
   }
 
 private Vec3 projectPoint(Vec3 p, Vec3 a)
