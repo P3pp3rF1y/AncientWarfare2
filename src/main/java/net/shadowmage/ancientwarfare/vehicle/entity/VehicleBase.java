@@ -15,7 +15,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData
 
 public float length;
 
-private OBB obb;
+public OBB obb;
 
 public VehicleBase(World world)
   {
@@ -83,8 +83,12 @@ public AxisAlignedBB getBoundingBox()
 @Override
 public void applyEntityCollision(Entity collider)
   {
-  AWLog.logDebug("applyEntityCollision: "+collider+" collides: "+obb.collides(collider.boundingBox));  
-  super.applyEntityCollision(collider);
+  AWLog.logDebug("applyEntityCollision: "+collider);
+  if(obb.collides(collider.boundingBox.copy().offset(-posX, -posY, -posZ)))
+    {
+    AWLog.logDebug("Applying collision!!");
+    super.applyEntityCollision(collider);
+    }
   }
 
 @Override
