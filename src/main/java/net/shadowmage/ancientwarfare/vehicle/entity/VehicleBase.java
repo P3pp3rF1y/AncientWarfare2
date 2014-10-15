@@ -59,6 +59,12 @@ public void setPosition(double x, double y, double z)
   updateBoundingBox();
   }
 
+@Override
+public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int netUpdateFrequencyMaybe)
+  {
+  super.setPositionAndRotation(x, y, z, yaw,  pitch);
+  }
+
 /**
  * Update the vehicles bounding box to the rotated representation of its true bounding box
  */
@@ -87,15 +93,34 @@ public void applyEntityCollision(Entity collider)
   if(obb.collides(collider.boundingBox.copy().offset(-posX, -posY, -posZ)))
     {
     AWLog.logDebug("Applying collision!!");
-    super.applyEntityCollision(collider);
+    double dx = collider.posX - this.posX;
+    double dz = collider.posZ - this.posZ;
+    dx *= 0.05d;
+    dz *= 0.05d;
+    collider.setPosition(collider.posX+dx, collider.posY, collider.posZ+dz);
+//    collider.addVelocity(dx*0.05d, 0, dz*0.05d);
+    
+//    super.applyEntityCollision(collider);
     }
   }
 
 @Override
-public void onCollideWithPlayer(EntityPlayer player)
+public void onCollideWithPlayer(EntityPlayer collider)
   {
+  if(obb.collides(collider.boundingBox.copy().offset(-posX, -posY, -posZ)))
+    {
+    AWLog.logDebug("Applying collision!!");
+    double dx = collider.posX - this.posX;
+    double dz = collider.posZ - this.posZ;
+    dx *= 0.05d;
+    dz *= 0.05d;
+    collider.setPosition(collider.posX+dx, collider.posY, collider.posZ+dz);
+//    collider.addVelocity(dx*0.05d, 0, dz*0.05d);
+    
+//    super.applyEntityCollision(collider);
+    }
 //  AWLog.logDebug("collide with player!! "+player);
-  super.onCollideWithPlayer(player);
+  super.onCollideWithPlayer(collider);
   }
 
 /**

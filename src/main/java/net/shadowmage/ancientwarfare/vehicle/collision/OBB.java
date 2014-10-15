@@ -89,7 +89,7 @@ public void updateForRotation(float yaw)
 
 public boolean collides(AxisAlignedBB bb)
   {
-  long t1 = System.nanoTime();
+//  long t1 = System.nanoTime();
   //scratch values
   double s1, s2, s3, s4;
   //x-axis for this OBB
@@ -232,9 +232,9 @@ public boolean collides(AxisAlignedBB bb)
     return false;
     }
 //  AWLog.logDebug("axis 4 overlap!");
-  long t2 = System.nanoTime();
-  AWLog.logDebug("Collision!");
-  AWLog.logDebug("time: "+(t2-t1));
+//  long t2 = System.nanoTime();
+//  AWLog.logDebug("Collision!");
+//  AWLog.logDebug("time: "+(t2-t1));
   return true;
   }
 
