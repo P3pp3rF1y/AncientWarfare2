@@ -18,7 +18,6 @@ steel: d7e4e4 (180/20/50 recolor from wood)
 gearhead: 535353
 
 	* add cleaner side information to civic inventories
-	* add active/used display to warehouse control tile
 	* add info to manual /etc regarding access to the gate repack gui
 	* update forum post and curse site with info regarding bug reports/issues/enhancements (not flagging)
 	* update instruction manual with information regarding new torque system

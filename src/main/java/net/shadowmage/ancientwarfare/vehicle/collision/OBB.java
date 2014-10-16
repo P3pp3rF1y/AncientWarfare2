@@ -18,7 +18,7 @@ public final class OBB
 {
 
 /**
- * W,L,H values for the OBB.  Must not change after being initially set.
+ * W,L,H values for the OBB
  */
 public final float width, height, length;
 public final float halfWidth, halfLength;
@@ -35,6 +35,11 @@ private Vec3[] corners = new Vec3[4];//upper corners would be the same thing, wi
 
 private float yaw = 0;
 
+/**
+ * private vectors used during some calculations to reduce object churn
+ */
+private Vec3 scratch = Vec3.createVectorHelper(0, 0, 0);
+
 public OBB(float width, float height, float length)
   {
   this.width = width;
@@ -48,6 +53,10 @@ public OBB(float width, float height, float length)
   corners[3] = Vec3.createVectorHelper(-halfWidth, 0, halfLength);//rear left
   }
 
+/**
+ * Update this OBB for the input yaw rotation
+ * @param yaw
+ */
 public void updateForRotation(float yaw)
   {
   if(yaw==this.yaw){return;}//do not recalc if yaw has not changed
@@ -90,55 +99,42 @@ public boolean collides(Vec3[] inCorners)
   {
   /**
    * basic SAT test for OBBs.
-   */
+   */  
   
-  Vec3 inCorner1 = inCorners[0];
-  Vec3 inCorner2 = inCorners[1];
-  Vec3 inCorner3 = inCorners[2];
-  Vec3 inCorner4 = inCorners[3];
-  //long t1 = System.nanoTime();
-  //scratch values
-  double s1, s2, s3, s4;
+  /**
+   * Scratch values, for use in calculations
+   */
+  double s1, s2, s3, s4, minA, maxA, minB, maxB;
+  
+  /**
+   * Axis vectors, determined by the input bounding boxes
+   */
   //x-axis for this OBB
   Vec3 axis1 = Vec3.createVectorHelper(corners[1].xCoord - corners[0].xCoord , 0, corners[1].zCoord - corners[0].zCoord);
-  //z-axis for this OBB
+  //z-axis for this OBB  
   Vec3 axis2 = Vec3.createVectorHelper(corners[2].xCoord - corners[1].xCoord , 0, corners[2].zCoord - corners[1].zCoord);
-  //x-axis for input AABB
-  Vec3 axis3 = Vec3.createVectorHelper(inCorner2.xCoord - inCorner1.xCoord, 0, inCorner2.zCoord - inCorner1.zCoord);
-  //z-axis for input AABB
-  Vec3 axis4 = Vec3.createVectorHelper(inCorner3.xCoord - inCorner2.xCoord, 0, inCorner3.zCoord - inCorner2.zCoord);  
+  
+  //x-axis for input BB
+  Vec3 axis3 = Vec3.createVectorHelper(inCorners[1].xCoord - inCorners[0].xCoord, 0, inCorners[1].zCoord - inCorners[0].zCoord);
+  //z-axis for input BB
+  Vec3 axis4 = Vec3.createVectorHelper(inCorners[2].xCoord - inCorners[1].xCoord, 0, inCorners[2].zCoord - inCorners[1].zCoord);  
+   
   /**
    * Axis 1
    */
-  //upper-left of this projected onto axis1
-  Vec3 a1 = projectPoint(corners[0], axis1);
-  //upper-right of this projected onto axis1
-  Vec3 a2 = projectPoint(corners[1], axis1);
-  //lower-right on axis1
-  Vec3 a3 = projectPoint(corners[2], axis1);
-  //lower-left on axis1
-  Vec3 a4 = projectPoint(corners[3], axis1);
-  s1 = projectScalar(a1, axis1);
-  s2 = projectScalar(a2, axis1);
-  s3 = projectScalar(a3, axis1);
-  s4 = projectScalar(a4, axis1);
-  double minA = Math.min(Math.min(s1, s2), Math.min(s3, s4));
-  double maxA = Math.max(Math.max(s1, s2), Math.max(s3, s4));
+  s1 = projectOntoAxis(corners[0], axis1);
+  s2 = projectOntoAxis(corners[1], axis1);
+  s3 = projectOntoAxis(corners[2], axis1);
+  s4 = projectOntoAxis(corners[3], axis1);
+  minA = Math.min(Math.min(s1, s2), Math.min(s3, s4));
+  maxA = Math.max(Math.max(s1, s2), Math.max(s3, s4));
 
-  //upper-left of the input aabb on axis1
-  Vec3 b1 = projectPoint(inCorner1, axis1);
-  //upper-right of the input aabb on axis1
-  Vec3 b2 = projectPoint(inCorner2, axis1);
-  //lower-right of aabb on axis1
-  Vec3 b3 = projectPoint(inCorner3, axis1);
-  //lower-left of aabb on axis1
-  Vec3 b4 = projectPoint(inCorner4, axis1);
-  s1 = projectScalar(b1, axis1);
-  s2 = projectScalar(b2, axis1);
-  s3 = projectScalar(b3, axis1);
-  s4 = projectScalar(b4, axis1);
-  double minB = Math.min(Math.min(s1, s2), Math.min(s3, s4));
-  double maxB = Math.max(Math.max(s1, s2), Math.max(s3, s4));
+  s1 = projectOntoAxis(inCorners[0], axis1);
+  s2 = projectOntoAxis(inCorners[1], axis1);
+  s3 = projectOntoAxis(inCorners[2], axis1);
+  s4 = projectOntoAxis(inCorners[3], axis1);
+  minB = Math.min(Math.min(s1, s2), Math.min(s3, s4));
+  maxB = Math.max(Math.max(s1, s2), Math.max(s3, s4));
   if(maxB < minA || minB > maxA)//no overlap
     {
     return false;
@@ -147,25 +143,17 @@ public boolean collides(Vec3[] inCorners)
   /**
    * Axis 2
    */
-  a1 = projectPoint(corners[0], axis2);
-  a2 = projectPoint(corners[1], axis2);
-  a3 = projectPoint(corners[2], axis2);
-  a4 = projectPoint(corners[3], axis2);
-  s1 = projectScalar(a1, axis2);
-  s2 = projectScalar(a2, axis2);
-  s3 = projectScalar(a3, axis2);
-  s4 = projectScalar(a4, axis2);
+  s1 = projectOntoAxis(corners[0], axis2);
+  s2 = projectOntoAxis(corners[1], axis2);
+  s3 = projectOntoAxis(corners[2], axis2);
+  s4 = projectOntoAxis(corners[3], axis2);
   minA = Math.min(Math.min(s1, s2), Math.min(s3, s4));
   maxA = Math.max(Math.max(s1, s2), Math.max(s3, s4));
 
-  b1 = projectPoint(inCorner1, axis2);  
-  b2 = projectPoint(inCorner2, axis2);
-  b3 = projectPoint(inCorner3, axis2);
-  b4 = projectPoint(inCorner4, axis2);
-  s1 = projectScalar(b1, axis2);
-  s2 = projectScalar(b2, axis2);
-  s3 = projectScalar(b3, axis2);
-  s4 = projectScalar(b4, axis2);
+  s1 = projectOntoAxis(inCorners[0], axis2);
+  s2 = projectOntoAxis(inCorners[1], axis2);
+  s3 = projectOntoAxis(inCorners[2], axis2);
+  s4 = projectOntoAxis(inCorners[3], axis2);
   minB = Math.min(Math.min(s1, s2), Math.min(s3, s4));
   maxB = Math.max(Math.max(s1, s2), Math.max(s3, s4));
   if(maxB < minA || minB > maxA)//no overlap
@@ -176,25 +164,17 @@ public boolean collides(Vec3[] inCorners)
   /**
    * Axis 3
    */
-  a1 = projectPoint(corners[0], axis3);
-  a2 = projectPoint(corners[1], axis3);
-  a3 = projectPoint(corners[2], axis3);
-  a4 = projectPoint(corners[3], axis3);
-  s1 = projectScalar(a1, axis3);
-  s2 = projectScalar(a2, axis3);
-  s3 = projectScalar(a3, axis3);
-  s4 = projectScalar(a4, axis3);
+  s1 = projectOntoAxis(corners[0], axis3);
+  s2 = projectOntoAxis(corners[1], axis3);
+  s3 = projectOntoAxis(corners[2], axis3);
+  s4 = projectOntoAxis(corners[3], axis3);
   minA = Math.min(Math.min(s1, s2), Math.min(s3, s4));
   maxA = Math.max(Math.max(s1, s2), Math.max(s3, s4));
 
-  b1 = projectPoint(inCorner1, axis3);  
-  b2 = projectPoint(inCorner2, axis3);
-  b3 = projectPoint(inCorner3, axis3);
-  b4 = projectPoint(inCorner4, axis3);
-  s1 = projectScalar(b1, axis3);
-  s2 = projectScalar(b2, axis3);
-  s3 = projectScalar(b3, axis3);
-  s4 = projectScalar(b4, axis3);
+  s1 = projectOntoAxis(inCorners[0], axis3);
+  s2 = projectOntoAxis(inCorners[1], axis3);
+  s3 = projectOntoAxis(inCorners[2], axis3);
+  s4 = projectOntoAxis(inCorners[3], axis3);
   minB = Math.min(Math.min(s1, s2), Math.min(s3, s4));
   maxB = Math.max(Math.max(s1, s2), Math.max(s3, s4));
   if(maxB < minA || minB > maxA)//no overlap
@@ -205,25 +185,17 @@ public boolean collides(Vec3[] inCorners)
   /**
    * Axis 3
    */
-  a1 = projectPoint(corners[0], axis4);
-  a2 = projectPoint(corners[1], axis4);
-  a3 = projectPoint(corners[2], axis4);
-  a4 = projectPoint(corners[3], axis4);
-  s1 = projectScalar(a1, axis4);
-  s2 = projectScalar(a2, axis4);
-  s3 = projectScalar(a3, axis4);
-  s4 = projectScalar(a4, axis4);
+  s1 = projectOntoAxis(corners[0], axis4);
+  s2 = projectOntoAxis(corners[1], axis4);
+  s3 = projectOntoAxis(corners[2], axis4);
+  s4 = projectOntoAxis(corners[3], axis4);
   minA = Math.min(Math.min(s1, s2), Math.min(s3, s4));
   maxA = Math.max(Math.max(s1, s2), Math.max(s3, s4));
 
-  b1 = projectPoint(inCorner1, axis4);  
-  b2 = projectPoint(inCorner2, axis4);
-  b3 = projectPoint(inCorner3, axis4);
-  b4 = projectPoint(inCorner4, axis4);
-  s1 = projectScalar(b1, axis4);
-  s2 = projectScalar(b2, axis4);
-  s3 = projectScalar(b3, axis4);
-  s4 = projectScalar(b4, axis4);
+  s1 = projectOntoAxis(inCorners[0], axis4);
+  s2 = projectOntoAxis(inCorners[1], axis4);
+  s3 = projectOntoAxis(inCorners[2], axis4);
+  s4 = projectOntoAxis(inCorners[3], axis4);
   minB = Math.min(Math.min(s1, s2), Math.min(s3, s4));
   maxB = Math.max(Math.max(s1, s2), Math.max(s3, s4));
   if(maxB < minA || minB > maxA)//no overlap
@@ -233,6 +205,11 @@ public boolean collides(Vec3[] inCorners)
   return true;
   }
 
+/**
+ * return true if the input AABB collides with this OBB
+ * @param bb
+ * @return
+ */
 public boolean collides(AxisAlignedBB bb)
   {  
   Vec3 c1 = Vec3.createVectorHelper(bb.minX, 0, bb.minZ);
@@ -242,19 +219,52 @@ public boolean collides(AxisAlignedBB bb)
   return collides(new Vec3[]{c1, c2, c3, c4});
   }
 
+/**
+ * return true if the input OBB collides with this OBB
+ * @param bb
+ * @return
+ */
 public boolean collides(OBB bb)
   {
   return collides(bb.corners);
   }
 
-private Vec3 projectPoint(Vec3 p, Vec3 a)
+/**
+ * return the scalar-position point for a given corner projected onto an axis (combines projectPoint and projectScalar)
+ * @param p
+ * @param a
+ * @return
+ */
+private double projectOntoAxis(Vec3 p, Vec3 a)
+  {
+  return projectScalar(projectPoint(p, a, scratch), a);
+  }
+
+/**
+ * projects a point onto the given axis.<br>
+ * the returned vector is the input point projected onto the input axis.
+ * @param p
+ * @param a
+ * @param out the vector to store the result in.  must not be null
+ * @return
+ */
+private Vec3 projectPoint(Vec3 p, Vec3 a, Vec3 out)
   {    
   double supper = p.xCoord * a.xCoord + p.zCoord * a.zCoord;
   double slower = a.xCoord * a.xCoord + a.zCoord * a.zCoord;
   double scalar = supper/slower;
-  return Vec3.createVectorHelper(scalar*a.xCoord, 0, scalar*a.zCoord);
+  out.xCoord = scalar*a.xCoord;
+  out.zCoord = scalar*a.zCoord;
+  return out;
   }
 
+/**
+ * returns a scalar value that denotes a points position on an axis, relative to other values returned from this method<br>
+ * overall the return value is meaningless aside from a method to determine ordering on a line.
+ * @param p
+ * @param a
+ * @return
+ */
 private double projectScalar(Vec3 p, Vec3 a)
   {
   return p.xCoord * a.xCoord + p.zCoord * a.zCoord; 
