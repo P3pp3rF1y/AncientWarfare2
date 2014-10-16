@@ -35,6 +35,13 @@ public static final String KEY_ALT_ITEM_USE_2 = "keybind.alt_item_use_3";
 public static final String KEY_ALT_ITEM_USE_3 = "keybind.alt_item_use_4";
 public static final String KEY_ALT_ITEM_USE_4 = "keybind.alt_item_use_5";
 
+public static final String KEY_VEHICLE_FORWARD = "keybind.vehicle.forward";
+public static final String KEY_VEHICLE_REVERSE = "keybind.vehicle.reverse";
+public static final String KEY_VEHICLE_LEFT = "keybind.vehicle.left";
+public static final String KEY_VEHICLE_RIGHT = "keybind.vehicle.right";
+public static final String KEY_VEHICLE_FIRE = "keybind.vehicle.fire";
+
+
 private static InputHandler instance = new InputHandler();
 public static InputHandler instance(){return instance;}
 private InputHandler(){}

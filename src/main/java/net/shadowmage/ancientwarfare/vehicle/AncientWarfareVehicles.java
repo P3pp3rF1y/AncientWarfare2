@@ -55,12 +55,12 @@ public void preInit(FMLPreInitializationEvent evt)
    */
   config = AWCoreStatics.getConfigFor("AncientWarfareVehicle");
   statics = new AWVehicleStatics(config);
+  statics.load();//load config settings
     
   /**
    * load pre-init (items, blocks, entities)
    */  
   proxy.registerClient();
-  statics.load();//load config settings
   AWVehicleEntityLoader.load();
   AWVehicleItemLoader.load();
       
