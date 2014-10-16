@@ -13,17 +13,21 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 public class VehicleBase extends Entity implements IEntityAdditionalSpawnData
 {
 
-public float length;
+
+public float vehicleWidth, vehicleHeight, vehicleLength;
 
 public OBB obb;
 
 public VehicleBase(World world)
   {
   super(world);
-  this.width = 2.0f;
-  this.height = 1.5f;
-  this.length = 3.0f;
-  this.obb = new OBB(width, height, length);
+  
+  vehicleWidth = 2.f;
+  vehicleHeight = 1.5f;
+  vehicleLength = 3.f;
+  this.obb = new OBB(vehicleWidth, vehicleHeight, vehicleLength);
+  this.width = vehicleWidth * 0.70f;//approximately the smallest BB the entity could ever occupy, use this for the 'Minecraft Bounding Box'
+  this.height = vehicleHeight;
   }
 
 @Override
@@ -98,9 +102,7 @@ public void applyEntityCollision(Entity collider)
     dx *= 0.05d;
     dz *= 0.05d;
     collider.setPosition(collider.posX+dx, collider.posY, collider.posZ+dz);
-//    collider.addVelocity(dx*0.05d, 0, dz*0.05d);
-    
-//    super.applyEntityCollision(collider);
+//    collider.addVelocity(dx*0.05d, 0, dz*0.05d);    
     }
   }
 
@@ -115,9 +117,7 @@ public void onCollideWithPlayer(EntityPlayer collider)
     dx *= 0.05d;
     dz *= 0.05d;
     collider.setPosition(collider.posX+dx, collider.posY, collider.posZ+dz);
-//    collider.addVelocity(dx*0.05d, 0, dz*0.05d);
-    
-//    super.applyEntityCollision(collider);
+//    collider.addVelocity(dx*0.05d, 0, dz*0.05d);    
     }
 //  AWLog.logDebug("collide with player!! "+player);
   super.onCollideWithPlayer(collider);
