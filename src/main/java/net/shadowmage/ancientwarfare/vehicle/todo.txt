@@ -1,0 +1,17 @@
+vehicles todo
+
+* collision handling
+	- need to figure out how to handle overriding MCs AABB stuff
+* multi passenger vehicles
+
+
+
+* client-side prediction for movement
+	- shouldn't be too hard, cyclic buffer, command ID, synch position and input status at each tick
+		- perhaps only full synch every X ticks
+		- only send input state changes along with the time/tick/commandID for that tick
+			-- how to handle inbetween ticks / network jitter?
+			
+input handling:
+	- callback from keybind handler, or poll state?
+		-probably poll state for movement-related stuff, or use a reset flag to tell if it was pressed at all during that tick

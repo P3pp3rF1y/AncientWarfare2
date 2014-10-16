@@ -26,11 +26,11 @@ public void registerClient()
 
 public void registerClientOptions()
   {
-  InputHandler.instance().registerKeybind(InputHandler.KEY_VEHICLE_FORWARD, AWVehicleStatics.keybindForward.getInt(), null);//TODO add input callback
-  InputHandler.instance().registerKeybind(InputHandler.KEY_VEHICLE_REVERSE, AWVehicleStatics.keybindReverse.getInt(), null);
-  InputHandler.instance().registerKeybind(InputHandler.KEY_VEHICLE_LEFT, AWVehicleStatics.keybindLeft.getInt(), null);
-  InputHandler.instance().registerKeybind(InputHandler.KEY_VEHICLE_RIGHT, AWVehicleStatics.keybindRight.getInt(), null);
-  InputHandler.instance().registerKeybind(InputHandler.KEY_VEHICLE_FIRE, AWVehicleStatics.keybindFire.getInt(), null);  
+  InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_FORWARD, AWVehicleStatics.keybindForward.getInt(), null);//TODO add input callback
+  InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_REVERSE, AWVehicleStatics.keybindReverse.getInt(), null);
+  InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_LEFT, AWVehicleStatics.keybindLeft.getInt(), null);
+  InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_RIGHT, AWVehicleStatics.keybindRight.getInt(), null);
+  InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_FIRE, AWVehicleStatics.keybindFire.getInt(), null);  
   ConfigManager.registerConfigCategory(new VehicleCategory("awconfig.vehicle_keybinds", "awconfig.vehicle_keybinds"));
   }
 

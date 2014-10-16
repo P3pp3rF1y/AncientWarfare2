@@ -8,11 +8,13 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
+import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class VehicleBase extends Entity implements IEntityAdditionalSpawnData
 {
 
+private VehicleInputHandler inputHandler;
 
 public float vehicleWidth, vehicleHeight, vehicleLength;
 
@@ -28,6 +30,8 @@ public VehicleBase(World world)
   this.obb = new OBB(vehicleWidth, vehicleHeight, vehicleLength);
   this.width = vehicleWidth * 0.70f;//approximately the smallest BB the entity could ever occupy, use this for the 'Minecraft Bounding Box'
   this.height = vehicleHeight;
+  
+  inputHandler = new VehicleInputHandler(this);
   }
 
 @Override
@@ -43,6 +47,7 @@ public void onUpdate()
     {
     rotationYaw++;    
     }
+  inputHandler.onUpdate();
   super.onUpdate();
   updateBoundingBox();
   }

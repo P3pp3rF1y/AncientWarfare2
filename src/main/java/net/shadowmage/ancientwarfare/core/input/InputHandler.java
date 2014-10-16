@@ -35,13 +35,6 @@ public static final String KEY_ALT_ITEM_USE_2 = "keybind.alt_item_use_3";
 public static final String KEY_ALT_ITEM_USE_3 = "keybind.alt_item_use_4";
 public static final String KEY_ALT_ITEM_USE_4 = "keybind.alt_item_use_5";
 
-public static final String KEY_VEHICLE_FORWARD = "keybind.vehicle.forward";
-public static final String KEY_VEHICLE_REVERSE = "keybind.vehicle.reverse";
-public static final String KEY_VEHICLE_LEFT = "keybind.vehicle.left";
-public static final String KEY_VEHICLE_RIGHT = "keybind.vehicle.right";
-public static final String KEY_VEHICLE_FIRE = "keybind.vehicle.fire";
-
-
 private static InputHandler instance = new InputHandler();
 public static InputHandler instance(){return instance;}
 private InputHandler(){}
@@ -224,6 +217,7 @@ List<InputCallback> inputHandlers = new ArrayList<InputCallback>();
 
 private int key;
 private String name;
+private boolean isPressed;
 
 private Keybind(String name, int key)
   {
@@ -241,16 +235,23 @@ public int getKeyCode()
   return key;
   }
 
-public void onKeyPressed()
+public boolean isPressed()
   {
+  return isPressed;
+  }
+
+private void onKeyPressed()
+  {
+  isPressed = true;
   for(InputCallback c : inputHandlers)
     {
     c.onKeyPressed();
     }
   }
 
-public void onKeyReleased()
+private void onKeyReleased()
   {
+  isPressed = false;
   for(InputCallback c : inputHandlers)
     {    
     c.onKeyReleased();

@@ -25,12 +25,17 @@ import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
-import net.shadowmage.ancientwarfare.core.input.InputHandler;
 
 import org.lwjgl.input.Keyboard;
 
 public class AWVehicleStatics extends ModConfiguration
 {
+
+public static final String KEY_VEHICLE_FORWARD = "keybind.vehicle.forward";
+public static final String KEY_VEHICLE_REVERSE = "keybind.vehicle.reverse";
+public static final String KEY_VEHICLE_LEFT = "keybind.vehicle.left";
+public static final String KEY_VEHICLE_RIGHT = "keybind.vehicle.right";
+public static final String KEY_VEHICLE_FIRE = "keybind.vehicle.fire";
 
 /**
  * shared settings:
@@ -64,11 +69,11 @@ public AWVehicleStatics(Configuration config)
 @Override
 public void initializeCategories()
   {
-  keybindForward = AncientWarfareCore.config.get(AWCoreStatics.keybinds, InputHandler.KEY_VEHICLE_FORWARD, Keyboard.KEY_W);
-  keybindReverse = AncientWarfareCore.config.get(AWCoreStatics.keybinds, InputHandler.KEY_VEHICLE_REVERSE, Keyboard.KEY_S);
-  keybindLeft = AncientWarfareCore.config.get(AWCoreStatics.keybinds, InputHandler.KEY_VEHICLE_LEFT, Keyboard.KEY_A);
-  keybindRight = AncientWarfareCore.config.get(AWCoreStatics.keybinds, InputHandler.KEY_VEHICLE_RIGHT, Keyboard.KEY_D);
-  keybindFire = AncientWarfareCore.config.get(AWCoreStatics.keybinds, InputHandler.KEY_VEHICLE_FIRE, Keyboard.KEY_SPACE); 
+  keybindForward = AncientWarfareCore.config.get(AWCoreStatics.keybinds, KEY_VEHICLE_FORWARD, Keyboard.KEY_W);
+  keybindReverse = AncientWarfareCore.config.get(AWCoreStatics.keybinds, KEY_VEHICLE_REVERSE, Keyboard.KEY_S);
+  keybindLeft = AncientWarfareCore.config.get(AWCoreStatics.keybinds, KEY_VEHICLE_LEFT, Keyboard.KEY_A);
+  keybindRight = AncientWarfareCore.config.get(AWCoreStatics.keybinds, KEY_VEHICLE_RIGHT, Keyboard.KEY_D);
+  keybindFire = AncientWarfareCore.config.get(AWCoreStatics.keybinds, KEY_VEHICLE_FIRE, Keyboard.KEY_SPACE); 
   }
 
 @Override
