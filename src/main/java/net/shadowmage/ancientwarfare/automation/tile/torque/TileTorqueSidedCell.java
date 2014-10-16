@@ -179,7 +179,7 @@ public void onNeighborTileChanged()
 
 protected void buildConnections()
   {
-  connections = new boolean[6];
+  boolean[] connections = new boolean[6];
   ITorqueTile[] cache = getTorqueCache();
   ForgeDirection dir;
   for(int i = 0; i < 6; i++)
@@ -208,6 +208,7 @@ protected void buildConnections()
       if(tes[i]!=null){connections[i]=true;}
       }
     }
+  this.connections = connections;
   }
 
 @Override
