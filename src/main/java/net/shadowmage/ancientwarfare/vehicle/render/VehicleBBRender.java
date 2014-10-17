@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehiclePart;
 
 import org.lwjgl.opengl.GL11;
 
@@ -34,35 +35,29 @@ public void doRender(Entity entity, double x, double y,  double z, float yaw, fl
   GL11.glDisable(GL11.GL_TEXTURE_2D);
   GL11.glEnable(GL11.GL_BLEND);
   GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-  GL11.glColor4f(.75f, .75f, .75f, 0.75f);
     
+  VehiclePart[] parts = vehicle.getParts();
+  
+  GL11.glTranslated(x, y, z);
+    
+  double x1, y1, z1;
+  GL11.glColor4f(0, .75f, 0, 0.75f);
+  for(VehiclePart part : parts)
+    {
+    x1 = part.posX - entity.posX;
+    y1 = part.posY - entity.posY;
+    z1 = part.posZ - entity.posZ;
+    renderAABB.setBB(part.boundingBox);
+    renderAABB.offset(x1, y1+1, z1);
+    renderAABB.offset(-part.posX, -part.posY, -part.posZ);
+    renderAABB(renderAABB);
+    }
+
+  GL11.glColor4f(.75f, .75f, .75f, 0.75f);
   renderAABB.setBB(entity.boundingBox);
-  renderAABB.offset(x - entity.lastTickPosX, y - entity.lastTickPosY, z - entity.lastTickPosZ);
+  renderAABB.offset(-entity.posX, -entity.posY,  -entity.posZ);
   renderAABB(renderAABB);
     
-  GL11.glColor4f(0, 0.75f, 0, 0.75f);
-  GL11.glTranslated(x, y+0.5d, z);
-  
-  renderOBB(vehicle.obb);
-  
-  if(vehicle.obb.collides(testCollisionBB))
-    {
-    GL11.glColor4f(1, 0, 0, 0.75f);
-    }
-  else
-    {
-    GL11.glColor4f(0, 0.75f, 0, 0.5f);
-    }
-  
-//  GL11.glRotatef(yaw, 0, 1, 0);
-//  float hw = entity.width / 2.f;
-//  float hl = vehicle.length / 2.f;
-//  renderOBB.setBounds(-hw, 0, -hl, hw, entity.height, hl);
-//  renderAABB(renderOBB);
-
-  
-  renderAABB(testCollisionBB);
-  
   GL11.glEnable(GL11.GL_TEXTURE_2D);
   GL11.glDisable(GL11.GL_BLEND);  
   GL11.glPopMatrix();
@@ -116,7 +111,6 @@ public static void renderOBB(OBB bb)
   tessellator.addVertex(c2.xCoord, maxY, c2.zCoord);
   tessellator.addVertex(c1.xCoord, maxY, c1.zCoord);
   
-  //TODO top/bottom  
   tessellator.draw();
   }
 

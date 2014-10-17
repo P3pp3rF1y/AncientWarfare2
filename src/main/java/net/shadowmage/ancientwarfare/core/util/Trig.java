@@ -151,7 +151,6 @@ public static boolean isAngleBetween(float test, float min, float max)
   test = Trig.wrapTo360(test);
   min = Trig.wrapTo360(min);
   max = Trig.wrapTo360(max);
-//  Config.logDebug(test+","+min+","+max);
   if(min > max)
     {
     return test>=min || test <= max;
