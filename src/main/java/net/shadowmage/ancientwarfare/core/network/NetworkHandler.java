@@ -37,10 +37,8 @@ public static final int PACKET_STRUCTURE_IMAGE_DATA = 10;
 public static final int PACKET_STRUCTURE_REMOVE = 11;
 public static final int PACKET_NPC_COMMAND = 12;
 public static final int PACKET_FACTION_UPDATE = 13;
-public static final int PACKET_VEHICLE_INPUT_CHANGE = 14;//single key input change packet from client->server
-public static final int PACKET_VEHICLE_INPUT_STATE = 15;//full input state packet, from client->server
-public static final int PACKET_VEHICLE_INPUT_RESPONSE = 16;//response to an input state/change packet, from server->client
-public static final int PACKET_VEHICLE_SERVER_POSITION = 17;//PROBABLY UN-NEEDED, NON-RIDING CLIENTS WILL USE VANILLA MOVEMENT SYNCH/UPDATE STUFF
+public static final int PACKET_VEHICLE_INPUT_STATE = 14;//full input state packet, from client->server
+public static final int PACKET_VEHICLE_INPUT_RESPONSE = 15;//response to an input state/change packet, from server->client
 
 public static final int GUI_CRAFTING = 0;
 public static final int GUI_SCANNER = 1;

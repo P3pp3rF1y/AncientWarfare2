@@ -27,11 +27,10 @@ public VehiclePart(VehicleBase vehicle, float width, float height, float xOffset
 
 public final void updatePosition()
   {
-  float yaw = vehicle.rotationYaw;
   location.xCoord = offset.xCoord;
   location.yCoord = offset.yCoord;
   location.zCoord = offset.zCoord;
-  location.rotateAroundY(yaw * Trig.TORADIANS);
+  location.rotateAroundY(vehicle.rotationYaw * Trig.TORADIANS);
   location.xCoord+=vehicle.posX;
   location.yCoord+=vehicle.posY;
   location.zCoord+=vehicle.posZ;

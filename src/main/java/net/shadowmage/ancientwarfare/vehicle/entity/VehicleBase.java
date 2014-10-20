@@ -10,14 +10,18 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandler;
+import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandlerTest;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class VehicleBase extends Entity implements IEntityAdditionalSpawnData
 {
 
-private VehicleInputHandler inputHandler;
-private VehicleMoveHandler moveHandler;
+public VehicleInputHandler inputHandler;
+public VehicleMoveHandler moveHandler;
 
 VehiclePart[] parts;
 
@@ -28,14 +32,17 @@ public VehicleBase(World world)
   {
   super(world);
   
+  inputHandler = new VehicleInputHandler(this);
+  moveHandler = new VehicleMoveHandlerTest(this);
+  
   vehicleWidth = 2.f;
   vehicleHeight = 1.0f;
   vehicleLength = 3.f;
-  this.width = Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
-  this.height = vehicleHeight;
   
-  inputHandler = new VehicleInputHandler(this);
-  moveHandler = new VehicleMoveHandler(this);
+  width = Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
+  height = vehicleHeight;
+  stepHeight = 1.f;
+  
   }
 
 /**
@@ -52,16 +59,18 @@ protected void entityInit()
 @Override
 public void onUpdate()
   {
-//  inputHandler.onUpdate();
-  if(!worldObj.isRemote){rotationYaw++;}
+  inputHandler.onUpdate();
   super.onUpdate();
   updatePartPositions();
+  
+  AWLog.logDebug("pos: "+posX+","+posY+","+posZ);
   }
 
 //************************************* COLLISION HANDLING *************************************//
-// disabled in base class to allow entity-parts to handle the collision handling.  each vehicle
-// part is responsible for its own collision detection and handling.
-//
+// Disabled in base class to allow entity-parts to handle the collision handling.  Each vehicle part
+// is responsible for updating its own position.  Vehicle base is responsible for resolving collision
+// detection with world/entities and vehicleparts.  Vehicle parts bridge all interaction stuff back to
+// the owning parent vehicle (interact, attack)
 
 @Override
 public AxisAlignedBB getCollisionBox(Entity entity)
@@ -87,10 +96,22 @@ public AxisAlignedBB getBoundingBox()
   return null;
   }
 
+/**
+ * Renderpass 0 for normal rendering<br>
+ * Renderpass 1 for debug bounding box rendering<br>
+ * TODO remove pass1 when no longer needed
+ */
 @Override
 public boolean shouldRenderInPass(int pass)
   {
   return pass==0 || pass==1;
+  }
+
+@Override
+@SideOnly(Side.CLIENT)
+public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int ticks)
+  {
+  inputHandler.handleVanillaSynch(x, y, z, yaw, pitch, ticks);
   }
 
 //************************************* MULTIPART ENTITY HANDLING CODE *************************************//
@@ -130,7 +151,6 @@ protected void buildParts()
   
   parts[6] = new VehiclePart(this, 1, 1,  0.0f, -0.5f);
   parts[7] = new VehiclePart(this, 1, 1,  0.0f,  0.5f);  
-  updatePartPositions();
   }
 
 protected final void updatePartPositions()

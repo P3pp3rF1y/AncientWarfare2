@@ -36,6 +36,8 @@ public static final String KEY_VEHICLE_REVERSE = "keybind.vehicle.reverse";
 public static final String KEY_VEHICLE_LEFT = "keybind.vehicle.left";
 public static final String KEY_VEHICLE_RIGHT = "keybind.vehicle.right";
 public static final String KEY_VEHICLE_FIRE = "keybind.vehicle.fire";
+//public static final String KEY_VEHICLE_ASCEND = "keybind.vehicle.fire";
+//public static final String KEY_VEHICLE_DESCCEND = "keybind.vehicle.fire";
 
 /**
  * shared settings:
