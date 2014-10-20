@@ -6,6 +6,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehiclePart;
@@ -28,6 +30,7 @@ public VehicleBBRender()
 @Override
 public void doRender(Entity entity, double x, double y,  double z, float yaw, float tick)
   {
+  if(MinecraftForgeClient.getRenderPass()==0){return;}
   VehicleBase vehicle = (VehicleBase)entity;
   
   GL11.glPushMatrix();
@@ -48,15 +51,17 @@ public void doRender(Entity entity, double x, double y,  double z, float yaw, fl
     y1 = part.posY - entity.posY;
     z1 = part.posZ - entity.posZ;
     renderAABB.setBB(part.boundingBox);
-    renderAABB.offset(x1, y1+1, z1);
+    renderAABB.offset(x1, y1, z1);
     renderAABB.offset(-part.posX, -part.posY, -part.posZ);
-    renderAABB(renderAABB);
+    RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 0, 0, 0.0625f);
+//    renderAABB(renderAABB);
     }
 
   GL11.glColor4f(.75f, .75f, .75f, 0.75f);
   renderAABB.setBB(entity.boundingBox);
   renderAABB.offset(-entity.posX, -entity.posY,  -entity.posZ);
-  renderAABB(renderAABB);
+  RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 1, 1, 0.0625f);
+//  renderAABB(renderAABB);
     
   GL11.glEnable(GL11.GL_TEXTURE_2D);
   GL11.glDisable(GL11.GL_BLEND);  
