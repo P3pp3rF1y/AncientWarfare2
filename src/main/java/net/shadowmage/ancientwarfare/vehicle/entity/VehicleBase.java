@@ -2,11 +2,13 @@ package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
@@ -85,6 +87,12 @@ public AxisAlignedBB getBoundingBox()
   return null;
   }
 
+@Override
+public boolean shouldRenderInPass(int pass)
+  {
+  return pass==0 || pass==1;
+  }
+
 //************************************* MULTIPART ENTITY HANDLING CODE *************************************//
 //
 /**
@@ -131,6 +139,17 @@ protected final void updatePartPositions()
     {
     part.updatePosition();
     }
+  }
+
+@Override
+public boolean interactFirst(EntityPlayer player)
+  {
+  AWLog.logDebug("interact with vehicle: "+player);
+  if(!worldObj.isRemote)
+    {
+    player.mountEntity(this);
+    }
+  return true;//return true for isHandled
   }
 
 /**

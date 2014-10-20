@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 public class VehiclePart extends Entity
@@ -36,15 +36,46 @@ public final void updatePosition()
   location.yCoord+=vehicle.posY;
   location.zCoord+=vehicle.posZ;
   setPosition(location.xCoord, location.yCoord, location.zCoord);
-  AWLog.logDebug("updating position for offset: "+offset+" new loc: "+location+" owner pos: "+vehicle);
   }
 
 @Override
-public AxisAlignedBB getCollisionBox(Entity p_70114_1_)
+public boolean interactFirst(EntityPlayer player)
   {
-  return p_70114_1_.boundingBox;
+  return vehicle.interactFirst(player);
   }
 
+/**
+ * Used to in collision detection between this entity and the passed in entity for:<br>
+ * getCollidingBoundingBoxes(Entity, AxisAlignedBB)<br>
+ * which is called from: 
+ * <li>moveEntity
+ * <li>check for valid spawn
+ * <li>canSpawnHere
+ * <li>zombie attack and aid summon
+ * <li>boat on-right-click
+ * <li>client side position synch packets<br><br>
+ * Return null to disable others colliding with this entity.
+ * Return the input entities bounding box (or other, adjusted) to enable collisions with this entity
+ */
+@Override
+public AxisAlignedBB getCollisionBox(Entity collidingEntity)
+  {
+  return collidingEntity.boundingBox;
+  }
+
+/**
+ * Used to get the collision box for this entity, used in:<br>
+ * getCollidingBoundingBoxes(Entity, AxisAlignedBB)<br> 
+ * which is called from: 
+ * <li>moveEntity
+ * <li>check for valid spawn
+ * <li>canSpawnHere
+ * <li>zombie attack and aid summon
+ * <li>boat on-right-click
+ * <li>client side position synch packets<br><br>
+ * Return null to have no collisions with -this- entity (collisions with parts still function properly)<br>
+ * Return boundingBox to enable collisions with -this- entity
+ */
 @Override
 public AxisAlignedBB getBoundingBox()
   {
@@ -52,7 +83,8 @@ public AxisAlignedBB getBoundingBox()
   }
 
 /**
- * Returns true if other Entities should be prevented from moving through this Entity.
+ * Used to determine if this entity can be hit by arrows and ray-traces in client getMouseOverObject calls<br>
+ * it appears that this is the -canBeCollidedWith()- for interactions
  */
 @Override
 public boolean canBeCollidedWith()
@@ -60,24 +92,22 @@ public boolean canBeCollidedWith()
   return true;
   }
 
+/**
+ * Used by entityLiving (or other mobile entities) to determine if it has contacted another mobile/pushable entity<br>
+ * Only used by minecart, boat and entityLivingBase for pushability on collision
+ */
 @Override
 public boolean canBePushed()
   {
   return true;
   }
 
-/**
- * Called when the entity is attacked.
- */
 @Override
 public boolean attackEntityFrom(DamageSource src, float amt)
   {
   return this.isEntityInvulnerable() ? false : this.vehicle.attackEntityFromPart(this, src, amt);
   }
 
-/**
- * Returns true if Entity argument is equal to this Entity
- */
 @Override
 public boolean isEntityEqual(Entity entity)
   {
