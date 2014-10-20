@@ -45,6 +45,7 @@ public AWStructureStatics(Configuration config)
 public static String templateExtension = "aws";
 public static boolean enableVillageGen = true;
 public static boolean enableStructureGeneration = true;
+public static boolean loadDefaultPack = false;
 private static boolean exportBlockNames = false;
 public static int clusterValueSearchRange = 16;
 public static int duplicateStructureSearchRange = 16;
@@ -82,7 +83,8 @@ protected void initializeValues()
   enableVillageGen = config.get(worldGenCategory, "enable_village_feature_generation", enableVillageGen, "Default="+enableVillageGen+"\n" +
   		"Enable or disable generation of additional village features.").getBoolean(enableVillageGen);
   enableStructureGeneration = config.get(worldGenCategory, "enable_structure_generation", enableStructureGeneration, "Default="+enableStructureGeneration+"\n" +
-  		"Enable or disable structure generation entirely.").getBoolean(enableStructureGeneration);  
+  		"Enable or disable structure generation entirely.").getBoolean(enableStructureGeneration);
+  loadDefaultPack = config.getBoolean(worldGenCategory, "load_default_structure_pack", loadDefaultPack, "If true the default structure pack will be loaded and enabled for world-gen.");
   duplicateStructureSearchRange = config.get(worldGenCategory, "validation_duplicate_search_radius", duplicateStructureSearchRange, "Default="+duplicateStructureSearchRange+"\n" +
   		"The minimum radius in chunks to be searched for duplicate structures.\n" +
   		"This setting should generally not need to be adjusted unless you have templates with extremely\n" +
