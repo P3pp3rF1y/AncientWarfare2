@@ -7,7 +7,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
@@ -29,7 +28,7 @@ public VehicleBase(World world)
   
   vehicleWidth = 2.f;
   vehicleHeight = 1.0f;
-  vehicleLength = 5.f;
+  vehicleLength = 3.f;
   this.width = Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   this.height = vehicleHeight;
   
@@ -95,72 +94,42 @@ public AxisAlignedBB getBoundingBox()
  * @return
  */
 @Override
-public VehiclePart[] getParts()
+public final VehiclePart[] getParts()
   {
-  if(parts==null){buildParts();}//lazy initialization of parts, don't even bother to construct until they are first asked for...perhaps change this to init parts in entity-init?
+  if(parts==null)
+    {
+    buildParts();
+    updatePartPositions();
+    }//lazy initialization of parts, don't even bother to construct until they are first asked for...perhaps change this to init parts in entity-init?
   return parts;
   }
 
-protected final void buildParts()
+/**
+ * Will be made abstract for actual classes<br>
+ * Implementations should return an array containing the vehicle parts for the given vehicle<br>
+ * Each part is responsible for updating its own location relative to vehicle position.<br>
+ * May have a config option to -not- use multiple vehicle parts,in which case a single vehicle part should be returned for the vehicle bounds
+ */
+protected void buildParts()
   {  
-  float min = Math.min(vehicleLength, vehicleWidth);
-  float max = Math.max(vehicleLength, vehicleWidth);
-  int num = (int)Math.ceil(max / min);
-  parts = new VehiclePart[num];
-  for(int i = 0; i < num; i++)
-    {
-    parts[i] = new VehiclePart(this, min, height);
-    }
+  parts = new VehiclePart[8];
+  parts[0] = new VehiclePart(this, 1, 1, -0.5f,  1.0f);
+  parts[1] = new VehiclePart(this, 1, 1, -0.5f,  0.0f);
+  parts[2] = new VehiclePart(this, 1, 1, -0.5f, -1.0f);
+  parts[3] = new VehiclePart(this, 1, 1,  0.5f,  1.0f);
+  parts[4] = new VehiclePart(this, 1, 1,  0.5f,  0.0f);
+  parts[5] = new VehiclePart(this, 1, 1,  0.5f, -1.0f);
+  
+  parts[6] = new VehiclePart(this, 1, 1,  0.0f, -0.5f);
+  parts[7] = new VehiclePart(this, 1, 1,  0.0f,  0.5f);  
   updatePartPositions();
   }
 
-protected void updatePartPositions()
+protected final void updatePartPositions()
   {
-  VehiclePart[] parts = getParts();
-  float min = Math.min(vehicleLength, vehicleWidth);
-  float max = Math.max(vehicleLength, vehicleWidth);
-  int num = parts.length;
-  
-  if(num==1)//only a single part, set to vehicle position
+  for(VehiclePart part : getParts())
     {
-    getParts()[0].setPosition(posX, posY, posZ);
-    return;
-    }
-  
-  float edgeSeparation = min / 2.f;  
-  float innerSeparation = (max - min) / (num-1);
-  
-  float pos = 0;//current position along vehicle axis line, from front->rear
-   
-  Vec3 lookVec = getLookVec();
-
-  double x, z;
-  double frontX, frontZ;
-  frontX = lookVec.xCoord * (max*0.5d) + posX;
-  frontZ = lookVec.zCoord * (max*0.5d) + posZ;
-  
-  x = frontX;
-  z = frontZ;
-  for(int i = 0; i < num; i++)
-    {
-    if(i==0)//first part
-      {
-      pos = edgeSeparation;
-      }
-    else if(i==num-1)//last part
-      {
-      pos = max-edgeSeparation;
-      }
-    else
-      {
-      pos += innerSeparation;
-      }
-    x = frontX - pos * lookVec.xCoord;
-    z = frontZ - pos * lookVec.zCoord;
-    parts[i].setPosition(x, posY, z);
-    AWLog.logDebug("set part pos to: "+parts[i].posX + ","+parts[i].posZ + " for entity pos: "+posX+","+posZ +  parts[i].boundingBox);
-    //calc x, y along vehicle axis vector
-    //set part to that position
+    part.updatePosition();
     }
   }
 
