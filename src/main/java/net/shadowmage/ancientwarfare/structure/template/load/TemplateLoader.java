@@ -33,7 +33,6 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,10 +40,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.text.DefaultStyledDocument;
 
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -58,6 +57,7 @@ public class TemplateLoader
 public static final String defaultTemplateDirectory = "/assets/ancientwarfare/templates/";
 public static String outputDirectory = null;
 public static String includeDirectory = null;
+private final String defaultTemplatePackLocation = "/assets/ancientwarfare/template/default_structure_pack.zip";
 
 private List<File> probableStructureFiles = new ArrayList<File>();
 private List<File> probableZipFiles = new ArrayList<File>();
@@ -96,9 +96,11 @@ public void initializeAndExportDefaults(String path)
 
 public void loadTemplates()
   {
+  int loadedCount = 0;
+  loadedCount += this.loadDefaultPack();//load default structure pack
+  
   this.locateStructureFiles();
   StructureTemplate template;
-  int loadedCount = 0;
   for(File f : this.probableStructureFiles)
     {
     AWLog.logDebug("Loading template: "+f.getName());
@@ -110,7 +112,7 @@ public void loadTemplates()
       loadedCount++;
       }
     }  
-  loadedCount+=this.loadTemplatesFromZip();
+  loadedCount+=this.loadTemplatesFromZips();
   AWLog.log("Loaded "+loadedCount+" structure(s).");
   this.validateAndLoadImages();
   this.probableStructureFiles.clear();
@@ -197,61 +199,91 @@ private void loadStructureImage(String imageName, InputStream is)
     {
     e.printStackTrace();
     }
+  }
+
+private int loadTemplatesFromZipStream(ZipInputStream zis)
+  {  
+  int parsed = 0;
+  StructureTemplate template;
+  ZipEntry entry;  
   try
     {
-    is.close();
+    while((entry = zis.getNextEntry())!=null)
+      {
+      if(entry.isDirectory()){continue;}//TODO how to handle subfolders in a zip-file?
+      if(entry.getName().toLowerCase().endsWith(".png"))
+        {
+        loadStructureImage(entry.getName(), zis);
+        continue;
+        }
+      else if(!entry.getName().toLowerCase().endsWith("."+AWStructureStatics.templateExtension))
+        {
+        continue;
+        }
+      template = loadTemplateFromZip(entry, zis);
+      if(template!=null)
+        {
+        AWLog.logDebug("Loading template: "+entry.getName());
+        StructureTemplateManager.instance().addTemplate(template);
+        loadedStructureNames.add(template.name);
+        parsed++;
+        }
+      }
+    }
+  catch (IOException e)
+    {
+    e.printStackTrace();
+    }  
+  return parsed;
+  }
+
+private int loadDefaultPack()
+  {
+  if(!AWStructureStatics.loadDefaultPack)
+    {
+    return 0;
+    }
+  InputStream is = getClass().getResourceAsStream(defaultTemplatePackLocation);
+  ZipInputStream zis = new ZipInputStream(is);  
+  int loaded = loadTemplatesFromZipStream(zis);
+  try
+    {
+    zis.close();
     } 
   catch (IOException e)
     {
     e.printStackTrace();
     }
+  return loaded;
   }
 
-private int loadTemplatesFromZip()
+private int loadTemplatesFromZips()
   {
-  ZipFile z;
-  ZipEntry entry;
-  Enumeration<? extends ZipEntry> zipEntries;
-  StructureTemplate template;
+  ZipInputStream zis = null;
+  FileInputStream fis = null;
+  
   int parsed = 0;
   int totalParsed = 0;
   for(File f : this.probableZipFiles)
     {
-    parsed = 0;
     AWLog.logDebug("Parsing templates from zip file: "+f.getName());
+    parsed = 0;
     try
       {
-      z = new ZipFile(f);
-      zipEntries = z.entries();
-      while(zipEntries.hasMoreElements())
+      fis = new FileInputStream(f);
+      zis = new ZipInputStream(fis);
+      parsed = loadTemplatesFromZipStream(zis);
+      try
         {
-        entry = zipEntries.nextElement();
-        if(entry.isDirectory()){continue;}//TODO how to handle subfolders in a zip-file?
-        if(entry.getName().toLowerCase().endsWith(".png"))
-          {
-          loadStructureImage(entry.getName(), z.getInputStream(entry));
-          continue;
-          }
-        else if(!entry.getName().toLowerCase().endsWith("."+AWStructureStatics.templateExtension))
-          {
-          continue;
-          }
-        AWLog.logDebug("Loading template ("+f.getName()+"): "+entry.getName());
-        template = loadTemplateFromZip(entry, z.getInputStream(entry));
-        if(template!=null)
-          {
-          StructureTemplateManager.instance().addTemplate(template);
-          loadedStructureNames.add(template.name);
-          parsed++;
-          }
+        zis.close();
+        fis.close();
         }
-      z.close();
-      } 
-    catch (ZipException e)
-      {
-      e.printStackTrace();
-      } 
-    catch (IOException e)
+      catch (IOException e)
+        {
+        e.printStackTrace();
+        }
+      }
+    catch (FileNotFoundException e)
       {
       e.printStackTrace();
       }
@@ -281,30 +313,6 @@ private StructureTemplate loadTemplateFromZip(ZipEntry entry, InputStream is)
     e1.printStackTrace();
     template = null;
     }  
-  try
-    {
-    reader.close();
-    } 
-  catch (IOException e)
-    {
-    e.printStackTrace();
-    }
-  try
-    {
-    isr.close();
-    } 
-  catch (IOException e)
-    {
-    e.printStackTrace();
-    }
-  try
-    {
-    is.close();
-    }
-  catch (IOException e)
-    {
-    e.printStackTrace();
-    }
   return template;
   }
 
