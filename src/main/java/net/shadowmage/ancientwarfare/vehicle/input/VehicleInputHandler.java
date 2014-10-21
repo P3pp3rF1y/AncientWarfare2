@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.vehicle.input;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketInputReply;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketInputState;
@@ -18,9 +18,7 @@ public class VehicleInputHandler
 private VehicleBase vehicle;
 private InputState inputState = new InputState();
 
-InputSnapshot[] inputBuffer = new InputSnapshot[40];//two seconds worth of input buffer for clients, two seconds worth of position snapshot on server
-int bufferIndex;//the current position in the inputBuffer
-
+List<InputSnapshot> snapshotBuffer = new ArrayList<InputSnapshot>();
 
 /**
  * server position and rotation values and length of update interval (lerpTicks)
@@ -29,6 +27,7 @@ double destX, destY, destZ;
 float destYaw, destPitch;
 int lerpTicks;
 
+int commandID = 0;
 List<PacketInputState> packetsToProcess = new ArrayList<PacketInputState>();
 
 public VehicleInputHandler(VehicleBase vehicle)
@@ -51,33 +50,30 @@ public void handleVanillaSynch(double x, double y, double z, float yaw, float pi
   this.destYaw = yaw;
   this.destPitch = pitch;
   this.lerpTicks = ticks + 2;
-//  AWLog.logDebug(String.format("rec vanilla synch packet %.2f, %.2f, %.2f, y/p: %.2f, %.2f t:%s", x, y, z, yaw, pitch, ticks));
   }
 
 public void handleInputPacket(PacketInputState state)
   {
-  AWLog.logDebug("Rec input state packet");
   packetsToProcess.add(state);
   }
 
 public void handleReplyPacket(PacketInputReply reply)
   {
+  AWLog.logDebug("rec reply packet!");
   int id = reply.commandID;
-  InputSnapshot snapshot = inputBuffer[id];
-  vehicle.posX = reply.x;
-  vehicle.posY = reply.y;
-  vehicle.posZ = reply.z;
-  vehicle.rotationYaw = reply.yaw;
-  vehicle.rotationPitch = reply.pitch;
-  for(int i = id+1; i%40 < bufferIndex; i++)
+  vehicle.setPositionAndRotation(reply.x, reply.y, reply.z, reply.yaw, reply.pitch);
+  Iterator<InputSnapshot> it = snapshotBuffer.iterator();
+  InputSnapshot st = null;
+  while(it.hasNext() && (st=it.next())!=null)
     {
-    snapshot = inputBuffer[i%40];
-    vehicle.moveHandler.updateVehicleMotion(snapshot.pressed);
-    }  
-  //TODO handle reply packet for a command
-  // scroll back through input buffer to the commandID that was processed
-  // set posX, posY, posZ to that indicated from packet
-  // replay any commands that occur -after- the replied-to command up to and including the last sent command
+    if(st.commandId<=id)
+      {
+      it.remove();
+      continue;
+      }
+    AWLog.logDebug("replaying command: "+st.commandId);
+    vehicle.moveHandler.updateVehicleMotion(st.pressed);
+    }
   }
 
 /**
@@ -86,7 +82,7 @@ public void handleReplyPacket(PacketInputReply reply)
 private void sendInputPacket()
   {
   PacketInputState pkt = new PacketInputState();
-  pkt.setID(vehicle, (byte)bufferIndex);
+  pkt.setID(vehicle, commandID);
   pkt.setInputStates(inputState.pressed);
   pkt.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
   NetworkHandler.sendToServer(pkt);  
@@ -115,21 +111,17 @@ private void serverUpdate()
   PacketInputState state;
   while(!packetsToProcess.isEmpty() && vehicle.riddenByEntity!=null)
     {    
+    AWLog.logDebug("processing input command on server");
     state = packetsToProcess.remove(0);    
     vehicle.moveHandler.updateVehicleMotion(state.keyStates);    
-    double adx = Trig.getAbsDiff(state.x, vehicle.posX);
-    double ady = Trig.getAbsDiff(state.y, vehicle.posY);
-    double adz = Trig.getAbsDiff(state.z, vehicle.posZ);
-    if(adx >= 0.02 || ady >=0.02 || adz >=0.02)
+    AWLog.logDebug(String.format("server move for command: %s. moved position: %.5f, %.5f, %.5f", state.commandID, vehicle.posX, vehicle.posY, vehicle.posZ));
+    if(vehicle.posX != state.x || vehicle.posY!=state.y || vehicle.posZ!=state.z || vehicle.rotationYaw!=state.yaw || vehicle.rotationPitch!=state.pitch)
       {
-      AWLog.logDebug("replying with server force-pos packet..."+state.commandID);
+      AWLog.logDebug("sending server correction reply");
       PacketInputReply reply = new PacketInputReply();
       reply.setID(vehicle, state.commandID);
       reply.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
       NetworkHandler.sendToPlayer((EntityPlayerMP)vehicle.riddenByEntity, reply);      
-      }    
-    if(vehicle.posX != state.x || vehicle.posY!=state.y || vehicle.posZ!=state.z || vehicle.rotationYaw!=state.yaw || vehicle.rotationPitch!=state.pitch)
-      {
       }
     }
   }
@@ -139,7 +131,8 @@ private void clientUpdate()
   if(vehicle.riddenByEntity==AncientWarfareCore.proxy.getClientPlayer())
     {
     collectInput();
-    updateMotion();
+    vehicle.moveHandler.updateVehicleMotion(inputState.pressed);
+    AWLog.logDebug(String.format("client move for command: %s. moved position: %.5f, %.5f, %.5f", commandID, vehicle.posX, vehicle.posY, vehicle.posZ));
     sendInputPacket();
     clearInputCache();   
     writeToBuffer();
@@ -164,13 +157,14 @@ private void writeToBuffer()
   {
   InputSnapshot shot = new InputSnapshot();
   for(int i = 0; i < inputState.pressed.length; i++){shot.pressed[i]=inputState.pressed[i];}
-  inputBuffer[bufferIndex]=shot;
+  shot.commandId = commandID;
+  snapshotBuffer.add(shot);
   }
 
 private void incrementBufferIndex()
   {
-  bufferIndex++;
-  if(bufferIndex>=inputBuffer.length){bufferIndex=0;}
+  commandID++;
+  //TODO how to roll this back?
   }
 
 private void clearInputCache()
@@ -187,11 +181,6 @@ private void collectInput()
     {
     if(inputState.state[i]){inputState.pressed[i]=true;}
     }
-  }
-
-private void updateMotion()
-  {
-  vehicle.moveHandler.updateVehicleMotion(inputState.pressed);
   }
 
 /**
@@ -256,6 +245,7 @@ private void lerpMotion()
     vehicle.rotationYaw = destYaw;
     vehicle.prevRotationPitch = vehicle.rotationPitch;
     vehicle.rotationPitch = destPitch;
+    vehicle.setPositionAndRotation(destX, destY, destZ, destYaw, destPitch);
     }
   }
 
@@ -284,6 +274,7 @@ boolean[] pressed = new boolean[VehicleInputKey.values().length];
  */
 private class InputSnapshot
 {
+int commandId;
 boolean[] pressed = new boolean[VehicleInputKey.values().length];
 }
 

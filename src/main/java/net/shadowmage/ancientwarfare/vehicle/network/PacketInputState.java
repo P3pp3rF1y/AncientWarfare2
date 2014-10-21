@@ -10,7 +10,7 @@ public class PacketInputState extends PacketBase
 {
 
 int entityID;
-public byte commandID;
+public int commandID;
 public boolean[] keyStates;
 public double x, y, z;
 public float yaw, pitch;
@@ -20,7 +20,7 @@ public PacketInputState()
   // TODO Auto-generated constructor stub
   }
 
-public void setID(Entity e, byte id)
+public void setID(Entity e, int id)
   {
   entityID = e.getEntityId();
   commandID = id;
@@ -43,7 +43,7 @@ public void setInputStates(boolean[] states)
 @Override
 protected void writeToStream(ByteBuf data)
   {
-  data.writeByte(commandID);
+  data.writeInt(commandID);
   data.writeInt(entityID);
   data.writeDouble(x);
   data.writeDouble(y);
@@ -57,7 +57,7 @@ protected void writeToStream(ByteBuf data)
 @Override
 protected void readFromStream(ByteBuf data)
   {
-  commandID = data.readByte();
+  commandID = data.readInt();
   entityID = data.readInt();
   x = data.readDouble();
   y = data.readDouble();
@@ -74,7 +74,6 @@ protected void readFromStream(ByteBuf data)
 @Override
 protected void execute()
   {
-  AWLog.logDebug("Processing input state packet!!");
   Entity e = player.worldObj.getEntityByID(entityID);
   if(e instanceof VehicleBase)
     {

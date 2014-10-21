@@ -41,7 +41,7 @@ public VehicleBase(World world)
   
   width = Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   height = vehicleHeight;
-  stepHeight = 1.f;
+  stepHeight = 1.1f;
   
   }
 
@@ -59,11 +59,9 @@ protected void entityInit()
 @Override
 public void onUpdate()
   {
-  inputHandler.onUpdate();
   super.onUpdate();
+  inputHandler.onUpdate();
   updatePartPositions();
-  
-  AWLog.logDebug("pos: "+posX+","+posY+","+posZ);
   }
 
 //************************************* COLLISION HANDLING *************************************//
@@ -90,6 +88,9 @@ public boolean canBePushed()
   return false;
   }
 
+/**
+ * Return null so that collisions happen with children pieces
+ */
 @Override
 public AxisAlignedBB getBoundingBox()
   {

@@ -3,15 +3,28 @@ vehicles todo
 * collision handling
 	- need to figure out how to handle overriding MCs AABB stuff
 * multi passenger vehicles
+* vehicles that you can walk around on
+	- rotate position of entity relative to vehicle rotation, test for rectangular BB to determine if the entity should fall off or not?
+	- when vehicle rotates all on-top entities will need to be rotated around for their relative position
 
 
+vehicle movement/input handling:
 
-* client-side prediction for movement
-	- shouldn't be too hard, cyclic buffer, command ID, synch position and input status at each tick
-		- perhaps only full synch every X ticks
-		- only send input state changes along with the time/tick/commandID for that tick
-			-- how to handle inbetween ticks / network jitter?
+client ridden
+	lerp for server correction
+	gather input
+	update motion for input
+	send movement command to server
+	
+client unridden
+	lerp for server position
+	
+server ridden
+	process command packets
+	update motion for input from packets
+	send response packet to client if corrections are needed
+	vanilla network manager sends packets for clients not riding the vehicle
+	
+server unridden
+	do nothing....send occasional 
 			
-input handling:
-	- callback from keybind handler, or poll state?
-		-probably poll state for movement-related stuff, or use a reset flag to tell if it was pressed at all during that tick
