@@ -1,20 +1,12 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
-import java.util.List;
-
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ReportedException;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -71,6 +63,58 @@ public void onUpdate()
   inputHandler.onUpdate();
   updatePartPositions();
   }
+
+//@Override
+//public void moveEntity(double x, double y, double z)
+//  {
+//  VehiclePart[] parts = getParts();
+//  if(parts==null)
+//    {
+//    super.moveEntity(x, y, z);//move base entity if parts==null        
+//    }
+//  else
+//    {
+//    /**
+//     * need to constrain motion for pieces by the most constrained piece
+//     * while still allowing for the vehicle to move up stairs/etc
+//     */
+//    
+//    double movedX = Double.MAX_VALUE, movedY = Double.MIN_VALUE, movedZ = Double.MAX_VALUE;
+//    
+//    double px, py, pz, dx, dy, dz;
+//    int len = parts.length;
+//    VehiclePart part;
+//    for(int i = 0; i < len; i++)
+//      {
+//      part = parts[i];
+//      
+//      px = part.posX;
+//      py = part.posY;
+//      pz = part.posZ;
+//      
+//      part.moveEntity(x, y, z);     
+//      
+//      //actual move delta for the piece
+//      dx = part.posX - px;
+//      dy = part.posY - py;
+//      dz = part.posZ - pz;
+//      
+//      //constrain any further attemps to the minimal moved by any piece (still need to rectify original pieces...)
+//      if(Math.abs(dx) < Math.abs(x)){x=dx;}
+////      if(Math.abs(dy) < Math.abs(y)){y=dy;}//dont constrain the Y, let peices fall/rise as they want
+//      if(Math.abs(dz) < Math.abs(z)){z=dz;}
+//      
+//      if(Math.abs(dx) < Math.abs(movedX)){movedX=dx;}
+//      if(Math.abs(dy) > Math.abs(movedY)){movedY=dy;}
+//      if(Math.abs(dz) < Math.abs(movedZ)){movedZ=dz;}
+//      }
+//    
+//    AWLog.logDebug("move from parts: "+movedX+","+movedY+","+movedZ);
+//    super.moveEntity(movedX, movedY, movedZ);
+////    setPosition(mx, maxY, mz);
+//    updatePartPositions();
+//    }
+//  }
 
 //************************************* COLLISION HANDLING *************************************//
 // Disabled in base class to allow entity-parts to handle the collision handling.  Each vehicle part

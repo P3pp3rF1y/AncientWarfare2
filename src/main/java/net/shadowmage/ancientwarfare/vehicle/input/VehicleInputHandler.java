@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -16,6 +17,12 @@ public class VehicleInputHandler
 {
 
 private VehicleBase vehicle;
+private boolean hadRider;
+
+/**
+ * Used client side to track input states<br>
+ * Used server side as an empty input array for dummy movement processing
+ */
 private InputState inputState = new InputState();
 
 List<InputSnapshot> snapshotBuffer = new ArrayList<InputSnapshot>();
@@ -29,6 +36,7 @@ int lerpTicks;
 
 int commandID = 0;
 List<PacketInputState> packetsToProcess = new ArrayList<PacketInputState>();
+List<PacketInputReply> replyPacketsToProcess = new ArrayList<PacketInputReply>();
 
 public VehicleInputHandler(VehicleBase vehicle)
   {
@@ -62,49 +70,33 @@ public void handleInputPacket(PacketInputState state)
 
 public void handleReplyPacket(PacketInputReply reply)
   {
-  int id = reply.commandID;
-  vehicle.setPositionAndRotation(reply.x, reply.y, reply.z, reply.yaw, reply.pitch);
-  Iterator<InputSnapshot> it = snapshotBuffer.iterator();
-  InputSnapshot st = null;
-  while(it.hasNext() && (st=it.next())!=null)
-    {
-    if(st.commandId<=id)
-      {
-      it.remove();
-      continue;
-      }
-    vehicle.moveHandler.updateVehicleMotion(st.pressed);
-    }
+  replyPacketsToProcess.add(reply);
   }
 
-/**
- * params are the original pre-input vehicle positions/rotations
- */
-private void sendInputPacket()
-  {  
-  destX = vehicle.posX;
-  destY = vehicle.posY;
-  destZ = vehicle.posZ;
-  destYaw = vehicle.rotationYaw;
-  destPitch = vehicle.rotationPitch;
-  lerpTicks = 1;
-  
-  boolean send = false;
-  for(boolean state : inputState.pressed)
+private void processReplyPackets()
+  {
+  PacketInputReply reply;
+  Iterator<PacketInputReply> it1 = replyPacketsToProcess.iterator();
+  while(it1.hasNext() && (reply=it1.next())!=null)
     {
-    if(state)
+    it1.remove();
+    int id = reply.commandID;
+    AWLog.logDebug("Client processing reply packet: "+id);
+    
+    vehicle.setPositionAndRotation(reply.x, reply.y, reply.z, reply.yaw, reply.pitch);
+    
+    Iterator<InputSnapshot> it = snapshotBuffer.iterator();
+    InputSnapshot st = null;
+    while(it.hasNext() && (st=it.next())!=null)
       {
-      send=true;
-      break;
+      if(st.commandId<=id)//already processed on server, no longer interested
+        {
+        it.remove();
+        continue;
+        }
+      vehicle.moveHandler.updateVehicleMotion(st.pressed);
       }
     }
-  
-  if(!send){return;}//do not send if no input was found, server only processes moves on input, so huge gain in network efficiency
-  PacketInputState pkt = new PacketInputState();
-  pkt.setID(vehicle, commandID);
-  pkt.setInputStates(inputState.pressed);
-  pkt.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
-  NetworkHandler.sendToServer(pkt);  
   }
 
 /**
@@ -119,37 +111,118 @@ public void onUpdate()
   }
 
 private void serverUpdate()
-  {
-  PacketInputState state;
-  while(!packetsToProcess.isEmpty() && vehicle.riddenByEntity!=null)
-    {    
-    state = packetsToProcess.remove(0);    
-    vehicle.moveHandler.updateVehicleMotion(state.keyStates);    
-    if(vehicle.posX != state.x || vehicle.posY!=state.y || vehicle.posZ!=state.z || vehicle.rotationYaw!=state.yaw || vehicle.rotationPitch!=state.pitch)
-      {
-      PacketInputReply reply = new PacketInputReply();
-      reply.setID(vehicle, state.commandID);
-      reply.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
-      NetworkHandler.sendToPlayer((EntityPlayerMP)vehicle.riddenByEntity, reply);      
+  {  
+  if(!packetsToProcess.isEmpty())//always process input packets, regardless of has rider or rider type
+    {
+    PacketInputState state;
+    while(!packetsToProcess.isEmpty())
+      {    
+      state = packetsToProcess.remove(0);
+      if(state.dummy)
+        {
+        vehicle.moveHandler.updateVehicleMotion(inputState.pressed);    
+        continue;
+        }      
+      AWLog.logDebug("Server processing Command id: "+state.commandID + "    ------------------");
+      AWLog.logDebug("server pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
+      vehicle.moveHandler.updateVehicleMotion(state.keyStates);    
+      AWLog.logDebug("post   pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
+      AWLog.logDebug("pos from client: "+state.x+","+state.y+","+state.z);
+      AWLog.logDebug("End Server processing Command id: "+state.commandID + "------------------");
+      if(vehicle.posX != state.x || vehicle.posY!=state.y || vehicle.posZ!=state.z || vehicle.rotationYaw!=state.yaw || vehicle.rotationPitch!=state.pitch)
+        {
+        double x = vehicle.posX - state.x;
+        double y = vehicle.posY - state.y;
+        double z = vehicle.posZ - state.z;
+        float yaw = vehicle.rotationYaw - state.yaw;
+        float pitch = vehicle.rotationPitch - state.pitch;
+        if(Math.abs(x)>0.025 || Math.abs(y)>0.025 || Math.abs(z)>0.025 || Math.abs(yaw) > 0.1 || Math.abs(pitch) > 0.1)
+          {        
+          AWLog.logDebug("Sending force pos packet");           
+          PacketInputReply reply = new PacketInputReply();
+          reply.setID(vehicle, state.commandID);
+          reply.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
+          NetworkHandler.sendToPlayer((EntityPlayerMP)vehicle.riddenByEntity, reply);              
+          }
+        }
       }
     }
+  else if(!(vehicle.riddenByEntity instanceof EntityPlayer))//has no packets && rider is not a player providing input packets from client
+    {
+    vehicle.moveHandler.updateVehicleMotion(inputState.pressed);//inputState should be a freshly initialized array (filled with false) on server
+    }    
   }
 
 private void clientUpdate()
   {
+  if(vehicle.riddenByEntity!=null)
+    {
+    if(!hadRider)
+      {
+      clearInputState();
+      }
+    hadRider=true;
+    }
+  else if(hadRider)
+    {
+    hadRider=false;
+    clearInputState();
+    }
   if(vehicle.riddenByEntity==AncientWarfareCore.proxy.getClientPlayer())
     {//update for vehicle ridden by the controlling client
+    processReplyPackets();
     collectInput();//collect all keypresses for the vehicle into a single pressed state for input handling
-    vehicle.moveHandler.updateVehicleMotion(inputState.pressed);//pass the pressed state array into vehicles motion handler (type depends upon vehicle)
-    sendInputPacket();//send packet of input to the server, should probably check if this input==empty and prev input==empty and only send if needed
+    updateMotionClient();
     clearInputCache();   
-    writeToBuffer();
-    incrementBufferIndex();
     }
   else//vanilla motion synch, merely re-interpret and lerp
     {
     lerpMotion();
     }
+  }
+
+/**
+ * params are the original pre-input vehicle positions/rotations
+ */
+private void sendInputPacket()
+  {  
+  int len = inputState.pressed.length;
+  boolean dummy = true;
+  for(int  i = 0; i < len; i++)
+    {
+    if(inputState.pressed[i])
+      {
+      dummy=false;
+      break;
+      }
+    }
+  PacketInputState pkt = new PacketInputState();
+  pkt.setID(vehicle, commandID);  
+  pkt.setDummy(dummy);
+  pkt.setInputStates(inputState.pressed);  
+  pkt.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
+  NetworkHandler.sendToServer(pkt); 
+  writeToBuffer();
+  incrementBufferIndex(); 
+  }
+
+private void updateMotionClient()
+  {
+  destX = vehicle.posX;
+  destY = vehicle.posY;
+  destZ = vehicle.posZ;
+  destYaw = vehicle.rotationYaw;
+  destPitch = vehicle.rotationPitch;
+  lerpTicks = 1;
+  
+  //have to send packet every tick or server-side vehicle will no update at all...
+  //perhaps make an empty input packet that is processed for an empty-command pass?
+  AWLog.logDebug("Client sending commandID: "+commandID + " --------------------------");
+  AWLog.logDebug("Pre  pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
+  vehicle.moveHandler.updateVehicleMotion(inputState.pressed);//pass the pressed state array into vehicles motion handler (type depends upon vehicle)
+  AWLog.logDebug("Sent pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
+  AWLog.logDebug("End sending commandID: "+commandID + "    --------------------------");
+  sendInputPacket();//send input to server
   }
 
 private void writeToBuffer()
@@ -174,6 +247,15 @@ private void clearInputCache()
     }  
   }
 
+private void clearInputState()
+  {
+  for(int i = 0; i < inputState.pressed.length; i++)
+    {
+    inputState.pressed[i] = false;
+    inputState.state[i] = false;
+    }  
+  }
+
 private void collectInput()
   {
   for(int i = 0; i < inputState.state.length; i++)
@@ -187,7 +269,6 @@ private void collectInput()
  */
 private void lerpMotion()
   {
-
   if(lerpTicks>0)
     {
     /**
@@ -228,9 +309,6 @@ private void lerpMotion()
      */
     vehicle.prevRotationYaw = vehicle.rotationYaw;
     vehicle.rotationYaw += dyaw / (float)t;
-    
-    
-    
 
     //TODO normalize pitch to -180<->180 range as with yaw
     float dpitch = destPitch - vehicle.rotationPitch;

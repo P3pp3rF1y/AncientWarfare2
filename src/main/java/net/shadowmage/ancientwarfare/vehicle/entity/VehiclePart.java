@@ -23,6 +23,7 @@ public VehiclePart(VehicleBase vehicle, float width, float height, float xOffset
   this.setSize(width, height);
   offset = Vec3.createVectorHelper(xOffset, 0, zOffset);
   location = Vec3.createVectorHelper(xOffset, 0, zOffset);
+  stepHeight = 1.f;
   updatePosition();
   }
 
@@ -60,7 +61,7 @@ public boolean interactFirst(EntityPlayer player)
 @Override
 public AxisAlignedBB getCollisionBox(Entity collidingEntity)
   {
-  return collidingEntity.boundingBox;
+  return isEntityEqual(collidingEntity) ? null : collidingEntity.boundingBox;//disable parts colliding with other parts from same vehicle
   }
 
 /**
