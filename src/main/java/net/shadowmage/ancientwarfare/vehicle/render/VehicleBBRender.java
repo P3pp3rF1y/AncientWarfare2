@@ -45,6 +45,7 @@ public void doRender(Entity entity, double x, double y,  double z, float yaw, fl
     
   double x1, y1, z1;
   GL11.glColor4f(0, .75f, 0, 0.75f);
+
   for(VehiclePart part : parts)
     {
     x1 = part.posX - entity.posX;
@@ -54,15 +55,13 @@ public void doRender(Entity entity, double x, double y,  double z, float yaw, fl
     renderAABB.offset(x1, y1, z1);
     renderAABB.offset(-part.posX, -part.posY, -part.posZ);
     RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 0, 0, 0.0625f);
-//    renderAABB(renderAABB);
-    }
+    }    
 
   GL11.glColor4f(.75f, .75f, .75f, 0.75f);
   renderAABB.setBB(entity.boundingBox);
   renderAABB.offset(-entity.posX, -entity.posY,  -entity.posZ);
   RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 1, 1, 0.0625f);
-//  renderAABB(renderAABB);
-    
+  
   GL11.glEnable(GL11.GL_TEXTURE_2D);
   GL11.glDisable(GL11.GL_BLEND);  
   GL11.glPopMatrix();

@@ -39,7 +39,6 @@ public void onKeyChanged(VehicleInputKey key, boolean newState)
   {
   inputState.state[key.ordinal()]=newState;
   if(newState){inputState.pressed[key.ordinal()]=true;}
-  AWLog.logDebug("rec input state for vehicle: "+key+" :: "+newState);
   }
 
 public void handleVanillaSynch(double x, double y, double z, float yaw, float pitch, int ticks)
@@ -49,7 +48,11 @@ public void handleVanillaSynch(double x, double y, double z, float yaw, float pi
   this.destZ = z; 
   this.destYaw = yaw;
   this.destPitch = pitch;
-  this.lerpTicks = ticks + 2;
+  this.lerpTicks = ticks * 2;
+  if(vehicle.riddenByEntity != AncientWarfareCore.proxy.getClientPlayer())
+    {
+    AWLog.logDebug("handling vanilla synch: "+x+","+y+","+z);    
+    }
   }
 
 public void handleInputPacket(PacketInputState state)
@@ -59,7 +62,6 @@ public void handleInputPacket(PacketInputState state)
 
 public void handleReplyPacket(PacketInputReply reply)
   {
-  AWLog.logDebug("rec reply packet!");
   int id = reply.commandID;
   vehicle.setPositionAndRotation(reply.x, reply.y, reply.z, reply.yaw, reply.pitch);
   Iterator<InputSnapshot> it = snapshotBuffer.iterator();
@@ -71,7 +73,6 @@ public void handleReplyPacket(PacketInputReply reply)
       it.remove();
       continue;
       }
-    AWLog.logDebug("replaying command: "+st.commandId);
     vehicle.moveHandler.updateVehicleMotion(st.pressed);
     }
   }
@@ -80,19 +81,30 @@ public void handleReplyPacket(PacketInputReply reply)
  * params are the original pre-input vehicle positions/rotations
  */
 private void sendInputPacket()
-  {
-  PacketInputState pkt = new PacketInputState();
-  pkt.setID(vehicle, commandID);
-  pkt.setInputStates(inputState.pressed);
-  pkt.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
-  NetworkHandler.sendToServer(pkt);  
-  
+  {  
   destX = vehicle.posX;
   destY = vehicle.posY;
   destZ = vehicle.posZ;
   destYaw = vehicle.rotationYaw;
   destPitch = vehicle.rotationPitch;
   lerpTicks = 1;
+  
+  boolean send = false;
+  for(boolean state : inputState.pressed)
+    {
+    if(state)
+      {
+      send=true;
+      break;
+      }
+    }
+  
+  if(!send){return;}//do not send if no input was found, server only processes moves on input, so huge gain in network efficiency
+  PacketInputState pkt = new PacketInputState();
+  pkt.setID(vehicle, commandID);
+  pkt.setInputStates(inputState.pressed);
+  pkt.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
+  NetworkHandler.sendToServer(pkt);  
   }
 
 /**
@@ -111,13 +123,10 @@ private void serverUpdate()
   PacketInputState state;
   while(!packetsToProcess.isEmpty() && vehicle.riddenByEntity!=null)
     {    
-    AWLog.logDebug("processing input command on server");
     state = packetsToProcess.remove(0);    
     vehicle.moveHandler.updateVehicleMotion(state.keyStates);    
-    AWLog.logDebug(String.format("server move for command: %s. moved position: %.5f, %.5f, %.5f", state.commandID, vehicle.posX, vehicle.posY, vehicle.posZ));
     if(vehicle.posX != state.x || vehicle.posY!=state.y || vehicle.posZ!=state.z || vehicle.rotationYaw!=state.yaw || vehicle.rotationPitch!=state.pitch)
       {
-      AWLog.logDebug("sending server correction reply");
       PacketInputReply reply = new PacketInputReply();
       reply.setID(vehicle, state.commandID);
       reply.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
@@ -129,28 +138,18 @@ private void serverUpdate()
 private void clientUpdate()
   {
   if(vehicle.riddenByEntity==AncientWarfareCore.proxy.getClientPlayer())
-    {
-    collectInput();
-    vehicle.moveHandler.updateVehicleMotion(inputState.pressed);
-    AWLog.logDebug(String.format("client move for command: %s. moved position: %.5f, %.5f, %.5f", commandID, vehicle.posX, vehicle.posY, vehicle.posZ));
-    sendInputPacket();
+    {//update for vehicle ridden by the controlling client
+    collectInput();//collect all keypresses for the vehicle into a single pressed state for input handling
+    vehicle.moveHandler.updateVehicleMotion(inputState.pressed);//pass the pressed state array into vehicles motion handler (type depends upon vehicle)
+    sendInputPacket();//send packet of input to the server, should probably check if this input==empty and prev input==empty and only send if needed
     clearInputCache();   
     writeToBuffer();
-    clientLerp();
     incrementBufferIndex();
     }
   else//vanilla motion synch, merely re-interpret and lerp
     {
     lerpMotion();
     }
-  }
-
-/**
- * lerp a controlled client for server-side corrections
- */
-private void clientLerp()
-  {
-  
   }
 
 private void writeToBuffer()
@@ -201,33 +200,42 @@ private void lerpMotion()
     double dx = destX - vehicle.posX;
     double dy = destY - vehicle.posY;
     double dz = destZ - vehicle.posZ;
-    float dyaw = destYaw - vehicle.rotationYaw;
-    while(dyaw<=-180)
-      {
-      dyaw+=360.f;
-      vehicle.rotationYaw+=360.f;
-      vehicle.prevRotationYaw+=360.f;
-      }
-    while(dyaw>180)
-      {
-      dyaw-=360.f;
-      vehicle.rotationYaw-=360.f;
-      vehicle.prevRotationYaw-=360.f;
-      }      
-    float dpitch = destPitch - vehicle.rotationPitch;
-    //TODO normalize pitch to -180<->180 range as with yaw
     
     /**
-     * do the actual lerping.  Need to examine how to properly set the lerp of vehicle motion
+     * lerp x,y,z motion
      */
-    vehicle.motionX = dx;
-    vehicle.motionY = dy;
-    vehicle.motionZ = dz;
+    vehicle.motionX = dx/t;
+    vehicle.motionY = dy/t;
+    vehicle.motionZ = dz/t;
+    vehicle.moveEntity(vehicle.motionX, vehicle.motionY, vehicle.motionZ);
+    
+    /**
+     * obtain and normalize yaw
+     */    
+    float dyaw = destYaw - vehicle.rotationYaw;
+    while(dyaw < -180.f)
+      {
+      dyaw += 360.f;
+      vehicle.rotationYaw += 360.f;
+      }
+    while(dyaw >= 180.f)
+      {
+      dyaw -= 360.f;
+      vehicle.rotationYaw -= 360.f;
+      }      
+    /**
+     * lerp yaw
+     */
     vehicle.prevRotationYaw = vehicle.rotationYaw;
-    vehicle.rotationYaw += dyaw/(float)t;
+    vehicle.rotationYaw += dyaw / (float)t;
+    
+    
+    
+
+    //TODO normalize pitch to -180<->180 range as with yaw
+    float dpitch = destPitch - vehicle.rotationPitch;
     vehicle.prevRotationPitch = vehicle.rotationPitch;
     vehicle.rotationPitch += dpitch / (float)t;
-    
     lerpTicks--;
     }
   else

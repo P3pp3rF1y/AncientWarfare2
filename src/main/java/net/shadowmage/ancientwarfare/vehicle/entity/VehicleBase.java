@@ -1,11 +1,20 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
+import java.util.List;
+
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -39,10 +48,9 @@ public VehicleBase(World world)
   vehicleHeight = 1.0f;
   vehicleLength = 3.f;
   
-  width = Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
+  width = 1.1f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   height = vehicleHeight;
-  stepHeight = 1.1f;
-  
+  stepHeight = 1.0f;  
   }
 
 /**
@@ -181,7 +189,7 @@ public boolean interactFirst(EntityPlayer player)
 public Vec3 getLookVec()
   {
   Vec3 vec = Vec3.createVectorHelper(0, 0, -1);
-  vec.rotateAroundY(rotationYaw * Trig.TORADIANS);  
+  vec.rotateAroundY(MathHelper.wrapAngleTo180_float(rotationYaw) * Trig.TORADIANS);  
   return vec;
   }
 

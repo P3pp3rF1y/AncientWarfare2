@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
@@ -30,7 +31,7 @@ public final void updatePosition()
   location.xCoord = offset.xCoord;
   location.yCoord = offset.yCoord;
   location.zCoord = offset.zCoord;
-  location.rotateAroundY(vehicle.rotationYaw * Trig.TORADIANS);
+  location.rotateAroundY(MathHelper.wrapAngleTo180_float(vehicle.rotationYaw) * Trig.TORADIANS);
   location.xCoord+=vehicle.posX;
   location.yCoord+=vehicle.posY;
   location.zCoord+=vehicle.posZ;

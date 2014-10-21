@@ -28,7 +28,7 @@ public void updateVehicleMotion(boolean[] inputStates)
   Vec3 forwardAxis = vehicle.getLookVec();
   double mx = forwardAxis.xCoord * forward;
   double mz = forwardAxis.zCoord * forward;
-  vehicle.moveEntity(mx, 0, mz);  
+  vehicle.moveEntity(mx, -0.05d, mz);  
   /**
    * then rotate the vehicle towards its new orientation
    */

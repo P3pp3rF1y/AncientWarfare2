@@ -2,11 +2,10 @@ package net.shadowmage.ancientwarfare.vehicle.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
-public class PacketInputState extends PacketBase
+public final class PacketInputState extends PacketBase
 {
 
 int entityID;
@@ -15,10 +14,7 @@ public boolean[] keyStates;
 public double x, y, z;
 public float yaw, pitch;
 
-public PacketInputState()
-  {
-  // TODO Auto-generated constructor stub
-  }
+public PacketInputState(){}
 
 public void setID(Entity e, int id)
   {
