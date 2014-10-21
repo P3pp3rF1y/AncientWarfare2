@@ -11,10 +11,11 @@ vehicles todo
 vehicle movement/input handling:
 
 client ridden
-	lerp for server correction
 	gather input
 	update motion for input
 	send movement command to server
+	write to command buffer
+	
 	
 client unridden
 	lerp for server position

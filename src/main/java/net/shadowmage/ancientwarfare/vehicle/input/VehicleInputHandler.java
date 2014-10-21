@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketInputReply;
@@ -57,10 +56,10 @@ public void handleVanillaSynch(double x, double y, double z, float yaw, float pi
   this.destYaw = yaw;
   this.destPitch = pitch;
   this.lerpTicks = ticks * 2;
-  if(vehicle.riddenByEntity != AncientWarfareCore.proxy.getClientPlayer())
-    {
-    AWLog.logDebug("handling vanilla synch: "+x+","+y+","+z);    
-    }
+//  if(vehicle.riddenByEntity != AncientWarfareCore.proxy.getClientPlayer())
+//    {
+//    AWLog.logDebug("handling vanilla synch: "+x+","+y+","+z);    
+//    }
   }
 
 public void handleInputPacket(PacketInputState state)
@@ -81,7 +80,7 @@ private void processReplyPackets()
     {
     it1.remove();
     int id = reply.commandID;
-    AWLog.logDebug("Client processing reply packet: "+id);
+//    AWLog.logDebug("Client processing reply packet: "+id);
     
     vehicle.setPositionAndRotation(reply.x, reply.y, reply.z, reply.yaw, reply.pitch);
     
@@ -123,12 +122,12 @@ private void serverUpdate()
         vehicle.moveHandler.updateVehicleMotion(inputState.pressed);    
         continue;
         }      
-      AWLog.logDebug("Server processing Command id: "+state.commandID + "    ------------------");
-      AWLog.logDebug("server pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
+//      AWLog.logDebug("Server processing Command id: "+state.commandID + "    ------------------");
+//      AWLog.logDebug("server pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
       vehicle.moveHandler.updateVehicleMotion(state.keyStates);    
-      AWLog.logDebug("post   pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
-      AWLog.logDebug("pos from client: "+state.x+","+state.y+","+state.z);
-      AWLog.logDebug("End Server processing Command id: "+state.commandID + "------------------");
+//      AWLog.logDebug("post   pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
+//      AWLog.logDebug("pos from client: "+state.x+","+state.y+","+state.z);
+//      AWLog.logDebug("End Server processing Command id: "+state.commandID + "------------------");
       if(vehicle.posX != state.x || vehicle.posY!=state.y || vehicle.posZ!=state.z || vehicle.rotationYaw!=state.yaw || vehicle.rotationPitch!=state.pitch)
         {
         double x = vehicle.posX - state.x;
@@ -138,7 +137,7 @@ private void serverUpdate()
         float pitch = vehicle.rotationPitch - state.pitch;
         if(Math.abs(x)>0.025 || Math.abs(y)>0.025 || Math.abs(z)>0.025 || Math.abs(yaw) > 0.1 || Math.abs(pitch) > 0.1)
           {        
-          AWLog.logDebug("Sending force pos packet");           
+//          AWLog.logDebug("Sending force pos packet");           
           PacketInputReply reply = new PacketInputReply();
           reply.setID(vehicle, state.commandID);
           reply.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
@@ -168,14 +167,15 @@ private void clientUpdate()
     hadRider=false;
     clearInputState();
     }
+  
   if(vehicle.riddenByEntity==AncientWarfareCore.proxy.getClientPlayer())
-    {//update for vehicle ridden by the controlling client
+    {
     processReplyPackets();
-    collectInput();//collect all keypresses for the vehicle into a single pressed state for input handling
+    collectInput();
     updateMotionClient();
     clearInputCache();   
     }
-  else//vanilla motion synch, merely re-interpret and lerp
+  else
     {
     lerpMotion();
     }
@@ -217,11 +217,11 @@ private void updateMotionClient()
   
   //have to send packet every tick or server-side vehicle will no update at all...
   //perhaps make an empty input packet that is processed for an empty-command pass?
-  AWLog.logDebug("Client sending commandID: "+commandID + " --------------------------");
-  AWLog.logDebug("Pre  pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
+//  AWLog.logDebug("Client sending commandID: "+commandID + " --------------------------");
+//  AWLog.logDebug("Pre  pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
   vehicle.moveHandler.updateVehicleMotion(inputState.pressed);//pass the pressed state array into vehicles motion handler (type depends upon vehicle)
-  AWLog.logDebug("Sent pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
-  AWLog.logDebug("End sending commandID: "+commandID + "    --------------------------");
+//  AWLog.logDebug("Sent pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
+//  AWLog.logDebug("End sending commandID: "+commandID + "    --------------------------");
   sendInputPacket();//send input to server
   }
 

@@ -27,6 +27,9 @@ public VehiclePart(VehicleBase vehicle, float width, float height, float xOffset
   updatePosition();
   }
 
+@Override
+protected void entityInit(){}
+
 public final void updatePosition()
   {
   location.xCoord = offset.xCoord;
@@ -61,7 +64,13 @@ public boolean interactFirst(EntityPlayer player)
 @Override
 public AxisAlignedBB getCollisionBox(Entity collidingEntity)
   {
-  return isEntityEqual(collidingEntity) ? null : collidingEntity.boundingBox;//disable parts colliding with other parts from same vehicle
+  if(collidingEntity instanceof VehiclePart)
+    {
+    VehiclePart p = (VehiclePart)collidingEntity;
+    if(p.vehicle==vehicle){return null;}
+    return p.boundingBox;
+    }  
+  return collidingEntity==vehicle? null :collidingEntity.boundingBox;
   }
 
 /**
@@ -106,17 +115,19 @@ public boolean canBePushed()
 @Override
 public boolean attackEntityFrom(DamageSource src, float amt)
   {
-  return this.isEntityInvulnerable() ? false : this.vehicle.attackEntityFromPart(this, src, amt);
+  return this.vehicle.attackEntityFromPart(this, src, amt);
   }
 
 @Override
 public boolean isEntityEqual(Entity entity)
   {
+  if(entity instanceof VehiclePart)
+    {
+    VehiclePart in = (VehiclePart)entity;
+    return this == in || this.vehicle==in.vehicle;
+    }
   return this == entity || this.vehicle == entity;
   }
-
-@Override
-protected void entityInit(){}
 
 @Override
 protected void readEntityFromNBT(NBTTagCompound p_70037_1_){}

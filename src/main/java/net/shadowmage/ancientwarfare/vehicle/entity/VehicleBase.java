@@ -64,57 +64,62 @@ public void onUpdate()
   updatePartPositions();
   }
 
-//@Override
-//public void moveEntity(double x, double y, double z)
-//  {
-//  VehiclePart[] parts = getParts();
-//  if(parts==null)
-//    {
-//    super.moveEntity(x, y, z);//move base entity if parts==null        
-//    }
-//  else
-//    {
-//    /**
-//     * need to constrain motion for pieces by the most constrained piece
-//     * while still allowing for the vehicle to move up stairs/etc
-//     */
-//    
-//    double movedX = Double.MAX_VALUE, movedY = Double.MIN_VALUE, movedZ = Double.MAX_VALUE;
-//    
-//    double px, py, pz, dx, dy, dz;
-//    int len = parts.length;
-//    VehiclePart part;
-//    for(int i = 0; i < len; i++)
-//      {
-//      part = parts[i];
-//      
-//      px = part.posX;
-//      py = part.posY;
-//      pz = part.posZ;
-//      
-//      part.moveEntity(x, y, z);     
-//      
-//      //actual move delta for the piece
-//      dx = part.posX - px;
-//      dy = part.posY - py;
-//      dz = part.posZ - pz;
-//      
-//      //constrain any further attemps to the minimal moved by any piece (still need to rectify original pieces...)
-//      if(Math.abs(dx) < Math.abs(x)){x=dx;}
-////      if(Math.abs(dy) < Math.abs(y)){y=dy;}//dont constrain the Y, let peices fall/rise as they want
-//      if(Math.abs(dz) < Math.abs(z)){z=dz;}
-//      
-//      if(Math.abs(dx) < Math.abs(movedX)){movedX=dx;}
-//      if(Math.abs(dy) > Math.abs(movedY)){movedY=dy;}
-//      if(Math.abs(dz) < Math.abs(movedZ)){movedZ=dz;}
-//      }
-//    
+@Override
+public void moveEntity(double x, double y, double z)
+  {
+  VehiclePart[] parts = getParts();
+  if(parts==null)
+    {
+    super.moveEntity(x, y, z);//move base entity if parts==null        
+    }
+  else
+    {
+    /**
+     * need to constrain motion for pieces by the most constrained piece
+     * while still allowing for the vehicle to move up stairs/etc
+     */
+    
+    boolean step = false;
+    double stepY = 0;
+    double movedX = x, movedY = y, movedZ = z;
+    
+    double minY = Double.MIN_VALUE;
+    
+    double px, py, pz, dx, dy, dz;
+    int len = parts.length;
+    VehiclePart part;
+    for(int i = 0; i < len; i++)
+      {
+      part = parts[i];      
+      px = part.posX;
+      py = part.posY;
+      pz = part.posZ;      
+      part.moveEntity(x, y, z);
+      //actual move delta for the piece
+      dx = part.posX - px;
+      dy = part.posY - py;
+      dz = part.posZ - pz;      
+      if(dy>0)
+        {
+        step=true;
+        stepY = dy;
+        AWLog.logDebug("detecting step!!");
+        }      
+      if(Math.abs(dx) < Math.abs(movedX)){movedX=dx;}
+      if(dy>movedY){movedY=dy;}            
+      if(Math.abs(dz) < Math.abs(movedZ)){movedZ=dz;}     
+      
+      if(part.posY>minY)
+        {
+        minY=part.posY;
+        }      
+      }    
 //    AWLog.logDebug("move from parts: "+movedX+","+movedY+","+movedZ);
-//    super.moveEntity(movedX, movedY, movedZ);
-////    setPosition(mx, maxY, mz);
-//    updatePartPositions();
-//    }
-//  }
+    super.moveEntity(movedX, y, movedZ);
+//    setPosition(posX+movedX, minY, posZ+movedZ);
+    updatePartPositions();
+    }
+  }
 
 //************************************* COLLISION HANDLING *************************************//
 // Disabled in base class to allow entity-parts to handle the collision handling.  Each vehicle part
@@ -195,15 +200,15 @@ public final VehiclePart[] getParts()
 protected void buildParts()
   {  
   parts = new VehiclePart[8];
-  parts[0] = new VehiclePart(this, 1, 1, -0.5f,  1.0f);
-  parts[1] = new VehiclePart(this, 1, 1, -0.5f,  0.0f);
-  parts[2] = new VehiclePart(this, 1, 1, -0.5f, -1.0f);
-  parts[3] = new VehiclePart(this, 1, 1,  0.5f,  1.0f);
-  parts[4] = new VehiclePart(this, 1, 1,  0.5f,  0.0f);
-  parts[5] = new VehiclePart(this, 1, 1,  0.5f, -1.0f);
+  parts[0] = new VehiclePart(this, 1, height, -0.5f,  1.0f);
+  parts[1] = new VehiclePart(this, 1, height, -0.5f,  0.0f);
+  parts[2] = new VehiclePart(this, 1, height, -0.5f, -1.0f);
+  parts[3] = new VehiclePart(this, 1, height,  0.5f,  1.0f);
+  parts[4] = new VehiclePart(this, 1, height,  0.5f,  0.0f);
+  parts[5] = new VehiclePart(this, 1, height,  0.5f, -1.0f);
   
-  parts[6] = new VehiclePart(this, 1, 1,  0.0f, -0.5f);
-  parts[7] = new VehiclePart(this, 1, 1,  0.0f,  0.5f);  
+  parts[6] = new VehiclePart(this, 1, height,  0.0f, -0.5f);
+  parts[7] = new VehiclePart(this, 1, height,  0.0f,  0.5f);  
   }
 
 protected final void updatePartPositions()
