@@ -49,6 +49,7 @@ public VehicleBase(World world)
   width = 1.1f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   height = vehicleHeight;
   stepHeight = 1.0f;  
+  orientedBoundingBox.updateForRotation(0);
   }
 
 /**
@@ -68,6 +69,7 @@ public void onUpdate()
   super.onUpdate();
   inputHandler.onUpdate();
   orientedBoundingBox.updateForRotation(rotationYaw);
+  orientedBoundingBox.updateForPosition(posX, posY, posZ);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   updatePartPositions();
   }
@@ -81,19 +83,85 @@ public void moveEntity(double x, double y, double z)
 @SuppressWarnings("unchecked")
 protected void moveEntityOBB(double x, double y, double z)
   {
-  List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(x, y, z));
+  /**
+   * two passes.
+   * first pass:
+   *    move by input x/z
+   *    check for collisions on x/z axis
+   *    handle those collisions (move back by mtv)
+   * second pass:
+   *    entity is already position for maximal x/z move without stepping up blocks
+   *    move by input y and set y position.
+   *    check to see if there is uncollided room above the entity
+   */
+  orientedBoundingBox.updateForPosition(posX + x, posY, posZ + z);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   
-  double mx = 0;
-  double my = 0;
-  double mz = 0;
+  Vec3 mtvTemp = null;
+  Vec3 mtv = null;  
+  
+  List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);
   
   for(AxisAlignedBB bb : aabbs)
     {
-    if(orientedBoundingBox.collides(bb))
+    mtvTemp = orientedBoundingBox.getMinCollisionVector(bb);
+    if(mtvTemp!=null)
       {
-      
+      if(mtv==null){mtv=mtvTemp;}
+      else
+        {
+        if(Math.abs(mtvTemp.xCoord)>Math.abs(mtv.xCoord)){mtv.xCoord=mtvTemp.xCoord;}
+        if(Math.abs(mtvTemp.yCoord)>Math.abs(mtv.yCoord)){mtv.yCoord=mtvTemp.yCoord;}
+        if(Math.abs(mtvTemp.zCoord)>Math.abs(mtv.zCoord)){mtv.zCoord=mtvTemp.zCoord;}
+        }
       }
-    }  
+    }
+  
+  
+  aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(0, y, 0));
+  mtvTemp = null;
+  for(AxisAlignedBB bb : aabbs)
+    {
+    
+    if(bb.maxY>=posY && bb.minY <= posY+vehicleHeight)
+      {
+      double d = bb.maxY-posY;
+      if(d<=stepHeight)
+        {
+        mtvTemp = Vec3.createVectorHelper(0, bb.maxY-posY, 0);        
+        }      
+      }
+    if(mtvTemp!=null)
+      {
+      if(mtv==null){mtv=mtvTemp;}
+      else if(Math.abs(mtvTemp.yCoord)>Math.abs(mtv.yCoord))
+        {
+        mtv.yCoord=mtvTemp.yCoord;
+        }        
+      mtv.xCoord = 0;
+      mtv.zCoord = 0;
+      }    
+    }
+  
+  y=0;//TODO remove this stuff when done with testing...
+  if(mtv==null)
+    {
+    setPosition(posX+x, posY+y, posZ+z);
+    orientedBoundingBox.updateForPosition(posX, posY, posZ);
+    orientedBoundingBox.setAABBToOBBExtents(boundingBox);   
+    AWLog.logDebug("not collided... newpos: "+posX+","+posY+","+posZ);
+    }
+  else
+    {
+    mtv.yCoord=0;//TODO remove this stuff when done with testing...
+    x += mtv.xCoord;
+    y += mtv.yCoord;
+    z += mtv.zCoord;
+    setPosition(posX + x, posY + y, posZ + z);
+    orientedBoundingBox.updateForPosition(posX, posY, posZ);
+    orientedBoundingBox.setAABBToOBBExtents(boundingBox);   
+    AWLog.logDebug("collided..mtv: "+mtv+" newpos: "+posX+","+posY+","+posZ+" for adjusted motion: "+x+","+y+","+z); 
+    }
   }
 
 //************************************* COLLISION HANDLING *************************************//

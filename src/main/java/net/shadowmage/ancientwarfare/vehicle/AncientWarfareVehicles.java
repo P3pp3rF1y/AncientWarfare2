@@ -54,7 +54,6 @@ public static AWVehicleStatics statics;
 public void preInit(FMLPreInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Vehicles Pre-Init started");
-  loadTest();
   ModuleStatus.vehiclesLoaded = true; 
   
   /**
@@ -100,19 +99,6 @@ public void postInit(FMLPostInitializationEvent evt)
     */
   config.save();
   AWLog.log("Ancient Warfare Vehicles Post-Init completed.  Successfully completed all loading stages.");
-  }
-
-private static void loadTest()
-  {
-  OBB obb1 = new OBB(2, 2, 2);
-  AxisAlignedBB aabb1 = AxisAlignedBB.getBoundingBox(-1, 0, 0, 1, 2, 2);
-  
-  Vec3 vec = obb1.getMinCollisionVector(aabb1);
-  AWLog.logDebug("collision vec: "+vec);
-  
-  
-  Integer a = null;
-  if(a.toString().equals("")){}//crash to exit
   }
 
 }
