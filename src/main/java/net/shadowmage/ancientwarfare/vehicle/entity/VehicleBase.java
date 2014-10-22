@@ -86,23 +86,13 @@ public void moveEntity(double inputXMotion, double inputYMotion, double inputZMo
   {
   //  moveEntityOBB(x, y, z);
 
-
   this.worldObj.theProfiler.startSection("move");
-  this.ySize *= 0.4F;
   double origPosX = this.posX;
   double origPosY = this.posY;
   double origPosZ = this.posZ;
 
-  if (this.isInWeb)
-    {
-    this.isInWeb = false;
-    inputXMotion *= 0.25D;
-    inputYMotion *= 0.05000000074505806D;
-    inputZMotion *= 0.25D;
-    this.motionX = 0.0D;
-    this.motionY = 0.0D;
-    this.motionZ = 0.0D;
-    }
+  int j;
+  int k;
 
   double origInputX = inputXMotion;
   double origInputY = inputYMotion;
@@ -115,9 +105,6 @@ public void moveEntity(double inputXMotion, double inputYMotion, double inputZMo
     inputYMotion = list.get(i).calculateYOffset(this.boundingBox, inputYMotion);//getmtv
     }
   this.boundingBox.offset(0.0D, inputYMotion, 0.0D);
-
-  boolean verticallyCollided = this.onGround || origInputY != inputYMotion && origInputY < 0.0D;
-  int j;
 
   for (j = 0; j < list.size(); ++j)
     {
@@ -134,7 +121,7 @@ public void moveEntity(double inputXMotion, double inputYMotion, double inputZMo
   double inputXMotion1;
   double inputYMotion1;
   double inputZMotion1;
-  int k;
+  boolean verticallyCollided = this.onGround || origInputY != inputYMotion && origInputY < 0.0D;
 
   //if stepHeight>0 && calcedYMotion != inputYMotion
   if(this.stepHeight > 0.0F && verticallyCollided && (origInputX != inputXMotion || origInputZ != inputZMotion))
@@ -153,30 +140,25 @@ public void moveEntity(double inputXMotion, double inputYMotion, double inputZMo
       {
       inputYMotion = ((AxisAlignedBB)list.get(k)).calculateYOffset(this.boundingBox, inputYMotion);
       }
-
     this.boundingBox.offset(0.0D, inputYMotion, 0.0D);
 
     for (k = 0; k < list.size(); ++k)
       {
       inputXMotion = ((AxisAlignedBB)list.get(k)).calculateXOffset(this.boundingBox, inputXMotion);
       }
-
     this.boundingBox.offset(inputXMotion, 0.0D, 0.0D);
 
     for (k = 0; k < list.size(); ++k)
       {
       inputZMotion = ((AxisAlignedBB)list.get(k)).calculateZOffset(this.boundingBox, inputZMotion);
       }
-
     this.boundingBox.offset(0.0D, 0.0D, inputZMotion);
-
+    
     inputYMotion = (double)(-this.stepHeight);
-
     for (k = 0; k < list.size(); ++k)
       {
       inputYMotion = ((AxisAlignedBB)list.get(k)).calculateYOffset(this.boundingBox, inputYMotion);
       }
-
     this.boundingBox.offset(0.0D, inputYMotion, 0.0D);
 
     if(inputXMotion1 * inputXMotion1 + inputZMotion1 * inputZMotion1 >= inputXMotion * inputXMotion + inputZMotion * inputZMotion)//original move was larger than post-step move?
