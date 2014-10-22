@@ -4,12 +4,18 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -50,6 +56,7 @@ public VehicleBase(World world)
   height = vehicleHeight;
   stepHeight = 1.0f;  
   orientedBoundingBox.updateForRotation(0);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   }
 
 /**
@@ -75,9 +82,156 @@ public void onUpdate()
   }
 
 @Override
-public void moveEntity(double x, double y, double z)
+public void moveEntity(double inputXMotion, double inputYMotion, double inputZMotion)
   {
-  moveEntityOBB(x, y, z);
+  //  moveEntityOBB(x, y, z);
+
+
+  this.worldObj.theProfiler.startSection("move");
+  this.ySize *= 0.4F;
+  double origPosX = this.posX;
+  double origPosY = this.posY;
+  double origPosZ = this.posZ;
+
+  if (this.isInWeb)
+    {
+    this.isInWeb = false;
+    inputXMotion *= 0.25D;
+    inputYMotion *= 0.05000000074505806D;
+    inputZMotion *= 0.25D;
+    this.motionX = 0.0D;
+    this.motionY = 0.0D;
+    this.motionZ = 0.0D;
+    }
+
+  double origInputX = inputXMotion;
+  double origInputY = inputYMotion;
+  double origInputZ = inputZMotion;
+
+  List<AxisAlignedBB> list = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(inputXMotion, inputYMotion, inputZMotion));
+
+  for (int i = 0; i < list.size(); ++i)
+    {
+    inputYMotion = list.get(i).calculateYOffset(this.boundingBox, inputYMotion);//getmtv
+    }
+  this.boundingBox.offset(0.0D, inputYMotion, 0.0D);
+
+  boolean verticallyCollided = this.onGround || origInputY != inputYMotion && origInputY < 0.0D;
+  int j;
+
+  for (j = 0; j < list.size(); ++j)
+    {
+    inputXMotion = ((AxisAlignedBB)list.get(j)).calculateXOffset(this.boundingBox, inputXMotion);//getmtv
+    }
+  this.boundingBox.offset(inputXMotion, 0.0D, 0.0D);
+
+  for (j = 0; j < list.size(); ++j)
+    {
+    inputZMotion = ((AxisAlignedBB)list.get(j)).calculateZOffset(this.boundingBox, inputZMotion);//getmtv
+    }
+  this.boundingBox.offset(0.0D, 0.0D, inputZMotion);
+
+  double inputXMotion1;
+  double inputYMotion1;
+  double inputZMotion1;
+  int k;
+
+  //if stepHeight>0 && calcedYMotion != inputYMotion
+  if(this.stepHeight > 0.0F && verticallyCollided && (origInputX != inputXMotion || origInputZ != inputZMotion))
+    {
+    inputXMotion1 = inputXMotion;
+    inputYMotion1 = inputYMotion;
+    inputZMotion1 = inputZMotion;
+    inputXMotion = origInputX;
+    inputYMotion = (double)this.stepHeight;
+    inputZMotion = origInputZ;
+    AxisAlignedBB copyOfBoundingBox = this.boundingBox.copy();
+    
+    list = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(origInputX, inputYMotion, origInputZ));
+
+    for (k = 0; k < list.size(); ++k)
+      {
+      inputYMotion = ((AxisAlignedBB)list.get(k)).calculateYOffset(this.boundingBox, inputYMotion);
+      }
+
+    this.boundingBox.offset(0.0D, inputYMotion, 0.0D);
+
+    for (k = 0; k < list.size(); ++k)
+      {
+      inputXMotion = ((AxisAlignedBB)list.get(k)).calculateXOffset(this.boundingBox, inputXMotion);
+      }
+
+    this.boundingBox.offset(inputXMotion, 0.0D, 0.0D);
+
+    for (k = 0; k < list.size(); ++k)
+      {
+      inputZMotion = ((AxisAlignedBB)list.get(k)).calculateZOffset(this.boundingBox, inputZMotion);
+      }
+
+    this.boundingBox.offset(0.0D, 0.0D, inputZMotion);
+
+    inputYMotion = (double)(-this.stepHeight);
+
+    for (k = 0; k < list.size(); ++k)
+      {
+      inputYMotion = ((AxisAlignedBB)list.get(k)).calculateYOffset(this.boundingBox, inputYMotion);
+      }
+
+    this.boundingBox.offset(0.0D, inputYMotion, 0.0D);
+
+    if(inputXMotion1 * inputXMotion1 + inputZMotion1 * inputZMotion1 >= inputXMotion * inputXMotion + inputZMotion * inputZMotion)//original move was larger than post-step move?
+      {
+      inputXMotion = inputXMotion1;
+      inputYMotion = inputYMotion1;
+      inputZMotion = inputZMotion1;
+      this.boundingBox.setBB(copyOfBoundingBox);//revert BB to cached copy
+      }
+    }
+
+  this.worldObj.theProfiler.endSection();
+  this.worldObj.theProfiler.startSection("rest");
+  this.posX = (this.boundingBox.minX + this.boundingBox.maxX) / 2.0D;
+  this.posY = this.boundingBox.minY + (double)this.yOffset - (double)this.ySize;
+  this.posZ = (this.boundingBox.minZ + this.boundingBox.maxZ) / 2.0D;
+  this.isCollidedHorizontally = origInputX != inputXMotion || origInputZ != inputZMotion;
+  this.isCollidedVertically = origInputY != inputYMotion;
+  this.onGround = origInputY != inputYMotion && origInputY < 0.0D;
+  this.isCollided = this.isCollidedHorizontally || this.isCollidedVertically;
+  this.updateFallState(inputYMotion, this.onGround);
+
+  if (origInputX != inputXMotion)
+    {
+    this.motionX = 0.0D;
+    }
+
+  if (origInputY != inputYMotion)
+    {
+    this.motionY = 0.0D;
+    }
+
+  if (origInputZ != inputZMotion)
+    {
+    this.motionZ = 0.0D;
+    }
+
+  inputXMotion1 = this.posX - origPosX;
+  inputYMotion1 = this.posY - origPosY;
+  inputZMotion1 = this.posZ - origPosZ;
+  
+  try
+    {
+    this.func_145775_I();
+    }
+  catch (Throwable throwable)
+    {
+    CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity block collision");
+    CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being checked for collision");
+    this.addEntityCrashInfo(crashreportcategory);
+    throw new ReportedException(crashreport);
+    }
+
+  this.worldObj.theProfiler.endSection();
+   
   }
 
 @SuppressWarnings("unchecked")
