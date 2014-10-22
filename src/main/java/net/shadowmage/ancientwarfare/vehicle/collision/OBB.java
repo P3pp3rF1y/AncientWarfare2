@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.collision;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 /**
@@ -16,6 +17,9 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
  */
 public final class OBB
 {
+
+private static Axis aabbAxis1 = new Axis(1,0,0);
+private static Axis aabbAxis2 = new Axis(0,0,1);
 
 /**
  * W,L,H values for the OBB
@@ -32,9 +36,9 @@ private float widthExtent, lengthExtent;
  * corners of a entity-origin OBB
  */
 private Vec3[] corners = new Vec3[4];//upper corners would be the same thing, with y=height...so too boring to implement
+private Axis axis1, axis2;
 
 private float yaw = 0;
-
 /**
  * private vectors used during some calculations to reduce object churn
  */
@@ -51,13 +55,68 @@ public OBB(float width, float height, float length)
   corners[1] = Vec3.createVectorHelper(halfWidth, 0, -halfLength);//front right
   corners[2] = Vec3.createVectorHelper(halfWidth, 0, halfLength);//rear right
   corners[3] = Vec3.createVectorHelper(-halfWidth, 0, halfLength);//rear left
+  axis1 = new Axis(0,0,0);
+  axis2 = new Axis(0,0,0);
+  updateForRotation(0);
+  updateAxis();  
+  }
+
+/**
+ * return the scalar-position point for a given corner projected onto an axis (combines projectPoint and projectScalar)
+ * @param p
+ * @param a
+ * @return
+ */
+private double projectOntoAxis(Vec3 p, Vec3 a)
+  {
+  return projectScalar(projectPoint(p, a, scratch), a);
+  }
+
+/**
+ * projects a point onto the given axis.<br>
+ * the returned vector is the input point projected onto the input axis.
+ * @param p
+ * @param a
+ * @param out the vector to store the result in.  must not be null
+ * @return
+ */
+private Vec3 projectPoint(Vec3 p, Vec3 a, Vec3 out)
+  {    
+  double supper = p.xCoord * a.xCoord + p.zCoord * a.zCoord;
+  double slower = a.xCoord * a.xCoord + a.zCoord * a.zCoord;
+  double scalar = supper/slower;
+  out.xCoord = scalar*a.xCoord;
+  out.zCoord = scalar*a.zCoord;
+  return out;
+  }
+
+/**
+ * returns a scalar value that denotes a points position on an axis, relative to other values returned from this method<br>
+ * overall the return value is meaningless aside from a method to determine ordering on a line.
+ * @param p
+ * @param a
+ * @return
+ */
+private double projectScalar(Vec3 p, Vec3 a)
+  {
+  return p.xCoord * a.xCoord + p.zCoord * a.zCoord; 
+  }
+
+private void updateAxis()
+  {
+  axis1.x = corners[1].xCoord - corners[0].xCoord;
+  axis1.z = corners[1].zCoord - corners[0].zCoord;
+  axis1.normalize();
+  axis2.x = corners[2].xCoord - corners[1].xCoord;
+  axis2.z = corners[2].zCoord - corners[1].zCoord;
+  axis2.normalize();
   }
 
 /**
  * Update this OBB for the input yaw rotation
  * @param yaw
  */
-public void updateForRotation(float yaw)
+public final void updateForRotation(float yaw)
   {
   if(yaw==this.yaw){return;}//do not recalc if yaw has not changed
   this.yaw = yaw;
@@ -93,9 +152,10 @@ public void updateForRotation(float yaw)
   //rear-left corner
   corners[3].xCoord = -corners[1].xCoord;
   corners[3].zCoord = -corners[1].zCoord;
+  updateAxis();
   }
 
-public boolean collides(Vec3[] inCorners)
+public final boolean collides(Vec3[] inCorners)
   {
   /**
    * basic SAT test for OBBs.
@@ -113,12 +173,13 @@ public boolean collides(Vec3[] inCorners)
   Vec3 axis1 = Vec3.createVectorHelper(corners[1].xCoord - corners[0].xCoord , 0, corners[1].zCoord - corners[0].zCoord);
   //z-axis for this OBB  
   Vec3 axis2 = Vec3.createVectorHelper(corners[2].xCoord - corners[1].xCoord , 0, corners[2].zCoord - corners[1].zCoord);
+    
   
   //x-axis for input BB
   Vec3 axis3 = Vec3.createVectorHelper(inCorners[1].xCoord - inCorners[0].xCoord, 0, inCorners[1].zCoord - inCorners[0].zCoord);
   //z-axis for input BB
-  Vec3 axis4 = Vec3.createVectorHelper(inCorners[2].xCoord - inCorners[1].xCoord, 0, inCorners[2].zCoord - inCorners[1].zCoord);  
-   
+  Vec3 axis4 = Vec3.createVectorHelper(inCorners[2].xCoord - inCorners[1].xCoord, 0, inCorners[2].zCoord - inCorners[1].zCoord);
+
   /**
    * Axis 1
    */
@@ -210,8 +271,9 @@ public boolean collides(Vec3[] inCorners)
  * @param bb
  * @return
  */
-public boolean collides(AxisAlignedBB bb)
+public final boolean collides(AxisAlignedBB bb)
   {  
+  if(bb.minY>corners[0].yCoord+height || bb.maxY<corners[0].yCoord){return false;}//quickly check Y-intersection prior to other tests
   Vec3 c1 = Vec3.createVectorHelper(bb.minX, 0, bb.minZ);
   Vec3 c2 = Vec3.createVectorHelper(bb.maxX, 0, bb.minZ);
   Vec3 c3 = Vec3.createVectorHelper(bb.maxX, 0, bb.maxZ);
@@ -224,50 +286,80 @@ public boolean collides(AxisAlignedBB bb)
  * @param bb
  * @return
  */
-public boolean collides(OBB bb)
+public final boolean collides(OBB bb)
   {
   return collides(bb.corners);
   }
 
-/**
- * return the scalar-position point for a given corner projected onto an axis (combines projectPoint and projectScalar)
- * @param p
- * @param a
- * @return
- */
-private double projectOntoAxis(Vec3 p, Vec3 a)
+public final Vec3 getMinCollisionVector(OBB bb)
   {
-  return projectScalar(projectPoint(p, a, scratch), a);
+  return getMinCollisionVector(bb.corners, bb.axis1, bb.axis2);
   }
 
-/**
- * projects a point onto the given axis.<br>
- * the returned vector is the input point projected onto the input axis.
- * @param p
- * @param a
- * @param out the vector to store the result in.  must not be null
- * @return
- */
-private Vec3 projectPoint(Vec3 p, Vec3 a, Vec3 out)
-  {    
-  double supper = p.xCoord * a.xCoord + p.zCoord * a.zCoord;
-  double slower = a.xCoord * a.xCoord + a.zCoord * a.zCoord;
-  double scalar = supper/slower;
-  out.xCoord = scalar*a.xCoord;
-  out.zCoord = scalar*a.zCoord;
-  return out;
+public final Vec3 getMinCollisionVector(AxisAlignedBB bb)
+  {
+  if(bb.minY>corners[0].yCoord + height || bb.maxY < corners[0].yCoord){return null;}//quickly check Y-intersection prior to other tests
+  Vec3 c1 = Vec3.createVectorHelper(bb.minX, 0, bb.minZ);
+  Vec3 c2 = Vec3.createVectorHelper(bb.maxX, 0, bb.minZ);
+  Vec3 c3 = Vec3.createVectorHelper(bb.maxX, 0, bb.maxZ);
+  Vec3 c4 = Vec3.createVectorHelper(bb.minX, 0, bb.maxZ);
+  return getMinCollisionVector(new Vec3[]{c1, c2, c3, c4}, aabbAxis1, aabbAxis2);
   }
 
-/**
- * returns a scalar value that denotes a points position on an axis, relative to other values returned from this method<br>
- * overall the return value is meaningless aside from a method to determine ordering on a line.
- * @param p
- * @param a
- * @return
- */
-private double projectScalar(Vec3 p, Vec3 a)
+public final Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
   {
-  return p.xCoord * a.xCoord + p.zCoord * a.zCoord; 
+  double minOverlap = Double.MAX_VALUE;
+  double overlap = 0;  
+  Axis overlapAxis = null;
+  
+  Projection p1 = axis1.projectShape(corners);
+  Projection p2 = axis1.projectShape(inCorners);
+  overlap = p1.getOverlap(p2);
+  AWLog.logDebug("calced overlap for axis1: "+overlap);
+  if(overlap==0)
+    {
+    return null;
+    }//no collision on that axis
+  else if (Math.abs(overlap)<Math.abs(minOverlap))
+    {
+    minOverlap = overlap;
+    overlapAxis = axis1;
+    }
+  
+  p1 = axis2.projectShape(corners);
+  p2 = axis2.projectShape(inCorners);
+  overlap = p1.getOverlap(p2);
+  AWLog.logDebug("calced overlap for axis2: "+overlap);
+  if(overlap==0){return null;}//no collision on that axis
+  else if (Math.abs(overlap)<Math.abs(minOverlap))
+    {
+    minOverlap = overlap;
+    overlapAxis = axis2;
+    }
+  
+  p1 = axis3.projectShape(corners);
+  p2 = axis3.projectShape(inCorners);
+  overlap = p1.getOverlap(p2);
+  AWLog.logDebug("calced overlap for axis3: "+overlap);
+  if(overlap==0){return null;}//no collision on that axis
+  else if (Math.abs(overlap)<Math.abs(minOverlap))
+    {
+    minOverlap = overlap;
+    overlapAxis = axis3;
+    }
+  
+  p1 = axis4.projectShape(corners);
+  p2 = axis4.projectShape(inCorners);
+  overlap = p1.getOverlap(p2);
+  AWLog.logDebug("calced overlap for axis4: "+overlap);
+  if(overlap==0){return null;}//no collision on that axis
+  else if (Math.abs(overlap)<Math.abs(minOverlap))
+    {
+    minOverlap = overlap;
+    overlapAxis = axis4;
+    }
+   
+  return Vec3.createVectorHelper(overlapAxis.x*minOverlap, 0, overlapAxis.z*minOverlap);
   }
 
 /**
@@ -286,5 +378,90 @@ public final void setAABBToOBBExtents(AxisAlignedBB bb)
   {
   bb.setBounds(-widthExtent, 0, -lengthExtent, widthExtent, height, lengthExtent);
   }
+
+private static class Axis
+{
+
+double x, y, z;
+
+public Axis(double x, double y, double z)
+  {
+  this.x = x;
+  this.y = y;
+  this.z = z;
+  normalize();
+  }
+
+public final void normalize()
+  {
+  double sq = x*x+y*y+z*z;
+  if(sq>0.0000001d)
+    {
+    sq = Math.sqrt(sq);
+    x/=sq;
+    y/=sq;
+    z/=sq;
+    }  
+  }
+
+public final double dot(Vec3 vec)
+  {
+  return x * vec.xCoord + y * vec.yCoord + z * vec.zCoord;
+  }
+
+@Override
+public String toString()
+  {  
+  return String.format("Axis: %.2f, %.2f, %.2f", x, y, z);
+  }
+
+private Projection projectShape(Vec3[] corners)
+  {
+  double min = Double.MAX_VALUE;
+  double max = Double.MIN_VALUE;
+  double d;
+  for(Vec3 p : corners)
+    {    
+    d = dot(p);
+    if(d<min){min=d;}
+    if(d>max){max=d;}
+    }
+  AWLog.logDebug("returning projection min/max: "+min+"::"+max+" for axis: "+this);
+  return new Projection(min, max);
+  }
+
+}
+
+private static class Projection
+{
+
+double min, max;
+
+public Projection(double min, double max)
+  {
+  this.min=min;
+  this.max=max;
+  }
+
+public double getOverlap(Projection p)
+  {
+  if(p.max<min){return 0;}//input ends before this starts
+  if(p.min>max){return 0;}//this ends before input starts
+  
+  //TODO...no clue if the rest of this is right
+  //kind of seems to be
+  double d1 = max - p.min;
+  double d2 = p.min - max;
+  return Math.abs(d1) < Math.abs(d2)? d1 : d2;
+  }
+
+@Override
+public String toString()
+  {
+  return String.format("Proj: %.2f |<->| %.2f", min, max);
+  }
+}
+
+
 
 }

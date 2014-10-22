@@ -1,6 +1,9 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import io.netty.buffer.ByteBuf;
+
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,6 +14,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandler;
 import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandlerTest;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputHandler;
@@ -23,6 +27,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData
 
 public VehicleInputHandler inputHandler;
 public VehicleMoveHandler moveHandler;
+public OBB orientedBoundingBox;
 
 VehiclePart[] parts;
 
@@ -39,6 +44,7 @@ public VehicleBase(World world)
   vehicleWidth = 2.f;
   vehicleHeight = 1.0f;
   vehicleLength = 3.f;
+  orientedBoundingBox = new OBB(vehicleWidth, vehicleHeight, vehicleLength);
   
   width = 1.1f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   height = vehicleHeight;
@@ -58,67 +64,36 @@ protected void entityInit()
 
 @Override
 public void onUpdate()
-  {
+  {  
   super.onUpdate();
   inputHandler.onUpdate();
+  orientedBoundingBox.updateForRotation(rotationYaw);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   updatePartPositions();
   }
 
 @Override
 public void moveEntity(double x, double y, double z)
   {
-  VehiclePart[] parts = getParts();
-  if(parts==null)
+  moveEntityOBB(x, y, z);
+  }
+
+@SuppressWarnings("unchecked")
+protected void moveEntityOBB(double x, double y, double z)
+  {
+  List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(x, y, z));
+  
+  double mx = 0;
+  double my = 0;
+  double mz = 0;
+  
+  for(AxisAlignedBB bb : aabbs)
     {
-    super.moveEntity(x, y, z);//move base entity if parts==null        
-    }
-  else
-    {
-    /**
-     * need to constrain motion for pieces by the most constrained piece
-     * while still allowing for the vehicle to move up stairs/etc
-     */
-    
-    boolean step = false;
-    double stepY = 0;
-    double movedX = x, movedY = y, movedZ = z;
-    
-    double minY = Double.MIN_VALUE;
-    
-    double px, py, pz, dx, dy, dz;
-    int len = parts.length;
-    VehiclePart part;
-    for(int i = 0; i < len; i++)
+    if(orientedBoundingBox.collides(bb))
       {
-      part = parts[i];      
-      px = part.posX;
-      py = part.posY;
-      pz = part.posZ;      
-      part.moveEntity(x, y, z);
-      //actual move delta for the piece
-      dx = part.posX - px;
-      dy = part.posY - py;
-      dz = part.posZ - pz;      
-      if(dy>0)
-        {
-        step=true;
-        stepY = dy;
-        AWLog.logDebug("detecting step!!");
-        }      
-      if(Math.abs(dx) < Math.abs(movedX)){movedX=dx;}
-      if(dy>movedY){movedY=dy;}            
-      if(Math.abs(dz) < Math.abs(movedZ)){movedZ=dz;}     
       
-      if(part.posY>minY)
-        {
-        minY=part.posY;
-        }      
-      }    
-//    AWLog.logDebug("move from parts: "+movedX+","+movedY+","+movedZ);
-    super.moveEntity(movedX, y, movedZ);
-//    setPosition(posX+movedX, minY, posZ+movedZ);
-    updatePartPositions();
-    }
+      }
+    }  
   }
 
 //************************************* COLLISION HANDLING *************************************//

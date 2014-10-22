@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.vehicle;
 
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -7,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
+import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.crafting.AWVehicleCrafting;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
@@ -51,7 +54,7 @@ public static AWVehicleStatics statics;
 public void preInit(FMLPreInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Vehicles Pre-Init started");
-  
+  loadTest();
   ModuleStatus.vehiclesLoaded = true; 
   
   /**
@@ -97,6 +100,19 @@ public void postInit(FMLPostInitializationEvent evt)
     */
   config.save();
   AWLog.log("Ancient Warfare Vehicles Post-Init completed.  Successfully completed all loading stages.");
+  }
+
+private static void loadTest()
+  {
+  OBB obb1 = new OBB(2, 2, 2);
+  AxisAlignedBB aabb1 = AxisAlignedBB.getBoundingBox(-1, 0, 0, 1, 2, 2);
+  
+  Vec3 vec = obb1.getMinCollisionVector(aabb1);
+  AWLog.logDebug("collision vec: "+vec);
+  
+  
+  Integer a = null;
+  if(a.toString().equals("")){}//crash to exit
   }
 
 }
