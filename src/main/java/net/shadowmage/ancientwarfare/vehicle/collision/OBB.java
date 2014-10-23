@@ -68,8 +68,6 @@ private Axis axis1, axis2;
  */
 private float yaw = 0;
 
-private static boolean debug = false;
-
 public OBB(float width, float height, float length)
   {
   this.width = width;
@@ -109,8 +107,6 @@ public final void updateForPosition(double x, double y, double z)
     updateCornerVector(i);
     }
   }
-
-public void setDebug(boolean val){debug = val;}
 
 /**
  * updates the input world-position corner to be the origin-corner + last known position
