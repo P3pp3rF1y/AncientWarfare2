@@ -152,6 +152,7 @@ private Vec3 copyVec(Vec3 in)
  */
 public final void updateForRotation(float yaw)
   {
+  yaw = -yaw;//TODO figure out why yaw is inverted for OBB, figure out where else it might be inverted for other calculations
   if(yaw==this.yaw){return;}//do not recalc if yaw has not changed
   this.yaw = yaw;
   float yawRad = Trig.TORADIANS * yaw;
@@ -230,7 +231,7 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
   Projection p2 = axis1.projectShape(inCorners);
   if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-  if(debug){AWLog.logDebug("overlap axis: "+axis1+" :: "+overlap+" p: "+p1+" :: "+p2);}
+//  if(debug){AWLog.logDebug("overlap axis: "+axis1+" :: "+overlap+" p: "+p1+" :: "+p2);}
   if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
@@ -241,7 +242,7 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
   p2 = axis2.projectShape(inCorners);
   if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-  if(debug){AWLog.logDebug("overlap axis: "+axis2+" :: "+overlap+" p: "+p1+" :: "+p2);}
+//  if(debug){AWLog.logDebug("overlap axis: "+axis2+" :: "+overlap+" p: "+p1+" :: "+p2);}
   if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
@@ -252,7 +253,7 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
   p2 = axis3.projectShape(inCorners);
   if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-  if(debug){AWLog.logDebug("overlap axis: "+axis3+" :: "+overlap+" p: "+p1+" :: "+p2);}
+//  if(debug){AWLog.logDebug("overlap axis: "+axis3+" :: "+overlap+" p: "+p1+" :: "+p2);}
   if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
@@ -263,13 +264,13 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
   p2 = axis4.projectShape(inCorners);
   if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-  if(debug){AWLog.logDebug("overlap axis: "+axis4+" :: "+overlap+" p: "+p1+" :: "+p2);}
+//  if(debug){AWLog.logDebug("overlap axis: "+axis4+" :: "+overlap+" p: "+p1+" :: "+p2);}
   if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
     overlapAxis = axis4;
     }
-  if(debug){AWLog.logDebug("final overlap: "+overlapAxis+" :: "+minOverlap);}
+//  if(debug){AWLog.logDebug("final overlap: "+overlapAxis+" :: "+minOverlap);}
   return Vec3.createVectorHelper(overlapAxis.axisX * minOverlap, 0, overlapAxis.axisZ * minOverlap);
   }
 
@@ -348,9 +349,9 @@ private Projection projectShape(Vec3[] corners)
       if(d < min){min=d;}
       if(d > max){max=d;}
       }
-    if(debug){AWLog.logDebug("pos for corner: "+d+" :: "+corners[i]+"  "+min+" : "+max);}
+//    if(debug){AWLog.logDebug("pos for corner: "+d+" :: "+corners[i]+"  "+min+" : "+max);}
     }
-  if(debug){AWLog.logDebug("min/max for proj: "+min+" : "+max);}
+//  if(debug){AWLog.logDebug("min/max for proj: "+min+" : "+max);}
   return new Projection(min, max);
   }
 
