@@ -84,7 +84,9 @@ protected void resurrectTarget()
     {
     resdNpc.ordersStack=null;
     resdNpc.upkeepStack=null;
-    for(int i = 0;i < 5; i++){npc.setCurrentItemOrArmor(i, null);}
+    for(int i = 0;i < 5; i++){resdNpc.setCurrentItemOrArmor(i, null);}
+    resdNpc.upkeepStack=null;
+    resdNpc.setShieldStack(null);
     resdNpc.setHealth(resdNpc.getMaxHealth()/2);
     resdNpc.setPositionAndRotation(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
     npc.worldObj.spawnEntityInWorld(resdNpc);
