@@ -68,7 +68,7 @@ private Axis axis1, axis2;
  */
 private float yaw = 0;
 
-private boolean debug = false;
+private static boolean debug = false;
 
 public OBB(float width, float height, float length)
   {
@@ -332,15 +332,25 @@ public String toString()
 
 private Projection projectShape(Vec3[] corners)
   {
-  double min = Double.MAX_VALUE;
-  double max = Double.MIN_VALUE;
+  double min = 0;//Double.MAX_VALUE;
+  double max = 0;//Double.MIN_VALUE;
   double d;
-  for(Vec3 p : corners)
-    {    
-    d = dot(p);
-    if(d < min){min=d;}
-    if(d > max){max=d;}
+  int len = corners.length;
+  for(int i = 0; i < len; i++)
+    {
+    d = dot(corners[i]);
+    if(i==0)
+      {
+      min=max=d;
+      }
+    else
+      {
+      if(d < min){min=d;}
+      if(d > max){max=d;}
+      }
+    if(debug){AWLog.logDebug("pos for corner: "+d+" :: "+corners[i]+"  "+min+" : "+max);}
     }
+  if(debug){AWLog.logDebug("min/max for proj: "+min+" : "+max);}
   return new Projection(min, max);
   }
 
@@ -368,10 +378,7 @@ public double getOverlap(Projection p)
   {
   if(min>p.max){return 0;}
   if(max<p.min){return 0;}
-  
-  if(max==p.max && min==p.min){return max-min;}//complete overlap of same size...weird...no way to know which direction is correct....
-  else if(max>=p.min){return p.min-max;}
-  else if(min<=p.max){return p.max-min;}
+  //TODO figure this stuff out...
   return 0;
   }
 
