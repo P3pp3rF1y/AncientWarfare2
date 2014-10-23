@@ -374,12 +374,21 @@ public boolean doesOverlap(Projection p)
   return true;
   }
 
+//overlap code skimmed from: https://github.com/ghost7/collision/blob/master/sat/Polygon.cpp
 public double getOverlap(Projection p)
   {
-  if(min>p.max){return 0;}
-  if(max<p.min){return 0;}
-  //TODO figure this stuff out...
-  return 0;
+  if(min > p.max || max < p.min)
+    {
+    return 0;
+    }
+  else if (min < p.min)
+    {
+    return p.min - max;
+    }
+  else 
+    {
+    return p.max - min;
+    }
   }
 
 @Override
