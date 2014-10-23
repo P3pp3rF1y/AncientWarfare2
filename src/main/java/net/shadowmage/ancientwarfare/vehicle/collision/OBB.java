@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.collision;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 /**
@@ -67,6 +68,8 @@ private Axis axis1, axis2;
  */
 private float yaw = 0;
 
+private static boolean debug = false;
+
 public OBB(float width, float height, float length)
   {
   this.width = width;
@@ -106,6 +109,8 @@ public final void updateForPosition(double x, double y, double z)
     updateCornerVector(i);
     }
   }
+
+public void setDebug(boolean val){debug = val;}
 
 /**
  * updates the input world-position corner to be the origin-corner + last known position
@@ -207,11 +212,11 @@ public final Vec3 getMinCollisionVector(OBB bb)
 
 public final Vec3 getMinCollisionVector(AxisAlignedBB bb)
   {
-//  if(bb.minY>corners[0].yCoord + height || bb.maxY < corners[0].yCoord){return null;}//quickly check Y-intersection prior to other tests
-  Vec3 c1 = Vec3.createVectorHelper(bb.minX, bb.minY, bb.minZ);
-  Vec3 c2 = Vec3.createVectorHelper(bb.maxX, bb.minY, bb.minZ);
-  Vec3 c3 = Vec3.createVectorHelper(bb.maxX, bb.minY, bb.maxZ);
-  Vec3 c4 = Vec3.createVectorHelper(bb.minX, bb.minY, bb.maxZ);
+  if(bb.minY > cornerPos[0].yCoord + height || bb.maxY < cornerPos[0].yCoord){return null;}//quickly check Y-intersection prior to other tests
+  Vec3 c1 = Vec3.createVectorHelper(bb.minX, 0, bb.minZ);
+  Vec3 c2 = Vec3.createVectorHelper(bb.maxX, 0, bb.minZ);
+  Vec3 c3 = Vec3.createVectorHelper(bb.maxX, 0, bb.maxZ);
+  Vec3 c4 = Vec3.createVectorHelper(bb.minX, 0, bb.maxZ);
   return getMinCollisionVector(new Vec3[]{c1, c2, c3, c4}, aabbAxis1, aabbAxis2);
   }
 
@@ -223,9 +228,10 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
   
   Projection p1 = axis1.projectShape(cornerPos);
   Projection p2 = axis1.projectShape(inCorners);
+  if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-  if(overlap==0){return null;}//no collision on that axis
-  else if (Math.abs(overlap)<Math.abs(minOverlap))
+  if(debug){AWLog.logDebug("overlap axis: "+axis1+" :: "+overlap+" p: "+p1+" :: "+p2);}
+  if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
     overlapAxis = axis1;
@@ -233,9 +239,10 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
   
   p1 = axis2.projectShape(cornerPos);
   p2 = axis2.projectShape(inCorners);
+  if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-  if(overlap==0){return null;}//no collision on that axis
-  else if (Math.abs(overlap)<Math.abs(minOverlap))
+  if(debug){AWLog.logDebug("overlap axis: "+axis2+" :: "+overlap+" p: "+p1+" :: "+p2);}
+  if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
     overlapAxis = axis2;
@@ -243,9 +250,10 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
   
   p1 = axis3.projectShape(cornerPos);
   p2 = axis3.projectShape(inCorners);
+  if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-  if(overlap==0){return null;}//no collision on that axis
-  else if (Math.abs(overlap)<Math.abs(minOverlap))
+  if(debug){AWLog.logDebug("overlap axis: "+axis3+" :: "+overlap+" p: "+p1+" :: "+p2);}
+  if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
     overlapAxis = axis3;
@@ -253,15 +261,16 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
   
   p1 = axis4.projectShape(cornerPos);
   p2 = axis4.projectShape(inCorners);
+  if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-  if(overlap==0){return null;}//no collision on that axis
-  else if (Math.abs(overlap)<Math.abs(minOverlap))
+  if(debug){AWLog.logDebug("overlap axis: "+axis4+" :: "+overlap+" p: "+p1+" :: "+p2);}
+  if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
     overlapAxis = axis4;
     }
-   
-  return Vec3.createVectorHelper(overlapAxis.axisX*minOverlap, 0, overlapAxis.axisZ*minOverlap);
+  if(debug){AWLog.logDebug("final overlap: "+overlapAxis+" :: "+minOverlap);}
+  return Vec3.createVectorHelper(overlapAxis.axisX * minOverlap, 0, overlapAxis.axisZ * minOverlap);
   }
 
 /**
@@ -301,7 +310,7 @@ public Axis(double x, double y, double z)
 public final void normalize()
   {
   double sq = axisX*axisX+axisY*axisY+axisZ*axisZ;
-  if(sq>0.0000001d)
+  if(Math.abs(sq)>0.0000001d)
     {
     sq = Math.sqrt(sq);
     axisX /= sq;
@@ -323,15 +332,25 @@ public String toString()
 
 private Projection projectShape(Vec3[] corners)
   {
-  double min = Double.MAX_VALUE;
-  double max = Double.MIN_VALUE;
+  double min = 0;//Double.MAX_VALUE;
+  double max = 0;//Double.MIN_VALUE;
   double d;
-  for(Vec3 p : corners)
-    {    
-    d = dot(p);
-    if(d < min){min=d;}
-    if(d > max){max=d;}
+  int len = corners.length;
+  for(int i = 0; i < len; i++)
+    {
+    d = dot(corners[i]);
+    if(i==0)
+      {
+      min=max=d;
+      }
+    else
+      {
+      if(d < min){min=d;}
+      if(d > max){max=d;}
+      }
+    if(debug){AWLog.logDebug("pos for corner: "+d+" :: "+corners[i]+"  "+min+" : "+max);}
     }
+  if(debug){AWLog.logDebug("min/max for proj: "+min+" : "+max);}
   return new Projection(min, max);
   }
 
@@ -348,16 +367,19 @@ public Projection(double min, double max)
   this.max=max;
   }
 
+public boolean doesOverlap(Projection p)
+  {
+  if(p.max<min){return false;}
+  if(p.min>max){return false;}
+  return true;
+  }
+
 public double getOverlap(Projection p)
   {
-  if(p.max <= min){return 0;}//input ends before this starts
-  if(p.min >= max){return 0;}//this ends before input starts
-  
-  //TODO...no clue if the rest of this is right
-  //kind of seems to be correct, but might need to be re-examined
-  double d1 = max - p.min;
-  double d2 = p.min - max;
-  return Math.abs(d1) < Math.abs(d2)? d1 : d2;
+  if(min>p.max){return 0;}
+  if(max<p.min){return 0;}
+  //TODO figure this stuff out...
+  return 0;
   }
 
 @Override
