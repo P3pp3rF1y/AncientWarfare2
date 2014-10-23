@@ -84,7 +84,8 @@ public void onUpdate()
 @Override
 public void moveEntity(double inputXMotion, double inputYMotion, double inputZMotion)
   {
-  //  moveEntityOBB(x, y, z);
+  moveEntityOBB(inputXMotion, inputYMotion, inputZMotion);
+  if(true){return;}
 
   this.worldObj.theProfiler.startSection("move");
   double origPosX = this.posX;
@@ -219,85 +220,88 @@ public void moveEntity(double inputXMotion, double inputYMotion, double inputZMo
 @SuppressWarnings("unchecked")
 protected void moveEntityOBB(double x, double y, double z)
   {
+//  AWLog.logDebug("moving entity..: "+x+","+y+","+z);
   /**
-   * two passes.
+   * two passes:
    * first pass:
-   *    move by input x/z
-   *    check for collisions on x/z axis
-   *    handle those collisions (move back by mtv)
-   * second pass:
-   *    entity is already position for maximal x/z move without stepping up blocks
-   *    move by input y and set y position.
-   *    check to see if there is uncollided room above the entity
+   *    check for collision on x, y, z
+   *    move entity on x, z
+   *    
+   *    
+   *    only move entity down if there is no collision 
    */
-  orientedBoundingBox.updateForPosition(posX + x, posY, posZ + z);
+  orientedBoundingBox.updateForPosition(posX + x, posY + y, posZ + z);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   
   Vec3 mtvTemp = null;
   Vec3 mtv = null;  
+//  double mtvLenSq;
   
-  List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);
+  List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);  
+  boolean onGround = false;
   
   for(AxisAlignedBB bb : aabbs)
-    {
-    mtvTemp = orientedBoundingBox.getMinCollisionVector(bb);
+    {  
+    if(boundingBox.minY <= bb.maxX && boundingBox.maxX >= bb.minY && bb.maxY - boundingBox.minY <= stepHeight)      
+      {
+      orientedBoundingBox.setDebug(false);
+      }
+    else
+      {
+      orientedBoundingBox.setDebug(true);
+      }
+    mtvTemp = orientedBoundingBox.getMinCollisionVector(bb);    
+//    AWLog.logDebug("checking bb for collision: "+bb + " :: mtv: "+mtvTemp);
     if(mtvTemp!=null)
       {
-      if(mtv==null){mtv=mtvTemp;}
+      if(boundingBox.minY <= bb.maxX && boundingBox.maxX >= bb.minY)      
+        {      
+        if(bb.maxY - boundingBox.minY <= stepHeight)
+          {      
+          onGround = true;
+          mtvTemp = Vec3.createVectorHelper(0, bb.maxY - boundingBox.minY, 0);
+//          AWLog.logDebug("Stepping over height... "+mtvTemp);
+          } 
+        else
+          {
+//          AWLog.logDebug("not stepping, colliding horizontally... "+mtvTemp);
+          }
+        }
       else
         {
+//        AWLog.logDebug("non vertical, colliding horizontally mtv: "+mtvTemp);
+        }      
+      if(mtv==null)
+        {
+        mtv=mtvTemp;
+//        mtvLenSq = mtvTemp.xCoord * mtvTemp.xCoord + mtvTemp.yCoord*mtvTemp.yCoord + mtvTemp.zCoord*mtvTemp.zCoord;
+        }
+      else
+        {
+//        double d1 =  mtvTemp.xCoord * mtvTemp.xCoord + mtvTemp.yCoord*mtvTemp.yCoord + mtvTemp.zCoord*mtvTemp.zCoord;
+//        if(d1)
         if(Math.abs(mtvTemp.xCoord)>Math.abs(mtv.xCoord)){mtv.xCoord=mtvTemp.xCoord;}
         if(Math.abs(mtvTemp.yCoord)>Math.abs(mtv.yCoord)){mtv.yCoord=mtvTemp.yCoord;}
         if(Math.abs(mtvTemp.zCoord)>Math.abs(mtv.zCoord)){mtv.zCoord=mtvTemp.zCoord;}
         }
       }
     }
-  
-  
-  aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(0, y, 0));
-  mtvTemp = null;
-  for(AxisAlignedBB bb : aabbs)
-    {
-    
-    if(bb.maxY>=posY && bb.minY <= posY+vehicleHeight)
-      {
-      double d = bb.maxY-posY;
-      if(d<=stepHeight)
-        {
-        mtvTemp = Vec3.createVectorHelper(0, bb.maxY-posY, 0);        
-        }      
-      }
-    if(mtvTemp!=null)
-      {
-      if(mtv==null){mtv=mtvTemp;}
-      else if(Math.abs(mtvTemp.yCoord)>Math.abs(mtv.yCoord))
-        {
-        mtv.yCoord=mtvTemp.yCoord;
-        }        
-      mtv.xCoord = 0;
-      mtv.zCoord = 0;
-      }    
-    }
-  
-  y=0;//TODO remove this stuff when done with testing...
+   
   if(mtv==null)
     {
-    setPosition(posX+x, posY+y, posZ+z);
-    orientedBoundingBox.updateForPosition(posX, posY, posZ);
-    orientedBoundingBox.setAABBToOBBExtents(boundingBox);   
-    AWLog.logDebug("not collided... newpos: "+posX+","+posY+","+posZ);
+//    AWLog.logDebug("not collided... newpos: "+posX+","+posY+","+posZ);
     }
   else
     {
-    mtv.yCoord=0;//TODO remove this stuff when done with testing...
     x += mtv.xCoord;
     y += mtv.yCoord;
     z += mtv.zCoord;
-    setPosition(posX + x, posY + y, posZ + z);
-    orientedBoundingBox.updateForPosition(posX, posY, posZ);
-    orientedBoundingBox.setAABBToOBBExtents(boundingBox);   
-    AWLog.logDebug("collided..mtv: "+mtv+" newpos: "+posX+","+posY+","+posZ+" for adjusted motion: "+x+","+y+","+z); 
+//    AWLog.logDebug("collided..mtv: "+mtv+" newpos: "+posX+","+posY+","+posZ+" for adjusted motion: "+x+","+y+","+z); 
     }
+  
+  setPosition(posX + x, posY + y, posZ + z);
+  orientedBoundingBox.updateForPosition(posX, posY, posZ);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);   
   }
 
 //************************************* COLLISION HANDLING *************************************//
