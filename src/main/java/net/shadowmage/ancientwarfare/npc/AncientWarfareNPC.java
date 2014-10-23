@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
+import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
@@ -36,6 +37,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 @Mod
 (
@@ -80,6 +82,7 @@ public void preInit(FMLPreInitializationEvent evt)
    */  
   proxy.registerClient();
   statics.load();//load config settings
+  FMLCommonHandler.instance().bus().register(this);
   FMLCommonHandler.instance().bus().register(FactionTracker.INSTANCE);
   MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
   
@@ -143,5 +146,10 @@ public void postInit(FMLPostInitializationEvent evt)
   AWLog.log("Ancient Warfare NPCs Post-Init completed.  Successfully completed all loading stages.");
   }
 
+@EventHandler
+public void serverStart(FMLServerStartingEvent evt)
+  {
+  evt.registerServerCommand(new CommandFaction());
+  }
 
 }
