@@ -238,7 +238,8 @@ protected void moveEntityOBB(double x, double y, double z)
 //  double mtvLenSq;
   
   List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);  
-  boolean onGround = false;
+  
+  boolean checkStep = false;
   
   for(AxisAlignedBB bb : aabbs)
     {  
@@ -256,21 +257,18 @@ protected void moveEntityOBB(double x, double y, double z)
       {
       if(boundingBox.minY <= bb.maxX && boundingBox.maxX >= bb.minY)      
         {      
-        if(bb.maxY - boundingBox.minY <= stepHeight)
+        double y1 = bb.maxY - boundingBox.minY;
+        if(y1 <= 0.5d)//only do base-stepping for half block or less heights
           {      
-          onGround = true;
-          mtvTemp = Vec3.createVectorHelper(0, bb.maxY - boundingBox.minY, 0);
+          mtvTemp = Vec3.createVectorHelper(0, y1, 0);
 //          AWLog.logDebug("Stepping over height... "+mtvTemp);
           } 
-        else
+        else if(y1 <= stepHeight - y)
           {
-//          AWLog.logDebug("not stepping, colliding horizontally... "+mtvTemp);
+          checkStep = true;          
           }
         }
-      else
-        {
-//        AWLog.logDebug("non vertical, colliding horizontally mtv: "+mtvTemp);
-        }      
+      
       if(mtv==null)
         {
         mtv=mtvTemp;
@@ -286,17 +284,63 @@ protected void moveEntityOBB(double x, double y, double z)
         }
       }
     }
-   
-  if(mtv==null)
-    {
-//    AWLog.logDebug("not collided... newpos: "+posX+","+posY+","+posZ);
+  
+  Vec3 mtvStep = null;  
+  /**
+   * check for stepping...
+   */
+  if(checkStep && y <= 0)
+    {        
+    AWLog.logDebug("doing large step!: "+mtv); 
+    AxisAlignedBB bb1 = boundingBox.copy(); 
+    orientedBoundingBox.updateForPosition(posX+x, posY+y+stepHeight, posZ+z);
+    orientedBoundingBox.setAABBToOBBExtents(bb1);
+    aabbs = worldObj.getCollidingBoundingBoxes(this, bb1);
+    AWLog.logDebug("aabbs.. "+aabbs);
+    for(AxisAlignedBB bb : aabbs)
+      {
+      mtvTemp = orientedBoundingBox.getMinCollisionVector(bb);
+      AWLog.logDebug("mtvTemp: "+mtvTemp);
+      if(mtvTemp!=null)
+        {
+        if(boundingBox.minY <= bb.maxX && boundingBox.maxX >= bb.minY)      
+          {      
+          double y1 = bb.maxY - boundingBox.minY;
+          if(y1 <= stepHeight - y)
+            {      
+            mtvTemp = Vec3.createVectorHelper(0, stepHeight - y, 0);
+            AWLog.logDebug("stepping over bb: "+bb);
+            } 
+          }        
+        if(mtvStep==null)
+          {
+          mtvStep=mtvTemp;
+//          mtvLenSq = mtvTemp.xCoord * mtvTemp.xCoord + mtvTemp.yCoord*mtvTemp.yCoord + mtvTemp.zCoord*mtvTemp.zCoord;
+          }
+        else
+          {
+          if(Math.abs(mtvTemp.xCoord)>Math.abs(mtvStep.xCoord)){mtvStep.xCoord=mtvTemp.xCoord;}
+          if(Math.abs(mtvTemp.yCoord)>Math.abs(mtvStep.yCoord)){mtvStep.yCoord=mtvTemp.yCoord;}
+          if(Math.abs(mtvTemp.zCoord)>Math.abs(mtvStep.zCoord)){mtvStep.zCoord=mtvTemp.zCoord;}
+          }
+        }   
+      }    
     }
-  else
+  
+  if(mtvStep!=null && mtv!=null)
+    {
+    if(Math.abs(mtvStep.xCoord) <= Math.abs(mtv.xCoord) && Math.abs(mtvStep.zCoord) <= Math.abs(mtv.zCoord))
+      {
+      mtv = mtvStep;
+      AWLog.logDebug("using step mtv! "+mtv);
+      }
+    }
+  
+  if(mtv!=null)
     {
     x += mtv.xCoord;
     y += mtv.yCoord;
     z += mtv.zCoord;
-//    AWLog.logDebug("collided..mtv: "+mtv+" newpos: "+posX+","+posY+","+posZ+" for adjusted motion: "+x+","+y+","+z); 
     }
   
   setPosition(posX + x, posY + y, posZ + z);

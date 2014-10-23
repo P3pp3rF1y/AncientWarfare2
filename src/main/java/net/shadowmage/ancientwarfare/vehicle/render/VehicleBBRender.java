@@ -64,7 +64,7 @@ public void doRender(Entity entity, double x, double y,  double z, float yaw, fl
   
   GL11.glRotated(vehicle.rotationYaw, 0, 1, 0);
   renderAABB.setBounds(-vehicle.vehicleWidth/2.f, 0, -vehicle.vehicleLength/2.f, vehicle.vehicleWidth/2.f, vehicle.vehicleHeight, vehicle.vehicleLength/2.f);
-  RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 1, 1, 0.0625f);
+  RenderTools.drawOutlinedBoundingBox2(renderAABB, 0, 1, 0, 0.0625f);
   
   GL11.glEnable(GL11.GL_TEXTURE_2D);
   GL11.glDisable(GL11.GL_BLEND);  
