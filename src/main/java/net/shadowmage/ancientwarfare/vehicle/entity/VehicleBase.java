@@ -4,18 +4,12 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ReportedException;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -88,19 +82,97 @@ public void moveEntity(double inputXMotion, double inputYMotion, double inputZMo
   }
 
 @SuppressWarnings("unchecked")
-protected void moveEntityOBB(double x, double y, double z)
+public void rotateEntity(float rotationDelta)
   {
-  orientedBoundingBox.updateForPosition(posX + x, posY + y, posZ + z);
+  prevRotationYaw = rotationYaw;
+  
+  orientedBoundingBox.updateForRotation(rotationYaw + rotationDelta);
+  orientedBoundingBox.updateForPosition(posX, posY, posZ);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   
+  Vec3 mtvTempBase = Vec3.createVectorHelper(0,0,0);
   Vec3 mtvTemp = null;
   Vec3 mtv = null;  
   
   List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);  
   
-  for(AxisAlignedBB bb : aabbs)
+  AxisAlignedBB bb = null;
+  int len = aabbs.size();
+  for(int i = 0; i< len; i++)
     { 
-    mtvTemp = orientedBoundingBox.getMinCollisionVector(bb);    
+    bb = aabbs.get(i);
+    mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
+    if(mtvTemp!=null)
+      {
+      if(mtv==null)
+        {
+        mtv = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
+        }
+      else
+        {
+        if(Math.abs(mtvTemp.xCoord)>Math.abs(mtv.xCoord)){mtv.xCoord=mtvTemp.xCoord;}
+        if(Math.abs(mtvTemp.yCoord)>Math.abs(mtv.yCoord)){mtv.yCoord=mtvTemp.yCoord;}
+        if(Math.abs(mtvTemp.zCoord)>Math.abs(mtv.zCoord)){mtv.zCoord=mtvTemp.zCoord;}
+        }
+      }
+    }
+  
+  if(mtv==null || (mtv.xCoord==0 && mtv.zCoord==0 && mtv.yCoord==0))//set position from move as there is no collision
+    {
+    rotationYaw += rotationDelta;
+    }
+  else if(mtv.yCoord!=0)
+    {  
+    AWLog.logDebug("vertical colllision while rotating, reverting");
+    orientedBoundingBox.updateForRotation(rotationYaw);
+    orientedBoundingBox.updateForPosition(posX, posY, posZ);
+    orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+    }  
+  else
+    {
+    AWLog.logDebug("colllision while rotating, attempting rotate + slide");    
+    orientedBoundingBox.updateForPosition(posX + mtv.xCoord, posY, posZ + mtv.zCoord);
+    orientedBoundingBox.setAABBToOBBExtents(boundingBox);    
+    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);      
+    bb = null;
+    len = aabbs.size();
+    for(int i = 0; i< len; i++)
+      { 
+      bb = aabbs.get(i);
+      mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
+      if(mtvTemp!=null)
+        {
+        AWLog.logDebug("unresolvable collision while rotating, reverting");
+        orientedBoundingBox.updateForRotation(rotationYaw);
+        orientedBoundingBox.updateForPosition(posX, posY, posZ);
+        orientedBoundingBox.setAABBToOBBExtents(boundingBox);        
+        break;
+        }
+      }
+    //no unresolvable collision, slide worked
+    rotationYaw += rotationDelta;
+    setPosition(posX + mtv.xCoord, posY, posZ + mtv.zCoord);//obb and bb already set/updated for rotation and bounds from test    
+    }  
+  }
+
+@SuppressWarnings("unchecked")
+protected void moveEntityOBB(double x, double y, double z)
+  {
+  orientedBoundingBox.updateForPosition(posX + x, posY + y, posZ + z);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+  
+  Vec3 mtvTempBase = Vec3.createVectorHelper(0,0,0);
+  Vec3 mtvTemp = null;
+  Vec3 mtv = null;  
+  
+  List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);  
+  
+  AxisAlignedBB bb = null;
+  int len = aabbs.size();
+  for(int i = 0; i< len; i++)
+    { 
+    bb = aabbs.get(i);
+    mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
     if(mtvTemp!=null)
       {
       if(boundingBox.minY <= bb.maxX && boundingBox.maxX >= bb.minY)      
@@ -120,7 +192,7 @@ protected void moveEntityOBB(double x, double y, double z)
         }
       if(mtv==null)
         {
-        mtv=mtvTemp;
+        mtv = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
         }
       else
         {
@@ -164,12 +236,18 @@ protected void moveEntityOBB(double x, double y, double z)
     }
  
   Vec3 mtvStep = null;  
-  for(AxisAlignedBB bb : aabbs)
+  bb = null;
+  len = aabbs.size();
+  for(int i = 0; i< len; i++)
     { 
-    mtvTemp = orientedBoundingBox.getMinCollisionVector(bb);    
+    bb = aabbs.get(i);
+    mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
     if(mtvTemp!=null)
       {
-      if(mtvStep==null){mtvStep=mtvTemp;}
+      if(mtvStep==null)
+        {
+        mtvStep = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
+        }
       else
         {
         if(Math.abs(mtvTemp.xCoord) > Math.abs(mtvStep.xCoord)){mtvStep.xCoord=mtvTemp.xCoord;}

@@ -212,23 +212,23 @@ private void updateAxis()
  * @param bb
  * @return
  */
-public final Vec3 getMinCollisionVector(OBB bb)
+public final Vec3 getMinCollisionVector(OBB bb, Vec3 mtvOut)
   {
   if(bb.cornerPos[0].yCoord + bb.height < cornerPos[0].yCoord || bb.cornerPos[0].yCoord > cornerPos[0].yCoord + height){return null;}//quickly check Y-intersection prior to other tests
-  return getMinCollisionVector(bb.cornerPos, bb.axis1, bb.axis2);
+  return getMinCollisionVector(bb.cornerPos, bb.axis1, bb.axis2, mtvOut);
   }
 
-public final Vec3 getMinCollisionVector(AxisAlignedBB bb)
+public final Vec3 getMinCollisionVector(AxisAlignedBB bb, Vec3 mtvOut)
   {
   if(bb.minY > cornerPos[0].yCoord + height || bb.maxY < cornerPos[0].yCoord){return null;}//quickly check Y-intersection prior to other tests
   setVector(aaBBCorners[0], bb.minX, 0, bb.minZ);
   setVector(aaBBCorners[1], bb.maxX, 0, bb.minZ);
   setVector(aaBBCorners[2], bb.maxX, 0, bb.maxZ);
   setVector(aaBBCorners[3], bb.minX, 0, bb.maxZ);
-  return getMinCollisionVector(aaBBCorners, aabbAxis1, aabbAxis2);
+  return getMinCollisionVector(aaBBCorners, aabbAxis1, aabbAxis2, mtvOut);
   }
 
-private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
+private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4, Vec3 mtvOut)
   {
   double minOverlap = Double.MAX_VALUE;
   double overlap = 0;  

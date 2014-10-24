@@ -288,8 +288,9 @@ private void lerpMotion()
     vehicle.motionX = dx/t;
     vehicle.motionY = dy/t;
     vehicle.motionZ = dz/t;
+    vehicle.noClip=true;//enable no-clip for pure client-side, to remove lerp/collision desynch, as lerp might attempt to clip slightly through some geometries
     vehicle.moveEntity(vehicle.motionX, vehicle.motionY, vehicle.motionZ);
-    
+    vehicle.noClip=false;
     /**
      * obtain and normalize yaw
      */    
