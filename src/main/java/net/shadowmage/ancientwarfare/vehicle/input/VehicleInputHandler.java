@@ -112,23 +112,25 @@ private void serverUpdate()
       state = packetsToProcess.remove(0);
       if(state.dummy)
         {
-        vehicle.moveHandler.updateVehicleMotion(inputState.pressed);    
-        continue;
-        }      
-      vehicle.moveHandler.updateVehicleMotion(state.keyStates);   
-      if(vehicle.posX != state.x || vehicle.posY!=state.y || vehicle.posZ!=state.z || vehicle.rotationYaw!=state.yaw || vehicle.rotationPitch!=state.pitch)
+        vehicle.moveHandler.updateVehicleMotion(inputState.pressed);//inputState should be a freshly initialized array (filled with false) on server
+        }
+      else
         {
-        double x = vehicle.posX - state.x;
-        double y = vehicle.posY - state.y;
-        double z = vehicle.posZ - state.z;
-        float yaw = vehicle.rotationYaw - state.yaw;
-        float pitch = vehicle.rotationPitch - state.pitch;
-        if(Math.abs(x)>0.025 || Math.abs(y)>0.025 || Math.abs(z)>0.025 || Math.abs(yaw) > 0.1 || Math.abs(pitch) > 0.1)
-          {                
-          PacketInputReply reply = new PacketInputReply();
-          reply.setID(vehicle, state.commandID);
-          reply.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
-          NetworkHandler.sendToPlayer((EntityPlayerMP)vehicle.riddenByEntity, reply);              
+        vehicle.moveHandler.updateVehicleMotion(state.keyStates);   
+        if(vehicle.posX != state.x || vehicle.posY!=state.y || vehicle.posZ!=state.z || vehicle.rotationYaw!=state.yaw || vehicle.rotationPitch!=state.pitch)
+          {
+          double x = vehicle.posX - state.x;
+          double y = vehicle.posY - state.y;
+          double z = vehicle.posZ - state.z;
+          float yaw = vehicle.rotationYaw - state.yaw;
+          float pitch = vehicle.rotationPitch - state.pitch;
+          if(Math.abs(x)>0.025 || Math.abs(y)>0.025 || Math.abs(z)>0.025 || Math.abs(yaw) > 0.1 || Math.abs(pitch) > 0.1)
+            {                
+            PacketInputReply reply = new PacketInputReply();
+            reply.setID(vehicle, state.commandID);
+            reply.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
+            NetworkHandler.sendToPlayer((EntityPlayerMP)vehicle.riddenByEntity, reply);              
+            }
           }
         }
       }
@@ -277,7 +279,7 @@ private void lerpMotion()
       vehicle.motionZ = dz/t;
       }
     
-    vehicle.setPosition(vehicle.posX+vehicle.motionX, vehicle.posY+vehicle.motionY, vehicle.posZ+vehicle.motionZ);
+    vehicle.setPosition(vehicle.posX + vehicle.motionX, vehicle.posY + vehicle.motionY, vehicle.posZ + vehicle.motionZ);
     
     /**
      * obtain and normalize yaw
@@ -327,6 +329,8 @@ private void lerpMotion()
     vehicle.rotationPitch = destPitch;
     vehicle.setPositionAndRotation(destX, destY, destZ, destYaw, destPitch);
     }
+  vehicle.orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw);
+  vehicle.orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);
   }
 
 /**

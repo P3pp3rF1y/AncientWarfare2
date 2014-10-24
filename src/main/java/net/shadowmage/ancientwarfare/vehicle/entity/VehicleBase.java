@@ -37,19 +37,21 @@ public float vehicleWidth, vehicleHeight, vehicleLength;
 public VehicleBase(World world)
   {
   super(world);
-  vehicleWidth = 7.f;
+  vehicleWidth = 3.f;
   vehicleHeight = 2.0f;
-  vehicleLength = 15.f;
+  vehicleLength = 5.f;
+  
+  World.MAX_ENTITY_RADIUS = Math.max(World.MAX_ENTITY_RADIUS, Math.max(vehicleWidth*1.4f, vehicleLength*1.4f));
   
   orientedBoundingBox = new OBB(vehicleWidth, vehicleHeight, vehicleLength);  
-  orientedBoundingBox.updateForRotation(0);
+  orientedBoundingBox.setRotation(0);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   inputHandler = new VehicleInputHandler(this);
   moveHandler = new VehicleMoveHandlerTest(this);  
   
   width = 1.1f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   height = vehicleHeight;
-  stepHeight = 1.0f;  
+  stepHeight = 1.0f;    
   }
 
 /**
@@ -70,7 +72,7 @@ public void onUpdate()
   inputHandler.onUpdate();
   orientedBoundingBox.updateForRotation(rotationYaw);
   orientedBoundingBox.updateForPosition(posX, posY, posZ);
-  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);  
   updatePartPositions();
   }
 
@@ -338,6 +340,7 @@ public final VehiclePart[] getParts()
     {
     buildParts();
     updatePartPositions();
+    
     }//lazy initialization of parts, don't even bother to construct until they are first asked for...perhaps change this to init parts in entity-init?
   return parts;
   }
@@ -413,17 +416,26 @@ protected void writeEntityToNBT(NBTTagCompound var1)
   }
 
 @Override
-public void writeSpawnData(ByteBuf buffer)
+public void writeSpawnData(ByteBuf data)
   {
-  // TODO Auto-generated method stub
+  data.writeDouble(posX);
+  data.writeDouble(posY);
+  data.writeDouble(posZ);
+  data.writeFloat(rotationYaw);
   
   }
 
 @Override
-public void readSpawnData(ByteBuf additionalData)
+public void readSpawnData(ByteBuf data)
   {
-  // TODO Auto-generated method stub
-  
+  posX = data.readDouble();
+  posY = data.readDouble();
+  posZ = data.readDouble();
+  prevRotationYaw = rotationYaw = data.readFloat();
+  orientedBoundingBox.updateForPosition(posX, posY, posZ);
+  orientedBoundingBox.updateForRotation(rotationYaw);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+  AWLog.logDebug("client spawn, set bb to: "+boundingBox);
   }
 
 }

@@ -7,6 +7,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 public class VehiclePart extends Entity
@@ -36,15 +37,17 @@ public final void updatePosition()
   location.yCoord = offset.yCoord;
   location.zCoord = offset.zCoord;
   location.rotateAroundY(MathHelper.wrapAngleTo180_float(vehicle.rotationYaw) * Trig.TORADIANS);
-  location.xCoord+=vehicle.posX;
-  location.yCoord+=vehicle.posY;
-  location.zCoord+=vehicle.posZ;
+  location.xCoord += vehicle.posX;
+  location.yCoord += vehicle.posY;
+  location.zCoord += vehicle.posZ;
+//  AWLog.logDebug("part pos: "+location);
   setPosition(location.xCoord, location.yCoord, location.zCoord);
   }
 
 @Override
 public boolean interactFirst(EntityPlayer player)
   {
+  AWLog.logDebug("interact with part!!");
   return vehicle.interactFirst(player);
   }
 

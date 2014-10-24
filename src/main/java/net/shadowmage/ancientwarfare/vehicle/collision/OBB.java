@@ -123,6 +123,12 @@ public final void updateForPosition(double x, double y, double z)
     }
   }
 
+public final void updateForPositionAndRotation(double x, double y, double z, float yaw)
+  {
+  updateForRotation(yaw);
+  updateForPosition(x, y, z);
+  }
+
 /**
  * updates the input world-position corner to be the origin-corner + last known position
  * @param index
@@ -151,15 +157,8 @@ private Vec3 copyVec(Vec3 in)
   return Vec3.createVectorHelper(in.xCoord, in.yCoord, in.zCoord);
   }
 
-/**
- * Update this OBB for the input yaw rotation.<br>
- * Subsequently calls updateForPosition(currentPos) to update world-corner positions;
- * @param yaw
- */
-public final void updateForRotation(float yaw)
+public final void setRotation(float yaw)
   {
-  yaw = -yaw;//TODO figure out why yaw is inverted for OBB, figure out where else it might be inverted for other calculations
-  if(yaw==this.yaw){return;}//do not recalc if yaw has not changed
   this.yaw = yaw;
   float yawRad = Trig.TORADIANS * yaw;
   float cos = MathHelper.cos(yawRad);
@@ -195,6 +194,18 @@ public final void updateForRotation(float yaw)
   corners[3].zCoord = -corners[1].zCoord;
   updateAxis();
   updateForPosition(x, y, z);
+  }
+
+/**
+ * Update this OBB for the input yaw rotation.<br>
+ * Subsequently calls updateForPosition(currentPos) to update world-corner positions;
+ * @param yaw
+ */
+public final void updateForRotation(float yaw)
+  {
+  yaw = -yaw;//TODO figure out why yaw is inverted for OBB, figure out where else it might be inverted for other calculations
+  if(yaw==this.yaw){return;}//do not recalc if yaw has not changed
+  setRotation(yaw);
   }
 
 private void updateAxis()
