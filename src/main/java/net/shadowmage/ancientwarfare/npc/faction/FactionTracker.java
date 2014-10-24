@@ -54,6 +54,14 @@ public void adjustStandingFor(World world, String playerName, String factionName
   sendFactionUpdate(world, playerName, factionName, data);
   }
 
+public void setStandingFor(World world, String playerName, String factionName, int setting)
+  {
+  if(world.isRemote){throw new IllegalArgumentException("Cannot set standing on client world!");}
+  FactionData data = AWGameData.INSTANCE.getData(FactionData.name, world, FactionData.class);
+  data.setStandingFor(playerName, factionName, setting);
+  sendFactionUpdate(world, playerName, factionName, data);
+  }
+
 public int getStandingFor(World world, String playerName, String factionName)
   {
   if(world.isRemote)
