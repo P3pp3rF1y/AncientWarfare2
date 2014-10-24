@@ -6,6 +6,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
@@ -92,6 +93,7 @@ public List addTabCompletionOptions(ICommandSender var1, String[] var2)
     }
   if(var2.length==2)
     {
+    return CommandBase.getListOfStringsMatchingLastWord(var2, MinecraftServer.getServer().getAllUsernames());
     }//would be a player name
   if(var2.length==3)
     {
@@ -110,12 +112,6 @@ public List addTabCompletionOptions(ICommandSender var1, String[] var2)
 @Override
 public boolean isUsernameIndex(String[] var1, int var2)
   {
-  String input = "";
-  for(int i = 0; i < var1.length; i++)
-    {
-    input = input + " " + var1[i];
-    }
-  AWLog.logDebug("is username index: "+var2+" "+input);
   return var2==1;
   }
 
