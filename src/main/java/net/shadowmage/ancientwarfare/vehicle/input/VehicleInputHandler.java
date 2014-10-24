@@ -253,6 +253,9 @@ private void collectInput()
  */
 private void lerpMotion()
   {
+  vehicle.motionX = 0;
+  vehicle.motionY = 0;
+  vehicle.motionZ = 0;
   if(lerpTicks>0)
     {
     /**
@@ -266,20 +269,14 @@ private void lerpMotion()
     double dy = destY - vehicle.posY;
     double dz = destZ - vehicle.posZ;
     
-    if(Math.abs(dx)>2.d || Math.abs(dy)>2.d || Math.abs(dz)>2.d)//too far for smooth lerp
+    if(Math.abs(dx)<2.d && Math.abs(dy)<2.d && Math.abs(dz)<2.d)//too far for smooth lerp
       {
-      vehicle.motionX = dx;
-      vehicle.motionY = dy;
-      vehicle.motionZ = dz;
-      }
-    else//lerp
-      {
-      vehicle.motionX = dx/t;
-      vehicle.motionY = dy/t;
-      vehicle.motionZ = dz/t;
+      dx/=t;
+      dy/=t;
+      dz/=t;
       }
     
-    vehicle.setPosition(vehicle.posX + vehicle.motionX, vehicle.posY + vehicle.motionY, vehicle.posZ + vehicle.motionZ);
+    vehicle.setPosition(vehicle.posX + dx, vehicle.posY + dy, vehicle.posZ + dz);
     
     /**
      * obtain and normalize yaw
@@ -317,17 +314,9 @@ private void lerpMotion()
     /**
      * no lerp ticks, set to server-position
      */
-    vehicle.posX = destX;
-    vehicle.posY = destY;
-    vehicle.posZ = destZ;
-    vehicle.motionX = 0;
-    vehicle.motionY = 0;
-    vehicle.motionZ = 0;
-    vehicle.prevRotationYaw = vehicle.rotationYaw;
     vehicle.rotationYaw = destYaw;
-    vehicle.prevRotationPitch = vehicle.rotationPitch;
     vehicle.rotationPitch = destPitch;
-    vehicle.setPositionAndRotation(destX, destY, destZ, destYaw, destPitch);
+    vehicle.setPosition(destX, destY, destZ);
     }
   vehicle.orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw);
   vehicle.orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);

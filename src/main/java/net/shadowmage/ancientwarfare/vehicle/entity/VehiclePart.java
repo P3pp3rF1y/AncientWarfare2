@@ -40,7 +40,6 @@ public final void updatePosition()
   location.xCoord += vehicle.posX;
   location.yCoord += vehicle.posY;
   location.zCoord += vehicle.posZ;
-//  AWLog.logDebug("part pos: "+location);
   setPosition(location.xCoord, location.yCoord, location.zCoord);
   }
 

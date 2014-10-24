@@ -44,7 +44,7 @@ public VehicleBase(World world)
   World.MAX_ENTITY_RADIUS = Math.max(World.MAX_ENTITY_RADIUS, Math.max(vehicleWidth*1.4f, vehicleLength*1.4f));
   
   orientedBoundingBox = new OBB(vehicleWidth, vehicleHeight, vehicleLength);  
-  orientedBoundingBox.setRotation(0);
+  orientedBoundingBox.setRotation(-0);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   inputHandler = new VehicleInputHandler(this);
   moveHandler = new VehicleMoveHandlerTest(this);  
