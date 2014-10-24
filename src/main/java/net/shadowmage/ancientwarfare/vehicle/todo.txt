@@ -6,26 +6,10 @@ vehicles todo
 * vehicles that you can walk around on
 	- rotate position of entity relative to vehicle rotation, test for rectangular BB to determine if the entity should fall off or not?
 	- when vehicle rotates all on-top entities will need to be rotated around for their relative position
-
-
-vehicle movement/input handling:
-
-client ridden
-	gather input
-	update motion for input
-	send movement command to server
-	write to command buffer
-	
-	
-client unridden
-	lerp for server position
-	
-server ridden
-	process command packets
-	update motion for input from packets
-	send response packet to client if corrections are needed
-	vanilla network manager sends packets for clients not riding the vehicle
-	
-server unridden
-	do nothing....send occasional 
+	- will use input interception to facilitate movement of player on vehicle
+	- will use some sort of fake 'world' for collision detection.  Perhaps just a list of AABBs for the vehicle interior with manual resolution
+* vehicle tier/upgrade system
+	- do not have material teirs, just use upgrades for enhanced functionality
+	- use click-to-apply upgrades, or slotted?
+		one way allows for -all- upgrades to be applied, the other limits to a selected range by player choice
 			

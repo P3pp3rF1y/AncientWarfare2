@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.vehicle.collision;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 /**
@@ -27,6 +26,22 @@ private static Axis aabbAxis1 = new Axis(1,0,0);
  * Cached static axis variable to use for interaction with AABBs (z-axis)
  */
 private static Axis aabbAxis2 = new Axis(0,0,1);
+
+/**
+ * Cached static array of Vec3 to use for AABB corners (might need un-static'd if ever used for multi-threaded stuff...)
+ */
+private static Vec3[] aaBBCorners = new Vec3[]
+      {
+      Vec3.createVectorHelper(0, 0, 0),
+      Vec3.createVectorHelper(0, 0, 0),
+      Vec3.createVectorHelper(0, 0, 0),
+      Vec3.createVectorHelper(0, 0, 0)
+      };
+
+/**
+ * cached static projections to use for overlap testing (would need un-static'd if ever used for multi-threaded stuff...)
+ */
+private static Projection p1 = new Projection(0,0), p2=new Projection(0,0);
 
 /**
  * W,L,H values for the OBB
@@ -119,16 +134,11 @@ private void updateCornerVector(int index)
   cornerPos[index].zCoord = corners[index].zCoord + z;
   }
 
-/**
- * Vector helper function to set one vector identical to another
- * @param input
- * @param toSet
- */
-private void setVector(Vec3 input, Vec3 toSet)
+private void setVector(Vec3 toSet, double x, double y, double z)
   {
-  toSet.xCoord = input.xCoord;
-  toSet.yCoord = input.yCoord;
-  toSet.zCoord = input.zCoord;
+  toSet.xCoord = x;
+  toSet.yCoord = y;
+  toSet.zCoord = z;
   }
 
 /**
@@ -204,17 +214,18 @@ private void updateAxis()
  */
 public final Vec3 getMinCollisionVector(OBB bb)
   {
+  if(bb.cornerPos[0].yCoord + bb.height < cornerPos[0].yCoord || bb.cornerPos[0].yCoord > cornerPos[0].yCoord + height){return null;}//quickly check Y-intersection prior to other tests
   return getMinCollisionVector(bb.cornerPos, bb.axis1, bb.axis2);
   }
 
 public final Vec3 getMinCollisionVector(AxisAlignedBB bb)
   {
   if(bb.minY > cornerPos[0].yCoord + height || bb.maxY < cornerPos[0].yCoord){return null;}//quickly check Y-intersection prior to other tests
-  Vec3 c1 = Vec3.createVectorHelper(bb.minX, 0, bb.minZ);
-  Vec3 c2 = Vec3.createVectorHelper(bb.maxX, 0, bb.minZ);
-  Vec3 c3 = Vec3.createVectorHelper(bb.maxX, 0, bb.maxZ);
-  Vec3 c4 = Vec3.createVectorHelper(bb.minX, 0, bb.maxZ);
-  return getMinCollisionVector(new Vec3[]{c1, c2, c3, c4}, aabbAxis1, aabbAxis2);
+  setVector(aaBBCorners[0], bb.minX, 0, bb.minZ);
+  setVector(aaBBCorners[1], bb.maxX, 0, bb.minZ);
+  setVector(aaBBCorners[2], bb.maxX, 0, bb.maxZ);
+  setVector(aaBBCorners[3], bb.minX, 0, bb.maxZ);
+  return getMinCollisionVector(aaBBCorners, aabbAxis1, aabbAxis2);
   }
 
 private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
@@ -223,50 +234,46 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4)
   double overlap = 0;  
   Axis overlapAxis = null;
   
-  Projection p1 = axis1.projectShape(cornerPos);
-  Projection p2 = axis1.projectShape(inCorners);
+  p1 = axis1.projectShape(cornerPos, p1);
+  p2 = axis1.projectShape(inCorners, p2);
   if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-//  if(debug){AWLog.logDebug("overlap axis: "+axis1+" :: "+overlap+" p: "+p1+" :: "+p2);}
   if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
     overlapAxis = axis1;
     }
   
-  p1 = axis2.projectShape(cornerPos);
-  p2 = axis2.projectShape(inCorners);
+  p1 = axis2.projectShape(cornerPos, p1);
+  p2 = axis2.projectShape(inCorners, p2);
   if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-//  if(debug){AWLog.logDebug("overlap axis: "+axis2+" :: "+overlap+" p: "+p1+" :: "+p2);}
   if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
     overlapAxis = axis2;
     }
   
-  p1 = axis3.projectShape(cornerPos);
-  p2 = axis3.projectShape(inCorners);
+  p1 = axis3.projectShape(cornerPos, p1);
+  p2 = axis3.projectShape(inCorners, p2);
   if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-//  if(debug){AWLog.logDebug("overlap axis: "+axis3+" :: "+overlap+" p: "+p1+" :: "+p2);}
   if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
     overlapAxis = axis3;
     }
   
-  p1 = axis4.projectShape(cornerPos);
-  p2 = axis4.projectShape(inCorners);
+  p1 = axis4.projectShape(cornerPos, p1);
+  p2 = axis4.projectShape(inCorners, p2);
   if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
   overlap = p1.getOverlap(p2);
-//  if(debug){AWLog.logDebug("overlap axis: "+axis4+" :: "+overlap+" p: "+p1+" :: "+p2);}
   if(Math.abs(overlap)<Math.abs(minOverlap))
     {
     minOverlap = overlap;
     overlapAxis = axis4;
     }
-//  if(debug){AWLog.logDebug("final overlap: "+overlapAxis+" :: "+minOverlap);}
+  
   return Vec3.createVectorHelper(overlapAxis.axisX * minOverlap, 0, overlapAxis.axisZ * minOverlap);
   }
 
@@ -327,13 +334,13 @@ public String toString()
   return String.format("Axis: %.2f, %.2f, %.2f", axisX, axisY, axisZ);
   }
 
-private Projection projectShape(Vec3[] corners)
+private Projection projectShape(Vec3[] corners, Projection p)
   {
-  double min = 0;//Double.MAX_VALUE;
-  double max = 0;//Double.MIN_VALUE;
-  double d;
+  double d = dot(corners[0]);
+  double min = d;
+  double max = d;
   int len = corners.length;
-  for(int i = 0; i < len; i++)
+  for(int i = 1; i < len; i++)//skip first corner, already used to set starting min/max
     {
     d = dot(corners[i]);
     if(i==0)
@@ -345,10 +352,10 @@ private Projection projectShape(Vec3[] corners)
       if(d < min){min=d;}
       if(d > max){max=d;}
       }
-//    if(debug){AWLog.logDebug("pos for corner: "+d+" :: "+corners[i]+"  "+min+" : "+max);}
     }
-//  if(debug){AWLog.logDebug("min/max for proj: "+min+" : "+max);}
-  return new Projection(min, max);
+  p.min = min;
+  p.max = max;
+  return p;
   }
 
 }
