@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
+import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
@@ -41,6 +42,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 @Mod
 (
@@ -157,6 +159,12 @@ public void onConfigChanged(OnConfigChangedEvent evt)
     {
     proxy.onConfigChanged();    
     }
+  }
+
+@EventHandler
+public void serverStart(FMLServerStartingEvent evt)
+  {
+  evt.registerServerCommand(new CommandFaction());
   }
 
 }

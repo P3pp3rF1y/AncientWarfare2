@@ -678,13 +678,20 @@ entity.ancientwarfarenpc.custom_3.civilian.female.name=Imperial Woman
 
 
 #commands
-command.aw.structure.usage=foo usage
+command.aw.structure.usage=Foo Usage (TODO)
 command.aw.structure.not_found=Template could not be located: %s
 command.aw.structure.file_not_found=File could not be located: %s
 command.aw.structure.template_removed=Template was removed: %s
 command.aw.structure.file_deleted=File was deleted: %s
 command.aw.structure.built=Structure built: %s at: %s,%s,%s
 command.aw.research.usage=Usage: /awresearch (add:remove:fill:clear) playerName [goalname for add/remove]
+command.aw.faction.usage=/awfaction (set | setall | set) (playername)
+command.aw.faction.set.usage=/awfaction set (playername) (faction) (amount)
+command.aw.faction.setall.usage=/awfaction setall (playername) (amount)
+command.aw.faction.get.usage=/awfaction get (playername)
+command.aw.faction.status.player=Faction Standing For Player: %s
+command.aw.faction.status.value=Faction %s  Standing: %s
+command.aw.faction.set=Set faction standing for %s with %s to %s
 
 #research
 research.invention=Invention

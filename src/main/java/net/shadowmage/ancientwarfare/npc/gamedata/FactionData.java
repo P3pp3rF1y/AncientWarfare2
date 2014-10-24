@@ -52,6 +52,12 @@ public void adjustStandingFor(String playerName, String faction, int adjustment)
   markDirty();
   }
 
+public void setStandingFor(String playerName, String faction, int setting)
+  {
+  if(playerFactionEntries.containsKey(playerName)){playerFactionEntries.get(playerName).setStandingFor(faction, setting);}
+  markDirty();
+  }
+
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
