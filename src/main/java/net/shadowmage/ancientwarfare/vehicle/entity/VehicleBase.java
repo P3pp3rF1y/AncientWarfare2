@@ -37,20 +37,19 @@ public float vehicleWidth, vehicleHeight, vehicleLength;
 public VehicleBase(World world)
   {
   super(world);
+  vehicleWidth = 7.f;
+  vehicleHeight = 2.0f;
+  vehicleLength = 15.f;
   
+  orientedBoundingBox = new OBB(vehicleWidth, vehicleHeight, vehicleLength);  
+  orientedBoundingBox.updateForRotation(0);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   inputHandler = new VehicleInputHandler(this);
-  moveHandler = new VehicleMoveHandlerTest(this);
-  
-  vehicleWidth = 2.f;
-  vehicleHeight = 1.0f;
-  vehicleLength = 3.f;
-  orientedBoundingBox = new OBB(vehicleWidth, vehicleHeight, vehicleLength);
+  moveHandler = new VehicleMoveHandlerTest(this);  
   
   width = 1.1f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   height = vehicleHeight;
   stepHeight = 1.0f;  
-  orientedBoundingBox.updateForRotation(0);
-  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   }
 
 /**
@@ -78,7 +77,7 @@ public void onUpdate()
 @Override
 public void moveEntity(double inputXMotion, double inputYMotion, double inputZMotion)
   {
-  moveEntityOBB(inputXMotion, inputYMotion, inputZMotion);   
+  moveEntityOBB(inputXMotion, inputYMotion, inputZMotion);
   }
 
 @SuppressWarnings("unchecked")
@@ -123,14 +122,12 @@ public void rotateEntity(float rotationDelta)
     }
   else if(mtv.yCoord!=0)
     {  
-    AWLog.logDebug("vertical colllision while rotating, reverting");
     orientedBoundingBox.updateForRotation(rotationYaw);
     orientedBoundingBox.updateForPosition(posX, posY, posZ);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);
     }  
   else
-    {
-    AWLog.logDebug("colllision while rotating, attempting rotate + slide");    
+    {    
     orientedBoundingBox.updateForPosition(posX + mtv.xCoord, posY, posZ + mtv.zCoord);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);    
     aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);      
@@ -142,7 +139,6 @@ public void rotateEntity(float rotationDelta)
       mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
       if(mtvTemp!=null)
         {
-        AWLog.logDebug("unresolvable collision while rotating, reverting");
         orientedBoundingBox.updateForRotation(rotationYaw);
         orientedBoundingBox.updateForPosition(posX, posY, posZ);
         orientedBoundingBox.setAABBToOBBExtents(boundingBox);        
@@ -187,7 +183,6 @@ protected void moveEntityOBB(double x, double y, double z)
         {
         //is colliding from the top-down, how to handle this while now pushing entity into the ground?
         //might want to just try and move the entity on x/z until clear
-        AWLog.logDebug("head collision!!");
         mtvTemp = Vec3.createVectorHelper(0, bb.minY - boundingBox.maxY, 0);
         }
       if(mtv==null)
@@ -244,6 +239,12 @@ protected void moveEntityOBB(double x, double y, double z)
     mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
     if(mtvTemp!=null)
       {
+      if(bb.minY < boundingBox.maxY)//do not step up if blocks are colliding vertically post-step
+        {
+        orientedBoundingBox.updateForPosition(posX, posY, posZ);
+        orientedBoundingBox.setAABBToOBBExtents(boundingBox);  
+        return;                
+        }
       if(mtvStep==null)
         {
         mtvStep = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
