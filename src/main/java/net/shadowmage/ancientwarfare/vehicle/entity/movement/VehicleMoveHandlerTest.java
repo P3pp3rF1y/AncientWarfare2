@@ -10,7 +10,6 @@ public class VehicleMoveHandlerTest extends VehicleMoveHandler
 public VehicleMoveHandlerTest(VehicleBase vehicle)
   {
   super(vehicle);
-  // TODO Auto-generated constructor stub
   }
 
 @Override

@@ -55,11 +55,7 @@ public void handleVanillaSynch(double x, double y, double z, float yaw, float pi
   this.destZ = z; 
   this.destYaw = yaw;
   this.destPitch = pitch;
-  this.lerpTicks = ticks * 2;
-//  if(vehicle.riddenByEntity != AncientWarfareCore.proxy.getClientPlayer())
-//    {
-//    AWLog.logDebug("handling vanilla synch: "+x+","+y+","+z);    
-//    }
+  this.lerpTicks = ticks * 2;//TODO figure out wtf this network ticks stuff is actually supposed to be used for and when it is actually 'smooth'
   }
 
 public void handleInputPacket(PacketInputState state)
@@ -79,11 +75,8 @@ private void processReplyPackets()
   while(it1.hasNext() && (reply=it1.next())!=null)
     {
     it1.remove();
-    int id = reply.commandID;
-//    AWLog.logDebug("Client processing reply packet: "+id);
-    
-    vehicle.setPositionAndRotation(reply.x, reply.y, reply.z, reply.yaw, reply.pitch);
-    
+    int id = reply.commandID;    
+    vehicle.setPositionAndRotation(reply.x, reply.y, reply.z, reply.yaw, reply.pitch);    
     Iterator<InputSnapshot> it = snapshotBuffer.iterator();
     InputSnapshot st = null;
     while(it.hasNext() && (st=it.next())!=null)
@@ -122,12 +115,7 @@ private void serverUpdate()
         vehicle.moveHandler.updateVehicleMotion(inputState.pressed);    
         continue;
         }      
-//      AWLog.logDebug("Server processing Command id: "+state.commandID + "    ------------------");
-//      AWLog.logDebug("server pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
-      vehicle.moveHandler.updateVehicleMotion(state.keyStates);    
-//      AWLog.logDebug("post   pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
-//      AWLog.logDebug("pos from client: "+state.x+","+state.y+","+state.z);
-//      AWLog.logDebug("End Server processing Command id: "+state.commandID + "------------------");
+      vehicle.moveHandler.updateVehicleMotion(state.keyStates);   
       if(vehicle.posX != state.x || vehicle.posY!=state.y || vehicle.posZ!=state.z || vehicle.rotationYaw!=state.yaw || vehicle.rotationPitch!=state.pitch)
         {
         double x = vehicle.posX - state.x;
@@ -136,8 +124,7 @@ private void serverUpdate()
         float yaw = vehicle.rotationYaw - state.yaw;
         float pitch = vehicle.rotationPitch - state.pitch;
         if(Math.abs(x)>0.025 || Math.abs(y)>0.025 || Math.abs(z)>0.025 || Math.abs(yaw) > 0.1 || Math.abs(pitch) > 0.1)
-          {        
-//          AWLog.logDebug("Sending force pos packet");           
+          {                
           PacketInputReply reply = new PacketInputReply();
           reply.setID(vehicle, state.commandID);
           reply.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
@@ -198,7 +185,7 @@ private void sendInputPacket()
     }
   PacketInputState pkt = new PacketInputState();
   pkt.setID(vehicle, commandID);  
-  pkt.setDummy(dummy);
+  pkt.setDummy(dummy);//send a dummy empty-input packet if no input was detected (much smaller packet size)
   pkt.setInputStates(inputState.pressed);  
   pkt.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
   NetworkHandler.sendToServer(pkt); 
@@ -213,15 +200,10 @@ private void updateMotionClient()
   destZ = vehicle.posZ;
   destYaw = vehicle.rotationYaw;
   destPitch = vehicle.rotationPitch;
-  lerpTicks = 1;
-  
+  lerpTicks = 1;  
   //have to send packet every tick or server-side vehicle will no update at all...
   //perhaps make an empty input packet that is processed for an empty-command pass?
-//  AWLog.logDebug("Client sending commandID: "+commandID + " --------------------------");
-//  AWLog.logDebug("Pre  pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
   vehicle.moveHandler.updateVehicleMotion(inputState.pressed);//pass the pressed state array into vehicles motion handler (type depends upon vehicle)
-//  AWLog.logDebug("Sent pos: "+vehicle.posX+","+vehicle.posY+","+vehicle.posZ);
-//  AWLog.logDebug("End sending commandID: "+commandID + "    --------------------------");
   sendInputPacket();//send input to server
   }
 
@@ -282,15 +264,21 @@ private void lerpMotion()
     double dy = destY - vehicle.posY;
     double dz = destZ - vehicle.posZ;
     
-    /**
-     * lerp x,y,z motion
-     */
-    vehicle.motionX = dx/t;
-    vehicle.motionY = dy/t;
-    vehicle.motionZ = dz/t;
-    vehicle.noClip=true;//enable no-clip for pure client-side, to remove lerp/collision desynch, as lerp might attempt to clip slightly through some geometries
-    vehicle.moveEntity(vehicle.motionX, vehicle.motionY, vehicle.motionZ);
-    vehicle.noClip=false;
+    if(Math.abs(dx)>2.d || Math.abs(dy)>2.d || Math.abs(dz)>2.d)//too far for smooth lerp
+      {
+      vehicle.motionX = dx;
+      vehicle.motionY = dy;
+      vehicle.motionZ = dz;
+      }
+    else//lerp
+      {
+      vehicle.motionX = dx/t;
+      vehicle.motionY = dy/t;
+      vehicle.motionZ = dz/t;
+      }
+    
+    vehicle.setPosition(vehicle.posX+vehicle.motionX, vehicle.posY+vehicle.motionY, vehicle.posZ+vehicle.motionZ);
+    
     /**
      * obtain and normalize yaw
      */    
@@ -304,12 +292,17 @@ private void lerpMotion()
       {
       dyaw -= 360.f;
       vehicle.rotationYaw -= 360.f;
-      }      
-    /**
-     * lerp yaw
-     */
-    vehicle.prevRotationYaw = vehicle.rotationYaw;
-    vehicle.rotationYaw += dyaw / (float)t;
+      }
+    
+    vehicle.prevRotationYaw = vehicle.rotationYaw;    
+    if(dyaw > 5)
+      {
+      vehicle.rotationYaw += dyaw;
+      }
+    else
+      {
+      vehicle.rotationYaw += dyaw / (float)t;      
+      }
 
     //TODO normalize pitch to -180<->180 range as with yaw
     float dpitch = destPitch - vehicle.rotationPitch;
