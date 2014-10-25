@@ -31,7 +31,7 @@ List<InputSnapshot> snapshotBuffer = new ArrayList<InputSnapshot>();
  */
 double destX, destY, destZ;
 float destYaw, destPitch;
-int lerpTicks;
+int lerpTicks = -1;
 
 int commandID = 0;
 List<PacketInputState> packetsToProcess = new ArrayList<PacketInputState>();
@@ -253,9 +253,9 @@ private void collectInput()
  */
 private void lerpMotion()
   {
-  vehicle.motionX = 0;
-  vehicle.motionY = 0;
-  vehicle.motionZ = 0;
+//  vehicle.motionX = 0;
+//  vehicle.motionY = 0;
+//  vehicle.motionZ = 0;
   if(lerpTicks>0)
     {
     /**
@@ -269,13 +269,12 @@ private void lerpMotion()
     double dy = destY - vehicle.posY;
     double dz = destZ - vehicle.posZ;
     
-    if(Math.abs(dx)<2.d && Math.abs(dy)<2.d && Math.abs(dz)<2.d)//too far for smooth lerp
+    if(Math.abs(dx) < 2.d && Math.abs(dy) < 2.d && Math.abs(dz) < 2.d)
       {
-      dx/=t;
-      dy/=t;
-      dz/=t;
-      }
-    
+      dx /= t;
+      dy /= t;
+      dz /= t;
+      }    
     vehicle.setPosition(vehicle.posX + dx, vehicle.posY + dy, vehicle.posZ + dz);
     
     /**
@@ -294,7 +293,7 @@ private void lerpMotion()
       }
     
     vehicle.prevRotationYaw = vehicle.rotationYaw;    
-    if(dyaw > 5)
+    if(Math.abs(dyaw) > 5)
       {
       vehicle.rotationYaw += dyaw;
       }
@@ -307,9 +306,10 @@ private void lerpMotion()
     float dpitch = destPitch - vehicle.rotationPitch;
     vehicle.prevRotationPitch = vehicle.rotationPitch;
     vehicle.rotationPitch += dpitch / (float)t;
+    
     lerpTicks--;
     }
-  else
+  else if (lerpTicks==0)
     {
     /**
      * no lerp ticks, set to server-position

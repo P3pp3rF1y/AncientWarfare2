@@ -33,7 +33,6 @@ VehiclePart[] parts;
 
 public float vehicleWidth, vehicleHeight, vehicleLength;
 
-
 public VehicleBase(World world)
   {
   super(world);
@@ -49,9 +48,12 @@ public VehicleBase(World world)
   inputHandler = new VehicleInputHandler(this);
   moveHandler = new VehicleMoveHandlerTest(this);  
   
-  width = 1.1f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
+  width = 1.42f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   height = vehicleHeight;
   stepHeight = 1.0f;    
+  
+  buildParts();
+  updatePartPositions();
   }
 
 /**
@@ -68,12 +70,13 @@ protected void entityInit()
 @Override
 public void onUpdate()
   {  
+  worldObj.theProfiler.startSection("AWVehicleTick");
   super.onUpdate();
   inputHandler.onUpdate();
-  orientedBoundingBox.updateForRotation(rotationYaw);
-  orientedBoundingBox.updateForPosition(posX, posY, posZ);
+  orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);  
   updatePartPositions();
+  worldObj.theProfiler.endSection();
   }
 
 @Override
@@ -86,9 +89,8 @@ public void moveEntity(double inputXMotion, double inputYMotion, double inputZMo
 public void rotateEntity(float rotationDelta)
   {
   prevRotationYaw = rotationYaw;
-  
-  orientedBoundingBox.updateForRotation(rotationYaw + rotationDelta);
-  orientedBoundingBox.updateForPosition(posX, posY, posZ);
+
+  orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw + rotationDelta);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   
   Vec3 mtvTempBase = Vec3.createVectorHelper(0,0,0);
@@ -339,8 +341,7 @@ public final VehiclePart[] getParts()
   if(parts==null)
     {
     buildParts();
-    updatePartPositions();
-    
+    updatePartPositions();    
     }//lazy initialization of parts, don't even bother to construct until they are first asked for...perhaps change this to init parts in entity-init?
   return parts;
   }
@@ -377,7 +378,7 @@ protected final void updatePartPositions()
 public boolean interactFirst(EntityPlayer player)
   {
   AWLog.logDebug("interact with vehicle: "+player);
-  if(!worldObj.isRemote)
+  if(!worldObj.isRemote && this.riddenByEntity==null && player.ridingEntity==null)
     {
     player.mountEntity(this);
     }
@@ -406,7 +407,9 @@ public final boolean attackEntityFromPart(VehiclePart part, DamageSource p_70965
 @Override
 protected void readEntityFromNBT(NBTTagCompound var1)
   {
-  
+  AWLog.logDebug("read vehicle from nbt... pos/rot: "+posX+","+posY+","+posZ+" :: "+rotationYaw);
+//  orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+//  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   }
 
 @Override
@@ -418,24 +421,22 @@ protected void writeEntityToNBT(NBTTagCompound var1)
 @Override
 public void writeSpawnData(ByteBuf data)
   {
-  data.writeDouble(posX);
-  data.writeDouble(posY);
-  data.writeDouble(posZ);
-  data.writeFloat(rotationYaw);
-  
+//  data.writeDouble(posX);
+//  data.writeDouble(posY);
+//  data.writeDouble(posZ);
+//  data.writeFloat(rotationYaw);  
   }
 
 @Override
 public void readSpawnData(ByteBuf data)
   {
-  posX = data.readDouble();
-  posY = data.readDouble();
-  posZ = data.readDouble();
-  prevRotationYaw = rotationYaw = data.readFloat();
-  orientedBoundingBox.updateForPosition(posX, posY, posZ);
-  orientedBoundingBox.updateForRotation(rotationYaw);
-  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
-  AWLog.logDebug("client spawn, set bb to: "+boundingBox);
+//  posX = data.readDouble();
+//  posY = data.readDouble();
+//  posZ = data.readDouble();
+//  prevRotationYaw = rotationYaw = data.readFloat();
+//  orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+//  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+//  AWLog.logDebug("client spawn, set bb to: "+boundingBox+" yaw: "+rotationYaw);
   }
 
 }
