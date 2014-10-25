@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandler;
-import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandlerTest;
+import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandlerWater;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
@@ -46,13 +46,13 @@ public VehicleBase(World world)
   orientedBoundingBox.setRotation(-0);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   inputHandler = new VehicleInputHandler(this);
-  moveHandler = new VehicleMoveHandlerTest(this);  
+  moveHandler = new VehicleMoveHandlerWater(this);  
   
   width = 1.42f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   height = vehicleHeight;
   stepHeight = 1.0f;    
   
-  buildParts();
+  buildParts();//need to call build parts in the constructor to align entity-ids properly (they are supposed to be sequential)
   updatePartPositions();
   }
 
@@ -79,17 +79,39 @@ public void onUpdate()
   worldObj.theProfiler.endSection();
   }
 
+//************************************* MOVEMENT HANDLING *************************************//
+//Custom movement handling using OBB for terrain collision detection for both movement and rotation.
+//
+
+/**
+ * Overriden to remove applying fall distance to rider
+ * @param distance (unused)
+ */
+@Override
+protected void fall(float distance)
+  {
+  }
+
+/**
+ * Overriden to use OBB for movement collision checks.<br>
+ * Currently does not replicate vanilla functionality for contact with fire blocks, web move speed reduction, walk-on-block checks, or distance traveled
+ * @param inputXMotion
+ * @param inputYMotion
+ * @param inputZMotion
+ */
 @Override
 public void moveEntity(double inputXMotion, double inputYMotion, double inputZMotion)
   {
   moveEntityOBB(inputXMotion, inputYMotion, inputZMotion);
   }
 
+/**
+ * 
+ * @param rotationDelta
+ */
 @SuppressWarnings("unchecked")
 public void rotateEntity(float rotationDelta)
   {
-  prevRotationYaw = rotationYaw;
-
   orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw + rotationDelta);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   
@@ -282,18 +304,31 @@ protected void moveEntityOBB(double x, double y, double z)
 // detection with world/entities and vehicleparts.  Vehicle parts bridge all interaction stuff back to
 // the owning parent vehicle (interact, attack)
 
+/**
+ * Allow child parts to determine entity-entity collision boxes
+ * @param entity (unused)
+ * @return null for vehicle implementation
+ */
 @Override
 public AxisAlignedBB getCollisionBox(Entity entity)
   {
   return null;
   }
 
+/**
+ * Allow child parts to determine collision status
+ * @return false for vehicle implementation
+ */
 @Override
 public boolean canBeCollidedWith()
   {
   return false;
   }
 
+/**
+ * Allow child parts to determine push-status for entity-entity interaction
+ * @return false for vehicle implementation
+ */
 @Override
 public boolean canBePushed()
   {
@@ -302,6 +337,7 @@ public boolean canBePushed()
 
 /**
  * Return null so that collisions happen with children pieces
+ * @return null for vehicle implementation
  */
 @Override
 public AxisAlignedBB getBoundingBox()
@@ -312,7 +348,7 @@ public AxisAlignedBB getBoundingBox()
 /**
  * Renderpass 0 for normal rendering<br>
  * Renderpass 1 for debug bounding box rendering<br>
- * TODO remove pass1 when no longer needed
+ * TODO remove pass1 and override when no longer needed
  */
 @Override
 public boolean shouldRenderInPass(int pass)
@@ -407,9 +443,6 @@ public final boolean attackEntityFromPart(VehiclePart part, DamageSource p_70965
 @Override
 protected void readEntityFromNBT(NBTTagCompound var1)
   {
-  AWLog.logDebug("read vehicle from nbt... pos/rot: "+posX+","+posY+","+posZ+" :: "+rotationYaw);
-//  orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
-//  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   }
 
 @Override
@@ -421,22 +454,11 @@ protected void writeEntityToNBT(NBTTagCompound var1)
 @Override
 public void writeSpawnData(ByteBuf data)
   {
-//  data.writeDouble(posX);
-//  data.writeDouble(posY);
-//  data.writeDouble(posZ);
-//  data.writeFloat(rotationYaw);  
   }
 
 @Override
 public void readSpawnData(ByteBuf data)
   {
-//  posX = data.readDouble();
-//  posY = data.readDouble();
-//  posZ = data.readDouble();
-//  prevRotationYaw = rotationYaw = data.readFloat();
-//  orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
-//  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
-//  AWLog.logDebug("client spawn, set bb to: "+boundingBox+" yaw: "+rotationYaw);
   }
 
 }
