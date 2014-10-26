@@ -87,11 +87,19 @@ protected StructureBuilder()
 
 public void instantConstruction()
   {
-  while(!this.isFinished())
+  try
     {
-    this.placeCurrentPosition();
+    while(!this.isFinished())
+      {
+      this.placeCurrentPosition();
+      }
     }
-  this.placeEntities();
+  catch(Exception e)
+    {
+    TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
+    throw new RuntimeException("Caught exception while constructing template blocks: "+rule, e);
+    }
+  this.placeEntities();    
   }
 
 protected void placeEntities()

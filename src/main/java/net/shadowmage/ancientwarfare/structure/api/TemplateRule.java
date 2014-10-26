@@ -136,4 +136,10 @@ public final NBTTagCompound readTag(List<String> ruleData) throws TemplateRulePa
   return NBTTools.readNBTFrom(tagLines);
   }
 
+@Override
+public String toString()
+  {
+  return "Template rule: "+ruleNumber+" type: "+getClass().getSimpleName();
+  }
+
 }
