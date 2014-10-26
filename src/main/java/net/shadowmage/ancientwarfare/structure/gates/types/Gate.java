@@ -22,8 +22,6 @@ package net.shadowmage.ancientwarfare.structure.gates.types;
 
 import java.util.HashMap;
 
-import codechicken.nei.WorldOverlayRenderer;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
