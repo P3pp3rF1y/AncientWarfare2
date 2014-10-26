@@ -128,6 +128,8 @@ public void readFromNBT(NBTTagCompound tag)
     bbMax = new BlockPosition();
     bbMax.read(tag.getCompoundTag("bbMax"));
     }
+  if(bbMax==null){bbMax=new BlockPosition(xCoord, yCoord, zCoord+1);}
+  if(bbMin==null){bbMin=new BlockPosition(xCoord, yCoord, zCoord+1);}
   }
 
 @Override
