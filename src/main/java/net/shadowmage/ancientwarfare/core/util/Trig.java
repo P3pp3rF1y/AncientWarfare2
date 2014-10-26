@@ -23,6 +23,7 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.util.MathHelper;
+import net.shadowmage.ancientwarfare.vehicle.collision.OBB.Projection;
 
 /**
  * because I hate it so much...why not make the 
@@ -70,6 +71,22 @@ public static float cos(float radians)
 public static float sin(float radians)
   {
   return MathHelper.sin(radians);
+  }
+
+public static double getOverlap(double minA, double maxA, double minB, double maxB)
+  {
+  if(minA > maxB || maxA < minB)
+    {
+    return 0;
+    }
+  else if (minA < minB)
+    {
+    return minB - maxA;
+    }
+  else 
+    {
+    return maxB - minA;
+    }
   }
 
 public static double wrapTo360(double in)

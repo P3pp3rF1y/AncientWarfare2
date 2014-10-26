@@ -30,7 +30,7 @@ private static Axis aabbAxis2 = new Axis(0,0,1);
 /**
  * Cached static array of Vec3 to use for AABB corners (might need un-static'd if ever used for multi-threaded stuff...)
  */
-private static Vec3[] aaBBCorners = new Vec3[]
+private Vec3[] aaBBCorners = new Vec3[]
       {
       Vec3.createVectorHelper(0, 0, 0),
       Vec3.createVectorHelper(0, 0, 0),
@@ -41,7 +41,7 @@ private static Vec3[] aaBBCorners = new Vec3[]
 /**
  * cached static projections to use for overlap testing (would need un-static'd if ever used for multi-threaded stuff...)
  */
-private static Projection p1 = new Projection(0,0), p2=new Projection(0,0);
+private Projection p1 = new Projection(0,0), p2=new Projection(0,0);
 
 /**
  * W,L,H values for the OBB
@@ -140,7 +140,7 @@ private void updateCornerVector(int index)
   cornerPos[index].zCoord = corners[index].zCoord + z;
   }
 
-private void setVector(Vec3 toSet, double x, double y, double z)
+private static void setVector(Vec3 toSet, double x, double y, double z)
   {
   toSet.xCoord = x;
   toSet.yCoord = y;
@@ -197,8 +197,8 @@ public final void setRotation(float yaw)
   }
 
 /**
- * Update this OBB for the input yaw rotation.<br>
- * Subsequently calls updateForPosition(currentPos) to update world-corner positions;
+ * Update this OBB for the input yaw rotation. Updates local-origin corners and axis only, does not update world-position corners -- call updateForPosition() for that.<br>
+ * Will only update if the input yaw is different than the previous yaw
  * @param yaw
  */
 public final void updateForRotation(float yaw)
@@ -225,13 +225,13 @@ private void updateAxis()
  */
 public final Vec3 getMinCollisionVector(OBB bb, Vec3 mtvOut)
   {
-  if(bb.cornerPos[0].yCoord + bb.height < cornerPos[0].yCoord || bb.cornerPos[0].yCoord > cornerPos[0].yCoord + height){return null;}//quickly check Y-intersection prior to other tests
+//  if(bb.cornerPos[0].yCoord + bb.height < cornerPos[0].yCoord || bb.cornerPos[0].yCoord > cornerPos[0].yCoord + height){return null;}//quickly check Y-intersection prior to other tests
   return getMinCollisionVector(bb.cornerPos, bb.axis1, bb.axis2, mtvOut);
   }
 
 public final Vec3 getMinCollisionVector(AxisAlignedBB bb, Vec3 mtvOut)
   {
-  if(bb.minY > cornerPos[0].yCoord + height || bb.maxY < cornerPos[0].yCoord){return null;}//quickly check Y-intersection prior to other tests
+//  if(bb.minY > cornerPos[0].yCoord + height || bb.maxY < cornerPos[0].yCoord){return null;}//quickly check Y-intersection prior to other tests
   setVector(aaBBCorners[0], bb.minX, 0, bb.minZ);
   setVector(aaBBCorners[1], bb.maxX, 0, bb.minZ);
   setVector(aaBBCorners[2], bb.maxX, 0, bb.maxZ);
@@ -288,6 +288,65 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4, Vec
   return Vec3.createVectorHelper(overlapAxis.axisX * minOverlap, 0, overlapAxis.axisZ * minOverlap);
   }
 
+public final Vec3 getMinCollisionVectorAABB(AxisAlignedBB bb, boolean x, boolean z, Vec3 mtvOut)
+  {
+//  if(bb.minY > cornerPos[0].yCoord + height || bb.maxY < cornerPos[0].yCoord){return null;}//quickly check Y-intersection prior to other tests
+  setVector(aaBBCorners[0], bb.minX, 0, bb.minZ);
+  setVector(aaBBCorners[1], bb.maxX, 0, bb.minZ);
+  setVector(aaBBCorners[2], bb.maxX, 0, bb.maxZ);
+  setVector(aaBBCorners[3], bb.minX, 0, bb.maxZ);
+  return getMinCollisionVectorAABBAxis(aaBBCorners, aabbAxis1, aabbAxis2, mtvOut, x, z);
+  }
+
+private Vec3 getMinCollisionVectorAABBAxis(Vec3[] inCorners, Axis axis3, Axis axis4, Vec3 mtvOut, boolean x, boolean z)
+  {
+  double minOverlap = Double.MAX_VALUE;
+  double overlap = 0;  
+  Axis overlapAxis = null;
+  
+  p1 = axis1.projectShape(cornerPos, p1);
+  p2 = axis1.projectShape(inCorners, p2);
+  if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
+  overlap = p1.getOverlap(p2);
+  minOverlap = overlap;
+  overlapAxis = axis1;
+  
+  p1 = axis2.projectShape(cornerPos, p1);
+  p2 = axis2.projectShape(inCorners, p2);
+  if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
+  overlap = p1.getOverlap(p2);
+  if(Math.abs(overlap)<Math.abs(minOverlap))
+    {
+    minOverlap = overlap;
+    overlapAxis = axis2;
+    }
+    
+  p1 = axis3.projectShape(cornerPos, p1);
+  p2 = axis3.projectShape(inCorners, p2);
+  if(!p1.doesOverlap(p2)){return null;}//no projection overlap on x axis (testing x-extents)
+  overlap = p1.getOverlap(p2);
+  if(x && Math.abs(overlap)<Math.abs(minOverlap))
+    {
+    minOverlap = overlap;
+    overlapAxis = axis2;
+    }
+  
+  p1 = axis4.projectShape(cornerPos, p1);
+  p2 = axis4.projectShape(inCorners, p2);
+  if(!p1.doesOverlap(p2)){return null;}//no projection overlap on z axis (testing z-extents)
+  overlap = p1.getOverlap(p2);
+  if(z && Math.abs(overlap)<Math.abs(minOverlap))
+    {
+    minOverlap = overlap;
+    overlapAxis = axis2;
+    }
+  
+  Vec3 mtvAxis = Vec3.createVectorHelper(x?minOverlap: 0, 0, z? minOverlap : 0);
+  if(x){mtvAxis.xCoord *= overlapAxis.axisX;}
+  if(z){mtvAxis.zCoord *= overlapAxis.axisZ;}
+  return mtvAxis;
+  }
+
 /**
  * Return a corner of the OBB for the given index<br>
  * 0=front left<br>
@@ -307,6 +366,13 @@ public final void setAABBToOBBExtents(AxisAlignedBB bb)
   {
   bb.setBounds(-widthExtent, 0, -lengthExtent, widthExtent, height, lengthExtent);
   bb.offset(x, y, z);
+  }
+
+@Override
+public String toString()
+  {
+  // TODO Auto-generated method stub
+  return "OBB: "+cornerPos[0]+" : "+cornerPos[1] + " : " +cornerPos[2]+" : "+cornerPos[3];
   }
 
 public static final class Axis
@@ -384,8 +450,8 @@ public Projection(double min, double max)
 
 public boolean doesOverlap(Projection p)
   {
-  if(p.max<min){return false;}
-  if(p.min>max){return false;}
+  if(p.max<=min){return false;}
+  if(p.min>=max){return false;}
   return true;
   }
 

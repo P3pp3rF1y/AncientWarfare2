@@ -102,7 +102,7 @@ protected void fall(float distance)
 @Override
 public void moveEntity(double inputXMotion, double inputYMotion, double inputZMotion)
   {
-  moveEntityOBB(inputXMotion, inputYMotion, inputZMotion);
+  moveEntityOBB2(inputXMotion, inputYMotion, inputZMotion);
   }
 
 /**
@@ -142,16 +142,10 @@ public void rotateEntity(float rotationDelta)
       }
     }
   
-  if(mtv==null || (mtv.xCoord==0 && mtv.zCoord==0 && mtv.yCoord==0))//set position from move as there is no collision
+  if(mtv==null)//set position from move as there is no collision
     {
     rotationYaw += rotationDelta;
     }
-  else if(mtv.yCoord!=0)
-    {  
-    orientedBoundingBox.updateForRotation(rotationYaw);
-    orientedBoundingBox.updateForPosition(posX, posY, posZ);
-    orientedBoundingBox.setAABBToOBBExtents(boundingBox);
-    }  
   else
     {    
     orientedBoundingBox.updateForPosition(posX + mtv.xCoord, posY, posZ + mtv.zCoord);
@@ -296,6 +290,170 @@ protected void moveEntityOBB(double x, double y, double z)
     }  
   orientedBoundingBox.updateForPosition(posX, posY, posZ);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);  
+  }
+
+@SuppressWarnings("unchecked")
+protected void moveEntityOBB2(double x, double y, double z)
+  {
+  AWLog.logDebug("pre move pos: "+posX+","+posY+","+posZ);
+  //first move entity on y-axis
+  //sweep BB for movement amount
+  //check minimal / maximal overlap value 
+  //entity should -not- collide on both min and max planes, as that would indicate it was -previously- in collision
+  //
+  //after y axis movement is resolved
+  
+  
+  /**
+   * update bounding box so it is... up to date
+   */
+  orientedBoundingBox.updateForPosition(posX, posY, posZ);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+  
+  List<AxisAlignedBB> aabbs = null;
+  AxisAlignedBB bb;
+  int len;
+  Vec3 mtvTempBase = Vec3.createVectorHelper(0,0,0);
+  Vec3 mtvTemp = null;
+  Vec3 mtv = null;  
+
+  double adjustedYMotion = y;
+  double adjustedXMotion = x;
+  double adjustedZMotion = z;
+  
+  if(y!=0)
+    {
+    /**
+     * get a list of colliding bbs swept along y-movement axis
+     */
+    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(0, y, 0));  
+    bb = null;
+    len = aabbs.size();    
+    double min = 256;
+    double max = 0;
+    for(int i = 0; i< len; i++)
+      { 
+      bb = aabbs.get(i);
+      mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);//check each bb vs the OBB for x/z collision
+      if(mtvTemp!=null)//it collides, check for overlap
+        {
+        if(y < 0)//moving downward, check for the highest found maximum collision border
+          {
+          double d = bb.maxY - posY;
+          if(d < stepHeight)
+            {
+            max = Math.max(max, bb.maxY);            
+            }
+          }
+        else//y > 0, moving upward, check for the lowest minimal collision border
+          {
+          min = Math.min(min, bb.minY);
+          } 
+        }
+      }
+    if( y < 0 && max > posY + y)
+      {
+      adjustedYMotion = max - posY;
+      }
+    else if( y > 0 && min < posY + y + vehicleHeight)
+      {
+      adjustedYMotion = min - (posY + vehicleHeight);
+      }
+//    if(adjustedYMotion==y){AWLog.logDebug("moving uncollided on vertical");}
+    
+    setPosition(posX, posY+adjustedYMotion, posZ);
+    orientedBoundingBox.updateForPosition(posX, posY, posZ);
+    orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+//    AWLog.logDebug("moving vertical, adjusted Y: "+adjustedYMotion+" adjusted bb: "+boundingBox);
+    }
+    
+  if(x!=0)//try move on x-axis, only respond to mtv result on x-axis
+    {
+    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(adjustedXMotion, 0, adjustedZMotion));  
+    orientedBoundingBox.updateForPosition(posX+adjustedXMotion, posY, posZ+adjustedZMotion);
+    orientedBoundingBox.setAABBToOBBExtents(boundingBox);  
+    mtv=null;  
+    len = aabbs.size();
+    for(int i = 0; i< len; i++)
+      { 
+      bb = aabbs.get(i);
+      mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
+      if(mtvTemp!=null)
+        {
+        if(mtv==null)
+          {
+          mtv = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
+          }
+        else
+          {
+          if(Math.abs(mtvTemp.xCoord)>Math.abs(mtv.xCoord)){mtv.xCoord=mtvTemp.xCoord;}
+          if(Math.abs(mtvTemp.yCoord)>Math.abs(mtv.yCoord)){mtv.yCoord=mtvTemp.yCoord;}
+          if(Math.abs(mtvTemp.zCoord)>Math.abs(mtv.zCoord)){mtv.zCoord=mtvTemp.zCoord;}
+          }
+        }
+      }
+    if(mtv==null)//uncollided
+      {
+      AWLog.logDebug("moving for uncollided horizontal XZ");
+      setPosition(posX+adjustedXMotion, posY, posZ+adjustedZMotion);
+      orientedBoundingBox.updateForPosition(posX, posY, posZ);
+      orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+      }
+    else//was collided.  move for partial value, retest, if test has any collisions, revert to unaltered x/z pos
+      {    
+      adjustedXMotion += mtv.xCoord;
+      adjustedZMotion += mtv.zCoord;
+      setPosition(posX+adjustedXMotion, posY, posZ+adjustedZMotion);
+      orientedBoundingBox.updateForPosition(posX, posY, posZ);
+      orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+      AWLog.logDebug("adjusted horizontal move XZ: "+adjustedXMotion+" : "+adjustedZMotion+" : "+orientedBoundingBox);
+      }
+    }
+  
+//  
+//  if(z!=0)
+//    {
+//    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(0, 0, adjustedZMotion));  
+//    orientedBoundingBox.updateForPosition(posX, posY, posZ+adjustedZMotion);
+//    orientedBoundingBox.setAABBToOBBExtents(boundingBox);  
+//    mtv=null;  
+//    len = aabbs.size();
+//    for(int i = 0; i< len; i++)
+//      { 
+//      bb = aabbs.get(i);
+//      mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
+//      if(mtvTemp!=null)
+//        {
+//        if(mtv==null)
+//          {
+//          mtv = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
+//          }
+//        else
+//          {
+//          if(Math.abs(mtvTemp.xCoord)>Math.abs(mtv.xCoord)){mtv.xCoord=mtvTemp.xCoord;}
+//          if(Math.abs(mtvTemp.yCoord)>Math.abs(mtv.yCoord)){mtv.yCoord=mtvTemp.yCoord;}
+//          if(Math.abs(mtvTemp.zCoord)>Math.abs(mtv.zCoord)){mtv.zCoord=mtvTemp.zCoord;}
+//          }
+//        }
+//      }
+//    if(mtv==null)//uncollided
+//      {
+//      AWLog.logDebug("moving for uncollided horizontal Z");
+//      setPosition(posX, posY, posZ+adjustedZMotion);
+//      orientedBoundingBox.updateForPosition(posX, posY, posZ);
+//      orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+//      }
+//    else//was collided.  move for partial value
+//      {
+//      AWLog.logDebug("collided z move: "+mtv);
+//      adjustedZMotion += mtv.zCoord;
+//      setPosition(posX + mtv.xCoord, posY, posZ+adjustedZMotion);
+//      orientedBoundingBox.updateForPosition(posX, posY, posZ);
+//      orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+//      AWLog.logDebug("adjusted horizontal move Z: "+adjustedZMotion+" : "+orientedBoundingBox);
+//      }
+//    }
+  AWLog.logDebug("post move... position : "+posX+","+posY+","+posZ + " " +orientedBoundingBox);
   }
 
 //************************************* COLLISION HANDLING *************************************//
