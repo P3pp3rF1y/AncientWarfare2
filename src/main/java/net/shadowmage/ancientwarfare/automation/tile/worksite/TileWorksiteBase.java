@@ -406,14 +406,17 @@ public void writeToNBT(NBTTagCompound tag)
     {
     tag.setString("owner", owningPlayer);
     }
-  int[] ug = new int[getUpgrades().size()];
-  int i = 0;
-  for(WorksiteUpgrade u : getUpgrades())
+  if(!getUpgrades().isEmpty())
     {
-    ug[i] = u.ordinal();
-    i++;
+    int[] ug = new int[getUpgrades().size()];
+    int i = 0;
+    for(WorksiteUpgrade u : getUpgrades())
+      {
+      ug[i] = u.ordinal();
+      i++;
+      }
+    tag.setIntArray("upgrades", ug);    
     }
-  tag.setIntArray("upgrades", ug);
   tag.setInteger("orientation", orientation.ordinal());
   }
 
