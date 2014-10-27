@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -62,7 +63,7 @@ public void writeToNBT(NBTTagCompound tag)
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  if(tag.hasKey("targetMap")){targetMap = tag.getByteArray("targetMap");}
+  if(tag.hasKey("targetMap") && tag.getTag("targetMap") instanceof NBTTagByteArray){targetMap = tag.getByteArray("targetMap");}
   }
 
 public byte[] getTargetMap()

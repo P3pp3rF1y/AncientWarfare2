@@ -3,7 +3,10 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 import java.util.EnumSet;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -406,14 +409,17 @@ public void writeToNBT(NBTTagCompound tag)
     {
     tag.setString("owner", owningPlayer);
     }
-  int[] ug = new int[getUpgrades().size()];
-  int i = 0;
-  for(WorksiteUpgrade u : getUpgrades())
+  if(!getUpgrades().isEmpty())
     {
-    ug[i] = u.ordinal();
-    i++;
+    int[] ug = new int[getUpgrades().size()];
+    int i = 0;
+    for(WorksiteUpgrade u : getUpgrades())
+      {
+      ug[i] = u.ordinal();
+      i++;
+      }
+    tag.setIntArray("upgrades", ug);    
     }
-  tag.setIntArray("upgrades", ug);
   tag.setInteger("orientation", orientation.ordinal());
   }
 
@@ -426,11 +432,33 @@ public void readFromNBT(NBTTagCompound tag)
     {
     owningPlayer = tag.getString("owner");
     }
-  int[] ug = tag.getIntArray("upgrades");
-  for(int i= 0; i < ug.length; i++)
+  if(tag.hasKey("upgrades"))
     {
-    upgrades.add(WorksiteUpgrade.values()[ug[i]]);
+    NBTBase upgradeTag = tag.getTag("upgrades");
+    if(upgradeTag instanceof NBTTagIntArray)
+      {
+      int[] ug = tag.getIntArray("upgrades");
+      for(int i= 0; i < ug.length; i++)
+        {
+        upgrades.add(WorksiteUpgrade.values()[ug[i]]);
+        }
+      }
+    else if(upgradeTag instanceof NBTTagList)//template parser reads int-arrays as a tag list for some reason
+      {
+      NBTTagList list = (NBTTagList)upgradeTag;
+      for(int i =0; i < list.tagCount(); i++)
+        {
+        String st = list.getStringTagAt(i);
+        try
+          {
+          int ug = Integer.parseInt(st);
+          upgrades.add(WorksiteUpgrade.values()[ug]);
+          }
+        catch(NumberFormatException e){}
+        }
+      }
     }
+
   if(tag.hasKey("orientation")){orientation = ForgeDirection.values()[tag.getInteger("orientation")];}
   updateEfficiency();
   }
