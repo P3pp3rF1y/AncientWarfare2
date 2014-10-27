@@ -31,6 +31,9 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.Json;
+import net.shadowmage.ancientwarfare.core.util.JsonTagReader;
+import net.shadowmage.ancientwarfare.core.util.JsonTagWriter;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
@@ -88,13 +91,17 @@ public void parseRule(int ruleNumber, List<String> lines) throws TemplateRulePar
 
 public final void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOException
   {
-  String line = "jsonTag="+tag.toString();
+  String line = Json.getJsonData(JsonTagWriter.getJsonForTag(tag));
   out.write(line);
   out.newLine();
   }
 
 public final NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException
   {
+  if(ruleData.get(0).startsWith("JSON:{"))//new aw-specific json formatted nbt-tag
+    {
+    return JsonTagReader.parseTagCompound(ruleData.get(0));
+    }
   for(String line : ruleData)
     {
     if(line.toLowerCase().startsWith("jsontag="))
