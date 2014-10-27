@@ -295,7 +295,7 @@ protected void moveEntityOBB(double x, double y, double z)
 @SuppressWarnings("unchecked")
 protected void moveEntityOBB2(double x, double y, double z)
   {
-  AWLog.logDebug("pre move pos: "+posX+","+posY+","+posZ);
+//  AWLog.logDebug("pre move pos: "+posX+","+posY+","+posZ);
   //first move entity on y-axis
   //sweep BB for movement amount
   //check minimal / maximal overlap value 
@@ -367,7 +367,7 @@ protected void moveEntityOBB2(double x, double y, double z)
 //    AWLog.logDebug("moving vertical, adjusted Y: "+adjustedYMotion+" adjusted bb: "+boundingBox);
     }
     
-  if(x!=0)//try move on x-axis, only respond to mtv result on x-axis
+  if(x!=0 || z!=0)//try move on x-axis, only respond to mtv result on x-axis
     {
     aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(adjustedXMotion, 0, adjustedZMotion));  
     orientedBoundingBox.updateForPosition(posX+adjustedXMotion, posY, posZ+adjustedZMotion);
@@ -395,20 +395,35 @@ protected void moveEntityOBB2(double x, double y, double z)
     if(mtv==null)//uncollided
       {
       AWLog.logDebug("moving for uncollided horizontal XZ");
-      setPosition(posX+adjustedXMotion, posY, posZ+adjustedZMotion);
-      orientedBoundingBox.updateForPosition(posX, posY, posZ);
-      orientedBoundingBox.setAABBToOBBExtents(boundingBox);
       }
     else//was collided.  move for partial value, retest, if test has any collisions, revert to unaltered x/z pos
       {    
       adjustedXMotion += mtv.xCoord;
       adjustedZMotion += mtv.zCoord;
-      setPosition(posX+adjustedXMotion, posY, posZ+adjustedZMotion);
-      orientedBoundingBox.updateForPosition(posX, posY, posZ);
-      orientedBoundingBox.setAABBToOBBExtents(boundingBox);
       AWLog.logDebug("adjusted horizontal move XZ: "+adjustedXMotion+" : "+adjustedZMotion+" : "+orientedBoundingBox);
       }
+    setPosition(posX+adjustedXMotion, posY, posZ+adjustedZMotion);
+    orientedBoundingBox.updateForPosition(posX, posY, posZ);
+    orientedBoundingBox.setAABBToOBBExtents(boundingBox);
     }
+  
+//  if(adjustedXMotion!=x || adjustedZMotion!=z)
+//    {
+//    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);  
+//    len = aabbs.size();
+//    for(int i = 0; i< len; i++)
+//      { 
+//      bb = aabbs.get(i);
+//      mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
+//      if(mtvTemp!=null)
+//        {
+//        setPosition(posX-adjustedXMotion, posY, posZ-adjustedZMotion);
+//        orientedBoundingBox.updateForPosition(posX, posY, posZ);
+//        orientedBoundingBox.setAABBToOBBExtents(boundingBox);  
+//        break;
+//        }
+//      }
+//    }
   
 //  
 //  if(z!=0)
@@ -453,7 +468,7 @@ protected void moveEntityOBB2(double x, double y, double z)
 //      AWLog.logDebug("adjusted horizontal move Z: "+adjustedZMotion+" : "+orientedBoundingBox);
 //      }
 //    }
-  AWLog.logDebug("post move... position : "+posX+","+posY+","+posZ + " " +orientedBoundingBox);
+//  AWLog.logDebug("post move... position : "+posX+","+posY+","+posZ + " " +orientedBoundingBox);
   }
 
 //************************************* COLLISION HANDLING *************************************//
