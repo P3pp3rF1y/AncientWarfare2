@@ -374,6 +374,7 @@ protected void moveEntityOBB2(double x, double y, double z)
       mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
       if(mtvTemp!=null)
         {
+        AWLog.logDebug("corner vector X: "+orientedBoundingBox.cornerVec);
         if(mtv==null)
           {
           mtv = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
@@ -381,6 +382,8 @@ protected void moveEntityOBB2(double x, double y, double z)
         else
           {
           if(Math.abs(mtvTemp.xCoord)>Math.abs(mtv.xCoord)){mtv.xCoord=mtvTemp.xCoord;}
+          if(Math.abs(mtvTemp.yCoord)>Math.abs(mtv.yCoord)){mtv.yCoord=mtvTemp.yCoord;}
+          if(Math.abs(mtvTemp.zCoord)>Math.abs(mtv.zCoord)){mtv.zCoord=mtvTemp.zCoord;}
           }
         }
       }
@@ -391,13 +394,13 @@ protected void moveEntityOBB2(double x, double y, double z)
       orientedBoundingBox.updateForPosition(posX, posY, posZ);
       orientedBoundingBox.setAABBToOBBExtents(boundingBox);
       }
-    else//was collided.  move for partial value, retest, if test has any collisions, revert to unaltered x/z pos
-      {    
+    else//revert
+      {
+      AWLog.logDebug("collided move on X: "+mtv + " : "+x);
       adjustedXMotion += mtv.xCoord;
-      setPosition(posX+adjustedXMotion, posY, posZ);
+      setPosition(posX + adjustedXMotion, posY, posZ);
       orientedBoundingBox.updateForPosition(posX, posY, posZ);
       orientedBoundingBox.setAABBToOBBExtents(boundingBox);
-      AWLog.logDebug("adjusted horizontal move X: "+adjustedXMotion+" : "+orientedBoundingBox);
       }
     }  
   
@@ -411,15 +414,18 @@ protected void moveEntityOBB2(double x, double y, double z)
     for(int i = 0; i< len; i++)
       { 
       bb = aabbs.get(i);
-      mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
+      mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);
       if(mtvTemp!=null)
         {
+        AWLog.logDebug("corner vector Z: "+orientedBoundingBox.cornerVec);
         if(mtv==null)
           {
           mtv = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
           }
         else
           {
+          if(Math.abs(mtvTemp.xCoord)>Math.abs(mtv.xCoord)){mtv.xCoord=mtvTemp.xCoord;}
+          if(Math.abs(mtvTemp.yCoord)>Math.abs(mtv.yCoord)){mtv.yCoord=mtvTemp.yCoord;}
           if(Math.abs(mtvTemp.zCoord)>Math.abs(mtv.zCoord)){mtv.zCoord=mtvTemp.zCoord;}
           }
         }
@@ -431,36 +437,25 @@ protected void moveEntityOBB2(double x, double y, double z)
       orientedBoundingBox.updateForPosition(posX, posY, posZ);
       orientedBoundingBox.setAABBToOBBExtents(boundingBox);
       }
-    else//was collided.  move for partial value
+    else//revert
       {
+      AWLog.logDebug("collided move on Z: "+mtv + " : "+z);
       adjustedZMotion += mtv.zCoord;
       setPosition(posX, posY, posZ+adjustedZMotion);
       orientedBoundingBox.updateForPosition(posX, posY, posZ);
-      orientedBoundingBox.setAABBToOBBExtents(boundingBox);
-      AWLog.logDebug("adjusted horizontal move Z: "+adjustedZMotion+" : "+orientedBoundingBox);
+      orientedBoundingBox.setAABBToOBBExtents(boundingBox);      
       }
     }
   
-//if(adjustedXMotion!=x || adjustedZMotion!=z)
-//  {
-//  aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);  
-//  len = aabbs.size();
-//  for(int i = 0; i< len; i++)
-//    { 
-//    bb = aabbs.get(i);
-//    mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
-//    if(mtvTemp!=null)
-//      {
-//      setPosition(posX-adjustedXMotion, posY, posZ-adjustedZMotion);
-//      orientedBoundingBox.updateForPosition(posX, posY, posZ);
-//      orientedBoundingBox.setAABBToOBBExtents(boundingBox);  
-//      break;
-//      }
-//    }
-//  }
-  
-//  AWLog.logDebug("post move... position : "+posX+","+posY+","+posZ + " " +orientedBoundingBox);
+  /**
+   * try and step up with x/z motion
+   */
+  if(adjustedXMotion != x || adjustedZMotion != z)
+    {
+    
+    }
   }
+
 
 //************************************* COLLISION HANDLING *************************************//
 // Disabled in base class to allow entity-parts to handle the collision handling.  Each vehicle part

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.collision;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 /**
@@ -236,7 +237,7 @@ public final Vec3 getMinCollisionVector(AxisAlignedBB bb, Vec3 mtvOut)
   setVector(aaBBCorners[1], bb.maxX, 0, bb.minZ);
   setVector(aaBBCorners[2], bb.maxX, 0, bb.maxZ);
   setVector(aaBBCorners[3], bb.minX, 0, bb.maxZ);
-  return getMinCollisionVector(aaBBCorners, aabbAxis1, aabbAxis2, mtvOut);
+  return getLongCollisionVectorForAxis(aaBBCorners, aabbAxis1, aabbAxis2, mtvOut);
   }
 
 private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4, Vec3 mtvOut)
@@ -288,64 +289,133 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4, Vec
   return Vec3.createVectorHelper(overlapAxis.axisX * minOverlap, 0, overlapAxis.axisZ * minOverlap);
   }
 
-public final Vec3 getMinCollisionVectorAABB(AxisAlignedBB bb, boolean x, boolean z, Vec3 mtvOut)
+private Vec3 getLongCollisionVectorForAxis(Vec3[] inCorners, Axis axis3, Axis axis4, Vec3 mtvOut)
   {
-//  if(bb.minY > cornerPos[0].yCoord + height || bb.maxY < cornerPos[0].yCoord){return null;}//quickly check Y-intersection prior to other tests
-  setVector(aaBBCorners[0], bb.minX, 0, bb.minZ);
-  setVector(aaBBCorners[1], bb.maxX, 0, bb.minZ);
-  setVector(aaBBCorners[2], bb.maxX, 0, bb.maxZ);
-  setVector(aaBBCorners[3], bb.minX, 0, bb.maxZ);
-  return getMinCollisionVectorAABBAxis(aaBBCorners, aabbAxis1, aabbAxis2, mtvOut, x, z);
+  Vec3 mtv = getMinCollisionVector(inCorners, axis3, axis4, mtvOut);
+  if(mtv==null){return mtv;}
+  if(mtv.xCoord==0 || mtv.zCoord==0){return mtv;}//was already optimal along a single axis
+  
+  Vec3 obbSlope1 = createLine(cornerPos[0], cornerPos[1]);
+  Vec3 obbSlope2 = createLine(cornerPos[1], cornerPos[2]);
+  Vec3 obbSlope3 = createLine(cornerPos[2], cornerPos[3]);
+  Vec3 obbSlope4 = createLine(cornerPos[3], cornerPos[0]);
+  
+  Vec3 abb1 = createLine(inCorners[0], inCorners[1]);
+  Vec3 abb2 = createLine(inCorners[1], inCorners[2]);
+  Vec3 abb3 = createLine(inCorners[2], inCorners[3]);
+  Vec3 abb4 = createLine(inCorners[3], inCorners[0]);
+  
+  Vec3 t1 = obbSlope1.getIntermediateWithXValue(abb1, abb1.xCoord - inCorners[0].xCoord);
+  AWLog.logDebug("slope intercept test: "+t1);
+  Vec3 t2 = obbSlope1.getIntermediateWithXValue(abb2, inCorners[1].xCoord);
+  AWLog.logDebug("slope intercept test: "+t2);  
+  Vec3 t3 = obbSlope1.getIntermediateWithXValue(abb3, inCorners[2].xCoord);
+  AWLog.logDebug("slope intercept test: "+t3);
+  Vec3 t4 = obbSlope1.getIntermediateWithXValue(abb4, inCorners[3].xCoord);
+  AWLog.logDebug("slope intercept test: "+t4);
+  
+  
+  
+  
+//    
+//  Vec3 isec = Vec3.createVectorHelper(0, 0, 0);
+//  int i = getLineIntersection(cornerPos[0], cornerPos[1], inCorners[0], inCorners[1], isec);
+//  AWLog.logDebug("isec0 " +isec);
+//  
+//  isec = Vec3.createVectorHelper(0, 0, 0);
+//  i = getLineIntersection(cornerPos[1], cornerPos[2], inCorners[0], inCorners[1], isec);
+//  AWLog.logDebug("isec1 " +isec);
+//  
+//  isec = Vec3.createVectorHelper(0, 0, 0);
+//  i = getLineIntersection(cornerPos[2], cornerPos[3], inCorners[0], inCorners[1], isec);
+//  AWLog.logDebug("isec2 " +isec);
+//  
+//  isec = Vec3.createVectorHelper(0, 0, 0);
+//  i = getLineIntersection(cornerPos[3], cornerPos[0], inCorners[0], inCorners[1], isec);
+//  AWLog.logDebug("isec3 " +isec);
+  
+  
+  
+  /**
+   * create a triangle out of the intersection, using mtv and obb   we know one length (mtv-length), and two angles.
+   */  
+  float angleA = 90.f;//corner between mtv origin + OBB edge
+  float angleB = Math.abs((yaw) % 90.f);
+  float angleC = 180.f - angleA - angleB;
+  
+//  AWLog.logDebug("angles: "+angleA+" : "+angleB+" : "+angleC);
+    
+  float sinA = Trig.TODEGREES * MathHelper.sin(angleA*Trig.TORADIANS);
+  float sinB = Trig.TODEGREES * MathHelper.sin(angleB*Trig.TORADIANS);
+  float sinC = Trig.TODEGREES * MathHelper.sin(angleC*Trig.TORADIANS);  
+  
+  float sideB1 = (float)mtv.lengthVector();  
+  float sideA1 = (sideB1 * sinA)/sinB;  
+  float sideC1 = (sideB1 * sinC)/sinB;  
+  
+  /**
+   * reseat angles for full triangle test now that we know the length of sideA
+   */  
+  angleC = 90;
+  angleA = 180 - angleB - angleC;
+  //side A1 is a known value now
+//  AWLog.logDebug("angles2: "+angleA+" : "+angleB+" : "+angleC);
+  
+  sinA = Trig.TODEGREES * MathHelper.sin(angleA*Trig.TORADIANS);
+  sinC = Trig.TODEGREES * MathHelper.sin(angleC*Trig.TORADIANS); 
+  
+  sideB1 = (sideA1 * sinB)/sinA;//need to find B as it is the other possible vector
+  sideC1 = (sideA1 * sinC)/sinA;//don't really need sideC as it is the..un-needed side
+      
+  double bbhw = (inCorners[1].xCoord - inCorners[0].xCoord) / 2.d;
+  double bbhl = (inCorners[2].zCoord - inCorners[1].zCoord) / 2.d;
+  
+  double dx = (inCorners[0].xCoord + bbhw) - x;
+  double dz = (inCorners[0].zCoord + bbhl) - z;
+  
+  if(dx>0){sideA1 = -sideA1;}
+  if(dz>0){sideB1 = -sideB1;}
+  
+  mtv.zCoord = sideA1;
+  mtv.xCoord = sideB1;
+  
+  cornerVec.xCoord = sideA1;
+  cornerVec.yCoord = sideB1;
+  cornerVec.zCoord = sideC1;  
+  return mtv;
   }
 
-private Vec3 getMinCollisionVectorAABBAxis(Vec3[] inCorners, Axis axis3, Axis axis4, Vec3 mtvOut, boolean x, boolean z)
+private int getLineIntersection(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Vec3 out)
   {
-  double minOverlap = Double.MAX_VALUE;
-  double overlap = 0;  
-  Axis overlapAxis = null;
-  
-  p1 = axis1.projectShape(cornerPos, p1);
-  p2 = axis1.projectShape(inCorners, p2);
-  if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
-  overlap = p1.getOverlap(p2);
-  minOverlap = overlap;
-  overlapAxis = axis1;
-  
-  p1 = axis2.projectShape(cornerPos, p1);
-  p2 = axis2.projectShape(inCorners, p2);
-  if(!p1.doesOverlap(p2)){return null;}//no collision on that axis
-  overlap = p1.getOverlap(p2);
-  if(Math.abs(overlap)<Math.abs(minOverlap))
+  double s1_x, s1_z, s2_x, s2_z;
+  s1_x = p1.xCoord - p0.xCoord;
+  s1_z = p1.zCoord - p0.zCoord;
+  s2_x = p3.xCoord - p2.xCoord; 
+  s2_z = p3.zCoord - p2.zCoord;
+
+  double s, t;
+  s = (-s1_z * (p0.xCoord - p2.xCoord) + s1_x * (p0.zCoord - p2.zCoord)) / (-s2_x * s1_z + s1_x * s2_z);
+  t = ( s2_x * (p0.zCoord - p2.zCoord) - s2_z * (p0.xCoord - p2.xCoord)) / (-s2_x * s1_z + s1_x * s2_z);
+
+  if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
     {
-    minOverlap = overlap;
-    overlapAxis = axis2;
+    // Collision detected
+    if(out!=null)
+      {
+      out.xCoord = p0.xCoord + (t * s1_x);
+      out.zCoord = p0.zCoord + (t * s1_z);
+      }
+    return 1;
     }
-    
-  p1 = axis3.projectShape(cornerPos, p1);
-  p2 = axis3.projectShape(inCorners, p2);
-  if(!p1.doesOverlap(p2)){return null;}//no projection overlap on x axis (testing x-extents)
-  overlap = p1.getOverlap(p2);
-  if(x && Math.abs(overlap)<Math.abs(minOverlap))
-    {
-    minOverlap = overlap;
-    overlapAxis = axis2;
-    }
-  
-  p1 = axis4.projectShape(cornerPos, p1);
-  p2 = axis4.projectShape(inCorners, p2);
-  if(!p1.doesOverlap(p2)){return null;}//no projection overlap on z axis (testing z-extents)
-  overlap = p1.getOverlap(p2);
-  if(z && Math.abs(overlap)<Math.abs(minOverlap))
-    {
-    minOverlap = overlap;
-    overlapAxis = axis2;
-    }
-  
-  Vec3 mtvAxis = Vec3.createVectorHelper(x?minOverlap: 0, 0, z? minOverlap : 0);
-  if(x){mtvAxis.xCoord *= overlapAxis.axisX;}
-  if(z){mtvAxis.zCoord *= overlapAxis.axisZ;}
-  return mtvAxis;
+  return 0; // No collision
   }
+
+private Vec3 createLine(Vec3 a, Vec3 b)
+  {
+  return Vec3.createVectorHelper(b.xCoord-a.xCoord, b.yCoord-a.yCoord, b.zCoord-a.zCoord);
+  }
+
+public final Vec3 cornerVec = Vec3.createVectorHelper(0, 0, 0);//TODO debug var, remove...
 
 /**
  * Return a corner of the OBB for the given index<br>
