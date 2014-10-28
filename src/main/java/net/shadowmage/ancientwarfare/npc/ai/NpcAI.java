@@ -54,19 +54,34 @@ public NpcAI(NpcBase npc)
   maxPFDistSq = maxPFDist * maxPFDist;
   }
 
-protected void moveToPosition(int x, int y, int z, double sqDist)
+protected final void moveToEntity(Entity target, double sqDist)
+  {
+  moveToPosition(target.posX, target.boundingBox.minY, target.posZ, sqDist);
+  }
+
+protected final void moveToPosition(int x, int y, int z, double sqDist)
+  {
+  moveToPosition(x+0.5d, y, z+0.5d, sqDist);
+  }
+
+protected final void moveToPosition(BlockPosition pos, double sqDist)
+  {
+  moveToPosition(pos.x+0.5d, pos.y, pos.z+0.5d, sqDist);
+  }
+
+protected final void moveToPosition(double x, double y, double z, double sqDist)
   {
   moveRetryDelay--;
   if(moveRetryDelay<=0)
     {
     if(sqDist > maxPFDistSq)
       {
-      moveLongDistance(x+0.5d, y, z+0.5d);
+      moveLongDistance(x, y, z);
       moveRetryDelay = 60;//3 second delay between PF attempts, give the entity time to get a bit closer to target
       }
     else
       {
-      npc.getNavigator().tryMoveToXYZ(x+0.5d, y, z+0.5d, moveSpeed);
+      npc.getNavigator().tryMoveToXYZ(x, y, z, moveSpeed);
       moveRetryDelay=10;//base .5 second retry delay
       if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
       if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32 (delay will be 2 seconds total at this point)
@@ -74,32 +89,7 @@ protected void moveToPosition(int x, int y, int z, double sqDist)
     }
   }
 
-protected void moveToPosition(BlockPosition pos, double sqDist)
-  {
-  moveToPosition(pos.x, pos.y, pos.z, sqDist);
-  }
-
-protected void moveToEntity(Entity target, double sqDist)
-  {
-  moveRetryDelay--;
-  if(moveRetryDelay<=0)
-    {
-    if(sqDist > maxPFDistSq)
-      {
-      moveLongDistance(target.posX, target.boundingBox.minY, target.posZ);
-      moveRetryDelay = 60;//3 second delay between PF attempts, give the entity time to get a bit closer to target
-      }
-    else
-      {
-      npc.getNavigator().tryMoveToEntityLiving(target, moveSpeed);
-      moveRetryDelay=10;//base .5 second retry delay
-      if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-      if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32 (delay will be 2 seconds total at this point)
-      }    
-    }
-  }
-
-protected void moveLongDistance(double x, double y, double z)
+protected final void moveLongDistance(double x, double y, double z)
   {
   Vec3 vec = Vec3.createVectorHelper(x - npc.posX, y - npc.posY, z - npc.posZ);
   

@@ -7,8 +7,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -17,8 +18,8 @@ public class NpcAIFleeHostiles extends NpcAI
 
 IEntitySelector selector;
 double distanceFromEntity = 16;
-EntityLiving fleeTarget;
-PathEntity path;
+Vec3 fleeVector;
+int stayAtHomeTimer = 0;
 
 public NpcAIFleeHostiles(NpcBase npc)
   {
@@ -48,28 +49,27 @@ public boolean shouldExecute()
     {
     return false;
     }
-  this.fleeTarget = (EntityLiving)list.get(0);
-  //TODO find closest target to flee from?
-  
-  Vec3 vec3 = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, 16, 7, Vec3.createVectorHelper(this.fleeTarget.posX, this.fleeTarget.posY, this.fleeTarget.posZ));
-
-  if (vec3 == null)
+  EntityLiving fleeTarget = (EntityLiving)list.get(0);  
+  //TODO find closest target to flee from, or at least check if can-see the target? 
+  boolean flee = false;
+  if(npc.getTownHallPosition()!=null || npc.hasHome())
     {
-    return false;//did not find random flee-towards target
-    }
-  else if (this.fleeTarget.getDistanceSq(vec3.xCoord, vec3.yCoord, vec3.zCoord) < this.fleeTarget.getDistanceSqToEntity(this.npc))
-    {
-    return false;//do not flee towards a position that is closer to the flee-target than you are
+    flee=true;
     }
   else
     {
-    path = npc.getNavigator().getPathToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord);
-    if(path!=null)
+    fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, 16, 7, Vec3.createVectorHelper(fleeTarget.posX, fleeTarget.posY, fleeTarget.posZ));
+    if(fleeVector == null || fleeTarget.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord) < fleeTarget.getDistanceSqToEntity(this.npc))
       {
-      return true;
+      flee = false;//did not find random flee-towards target, perhaps retry next tick
       }
-    return false;
+    else
+      {
+      flee = true;
+      }
     }
+  if(flee){npc.setAttackTarget(fleeTarget);}
+  return flee;
   }
 
 /**
@@ -79,25 +79,84 @@ public boolean shouldExecute()
 public boolean continueExecuting()
   {
   if(!npc.getIsAIEnabled()){return false;}
-  return this.fleeTarget!=null && !this.fleeTarget.isDead && this.fleeTarget.getDistanceSqToEntity(this.npc) < distanceFromEntity*distanceFromEntity && npc.getAttackTarget()==this.fleeTarget && !this.npc.getNavigator().noPath();
+  if(npc.getAttackTarget()==null || npc.getAttackTarget().isDead){return false;}
+  return stayAtHomeTimer!=0 || npc.getAttackTarget().getDistanceSqToEntity(this.npc) < distanceFromEntity*distanceFromEntity;
   }
 
 @Override
-public void startExecuting()
+public void updateTask()
   {
-  npc.getNavigator().setPath(path, 1.d);
-  npc.setTarget(fleeTarget);
-  npc.setAttackTarget(fleeTarget);
+  if(npc.getAttackTarget()==null || npc.getAttackTarget().isDead)
+    {
+    npc.setAttackTarget(null);
+    stayAtHomeTimer=0;
+    return;
+    }
+  if(npc.getTownHallPosition()!=null)
+    {
+    BlockPosition pos = npc.getTownHallPosition();
+    double distSq = npc.getDistanceSq(pos);
+    if(distSq>3*3)
+      {
+      moveToPosition(pos, distSq);
+      stayAtHomeTimer = 20*20;//30 seconds...
+      }
+    else
+      {  
+      if(stayAtHomeTimer>0)
+        {
+        stayAtHomeTimer--;
+        }      
+      }
+    }
+  else if(npc.hasHome())
+    {
+    double distSq = npc.getDistanceSqFromHome();
+    ChunkCoordinates cc = npc.getHomePosition();
+    if(distSq>3*3)
+      {
+      moveToPosition(cc.posX, cc.posY, cc.posZ, distSq);
+      stayAtHomeTimer = 20*20;//30 seconds...
+      }
+    else
+      {
+      if(stayAtHomeTimer>0)
+        {
+        stayAtHomeTimer--;
+        }       
+      }
+    }
+  else//check distance to flee vector
+    {
+    double distSq = npc.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord);
+    if(distSq>3*3)
+      {
+      moveToPosition(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord, distSq);
+      }
+    else
+      {
+      if(npc.getDistanceSqToEntity(npc.getAttackTarget()) < 16*16)//entity still chasing, find a new flee vector
+        {
+        fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, 16, 7, Vec3.createVectorHelper(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
+        if(fleeVector==null)
+          {
+          npc.setAttackTarget(null);//retry next tick..perhaps...
+          }
+        }
+      else//entity too far to care, stop running
+        {
+        npc.setAttackTarget(null);
+        }
+      }
+    }
   }
 
 @Override
 public void resetTask()
   {
-  fleeTarget = null;
-  path = null;
+  fleeVector = null;
   npc.getNavigator().clearPathEntity();
   npc.setAttackTarget(null);
-  npc.setTarget(null);
   }
 
 }
