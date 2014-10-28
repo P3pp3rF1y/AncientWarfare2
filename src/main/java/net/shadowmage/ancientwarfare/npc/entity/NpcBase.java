@@ -589,15 +589,6 @@ public abstract String getNpcSubType();
 public abstract String getNpcType();
 
 /**
- * handle an incoming attack alert from another NPC.<br>
- * implementations should inform their alert-AI and/or set attack/flee targets appropriately<br>
- * called from alert-AI tasks when npc attack target / attacker changes.
- * @param broadcaster
- * @param target
- */
-public abstract void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target);
-
-/**
  * return the full NPC type for this npc<br>
  * returns npcType if subtype is empty, else npcType.npcSubtype 
  * @return

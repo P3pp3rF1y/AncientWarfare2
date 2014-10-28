@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
@@ -33,7 +32,6 @@ public abstract class NpcPlayerOwned extends NpcBase
 private Command playerIssuedCommand;//TODO load/save
 private int foodValueRemaining = 0;
 
-protected NpcAIAlertPlayerOwned alertAI;
 protected NpcAIRideHorse horseAI;
 
 private BlockPosition townHallPosition;
@@ -80,15 +78,6 @@ public int getArmorValueOverride()
 public int getAttackDamageOverride()
   {
   return -1;
-  }
-
-@Override
-public void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target)
-  {
-  if(alertAI!=null)
-    {
-    alertAI.handleAlert(broadcaster, target);
-    }  
   }
 
 @Override

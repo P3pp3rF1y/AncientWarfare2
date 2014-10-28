@@ -17,7 +17,7 @@ public class NpcAIFleeHostiles extends NpcAI
 
 IEntitySelector selector;
 double distanceFromEntity = 16;
-Entity fleeTarget;
+EntityLiving fleeTarget;
 PathEntity path;
 
 public NpcAIFleeHostiles(NpcBase npc)
@@ -48,22 +48,26 @@ public boolean shouldExecute()
     {
     return false;
     }
-  this.fleeTarget = (Entity)list.get(0);
+  this.fleeTarget = (EntityLiving)list.get(0);
+  //TODO find closest target to flee from?
   
   Vec3 vec3 = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, 16, 7, Vec3.createVectorHelper(this.fleeTarget.posX, this.fleeTarget.posY, this.fleeTarget.posZ));
 
   if (vec3 == null)
     {
-    return false;
+    return false;//did not find random flee-towards target
     }
   else if (this.fleeTarget.getDistanceSq(vec3.xCoord, vec3.yCoord, vec3.zCoord) < this.fleeTarget.getDistanceSqToEntity(this.npc))
     {
-    return false;
+    return false;//do not flee towards a position that is closer to the flee-target than you are
     }
   else
     {
-    PathEntity path = npc.getNavigator().getPathToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord);
-    if(path!=null){return true;}
+    path = npc.getNavigator().getPathToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord);
+    if(path!=null)
+      {
+      return true;
+      }
     return false;
     }
   }
@@ -75,20 +79,15 @@ public boolean shouldExecute()
 public boolean continueExecuting()
   {
   if(!npc.getIsAIEnabled()){return false;}
-  return !this.npc.getNavigator().noPath();
+  return this.fleeTarget!=null && !this.fleeTarget.isDead && this.fleeTarget.getDistanceSqToEntity(this.npc) < 16*16 && npc.getAttackTarget()==this.fleeTarget && !this.npc.getNavigator().noPath();
   }
 
 @Override
 public void startExecuting()
   {
-  if(path!=null)
-    {
-    npc.getNavigator().setPath(path, 1.d);    
-    }
-  else
-    {
-    npc.getNavigator().clearPathEntity();
-    }
+  npc.getNavigator().setPath(path, 1.d);
+  npc.setTarget(fleeTarget);
+  npc.setAttackTarget(fleeTarget);
   }
 
 @Override
@@ -97,6 +96,8 @@ public void resetTask()
   fleeTarget = null;
   path = null;
   npc.getNavigator().clearPathEntity();
+  npc.setAttackTarget(null);
+  npc.setTarget(null);
   }
 
 }
