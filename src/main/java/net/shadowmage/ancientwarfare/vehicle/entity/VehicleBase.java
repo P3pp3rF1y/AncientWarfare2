@@ -12,6 +12,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
@@ -101,7 +102,7 @@ protected void fall(float distance)
 @Override
 public void moveEntity(double inputXMotion, double inputYMotion, double inputZMotion)
   {
-  moveEntityOBB2(inputXMotion, inputYMotion, inputZMotion);
+  moveEntityOBB3(inputXMotion, inputYMotion, inputZMotion);
   }
 
 /**
@@ -490,6 +491,145 @@ protected void moveEntityOBB2(double x, double y, double z)
     {
     
     }
+  }
+
+@SuppressWarnings("unchecked")
+protected void moveEntityOBB3(double x, double y, double z)
+  {
+  if(!worldObj.isRemote)
+    {
+    AWCoreStatics.DEBUG = false;
+    }
+  orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+  List<AxisAlignedBB>  aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.expand(Math.abs(x)+0.2d, Math.abs(y)+0.2d, Math.abs(z)+0.2d));
+  //first do Y movement test, use basic OBB vs bbs test, move downard if not collided 
+  double xMove, yMove, zMove;
+  yMove = moveY(y, aabbs);
+  xMove = getXmove(x, aabbs);
+  if(xMove!=0)
+    {
+    setPosition(posX+xMove, posY, posZ);
+    orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+    orientedBoundingBox.setAABBToOBBExtents(boundingBox);    
+    }
+  zMove = getZMove(z, aabbs);
+  if(zMove!=0)
+    {
+    setPosition(posX, posY, posZ+zMove);
+    orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+    orientedBoundingBox.setAABBToOBBExtents(boundingBox);      
+    }
+  if(yMove<=0 && (x!=xMove || z!=zMove))
+    {
+    
+    }
+  AWCoreStatics.DEBUG = true;
+  }
+
+private double getXmove(double xMotion, List<AxisAlignedBB> aabbs)
+  {
+  AxisAlignedBB bb;
+  int len = aabbs.size();  
+  double xMove = xMotion;
+  Vec3 vec;
+  for(int i = 0; i< len; i++)
+    { 
+    bb = aabbs.get(i);
+    if(bb.maxY <= boundingBox.minY || bb.minY >= boundingBox.maxY){continue;}//no collision at all, skip
+    AWLog.logDebug("testing vs aabb x: "+bb);
+    vec = orientedBoundingBox.getCollisionVectorXMovement(bb, xMotion);
+    if(vec!=null)
+      {
+      if(Math.abs(vec.xCoord) < Math.abs(xMove))
+        {
+        xMove = vec.xCoord;
+        }
+      }
+    } 
+  AWLog.logDebug("moved x: "+xMove);
+  if(Math.abs(xMove)<0.01d)
+    {
+    xMove=0; 
+    }  
+  return xMove;
+  }
+
+private double getZMove(double zMotion, List<AxisAlignedBB> aabbs)
+  {
+  AxisAlignedBB bb;
+  int len = aabbs.size();  
+  
+  double zMove = zMotion;
+  Vec3 vec;
+  for(int i = 0; i< len; i++)
+    { 
+    bb = aabbs.get(i);
+    if(bb.maxY <= boundingBox.minY || bb.minY >= boundingBox.maxY){continue;}//no collision at all, skip
+    AWLog.logDebug("testing vs aabb z: "+bb);
+    vec = orientedBoundingBox.getCollisionVectorZMovement(bb, zMotion);
+    if(vec!=null)
+      {
+      if(Math.abs(vec.zCoord) < Math.abs(zMove))
+        {
+        zMove = vec.zCoord;
+        }
+      }
+    } 
+  if(Math.abs(zMove)<0.01d)
+    {
+    zMove=0; 
+    }  
+  AWLog.logDebug("moved z: "+zMove);
+  return zMove;
+  }
+
+private double moveY(double y, List<AxisAlignedBB> aabbs)
+  {
+  Vec3 mtvTempBase = Vec3.createVectorHelper(0, 0, 0);
+  Vec3 mtvTemp;
+  AxisAlignedBB bb;
+  int len;
+  /**
+   * get a list of colliding bbs swept along y-movement axis
+   */
+  bb = null;
+  len = aabbs.size();    
+  double min = 256;
+  double max = 0;
+  for(int i = 0; i< len; i++)
+    { 
+    bb = aabbs.get(i);
+    if(bb.maxY < boundingBox.minY || bb.minY > boundingBox.maxY){continue;}//no collision at all, skip
+    mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);//check each bb vs the OBB for x/z collision
+    if(mtvTemp!=null)//it collides, check for overlap
+      {
+      if(y < 0)//moving downward, check for the highest found maximum collision border
+        {
+        double d = bb.maxY - posY;
+        if(d < stepHeight)
+          {
+          max = Math.max(max, bb.maxY);            
+          }
+        }
+      else//y > 0, moving upward, check for the lowest minimal collision border
+        {
+        min = Math.min(min, bb.minY);
+        } 
+      }
+    }
+  if( y < 0 && max > posY + y)
+    {
+    y = max - posY;
+    }
+  else if( y > 0 && min < posY + y + vehicleHeight)
+    {
+    y = min - (posY + vehicleHeight);
+    }
+  setPosition(posX, posY+y, posZ);
+  orientedBoundingBox.updateForPosition(posX, posY, posZ);
+  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+  return y;
   }
 
 

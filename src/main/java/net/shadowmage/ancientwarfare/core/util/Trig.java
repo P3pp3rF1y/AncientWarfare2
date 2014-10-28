@@ -23,7 +23,6 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.util.MathHelper;
-import net.shadowmage.ancientwarfare.vehicle.collision.OBB.Projection;
 
 /**
  * because I hate it so much...why not make the 
@@ -309,6 +308,26 @@ public static byte getTurnDirection(float yaw, float dest)
     diff-=360.f;
     }
   return (byte) (diff < 0 ? -1 : 1);
+  }
+
+public static double max(double... vals)
+  {
+  double max = vals[0];
+  for(int i = 1; i< vals.length; i++)
+    {
+    if(vals[i]>max){max=vals[i];}
+    }
+  return max;
+  }
+
+public static double min(double... vals)
+  {
+  double min = vals[0];
+  for(int i = 1; i< vals.length; i++)
+    {
+    if(vals[i]<min){min=vals[i];}
+    }
+  return min;
   }
 
 public static float getMin(float... vals)
