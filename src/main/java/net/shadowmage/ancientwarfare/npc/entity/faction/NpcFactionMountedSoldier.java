@@ -14,11 +14,11 @@ import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFactionFindCommander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFactionRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFindCommander;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 
 public abstract class NpcFactionMountedSoldier extends NpcFactionMounted
 {

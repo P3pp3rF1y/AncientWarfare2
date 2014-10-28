@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,6 +10,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget.Sorter;
 import net.minecraft.util.AxisAlignedBB;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIPlayerOwnedMedic extends NpcAI
@@ -20,7 +21,7 @@ int injuredRecheckDelayMax = 20;
 int healDelay = 0;
 int healDelayMax = 20;
 
-EntityLivingBase targetToHeal = null;
+protected EntityLivingBase targetToHeal = null;
 
 private final EntityAINearestAttackableTarget.Sorter sorter;
 IEntitySelector selector;

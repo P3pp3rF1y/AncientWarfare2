@@ -18,12 +18,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFactionRangedAttack;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFactionFindCommander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFactionRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFindCommander;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 
 public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob
 {

@@ -1,9 +1,10 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard.BardTuneData;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;

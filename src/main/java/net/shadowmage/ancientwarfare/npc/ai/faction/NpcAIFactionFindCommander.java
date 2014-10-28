@@ -1,5 +1,6 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.faction;
 
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindCommander;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 
