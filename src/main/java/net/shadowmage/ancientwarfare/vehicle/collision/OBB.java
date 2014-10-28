@@ -325,7 +325,7 @@ private Vec3 getLongCollisionVectorForAxis(Vec3[] inCorners, Axis axis3, Axis ax
       {
       icp1 = k;
       icp2 = (k + 1) % 4;
-      if(getLineIntersection(cornerPos[cp1], cornerPos[cp2], inCorners[icp1], inCorners[icp2], isec))
+      if(getLineIntersection2(cornerPos[cp1], cornerPos[cp2], inCorners[icp1], inCorners[icp2], isec))
         {
         if(o1==null){o1=copyVec(isec);}
         else if(o2==null){o2=copyVec(isec);}
@@ -345,53 +345,53 @@ private Vec3 getLongCollisionVectorForAxis(Vec3[] inCorners, Axis axis3, Axis ax
   if(Math.abs(mtv.xCoord)<Math.abs(xc)){mtv.xCoord=xc;}
   if(Math.abs(mtv.zCoord)<Math.abs(zc)){mtv.zCoord=zc;}
      
-  /**
-   * create a triangle out of the intersection, using mtv and obb   we know one length (mtv-length), and two angles.
-   */  
-  float angleA = 90.f;//corner between mtv origin + OBB edge
-  float angleB = Math.abs((yaw) % 90.f);
-  float angleC = 180.f - angleA - angleB;
-  
-//  AWLog.logDebug("angles: "+angleA+" : "+angleB+" : "+angleC);
-    
-  float sinA = Trig.TODEGREES * MathHelper.sin(angleA*Trig.TORADIANS);
-  float sinB = Trig.TODEGREES * MathHelper.sin(angleB*Trig.TORADIANS);
-  float sinC = Trig.TODEGREES * MathHelper.sin(angleC*Trig.TORADIANS);  
-  
-  float sideB1 = (float)mtv.lengthVector();  
-  float sideA1 = (sideB1 * sinA)/sinB;  
-  float sideC1 = (sideB1 * sinC)/sinB;  
-  
-  /**
-   * reseat angles for full triangle test now that we know the length of sideA
-   */  
-  angleC = 90;
-  angleA = 180 - angleB - angleC;
-  //side A1 is a known value now
-//  AWLog.logDebug("angles2: "+angleA+" : "+angleB+" : "+angleC);
-  
-  sinA = Trig.TODEGREES * MathHelper.sin(angleA*Trig.TORADIANS);
-  sinC = Trig.TODEGREES * MathHelper.sin(angleC*Trig.TORADIANS); 
-  
-  sideB1 = (sideA1 * sinB)/sinA;//need to find B as it is the other possible vector
-  sideC1 = (sideA1 * sinC)/sinA;//don't really need sideC as it is the..un-needed side
-      
-  double bbhw = (inCorners[1].xCoord - inCorners[0].xCoord) / 2.d;
-  double bbhl = (inCorners[2].zCoord - inCorners[1].zCoord) / 2.d;
-  
-  double dx = (inCorners[0].xCoord + bbhw) - x;
-  double dz = (inCorners[0].zCoord + bbhl) - z;
-  
-  if(dx>0){sideA1 = -sideA1;}
-  if(dz>0){sideB1 = -sideB1;}
-  
-//  mtv.zCoord = sideA1;
-//  mtv.xCoord = sideB1;
-  
-  cornerVec.xCoord = sideA1;
-  cornerVec.yCoord = sideB1;
-  cornerVec.zCoord = sideC1;
-  if(debug){AWLog.logDebug("cornervec: "+cornerVec);}
+//  /**
+//   * create a triangle out of the intersection, using mtv and obb   we know one length (mtv-length), and two angles.
+//   */  
+//  float angleA = 90.f;//corner between mtv origin + OBB edge
+//  float angleB = Math.abs((yaw) % 90.f);
+//  float angleC = 180.f - angleA - angleB;
+//  
+////  AWLog.logDebug("angles: "+angleA+" : "+angleB+" : "+angleC);
+//    
+//  float sinA = Trig.TODEGREES * MathHelper.sin(angleA*Trig.TORADIANS);
+//  float sinB = Trig.TODEGREES * MathHelper.sin(angleB*Trig.TORADIANS);
+//  float sinC = Trig.TODEGREES * MathHelper.sin(angleC*Trig.TORADIANS);  
+//  
+//  float sideB1 = (float)mtv.lengthVector();  
+//  float sideA1 = (sideB1 * sinA)/sinB;  
+//  float sideC1 = (sideB1 * sinC)/sinB;  
+//  
+//  /**
+//   * reseat angles for full triangle test now that we know the length of sideA
+//   */  
+//  angleC = 90;
+//  angleA = 180 - angleB - angleC;
+//  //side A1 is a known value now
+////  AWLog.logDebug("angles2: "+angleA+" : "+angleB+" : "+angleC);
+//  
+//  sinA = Trig.TODEGREES * MathHelper.sin(angleA*Trig.TORADIANS);
+//  sinC = Trig.TODEGREES * MathHelper.sin(angleC*Trig.TORADIANS); 
+//  
+//  sideB1 = (sideA1 * sinB)/sinA;//need to find B as it is the other possible vector
+//  sideC1 = (sideA1 * sinC)/sinA;//don't really need sideC as it is the..un-needed side
+//      
+//  double bbhw = (inCorners[1].xCoord - inCorners[0].xCoord) / 2.d;
+//  double bbhl = (inCorners[2].zCoord - inCorners[1].zCoord) / 2.d;
+//  
+//  double dx = (inCorners[0].xCoord + bbhw) - x;
+//  double dz = (inCorners[0].zCoord + bbhl) - z;
+//  
+//  if(dx>0){sideA1 = -sideA1;}
+//  if(dz>0){sideB1 = -sideB1;}
+//  
+////  mtv.zCoord = sideA1;
+////  mtv.xCoord = sideB1;
+//  
+//  cornerVec.xCoord = sideA1;
+//  cornerVec.yCoord = sideB1;
+//  cornerVec.zCoord = sideC1;
+//  if(debug){AWLog.logDebug("cornervec: "+cornerVec);}
   
   return mtv;
   }
@@ -418,6 +418,37 @@ private boolean getLineIntersection(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Vec3 out
     return true;
     }
   return false;
+  }
+
+private boolean getLineIntersection2(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Vec3 out)
+  {
+  double s02_x, s02_y, s10_x, s10_y, s32_x, s32_y, s_numer, t_numer, denom, t;
+  s10_x = p1.xCoord - p0.xCoord;
+  s10_y = p1.zCoord - p0.zCoord;
+  s32_x = p3.xCoord - p2.xCoord;
+  s32_y = p3.zCoord - p2.zCoord;
+
+  denom = s10_x * s32_y - s32_x * s10_y;
+  if (denom == 0){return false;} // Collinear
+  boolean denomPositive = denom > 0;
+
+  s02_x = p0.xCoord - p2.xCoord;
+  s02_y = p0.zCoord - p2.zCoord;
+  s_numer = s10_x * s02_y - s10_y * s02_x;
+  if ((s_numer < 0) == denomPositive){return false;}     
+
+  t_numer = s32_x * s02_y - s32_y * s02_x;
+  if ((t_numer < 0) == denomPositive){return false;}
+
+  if (((s_numer > denom) == denomPositive) || ((t_numer > denom) == denomPositive)){return false;}
+  // Collision detected
+  t = t_numer / denom;
+  if(out!=null)
+    {
+    out.xCoord = p0.xCoord + (t * s10_x);
+    out.zCoord = p0.zCoord + (t * s10_y);
+    }
+  return true;
   }
 
 public final Vec3 cornerVec = Vec3.createVectorHelper(0, 0, 0);//TODO debug var, remove...
