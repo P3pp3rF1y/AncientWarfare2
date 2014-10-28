@@ -19,8 +19,8 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFindCommander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 
@@ -52,7 +52,7 @@ public NpcFactionArcher(World par1World)
   this.tasks.addTask(1, new NpcAIFactionFindCommander(this));  
   this.tasks.addTask(1, new NpcAIFollowPlayer(this));
 //  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); 
-  this.tasks.addTask(2, new NpcAIStayAtHome(this));
+  this.tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
   this.tasks.addTask(3, new NpcAIFactionRangedAttack(this));
   
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
