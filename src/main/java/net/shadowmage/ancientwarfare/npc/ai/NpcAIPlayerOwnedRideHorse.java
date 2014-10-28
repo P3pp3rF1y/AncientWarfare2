@@ -7,85 +7,86 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIRideHorseFaction extends NpcAI
+public class NpcAIPlayerOwnedRideHorse extends NpcAI
 {
 
 AttributeModifier followRangeModifier;
 AttributeModifier moveSpeedModifier;
-boolean wasHorseKilled = false;
+
 EntityHorse horse;
 List<EntityAITaskEntry> horseAI = new ArrayList<EntityAITaskEntry>();
+boolean saddled = false;
 
-public NpcAIRideHorseFaction(NpcBase npc)
+public NpcAIPlayerOwnedRideHorse(NpcBase npc)
   {
   super(npc);
-  this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", 1.5d, 2);
-  this.moveSpeedModifier.setSaved(false);
+  this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", 1.0d, 2);
+  this.moveSpeedModifier.setSaved(false);  
   this.followRangeModifier = new AttributeModifier("modifier.npc_horse_path_extension", 24.d, 0);
   this.followRangeModifier.setSaved(false);
-  }
-
-@Override
-public boolean shouldExecute()
-  {
-  return !wasHorseKilled && (npc.ridingEntity==null || horse!=npc.ridingEntity);
-  }
-
-@Override
-public void startExecuting()
-  {  
-  if(horse==null && !wasHorseKilled)
-    {
-    if(npc.ridingEntity instanceof EntityHorse)
-      {
-      horse = (EntityHorse)npc.ridingEntity;
-      }
-    else
-      {
-      spawnHorse();
-      }
-    }
-  else if(horse!=null && horse.isDead)
-    {
-    wasHorseKilled=true;
-    horse=null;
-    }
-  }
-
-@Override
-public void updateTask()
-  {
-  super.updateTask();
-  }
-
-private void spawnHorse()
-  {
-  EntityHorse horse = new EntityHorse(npc.worldObj);
-  horse.setLocationAndAngles(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
-  horse.setHorseType(0);
-  //TODO set horse variant randomly...need to find how/where to set this at/from
-  horse.setHorseSaddled(false);
-  horse.setHorseTamed(true);
-  this.horse = horse;
-  npc.worldObj.spawnEntityInWorld(horse);
-  npc.mountEntity(horse);
-  onMountHorse();
   }
 
 public void onKilled()
   {
   if(horse!=null)
+    {    
+    onDismountHorse();
+    }
+  horse=null;
+  }
+
+@Override
+public boolean shouldExecute()
+  {
+  if(horse==null)
+    {
+    if(npc.ridingEntity instanceof EntityHorse)
+      {      
+      horse = (EntityHorse)npc.ridingEntity;
+      onMountHorse();
+      return true;
+      }
+    }
+  return false;
+  }
+
+@Override
+public boolean continueExecuting()
+  {
+  return horse!=null;
+  }
+
+@Override
+public void startExecuting()
+  {
+  
+  }
+
+@Override
+public void updateTask()
+  {
+  if(horse != npc.ridingEntity && horse!=null)
+    {
+    onDismountHorse();
+    horse=null;    
+    } 
+  }
+
+@Override
+public void resetTask()
+  {
+  if(horse!=null)
     {
     onDismountHorse();
     }
-  horse = null;
+  horse=null;
   }
 
 private void onMountHorse()
   {
+  this.saddled = horse.isHorseSaddled();
   removeHorseAI();
   horse.setHorseSaddled(false);
   applyModifiers();
@@ -94,8 +95,8 @@ private void onMountHorse()
 private void onDismountHorse()
   {
   addHorseAI();
-  horse.setHorseSaddled(true);
   removeModifiers();
+  horse.setHorseSaddled(saddled);
   }
 
 private void applyModifiers()
@@ -131,17 +132,6 @@ private void addHorseAI()
     horse.tasks.taskEntries.addAll(horseAI);
     }  
   horseAI.clear();
-  }
-
-public void readFromNBT(NBTTagCompound tag)
-  {
-  wasHorseKilled = tag.getBoolean("wasHorseKilled");
-  }
-
-public NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  tag.setBoolean("wasHorseKilled", wasHorseKilled);
-  return tag;
   }
 
 }

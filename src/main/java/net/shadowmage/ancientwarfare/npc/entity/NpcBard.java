@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIBard;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIPlayerOwnedBard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
@@ -24,7 +24,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 
 public class NpcBard extends NpcPlayerOwned
@@ -38,7 +38,7 @@ public NpcBard(World par1World)
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
-  this.tasks.addTask(0, (horseAI=new NpcAIRideHorse(this))); 
+  this.tasks.addTask(0, (horseAI=new NpcAIPlayerOwnedRideHorse(this))); 
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAICommandGuard(this));
   this.tasks.addTask(2, new NpcAICommandMove(this));
@@ -47,7 +47,7 @@ public NpcBard(World par1World)
   this.tasks.addTask(5, new NpcAIIdleWhenHungry(this)); 
   
   this.tasks.addTask(7, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
-  this.tasks.addTask(8, new NpcAIBard(this));
+  this.tasks.addTask(8, new NpcAIPlayerOwnedBard(this));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));

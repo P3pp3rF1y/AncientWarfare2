@@ -79,7 +79,7 @@ public boolean shouldExecute()
 public boolean continueExecuting()
   {
   if(!npc.getIsAIEnabled()){return false;}
-  return this.fleeTarget!=null && !this.fleeTarget.isDead && this.fleeTarget.getDistanceSqToEntity(this.npc) < 16*16 && npc.getAttackTarget()==this.fleeTarget && !this.npc.getNavigator().noPath();
+  return this.fleeTarget!=null && !this.fleeTarget.isDead && this.fleeTarget.getDistanceSqToEntity(this.npc) < distanceFromEntity*distanceFromEntity && npc.getAttackTarget()==this.fleeTarget && !this.npc.getNavigator().noPath();
   }
 
 @Override

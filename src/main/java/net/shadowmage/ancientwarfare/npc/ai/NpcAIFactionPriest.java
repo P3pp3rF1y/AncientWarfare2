@@ -2,10 +2,10 @@ package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIPriestFaction extends NpcAIMedic
+public class NpcAIFactionPriest extends NpcAIPlayerOwnedMedic
 {
 
-public NpcAIPriestFaction(NpcBase npc)
+public NpcAIFactionPriest(NpcBase npc)
   {
   super(npc);
   }

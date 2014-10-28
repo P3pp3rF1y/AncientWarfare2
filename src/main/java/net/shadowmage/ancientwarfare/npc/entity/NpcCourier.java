@@ -15,20 +15,20 @@ import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAICourier;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIPlayerOwnedCourier;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public class NpcCourier extends NpcPlayerOwned
 {
 
-NpcAICourier courierAI;
+NpcAIPlayerOwnedCourier courierAI;
 public InventoryBackpack backpackInventory;
 
 public NpcCourier(World par1World)
@@ -37,14 +37,14 @@ public NpcCourier(World par1World)
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
-  this.tasks.addTask(0, (horseAI=new NpcAIRideHorse(this)));
+  this.tasks.addTask(0, (horseAI=new NpcAIPlayerOwnedRideHorse(this)));
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAICommandGuard(this));
   this.tasks.addTask(2, new NpcAICommandMove(this));
   this.tasks.addTask(3, new NpcAIFleeHostiles(this));
   this.tasks.addTask(4, new NpcAIGetFood(this));  
   this.tasks.addTask(5, new NpcAIIdleWhenHungry(this)); 
-  this.tasks.addTask(6, (courierAI=new NpcAICourier(this)));
+  this.tasks.addTask(6, (courierAI=new NpcAIPlayerOwnedCourier(this)));
   this.tasks.addTask(7, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)

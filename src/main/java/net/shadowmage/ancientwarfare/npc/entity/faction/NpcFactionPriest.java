@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIPriestFaction;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFactionPriest;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 
 public abstract class NpcFactionPriest extends NpcFaction
@@ -27,7 +27,7 @@ public NpcFactionPriest(World par1World)
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
   this.tasks.addTask(1, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); 
-  this.tasks.addTask(3, new NpcAIPriestFaction(this));
+  this.tasks.addTask(3, new NpcAIFactionPriest(this));
   
   this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
   this.tasks.addTask(102, new NpcAIWander(this, 0.625D));

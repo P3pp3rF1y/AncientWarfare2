@@ -3,10 +3,10 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 
-public class NpcAIFindCommanderFaction extends NpcAIFindCommander
+public class NpcAIFactionFindCommander extends NpcAIFindCommander
 {
 
-public NpcAIFindCommanderFaction(NpcBase npc)
+public NpcAIFactionFindCommander(NpcBase npc)
   {
   super(npc);
   }

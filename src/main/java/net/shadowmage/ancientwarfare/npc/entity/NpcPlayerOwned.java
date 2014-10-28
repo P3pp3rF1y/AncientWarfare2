@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
@@ -32,7 +32,7 @@ public abstract class NpcPlayerOwned extends NpcBase
 private Command playerIssuedCommand;//TODO load/save
 private int foodValueRemaining = 0;
 
-protected NpcAIRideHorse horseAI;
+protected NpcAIPlayerOwnedRideHorse horseAI;
 
 private BlockPosition townHallPosition;
 private BlockPosition upkeepAutoBlock;

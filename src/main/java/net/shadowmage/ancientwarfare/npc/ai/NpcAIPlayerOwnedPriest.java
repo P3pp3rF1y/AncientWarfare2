@@ -8,14 +8,14 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall.NpcDeathEntry;
 
-public class NpcAIPriestPlayerOwned extends NpcAI
+public class NpcAIPlayerOwnedPriest extends NpcAI
 {
 
 int lastCheckTicks = -1;
 NpcDeathEntry entryToRes;
 int resurrectionDelay = 0;
 
-public NpcAIPriestPlayerOwned(NpcBase npc)
+public NpcAIPlayerOwnedPriest(NpcBase npc)
   {
   super(npc);
   this.setMutexBits(ATTACK+MOVE);

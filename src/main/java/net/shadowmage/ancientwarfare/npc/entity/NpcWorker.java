@@ -31,7 +31,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWork;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWorkRandom;
@@ -50,7 +50,7 @@ public NpcWorker(World par1World)
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
-  this.tasks.addTask(0, (horseAI=new NpcAIRideHorse(this)));
+  this.tasks.addTask(0, (horseAI=new NpcAIPlayerOwnedRideHorse(this)));
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAICommandGuard(this));
   this.tasks.addTask(2, new NpcAICommandMove(this));

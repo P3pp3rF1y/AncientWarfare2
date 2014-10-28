@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
-public class NpcAICourier extends NpcAI
+public class NpcAIPlayerOwnedCourier extends NpcAI
 {
 
 boolean init;
@@ -23,7 +23,7 @@ RoutingOrder order;
 ItemStack routeStack;
 
 NpcCourier courier;
-public NpcAICourier(NpcBase npc)
+public NpcAIPlayerOwnedCourier(NpcBase npc)
   {
   super(npc);
   courier = (NpcCourier)npc;
