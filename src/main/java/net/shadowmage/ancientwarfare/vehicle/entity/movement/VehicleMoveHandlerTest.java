@@ -17,8 +17,8 @@ public void updateVehicleMotion(boolean[] inputStates)
   {
   float rotation = 0;
   double forward = 0;
-  if(inputStates[VehicleInputKey.FORWARD.ordinal()]){forward+=0.05d;}
-  if(inputStates[VehicleInputKey.REVERSE.ordinal()]){forward-=0.05d;}
+  if(inputStates[VehicleInputKey.FORWARD.ordinal()]){forward+=0.25d;}
+  if(inputStates[VehicleInputKey.REVERSE.ordinal()]){forward-=0.25d;}
   if(inputStates[VehicleInputKey.LEFT.ordinal()]){rotation+=1.f;}
   if(inputStates[VehicleInputKey.RIGHT.ordinal()]){rotation-=1.f;}  
   /**
@@ -27,7 +27,7 @@ public void updateVehicleMotion(boolean[] inputStates)
   Vec3 forwardAxis = vehicle.getLookVec();
   double mx = forwardAxis.xCoord * forward;
   double mz = forwardAxis.zCoord * forward;
-  vehicle.moveEntity(mx, -0.05d, mz);
+  vehicle.moveEntity(mx, -0.25d, mz);
   /**
    * then rotate the vehicle towards its new orientation
    */

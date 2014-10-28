@@ -21,8 +21,8 @@ public void updateVehicleMotion(boolean[] inputStates)
   {
   float rotation = 0;
   double forward = 0;
-  if(inputStates[VehicleInputKey.FORWARD.ordinal()]){forward+=0.05d;}
-  if(inputStates[VehicleInputKey.REVERSE.ordinal()]){forward-=0.05d;}
+  if(inputStates[VehicleInputKey.FORWARD.ordinal()]){forward+=0.25d;}
+  if(inputStates[VehicleInputKey.REVERSE.ordinal()]){forward-=0.25d;}
   if(inputStates[VehicleInputKey.LEFT.ordinal()]){rotation+=1.f;}
   if(inputStates[VehicleInputKey.RIGHT.ordinal()]){rotation-=1.f;}  
   /**
@@ -31,7 +31,7 @@ public void updateVehicleMotion(boolean[] inputStates)
   Vec3 forwardAxis = vehicle.getLookVec();
   double mx = forwardAxis.xCoord * forward;
   double mz = forwardAxis.zCoord * forward;
-  double my = -1;
+  double my = -0.25d;
 
   //check in-water depth, for brevity sake, only check the block(s) under the center of the entity and the obb corners (5 points)
   //the rest of the entity should be in either water or air due to the other collision handling

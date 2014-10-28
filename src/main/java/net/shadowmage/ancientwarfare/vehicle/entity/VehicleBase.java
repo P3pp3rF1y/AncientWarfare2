@@ -398,7 +398,7 @@ protected void moveEntityOBB2(double x, double y, double z)
     else//revert
       {
       adjustedXMotion += mtv.xCoord;  
-      setPosition(posX+adjustedXMotion, posY, posZ);
+      setPosition(posX, posY, posZ);
       orientedBoundingBox.updateForPosition(posX, posY, posZ);
       orientedBoundingBox.setAABBToOBBExtents(boundingBox);
       AWLog.logDebug("collided move on X: "+mtv + " : "+x+" : "+adjustedXMotion);
@@ -413,8 +413,8 @@ protected void moveEntityOBB2(double x, double y, double z)
         mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
         if(mtvTemp!=null)
           {
-          AWLog.logDebug("post correction still colliding, WTFGODDAMNIT! "+orientedBoundingBox);
-          throw new RuntimeException("math is not working..");
+          AWLog.logDebug("post correction still colliding, WTFGODDAMNIT! "+mtvTemp+" "+orientedBoundingBox);
+//          throw new RuntimeException("math is not working..");
           }
         }
       
@@ -460,7 +460,7 @@ protected void moveEntityOBB2(double x, double y, double z)
       {
       adjustedZMotion += mtv.zCoord;
 //      if(Math.abs(adjustedZMotion)<0.01d){adjustedZMotion=0;}
-      setPosition(posX, posY, posZ+adjustedZMotion);
+      setPosition(posX, posY, posZ);
       orientedBoundingBox.updateForPosition(posX, posY, posZ);
       orientedBoundingBox.setAABBToOBBExtents(boundingBox);   
       AWLog.logDebug("collided move on Z: "+mtv + " : "+z+ " : "+adjustedZMotion); 
@@ -474,8 +474,8 @@ protected void moveEntityOBB2(double x, double y, double z)
         mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
         if(mtvTemp!=null)
           {
-          AWLog.logDebug("post correction still colliding, WTFGODDAMNIT! "+orientedBoundingBox);
-          throw new RuntimeException("math is not working..");
+          AWLog.logDebug("post correction still colliding, WTFGODDAMNIT! "+mtvTemp+" "+orientedBoundingBox);
+//          throw new RuntimeException("math is not working..");
           }
         }
       
