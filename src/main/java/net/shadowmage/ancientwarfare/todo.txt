@@ -9,6 +9,7 @@ Vehicle Module?
 //http://www.geometrictools.com/Documentation/DynamicCollisionDetection.pdf
 //http://www.gamedev.net/page/resources/_/technical/game-programming/2d-rotated-rectangle-collision-r2604
 //http://www.codezealot.org/archives/55#sat-mtv
+//http://www.codezealot.org/archives/394
 
 //http://www.videogamesblogger.com/2014/10/13/borderlands-the-pre-sequel-cheats.htm
 //http://www.gamedev.net/topic/588070-seperating-axis-theorem---how-to-resolve-contact-points/

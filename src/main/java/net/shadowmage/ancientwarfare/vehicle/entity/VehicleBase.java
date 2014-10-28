@@ -301,7 +301,7 @@ protected void moveEntityOBB2(double x, double y, double z)
   /**
    * update bounding box so it is... up to date
    */
-  orientedBoundingBox.updateForPosition(posX, posY, posZ);
+  orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   
   List<AxisAlignedBB> aabbs = null;
@@ -363,7 +363,9 @@ protected void moveEntityOBB2(double x, double y, double z)
     
   if(x!=0)//try move on x-axis, only respond to mtv result on x-axis
     {
-    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(adjustedXMotion, 0, 0));  
+    AWLog.logDebug("attempting x move: "+x);
+    orientedBoundingBox.debug=true;
+    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(adjustedXMotion, 0, 0).expand(0.02d, 0, 0.02d));  
     orientedBoundingBox.updateForPosition(posX+adjustedXMotion, posY, posZ);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);  
     mtv=null;  
@@ -371,10 +373,9 @@ protected void moveEntityOBB2(double x, double y, double z)
     for(int i = 0; i< len; i++)
       { 
       bb = aabbs.get(i);
-      mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
+      mtvTemp = orientedBoundingBox.getLongCollisionVectorForAxis(bb, mtvTempBase, adjustedXMotion, 0);    
       if(mtvTemp!=null)
         {
-        AWLog.logDebug("corner vector X: "+orientedBoundingBox.cornerVec);
         if(mtv==null)
           {
           mtv = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
@@ -396,17 +397,36 @@ protected void moveEntityOBB2(double x, double y, double z)
       }
     else//revert
       {
-      AWLog.logDebug("collided move on X: "+mtv + " : "+x);
-      adjustedXMotion += mtv.xCoord;
-      setPosition(posX + adjustedXMotion, posY, posZ);
+      adjustedXMotion += mtv.xCoord;  
+      setPosition(posX+adjustedXMotion, posY, posZ);
       orientedBoundingBox.updateForPosition(posX, posY, posZ);
       orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+      AWLog.logDebug("collided move on X: "+mtv + " : "+x+" : "+adjustedXMotion);
+          
+      
+      aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.expand(0.02d, 0, 0.02d));  
+      mtv=null;  
+      len = aabbs.size();
+      for(int i = 0; i< len; i++)
+        { 
+        bb = aabbs.get(i);
+        mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
+        if(mtvTemp!=null)
+          {
+          AWLog.logDebug("post correction still colliding, WTFGODDAMNIT! "+orientedBoundingBox);
+          throw new RuntimeException("math is not working..");
+          }
+        }
+      
       }
+    orientedBoundingBox.debug=false;
     }  
   
   if(z!=0)
     {
-    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(0, 0, adjustedZMotion));  
+    AWLog.logDebug("attempting z move: "+z);
+    orientedBoundingBox.debug=true;
+    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(0, 0, adjustedZMotion).expand(0.02d, 0, 0.02d));  
     orientedBoundingBox.updateForPosition(posX, posY, posZ+adjustedZMotion);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);  
     mtv=null;  
@@ -414,10 +434,9 @@ protected void moveEntityOBB2(double x, double y, double z)
     for(int i = 0; i< len; i++)
       { 
       bb = aabbs.get(i);
-      mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);
+      mtvTemp = orientedBoundingBox.getLongCollisionVectorForAxis(bb, mtvTempBase, 0, adjustedZMotion);
       if(mtvTemp!=null)
         {
-        AWLog.logDebug("corner vector Z: "+orientedBoundingBox.cornerVec);
         if(mtv==null)
           {
           mtv = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
@@ -437,14 +456,31 @@ protected void moveEntityOBB2(double x, double y, double z)
       orientedBoundingBox.updateForPosition(posX, posY, posZ);
       orientedBoundingBox.setAABBToOBBExtents(boundingBox);
       }
-    else//revert
+    else//move adjusted
       {
-      AWLog.logDebug("collided move on Z: "+mtv + " : "+z);
       adjustedZMotion += mtv.zCoord;
+//      if(Math.abs(adjustedZMotion)<0.01d){adjustedZMotion=0;}
       setPosition(posX, posY, posZ+adjustedZMotion);
       orientedBoundingBox.updateForPosition(posX, posY, posZ);
-      orientedBoundingBox.setAABBToOBBExtents(boundingBox);      
+      orientedBoundingBox.setAABBToOBBExtents(boundingBox);   
+      AWLog.logDebug("collided move on Z: "+mtv + " : "+z+ " : "+adjustedZMotion); 
+      
+      aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.expand(0.02d, 0, 0.02d));  
+      mtv=null;  
+      len = aabbs.size();
+      for(int i = 0; i< len; i++)
+        { 
+        bb = aabbs.get(i);
+        mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
+        if(mtvTemp!=null)
+          {
+          AWLog.logDebug("post correction still colliding, WTFGODDAMNIT! "+orientedBoundingBox);
+          throw new RuntimeException("math is not working..");
+          }
+        }
+      
       }
+    orientedBoundingBox.debug=false;
     }
   
   /**
