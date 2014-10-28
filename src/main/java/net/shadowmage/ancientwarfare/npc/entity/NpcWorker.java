@@ -23,26 +23,25 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.core.item.ItemQuill;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindWorksite;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIWork;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIWorkRandom;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFindWorksite;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedWork;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedWorkRandom;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public class NpcWorker extends NpcPlayerOwned implements IWorker
 {
 
 public BlockPosition autoWorkTarget;
-private NpcAIWork workAI;
-private NpcAIWorkRandom workRandomAI;
+private NpcAIPlayerOwnedWork workAI;
+private NpcAIPlayerOwnedWorkRandom workRandomAI;
 
 public NpcWorker(World par1World)
   {
@@ -52,13 +51,12 @@ public NpcWorker(World par1World)
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
   this.tasks.addTask(0, (horseAI=new NpcAIPlayerOwnedRideHorse(this)));
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
-  this.tasks.addTask(2, new NpcAICommandGuard(this));
-  this.tasks.addTask(2, new NpcAICommandMove(this));
+  this.tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
   this.tasks.addTask(3, new NpcAIFleeHostiles(this));
-  this.tasks.addTask(4, new NpcAIGetFood(this));  
-  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this)); 
-  this.tasks.addTask(6, (workAI = new NpcAIWork(this)));
-  this.tasks.addTask(7, (workRandomAI = new NpcAIWorkRandom(this)));
+  this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));  
+  this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this)); 
+  this.tasks.addTask(6, (workAI = new NpcAIPlayerOwnedWork(this)));
+  this.tasks.addTask(7, (workRandomAI = new NpcAIPlayerOwnedWorkRandom(this)));
   this.tasks.addTask(8, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
   
   //post-100 -- used by delayed shared tasks (look at random stuff, wander)
@@ -66,7 +64,7 @@ public NpcWorker(World par1World)
   this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
   this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
   
-  this.targetTasks.addTask(0, new NpcAIFindWorksite(this));
+  this.targetTasks.addTask(0, new NpcAIPlayerOwnedFindWorksite(this));
   }
 
 @Override

@@ -1,14 +1,15 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.util.ChunkCoordinates;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIIdleWhenHungry extends NpcAI
+public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI
 {
 
 int moveTimer = 0;
 
-public NpcAIIdleWhenHungry(NpcBase npc)
+public NpcAIPlayerOwnedIdleWhenHungry(NpcBase npc)
   {
   super(npc);
   this.setMutexBits(MOVE+ATTACK+HUNGRY);

@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import java.util.List;
 
@@ -7,17 +7,18 @@ import net.minecraft.util.MathHelper;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 
 
-public class NpcAIFindWorksite extends NpcAI
+public class NpcAIPlayerOwnedFindWorksite extends NpcAI
 {
 
 int lastExecuted = -1;//set to -1 default to trigger should execute lookup on first run
 int checkFrequency = 200;//how often to recheck if orders and work target are both null
 
-public NpcAIFindWorksite(NpcBase npc)
+public NpcAIPlayerOwnedFindWorksite(NpcBase npc)
   {
   super(npc);
   }

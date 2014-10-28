@@ -9,14 +9,13 @@ import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedPriest;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 
@@ -32,11 +31,10 @@ public NpcPriest(World par1World)
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
   this.tasks.addTask(0, (horseAI=new NpcAIPlayerOwnedRideHorse(this)));
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
-  this.tasks.addTask(2, new NpcAICommandGuard(this));
-  this.tasks.addTask(2, new NpcAICommandMove(this));
+  this.tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
   this.tasks.addTask(3, new NpcAIFleeHostiles(this));
-  this.tasks.addTask(4, new NpcAIGetFood(this));  
-  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));
+  this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));  
+  this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
   this.tasks.addTask(6, new NpcAIMoveHome(this, 50.f, 8.f, 30.f, 3.f));
   this.tasks.addTask(7, new NpcAIPlayerOwnedPriest(this));
   

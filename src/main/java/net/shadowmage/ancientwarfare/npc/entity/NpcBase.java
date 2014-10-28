@@ -413,14 +413,27 @@ public final void onKillEntity(EntityLivingBase par1EntityLivingBase)
     }
   }
 
+/**
+ * Returns the currently following player-issues command, or null if none
+ * @return
+ */
 public Command getCurrentCommand()
   {
   return null;//NOOP on non-player owned npc
   }
 
+/**
+ * input path from command baton - default implementation for player-owned NPC is to set current command==input command and then let AI do the rest
+ * @param cmd
+ */
 public void handlePlayerCommand(Command cmd)
   {
 //NOOP on non-player owned npc
+  }
+
+public void setPlayerCommand(Command cmd)
+  {
+  
   }
 
 /**

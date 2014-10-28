@@ -1,19 +1,20 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 
-public class NpcAIWorkRandom extends NpcAI
+public class NpcAIPlayerOwnedWorkRandom extends NpcAI
 {
 
 private int ticksAtSite = 0;
 NpcWorker worker;
-public NpcAIWorkRandom(NpcBase npc)
+public NpcAIPlayerOwnedWorkRandom(NpcBase npc)
   {
   super(npc);
   worker = (NpcWorker)npc;

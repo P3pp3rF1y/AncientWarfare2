@@ -1,10 +1,11 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIAttackRanged extends NpcAI
+public class NpcAIPlayerOwnedAttackRanged extends NpcAI
 {
 
 private final IRangedAttackMob rangedAttacker;
@@ -12,7 +13,7 @@ private int attackDelay = 35;
 private double attackDistance = 16.d * 16.d;
 private EntityLivingBase target;
 
-public NpcAIAttackRanged(NpcBase npc)
+public NpcAIPlayerOwnedAttackRanged(NpcBase npc)
     {
     super(npc);
     this.rangedAttacker = (IRangedAttackMob)npc;//will classcastexception if improperly used..

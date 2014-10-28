@@ -22,7 +22,6 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
-import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
@@ -162,43 +161,13 @@ public Command getCurrentCommand()
 @Override
 public void handlePlayerCommand(Command cmd)
   {  
-  if(cmd==null)
-    {
-    this.playerIssuedCommand=null;
-    }
-  else if(cmd.type==CommandType.ATTACK)
-    {
-    Entity e = cmd.getEntityTarget(worldObj);
-    if(e instanceof EntityLivingBase && canTarget(e))
-      {
-      setAttackTarget((EntityLivingBase)e);
-      }
-    this.playerIssuedCommand=null;
-    }
-  else if(cmd.type==CommandType.ATTACK_AREA || cmd.type==CommandType.GUARD || cmd.type==CommandType.MOVE)
-    {
-    this.playerIssuedCommand=cmd;    
-    }
-  else if(cmd.type==CommandType.SET_HOME)
-    {
-    setHomeArea(cmd.x, cmd.y, cmd.z, 40);
-    }
-  else if(cmd.type==CommandType.SET_UPKEEP)
-    {
-    upkeepAutoBlock = new BlockPosition(cmd.x, cmd.y, cmd.z);
-    }
-  else if(cmd.type==CommandType.CLEAR_HOME)
-    {
-    detachHome();
-    }
-  else if(cmd.type==CommandType.CLEAR_UPKEEP)
-    {
-    upkeepAutoBlock=null;
-    }
-  else if(cmd.type==CommandType.CLEAR_COMMAND)
-    {
-    this.playerIssuedCommand = null;
-    }
+  this.setPlayerCommand(cmd); 
+  }
+
+@Override
+public void setPlayerCommand(Command cmd)
+  {
+  this.playerIssuedCommand = cmd;
   }
 
 @Override
