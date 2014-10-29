@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.vehicle.collision;
 
-import com.sun.org.apache.xml.internal.resolver.readers.XCatalogReader;
-
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -31,7 +29,7 @@ private static Axis aabbAxis1 = new Axis(1,0,0);
 private static Axis aabbAxis2 = new Axis(0,0,1);
 
 /**
- * Cached static array of Vec3 to use for AABB corners (might need un-static'd if ever used for multi-threaded stuff...)
+ * Cached array of Vec3 to use for AABB corners
  */
 private Vec3[] aaBBCorners = new Vec3[]
       {
@@ -42,10 +40,13 @@ private Vec3[] aaBBCorners = new Vec3[]
       };
 
 /**
- * cached static projections to use for overlap testing (would need un-static'd if ever used for multi-threaded stuff...)
+ * cached projections to use for overlap testing
  */
 private Projection p1 = new Projection(0,0), p2=new Projection(0,0);
 
+/**
+ * cached line segments for use in intersection testing
+ */
 private LineSegment obbEdge1, obbEdge2, obbEdge3, obbEdge4;
 private LineSegment obbLine1, obbLine2, obbLine3, obbLine4;
 
@@ -239,13 +240,11 @@ private void updateAxis()
  */
 public final Vec3 getMinCollisionVector(OBB bb, Vec3 mtvOut)
   {
-//  if(bb.cornerPos[0].yCoord + bb.height < cornerPos[0].yCoord || bb.cornerPos[0].yCoord > cornerPos[0].yCoord + height){return null;}//quickly check Y-intersection prior to other tests
   return getMinCollisionVector(bb.cornerPos, bb.axis1, bb.axis2, mtvOut);
   }
 
 public final Vec3 getMinCollisionVector(AxisAlignedBB bb, Vec3 mtvOut)
   {
-//  if(bb.minY > cornerPos[0].yCoord + height || bb.maxY < cornerPos[0].yCoord){return null;}//quickly check Y-intersection prior to other tests
   setVector(aaBBCorners[0], bb.minX, 0, bb.minZ);
   setVector(aaBBCorners[1], bb.maxX, 0, bb.minZ);
   setVector(aaBBCorners[2], bb.maxX, 0, bb.maxZ);

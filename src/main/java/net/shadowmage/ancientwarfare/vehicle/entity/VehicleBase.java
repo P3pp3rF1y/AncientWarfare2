@@ -119,7 +119,7 @@ public void rotateEntity(float rotationDelta)
   Vec3 mtvTemp = null;
   Vec3 mtv = null;  
   
-  List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);  
+  List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.expand(0.2d, 0, 0.2d));  
   
   AxisAlignedBB bb = null;
   int len = aabbs.size();
@@ -131,12 +131,11 @@ public void rotateEntity(float rotationDelta)
       {
       if(mtv==null)
         {
-        mtv = Vec3.createVectorHelper(mtvTemp.xCoord, mtvTemp.yCoord, mtvTemp.zCoord);
+        mtv = Vec3.createVectorHelper(mtvTemp.xCoord, 0, mtvTemp.zCoord);
         }
       else
         {
         if(Math.abs(mtvTemp.xCoord)>Math.abs(mtv.xCoord)){mtv.xCoord=mtvTemp.xCoord;}
-        if(Math.abs(mtvTemp.yCoord)>Math.abs(mtv.yCoord)){mtv.yCoord=mtvTemp.yCoord;}
         if(Math.abs(mtvTemp.zCoord)>Math.abs(mtv.zCoord)){mtv.zCoord=mtvTemp.zCoord;}
         }
       }
@@ -147,12 +146,16 @@ public void rotateEntity(float rotationDelta)
     rotationYaw += rotationDelta;
     }
   else
-    {    
-    orientedBoundingBox.updateForPosition(posX + mtv.xCoord, posY, posZ + mtv.zCoord);
+    {
+    mtv.xCoord*=1.1d;
+    mtv.zCoord*=1.1d;
+    setPosition(posX + mtv.xCoord, posY, posZ + mtv.zCoord);
+    orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw + rotationDelta);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);    
-    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox);      
+    aabbs = worldObj.getCollidingBoundingBoxes(this, boundingBox.expand(0.2d, 0, 0.2d));      
     bb = null;
     len = aabbs.size();
+    mtvTemp = null;
     for(int i = 0; i< len; i++)
       { 
       bb = aabbs.get(i);
@@ -165,9 +168,21 @@ public void rotateEntity(float rotationDelta)
         break;
         }
       }
-    //no unresolvable collision, slide worked
-    rotationYaw += rotationDelta;
-    setPosition(posX + mtv.xCoord, posY, posZ + mtv.zCoord);//obb and bb already set/updated for rotation and bounds from test    
+    if(mtvTemp==null)
+      {
+      AWLog.logDebug("resolved rotation with slide");
+      rotationYaw += rotationDelta;
+      setPosition(posX, posY, posZ);
+      orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+      orientedBoundingBox.setAABBToOBBExtents(boundingBox); 
+      }
+    else
+      {
+      AWLog.logDebug("could not resolve rotation with slide, reverting");
+      setPosition(posX - mtv.xCoord, posY, posZ-mtv.zCoord);
+      orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+      orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+      }    
     }  
   }
 
