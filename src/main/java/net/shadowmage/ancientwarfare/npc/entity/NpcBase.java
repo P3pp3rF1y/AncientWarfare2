@@ -728,6 +728,11 @@ public BlockPosition getUpkeepPoint()
   return null;//NOOP in non-player owned
   }
 
+public void setUpkeepAutoPosition(BlockPosition pos)
+  {
+  
+  }
+
 public int getUpkeepAmount()
   {
   return 0;//NOOP in non-player owned

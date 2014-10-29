@@ -14,6 +14,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
@@ -22,6 +23,7 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
+import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
@@ -161,6 +163,31 @@ public Command getCurrentCommand()
 @Override
 public void handlePlayerCommand(Command cmd)
   {  
+  if(cmd!=null && cmd.type==CommandType.ATTACK)
+    {
+    Entity e = cmd.getEntityTarget(worldObj);
+    AWLog.logDebug("handling attack command : "+e);
+    if(e instanceof EntityLivingBase)
+      {
+      EntityLivingBase elb = (EntityLivingBase)e;
+      if(isHostileTowards(elb))//only allow targets npc is hostile towards
+        {
+        if(elb instanceof NpcPlayerOwned)//if target is also a player-owned npc
+          {
+          NpcPlayerOwned n = (NpcPlayerOwned)elb;
+          if(n.getTeam()!=getTeam())//only allow target if they are not on the same team (non-teamed cannot attack other non-teamed, cannot attack team-mates npcs either)
+            {
+            setAttackTarget(n);
+            }
+          }
+        else
+          {
+          setAttackTarget(elb);        
+          }      
+        }
+      }
+    cmd=null;
+    }
   this.setPlayerCommand(cmd); 
   }
 
@@ -263,6 +290,12 @@ public BlockPosition getUpkeepPoint()
     return order.getUpkeepPosition();
     }
   return upkeepAutoBlock;
+  }
+
+@Override
+public void setUpkeepAutoPosition(BlockPosition pos)
+  {
+  upkeepAutoBlock = pos;
   }
 
 @Override
