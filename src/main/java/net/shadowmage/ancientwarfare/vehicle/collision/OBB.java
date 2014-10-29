@@ -641,7 +641,7 @@ public Vec3 getCollisionVectorXMovement(AxisAlignedBB bb, double xMove)
     }  
   
   //TODO find proper epsilon value
-  if(adjustedXMove!=x){adjustedXMove*=0.95d;}//minor correction so that entity should never clip into geometry, even with rounding errors...  
+  if(adjustedXMove!=x){adjustedXMove*=0.995d;}//minor correction so that entity should never clip into geometry, even with rounding errors...  
   
   Vec3 closestIntercept = Vec3.createVectorHelper(adjustedXMove, 0, 0);
   return closestIntercept;
@@ -843,7 +843,7 @@ public final Vec3 getCollisionVectorZMovement(AxisAlignedBB bb, double zMove)
     }  
   
   //TODO find proper epsilon value
-  if(adjustedZMove!=z){adjustedZMove*=0.95d;}//minor correction so that entity should never clip into geometry, even with rounding errors...  
+  if(adjustedZMove!=z){adjustedZMove*=0.995d;}//minor correction so that entity should never clip into geometry, even with rounding errors...  
   
   Vec3 closestIntercept = Vec3.createVectorHelper(0, 0, adjustedZMove);
   return closestIntercept;
