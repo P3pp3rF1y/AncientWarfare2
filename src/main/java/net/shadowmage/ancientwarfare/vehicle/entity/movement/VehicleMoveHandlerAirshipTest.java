@@ -23,7 +23,7 @@ public void updateVehicleMotion(boolean[] inputStates)
   if(inputStates[VehicleInputKey.LEFT.ordinal()]){rotation+=1.f;}
   if(inputStates[VehicleInputKey.RIGHT.ordinal()]){rotation-=1.f;}
   if(inputStates[VehicleInputKey.ASCEND.ordinal()]){ascent+=0.25d;}
-  if(inputStates[VehicleInputKey.DESCEND.ordinal()]){ascent-=0.52d;}
+  if(inputStates[VehicleInputKey.DESCEND.ordinal()]){ascent-=0.25d;}
   /**
    * first move the vehicle forward along its current move vector
    */
