@@ -28,7 +28,9 @@ public TemplateRuleTorqueTile(World world, int x, int y, int z, Block block, int
   TileTorqueBase tile = (TileTorqueBase)world.getTileEntity(x, y, z);
   this.blockName = BlockDataManager.instance().getNameForBlock(block);
   this.meta = meta;
-  this.orientation = BlockDataManager.instance().getRotatedMeta(block, tile.getPrimaryFacing().ordinal(), turns);
+  ForgeDirection o = tile.getPrimaryFacing();
+  for(int i = 0; i< turns;i++){o = o.getRotation(ForgeDirection.UP);}  
+  this.orientation = o.ordinal();
   this.tag = new NBTTagCompound();
   tile.writeToNBT(tag);
   }
@@ -53,7 +55,9 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
   tag.setInteger("y", y);
   tag.setInteger("z", z);
   tile.readFromNBT(tag);  
-  tile.setPrimaryFacing(ForgeDirection.getOrientation(BlockDataManager.instance().getRotatedMeta(block, orientation, turns)));  
+  ForgeDirection o = ForgeDirection.getOrientation(orientation);
+  for(int i = 0; i< turns;i++){o = o.getRotation(ForgeDirection.UP);}
+  tile.setPrimaryFacing(o);  
   world.markBlockForUpdate(x, y, z);
   }
 
@@ -78,7 +82,7 @@ public void writeRuleData(NBTTagCompound tag)
 @Override
 public void addResources(List<ItemStack> resources)
   {
-  resources.add(new ItemStack(Item.getItemFromBlock(BlockDataManager.instance().getBlockForName(blockName))));
+  resources.add(new ItemStack(Item.getItemFromBlock(BlockDataManager.instance().getBlockForName(blockName)), 1, meta));
   }
 
 @Override

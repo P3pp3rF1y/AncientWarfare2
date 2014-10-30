@@ -6,8 +6,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -41,7 +43,8 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
    * TODO validate that block is not inside work bounds of any other nearby worksites ??
    * TODO validate that worksite does not intersect any others
    */
-  metadata = BlockRotationHandler.getMetaForPlacement(player, (IRotatableBlock) field_150939_a, side);
+  int ormetadata = BlockRotationHandler.getMetaForPlacement(player, (IRotatableBlock) field_150939_a, side);
+  ForgeDirection o = ForgeDirection.values()[ormetadata];
   
   boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
   if(val)
@@ -54,6 +57,10 @@ public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, i
     if(worksite instanceof IOwnable)
       {
       ((IOwnable)worksite).setOwnerName(player.getCommandSenderName());
+      }
+    if(worksite instanceof IRotatableTile)
+      {
+      ((IRotatableTile) worksite).setPrimaryFacing(o);
       }
     world.markBlockForUpdate(x, y, z);
     }

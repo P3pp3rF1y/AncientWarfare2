@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -21,6 +22,7 @@ public class TemplateRuleWorksite extends TemplateRuleBlock
 
 public String blockName;
 public int meta;
+public int orientation;
 BlockPosition p1, p2;
 NBTTagCompound tag;
 
@@ -28,8 +30,11 @@ public TemplateRuleWorksite(World world, int x, int y, int z, Block block, int m
   {
   super(world, x, y, z, block, meta, turns);
   this.blockName = BlockDataManager.instance().getNameForBlock(block);
-  this.meta = BlockDataManager.instance().getRotatedMeta(block, meta, turns);
+  this.meta = meta;   
   TileWorksiteBase worksite = (TileWorksiteBase) world.getTileEntity(x, y, z);
+  ForgeDirection o = worksite.getPrimaryFacing();
+  for(int i = 0; i< turns;i++){o = o.getRotation(ForgeDirection.UP);}  
+  this.orientation = o.ordinal();
   if(worksite.hasWorkBounds())
     {
     p1 = worksite.getWorkBoundsMin().copy();
@@ -58,13 +63,15 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
   {
   Block block = BlockDataManager.instance().getBlockForName(blockName);
   BlockPosition pos1, pos2;
-  int meta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);
   world.setBlock(x, y, z, block, meta, 2);
   TileWorksiteBase worksite = (TileWorksiteBase) world.getTileEntity(x, y, z);
   tag.setInteger("x", x);
   tag.setInteger("y", y);
   tag.setInteger("z", z);
   worksite.readFromNBT(tag);    
+  ForgeDirection o = ForgeDirection.getOrientation(orientation);
+  for(int i = 0; i< turns;i++){o = o.getRotation(ForgeDirection.UP);}
+  worksite.setPrimaryFacing(o);
   if(p1!=null && p2!=null)
     {
     pos1 = p1.copy();
@@ -83,6 +90,7 @@ public void parseRuleData(NBTTagCompound tag)
   {
   this.blockName = tag.getString("blockId");
   this.meta = tag.getInteger("meta");
+  this.orientation = tag.getInteger("orientation");
   if(tag.hasKey("teData")){this.tag = tag.getCompoundTag("teData");}
   if(tag.hasKey("pos1")){this.p1 = new BlockPosition(tag.getCompoundTag("pos1"));}
   if(tag.hasKey("pos2")){this.p2 = new BlockPosition(tag.getCompoundTag("pos2"));}
@@ -93,6 +101,7 @@ public void writeRuleData(NBTTagCompound tag)
   {
   tag.setString("blockId", blockName);
   tag.setInteger("meta", meta);
+  tag.setInteger("orientation", orientation);
   if(p1!=null){tag.setTag("pos1", p1.writeToNBT(new NBTTagCompound()));}
   if(p2!=null){tag.setTag("pos2", p2.writeToNBT(new NBTTagCompound()));}
   if(this.tag!=null){tag.setTag("teData", this.tag);}
@@ -101,7 +110,7 @@ public void writeRuleData(NBTTagCompound tag)
 @Override
 public void addResources(List<ItemStack> resources)
   {
-  resources.add(new ItemStack(Item.getItemFromBlock(BlockDataManager.instance().getBlockForName(blockName))));
+  resources.add(new ItemStack(Item.getItemFromBlock(BlockDataManager.instance().getBlockForName(blockName)), 1, meta));
   }
 
 @Override

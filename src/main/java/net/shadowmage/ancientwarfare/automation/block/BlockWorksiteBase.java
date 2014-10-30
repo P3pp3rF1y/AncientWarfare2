@@ -8,10 +8,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -86,6 +87,19 @@ public IIcon getIcon(int side, int meta)
   }
 
 @Override
+@SideOnly(Side.CLIENT)
+public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
+  {
+  TileEntity te = world.getTileEntity(x, y, z);
+  if(te instanceof TileWorksiteBase)
+    {
+    TileWorksiteBase twb = (TileWorksiteBase)te;
+    return getIcon(side, twb.getPrimaryFacing().ordinal());
+    }
+  return super.getIcon(world, x, y, z, side);
+  }
+
+@Override
 public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
   {
   TileEntity te = world.getTileEntity(x, y, z);
@@ -116,13 +130,16 @@ public boolean invertFacing()
 @Override
 public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
   {  
-  int meta = worldObj.getBlockMetadata(x, y, z);
-  int newMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
-  if(meta!=newMeta)
+  TileEntity te = worldObj.getTileEntity(x, y, z);
+  if(te instanceof TileWorksiteBase)
     {
-    worldObj.setBlockMetadataWithNotify(x, y, z, newMeta, 3);
-    worldObj.markBlockForUpdate(x, y, z);    
-    return true;
+    TileWorksiteBase twb = (TileWorksiteBase)te;
+    ForgeDirection o = twb.getPrimaryFacing();
+    if(axis==ForgeDirection.DOWN || axis==ForgeDirection.UP)
+      {
+      o = o.getRotation(axis);
+      twb.setPrimaryFacing(o);//twb will send update packets / etc
+      }
     }
   return false;
   }
