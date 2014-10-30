@@ -10,6 +10,8 @@ import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputKey;
 public class VehicleMoveHandlerWater extends VehicleMoveHandler
 {
 
+private float targetSubmergedDepth = 1.f;
+
 public VehicleMoveHandlerWater(VehicleBase vehicle)
   {
   super(vehicle);
@@ -31,7 +33,7 @@ public void updateVehicleMotion(boolean[] inputStates)
   Vec3 forwardAxis = vehicle.getLookVec();
   double mx = forwardAxis.xCoord * forward;
   double mz = forwardAxis.zCoord * forward;
-  double my = -0.25d;
+  double my = 0.d;
 
   //check in-water depth, for brevity sake, only check the block(s) under the center of the entity and the obb corners (5 points)
   //the rest of the entity should be in either water or air due to the other collision handling
@@ -91,20 +93,28 @@ public void updateVehicleMotion(boolean[] inputStates)
       }
     }
   
-//  submerged *= 0.2f; //e.g. x/5.f
-//  AWLog.logDebug("submerged: "+submerged);    
-//  if(submerged < (float)height / 2.f)
-//    {
-//    mx*=0.5d;
-//    mz*=0.5d;
-//    float target = height / 2.f;
-//    target -= submerged;
-//    my = -target;
-//    if(my <- 0.5d) {my=-0.5d;}
-//    AWLog.logDebug("my: "+my);
-//    //
-//    
-//    }
+  submerged *= 0.2f; //i.e. submerged/=5.f
+  AWLog.logDebug("submerged: "+submerged);   
+    
+  if(submerged==0)
+    {
+    mx*=0.25d;
+    mz*=0.25d;    
+    }
+  if(submerged < targetSubmergedDepth)
+    {
+    mx*=0.85d;
+    mz*=0.85d;
+    float move = submerged - targetSubmergedDepth;
+    my = move;
+    if(my < -0.5d){my=-0.5d;}//TODO gravity sim stuff... 
+    }
+  else if(submerged > targetSubmergedDepth)
+    {
+    my = submerged - targetSubmergedDepth;
+    if(my > 0.15d){my=0.15d;}//TODO gravity sim stuff... 
+    }
+  AWLog.logDebug("my: "+my);   
   
   vehicle.moveEntity(mx, my, mz);
   /**

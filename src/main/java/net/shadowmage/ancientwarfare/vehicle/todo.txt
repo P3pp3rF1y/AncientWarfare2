@@ -1,15 +1,58 @@
 vehicles todo
 
-* collision handling
-	- need to figure out how to handle overriding MCs AABB stuff
+* water and flying movement types
+* missile entity for vehicles to fire
+	- will require tracking field for firing-entity id
+	- will require synching firing-entity id to client
+* large component vehicles
+	- has stations that may have cannon/ballista/hwacha mounted at them 
 * multi passenger vehicles
-* vehicles that you can walk around on
-	- rotate position of entity relative to vehicle rotation, test for rectangular BB to determine if the entity should fall off or not?
-	- when vehicle rotates all on-top entities will need to be rotated around for their relative position
-	- will use input interception to facilitate movement of player on vehicle
-	- will use some sort of fake 'world' for collision detection.  Perhaps just a list of AABBs for the vehicle interior with manual resolution
+	- entity.riddenEntity = vehicle
+	- vehicle.riddenByEntity = driver
+	- vehicle.additionalRiders() = other entities to update
+	- should probably make a list of 'vehicle stations' that can be ridden
+		-each station is responsible for updating its riders location / rotation
+		-stations may be seats or battle-stations
+	- stations will be linked to a multi-part-entity collision box that can be clicked on to activate that station
+	- will require a GUI for switching between stations (or other keybind...)
 * vehicle tier/upgrade system
 	- do not have material teirs, just use upgrades for enhanced functionality
 	- use click-to-apply upgrades, or slotted?
 		one way allows for -all- upgrades to be applied, the other limits to a selected range by player choice
+	- specific upgrades for each vehicle? e.g:
+		- catapult metal arm
+		- trebuchet triple sling
+		- ballista metal tensioner
+* vehicle types:
+	Land:
+		Catapult (single pilot)
+		Ballista (single pilot)
+		Scorpio (small metal spring-type ballista)
+		Trebuchet (single pilot)
+		Cannon (single pilot)
+		Hwacha (single pilot)
+		Battering Ram (single pilot)
+		Chest Cart (single pilot)
+		Siege Tower (multi-passenger)(need to find a way to 'extend' the tower, and a way for players to 'climb' the tower / get off at the right position (hit 'fire' once climbed appropriately?))
+	Water: (might need to reduce gun counts for easier managing of stuff...)
+		Sloop/Pinnace - small multi-passenger, 8 gun max
+		Frigate - med multi-passenger, 25 gun max	
+		Galleon - large multi-passenger, 50 gun max
+	Air:
+		Hot Air Balloon
+			-burns coal / fuel materials
+			-will lose altitude slowly when fuel runs out
+		Ornithopter
+			-not really a vehicle per-se, more of a jetpack / wearable armor
+			- flap to fly, hold flap to glide
+		Airship (a small-ish frigate with an elongated hot air balloon above it...)
+			-burns coal / fuel materials
+			-will be immobile (except for descend command) when out of fuel
+		
+* vehicles that you can walk around on (or... perhaps not... will be hacky as hell at best)
+	- rotate position of entity relative to vehicle rotation, test for rectangular BB to determine if the entity should fall off or not?
+	- when vehicle rotates all on-top entities will need to be rotated around for their relative position
+	- will use input interception to facilitate movement of player on vehicle
+	- will use some sort of fake 'world' for collision detection.  Perhaps just a list of AABBs for the vehicle interior with manual resolution
+
 			
