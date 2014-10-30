@@ -103,6 +103,15 @@ public WorkSiteReedFarm()
   }
 
 @Override
+public void onTargetsAdjusted()
+  {
+  validateCollection(cocoaToPlant);
+  validateCollection(blocksToHarvest);
+  validateCollection(cactusToPlant);
+  validateCollection(reedToPlant);
+  }
+
+@Override
 public void onBoundsAdjusted()
   {
   validateCollection(cocoaToPlant);

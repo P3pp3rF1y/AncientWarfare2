@@ -1,5 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -33,6 +36,18 @@ protected boolean isTarget(int x1, int y1)
   int x = x1 - bbMin.x;
   int z = y1 - bbMin.z;
   return targetMap[z*16 + x]==1;
+  }
+
+@Override
+protected void validateCollection(Collection<BlockPosition> blocks)
+  {
+  Iterator<BlockPosition> it = blocks.iterator();
+  BlockPosition pos;
+  while(it.hasNext() && (pos=it.next())!=null)
+    {
+    if(!isInBounds(pos)){it.remove();}
+    else if(!isTarget(pos)){it.remove();}
+    }
   }
 
 public void onTargetsAdjusted()
