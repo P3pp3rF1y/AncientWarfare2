@@ -35,6 +35,8 @@ public void registerClientOptions()
   InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_LEFT, AWVehicleStatics.keybindLeft.getInt(), new VehicleInputCallback(VehicleInputKey.LEFT));
   InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_RIGHT, AWVehicleStatics.keybindRight.getInt(), new VehicleInputCallback(VehicleInputKey.RIGHT));
   InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_FIRE, AWVehicleStatics.keybindFire.getInt(), new VehicleInputCallback(VehicleInputKey.FIRE));  
+  InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_ASCEND, AWVehicleStatics.keybindAscend.getInt(), new VehicleInputCallback(VehicleInputKey.ASCEND));
+  InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_DESCEND, AWVehicleStatics.keybindDescend.getInt(), new VehicleInputCallback(VehicleInputKey.DESCEND));
   ConfigManager.registerConfigCategory(new VehicleCategory("awconfig.vehicle_keybinds", "awconfig.vehicle_keybinds"));
   }
 
@@ -81,6 +83,8 @@ private static List<IConfigElement> getElementList()
   list.add(new ConfigElement(AWVehicleStatics.keybindLeft));  
   list.add(new ConfigElement(AWVehicleStatics.keybindRight));  
   list.add(new ConfigElement(AWVehicleStatics.keybindFire));  
+  list.add(new ConfigElement(AWVehicleStatics.keybindAscend));
+  list.add(new ConfigElement(AWVehicleStatics.keybindDescend));
   return list;
   }
 }

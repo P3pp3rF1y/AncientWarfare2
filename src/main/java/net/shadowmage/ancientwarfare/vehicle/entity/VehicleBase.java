@@ -12,12 +12,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandler;
-import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandlerWater;
+import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandlerAirshipTest;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
@@ -47,7 +46,7 @@ public VehicleBase(World world)
   orientedBoundingBox.setRotation(-0);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   inputHandler = new VehicleInputHandler(this);
-  moveHandler = new VehicleMoveHandlerWater(this);  
+  moveHandler = new VehicleMoveHandlerAirshipTest(this);  
   
   width = 1.42f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   height = vehicleHeight;
@@ -188,10 +187,6 @@ public void rotateEntity(float rotationDelta)
 @SuppressWarnings("unchecked")
 protected void moveEntityOBB(double x, double y, double z)
   {
-  if(!worldObj.isRemote)
-    {
-    AWCoreStatics.DEBUG = false;
-    }
   if(Math.abs(x)<0.001d){x=0.d;}
   if(Math.abs(z)<0.001d){z=0.d;}
   orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
@@ -206,7 +201,6 @@ protected void moveEntityOBB(double x, double y, double z)
     setPosition(posX, posY+yMove, posZ);
     orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);
-    AWLog.logDebug("moved Y :"+yMove+" new Y: "+posY + " :: "+orientedBoundingBox);
     }
   xMove = getXmove(x, aabbs);
   if(xMove!=0)
@@ -214,7 +208,6 @@ protected void moveEntityOBB(double x, double y, double z)
     setPosition(posX+xMove, posY, posZ);
     orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);   
-    AWLog.logDebug("initial moveX: "+xMove+" :: "+orientedBoundingBox); 
     }
   zMove = getZMove(z, aabbs);
   if(zMove!=0)
@@ -222,10 +215,9 @@ protected void moveEntityOBB(double x, double y, double z)
     setPosition(posX, posY, posZ+zMove);
     orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);    
-    AWLog.logDebug("initial moveZ: "+zMove+" :: "+orientedBoundingBox);  
     }
     
-  if(yMove <= 0 && (x!=xMove || z!=zMove))//attempt to step upwards by step-height
+  if(stepHeight>0 && yMove <= 0 && (x!=xMove || z!=zMove))//attempt to step upwards by step-height
     {    
     //remainder of movement for x and z axes
     double mx = x - xMove;
@@ -239,10 +231,7 @@ protected void moveEntityOBB(double x, double y, double z)
       }
     orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);
-    }
-  
-  AWLog.logDebug("final move: "+xMove+":"+yMove+":"+zMove+" end pos:  "+posX+","+posY+","+posZ+" :: "+orientedBoundingBox);
-  AWCoreStatics.DEBUG = true;
+    }  
   }
 
 /**

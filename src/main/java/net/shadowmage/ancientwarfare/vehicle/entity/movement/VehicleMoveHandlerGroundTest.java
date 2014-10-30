@@ -4,10 +4,10 @@ import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputKey;
 
-public class VehicleMoveHandlerTest extends VehicleMoveHandler
+public class VehicleMoveHandlerGroundTest extends VehicleMoveHandler
 {
 
-public VehicleMoveHandlerTest(VehicleBase vehicle)
+public VehicleMoveHandlerGroundTest(VehicleBase vehicle)
   {
   super(vehicle);
   }

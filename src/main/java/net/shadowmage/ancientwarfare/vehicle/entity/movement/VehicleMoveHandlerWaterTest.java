@@ -7,12 +7,12 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputKey;
 
-public class VehicleMoveHandlerWater extends VehicleMoveHandler
+public class VehicleMoveHandlerWaterTest extends VehicleMoveHandler
 {
 
 private float targetSubmergedDepth = 1.f;
 
-public VehicleMoveHandlerWater(VehicleBase vehicle)
+public VehicleMoveHandlerWaterTest(VehicleBase vehicle)
   {
   super(vehicle);
   // TODO Auto-generated constructor stub
