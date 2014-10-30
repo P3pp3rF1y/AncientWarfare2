@@ -28,12 +28,12 @@ public InventoryBasic resourceInventory;
 public InventoryBasic outputSlot;//the templated output slot, non-pullable
 public InventoryCrafting craftMatrix;//the 3x3 recipe template/matrix
 
+boolean canCraftLastCheck = false;
+boolean canHoldLastCheck = false;
+
 int[] outputSlotIndices;
 int[] resourceSlotIndices;
 ItemStack[] matrixShadow = new ItemStack[9];//shadow copy of input matrix
-
-boolean hasResourcesForNext;//set from onInventoryChanged() to check if there are enough resources in input inventory to craft the next item
-boolean shouldUpdateInventory;
 
 public TileAutoCrafting()
   {
@@ -51,51 +51,10 @@ public TileAutoCrafting()
       }
     };
   craftMatrix = new InventoryCrafting(dummy, 3, 3);
-  resourceInventory = new InventoryBasic(27)
-    {
-    @Override
-    public void markDirty()
-      {
-      onInventoryUpdated();
-      super.markDirty();
-      }
-    @Override
-    public void setInventorySlotContents(int var1, ItemStack var2)
-      {      
-      super.setInventorySlotContents(var1, var2);
-      if(worldObj!=null && !worldObj.isRemote)
-        {
-        onInventoryUpdated();
-        }
-      }
-    };
-  outputInventory = new InventoryBasic(9)
-    {
-    @Override
-    public void markDirty()
-      {
-      onInventoryUpdated();
-      super.markDirty();
-      }
-    };
-  outputSlot = new InventoryBasic(1)
-    {
-    @Override
-    public void markDirty()
-      {
-      onInventoryUpdated();
-      super.markDirty();
-      }
-    };
-  bookSlot = new InventoryBasic(1)
-    {
-    @Override
-    public void markDirty()
-      {
-      onInventoryUpdated();
-      super.markDirty();
-      }
-    };
+  resourceInventory = new InventoryBasic(27);
+  outputInventory = new InventoryBasic(9);
+  outputSlot = new InventoryBasic(1);
+  bookSlot = new InventoryBasic(1);
   resourceSlotIndices = new int[18];
   for(int i = 0; i < 18; i++)
     {
@@ -108,15 +67,9 @@ public TileAutoCrafting()
     }
   }
 
-private void onInventoryUpdated()
+private boolean canCraft()
   {
-  this.hasResourcesForNext = false;
-  this.shouldUpdateInventory = true;
-  this.markDirty();
-  }
-
-private void countResources()
-  {
+  if(outputSlot.getStackInSlot(0)==null){return false;}//no output stack, don't even bother checking
   ArrayList<ItemStack> compactedCraft = new ArrayList<ItemStack>();
   ItemStack stack1, stack2;
   boolean found;
@@ -150,10 +103,7 @@ private void countResources()
       break;
       }
     }  
-  if(found)
-    {
-    hasResourcesForNext = true;
-    }
+  return found;
   }
 
 public String getCrafterName()
@@ -168,7 +118,7 @@ public final void setOwningPlayer(String name)
 
 public boolean tryCraftItem()
   {
-  if(hasResourcesForNext && outputSlot.getStackInSlot(0)!=null && InventoryTools.canInventoryHold(outputInventory, -1, this.outputSlot.getStackInSlot(0)))
+  if(canCraft() && canHold())
     {
     craftItem();
     return true;
@@ -185,7 +135,6 @@ private void craftItem()
     {
     InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
     }  
-  countResources();
   }
 
 private void useResources()
@@ -232,8 +181,6 @@ public void readFromNBT(NBTTagCompound tag)
   this.outputInventory.readFromNBT(tag.getCompoundTag("outputInventory"));
   this.outputSlot.readFromNBT(tag.getCompoundTag("outputSlot"));
   InventoryTools.readInventoryFromNBT(craftMatrix, tag.getCompoundTag("craftMatrix"));
-  hasResourcesForNext = tag.getBoolean("hasResourcesForNext");
-  shouldUpdateInventory = tag.getBoolean("shouldUpdateInventory");
   onLayoutMatrixChanged(craftMatrix);
   }
 
@@ -246,15 +193,12 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setTag("outputInventory", outputInventory.writeToNBT(new NBTTagCompound()));
   tag.setTag("outputSlot", outputSlot.writeToNBT(new NBTTagCompound()));
   tag.setTag("craftMatrix", InventoryTools.writeInventoryToNBT(craftMatrix, new NBTTagCompound()));  
-  tag.setBoolean("hasResourcesForNext", hasResourcesForNext);
-  tag.setBoolean("shouldUpdateInventory", shouldUpdateInventory);
   }
 
 /***************************************INVENTORY METHODS************************************************/
 private void onLayoutMatrixChanged(IInventory matrix)
   {
   this.outputSlot.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(craftMatrix, worldObj, getCrafterName()));
-  this.onInventoryUpdated();
   }
 
 @Override
@@ -419,20 +363,21 @@ protected boolean processWork()
 @Override
 protected boolean hasWorksiteWork()
   {
-  return hasResourcesForNext && outputSlot.getStackInSlot(0)!=null;
+  return canCraftLastCheck && canHoldLastCheck && outputSlot.getStackInSlot(0)!=null;
   }
 
 @Override
 protected void updateWorksite()
   {
-  worldObj.theProfiler.startSection("CraftingInventoryCheck");
-  if(shouldUpdateInventory)
-    {
-    hasResourcesForNext = false;
-    countResources();
-    shouldUpdateInventory = false;
-    }
-  worldObj.theProfiler.endSection();
+  canCraftLastCheck = canCraft();
+  canHoldLastCheck = canHold();
+  }
+
+private boolean canHold()
+  {
+  ItemStack test = outputSlot.getStackInSlot(0);
+  if(test==null){return false;}//nothing to hold!!
+  return InventoryTools.canInventoryHold(outputInventory, -1, test);
   }
 
 @Override
