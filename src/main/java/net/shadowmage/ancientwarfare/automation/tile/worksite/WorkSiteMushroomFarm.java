@@ -80,6 +80,14 @@ public WorkSiteMushroomFarm()
   }
 
 @Override
+public void onTargetsAdjusted()
+  {
+  validateCollection(blocksToPlantMushroom);
+  validateCollection(blocksToHarvest);
+  validateCollection(blocksToPlantNetherWart);
+  }
+
+@Override
 public void onBoundsAdjusted()
   {
   validateCollection(blocksToPlantMushroom);

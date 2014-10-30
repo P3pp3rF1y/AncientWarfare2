@@ -100,6 +100,14 @@ public WorkSiteTreeFarm()
   }
 
 @Override
+public void onTargetsAdjusted()
+  {
+  validateCollection(blocksToFertilize);
+  validateCollection(blocksToChop);
+  validateCollection(blocksToPlant);
+  }
+
+@Override
 public void onBoundsAdjusted()
   {
   validateCollection(blocksToFertilize);

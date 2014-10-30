@@ -1,19 +1,19 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.util.ChunkCoordinates;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIFactionRangedAttack extends NpcAI
+public class NpcAIPlayerOwnedAttackRanged extends NpcAI
 {
 
 private final IRangedAttackMob rangedAttacker;
 private int attackDelay = 35;
-private double attackDistanceSq = 16.d * 16.d;
+private double attackDistance = 16.d * 16.d;
 private EntityLivingBase target;
 
-public NpcAIFactionRangedAttack(NpcBase npc)
+public NpcAIPlayerOwnedAttackRanged(NpcBase npc)
     {
     super(npc);
     this.rangedAttacker = (IRangedAttackMob)npc;//will classcastexception if improperly used..
@@ -65,36 +65,24 @@ public void updateTask()
   double dist = this.npc.getDistanceSq(this.target.posX, this.target.posY, this.target.posZ);
   boolean canSee = this.npc.getEntitySenses().canSee(this.target);  
 
-  this.attackDelay--;
   this.npc.getLookHelper().setLookPositionWithEntity(this.target, 30.0F, 30.0F);
-  if(dist > attackDistanceSq || !canSee)
+  if(dist>attackDistance || !canSee)
     {
     this.npc.addAITask(TASK_MOVE);
     this.moveToEntity(target, dist);    
     }
   else
-    {    
-    double homeDist = npc.getDistanceSqFromHome();
-    if(npc.getDistanceSqFromHome() > 9 && dist < 8*8)
-      {
-      npc.addAITask(TASK_MOVE);
-      ChunkCoordinates home = npc.getHomePosition();      
-      this.moveToPosition(home.posX, home.posY, home.posZ, homeDist); 
-      }
-    else
-      {
-      npc.removeAITask(TASK_MOVE);  
-      npc.getNavigator().clearPathEntity();
-      }
+    {
+    npc.removeAITask(TASK_MOVE);
+    this.npc.getNavigator().clearPathEntity();
+    this.attackDelay--;
     if(this.attackDelay<=0)
       {
-      float pwr = (float)(attackDistanceSq / dist);
+      float pwr = (float)(attackDistance / dist);
       pwr = pwr < 0.1f ? 0.1f : pwr>1.f ? 1.f : pwr;
       this.rangedAttacker.attackEntityWithRangedAttack(target, 1.f);
       this.attackDelay=35;
       }
     }  
   }
-
-
 }

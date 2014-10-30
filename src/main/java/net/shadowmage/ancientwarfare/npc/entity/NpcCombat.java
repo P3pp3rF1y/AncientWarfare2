@@ -26,21 +26,18 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwnedCombat;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackRanged;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandGuard;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAICommandMove;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindCommander;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeOnLowHealth;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIGetFood;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIIdleWhenHungry;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMedic;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIPatrol;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAttackRanged;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFindCommander;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedMedic;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedPatrol;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
@@ -50,13 +47,13 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob
 
 private EntityAIBase collideAI;
 private EntityAIBase arrowAI;
-private NpcAIPatrol patrolAI;
+private NpcAIPlayerOwnedPatrol patrolAI;
 
 public NpcCombat(World par1World)
   {
   super(par1World);
   collideAI = new NpcAIAttackMeleeLongRange(this);
-  arrowAI = new NpcAIAttackRanged(this); 
+  arrowAI = new NpcAIPlayerOwnedAttackRanged(this); 
   
   IEntitySelector selector = new IEntitySelector()
     {
@@ -70,18 +67,15 @@ public NpcCombat(World par1World)
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
-  this.tasks.addTask(0, (horseAI=new NpcAIRideHorse(this)));
-  this.tasks.addTask(1, (alertAI=new NpcAIAlertPlayerOwnedCombat(this)));  
+  this.tasks.addTask(0, (horseAI=new NpcAIPlayerOwnedRideHorse(this)));
   this.tasks.addTask(2, new NpcAIFollowPlayer(this));
-  this.tasks.addTask(2, new NpcAICommandGuard(this));
-  this.tasks.addTask(2, new NpcAICommandMove(this));
-  this.tasks.addTask(3, new NpcAIFleeOnLowHealth(this));
-  this.tasks.addTask(4, new NpcAIGetFood(this));
-  this.tasks.addTask(5, new NpcAIIdleWhenHungry(this));
+  this.tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
+  this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
+  this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
   //6--empty....
-  //7==combat task, inserted onweaponinventoryupdated
-  this.tasks.addTask(8, new NpcAIMedic(this));
-  this.tasks.addTask(9, (patrolAI = new NpcAIPatrol(this)));
+  //7==combat task, inserted from onweaponinventoryupdated
+  this.tasks.addTask(8, new NpcAIPlayerOwnedMedic(this));
+  this.tasks.addTask(9, (patrolAI = new NpcAIPlayerOwnedPatrol(this)));
   
   this.tasks.addTask(10, new NpcAIMoveHome(this, 50.f, 5.f, 20.f, 5.f));
   
@@ -90,7 +84,7 @@ public NpcCombat(World par1World)
   this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
   this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));      
   
-  this.targetTasks.addTask(0, new NpcAIFindCommander(this));
+  this.targetTasks.addTask(0, new NpcAIPlayerOwnedFindCommander(this));
   this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
   this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, true, false, selector));
   }

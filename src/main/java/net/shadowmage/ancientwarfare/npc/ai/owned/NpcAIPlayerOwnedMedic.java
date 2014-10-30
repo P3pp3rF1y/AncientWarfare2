@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,9 +10,10 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget.Sorter;
 import net.minecraft.util.AxisAlignedBB;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIMedic extends NpcAI
+public class NpcAIPlayerOwnedMedic extends NpcAI
 {
 
 int injuredRecheckDelay = 0;
@@ -20,12 +21,12 @@ int injuredRecheckDelayMax = 20;
 int healDelay = 0;
 int healDelayMax = 20;
 
-EntityLivingBase targetToHeal = null;
+protected EntityLivingBase targetToHeal = null;
 
 private final EntityAINearestAttackableTarget.Sorter sorter;
 IEntitySelector selector;
 
-public NpcAIMedic(NpcBase npc)
+public NpcAIPlayerOwnedMedic(NpcBase npc)
   {
   super(npc);
   sorter = new Sorter(npc);
@@ -37,7 +38,7 @@ public NpcAIMedic(NpcBase npc)
       if(var1 instanceof EntityLivingBase)
         {
         EntityLivingBase e = (EntityLivingBase)var1;
-        if(e.getHealth()<e.getMaxHealth() && !NpcAIMedic.this.npc.isHostileTowards(e))
+        if(e.getHealth()<e.getMaxHealth() && !NpcAIPlayerOwnedMedic.this.npc.isHostileTowards(e))
           {
           return true;
           }

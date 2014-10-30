@@ -413,14 +413,27 @@ public final void onKillEntity(EntityLivingBase par1EntityLivingBase)
     }
   }
 
+/**
+ * Returns the currently following player-issues command, or null if none
+ * @return
+ */
 public Command getCurrentCommand()
   {
   return null;//NOOP on non-player owned npc
   }
 
+/**
+ * input path from command baton - default implementation for player-owned NPC is to set current command==input command and then let AI do the rest
+ * @param cmd
+ */
 public void handlePlayerCommand(Command cmd)
   {
 //NOOP on non-player owned npc
+  }
+
+public void setPlayerCommand(Command cmd)
+  {
+  
   }
 
 /**
@@ -589,15 +602,6 @@ public abstract String getNpcSubType();
 public abstract String getNpcType();
 
 /**
- * handle an incoming attack alert from another NPC.<br>
- * implementations should inform their alert-AI and/or set attack/flee targets appropriately<br>
- * called from alert-AI tasks when npc attack target / attacker changes.
- * @param broadcaster
- * @param target
- */
-public abstract void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target);
-
-/**
  * return the full NPC type for this npc<br>
  * returns npcType if subtype is empty, else npcType.npcSubtype 
  * @return
@@ -722,6 +726,11 @@ public int getUpkeepBlockSide()
 public BlockPosition getUpkeepPoint()
   {
   return null;//NOOP in non-player owned
+  }
+
+public void setUpkeepAutoPosition(BlockPosition pos)
+  {
+  
   }
 
 public int getUpkeepAmount()

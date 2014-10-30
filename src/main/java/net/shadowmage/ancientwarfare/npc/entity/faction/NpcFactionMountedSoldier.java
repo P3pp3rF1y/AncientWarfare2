@@ -13,13 +13,12 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFindCommanderFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorseFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFindCommander;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 
 public abstract class NpcFactionMountedSoldier extends NpcFactionMounted
 {
@@ -41,9 +40,8 @@ public NpcFactionMountedSoldier(World par1World)
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
-  this.tasks.addTask(0, (horseAI=new NpcAIRideHorseFaction(this)));
-  this.tasks.addTask(1, new NpcAIFindCommanderFaction(this));  
-  this.tasks.addTask(1, (alertAI = new NpcAIAlertFaction(this)));
+  this.tasks.addTask(0, (horseAI=new NpcAIFactionRideHorse(this)));
+  this.tasks.addTask(1, new NpcAIFactionFindCommander(this));  
   this.tasks.addTask(1, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f));   
   this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));

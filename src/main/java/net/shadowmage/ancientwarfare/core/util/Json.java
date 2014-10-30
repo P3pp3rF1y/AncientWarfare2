@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.nbt.NBTBase;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class Json
 {
@@ -168,8 +169,14 @@ private void skipBlanks() throws IOException
 
 protected JsonAbstract readAbstract() throws IOException
   {
-  if(rawChar=='{'){return readObject();}
-  else if(rawChar=='['){return readArray();}
+  if(rawChar=='{')
+    {
+    return readObject();
+    }
+  else if(rawChar=='[')
+    {
+    return readArray();
+    }
   return readValue();
   }
 
@@ -184,7 +191,12 @@ protected JsonObject readObject() throws IOException
   JsonObject object = new JsonObject();
   readRawChar();
   skipBlanks();
-  if(rawChar=='}'){return object;}//end was detected with nothing intervening
+  if(rawChar=='}')
+    {
+    readRawChar();//read to next char
+    skipBlanks();//advance to next valid character
+    return object;
+    }//end was detected with nothing intervening
   
   String name;
   JsonAbstract value;
@@ -222,7 +234,12 @@ protected JsonArray readArray() throws IOException
   JsonArray array = new JsonArray();
   readRawChar();
   skipBlanks();//advance to next valid char
-  if(rawChar==']'){return array;}//end was detected with nothing intervening  
+  if(rawChar==']')
+    {
+    readRawChar();//read to next char
+    skipBlanks();//advance to next valid character
+    return array;
+    }//end was detected with nothing intervening  
   JsonAbstract value;  
   while(rawChar!=']')
     {

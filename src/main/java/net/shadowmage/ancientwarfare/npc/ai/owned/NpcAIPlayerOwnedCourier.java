@@ -1,16 +1,17 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
-public class NpcAICourier extends NpcAI
+public class NpcAIPlayerOwnedCourier extends NpcAI
 {
 
 boolean init;
@@ -23,7 +24,7 @@ RoutingOrder order;
 ItemStack routeStack;
 
 NpcCourier courier;
-public NpcAICourier(NpcBase npc)
+public NpcAIPlayerOwnedCourier(NpcBase npc)
   {
   super(npc);
   courier = (NpcCourier)npc;

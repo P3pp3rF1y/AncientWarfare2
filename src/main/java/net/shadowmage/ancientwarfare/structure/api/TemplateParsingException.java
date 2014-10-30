@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.api;
 
+@SuppressWarnings("serial")
 public class TemplateParsingException extends Exception
 {
 

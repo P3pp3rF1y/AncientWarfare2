@@ -1,12 +1,8 @@
 package net.shadowmage.ancientwarfare.structure.template.build;
 
+@SuppressWarnings("serial")
 public class StructureBuildingException extends Exception
 {
-
-/**
- * 
- */
-private static final long serialVersionUID = -3374779894692686167L;
 
 protected StructureBuildingException()
   {
@@ -44,7 +40,7 @@ public EntityPlacementException(String message, Throwable t){super(message, t);}
 public EntityPlacementException(String message){super(message);}
 }
 
-public static class Block extends StructureBuildingException
+public static class BlockPlacementException extends StructureBuildingException
 {
 
 }

@@ -48,6 +48,7 @@ public void addHandledBlocks(IStructurePluginManager manager)
   manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteQuarry, TemplateRuleWorksite.class);
   manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteWarehouse, TemplateRuleWorksite.class);
   
+  manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueShaft, TemplateRuleTorqueTile.class);
   manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueConduit, TemplateRuleTorqueTile.class);
   manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueDistributor, TemplateRuleTorqueTile.class);
   manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.flywheel, TemplateRuleTorqueTile.class);

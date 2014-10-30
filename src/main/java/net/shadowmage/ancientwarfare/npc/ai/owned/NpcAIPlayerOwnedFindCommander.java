@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,9 +10,10 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget.Sorter;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.util.AxisAlignedBB;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIFindCommander extends NpcAI
+public class NpcAIPlayerOwnedFindCommander extends NpcAI
 {
 
 int lastExecuted = -1;
@@ -22,7 +23,7 @@ AttributeModifier modifier;
 private final EntityAINearestAttackableTarget.Sorter sorter;
 IEntitySelector selector;
 
-public NpcAIFindCommander(NpcBase npc)
+public NpcAIPlayerOwnedFindCommander(NpcBase npc)
   {
   super(npc);
   modifier = new AttributeModifier("npc.commander.bonus", 2.d, 0);//additive modifier attribute, add 2 damage
@@ -36,7 +37,7 @@ public NpcAIFindCommander(NpcBase npc)
       if(var1 instanceof NpcBase)
         {
         NpcBase e = (NpcBase)var1;
-        if(NpcAIFindCommander.this.npc.canBeCommandedBy(e.getOwnerName()) && isCommander(e))
+        if(NpcAIPlayerOwnedFindCommander.this.npc.canBeCommandedBy(e.getOwnerName()) && isCommander(e))
           {
           return true;
           }

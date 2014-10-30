@@ -11,7 +11,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -20,8 +19,6 @@ import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 
 public abstract class NpcFaction extends NpcBase
 {
-
-protected NpcAIAlertFaction alertAI;
 
 public NpcFaction(World par1World)
   {
@@ -75,15 +72,6 @@ protected boolean interact(EntityPlayer player)
 public void openGUI(EntityPlayer player)
   {
   NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);
-  }
-
-@Override
-public void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target)
-  {
-  if(alertAI!=null)
-    {
-    alertAI.handleAlert(broadcaster, target);
-    }
   }
 
 @Override

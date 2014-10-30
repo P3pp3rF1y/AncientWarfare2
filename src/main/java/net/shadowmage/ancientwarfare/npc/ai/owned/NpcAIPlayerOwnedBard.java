@@ -1,14 +1,15 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard.BardTuneData;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIBard extends NpcAI
+public class NpcAIPlayerOwnedBard extends NpcAI
 {
 
 boolean playing = false;//if currently playing a tune.
@@ -19,7 +20,7 @@ int playTime;//tracking current play time.  when this exceeds length, cooldown d
 
 NpcBard bard;
 
-public NpcAIBard(NpcBase npc)
+public NpcAIPlayerOwnedBard(NpcBase npc)
   {
   super(npc);
   this.bard = (NpcBard)npc;

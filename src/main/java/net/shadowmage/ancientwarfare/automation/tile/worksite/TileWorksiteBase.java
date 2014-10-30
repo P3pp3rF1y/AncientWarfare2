@@ -395,7 +395,7 @@ public final void setPrimaryFacing(ForgeDirection face)
   {
   orientation = face;
   this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
+  this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());//notify neighbors of tile change
   }
 
 //*************************************** NBT AND PACKET DATA METHODS ***************************************//

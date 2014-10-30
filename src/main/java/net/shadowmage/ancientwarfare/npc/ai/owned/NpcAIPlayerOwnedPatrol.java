@@ -1,12 +1,13 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 
-public class NpcAIPatrol extends NpcAI
+public class NpcAIPlayerOwnedPatrol extends NpcAI
 {
 
 double moveSpeed = 1.d;
@@ -20,7 +21,7 @@ int maxTicksAtPoint = 50;//default 2.5 second idle at each point
 public CombatOrder orders;
 ItemStack ordersStack;
 
-public NpcAIPatrol(NpcBase npc)
+public NpcAIPlayerOwnedPatrol(NpcBase npc)
   {
   super(npc);
   setMutexBits(ATTACK+MOVE);

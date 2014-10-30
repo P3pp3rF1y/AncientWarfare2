@@ -1,14 +1,15 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
-public class NpcAIGetFood extends NpcAI
+public class NpcAIPlayerOwnedGetFood extends NpcAI
 {
 
-public NpcAIGetFood(NpcPlayerOwned npc)
+public NpcAIPlayerOwnedGetFood(NpcPlayerOwned npc)
   {
   super(npc);
   this.setMutexBits(MOVE+ATTACK+HUNGRY);

@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertFaction;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
@@ -31,7 +30,6 @@ public NpcFactionTrader(World par1World)
   this.tasks.addTask(0, new EntityAISwimming(this));
   this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
   this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
-  this.tasks.addTask(1, (alertAI = new NpcAIAlertFaction(this)));
   this.tasks.addTask(1, new NpcAIFollowPlayer(this));
   this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); 
   

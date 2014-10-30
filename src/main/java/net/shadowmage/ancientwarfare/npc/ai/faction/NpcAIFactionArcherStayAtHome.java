@@ -1,15 +1,16 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.faction;
 
 import net.minecraft.util.ChunkCoordinates;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIStayAtHome extends NpcAI
+public class NpcAIFactionArcherStayAtHome extends NpcAI
 {
 
 BlockPosition target;
 
-public NpcAIStayAtHome(NpcBase npc)
+public NpcAIFactionArcherStayAtHome(NpcBase npc)
   {
   super(npc);
   setMutexBits(ATTACK + MOVE);

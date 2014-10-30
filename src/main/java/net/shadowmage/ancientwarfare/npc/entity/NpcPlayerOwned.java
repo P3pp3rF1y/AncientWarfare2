@@ -14,11 +14,11 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAlertPlayerOwned;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
@@ -33,8 +33,7 @@ public abstract class NpcPlayerOwned extends NpcBase
 private Command playerIssuedCommand;//TODO load/save
 private int foodValueRemaining = 0;
 
-protected NpcAIAlertPlayerOwned alertAI;
-protected NpcAIRideHorse horseAI;
+protected NpcAIPlayerOwnedRideHorse horseAI;
 
 private BlockPosition townHallPosition;
 private BlockPosition upkeepAutoBlock;
@@ -80,15 +79,6 @@ public int getArmorValueOverride()
 public int getAttackDamageOverride()
   {
   return -1;
-  }
-
-@Override
-public void handleAlertBroadcast(NpcBase broadcaster, EntityLivingBase target)
-  {
-  if(alertAI!=null)
-    {
-    alertAI.handleAlert(broadcaster, target);
-    }  
   }
 
 @Override
@@ -173,43 +163,38 @@ public Command getCurrentCommand()
 @Override
 public void handlePlayerCommand(Command cmd)
   {  
-  if(cmd==null)
-    {
-    this.playerIssuedCommand=null;
-    }
-  else if(cmd.type==CommandType.ATTACK)
+  if(cmd!=null && cmd.type==CommandType.ATTACK)
     {
     Entity e = cmd.getEntityTarget(worldObj);
-    if(e instanceof EntityLivingBase && canTarget(e))
+    AWLog.logDebug("handling attack command : "+e);
+    if(e instanceof EntityLivingBase)
       {
-      setAttackTarget((EntityLivingBase)e);
+      EntityLivingBase elb = (EntityLivingBase)e;
+      if(isHostileTowards(elb))//only allow targets npc is hostile towards
+        {
+        if(elb instanceof NpcPlayerOwned)//if target is also a player-owned npc
+          {
+          NpcPlayerOwned n = (NpcPlayerOwned)elb;
+          if(n.getTeam()!=getTeam())//only allow target if they are not on the same team (non-teamed cannot attack other non-teamed, cannot attack team-mates npcs either)
+            {
+            setAttackTarget(n);
+            }
+          }
+        else
+          {
+          setAttackTarget(elb);        
+          }      
+        }
       }
-    this.playerIssuedCommand=null;
+    cmd=null;
     }
-  else if(cmd.type==CommandType.ATTACK_AREA || cmd.type==CommandType.GUARD || cmd.type==CommandType.MOVE)
-    {
-    this.playerIssuedCommand=cmd;    
-    }
-  else if(cmd.type==CommandType.SET_HOME)
-    {
-    setHomeArea(cmd.x, cmd.y, cmd.z, 40);
-    }
-  else if(cmd.type==CommandType.SET_UPKEEP)
-    {
-    upkeepAutoBlock = new BlockPosition(cmd.x, cmd.y, cmd.z);
-    }
-  else if(cmd.type==CommandType.CLEAR_HOME)
-    {
-    detachHome();
-    }
-  else if(cmd.type==CommandType.CLEAR_UPKEEP)
-    {
-    upkeepAutoBlock=null;
-    }
-  else if(cmd.type==CommandType.CLEAR_COMMAND)
-    {
-    this.playerIssuedCommand = null;
-    }
+  this.setPlayerCommand(cmd); 
+  }
+
+@Override
+public void setPlayerCommand(Command cmd)
+  {
+  this.playerIssuedCommand = cmd;
   }
 
 @Override
@@ -305,6 +290,12 @@ public BlockPosition getUpkeepPoint()
     return order.getUpkeepPosition();
     }
   return upkeepAutoBlock;
+  }
+
+@Override
+public void setUpkeepAutoPosition(BlockPosition pos)
+  {
+  upkeepAutoBlock = pos;
   }
 
 @Override

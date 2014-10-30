@@ -4,12 +4,12 @@ import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorseFaction;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 
 public abstract class NpcFactionMounted extends NpcFaction
 {
 
-protected NpcAIRideHorseFaction horseAI;
+protected NpcAIFactionRideHorse horseAI;
 
 public NpcFactionMounted(World par1World)
   {

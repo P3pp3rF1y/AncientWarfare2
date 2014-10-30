@@ -1,12 +1,13 @@
-package net.shadowmage.ancientwarfare.npc.ai;
+package net.shadowmage.ancientwarfare.npc.ai.faction;
 
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFindCommander;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 
-public class NpcAIFindCommanderFaction extends NpcAIFindCommander
+public class NpcAIFactionFindCommander extends NpcAIPlayerOwnedFindCommander
 {
 
-public NpcAIFindCommanderFaction(NpcBase npc)
+public NpcAIFactionFindCommander(NpcBase npc)
   {
   super(npc);
   }
