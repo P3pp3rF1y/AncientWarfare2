@@ -155,7 +155,6 @@ private void readRawChar() throws IOException
     currentChar = ' ';
     return;
     }
-  AWLog.logDebug("rawChar: "+currentChar);
   rawChar = readBuffer[index];
   currentChar = readBuffer[index];
   }
@@ -172,15 +171,12 @@ protected JsonAbstract readAbstract() throws IOException
   {
   if(rawChar=='{')
     {
-    AWLog.logDebug("starting object read");
     return readObject();
     }
   else if(rawChar=='[')
     {
-    AWLog.logDebug("starting array read");
     return readArray();
     }
-  AWLog.logDebug("starting value read");
   return readValue();
   }
 
@@ -224,7 +220,6 @@ protected JsonObject readObject() throws IOException
     }
   readRawChar();//read to next char
   skipBlanks();//advance to next valid character
-  AWLog.logDebug("read object: "+object.getJsonString());
   return object;
   }
 
@@ -260,7 +255,6 @@ protected JsonArray readArray() throws IOException
     }
   readRawChar();//read to next char
   skipBlanks();//advance to next valid character
-  AWLog.logDebug("read array: "+array.getJsonString());
   return array;
   }
 
