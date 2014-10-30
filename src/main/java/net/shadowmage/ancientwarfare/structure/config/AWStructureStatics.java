@@ -57,12 +57,14 @@ public static int structureImageHeight = 288;
 public static Set<String> excludedSpawnerEntities = new HashSet<String>();
 private static HashSet<String> skippableWorldGenBlocks = new HashSet<String>();
 private static HashSet<String> worldGenTargetBlocks = new HashSet<String>();
+private static HashSet<String> scannerSkippedBlocks = new HashSet<String>();
 
 private static String worldGenCategory = "a_world-gen_settings";
 private static String villageGenCategory = "b_village-gen_settings";
 private static String excludedEntitiesCategory = "c_excluded_spawner_entities";
 private static String worldGenBlocks = "d_world_gen_skippable_blocks";
 private static String targetBlocks = "e_world_gen_target_blocks";
+private static String scanSkippedBlocks = "f_scanner_skipped_blocks";
 
 @Override
 public void initializeCategories()
@@ -72,6 +74,7 @@ public void initializeCategories()
   this.config.addCustomCategoryComment(excludedEntitiesCategory, "Entities that will not show up in the Mob Spawner Placer entity selection list.\nAdd any mobs here that will crash if spawned via the vanilla mob-spawner (usually complex NBT-defined entities).");
   this.config.addCustomCategoryComment(worldGenBlocks, "Blocks that should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
   this.config.addCustomCategoryComment(targetBlocks, "List of target blocks to add to the target-block selection GUI.\nVanilla block names should be listed as the 1.7 registered name. \nMod blocks should be listed as their registered name");
+  this.config.addCustomCategoryComment(scanSkippedBlocks, "List of blocks that the structure scanner will completely ignore.\nWhenever these blocks are encountered the template will instead fill that block position with a hard-air rule.\nAdd any blocks to this list that may cause crashes when scanned or duplicated.\nVanilla blocks should not need to be added, but some mod-blocks may.\nBlock names must be specified by fully-qualified name (e.g. \"minecraft:stone\")");
   }
 
 @Override
@@ -119,7 +122,21 @@ protected void initializeValues()
   initializeDefaultSkippableBlocks();
   initializeDefaultSkippedEntities();
   initializeDefaultAdditionalTargetBlocks();
+  initializeScannerSkippedBlocks();
   this.config.save();
+  }
+
+private void initializeScannerSkippedBlocks()
+  {
+  String[] defaultSkippableBlocks = new String[]
+        {
+        "AncientWarfareStructure:gate_proxy",//skip gate proxy blocks by default... possibly some others that need skipping as well 
+        };
+  defaultSkippableBlocks = config.getStringList("scanner_skipped_blocks", scanSkippedBlocks, defaultSkippableBlocks, "Blocks to be skipped by structure scanner");
+  for(String b : defaultSkippableBlocks)
+    {
+    scannerSkippedBlocks.add(b);
+    }
   }
 
 private void initializeDefaultSkippableBlocks()
@@ -740,6 +757,11 @@ public static Set<String> getUserDefinedTargetBlocks()
 public static String getBiomeName(BiomeGenBase biome)
   {
   return biome==null ? "null" : biome.biomeName.toLowerCase();
+  }
+
+public static boolean shouldSkipScan(Block block)
+  {
+  return scannerSkippedBlocks.contains(Block.blockRegistry.getNameForObject(block));
   }
 
 public void loadPostInitValues()

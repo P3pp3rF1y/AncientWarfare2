@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -36,6 +35,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
@@ -108,8 +108,9 @@ public StructureTemplate scan(World world, BlockPosition min, BlockPosition max,
         destination.z = scanZ - min.z;
         BlockTools.rotateInArea(destination, xSize, zSize, turns);
         
-        scannedBlock = world.getBlock(scanX, scanY, scanZ);
-        if(scannedBlock!=null && scannedBlock!=Blocks.air)
+        scannedBlock = world.getBlock(scanX, scanY, scanZ);       
+        
+        if(scannedBlock!=null && !AWStructureStatics.shouldSkipScan(scannedBlock) && !world.isAirBlock(scanX, scanY, scanZ))
           {   
           pluginId = StructurePluginManager.instance().getPluginNameFor(scannedBlock);
           if(pluginId!=null)
@@ -144,12 +145,9 @@ public StructureTemplate scan(World world, BlockPosition min, BlockPosition max,
             templateRuleData[index] = (short) scannedBlockRule.ruleNumber;
             }
           }
-        else
-          {
-          }//end entity-scan else block
         }//end scan x-level for
-      }
-    }  
+      }//end scan z-level for
+    }//end scan y-level for
   
 
   TemplateRuleEntity scannedEntityRule;
