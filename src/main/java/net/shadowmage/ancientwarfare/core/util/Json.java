@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.nbt.NBTBase;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class Json
 {
@@ -154,6 +155,7 @@ private void readRawChar() throws IOException
     currentChar = ' ';
     return;
     }
+  AWLog.logDebug("rawChar: "+currentChar);
   rawChar = readBuffer[index];
   currentChar = readBuffer[index];
   }
@@ -168,8 +170,17 @@ private void skipBlanks() throws IOException
 
 protected JsonAbstract readAbstract() throws IOException
   {
-  if(rawChar=='{'){return readObject();}
-  else if(rawChar=='['){return readArray();}
+  if(rawChar=='{')
+    {
+    AWLog.logDebug("starting object read");
+    return readObject();
+    }
+  else if(rawChar=='[')
+    {
+    AWLog.logDebug("starting array read");
+    return readArray();
+    }
+  AWLog.logDebug("starting value read");
   return readValue();
   }
 
@@ -184,7 +195,12 @@ protected JsonObject readObject() throws IOException
   JsonObject object = new JsonObject();
   readRawChar();
   skipBlanks();
-  if(rawChar=='}'){return object;}//end was detected with nothing intervening
+  if(rawChar=='}')
+    {
+    readRawChar();//read to next char
+    skipBlanks();//advance to next valid character
+    return object;
+    }//end was detected with nothing intervening
   
   String name;
   JsonAbstract value;
@@ -208,6 +224,7 @@ protected JsonObject readObject() throws IOException
     }
   readRawChar();//read to next char
   skipBlanks();//advance to next valid character
+  AWLog.logDebug("read object: "+object.getJsonString());
   return object;
   }
 
@@ -222,7 +239,12 @@ protected JsonArray readArray() throws IOException
   JsonArray array = new JsonArray();
   readRawChar();
   skipBlanks();//advance to next valid char
-  if(rawChar==']'){return array;}//end was detected with nothing intervening  
+  if(rawChar==']')
+    {
+    readRawChar();//read to next char
+    skipBlanks();//advance to next valid character
+    return array;
+    }//end was detected with nothing intervening  
   JsonAbstract value;  
   while(rawChar!=']')
     {
@@ -238,6 +260,7 @@ protected JsonArray readArray() throws IOException
     }
   readRawChar();//read to next char
   skipBlanks();//advance to next valid character
+  AWLog.logDebug("read array: "+array.getJsonString());
   return array;
   }
 
