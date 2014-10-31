@@ -39,5 +39,9 @@ public void updateVehicleMotion(boolean[] inputStates)
     {
     vehicle.rotateEntity(rotation);    
     }
+  if(vehicle.worldObj.isRemote && inputStates[VehicleInputKey.FIRE.ordinal()])
+    {
+    vehicle.onFirePressedPilot();
+    }
   }
 }

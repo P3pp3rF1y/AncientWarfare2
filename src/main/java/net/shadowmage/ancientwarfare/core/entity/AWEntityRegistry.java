@@ -119,6 +119,7 @@ public static final String NPC_FACTION_CUSTOM_3_CIVILIAN_FEMALE = "custom_3.civi
  * Vehicle Module Entity Registrations
  */
 public static final String VEHICLE_TEST = "vehicle_test";
+public static final String MISSILE_TEST = "missile_test";
 
 /**
  * Structure Module Entity Registrations
@@ -150,6 +151,11 @@ public static Entity createEntity(String type, World world)
   return null;
   }
 
+/**
+ * The entityClass for this registration -must- match the class returned from createEntity, or weird desynch crap will happen as server/client may be using different classes
+ * and/or the entity will not be persistent due to class mismatch
+ * @author Shadowmage
+ */
 public static abstract class EntityDeclaration
 {
 
@@ -160,6 +166,7 @@ Object mod;
 int trackingRange;
 int updateFrequency;
 boolean sendsVelocityUpdates;
+
 
 public EntityDeclaration(Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)
   {

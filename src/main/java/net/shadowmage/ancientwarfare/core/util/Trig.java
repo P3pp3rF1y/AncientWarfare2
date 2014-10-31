@@ -28,7 +28,6 @@ import net.minecraft.util.MathHelper;
  * because I hate it so much...why not make the 
  * computer do it all for me?
  * @author Shadowmage
- *
  */
 public class Trig
 {
@@ -36,6 +35,7 @@ public static final float PI = 3.141592653589793f;
 public static final float TORADIANS = PI / 180.f;
 public static final float TODEGREES = 180.f / PI;
 public static final float GRAVITY = 9.81f;
+public static final double gravityTick =  GRAVITY *0.05D * 0.05D;
 
 public static int getPower(int num, int exp)
   {
@@ -213,7 +213,7 @@ public static float getVelocity(double x, double z)
 
 public static int getDifference(int a, int b)
   {
-  return a< b? b-a : a-b;
+  return Math.abs(a-b);
   }
 
 public static int getMin(int a, int b)
@@ -310,16 +310,6 @@ public static byte getTurnDirection(float yaw, float dest)
   return (byte) (diff < 0 ? -1 : 1);
   }
 
-public static double max(double... vals)
-  {
-  double max = vals[0];
-  for(int i = 1; i< vals.length; i++)
-    {
-    if(vals[i]>max){max=vals[i];}
-    }
-  return max;
-  }
-
 public static double min(double... vals)
   {
   double min = vals[0];
@@ -330,7 +320,17 @@ public static double min(double... vals)
   return min;
   }
 
-public static float getMin(float... vals)
+public static double max(double... vals)
+  {
+  double max = vals[0];
+  for(int i = 1; i< vals.length; i++)
+    {
+    if(vals[i]>max){max=vals[i];}
+    }
+  return max;
+  }
+
+public static float min(float... vals)
   {
   float min = Float.MAX_VALUE;
   for(float val : vals)
@@ -340,7 +340,7 @@ public static float getMin(float... vals)
   return min;
   }
 
-public static float getMax(float... vals)
+public static float max(float... vals)
   {
   float max = Float.MIN_VALUE;
   for(float val : vals)

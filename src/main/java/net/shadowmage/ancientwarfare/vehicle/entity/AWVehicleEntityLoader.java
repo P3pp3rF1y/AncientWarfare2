@@ -20,18 +20,28 @@ private static HashMap<String, String> regNameToIcon = new HashMap<String, Strin
 
 public static void load()
   {
-  EntityDeclaration reg = new EntityDeclaration(VehicleBase.class, AWEntityRegistry.VEHICLE_TEST, nextID++, AncientWarfareVehicles.instance, 120, 3, true)
+  EntityDeclaration reg = new EntityDeclaration(VehicleTurreted.class, AWEntityRegistry.VEHICLE_TEST, nextID++, AncientWarfareVehicles.instance, 120, 3, true)
     {  
     @Override
     public Entity createEntity(World world)
       {
-      return new VehicleBase(world);
+      return new VehicleTurreted(world);
       }
     };
-  registerEntity(reg, "fooicon");
+  registerVehicleEntity(reg, "fooicon");
+  
+  reg = new EntityDeclaration(MissileBase.class, AWEntityRegistry.MISSILE_TEST, nextID++, AncientWarfareVehicles.instance, 120, 3, true)
+    {
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new MissileBase(world);
+      }
+    };
+  AWEntityRegistry.registerEntity(reg);
   }
 
-private static void registerEntity(EntityDeclaration reg, String icon)
+private static void registerVehicleEntity(EntityDeclaration reg, String icon)
   {
   if(!vehicleTypes.contains(reg.getEntityName())){vehicleTypes.add(reg.getEntityName());}
   AWEntityRegistry.registerEntity(reg);

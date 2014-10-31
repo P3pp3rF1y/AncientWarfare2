@@ -7,10 +7,12 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehiclePart;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleTurreted;
 
 import org.lwjgl.opengl.GL11;
 
@@ -69,6 +71,16 @@ public void doRender(Entity entity, double x, double y,  double z, float yaw, fl
   GL11.glEnable(GL11.GL_TEXTURE_2D);
   GL11.glDisable(GL11.GL_BLEND);  
   GL11.glPopMatrix();
+  if(entity instanceof VehicleTurreted)
+    {
+    GL11.glPushMatrix();
+    GL11.glTranslated(x, y, z);
+    VehicleTurreted veh = (VehicleTurreted)entity;
+    Vec3 turretOffset = veh.getTurretOffset();
+    Vec3 launchVelocity = veh.getLaunchVelocity();
+    TrajectoryRender.renderTrajectory(turretOffset.xCoord, turretOffset.yCoord, turretOffset.zCoord, launchVelocity.xCoord, launchVelocity.yCoord, launchVelocity.zCoord);
+    GL11.glPopMatrix();
+    }
   }
 
 @Override

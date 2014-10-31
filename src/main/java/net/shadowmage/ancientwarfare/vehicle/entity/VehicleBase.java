@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -78,6 +79,31 @@ public void onUpdate()
   worldObj.theProfiler.endSection();
   }
 
+//************************************* INPUT HANDLING *************************************//
+// Custom input handling, for input such as fire, openGUI commands, switching stations, etc...
+//
+
+/**
+ * The vehicle is responsible for managing its own firing cooldown timer and firing parameters<br>
+ * If a missile is fired it should use the launching entity ID of the vehicle rider, which will be used for team-status / collision stuff<br>
+ * This input will happen when the 'pilot' of the vehicle presses the fire key (this.riddenByEntity)
+ */
+public void onFirePressedPilot()
+  {
+  
+  }
+
+/**
+ * TODO this method should be moved into a subclass for multi-passenger vehicles, and also be passed in a station object parameter
+ * Called when a specific non-pilot passenger presses their fire-button
+ * @param passenger
+ */
+public void onFirePressedPassenger(EntityLivingBase passenger)
+  {
+  
+  }
+
+
 //************************************* MOVEMENT HANDLING *************************************//
 // Custom movement handling using OBB for terrain collision detection for both movement and rotation.
 // Uses SAT for basic overlap tests for y-movement, uses some custom ray-tracing for testing move extents on x/z axes
@@ -106,7 +132,11 @@ public void moveEntity(double inputXMotion, double inputYMotion, double inputZMo
   }
 
 /**
- * 
+ * Rotate the entity using OBB for collision detection.<br>
+ * Will first attempt rotation.  If no collision is detected, the rotation was valid and is set immediately.
+ * If a collision is detected will find the MTV for that collision set.  Will then attempt to move out of collision with the given MTV.
+ * Tests once more to verify that the final resting position is not in collision with anything. If final resting position is valid, the
+ * rotation is updated, else the rotation is reverted to its state prior to this call. 
  * @param rotationDelta
  */
 @SuppressWarnings("unchecked")
@@ -184,6 +214,13 @@ public void rotateEntity(float rotationDelta)
     }  
   }
 
+/**
+ * Moves the entity using OBB for collision detection and movement resolution.<br>
+ * Tests each axis separately, and does additional tests for step-height/step-up movement.<br>
+ * @param x
+ * @param y
+ * @param z
+ */
 @SuppressWarnings("unchecked")
 protected void moveEntityOBB(double x, double y, double z)
   {
@@ -262,6 +299,12 @@ private double getYNegativeMove(double yMotion, List<AxisAlignedBB> aabbs)
   return maxFoundY - posY;
   }
 
+/**
+ * Locate the maximum amount this entity can move in the positive Y direction before encountering a colliding object.
+ * @param yMotion
+ * @param aabbs
+ * @return
+ */
 private double getYPositiveMove(double yMotion, List<AxisAlignedBB> aabbs)
   {
   Vec3 mtvTempBase = Vec3.createVectorHelper(0, 0, 0);
@@ -324,6 +367,12 @@ private double getYStepHeight(List<AxisAlignedBB> aabbs)
   return maxRestingY - posY;
   }
 
+/**
+ * Return the maximum amount (up to input) that the vehicle can move on the X axis in the input direction before collision.
+ * @param xMotion
+ * @param aabbs
+ * @return
+ */
 private double getXmove(double xMotion, List<AxisAlignedBB> aabbs)
   {
   AxisAlignedBB bb;
@@ -344,7 +393,6 @@ private double getXmove(double xMotion, List<AxisAlignedBB> aabbs)
         }
       }
     } 
-  AWLog.logDebug("moved x: "+xMove);
   if(Math.abs(xMove)<0.001d)
     {
     xMove=0; 
@@ -352,6 +400,12 @@ private double getXmove(double xMotion, List<AxisAlignedBB> aabbs)
   return xMove;
   }
 
+/**
+ * Return the maximum amount (up to input) that the vehicle can move on the Z axis in the input direction before collision.
+ * @param zMotion
+ * @param aabbs
+ * @return
+ */
 private double getZMove(double zMotion, List<AxisAlignedBB> aabbs)
   {
   AxisAlignedBB bb;
@@ -377,9 +431,9 @@ private double getZMove(double zMotion, List<AxisAlignedBB> aabbs)
     {
     zMove=0; 
     }  
-  AWLog.logDebug("moved z: "+zMove);
   return zMove;
   }
+
 
 //************************************* COLLISION HANDLING *************************************//
 // Disabled in base class to allow entity-parts to handle the collision handling.  Each vehicle part
@@ -447,7 +501,9 @@ public void setPositionAndRotation2(double x, double y, double z, float yaw, flo
   }
 
 //************************************* MULTIPART ENTITY HANDLING CODE *************************************//
+// Updating of entity parts, handling interaction with specific entity parts.
 //
+
 /**
  * Return an array containing the sub-parts to this entity.  These sub-parts are not added to the world and not synchronized between client and server.
  * Any synchronization is left to the implementing class.
@@ -522,6 +578,8 @@ public final boolean attackEntityFromPart(VehiclePart part, DamageSource p_70965
   }
 
 //************************************* NBT / NETWORK *************************************//
+// Basic read/write from disk / client-data stream
+//
 
 @Override
 protected void readEntityFromNBT(NBTTagCompound var1)

@@ -1,11 +1,18 @@
-vehicles todo
+vehicles todo:
+
+* vehicle start:
+	Movement handling -- need to implement acceleration stuff (incl. gravity)
+	** Collision detection
+	Turret functionality for the basic siege engines
+	Missile class and functionality
+	Models / textures
 
 * water and flying movement types
 * missile entity for vehicles to fire
 	- will require tracking field for firing-entity id
 	- will require synching firing-entity id to client
 * large component vehicles
-	- has stations that may have cannon/ballista/hwacha mounted at them 
+	- has stations that may have cannon/ballista/hwacha mounted at them (perhaps not actual vehicles, but representations of them) 
 * multi passenger vehicles
 	- entity.riddenEntity = vehicle
 	- vehicle.riddenByEntity = driver
@@ -34,7 +41,7 @@ vehicles todo
 		Battering Ram (single pilot)
 		Chest Cart (single pilot)
 		Siege Tower (multi-passenger)(need to find a way to 'extend' the tower, and a way for players to 'climb' the tower / get off at the right position (hit 'fire' once climbed appropriately?))
-	Water: (might need to reduce gun counts for easier managing of stuff...)
+	 Water: (might need to reduce gun counts for easier managing of stuff...)
 		Sloop/Pinnace - small multi-passenger, 8 gun max
 		Frigate - med multi-passenger, 25 gun max	
 		Galleon - large multi-passenger, 50 gun max
