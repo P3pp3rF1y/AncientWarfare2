@@ -7,12 +7,27 @@ vehicles todo:
 	Missile class and functionality
 	Models / textures
 
-* water and flying movement types
+* split input handling into movement and interaction?
+* implement input handling for multi-passenger vehicles	
+* movement handling needs to accomodate acceleration
+* during movement resolution set onGround, collidedX, collidedZ vars
+
+* clean up OBB stuff
+	- allow for multiple OBB per vehicle (e.g. airship, sailboats... pretty much all of them)
+	- move all of the temp variables used by OBB off to a separate 'Movement Resolver' class
+		- use this class to get movement vectors
+		- hmm.. most of the vars are OBB specific though, so this probably wont' help...
+	- add config option to disable use of OBB stuff?
+	- add config option to disable use of multi-part entity stuff?	
+
 * missile entity for vehicles to fire
 	- will require tracking field for firing-entity id
 	- will require synching firing-entity id to client
+	- need to make rocket-type missile as well (for hwacha)
+		- will require special trajectory calculators
+	
 * large component vehicles
-	- has stations that may have cannon/ballista/hwacha mounted at them (perhaps not actual vehicles, but representations of them) 
+	- has stations that may have cannon/ballista/catapult/hwacha mounted at them (perhaps not actual vehicles, but representations of them) 
 * multi passenger vehicles
 	- entity.riddenEntity = vehicle
 	- vehicle.riddenByEntity = driver

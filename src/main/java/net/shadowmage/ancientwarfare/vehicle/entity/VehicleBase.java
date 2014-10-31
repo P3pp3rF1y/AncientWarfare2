@@ -105,7 +105,7 @@ public void onFirePressedPassenger(EntityLivingBase passenger)
 
 
 //************************************* MOVEMENT HANDLING *************************************//
-// Custom movement handling using OBB for terrain collision detection for both movement and rotation.
+// Custom movement handling using vehicle OBB(s) for terrain collision detection for both movement and rotation.
 // Uses SAT for basic overlap tests for y-movement, uses some custom ray-tracing for testing move extents on x/z axes
 // 
 

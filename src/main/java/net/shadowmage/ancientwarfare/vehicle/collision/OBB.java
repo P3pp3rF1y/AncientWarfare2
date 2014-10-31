@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.vehicle.collision;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 /**
@@ -305,162 +304,7 @@ private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4, Vec
   return Vec3.createVectorHelper(overlapAxis.axisX * minOverlap, 0, overlapAxis.axisZ * minOverlap);
   }
 
-public static boolean debug = false;
 
-public final Vec3 getLongCollisionVectorForAxis(AxisAlignedBB bb, Vec3 mtvOut, double xMove, double zMove)
-  {
-  setVector(aaBBCorners[0], bb.minX, cornerPos[0].yCoord, bb.minZ);
-  setVector(aaBBCorners[1], bb.maxX, cornerPos[0].yCoord, bb.minZ);
-  setVector(aaBBCorners[2], bb.maxX, cornerPos[0].yCoord, bb.maxZ);
-  setVector(aaBBCorners[3], bb.minX, cornerPos[0].yCoord, bb.maxZ);
-  return getLongCollisionVectorForAxis(aaBBCorners, aabbAxis1, aabbAxis2, mtvOut, xMove, zMove);
-  }
-
-private Vec3 getLongCollisionVectorForAxis(Vec3[] inCorners, Axis axis3, Axis axis4, Vec3 mtvOut, double xMove, double zMove)
-  {
-  Vec3 mtv = getMinCollisionVector(inCorners, axis3, axis4, mtvOut);
-  if(mtv==null){return mtv;}
-//  if(mtv.xCoord==0 || mtv.zCoord==0){return mtv;}//was already optimal along a single axis
-  
-  Vec3 o1 = null;
-  Vec3 o2 = null;
-  
-  Vec3 isec = Vec3.createVectorHelper(0, 0, 0);
-  
-  int cp1, cp2, icp1, icp2;
-  for(int i = 0; i < 4; i++)
-    {
-    cp1 = i;
-    cp2 = (i+1) % 4;
-    for(int k = 0; k < 4; k++)
-      {
-      icp1 = k;
-      icp2 = (k + 1) % 4;
-      if(getLineIntersection2(cornerPos[cp1], cornerPos[cp2], inCorners[icp1], inCorners[icp2], isec))
-        {
-        if(o1==null){o1=copyVec(isec);}
-        else if(o2==null){o2=copyVec(isec);}
-        }
-      if(o1!=null && o2!=null){break;}
-      }
-    if(o1!=null && o2!=null){break;}
-    }
-  
-  if(o1==null || o2==null){return mtv;}
-  
-  double xc = Math.abs(o1.xCoord-o2.xCoord);
-  double zc = Math.abs(o1.zCoord-o2.zCoord);
-  if(xMove > 0){xc=-xc;}
-  if(zMove > 0){zc=-zc;}  
-  if(debug){AWLog.logDebug("intersect data: "+mtv+" : "+o1+" : "+o2 + " :: "+xc+" : "+zc);}
-  if(Math.abs(mtv.xCoord)<Math.abs(xc)){mtv.xCoord=xc;}
-  if(Math.abs(mtv.zCoord)<Math.abs(zc)){mtv.zCoord=zc;}
-     
-//  /**
-//   * create a triangle out of the intersection, using mtv and obb   we know one length (mtv-length), and two angles.
-//   */  
-//  float angleA = 90.f;//corner between mtv origin + OBB edge
-//  float angleB = Math.abs((yaw) % 90.f);
-//  float angleC = 180.f - angleA - angleB;
-//  
-////  AWLog.logDebug("angles: "+angleA+" : "+angleB+" : "+angleC);
-//    
-//  float sinA = Trig.TODEGREES * MathHelper.sin(angleA*Trig.TORADIANS);
-//  float sinB = Trig.TODEGREES * MathHelper.sin(angleB*Trig.TORADIANS);
-//  float sinC = Trig.TODEGREES * MathHelper.sin(angleC*Trig.TORADIANS);  
-//  
-//  float sideB1 = (float)mtv.lengthVector();  
-//  float sideA1 = (sideB1 * sinA)/sinB;  
-//  float sideC1 = (sideB1 * sinC)/sinB;  
-//  
-//  /**
-//   * reseat angles for full triangle test now that we know the length of sideA
-//   */  
-//  angleC = 90;
-//  angleA = 180 - angleB - angleC;
-//  //side A1 is a known value now
-////  AWLog.logDebug("angles2: "+angleA+" : "+angleB+" : "+angleC);
-//  
-//  sinA = Trig.TODEGREES * MathHelper.sin(angleA*Trig.TORADIANS);
-//  sinC = Trig.TODEGREES * MathHelper.sin(angleC*Trig.TORADIANS); 
-//  
-//  sideB1 = (sideA1 * sinB)/sinA;//need to find B as it is the other possible vector
-//  sideC1 = (sideA1 * sinC)/sinA;//don't really need sideC as it is the..un-needed side
-//      
-//  double bbhw = (inCorners[1].xCoord - inCorners[0].xCoord) / 2.d;
-//  double bbhl = (inCorners[2].zCoord - inCorners[1].zCoord) / 2.d;
-//  
-//  double dx = (inCorners[0].xCoord + bbhw) - x;
-//  double dz = (inCorners[0].zCoord + bbhl) - z;
-//  
-//  if(dx>0){sideA1 = -sideA1;}
-//  if(dz>0){sideB1 = -sideB1;}
-//  
-////  mtv.zCoord = sideA1;
-////  mtv.xCoord = sideB1;
-//  
-//  cornerVec.xCoord = sideA1;
-//  cornerVec.yCoord = sideB1;
-//  cornerVec.zCoord = sideC1;
-//  if(debug){AWLog.logDebug("cornervec: "+cornerVec);}
-  
-  return mtv;
-  }
-
-private boolean getLineIntersection(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Vec3 out)
-  {
-  double s1_x, s1_z, s2_x, s2_z;
-  s1_x = p1.xCoord - p0.xCoord;
-  s1_z = p1.zCoord - p0.zCoord;
-  s2_x = p3.xCoord - p2.xCoord; 
-  s2_z = p3.zCoord - p2.zCoord;
-
-  double s, t;
-  s = (-s1_z * (p0.xCoord - p2.xCoord) + s1_x * (p0.zCoord - p2.zCoord)) / (-s2_x * s1_z + s1_x * s2_z);
-  t = ( s2_x * (p0.zCoord - p2.zCoord) - s2_z * (p0.xCoord - p2.xCoord)) / (-s2_x * s1_z + s1_x * s2_z);
-
-  if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
-    {
-    if(out!=null)
-      {
-      out.xCoord = p0.xCoord + (t * s1_x);
-      out.zCoord = p0.zCoord + (t * s1_z);
-      }
-    return true;
-    }
-  return false;
-  }
-
-private boolean getLineIntersection2(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Vec3 out)
-  {
-  double s02_x, s02_y, s10_x, s10_y, s32_x, s32_y, s_numer, t_numer, denom, t;
-  s10_x = p1.xCoord - p0.xCoord;
-  s10_y = p1.zCoord - p0.zCoord;
-  s32_x = p3.xCoord - p2.xCoord;
-  s32_y = p3.zCoord - p2.zCoord;
-
-  denom = s10_x * s32_y - s32_x * s10_y;
-  if (denom == 0){return false;} // Collinear
-  boolean denomPositive = denom > 0;
-
-  s02_x = p0.xCoord - p2.xCoord;
-  s02_y = p0.zCoord - p2.zCoord;
-  s_numer = s10_x * s02_y - s10_y * s02_x;
-  if ((s_numer < 0) == denomPositive){return false;}     
-
-  t_numer = s32_x * s02_y - s32_y * s02_x;
-  if ((t_numer < 0) == denomPositive){return false;}
-
-  if (((s_numer > denom) == denomPositive) || ((t_numer > denom) == denomPositive)){return false;}
-  // Collision detected
-  t = t_numer / denom;
-  if(out!=null)
-    {
-    out.xCoord = p0.xCoord + (t * s10_x);
-    out.zCoord = p0.zCoord + (t * s10_y);
-    }
-  return true;
-  }
 
 public Vec3 getCollisionVectorXMovement(AxisAlignedBB bb, double xMove)
   {    
@@ -849,8 +693,6 @@ public final Vec3 getCollisionVectorZMovement(AxisAlignedBB bb, double zMove)
   return closestIntercept;
   }
 
-public final Vec3 cornerVec = Vec3.createVectorHelper(0, 0, 0);//TODO debug var, remove...
-
 /**
  * Return a corner of the OBB for the given index<br>
  * 0=front left<br>
@@ -875,11 +717,10 @@ public final void setAABBToOBBExtents(AxisAlignedBB bb)
 @Override
 public String toString()
   {
-  // TODO Auto-generated method stub
   return "OBB: "+cornerPos[0]+" : "+cornerPos[1] + " : " +cornerPos[2]+" : "+cornerPos[3];
   }
 
-public static final class Axis
+private static final class Axis
 {
 
 public double axisX, axisY, axisZ;
@@ -941,7 +782,7 @@ private Projection projectShape(Vec3[] corners, Projection p)
 
 }
 
-public static final class Projection
+private static final class Projection
 {
 
 public double min, max;
@@ -983,16 +824,10 @@ public String toString()
   }
 }
 
-public static final class LineSegment
+private static final class LineSegment
 {
 
 public Vec3 start, end;
-
-public LineSegment()
-  {
-  start = Vec3.createVectorHelper(0, 0, 0);
-  end = Vec3.createVectorHelper(0, 0, 0);
-  }
 
 public LineSegment(Vec3 start, Vec3 end)
   {

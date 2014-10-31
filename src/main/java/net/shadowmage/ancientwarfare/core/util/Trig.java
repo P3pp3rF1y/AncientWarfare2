@@ -23,10 +23,10 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 
 /**
- * because I hate it so much...why not make the 
- * computer do it all for me?
+ * Static Math utilities class<br>
  * @author Shadowmage
  */
 public class Trig
@@ -36,6 +36,8 @@ public static final float TORADIANS = PI / 180.f;
 public static final float TODEGREES = 180.f / PI;
 public static final float GRAVITY = 9.81f;
 public static final double gravityTick =  GRAVITY *0.05D * 0.05D;
+
+private Trig(){}//static utility class, no public facing constructor
 
 public static int getPower(int num, int exp)
   {
@@ -70,6 +72,61 @@ public static float cos(float radians)
 public static float sin(float radians)
   {
   return MathHelper.sin(radians);
+  }
+
+public static boolean getLineIntersection(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Vec3 out)
+  {
+  double s1_x, s1_z, s2_x, s2_z;
+  s1_x = p1.xCoord - p0.xCoord;
+  s1_z = p1.zCoord - p0.zCoord;
+  s2_x = p3.xCoord - p2.xCoord; 
+  s2_z = p3.zCoord - p2.zCoord;
+
+  double s, t;
+  s = (-s1_z * (p0.xCoord - p2.xCoord) + s1_x * (p0.zCoord - p2.zCoord)) / (-s2_x * s1_z + s1_x * s2_z);
+  t = ( s2_x * (p0.zCoord - p2.zCoord) - s2_z * (p0.xCoord - p2.xCoord)) / (-s2_x * s1_z + s1_x * s2_z);
+
+  if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+    {
+    if(out!=null)
+      {
+      out.xCoord = p0.xCoord + (t * s1_x);
+      out.zCoord = p0.zCoord + (t * s1_z);
+      }
+    return true;
+    }
+  return false;
+  }
+
+public static boolean getLineIntersection2(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Vec3 out)
+  {
+  double s02_x, s02_y, s10_x, s10_y, s32_x, s32_y, s_numer, t_numer, denom, t;
+  s10_x = p1.xCoord - p0.xCoord;
+  s10_y = p1.zCoord - p0.zCoord;
+  s32_x = p3.xCoord - p2.xCoord;
+  s32_y = p3.zCoord - p2.zCoord;
+
+  denom = s10_x * s32_y - s32_x * s10_y;
+  if (denom == 0){return false;} // Collinear
+  boolean denomPositive = denom > 0;
+
+  s02_x = p0.xCoord - p2.xCoord;
+  s02_y = p0.zCoord - p2.zCoord;
+  s_numer = s10_x * s02_y - s10_y * s02_x;
+  if ((s_numer < 0) == denomPositive){return false;}     
+
+  t_numer = s32_x * s02_y - s32_y * s02_x;
+  if ((t_numer < 0) == denomPositive){return false;}
+
+  if (((s_numer > denom) == denomPositive) || ((t_numer > denom) == denomPositive)){return false;}
+  // Collision detected
+  t = t_numer / denom;
+  if(out!=null)
+    {
+    out.xCoord = p0.xCoord + (t * s10_x);
+    out.zCoord = p0.zCoord + (t * s10_y);
+    }
+  return true;
   }
 
 public static double getOverlap(double minA, double maxA, double minB, double maxB)

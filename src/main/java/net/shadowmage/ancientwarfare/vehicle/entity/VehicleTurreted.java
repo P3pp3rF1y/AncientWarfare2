@@ -2,12 +2,14 @@ package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 public class VehicleTurreted extends VehicleBase
 {
 
 
+protected int fireDelay = 0;
 protected float launchAngle, launchPower;
 protected Vec3 turretOffsetBase = Vec3.createVectorHelper(0, 1, -1);
 
@@ -37,6 +39,7 @@ public void onUpdate()
   double cosYaw = Math.cos(Trig.TORADIANS * (rotationYaw + 180.d));// ^^
   updateLaunchVelocity(sinYaw, cosYaw);
   updateTurretOffset(sinYaw, cosYaw);
+  if(fireDelay>0){fireDelay--;}
   }
 
 protected void updateLaunchVelocity(double sinYaw, double cosYaw)
@@ -66,6 +69,21 @@ public Vec3 getTurretOffset()
 public Vec3 getLaunchVelocity()
   {
   return launchVelocity;
+  }
+
+@Override
+public void onFirePressedPilot()
+  {  
+  AWLog.logDebug("fire pressed. delay left: "+fireDelay);
+  if(fireDelay<=0)
+    {
+    fireDelay = 40;
+    MissileBase missile = new MissileBase(worldObj);
+    missile.setPosition(posX+turretOffset.xCoord, posY+turretOffset.yCoord, posZ+turretOffset.zCoord);
+    missile.setLaunchParameters(launchVelocity.xCoord, launchVelocity.yCoord, launchVelocity.zCoord, getUniqueID());
+    worldObj.spawnEntityInWorld(missile);
+    AWLog.logDebug("spawned missile..."+missile);
+    }  
   }
 
 }

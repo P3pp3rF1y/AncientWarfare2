@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
@@ -13,15 +14,14 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 public class MissileBase extends Entity implements IEntityAdditionalSpawnData
 {
 
-float launchYaw;
-float launchAngle;
-float launchPower;
-double moveX, moveZ, moveY;//calculated per-tick movement on x and z axes
-UUID launcherUniqueId;
+private double moveX, moveZ, moveY;//calculated per-tick movement on x and z axes
+private UUID launcherUniqueId;
 
-public MissileBase(World p_i1582_1_)
+public MissileBase(World world)
   {
-  super(p_i1582_1_);
+  super(world);
+  this.width=0.5f;
+  this.height=0.5f;
   }
 
 /**
@@ -30,21 +30,12 @@ public MissileBase(World p_i1582_1_)
  * @param launchPower velocity in m/s
  * @param launcherID UUID of the launching entity.  Used to determine hit-callbacks and if the missile should damage entities it hits (will not damage same-team entities)
  */
-public void setLaunchParameters(float launchYaw, float launchPitch, float launchPower, UUID launcherID)
+public void setLaunchParameters(double moveX, double moveY, double moveZ, UUID launcherID)
   {
-  this.launchYaw = launchYaw;
-  this.launchAngle = launchPitch;
-  this.launchPower = launchPower;
+  this.moveX = moveX;
+  this.moveY = moveY;
+  this.moveZ = moveZ;
   this.launcherUniqueId = launcherID;
-  double sinPitch = Math.sin(Trig.TORADIANS*launchPitch);
-  double cosPitch = Math.cos(Trig.TORADIANS*launchPitch);
-  double sinYaw = Math.sin(Trig.TORADIANS*launchYaw);
-  double cosYaw = Math.cos(Trig.TORADIANS*launchYaw);
-  double verticalVelocityStart = sinPitch * launchPower * 0.05d;
-  double horizontalVelocityStart = cosPitch * launchPower * 0.05d;
-  moveX = sinYaw * horizontalVelocityStart;
-  moveZ = cosYaw * horizontalVelocityStart;
-  moveY = verticalVelocityStart;
   }
 
 @Override
@@ -62,33 +53,46 @@ public void onUpdate()
 
 public void updateTrajectory()
   {
-  
+  posX += moveX;
+  posY += moveY;
+  posZ += moveZ;
+  setPosition(posX, posY, posZ);
+  moveY -= Trig.gravityTick;
+  if(!worldObj.isRemote && !worldObj.isAirBlock(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)))
+    {
+    setDead();
+    }
   }
 
 @Override
-protected void readEntityFromNBT(NBTTagCompound p_70037_1_)
+protected void readEntityFromNBT(NBTTagCompound tag)
   {
   
   }
 
 @Override
-protected void writeEntityToNBT(NBTTagCompound p_70014_1_)
+protected void writeEntityToNBT(NBTTagCompound tag)
   {
   
   }
 
 @Override
-public void writeSpawnData(ByteBuf buffer)
+public void writeSpawnData(ByteBuf data)
   {
-  // TODO Auto-generated method stub
-  
+  data.writeDouble(moveX);
+  data.writeDouble(moveY);
+  data.writeDouble(moveZ);
+  data.writeLong(launcherUniqueId.getMostSignificantBits());
+  data.writeLong(launcherUniqueId.getLeastSignificantBits());
   }
 
 @Override
-public void readSpawnData(ByteBuf additionalData)
+public void readSpawnData(ByteBuf data)
   {
-  // TODO Auto-generated method stub
-  
+  moveX = data.readDouble();
+  moveY = data.readDouble();
+  moveZ = data.readDouble();
+  launcherUniqueId = new UUID(data.readLong(), data.readLong());  
   }
 
 }
