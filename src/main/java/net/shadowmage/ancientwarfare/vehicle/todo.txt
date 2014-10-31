@@ -4,13 +4,22 @@ vehicles todo:
 	Movement handling -- need to implement acceleration stuff (incl. gravity)
 	** Collision detection
 	Turret functionality for the basic siege engines
-	Missile class and functionality
 	Models / textures
 
 * split input handling into movement and interaction?
 * implement input handling for multi-passenger vehicles	
 * movement handling needs to accomodate acceleration
 * during movement resolution set onGround, collidedX, collidedZ vars
+* figure out basic missile types
+	- regular (stone/iron shot)
+	- fire (napalm/naptha)
+	- HE (TNT)
+	- Airburst
+* figure out rocket missile types
+	- regular (powered-arrow)
+	- fire (flame-arrow)
+	- HE (TNT)
+	- Airburst (shrapnel)
 
 * clean up OBB stuff
 	- allow for multiple OBB per vehicle (e.g. airship, sailboats... pretty much all of them)
