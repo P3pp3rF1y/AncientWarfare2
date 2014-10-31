@@ -27,7 +27,8 @@ vehicles todo:
 		- use this class to get movement vectors
 		- hmm.. most of the vars are OBB specific though, so this probably wont' help...
 	- add config option to disable use of OBB stuff?
-	- add config option to disable use of multi-part entity stuff?	
+	- add config option to disable use of multi-part entity stuff?
+	- optimize tested axis in ray-trace movement resolution	
 
 * missile entity for vehicles to fire
 	- will require tracking field for firing-entity id
@@ -54,6 +55,7 @@ vehicles todo:
 		- catapult metal arm
 		- trebuchet triple sling
 		- ballista metal tensioner
+	- use upgrades to determine ammo type		
 * vehicle types:
 	Land:
 		Catapult (single pilot)
