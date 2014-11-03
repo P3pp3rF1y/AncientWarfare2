@@ -6,63 +6,18 @@ vehicles todo:
 	Turret functionality for the basic siege engines
 	Models / textures
 
-* split input handling into movement and interaction?
-* implement input handling for multi-passenger vehicles	
-* movement handling needs to accomodate acceleration
-* during movement resolution set onGround, collidedX, collidedZ vars
-* figure out basic missile types
-	- regular (stone/iron shot)
-	- fire (napalm/naptha)
-	- HE (TNT)
-	- Airburst
-* figure out rocket missile types
-	- regular (powered-arrow)
-	- fire (flame-arrow)
-	- HE (TNT)
-	- Airburst (shrapnel)
-
-* clean up OBB stuff
-	- allow for multiple OBB per vehicle (e.g. airship, sailboats... pretty much all of them)
-	- move all of the temp variables used by OBB off to a separate 'Movement Resolver' class
-		- use this class to get movement vectors
-		- hmm.. most of the vars are OBB specific though, so this probably wont' help...
-	- add config option to disable use of OBB stuff?
-	- add config option to disable use of multi-part entity stuff?
-	- optimize tested axis in ray-trace movement resolution	
-
-* missile entity for vehicles to fire
-	- will require tracking field for firing-entity id
-	- will require synching firing-entity id to client
-	- need to make rocket-type missile as well (for hwacha)
-		- will require special trajectory calculators
-	
-* large component vehicles
-	- has stations that may have cannon/ballista/catapult/hwacha mounted at them (perhaps not actual vehicles, but representations of them) 
-* multi passenger vehicles
-	- entity.riddenEntity = vehicle
-	- vehicle.riddenByEntity = driver
-	- vehicle.additionalRiders() = other entities to update
-	- should probably make a list of 'vehicle stations' that can be ridden
-		-each station is responsible for updating its riders location / rotation
-		-stations may be seats or battle-stations
-	- stations will be linked to a multi-part-entity collision box that can be clicked on to activate that station
-	- will require a GUI for switching between stations (or other keybind...)
-* vehicle tier/upgrade system
-	- do not have material teirs, just use upgrades for enhanced functionality
-	- use click-to-apply upgrades, or slotted?
-		one way allows for -all- upgrades to be applied, the other limits to a selected range by player choice
-	- specific upgrades for each vehicle? e.g:
-		- catapult metal arm
-		- trebuchet triple sling
-		- ballista metal tensioner
-	- use upgrades to determine ammo type		
 * vehicle types:
 	Land:
 		Catapult (single pilot)
-		Ballista (single pilot)
-		Scorpio (small metal spring-type ballista)
+			-traditional, no turret, yaw locked to vehicle
+		Ballista (single pilot) (large)
+			-traditional, no turret, yaw locked to vehicle
+		Scorpio (small metal spring-type ballista) (sized like the old ballistas)		
+			-traditional, no turret, yaw locked to vehicle
 		Trebuchet (single pilot)
+			-traditional, no turret, yaw locked to vehicle
 		Cannon (single pilot)
+			-traditional, no turret, yaw locked to vehicle
 		Hwacha (single pilot)
 		Battering Ram (single pilot)
 		Chest Cart (single pilot)
@@ -80,12 +35,45 @@ vehicles todo:
 			- flap to fly, hold flap to glide
 		Airship (a small-ish frigate with an elongated hot air balloon above it...)
 			-burns coal / fuel materials
-			-will be immobile (except for descend command) when out of fuel
-		
-* vehicles that you can walk around on (or... perhaps not... will be hacky as hell at best)
-	- rotate position of entity relative to vehicle rotation, test for rectangular BB to determine if the entity should fall off or not?
-	- when vehicle rotates all on-top entities will need to be rotated around for their relative position
-	- will use input interception to facilitate movement of player on vehicle
-	- will use some sort of fake 'world' for collision detection.  Perhaps just a list of AABBs for the vehicle interior with manual resolution
+			-will be immobile (except for descend command) when out of fuel	
+
+Needed to get normal vehicles working:
+- Aim synching
+	- do they have turrets or aim with vehicle yaw?
+	- what happens if yaw is not lined up for shot? (obv. it misses...)
+	- turrets make most vehicles easier to aim (unless vehicle rotation is made to rotate in smaller increments)
+- models / textures
+- missile types / models / textures
+- multi-part BBs
+- can vehicles mobile, or are they static?
+	- makes sense for most vehicles:
+		catapult
+		cannon
+		hwacha
+		ballista
+		battering ram
+		siege tower
+		chest cart
+	- trebuchet is immobile
+	-- perhaps allow them to be mobile, but move slowly and unpilotable by NPCs? (e.g. player-only)
+		- engineers assigned a vehicle will 'construct' their vehicle at a given site, and repack/deconstruct it when it is time to move
+		- how does this work with a siege tower, chest-cart, battering ram?
+			-...it doesn't...
+	-- simplifies things greatly if none of the vehicles are mobile
+		-except how to handle chest-cart, battering ram, and siege tower?
+	-- allow vehicles to be mobile, but enable NPCs with only a basic 'driving' AI rather than full-blown pathfinding
+		- solves issues with chest-carts, battering ram, siege-towers
+		- still does not answer how to handle yaw-aim adjustment
+			-by vehicle yaw
+			-or by turret on vehicle
+			
+Proposed:
+- Vehicles do not have turrets.  Vehicle yaw = aim yaw.
+- Auto-aim only handles pitch/power adjustment
+	- Most vehicles are mobile (all but trebuchet?)
+	- Ballista comes in mobile (ballista) and fixed-stand versions (scorpio)
+- NPCs only have a basic 'drive vehicle' AI and ZERO pathfinding for when riding
+	- NPCs will 'cheat' when it comes time to aiming, and just -set- the vehicle rotation to what they need for a chosen shot	
+				
 
 			

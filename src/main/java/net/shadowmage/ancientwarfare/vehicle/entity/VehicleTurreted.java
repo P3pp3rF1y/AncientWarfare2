@@ -75,7 +75,7 @@ public Vec3 getLaunchVelocity()
 @Override
 public void onFirePressedPilot(Vec3 target)
   {  
-  AWLog.logDebug("fire pressed. delay left: "+fireDelay+" at target: "+target);
+  AWLog.logDebug("fire pressed. delay left: "+fireDelay);
   if(fireDelay<=0)
     {
     fireDelay = 40;
@@ -89,8 +89,8 @@ public void onFirePressedPilot(Vec3 target)
     
     AWLog.logDebug("firing at: "+target+" params: "+angleYaw+" : "+anglePitch+" :: "+velocity);
 
-    double sinYaw = Math.sin(Trig.TORADIANS * (rotationYaw + 180.d));//+180 is compensation for z-axis inversion in MC?
-    double cosYaw = Math.cos(Trig.TORADIANS * (rotationYaw + 180.d));// ^^
+    double sinYaw = Math.sin(Trig.TORADIANS * (rotationYaw + 180.d)); //+180 is compensation for z-axis inversion in MC?
+    double cosYaw = Math.cos(Trig.TORADIANS * (rotationYaw + 180.d)); // ^^
     this.launchPower = (float)velocity;
     updateLaunchVelocity(sinYaw, cosYaw);
     
