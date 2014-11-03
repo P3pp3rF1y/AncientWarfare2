@@ -4,6 +4,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.vehicle.ballistics.TrajectoryPlotter;
 
 public class VehicleTurreted extends VehicleBase
 {
@@ -72,12 +73,27 @@ public Vec3 getLaunchVelocity()
   }
 
 @Override
-public void onFirePressedPilot()
+public void onFirePressedPilot(Vec3 target)
   {  
-  AWLog.logDebug("fire pressed. delay left: "+fireDelay);
+  AWLog.logDebug("fire pressed. delay left: "+fireDelay+" at target: "+target);
   if(fireDelay<=0)
     {
     fireDelay = 40;
+    double dx = target.xCoord - posX;
+    double dy = target.yCoord - posY;
+    double dz = target.zCoord - posZ;
+    double angleYaw = Math.atan2(dz, dx)*Trig.TODEGREES;
+    double anglePitch = 45.d;
+    double velocity = TrajectoryPlotter.getPowerToHit(dx, dy, dz, (float) anglePitch, 120);
+    
+    
+    AWLog.logDebug("firing at: "+target+" params: "+angleYaw+" : "+anglePitch+" :: "+velocity);
+
+    double sinYaw = Math.sin(Trig.TORADIANS * (rotationYaw + 180.d));//+180 is compensation for z-axis inversion in MC?
+    double cosYaw = Math.cos(Trig.TORADIANS * (rotationYaw + 180.d));// ^^
+    this.launchPower = (float)velocity;
+    updateLaunchVelocity(sinYaw, cosYaw);
+    
     MissileBase missile = new MissileBase(worldObj);
     missile.setPosition(posX+turretOffset.xCoord, posY+turretOffset.yCoord, posZ+turretOffset.zCoord);
     missile.setLaunchParameters(launchVelocity.xCoord, launchVelocity.yCoord, launchVelocity.zCoord, getUniqueID());

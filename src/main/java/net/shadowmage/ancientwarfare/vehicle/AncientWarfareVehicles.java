@@ -74,6 +74,7 @@ public void preInit(FMLPreInitializationEvent evt)
   PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_STATE, PacketInputState.class);
   PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_RESPONSE, PacketInputReply.class);
   AWLog.log("Ancient Warfare Vehicles Pre-Init completed");
+  for(int i = 0; i < 100; i++){TrajectoryPlotter.loadTest();}
   }
 
 @EventHandler

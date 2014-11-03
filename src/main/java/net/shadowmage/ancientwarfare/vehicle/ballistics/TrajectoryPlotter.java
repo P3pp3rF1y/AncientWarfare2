@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.vehicle.ballistics;
 
 import net.minecraft.util.MathHelper;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 public class TrajectoryPlotter
@@ -15,107 +16,21 @@ public class TrajectoryPlotter
  * @param maxPower the specified max launch power
  * @return power needed to hit target, or 0 if beyond maxPower value
  */
-public static final double getPowerFor(double dx, double dy, double dz, float angle, float maxPower)
+public static final double getPowerToHit(double dx, double dy, double dz, float angle, float maxPower)
   {
   double len = MathHelper.sqrt_double(dx*dx+dz*dz);
-  double pow = iterativeSpeedFinder(len, dy, angle, 5);
-  if(pow<=maxPower){return pow;}
+  double pow = getLaunchPowerToHit(len, dy, angle, 10);
+  if(pow <= maxPower){return pow;}
   return 0;//TODO what to return for an invalid power setting?
   }
 
-public static final double getAngleFor(double dx, double dy, double dz, float minAngle, float maxAngle, float velocity)
+public static final double getAngleToHit(double dx, double dy, double dz, float minAngle, float maxAngle, float velocity)
   {
   double len = MathHelper.sqrt_double(dx*dx+dz*dz);
   double[] angles = getLaunchAngleToHit(len, dy, velocity);
   if(angles[0]>=minAngle && angles[0]<=maxAngle){return angles[0];}
   else if(angles[1]>=minAngle && angles[1]<=maxAngle){return angles[1];}
   return 0;//TODO what to return for an invalid angle?
-  }
-
-/**
- * 
- * @param x input hit x (horizontal distance)
- * @param y input hit y (vertical distance)
- * @param v velocity per second
- * @param g gravity per second
- * @return an array containing the two launch angles that can hit the specified position
- */
-private static double[] getLaunchAngleToHit(double x, double y, double v)
-  {
-  double v2 = v*v;
-  double v4 = v*v*v*v;
-  double x2 = x*x;  
-  double sqRtVal = Math.sqrt(v4 - Trig.GRAVITY * (Trig.GRAVITY*x2 + 2*y*v2));  
-  double h = v2 + sqRtVal;
-  double l = v2 - sqRtVal;  
-  h /= Trig.GRAVITY*x;
-  l /= Trig.GRAVITY*x;  
-  h = Trig.toDegrees((float) Math.atan(h));
-  l = Trig.toDegrees((float) Math.atan(l));  
-  return new double[]{h, l};  
-  }
-
-private static double iterativeSpeedFinder(double x, double y, float angle, int maxIterations)
-  {  
-  angle = 90-angle;
-  float bestVelocity = 0.f;
-  float velocityIncrement = 10.f;
-  float testVelocity = 10.f;
-  float gravityTick = 9.81f *0.05f*0.05f;
-  float posX = 0;
-  float posY = 0;
-  float motX = 0;
-  float motY = 0;
-  float hitX = 0;
-  boolean hitGround = true;
-  float hitDiffX;
-  float hitDiffY;            
-  float hitPercent;
-  for(int iter = 0; iter < maxIterations; iter++)
-    {
-    //reset pos
-    //calc initial motion from input angle and current testVelocity
-    hitGround = true;
-    posX = 0.f;
-    posY = 0.f;
-    motX = Trig.sinDegrees(angle)*testVelocity*0.05f;
-    motY = Trig.cosDegrees(angle)*testVelocity*0.05f;   
-    while(motY>=0 || posY >= y)
-      {
-      //move
-      //check hit
-      //apply gravity if not hit
-      posX+=motX;
-      posY+=motY;
-      if(posX>x)
-        {
-        hitGround = false;
-        break;//missile went too far
-        }     
-      motY-=gravityTick;        
-      }    
-    if(hitGround)//if break was triggered by going negative on y axis, get a more precise hit vector
-      {
-      motY+=gravityTick;
-      hitDiffX = motX - posX;
-      hitDiffY = motY - posY;            
-      hitPercent = (float) ((y - posY) / hitDiffY);
-      hitX = posX + hitDiffX * hitPercent;
-      } 
-    if(hitGround && hitX < x)// hit was not far enough, increase power
-      {
-      bestVelocity = testVelocity;
-      testVelocity += velocityIncrement;        
-      }
-    else//it was too far, go back to previous power, decrease increment, increase by new increment
-      {
-      testVelocity -= velocityIncrement;
-      bestVelocity = testVelocity;
-      velocityIncrement *= 0.5f;
-      testVelocity +=velocityIncrement;
-      } 
-    } 
-  return bestVelocity;
   }
 
 /**
@@ -130,18 +45,120 @@ public static double getMaxRange(float angle, float v)
   }
 
 /**
- * TODO test this -- likely faster than iterative finder, but I remember seeing this one before and it being useless for some reason..
- * http://gamedev.stackexchange.com/questions/17467/calculating-velocity-needed-to-hit-target-in-parabolic-arc
+ * @param x input hit x (horizontal distance)
+ * @param y input hit y (vertical distance)
+ * @param v velocity per second
+ * @return an array containing the two launch angles that can hit the specified position
+ */
+private static double[] getLaunchAngleToHit(double x, double y, double v)
+  {
+  double v2 = v*v;
+  double v4 = v*v*v*v;
+  double x2 = x*x;  
+  double sqRtVal = Math.sqrt(v4 - Trig.GRAVITY * (Trig.GRAVITY*x2 + 2*y*v2));  
+  double h = v2 + sqRtVal;
+  double l = v2 - sqRtVal;  
+  h /= Trig.GRAVITY * x;
+  l /= Trig.GRAVITY * x;  
+  h = Trig.toDegrees((float) Math.atan(h));
+  l = Trig.toDegrees((float) Math.atan(l));  
+  return new double[]{h, l};  
+  }
+
+/**
+ * iterative finder -- uses derivation of motion equations rather than simulation of ballistic trajectory
+ * @param tx
+ * @param ty
+ * @param angle
+ * @param iterations
+ * @return last tested launch velocity closest to actual destination velocity 
+ */
+private static double getLaunchPowerToHit(double tx, double ty, double angle, int iterations)
+  {
+  double testPower = 10;
+  double powerInc = 10;
+  double y = 0;
+  for(int i = 0; i < iterations; i++)
+    {
+    y = getProjectileHeight(angle, testPower, tx);
+    if(Math.abs(ty-y)<0.01d){return testPower;}//if result is really close to dest, return result
+    if(y > ty)//else too far, decrease the increment
+      {
+      testPower -= powerInc;//revert to previous power (or 0 if first iteration)
+      powerInc*=0.5d;//decrese increment, so next iteration less power is tested
+      }
+    //implicit else not far enough, increase power by raw increment
+    testPower += powerInc;
+    }
+  return testPower;
+  }
+
+/**
+ * http://en.wikipedia.org/wiki/Trajectory_of_a_projectile#Angle_.CE.B8_required_to_hit_coordinate_.28x.2Cy.29
+ * return the height of the projectile at a given distance from launch<br>
+ * used by iterative finder to 'cheat' doing exact duplications of trajectory
+ * @param angle
+ * @param velocity
  * @param x
- * @param y
- * @param o
  * @return
  */
-private static double getLaunchPower(double x, double y, double o)
+private static double getProjectileHeight(double angle, double velocity, double x)
   {
   double g = Trig.GRAVITY;
-  double v = (Math.sqrt(g) * Math.sqrt(x) * Math.sqrt((Math.tan(o)*Math.tan(o))+1)) / Math.sqrt(2 * Math.tan(o) - (2 * g * y) / x); // velocity
-  return v;
+  double sinA = Math.sin(Trig.TORADIANS*angle);//used to determine vertical component  
+  double cosA = Math.cos(Trig.TORADIANS*angle);//used to determine horizontal component
+  double vx = (cosA * velocity);
+  double vy = (sinA * velocity);
+  double t = x / vx;//time on horizontal to reach x position  
+  double t2 = (t*t);
+  double g12 = g/2.d;  
+  /**
+   * y = v0y t - 1/2 gt ^2
+   */
+  double y = vy*t-g12*t2;
+  return y;
+  }
+
+/**
+ * http://en.wikipedia.org/wiki/Trajectory_of_a_projectile#Angle_.CE.B8_required_to_hit_coordinate_.28x.2Cy.29
+ * return the height of the projectile at a given distance from launch<br>
+ * used by iterative finder to 'cheat' doing exact duplications of trajectory
+ * @param angle
+ * @param v
+ * @param x
+ * @return
+ */
+private static double getProjectileHeight2(double angle, double v, double x)
+  {
+  double g = Trig.GRAVITY;
+  double cosA = Math.cos(Trig.TORADIANS*angle);//used to determine horizontal component  
+  double a = 0;
+  double b = x * Math.tan(Trig.TORADIANS*angle);
+  double c = g * (x*x);
+  double d = 2 * Math.pow(v*cosA, 2);  
+  return a + b - (c/d);
+  }
+
+public static void loadTest()
+  {
+  double targetX = 190;
+  double targetY = 00;
+  double basePower = 50;
+  
+  long t1 = System.nanoTime();  
+  double[] angles = getLaunchAngleToHit(targetX, targetY, basePower);
+  long t2 = System.nanoTime();
+  double p1 = getLaunchPowerToHit(targetX, targetY, angles[0], 20);
+  long t3 = System.nanoTime();
+  double p2 = getLaunchPowerToHit(targetX, targetY, angles[1], 20);
+  long t4 = System.nanoTime();
+  
+  long d1 = (t2-t1);
+  long d2 = (t3-t2);
+  long d3 = (t4-t3);
+    
+  AWLog.logDebug("a/p : "+angles[0]+" : "+angles[1]+" :: "+p1+" : "+p2);
+  AWLog.logDebug("times: "+d1+" :: "+d2+" :: "+d3);
   }
 
 }

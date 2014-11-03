@@ -82,8 +82,12 @@ public void writeSpawnData(ByteBuf data)
   data.writeDouble(moveX);
   data.writeDouble(moveY);
   data.writeDouble(moveZ);
-  data.writeLong(launcherUniqueId.getMostSignificantBits());
-  data.writeLong(launcherUniqueId.getLeastSignificantBits());
+  data.writeBoolean(launcherUniqueId!=null);//write a boolean if launcherID has been written
+  if(launcherUniqueId!=null)
+    {
+    data.writeLong(launcherUniqueId.getMostSignificantBits());
+    data.writeLong(launcherUniqueId.getLeastSignificantBits());    
+    }
   }
 
 @Override
@@ -92,7 +96,10 @@ public void readSpawnData(ByteBuf data)
   moveX = data.readDouble();
   moveY = data.readDouble();
   moveZ = data.readDouble();
-  launcherUniqueId = new UUID(data.readLong(), data.readLong());  
+  if(data.readBoolean())//if boolean==true, launcherID should be read from stream
+    {
+    launcherUniqueId = new UUID(data.readLong(), data.readLong());    
+    }  
   }
 
 }

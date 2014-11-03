@@ -88,7 +88,7 @@ public void onUpdate()
  * If a missile is fired it should use the launching entity ID of the vehicle rider, which will be used for team-status / collision stuff<br>
  * This input will happen when the 'pilot' of the vehicle presses the fire key (this.riddenByEntity)
  */
-public void onFirePressedPilot()
+public void onFirePressedPilot(Vec3 target)
   {
   
   }
