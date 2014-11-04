@@ -71,8 +71,7 @@ public boolean continueExecuting()
   if(!npc.getIsAIEnabled()){return false;}
   if(!"medic".equals(npc.getNpcSubType())){return false;}
   if(targetToHeal==null || targetToHeal.isDead || targetToHeal.getHealth()>=targetToHeal.getMaxHealth()){return false;}
-  
-  return super.continueExecuting();
+  return true;
   }
 
 @Override
@@ -86,11 +85,11 @@ public void updateTask()
   {
   double dist = npc.getDistanceSqToEntity(targetToHeal);
   double attackDistance = (double)((this.npc.width * this.npc.width * 2.0F * 2.0F) + (targetToHeal.width * targetToHeal.width * 2.0F * 2.0F));
-  if(dist>attackDistance)
+  if(dist > attackDistance)
     {
     npc.addAITask(TASK_MOVE);
     moveToEntity(targetToHeal, dist);
-    healDelay = healDelayMax;//TODO get from config
+    healDelay = healDelayMax;
     }
   else
     {
@@ -98,7 +97,7 @@ public void updateTask()
     healDelay--;
     if(healDelay<0)
       {
-      healDelay = healDelayMax;//TODO get from config
+      healDelay = healDelayMax;
       float amountToHeal = ((float) npc.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue())/2.f;
       targetToHeal.setHealth(targetToHeal.getHealth()+amountToHeal);
       }
