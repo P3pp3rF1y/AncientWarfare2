@@ -49,7 +49,7 @@ public boolean shouldIncludeForSelection(World world, int x, int y, int z, int f
   String name = BlockDataManager.instance().getNameForBlock(block);
   if(block==null || !validTargetBlocks.contains(name))
     {
-    AWLog.logDebug("rejecting due to target block mismatch of: "+name+" valid blocks are: "+validTargetBlocks);
+    AWLog.logDebug("Rejecting due to target block mismatch of: "+name+" at: "+x+","+y+","+z+" Valid blocks are: "+validTargetBlocks);
     return false;
     }
   return true;

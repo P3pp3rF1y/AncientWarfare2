@@ -489,7 +489,7 @@ protected boolean validateBlockType(World world, int x, int y, int z, Set<String
     }
   if(!validBlocks.contains(BlockDataManager.instance().getNameForBlock(block)))
     {
-    AWLog.logDebug("rejected for non-matching block: "+BlockDataManager.instance().getNameForBlock(block) + " at: "+x+","+y+","+z);
+    AWLog.logDebug("Rejected for non-matching block: "+BlockDataManager.instance().getNameForBlock(block) + " at: "+x+","+y+","+z+" Valid blocks: "+validBlocks);
     return false;
     }
   return true;  
