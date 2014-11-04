@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.nbt.NBTBase;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class Json
 {

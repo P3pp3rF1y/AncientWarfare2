@@ -98,11 +98,14 @@ public final void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOExce
 
 public final NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException
   {
-  if(ruleData.get(0).startsWith("JSON:{"))//new aw-specific json formatted nbt-tag
+  for(String line : ruleData)//new json format
     {
-    return JsonTagReader.parseTagCompound(ruleData.get(0));
+    if(line.startsWith("JSON:{"))
+      {
+      return JsonTagReader.parseTagCompound(line);
+      }
     }
-  for(String line : ruleData)
+  for(String line : ruleData)//old json format
     {
     if(line.toLowerCase().startsWith("jsontag="))
       {
@@ -121,6 +124,7 @@ public final NBTTagCompound readTag(List<String> ruleData) throws TemplateRulePa
         }      
       }
     }
+  //old tag: format
   List<String> tagLines = new ArrayList<String>();  
   String line;
   Iterator<String> it = ruleData.iterator();
