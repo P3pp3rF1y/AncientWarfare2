@@ -168,7 +168,6 @@ private void initializeDefaultSkippableBlocks()
             "minecraft:pumpkin_stem",
             "minecraft:melon_stem",
             "minecraft:vine",
-            "minecraft:mycelium",
             "minecraft:waterlily",
             "minecraft:cocoa",
             "minecraft:leaves2",
@@ -483,16 +482,6 @@ private void initializeDefaultSkippableBlocks()
             "Metallurgy:utility.ore",
             "BiomesOPlenty:ash",
             "BiomesOPlenty:gemOre",
-            "minecraft:gold_ore",
-            "minecraft:iron_ore",
-            "minecraft:coal_ore",
-            "minecraft:lapis_ore",
-            "minecraft:mossy_cobblestone",
-            "minecraft:diamond_ore",
-            "minecraft:redstone_ore",
-            "minecraft:emerald_ore",
-            "minecraft:quartz_ore",
-            "minecraft:clay"
         };
 
   defaultSkippableBlocks = config.get(worldGenBlocks, "skippable_blocks", defaultSkippableBlocks).getStringList();
