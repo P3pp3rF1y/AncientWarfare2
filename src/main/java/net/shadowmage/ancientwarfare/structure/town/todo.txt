@@ -1,0 +1,6 @@
+towns:
+
+- need to determine area to construct town in
+	how to find an area that is flat enough?
+	- allow a max depth variance over a given area? e.g. if variance < 20, generate==true
+	once area is found, level the entire thing, perhaps with gradient steps towards the external heights of the chosen area
