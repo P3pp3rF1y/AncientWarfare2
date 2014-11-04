@@ -12,20 +12,20 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget.Sorter;
 import net.minecraft.util.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIMedic extends NpcAI
+public class NpcAIMedicBase extends NpcAI
 {
 
-int injuredRecheckDelay = 0;
-int injuredRecheckDelayMax = 20;
-int healDelay = 0;
-int healDelayMax = 20;
+private int injuredRecheckDelay = 0;
+private int injuredRecheckDelayMax = 20;
+private int healDelay = 0;
+private int healDelayMax = 20;
 
-EntityLivingBase targetToHeal = null;
+private EntityLivingBase targetToHeal = null;
 
 private final EntityAINearestAttackableTarget.Sorter sorter;
-IEntitySelector selector;
+private IEntitySelector selector;
 
-public NpcAIMedic(NpcBase npc)
+public NpcAIMedicBase(NpcBase npc)
   {
   super(npc);
   sorter = new Sorter(npc);
@@ -37,7 +37,7 @@ public NpcAIMedic(NpcBase npc)
       if(var1 instanceof EntityLivingBase)
         {
         EntityLivingBase e = (EntityLivingBase)var1;
-        if(e.getHealth()<e.getMaxHealth() && !NpcAIMedic.this.npc.isHostileTowards(e))
+        if(e.getHealth()<e.getMaxHealth() && !NpcAIMedicBase.this.npc.isHostileTowards(e))
           {
           return true;
           }
@@ -52,7 +52,7 @@ public NpcAIMedic(NpcBase npc)
 public boolean shouldExecute()
   {
   if(!npc.getIsAIEnabled()){return false;}
-  if(!"medic".equals(npc.getNpcSubType())){return false;}
+  if(!isProperSubtype()){return false;}
   injuredRecheckDelay--;
   if(injuredRecheckDelay>0){return false;}
   injuredRecheckDelay=injuredRecheckDelayMax;
@@ -62,6 +62,11 @@ public boolean shouldExecute()
   if(potentialTargets.isEmpty()){return false;}
   Collections.sort(potentialTargets, sorter);
   this.targetToHeal = potentialTargets.get(0);
+  if(targetToHeal==null || targetToHeal.getHealth()<=0 || targetToHeal.isDead || targetToHeal.getHealth()>=targetToHeal.getMaxHealth())
+    {
+    targetToHeal = null;
+    return false;
+    }
   return true;
   }
 
@@ -69,9 +74,14 @@ public boolean shouldExecute()
 public boolean continueExecuting()
   {
   if(!npc.getIsAIEnabled()){return false;}
-  if(!"medic".equals(npc.getNpcSubType())){return false;}
-  if(targetToHeal==null || targetToHeal.isDead || targetToHeal.getHealth()>=targetToHeal.getMaxHealth()){return false;}
+  if(!isProperSubtype()){return false;}
+  if(targetToHeal==null || targetToHeal.getHealth()<=0 || targetToHeal.isDead || targetToHeal.getHealth()>=targetToHeal.getMaxHealth()){return false;}
   return true;
+  }
+
+protected boolean isProperSubtype()
+  {
+  return "medic".equals(npc.getNpcSubType());
   }
 
 @Override
@@ -99,6 +109,7 @@ public void updateTask()
       {
       healDelay = healDelayMax;
       float amountToHeal = ((float) npc.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue())/2.f;
+      npc.swingItem();
       targetToHeal.setHealth(targetToHeal.getHealth()+amountToHeal);
       }
     }
@@ -108,6 +119,7 @@ public void updateTask()
 public void resetTask()
   {
   npc.removeAITask(TASK_MOVE+TASK_GUARD);
+  targetToHeal = null;
   }
 
 
