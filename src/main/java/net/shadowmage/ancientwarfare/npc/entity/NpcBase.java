@@ -116,6 +116,14 @@ public int getMaxHealthOverride()
 public void setMaxHealthOverride(int maxHealthOverride)
   {
   this.maxHealthOverride = maxHealthOverride;
+  if(maxHealthOverride>0)
+    {
+    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(maxHealthOverride);
+    if(getHealth()<getMaxHealth())
+      {
+      setHealth(getMaxHealth());
+      }
+    }
   }
 
 public void setCustomTexRef(String customTexRef)
