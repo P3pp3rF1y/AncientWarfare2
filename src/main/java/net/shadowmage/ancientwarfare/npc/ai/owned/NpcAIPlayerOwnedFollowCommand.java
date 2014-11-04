@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityHorse;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -99,6 +100,10 @@ public void updateTask()
     npc.setPlayerCommand(null);    
     break;
     }
+  default:
+    {
+    break;    
+    }
   }
   
   cmd = npc.getCurrentCommand();//refresh command, it may have been set to null from previous switch
@@ -120,6 +125,10 @@ public void updateTask()
       {
       handleMoveCommand(cmd);
       break;
+      }
+    default:
+      {
+      break;    
       }
     }
     }
@@ -158,8 +167,12 @@ private void handleGuardCommand(Command cmd)
   else
     {
     npc.getNavigator().clearPathEntity();//clear path to stop moving
-    //do not clear command, guard command is persistent    
-    //TODO mount target if it is a horse...
+    if(e instanceof EntityHorse && e.riddenByEntity==null)
+      {
+      npc.mountEntity(e);
+      npc.setPlayerCommand(null);//clear command if horse was mounted successfully..
+      }
+    //do not clear command, guard command is persistent  
     }
   }
 
