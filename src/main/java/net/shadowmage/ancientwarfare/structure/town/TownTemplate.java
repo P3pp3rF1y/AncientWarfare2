@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TownTemplate
 {
 
 private String townTypeName;
-private String duplicateSearchName;
 
 private boolean biomeWhiteList;
 private List<String> biomeList;
@@ -15,25 +15,27 @@ private boolean dimensionWhiteList;
 private List<Integer> dimensionList;
 
 private int wallStyle;
-private int minSize;
-private int maxSize;
-int maxValue;
+private int minSize = 50;
+private int maxSize = 256;
+int maxValue = 500;
 
+/**
+ * A specific template to be generated at the center of town, as the town-hall.  All roads and other buildings will be constructed -around- this one
+ */
+private TownStructureEntry townHallEntry;
 private List<TownStructureEntry> structureEntries;
 
-public TownTemplate(String townTypeName, String duplicateSearchName)
+public TownTemplate(String townTypeName)
   {
   this.townTypeName = townTypeName;
-  this.duplicateSearchName = duplicateSearchName;
+  biomeList = new ArrayList<String>();
+  dimensionList = new ArrayList<Integer>();
+  structureEntries = new ArrayList<TownStructureEntry>();
   }
 
 public final String getTownTypeName(){return townTypeName;}
 
 public final void setTownTypeName(String townTypeName){this.townTypeName = townTypeName;}
-
-public final String getDuplicateSearchName(){return duplicateSearchName;}
-
-public final void setDuplicateSearchName(String duplicateSearchName){this.duplicateSearchName = duplicateSearchName;}
 
 public final boolean isBiomeWhiteList(){return biomeWhiteList;}
 
@@ -41,24 +43,50 @@ public final void setBiomeWhiteList(boolean biomeWhiteList){this.biomeWhiteList 
 
 public final List<String> getBiomeList(){return biomeList;}
 
-public final void setBiomeList(List<String> biomeList){this.biomeList = biomeList;}
-
 public final boolean isDimensionWhiteList(){return dimensionWhiteList;}
 
 public final void setDimensionWhiteList(boolean dimensionWhiteList){this.dimensionWhiteList = dimensionWhiteList;}
 
 public final List<Integer> getDimensionList(){return dimensionList;}
 
-public final void setDimensionList(List<Integer> dimensionList){this.dimensionList = dimensionList;}
+public final List<TownStructureEntry> getStructureEntries(){return structureEntries;}
+
+public final int getWallStyle(){return wallStyle;}
+
+public final void setWallStyle(int wallStyle){this.wallStyle = wallStyle;}
+
+public final int getMinSize(){return minSize;}
+
+public final void setMinSize(int minSize){this.minSize = minSize;}
+
+public final int getMaxSize(){return maxSize;}
+
+public final void setMaxSize(int maxSize){this.maxSize = maxSize;}
+
+public final int getMaxValue(){return maxValue;}
+
+public final void setMaxValue(int maxValue){this.maxValue = maxValue;}
+
+public final TownStructureEntry getTownHallEntry(){return townHallEntry;}
+
+public final void setTownHallEntry(TownStructureEntry townHallEntry){this.townHallEntry = townHallEntry;}
 
 public static final class TownStructureEntry
 {
+String templateName;
 int min;//min # to generate
 int max;//max # to generate
 int value;// generation value
 int weight;// selection weight
-boolean cosmetic;//stuff like torches
+boolean cosmetic;//stuff like torches, what would this flag -actually- be used for?
+public TownStructureEntry(String name, int min, int max, int value, int weight)
+  {
+  this.templateName = name;
+  this.min = min;
+  this.max = max;
+  this.value = value;
+  this.weight = weight;
+  }
 }
-
 
 }

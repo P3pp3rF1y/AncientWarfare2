@@ -1,11 +1,19 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.town.TownGenerator;
+import net.shadowmage.ancientwarfare.structure.town.TownPlacementValidator;
+import net.shadowmage.ancientwarfare.structure.town.TownPlacementValidator.TownBoundingArea;
+import net.shadowmage.ancientwarfare.structure.town.TownTestGenerator;
 
 public class ItemTownBuilder extends Item implements IItemKeyInterface, IItemClickable
 {
@@ -19,6 +27,9 @@ public ItemTownBuilder(String itemName)
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setMaxStackSize(1);  
   this.setTextureName("ancientwarfare:structure/"+itemName);
+  
+  //TODO remove this
+  TownTestGenerator.load();
   }
 
 @Override
@@ -64,6 +75,17 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
   if(player==null || player.worldObj.isRemote)
     {
     return;
+    }
+  BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+  if(pos!=null)
+    {
+    TownBoundingArea area = TownPlacementValidator.findGenerationPosition(player.worldObj, pos.x, pos.y, pos.z);
+    AWLog.logDebug("Found area: "+area);
+    if(area!=null)
+      {
+      TownGenerator gen = new TownGenerator(TownTestGenerator.testTemplate);
+      gen.generateAt(player.worldObj, area);
+      }
     }
   }
 
