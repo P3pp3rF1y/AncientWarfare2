@@ -144,7 +144,6 @@ private void initializeDefaultSkippableBlocks()
   String[] defaultSkippableBlocks = new String[]    
         {
             "minecraft:air",
-            "minecraft:grass",
             "minecraft:sapling",
             "minecraft:log",
             "minecraft:leaves",
