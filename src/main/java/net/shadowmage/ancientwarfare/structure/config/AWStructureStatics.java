@@ -219,6 +219,8 @@ private void initializeDefaultSkippableBlocks()
             "BiomesOPlenty:poison",
             "BiomesOPlenty:hell_blood",
             "BiomesOPlenty:honey",
+            "BiomesOPlenty:ash",
+            "BiomesOPlenty:gemOre",
             "coralmod:Coral1",
             "coralmod:Coral2",
             "coralmod:Coral3",
@@ -479,8 +481,7 @@ private void initializeDefaultSkippableBlocks()
             "Metallurgy:nether.ore",
             "Metallurgy:precious.ore",
             "Metallurgy:utility.ore",
-            "BiomesOPlenty:ash",
-            "BiomesOPlenty:gemOre",
+            "MineFactoryReloaded:tile.mfr.rubberwood.leaves",
         };
 
   defaultSkippableBlocks = config.get(worldGenBlocks, "skippable_blocks", defaultSkippableBlocks).getStringList();

@@ -14,10 +14,13 @@ private List<String> biomeList;
 private boolean dimensionWhiteList;
 private List<Integer> dimensionList;
 
-private int wallStyle;
 private int minSize = 50;
 private int maxSize = 256;
 int maxValue = 500;
+
+private int wallStyle;//0==no wall
+private int wallSize;
+private int wallHeight;
 
 /**
  * A specific template to be generated at the center of town, as the town-hall.  All roads and other buildings will be constructed -around- this one
@@ -34,42 +37,27 @@ public TownTemplate(String townTypeName)
   }
 
 public final String getTownTypeName(){return townTypeName;}
-
-public final void setTownTypeName(String townTypeName){this.townTypeName = townTypeName;}
-
 public final boolean isBiomeWhiteList(){return biomeWhiteList;}
-
 public final void setBiomeWhiteList(boolean biomeWhiteList){this.biomeWhiteList = biomeWhiteList;}
-
 public final List<String> getBiomeList(){return biomeList;}
-
 public final boolean isDimensionWhiteList(){return dimensionWhiteList;}
-
 public final void setDimensionWhiteList(boolean dimensionWhiteList){this.dimensionWhiteList = dimensionWhiteList;}
-
 public final List<Integer> getDimensionList(){return dimensionList;}
-
 public final List<TownStructureEntry> getStructureEntries(){return structureEntries;}
-
-public final int getWallStyle(){return wallStyle;}
-
-public final void setWallStyle(int wallStyle){this.wallStyle = wallStyle;}
-
 public final int getMinSize(){return minSize;}
-
 public final void setMinSize(int minSize){this.minSize = minSize;}
-
 public final int getMaxSize(){return maxSize;}
-
 public final void setMaxSize(int maxSize){this.maxSize = maxSize;}
-
 public final int getMaxValue(){return maxValue;}
-
 public final void setMaxValue(int maxValue){this.maxValue = maxValue;}
-
 public final TownStructureEntry getTownHallEntry(){return townHallEntry;}
-
 public final void setTownHallEntry(TownStructureEntry townHallEntry){this.townHallEntry = townHallEntry;}
+public final int getWallStyle(){return wallStyle;}
+public final int getWallSize(){return wallSize;}
+public final int getWallHeight(){return wallHeight;}
+public final void setWallStyle(int wallStyle){this.wallStyle = wallStyle;}
+public final void setWallSize(int wallSize){this.wallSize = wallSize;}
+public final void setWallHeight(int wallHeight){this.wallHeight = wallHeight;}
 
 public static final class TownStructureEntry
 {

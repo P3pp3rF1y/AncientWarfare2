@@ -5,7 +5,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 public class TownPlacementValidator
@@ -28,23 +27,17 @@ public static TownBoundingArea findGenerationPosition(World world, int x, int y,
   int cz = z >> 4;
    
   int height = getTopFilledHeight(world.getChunkFromChunkCoords(cx, cz), x & 15, z & 15);
-  AWLog.logDebug("Found initial avg height of: "+height);
-  if(height<=0){return null;}
+  if(height <= 0){return null;}
   
   TownBoundingArea area = new TownBoundingArea();
-  area.minY = Math.max(0, height-8);
-  area.maxY = Math.min(256, height+7);
+  area.minY = Math.max(0, height-7);
+  area.maxY = Math.min(255, area.minY+15);
   area.chunkMinX = cx;
   area.chunkMaxX = cx;
   area.chunkMinZ = cz;
   area.chunkMaxZ = cz;  
   expandBoundingArea(world, area);
-    
-  if(area.getChunkWidth()>=1 && area.getChunkLength()>=1)
-    {
-    return area;
-    }
-  return null;
+  return area;
   }
 
 private static void expandBoundingArea(World world, TownBoundingArea area)
@@ -54,33 +47,32 @@ private static void expandBoundingArea(World world, TownBoundingArea area)
   do
     {
     didExpand = false;
-    if(xneg && area.getChunkWidth() <= 2)
+    if(xneg && area.getChunkWidth() <= 9)
       {
       xneg = tryExpandXNeg(world, area);
       didExpand = didExpand || xneg; 
       }
-    if(xpos && area.getChunkWidth() <= 2)
+    if(xpos && area.getChunkWidth() <= 9)
       {
       xpos = tryExpandXPos(world, area);  
       didExpand = didExpand || xpos;
       } 
-    if(zneg && area.getChunkLength() <= 2)
+    if(zneg && area.getChunkLength() <= 9)
       {
       zneg = tryExpandZNeg(world, area);
       didExpand = didExpand || zneg;
       } 
-    if(zpos &&area.getChunkLength() <= 2)
+    if(zpos &&area.getChunkLength() <= 9)
       {
       zpos = tryExpandZPos(world, area);
       didExpand = didExpand || zpos;
       }  
     }
-  while(didExpand && (area.getChunkWidth() <= 2 || area.getChunkLength() <= 2));
+  while(didExpand && (area.getChunkWidth() <= 9 || area.getChunkLength() <= 9));
   }
 
 private static boolean tryExpandXNeg(World world, TownBoundingArea area)
   {
-  AWLog.logDebug("attempting expand x-");
   int cx = area.chunkMinX - 1;
   int minZ = area.chunkMinZ;
   int maxZ = area.chunkMaxZ;
@@ -97,7 +89,6 @@ private static boolean tryExpandXNeg(World world, TownBoundingArea area)
     }
   if(valid)
     {
-    AWLog.logDebug("exp x-");
     area.chunkMinX = cx;
     }
   return valid;
@@ -105,7 +96,6 @@ private static boolean tryExpandXNeg(World world, TownBoundingArea area)
 
 private static boolean tryExpandXPos(World world, TownBoundingArea area)
   {
-  AWLog.logDebug("attempting expand x+");
   int cx = area.chunkMaxX + 1;
   int minZ = area.chunkMinZ;
   int maxZ = area.chunkMaxZ;
@@ -122,7 +112,6 @@ private static boolean tryExpandXPos(World world, TownBoundingArea area)
     }
   if(valid)
     {
-    AWLog.logDebug("exp x+");
     area.chunkMaxX = cx;
     }
   return valid;
@@ -130,7 +119,6 @@ private static boolean tryExpandXPos(World world, TownBoundingArea area)
 
 private static boolean tryExpandZNeg(World world, TownBoundingArea area)
   {
-  AWLog.logDebug("attempting expand z-");
   int cz = area.chunkMinZ - 1;
   int minX = area.chunkMinX;
   int maxX = area.chunkMaxX;
@@ -147,7 +135,6 @@ private static boolean tryExpandZNeg(World world, TownBoundingArea area)
     }
   if(valid)
     {
-    AWLog.logDebug("exp z-");
     area.chunkMinZ = cz;
     }
   return valid;
@@ -155,7 +142,6 @@ private static boolean tryExpandZNeg(World world, TownBoundingArea area)
 
 private static boolean tryExpandZPos(World world, TownBoundingArea area)
   {
-  AWLog.logDebug("attempting expand z+");
   int cz = area.chunkMaxZ + 1;
   int minX = area.chunkMinX;
   int maxX = area.chunkMaxX;
@@ -172,12 +158,18 @@ private static boolean tryExpandZPos(World world, TownBoundingArea area)
     }
   if(valid)
     {
-    AWLog.logDebug("exp z+");
     area.chunkMaxZ = cz;
     }
   return valid;
   }
 
+/**
+ * returns the average Y level of the top blocks of the chunk
+ * @param world
+ * @param cx
+ * @param cz
+ * @return
+ */
 private static int findAverageTopHeight(World world, int cx, int cz)
   {
   Chunk chunk = world.getChunkFromChunkCoords(cx, cz);
@@ -199,10 +191,18 @@ private static int findAverageTopHeight(World world, int cx, int cz)
         }
       }
     }
-  total /= 256;
+  total = (int) Math.ceil((double)total / 256.d);
   return total;
   }
 
+/**
+ * return the highest Y that has a solid non-skipped block in it<br>
+ * This implementation skips water, air, and any blocks on the world-gen skippable blocks list (trees, plants, etc)
+ * @param chunk
+ * @param xInChunk
+ * @param zInChunk
+ * @return
+ */
 private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk)
   {
   int maxY = chunk.getTopFilledSegment()+15;
@@ -215,40 +215,5 @@ private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk)
     }
   return -1;
   }
-
-public static final class TownBoundingArea
-{
-
-int chunkMinX;
-int chunkMaxX;
-int chunkMinZ;
-int chunkMaxZ;
-int minY;
-int maxY;
-
-public int getChunkWidth(){return (chunkMaxX-chunkMinX)+1;}
-public int getChunkLength(){return (chunkMaxZ-chunkMinZ)+1;}
-public int getChunkMinX(){return chunkMinX;}
-public int getChunkMaxX(){return chunkMaxX;}
-public int getChunkMinZ(){return chunkMinZ;}
-public int getChunkMaxZ(){return chunkMaxZ;}
-public int getBlockMinX(){return chunkMinX*16;}
-public int getBlockMaxX(){return chunkMaxX*16+15;}
-public int getBlockMinZ(){return chunkMinZ*16;}
-public int getBlockMaxZ(){return chunkMaxZ*16+15;}
-public int getBlockWidth(){return getBlockMaxX()-getBlockMinX()+1;}
-public int getBlockLength(){return getBlockMaxZ()-getBlockMinZ()+1;}
-
-@Override
-public String toString()
-  {
-  int minX = chunkMinX * 16;
-  int maxX = chunkMaxX * 16 + 15;
-  int minZ = chunkMinZ * 16;
-  int maxZ = chunkMaxZ * 16 + 15;
-  return "TownArea: "+minX+"  :"+minZ+" :: "+maxX+" : "+maxZ +" size: "+getBlockWidth()+" : "+getBlockLength();
-  }
-
-}
 
 }
