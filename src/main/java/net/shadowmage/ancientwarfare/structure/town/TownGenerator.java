@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -9,7 +11,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
@@ -40,6 +45,7 @@ int generationOrientation;
  */
 int remainingGenerationValue;
 private HashMap<String, TownGeneratedEntry> generatedStructureMap = new HashMap<String, TownGeneratedEntry>();
+private List<StructureBB> generatedBoundingBoxes = new ArrayList<StructureBB>();
 
 public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   {
@@ -76,10 +82,12 @@ private void doGeneration()
   doLeveling();
   if(template.getWallStyle()!=0)
     {
-    doWallTest();
+    doWall();
     placeGates();
     }
   layMainRoad();
+  generateTownhall();
+  generateStructures();
   }
 
 private void doBorder()
@@ -185,7 +193,7 @@ private void doLeveling()
     }
   }
 
-private void doWallTest()
+private void doWall()
   {
   int minX = area.getWallMinX();
   int minZ = area.getWallMinZ();
@@ -236,13 +244,46 @@ private void doWallTest()
  */
 private void layMainRoad()
   {
+  int cx = area.getBlockMinX() + area.getBlockWidth()/2;
+  int cz = area.getBlockMinZ() + area.getBlockLength()/2;
+  int minX, minZ, maxX, maxZ;
+  if(generationOrientation==0 || generationOrientation==2)
+    {
+    minX = area.getWallMinX();
+    maxX = area.getWallMaxX();
+    minZ = cz - (template.getRoadWidth()/2);
+    maxZ = minZ + (template.getRoadWidth()-1);
+    }
+  else
+    {
+    minX = cx - (template.getRoadWidth()/2);
+    maxX = minX + (template.getRoadWidth()-1);
+    minZ = area.getWallMinZ();
+    maxZ = area.getWallMaxZ();
+    }
   
+  AWLog.logDebug("pre placement loop: "+minX+","+maxX+","+minZ+","+maxZ);
+  for(int x = minX; x <= maxX; x++)
+    {
+    for(int z = minZ; z <= maxZ; z++)
+      {
+      AWLog.logDebug("setting block to gravel: "+x+","+area.getSurfaceY()+","+z);
+      world.setBlock(x, area.getSurfaceY(), z, template.getRoadFillBlock());
+      }
+    }
+  
+  StructureBB roadBB = new StructureBB(new BlockPosition(minX, area.getSurfaceY(), minZ), new BlockPosition(maxX, area.getSurfaceY(), maxZ));
+  AWLog.logDebug("generated main road: "+roadBB);
+  generatedBoundingBoxes.add(roadBB);
   }
 
-private void placeGates()
-  {
-  
-  }
+private void placeGates(){}//TODO
+
+private void generateTownhall(){}//TODO
+
+private void generateStructures(){}//TODO
+
+private void generateStructure(){}//TODO
 
 private int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk, boolean skippables)
   {

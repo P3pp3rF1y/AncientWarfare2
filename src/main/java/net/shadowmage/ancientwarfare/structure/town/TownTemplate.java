@@ -3,6 +3,9 @@ package net.shadowmage.ancientwarfare.structure.town;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+
 public class TownTemplate
 {
 
@@ -21,6 +24,9 @@ int maxValue = 500;
 private int wallStyle;//0==no wall
 private int wallSize;
 private int wallHeight;
+
+private int roadWidth = 3;
+private Block roadFillBlock = Blocks.gravel;
 
 /**
  * A specific template to be generated at the center of town, as the town-hall.  All roads and other buildings will be constructed -around- this one
@@ -58,6 +64,10 @@ public final int getWallHeight(){return wallHeight;}
 public final void setWallStyle(int wallStyle){this.wallStyle = wallStyle;}
 public final void setWallSize(int wallSize){this.wallSize = wallSize;}
 public final void setWallHeight(int wallHeight){this.wallHeight = wallHeight;}
+public final int getRoadWidth(){return roadWidth;}
+public final Block getRoadFillBlock(){return roadFillBlock;}
+public final void setRoadWidth(int roadWidth){this.roadWidth = roadWidth;}
+public final void setRoadFillBlock(Block roadFillBlock){this.roadFillBlock = roadFillBlock==null? this.roadFillBlock : roadFillBlock;}
 
 public static final class TownStructureEntry
 {
