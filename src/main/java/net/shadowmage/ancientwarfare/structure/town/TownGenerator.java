@@ -14,7 +14,10 @@ import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
@@ -82,7 +85,7 @@ private void doGeneration()
   doLeveling();
   if(template.getWallStyle()!=0)
     {
-    doWall();
+    generateWalls();
     placeGates();
     }
   layMainRoad();
@@ -193,50 +196,83 @@ private void doLeveling()
     }
   }
 
-private void doWall()
+private void generateWalls()
   {
+  wallTemplateTest(); 
+  }
+
+private void wallTemplateTest()
+  {
+  StructureTemplate s1 = StructureTemplateManager.instance().getTemplate("wall_straight1");
+  StructureTemplate s2 = StructureTemplateManager.instance().getTemplate("wall_corner1");
   int minX = area.getWallMinX();
   int minZ = area.getWallMinZ();
   int maxX = area.getWallMaxX();
   int maxZ = area.getWallMaxZ();
   int minY = area.getSurfaceY()+1;
-  int maxY = minY + 7;
-  int wallSize = area.wallSize - 1;
-  if(wallSize<0){return;}  
-  for(int z = minZ; z <= maxZ; z++)
+  int x, z;
+  int orientation;
+  StructureBuilder builder;
+    
+  //construct N wall
+  orientation = 0;
+  for(int i = 1; i < area.getChunkWidth()-2; i++)
     {
-    for(int x = minX; x <= minX + wallSize; x++)
-      {
-      for(int y = minY; y <= maxY; y++)
-        {
-        world.setBlock(x, y, z, Blocks.stonebrick);
-        }
-      }
-    for(int x = maxX - wallSize; x <= maxX; x++)
-      {
-      for(int y = minY; y<=maxY; y++)
-        {
-        world.setBlock(x, y, z, Blocks.stonebrick);
-        }
-      }
+    x = minX + 16*i;
+    z = minZ;
+    builder = new StructureBuilder(world, s1, orientation, x, minY, z);
+    builder.instantConstruction();
     }
-  for(int x = minX; x<=maxX; x++)
+  
+  //construct E wall
+  orientation = 1;
+  for(int i = 1; i < area.getChunkLength()-2; i++)
     {
-    for(int z = minZ; z<= minZ + wallSize; z++)
-      {
-      for(int y = minY; y<=maxY; y++)
-        {
-        world.setBlock(x, y, z, Blocks.stonebrick);
-        }
-      }
-    for(int z = maxZ - wallSize; z<= maxZ; z++)
-      {
-      for(int y = minY; y<=maxY; y++)
-        {
-        world.setBlock(x, y, z, Blocks.stonebrick);
-        }
-      }
+    x = maxX;
+    z = minZ + 16*i;
+    builder = new StructureBuilder(world, s1, orientation, x, minY, z);
+    builder.instantConstruction();
     }
+  
+  //construct S wall
+  orientation = 2;
+  for(int i = 1; i < area.getChunkLength()-2; i++)
+    {
+    x = maxX - 16*i;
+    z = maxZ;
+    builder = new StructureBuilder(world, s1, orientation, x, minY, z);
+    builder.instantConstruction();
+    }
+  
+  //construct W wall
+  orientation = 3;
+  for(int i = 1; i < area.getChunkLength()-2; i++)
+    {
+    x = minX;
+    z = maxZ - 16*i;
+    builder = new StructureBuilder(world, s1, orientation, x, minY, z);
+    builder.instantConstruction();
+    }
+  
+  //construct NW corner
+  orientation = 3;
+  builder = new StructureBuilder(world, s2, orientation, minX, minY, minZ);
+  builder.instantConstruction();
+  
+  //construct NE corner
+  orientation = 0;
+  builder = new StructureBuilder(world, s2, orientation, maxX, minY, minZ);
+  builder.instantConstruction();
+  
+  //construct SE corner
+  orientation = 1;//facing south, runs east-west
+  builder = new StructureBuilder(world, s2, orientation, maxX, minY, maxZ);
+  builder.instantConstruction();
+  
+  //construct SW corner
+  orientation = 2;//facing south, runs east-west
+  builder = new StructureBuilder(world, s2, orientation, minX, minY, maxZ);
+  builder.instantConstruction();
   }
 
 /**

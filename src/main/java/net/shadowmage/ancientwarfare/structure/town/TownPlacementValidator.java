@@ -10,6 +10,8 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 public class TownPlacementValidator
 {
 
+private static int maxSize = 8;
+
 /**
  * input a single X, Y, Z coordinate to examine the nearby area for potential town generation.<br>
  * First examines the chunk that was at the input coordinates, and expands out from there attempting
@@ -47,28 +49,28 @@ private static void expandBoundingArea(World world, TownBoundingArea area)
   do
     {
     didExpand = false;
-    if(xneg && area.getChunkWidth() <= 9)
+    if(xneg && area.getChunkWidth() <= maxSize)
       {
       xneg = tryExpandXNeg(world, area);
       didExpand = didExpand || xneg; 
       }
-    if(xpos && area.getChunkWidth() <= 9)
+    if(xpos && area.getChunkWidth() <= maxSize)
       {
       xpos = tryExpandXPos(world, area);  
       didExpand = didExpand || xpos;
       } 
-    if(zneg && area.getChunkLength() <= 9)
+    if(zneg && area.getChunkLength() <= maxSize)
       {
       zneg = tryExpandZNeg(world, area);
       didExpand = didExpand || zneg;
       } 
-    if(zpos &&area.getChunkLength() <= 9)
+    if(zpos &&area.getChunkLength() <= maxSize)
       {
       zpos = tryExpandZPos(world, area);
       didExpand = didExpand || zpos;
       }  
     }
-  while(didExpand && (area.getChunkWidth() <= 9 || area.getChunkLength() <= 9));
+  while(didExpand && (area.getChunkWidth() <= maxSize || area.getChunkLength() <= maxSize));
   }
 
 private static boolean tryExpandXNeg(World world, TownBoundingArea area)

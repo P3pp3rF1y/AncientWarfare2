@@ -30,14 +30,14 @@ public int getBlockWidth(){return getBlockMaxX()-getBlockMinX()+1;}
 public int getBlockLength(){return getBlockMaxZ()-getBlockMinZ()+1;}
 
 public int getWallMinX(){return getBlockMinX() - 1 + borderSize;}
-public int getWallMaxX(){return getBlockMaxX() - borderSize;}
+public int getWallMaxX(){return getBlockMaxX() - 1 - borderSize;}
 public int getWallMinZ(){return getBlockMinZ() - 1 + borderSize;}
-public int getWallMaxZ(){return getBlockMaxZ() - borderSize;}
+public int getWallMaxZ(){return getBlockMaxZ() - 1 - borderSize;}
 
 public int getTownMinX(){return getBlockMinX() - 1 + wallSize + borderSize;}
-public int getTownMaxX(){return getBlockMaxX() - wallSize - borderSize;}
+public int getTownMaxX(){return getBlockMaxX() - 1 - wallSize - borderSize;}
 public int getTownMinZ(){return getBlockMinZ() - 1 + wallSize + borderSize;}
-public int getTownMaxZ(){return getBlockMaxZ() - wallSize - borderSize;}
+public int getTownMaxZ(){return getBlockMaxZ() - 1 - wallSize - borderSize;}
 
 public int getMinY(){return minY;}
 public int getMaxY(){return maxY;}
