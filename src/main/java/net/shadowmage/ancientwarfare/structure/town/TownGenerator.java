@@ -220,7 +220,7 @@ private void wallTemplateTest()
     {
     x = minX + 16*i;
     z = minZ;
-    builder = new StructureBuilder(world, s1, orientation, x, minY, z);
+    builder = new StructureBuilder(world, getWallSection(i), orientation, x, minY, z);
     builder.instantConstruction();
     }
   
@@ -230,7 +230,7 @@ private void wallTemplateTest()
     {
     x = maxX;
     z = minZ + 16*i;
-    builder = new StructureBuilder(world, s1, orientation, x, minY, z);
+    builder = new StructureBuilder(world, getWallSection(i), orientation, x, minY, z);
     builder.instantConstruction();
     }
   
@@ -240,7 +240,7 @@ private void wallTemplateTest()
     {
     x = maxX - 16*i;
     z = maxZ;
-    builder = new StructureBuilder(world, s1, orientation, x, minY, z);
+    builder = new StructureBuilder(world, getWallSection(i), orientation, x, minY, z);
     builder.instantConstruction();
     }
   
@@ -250,27 +250,27 @@ private void wallTemplateTest()
     {
     x = minX;
     z = maxZ - 16*i;
-    builder = new StructureBuilder(world, s1, orientation, x, minY, z);
+    builder = new StructureBuilder(world, getWallSection(i), orientation, x, minY, z);
     builder.instantConstruction();
     }
   
   //construct NW corner
-  orientation = 3;
+  orientation = 0;
   builder = new StructureBuilder(world, s2, orientation, minX, minY, minZ);
   builder.instantConstruction();
   
   //construct NE corner
-  orientation = 0;
+  orientation = 1;
   builder = new StructureBuilder(world, s2, orientation, maxX, minY, minZ);
   builder.instantConstruction();
   
   //construct SE corner
-  orientation = 1;//facing south, runs east-west
+  orientation = 2;//facing south, runs east-west
   builder = new StructureBuilder(world, s2, orientation, maxX, minY, maxZ);
   builder.instantConstruction();
   
   //construct SW corner
-  orientation = 2;//facing south, runs east-west
+  orientation = 3;//facing south, runs east-west
   builder = new StructureBuilder(world, s2, orientation, minX, minY, maxZ);
   builder.instantConstruction();
   }
@@ -320,6 +320,11 @@ private void generateTownhall(){}//TODO
 private void generateStructures(){}//TODO
 
 private void generateStructure(){}//TODO
+
+private StructureTemplate getWallSection(int index)
+  {
+  return StructureTemplateManager.instance().getTemplate("wall_straight1");//TODO
+  }
 
 private int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk, boolean skippables)
   {
