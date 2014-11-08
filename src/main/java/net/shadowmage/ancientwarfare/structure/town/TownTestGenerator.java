@@ -10,9 +10,13 @@ public static TownTemplate testTemplate;
 public static void load()
   {
   testTemplate = new TownTemplate("testTown");  
-  testTemplate.getStructureEntries().add(new TownStructureEntry("wgt1", 1, 1, 100, 10));
-  testTemplate.getStructureEntries().add(new TownStructureEntry("wgt2", 1, 1, 100, 10));
-  testTemplate.getStructureEntries().add(new TownStructureEntry("wgt3", 1, 1, 100, 10));
+  testTemplate.getStructureEntries().add(new TownStructureEntry("town_house1", 1, 1, 100, 10));
+  testTemplate.getStructureEntries().add(new TownStructureEntry("town_house2", 1, 1, 100, 10));
+  testTemplate.getStructureEntries().add(new TownStructureEntry("town_house3", 1, 1, 100, 10));
+  testTemplate.getStructureEntries().add(new TownStructureEntry("town_house4", 1, 1, 100, 10));
+  testTemplate.getStructureEntries().add(new TownStructureEntry("town_house5", 1, 1, 100, 10));
+  testTemplate.getStructureEntries().add(new TownStructureEntry("town_house6", 1, 1, 100, 10));
+  testTemplate.setTownHallEntry(new TownStructureEntry("town_hall1", 1, 1, 100, 10));
   testTemplate.setMinSize(90);
   testTemplate.setMaxSize(128);
   testTemplate.setMaxValue(1000);

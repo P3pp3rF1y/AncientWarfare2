@@ -1,11 +1,11 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/7/2014 at: 10:41:0
+# Auto-generated structure template file. created on: 11/7/2014 at: 18:10:16
 # Lines beginning with # denote comments
 
 header:
 version=2.1
 name=wall_straight1
-size=16,4,4
+size=16,6,4
 offset=15,0,3
 :endheader
 
@@ -56,6 +56,18 @@ layer: 3
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+:endlayer
+layer: 4
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+:endlayer
+layer: 5
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0
 :endlayer
 
 #### RULES ####
