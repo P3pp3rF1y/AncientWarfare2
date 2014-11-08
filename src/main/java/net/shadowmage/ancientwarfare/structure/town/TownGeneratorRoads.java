@@ -10,12 +10,12 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 public class TownGeneratorRoads
 {
 
-public static void generateRoads(World world, TownBoundingArea area, TownTemplate template, int generationOrientation, List<StructureBB> generatedBoundingBoxes)
+public static void generateRoads(World world, TownBoundingArea area, TownTemplate template, List<StructureBB> generatedBoundingBoxes)
   {
   int cx = area.getBlockMinX() + area.getBlockWidth()/2;
   int cz = area.getBlockMinZ() + area.getBlockLength()/2;
   int minX, minZ, maxX, maxZ;
-
+  int generationOrientation = area.getTownOrientation();
   if(generationOrientation==0 || generationOrientation==2)
     {
     minX = area.getWallMinX();
@@ -43,6 +43,11 @@ public static void generateRoads(World world, TownBoundingArea area, TownTemplat
   StructureBB roadBB = new StructureBB(new BlockPosition(minX, area.getSurfaceY()-1, minZ), new BlockPosition(maxX, area.getSurfaceY(), maxZ));
   generatedBoundingBoxes.add(roadBB);
     
+  }
+
+private static void generateMainRoad()
+  {
+  
   }
 
 }

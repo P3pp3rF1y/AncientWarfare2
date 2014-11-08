@@ -21,8 +21,9 @@ public static void load()
   testTemplate.setMaxSize(128);
   testTemplate.setMaxValue(1000);
   testTemplate.setWallStyle(1);
-  testTemplate.setWallSize(2);
-  testTemplate.setWallHeight(4);
+  testTemplate.setWallSize(7);
+  testTemplate.addWall(0, "wall_straight1", 10);
+  testTemplate.addCornerWall("wall_corner1", 10);
   }
 
 }
