@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.town;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -24,9 +25,12 @@ int maxValue = 500;
 
 private int wallStyle;//0==no wall, 1==random walls, 2==by pattern
 private int wallSize;
+private int cornersTotalWeight;
 private List<TownWallEntry> cornerWalls = new ArrayList<TownWallEntry>();
+private int gatesTotalWeight;
 private List<TownWallEntry> gateWalls = new ArrayList<TownWallEntry>();
 private HashMap<Integer, List<TownWallEntry>> wallPieces = new HashMap<Integer, List<TownWallEntry>>();//wall pieces by type
+private HashMap<Integer, Integer> wallTotalWeights = new HashMap<Integer, Integer>();
 private HashMap<Integer, int[]> wallPatterns = new HashMap<Integer, int[]>();
 
 private int roadWidth = 3;
@@ -73,24 +77,50 @@ public final int getRoadWidth(){return roadWidth;}
 public final Block getRoadFillBlock(){return roadFillBlock;}
 public final void setRoadWidth(int roadWidth){this.roadWidth = roadWidth;}
 public final void setRoadFillBlock(Block roadFillBlock){this.roadFillBlock = roadFillBlock==null? this.roadFillBlock : roadFillBlock;}
-public final List<TownWallEntry> getCornerWalls(){return cornerWalls;}
-public final List<TownWallEntry> getGateWalls(){return gateWalls;}
-public final List<TownWallEntry> getWalls(int type){return wallPieces.get(type);}
 public final int[] getWallPattern(int size){return wallPatterns.get(size);}
 public final int getWallStyle(){return wallStyle;}
 public final int getWallSize(){return wallSize;}
 public final void setWallStyle(int wallStyle){this.wallStyle = wallStyle;}
 public final void setWallSize(int wallSize){this.wallSize = wallSize;}
 public final void addWallPattern(int size, int[] pattern){wallPatterns.put(size, pattern);}
-public final void addCornerWall(String name, int weight){cornerWalls.add(new TownWallEntry(name, weight));}
-public final void addGateWall(String name, int weight){gateWalls.add(new TownWallEntry(name, weight));}
+public final void addCornerWall(String name, int weight)
+  {
+  cornerWalls.add(new TownWallEntry(name, weight));
+  cornersTotalWeight+=weight;
+  }
+public final void addGateWall(String name, int weight)
+  {
+  gateWalls.add(new TownWallEntry(name, weight));
+  gatesTotalWeight+=weight;
+  }
 public final void addWall(int type, String name, int weight)
   {
   if(!wallPieces.containsKey(type)){wallPieces.put(type, new ArrayList<TownWallEntry>());}
-  wallPieces.get(type).add(new TownWallEntry(name, weight));
+  wallPieces.get(type).add(new TownWallEntry(name, weight));  
+  if(!wallTotalWeights.containsKey(type)){wallTotalWeights.put(type, 0);}
+  int w = wallTotalWeights.get(type);
+  w+=weight;
+  wallTotalWeights.put(type, w);
   }
 public final int getTownBlockSize(){return townBlockSize;}
 public final int getStructuresPerBlock(){return structuresPerBlock;}
+public final String getRandomWeightedWall(Random rng, int type){return getRandomWeightedWallPiece(rng, wallPieces.get(type), wallTotalWeights.get(type));}
+public final String getRandomWeightedCorner(Random rng){return getRandomWeightedWallPiece(rng, cornerWalls, cornersTotalWeight);}
+public final String getRandomWeightedGate(Random rng){return getRandomWeightedWallPiece(rng, gateWalls, gatesTotalWeight);}
+
+private static String getRandomWeightedWallPiece(Random rng, List<TownWallEntry> list, int totalWeight)
+  {
+  int roll = rng.nextInt(totalWeight);
+  for(TownWallEntry e : list)
+    {
+    roll-=e.weight;
+    if(roll<0)
+      {
+      return e.templateName;
+      }
+    }
+  return null;
+  }
 
 public static final class TownStructureEntry
 {

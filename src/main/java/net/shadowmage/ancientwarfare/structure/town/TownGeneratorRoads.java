@@ -12,8 +12,13 @@ public class TownGeneratorRoads
 
 public static void generateRoads(World world, TownBoundingArea area, TownTemplate template, List<StructureBB> generatedBoundingBoxes)
   {
-  int cx = area.getBlockMinX() + area.getBlockWidth()/2;
-  int cz = area.getBlockMinZ() + area.getBlockLength()/2;
+  generateMainRoad(world, area, template, generatedBoundingBoxes);    
+  }
+
+private static void generateMainRoad(World world, TownBoundingArea area, TownTemplate template, List<StructureBB> generatedBoundingBoxes)
+  {
+  int cx = area.getCenterX();
+  int cz = area.getCenterZ();
   int minX, minZ, maxX, maxZ;
   int generationOrientation = area.getTownOrientation();
   if(generationOrientation==0 || generationOrientation==2)
@@ -39,15 +44,8 @@ public static void generateRoads(World world, TownBoundingArea area, TownTemplat
       world.setBlock(x, area.getSurfaceY()-1, z, Blocks.dirt);//TODO grab road underfill block from somewhere?
       }
     }
-
   StructureBB roadBB = new StructureBB(new BlockPosition(minX, area.getSurfaceY()-1, minZ), new BlockPosition(maxX, area.getSurfaceY(), maxZ));
   generatedBoundingBoxes.add(roadBB);
-    
-  }
-
-private static void generateMainRoad()
-  {
-  
   }
 
 }

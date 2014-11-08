@@ -44,6 +44,8 @@ public void generate()
   this.area.wallSize = template.getWallSize();
   this.remainingGenerationValue = template.maxValue;  
   area.townOrientation = rng.nextInt(4);
+  area.townCenterX = area.getBlockMinX() + area.getBlockWidth()/2;
+  area.townCenterZ = area.getBlockMinZ() + area.getBlockLength()/2;  
   fillStructureMap();
   doGeneration();
   }
@@ -63,7 +65,7 @@ private void doGeneration()
   {
   TownGeneratorBorders.generateBorders(world, area);  
   TownGeneratorBorders.levelTownArea(world, area);
-  TownGeneratorWalls.generateWalls(world, area, template);
+  TownGeneratorWalls.generateWalls(world, area, template, rng);
   TownGeneratorRoads.generateRoads(world, area, template, generatedBoundingBoxes);
   }
 
