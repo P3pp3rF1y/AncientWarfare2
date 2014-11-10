@@ -160,6 +160,7 @@ public void render(int mouseX, int mouseY, float partialTick)
     GL11.glEnable(GL11.GL_DEPTH_TEST);
     GL11.glDisable(GL11.GL_LIGHTING);
     GL11.glPopAttrib();
+    GL11.glColor4f(1, 1, 1, 1);
     }  
   }
 
