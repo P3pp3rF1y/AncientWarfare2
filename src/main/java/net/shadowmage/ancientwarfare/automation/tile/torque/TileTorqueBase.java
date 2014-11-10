@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -61,7 +62,6 @@ protected double torqueIn, torqueOut, torqueLoss, prevEnergy;
 @Override
 public final int getEnergyStored(ForgeDirection from)
   {
-//  AWLog.logDebug("cofh get stored: "+from);
   return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
   }
 
@@ -69,7 +69,6 @@ public final int getEnergyStored(ForgeDirection from)
 @Override
 public final int getMaxEnergyStored(ForgeDirection from)
   {
-//  AWLog.logDebug("cofh get max stored: "+from);
   return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
   }
 
@@ -77,7 +76,6 @@ public final int getMaxEnergyStored(ForgeDirection from)
 @Override
 public final boolean canConnectEnergy(ForgeDirection from)
   {
-//  AWLog.logDebug("cofh get can connect: "+from);
   return canOutputTorque(from) || canInputTorque(from);
   }
 
@@ -85,18 +83,13 @@ public final boolean canConnectEnergy(ForgeDirection from)
 @Override
 public final int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
   {
-//  AWLog.logDebug("cofh extract: "+from+" :: "+maxExtract);
   return 0;
-//  if(!canOutputTorque(from)){return 0;}  
-//  if(simulate){return Math.min(maxExtract, (int) (AWAutomationStatics.torqueToRf * getMaxTorqueOutput(from)));}
-//  return (int) (AWAutomationStatics.torqueToRf * drainTorque(from, (double)maxExtract * AWAutomationStatics.rfToTorque));
   }
 
 @Optional.Method(modid="CoFHCore")
 @Override
 public final int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
   {
-//  AWLog.logDebug("cofh receive: "+from+" :: "+maxReceive);
   if(!canInputTorque(from)){return 0;}
   if(simulate){return Math.min(maxReceive, (int)(AWAutomationStatics.torqueToRf * getMaxTorqueInput(from)));}
   return (int)(AWAutomationStatics.torqueToRf * addTorque(from, (double)maxReceive * AWAutomationStatics.rfToTorque));
