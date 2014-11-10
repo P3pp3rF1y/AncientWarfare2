@@ -105,7 +105,7 @@ public final void registerNetwork()
   PacketBase.registerPacketType(PACKET_RESEARCH_INIT, PacketResearchInit.class);
   PacketBase.registerPacketType(PACKET_RESEARCH_ADD, PacketResearchUpdate.class);
   PacketBase.registerPacketType(PACKET_RESEARCH_START, PacketResearchStart.class);
-  PacketBase.registerPacketType(PACKET_BLOCK_EVENT, PacketTileEvent.class);
+  PacketBase.registerPacketType(PACKET_BLOCK_EVENT, PacketBlockEvent.class);
   NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
   }
 

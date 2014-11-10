@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.network.PacketTileEvent;
+import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
 import buildcraft.api.mj.IBatteryObject;
 import buildcraft.api.mj.ISidedBatteryProvider;
 import cofh.api.energy.IEnergyHandler;
@@ -348,8 +348,8 @@ protected final double applyPowerDrain(TorqueCell cell)
 
 protected final void sendDataToClient(int type, int data)
   {
-  PacketTileEvent pkt = new PacketTileEvent();
-  pkt.setParams(xCoord, yCoord, zCoord, (short)type, (short)data);
+  PacketBlockEvent pkt = new PacketBlockEvent();
+  pkt.setParams(xCoord, yCoord, zCoord, getBlockType(), (byte)type, (short)data);
   NetworkHandler.sendToAllTrackingChunk(worldObj, xCoord >> 4 , zCoord >> 4, pkt);
   }
 
@@ -364,7 +364,6 @@ public boolean receiveClientEvent(int a, int b)
   {
   if(worldObj.isRemote)
     {
-    AWLog.logDebug("rec. client event: "+a+" : "+b);
     if(a < 6)
       {
       int side = a;
@@ -373,7 +372,7 @@ public boolean receiveClientEvent(int a, int b)
       handleClientRotationData(ForgeDirection.values()[side], val);
       }    
     }
-  return true;//
+  return true;
   }
 
 //*************************************** NBT / DATA PACKET ***************************************//
