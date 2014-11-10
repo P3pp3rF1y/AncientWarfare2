@@ -35,6 +35,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
+import net.shadowmage.ancientwarfare.structure.town.TownTestGenerator;
 import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -121,7 +122,7 @@ public void preInit(FMLPreInitializationEvent evt)
   AWStructuresBlockLoader.load();
   String path = evt.getModConfigurationDirectory().getAbsolutePath();
   TemplateLoader.instance().initializeAndExportDefaults(path);  
-
+  TownTestGenerator.test();
   AWLog.log("Ancient Warfare Structures Pre-Init completed");
   }
 
