@@ -40,8 +40,16 @@ public void initElements()
   Label label = new Label(8,8, StatCollector.translateToLocal("guistrings.select_biomes")+":");
   addGuiElement(label);
   
-  whiteList = new Checkbox(8, 20, 16, 16, StatCollector.translateToLocal("guistrings.biome_whitelist")+"?");
+  whiteList = new Checkbox(8, 20, 16, 16, StatCollector.translateToLocal("guistrings.biome_whitelist")+"?")
+    {
+    @Override
+    public void onToggled()
+      {
+      parent.validator.setBiomeWhiteList(checked());
+      }
+    };
   addGuiElement(whiteList);
+  whiteList.setChecked(parent.validator.isBiomeWhiteList());
   
   area = new CompositeScrolled(this, 0, 40, 256, 200);
   this.addGuiElement(area);
@@ -106,7 +114,7 @@ public void initElements()
 @Override
 public void setupElements()
   {
- 
+  whiteList.setChecked(parent.validator.isBiomeWhiteList());
   }
 
 }

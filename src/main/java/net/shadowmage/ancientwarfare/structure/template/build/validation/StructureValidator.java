@@ -313,6 +313,16 @@ public final void setProperty(String name, Object value)
     }
   }
 
+public final void setBiomeWhiteList(boolean val)
+  {
+  properties.get(PROP_BIOME_WHITE_LIST).setValue(val);
+  }
+
+public final void setDimensionWhiteList(boolean val)
+  {
+  properties.get(PROP_DIMENSION_WHITE_LIST).setValue(val);
+  }
+
 public final boolean isBlockSwap()
   {
   return properties.get(PROP_BLOCK_SWAP).getDataBoolean();

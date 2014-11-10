@@ -59,8 +59,16 @@ public void initElements()
     };
   addGuiElement(button);
   
-  whiteList = new Checkbox(8, 20, 16, 16, StatCollector.translateToLocal("guistrings.dimension_whitelist")+"?");
+  whiteList = new Checkbox(8, 20, 16, 16, StatCollector.translateToLocal("guistrings.dimension_whitelist")+"?")
+    {
+    @Override
+    public void onToggled()
+      {
+      parent.validator.setDimensionWhiteList(checked());
+      }
+    };
   addGuiElement(whiteList);
+  whiteList.setChecked(parent.validator.isDimensionWhiteList());
     
   dimensionSelection = new NumberInput(140, 22, 35, 0, this);
   dimensionSelection.setIntegerValue();
@@ -85,6 +93,7 @@ public void initElements()
 public void setupElements()
   {
   area.clearElements();
+  whiteList.setChecked(parent.validator.isDimensionWhiteList());
   
   int totalHeight = 8;
   for(Integer dim : dims)
