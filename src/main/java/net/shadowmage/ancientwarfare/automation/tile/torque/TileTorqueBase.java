@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -349,7 +348,7 @@ protected final double applyPowerDrain(TorqueCell cell)
 protected final void sendDataToClient(int type, int data)
   {
   PacketBlockEvent pkt = new PacketBlockEvent();
-  pkt.setParams(xCoord, yCoord, zCoord, getBlockType(), (byte)type, (short)data);
+  pkt.setParams(xCoord, yCoord, zCoord, getBlockType(), (short)type, (short)data);
   NetworkHandler.sendToAllTrackingChunk(worldObj, xCoord >> 4 , zCoord >> 4, pkt);
   }
 
