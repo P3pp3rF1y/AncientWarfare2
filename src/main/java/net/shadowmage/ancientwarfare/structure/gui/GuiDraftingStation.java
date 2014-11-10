@@ -39,7 +39,7 @@ public void initElements()
   rect = new TexturedRectangle(227, 8, 170, 96, (ResourceLocation)null, 512, 288, 0, 0, 512, 288);
   addGuiElement(rect);
   
-  resourceListArea = new CompositeScrolled(176, 96+8, 400-176, 240-96-8);
+  resourceListArea = new CompositeScrolled(this, 176, 96+8, 400-176, 240-96-8);
   addGuiElement(resourceListArea);
   
   selectButton = new Button(8, 8, 95, 12, StatCollector.translateToLocal("guistrings.structure.select_structure"))

@@ -87,7 +87,7 @@ public void initElements()
     };
   addGuiElement(deleteNameButton);
   
-  nameSelectArea = new CompositeScrolled(0, 20+4+12, 256, 240-8-12-4-12);
+  nameSelectArea = new CompositeScrolled(this, 0, 20+4+12, 256, 240-8-12-4-12);
   addGuiElement(nameSelectArea);
   }
 

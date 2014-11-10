@@ -88,7 +88,7 @@ public void initElements()
     };
   addGuiElement(input);
     
-  area = new CompositeItemSlots(0, 8+12+4+12+2, 178, 96, this);
+  area = new CompositeItemSlots(this, 0, 8+12+4+12+2, 178, 96, this);
   
   Listener l = new Listener(Listener.MOUSE_DOWN)
     {    
@@ -164,7 +164,7 @@ private void addInventoryViewElements()
       totalSize+=18;
       }
     }  
-  area.setAreaSize(totalSize);
+  area.setAreaSize(totalSize+8);
   }
 
 private void sortItems(List<ItemStack> items)

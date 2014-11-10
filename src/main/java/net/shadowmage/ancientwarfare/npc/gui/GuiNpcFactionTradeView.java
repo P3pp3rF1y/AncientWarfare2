@@ -35,7 +35,7 @@ public GuiNpcFactionTradeView(ContainerBase container)
 public void initElements()
   {
   int areaYSize = player.capabilities.isCreativeMode ? ySize - 24 - 16 - 4 - 4*18 : ySize - 16 - 4 - 4*18;
-  area = new CompositeScrolled(0, player.capabilities.isCreativeMode? 24 : 0, xSize, areaYSize);
+  area = new CompositeScrolled(this, 0, player.capabilities.isCreativeMode? 24 : 0, xSize, areaYSize);
   inventoryButton = new Button(8, 8, (256-16)/2, 12, "guistrings.inventory")
     {
     @Override

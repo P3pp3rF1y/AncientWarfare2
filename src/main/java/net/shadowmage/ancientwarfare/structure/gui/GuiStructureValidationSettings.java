@@ -42,7 +42,7 @@ public GuiStructureValidationSettings(GuiStructureScanner parent)
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 30, 256, 210);
+  area = new CompositeScrolled(this, 0, 30, 256, 210);
   this.addGuiElement(area);
   
   Listener listener = new Listener(Listener.MOUSE_UP)

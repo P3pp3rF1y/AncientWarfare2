@@ -57,10 +57,10 @@ public void initElements()
   updateSelectionName(cnt.entityId);
   addGuiElement(currentSelectionName);
   
-  typeSelectionArea = new CompositeScrolled(0, 30, 256, 105);
+  typeSelectionArea = new CompositeScrolled(this, 0, 30, 256, 105);
   addGuiElement(typeSelectionArea);
   
-  attributesArea = new CompositeScrolled(0, 30+105, 256, 105);
+  attributesArea = new CompositeScrolled(this, 0, 30+105, 256, 105);
   addGuiElement(attributesArea);  
   }
 

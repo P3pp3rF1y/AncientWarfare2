@@ -73,16 +73,16 @@ public void initElements()
   textureRect = new TexturedRectangleLive(0, 0, xSize, ySize, GuiModelEditor.model.textureWidth(), GuiModelEditor.model.textureHeight(), 0, 0, GuiModelEditor.model.textureWidth(), GuiModelEditor.model.textureHeight(), loc);
   addGuiElement(textureRect);
   
-  textureControlArea = new CompositeScrolled(-guiLeft, -guiTop, (width - xSize)/2, height/2);
+  textureControlArea = new CompositeScrolled(this, -guiLeft, -guiTop, (width - xSize)/2, height/2);
   addGuiElement(textureControlArea);
   
-  primitiveControlArea = new CompositeScrolled(-guiLeft, -guiTop + height/2, (width - xSize)/2, height/2);
+  primitiveControlArea = new CompositeScrolled(this, -guiLeft, -guiTop + height/2, (width - xSize)/2, height/2);
   addGuiElement(primitiveControlArea);
   
-  fileControlArea = new CompositeScrolled(width, -guiTop, (width - xSize)/2, height/2);
+  fileControlArea = new CompositeScrolled(this, width, -guiTop, (width - xSize)/2, height/2);
   addGuiElement(fileControlArea);
   
-  pieceListArea = new CompositeScrolled(width, -guiTop + height/2, (width - xSize)/2, height/2);
+  pieceListArea = new CompositeScrolled(this, width, -guiTop + height/2, (width - xSize)/2, height/2);
   addGuiElement(pieceListArea);
   
   pieceNameLabel = new Label(8, -guiTop, "Piece: No Selection");

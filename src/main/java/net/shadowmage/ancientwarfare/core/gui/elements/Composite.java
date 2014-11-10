@@ -21,13 +21,15 @@ public class Composite extends GuiElement
 {
 
 protected List<GuiElement> elements = new ArrayList<GuiElement>();
+private GuiContainerBase gui;
 
-public Composite(int topLeftX, int topLeftY, int width, int height)
+public Composite(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height)
   {
-  super(topLeftX, topLeftY, width, height); 
+  super(topLeftX, topLeftY, width, height);
+  this.gui = gui;
   addDefaultListeners();
   this.keyboardInterface = true;
-  this.mouseInterface = true;
+  this.mouseInterface = true;  
   }
 
 /**
@@ -78,7 +80,8 @@ protected void addDefaultListeners()
 
 public void clearElements()
   {
-  this.elements.clear();
+  this.gui.onCompositeCleared(elements);
+  this.elements.clear();  
   }
 
 @Override

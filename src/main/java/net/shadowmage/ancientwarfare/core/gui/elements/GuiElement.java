@@ -27,6 +27,7 @@ protected boolean keyboardInterface;
 protected boolean enabled;
 protected boolean visible;
 protected boolean selected;//isFocused -- for text-input lines / etc
+protected boolean scrollInput = false;//if should intercept scroll input, mostly used inside compositescrolled containers, really should only be true for number input widget
 
 protected Tooltip tooltip;
 protected long hoverStart;
@@ -67,6 +68,8 @@ public GuiElement(int topLeftX, int topLeftY, int width, int height)
   }
 
 public void setEnabled(boolean enabled){this.enabled = enabled;}
+
+public void setScrollable(boolean handleScroll){this.scrollInput=handleScroll;}
 
 /**
  * called to update the internal positioning of this element.

@@ -24,7 +24,7 @@ public GuiCombatOrder(ContainerBase container)
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 40, 256, 200);
+  area = new CompositeScrolled(this, 0, 40, 256, 200);
   addGuiElement(area);
   }
 

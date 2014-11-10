@@ -45,7 +45,7 @@ public GuiFileSelect(GuiContainerBase parent, String basePath, boolean allowNewF
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 40, 256, 200);
+  area = new CompositeScrolled(this, 0, 40, 256, 200);
   addGuiElement(area);
   
   Button button = new Button(256-8-55-55, 8+14, 55, 12, "Accept");

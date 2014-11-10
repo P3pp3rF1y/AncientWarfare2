@@ -46,7 +46,7 @@ public void initElements()
   Label label = new Label(8,8, StatCollector.translateToLocal("guistrings.select_dimensions")+":");
   addGuiElement(label);
   
-  area = new CompositeScrolled(0, 40, 256, 200);
+  area = new CompositeScrolled(this, 0, 40, 256, 200);
   this.addGuiElement(area);
   
   Button button = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"))

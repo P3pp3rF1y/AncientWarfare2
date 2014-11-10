@@ -43,7 +43,7 @@ public void initElements()
   whiteList = new Checkbox(8, 20, 16, 16, StatCollector.translateToLocal("guistrings.biome_whitelist")+"?");
   addGuiElement(whiteList);
   
-  area = new CompositeScrolled(0, 40, 256, 200);
+  area = new CompositeScrolled(this, 0, 40, 256, 200);
   this.addGuiElement(area);
   
   Button button = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"))

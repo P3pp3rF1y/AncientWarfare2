@@ -39,7 +39,7 @@ public GuiWarehouseStorage(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 0, xSize, 74);
+  area = new CompositeScrolled(this, 0, 0, xSize, 74);
   addGuiElement(area);
   
   
@@ -55,7 +55,7 @@ public void initElements()
       return true;
       }
     };
-  area2 = new CompositeItemSlots(0, 74, xSize, 74, this);
+  area2 = new CompositeItemSlots(this, 0, 74, xSize, 74, this);
   area2.addNewListener(l);  
   addGuiElement(area2);
   }
