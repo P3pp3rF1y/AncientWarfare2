@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 
 public class TownTestGenerator
@@ -36,163 +37,175 @@ public static void test()
   {
   Generator gen = new Generator(5*16, 5*16, 0);
   gen.generate();  
-//  Integer.parseInt("foo");
   }
 
-/**Gen algorithm:
+/**
+ * Roads have no initial width
+ *  width is calculated from the amount of connecting roads
+ *    more connecting roads = larger width
  * 
- * Generation of structures goes along roads.
- * Initial road is generated across town.  Has two start nodes, one for each cardinal direction that the road is stretching.
- * Roads are added to a 'roads to walk' list once generated.
- * Roads have a start node that determines the starting location of the road
- * Roads have an orientation that denotes what direction the road runs.
- * Roads have a set 'road width', that decreases as the road goes further from the main-street
+ * Road generation:
+ * Generate static roads (cross roads)
+ *    While generating these, generate seeds for main cross-roads
+ *    ensure that these main cross roads are not too frequent
+ *    generate a 'road start node' for each of these side roads.  It is these start nodes that will be used for continued generation
+ *
  * 
- * while(!roadsToWalk.isEmpty)
- *  pull first road from list.  Walk along the road attempting to generate structures on the left and right
- *  keep track of how many blocks walked and what type of road
- *  after every X blocks walked, plot the start to a side road rather than try for a building.
- *    Side roads are smaller in width than main roads (6->4->2 min)
- *    add newly generated side roads to roadsToWalk list.
- *    after a building is generated on a road, fill in the road up to that position (front door node for the structure)
+ * 
  * 
  */
 
-private static class Road
+private static class Road3
+{
+Direction genDirection;
+int x, z;
+List<RoadNode> nodes = new ArrayList<RoadNode>();
+List<RoadNode> openNodes = new ArrayList<RoadNode>();
+public Road3(int x, int z, Direction genDirection)
+  {
+  this.x = x;
+  this.z = z;
+  this.genDirection = genDirection;
+  RoadNode n = new RoadNode();
+  this.nodes.add(n);
+  openNodes.add(n);
+  }
+}
+
+private static class RoadNode
+{
+boolean[] connections = new boolean[4];//connection bits for each direction, whether the road already continues in that direction
+boolean open=true;//should this node be considered for further expansion (does not prevent other roads from connecting to this node)
+}
+
+
+private static class Road2
 {
 Direction orientation;
-int startX, startZ;
-int width;//should generally be 4 or 6, might be 2 for side-alleys
-int leftWidth;
-int rightWidth;
-int genType;
-int length;
-int blocksTilSideRoadCheckLeft = 10;
-int blocksTilSideRoadCheckRight = 16;
-int lastBuildingEdgePos = -1;
-BlockPosition min, max;
-BlockPosition genPos;
-
-public Road(int x, int z, int width, int genType, Direction orientation)
-  {
-  this.startX = x;
-  this.startZ = z;
-  this.width = width;
-  this.genType = genType;
-  this.orientation = orientation;  
-  this.leftWidth = (width/2);
-  this.rightWidth = (width/2)-1;
-  this.length=1;
-  this.blocksTilSideRoadCheckLeft = width*2;
-  this.blocksTilSideRoadCheckRight = width*2;
+int x, z;
+int negativeXWidth;
+int positiveXWidth;
+int negativeZWidth;
+int positiveZWidth;
+int fullWidth;
+int length=1;
+StructureBB bb;
+StructureBB growthBB;
+public Road2(int x, int z, int width, Direction orientation)
+  {  
+  this.x = x;
+  this.z = z;
+  this.fullWidth = width;
+  this.orientation = orientation;
+  bb = new StructureBB(new BlockPosition(), new BlockPosition());
   
-  min = new BlockPosition(x, 0, z);
-  max = new BlockPosition(x, 0, z);
-  
-  int olx = getLeftX();
-  int olz = getLeftZ();
-  int orx = getRightX();
-  int orz = getRightZ();
-  if(olx>0){max.x+=rightWidth;}
-  else if(olx<0){min.x-=leftWidth;}
-  if(orx>0){max.x+=rightWidth;}
-  else if(orx<0){min.x-=leftWidth;}
-  if(olz>0){max.z+=rightWidth;}
-  else if(olz<0){min.z-=leftWidth;}
-  if(orz>0){max.z+=rightWidth;}
-  else if(orz<0){min.z-=leftWidth;}
-  genPos = new BlockPosition(startX, 0, startZ);
-  AWLog.logDebug("created road start: "+min+" :: "+max+" width: "+width);
+  if(orientation==Direction.NORTH || orientation==Direction.SOUTH)
+    {
+    negativeXWidth = (width/2);
+    positiveXWidth = (width/2)-1;    
+    }
+  else if(orientation==Direction.EAST || orientation==Direction.WEST)
+    {
+    negativeZWidth = (width/2);
+    positiveZWidth = (width/2)-1;    
+    }
+  bb.min.x -= negativeXWidth;
+  bb.max.x += positiveXWidth;
+  bb.min.z -= negativeZWidth;
+  bb.max.z += positiveZWidth;
+  growthBB = new StructureBB(bb.min.copy(),  bb.max.copy());
+  growthBB.min.x+=orientation.xDirection;
+  growthBB.max.x+=orientation.xDirection;
+  growthBB.min.z+=orientation.zDirection;
+  growthBB.max.z+=orientation.zDirection;
   }
 
-public int getMoveX(){return orientation.xDirection;}
-public int getMoveZ(){return orientation.zDirection;}
-public int getLeftX(){return orientation.getLeft().xDirection;}
-public int getRightX(){return orientation.getRight().xDirection;}
-public int getLeftZ(){return orientation.getLeft().zDirection;}
-public int getRightZ(){return orientation.getRight().zDirection;}
+public StructureBB getBounds()
+  {
+  return bb;
+  }
 
 public void grow()
   {
-  int x = getMoveX();
-  int z = getMoveZ();
-  genPos.x+=x;
-  genPos.z+=z;
-  if(x<0){min.x--;}
-  else if(x>0){max.x++;}
-  if(z<0){min.z--;}
-  else if(z>0){max.z++;}
   length++;
-  }
-
-public boolean canGrow(int width, int length)
+  switch(orientation)
   {
-  int x = getMoveX();
-  if(x < 0 && min.x <=0){return false;}//cannot grow west
-  else if(x > 0 && max.x >= width-1){return false;}//cannot grow east
-  int z = getMoveZ();
-  if(z < 0 && min.z <=0){return false;}//cannot grow north
-  else if(z > 0 && max.z >= length-1){return false;}//cannot grow south
-  return true;
-  }
-
-public void gen(int width, int length, List<Road> roads)
-  {
-  if(this.width>2)//try and create sub-road
+  case NORTH:
     {
-    roadGenUpdate(width, length, roads);
+    growthBB.min.z--;
+    growthBB.max.z--;
+    bb.min.z--;
+    break;
+    }
+  case EAST:
+    {
+    growthBB.min.x++;
+    growthBB.max.x++;
+    bb.max.x++;
+    break;
+    }
+  case SOUTH:
+    {
+    growthBB.min.z++;
+    growthBB.max.z++;
+    bb.min.z++;
+    break;
+    }
+  case WEST:
+    {
+    growthBB.min.x--;
+    growthBB.max.x--;
+    bb.max.x--;
+    break;
     }
   }
-
-private void roadGenUpdate(int width, int length, List<Road> roads)
-  {
-  if(blocksTilSideRoadCheckLeft>0){blocksTilSideRoadCheckLeft--;}
-  if(blocksTilSideRoadCheckRight>0){blocksTilSideRoadCheckRight--;}
-  if(blocksTilSideRoadCheckLeft<=0)
-    {
-    Road r = tryRoad(width, length, orientation.getLeft());
-    if(r!=null)
-      {
-      roads.add(r);
-      blocksTilSideRoadCheckLeft=this.width*2;
-      }
-    }
-//  if(blocksTilSideRoadCheckRight==0)
-//    {
-//    Road r = tryRoad(width, length, orientation.getRight());
-//    if(r!=null)
-//      {
-//      roads.add(r);
-//      blocksTilSideRoadCheckRight=this.width*2;
-//      }
-//    }
   }
 
-private Road tryRoad(int width, int length, Direction o)
+/**
+ * Returns a bb denoting the new blocks that would be added to this road if it were to grow in length by 1 block
+ * @return
+ */
+public StructureBB getGrowthBounds()
   {
-  int roadWidth = this.width-2;
-  if(roadWidth<1){return null;}
-  int x = genPos.x;
-  if(o.xDirection<0){x -= (leftWidth+1);}
-  if(o.xDirection>0){x += (rightWidth+1);}
-  int z = genPos.z;
-  if(o.zDirection<0){z -= (leftWidth+1);}
-  if(o.zDirection>0){z += (rightWidth+1);}
-  if(x<0 || x>=width || z<0 || z>=length){return null;}
-  Road r = new Road(x, z, roadWidth, genType+1, o);
-  if(r.min.x<0 || r.min.z<0 || r.max.x>=width || r.max.z >=length){return null;}
-  return r;
+  return growthBB;
+  }
+
+public BlockPosition getLeftStart()
+  {
+  BlockPosition pos=null;
+  int x = getGrowthBounds().min.x, z = getGrowthBounds().min.z;
+  if(orientation==Direction.NORTH){x--;}
+  else if(orientation==Direction.SOUTH){x+=fullWidth;}
+  else if(orientation==Direction.EAST){z--;}
+  else if(orientation==Direction.WEST){z+=fullWidth;}  
+  pos = new BlockPosition(x,0,z);  
+  return pos;
+  }
+
+public BlockPosition getRightStart()
+  {
+  BlockPosition pos=null;
+  int x = getGrowthBounds().min.x, z = getGrowthBounds().min.z;
+  if(orientation==Direction.NORTH){x--;}
+  else if(orientation==Direction.SOUTH){x+=fullWidth;}
+  else if(orientation==Direction.EAST){z--;}
+  else if(orientation==Direction.WEST){z+=fullWidth;}  
+  pos = new BlockPosition(x,0,z);  
+  return pos;
   }
 
 }
 
 private static class Generator
 {
+
 Random rng;
 byte[] testGrid;
+private int blockSize;
 private int width, length;
 private Direction orientation;
-private List<Road> unwalkedRoads = new ArrayList<Road>();
+private List<Road2> unwalkedRoads = new ArrayList<Road2>();
+private List<Road2> generatedRoads = new ArrayList<Road2>();
 
 public Generator(int width, int length, int orientation)
   {
@@ -208,8 +221,14 @@ public void generate()
   genMainRoad();  
   while(!unwalkedRoads.isEmpty())
     {
-    walkRoad(unwalkedRoads.remove(0));
+    randomWalkRoad(unwalkedRoads.remove(0));
     }
+  
+  for(Road2 r : generatedRoads)
+    {
+    write(r.getBounds(), (byte)1);
+    }
+  genRandomStructures();
   int centerX = (width/2);
   int centerZ = (length/2);
   write(centerX, centerZ, (byte)9);
@@ -217,39 +236,108 @@ public void generate()
   AWLog.logDebug("grid: \n"+line);
   }
 
+private void genRandomStructures()
+  {
+  StructureBB bb = new StructureBB(new BlockPosition(), new BlockPosition());
+  for(int i = 0; i < 20; i++)
+    {
+    int sw = 5 + rng.nextInt(5);//5-9 block wide
+    int sl = 5 + rng.nextInt(5);//5-9 block long    
+    float xr = rng.nextFloat() * rng.nextFloat();
+    float zr = rng.nextFloat() * rng.nextFloat();
+    float hw = width/2;
+    float hl = length/2;
+    int x = (int)hw + (int)(hw*xr);
+    int z = (int)hl + (int)(hl*zr);
+    bb.min.x = x;
+    bb.min.z = z;
+    bb.max.x = x+sw;
+    bb.max.z = z+sl;
+    if(bb.min.x>=0 && bb.min.z>=0 && bb.max.x<width && bb.max.z<length && !doesBBIntersect(bb))
+      {
+      write(bb, (byte)2);
+      }
+    }
+  }
+
 private void genMainRoad()
   {   
   int centerX = (width/2);
   int centerZ = (length/2);
-  Road r = genRoad(orientation, centerX, centerZ, 6, 0);
-  r.blocksTilSideRoadCheckLeft = 0;
-  unwalkedRoads.add(r); 
-  Direction o = orientation.getOpposite();
-  unwalkedRoads.add(r = genRoad(o, centerX+o.xDirection, centerZ+o.zDirection, 6, 0));
-  r.blocksTilSideRoadCheckLeft = 0;
+  
+  Direction o = orientation;
+  Road2 r = genRoad(orientation, centerX, centerZ, 6);
+  walkRoad(r); 
+  
+  o = orientation.getOpposite();
+  r = genRoad(o, centerX+o.xDirection, centerZ+o.zDirection, 6);
+  walkRoad(r);
   }
 
-private Road genRoad(Direction orientation, int x1, int z1, int width, int type)
+private Road2 genRoad(Direction orientation, int x1, int z1, int width)
   {
-  return new Road(x1, z1, width, type, orientation);
+  return new Road2(x1, z1, width, orientation);
   }
 
-private void walkRoad(Road road)
+private void walkRoad(Road2 road)
   {
-  int leftRoadCheck;
-  int rightRoadCheck;
-  while(road.canGrow(width, length))
+  while(canRoadGrow(road))
     {
-    road.grow();
-    road.gen(width, length, unwalkedRoads);
-    }
-  for(int x = road.min.x; x<= road.max.x; x++)
-    {
-    for(int z = road.min.z; z<= road.max.z; z++)
+    int roll = rng.nextInt(10);
+    if(roll==0)//left
       {
-      write(x, z, (byte)1);
+      
+      }
+    if(roll==1)//right
+      {
+      
+      }
+    road.grow();    
+    }
+  generatedRoads.add(road);
+  }
+
+private void randomWalkRoad(Road2 road)
+  {
+  while(canRoadGrow(road))
+    {
+    int roll = rng.nextInt(10);
+    if(roll<2){break;}//0/1
+    if(roll==2)//2/3
+      {
+      StructureBB bb = road.getGrowthBounds();
+      Direction o = road.orientation.getLeft();
+      }
+    else if(roll==3)
+      {
+      StructureBB bb = road.getGrowthBounds();
+      Direction o = road.orientation.getRight();      
+      }
+    road.grow();    
+    }
+  generatedRoads.add(road);
+  }
+
+private boolean canRoadGrow(Road2 road)
+  {
+  StructureBB bb = road.getGrowthBounds();
+  if(bb.min.x<0 || bb.max.x>=width || bb.min.z<0 || bb.max.z>=length){return false;}
+  return !doesBBIntersect(bb);
+  }
+
+private boolean doesBBIntersect(StructureBB bb)
+  {
+  for(int x = bb.min.x; x<=bb.max.x; x++)
+    {
+    for(int z = bb.min.z; z<=bb.max.z; z++)
+      {
+      if(testGrid[getIndex(x, z)]!=0)
+        {
+        return true;
+        }
       }
     }
+  return false;
   }
 
 /**
@@ -269,6 +357,17 @@ private void genBuilding(int x, int z, int genWidth, int genLength, byte type)
     for(int pz = z; pz < z + genLength; pz++)
       {
       write(px, pz, type);
+      }
+    }
+  }
+
+private void write(StructureBB bb, byte type)
+  {
+  for(int x = bb.min.x; x<=bb.max.x; x++)
+    {
+    for(int z = bb.min.z; z<=bb.max.z; z++)
+      {
+      write(x, z, type);
       }
     }
   }
