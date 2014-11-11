@@ -40,161 +40,110 @@ public static void test()
   }
 
 /**
- * Roads have no initial width
- *  width is calculated from the amount of connecting roads
- *    more connecting roads = larger width
- * 
- * Road generation:
- * Generate static roads (cross roads)
- *    While generating these, generate seeds for main cross-roads
- *    ensure that these main cross roads are not too frequent
- *    generate a 'road start node' for each of these side roads.  It is these start nodes that will be used for continued generation
- *
- * 
- * 
+ * find optimal grid size.
+ *  structure grid size = (max dimension for a non town-hall structure + 2)
+ *    - this ensures that any structure can fit into any plot
+ *    - perhaps adjust so that some structures take up 1x2 or 2x2 grid
+ *    - use pre-selected structure grid size based on template settings? (still use 1x2 and 2x2 grids for large structs if needed)
+ *  block grid size = (3*structureGridSize) + rng.nextInt(2) - 1 (so, 2-4)
+ *  lay out blocks
+ *  fill with structures, each block now has a discrete plot
+ *  randomize which plot gets the extra bits (it doesn't matter)
+ *  
+ *  track front door nodes for each structure built.
+ *  ensure front door nodes are connected to main roads (connect along block lines in direction of main road)
  * 
  */
 
-private static class Road3
+private static class TownPlot
 {
-Direction genDirection;
-int x, z;
-List<RoadNode> nodes = new ArrayList<RoadNode>();
-List<RoadNode> openNodes = new ArrayList<RoadNode>();
-public Road3(int x, int z, Direction genDirection)
-  {
-  this.x = x;
-  this.z = z;
-  this.genDirection = genDirection;
-  RoadNode n = new RoadNode();
-  this.nodes.add(n);
-  openNodes.add(n);
-  }
-}
-
-private static class RoadNode
-{
-boolean[] connections = new boolean[4];//connection bits for each direction, whether the road already continues in that direction
-boolean open=true;//should this node be considered for further expansion (does not prevent other roads from connecting to this node)
-}
-
-
-private static class Road2
-{
+StructureBB bb;//bb of the plot
+StructureBB structBB;//bb of the actual structure
+BlockPosition doorPos;
 Direction orientation;
-int x, z;
-int negativeXWidth;
-int positiveXWidth;
-int negativeZWidth;
-int positiveZWidth;
-int fullWidth;
-int length=1;
-StructureBB bb;
-StructureBB growthBB;
-public Road2(int x, int z, int width, Direction orientation)
-  {  
-  this.x = x;
-  this.z = z;
-  this.fullWidth = width;
-  this.orientation = orientation;
-  bb = new StructureBB(new BlockPosition(), new BlockPosition());
-  
-  if(orientation==Direction.NORTH || orientation==Direction.SOUTH)
-    {
-    negativeXWidth = (width/2);
-    positiveXWidth = (width/2)-1;    
-    }
-  else if(orientation==Direction.EAST || orientation==Direction.WEST)
-    {
-    negativeZWidth = (width/2);
-    positiveZWidth = (width/2)-1;    
-    }
-  bb.min.x -= negativeXWidth;
-  bb.max.x += positiveXWidth;
-  bb.min.z -= negativeZWidth;
-  bb.max.z += positiveZWidth;
-  growthBB = new StructureBB(bb.min.copy(),  bb.max.copy());
-  growthBB.min.x+=orientation.xDirection;
-  growthBB.max.x+=orientation.xDirection;
-  growthBB.min.z+=orientation.zDirection;
-  growthBB.max.z+=orientation.zDirection;
-  }
+boolean[] roadBorders;//what directions are adjacent to a road, can be 0-2
 
-public StructureBB getBounds()
+public TownPlot(int x, int z, int width, int length)
   {
-  return bb;
-  }
-
-public void grow()
-  {
-  length++;
-  switch(orientation)
-  {
-  case NORTH:
-    {
-    growthBB.min.z--;
-    growthBB.max.z--;
-    bb.min.z--;
-    break;
-    }
-  case EAST:
-    {
-    growthBB.min.x++;
-    growthBB.max.x++;
-    bb.max.x++;
-    break;
-    }
-  case SOUTH:
-    {
-    growthBB.min.z++;
-    growthBB.max.z++;
-    bb.min.z++;
-    break;
-    }
-  case WEST:
-    {
-    growthBB.min.x--;
-    growthBB.max.x--;
-    bb.max.x--;
-    break;
-    }
-  }
+  bb = new StructureBB(new BlockPosition(x, 0, z), new BlockPosition(x + width-1, 0, z+length-1));
+  roadBorders = new boolean[4];
+  AWLog.logDebug("town plot: "+bb);
   }
 
 /**
- * Returns a bb denoting the new blocks that would be added to this road if it were to grow in length by 1 block
- * @return
+ * Expands THIS plot to include the passed in plot.<br>
+ * The passed-in plot should be discarded as it is no longer valid
+ * @param other
  */
-public StructureBB getGrowthBounds()
+public void merge(TownPlot other)
   {
-  return growthBB;
+  if(other.bb.min.x<bb.min.x){bb.min.x=other.bb.min.x;}
+  if(other.bb.max.x>bb.max.x){bb.max.x=other.bb.max.x;}
+  if(other.bb.min.z<bb.min.z){bb.min.z=other.bb.min.z;}
+  if(other.bb.max.z>bb.max.z){bb.max.z=other.bb.max.z;}
+  for(int i = 0; i < 4; i++)
+    {
+    if(other.roadBorders[i]){this.roadBorders[i]=true;}
+    }
+  }
+}
+
+private static class TownBlock
+{
+
+StructureBB bb;
+List<TownPlot> plots;
+
+public TownBlock(int x, int z, int size)
+  {
+  bb = new StructureBB(new BlockPosition(x, 0, z), new BlockPosition(x + size-1, 0, z + size-1));
+  plots = new ArrayList<TownPlot>();
   }
 
-public BlockPosition getLeftStart()
+public void subdivide()
   {
-  BlockPosition pos=null;
-  int x = getGrowthBounds().min.x, z = getGrowthBounds().min.z;
-  if(orientation==Direction.NORTH){x--;}
-  else if(orientation==Direction.SOUTH){x+=fullWidth;}
-  else if(orientation==Direction.EAST){z--;}
-  else if(orientation==Direction.WEST){z+=fullWidth;}  
-  pos = new BlockPosition(x,0,z);  
-  return pos;
-  }
-
-public BlockPosition getRightStart()
-  {
-  BlockPosition pos=null;
-  int x = getGrowthBounds().min.x, z = getGrowthBounds().min.z;
-  if(orientation==Direction.NORTH){x--;}
-  else if(orientation==Direction.SOUTH){x+=fullWidth;}
-  else if(orientation==Direction.EAST){z--;}
-  else if(orientation==Direction.WEST){z+=fullWidth;}  
-  pos = new BlockPosition(x,0,z);  
-  return pos;
+  int xWidth = (bb.max.x - bb.min.x)+1;
+  int zLength = (bb.max.z - bb.min.z)+1;
+  int plotWidth = xWidth/3;
+  int plotLength = zLength/3;
+  for(int x = bb.min.x; x +plotWidth <= bb.max.x; x+=plotWidth)
+    {
+    for(int z = bb.min.z; z + plotLength <= bb.max.z; z+=plotLength)
+      {
+      plots.add(new TownPlot(x, z, plotWidth, plotLength));
+      }
+    }
   }
 
 }
+
+private static class TownQuadrant
+{
+StructureBB bb;
+List<TownBlock> blocks;
+int blockSize;
+
+public TownQuadrant(int x, int z, int width, int length, int blockSize)
+  {
+  this.blockSize = blockSize;
+  bb = new StructureBB(new BlockPosition(x, 0, z), new BlockPosition(x+width-1, 0, z+length-1));
+  blocks = new ArrayList<TownBlock>();
+  }
+
+public void subdivide()
+  {
+  for(int x = bb.min.x; x+blockSize <= bb.max.x; x+=blockSize)
+    {
+    for(int z = bb.min.z; z+blockSize <=  bb.max.z; z+=blockSize)
+      {
+      blocks.add(new TownBlock(x, z, blockSize));
+      }
+    }
+  for(TownBlock block : blocks){block.subdivide();}
+  }
+
+}
+
 
 private static class Generator
 {
@@ -204,11 +153,10 @@ byte[] testGrid;
 private int blockSize;
 private int width, length;
 private Direction orientation;
-private List<Road2> unwalkedRoads = new ArrayList<Road2>();
-private List<Road2> generatedRoads = new ArrayList<Road2>();
 
 public Generator(int width, int length, int orientation)
   {
+  this.blockSize = 30;
   this.width = width;
   this.length = length;
   this.orientation = Direction.fromFacing(orientation);
@@ -217,112 +165,63 @@ public Generator(int width, int length, int orientation)
   }
 
 public void generate()
-  {
-  genMainRoad();  
-  while(!unwalkedRoads.isEmpty())
-    {
-    randomWalkRoad(unwalkedRoads.remove(0));
-    }
+  { 
+  int halfWidth = width/2;
+  int halfLength = length/2;
+  int centerX = halfWidth;
+  int centerZ = halfLength;
+  halfWidth-=3;
+  halfLength-=3;
   
-  for(Road2 r : generatedRoads)
-    {
-    write(r.getBounds(), (byte)1);
-    }
-  genRandomStructures();
-  int centerX = (width/2);
-  int centerZ = (length/2);
+  TownQuadrant tq = new TownQuadrant(0, 0, halfWidth, halfLength, blockSize);
+  tq.subdivide();
+  write(tq);
+  
+  tq = new TownQuadrant(centerX+2, 0, halfWidth, halfLength, blockSize);
+  tq.subdivide();
+  write(tq);
+  
+  tq = new TownQuadrant(centerX+2, centerZ+2, halfWidth, halfLength, blockSize);
+  tq.subdivide();
+  write(tq);
+  
+  tq = new TownQuadrant(0, centerZ+2, halfWidth, halfLength, blockSize);
+  tq.subdivide();
+  write(tq);
+  
   write(centerX, centerZ, (byte)9);
   String line = writeTestGrid();
   AWLog.logDebug("grid: \n"+line);
   }
 
-private void genRandomStructures()
+private void write(TownQuadrant tq)
   {
-  StructureBB bb = new StructureBB(new BlockPosition(), new BlockPosition());
-  for(int i = 0; i < 20; i++)
+  for(TownBlock tb : tq.blocks)
     {
-    int sw = 5 + rng.nextInt(5);//5-9 block wide
-    int sl = 5 + rng.nextInt(5);//5-9 block long    
-    float xr = rng.nextFloat() * rng.nextFloat();
-    float zr = rng.nextFloat() * rng.nextFloat();
-    float hw = width/2;
-    float hl = length/2;
-    int x = (int)hw + (int)(hw*xr);
-    int z = (int)hl + (int)(hl*zr);
-    bb.min.x = x;
-    bb.min.z = z;
-    bb.max.x = x+sw;
-    bb.max.z = z+sl;
-    if(bb.min.x>=0 && bb.min.z>=0 && bb.max.x<width && bb.max.z<length && !doesBBIntersect(bb))
-      {
-      write(bb, (byte)2);
-      }
+    write(tb);
     }
   }
 
-private void genMainRoad()
-  {   
-  int centerX = (width/2);
-  int centerZ = (length/2);
-  
-  Direction o = orientation;
-  Road2 r = genRoad(orientation, centerX, centerZ, 6);
-  walkRoad(r); 
-  
-  o = orientation.getOpposite();
-  r = genRoad(o, centerX+o.xDirection, centerZ+o.zDirection, 6);
-  walkRoad(r);
-  }
-
-private Road2 genRoad(Direction orientation, int x1, int z1, int width)
+private void write(TownBlock tb)
   {
-  return new Road2(x1, z1, width, orientation);
-  }
-
-private void walkRoad(Road2 road)
-  {
-  while(canRoadGrow(road))
+  for(TownPlot tp : tb.plots)
     {
-    int roll = rng.nextInt(10);
-    if(roll==0)//left
-      {
-      
-      }
-    if(roll==1)//right
-      {
-      
-      }
-    road.grow();    
+    write(tp);
     }
-  generatedRoads.add(road);
   }
 
-private void randomWalkRoad(Road2 road)
+private void write(TownPlot tp)
   {
-  while(canRoadGrow(road))
+  for(int x = tp.bb.min.x; x<=tp.bb.max.x; x++)
     {
-    int roll = rng.nextInt(10);
-    if(roll<2){break;}//0/1
-    if(roll==2)//2/3
-      {
-      StructureBB bb = road.getGrowthBounds();
-      Direction o = road.orientation.getLeft();
-      }
-    else if(roll==3)
-      {
-      StructureBB bb = road.getGrowthBounds();
-      Direction o = road.orientation.getRight();      
-      }
-    road.grow();    
+    write(x, tp.bb.min.z, (byte)2);
+    write(x, tp.bb.max.z, (byte)2);
     }
-  generatedRoads.add(road);
-  }
-
-private boolean canRoadGrow(Road2 road)
-  {
-  StructureBB bb = road.getGrowthBounds();
-  if(bb.min.x<0 || bb.max.x>=width || bb.min.z<0 || bb.max.z>=length){return false;}
-  return !doesBBIntersect(bb);
+  for(int z = tp.bb.min.z; z<=tp.bb.max.z; z++)
+    {
+    write(tp.bb.min.x, z, (byte)2);
+    write(tp.bb.max.x, z, (byte)2);
+    }
   }
 
 private boolean doesBBIntersect(StructureBB bb)
