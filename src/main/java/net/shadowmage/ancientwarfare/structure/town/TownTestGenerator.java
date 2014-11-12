@@ -35,38 +35,40 @@ public static void load()
 
 public static void test()
   {
-  Generator gen = new Generator(9*16, 9*16, 0);
+  Generator gen = new Generator(5*16, 9*16, 0);
   gen.generate();  
   }
 
 /**
- * find optimal grid size.
- *  structure grid size = (max dimension for a non town-hall structure + 2)
- *    - this ensures that any structure can fit into any plot
- *    - perhaps adjust so that some structures take up 1x2 or 2x2 grid
- *    - use pre-selected structure grid size based on template settings? (still use 1x2 and 2x2 grids for large structs if needed)
- *  block grid size = (3*structureGridSize) + rng.nextInt(2) - 1 (so, 2-4)
- *  lay out blocks
- *  fill with structures, each block now has a discrete plot
- *  randomize which plot gets the extra bits (it doesn't matter)
+ * split town into quadrants
+ *  each quadrant gets a generation direction (2) denoting the direction towards its exterior corner
+ *  quadrants split themselves into town blocks based on town block input size, starting from the center of the town and extending outward; partial blocks will be on the outside of the town
  *  
- *  track front door nodes for each structure built.
- *  ensure front door nodes are connected to main roads (connect along block lines in direction of main road)
+ * 
+ * split town blocks into town plots
+ *  generation area for plots is shrunk by 1 block (x/z) for roads along the borders of town-blocks
+ *  each plot gets a generation direction from the quadrant that contains it
+ *  generation of plots occurs the same as generation of blocks, except using plot size (i.e. partials along the exterior borders)
+ *    
+ * each plot will be the target for building construction
+ *  structures may use more than a single plot, up to and including the entire town block
+ *  construction will happen at the town-block level
+ *  each structure
  * 
  */
 
 private static class TownPlot
 {
+
+TownBlock block;
 StructureBB bb;//bb of the plot
-StructureBB structBB;//bb of the actual structure
-BlockPosition doorPos;
-Direction orientation;
 boolean[] roadBorders;//what directions are adjacent to a road, can be 0-2 total sides (0=center plot, cannot have struct, can only merge with other plots or be 'cosmetic' structs)
 
-public TownPlot(int x, int z, int width, int length)
+public TownPlot(TownBlock block, StructureBB bb, boolean[] borders)
   {
-  bb = new StructureBB(new BlockPosition(x, 0, z), new BlockPosition(x + width-1, 0, z+length-1));
-  roadBorders = new boolean[4];
+  this.block = block;
+  this.bb = bb;
+  roadBorders = borders;
   AWLog.logDebug("town plot: "+bb);
   }
 
@@ -91,12 +93,17 @@ public void merge(TownPlot other)
 private static class TownBlock
 {
 
+boolean[] roadBorders;
+int plotSize = 10;
+TownQuadrant quadrant;
 StructureBB bb;
 List<TownPlot> plots;
 
-public TownBlock(StructureBB bb)
+public TownBlock(TownQuadrant quadrant, StructureBB bb, boolean[] roadBorders)
   {
+  this.quadrant = quadrant;
   this.bb = bb;
+  this.roadBorders = roadBorders;
   AWLog.logDebug("created new town block: "+bb);
   plots = new ArrayList<TownPlot>();
   }
@@ -105,14 +112,68 @@ public void subdivide()
   {
   int xWidth = (bb.max.x - bb.min.x)+1;
   int zLength = (bb.max.z - bb.min.z)+1;
-  int plotWidth = xWidth/3;
-  int plotLength = zLength/3;
-  for(int x = bb.min.x; x +plotWidth <= bb.max.x; x+=plotWidth)
+  int xDivs, zDivs;
+  xDivs = xWidth/plotSize;
+  if(xWidth%plotSize!=0){xDivs++;}
+  zDivs = zLength/plotSize;
+  if(zLength%plotSize!=0){zDivs++;}  
+  
+  AWLog.logDebug("dividing block into plots; "+xWidth+" : "+zLength+" :: "+xDivs+" : "+zDivs);
+  int widthToUse, lengthToUse;
+  int xStart, xEnd;
+  int zStart, zEnd;  
+  int xSize, zSize;
+  
+  boolean[] roadBorders;
+  
+  xStart = quadrant.xDir<0 ? bb.max.x : bb.min.x;  
+  widthToUse = xWidth;
+  for(int x = 0; x<xDivs; x++)
     {
-    for(int z = bb.min.z; z + plotLength <= bb.max.z; z+=plotLength)
+    xSize = widthToUse > plotSize ? plotSize : widthToUse;
+    xEnd = xStart + (xSize-1) * quadrant.xDir;
+    
+    zStart = quadrant.zDir<0 ? bb.max.z : bb.min.z;
+    lengthToUse = zLength;
+    for(int z = 0; z<zDivs; z++)
       {
-      plots.add(new TownPlot(x, z, plotWidth, plotLength));
+      roadBorders = new boolean[4];
+      setRoadBorders(x==0, z==0, x==xDivs-1, z==zDivs-1, roadBorders);
+      zSize = lengthToUse > plotSize ? plotSize : lengthToUse;
+      zEnd = zStart + quadrant.zDir * (zSize - 1);
+      
+      plots.add(new TownPlot(this, new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd)), roadBorders));      
+      
+      lengthToUse -= plotSize;
+      zStart = zEnd + quadrant.zDir;
       }
+    
+    widthToUse -= plotSize;
+    xStart = xEnd + quadrant.xDir;
+    }
+  }
+
+private void setRoadBorders(boolean startX, boolean startZ, boolean endX, boolean endZ, boolean[] borders)
+  {
+  if(startX)
+    {
+    if(quadrant.xDir>0){borders[3]=true;}//w
+    else{borders[1]=true;}//e
+    }
+  if(endX)
+    {
+    if(quadrant.xDir>0){borders[1]=true;}//e
+    else{borders[3]=true;}//w
+    }
+  if(startZ)
+    {
+    if(quadrant.zDir>0){borders[0]=true;}//n
+    else{borders[2]=true;}//s
+    }
+  if(endZ)
+    {
+    if(quadrant.zDir>0){borders[2]=true;}//s
+    else{borders[0]=true;}//n
     }
   }
 
@@ -121,16 +182,17 @@ public void subdivide()
 private static class TownQuadrant
 {
 BlockPosition startPos;
-Direction xDirection;
-Direction zDirection;
+int xDir;
+int zDir;
 StructureBB bb;
 List<TownBlock> blocks;
 int blockSize;
+boolean roadBorders[];
 
 public TownQuadrant(Direction xDir, Direction zDir, int x, int z, int width, int length, int blockSize)
   {  
-  this.xDirection = xDir;
-  this.zDirection = zDir;
+  this.xDir = xDir.xDirection;
+  this.zDir = zDir.zDirection;
   
   this.startPos = new BlockPosition(x, 0, z);
   BlockPosition endPos = startPos.copy();
@@ -151,37 +213,39 @@ public void subdivide()
   if(widthToUse%blockSize!=0){xDivs++;}
   int zDivs = lengthToUse/blockSize;
   if(lengthToUse%blockSize!=0){zDivs++;}
-  
-  int xDir = xDirection.xDirection;
-  int zDir = zDirection.zDirection;  
+    
   int xStart, xEnd;
   int zStart, zEnd;
   int xSize, zSize;
+  boolean roadBorders[];
   
+  xStart = startPos.x;  
   for(int x = 0; x<xDivs; x++)
-    {
-    xStart = startPos.x + (xDir * x)*blockSize;
-    xSize = widthToUse>blockSize ? blockSize : widthToUse;
-    xEnd = xStart + xDir * (xSize-1);
-    
+    {    
+    xSize = widthToUse > blockSize ? blockSize : widthToUse;
+    xEnd = xStart + xDir * (xSize - 1); 
+
+    zStart = startPos.z;//reseat z
+    lengthToUse = (bb.max.z - bb.min.z) + 1;//reseat z
     for(int z = 0; z<zDivs; z++)
       {
-      zStart = startPos.z + (zDir * z)*blockSize;
-      zSize = lengthToUse>blockSize ? blockSize : lengthToUse;
-      zEnd = zStart + zDir * (zSize-1);
+      roadBorders = new boolean[4];
+      zSize = lengthToUse > blockSize ? blockSize : lengthToUse;
+      zEnd = zStart + zDir * (zSize - 1);
       
-      blocks.add(new TownBlock(new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd))));
-      lengthToUse-=blockSize;
+      blocks.add(new TownBlock(this, new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd)), roadBorders));
+      
+      lengthToUse -= blockSize;
+      zStart = zEnd + zDir;
       }
-    lengthToUse = (bb.max.z - bb.min.z) + 1;
+    
     widthToUse -= blockSize;
+    xStart = xEnd + xDir;
     }
-
   for(TownBlock block : blocks){block.subdivide();}
   }
 
 }
-
 
 private static class Generator
 {
@@ -231,6 +295,7 @@ public void generate()
   write(centerX-1, centerZ, (byte)9);
   write(centerX, centerZ-1, (byte)9);
   write(centerX-1, centerZ-1, (byte)9);
+    
   String line = writeTestGrid();
   AWLog.logDebug("grid: \n"+line);
   }
@@ -255,10 +320,10 @@ private void write(TownBlock tb)
     write(tb.bb.min.x, z, (byte)1);
     write(tb.bb.max.x, z, (byte)1);
     }
-//  for(TownPlot tp : tb.plots)
-//    {
-//    write(tp);
-//    }
+  for(TownPlot tp : tb.plots)
+    {
+    write(tp);
+    }
   }
 
 private void write(TownPlot tp)
@@ -355,15 +420,6 @@ private String writeTestGrid()
 
 }
 
-//public static final class BlockBB
-//{
-//int minX, minY, minZ;
-//int maxX, maxY, maxZ;
-//public BlockBB(int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
-//  {
-//  
-//  }
-//}
 
 public static enum Direction
 {
