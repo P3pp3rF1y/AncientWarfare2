@@ -101,7 +101,7 @@ public boolean collidesWith(StructureBB bb)
  * can be used to contract by specifying negative amounts...
  * @param amt
  */
-public void expand(int x, int y, int z)
+public StructureBB expand(int x, int y, int z)
   {
   min.x-=x;
   min.y-=y;
@@ -109,6 +109,7 @@ public void expand(int x, int y, int z)
   max.x+=x;
   max.y+=y;
   max.z+=z;
+  return this;
   }
 
 public int getXSize(){return max.x-min.x+1;}

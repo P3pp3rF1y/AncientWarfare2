@@ -35,7 +35,7 @@ public static void load()
 
 public static void test()
   {
-  Generator gen = new Generator(5*16, 9*16, 0);
+  Generator gen = new Generator(5*16, 5*16, 0);
   gen.generate();  
   }
 
@@ -112,6 +112,10 @@ public void subdivide()
   {
   int xWidth = (bb.max.x - bb.min.x)+1;
   int zLength = (bb.max.z - bb.min.z)+1;
+  if(roadBorders[1]){xWidth--;}
+  if(roadBorders[3]){xWidth--;}
+  if(roadBorders[0]){zLength--;}
+  if(roadBorders[2]){zLength--;}
   int xDivs, zDivs;
   xDivs = xWidth/plotSize;
   if(xWidth%plotSize!=0){xDivs++;}
@@ -126,7 +130,10 @@ public void subdivide()
   
   boolean[] roadBorders;
   
-  xStart = quadrant.xDir<0 ? bb.max.x : bb.min.x;  
+  xStart = quadrant.xDir<0 ? bb.max.x : bb.min.x;
+  if(quadrant.xDir<0 && this.roadBorders[1]){xStart--;}//if generating west && has eastern road
+  else if(quadrant.xDir>0 && this.roadBorders[3]){xStart++;}//if generating east && has western road
+  
   widthToUse = xWidth;
   for(int x = 0; x<xDivs; x++)
     {
@@ -134,6 +141,8 @@ public void subdivide()
     xEnd = xStart + (xSize-1) * quadrant.xDir;
     
     zStart = quadrant.zDir<0 ? bb.max.z : bb.min.z;
+    if(quadrant.zDir<0 && this.roadBorders[2]){zStart--;}//generation is to the north && has southern road
+    else if(quadrant.zDir>0 && this.roadBorders[0]){zStart++;}//generation is to the south && has northern road
     lengthToUse = zLength;
     for(int z = 0; z<zDivs; z++)
       {
@@ -181,7 +190,6 @@ private void setRoadBorders(boolean startX, boolean startZ, boolean endX, boolea
 
 private static class TownQuadrant
 {
-BlockPosition startPos;
 int xDir;
 int zDir;
 StructureBB bb;
@@ -193,8 +201,13 @@ public TownQuadrant(Direction xDir, Direction zDir, int x, int z, int width, int
   {  
   this.xDir = xDir.xDirection;
   this.zDir = zDir.zDirection;
+  roadBorders = new boolean[4];
+  roadBorders[0]=this.zDir < 0;
+  roadBorders[2]=!roadBorders[0];
+  roadBorders[1]=this.xDir < 0;
+  roadBorders[3]=!roadBorders[1];
   
-  this.startPos = new BlockPosition(x, 0, z);
+  BlockPosition startPos = new BlockPosition(x, 0, z);
   BlockPosition endPos = startPos.copy();
   endPos.x += xDir.xDirection * (width-1);
   endPos.z += zDir.zDirection * (length-1);
@@ -207,8 +220,8 @@ public TownQuadrant(Direction xDir, Direction zDir, int x, int z, int width, int
 
 public void subdivide()
   {
-  int widthToUse = (bb.max.x - bb.min.x) + 1;
-  int lengthToUse = (bb.max.z - bb.min.z) + 1;
+  int widthToUse = (bb.max.x - bb.min.x);
+  int lengthToUse = (bb.max.z - bb.min.z);
   int xDivs = widthToUse/blockSize;
   if(widthToUse%blockSize!=0){xDivs++;}
   int zDivs = lengthToUse/blockSize;
@@ -218,18 +231,23 @@ public void subdivide()
   int zStart, zEnd;
   int xSize, zSize;
   boolean roadBorders[];
-  
-  xStart = startPos.x;  
+
+  xStart = xDir < 0 ? bb.max.x-1 : bb.min.x+1;  
   for(int x = 0; x<xDivs; x++)
     {    
     xSize = widthToUse > blockSize ? blockSize : widthToUse;
     xEnd = xStart + xDir * (xSize - 1); 
 
-    zStart = startPos.z;//reseat z
-    lengthToUse = (bb.max.z - bb.min.z) + 1;//reseat z
+    zStart = zDir<0 ? bb.max.z-1 : bb.min.z+1;
+    lengthToUse = (bb.max.z - bb.min.z);
     for(int z = 0; z<zDivs; z++)
       {
       roadBorders = new boolean[4];
+      roadBorders[0] = zDir>0 || (zDir<0 && z < zDivs-1);//has road on north side if generation direction is south or is not the last block in that direciton
+      roadBorders[2] = zDir<0 || (zDir>0 && z < zDivs-1);//has road on south side if generation direction is north or is not the last block in that direction
+      roadBorders[1] = xDir<0 || (xDir>0 && x < xDivs-1);//has road on east side if generation direction is west or is not the last block in that direction
+      roadBorders[3] = xDir>0 || (xDir<0 && x < xDivs-1);//has road on west side if generation direction is east or is not the last block in that direction      
+      
       zSize = lengthToUse > blockSize ? blockSize : lengthToUse;
       zEnd = zStart + zDir * (zSize - 1);
       
@@ -258,7 +276,7 @@ private Direction orientation;
 
 public Generator(int width, int length, int orientation)
   {
-  this.blockSize = 30;
+  this.blockSize = 32;
   this.width = width;
   this.length = length;
   this.orientation = Direction.fromFacing(orientation);
@@ -272,22 +290,20 @@ public void generate()
   int halfLength = length/2;
   int centerX = halfWidth;
   int centerZ = halfLength;
-  halfWidth-=3;
-  halfLength-=3;
   
-  TownQuadrant tq = new TownQuadrant(Direction.WEST, Direction.NORTH, centerX-4, centerZ-4, halfWidth, halfLength, blockSize);
+  TownQuadrant tq = new TownQuadrant(Direction.WEST, Direction.NORTH, centerX-1, centerZ-1, halfWidth, halfLength, blockSize);
   tq.subdivide();
   write(tq);
   
-  tq = new TownQuadrant(Direction.EAST, Direction.NORTH, centerX+3, centerZ-4, halfWidth, halfLength, blockSize);
+  tq = new TownQuadrant(Direction.EAST, Direction.NORTH, centerX+0, centerZ-1, halfWidth, halfLength, blockSize);
   tq.subdivide();
   write(tq);
   
-  tq = new TownQuadrant(Direction.EAST, Direction.SOUTH, centerX+3, centerZ+3, halfWidth, halfLength, blockSize);
+  tq = new TownQuadrant(Direction.EAST, Direction.SOUTH, centerX+0, centerZ+0, halfWidth, halfLength, blockSize);
   tq.subdivide();
   write(tq);
   
-  tq = new TownQuadrant(Direction.WEST, Direction.SOUTH, centerX-4, centerZ+3, halfWidth, halfLength, blockSize);
+  tq = new TownQuadrant(Direction.WEST, Direction.SOUTH, centerX-1, centerZ+0, halfWidth, halfLength, blockSize);
   tq.subdivide();
   write(tq);
   
@@ -302,6 +318,16 @@ public void generate()
 
 private void write(TownQuadrant tq)
   {
+  for(int x = tq.bb.min.x; x<=tq.bb.max.x; x++)
+    {
+    write(x, tq.bb.min.z, (byte)1);
+    write(x, tq.bb.max.z, (byte)1);
+    }
+  for(int z = tq.bb.min.z; z<=tq.bb.max.z; z++)
+    {
+    write(tq.bb.min.x, z, (byte)1);
+    write(tq.bb.max.x, z, (byte)1);
+    }
   for(TownBlock tb : tq.blocks)
     {
     write(tb);
@@ -312,13 +338,13 @@ private void write(TownBlock tb)
   {
   for(int x = tb.bb.min.x; x<=tb.bb.max.x; x++)
     {
-    write(x, tb.bb.min.z, (byte)1);
-    write(x, tb.bb.max.z, (byte)1);
+    write(x, tb.bb.min.z, (byte)2);
+    write(x, tb.bb.max.z, (byte)2);
     }
   for(int z = tb.bb.min.z; z<=tb.bb.max.z; z++)
     {
-    write(tb.bb.min.x, z, (byte)1);
-    write(tb.bb.max.x, z, (byte)1);
+    write(tb.bb.min.x, z, (byte)2);
+    write(tb.bb.max.x, z, (byte)2);
     }
   for(TownPlot tp : tb.plots)
     {
@@ -330,13 +356,13 @@ private void write(TownPlot tp)
   {
   for(int x = tp.bb.min.x; x<=tp.bb.max.x; x++)
     {
-    write(x, tp.bb.min.z, (byte)2);
-    write(x, tp.bb.max.z, (byte)2);
+    write(x, tp.bb.min.z, (byte)3);
+    write(x, tp.bb.max.z, (byte)3);
     }
   for(int z = tp.bb.min.z; z<=tp.bb.max.z; z++)
     {
-    write(tp.bb.min.x, z, (byte)2);
-    write(tp.bb.max.x, z, (byte)2);
+    write(tp.bb.min.x, z, (byte)3);
+    write(tp.bb.max.x, z, (byte)3);
     }
   }
 
