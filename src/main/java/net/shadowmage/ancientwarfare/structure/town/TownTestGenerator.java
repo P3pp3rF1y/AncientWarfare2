@@ -35,7 +35,7 @@ public static void load()
 
 public static void test()
   {
-  Generator gen = new Generator(5*16, 5*16, 0);
+  Generator gen = new Generator(9*16, 9*16, 0);
   gen.generate();  
   }
 
@@ -61,7 +61,7 @@ StructureBB bb;//bb of the plot
 StructureBB structBB;//bb of the actual structure
 BlockPosition doorPos;
 Direction orientation;
-boolean[] roadBorders;//what directions are adjacent to a road, can be 0-2
+boolean[] roadBorders;//what directions are adjacent to a road, can be 0-2 total sides (0=center plot, cannot have struct, can only merge with other plots or be 'cosmetic' structs)
 
 public TownPlot(int x, int z, int width, int length)
   {
@@ -94,9 +94,10 @@ private static class TownBlock
 StructureBB bb;
 List<TownPlot> plots;
 
-public TownBlock(int x, int z, int size)
+public TownBlock(StructureBB bb)
   {
-  bb = new StructureBB(new BlockPosition(x, 0, z), new BlockPosition(x + size-1, 0, z + size-1));
+  this.bb = bb;
+  AWLog.logDebug("created new town block: "+bb);
   plots = new ArrayList<TownPlot>();
   }
 
@@ -119,26 +120,63 @@ public void subdivide()
 
 private static class TownQuadrant
 {
+BlockPosition startPos;
+Direction xDirection;
+Direction zDirection;
 StructureBB bb;
 List<TownBlock> blocks;
 int blockSize;
 
-public TownQuadrant(int x, int z, int width, int length, int blockSize)
-  {
+public TownQuadrant(Direction xDir, Direction zDir, int x, int z, int width, int length, int blockSize)
+  {  
+  this.xDirection = xDir;
+  this.zDirection = zDir;
+  
+  this.startPos = new BlockPosition(x, 0, z);
+  BlockPosition endPos = startPos.copy();
+  endPos.x += xDir.xDirection * (width-1);
+  endPos.z += zDir.zDirection * (length-1);
+  
   this.blockSize = blockSize;
-  bb = new StructureBB(new BlockPosition(x, 0, z), new BlockPosition(x+width-1, 0, z+length-1));
+  bb = new StructureBB(startPos, endPos);
+  AWLog.logDebug("created new quadrant: "+bb);
   blocks = new ArrayList<TownBlock>();
   }
 
 public void subdivide()
   {
-  for(int x = bb.min.x; x+blockSize <= bb.max.x; x+=blockSize)
+  int widthToUse = (bb.max.x - bb.min.x) + 1;
+  int lengthToUse = (bb.max.z - bb.min.z) + 1;
+  int xDivs = widthToUse/blockSize;
+  if(widthToUse%blockSize!=0){xDivs++;}
+  int zDivs = lengthToUse/blockSize;
+  if(lengthToUse%blockSize!=0){zDivs++;}
+  
+  int xDir = xDirection.xDirection;
+  int zDir = zDirection.zDirection;  
+  int xStart, xEnd;
+  int zStart, zEnd;
+  int xSize, zSize;
+  
+  for(int x = 0; x<xDivs; x++)
     {
-    for(int z = bb.min.z; z+blockSize <=  bb.max.z; z+=blockSize)
+    xStart = startPos.x + (xDir * x)*blockSize;
+    xSize = widthToUse>blockSize ? blockSize : widthToUse;
+    xEnd = xStart + xDir * (xSize-1);
+    
+    for(int z = 0; z<zDivs; z++)
       {
-      blocks.add(new TownBlock(x, z, blockSize));
+      zStart = startPos.z + (zDir * z)*blockSize;
+      zSize = lengthToUse>blockSize ? blockSize : lengthToUse;
+      zEnd = zStart + zDir * (zSize-1);
+      
+      blocks.add(new TownBlock(new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd))));
+      lengthToUse-=blockSize;
       }
+    lengthToUse = (bb.max.z - bb.min.z) + 1;
+    widthToUse -= blockSize;
     }
+
   for(TownBlock block : blocks){block.subdivide();}
   }
 
@@ -173,23 +211,26 @@ public void generate()
   halfWidth-=3;
   halfLength-=3;
   
-  TownQuadrant tq = new TownQuadrant(0, 0, halfWidth, halfLength, blockSize);
+  TownQuadrant tq = new TownQuadrant(Direction.WEST, Direction.NORTH, centerX-4, centerZ-4, halfWidth, halfLength, blockSize);
   tq.subdivide();
   write(tq);
   
-  tq = new TownQuadrant(centerX+2, 0, halfWidth, halfLength, blockSize);
+  tq = new TownQuadrant(Direction.EAST, Direction.NORTH, centerX+3, centerZ-4, halfWidth, halfLength, blockSize);
   tq.subdivide();
   write(tq);
   
-  tq = new TownQuadrant(centerX+2, centerZ+2, halfWidth, halfLength, blockSize);
+  tq = new TownQuadrant(Direction.EAST, Direction.SOUTH, centerX+3, centerZ+3, halfWidth, halfLength, blockSize);
   tq.subdivide();
   write(tq);
   
-  tq = new TownQuadrant(0, centerZ+2, halfWidth, halfLength, blockSize);
+  tq = new TownQuadrant(Direction.WEST, Direction.SOUTH, centerX-4, centerZ+3, halfWidth, halfLength, blockSize);
   tq.subdivide();
   write(tq);
   
   write(centerX, centerZ, (byte)9);
+  write(centerX-1, centerZ, (byte)9);
+  write(centerX, centerZ-1, (byte)9);
+  write(centerX-1, centerZ-1, (byte)9);
   String line = writeTestGrid();
   AWLog.logDebug("grid: \n"+line);
   }
@@ -204,10 +245,20 @@ private void write(TownQuadrant tq)
 
 private void write(TownBlock tb)
   {
-  for(TownPlot tp : tb.plots)
+  for(int x = tb.bb.min.x; x<=tb.bb.max.x; x++)
     {
-    write(tp);
+    write(x, tb.bb.min.z, (byte)1);
+    write(x, tb.bb.max.z, (byte)1);
     }
+  for(int z = tb.bb.min.z; z<=tb.bb.max.z; z++)
+    {
+    write(tb.bb.min.x, z, (byte)1);
+    write(tb.bb.max.x, z, (byte)1);
+    }
+//  for(TownPlot tp : tb.plots)
+//    {
+//    write(tp);
+//    }
   }
 
 private void write(TownPlot tp)
