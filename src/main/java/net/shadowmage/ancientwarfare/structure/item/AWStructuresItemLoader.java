@@ -34,12 +34,15 @@ public static void load()
   {  
   GameRegistry.registerItem(scanner, "structure_scanner");
   GameRegistry.registerItem(builder, "structure_builder");
-//  GameRegistry.registerItem(builderWorldGen, "structure_builder_world_gen");
-//  GameRegistry.registerItem(townBuilder, "town_builder");
+  GameRegistry.registerItem(builderWorldGen, "structure_builder_world_gen");
+  GameRegistry.registerItem(townBuilder, "town_builder");
   GameRegistry.registerItem(spawner, "spawner_placer");    
   GameRegistry.registerItem(gateSpawner, "gate_spawner");
   GameRegistry.registerItem(constructionTool, "construction_tool");
   GameRegistry.registerItem(blockInfo, "block_info_clicker");
+  
+  builderWorldGen.setCreativeTab(null);
+  townBuilder.setCreativeTab(null);
   }
 
 }
