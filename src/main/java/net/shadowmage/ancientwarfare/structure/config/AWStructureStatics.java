@@ -48,7 +48,7 @@ public static boolean enableStructureGeneration = true;
 public static boolean loadDefaultPack = false;
 private static boolean exportBlockNames = false;
 public static int clusterValueSearchRange = 16;
-public static int duplicateStructureSearchRange = 16;
+public static int duplicateStructureSearchRange = 40;
 public static int maxClusterValue = 500;
 public static float randomGenerationChance = 0.075f;
 public static int spawnProtectionRange = 12;
@@ -87,7 +87,7 @@ protected void initializeValues()
   		"Enable or disable generation of additional village features.").getBoolean(enableVillageGen);
   enableStructureGeneration = config.get(worldGenCategory, "enable_structure_generation", enableStructureGeneration, "Default="+enableStructureGeneration+"\n" +
   		"Enable or disable structure generation entirely.").getBoolean(enableStructureGeneration);
-  loadDefaultPack = config.getBoolean(worldGenCategory, "load_default_structure_pack", loadDefaultPack, "If true the default structure pack will be loaded and enabled for world-gen.");
+  loadDefaultPack = config.get(worldGenCategory, "load_default_structure_pack", loadDefaultPack, "If true the default structure pack will be loaded and enabled for world-gen.").getBoolean(loadDefaultPack);
   duplicateStructureSearchRange = config.get(worldGenCategory, "validation_duplicate_search_radius", duplicateStructureSearchRange, "Default="+duplicateStructureSearchRange+"\n" +
   		"The minimum radius in chunks to be searched for duplicate structures.\n" +
   		"This setting should generally not need to be adjusted unless you have templates with extremely\n" +
