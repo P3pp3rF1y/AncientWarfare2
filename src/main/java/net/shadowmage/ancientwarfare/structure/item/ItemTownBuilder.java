@@ -25,7 +25,7 @@ public ItemTownBuilder(String itemName)
   this.setUnlocalizedName(itemName);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setMaxStackSize(1);  
-  this.setTextureName("ancientwarfare:structure/"+itemName);
+  this.setTextureName("ancientwarfare:structure/structure_builder");
   
   //TODO remove this
   TownTestGenerator.load();

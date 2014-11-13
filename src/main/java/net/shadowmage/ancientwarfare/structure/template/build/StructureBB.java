@@ -112,6 +112,17 @@ public StructureBB expand(int x, int y, int z)
   return this;
   }
 
+public StructureBB offset(int x, int y, int z)
+  {
+  min.x += x;
+  min.y += y;
+  min.z += z;
+  max.x += x;
+  max.y += y;
+  max.z += z;
+  return this;
+  }
+
 public int getXSize(){return max.x-min.x+1;}
 
 public int getZSize(){return max.z-min.z+1;}

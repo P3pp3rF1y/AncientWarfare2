@@ -40,11 +40,8 @@ private Block roadFillBlock = Blocks.gravel;
  * the nominal size of a town-block, in blocks
  */
 private int townBlockSize;
+private int townPlotSize;
 
-/**
- * how many structures should attempt to be generated on each side of a town block
- */
-private int structuresPerBlock;
 
 /**
  * A specific template to be generated at the center of town, as the town-hall.  All roads and other buildings will be constructed -around- this one
@@ -103,7 +100,9 @@ public final void addWall(int type, String name, int weight)
   wallTotalWeights.put(type, w);
   }
 public final int getTownBlockSize(){return townBlockSize;}
-public final int getStructuresPerBlock(){return structuresPerBlock;}
+public final int getTownPlotSize(){return townPlotSize;}
+public void setTownBlockSize(int townBlockSize){this.townBlockSize = townBlockSize;}
+public void setTownPlotSize(int townPlotSize){this.townPlotSize = townPlotSize;}
 public final String getRandomWeightedWall(Random rng, int type){return getRandomWeightedWallPiece(rng, wallPieces.get(type), wallTotalWeights.get(type));}
 public final String getRandomWeightedCorner(Random rng){return getRandomWeightedWallPiece(rng, cornerWalls, cornersTotalWeight);}
 public final String getRandomWeightedGate(Random rng){return getRandomWeightedWallPiece(rng, gateWalls, gatesTotalWeight);}
@@ -127,16 +126,11 @@ public static final class TownStructureEntry
 String templateName;
 int min;//min # to generate
 int max;//max # to generate
-int value;// generation value
-int weight;// selection weight
-boolean cosmetic;//stuff like torches, what would this flag -actually- be used for?
-public TownStructureEntry(String name, int min, int max, int value, int weight)
+public TownStructureEntry(String name, int min, int max)
   {
   this.templateName = name;
   this.min = min;
   this.max = max;
-  this.value = value;
-  this.weight = weight;
   }
 }
 

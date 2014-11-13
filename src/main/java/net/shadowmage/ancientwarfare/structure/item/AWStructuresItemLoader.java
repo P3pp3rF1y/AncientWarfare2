@@ -41,8 +41,8 @@ public static void load()
   GameRegistry.registerItem(constructionTool, "construction_tool");
   GameRegistry.registerItem(blockInfo, "block_info_clicker");
   
-  builderWorldGen.setCreativeTab(null);
-  townBuilder.setCreativeTab(null);
+//  builderWorldGen.setCreativeTab(null);
+//  townBuilder.setCreativeTab(null);
   }
 
 }

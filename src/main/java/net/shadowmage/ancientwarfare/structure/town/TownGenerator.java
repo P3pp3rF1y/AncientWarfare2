@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 
 /**
@@ -21,15 +21,9 @@ private Random rng;
 private World world;
 private TownBoundingArea area;
 private TownTemplate template;
+private TownPartCollection town;
 
-
-
-/**
- * the remaining 'cluster value' that can be used by structures to be generated in this town
- */
-int remainingGenerationValue;
-private HashMap<String, TownGeneratedEntry> generatedStructureMap = new HashMap<String, TownGeneratedEntry>();
-private List<StructureBB> generatedBoundingBoxes = new ArrayList<StructureBB>();
+private List<StructureTemplate> templatesToGenerate = new ArrayList<StructureTemplate>();
 
 public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   {
@@ -37,12 +31,12 @@ public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   this.area = area;
   this.template = template;  
   this.rng = new Random();
+  this.town = new TownPartCollection(area, template.getTownBlockSize(), template.getTownPlotSize(), rng);
   }
 
 public void generate()
   {
-  this.area.wallSize = template.getWallSize();
-  this.remainingGenerationValue = template.maxValue;  
+  this.area.wallSize = template.getWallSize(); 
   area.townOrientation = rng.nextInt(4);
   area.townCenterX = area.getBlockMinX() + area.getBlockWidth()/2;
   area.townCenterZ = area.getBlockMinZ() + area.getBlockLength()/2;  
@@ -51,13 +45,21 @@ public void generate()
   }
 
 /**
- * add initial (empty) generation entries to structure map for each structure type in the template
+ * add initial generation entries to list of structures to attempt to generate
  */
 private void fillStructureMap()
   {
+  int min, max, gen;
   for(TownStructureEntry e : template.getStructureEntries())
     {
-    generatedStructureMap.put(e.templateName, new TownGeneratedEntry());
+    StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+    min = e.min;
+    max = e.max;
+    gen = min + (max-min>0 ? rng.nextInt(max-min): 0);
+    for(int i = 0; i < gen; i++)
+      {
+      templatesToGenerate.add(t);
+      }
     }
   }
 
@@ -66,12 +68,11 @@ private void doGeneration()
   TownGeneratorBorders.generateBorders(world, area);  
   TownGeneratorBorders.levelTownArea(world, area);
   TownGeneratorWalls.generateWalls(world, area, template, rng);
-  TownGeneratorRoads.generateRoads(world, area, template, generatedBoundingBoxes);
+  this.town.generateGrid();
+  StructureTemplate townHall = null;
+  if(template.getTownHallEntry()!=null){townHall=StructureTemplateManager.instance().getTemplate(template.getTownHallEntry().templateName);}
+  this.town.generateStructures(world, townHall, templatesToGenerate);
+  this.town.generateRoads(world);
   }
-
-public static final class TownGeneratedEntry
-{
-int numGenerated;
-}
 
 }
