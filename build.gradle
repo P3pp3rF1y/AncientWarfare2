@@ -34,17 +34,20 @@ allprojects
 
 dependencies {
   compile files {
+    "lib/CodeChickenLib-1.7.10-1.1.1.106-dev.jar"
+  }
+  compile files {
     "lib/buildcraft-6.1.8-dev.jar"
   }
   compile files {
-    "lib/CodeChickenCore-1.7.10-1.0.2.9-dev.jar"
+    "lib/CodeChickenCore-1.7.10-1.0.4.29-dev.jar"
   }
   compile files {
-    "lib/NotEnoughItems-1.7.10-1.0.2.15-dev.jar"
+    "lib/NotEnoughItems-1.7.10-1.0.3.67-dev.jar"
   }
   compile files {
     "lib/CoFHLib-[1.7.10]1.0.0B7-dev-29.jar"
-  }
+  }  
 }
 
 task updateVersion(type:Copy){
