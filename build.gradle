@@ -37,7 +37,7 @@ dependencies {
     "lib/CodeChickenLib-1.7.10-1.1.1.106-dev.jar"
   }
   compile files {
-    "lib/buildcraft-6.1.8-dev.jar"
+    "lib/buildcraft-6.1.8-dev.jar" // can remove this, no longer a real dep; can just load as a mod in mods folder
   }
   compile files {
     "lib/CodeChickenCore-1.7.10-1.0.4.29-dev.jar"
