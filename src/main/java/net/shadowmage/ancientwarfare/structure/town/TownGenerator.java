@@ -31,15 +31,14 @@ public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   this.area = area;
   this.template = template;  
   this.rng = new Random();
+  this.area.townCenterX = area.getBlockMinX() + area.getBlockWidth()/2;
+  this.area.townCenterZ = area.getBlockMinZ() + area.getBlockLength()/2;  
+  this.area.wallSize = template.getWallSize(); 
   this.town = new TownPartCollection(area, template.getTownBlockSize(), template.getTownPlotSize(), rng);
   }
 
 public void generate()
   {
-  this.area.wallSize = template.getWallSize(); 
-  area.townOrientation = rng.nextInt(4);
-  area.townCenterX = area.getBlockMinX() + area.getBlockWidth()/2;
-  area.townCenterZ = area.getBlockMinZ() + area.getBlockLength()/2;  
   fillStructureMap();
   doGeneration();
   }
@@ -69,10 +68,10 @@ private void doGeneration()
   TownGeneratorBorders.levelTownArea(world, area);
   TownGeneratorWalls.generateWalls(world, area, template, rng);
   this.town.generateGrid();
+  this.town.generateRoads(world);
   StructureTemplate townHall = null;
   if(template.getTownHallEntry()!=null){townHall=StructureTemplateManager.instance().getTemplate(template.getTownHallEntry().templateName);}
   this.town.generateStructures(world, townHall, templatesToGenerate);
-  this.town.generateRoads(world);
   }
 
 }

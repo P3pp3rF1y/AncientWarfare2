@@ -270,5 +270,11 @@ public BlockPosition getRRCorner(int face, BlockPosition out)
   }
 
 public boolean isPositionInBoundingBox(int x, int y, int z){return x>=min.x && x<=max.x && y>=min.y && y<=max.y && z>=min.z && z<=max.z;}
+public boolean isPositionInBoundingBox(BlockPosition pos){return isPositionInBoundingBox(pos.x, pos.y, pos.z);}
+
+public StructureBB copy()
+  {
+  return new StructureBB(min.copy(), max.copy());
+  }
 
 }

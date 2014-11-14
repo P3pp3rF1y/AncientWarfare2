@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -8,85 +7,150 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 public class TownPartQuadrant
 {
-TownPartCollection town;
-int xDir;
-int zDir;
-StructureBB bb;
-List<TownPartBlock> blocks;
-int blockSize;
-boolean roadBorders[];
 
-public TownPartQuadrant(TownPartCollection town, Direction xDir, Direction zDir, int x, int z, int width, int length, int blockSize)
+public final TownPartCollection town;
+protected StructureBB bb;
+private Direction xDir, zDir;
+protected int xDivs, zDivs;
+private boolean roadBorders[];
+protected TownPartBlock blocks[];
+//private List<TownPartBlock> blocks;
+
+public TownPartQuadrant(TownPartCollection town, Direction xDir, Direction zDir, StructureBB bb, boolean[] borders)
   {  
   this.town = town;
-  this.xDir = xDir.xDirection;
-  this.zDir = zDir.zDirection;
-  roadBorders = new boolean[4];
-  
-  roadBorders[0] = this.zDir < 0;//has southern road border if generating northward
-  roadBorders[2] = !roadBorders[0];//opposite of the above statement
-  
-  roadBorders[3] = this.xDir < 0;//has eastern border if generating westward
-  roadBorders[1] = !roadBorders[1];//opposite of the above statement
-  
-  BlockPosition startPos = new BlockPosition(x, 0, z);
-  BlockPosition endPos = startPos.copy();
-  endPos.x += xDir.xDirection * (width-1);
-  endPos.z += zDir.zDirection * (length-1);
-  
-  this.blockSize = blockSize;
-  bb = new StructureBB(startPos, endPos);
-  blocks = new ArrayList<TownPartBlock>();
+  this.xDir= xDir;
+  this.zDir = zDir;
+  this.bb = bb;
+  this.roadBorders = borders;  
+  }
+
+public boolean hasRoadBorder(Direction d)
+  {
+  return roadBorders[d.ordinal()];
+  }
+
+protected void setRoadBorder(Direction d, boolean val)
+  {
+  roadBorders[d.ordinal()]=val;
   }
 
 public void subdivide()
   {
-  int widthToUse = (bb.max.x - bb.min.x);
-  int lengthToUse = (bb.max.z - bb.min.z);
-  int xDivs = widthToUse/blockSize;
-  if(widthToUse%blockSize!=0){xDivs++;}
-  int zDivs = lengthToUse/blockSize;
-  if(lengthToUse%blockSize!=0){zDivs++;}
-    
+  int blockSize = town.blockSize;
+  int totalWidth = (bb.max.x - bb.min.x);
+  int totalLength = (bb.max.z - bb.min.z);  
+  int widthToUse = totalWidth;
+  int lengthToUse = totalLength;
+  
+  widthToUse--;//the forced road edge for first block
+  lengthToUse--;//the forced road edge for first block
+  while(widthToUse>0)
+    {    
+    widthToUse-=blockSize;
+    widthToUse-=2;//end edge of block + front edge of next block
+    xDivs++;
+    }
+  while(lengthToUse>0)
+    {
+    lengthToUse-=blockSize;
+    lengthToUse-=2;
+    zDivs++;
+    }
+  
+  blocks = new TownPartBlock[xDivs*zDivs];
   int xStart, xEnd;
   int zStart, zEnd;
   int xSize, zSize;
-  boolean roadBorders[];
+  int xIndex, zIndex;
+  TownPartBlock block;
 
-  xStart = xDir < 0 ? bb.max.x-1 : bb.min.x+1;  
+  widthToUse = totalWidth;
+  xStart = xDir.xDirection < 0 ? bb.max.x-1 : bb.min.x+1;
   for(int x = 0; x<xDivs; x++)
     {    
     xSize = widthToUse > blockSize ? blockSize : widthToUse;
-    xEnd = xStart + xDir * (xSize - 1); 
+    xEnd = xStart + xDir.xDirection * (xSize - 1);    
+    xIndex = xDir == Direction.WEST? (xDivs-1)-x : x;
 
-    zStart = zDir<0 ? bb.max.z-1 : bb.min.z+1;
+    zStart = zDir.zDirection<0 ? bb.max.z-1 : bb.min.z+1;
     lengthToUse = (bb.max.z - bb.min.z);
     for(int z = 0; z<zDivs; z++)
-      {
-      roadBorders = new boolean[4];
-      roadBorders[2] = zDir>0 || (zDir<0 && z < zDivs-1);//has road on north side if generation direction is south or is not the last block in that direciton
-      roadBorders[0] = zDir<0 || (zDir>0 && z < zDivs-1);//has road on south side if generation direction is north or is not the last block in that direction
-      roadBorders[3] = xDir<0 || (xDir>0 && x < xDivs-1);//has road on east side if generation direction is west or is not the last block in that direction
-      roadBorders[1] = xDir>0 || (xDir<0 && x < xDivs-1);//has road on west side if generation direction is east or is not the last block in that direction      
-      
+      {           
       zSize = lengthToUse > blockSize ? blockSize : lengthToUse;
-      zEnd = zStart + zDir * (zSize - 1);
+      zEnd = zStart + zDir.zDirection * (zSize - 1);
+      zIndex = zDir==Direction.NORTH ? (zDivs-1)-z : z;
       
-      blocks.add(new TownPartBlock(this, new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd)), roadBorders));
+      block = new TownPartBlock(this, new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd)), xIndex, zIndex, getBorders(xIndex, zIndex));
+      setBlock(block, xIndex, zIndex);
+      block.subdivide();
       
-      lengthToUse -= blockSize;
-      zStart = zEnd + zDir;
+      lengthToUse -= (blockSize+2);
+      zStart = zEnd + zDir.zDirection * 3;
       }
     
-    widthToUse -= blockSize;
-    xStart = xEnd + xDir;
+    widthToUse -= (blockSize+2);
+    xStart = xEnd + xDir.xDirection * 3;
     }
-  for(TownPartBlock block : blocks){block.subdivide();}
+  }
+
+private void setBlock(TownPartBlock tb, int x, int z)
+  {
+  blocks[getIndex(x, z)]=tb;
+  }
+
+protected TownPartBlock getBlock(int x, int z)
+  {
+  return blocks[getIndex(x, z)];
+  }
+
+private int getIndex(int x, int z)
+  {
+  return z*xDivs + x;
+  }
+
+private boolean[] getBorders(int x, int z)
+  {
+  boolean[] borders = new boolean[4];
+  if(zDir==Direction.NORTH)
+    {
+    borders[Direction.SOUTH.ordinal()]=true;//has south
+    borders[Direction.NORTH.ordinal()]=z>0;//not on northern edge
+    }
+  else//zDir==Direction.SOUTH
+    {
+    borders[Direction.NORTH.ordinal()]=true;//has south
+    borders[Direction.SOUTH.ordinal()]=z < zDivs-1;//not on souther edge
+    }
+  if(xDir==Direction.WEST)
+    {
+    borders[Direction.EAST.ordinal()]=true;//has east
+    borders[Direction.WEST.ordinal()]=x>0;
+    }
+  else
+    {
+    borders[Direction.WEST.ordinal()]=true;
+    borders[Direction.EAST.ordinal()]= x < xDivs - 1;
+    }  
+  return borders;
   }
 
 public void addBlocks(List<TownPartBlock> blocks)
   {
-  blocks.addAll(this.blocks);
+  for(int i = 0; i< this.blocks.length; i++)
+    {
+    blocks.add(this.blocks[i]);
+    }
+  }
+
+public Direction getXDir()
+  {
+  return xDir;
+  }
+
+public Direction getZDir()
+  {
+  return zDir;
   }
 
 }
