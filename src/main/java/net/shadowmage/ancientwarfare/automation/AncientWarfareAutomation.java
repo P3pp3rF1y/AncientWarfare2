@@ -29,7 +29,6 @@ import net.shadowmage.ancientwarfare.automation.crafting.AWAutomationCrafting;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -93,7 +92,6 @@ public void preInit(FMLPreInitializationEvent evt)
     ModuleStatus.redstoneFluxEnabled = true;
     AWLog.log("Detecting CoFHCore is loaded, enabling RF Compatibility");
     }   
-  BCProxy.loadInstance();
   RFProxy.loadInstance();
   
   /**

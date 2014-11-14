@@ -10,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -19,17 +18,14 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
-import buildcraft.api.mj.IBatteryObject;
-import buildcraft.api.mj.ISidedBatteryProvider;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.common.Optional;
 
 @Optional.InterfaceList(value=
   {
   @Optional.Interface(iface="cofh.api.energy.IEnergyHandler", modid="CoFHCore",striprefs=true),
-  @Optional.Interface(iface="buildcraft.api.mj.ISidedBatteryProvider",modid="BuildCraft|Core",striprefs=true),
   })
-public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler, ISidedBatteryProvider
+public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler
 {
 
 /**
@@ -43,7 +39,6 @@ protected ForgeDirection orientation = ForgeDirection.NORTH;
  */
 protected int networkUpdateTicks;
 
-private TileEntity[]bcCache;//cannot reference interface directly, but can cast directly...//only used when bc installed
 private TileEntity[]rfCache;//cannot reference interface directly, but can cast directly...//only used when cofh installed
 private ITorqueTile[]torqueCache;
 
@@ -96,15 +91,6 @@ public final int receiveEnergy(ForgeDirection from, int maxReceive, boolean simu
   return (int)(AWAutomationStatics.torqueToRf * addTorque(from, (double)maxReceive * AWAutomationStatics.rfToTorque));
   }
 
-//*************************************** BC MJ METHODS ***************************************//
-
-@Optional.Method(modid="BuildCraft|Core")
-@Override
-public IBatteryObject getMjBattery(String kind, ForgeDirection direction)
-  {  
-  return (IBatteryObject) BCProxy.instance.getBatteryObject(kind, this, direction);
-  }
-
 //*************************************** NEIGHBOR CACHE UPDATING ***************************************//
 
 public final ITorqueTile[] getTorqueCache()
@@ -117,12 +103,6 @@ public final TileEntity[] getRFCache()
   {
   if(rfCache==null){buildRFCache();}
   return rfCache;
-  }
-
-public final TileEntity[] getBCCache()
-  {
-  if(bcCache==null){buildBCCache();}
-  return bcCache;
   }
 
 private void buildTorqueCache()
@@ -174,29 +154,6 @@ private void buildRFCache()
   this.rfCache = rfCache;
   }
 
-private void buildBCCache()
-  {
-  TileEntity[] bcCache = new TileEntity[6];
-  ForgeDirection dir;
-  TileEntity te;
-  int x, y, z;
-  for(int i = 0; i < 6; i++)
-    {
-    dir = ForgeDirection.values()[i];
-    if(!canOutputTorque(dir) && !canInputTorque(dir)){continue;}
-    x = xCoord+dir.offsetX;
-    y = yCoord+dir.offsetY;
-    z = zCoord+dir.offsetZ;
-    if(!worldObj.blockExists(x, y, z)){continue;}
-    te = worldObj.getTileEntity(x, y, z);
-    if(BCProxy.instance.isPowerTile(te))
-      {
-      bcCache[dir.ordinal()]=te;
-      }
-    }
-  this.bcCache = bcCache;
-  }
-
 @Override
 public void validate()
   {  
@@ -220,7 +177,6 @@ protected final void invalidateNeighborCache()
   {
   torqueCache=null;
   rfCache=null;
-  bcCache=null;
   onNeighborCacheInvalidated();
   }
 
@@ -324,11 +280,6 @@ protected final double transferPowerTo(ForgeDirection from)
     if(ModuleStatus.redstoneFluxEnabled)
       {
       transferred = RFProxy.instance.transferPower(this, from, getRFCache()[from.ordinal()]);
-      if(transferred>0){return transferred;}
-      }
-    if(ModuleStatus.buildCraftLoaded)
-      {
-      transferred = BCProxy.instance.transferPower(this, from, getBCCache()[from.ordinal()]);
       if(transferred>0){return transferred;}
       }
     }
