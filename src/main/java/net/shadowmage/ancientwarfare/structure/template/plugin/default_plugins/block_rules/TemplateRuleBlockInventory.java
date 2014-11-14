@@ -73,11 +73,17 @@ public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block,
     for(int i = 0; i<inventory.getSizeInventory();i++)
       {
       stack = inventory.getStackInSlot(i);
+      inventory.setInventorySlotContents(i, null);
       inventoryStacks[i] = stack==null ? null : stack.copy();
       }
+    te.writeToNBT(tag);
+    for(int i = 0; i<inventory.getSizeInventory();i++)
+      {
+      inventory.setInventorySlotContents(i, inventoryStacks[i]);      
+      }
+    //actual items were already removed from tag in previous for loop blocks prior to tile writing to nbt 
+    tag.removeTag("Items");//remove vanilla inventory tag from tile-entities (need to custom handle AW inventoried blocks still)
     }
-  te.writeToNBT(tag);
-  tag.removeTag("Items");//remove vanilla inventory tag from tile-entities (need to custom handle AW inventoried blocks still)
   }
 
 public TemplateRuleBlockInventory()
