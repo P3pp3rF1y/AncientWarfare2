@@ -53,6 +53,8 @@ item.structure_builder.name=Structure Builder
 item.spawner_placer.name=Mob Spawner Placement Tool
 item.construction_tool.name=Construction Tool
 item.block_info_clicker.name=Block Info Tool
+item.town_builder.name=Instant Town Building Tool
+item.structure_builder_world_gen.name=WorldGen Structure Builder 
 #automation
 item.worksite_upgrade.0.name=Medium Bounds Upgrade
 item.worksite_upgrade.1.name=Large Bounds Upgrade
