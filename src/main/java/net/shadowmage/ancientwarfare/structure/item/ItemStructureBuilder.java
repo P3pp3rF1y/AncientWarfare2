@@ -113,6 +113,12 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
     BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);    
     StructureBuilder builder = new StructureBuilder(player.worldObj, template, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), bpHit.x, bpHit.y, bpHit.z);
     builder.instantConstruction();
+    if(!player.capabilities.isCreativeMode)
+      {
+      int slot = player.inventory.currentItem;
+      if(stack.stackSize==1){player.inventory.setInventorySlotContents(slot, null);}
+      else{stack.stackSize--;}
+      }
     }  
   else
     {
@@ -131,7 +137,7 @@ public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
 @Override
 public void onRightClick(EntityPlayer player, ItemStack stack)
   {
-  if(!player.worldObj.isRemote && !player.isSneaking())
+  if(!player.worldObj.isRemote && !player.isSneaking() && player.capabilities.isCreativeMode)
     {
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_BUILDER, 0, 0, 0);   
     }        
