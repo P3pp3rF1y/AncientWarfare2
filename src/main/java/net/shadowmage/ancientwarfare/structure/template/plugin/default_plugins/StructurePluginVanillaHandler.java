@@ -86,6 +86,7 @@ public void addHandledBlocks(IStructurePluginManager manager)
   specialHandledBlocks.add(Blocks.dropper);
   specialHandledBlocks.add(Blocks.hopper);
   specialHandledBlocks.add(Blocks.beacon);
+  specialHandledBlocks.add(Blocks.trapped_chest);
     
   Block block;
   for(int i = 0; i < 256; i++)
@@ -114,6 +115,7 @@ public void addHandledBlocks(IStructurePluginManager manager)
   manager.registerBlockHandler("vanillaInventory", Blocks.chest, TemplateRuleBlockInventory.class);
   manager.registerBlockHandler("vanillaInventory", Blocks.dropper, TemplateRuleBlockInventory.class);
   manager.registerBlockHandler("vanillaInventory", Blocks.hopper, TemplateRuleBlockInventory.class);  
+  manager.registerBlockHandler("vanillaInventory", Blocks.trapped_chest, TemplateRuleBlockInventory.class);  
 
   manager.registerBlockHandler("awAdvancedSpawner", AWBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
   manager.registerBlockHandler("awCoreLogic", AWBlocks.engineeringStation, TemplateRuleBlockLogic.class);
