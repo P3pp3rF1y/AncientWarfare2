@@ -25,8 +25,10 @@ public static final ItemStructureBuilderWorldGen builderWorldGen = new ItemStruc
 public static final ItemTownBuilder townBuilder = new ItemTownBuilder("town_builder");
 public static final ItemSpawnerPlacer spawner = new ItemSpawnerPlacer("spawner_placer");
 public static final ItemGateSpawner gateSpawner = new ItemGateSpawner("gate_spawner");
-public static final ItemConstructionTool constructionTool = new ItemConstructionTool("construction_tool");
 public static final ItemBlockInfo blockInfo = new ItemBlockInfo("block_info_clicker");
+
+public static final ItemConstructionTool constructionTool = new ItemConstructionTool("construction_tool");
+public static final ItemConstructionToolLakes constructionToolLakes = new ItemConstructionToolLakes("construction_tool_lakes");
 
 public static void load()
   {  
@@ -37,6 +39,7 @@ public static void load()
   GameRegistry.registerItem(spawner, "spawner_placer");    
   GameRegistry.registerItem(gateSpawner, "gate_spawner");
   GameRegistry.registerItem(constructionTool, "construction_tool");
+  GameRegistry.registerItem(constructionToolLakes, "construction_tool_lakes");
   GameRegistry.registerItem(blockInfo, "block_info_clicker");  
   }
 

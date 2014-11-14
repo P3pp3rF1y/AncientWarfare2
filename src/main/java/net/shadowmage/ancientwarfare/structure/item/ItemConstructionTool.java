@@ -267,7 +267,7 @@ protected void readFromNBT(NBTTagCompound tag)
   if(tag.hasKey("pos2")){pos2=new BlockPosition(tag.getCompoundTag("pos2"));}
   if(tag.hasKey("block")){block = (Block) Block.blockRegistry.getObject(tag.getString("block"));}
   if(tag.hasKey("meta")){meta = tag.getInteger("meta");}
-  if(tag.hasKey("type")){type = ConstructionType.values()[tag.getInteger("type")];}
+  if(tag.hasKey("type")){type = ConstructionType.get(tag.getInteger("type"));}
   }
 
 protected NBTTagCompound writeToNBT(NBTTagCompound tag)
@@ -324,6 +324,11 @@ public ConstructionType next()
   ordinal++;
   if(ordinal>=values().length){ordinal=0;}
   return values()[ordinal];
+  }
+public static ConstructionType get(int index)
+  {
+  if(index>=0 && index<values().length){return values()[index];}
+  return SOLID_FILL;
   }
 }
 
