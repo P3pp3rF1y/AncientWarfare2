@@ -39,6 +39,10 @@ boolean isTop = false;
 public TemplateRuleBlockDoors(World world, int x, int y, int z, Block block, int meta, int turns)
   {
   super(world, x, y, z, block, meta, turns);
+  if(world.getBlock(x, y+1, z)==block)
+    {
+    sideFlag = (byte)world.getBlockMetadata(x, y+1, z);
+    }
   }
 
 public TemplateRuleBlockDoors()
