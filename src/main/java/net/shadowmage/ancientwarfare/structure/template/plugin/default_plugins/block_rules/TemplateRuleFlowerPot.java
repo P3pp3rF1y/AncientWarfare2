@@ -29,7 +29,12 @@ public TemplateRuleFlowerPot(World world, int x, int y, int z, Block block, int 
 
 public TemplateRuleFlowerPot()
   {
-  // TODO Auto-generated constructor stub
+  }
+
+@Override
+public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z)
+  {
+  return false;
   }
 
 @Override
