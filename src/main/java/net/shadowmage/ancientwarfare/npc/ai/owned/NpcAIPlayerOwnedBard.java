@@ -55,7 +55,6 @@ public void updateTask()
     playTime++;
     if(playTime>=maxPlayTime)
       {
-      AWLog.logDebug("song time exceeded, setting playing to false");
       playTime = 0;
       playing = false;
       int d = data.getMaxDelay()-data.getMinDelay();
@@ -86,7 +85,6 @@ public void updateTask()
       }
     else
       {
-      AWLog.logDebug("starting next song..");
       setNextSong();
       startSong();
       }
@@ -107,9 +105,7 @@ private void startSong()
   BardTuneEntry entry = data.get(tuneIndex);
   maxPlayTime = (int)(entry.length() * 20.f * 60.f);//convert minutes into ticks
   float volume = (float)entry.volume() * 0.01f;
-  bard.worldObj.playSoundAtEntity(bard, entry.name(), volume, 1.f);
-  AWLog.logDebug("playing: "+entry.name());
-//  bard.worldObj.playSoundAtEntity(bard, "fireworks.launch", volume, 1.f);
+  bard.worldObj.playSoundAtEntity(bard, entry.name(), 3.0f * volume, 1.f);
   playing=true;
   playTime=0;
   }

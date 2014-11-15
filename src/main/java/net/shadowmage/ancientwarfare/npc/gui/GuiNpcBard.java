@@ -141,7 +141,7 @@ private int addTuneEntry(final BardTuneEntry entry, final int index, int startHe
     @Override
     public void onValueUpdated(float value)
       {
-      entry.setLength((int)value);
+      entry.setLength(value);
       }
     };
   area.addGuiElement(length);
