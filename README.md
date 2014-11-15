@@ -15,9 +15,7 @@ Modules initially available will be:
 * Automation -- adds quarries, automated farms, tree-farms, etc.  
 * NPCs -- adds workers, combat npcs.  complete faction-based npc system for world-gen.  
 * Structures -- the AW template system, packaged as a stand-alone.  Has dynamically loaded plugins to handle interaction with other AW modules.  
-<<<<<<< HEAD
 * Vehicles -- Adds vehicles for transportation and warfare.  WIP
-=======
   
   
 Initial Releases will not have any Vehicles module -- that will be coming later in the development cycle.
@@ -39,4 +37,3 @@ GNU General Public License for more details.
   
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
->>>>>>> refs/heads/import_table_models
