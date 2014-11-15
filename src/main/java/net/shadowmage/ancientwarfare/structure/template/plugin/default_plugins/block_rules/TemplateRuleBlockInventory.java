@@ -29,8 +29,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.NBTTools;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.build.LootGenerator;
 
 public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks
@@ -73,12 +76,14 @@ public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block,
       inventory.setInventorySlotContents(i, null);
       inventoryStacks[i] = stack==null ? null : stack.copy();
       }
+    te.writeToNBT(tag);
     for(int i = 0; i<inventory.getSizeInventory();i++)
       {
       inventory.setInventorySlotContents(i, inventoryStacks[i]);      
       }
+    //actual items were already removed from tag in previous for loop blocks prior to tile writing to nbt 
+    tag.removeTag("Items");//remove vanilla inventory tag from tile-entities (need to custom handle AW inventoried blocks still)
     }
-  te.writeToNBT(tag);
   }
 
 public TemplateRuleBlockInventory()
@@ -99,6 +104,7 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
   if(inventory==null){return;}
   if(randomLootLevel>0)
     {    
+    for(int i = 0; i< inventory.getSizeInventory(); i++){inventory.setInventorySlotContents(i, null);}//clear the inventory in prep for random loot stuff
     LootGenerator.INSTANCE.generateLootFor(inventory, randomLootLevel-1, world.rand);
     }
   else if(inventoryStacks!=null)
@@ -110,6 +116,8 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
       inventory.setInventorySlotContents(i, stack==null? null : stack.copy());
       }
     }
+  int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);  
+  world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
   world.markBlockForUpdate(x, y, z);  
   }
 
@@ -148,12 +156,12 @@ public void parseRuleData(NBTTagCompound tag)
   {
   super.parseRuleData(tag);
   if(tag.hasKey("inventoryData"))
-    {
+    {    
     NBTTagCompound inventoryTag = tag.getCompoundTag("inventoryData");
     int length = inventoryTag.getInteger("length");
     inventoryStacks = new ItemStack[length];
     NBTTagCompound itemTag;
-    NBTTagList list = tag.getTagList("inventoryContents", Constants.NBT.TAG_COMPOUND); 
+    NBTTagList list = inventoryTag.getTagList("inventoryContents", Constants.NBT.TAG_COMPOUND); 
     int slot;
     ItemStack stack;
     for(int i = 0; i < list.tagCount(); i++)

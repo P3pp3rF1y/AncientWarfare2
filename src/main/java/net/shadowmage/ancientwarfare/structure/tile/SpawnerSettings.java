@@ -489,7 +489,6 @@ public void spawnEntities(World world, int x, int y, int z, int grpIndex)
     int b2 = settings.remainingSpawnCount;    
     int a = (a1<<16)|(a2&0x0000ffff);
     int b = (b1<<16)|(b2&0x0000ffff);
-    AWLog.logDebug("adding block event...");
     world.addBlockEvent(x, y, z, AWBlocks.advancedSpawner, a, b);    
     index++;
     }

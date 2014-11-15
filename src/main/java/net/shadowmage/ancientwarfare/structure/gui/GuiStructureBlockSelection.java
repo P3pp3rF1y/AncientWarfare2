@@ -55,7 +55,7 @@ public void initElements()
     }; 
   addGuiElement(button);
   
-  area = new CompositeScrolled(0, 8+12+4, 256, 240-24);
+  area = new CompositeScrolled(this, 0, 8+12+4, 256, 240-24);
   this.addGuiElement(area);
   
   int totalHeight = 3;

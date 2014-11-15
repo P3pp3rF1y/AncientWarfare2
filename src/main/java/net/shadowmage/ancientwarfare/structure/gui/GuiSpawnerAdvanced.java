@@ -39,7 +39,7 @@ protected boolean onGuiCloseRequested()
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 40, 256, 200);
+  area = new CompositeScrolled(this, 0, 40, 256, 200);
   addGuiElement(area); 
   
   Button done = new Button(256-8-55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"))

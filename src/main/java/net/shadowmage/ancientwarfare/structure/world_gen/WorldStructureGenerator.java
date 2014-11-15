@@ -127,7 +127,7 @@ private void generateAt(int chunkX, int chunkZ, World world, IChunkProvider chun
   world.theProfiler.startSection("AWTemplateGeneration");
   if(attemptStructureGenerationAt(world, x, y, z, face, template, map))
     {
-    AWLog.log(String.format("Generated structure: %s at %s, %s, %s", template.name, x, y, z));
+    AWLog.log(String.format("Generated structure: %s at %s, %s, %s, time: %sms", template.name, x, y, z, (System.currentTimeMillis()-t1)));
     } 
   world.theProfiler.endSection();
   }
@@ -170,9 +170,7 @@ public static int getStepNumber(int x, int z, int minX, int maxX, int minZ, int 
 
 public boolean attemptStructureGenerationAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map)
   {
-  boolean generate = false;
-  long t1, t2;
-  t1 = System.currentTimeMillis();
+  long t1 = System.currentTimeMillis();
   int prevY = y;
   StructureBB bb = new StructureBB(x, y, z, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
   y = template.getValidationSettings().getAdjustedSpawnY(world, x, y, z, face, template, bb);
@@ -188,22 +186,15 @@ public boolean attemptStructureGenerationAt(World world, int x, int y, int z, in
       {
       return false;
       }
-    }  
-  generate = template.getValidationSettings().validatePlacement(world, x, y, z, face, template, bb);
-  if(AWCoreStatics.DEBUG)
+    }    
+  boolean val = template.getValidationSettings().validatePlacement(world, x, y, z, face, template, bb);
+  AWLog.logDebug("validation took: "+(System.currentTimeMillis()-t1+" ms"));
+  if(val)
     {
-    AWLog.logError("validation took: "+(System.currentTimeMillis()-t1+" ms"));   
-    }
-  if(generate)
-    {    
-    t2 = System.currentTimeMillis();
     generateStructureAt(world, x, y, z, face, template, map, bb);
-    if(AWCoreStatics.DEBUG)
-      {
-      AWLog.logError("generation took: "+(System.currentTimeMillis()-t2)+" ms");      
-      }
-    }  
-  return generate;
+    return true;
+    }   
+  return false;
   }
 
 private void generateStructureAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map, StructureBB bb)

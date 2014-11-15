@@ -53,9 +53,9 @@ protected boolean onGuiCloseRequested()
 @Override
 public void initElements()
   {
-  tradesArea = new CompositeScrolled(0, 24, xSize, ySize-24-4-4-8-4*18);
-  routeArea = new CompositeScrolled(0, 24, xSize, ySize-24-4-4-8-4*18);
-  restockArea = new CompositeScrolled(0, 24, xSize, ySize-24-4-4-8-4*18);
+  tradesArea = new CompositeScrolled(this, 0, 24, xSize, ySize-24-4-4-8-4*18);
+  routeArea = new CompositeScrolled(this, 0, 24, xSize, ySize-24-4-4-8-4*18);
+  restockArea = new CompositeScrolled(this, 0, 24, xSize, ySize-24-4-4-8-4*18);
   tradeButton = new Button(8, 8, 75, 12, "guistrings.npc.trades")
     {
     @Override

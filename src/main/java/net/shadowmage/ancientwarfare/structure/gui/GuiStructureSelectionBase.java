@@ -82,13 +82,13 @@ public void initElements()
     };
   addGuiElement(filterInput);
   
-  selectionArea = new CompositeScrolled(0, 138, 256, 240-138);
+  selectionArea = new CompositeScrolled(this, 0, 138, 256, 240-138);
   addGuiElement(selectionArea);
   
   rect = new TexturedRectangle(43, 42, 170, 96, (ResourceLocation)null, 512, 288, 0, 0, 512, 288);
   addGuiElement(rect);
   
-  resourceArea = new CompositeScrolled(256, 40, 144, 200);
+  resourceArea = new CompositeScrolled(this, 256, 40, 144, 200);
   addGuiElement(resourceArea);
   
   StructureTemplateClient t = StructureTemplateManagerClient.instance().getClientTemplate(container.structureName);

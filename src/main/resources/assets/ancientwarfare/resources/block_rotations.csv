@@ -31,8 +31,8 @@ stone_button,,3,4,2,1,,,,,11,12,10,9,,,
 tripwire_hook,1,2,3,0,5,6,7,4,,,,,13,14,15,12
 tripwire,0,1,,,,,,,,,,,,,,
 torch,,3,4,2,1,,5,,,,,,,,,
-wooden_door,1,2,3,0,5,6,7,4,8,,,,,,,
-iron_door,1,2,3,0,5,6,7,4,8,,,,,,,
+wooden_door,1,2,3,0,5,6,7,4,8,9,,,,,,
+iron_door,1,2,3,0,5,6,7,4,8,9,,,,,,
 fence_gate,1,2,3,0,5,6,7,4,,,,,,,,
 stone_brick_stairs,2,3,1,0,6,7,5,4,,,,,,,,
 nether_brick_stairs,2,3,1,0,6,7,5,4,,,,,,,,
@@ -72,7 +72,7 @@ carrots,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 leaves2,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 carpet,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 hardened_clay,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
-#below here are custom mapped AW blocks,0,1,2,3,4,5,,,,,,,,,,
+#below here are custom mapped AW blocks (most of these no longer use meta..need to re-examine/remove),,,,,,,,,,,,,,,,
 civic_quarry,0,1,5,4,2,3,,,,,,,,,,
 civic_forestry,0,1,5,4,2,3,,,,,,,,,,
 civic_crop_farm,0,1,5,4,2,3,,,,,,,,,,

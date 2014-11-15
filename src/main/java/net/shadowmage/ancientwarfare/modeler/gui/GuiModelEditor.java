@@ -148,16 +148,16 @@ public void initElements()
   modelWidget.setTexture(uvMapTexture);
   this.addGuiElement(modelWidget);
   
-  pieceControlArea = new CompositeScrolled(-guiLeft, -guiTop, ((width-xSize) / 2), height/2);
+  pieceControlArea = new CompositeScrolled(this, -guiLeft, -guiTop, ((width-xSize) / 2), height/2);
   addGuiElement(pieceControlArea);
   
-  primitiveControlArea = new CompositeScrolled(-guiLeft, -guiTop + height/2, ((width-xSize) / 2), height/2);
+  primitiveControlArea = new CompositeScrolled(this, -guiLeft, -guiTop + height/2, ((width-xSize) / 2), height/2);
   addGuiElement(primitiveControlArea);
   
-  fileControlArea = new CompositeScrolled(xSize, -guiTop, ((width-xSize) / 2), height/2);
+  fileControlArea = new CompositeScrolled(this, xSize, -guiTop, ((width-xSize) / 2), height/2);
   addGuiElement(fileControlArea);
   
-  partListArea = new CompositeScrolled(xSize, -guiTop + height/2, ((width-xSize) / 2), height/2);
+  partListArea = new CompositeScrolled(this, xSize, -guiTop + height/2, ((width-xSize) / 2), height/2);
   addGuiElement(partListArea);
   
   pieceNameLabel = new Label(8, -guiTop, "Piece: No Selection");

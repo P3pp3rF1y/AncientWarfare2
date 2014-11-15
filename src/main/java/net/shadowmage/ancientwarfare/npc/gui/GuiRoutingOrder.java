@@ -39,7 +39,7 @@ public GuiRoutingOrder(ContainerBase container)
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 0, xSize, ySize-4*18-8-4-8);
+  area = new CompositeScrolled(this, 0, 0, xSize, ySize-4*18-8-4-8);
   addGuiElement(area);
   }
 

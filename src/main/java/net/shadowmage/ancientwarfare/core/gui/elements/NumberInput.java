@@ -19,6 +19,7 @@ public NumberInput(int topLeftX, int topLeftY, int width, float defaultText, IWi
   super(topLeftX, topLeftY, width, String.format("%.2f", defaultText), selector);
   this.value = defaultText;
   this.setAllowedChars(allowedNums);  
+  this.scrollInput = true;
   }
 
 public int getIntegerValue()

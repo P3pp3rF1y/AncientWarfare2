@@ -35,7 +35,7 @@ public GuiWorkOrder(ContainerBase container)
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 40, xSize, ySize-40);
+  area = new CompositeScrolled(this, 0, 40, xSize, ySize-40);
   addGuiElement(area);
   
   //TODO add 'shift selection' to the top of the GUI -- early day / late day / night??

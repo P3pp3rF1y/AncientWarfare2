@@ -48,7 +48,7 @@ public static boolean enableStructureGeneration = true;
 public static boolean loadDefaultPack = false;
 private static boolean exportBlockNames = false;
 public static int clusterValueSearchRange = 16;
-public static int duplicateStructureSearchRange = 16;
+public static int duplicateStructureSearchRange = 40;
 public static int maxClusterValue = 500;
 public static float randomGenerationChance = 0.075f;
 public static int spawnProtectionRange = 12;
@@ -87,7 +87,7 @@ protected void initializeValues()
   		"Enable or disable generation of additional village features.").getBoolean(enableVillageGen);
   enableStructureGeneration = config.get(worldGenCategory, "enable_structure_generation", enableStructureGeneration, "Default="+enableStructureGeneration+"\n" +
   		"Enable or disable structure generation entirely.").getBoolean(enableStructureGeneration);
-  loadDefaultPack = config.getBoolean(worldGenCategory, "load_default_structure_pack", loadDefaultPack, "If true the default structure pack will be loaded and enabled for world-gen.");
+  loadDefaultPack = config.get(worldGenCategory, "load_default_structure_pack", loadDefaultPack, "If true the default structure pack will be loaded and enabled for world-gen.").getBoolean(loadDefaultPack);
   duplicateStructureSearchRange = config.get(worldGenCategory, "validation_duplicate_search_radius", duplicateStructureSearchRange, "Default="+duplicateStructureSearchRange+"\n" +
   		"The minimum radius in chunks to be searched for duplicate structures.\n" +
   		"This setting should generally not need to be adjusted unless you have templates with extremely\n" +
@@ -144,12 +144,7 @@ private void initializeDefaultSkippableBlocks()
   String[] defaultSkippableBlocks = new String[]    
         {
             "minecraft:air",
-            "minecraft:grass",
             "minecraft:sapling",
-            "minecraft:flowing_water",
-            "minecraft:water",
-            "minecraft:flowing_lava",
-            "minecraft:lava",
             "minecraft:log",
             "minecraft:leaves",
             "minecraft:sponge",
@@ -172,7 +167,6 @@ private void initializeDefaultSkippableBlocks()
             "minecraft:pumpkin_stem",
             "minecraft:melon_stem",
             "minecraft:vine",
-            "minecraft:mycelium",
             "minecraft:waterlily",
             "minecraft:cocoa",
             "minecraft:leaves2",
@@ -225,6 +219,8 @@ private void initializeDefaultSkippableBlocks()
             "BiomesOPlenty:poison",
             "BiomesOPlenty:hell_blood",
             "BiomesOPlenty:honey",
+            "BiomesOPlenty:ash",
+            "BiomesOPlenty:gemOre",
             "coralmod:Coral1",
             "coralmod:Coral2",
             "coralmod:Coral3",
@@ -485,18 +481,7 @@ private void initializeDefaultSkippableBlocks()
             "Metallurgy:nether.ore",
             "Metallurgy:precious.ore",
             "Metallurgy:utility.ore",
-            "BiomesOPlenty:ash",
-            "BiomesOPlenty:gemOre",
-            "minecraft:gold_ore",
-            "minecraft:iron_ore",
-            "minecraft:coal_ore",
-            "minecraft:lapis_ore",
-            "minecraft:mossy_cobblestone",
-            "minecraft:diamond_ore",
-            "minecraft:redstone_ore",
-            "minecraft:emerald_ore",
-            "minecraft:quartz_ore",
-            "minecraft:clay"
+            "MineFactoryReloaded:tile.mfr.rubberwood.leaves",
         };
 
   defaultSkippableBlocks = config.get(worldGenBlocks, "skippable_blocks", defaultSkippableBlocks).getStringList();

@@ -38,7 +38,7 @@ public GuiResearchBook(ContainerBase container)
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 40, xSize/2, ySize-40);
+  area = new CompositeScrolled(this, 0, 40, xSize/2, ySize-40);
   addGuiElement(area);
   modeBox = new Checkbox(8, 8, 16, 16, "guistrings.research.research_mode")
     {
@@ -52,7 +52,7 @@ public void initElements()
   modeBox.setChecked(researchMode);
   addGuiElement(modeBox);
   
-  detailsArea = new CompositeScrolled(xSize/2, 40, xSize/2, ySize-40);
+  detailsArea = new CompositeScrolled(this, xSize/2, 40, xSize/2, ySize-40);
   addGuiElement(detailsArea);
   }
 

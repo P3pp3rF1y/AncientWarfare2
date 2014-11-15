@@ -10,24 +10,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.automation.proxy.BCProxy;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
-import buildcraft.api.mj.IBatteryObject;
-import buildcraft.api.mj.ISidedBatteryProvider;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.common.Optional;
 
 @Optional.InterfaceList(value=
   {
   @Optional.Interface(iface="cofh.api.energy.IEnergyHandler", modid="CoFHCore",striprefs=true),
-  @Optional.Interface(iface="buildcraft.api.mj.ISidedBatteryProvider",modid="BuildCraft|Core",striprefs=true),
   })
-public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler, ISidedBatteryProvider
+public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler
 {
 
 /**
@@ -41,7 +39,6 @@ protected ForgeDirection orientation = ForgeDirection.NORTH;
  */
 protected int networkUpdateTicks;
 
-private TileEntity[]bcCache;//cannot reference interface directly, but can cast directly...//only used when bc installed
 private TileEntity[]rfCache;//cannot reference interface directly, but can cast directly...//only used when cofh installed
 private ITorqueTile[]torqueCache;
 
@@ -61,7 +58,6 @@ protected double torqueIn, torqueOut, torqueLoss, prevEnergy;
 @Override
 public final int getEnergyStored(ForgeDirection from)
   {
-//  AWLog.logDebug("cofh get stored: "+from);
   return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
   }
 
@@ -69,7 +65,6 @@ public final int getEnergyStored(ForgeDirection from)
 @Override
 public final int getMaxEnergyStored(ForgeDirection from)
   {
-//  AWLog.logDebug("cofh get max stored: "+from);
   return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
   }
 
@@ -77,7 +72,6 @@ public final int getMaxEnergyStored(ForgeDirection from)
 @Override
 public final boolean canConnectEnergy(ForgeDirection from)
   {
-//  AWLog.logDebug("cofh get can connect: "+from);
   return canOutputTorque(from) || canInputTorque(from);
   }
 
@@ -85,30 +79,16 @@ public final boolean canConnectEnergy(ForgeDirection from)
 @Override
 public final int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
   {
-//  AWLog.logDebug("cofh extract: "+from+" :: "+maxExtract);
   return 0;
-//  if(!canOutputTorque(from)){return 0;}  
-//  if(simulate){return Math.min(maxExtract, (int) (AWAutomationStatics.torqueToRf * getMaxTorqueOutput(from)));}
-//  return (int) (AWAutomationStatics.torqueToRf * drainTorque(from, (double)maxExtract * AWAutomationStatics.rfToTorque));
   }
 
 @Optional.Method(modid="CoFHCore")
 @Override
 public final int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
   {
-//  AWLog.logDebug("cofh receive: "+from+" :: "+maxReceive);
   if(!canInputTorque(from)){return 0;}
   if(simulate){return Math.min(maxReceive, (int)(AWAutomationStatics.torqueToRf * getMaxTorqueInput(from)));}
   return (int)(AWAutomationStatics.torqueToRf * addTorque(from, (double)maxReceive * AWAutomationStatics.rfToTorque));
-  }
-
-//*************************************** BC MJ METHODS ***************************************//
-
-@Optional.Method(modid="BuildCraft|Core")
-@Override
-public IBatteryObject getMjBattery(String kind, ForgeDirection direction)
-  {  
-  return (IBatteryObject) BCProxy.instance.getBatteryObject(kind, this, direction);
   }
 
 //*************************************** NEIGHBOR CACHE UPDATING ***************************************//
@@ -123,12 +103,6 @@ public final TileEntity[] getRFCache()
   {
   if(rfCache==null){buildRFCache();}
   return rfCache;
-  }
-
-public final TileEntity[] getBCCache()
-  {
-  if(bcCache==null){buildBCCache();}
-  return bcCache;
   }
 
 private void buildTorqueCache()
@@ -180,29 +154,6 @@ private void buildRFCache()
   this.rfCache = rfCache;
   }
 
-private void buildBCCache()
-  {
-  TileEntity[] bcCache = new TileEntity[6];
-  ForgeDirection dir;
-  TileEntity te;
-  int x, y, z;
-  for(int i = 0; i < 6; i++)
-    {
-    dir = ForgeDirection.values()[i];
-    if(!canOutputTorque(dir) && !canInputTorque(dir)){continue;}
-    x = xCoord+dir.offsetX;
-    y = yCoord+dir.offsetY;
-    z = zCoord+dir.offsetZ;
-    if(!worldObj.blockExists(x, y, z)){continue;}
-    te = worldObj.getTileEntity(x, y, z);
-    if(BCProxy.instance.isPowerTile(te))
-      {
-      bcCache[dir.ordinal()]=te;
-      }
-    }
-  this.bcCache = bcCache;
-  }
-
 @Override
 public void validate()
   {  
@@ -226,7 +177,6 @@ protected final void invalidateNeighborCache()
   {
   torqueCache=null;
   rfCache=null;
-  bcCache=null;
   onNeighborCacheInvalidated();
   }
 
@@ -332,11 +282,6 @@ protected final double transferPowerTo(ForgeDirection from)
       transferred = RFProxy.instance.transferPower(this, from, getRFCache()[from.ordinal()]);
       if(transferred>0){return transferred;}
       }
-    if(ModuleStatus.buildCraftLoaded)
-      {
-      transferred = BCProxy.instance.transferPower(this, from, getBCCache()[from.ordinal()]);
-      if(transferred>0){return transferred;}
-      }
     }
   return transferred;
   }
@@ -353,7 +298,9 @@ protected final double applyPowerDrain(TorqueCell cell)
 
 protected final void sendDataToClient(int type, int data)
   {
-  worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), type, data);
+  PacketBlockEvent pkt = new PacketBlockEvent();
+  pkt.setParams(xCoord, yCoord, zCoord, getBlockType(), (short)type, (short)data);
+  NetworkHandler.sendToAllTrackingChunk(worldObj, xCoord >> 4 , zCoord >> 4, pkt);
   }
 
 protected final float getRotation(double rotation, double prevRotation, float delta)
@@ -375,7 +322,7 @@ public boolean receiveClientEvent(int a, int b)
       handleClientRotationData(ForgeDirection.values()[side], val);
       }    
     }
-  return true;//
+  return true;
   }
 
 //*************************************** NBT / DATA PACKET ***************************************//

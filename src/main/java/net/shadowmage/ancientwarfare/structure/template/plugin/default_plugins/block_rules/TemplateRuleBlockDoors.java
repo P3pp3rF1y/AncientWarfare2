@@ -1,11 +1,11 @@
 /**
-   Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
+   Copyright 2012-2014 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
 
-   This file is part of Ancient Warfare.
+   This file is part of Ancient Warfare 2.
 
-   Ancient Warfare is free software: you can redistribute it and/or modify
+   Ancient Warfare 2 is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
@@ -39,6 +39,10 @@ boolean isTop = false;
 public TemplateRuleBlockDoors(World world, int x, int y, int z, Block block, int meta, int turns)
   {
   super(world, x, y, z, block, meta, turns);
+  if(world.getBlock(x, y+1, z)==block)
+    {
+    sideFlag = (byte)world.getBlockMetadata(x, y+1, z);
+    }
   }
 
 public TemplateRuleBlockDoors()

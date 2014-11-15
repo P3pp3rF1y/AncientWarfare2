@@ -24,7 +24,7 @@ allprojects
   apply plugin: 'forge'
   minecraft
   {
-    version = "1.7.10-10.13.1.1219"
+    version = "1.7.10-10.13.2.1236"
     runDir = "eclipse/assets"
   }
   version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.releasetype + "-MC" +minecraft.version
@@ -34,17 +34,20 @@ allprojects
 
 dependencies {
   compile files {
-    "lib/buildcraft-6.0.17-dev.jar"
+    "lib/CodeChickenLib-1.7.10-1.1.1.106-dev.jar"
   }
   compile files {
-    "lib/CodeChickenCore-1.7.10-1.0.2.9-dev.jar"
+    "lib/buildcraft-6.1.8-dev.jar" // can remove this, no longer a real dep; can just load as a mod in mods folder
   }
   compile files {
-    "lib/NotEnoughItems-1.7.10-1.0.2.15-dev.jar"
+    "lib/CodeChickenCore-1.7.10-1.0.4.29-dev.jar"
   }
   compile files {
-    "lib/CoFHLib-[1.7.10]1.0.0B6-dev-26.jar"
+    "lib/NotEnoughItems-1.7.10-1.0.3.67-dev.jar"
   }
+  compile files {
+    "lib/CoFHLib-[1.7.10]1.0.0B7-dev-29.jar"
+  }  
 }
 
 task updateVersion(type:Copy){

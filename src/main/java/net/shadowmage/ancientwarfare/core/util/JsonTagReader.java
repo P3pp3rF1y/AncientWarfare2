@@ -52,7 +52,8 @@ public static NBTTagCompound getTagFrom(JsonObject compoundTagObject)
 
 private static NBTBase getTagFor(JsonObject jsonTagBase)
   {
-  String id = jsonTagBase.getValue("id").getStringValue();
+  JsonValue val = jsonTagBase.getValue("id");
+  String id = val.getStringValue();
   JsonAbstract value = jsonTagBase.getAbstract("val");
   if("ct".equals(id))
     {

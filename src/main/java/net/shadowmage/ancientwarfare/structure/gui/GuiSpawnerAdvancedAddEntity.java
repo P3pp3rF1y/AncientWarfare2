@@ -90,7 +90,7 @@ public void initElements()
   Label label = new Label(8, 40-14, StatCollector.translateToLocal("guistrings.spawner.set_entity_properties"));
   addGuiElement(label);
   
-  area = new CompositeScrolled(0, 40, 256, 200);
+  area = new CompositeScrolled(this, 0, 40, 256, 200);
   addGuiElement(area); 
   }
 

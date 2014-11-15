@@ -40,6 +40,12 @@ public StructureBB(int x, int y, int z, int face, int xSize, int ySize, int zSiz
   this.setFromStructure(x, y, z, face, xSize, ySize, zSize, xOffset, yOffset, zOffset);     
   }
 
+public StructureBB(BlockPosition pos1, BlockPosition pos2)
+  {
+  this.min = BlockTools.getMin(pos1, pos2);
+  this.max = BlockTools.getMax(pos1, pos2);
+  }
+
 public final StructureBB setFromStructure(int x, int y, int z, int face, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset)
   {   
   /**
@@ -71,20 +77,6 @@ public final StructureBB setFromStructure(int x, int y, int z, int face, int xSi
   return this;
   }
 
-//public BlockPosition getPositionInTemplate(int x, int y, int z, int face)
-//  {
-//  BlockPosition pos = new BlockPosition(x-min.x, y-min.y, z-min.z);
-//  int turns = ( face + 2 ) % 4;
-//  BlockTools.rotateInArea(pos, this.getXSize(), this.getZSize(), turns);  
-//  return pos;
-//  }
-
-public StructureBB(BlockPosition pos1, BlockPosition pos2)
-  {
-  this.min = BlockTools.getMin(pos1, pos2);
-  this.max = BlockTools.getMax(pos1, pos2);
-  }
-
 @Override
 public String toString()
   {
@@ -99,7 +91,7 @@ public String toString()
 public boolean collidesWith(StructureBB bb)
   {
   if(max.x < bb.min.x || max.y < bb.min.y || max.z < bb.min.z || min.x > bb.max.x || min.y > bb.max.y || min.z > bb.max.z)
-    {//separation of axis...the early-out version of containment testing
+    {
     return false;
     }  
   return true;
@@ -109,7 +101,7 @@ public boolean collidesWith(StructureBB bb)
  * can be used to contract by specifying negative amounts...
  * @param amt
  */
-public void expand(int x, int y, int z)
+public StructureBB expand(int x, int y, int z)
   {
   min.x-=x;
   min.y-=y;
@@ -117,27 +109,27 @@ public void expand(int x, int y, int z)
   max.x+=x;
   max.y+=y;
   max.z+=z;
+  return this;
   }
 
-public int getXSize()
+public StructureBB offset(int x, int y, int z)
   {
-  return max.x-min.x+1;
+  min.x += x;
+  min.y += y;
+  min.z += z;
+  max.x += x;
+  max.y += y;
+  max.z += z;
+  return this;
   }
 
-public int getZSize()
-  {
-  return max.z-min.z+1;
-  }
+public int getXSize(){return max.x-min.x+1;}
 
-public int getCenterX()
-  {
-  return min.x + (getXSize()/2);
-  }
+public int getZSize(){return max.z-min.z+1;}
 
-public int getCenterZ()
-  {
-  return min.z + (getZSize()/2);
-  }
+public int getCenterX(){return min.x + (getXSize()/2);}
+
+public int getCenterZ(){return min.z + (getZSize()/2);}
 
 /**
  * 0-- z++==forward x++==left
@@ -145,7 +137,6 @@ public int getCenterZ()
  * 2-- z--==forward x--==left
  * 3-- x++==forward z--==left
  */
-
 public void getFrontCorners(int face, BlockPosition min, BlockPosition max)
   {  
   getFLCorner(face, min);
@@ -278,9 +269,12 @@ public BlockPosition getRRCorner(int face, BlockPosition out)
   return out;
   }
 
-public boolean isPositionInBoundingBox(int x, int y, int z)
+public boolean isPositionInBoundingBox(int x, int y, int z){return x>=min.x && x<=max.x && y>=min.y && y<=max.y && z>=min.z && z<=max.z;}
+public boolean isPositionInBoundingBox(BlockPosition pos){return isPositionInBoundingBox(pos.x, pos.y, pos.z);}
+
+public StructureBB copy()
   {
-  return x>=min.x && x<=max.x && y>=min.y && y<=max.y && z>=min.z && z<=max.z;
+  return new StructureBB(min.copy(), max.copy());
   }
 
 }

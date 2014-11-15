@@ -29,13 +29,13 @@ import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMedicBase;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAttackRanged;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFindCommander;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedMedic;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedPatrol;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -74,7 +74,7 @@ public NpcCombat(World par1World)
   this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
   //6--empty....
   //7==combat task, inserted from onweaponinventoryupdated
-  this.tasks.addTask(8, new NpcAIPlayerOwnedMedic(this));
+  this.tasks.addTask(8, new NpcAIMedicBase(this));
   this.tasks.addTask(9, (patrolAI = new NpcAIPlayerOwnedPatrol(this)));
   
   this.tasks.addTask(10, new NpcAIMoveHome(this, 50.f, 5.f, 20.f, 5.f));

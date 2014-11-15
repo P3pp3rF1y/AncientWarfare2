@@ -29,7 +29,7 @@ public GuiWarehouseInterface(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 0, xSize, 88);
+  area = new CompositeScrolled(this, 0, 0, xSize, 88);
   addGuiElement(area);
   }
 

@@ -135,7 +135,7 @@ public void onNeighborTileChanged()
       {
       int a = 7;
       int b = powered ? 1: 0;
-      worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), a, b);
+      sendDataToClient(a, b);
       }    
     }
   }

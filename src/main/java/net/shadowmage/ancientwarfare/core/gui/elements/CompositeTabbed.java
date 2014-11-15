@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITabCallback;
@@ -29,9 +30,9 @@ protected Tab currentTab = null;
 protected boolean hasTopTabs = false;
 protected boolean hasBottomTabs = false;
 
-public CompositeTabbed(int topLeftX, int topLeftY, int width, int height)
+public CompositeTabbed(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height)
   {
-  super(topLeftX, topLeftY, width, height);
+  super(gui, topLeftX, topLeftY, width, height);
   }
 
 @Override

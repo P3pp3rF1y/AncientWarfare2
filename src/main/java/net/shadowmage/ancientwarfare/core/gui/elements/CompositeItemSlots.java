@@ -8,6 +8,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
@@ -19,9 +20,9 @@ protected static RenderItem itemRender = new RenderItem();
 private List<ItemSlot> itemSlots = new ArrayList<ItemSlot>();
 ITooltipRenderer render;
 
-public CompositeItemSlots(int topLeftX, int topLeftY, int width, int height, ITooltipRenderer render)
+public CompositeItemSlots(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height, ITooltipRenderer render)
   {
-  super(topLeftX, topLeftY, width, height);
+  super(gui, topLeftX, topLeftY, width, height);
   this.render = render;
   }
 

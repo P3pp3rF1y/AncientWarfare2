@@ -34,10 +34,10 @@ public GuiResearchStationSelection(GuiResearchStation parent, int x, int y)
 @Override
 public void initElements()
   {  
-  queueArea = new CompositeScrolled(0, 40, 200, 200);
+  queueArea = new CompositeScrolled(this, 0, 40, 200, 200);
   addGuiElement(queueArea);
   
-  selectionArea = new CompositeScrolled(200, 40, 200, 200);
+  selectionArea = new CompositeScrolled(this, 200, 40, 200, 200);
   addGuiElement(selectionArea);
   
   Label label = new Label(8, 8, "guistrings.research.queued_research");

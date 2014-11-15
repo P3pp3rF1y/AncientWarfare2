@@ -120,8 +120,7 @@ public void preInit(FMLPreInitializationEvent evt)
   AWStructuresItemLoader.load();
   AWStructuresBlockLoader.load();
   String path = evt.getModConfigurationDirectory().getAbsolutePath();
-  TemplateLoader.instance().initializeAndExportDefaults(path);  
-
+  TemplateLoader.instance().initializeAndExportDefaults(path);
   AWLog.log("Ancient Warfare Structures Pre-Init completed");
   }
 

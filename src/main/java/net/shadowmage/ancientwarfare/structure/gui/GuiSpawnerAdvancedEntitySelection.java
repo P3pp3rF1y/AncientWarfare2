@@ -39,7 +39,7 @@ protected boolean onGuiCloseRequested()
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 40, 256, 200);
+  area = new CompositeScrolled(this, 0, 40, 256, 200);
   addGuiElement(area); 
   
   Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.spawner.select_entity"));

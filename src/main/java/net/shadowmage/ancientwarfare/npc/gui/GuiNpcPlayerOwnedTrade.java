@@ -38,7 +38,7 @@ public void initElements()
     areaY = 12+8+4;
     owner = true;
     }
-  area = new CompositeScrolled(0, areaY, xSize, areaSize);  
+  area = new CompositeScrolled(this, 0, areaY, xSize, areaSize);  
   }
 
 @Override

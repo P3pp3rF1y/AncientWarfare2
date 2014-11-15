@@ -28,7 +28,7 @@ public GuiNpcBard(ContainerBase container)
 @Override
 public void initElements()
   {      
-  area = new CompositeScrolled(0, 0, xSize, ySize);
+  area = new CompositeScrolled(this, 0, 0, xSize, ySize);
   }
 
 @Override

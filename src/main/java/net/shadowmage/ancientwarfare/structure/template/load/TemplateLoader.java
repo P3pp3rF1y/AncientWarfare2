@@ -105,7 +105,7 @@ public void loadTemplates()
     template = loadTemplateFromFile(f);
     if(template!=null)
       {
-      AWLog.log("Loaded Structure Template: "+f.getName()+" world gen: "+template.getValidationSettings().isWorldGenEnabled());
+      AWLog.log("Loaded Structure Template: ["+template.name+"] WorldGen: "+template.getValidationSettings().isWorldGenEnabled() +"  Survival: "+template.getValidationSettings().isSurvival());
       StructureTemplateManager.instance().addTemplate(template);
       loadedStructureNames.add(template.name);
       loadedCount++;
@@ -221,7 +221,7 @@ private int loadTemplatesFromZipStream(ZipInputStream zis)
       template = loadTemplateFromZip(entry, zis);
       if(template!=null)
         {
-        AWLog.logDebug("Loading template: "+entry.getName());
+        AWLog.log("Loaded Structure Template: ["+template.name+"] WorldGen: "+template.getValidationSettings().isWorldGenEnabled()+"  Survival: "+template.getValidationSettings().isSurvival());
         StructureTemplateManager.instance().addTemplate(template);
         loadedStructureNames.add(template.name);
         parsed++;

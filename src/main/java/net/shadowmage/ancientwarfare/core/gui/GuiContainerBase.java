@@ -36,7 +36,7 @@ protected static final String defaultBackground = "guiBackgroundLarge.png";
 
 private static LinkedList<Viewport> viewportStack = new LinkedList<Viewport>();
 
-private boolean widgetSelected = false;
+private GuiElement selectedWidget = null;
 protected boolean shouldCloseOnVanillaKeys = true;
 private float partialRenderTick = 0.f;
 private boolean initDone = false;
@@ -95,6 +95,7 @@ public void handleElementTooltipRender(Tooltip tooltipObject)
 
 protected void clearElements()
   {
+  if(this.selectedWidget!=null && this.elements.contains(selectedWidget)){this.selectedWidget=null;}
   this.elements.clear();
   }
 
@@ -151,7 +152,7 @@ public void handleKeyboardInput()
     element.handleKeyboardInput(evt);
     }
   
-  if(!widgetSelected)
+  if(selectedWidget==null)
     {  
     super.handleKeyboardInput();    
     }
@@ -160,7 +161,7 @@ public void handleKeyboardInput()
 @Override
 protected void keyTyped(char ch, int key)
   {  
-  if(!widgetSelected)
+  if(selectedWidget==null)
     {
     boolean isExitCommand = key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode();  
     if(isExitCommand)
@@ -325,13 +326,20 @@ protected void renderToolTip(ItemStack stack, int x, int y)
 @Override
 public void onWidgetSelected(GuiElement element)
   {
-  this.widgetSelected = true;
+  this.selectedWidget = element;
+  element.setSelected(true);
   }
 
 @Override
 public void onWidgetDeselected(GuiElement element)
   {
-  this.widgetSelected = false;
+  if(selectedWidget==element){selectedWidget=null;}
+  element.setSelected(false);
+  }
+
+public void onCompositeCleared(List<GuiElement> compositeElements)
+  {
+  if(compositeElements.contains(selectedWidget)){selectedWidget=null;}  
   }
 
 /**

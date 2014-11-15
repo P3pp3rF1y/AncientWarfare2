@@ -190,15 +190,6 @@ protected void buildConnections()
       connections[i]=(cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i].canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
       }
     }
-  if(ModuleStatus.buildCraftLoaded)
-    {
-    TileEntity[] tes = getBCCache();
-    for(int i = 0; i < 6; i++)
-      {
-      if(cache[i]!=null){continue;}//already examined that side..
-      if(tes[i]!=null){connections[i]=true;}
-      }
-    }
   if(ModuleStatus.redstoneFluxEnabled)
     {
     TileEntity[] tes = getRFCache();

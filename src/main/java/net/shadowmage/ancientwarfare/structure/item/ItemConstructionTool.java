@@ -132,7 +132,36 @@ private void handleSolidFill(EntityPlayer player, ConstructionSettings settings)
 
 private void handleBoxFill(EntityPlayer player, ConstructionSettings settings)
   {
-
+  if(settings.pos1!=null && settings.pos2!=null && settings.block!=null)
+    {
+    BlockPosition min = BlockTools.getMin(settings.pos1, settings.pos2);
+    BlockPosition max = BlockTools.getMax(settings.pos1, settings.pos2);
+    
+    for(int x = min.x; x<=max.x; x++)
+      {
+      for(int z = min.z; z<=max.z; z++)
+        {
+        player.worldObj.setBlock(x, max.y, z, settings.block, settings.meta, 3);
+        player.worldObj.setBlock(x, min.y, z, settings.block, settings.meta, 3);
+        }
+      }
+    for(int x = min.x; x<=max.x; x++)
+      {
+      for(int y = min.y; y<=max.y; y++)
+        {
+        player.worldObj.setBlock(x, y, min.z, settings.block, settings.meta, 3);
+        player.worldObj.setBlock(x, y, max.z, settings.block, settings.meta, 3);
+        }
+      }
+    for(int z = min.z; z<=max.z; z++)
+      {
+      for(int y = min.y; y<=max.y; y++)
+        {
+        player.worldObj.setBlock(min.x, y, z, settings.block, settings.meta, 3);
+        player.worldObj.setBlock(max.x, y, z, settings.block, settings.meta, 3);
+        }
+      }
+    }
   }
 
 private void handleLakeFill(EntityPlayer player, ConstructionSettings settings)
@@ -267,7 +296,7 @@ protected void readFromNBT(NBTTagCompound tag)
   if(tag.hasKey("pos2")){pos2=new BlockPosition(tag.getCompoundTag("pos2"));}
   if(tag.hasKey("block")){block = (Block) Block.blockRegistry.getObject(tag.getString("block"));}
   if(tag.hasKey("meta")){meta = tag.getInteger("meta");}
-  if(tag.hasKey("type")){type = ConstructionType.values()[tag.getInteger("type")];}
+  if(tag.hasKey("type")){type = ConstructionType.get(tag.getInteger("type"));}
   }
 
 protected NBTTagCompound writeToNBT(NBTTagCompound tag)
@@ -324,6 +353,11 @@ public ConstructionType next()
   ordinal++;
   if(ordinal>=values().length){ordinal=0;}
   return values()[ordinal];
+  }
+public static ConstructionType get(int index)
+  {
+  if(index>=0 && index<values().length){return values()[index];}
+  return SOLID_FILL;
   }
 }
 

@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
@@ -13,11 +14,10 @@ public class CompositeScrolled extends Composite implements IScrollableCallback
 protected Scrollbar scrollbar;
 protected int currentTop = 0;
 
-public CompositeScrolled(int topLeftX, int topLeftY, int width, int height)
+public CompositeScrolled(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height)
   {
-  super(topLeftX, topLeftY, width, height);
+  super(gui, topLeftX, topLeftY, width, height);
   scrollbar = new Scrollbar(width-12, 0, 12, height, this);
-//  this.addGuiElement(scrollbar);  
   }
 
 @Override
@@ -100,10 +100,17 @@ protected void addDefaultListeners()
         if(isMouseOverElement(evt.mx, evt.my))
           {
           boolean overElement = false;
-          scrollbar.handleMouseInput(evt);
+          scrollbar.handleMouseInput(evt);//in case input was directly over scrollbar
           for(GuiElement element : elements)
             {
-            if(element.isMouseOverElement(evt.mx, evt.my)){overElement=true;}
+            if(element.isMouseOverElement(evt.mx, evt.my))
+              {
+              overElement=true;
+              if(evt.mw!=0 && !element.scrollInput)
+                {
+                overElement = false;
+                }
+              }
             element.handleMouseInput(evt);
             }
           if(!overElement && !scrollbar.isMouseOverElement(evt.mx, evt.my) && evt.mw!=0)

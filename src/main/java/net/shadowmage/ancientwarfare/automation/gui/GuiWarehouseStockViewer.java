@@ -25,7 +25,7 @@ public GuiWarehouseStockViewer(ContainerBase par1Container)
 @Override
 public void initElements()
   {
-  area = new CompositeScrolled(0, 0, 178, 80);//240-8-8-4-4*18
+  area = new CompositeScrolled(this, 0, 0, 178, 80);//240-8-8-4-4*18
   addGuiElement(area);
   }
 

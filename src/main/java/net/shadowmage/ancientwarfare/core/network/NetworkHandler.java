@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.network;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,8 +38,9 @@ public static final int PACKET_STRUCTURE_IMAGE_DATA = 10;
 public static final int PACKET_STRUCTURE_REMOVE = 11;
 public static final int PACKET_NPC_COMMAND = 12;
 public static final int PACKET_FACTION_UPDATE = 13;
-public static final int PACKET_VEHICLE_INPUT_STATE = 14;//full input state packet, from client->server
-public static final int PACKET_VEHICLE_INPUT_RESPONSE = 15;//response to an input state/change packet, from server->client
+public static final int PACKET_BLOCK_EVENT = 14;
+public static final int PACKET_VEHICLE_INPUT_STATE = 15;//full input state packet, from client->server
+public static final int PACKET_VEHICLE_INPUT_RESPONSE = 16;//response to an input state/change packet, from server->client
 
 public static final int GUI_CRAFTING = 0;
 public static final int GUI_SCANNER = 1;
@@ -105,6 +107,7 @@ public final void registerNetwork()
   PacketBase.registerPacketType(PACKET_RESEARCH_INIT, PacketResearchInit.class);
   PacketBase.registerPacketType(PACKET_RESEARCH_ADD, PacketResearchUpdate.class);
   PacketBase.registerPacketType(PACKET_RESEARCH_START, PacketResearchStart.class);
+  PacketBase.registerPacketType(PACKET_BLOCK_EVENT, PacketBlockEvent.class);
   NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
   }
 
@@ -141,6 +144,26 @@ public final static void sendToAllTracking(Entity e, PacketBase pkt)
 public final static void sendToAllNear(World world, int x, int y, int z, double range, PacketBase pkt)
   {
   INSTANCE.channel.sendToAllAround(pkt.getFMLPacket(), new TargetPoint(world.provider.dimensionId, x, y, z, range));
+  }
+
+/**
+ * 
+ * @param world (must be instanceof be WorldServer)
+ * @param cx chunkX
+ * @param cz chunkZ
+ * @param pkt the packet
+ */
+@SuppressWarnings("unchecked")
+public static final void sendToAllTrackingChunk(World world, int cx, int cz, PacketBase pkt)
+  {
+  WorldServer server = (WorldServer)world;
+  for(EntityPlayer p : (List<EntityPlayer>)server.playerEntities)
+    {
+    if(server.getPlayerManager().isPlayerWatchingChunk((EntityPlayerMP)p, cx, cz))
+      {
+      sendToPlayer((EntityPlayerMP)p, pkt);
+      }
+    }
   }
 
 @Override

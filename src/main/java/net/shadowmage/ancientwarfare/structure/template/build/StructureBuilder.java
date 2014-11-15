@@ -52,10 +52,16 @@ private boolean isFinished = false;
 
 public StructureBuilder(World world, StructureTemplate template, int face, int x, int y, int z)
   {
+  this(world, template, face, new BlockPosition(x,y,z), new StructureBB(x, y, z, face, template)); 
+  }
+
+public StructureBuilder(World world, StructureTemplate template, int face, BlockPosition buildKey, StructureBB bb)
+  {
   this.world = world;
   this.template = template;
   this.buildFace = face;
-  buildOrigin = new BlockPosition(x,y,z);
+  this.bb = bb;
+  buildOrigin = buildKey;
   destination = new BlockPosition();   
   currentX = currentY = currentZ = 0;
   destXSize = template.xSize;
@@ -71,8 +77,6 @@ public StructureBuilder(World world, StructureTemplate template, int face, int x
     destXSize = destZSize;
     destZSize = swap;
     }
-  
-  bb = new StructureBB(x, y, z, face, template);  
   /**
    * initialize the first target destination so that the structure is ready to start building when called on to build
    */

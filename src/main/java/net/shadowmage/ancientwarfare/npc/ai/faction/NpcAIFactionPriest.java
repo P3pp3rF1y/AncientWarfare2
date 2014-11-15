@@ -1,9 +1,9 @@
 package net.shadowmage.ancientwarfare.npc.ai.faction;
 
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedMedic;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMedicBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIFactionPriest extends NpcAIPlayerOwnedMedic
+public class NpcAIFactionPriest extends NpcAIMedicBase
 {
 
 public NpcAIFactionPriest(NpcBase npc)
@@ -12,10 +12,9 @@ public NpcAIFactionPriest(NpcBase npc)
   }
 
 @Override
-public boolean continueExecuting()
-  {  
-  if(targetToHeal==null || targetToHeal.isDead || targetToHeal.getHealth()>=targetToHeal.getMaxHealth()){return false;}  
-  return super.continueExecuting();
+protected boolean isProperSubtype()
+  {
+  return true;
   }
 
 }
