@@ -520,20 +520,20 @@ public void openAltGui(EntityPlayer player)
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
-  if(tag.hasKey("maxChickens")){maxChickenCount = tag.getInteger("maxChickens");}
-  if(tag.hasKey("maxCows")){maxCowCount = tag.getInteger("maxCows");}
-  if(tag.hasKey("maxPigs")){maxPigCount = tag.getInteger("maxPigs");}
-  if(tag.hasKey("maxSheep")){maxSheepCount = tag.getInteger("maxSheep");}
+  maxChickenCount = tag.getInteger("maxChickens");
+  maxCowCount = tag.getInteger("maxCows");
+  maxPigCount = tag.getInteger("maxPigs");
+  maxSheepCount = tag.getInteger("maxSheep");
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
-  tag.setInteger("maxChickens", maxChickenCount);
-  tag.setInteger("maxCows", maxCowCount);
-  tag.setInteger("maxPigs", maxPigCount);
-  tag.setInteger("maxSheep", maxSheepCount);
+  if(tag.hasKey("maxChickens")){tag.setInteger("maxChickens", maxChickenCount);}
+  if(tag.hasKey("maxCows")){tag.setInteger("maxCows", maxCowCount);}
+  if(tag.hasKey("maxPigs")){tag.setInteger("maxPigs", maxPigCount);}
+  if(tag.hasKey("maxSheep")){tag.setInteger("maxSheep", maxSheepCount);}
   }
 
 private static class EntityPair

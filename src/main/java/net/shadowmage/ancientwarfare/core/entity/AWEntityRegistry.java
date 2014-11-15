@@ -8,6 +8,9 @@ import net.minecraft.world.World;
 public class AWEntityRegistry
 {
 
+/**
+ * NPC Module Registrations
+ */
 public static final String NPC_WORKER = "aw_npc_worker";
 public static final String NPC_COMBAT = "aw_npc_combat";
 public static final String NPC_COURIER = "aw_npc_courier";
@@ -112,8 +115,15 @@ public static final String NPC_FACTION_CUSTOM_3_SOLDIER_ELITE = "custom_3.soldie
 public static final String NPC_FACTION_CUSTOM_3_LEADER_ELITE = "custom_3.leader.elite";
 public static final String NPC_FACTION_CUSTOM_3_CIVILIAN_FEMALE = "custom_3.civilian.female";
 
-
+/**
+ * Vehicle Module Entity Registrations
+ */
 public static final String VEHICLE_TEST = "vehicle_test";
+public static final String MISSILE_TEST = "missile_test";
+
+/**
+ * Structure Module Entity Registrations
+ */
 //TODO add gates?? where are they registered at?
 
 private static HashMap<String, EntityDeclaration> entityRegistrations = new HashMap<String, EntityDeclaration>();
@@ -141,6 +151,11 @@ public static Entity createEntity(String type, World world)
   return null;
   }
 
+/**
+ * The entityClass for this registration -must- match the class returned from createEntity, or weird desynch crap will happen as server/client may be using different classes
+ * and/or the entity will not be persistent due to class mismatch
+ * @author Shadowmage
+ */
 public static abstract class EntityDeclaration
 {
 
@@ -151,6 +166,7 @@ Object mod;
 int trackingRange;
 int updateFrequency;
 boolean sendsVelocityUpdates;
+
 
 public EntityDeclaration(Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)
   {

@@ -1,12 +1,19 @@
 package net.shadowmage.ancientwarfare.vehicle;
 
 import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.network.PacketBase;
+import net.shadowmage.ancientwarfare.vehicle.ballistics.TrajectoryPlotter;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.crafting.AWVehicleCrafting;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
+import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItemLoader;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketInputReply;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketInputState;
 import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -21,7 +28,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 name = "Ancient Warfare Vehicles",
 modid = "AncientWarfareVehicle",
 version = "@VERSION@",
-dependencies = "required-after:AncientWarfare"
+dependencies = "required-after:"+AncientWarfareCore.modID
 )
 
 public class AncientWarfareVehicles 
@@ -45,7 +52,6 @@ public static AWVehicleStatics statics;
 public void preInit(FMLPreInitializationEvent evt)
   {
   AWLog.log("Ancient Warfare Vehicles Pre-Init started");
-  
   ModuleStatus.vehiclesLoaded = true; 
   
   /**
@@ -53,18 +59,22 @@ public void preInit(FMLPreInitializationEvent evt)
    */
   config = AWCoreStatics.getConfigFor("AncientWarfareVehicle");
   statics = new AWVehicleStatics(config);
+  statics.load();//load config settings
     
   /**
    * load pre-init (items, blocks, entities)
    */  
   proxy.registerClient();
-  statics.load();//load config settings
   AWVehicleEntityLoader.load();
+  AWVehicleItemLoader.load();
       
   /**
    * register tick-handlers
    */
+  PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_STATE, PacketInputState.class);
+  PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_RESPONSE, PacketInputReply.class);
   AWLog.log("Ancient Warfare Vehicles Pre-Init completed");
+  for(int i = 0; i < 100; i++){TrajectoryPlotter.loadTest();}
   }
 
 @EventHandler
