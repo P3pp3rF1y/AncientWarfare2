@@ -1,5 +1,5 @@
 {
-"bard.tune1": {"category": "master", "sounds":[{"name": "npc/bard/bard1", "stream": false}]},
+"bard.tune1": {"category": "neutral", "sounds":[{"name": "npc/bard/bard1", "stream": false}]},
 "bard.tune2": {
 	"category": "neutral",
 	"sounds": [
