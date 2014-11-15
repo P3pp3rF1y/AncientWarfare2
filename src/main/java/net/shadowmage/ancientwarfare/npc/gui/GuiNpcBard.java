@@ -200,6 +200,7 @@ private int addTuneEntry(final BardTuneEntry entry, final int index, int startHe
 @Override
 protected boolean onGuiCloseRequested()
   {  
+  container.sendTuneDataToServer(player);
   NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, container.npc.getEntityId(), 0, 0);
   return false;
   }

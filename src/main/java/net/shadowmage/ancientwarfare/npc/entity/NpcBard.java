@@ -158,6 +158,10 @@ public void setRandom(boolean val){random=val;}
 
 public void readFromNBT(NBTTagCompound tag)
   {
+  minDelay=tag.getInteger("minDelay");
+  maxDelay=tag.getInteger("maxDelay");
+  random = tag.getBoolean("random");
+  playOnPlayerEntry = tag.getBoolean("playerEntry");
   tunes.clear();
   BardTuneEntry d;
   NBTTagList l = tag.getTagList("entries", Constants.NBT.TAG_COMPOUND);
@@ -171,6 +175,10 @@ public void readFromNBT(NBTTagCompound tag)
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
+  tag.setInteger("minDelay", minDelay);
+  tag.setInteger("maxDelay", maxDelay);
+  tag.setBoolean("random", random);
+  tag.setBoolean("playerEntry", playOnPlayerEntry);
   NBTTagList l = new NBTTagList();
   for(int i = 0; i < tunes.size(); i++)
     {
@@ -189,14 +197,14 @@ int volume;// percentage, as integer 0 = 0%, 100=100%, 150=150%
 
 public BardTuneEntry()
   {
-  name = "";
+  name = " ";
   length = 0;
   volume = 100;
   }
 
 public void setLength(int length){this.length = length;}
 
-public void setName(String name){this.name = name==null? "" : name;}
+public void setName(String name){this.name = name==null? " " : name;}
 
 public void setVolume(int volume){this.volume = volume;}
 

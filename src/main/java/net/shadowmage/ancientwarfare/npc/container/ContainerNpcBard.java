@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard.BardTuneData;
@@ -37,8 +38,7 @@ public void handlePacketData(NBTTagCompound tag)
   refreshGui();
   }
 
-@Override
-public void onContainerClosed(EntityPlayer player)
+public void sendTuneDataToServer(EntityPlayer player)
   {
   if(player.worldObj.isRemote)//handles sending new/updated/changed data back to server on GUI close.  the last GUI to close will be the one whos data 'sticks'
     {
@@ -46,7 +46,6 @@ public void onContainerClosed(EntityPlayer player)
     tag.setTag("tuneData", data.writeToNBT(new NBTTagCompound()));
     sendDataToServer(tag);
     }
-  super.onContainerClosed(player);
   }
 
 }
