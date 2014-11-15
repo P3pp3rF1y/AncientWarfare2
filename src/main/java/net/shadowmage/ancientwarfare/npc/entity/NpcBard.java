@@ -192,7 +192,7 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
 public static final class BardTuneEntry
 {
 String name;
-int length;//length in seconds, used to determine when count down for next tune should start
+float length;//length in seconds, used to determine when count down for next tune should start
 int volume;// percentage, as integer 0 = 0%, 100=100%, 150=150%
 
 public BardTuneEntry()
@@ -202,7 +202,7 @@ public BardTuneEntry()
   volume = 100;
   }
 
-public void setLength(int length){this.length = length;}
+public void setLength(float length){this.length = length;}
 
 public void setName(String name){this.name = name==null? " " : name;}
 
@@ -212,19 +212,19 @@ public int volume(){return volume;}
 
 public String name(){return name;}
 
-public int length(){return length;}
+public float length(){return length;}
 
 public void readFromNBT(NBTTagCompound tag)
   {
   name = tag.getString("name");
-  length = tag.getInteger("length");
+  length = tag.getFloat("length");
   volume = tag.getInteger("volume");
   }
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
   tag.setString("name", name);
-  tag.setInteger("length", length);
+  tag.setFloat("length", length);
   tag.setInteger("volume", volume);
   return tag;
   }

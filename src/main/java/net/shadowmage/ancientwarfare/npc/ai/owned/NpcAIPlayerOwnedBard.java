@@ -4,21 +4,24 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard.BardTuneData;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBard.BardTuneEntry;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIPlayerOwnedBard extends NpcAI
 {
 
-boolean playing = false;//if currently playing a tune.
-int currentDelay;//the current cooldown delay.  if not playing, this delay will be incremented before attempting to start next song
-int tuneIndex = -1;//will be incremented to 0 before first song selected
-int playerCheckDelay;//used to not check for players -every- tick. checks every 10 ticks
-int playTime;//tracking current play time.  when this exceeds length, cooldown delay is triggered
+private boolean playing = false;//if currently playing a tune.
+private int currentDelay;//the current cooldown delay.  if not playing, this delay will be incremented before attempting to start next song
+private int tuneIndex = -1;//will be incremented to 0 before first song selected
+private int playerCheckDelay;//used to not check for players -every- tick. checks every 10 ticks
+private int playTime;//tracking current play time.  when this exceeds length, cooldown delay is triggered
+private int maxPlayTime;
 
-NpcBard bard;
+private NpcBard bard;
 
 public NpcAIPlayerOwnedBard(NpcBase npc)
   {
@@ -44,16 +47,19 @@ public void startExecuting(){}
 @Override
 public void updateTask()
   {
+//  AWLog.logDebug("updating bard ai..");
   BardTuneData data = bard.getTuneData();
   if(playing)
     {
+//    AWLog.logDebug("already playing...");
     playTime++;
-    if(playTime>=data.get(tuneIndex).length())
+    if(playTime>=maxPlayTime)
       {
-      playTime=0;
+      AWLog.logDebug("song time exceeded, setting playing to false");
+      playTime = 0;
       playing = false;
       int d = data.getMaxDelay()-data.getMinDelay();
-      currentDelay = data.getMinDelay() + d > 0? npc.getRNG().nextInt(d) : 0;
+      currentDelay = data.getMinDelay() + (d > 0? npc.getRNG().nextInt(d) : 0);
       }
     }
   else if(currentDelay>0)
@@ -61,14 +67,13 @@ public void updateTask()
     currentDelay--;
     }
   else
-    {
+    {    
     if(data.getPlayOnPlayerEntry())
       {
       playerCheckDelay--;
       if(playerCheckDelay<=0)
         {
         playerCheckDelay = 10;
-        //TODO look for players in nearby area...20 blocks or so?
         AxisAlignedBB aabb = npc.boundingBox.copy().expand(20, 20, 20);
         @SuppressWarnings("unchecked")
         List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, aabb);
@@ -81,6 +86,7 @@ public void updateTask()
       }
     else
       {
+      AWLog.logDebug("starting next song..");
       setNextSong();
       startSong();
       }
@@ -89,6 +95,7 @@ public void updateTask()
 
 private void setNextSong()
   {
+  //TODO pick random song if random is selected... (ensure it was not the last song played?)
   BardTuneData data = bard.getTuneData();
   tuneIndex++;
   if(tuneIndex>=data.size()){tuneIndex=0;}  
@@ -96,6 +103,13 @@ private void setNextSong()
 
 private void startSong()
   {
+  BardTuneData data = bard.getTuneData();
+  BardTuneEntry entry = data.get(tuneIndex);
+  maxPlayTime = (int)(entry.length() * 20.f * 60.f);//convert minutes into ticks
+  float volume = (float)entry.volume() * 0.01f;
+  bard.worldObj.playSoundAtEntity(bard, entry.name(), volume, 1.f);
+  AWLog.logDebug("playing: "+entry.name());
+//  bard.worldObj.playSoundAtEntity(bard, "fireworks.launch", volume, 1.f);
   playing=true;
   playTime=0;
   }
