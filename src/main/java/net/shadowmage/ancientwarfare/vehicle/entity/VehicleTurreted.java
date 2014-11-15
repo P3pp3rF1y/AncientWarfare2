@@ -79,9 +79,12 @@ public void onFirePressedPilot(Vec3 target)
   if(fireDelay<=0)
     {
     fireDelay = 40;
-    double dx = target.xCoord - posX;
-    double dy = target.yCoord - posY;
-    double dz = target.zCoord - posZ;
+    double px = posX + turretOffset.xCoord;
+    double py = posY + turretOffset.yCoord;
+    double pz = posZ + turretOffset.zCoord;
+    double dx = target.xCoord - px;
+    double dy = target.yCoord - py;
+    double dz = target.zCoord - pz;
     double angleYaw = Math.atan2(dz, dx)*Trig.TODEGREES;
     double anglePitch = 45.d;
     double velocity = TrajectoryPlotter.getPowerToHit(dx, dy, dz, (float) anglePitch, 120);
@@ -95,7 +98,7 @@ public void onFirePressedPilot(Vec3 target)
     updateLaunchVelocity(sinYaw, cosYaw);
     
     MissileBase missile = new MissileBase(worldObj);
-    missile.setPosition(posX+turretOffset.xCoord, posY+turretOffset.yCoord, posZ+turretOffset.zCoord);
+    missile.setPosition(px, py, pz);
     missile.setLaunchParameters(launchVelocity.xCoord, launchVelocity.yCoord, launchVelocity.zCoord, getUniqueID());
     worldObj.spawnEntityInWorld(missile);
     AWLog.logDebug("spawned missile..."+missile);

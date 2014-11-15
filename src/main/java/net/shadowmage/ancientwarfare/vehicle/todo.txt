@@ -9,19 +9,16 @@ vehicles todo:
 * vehicle types:
 	Land:
 		Catapult (single pilot)
-			-traditional, no turret, yaw locked to vehicle
 		Ballista (single pilot) (large)
-			-traditional, no turret, yaw locked to vehicle
 		Scorpio (small metal spring-type ballista) (sized like the old ballistas)		
-			-traditional, no turret, yaw locked to vehicle
+			-non-mobile, ballista slightly smaller, no turret, yaw locked to vehicle
 		Trebuchet (single pilot)
-			-traditional, no turret, yaw locked to vehicle
+			-non-mobile, no turret, yaw locked to vehicle
 		Cannon (single pilot)
-			-traditional, no turret, yaw locked to vehicle
 		Hwacha (single pilot)
 		Battering Ram (single pilot)
 		Chest Cart (single pilot)
-		Siege Tower (multi-passenger)(need to find a way to 'extend' the tower, and a way for players to 'climb' the tower / get off at the right position (hit 'fire' once climbed appropriately?))
+		Siege Tower (multi-passenger)(need to find a way to 'extend' the tower, and a way for players to 'climb' the tower / get off at the right position (hit 'fire' once climbed appropriately?))			
 	 Water: (might need to reduce gun counts for easier managing of stuff...)
 		Sloop/Pinnace - small multi-passenger, 8 gun max
 		Frigate - med multi-passenger, 25 gun max	
@@ -36,6 +33,7 @@ vehicles todo:
 		Airship (a small-ish frigate with an elongated hot air balloon above it...)
 			-burns coal / fuel materials
 			-will be immobile (except for descend command) when out of fuel	
+
 
 Needed to get normal vehicles working:
 - Aim synching
