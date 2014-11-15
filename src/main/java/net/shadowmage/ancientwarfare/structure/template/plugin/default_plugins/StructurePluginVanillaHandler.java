@@ -51,6 +51,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.b
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockInventory;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockSign;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleFlowerPot;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaBlocks;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityHanging;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;
@@ -87,7 +88,8 @@ public void addHandledBlocks(IStructurePluginManager manager)
   specialHandledBlocks.add(Blocks.hopper);
   specialHandledBlocks.add(Blocks.beacon);
   specialHandledBlocks.add(Blocks.trapped_chest);
-    
+  specialHandledBlocks.add(Blocks.flower_pot);  
+  
   Block block;
   for(int i = 0; i < 256; i++)
     {
@@ -116,6 +118,7 @@ public void addHandledBlocks(IStructurePluginManager manager)
   manager.registerBlockHandler("vanillaInventory", Blocks.dropper, TemplateRuleBlockInventory.class);
   manager.registerBlockHandler("vanillaInventory", Blocks.hopper, TemplateRuleBlockInventory.class);  
   manager.registerBlockHandler("vanillaInventory", Blocks.trapped_chest, TemplateRuleBlockInventory.class);  
+  manager.registerBlockHandler("vanillaFlowerPot", Blocks.flower_pot, TemplateRuleFlowerPot.class);
 
   manager.registerBlockHandler("awAdvancedSpawner", AWBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
   manager.registerBlockHandler("awCoreLogic", AWBlocks.engineeringStation, TemplateRuleBlockLogic.class);
