@@ -1,15 +1,5 @@
 {
-"bard.tune1": {"category": "neutral", "sounds":[{"name": "npc/bard/bard1", "stream": false}]},
-"bard.tune2": {
-	"category": "neutral",
-	"sounds": [
-		"npc/bard/bard2"
-		]
-	},
-"bard.tune3": {
-	"category": "neutral",
-	"sounds": [
-		"npc/bard/bard3"
-		]
-	}
+"bard.tune1": {"category": "neutral", "sounds": [{"name": "npc/bard/bard1", "stream": false}]},
+"bard.tune2": {"category": "neutral", "sounds": ["npc/bard/bard2"]},
+"bard.tune3": {"category": "neutral", "sounds": ["npc/bard/bard3"]}
 }
