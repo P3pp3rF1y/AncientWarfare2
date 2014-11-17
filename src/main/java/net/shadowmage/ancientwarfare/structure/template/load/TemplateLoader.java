@@ -49,6 +49,9 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+import net.shadowmage.ancientwarfare.structure.town.TownTemplate;
+import net.shadowmage.ancientwarfare.structure.town.TownTemplateManager;
+import net.shadowmage.ancientwarfare.structure.town.TownTemplateParser;
 
 public class TemplateLoader
 {
@@ -58,8 +61,11 @@ public static String outputDirectory = null;
 public static String includeDirectory = null;
 private final String defaultTemplatePackLocation = "/assets/ancientwarfare/template/default_structure_pack.zip";
 
+private List<File> probableTownFiles = new ArrayList<File>();
 private List<File> probableStructureFiles = new ArrayList<File>();
 private List<File> probableZipFiles = new ArrayList<File>();
+
+private List<TownTemplate> parsedTownTemplates = new ArrayList<TownTemplate>();
 
 private Set<String> loadedStructureNames = new HashSet<String>();
 
@@ -111,8 +117,9 @@ public void loadTemplates()
       loadedCount++;
       }
     }  
-  loadedCount+=this.loadTemplatesFromZips();
-  AWLog.log("Loaded "+loadedCount+" structure(s).");
+  loadedCount += this.loadTemplatesFromZips();
+  AWLog.log("Loaded "+loadedCount+" structure(s)");
+    
   this.validateAndLoadImages();
   this.probableStructureFiles.clear();
   this.probableZipFiles.clear();
@@ -120,6 +127,34 @@ public void loadTemplates()
   this.loadedStructureNames.clear();
   this.images.clear();
   this.imageMD5s.clear();
+  
+  loadTownTemplates();
+  }
+
+private void loadTownTemplates()
+  {
+  TownTemplate townTemplate;
+  for(File f : this.probableTownFiles)
+    {    
+    townTemplate = loadTownTemplateFromFile(f);
+    if(townTemplate!=null)
+      {
+      parsedTownTemplates.add(townTemplate);
+      }
+    }  
+  
+  this.probableTownFiles.clear();
+  
+  if(!this.parsedTownTemplates.isEmpty())
+    {
+    AWLog.log("Loading Town Templates: ");
+    for(TownTemplate t : this.parsedTownTemplates)
+      {
+      AWLog.log("Loading town template: "+t.getTownTypeName());
+      TownTemplateManager.instance().loadTemplate(t);
+      }
+    AWLog.log("Loaded : "+this.parsedTownTemplates.size()+" Town Templates.");    
+    }  
   }
 
 private void validateAndLoadImages()
@@ -151,6 +186,32 @@ private StructureTemplate loadTemplateFromFile(File file)
       templateLines.add(scan.nextLine());
       }
     return TemplateParser.instance().parseTemplate(file.getName(), templateLines);
+    } 
+  catch (FileNotFoundException e)
+    {
+    e.printStackTrace();
+    return null;
+    }
+  finally
+    {
+    if(scan!=null){scan.close();}
+    }
+  }
+
+private TownTemplate loadTownTemplateFromFile(File file)
+  {
+  FileReader reader = null;
+  Scanner scan = null;
+  List<String> templateLines = new ArrayList<String>();
+  try
+    {
+    reader = new FileReader(file);
+    scan = new Scanner(reader);
+    while(scan.hasNext())
+      {
+      templateLines.add(scan.nextLine());
+      }
+    return TownTemplateParser.parseTemplate(templateLines);
     } 
   catch (FileNotFoundException e)
     {
@@ -212,6 +273,11 @@ private int loadTemplatesFromZipStream(ZipInputStream zis)
       if(entry.getName().toLowerCase().endsWith(".png"))
         {
         loadStructureImage(entry.getName(), zis);
+        continue;
+        }
+      else if(entry.getName().toLowerCase().endsWith("."+AWStructureStatics.townTemplateExtension))
+        {
+        loadTownTemplateFromZip(entry, zis);
         continue;
         }
       else if(!entry.getName().toLowerCase().endsWith("."+AWStructureStatics.templateExtension))
@@ -291,6 +357,33 @@ private int loadTemplatesFromZips()
   return totalParsed;
   }
 
+private TownTemplate loadTownTemplateFromZip(ZipEntry entry, InputStream is)
+  {
+  InputStreamReader isr = new InputStreamReader(is);
+  BufferedReader reader = new BufferedReader(isr);
+  List<String> lines = new ArrayList<String>();
+  String line;
+  TownTemplate template = null;
+  try
+    {
+    while((line = reader.readLine())!=null)
+      {
+      lines.add(line);
+      }
+    template = TownTemplateParser.parseTemplate(lines);
+    if(template!=null)
+      {
+      parsedTownTemplates.add(template);
+      }
+    } 
+  catch (IOException e1)
+    {
+    e1.printStackTrace();
+    template = null;
+    }  
+  return template;
+  }
+
 private StructureTemplate loadTemplateFromZip(ZipEntry entry, InputStream is)
   {
   InputStreamReader isr = new InputStreamReader(is);
@@ -317,6 +410,7 @@ private StructureTemplate loadTemplateFromZip(ZipEntry entry, InputStream is)
 private void locateStructureFiles()
   {
   this.recursiveScan(new File(includeDirectory), probableStructureFiles, probableZipFiles, AWStructureStatics.templateExtension);
+  this.recursiveScan(new File(includeDirectory), probableTownFiles, probableZipFiles, AWStructureStatics.townTemplateExtension);
   }
 
 private void recursiveScan(File directory, List<File> fileList, List<File> zipFileList, String extension)
@@ -340,11 +434,11 @@ private void recursiveScan(File directory, List<File> fileList, List<File> zipFi
       {
       recursiveScan(currentFile, fileList, zipFileList, extension);
       }
-    else if(isProbableFile(currentFile, extension))
+    else if(isProbableFile(currentFile, extension) && !fileList.contains(currentFile))
       {
       fileList.add(currentFile);
       }
-    else if(isProbableZip(currentFile))
+    else if(isProbableZip(currentFile) && !zipFileList.contains(currentFile))
       {
       zipFileList.add(currentFile);
       }
