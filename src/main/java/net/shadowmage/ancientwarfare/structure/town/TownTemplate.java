@@ -11,42 +11,51 @@ import net.minecraft.init.Blocks;
 public class TownTemplate
 {
 
-private String townTypeName;
 
-private boolean biomeWhiteList;
-private List<String> biomeList = new ArrayList<String>();
+private String townTypeName;//
 
-private boolean dimensionWhiteList;
-private List<Integer> dimensionList = new ArrayList<Integer>();
+private boolean biomeWhiteList;//
+private List<String> biomeList = new ArrayList<String>();//
 
-private int minSize = 3;
-private int maxSize = 9;
-int maxValue = 500;
+private boolean dimensionWhiteList;//
+private List<Integer> dimensionList = new ArrayList<Integer>();//
 
-private int wallStyle;//0==no wall, 1==random walls, 2==by pattern
-private int wallSize;
-private int cornersTotalWeight;
-private List<TownWallEntry> cornerWalls = new ArrayList<TownWallEntry>();
-private int gatesTotalWeight;
-private List<TownWallEntry> gateWalls = new ArrayList<TownWallEntry>();
-private HashMap<Integer, List<TownWallEntry>> wallPieces = new HashMap<Integer, List<TownWallEntry>>();//wall pieces by type
-private HashMap<Integer, Integer> wallTotalWeights = new HashMap<Integer, Integer>();
-private HashMap<Integer, int[]> wallPatterns = new HashMap<Integer, int[]>();
-
-private int roadWidth = 3;
-private Block roadFillBlock = Blocks.gravel;
+private int minSize = 3;//size in chunks//
+private int maxSize = 9;//size in chunks//
 
 /**
  * the nominal size of a town-block, in blocks
  */
-private int townBlockSize;
-private int townPlotSize;
+private int townBlockSize;//
+private int townPlotSize;//
 
+private Block roadFillBlock = Blocks.gravel;//
+
+private int wallStyle;//0==no wall, 1==corner only, 2==random walls, 3==by pattern//
+private int wallSize;//size in blocks//
+
+private HashMap<Integer, TownWallEntry> wallsByID = new HashMap<Integer, TownWallEntry>();
+private HashMap<Integer, int[]> wallPatterns = new HashMap<Integer, int[]>();
+
+private int cornersTotalWeight;
+private List<TownWallEntry> cornerWalls = new ArrayList<TownWallEntry>();
+
+private int gatesCenterTotalWeight;
+private List<TownWallEntry> gateCenterWalls = new ArrayList<TownWallEntry>();
+
+private int gatesLeftTotalWeight;
+private List<TownWallEntry> gateLeftWalls = new ArrayList<TownWallEntry>();
+
+private int gatesRightTotalWeight;
+private List<TownWallEntry> gateRightWalls = new ArrayList<TownWallEntry>();
+
+private int wallTotalWeights;
+private List<TownWallEntry> walls = new ArrayList<TownWallEntry>();
 
 /**
  * A specific template to be generated at the center of town, as the town-hall.  All roads and other buildings will be constructed -around- this one
  */
-private TownStructureEntry townHallEntry;
+private TownStructureEntry townHallEntry;//
 private List<TownStructureEntry> structureEntries = new ArrayList<TownStructureEntry>();
 
 public TownTemplate(String townTypeName)
@@ -66,13 +75,9 @@ public final int getMinSize(){return minSize;}
 public final void setMinSize(int minSize){this.minSize = minSize;}
 public final int getMaxSize(){return maxSize;}
 public final void setMaxSize(int maxSize){this.maxSize = maxSize;}
-public final int getMaxValue(){return maxValue;}
-public final void setMaxValue(int maxValue){this.maxValue = maxValue;}
 public final TownStructureEntry getTownHallEntry(){return townHallEntry;}
 public final void setTownHallEntry(TownStructureEntry townHallEntry){this.townHallEntry = townHallEntry;}
-public final int getRoadWidth(){return roadWidth;}
 public final Block getRoadFillBlock(){return roadFillBlock;}
-public final void setRoadWidth(int roadWidth){this.roadWidth = roadWidth;}
 public final void setRoadFillBlock(Block roadFillBlock){this.roadFillBlock = roadFillBlock==null? this.roadFillBlock : roadFillBlock;}
 public final int[] getWallPattern(int size){return wallPatterns.get(size);}
 public final int getWallStyle(){return wallStyle;}
@@ -87,25 +92,34 @@ public final void addCornerWall(String name, int weight)
   }
 public final void addGateWall(String name, int weight)
   {
-  gateWalls.add(new TownWallEntry(name, weight));
-  gatesTotalWeight+=weight;
+  gateCenterWalls.add(new TownWallEntry(name, weight));
+  gatesCenterTotalWeight+=weight;
   }
-public final void addWall(int type, String name, int weight)
+public final void addLeftGateWall(String name, int weight)
   {
-  if(!wallPieces.containsKey(type)){wallPieces.put(type, new ArrayList<TownWallEntry>());}
-  wallPieces.get(type).add(new TownWallEntry(name, weight));  
-  if(!wallTotalWeights.containsKey(type)){wallTotalWeights.put(type, 0);}
-  int w = wallTotalWeights.get(type);
-  w+=weight;
-  wallTotalWeights.put(type, w);
+  gateLeftWalls.add(new TownWallEntry(name, weight));
+  gatesLeftTotalWeight+=weight;
+  }
+public final void addRightGateWall(String name, int weight)
+  {
+  gateRightWalls.add(new TownWallEntry(name, weight));
+  gatesRightTotalWeight+=weight;
+  }
+public final void addWall(String name, int weight)
+  {  
+  walls.add(new TownWallEntry(name, weight));
+  wallTotalWeights+=weight;
   }
 public final int getTownBlockSize(){return townBlockSize;}
 public final int getTownPlotSize(){return townPlotSize;}
 public void setTownBlockSize(int townBlockSize){this.townBlockSize = townBlockSize;}
 public void setTownPlotSize(int townPlotSize){this.townPlotSize = townPlotSize;}
-public final String getRandomWeightedWall(Random rng, int type){return getRandomWeightedWallPiece(rng, wallPieces.get(type), wallTotalWeights.get(type));}
+public final TownWallEntry getWall(int id){return wallsByID.get(id);}
+public final String getRandomWeightedWall(Random rng){return getRandomWeightedWallPiece(rng, walls, wallTotalWeights);}
 public final String getRandomWeightedCorner(Random rng){return getRandomWeightedWallPiece(rng, cornerWalls, cornersTotalWeight);}
-public final String getRandomWeightedGate(Random rng){return getRandomWeightedWallPiece(rng, gateWalls, gatesTotalWeight);}
+public final String getRandomWeightedGate(Random rng){return getRandomWeightedWallPiece(rng, gateCenterWalls, gatesCenterTotalWeight);}
+public final String getRandomWeightedGateLeft(Random rng){return getRandomWeightedWallPiece(rng, gateLeftWalls, gatesLeftTotalWeight);}
+public final String getRandomWeightedGateRight(Random rng){return getRandomWeightedWallPiece(rng, gateRightWalls, gatesRightTotalWeight);}
 
 private static String getRandomWeightedWallPiece(Random rng, List<TownWallEntry> list, int totalWeight)
   {
@@ -144,5 +158,6 @@ public TownWallEntry(String name, int weight)
   this.weight=weight;  
   }
 }
+
 
 }

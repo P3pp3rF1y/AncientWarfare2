@@ -6,92 +6,106 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
+import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
 
 public class TownGeneratorWalls
 {
 
 public static void generateWalls(World world, TownBoundingArea area, TownTemplate template, Random rng)
   {
-  if(template.getWallStyle()==0){return;}
+  if(template.getWallStyle()<=0){return;}//no walls
   int minX = area.getWallMinX();
   int minZ = area.getWallMinZ();
   int maxX = area.getWallMaxX();
   int maxZ = area.getWallMaxZ();
   int minY = area.getSurfaceY()+1;
   int x, z;
-  int orientation;
-  StructureBuilder builder;
+  int facingDirection;
+  
+  if(template.getWallStyle()>0)//has at least corner sections
+    {
+    //construct NW corner
+    facingDirection = Direction.SOUTH.ordinal();    
+    constructTemplate(world, getCornerSection(rng, template), facingDirection, minX, minY, minZ);
     
+    //construct NE corner
+    facingDirection = Direction.WEST.ordinal();
+    constructTemplate(world, getCornerSection(rng, template), facingDirection, maxX, minY, minZ);
+    
+    //construct SE corner
+    facingDirection = Direction.NORTH.ordinal();
+    constructTemplate(world, getCornerSection(rng, template), facingDirection, maxX, minY, maxZ);
+    
+    //construct SW corner
+    facingDirection = Direction.EAST.ordinal();
+    constructTemplate(world, getCornerSection(rng, template), facingDirection, minX, minY, maxZ);
+    }
+  
+  if(template.getWallStyle()>1)//has wall sections
+    {
   //construct N wall
-  orientation = 0;
-  for(int i = 1; i < area.getChunkWidth()-2; i++)
-    {
-    x = minX + 16*i;
-    z = minZ;
-    builder = new StructureBuilder(world, getWallSection(rng, template, i, area.getChunkWidth()-1), orientation, x, minY, z);
-    builder.instantConstruction();
+    facingDirection = Direction.SOUTH.ordinal();  
+    for(int i = 1; i < area.getChunkWidth()-2; i++)
+      {
+      x = minX + 16*i;
+      z = minZ;
+      constructTemplate(world, getWallSection(rng, template, i, area.getChunkWidth()-1), facingDirection, x, minY, z);
+      }
+    
+    //construct E wall
+    facingDirection = Direction.WEST.ordinal();
+    for(int i = 1; i < area.getChunkLength()-2; i++)
+      {
+      x = maxX;
+      z = minZ + 16*i;
+      constructTemplate(world, getWallSection(rng, template, i, area.getChunkLength()-1), facingDirection, x, minY, z);
+      }
+    
+    //construct S wall
+    facingDirection = Direction.NORTH.ordinal();
+    for(int i = 1; i < area.getChunkWidth()-2; i++)
+      {
+      x = maxX - 16*i;
+      z = maxZ;
+      constructTemplate(world, getWallSection(rng, template, i, area.getChunkWidth()-1), facingDirection, x, minY, z);
+      }
+    
+    //construct W wall
+    facingDirection = Direction.EAST.ordinal();
+    for(int i = 1; i < area.getChunkLength()-2; i++)
+      {
+      x = minX;
+      z = maxZ - 16*i;
+      constructTemplate(world, getWallSection(rng, template, i, area.getChunkLength()-1), facingDirection, x, minY, z);
+      }    
     }
-  
-  //construct E wall
-  orientation = 1;
-  for(int i = 1; i < area.getChunkLength()-2; i++)
-    {
-    x = maxX;
-    z = minZ + 16*i;
-    builder = new StructureBuilder(world, getWallSection(rng, template, i, area.getChunkLength()-1), orientation, x, minY, z);
-    builder.instantConstruction();
-    }
-  
-  //construct S wall
-  orientation = 2;
-  for(int i = 1; i < area.getChunkWidth()-2; i++)
-    {
-    x = maxX - 16*i;
-    z = maxZ;
-    builder = new StructureBuilder(world, getWallSection(rng, template, i, area.getChunkWidth()-1), orientation, x, minY, z);
-    builder.instantConstruction();
-    }
-  
-  //construct W wall
-  orientation = 3;
-  for(int i = 1; i < area.getChunkLength()-2; i++)
-    {
-    x = minX;
-    z = maxZ - 16*i;
-    builder = new StructureBuilder(world, getWallSection(rng, template, i, area.getChunkLength()-1), orientation, x, minY, z);
-    builder.instantConstruction();
-    }
-  
-  //construct NW corner
-  orientation = 0;
-  builder = new StructureBuilder(world, getCornerSection(rng, template), orientation, minX, minY, minZ);
-  builder.instantConstruction();
-  
-  //construct NE corner
-  orientation = 1;
-  builder = new StructureBuilder(world, getCornerSection(rng, template), orientation, maxX, minY, minZ);
-  builder.instantConstruction();
-  
-  //construct SE corner
-  orientation = 2;//facing south, runs east-west
-  builder = new StructureBuilder(world, getCornerSection(rng, template), orientation, maxX, minY, maxZ);
-  builder.instantConstruction();
-  
-  //construct SW corner
-  orientation = 3;//facing south, runs east-west
-  builder = new StructureBuilder(world, getCornerSection(rng, template), orientation, minX, minY, maxZ);
-  builder.instantConstruction();
   }
 
 private static StructureTemplate getWallSection(Random rng, TownTemplate template, int index, int wallLength)
   {
-  if(template.getWallStyle()==1)//random weighted
+  if(template.getWallStyle()==2)//random weighted
     {    
-    return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedWall(rng, 0));
+    int middle = (wallLength / 2);
+    if(index==middle)//return a gate piece
+      {
+      return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedGate(rng));      
+      }
+    else
+      {
+      return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedWall(rng));      
+      }
     }
-  else if(template.getWallStyle()==2)//patterned
+  else if(template.getWallStyle()==3)//patterned
     {
-    return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedWall(rng, template.getWallPattern(wallLength)[index]));
+    int[] pattern = template.getWallPattern(wallLength);
+    if(pattern!=null && wallLength<pattern.length)
+      {
+      TownWallEntry entry = template.getWall(template.getWallPattern(wallLength)[index]);
+      if(entry!=null)
+        {
+        return StructureTemplateManager.instance().getTemplate(entry.templateName);
+        }        
+      }  
     }
   return null;
   }
@@ -99,6 +113,12 @@ private static StructureTemplate getWallSection(Random rng, TownTemplate templat
 private static StructureTemplate getCornerSection(Random rng, TownTemplate template)
   {
   return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedCorner(rng));
+  }
+
+private static void constructTemplate(World world, StructureTemplate template, int face, int x, int y, int z)
+  {
+  if(template==null){return;}
+  new StructureBuilder(world, template, face, x, y, z).instantConstruction();
   }
 
 }

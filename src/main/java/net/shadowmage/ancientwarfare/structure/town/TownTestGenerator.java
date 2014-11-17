@@ -21,10 +21,9 @@ public static void load()
   testTemplate.setTownHallEntry(new TownStructureEntry("town_hall1", 1, 1));
   testTemplate.setMinSize(90);
   testTemplate.setMaxSize(128);
-  testTemplate.setMaxValue(1000);
   testTemplate.setWallStyle(1);
   testTemplate.setWallSize(7);
-  testTemplate.addWall(0, "wall_straight1", 10);
+  testTemplate.addWall("wall_straight1", 10);
   testTemplate.addCornerWall("wall_corner1", 10);
   testTemplate.setTownBlockSize(30);
   testTemplate.setTownPlotSize(3);

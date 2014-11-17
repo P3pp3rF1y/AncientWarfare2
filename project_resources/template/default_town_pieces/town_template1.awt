@@ -1,0 +1,47 @@
+### Ancient Warfare Town Template ###
+name=town_type_name
+minSize=4
+maxSize=9
+clusterValue=300
+townBlockSize=30
+townPlotSize=3
+wallStyle=2
+wallSize=8
+roadBlock=minecraft:gravel
+roadMeta=0
+biomeWhiteList=false
+biomeList=ocean,beach
+dimensionWhiteList=true
+dimensionList=0
+
+#wall type registry
+#name:type:id:weight
+walls:
+wall_section1:wall:0:10
+wall_section2:wall:1:10
+wall_gate1:gate:2:10
+wall_gate2:lgate:3:10
+wall_gate3:rgate:4:10
+wall_corner1:corner:5:10
+:endwalls
+
+#wall patterns
+#size:pattern
+wallPatterns:
+4:5-3-4-5
+5:5-0-2-0-5
+6:5-0-3-4-0-5
+7:5-0-1-2-1-0-5
+8:5-0-1-3-4-1-0-5
+9:5-0-1-0-2-0-1-0-5
+:endWallPaterns
+
+#single structure entry for the town-hall, or blank for none
+townHall:structure_name_here_or_blank_for_none
+
+#list of structures, one per line, colon separating min and max values for each (could alternatively use nearly any separator char)
+structures:
+village_house:3:5
+village_library:1:2
+village_smith:1:1
+:endstructures
