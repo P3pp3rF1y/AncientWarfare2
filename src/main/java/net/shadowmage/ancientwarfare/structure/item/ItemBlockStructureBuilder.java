@@ -11,6 +11,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -43,7 +44,7 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
     {
     name = par1ItemStack.getTagCompound().getString("structureName");
     }
-  par3List.add("DEBUG- struct name: "+name);  
+  par3List.add(StatCollector.translateToLocal("guistrings.structure.strucgture_name") + ": " + name);  
   }
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
