@@ -44,7 +44,7 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
     {
     name = par1ItemStack.getTagCompound().getString("structureName");
     }
-  par3List.add(StatCollector.translateToLocal("guistrings.structure.strucgture_name") + ": " + name);  
+  par3List.add(StatCollector.translateToLocal("guistrings.structure.structure_name") + ": " + name);  
   }
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
