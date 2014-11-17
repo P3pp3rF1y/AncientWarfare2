@@ -30,6 +30,7 @@ import net.shadowmage.ancientwarfare.core.util.RenderTools;
 public class Checkbox extends GuiElement
 {
 
+private boolean pressed = false;
 private boolean checked = false;
 protected String label;
 
@@ -49,11 +50,25 @@ public Checkbox(int topLeftX, int topLeftY, int width, int height, String label)
     @Override
     public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
-      if(visible && enabled && isMouseOverElement(evt.mx, evt.my))
+      if(pressed && visible && enabled && isMouseOverElement(evt.mx, evt.my))
         {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
         checked = !checked;
         onToggled();
+        }
+      pressed = false;
+      return true;
+      }
+    });
+
+  this.addNewListener(new Listener(Listener.MOUSE_DOWN)
+    {      
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
+      if(enabled && visible && isMouseOverElement(evt.mx, evt.my))
+        {        
+        pressed = true;
         }
       return true;
       }

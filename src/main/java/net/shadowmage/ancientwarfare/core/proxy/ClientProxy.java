@@ -24,6 +24,11 @@ import net.shadowmage.ancientwarfare.core.network.PacketHandlerClient;
 import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+
 import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
 import cpw.mods.fml.client.config.GuiConfig;
 import cpw.mods.fml.client.config.GuiConfigEntries;
@@ -61,6 +66,24 @@ public void registerClient()
   MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWBlocks.researchStation), render);
   
   ConfigManager.registerConfigCategory(new DummyCategoryElement("awconfig.core_keybinds", "awconfig.core_keybinds", KeybindCategoryEntry.class));
+  
+  if(AWCoreStatics.DEBUG)
+    {
+    setDebugResolution();    
+    }
+  }
+
+public void setDebugResolution()
+  {
+  org.lwjgl.opengl.DisplayMode mode = new DisplayMode(512, 288);
+  try
+    {
+    Display.setDisplayMode(mode);
+    }
+  catch (LWJGLException e)
+    {
+    e.printStackTrace();
+    }  
   }
 
 public void onConfigChanged()
