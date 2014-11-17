@@ -14,6 +14,8 @@ import org.lwjgl.opengl.GL11;
 public class Button extends GuiElement
 {
 
+
+private boolean pressed = false;
 protected FontRenderer fr;
 protected String text;
 protected int textX;
@@ -29,10 +31,23 @@ public Button(int topLeftX, int topLeftY, int width, int height, String text)
     @Override
     public boolean onEvent(GuiElement widget, ActivationEvent evt)
       {
+      if(pressed && enabled && visible && isMouseOverElement(evt.mx, evt.my))
+        {
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+        onPressed();    
+        }
+      pressed = false;
+      return true;
+      }
+    });
+  this.addNewListener(new Listener(Listener.MOUSE_DOWN)
+    {      
+    @Override
+    public boolean onEvent(GuiElement widget, ActivationEvent evt)
+      {
       if(enabled && visible && isMouseOverElement(evt.mx, evt.my))
         {        
-        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-        onPressed();
+        pressed = true;
         }
       return true;
       }
