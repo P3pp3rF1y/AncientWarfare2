@@ -49,8 +49,8 @@ public void updateEntity()
     serverNetworkUpdate();
     torqueIn = getTotalTorque() - prevEnergy;
     balanceStorage();
-    torqueOut = transferPower();
     torqueLoss = applyPowerLoss();
+    torqueOut = transferPower();
     prevEnergy = getTotalTorque();
     }
   else
