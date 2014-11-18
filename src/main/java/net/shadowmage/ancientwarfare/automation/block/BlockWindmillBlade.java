@@ -34,7 +34,6 @@ public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int
   return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
   }
 
-//TODO alter slightly to render a default icon when not a valid setup -- will need to query the TE
 @Override
 public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess access, int x, int y, int z, int side) {return false;}
 
