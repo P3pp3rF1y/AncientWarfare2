@@ -1,5 +1,6 @@
 ### Ancient Warfare Town Template ###
-name=town_type_name
+header:
+name=test_town_template
 minSize=4
 maxSize=9
 clusterValue=300
@@ -13,6 +14,9 @@ biomeWhiteList=false
 biomeList=ocean,beach
 dimensionWhiteList=true
 dimensionList=0
+townHall=structure_name_here_or_blank_for_none
+lamp=structure_name_here_or_blank_for_none
+:endheader
 
 #wall type registry
 #name:type:id:weight
@@ -36,12 +40,15 @@ wallPatterns:
 9:5-0-1-0-2-0-1-0-5
 :endWallPaterns
 
-#single structure entry for the town-hall, or blank for none
-townHall:structure_name_here_or_blank_for_none
-
 #list of structures, one per line, colon separating min and max values for each (could alternatively use nearly any separator char)
 structures:
 village_house:3:5
 village_library:1:2
 village_smith:1:1
 :endstructures
+
+#list of cosmetic structure templates w/weight, to be used to fill in random positions post-generation
+cosmetics:
+village_torch:5
+village_well:1
+:endcosmetics
