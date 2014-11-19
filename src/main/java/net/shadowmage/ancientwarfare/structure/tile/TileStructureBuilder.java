@@ -31,14 +31,15 @@ private boolean shouldRemove = false;
 public boolean isStarted = false;
 int workDelay = 20;
 
-public TileStructureBuilder()
-  {
-  
-  }
-
 double maxEnergyStored = 1600;
 double maxInput = 100;
 private double storedEnergy;
+
+public TileStructureBuilder()
+  {
+  maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
+  maxInput = AWCoreStatics.energyPerWorkUnit;
+  }
 
 @Override
 public int getBoundsMaxWidth(){return 0;}
