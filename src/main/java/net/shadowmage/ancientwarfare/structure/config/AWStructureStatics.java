@@ -45,7 +45,7 @@ public AWStructureStatics(Configuration config)
 public static String templateExtension = "aws";
 public static boolean enableVillageGen = true;
 public static boolean enableStructureGeneration = true;
-public static boolean loadDefaultPack = false;
+public static boolean loadDefaultPack = true;
 private static boolean exportBlockNames = false;
 public static int clusterValueSearchRange = 16;
 public static int duplicateStructureSearchRange = 40;
