@@ -168,7 +168,7 @@ private void loadStructureImage(String imageName, InputStream is)
   try
     {
     MessageDigest md = MessageDigest.getInstance("MD5");
-    DigestInputStream dis = new DigestInputStream(is, md);
+    DigestInputStream dis = new DigestInputStream(is, md);//InputStream is closed externally
     BufferedImage image = ImageIO.read(is);
     if(image!=null && image.getWidth()==AWStructureStatics.structureImageWidth && image.getHeight()==AWStructureStatics.structureImageHeight)
       {
@@ -187,7 +187,7 @@ private void loadStructureImage(String imageName, InputStream is)
       {
       AWLog.logError("Attempted to load improper sized template image: "+imageName+ " with dimensions of: "+image.getWidth()+"x"+image.getHeight()+".  Specified width/height is: "+AWStructureStatics.structureImageWidth+"x"+AWStructureStatics.structureImageHeight);
       }
-    dis.close();
+//    dis.close();
     } 
   catch (IOException e)
     {
@@ -352,7 +352,16 @@ private void recursiveScan(File directory, List<File> fileList, List<File> zipFi
       {
       try
         {
-        loadStructureImage(currentFile.getName(), new FileInputStream(currentFile));
+        FileInputStream fis = new FileInputStream(currentFile);
+        loadStructureImage(currentFile.getName(), fis);
+        try
+          {
+          fis.close();
+          }
+        catch (IOException e)
+          {
+          e.printStackTrace();
+          }
         } 
       catch (FileNotFoundException e)
         {
