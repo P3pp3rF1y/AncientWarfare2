@@ -28,8 +28,6 @@ import net.shadowmage.ancientwarfare.structure.crafting.AWStructureCrafting;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
-import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageData;
-import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageList;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -98,8 +96,6 @@ public void preInit(FMLPreInitializationEvent evt)
    * internal registry
    */
   PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);   
-  PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_IMAGE_LIST, PacketStructureImageList.class);
-  PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_IMAGE_DATA, PacketStructureImageData.class);
   PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class);
   AWGameData.INSTANCE.registerSaveData("AWStructureMap", StructureMap.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);

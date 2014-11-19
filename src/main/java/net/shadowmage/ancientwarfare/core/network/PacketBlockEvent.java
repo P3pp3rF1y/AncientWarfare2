@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.core.network;
 
-import net.minecraft.block.Block;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
 
 public class PacketBlockEvent extends PacketBase
 {
