@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -153,21 +154,23 @@ public void updateEntity()
     }
   if(ModuleStatus.automationLoaded || ModuleStatus.npcsLoaded)
     {
-    if(storedEnergy>=maxEnergyStored)
+    if(storedEnergy >= AWCoreStatics.energyPerWorkUnit)
       {
-      storedEnergy-=maxEnergyStored;
+      storedEnergy -= AWCoreStatics.energyPerWorkUnit;
       processWork();
       }
-    return;
     }
-  if(workDelay>0)
+  else
     {
-    workDelay--;
-    }
-  if(workDelay<=0)
-    {
-    processWork();
-    workDelay=20;
+    if(workDelay>0)
+      {
+      workDelay--;
+      }
+    if(workDelay<=0)
+      {
+      processWork();
+      workDelay=20;
+      }
     }
   }
 
@@ -209,6 +212,15 @@ public void onBlockBroken()
     }
   }
 
+public void onBlockClicked(EntityPlayer player)
+  {
+  int pass = builder.getPass()+1;
+  int max = builder.getMaxPasses();
+  float percent = builder.getPercentDoneWithPass() * 100.f;  
+  String perc = String.format("%.2f", percent);
+  player.addChatMessage(new ChatComponentText(perc+"% done with build pass: "+pass+" of "+max));
+  }
+
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {  
@@ -244,7 +256,7 @@ public void writeToNBT(NBTTagCompound tag)
 @Override
 public boolean hasWork()
   {
-  return storedEnergy<maxEnergyStored;
+  return storedEnergy < maxEnergyStored;
   }
 
 @Override
