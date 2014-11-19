@@ -7,8 +7,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -18,7 +23,10 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorqueTile
 {
@@ -30,14 +38,29 @@ private boolean shouldRemove = false;
 public boolean isStarted = false;
 int workDelay = 20;
 
+double maxEnergyStored = 150;
+double maxInput = 50;
+private double storedEnergy;
+public StructureBB clientBB;
+
 public TileStructureBuilder()
   {
-  
+  maxEnergyStored = AWCoreStatics.energyPerWorkUnit*3;
+  maxInput = AWCoreStatics.energyPerWorkUnit;
   }
 
-double maxEnergyStored = 1600;
-double maxInput = 100;
-private double storedEnergy;
+@Override
+@SideOnly(Side.CLIENT)
+public AxisAlignedBB getRenderBoundingBox()
+  {
+  AxisAlignedBB bb = super.getRenderBoundingBox();
+  if(clientBB!=null)
+    {
+    bb.addCoord(clientBB.min.x - xCoord, clientBB.min.y - yCoord, clientBB.min.z - zCoord);
+    bb.addCoord(clientBB.max.x - xCoord, clientBB.max.y - yCoord, clientBB.max.z - zCoord);
+    }
+  return bb;
+  }
 
 @Override
 public int getBoundsMaxWidth(){return 0;}
@@ -153,21 +176,23 @@ public void updateEntity()
     }
   if(ModuleStatus.automationLoaded || ModuleStatus.npcsLoaded)
     {
-    if(storedEnergy>=maxEnergyStored)
+    if(storedEnergy >= AWCoreStatics.energyPerWorkUnit)
       {
-      storedEnergy-=maxEnergyStored;
+      storedEnergy -= AWCoreStatics.energyPerWorkUnit;
       processWork();
       }
-    return;
     }
-  if(workDelay>0)
+  else
     {
-    workDelay--;
-    }
-  if(workDelay<=0)
-    {
-    processWork();
-    workDelay=20;
+    if(workDelay>0)
+      {
+      workDelay--;
+      }
+    if(workDelay<=0)
+      {
+      processWork();
+      workDelay=20;
+      }
     }
   }
 
@@ -209,6 +234,39 @@ public void onBlockBroken()
     }
   }
 
+public void onBlockClicked(EntityPlayer player)
+  {
+  int pass = builder.getPass()+1;
+  int max = builder.getMaxPasses();
+  float percent = builder.getPercentDoneWithPass() * 100.f;  
+  String perc = String.format("%.2f", percent);
+  player.addChatMessage(new ChatComponentText(perc+"% done with build pass: "+pass+" of "+max));
+  }
+
+@Override
+public Packet getDescriptionPacket()
+  {
+  NBTTagCompound tag = new NBTTagCompound();
+  StructureBB bb = builder.getBoundingBox();
+  if(bb!=null)
+    {
+    tag.setTag("bbMin", bb.min.writeToNBT(new NBTTagCompound()));
+    tag.setTag("bbMax", bb.max.writeToNBT(new NBTTagCompound()));
+    }
+  return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+  }
+
+@Override
+public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+  {
+  super.onDataPacket(net, pkt);
+  NBTTagCompound tag = pkt.func_148857_g();
+  if(tag.hasKey("bbMin") && tag.hasKey("bbMax"))
+    {
+    clientBB = new StructureBB(new BlockPosition(tag.getCompoundTag("bbMin")), new BlockPosition(tag.getCompoundTag("bbMax")));
+    }
+  }
+
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {  
@@ -244,7 +302,7 @@ public void writeToNBT(NBTTagCompound tag)
 @Override
 public boolean hasWork()
   {
-  return storedEnergy<maxEnergyStored;
+  return storedEnergy < maxEnergyStored;
   }
 
 @Override

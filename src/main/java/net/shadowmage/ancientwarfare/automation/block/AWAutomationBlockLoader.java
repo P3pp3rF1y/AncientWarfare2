@@ -143,7 +143,7 @@ public static final BlockHandCrankedEngine handCrankedEngine = new BlockHandCran
 public static final BlockTorqueGenerator torqueGeneratorSterling = new BlockTorqueGeneratorSterling("torque_generator_sterling");
 public static final BlockTorqueGenerator torqueGeneratorWaterwheel = new BlockTorqueGeneratorWaterwheel("torque_generator_waterwheel");
 public static final BlockWindmillBlade windmillBlade = new BlockWindmillBlade("windmill_blade");
-public static final BlockWindmillControll windmillControl = new BlockWindmillControll("windmill_controll");  
+public static final BlockWindmillControll windmillControl = new BlockWindmillControll("windmill_control");  
 
 public static final BlockChunkLoaderSimple chunkLoaderSimple = new BlockChunkLoaderSimple("chunk_loader_simple");
 public static final BlockChunkLoaderDeluxe chunkLoaderDeluxe = new BlockChunkLoaderDeluxe("chunk_loader_deluxe");

@@ -83,6 +83,11 @@ public StructureBuilder(World world, StructureTemplate template, int face, Block
   incrementDestination();
   }
 
+public StructureBB getBoundingBox()
+  {
+  return bb;
+  }
+
 protected StructureBuilder()
   {
   destination = new BlockPosition();
@@ -257,6 +262,25 @@ protected boolean incrementPosition()
 public boolean isFinished()
   {
   return isFinished;
+  }
+
+public float getPercentDoneWithPass()
+  {
+  float max = template.xSize * template.zSize * template.ySize;
+  float current = currentY * (template.xSize * template.zSize);//add layers done
+  current += currentZ * template.xSize;//add rows done
+  current += currentX;//add blocks done
+  return current/max;
+  }
+
+public int getPass()
+  {
+  return currentPriority;
+  }
+
+public int getMaxPasses()
+  {
+  return maxPriority;
   }
 
 }

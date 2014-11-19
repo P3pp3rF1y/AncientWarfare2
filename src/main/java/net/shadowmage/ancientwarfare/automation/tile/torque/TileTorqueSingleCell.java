@@ -47,8 +47,8 @@ public void updateEntity()
     { 
     serverNetworkUpdate();    
     torqueIn = torqueCell.getEnergy() - prevEnergy;
-    torqueOut = transferPowerTo(getPrimaryFacing());
     torqueLoss = applyPowerDrain(torqueCell);
+    torqueOut = transferPowerTo(getPrimaryFacing());
     prevEnergy = torqueCell.getEnergy();
     }
   else

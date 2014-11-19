@@ -53,9 +53,9 @@ public static int energyMinNetworkUpdateFrequency = 5;//default 4 updates/sec ma
 public static boolean enable_energy_network_updates = true;
 public static boolean enable_energy_client_updates = true;
 
-public static double low_efficiency_factor = 0.9995d;
-public static double med_efficiency_factor = 0.9997d;
-public static double high_efficiency_factor = 0.9999d;
+public static double low_efficiency_factor =  0.99990d;
+public static double med_efficiency_factor =  0.99995d;
+public static double high_efficiency_factor = 0.99999d;
 
 public static double low_transfer_max = 32.d;
 public static double med_transfer_max = 192.d;

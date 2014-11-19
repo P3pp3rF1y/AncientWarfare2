@@ -36,7 +36,7 @@ public GuiDraftingStation(ContainerBase par1Container)
 @Override
 public void initElements()  
   {  
-  rect = new TexturedRectangle(227, 8, 170, 96, (ResourceLocation)null, 512, 288, 0, 0, 512, 288);
+  rect = new TexturedRectangle(227-8, 8, 170, 96, (ResourceLocation)null, 512, 288, 0, 0, 512, 288);
   addGuiElement(rect);
   
   resourceListArea = new CompositeScrolled(this, 176, 96+8, 400-176, 240-96-8);
@@ -93,6 +93,7 @@ public void setupElements()
   for(ItemStack stack : container.neededResources)
     {
     slot = new ItemSlot(8, totalHeight, stack, this);    
+    slot.setRenderLabel(true);
     resourceListArea.addGuiElement(slot);    
     totalHeight+=18;
     }  
