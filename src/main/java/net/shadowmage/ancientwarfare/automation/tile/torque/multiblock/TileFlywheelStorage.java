@@ -41,6 +41,7 @@ public void updateEntity()
     else
       {
       serverNetworkUpdate();
+      applyPowerLoss();
       }
     }
   }
@@ -58,7 +59,8 @@ protected void clientNetworkUpdate()
 
 protected void applyPowerLoss()
   {
-  double eff = 1.d - getEfficiency();  
+  double eff = 1.d - getEfficiency(); 
+  eff *= 0.1d;
   torqueLoss = storedEnergy * eff;
   storedEnergy -= torqueLoss;
   }

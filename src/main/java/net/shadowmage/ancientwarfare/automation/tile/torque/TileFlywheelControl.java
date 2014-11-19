@@ -43,12 +43,9 @@ public void updateEntity()
 
 protected double applyDrainToStorage()
   {
-  TileFlywheelStorage storage = getControlledFlywheel();  
-  double eff = 1.d - inputCell.getEfficiency();
-  if(storage==null || storage.storedEnergy<=0 || eff == 0.d){return 0;}
-  double drain = storage.storedEnergy * eff;
-  storage.storedEnergy -= drain;  
-  return drain;
+  TileFlywheelStorage storage = getControlledFlywheel(); 
+  if(storage==null){return 0;}
+  return storage.torqueLoss;
   }
 
 protected void balancePower()
