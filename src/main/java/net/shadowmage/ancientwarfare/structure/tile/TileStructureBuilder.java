@@ -31,8 +31,8 @@ private boolean shouldRemove = false;
 public boolean isStarted = false;
 int workDelay = 20;
 
-double maxEnergyStored = 1600;
-double maxInput = 100;
+double maxEnergyStored = 150;
+double maxInput = 50;
 private double storedEnergy;
 
 public TileStructureBuilder()
