@@ -83,6 +83,11 @@ public StructureBuilder(World world, StructureTemplate template, int face, Block
   incrementDestination();
   }
 
+public StructureBB getBoundingBox()
+  {
+  return bb;
+  }
+
 protected StructureBuilder()
   {
   destination = new BlockPosition();
