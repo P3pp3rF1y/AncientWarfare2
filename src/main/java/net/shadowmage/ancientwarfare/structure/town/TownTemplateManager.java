@@ -31,15 +31,14 @@ public TownTemplate getTemplate(String name)
 public TownTemplate selectTemplateForGeneration(World world, int x, int z, TownBoundingArea area)
   {  
   TownTemplate selection = null;
-  int width = area.getChunkWidth();
-  int length = area.getChunkLength();
+  int width = area.getChunkWidth()-1;
+  int length = area.getChunkLength()-1;
   int min = Math.min(width, length);
-  int max = Math.max(width, length);  
   String biomeName = AWStructureStatics.getBiomeName(world.getBiomeGenForCoords(x, z));   
   int totalWeight = 0; 
   for(TownTemplate t : templates.values())
     {
-    if(min>=t.getMinSize() && max<=t.getMaxSize() && isBiomeValid(biomeName, t));
+    if(min >= t.getMinSize() && isBiomeValid(biomeName, t));
       {      
       searchCache.add(t);
       totalWeight += t.getSelectionWeight();
@@ -50,8 +49,8 @@ public TownTemplate selectTemplateForGeneration(World world, int x, int z, TownB
     totalWeight = world.rand.nextInt(totalWeight);
     for(TownTemplate t : searchCache)
       {
-      totalWeight-=t.getSelectionWeight();
-      if(totalWeight<=0)
+      totalWeight -= t.getSelectionWeight();
+      if(totalWeight < 0)
         {
         selection = t;
         break;

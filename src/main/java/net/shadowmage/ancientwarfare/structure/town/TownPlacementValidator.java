@@ -1,11 +1,19 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
+import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
 
 public class TownPlacementValidator
 {
@@ -23,7 +31,7 @@ private static int maxSize = 8;
  * @param z
  * @return bounding area for the town, or null if no acceptable area was found starting in the specified chunk
  */
-public static TownBoundingArea findGenerationPosition(World world, int x, int y, int z)
+public static TownBoundingArea findGenerationPosition(World world, int x, int z)
   {     
   int cx = x >> 4;
   int cz = z >> 4;
@@ -40,6 +48,34 @@ public static TownBoundingArea findGenerationPosition(World world, int x, int y,
   area.chunkMaxZ = cz;  
   expandBoundingArea(world, area);
   return area;
+  }
+
+public static boolean validateAreaForPlacement(World world, TownBoundingArea area)
+  {
+  if(!validateStructureCollision(world, area)){return false;} 
+  if(!validateBorderBlocks(world, area)){return false;}  
+  return true;
+  }
+
+private static boolean validateBorderBlocks(World world, TownBoundingArea area)
+  {
+  //TODO validate all blocks that would be underneath the border, to ensure they are not 'unreplaceable' blocks (e.g. they meet the target block list....which is...where?)s
+  return true;
+  }
+
+private static boolean validateStructureCollision(World world, TownBoundingArea area)
+  {
+  StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
+  if(map==null){return false;}
+  StructureBB bb = new StructureBB(new BlockPosition(area.getBlockMinX(), area.getMinY(), area.getBlockMaxX()), new BlockPosition(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
+  int size = Math.max(area.getChunkWidth(), area.getChunkLength());
+  List<StructureEntry> entries = new ArrayList<StructureEntry>();
+  map.getEntriesNear(world, area.getCenterX(), area.getCenterZ(), size, true, entries);
+  for(StructureEntry e : entries)
+    {
+    if(e.getBB().collidesWith(bb)){return false;}
+    }
+  return true;
   }
 
 private static void expandBoundingArea(World world, TownBoundingArea area)
@@ -79,14 +115,12 @@ private static boolean tryExpandXNeg(World world, TownBoundingArea area)
   int minZ = area.chunkMinZ;
   int maxZ = area.chunkMaxZ;
   boolean valid = true;
-  int top = 0;
   for(int z = minZ; z <= maxZ; z++)
     {
-    top = findAverageTopHeight(world, cx, z);
-    if(top < area.minY || top > area.maxY)
+    if(!isTopHeightWithin(world, cx, z, area.minY, area.maxY))
       {
       valid = false;
-      break;
+      break;      
       }
     }
   if(valid)
@@ -102,14 +136,12 @@ private static boolean tryExpandXPos(World world, TownBoundingArea area)
   int minZ = area.chunkMinZ;
   int maxZ = area.chunkMaxZ;
   boolean valid = true;
-  int top = 0;
   for(int z = minZ; z <= maxZ; z++)
     {
-    top = findAverageTopHeight(world, cx, z);
-    if(top < area.minY || top > area.maxY)
+    if(!isTopHeightWithin(world, cx, z, area.minY, area.maxY))
       {
       valid = false;
-      break;
+      break;      
       }
     }
   if(valid)
@@ -125,14 +157,12 @@ private static boolean tryExpandZNeg(World world, TownBoundingArea area)
   int minX = area.chunkMinX;
   int maxX = area.chunkMaxX;
   boolean valid = true;
-  int top = 0;
   for(int x = minX; x <= maxX; x++)
     {
-    top = findAverageTopHeight(world, x, cz);
-    if(top < area.minY || top > area.maxY)
+    if(!isTopHeightWithin(world, x, cz, area.minY, area.maxY))
       {
       valid = false;
-      break;
+      break;      
       }
     }
   if(valid)
@@ -148,14 +178,12 @@ private static boolean tryExpandZPos(World world, TownBoundingArea area)
   int minX = area.chunkMinX;
   int maxX = area.chunkMaxX;
   boolean valid = true;
-  int top = 0;
   for(int x = minX; x <= maxX; x++)
     {
-    top = findAverageTopHeight(world, x, cz);
-    if(top < area.minY || top > area.maxY)
+    if(!isTopHeightWithin(world, x, cz, area.minY, area.maxY))
       {
       valid = false;
-      break;
+      break;      
       }
     }
   if(valid)
@@ -165,36 +193,19 @@ private static boolean tryExpandZPos(World world, TownBoundingArea area)
   return valid;
   }
 
-/**
- * returns the average Y level of the top blocks of the chunk
- * @param world
- * @param cx
- * @param cz
- * @return
- */
-private static int findAverageTopHeight(World world, int cx, int cz)
+private static boolean isTopHeightWithin(World world, int cx, int cz, int min, int max)
   {
   Chunk chunk = world.getChunkFromChunkCoords(cx, cz);
-  int total = 0;
-  int val = 0;
+  int val;
   for(int x = 0; x<16; x++)
     {
     for(int z = 0; z<16; z++)
       {
       val = getTopFilledHeight(chunk, x, z);
-      if(val >= 0)
-        {
-        total += val;        
-        }
-      else
-        {
-        //invalid chunk, return -1??
-        return -1;
-        }
+      if(val<min || val>max){return false;}
       }
     }
-  total = (int) Math.ceil((double)total / 256.d);
-  return total;
+  return true;
   }
 
 /**

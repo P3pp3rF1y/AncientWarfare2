@@ -94,9 +94,6 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
     BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);   
     StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", player.worldObj, StructureMap.class);
     WorldStructureGenerator.instance().attemptStructureGenerationAt(player.worldObj, bpHit.x, bpHit.y, bpHit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), template, map);
-    
-//    StructureBuilder builder = new StructureBuilder(player.worldObj, template, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), bpHit.x, bpHit.y, bpHit.z);
-//    builder.instantConstruction();
     }  
   else
     {

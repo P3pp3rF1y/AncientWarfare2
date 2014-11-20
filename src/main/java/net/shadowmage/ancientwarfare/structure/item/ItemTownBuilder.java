@@ -4,16 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.structure.town.TownBoundingArea;
-import net.shadowmage.ancientwarfare.structure.town.TownGenerator;
-import net.shadowmage.ancientwarfare.structure.town.TownPlacementValidator;
-import net.shadowmage.ancientwarfare.structure.town.TownTemplate;
-import net.shadowmage.ancientwarfare.structure.town.TownTemplateManager;
+import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
+import codechicken.lib.math.MathHelper;
 
 public class ItemTownBuilder extends Item implements IItemKeyInterface, IItemClickable
 {
@@ -73,25 +67,7 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
     {
     return;
     }
-  BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, true);
-  if(pos!=null)
-    {
-    TownBoundingArea area = TownPlacementValidator.findGenerationPosition(player.worldObj, pos.x, pos.y, pos.z);
-    AWLog.logDebug("Found area: "+area);
-    if(area!=null)
-      {
-      TownTemplate template = TownTemplateManager.instance().selectTemplateForGeneration(player.worldObj, pos.x, pos.z, area);
-      if(template!=null)
-        {
-        TownGenerator gen = new TownGenerator(player.worldObj, area, template);
-        gen.generate();        
-        }
-      else
-        {
-        AWLog.logDebug("Could not retrieve template for generation...");
-        }
-      }
-    }
+  WorldTownGenerator.instance().attemptGeneration(player.worldObj, player.worldObj.rand, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ));
   }
 
 @Override

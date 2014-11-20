@@ -166,7 +166,7 @@ private boolean expandPlot(TownPartPlot plot, int xSize, int zSize)
 
 private void generateStructures(World world, TownPartBlock block)
   {  
-  int maxRetry = 4;//TODO base this off of townblock distance from center
+  int maxRetry = 1;//TODO base this off of townblock distance from center
   for(TownPartPlot plot : block.plots)
     {
     if(plot.closed){continue;}
@@ -211,7 +211,7 @@ private boolean generateForPlot(World world, TownPartPlot plot, StructureTemplat
     }  
   plot.markClosed();
   generateStructure(world, plot, template, face, width, length); 
-//  removeTemplate(template);
+  removeTemplate(template);
   return true;
   }
 
