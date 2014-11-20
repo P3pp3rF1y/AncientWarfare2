@@ -122,13 +122,14 @@ public void render(int mouseX, int mouseY, float partialTick)
         itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX+1, renderY+1, "");
         renderStackSize(renderX+1, renderY+1, item.stackSize, font);
         }
+      GL11.glDisable(GL11.GL_LIGHTING);
       if(renderLabel)
         {
         int x = renderX + 18;
         int y = renderY + 3;
+        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
         font.drawStringWithShadow(item.getDisplayName(), x, y, 0xffffffff);
         }
-      GL11.glDisable(GL11.GL_LIGHTING);
       }    
     
     if(isMouseOverElement(mouseX, mouseY))
