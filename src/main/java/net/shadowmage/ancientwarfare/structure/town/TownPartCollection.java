@@ -41,6 +41,7 @@ public final TownBoundingArea boundingArea;
  */
 TownPartQuadrant[] quadrants = new TownPartQuadrant[4];
 List<StructureTemplate> templatesToGenerate = new ArrayList<StructureTemplate>();
+List<StructureTemplate> cosmeticTemplatesToGenerate;
 
 public TownPartCollection(TownBoundingArea area, int blockSize, int plotSize, Random rng)
   {
@@ -116,9 +117,10 @@ public void generateGrid()
   AWLog.logDebug("grid: \n"+line);
   }
 
-public void generateStructures(World world, StructureTemplate townHall, List<StructureTemplate> toGenerate)
+public void generateStructures(World world, StructureTemplate townHall, List<StructureTemplate> toGenerate, List<StructureTemplate> cosmetics)
   {  
   this.templatesToGenerate.addAll(toGenerate);
+  this.cosmeticTemplatesToGenerate = cosmetics;
   List<TownPartBlock> blocks = new ArrayList<TownPartBlock>();
   for(TownPartQuadrant tq : this.quadrants)
     {
@@ -129,11 +131,14 @@ public void generateStructures(World world, StructureTemplate townHall, List<Str
     {
     generateTownHall(world, townHall);    
     }
-  for(TownPartBlock block : blocks)
+  for(TownPartBlock block : blocks)//first pass, actual structures
     {
-    AWLog.logDebug("------------generating structures for block: "+block+" ----------------");
     generateStructures(world, block);
     if(templatesToGenerate.isEmpty()){break;}//have generated all structures, no reason in continuing anymore
+    }
+  for(TownPartBlock block : blocks)//second pass, cosmetic stuff
+    {
+    generateCosmetics(world, block);
     }
   }
 
@@ -164,6 +169,20 @@ private boolean expandPlot(TownPartPlot plot, int xSize, int zSize)
   return plot.expand(xSize, zSize);  
   }
 
+private void generateCosmetics(World world, TownPartBlock block)
+  {
+  int maxRetry = 1;//TODO base this off of townblock distance from center
+  for(TownPartPlot plot : block.plots)
+    {
+    if(plot.closed){continue;}        
+    for(int i = 0; i < maxRetry; i++)
+      {
+      if(templatesToGenerate.isEmpty()){break;}
+      if(generateCosmeticForPlot(world, plot, getRandomCosmeticTemplate())){break;}
+      }
+    }
+  }
+
 private void generateStructures(World world, TownPartBlock block)
   {  
   int maxRetry = 1;//TODO base this off of townblock distance from center
@@ -178,6 +197,29 @@ private void generateStructures(World world, TownPartBlock block)
       if(generateForPlot(world, plot, getRandomTemplate())){break;}
       }
     }
+  }
+
+/**
+ * attempt to generate a structure at the given plot
+ * @param world
+ * @param plot
+ * @return true if generated
+ */
+private boolean generateCosmeticForPlot(World world, TownPartPlot plot, StructureTemplate template)
+  {  
+  int face = rng.nextInt(4);//select random face  
+  int width = face==0 || face==2 ? template.xSize : template.zSize;
+  int length = face==0 || face==2 ? template.zSize : template.xSize;
+  if(plot.getWidth()<width || plot.getLength()<length)
+    {
+    if(!expandPlot(plot, width, length))
+      {
+      return false;
+      }
+    }  
+  plot.markClosed();
+  generateStructure(world, plot, template, face, width, length); 
+  return true;
   }
 
 /**
@@ -205,7 +247,6 @@ private boolean generateForPlot(World world, TownPartPlot plot, StructureTemplat
     {
     if(!expandPlot(plot, width, length))
       {
-      AWLog.logDebug("Could not expand plot to generate structure: "+template.name);
       return false;
       }
     }  
@@ -224,6 +265,18 @@ private StructureTemplate getRandomTemplate()
   if(templatesToGenerate.size()==0){return null;}
   int rng = this.rng.nextInt(this.templatesToGenerate.size());
   return templatesToGenerate.get(rng);
+  }
+
+/**
+ * pull a random template from the cosmetic list, does not remove
+ * @return
+ */
+private StructureTemplate getRandomCosmeticTemplate()
+  {
+  //TODO select from weight instead of random from list
+  if(cosmeticTemplatesToGenerate.size()==0){return null;}
+  int rng = this.rng.nextInt(this.cosmeticTemplatesToGenerate.size());
+  return cosmeticTemplatesToGenerate.get(rng);
   }
 
 /**
