@@ -85,14 +85,33 @@ private static StructureTemplate getWallSection(Random rng, TownTemplate templat
   {
   if(template.getWallStyle()==2)//random weighted
     {    
-    int middle = (wallLength / 2);
-    if(index==middle)//return a gate piece
+    if(wallLength%2==0)//even sized
       {
-      return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedGate(rng));      
+      int middle = (wallLength / 2);
+      if(index==middle)//return a rgate piece
+        {        
+        return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedGateLeft(rng));      
+        }
+      else if(index==middle-1)
+        {
+        return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedGateRight(rng));           
+        }
+      else
+        {
+        return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedWall(rng));      
+        }
       }
     else
       {
-      return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedWall(rng));      
+      int middle = (wallLength / 2);
+      if(index==middle)//return a gate piece
+        {        
+        return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedGate(rng));      
+        }
+      else
+        {
+        return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedWall(rng));      
+        }
       }
     }
   else if(template.getWallStyle()==3)//patterned

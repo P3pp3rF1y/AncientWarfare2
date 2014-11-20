@@ -12,7 +12,8 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.town.TownBoundingArea;
 import net.shadowmage.ancientwarfare.structure.town.TownGenerator;
 import net.shadowmage.ancientwarfare.structure.town.TownPlacementValidator;
-import net.shadowmage.ancientwarfare.structure.town.TownTestGenerator;
+import net.shadowmage.ancientwarfare.structure.town.TownTemplate;
+import net.shadowmage.ancientwarfare.structure.town.TownTemplateManager;
 
 public class ItemTownBuilder extends Item implements IItemKeyInterface, IItemClickable
 {
@@ -25,10 +26,7 @@ public ItemTownBuilder(String itemName)
   this.setUnlocalizedName(itemName);
   this.setCreativeTab(AWStructuresItemLoader.structureTab);
   this.setMaxStackSize(1);  
-  this.setTextureName("ancientwarfare:structure/structure_builder");
-  
-  //TODO remove this
-  TownTestGenerator.load();
+  this.setTextureName("ancientwarfare:structure/structure_builder");//TODO make texture...
   }
 
 @Override
@@ -82,8 +80,16 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
     AWLog.logDebug("Found area: "+area);
     if(area!=null)
       {
-      TownGenerator gen = new TownGenerator(player.worldObj, area, TownTestGenerator.testTemplate);
-      gen.generate();
+      TownTemplate template = TownTemplateManager.instance().selectTemplateForGeneration(player.worldObj, pos.x, pos.z, area);
+      if(template!=null)
+        {
+        TownGenerator gen = new TownGenerator(player.worldObj, area, template);
+        gen.generate();        
+        }
+      else
+        {
+        AWLog.logDebug("Could not retrieve template for generation...");
+        }
       }
     }
   }

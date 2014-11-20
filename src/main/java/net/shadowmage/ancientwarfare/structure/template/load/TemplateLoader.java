@@ -29,9 +29,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -70,7 +67,6 @@ private List<TownTemplate> parsedTownTemplates = new ArrayList<TownTemplate>();
 private Set<String> loadedStructureNames = new HashSet<String>();
 
 private HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
-private HashMap<String, String> imageMD5s = new HashMap<String, String>();
 
 private TemplateLoader(){}
 private static TemplateLoader instance = new TemplateLoader(){};
@@ -125,9 +121,7 @@ public void loadTemplates()
   this.probableZipFiles.clear();
   this.images.clear();
   this.loadedStructureNames.clear();
-  this.images.clear();
-  this.imageMD5s.clear();
-  
+  this.images.clear();  
   loadTownTemplates();
   }
 
@@ -168,7 +162,7 @@ private void validateAndLoadImages()
       it.remove();
       continue;
       }
-    StructureTemplateManager.instance().addTemplateImage(name, images.get(name), imageMD5s.get(name));
+    StructureTemplateManager.instance().addTemplateImage(name, images.get(name));
     }
   }
 
@@ -202,14 +196,17 @@ private TownTemplate loadTownTemplateFromFile(File file)
   {
   FileReader reader = null;
   Scanner scan = null;
-  List<String> templateLines = new ArrayList<String>();
+  List<String> templateLines = new ArrayList<String>();  
+  String line;
   try
     {
     reader = new FileReader(file);
     scan = new Scanner(reader);
     while(scan.hasNext())
       {
-      templateLines.add(scan.nextLine());
+      line = scan.nextLine();
+      if(line.startsWith("#")){continue;}
+      templateLines.add(line);
       }
     return TownTemplateParser.parseTemplate(templateLines);
     } 
@@ -227,37 +224,21 @@ private TownTemplate loadTownTemplateFromFile(File file)
 private void loadStructureImage(String imageName, InputStream is)
   {
   try
-    {
-    MessageDigest md = MessageDigest.getInstance("MD5");
-    DigestInputStream dis = new DigestInputStream(is, md);//InputStream is closed externally
+    {    
     BufferedImage image = ImageIO.read(is);
     if(image!=null && image.getWidth()==AWStructureStatics.structureImageWidth && image.getHeight()==AWStructureStatics.structureImageHeight)
       {
       images.put(imageName, image);
-      byte[] data = md.digest();
-      String md5 = "";
-      StringBuilder sb = new StringBuilder(2*data.length);
-      for(byte b : data)
-        {
-        sb.append(String.format("%02x", b&0xff));
-        }
-      md5 = sb.toString();
-      imageMD5s.put(imageName, md5);
       }
     else
       {
       AWLog.logError("Attempted to load improper sized template image: "+imageName+ " with dimensions of: "+image.getWidth()+"x"+image.getHeight()+".  Specified width/height is: "+AWStructureStatics.structureImageWidth+"x"+AWStructureStatics.structureImageHeight);
       }
-//    dis.close();
     } 
   catch (IOException e)
     {
     e.printStackTrace();
     } 
-  catch (NoSuchAlgorithmException e)
-    {
-    e.printStackTrace();
-    }
   }
 
 private int loadTemplatesFromZipStream(ZipInputStream zis)

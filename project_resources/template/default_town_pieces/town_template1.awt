@@ -1,8 +1,11 @@
 ### Ancient Warfare Town Template ###
+# a line beginning with # denotes a comment line, and is ignored during parsing
+# the line must -start- with # to be ignored, mid-line comments are not allowed
 header:
 name=test_town_template
 minSize=4
 maxSize=9
+selectionWeight=10
 clusterValue=300
 townBlockSize=30
 townPlotSize=3
@@ -14,41 +17,47 @@ biomeWhiteList=false
 biomeList=ocean,beach
 dimensionWhiteList=true
 dimensionList=0
-townHall=structure_name_here_or_blank_for_none
-lamp=structure_name_here_or_blank_for_none
+townHall=town_hall1
+lamp=
 :endheader
 
 #wall type registry
 #name:type:id:weight
 walls:
-wall_section1:wall:0:10
-wall_section2:wall:1:10
-wall_gate1:gate:2:10
-wall_gate2:lgate:3:10
-wall_gate3:rgate:4:10
-wall_corner1:corner:5:10
+wall_corner1:corner:0:10
+wall_straight1:wall:1:10
+wall_straight2:wall:2:10
+wall_gate:gate:3:10
+wall_lgate:lgate:4:10
+wall_rgate:rgate:5:10
 :endwalls
 
 #wall patterns
 #size:pattern
 wallPatterns:
-4:5-3-4-5
-5:5-0-2-0-5
-6:5-0-3-4-0-5
-7:5-0-1-2-1-0-5
-8:5-0-1-3-4-1-0-5
-9:5-0-1-0-2-0-1-0-5
+4:0-4-5-0
+5:0-1-3-1-0
+6:0-1-4-5-1-0
+7:0-1-2-3-2-1-0
+8:0-1-2-4-5-2-1-0
+9:0-1-2-1-3-1-2-1-0
 :endWallPaterns
 
 #list of structures, one per line, colon separating min and max values for each (could alternatively use nearly any separator char)
 structures:
-village_house:3:5
-village_library:1:2
-village_smith:1:1
+village_church:1:3
+village_garden_large:2:4
+village_garden_small:2:4
+village_house_garden:5:8
+village_house:5:8
+village_hut1:5:8
+village_hut2:5:8
+village_library:5:8
+village_smith:5:8
 :endstructures
 
 #list of cosmetic structure templates w/weight, to be used to fill in random positions post-generation
 cosmetics:
-village_torch:5
-village_well:1
+#village_torch:5
+#village_well:1
 :endcosmetics

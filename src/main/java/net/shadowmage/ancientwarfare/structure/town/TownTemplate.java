@@ -7,6 +7,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public final class TownTemplate
 {
@@ -22,6 +23,8 @@ private List<Integer> dimensionList = new ArrayList<Integer>();//
 
 private int minSize = 3;//size in chunks//
 private int maxSize = 9;//size in chunks//
+
+private int selectionWeight;
 
 private int clusterValue;//value inserted into template gen map to discourage nearby random structure spawns
 
@@ -81,6 +84,8 @@ public final int getMinSize(){return minSize;}
 public final void setMinSize(int minSize){this.minSize = minSize;}
 public final int getMaxSize(){return maxSize;}
 public final void setMaxSize(int maxSize){this.maxSize = maxSize;}
+public final int getSelectionWeight(){return selectionWeight;}
+public final void setSelectionWeight(int selectionWeight){this.selectionWeight = selectionWeight;}
 public final int getClusterValue(){return clusterValue;}
 public final void setClusterValue(int clusterValue){this.clusterValue = clusterValue;}
 public final TownStructureEntry getTownHallEntry(){return townHallEntry;}
@@ -100,27 +105,27 @@ public final void addWallPattern(int size, int[] pattern){wallPatterns.put(size,
 
 public final void addWall(TownWallEntry e)
   {  
-  if(e.typeName.toCharArray().equals("wall"))
+  if(e.typeName.toLowerCase().equals("wall"))
     {
     walls.add(e);
     wallTotalWeights+=e.weight;
     }
-  else if(e.typeName.toCharArray().equals("corner"))
+  else if(e.typeName.toLowerCase().equals("corner"))
     {
     cornerWalls.add(e);
     cornersTotalWeight+=e.weight;
     }
-  else if(e.typeName.toCharArray().equals("gate"))
+  else if(e.typeName.toLowerCase().equals("gate"))
     {
     gateCenterWalls.add(e);
     gatesCenterTotalWeight+=e.weight;
     }
-  else if(e.typeName.toCharArray().equals("lgate"))
+  else if(e.typeName.toLowerCase().equals("lgate"))
     {
     gateLeftWalls.add(e);
     gatesLeftTotalWeight+=e.weight;
     }
-  else if(e.typeName.toCharArray().equals("rgate"))
+  else if(e.typeName.toLowerCase().equals("rgate"))
     {
     gateRightWalls.add(e);
     gatesRightTotalWeight+=e.weight;    
@@ -140,6 +145,7 @@ public final String getRandomWeightedGateRight(Random rng){return getRandomWeigh
 
 private static String getRandomWeightedWallPiece(Random rng, List<TownWallEntry> list, int totalWeight)
   {
+  AWLog.logDebug("getting random wall...: "+totalWeight);
   int roll = rng.nextInt(totalWeight);
   for(TownWallEntry e : list)
     {
@@ -182,6 +188,7 @@ public TownWallEntry(String name, String type, int id, int weight)
   this.typeName = type;
   this.id = id;
   this.weight=weight;  
+  AWLog.logDebug("parsed wall type entry: "+name+" : "+type+" : "+id+" : "+weight);
   }
 }
 

@@ -102,7 +102,7 @@ public StructureTemplate getTemplate(String name)
   return this.loadedTemplates.get(name);
   }
 
-public void addTemplateImage(String imageName, BufferedImage image, String md5)
+public void addTemplateImage(String imageName, BufferedImage image)
   {
   this.templateImages.put(imageName, image);
   }
