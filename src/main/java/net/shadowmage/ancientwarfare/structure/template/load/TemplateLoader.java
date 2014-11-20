@@ -119,7 +119,6 @@ public void loadTemplates()
   this.validateAndLoadImages();
   this.probableStructureFiles.clear();
   this.probableZipFiles.clear();
-  this.images.clear();
   this.loadedStructureNames.clear();
   this.images.clear();  
   loadTownTemplates();
@@ -224,7 +223,7 @@ private TownTemplate loadTownTemplateFromFile(File file)
 private void loadStructureImage(String imageName, InputStream is)
   {
   try
-    {    
+    {
     BufferedImage image = ImageIO.read(is);
     if(image!=null && image.getWidth()==AWStructureStatics.structureImageWidth && image.getHeight()==AWStructureStatics.structureImageHeight)
       {
