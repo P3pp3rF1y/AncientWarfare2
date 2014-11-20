@@ -1,15 +1,12 @@
 towns todo:
 
 area selection
-* need to clean up how areas are selected, perhaps using a min/max height check for the chunk rather than average height
 
 area validation
 * need to validate an area along the borders to ensure town is not cutting into any vanilla / other mods' structures
-* need to examine structure-gen map to make sure there are no structures in the area
 
 template selection
 
 template generation
 * need to add in lamp-post generation code
 * need to add in second-pass plot generation for cosmetic structures
-* post generation, need to insert a 'town' structure into the structure-gen map, denoting the bounds of the town and town-cluster value

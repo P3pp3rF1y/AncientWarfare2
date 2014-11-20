@@ -4,6 +4,11 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
+import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldTownGenerator implements IWorldGenerator
@@ -34,6 +39,16 @@ public void attemptGeneration(World world, Random rng, int blockX, int blockZ)
     area.chunkMaxZ = area.chunkMinZ + template.getMaxSize();
     }
   if(!TownPlacementValidator.validateAreaForPlacement(world, area)){return;}//cannot validate the area until bounds are possibly shrunk by selected template
+  
+  /**
+   * add the town to the generated structure map, as a -really- large structure entry
+   */
+  StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
+  StructureBB bb = new StructureBB(new BlockPosition(area.getBlockMinX(), area.getMinY(), area.getBlockMinZ()), new BlockPosition(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
+  StructureEntry entry = new StructureEntry(bb, template.getTownTypeName(), template.getClusterValue());
+  map.setGeneratedAt(world, area.getCenterX(), area.getSurfaceY(), area.getCenterZ(), 0, entry, false);
+  map.markDirty();
+  
   TownGenerator generator = new TownGenerator(world, area, template);
   generator.generate();
   }

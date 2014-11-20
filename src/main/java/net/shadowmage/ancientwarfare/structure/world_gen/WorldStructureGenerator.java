@@ -200,7 +200,7 @@ private void generateStructureAt(World world, int x, int y, int z, int face, Str
   {
   StructureBuilderWorldGen builder = new StructureBuilderWorldGen(world, template, face, x, y, z);
   builder.instantConstruction();
-  map.setGeneratedAt(world, x, y, z, face, template);
+  map.setGeneratedAt(world, x, y, z, face, new StructureEntry(x, y, z, face, template), template.getValidationSettings().isUnique());
   map.markDirty();
   }
 
