@@ -3,7 +3,6 @@ towns todo:
 area selection
 
 area validation
-* need to validate an area along the borders to ensure town is not cutting into any vanilla / other mods' structures
 
 template selection
 

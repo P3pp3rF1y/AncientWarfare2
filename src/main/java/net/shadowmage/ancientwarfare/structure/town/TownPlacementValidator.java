@@ -53,13 +53,6 @@ public static TownBoundingArea findGenerationPosition(World world, int x, int z)
 public static boolean validateAreaForPlacement(World world, TownBoundingArea area)
   {
   if(!validateStructureCollision(world, area)){return false;} 
-  if(!validateBorderBlocks(world, area)){return false;}  
-  return true;
-  }
-
-private static boolean validateBorderBlocks(World world, TownBoundingArea area)
-  {
-  //TODO validate all blocks that would be underneath the border, to ensure they are not 'unreplaceable' blocks (e.g. they meet the target block list....which is...where?)s
   return true;
   }
 
@@ -214,7 +207,7 @@ private static boolean isTopHeightWithin(World world, int cx, int cz, int min, i
  * @param chunk
  * @param xInChunk
  * @param zInChunk
- * @return
+ * @return top solid block height, or -1 for invalid top block or no top block found (void, bedrock...)
  */
 private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk)
   {
@@ -224,6 +217,7 @@ private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk)
     {
     block = chunk.getBlock(xInChunk, y, zInChunk);
     if(block==null || block==Blocks.air || AWStructureStatics.skippableBlocksContains(block) || block.getMaterial()==Material.water){continue;}
+    if(!AWStructureStatics.isValidTownTargetBlock(block)){return -1;}
     return y;
     }
   return -1;
