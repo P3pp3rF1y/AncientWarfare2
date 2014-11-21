@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
 import net.shadowmage.ancientwarfare.structure.container.ContainerGateControl;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvanced;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedBlock;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryBlock;
@@ -107,6 +108,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY, ContainerSpawnerAdvancedInventoryBlock.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL, ContainerGateControl.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_DRAFTING_STATION, ContainerDraftingStation.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_SOUND_BLOCK, ContainerSoundBlock.class);
   proxy.registerClient();   
       
   /**

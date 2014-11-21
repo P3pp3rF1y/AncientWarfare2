@@ -88,6 +88,7 @@ public static final int GUI_NPC_CREATIVE = 44;
 public static final int GUI_RESEARCH_BOOK = 45;
 public static final int GUI_WORKSITE_BOUNDS = 46;
 public static final int GUI_NPC_PLAYER_OWNED_TRADE = 47;
+public static final int GUI_SOUND_BLOCK = 48;
 
 private FMLEventChannel channel;
 

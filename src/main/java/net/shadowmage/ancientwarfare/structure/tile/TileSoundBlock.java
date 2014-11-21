@@ -7,9 +7,11 @@ import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 public class TileSoundBlock extends TileEntity
 {
 
+private SongPlayData tuneData;
+
 public TileSoundBlock()
   {
-  // TODO Auto-generated constructor stub
+  tuneData = new SongPlayData();
   }
 
 @Override
@@ -22,18 +24,19 @@ public void updateEntity()
 public void readFromNBT(NBTTagCompound tag)
   {
   super.readFromNBT(tag);
+  tuneData.readFromNBT(tag.getCompoundTag("tuneData"));
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
   super.writeToNBT(tag);
+  tag.setTag("tuneData", tuneData.writeToNBT(new NBTTagCompound()));
   }
 
 public SongPlayData getTuneData()
   {
-  // TODO Auto-generated method stub
-  return null;
+  return tuneData;
   }
 
 }

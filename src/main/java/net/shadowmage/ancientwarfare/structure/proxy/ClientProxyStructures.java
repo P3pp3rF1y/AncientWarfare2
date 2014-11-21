@@ -3,10 +3,12 @@ package net.shadowmage.ancientwarfare.structure.proxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gui.GuiDraftingStation;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControl;
+import net.shadowmage.ancientwarfare.structure.gui.GuiSoundBlock;
 import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerAdvanced;
 import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerAdvancedInventory;
 import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerPlacer;
@@ -33,6 +35,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY, GuiSpawnerAdvancedInventory.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_GATE_CONTROL, GuiGateControl.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_DRAFTING_STATION, GuiDraftingStation.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_SOUND_BLOCK, GuiSoundBlock.class);
   MinecraftForge.EVENT_BUS.register(StructureBoundingBoxRenderer.instance());
   
   RenderingRegistry.registerEntityRenderingHandler(EntityGate.class, new RenderGateHelper());  
