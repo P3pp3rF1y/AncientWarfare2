@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.npc.gui;
+package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -9,26 +9,25 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData.SongEntry;
-import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
 
-public class GuiNpcBard extends GuiContainerBase
+public class GuiSoundBlock extends GuiContainerBase
 {
 
-ContainerNpcBard container;
+ContainerSoundBlock container;
 CompositeScrolled area;
 
-public GuiNpcBard(ContainerBase container)
+public GuiSoundBlock(ContainerBase container)
   {
   super(container, 256, 240, defaultBackground);
-  this.container = (ContainerNpcBard)container;
+  this.container = (ContainerSoundBlock)container;
   }
 
 @Override
 public void initElements()
-  {      
+  {
   area = new CompositeScrolled(this, 0, 0, xSize, ySize);
   }
 
@@ -201,9 +200,8 @@ private int addTuneEntry(final SongEntry entry, final int index, int startHeight
 @Override
 protected boolean onGuiCloseRequested()
   {  
-  container.sendTuneDataToServer(player);
-  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, container.npc.getEntityId(), 0, 0);
-  return false;
+  container.sendTuneDataToServer(player);  
+  return true;
   }
 
 }

@@ -218,7 +218,7 @@ private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk)
     block = chunk.getBlock(xInChunk, y, zInChunk);
     if(block==null || block==Blocks.air || AWStructureStatics.skippableBlocksContains(block) || block.getMaterial()==Material.water){continue;}
     if(!AWStructureStatics.isValidTownTargetBlock(block)){return -1;}
-    return y;
+    return y;//if not skippable and is valid target block, return that y-level
     }
   return -1;
   }
