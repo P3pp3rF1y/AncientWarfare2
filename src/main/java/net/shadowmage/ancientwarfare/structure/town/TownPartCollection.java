@@ -11,8 +11,10 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
+import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 
 public class TownPartCollection
 {
@@ -41,7 +43,6 @@ public final TownTemplate template;
  */
 TownPartQuadrant[] quadrants = new TownPartQuadrant[4];
 List<StructureTemplate> templatesToGenerate = new ArrayList<StructureTemplate>();
-List<StructureTemplate> cosmeticTemplatesToGenerate;
 
 public TownPartCollection(TownTemplate template, TownBoundingArea area, Random rng)
   {
@@ -118,10 +119,9 @@ public void generateGrid()
   AWLog.logDebug("grid: \n"+line);
   }
 
-public void generateStructures(World world, StructureTemplate townHall, List<StructureTemplate> toGenerate, List<StructureTemplate> cosmetics, int expansion)
+public void generateStructures(World world, StructureTemplate townHall, List<StructureTemplate> toGenerate)
   {  
   this.templatesToGenerate.addAll(toGenerate);
-  this.cosmeticTemplatesToGenerate = cosmetics;
   List<TownPartBlock> blocks = new ArrayList<TownPartBlock>();
   for(TownPartQuadrant tq : this.quadrants)
     {
@@ -130,11 +130,11 @@ public void generateStructures(World world, StructureTemplate townHall, List<Str
   sortBlocksByDistance(blocks);  
   if(townHall!=null)
     {
-    generateTownHall(world, townHall, expansion);    
+    generateTownHall(world, townHall);    
     }
   for(TownPartBlock block : blocks)//first pass, actual structures
     {
-    generateStructures(world, block, expansion);
+    generateStructures(world, block);
     if(templatesToGenerate.isEmpty()){break;}//have generated all structures, no reason in continuing anymore
     }
   for(TownPartBlock block : blocks)//second pass, cosmetic stuff
@@ -143,7 +143,7 @@ public void generateStructures(World world, StructureTemplate townHall, List<Str
     }
   }
 
-private void generateTownHall(World world, StructureTemplate townHall, int expansion)
+private void generateTownHall(World world, StructureTemplate townHall)
   {
   int quadrantNumber = rng.nextInt(4);
   TownPartQuadrant tq = quadrants[quadrantNumber];//southeast quadrant  
@@ -155,7 +155,7 @@ private void generateTownHall(World world, StructureTemplate townHall, int expan
   int px = tq.getXDir()==Direction.EAST? 0 : block.plotsWidth-1;
   int pz = tq.getZDir()==Direction.SOUTH? 0 : block.plotsLength-1;
   plot = block.getPlot(px, pz);
-  generateForPlot(world, plot, townHall, expansion);
+  generateForPlot(world, plot, townHall);
   }
 
 /**
@@ -178,13 +178,13 @@ private void generateCosmetics(World world, TownPartBlock block)
     if(plot.closed){continue;}        
     for(int i = 0; i < maxRetry; i++)
       {
-      if(templatesToGenerate.isEmpty()){break;}
+      if(this.template.getCosmeticEntries().isEmpty()){break;}
       if(generateCosmeticForPlot(world, plot, getRandomCosmeticTemplate())){break;}
       }
     }
   }
 
-private void generateStructures(World world, TownPartBlock block, int expansion)
+private void generateStructures(World world, TownPartBlock block)
   {  
   int maxRetry = 1;//TODO base this off of townblock distance from center
   for(TownPartPlot plot : block.plots)
@@ -195,7 +195,7 @@ private void generateStructures(World world, TownPartBlock block, int expansion)
     for(int i = 0; i < maxRetry; i++)
       {
       if(templatesToGenerate.isEmpty()){break;}
-      if(generateForPlot(world, plot, getRandomTemplate(), expansion)){break;}
+      if(generateForPlot(world, plot, getRandomTemplate())){break;}
       }
     }
   }
@@ -229,8 +229,9 @@ private boolean generateCosmeticForPlot(World world, TownPartPlot plot, Structur
  * @param plot
  * @return true if generated
  */
-private boolean generateForPlot(World world, TownPartPlot plot, StructureTemplate template, int expansion)
+private boolean generateForPlot(World world, TownPartPlot plot, StructureTemplate template)
   {  
+  int expansion = this.template.getTownBuildingWidthExpansion();
   int face = rng.nextInt(4);//select random face  
   for(int i = 0, f=face; i < 4; i++, f++)//and then iterate until a valid face is found
     {
@@ -278,10 +279,12 @@ private StructureTemplate getRandomTemplate()
  */
 private StructureTemplate getRandomCosmeticTemplate()
   {
+  List<TownStructureEntry> cosmeticTemplatesToGenerate = this.template.getCosmeticEntries();
   //TODO select from weight instead of random from list
   if(cosmeticTemplatesToGenerate.size()==0){return null;}
-  int rng = this.rng.nextInt(this.cosmeticTemplatesToGenerate.size());
-  return cosmeticTemplatesToGenerate.get(rng);
+  int rng = this.rng.nextInt(cosmeticTemplatesToGenerate.size());
+  TownStructureEntry entry = cosmeticTemplatesToGenerate.get(rng);
+  return entry==null ? null : StructureTemplateManager.instance().getTemplate(entry.templateName);
   }
 
 /**

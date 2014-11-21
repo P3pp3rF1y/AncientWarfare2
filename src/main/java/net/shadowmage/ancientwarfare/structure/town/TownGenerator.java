@@ -83,7 +83,7 @@ private void doGeneration()
   this.town.generateRoads(world);
   StructureTemplate townHall = null;
   if(template.getTownHallEntry()!=null){townHall=StructureTemplateManager.instance().getTemplate(template.getTownHallEntry().templateName);}
-  this.town.generateStructures(world, townHall, templatesToGenerate, cosmeticTemplatesToGenerate, template.getTownBuildingWidthExpansion());
+  this.town.generateStructures(world, townHall, templatesToGenerate);
   }
 
 }
