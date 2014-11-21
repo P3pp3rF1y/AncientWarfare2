@@ -107,7 +107,7 @@ private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings = ne
 /************************************************CUSTOM NAME SETTINGS*************************************************/
 
 public static final String[] factionNames = new String[]{"bandit","viking","pirate","desert","native","custom_1","custom_2","custom_3"};
-public static final String[] factionNpcSubtypes = new String[]{"soldier","soldier.elite","cavalry","archer","archer.elite","mounted_archer","leader","leader.elite","priest","trader","civilian.male","civilian.female"};
+public static final String[] factionNpcSubtypes = new String[]{"soldier","soldier.elite","cavalry","archer","archer.elite","mounted_archer","leader","leader.elite","priest","trader","civilian.male","civilian.female","bard"};
 
 
 /************************************************HEALTH CONFIG*************************************************/
@@ -341,7 +341,7 @@ private void loadTargetValues()
     }  
   
   targets = targetConfig.get(targetSettings, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
-  		"Should work with any new-ai enabled mob type; vanilla or mod-added.").getStringList();
+  		"Should work with any new-ai enabled mob type; vanilla or mod-added (but might not work with mod-added entities with custom AI).").getStringList();
   
   for(String target : targets)
     {
@@ -506,6 +506,7 @@ public void initializeNpcEquipmentConfigs()
     eqmp.get(faction+".leader.elite")[0]="minecraft:diamond_sword";
     eqmp.get(faction+".trader")[0]="minecraft:book";
     eqmp.get(faction+".priest")[0]="minecraft:book";
+    eqmp.get(faction+".bard")[0]="AncientWarfareNpc:bard_instrument";
     }    
     
   String[] array;
