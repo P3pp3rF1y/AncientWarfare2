@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
@@ -65,4 +66,17 @@ public void openAltGui(EntityPlayer player)
   NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_BARD, getEntityId(), 0, 0);
   }
 
+@Override
+public void readEntityFromNBT(NBTTagCompound tag)
+  {  
+  super.readEntityFromNBT(tag);
+  tuneData.readFromNBT(tag.getCompoundTag("tuneData"));
+  }
+
+@Override
+public void writeEntityToNBT(NBTTagCompound tag)
+  {
+  super.writeEntityToNBT(tag);
+  tag.setTag("tuneData", tuneData.writeToNBT(new NBTTagCompound()));
+  }
 }
