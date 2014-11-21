@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -69,5 +70,21 @@ public void breakBlock(World world, int x, int y, int z, Block block, int meta)
       }
     }
   }
+
+@Override
+public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float vecX, float vecY, float vecZ)
+  {
+  if(!world.isRemote)
+    {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileStructureBuilder)
+      {
+      TileStructureBuilder builder = (TileStructureBuilder)te;
+      builder.onBlockClicked(player);
+      }
+    }
+  return true;
+  }
+  
 
 }

@@ -29,9 +29,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,6 +46,9 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+import net.shadowmage.ancientwarfare.structure.town.TownTemplate;
+import net.shadowmage.ancientwarfare.structure.town.TownTemplateManager;
+import net.shadowmage.ancientwarfare.structure.town.TownTemplateParser;
 
 public class TemplateLoader
 {
@@ -58,13 +58,15 @@ public static String outputDirectory = null;
 public static String includeDirectory = null;
 private final String defaultTemplatePackLocation = "/assets/ancientwarfare/template/default_structure_pack.zip";
 
+private List<File> probableTownFiles = new ArrayList<File>();
 private List<File> probableStructureFiles = new ArrayList<File>();
 private List<File> probableZipFiles = new ArrayList<File>();
+
+private List<TownTemplate> parsedTownTemplates = new ArrayList<TownTemplate>();
 
 private Set<String> loadedStructureNames = new HashSet<String>();
 
 private HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
-private HashMap<String, String> imageMD5s = new HashMap<String, String>();
 
 private TemplateLoader(){}
 private static TemplateLoader instance = new TemplateLoader(){};
@@ -111,15 +113,41 @@ public void loadTemplates()
       loadedCount++;
       }
     }  
-  loadedCount+=this.loadTemplatesFromZips();
-  AWLog.log("Loaded "+loadedCount+" structure(s).");
+  loadedCount += this.loadTemplatesFromZips();
+  AWLog.log("Loaded "+loadedCount+" structure(s)");
+    
   this.validateAndLoadImages();
   this.probableStructureFiles.clear();
   this.probableZipFiles.clear();
-  this.images.clear();
   this.loadedStructureNames.clear();
-  this.images.clear();
-  this.imageMD5s.clear();
+  this.images.clear();  
+  loadTownTemplates();
+  }
+
+private void loadTownTemplates()
+  {
+  TownTemplate townTemplate;
+  for(File f : this.probableTownFiles)
+    {    
+    townTemplate = loadTownTemplateFromFile(f);
+    if(townTemplate!=null)
+      {
+      parsedTownTemplates.add(townTemplate);
+      }
+    }  
+  
+  this.probableTownFiles.clear();
+  
+  if(!this.parsedTownTemplates.isEmpty())
+    {
+    AWLog.log("Loading Town Templates: ");
+    for(TownTemplate t : this.parsedTownTemplates)
+      {
+      AWLog.log("Loading town template: "+t.getTownTypeName());
+      TownTemplateManager.instance().loadTemplate(t);
+      }
+    AWLog.log("Loaded : "+this.parsedTownTemplates.size()+" Town Templates.");    
+    }  
   }
 
 private void validateAndLoadImages()
@@ -133,7 +161,7 @@ private void validateAndLoadImages()
       it.remove();
       continue;
       }
-    StructureTemplateManager.instance().addTemplateImage(name, images.get(name), imageMD5s.get(name));
+    StructureTemplateManager.instance().addTemplateImage(name, images.get(name));
     }
   }
 
@@ -163,40 +191,53 @@ private StructureTemplate loadTemplateFromFile(File file)
     }
   }
 
+private TownTemplate loadTownTemplateFromFile(File file)
+  {
+  FileReader reader = null;
+  Scanner scan = null;
+  List<String> templateLines = new ArrayList<String>();  
+  String line;
+  try
+    {
+    reader = new FileReader(file);
+    scan = new Scanner(reader);
+    while(scan.hasNext())
+      {
+      line = scan.nextLine();
+      if(line.startsWith("#")){continue;}
+      templateLines.add(line);
+      }
+    return TownTemplateParser.parseTemplate(templateLines);
+    } 
+  catch (FileNotFoundException e)
+    {
+    e.printStackTrace();
+    return null;
+    }
+  finally
+    {
+    if(scan!=null){scan.close();}
+    }
+  }
+
 private void loadStructureImage(String imageName, InputStream is)
   {
   try
     {
-    MessageDigest md = MessageDigest.getInstance("MD5");
-    DigestInputStream dis = new DigestInputStream(is, md);
     BufferedImage image = ImageIO.read(is);
     if(image!=null && image.getWidth()==AWStructureStatics.structureImageWidth && image.getHeight()==AWStructureStatics.structureImageHeight)
       {
       images.put(imageName, image);
-      byte[] data = md.digest();
-      String md5 = "";
-      StringBuilder sb = new StringBuilder(2*data.length);
-      for(byte b : data)
-        {
-        sb.append(String.format("%02x", b&0xff));
-        }
-      md5 = sb.toString();
-      imageMD5s.put(imageName, md5);
       }
     else
       {
       AWLog.logError("Attempted to load improper sized template image: "+imageName+ " with dimensions of: "+image.getWidth()+"x"+image.getHeight()+".  Specified width/height is: "+AWStructureStatics.structureImageWidth+"x"+AWStructureStatics.structureImageHeight);
       }
-    dis.close();
     } 
   catch (IOException e)
     {
     e.printStackTrace();
     } 
-  catch (NoSuchAlgorithmException e)
-    {
-    e.printStackTrace();
-    }
   }
 
 private int loadTemplatesFromZipStream(ZipInputStream zis)
@@ -212,6 +253,11 @@ private int loadTemplatesFromZipStream(ZipInputStream zis)
       if(entry.getName().toLowerCase().endsWith(".png"))
         {
         loadStructureImage(entry.getName(), zis);
+        continue;
+        }
+      else if(entry.getName().toLowerCase().endsWith("."+AWStructureStatics.townTemplateExtension))
+        {
+        loadTownTemplateFromZip(entry, zis);
         continue;
         }
       else if(!entry.getName().toLowerCase().endsWith("."+AWStructureStatics.templateExtension))
@@ -291,6 +337,33 @@ private int loadTemplatesFromZips()
   return totalParsed;
   }
 
+private TownTemplate loadTownTemplateFromZip(ZipEntry entry, InputStream is)
+  {
+  InputStreamReader isr = new InputStreamReader(is);
+  BufferedReader reader = new BufferedReader(isr);
+  List<String> lines = new ArrayList<String>();
+  String line;
+  TownTemplate template = null;
+  try
+    {
+    while((line = reader.readLine())!=null)
+      {
+      lines.add(line);
+      }
+    template = TownTemplateParser.parseTemplate(lines);
+    if(template!=null)
+      {
+      parsedTownTemplates.add(template);
+      }
+    } 
+  catch (IOException e1)
+    {
+    e1.printStackTrace();
+    template = null;
+    }  
+  return template;
+  }
+
 private StructureTemplate loadTemplateFromZip(ZipEntry entry, InputStream is)
   {
   InputStreamReader isr = new InputStreamReader(is);
@@ -317,6 +390,7 @@ private StructureTemplate loadTemplateFromZip(ZipEntry entry, InputStream is)
 private void locateStructureFiles()
   {
   this.recursiveScan(new File(includeDirectory), probableStructureFiles, probableZipFiles, AWStructureStatics.templateExtension);
+  this.recursiveScan(new File(includeDirectory), probableTownFiles, probableZipFiles, AWStructureStatics.townTemplateExtension);
   }
 
 private void recursiveScan(File directory, List<File> fileList, List<File> zipFileList, String extension)
@@ -340,11 +414,11 @@ private void recursiveScan(File directory, List<File> fileList, List<File> zipFi
       {
       recursiveScan(currentFile, fileList, zipFileList, extension);
       }
-    else if(isProbableFile(currentFile, extension))
+    else if(isProbableFile(currentFile, extension) && !fileList.contains(currentFile))
       {
       fileList.add(currentFile);
       }
-    else if(isProbableZip(currentFile))
+    else if(isProbableZip(currentFile) && !zipFileList.contains(currentFile))
       {
       zipFileList.add(currentFile);
       }
@@ -352,7 +426,16 @@ private void recursiveScan(File directory, List<File> fileList, List<File> zipFi
       {
       try
         {
-        loadStructureImage(currentFile.getName(), new FileInputStream(currentFile));
+        FileInputStream fis = new FileInputStream(currentFile);
+        loadStructureImage(currentFile.getName(), fis);
+        try
+          {
+          fis.close();
+          }
+        catch (IOException e)
+          {
+          e.printStackTrace();
+          }
         } 
       catch (FileNotFoundException e)
         {

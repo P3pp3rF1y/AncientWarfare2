@@ -18,16 +18,7 @@ public static Block advancedSpawner;
 public static Block gateProxy;
 public static Block draftingStation;
 public static Block builderBlock;
+public static Block soundBlock;
 
-/**
- * AUTOMATION module TODO
- */
-public static Block workerBlock;
-public static Block civicMineBlock;
-public static Block civicTreeBlock;
-public static Block civicCropBlock;
-public static Block civicMushBlock;
-public static Block civicReedBlock;
-public static Block civicBarnBlock;
 
 }

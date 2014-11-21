@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 public class TownPartPlot
@@ -33,7 +32,6 @@ public void markClosed()
     {
     for(int z = minZ; z<=maxZ; z++)
       {
-      AWLog.logDebug("marking plot as closed: "+x+","+z);
       block.getPlot(x, z).closed=true;
       }
     }
@@ -88,7 +86,6 @@ public int getLength()
 
 public boolean expand(int xSize, int zSize)
   {
-  AWLog.logDebug("trying to expand plot: "+bb);
   StructureBB bb = this.bb.copy();//will revert to this bb if expansion fails for any reason
   boolean val = tryExpand(xSize, zSize);
   if(!val)//no expansion...reset bb and min/max indices
@@ -105,7 +102,6 @@ private boolean tryExpand(int xSize, int zSize)
     {
     if(!expandEast() && !expandWest())
       {
-      AWLog.logDebug("could not expand east/west");
       return false;
       }
     }  
@@ -113,7 +109,6 @@ private boolean tryExpand(int xSize, int zSize)
     {
     if(!expandNorth() && !expandSouth())
       {
-      AWLog.logDebug("could not expand north/south");
       return false;
       }
     }
@@ -127,14 +122,12 @@ private boolean expandNorth()
     {
     if(block.getPlot(x, minZ-1).closed)
       {
-      AWLog.logDebug("found closed plot, not expanding.");
       return false;
       }
     }
   minZ--;
   TownPartPlot p = block.getPlot(x, minZ);
   this.bb.min.z = p.bb.min.z;
-  AWLog.logDebug("expanded plot: "+bb);
   return true;  
   }
 
@@ -145,14 +138,12 @@ private boolean expandSouth()
     {
     if(block.getPlot(x, maxZ+1).closed)
       {
-      AWLog.logDebug("found closed plot, not expanding.");
       return false;
       }
     }
   maxZ++;
   TownPartPlot p = block.getPlot(x, maxZ);
   this.bb.max.z = p.bb.max.z;
-  AWLog.logDebug("expanded plot: "+bb);
   return true;
   }
 
@@ -163,14 +154,12 @@ private boolean expandEast()
     {
     if(block.getPlot(minX-1, z).closed)
       {
-      AWLog.logDebug("found closed plot, not expanding.");
       return false;
       }
     }  
   minX--;
   TownPartPlot p = block.getPlot(minX, z);
   this.bb.min.x = p.bb.min.x;
-  AWLog.logDebug("expanded plot: "+bb);
   return true;
   }
 
@@ -181,14 +170,12 @@ private boolean expandWest()
     {
     if(block.getPlot(maxX+1, z).closed)
       {
-      AWLog.logDebug("found closed plot, not expanding.");
       return false;
       }
     }  
   maxX++;
   TownPartPlot p = block.getPlot(maxX, z);
   this.bb.max.x = p.bb.max.x;
-  AWLog.logDebug("expanded plot: "+bb);
   return true;
   }
 

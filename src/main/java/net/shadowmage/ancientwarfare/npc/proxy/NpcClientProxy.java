@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcBard;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcCreativeControls;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionBard;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionTradeSetup;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionTradeView;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcInventory;
@@ -60,6 +61,7 @@ public void registerClient()
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_CREATIVE, GuiNpcCreativeControls.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_TRADE_ORDER, GuiTradeOrder.class);
   NetworkHandler.registerGui(NetworkHandler.GUI_NPC_PLAYER_OWNED_TRADE, GuiNpcPlayerOwnedTrade.class);
+  NetworkHandler.registerGui(NetworkHandler.GUI_NPC_FACTION_BARD, GuiNpcFactionBard.class);
   
   RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, new RenderNpcBase());
   

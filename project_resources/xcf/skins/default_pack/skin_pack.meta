@@ -1,6 +1,7 @@
 courier=po_courier.png
 trader=po_trader.png
 priest=po_priest.png
+bard=po_bard.png
 worker=po_worker.png
 worker.researcher=po_worker_researcher.png
 worker.craftsman=po_worker_craftsman.png

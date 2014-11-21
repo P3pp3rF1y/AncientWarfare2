@@ -31,7 +31,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -201,7 +200,7 @@ private void generateStructureAt(World world, int x, int y, int z, int face, Str
   {
   StructureBuilderWorldGen builder = new StructureBuilderWorldGen(world, template, face, x, y, z);
   builder.instantConstruction();
-  map.setGeneratedAt(world, x, y, z, face, template);
+  map.setGeneratedAt(world, x, y, z, face, new StructureEntry(x, y, z, face, template), template.getValidationSettings().isUnique());
   map.markDirty();
   }
 

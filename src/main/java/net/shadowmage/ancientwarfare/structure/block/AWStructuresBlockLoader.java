@@ -6,6 +6,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
+import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -43,6 +44,10 @@ public static void load()
   builder.setIcon(0, 3, "ancientwarfare:structure/builder_side");
   builder.setIcon(0, 4, "ancientwarfare:structure/builder_side");
   builder.setIcon(0, 5, "ancientwarfare:structure/builder_side");
+  
+  AWBlocks.soundBlock = new BlockSoundBlock("sound_block");
+  GameRegistry.registerBlock(AWBlocks.soundBlock, "sound_block");
+  GameRegistry.registerTileEntity(TileSoundBlock.class, "tile_sound_block");
   }
 
 }

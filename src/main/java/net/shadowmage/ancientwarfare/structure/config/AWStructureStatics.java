@@ -43,9 +43,10 @@ public AWStructureStatics(Configuration config)
   }
 
 public static String templateExtension = "aws";
+public static String townTemplateExtension = "awt";
 public static boolean enableVillageGen = true;
 public static boolean enableStructureGeneration = true;
-public static boolean loadDefaultPack = false;
+public static boolean loadDefaultPack = true;
 private static boolean exportBlockNames = false;
 public static int clusterValueSearchRange = 16;
 public static int duplicateStructureSearchRange = 40;
@@ -58,6 +59,7 @@ public static Set<String> excludedSpawnerEntities = new HashSet<String>();
 private static HashSet<String> skippableWorldGenBlocks = new HashSet<String>();
 private static HashSet<String> worldGenTargetBlocks = new HashSet<String>();
 private static HashSet<String> scannerSkippedBlocks = new HashSet<String>();
+private static HashSet<String> townValidTargetBlocks = new HashSet<String>();
 
 private static String worldGenCategory = "a_world-gen_settings";
 private static String villageGenCategory = "b_village-gen_settings";
@@ -65,6 +67,7 @@ private static String excludedEntitiesCategory = "c_excluded_spawner_entities";
 private static String worldGenBlocks = "d_world_gen_skippable_blocks";
 private static String targetBlocks = "e_world_gen_target_blocks";
 private static String scanSkippedBlocks = "f_scanner_skipped_blocks";
+private static String townValidTargetBlocksCategory = "g_town_target_blocks";
 
 @Override
 public void initializeCategories()
@@ -75,6 +78,7 @@ public void initializeCategories()
   this.config.addCustomCategoryComment(worldGenBlocks, "Blocks that should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
   this.config.addCustomCategoryComment(targetBlocks, "List of target blocks to add to the target-block selection GUI.\nVanilla block names should be listed as the 1.7 registered name. \nMod blocks should be listed as their registered name");
   this.config.addCustomCategoryComment(scanSkippedBlocks, "List of blocks that the structure scanner will completely ignore.\nWhenever these blocks are encountered the template will instead fill that block position with a hard-air rule.\nAdd any blocks to this list that may cause crashes when scanned or duplicated.\nVanilla blocks should not need to be added, but some mod-blocks may.\nBlock names must be specified by fully-qualified name (e.g. \"minecraft:stone\")");
+  this.config.addCustomCategoryComment(townValidTargetBlocksCategory, "List of blocks that are valid target blocks for town creation.\nAny solid block found that is not on this list will prevent a town from spawning in a given chunk");
   }
 
 @Override
@@ -122,6 +126,7 @@ protected void initializeValues()
   initializeDefaultSkippableBlocks();
   initializeDefaultSkippedEntities();
   initializeDefaultAdditionalTargetBlocks();
+  initializeDefaultTownTargetBlocks();
   initializeScannerSkippedBlocks();
   this.config.save();
   }
@@ -683,6 +688,44 @@ private void initializeDefaultSkippedEntities()
   
   }
 
+private void initializeDefaultTownTargetBlocks()
+  {
+  String[] targetBlocks = new String[]
+        {
+            "minecraft:snow",
+            "minecraft:snow_layer",
+            "minecraft:ice",
+            "minecraft:water",
+            "minecraft:clay",
+            "minecraft:mycelium",
+            "minecraft:stone",
+            "minecraft:grass",
+            "minecraft:dirt",
+            "minecraft:sand",
+            "minecraft:gravel",
+            "minecraft:sand",
+            "minecraft:sandstone",
+            "BiomesOPlenty:mud",
+            "BiomesOPlenty:driedDirt",
+            "BiomesOPlenty:rocks",
+            "BiomesOPlenty:ash",
+            "BiomesOPlenty:ashStone",
+            "BiomesOPlenty:hardSand",
+            "BiomesOPlenty:hardDirt",
+            "BiomesOPlenty:biomeBlock",
+            "BiomesOPlenty:crystal",
+            "BiomesOPlenty:gemOre",
+            "BiomesOPlenty:cragRock",
+            "mam:mam_mamgravel",
+            "mam:mam_depthquartz",
+            "mam:mam_depthquartzchiseled",
+            "mam:mam_depthquartzlines",
+            "mam:mam_depthcrystalblock",
+        };    
+  targetBlocks = config.get("town_target_blocks", townValidTargetBlocksCategory, targetBlocks, "List of blocks that are valid").getStringList();
+  for(String st : targetBlocks){townValidTargetBlocks.add(st);}
+  }
+
 private void initializeDefaultAdditionalTargetBlocks()
   {
   /**
@@ -727,6 +770,11 @@ private void initializeDefaultAdditionalTargetBlocks()
     {
     worldGenTargetBlocks.add(st);
     }
+  }
+
+public static boolean isValidTownTargetBlock(Block block)
+  {
+  return block==null || block==Blocks.air? false : townValidTargetBlocks.contains(BlockDataManager.instance().getNameForBlock(block));
   }
 
 public static boolean skippableBlocksContains(Block block)

@@ -115,9 +115,19 @@ public static final String NPC_FACTION_CUSTOM_3_SOLDIER_ELITE = "custom_3.soldie
 public static final String NPC_FACTION_CUSTOM_3_LEADER_ELITE = "custom_3.leader.elite";
 public static final String NPC_FACTION_CUSTOM_3_CIVILIAN_FEMALE = "custom_3.civilian.female";
 
+public static final String NPC_FACTION_BANDIT_BARD = "bandit.bard";
+public static final String NPC_FACTION_DESERT_BARD = "desert.bard";
+public static final String NPC_FACTION_NATIVE_BARD = "native.bard";
+public static final String NPC_FACTION_PIRATE_BARD = "pirate.bard";
+public static final String NPC_FACTION_VIKING_BARD = "viking.bard";
+public static final String NPC_FACTION_CUSTOM_1_BARD = "custom_1.bard";
+public static final String NPC_FACTION_CUSTOM_2_BARD = "custom_2.bard";
+public static final String NPC_FACTION_CUSTOM_3_BARD = "custom_3.bard";
+
 /**
  * Vehicle Module Entity Registrations
  */
+
 public static final String VEHICLE_TEST = "vehicle_test";
 public static final String MISSILE_TEST = "missile_test";
 
@@ -125,6 +135,7 @@ public static final String MISSILE_TEST = "missile_test";
  * Structure Module Entity Registrations
  */
 //TODO add gates?? where are they registered at?
+public static final String AW_GATES = "aw_gate";
 
 private static HashMap<String, EntityDeclaration> entityRegistrations = new HashMap<String, EntityDeclaration>();
 @SuppressWarnings("rawtypes")

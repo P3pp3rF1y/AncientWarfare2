@@ -27,9 +27,10 @@ public void updateEntity()
     { 
     serverNetworkUpdate();    
     torqueIn = torqueCell.getEnergy() - prevEnergy;
-    torqueOut = transferPowerTo(getPrimaryFacing());
     torqueLoss = applyPowerDrain(torqueCell);
     torqueLoss += applyPowerDrain(inputCell);
+    torqueLoss += applyDrainToStorage();
+    torqueOut = transferPowerTo(getPrimaryFacing());
     balancePower();
     prevEnergy = torqueCell.getEnergy();
     }
@@ -38,6 +39,13 @@ public void updateEntity()
     clientNetworkUpdate();
     updateRotation();
     }
+  }
+
+protected double applyDrainToStorage()
+  {
+  TileFlywheelStorage storage = getControlledFlywheel(); 
+  if(storage==null){return 0;}
+  return storage.torqueLoss;
   }
 
 protected void balancePower()

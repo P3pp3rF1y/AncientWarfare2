@@ -39,6 +39,13 @@ public StructureEntry(int x, int y, int z, int face, StructureTemplate template)
   value = template.getValidationSettings().getClusterValue();
   }
 
+public StructureEntry(StructureBB bb, String name, int value)
+  {
+  this.name = name;
+  this.bb = bb;
+  this.value = value;
+  }
+
 public StructureEntry()
   {
   bb = new StructureBB(new BlockPosition(), new BlockPosition());

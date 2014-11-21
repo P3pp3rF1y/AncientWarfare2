@@ -31,6 +31,7 @@ protected boolean highlightOnMouseOver = true;
 protected boolean renderTooltip = true;
 protected boolean renderItemQuantity = true;
 protected boolean renderSlotBackground = true;
+protected boolean renderLabel = false;
 
 public ItemSlot(int topLeftX, int topLeftY, ItemStack item, ITooltipRenderer render)
   {
@@ -53,6 +54,8 @@ public ItemSlot(int topLeftX, int topLeftY, ItemStack item, ITooltipRenderer ren
     };
   addNewListener(listener);
   }
+
+public void setRenderLabel(boolean val){this.renderLabel = val;}
 
 public void setItem(ItemStack item)
   {
@@ -120,6 +123,13 @@ public void render(int mouseX, int mouseY, float partialTick)
         renderStackSize(renderX+1, renderY+1, item.stackSize, font);
         }
       GL11.glDisable(GL11.GL_LIGHTING);
+      if(renderLabel)
+        {
+        int x = renderX + 18;
+        int y = renderY + 3;
+        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+        font.drawStringWithShadow(item.getDisplayName(), x, y, 0xffffffff);
+        }
       }    
     
     if(isMouseOverElement(mouseX, mouseY))

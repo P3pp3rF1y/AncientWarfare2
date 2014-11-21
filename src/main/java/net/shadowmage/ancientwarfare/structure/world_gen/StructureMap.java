@@ -32,7 +32,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
 public class StructureMap extends WorldSavedData
 {
@@ -73,12 +72,11 @@ public Collection<StructureEntry> getEntriesNear(World world, int worldX, int wo
   return map.getEntriesNear(world.provider.dimensionId, cx, cz, chunkRadius, expandBySize, list);
   }
 
-public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, int face, StructureTemplate structure)
+public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, int face, StructureEntry entry, boolean unique)
   {
   int cx = worldX >> 4;
   int cz = worldZ >> 4;
-  StructureEntry entry = new StructureEntry(worldX, worldY, worldZ, face, structure);  
-  map.setGeneratedAt(world.provider.dimensionId, cx, cz, entry, structure.getValidationSettings().isUnique());
+  map.setGeneratedAt(world.provider.dimensionId, cx, cz, entry, unique);
   this.markDirty();
   }
 

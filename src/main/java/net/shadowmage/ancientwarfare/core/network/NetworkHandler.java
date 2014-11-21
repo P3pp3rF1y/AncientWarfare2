@@ -33,8 +33,8 @@ public static final int PACKET_ENTITY = 5;
 public static final int PACKET_RESEARCH_INIT = 6;
 public static final int PACKET_RESEARCH_ADD = 7;
 public static final int PACKET_RESEARCH_START = 8;
-public static final int PACKET_STRUCTURE_IMAGE_LIST = 9;
-public static final int PACKET_STRUCTURE_IMAGE_DATA = 10;
+//public static final int PACKET_STRUCTURE_IMAGE_LIST = 9;//unused
+//public static final int PACKET_STRUCTURE_IMAGE_DATA = 10;//unused
 public static final int PACKET_STRUCTURE_REMOVE = 11;
 public static final int PACKET_NPC_COMMAND = 12;
 public static final int PACKET_FACTION_UPDATE = 13;
@@ -90,6 +90,8 @@ public static final int GUI_NPC_CREATIVE = 44;
 public static final int GUI_RESEARCH_BOOK = 45;
 public static final int GUI_WORKSITE_BOUNDS = 46;
 public static final int GUI_NPC_PLAYER_OWNED_TRADE = 47;
+public static final int GUI_SOUND_BLOCK = 48;
+public static final int GUI_NPC_FACTION_BARD = 49;
 
 private FMLEventChannel channel;
 

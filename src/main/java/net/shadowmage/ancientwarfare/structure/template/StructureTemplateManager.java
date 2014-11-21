@@ -22,17 +22,13 @@ package net.shadowmage.ancientwarfare.structure.template;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.Map;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
-import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageData;
-import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageList;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 
 public class StructureTemplateManager
@@ -43,7 +39,7 @@ public static StructureTemplateManager instance(){return instance;}
 
 private HashMap<String,StructureTemplateClient> clientTemplates = new HashMap<String,StructureTemplateClient>();//server-side client-templates
 private HashMap<String,BufferedImage> templateImages = new HashMap<String,BufferedImage>();//server-side images
-private HashMap<String,String> imageMD5s = new HashMap<String,String>();
+//private HashMap<String,String> imageMD5s = new HashMap<String,String>();
 private HashMap<String,StructureTemplate> loadedTemplates = new HashMap<String,StructureTemplate>();
 
 public void addTemplate(StructureTemplate template)
@@ -84,8 +80,8 @@ public void onPlayerConnect(EntityPlayerMP player)
   pkt.packetData.setTag("structureList", list);
   NetworkHandler.sendToPlayer(player, pkt);
   
-  PacketStructureImageList pkt2 = new PacketStructureImageList(this.imageMD5s);
-  NetworkHandler.sendToPlayer(player, pkt2);
+//  PacketStructureImageList pkt2 = new PacketStructureImageList(this.imageMD5s);
+//  NetworkHandler.sendToPlayer(player, pkt2);
   }
 
 public boolean removeTemplate(String name)
@@ -93,7 +89,6 @@ public boolean removeTemplate(String name)
   if(this.loadedTemplates.containsKey(name))
     {
     this.loadedTemplates.remove(name);
-    this.imageMD5s.remove(name);
     this.clientTemplates.remove(name);
     this.templateImages.remove(name);    
     NetworkHandler.sendToAllPlayers(new PacketStructureRemove(name));
@@ -107,31 +102,14 @@ public StructureTemplate getTemplate(String name)
   return this.loadedTemplates.get(name);
   }
 
-public void addTemplateImage(String imageName, BufferedImage image, String md5)
+public void addTemplateImage(String imageName, BufferedImage image)
   {
   this.templateImages.put(imageName, image);
-  this.imageMD5s.put(imageName, md5);
-  }
-
-public void handleClientImageNameListRequest(EntityPlayer player, Map<String, String> imageNames)
-  {
-  PacketStructureImageData pkt;
-  for(String imageName : imageNames.keySet())
-    {
-    if(!templateImages.containsKey(imageName)){continue;}
-    pkt = new PacketStructureImageData(imageName, templateImages.get(imageName));
-    NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
-    }
   }
 
 public BufferedImage getTemplateImage(String imageName)
   {
   return templateImages.get(imageName);
-  }
-
-public String getImageMD5(String imageName)
-  {
-  return imageMD5s.get(imageName);
   }
 
 }

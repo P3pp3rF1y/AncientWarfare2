@@ -11,103 +11,7 @@ import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditArcherElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditCivilianFemale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditCivilianMale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditLeader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditLeaderElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditMountedArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditMountedSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditPriest;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditSoldierElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcBanditTrader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Archer;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1ArcherElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1CivilianFemale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1CivilianMale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Leader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1LeaderElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1MountedArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1MountedSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Priest;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Soldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1SoldierElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_1Trader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Archer;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2ArcherElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2CivilianFemale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2CivilianMale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Leader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2LeaderElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2MountedArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2MountedSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Priest;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Soldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2SoldierElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_2Trader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Archer;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3ArcherElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3CivilianFemale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3CivilianMale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Leader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3LeaderElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3MountedArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3MountedSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Priest;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Soldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3SoldierElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcCustom_3Trader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertArcherElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertCivilianFemale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertCivilianMale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertLeader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertLeaderElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertMountedArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertMountedSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertPriest;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertSoldierElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcDesertTrader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeArcherElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeCivilianFemale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeCivilianMale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeLeader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeLeaderElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeMountedArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeMountedSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativePriest;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeSoldierElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcNativeTrader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateArcherElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateCivilianFemale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateCivilianMale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateLeader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateLeaderElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateMountedArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateMountedSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPiratePriest;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateSoldierElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcPirateTrader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingArcherElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingCivilianFemale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingCivilianMale;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingLeader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingLeaderElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingMountedArcher;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingMountedSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingPriest;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingSoldier;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingSoldierElite;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcVikingTrader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.*;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
@@ -335,6 +239,16 @@ private static void addBandits()
       }
     };
   addNpcRegistration(reg, "bandit.leader.elite", "ancientwarfare:npc/spawner_bandit_leader");
+  
+  reg = new NpcFactionDeclaration(NpcBanditBard.class, AWEntityRegistry.NPC_FACTION_BANDIT_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, AWEntityRegistry.NPC_FACTION_BANDIT_BARD)
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcBanditBard(world);
+      }
+    };
+  addNpcRegistration(reg, AWEntityRegistry.NPC_FACTION_BANDIT_BARD, "ancientwarfare:npc/spawner_bandit_bard");
   }
 
 private static void addDesertNatives()
@@ -462,6 +376,16 @@ private static void addDesertNatives()
       }
     };
   addNpcRegistration(reg, "desert.leader.elite", "ancientwarfare:npc/spawner_desert_leader");
+  
+  reg = new NpcFactionDeclaration(NpcDesertBard.class, AWEntityRegistry.NPC_FACTION_DESERT_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, AWEntityRegistry.NPC_FACTION_DESERT_BARD)
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcDesertBard(world);
+      }
+    };
+  addNpcRegistration(reg, AWEntityRegistry.NPC_FACTION_DESERT_BARD, "ancientwarfare:npc/spawner_desert_bard");
   }
 
 private static void addJungleNatives()
@@ -589,6 +513,16 @@ private static void addJungleNatives()
       }
     };
   addNpcRegistration(reg, "native.leader.elite", "ancientwarfare:npc/spawner_native_leader");
+  
+  reg = new NpcFactionDeclaration(NpcNativeBard.class, AWEntityRegistry.NPC_FACTION_NATIVE_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, AWEntityRegistry.NPC_FACTION_NATIVE_BARD)
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcNativeBard(world);
+      }
+    };
+  addNpcRegistration(reg, AWEntityRegistry.NPC_FACTION_NATIVE_BARD, "ancientwarfare:npc/spawner_native_bard");
   }
 
 private static void addPirates()
@@ -716,6 +650,16 @@ private static void addPirates()
       }
     };
   addNpcRegistration(reg, "pirate.leader.elite", "ancientwarfare:npc/spawner_pirate_leader");
+  
+  reg = new NpcFactionDeclaration(NpcPirateBard.class, AWEntityRegistry.NPC_FACTION_PIRATE_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, AWEntityRegistry.NPC_FACTION_PIRATE_BARD)
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcPirateBard(world);
+      }
+    };
+  addNpcRegistration(reg, AWEntityRegistry.NPC_FACTION_PIRATE_BARD, "ancientwarfare:npc/spawner_pirate_bard");
   }
 
 private static void addVikings()
@@ -843,6 +787,16 @@ private static void addVikings()
       }
     };
   addNpcRegistration(reg, "viking.leader.elite", "ancientwarfare:npc/spawner_viking_leader");
+  
+  reg = new NpcFactionDeclaration(NpcVikingBard.class, AWEntityRegistry.NPC_FACTION_VIKING_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, AWEntityRegistry.NPC_FACTION_VIKING_BARD)
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcVikingBard(world);
+      }
+    };
+  addNpcRegistration(reg, AWEntityRegistry.NPC_FACTION_VIKING_BARD, "ancientwarfare:npc/spawner_viking_bard");
   }
 
 private static void addCustom1()
@@ -970,6 +924,16 @@ private static void addCustom1()
       }
     };
   addNpcRegistration(reg, "custom_1.leader.elite", "ancientwarfare:npc/spawner_custom_1_leader");
+  
+  reg = new NpcFactionDeclaration(NpcCustom_1Bard.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, AWEntityRegistry.NPC_FACTION_CUSTOM_1_BARD)
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_1Bard(world);
+      }
+    };
+  addNpcRegistration(reg, AWEntityRegistry.NPC_FACTION_CUSTOM_1_BARD, "ancientwarfare:npc/spawner_custom_1_bard");
   }
 
 private static void addCustom2()
@@ -1097,6 +1061,16 @@ private static void addCustom2()
       }
     };
   addNpcRegistration(reg, "custom_2.leader.elite", "ancientwarfare:npc/spawner_custom_2_leader");
+  
+  reg = new NpcFactionDeclaration(NpcCustom_2Bard.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, AWEntityRegistry.NPC_FACTION_CUSTOM_2_BARD)
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_2Bard(world);
+      }
+    };
+  addNpcRegistration(reg, AWEntityRegistry.NPC_FACTION_CUSTOM_2_BARD, "ancientwarfare:npc/spawner_custom_2_bard");
   }
 
 private static void addCustom3()
@@ -1225,6 +1199,16 @@ private static void addCustom3()
       }
     };
   addNpcRegistration(reg, "custom_3.leader.elite", "ancientwarfare:npc/spawner_custom_3_leader");
+  
+  reg = new NpcFactionDeclaration(NpcCustom_3Bard.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, AWEntityRegistry.NPC_FACTION_CUSTOM_3_BARD)
+    {    
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new NpcCustom_3Bard(world);
+      }
+    };
+  addNpcRegistration(reg, AWEntityRegistry.NPC_FACTION_CUSTOM_3_BARD, "ancientwarfare:npc/spawner_custom_3_bard");
   }
 
 /**

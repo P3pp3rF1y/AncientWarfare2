@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -21,10 +20,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
-import net.shadowmage.ancientwarfare.structure.network.PacketStructureImageList;
 
 public class StructureTemplateManagerClient
 {
@@ -32,7 +29,6 @@ private StructureTemplateManagerClient(){}
 private static StructureTemplateManagerClient instance = new StructureTemplateManagerClient(){};
 public static StructureTemplateManagerClient instance(){return instance;}
 
-private HashMap<String,String> clientImageMD5s = new HashMap<String, String>();
 private HashMap<String,ResourceLocation> clientTemplateImages = new HashMap<String, ResourceLocation>();
 private HashMap<String,StructureTemplateClient> clientTemplates = new HashMap<String,StructureTemplateClient>();
 
@@ -66,7 +62,6 @@ private void readClientStructure(NBTTagCompound tag)
 public void removeTemplate(String name)
   {
   this.clientTemplates.remove(name);
-  this.clientImageMD5s.remove(name);
   this.clientTemplateImages.remove(name);
   }
 
@@ -104,29 +99,6 @@ public ResourceLocation getImageFor(String templateName)
   return clientTemplateImages.get(templateName+".png");
   }
 
-public void handleStructureImageNameList(Map<String, String> imageMap)
-  {    
-  String pathBase = AWCoreStatics.configPathForFiles+"structures/image_cache/";
-  File dirBase = new File(pathBase);
-  dirBase.mkdirs();
-  Map<String, String> neededFiles = new HashMap<String, String>();
-  File testFile;
-  for(String name : imageMap.keySet())
-    {
-    testFile = new File(pathBase+name);
-    if(!clientTemplateImages.containsKey(name) && !testFile.exists())
-      {
-      neededFiles.put(name, name);
-      }
-    else if(clientImageMD5s.containsKey(name) && !clientImageMD5s.get(name).equals(imageMap.get(name)))
-      {
-      neededFiles.put(name, name);      
-      }
-    }  
-  
-  PacketStructureImageList pkt = new PacketStructureImageList(neededFiles);
-  NetworkHandler.sendToServer(pkt);
-  }
 
 private void loadTemplateImage(String imageName)
   {
@@ -140,22 +112,17 @@ private void loadTemplateImage(String imageName)
     if(image!=null)
       {
       Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
-      String md5 = StructureTemplateManager.instance().getImageMD5(imageName);
       clientTemplateImages.put(imageName, loc);
-      clientImageMD5s.put(imageName, md5);      
       }
     }
   else
     {
-    String md5;
     try
       {
       BufferedImage image = ImageIO.read(file);
       if(image.getWidth()==AWStructureStatics.structureImageWidth && image.getHeight()==AWStructureStatics.structureImageHeight)
         {
-        Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));      
-        md5 = getMD5(file);
-        clientImageMD5s.put(imageName, md5);
+        Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));   
         clientTemplateImages.put(imageName, loc);      
         }  
       else

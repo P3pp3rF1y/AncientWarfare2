@@ -24,6 +24,7 @@ private TownTemplate template;
 private TownPartCollection town;
 
 private List<StructureTemplate> templatesToGenerate = new ArrayList<StructureTemplate>();
+List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<StructureTemplate>();
 
 public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   {
@@ -34,7 +35,7 @@ public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   this.area.townCenterX = area.getBlockMinX() + area.getBlockWidth()/2;
   this.area.townCenterZ = area.getBlockMinZ() + area.getBlockLength()/2;  
   this.area.wallSize = template.getWallSize(); 
-  this.town = new TownPartCollection(area, template.getTownBlockSize(), template.getTownPlotSize(), rng);
+  this.town = new TownPartCollection(template, area, rng);
   }
 
 public void generate()
@@ -52,12 +53,23 @@ private void fillStructureMap()
   for(TownStructureEntry e : template.getStructureEntries())
     {
     StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+    if(t==null){continue;}
     min = e.min;
     max = e.max;
     gen = min + (max-min>0 ? rng.nextInt(max-min): 0);
     for(int i = 0; i < gen; i++)
       {
       templatesToGenerate.add(t);
+      }
+    }
+  for(TownStructureEntry e : template.getCosmeticEntries())
+    {
+    StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);  
+    if(t==null){continue;}
+    gen = e.min;
+    for(int i = 0; i < gen; i++)
+      {
+      this.cosmeticTemplatesToGenerate.add(t);
       }
     }
   }
