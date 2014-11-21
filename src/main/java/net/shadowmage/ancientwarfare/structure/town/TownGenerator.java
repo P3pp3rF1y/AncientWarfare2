@@ -35,7 +35,7 @@ public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   this.area.townCenterX = area.getBlockMinX() + area.getBlockWidth()/2;
   this.area.townCenterZ = area.getBlockMinZ() + area.getBlockLength()/2;  
   this.area.wallSize = template.getWallSize(); 
-  this.town = new TownPartCollection(area, template.getTownBlockSize(), template.getTownPlotSize(), rng);
+  this.town = new TownPartCollection(template, area, rng);
   }
 
 public void generate()

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -32,6 +31,7 @@ public final int length;
  */
 public final StructureBB worldBounds;
 public final TownBoundingArea boundingArea;
+public final TownTemplate template;
 
 /**
  * 0=nw<br>
@@ -43,12 +43,13 @@ TownPartQuadrant[] quadrants = new TownPartQuadrant[4];
 List<StructureTemplate> templatesToGenerate = new ArrayList<StructureTemplate>();
 List<StructureTemplate> cosmeticTemplatesToGenerate;
 
-public TownPartCollection(TownBoundingArea area, int blockSize, int plotSize, Random rng)
+public TownPartCollection(TownTemplate template, TownBoundingArea area, Random rng)
   {
+  this.template = template;
   this.boundingArea = area;
   this.rng = rng;
-  this.blockSize = blockSize;
-  this.plotSize = plotSize;
+  this.blockSize = template.getTownBlockSize();
+  this.plotSize = template.getTownPlotSize();
   this.worldBounds = new StructureBB(new BlockPosition(area.getTownMinX(), area.getSurfaceY()+1, area.getTownMinZ()), new BlockPosition(area.getTownMaxX(), area.getSurfaceY()+1, area.getTownMaxZ()));
   this.width = (worldBounds.max.x - worldBounds.min.x)+1;
   this.length = (worldBounds.max.z - worldBounds.min.z)+1;
@@ -292,7 +293,6 @@ private void removeTemplate(StructureTemplate t)
   templatesToGenerate.remove(t);
   }
 
-
 /**
  * 
  * @param world the world object that is currently being generated
@@ -330,20 +330,19 @@ private void generateStructure(World world, TownPartPlot plot, StructureTemplate
 
 public void generateRoads(World world)
   {
-  for(TownPartQuadrant tq : quadrants){genRoadsTest(world, tq);}
+  for(TownPartQuadrant tq : quadrants){generateRoads(world, tq);}
   }
 
-private void genRoadsTest(World world, TownPartQuadrant tq)
+private void generateRoads(World world, TownPartQuadrant tq)
   {
-  Block block = Blocks.cobblestone;
   int minX = tq.bb.min.x;
   int maxX = tq.bb.max.x;
   if(tq.hasRoadBorder(Direction.WEST)){minX--;}
   if(tq.hasRoadBorder(Direction.EAST)){maxX++;}
   for(int x = minX; x<=maxX; x++)
     {
-    if(tq.hasRoadBorder(Direction.NORTH)){genRoadTestBlock(world, x, tq.bb.min.z-1, block);}//north
-    if(tq.hasRoadBorder(Direction.SOUTH)){genRoadTestBlock(world, x, tq.bb.max.z+1, block);}//south
+    if(tq.hasRoadBorder(Direction.NORTH)){genRoadTestBlock(world, x, tq.bb.min.z-1);}//north
+    if(tq.hasRoadBorder(Direction.SOUTH)){genRoadTestBlock(world, x, tq.bb.max.z+1);}//south
     }
   int minZ = tq.bb.min.z;
   int maxZ = tq.bb.max.z;
@@ -351,26 +350,25 @@ private void genRoadsTest(World world, TownPartQuadrant tq)
   if(tq.hasRoadBorder(Direction.SOUTH)){maxZ++;}
   for(int z = minZ; z<=maxZ; z++)
     {
-    if(tq.hasRoadBorder(Direction.WEST)){genRoadTestBlock(world, tq.bb.min.x-1, z, block);}//west
-    if(tq.hasRoadBorder(Direction.EAST)){genRoadTestBlock(world, tq.bb.max.x+1, z, block);}//east
+    if(tq.hasRoadBorder(Direction.WEST)){genRoadTestBlock(world, tq.bb.min.x-1, z);}//west
+    if(tq.hasRoadBorder(Direction.EAST)){genRoadTestBlock(world, tq.bb.max.x+1, z);}//east
     }
   for(TownPartBlock tb : tq.blocks)
     {
-    genRoadsTest(world, tb);
+    generateRoads(world, tb);
     }
   }
 
-private void genRoadsTest(World world, TownPartBlock tb)
+private void generateRoads(World world, TownPartBlock tb)
   {
-  Block block = Blocks.cobblestone;
   int minX = tb.bb.min.x;
   int maxX = tb.bb.max.x;
   if(tb.hasRoadBorder(Direction.WEST)){minX--;}
   if(tb.hasRoadBorder(Direction.EAST)){maxX++;}
   for(int x = minX; x<=maxX; x++)
     {
-    if(tb.hasRoadBorder(Direction.NORTH)){genRoadTestBlock(world, x, tb.bb.min.z-1, block);}//north
-    if(tb.hasRoadBorder(Direction.SOUTH)){genRoadTestBlock(world, x, tb.bb.max.z+1, block);}//south
+    if(tb.hasRoadBorder(Direction.NORTH)){genRoadTestBlock(world, x, tb.bb.min.z-1);}//north
+    if(tb.hasRoadBorder(Direction.SOUTH)){genRoadTestBlock(world, x, tb.bb.max.z+1);}//south
     }
   int minZ = tb.bb.min.z;
   int maxZ = tb.bb.max.z;
@@ -378,33 +376,19 @@ private void genRoadsTest(World world, TownPartBlock tb)
   if(tb.hasRoadBorder(Direction.SOUTH)){maxZ++;}
   for(int z = minZ; z<=maxZ; z++)
     {
-    if(tb.hasRoadBorder(Direction.WEST)){genRoadTestBlock(world, tb.bb.min.x-1, z, block);}//west
-    if(tb.hasRoadBorder(Direction.EAST)){genRoadTestBlock(world, tb.bb.max.x+1, z, block);}//east
-    }
-  for(TownPartPlot tp : tb.plots){genRoadsTest(world, tp);}
-  }
-
-private void genRoadsTest(World world, TownPartPlot tp)
-  {
-  Block block = Blocks.netherrack;
-  for(int x = tp.bb.min.x; x<=tp.bb.max.x; x++)
-    {
-    genRoadTestBlock(world, x, tp.bb.min.z, block);
-    genRoadTestBlock(world, x, tp.bb.max.z, block);
-    }
-  for(int z = tp.bb.min.z; z<=tp.bb.max.z; z++)
-    {
-    genRoadTestBlock(world, tp.bb.min.x, z, block);
-    genRoadTestBlock(world, tp.bb.max.x, z, block);
+    if(tb.hasRoadBorder(Direction.WEST)){genRoadTestBlock(world, tb.bb.min.x-1, z);}//west
+    if(tb.hasRoadBorder(Direction.EAST)){genRoadTestBlock(world, tb.bb.max.x+1, z);}//east
     }
   }
 
-private void genRoadTestBlock(World world, int x, int z, Block block)
+private void genRoadTestBlock(World world, int x, int z)
   {
+  Block block = template.getRoadFillBlock();
+  int meta = template.getRoadFillMeta();
   x+=worldBounds.min.x;
   int y = worldBounds.min.y-1;
   z+=worldBounds.min.z;
-  world.setBlock(x, y, z, block);
+  world.setBlock(x, y, z, block, meta, 3);
   }
 
 private void write(TownPartQuadrant tq)
