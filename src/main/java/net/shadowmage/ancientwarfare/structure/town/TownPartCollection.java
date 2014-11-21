@@ -258,7 +258,7 @@ private boolean generateForPlot(World world, TownPartPlot plot, StructureTemplat
   if(face==0 || face==2){width-=expansion;}
   else{length-=expansion;}
   generateStructure(world, plot, template, face, width, length); 
-  removeTemplate(template);
+  removeTemplate(template);//remove template from 'to generate' list
   return true;
   }
 
