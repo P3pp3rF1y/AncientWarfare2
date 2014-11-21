@@ -117,7 +117,7 @@ public void generateGrid()
   AWLog.logDebug("grid: \n"+line);
   }
 
-public void generateStructures(World world, StructureTemplate townHall, List<StructureTemplate> toGenerate, List<StructureTemplate> cosmetics)
+public void generateStructures(World world, StructureTemplate townHall, List<StructureTemplate> toGenerate, List<StructureTemplate> cosmetics, int expansion)
   {  
   this.templatesToGenerate.addAll(toGenerate);
   this.cosmeticTemplatesToGenerate = cosmetics;
@@ -129,11 +129,11 @@ public void generateStructures(World world, StructureTemplate townHall, List<Str
   sortBlocksByDistance(blocks);  
   if(townHall!=null)
     {
-    generateTownHall(world, townHall);    
+    generateTownHall(world, townHall, expansion);    
     }
   for(TownPartBlock block : blocks)//first pass, actual structures
     {
-    generateStructures(world, block);
+    generateStructures(world, block, expansion);
     if(templatesToGenerate.isEmpty()){break;}//have generated all structures, no reason in continuing anymore
     }
   for(TownPartBlock block : blocks)//second pass, cosmetic stuff
@@ -142,7 +142,7 @@ public void generateStructures(World world, StructureTemplate townHall, List<Str
     }
   }
 
-private void generateTownHall(World world, StructureTemplate townHall)
+private void generateTownHall(World world, StructureTemplate townHall, int expansion)
   {
   int quadrantNumber = rng.nextInt(4);
   TownPartQuadrant tq = quadrants[quadrantNumber];//southeast quadrant  
@@ -154,7 +154,7 @@ private void generateTownHall(World world, StructureTemplate townHall)
   int px = tq.getXDir()==Direction.EAST? 0 : block.plotsWidth-1;
   int pz = tq.getZDir()==Direction.SOUTH? 0 : block.plotsLength-1;
   plot = block.getPlot(px, pz);
-  generateForPlot(world, plot, townHall);
+  generateForPlot(world, plot, townHall, expansion);
   }
 
 /**
@@ -183,7 +183,7 @@ private void generateCosmetics(World world, TownPartBlock block)
     }
   }
 
-private void generateStructures(World world, TownPartBlock block)
+private void generateStructures(World world, TownPartBlock block, int expansion)
   {  
   int maxRetry = 1;//TODO base this off of townblock distance from center
   for(TownPartPlot plot : block.plots)
@@ -194,7 +194,7 @@ private void generateStructures(World world, TownPartBlock block)
     for(int i = 0; i < maxRetry; i++)
       {
       if(templatesToGenerate.isEmpty()){break;}
-      if(generateForPlot(world, plot, getRandomTemplate())){break;}
+      if(generateForPlot(world, plot, getRandomTemplate(), expansion)){break;}
       }
     }
   }
@@ -228,7 +228,7 @@ private boolean generateCosmeticForPlot(World world, TownPartPlot plot, Structur
  * @param plot
  * @return true if generated
  */
-private boolean generateForPlot(World world, TownPartPlot plot, StructureTemplate template)
+private boolean generateForPlot(World world, TownPartPlot plot, StructureTemplate template, int expansion)
   {  
   int face = rng.nextInt(4);//select random face  
   for(int i = 0, f=face; i < 4; i++, f++)//and then iterate until a valid face is found
@@ -243,6 +243,8 @@ private boolean generateForPlot(World world, TownPartPlot plot, StructureTemplat
   face = (face+2)%4;//reverse face from road edge...
   int width = face==0 || face==2 ? template.xSize : template.zSize;
   int length = face==0 || face==2 ? template.zSize : template.xSize;
+  if(face==0 || face==2){width+=expansion;}//temporarily expand the size of the bb by the town-template building expansion size, ensures there is room around buildings
+  else{length+=expansion;}
   if(plot.getWidth()<width || plot.getLength()<length)
     {
     if(!expandPlot(plot, width, length))
@@ -251,6 +253,8 @@ private boolean generateForPlot(World world, TownPartPlot plot, StructureTemplat
       }
     }  
   plot.markClosed();
+  if(face==0 || face==2){width-=expansion;}
+  else{length-=expansion;}
   generateStructure(world, plot, template, face, width, length); 
   removeTemplate(template);
   return true;

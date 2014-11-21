@@ -7,7 +7,5 @@ area validation
 template selection
 
 template generation
-* need to add in town-wide 'structure buffer' setting; expand structure width by specified size on each side, to enable clear areas between structures.
 * need to add in lamp-post generation code
-* need to add in second-pass plot generation for cosmetic structures
-
+* finish up cosmetic structure pass

@@ -57,6 +57,7 @@ private static void parseHeader(Iterator<String> it, TownTemplate template)
     else if(line.startsWith("name")){template.setTownTypeName(StringTools.safeParseString("=", line));}
     else if(line.startsWith("minsize")){template.setMinSize(StringTools.safeParseInt("=", line));}
     else if(line.startsWith("maxsize")){template.setMaxSize(StringTools.safeParseInt("=", line));}
+    else if(line.startsWith("buildingexpansion")){template.setTownBuildingWidthExpansion(StringTools.safeParseInt("=", line));}
     else if(line.startsWith("selectionweight")){template.setSelectionWeight(StringTools.safeParseInt("=", line));}
     else if(line.startsWith("clustervalue")){template.setClusterValue(StringTools.safeParseInt("=", line));}
     else if(line.startsWith("townblocksize")){template.setTownBlockSize(StringTools.safeParseInt("=", line));}

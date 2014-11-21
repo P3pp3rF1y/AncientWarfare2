@@ -7,7 +7,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public final class TownTemplate
 {
@@ -33,6 +32,7 @@ private int clusterValue;//value inserted into template gen map to discourage ne
  */
 private int townBlockSize;//
 private int townPlotSize;//
+private int townBuildingWidthExpansion;
 
 private Block roadFillBlock = Blocks.gravel;//
 private int roadFillMeta = 0;
@@ -84,6 +84,8 @@ public final int getMinSize(){return minSize;}
 public final void setMinSize(int minSize){this.minSize = minSize;}
 public final int getMaxSize(){return maxSize;}
 public final void setMaxSize(int maxSize){this.maxSize = maxSize;}
+public final void setTownBuildingWidthExpansion(int townBuildingWidthExpansion){this.townBuildingWidthExpansion = townBuildingWidthExpansion;}
+public final int getTownBuildingWidthExpansion(){return townBuildingWidthExpansion;}
 public final int getSelectionWeight(){return selectionWeight;}
 public final void setSelectionWeight(int selectionWeight){this.selectionWeight = selectionWeight;}
 public final int getClusterValue(){return clusterValue;}
@@ -145,7 +147,6 @@ public final String getRandomWeightedGateRight(Random rng){return getRandomWeigh
 
 private static String getRandomWeightedWallPiece(Random rng, List<TownWallEntry> list, int totalWeight)
   {
-  AWLog.logDebug("getting random wall...: "+totalWeight);
   int roll = rng.nextInt(totalWeight);
   for(TownWallEntry e : list)
     {
@@ -188,7 +189,6 @@ public TownWallEntry(String name, String type, int id, int weight)
   this.typeName = type;
   this.id = id;
   this.weight=weight;  
-  AWLog.logDebug("parsed wall type entry: "+name+" : "+type+" : "+id+" : "+weight);
   }
 }
 
