@@ -63,6 +63,17 @@ public void setupElements()
     };
   random.setChecked(data.getIsRandom());
   area.addGuiElement(random);
+  
+  Checkbox redstone = new Checkbox(128, totalHeight, 16, 16, "guistrings.redstone")
+    {
+    @Override
+    public void onToggled()
+      {
+      container.redstoneInteraction = checked();
+      }
+    };
+  redstone.setChecked(container.redstoneInteraction);
+  area.addGuiElement(redstone);
   totalHeight+=16;
   
   NumberInput minDelay = new NumberInput(88, totalHeight, 55, data.getMinDelay(), this)

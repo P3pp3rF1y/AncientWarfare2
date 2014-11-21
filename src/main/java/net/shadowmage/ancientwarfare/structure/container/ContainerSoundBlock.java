@@ -11,12 +11,14 @@ public class ContainerSoundBlock extends ContainerBase
 
 public SongPlayData data;
 public TileSoundBlock tile;
+public boolean redstoneInteraction;
 
 public ContainerSoundBlock(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
   tile = (TileSoundBlock) player.worldObj.getTileEntity(x, y, z);
   data = tile.getTuneData();
+  redstoneInteraction = tile.isRedstoneInteraction();
   }
 
 @Override
@@ -24,6 +26,7 @@ public void sendInitData()
   {
   NBTTagCompound tag = new NBTTagCompound();
   tag.setTag("tuneData", data.writeToNBT(new NBTTagCompound()));
+  tag.setBoolean("redstone", redstoneInteraction);
   sendDataToClient(tag);
   }
 
@@ -34,6 +37,8 @@ public void handlePacketData(NBTTagCompound tag)
     {
     data.readFromNBT(tag.getCompoundTag("tuneData"));
     }
+  redstoneInteraction = tag.getBoolean("redstone");
+  tile.setRedstoneInteraction(redstoneInteraction);
   refreshGui();
   }
 
@@ -43,6 +48,7 @@ public void sendTuneDataToServer(EntityPlayer player)
     {
     NBTTagCompound tag = new NBTTagCompound();
     tag.setTag("tuneData", data.writeToNBT(new NBTTagCompound()));
+    tag.setBoolean("redstone", redstoneInteraction);
     sendDataToServer(tag);
     }
   }
