@@ -18,6 +18,7 @@ public static Block advancedSpawner;
 public static Block gateProxy;
 public static Block draftingStation;
 public static Block builderBlock;
+public static Block soundBlock;
 
 /**
  * AUTOMATION module TODO

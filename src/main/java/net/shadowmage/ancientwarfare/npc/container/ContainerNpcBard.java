@@ -3,13 +3,13 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBard.BardTuneData;
 
 public class ContainerNpcBard extends ContainerBase
 {
 
-public BardTuneData data;
+public SongPlayData data;
 public NpcBard npc;
 public ContainerNpcBard(EntityPlayer player, int x, int y, int z)
   {

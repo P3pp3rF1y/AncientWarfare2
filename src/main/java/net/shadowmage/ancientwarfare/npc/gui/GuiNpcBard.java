@@ -10,9 +10,9 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.SongPlayData;
+import net.shadowmage.ancientwarfare.core.util.SongPlayData.SongEntry;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBard.BardTuneData;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBard.BardTuneEntry;
 
 public class GuiNpcBard extends GuiContainerBase
 {
@@ -39,7 +39,7 @@ public void setupElements()
   addGuiElement(area);
   
   int totalHeight = 8;
-  final BardTuneData data = container.data;
+  final SongPlayData data = container.data;
   
   Checkbox playerEntry = new Checkbox(8, totalHeight, 16, 16, "guistrings.play_on_player_entry")
     {
@@ -111,7 +111,7 @@ public void setupElements()
   area.setAreaSize(totalHeight);
   }
 
-private int addTuneEntries(final BardTuneData data, int startHeight)
+private int addTuneEntries(final SongPlayData data, int startHeight)
   {
   for(int i = 0; i < data.size(); i++)
     {
@@ -120,7 +120,7 @@ private int addTuneEntries(final BardTuneData data, int startHeight)
   return startHeight;
   }
 
-private int addTuneEntry(final BardTuneEntry entry, final int index, int startHeight)
+private int addTuneEntry(final SongEntry entry, final int index, int startHeight)
   {
   int y = startHeight;
   Text input = new Text(8, startHeight, 120, entry.name(), this)
@@ -164,7 +164,7 @@ private int addTuneEntry(final BardTuneEntry entry, final int index, int startHe
     @Override
     protected void onPressed()
       {
-      final BardTuneData data = container.data;
+      final SongPlayData data = container.data;
       data.decrementEntry(index);
       refreshGui();
       }
@@ -175,7 +175,7 @@ private int addTuneEntry(final BardTuneEntry entry, final int index, int startHe
     @Override
     protected void onPressed()
       {
-      final BardTuneData data = container.data;
+      final SongPlayData data = container.data;
       data.deleteEntry(index);
       refreshGui();
       }
@@ -186,7 +186,7 @@ private int addTuneEntry(final BardTuneEntry entry, final int index, int startHe
     @Override
     protected void onPressed()
       {
-      final BardTuneData data = container.data;
+      final SongPlayData data = container.data;
       data.incrementEntry(index);
       refreshGui();
       }

@@ -4,10 +4,10 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.shadowmage.ancientwarfare.core.util.SongPlayData;
+import net.shadowmage.ancientwarfare.core.util.SongPlayData.SongEntry;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBard;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBard.BardTuneData;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBard.BardTuneEntry;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIPlayerOwnedBard extends NpcAI
@@ -46,11 +46,9 @@ public void startExecuting(){}
 @Override
 public void updateTask()
   {
-//  AWLog.logDebug("updating bard ai..");
-  BardTuneData data = bard.getTuneData();
+  SongPlayData data = bard.getTuneData();
   if(playing)
     {
-//    AWLog.logDebug("already playing...");
     playTime++;
     if(playTime>=maxPlayTime)
       {
@@ -93,15 +91,15 @@ public void updateTask()
 private void setNextSong()
   {
   //TODO pick random song if random is selected... (ensure it was not the last song played?)
-  BardTuneData data = bard.getTuneData();
+  SongPlayData data = bard.getTuneData();
   tuneIndex++;
   if(tuneIndex>=data.size()){tuneIndex=0;}  
   }
 
 private void startSong()
   {
-  BardTuneData data = bard.getTuneData();
-  BardTuneEntry entry = data.get(tuneIndex);
+  SongPlayData data = bard.getTuneData();
+  SongEntry entry = data.get(tuneIndex);
   maxPlayTime = (int)(entry.length() * 20.f * 60.f);//convert minutes into ticks
   float volume = (float)entry.volume() * 0.01f;
   bard.worldObj.playSoundAtEntity(bard, entry.name(), 3.0f * volume, 1.f);
