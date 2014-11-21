@@ -96,7 +96,7 @@ int volume;// percentage, as integer 0 = 0%, 100=100%, 150=150%
 
 public SongEntry()
   {
-  name = " ";
+  name = "";
   length = 0;
   volume = 100;
   }
@@ -115,14 +115,21 @@ public float length(){return length;}
 
 public void readFromNBT(NBTTagCompound tag)
   {
-  name = tag.getString("name");
+  name = "";
+  if(tag.hasKey("name"))
+    {
+    name = tag.getString("name");    
+    }
   length = tag.getFloat("length");
   volume = tag.getInteger("volume");
   }
 
 public NBTTagCompound writeToNBT(NBTTagCompound tag)
   {
-  tag.setString("name", name);
+  if(name!=null && !name.isEmpty())
+    {
+    tag.setString("name", name);    
+    }
   tag.setFloat("length", length);
   tag.setInteger("volume", volume);
   return tag;
