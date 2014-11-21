@@ -5,6 +5,7 @@ header:
 name=test_town_template
 minSize=4
 maxSize=9
+buildingExpansion=2
 selectionWeight=10
 clusterValue=300
 townBlockSize=30
