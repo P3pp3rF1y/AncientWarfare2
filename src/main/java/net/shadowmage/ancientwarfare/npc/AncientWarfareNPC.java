@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcCreativeControls;
+import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionBard;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeSetup;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeView;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
@@ -113,6 +114,7 @@ public void preInit(FMLPreInitializationEvent evt)
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_CREATIVE, ContainerNpcCreativeControls.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_TRADE_ORDER, ContainerTradeOrder.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_PLAYER_OWNED_TRADE, ContainerNpcPlayerOwnedTrade.class);
+  NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_FACTION_BARD, ContainerNpcFactionBard.class);
   PacketBase.registerPacketType(NetworkHandler.PACKET_NPC_COMMAND, PacketNpcCommand.class);
   PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class);
   
