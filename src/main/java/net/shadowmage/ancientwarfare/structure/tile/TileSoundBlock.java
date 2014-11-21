@@ -109,6 +109,7 @@ public void readFromNBT(NBTTagCompound tag)
   super.readFromNBT(tag);
   tuneData.readFromNBT(tag.getCompoundTag("tuneData"));
   redstoneInteraction = tag.getBoolean("redstone");
+  tuneIndex = tag.getInteger("tuneIndex");
   }
 
 @Override
@@ -117,6 +118,7 @@ public void writeToNBT(NBTTagCompound tag)
   super.writeToNBT(tag);
   tag.setTag("tuneData", tuneData.writeToNBT(new NBTTagCompound()));
   tag.setBoolean("redstone", redstoneInteraction);
+  tag.setInteger("tuneIndex", tuneIndex);
   }
 
 public SongPlayData getTuneData()
