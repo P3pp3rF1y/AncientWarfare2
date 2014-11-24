@@ -1,77 +1,8 @@
 vehicles todo:
 
-* vehicle start:
-	Movement handling -- need to implement acceleration stuff (incl. gravity)
-	** Collision detection
-	Turret functionality for the basic siege engines
-	Models / textures
+how to handle multiple vehicle types?
+-- need single OBB vehicles
+-- need multi OBB vehicles
+-- some multi-OBB vehicles might have pieces rotated independently from main body
 
-* vehicle types:
-	Land:
-		Catapult (single pilot)
-		Ballista (single pilot) (large)
-		Scorpio (small metal spring-type ballista) (sized like the old ballistas)		
-			-non-mobile, ballista slightly smaller, no turret, yaw locked to vehicle
-		Trebuchet (single pilot)
-			-non-mobile, no turret, yaw locked to vehicle
-		Cannon (single pilot)
-		Hwacha (single pilot)
-		Battering Ram (single pilot)
-		Chest Cart (single pilot)
-		Siege Tower (multi-passenger)(need to find a way to 'extend' the tower, and a way for players to 'climb' the tower / get off at the right position (hit 'fire' once climbed appropriately?))			
-	 Water: (might need to reduce gun counts for easier managing of stuff...)
-		Sloop/Pinnace - small multi-passenger, 8 gun max
-		Frigate - med multi-passenger, 25 gun max	
-		Galleon - large multi-passenger, 50 gun max
-	Air:
-		Hot Air Balloon
-			-burns coal / fuel materials
-			-will lose altitude slowly when fuel runs out
-		Ornithopter
-			-not really a vehicle per-se, more of a jetpack / wearable armor
-			- flap to fly, hold flap to glide
-		Airship (a small-ish frigate with an elongated hot air balloon above it...)
-			-burns coal / fuel materials
-			-will be immobile (except for descend command) when out of fuel	
-
-
-Needed to get normal vehicles working:
-- Aim synching
-	- do they have turrets or aim with vehicle yaw?
-	- what happens if yaw is not lined up for shot? (obv. it misses...)
-	- turrets make most vehicles easier to aim (unless vehicle rotation is made to rotate in smaller increments)
-- models / textures
-- missile types / models / textures
-- multi-part BBs
-- can vehicles mobile, or are they static?
-	- makes sense for most vehicles:
-		catapult
-		cannon
-		hwacha
-		ballista
-		battering ram
-		siege tower
-		chest cart
-	- trebuchet is immobile
-	-- perhaps allow them to be mobile, but move slowly and unpilotable by NPCs? (e.g. player-only)
-		- engineers assigned a vehicle will 'construct' their vehicle at a given site, and repack/deconstruct it when it is time to move
-		- how does this work with a siege tower, chest-cart, battering ram?
-			-...it doesn't...
-	-- simplifies things greatly if none of the vehicles are mobile
-		-except how to handle chest-cart, battering ram, and siege tower?
-	-- allow vehicles to be mobile, but enable NPCs with only a basic 'driving' AI rather than full-blown pathfinding
-		- solves issues with chest-carts, battering ram, siege-towers
-		- still does not answer how to handle yaw-aim adjustment
-			-by vehicle yaw
-			-or by turret on vehicle
-			
-Proposed:
-- Vehicles do not have turrets.  Vehicle yaw = aim yaw.
-- Auto-aim only handles pitch/power adjustment
-	- Most vehicles are mobile (all but trebuchet?)
-	- Ballista comes in mobile (ballista) and fixed-stand versions (scorpio)
-- NPCs only have a basic 'drive vehicle' AI and ZERO pathfinding for when riding
-	- NPCs will 'cheat' when it comes time to aiming, and just -set- the vehicle rotation to what they need for a chosen shot	
-				
-
-			
+can go low-level, non-generic, little/no inheritance.  program every vehicle independently
