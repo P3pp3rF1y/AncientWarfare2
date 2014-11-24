@@ -401,7 +401,6 @@ private StructureTemplate getRandomTemplate()
 private StructureTemplate getRandomCosmeticTemplate()
   {
   List<TownStructureEntry> cosmeticTemplatesToGenerate = this.template.getCosmeticEntries();
-  //TODO select from weight instead of random from list
   if(cosmeticTemplatesToGenerate.size()==0){return null;}
   int rng = this.rng.nextInt(cosmeticTemplatesToGenerate.size());
   TownStructureEntry entry = cosmeticTemplatesToGenerate.get(rng);
