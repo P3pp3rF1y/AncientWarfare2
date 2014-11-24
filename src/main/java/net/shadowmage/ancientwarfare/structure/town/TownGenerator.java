@@ -88,6 +88,7 @@ private void fillStructureMap()
   for(TownStructureEntry e : template.getStructureEntries())
     {
     StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+    AWLog.logDebug("found template: "+t+" for name: "+e.templateName);
     if(t==null){continue;}
     min = e.min;
     max = e.max;
@@ -449,16 +450,18 @@ private void generateStructure(World world, TownPartPlot plot, StructureTemplate
     
   //find corners of the bb for the structure  
   BlockPosition min = new BlockPosition(plot.bb.min.x+wAdj, 0, plot.bb.min.z+lAdj);
-  BlockPosition max = new BlockPosition(min.x + (width-1), 0, min.z+(length-1));
+  BlockPosition max = new BlockPosition(min.x + (width-1), template.ySize, min.z+(length-1));
   StructureBB bb = new StructureBB(min, max);
   
   BlockPosition buildKey = bb.getRLCorner(face, new BlockPosition());
   buildKey.moveRight(face, template.xOffset);
-  buildKey.moveBack(face, template.zOffset);
+  buildKey.moveBack(face, template.zOffset);  
+  buildKey.y -= template.yOffset;
   
   BlockPosition offset = worldBounds.min;
   buildKey.offset(offset.x, offset.y, offset.z);
   bb.offset(offset.x, offset.y, offset.z);
+  bb.offset(0, -template.yOffset, 0);
   StructureBuilder b = new StructureBuilder(world, template, face, buildKey, bb);
   b.instantConstruction();  
   }

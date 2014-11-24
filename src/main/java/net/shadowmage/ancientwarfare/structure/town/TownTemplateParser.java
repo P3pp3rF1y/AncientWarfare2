@@ -50,28 +50,30 @@ public static TownTemplate parseTemplate(List<String> lines)
 private static void parseHeader(Iterator<String> it, TownTemplate template)
   {
   String line;
+  String lower;
   while(it.hasNext() && (line=it.next())!=null)
     {
-    line = line.toLowerCase();
-    if(line.startsWith(":endheader")){break;}
-    else if(line.startsWith("name")){template.setTownTypeName(StringTools.safeParseString("=", line));}
-    else if(line.startsWith("minsize")){template.setMinSize(StringTools.safeParseInt("=", line));}
-    else if(line.startsWith("maxsize")){template.setMaxSize(StringTools.safeParseInt("=", line));}
-    else if(line.startsWith("buildingexpansion")){template.setTownBuildingWidthExpansion(StringTools.safeParseInt("=", line));}
-    else if(line.startsWith("selectionweight")){template.setSelectionWeight(StringTools.safeParseInt("=", line));}
-    else if(line.startsWith("clustervalue")){template.setClusterValue(StringTools.safeParseInt("=", line));}
-    else if(line.startsWith("townblocksize")){template.setTownBlockSize(StringTools.safeParseInt("=", line));}
-    else if(line.startsWith("townplotsize")){template.setTownPlotSize(StringTools.safeParseInt("=", line));}
-    else if(line.startsWith("wallstyle")){template.setWallStyle(StringTools.safeParseInt("=", line));}
-    else if(line.startsWith("wallsize")){template.setWallSize(StringTools.safeParseInt("=", line));}
-    else if(line.startsWith("roadblock")){template.setRoadFillBlock((Block)Block.blockRegistry.getObject(StringTools.safeParseString("=", line)));}
-    else if(line.startsWith("roadmeta")){template.setRoadFillMeta(StringTools.safeParseInt("=", line));}
-    else if(line.startsWith("biomewhitelist")){template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));}
-    else if(line.startsWith("biomelist")){template.setBiomeList(parseBiomeList(StringTools.safeParseString("=", line)));}
-    else if(line.startsWith("dimensionwhitelist")){template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));}
-    else if(line.startsWith("dimensionlist")){template.setDimensionList(parseDimensionList(StringTools.safeParseString("=", line)));}
-    else if(line.startsWith("townhall")){template.setTownHallEntry(new TownStructureEntry(StringTools.safeParseString("=", line), 1, 1));}
-    else if(line.startsWith("lamp")){template.setLamp(new TownStructureEntry(StringTools.safeParseString("=", line), 1, 1));}
+    lower = line.toLowerCase();
+    
+    if(lower.startsWith(":endheader")){break;}
+    else if(lower.startsWith("name")){template.setTownTypeName(StringTools.safeParseString("=", line));}
+    else if(lower.startsWith("minsize")){template.setMinSize(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("maxsize")){template.setMaxSize(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("buildingexpansion")){template.setTownBuildingWidthExpansion(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("selectionweight")){template.setSelectionWeight(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("clustervalue")){template.setClusterValue(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("townblocksize")){template.setTownBlockSize(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("townplotsize")){template.setTownPlotSize(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("wallstyle")){template.setWallStyle(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("wallsize")){template.setWallSize(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("roadblock")){template.setRoadFillBlock((Block)Block.blockRegistry.getObject(StringTools.safeParseString("=", line)));}
+    else if(lower.startsWith("roadmeta")){template.setRoadFillMeta(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("biomewhitelist")){template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));}
+    else if(lower.startsWith("biomelist")){template.setBiomeList(parseBiomeList(StringTools.safeParseString("=", line)));}
+    else if(lower.startsWith("dimensionwhitelist")){template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));}
+    else if(lower.startsWith("dimensionlist")){template.setDimensionList(parseDimensionList(StringTools.safeParseString("=", line)));}
+    else if(lower.startsWith("townhall")){template.setTownHallEntry(new TownStructureEntry(StringTools.safeParseString("=", line), 1, 1));}
+    else if(lower.startsWith("lamp")){template.setLamp(new TownStructureEntry(StringTools.safeParseString("=", line), 1, 1));}
     }  
   }
 
@@ -80,8 +82,7 @@ private static void parseStructures(Iterator<String> it, TownTemplate template)
   String line;
   while(it.hasNext() && (line=it.next())!=null)
     {
-    line = line.toLowerCase();    
-    if(line.startsWith(":endstructures")){break;}
+    if(line.toLowerCase().startsWith(":endstructures")){break;}
     else
       {
       TownStructureEntry e = parseStructure(line);
@@ -95,8 +96,7 @@ private static void parseWalls(Iterator<String> it, TownTemplate template)
   String line;
   while(it.hasNext() && (line=it.next())!=null)
     {
-    line = line.toLowerCase();
-    if(line.startsWith(":endwalls")){break;}
+    if(line.toLowerCase().startsWith(":endwalls")){break;}
     else
       {
       TownWallEntry e = parseWall(line);
@@ -112,9 +112,8 @@ private static void parseWallPatterns(Iterator<String> it, TownTemplate template
   {
   String line;
   while(it.hasNext() && (line=it.next())!=null)
-    {
-    line = line.toLowerCase();    
-    if(line.startsWith(":endwallpaterns")){break;}
+    {  
+    if(line.toLowerCase().startsWith(":endwallpaterns")){break;}
     else
       {
       String[] bits = line.split(":", -1);
@@ -130,8 +129,7 @@ private static void parseCosmetics(Iterator<String> it, TownTemplate template)
   String line;
   while(it.hasNext() && (line=it.next())!=null)
     {
-    line = line.toLowerCase();    
-    if(line.startsWith(":endcosmetics")){break;}
+    if(line.toLowerCase().startsWith(":endcosmetics")){break;}
     else
       {      
       TownStructureEntry e = parseCosmetic(line);
