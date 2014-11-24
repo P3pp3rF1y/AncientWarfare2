@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocksChurch
 size=39,43,28
-offset=18,3,27
+offset=18,4,27
 :endheader
 
 #### VALIDATION ####

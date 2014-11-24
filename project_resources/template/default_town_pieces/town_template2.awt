@@ -5,10 +5,10 @@ header:
 name=test_town_template
 minSize=4
 maxSize=9
-buildingExpansion=2
+buildingExpansion=0
 selectionWeight=10
 clusterValue=300
-townBlockSize=30
+townBlockSize=40
 townPlotSize=3
 wallStyle=2
 wallSize=8
@@ -18,7 +18,7 @@ biomeWhiteList=false
 biomeList=ocean,beach
 dimensionWhiteList=true
 dimensionList=0
-townHall=town_hall1
+townHall=TownBlocksMarketSquare
 lamp=lamp_post
 :endheader
 
@@ -46,19 +46,19 @@ wallPatterns:
 
 #list of structures, one per line, colon separating min and max values for each (could alternatively use nearly any separator char)
 structures:
-village_church:1:2
-village_garden_large:3:5
-village_garden_small:3:5
-village_house_garden:5:8
-village_house:8:12
-village_hut1:8:12
-village_hut2:8:12
-village_library:8:12
-village_smith:1:2
+TownBlocks1Houses:1:1
+TownBlocks1HousesB:1:1
+TownBlocks2Houses:1:1
+TownBlocks2HousesC:1:1
+TownBlocksArmourer:1:1
+TownBlocksChurch:1:1
+TownBlocksGovernorsPalace:1:1
+TownBlocksGovernorsTower:1:1
+TownBlocksLarge3Housing:1:1
+TownBlocksLargeBlockShrine:1:1
+TownBlocksLargeInnAndFountain:1:1
 :endstructures
 
 #list of cosmetic structure templates w/weight, to be used to fill in random positions post-generation
 cosmetics:
-cosmetic_1:1
-cosmetic_2:1
 :endcosmetics

@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocks1Houses
 size=20,18,11
-offset=8,3,10
+offset=8,4,10
 :endheader
 
 #### VALIDATION ####

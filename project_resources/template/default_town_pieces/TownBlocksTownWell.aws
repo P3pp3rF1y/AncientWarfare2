@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocksTownWell
 size=10,22,10
-offset=4,11,9
+offset=4,12,9
 :endheader
 
 #### VALIDATION ####

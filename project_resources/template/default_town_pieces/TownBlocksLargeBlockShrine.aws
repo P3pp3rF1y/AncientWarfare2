@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocksLargeBlockShrine
 size=30,23,33
-offset=16,2,32
+offset=16,3,32
 :endheader
 
 #### VALIDATION ####

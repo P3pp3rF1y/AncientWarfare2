@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocksLargeMerchantHouse
 size=18,19,22
-offset=10,1,21
+offset=10,2,21
 :endheader
 
 #### VALIDATION ####

@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocksTownWatchPrison
 size=19,27,15
-offset=9,4,14
+offset=9,5,14
 :endheader
 
 #### VALIDATION ####

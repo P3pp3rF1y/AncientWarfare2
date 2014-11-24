@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocksManufactory2
 size=25,28,24
-offset=10,5,23
+offset=10,6,23
 :endheader
 
 #### VALIDATION ####

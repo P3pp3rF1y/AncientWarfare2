@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocksMarketSquare
 size=23,20,28
-offset=10,5,27
+offset=10,6,27
 :endheader
 
 #### VALIDATION ####

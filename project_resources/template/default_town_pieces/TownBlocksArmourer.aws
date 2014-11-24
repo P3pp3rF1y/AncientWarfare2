@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocksArmourer
 size=21,22,18
-offset=8,7,17
+offset=8,8,17
 :endheader
 
 #### VALIDATION ####

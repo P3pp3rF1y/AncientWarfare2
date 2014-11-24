@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocksGovernorsTower
 size=21,68,23
-offset=10,10,22
+offset=10,11,22
 :endheader
 
 #### VALIDATION ####
