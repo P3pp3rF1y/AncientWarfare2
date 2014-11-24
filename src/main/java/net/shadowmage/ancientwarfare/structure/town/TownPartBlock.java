@@ -30,8 +30,11 @@ public TownPartBlock(TownPartQuadrant quadrant, StructureBB bb, int x, int z, bo
   plots = new ArrayList<TownPartPlot>();
   this.roadBorders = roadBorders;
   
-  int townCenterX = quadrant.town.width/2;
-  int townCenterZ = quadrant.town.length/2;
+  /**
+   * calculate distance from center
+   */
+  int townCenterX = bb.getCenterX() - bb.min.x;
+  int townCenterZ = bb.getCenterZ() - bb.min.z;
   int w = (bb.max.x - bb.min.x) + 1;
   int l = (bb.max.z - bb.min.z) + 1;
   int bcx = bb.min.x + (w/2);
@@ -49,9 +52,8 @@ protected void setRoadBorder(Direction d, boolean val)
   roadBorders[d.ordinal()]=val;
   }
 
-public void subdivide()
+public void subdivide(int plotSize)
   {
-  int plotSize = quadrant.town.plotSize;
   int xWidth = (bb.max.x - bb.min.x)+1;
   int zLength = (bb.max.z - bb.min.z)+1;
   int xDivs, zDivs;
