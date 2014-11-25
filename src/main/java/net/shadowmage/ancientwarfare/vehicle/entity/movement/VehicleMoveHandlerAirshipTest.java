@@ -41,7 +41,7 @@ public void updateVehicleMotion(boolean[] inputStates)
    */
   if(rotation!=0)
     {
-    vehicle.rotateEntity(rotation);    
+    vehicle.moveHelper.rotateVehicle(rotation);    
     }
   if(!vehicle.worldObj.isRemote && inputStates[VehicleInputKey.FIRE.ordinal()])
     {

@@ -318,8 +318,7 @@ private void lerpMotion()
     vehicle.rotationPitch = destPitch;
     vehicle.setPosition(destX, destY, destZ);
     }
-  vehicle.orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw);
-  vehicle.orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);
+  vehicle.moveHelper.update();
   }
 
 /**
