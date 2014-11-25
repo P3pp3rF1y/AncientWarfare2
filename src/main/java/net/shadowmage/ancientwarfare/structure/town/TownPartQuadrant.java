@@ -8,17 +8,14 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 public class TownPartQuadrant
 {
 
-public final TownPartCollection town;
 protected StructureBB bb;
 private Direction xDir, zDir;
 protected int xDivs, zDivs;
 private boolean roadBorders[];
 protected TownPartBlock blocks[];
-//private List<TownPartBlock> blocks;
 
-public TownPartQuadrant(TownPartCollection town, Direction xDir, Direction zDir, StructureBB bb, boolean[] borders)
+public TownPartQuadrant(Direction xDir, Direction zDir, StructureBB bb, boolean[] borders)
   {  
-  this.town = town;
   this.xDir= xDir;
   this.zDir = zDir;
   this.bb = bb;
@@ -35,9 +32,8 @@ protected void setRoadBorder(Direction d, boolean val)
   roadBorders[d.ordinal()]=val;
   }
 
-public void subdivide()
+public void subdivide(int blockSize, int plotSize)
   {
-  int blockSize = town.blockSize;
   int totalWidth = (bb.max.x - bb.min.x);
   int totalLength = (bb.max.z - bb.min.z);  
   int widthToUse = totalWidth;
@@ -83,7 +79,7 @@ public void subdivide()
       
       block = new TownPartBlock(this, new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd)), xIndex, zIndex, getBorders(xIndex, zIndex));
       setBlock(block, xIndex, zIndex);
-      block.subdivide();
+      block.subdivide(plotSize);
       
       lengthToUse -= (blockSize+2);
       zStart = zEnd + zDir.zDirection * 3;
