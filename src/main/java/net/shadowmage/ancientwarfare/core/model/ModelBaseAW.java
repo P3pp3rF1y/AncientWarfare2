@@ -151,9 +151,9 @@ public List<String> getModelLines()
 public void addPiece(ModelPiece piece)
   {
   pieces.put(piece.getName(), piece);
-  if(piece.getParent()==null)
+  if(piece.getParent() == null)
     {
-    getBasePieces().add(piece);
+    basePieces.add(piece);
     }
   }
 
