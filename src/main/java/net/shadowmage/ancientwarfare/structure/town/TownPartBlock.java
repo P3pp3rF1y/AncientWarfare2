@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 public class TownPartBlock
@@ -21,7 +20,7 @@ List<TownPartPlot> plots;
 private TownPartPlot[] plotsArray;
 int plotsWidth, plotsLength;
 
-public TownPartBlock(TownPartQuadrant quadrant, StructureBB bb, int x, int z, boolean[] roadBorders)
+public TownPartBlock(TownPartQuadrant quadrant, StructureBB bb, int x, int z, boolean[] roadBorders, float dist)
   {
   this.quadrant = quadrant;
   this.bb = bb;
@@ -29,17 +28,7 @@ public TownPartBlock(TownPartQuadrant quadrant, StructureBB bb, int x, int z, bo
   this.z = z;
   plots = new ArrayList<TownPartPlot>();
   this.roadBorders = roadBorders;
-  
-  /**
-   * calculate distance from center
-   */
-  int townCenterX = bb.getCenterX() - bb.min.x;
-  int townCenterZ = bb.getCenterZ() - bb.min.z;
-  int w = (bb.max.x - bb.min.x) + 1;
-  int l = (bb.max.z - bb.min.z) + 1;
-  int bcx = bb.min.x + (w/2);
-  int bcz = bb.min.z + (l/2);
-  distFromTownCenter = Trig.getDistance(townCenterX, 0, townCenterZ, bcx, 0, bcz);
+  distFromTownCenter = dist;
   }
 
 public boolean hasRoadBorder(Direction d)

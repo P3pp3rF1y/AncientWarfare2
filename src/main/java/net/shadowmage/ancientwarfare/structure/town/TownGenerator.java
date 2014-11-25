@@ -147,7 +147,7 @@ public void generateGrid()
   //northwest quadrant, pre-shrunk for road borders
   roadBorders = new boolean[]{true, false, false, true};
   bb = new StructureBB(new BlockPosition(0, 0, 0), new BlockPosition(centerX-2, 0, centerZ-2));
-  tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders);
+  tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, boundingArea);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize());
   write(tq);
   addQuadrant(0, tq);
@@ -155,7 +155,7 @@ public void generateGrid()
   //northeast quadrant
   roadBorders = new boolean[]{true, true, false, false};
   bb = new StructureBB(new BlockPosition(centerX+1, 0, 0), new BlockPosition(width-1, 0, centerZ-2));
-  tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders);
+  tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, boundingArea);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize());
   write(tq);
   addQuadrant(1, tq);
@@ -163,7 +163,7 @@ public void generateGrid()
   //southeast quadrant
   roadBorders = new boolean[]{false, true, true, false};
   bb = new StructureBB(new BlockPosition(centerX+1, 0, centerZ+1), new BlockPosition(width-1, 0, length-1));
-  tq = new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders);
+  tq = new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders, boundingArea);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize());
   write(tq);
   addQuadrant(2, tq);
@@ -171,7 +171,7 @@ public void generateGrid()
   //southwest quadrant
   roadBorders = new boolean[]{false, false, true, true};
   bb = new StructureBB(new BlockPosition(0, 0, centerZ+1), new BlockPosition(centerX-2, 0, length-1));
-  tq = new TownPartQuadrant(Direction.WEST, Direction.SOUTH, bb, roadBorders);
+  tq = new TownPartQuadrant(Direction.WEST, Direction.SOUTH, bb, roadBorders, boundingArea);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize());
   write(tq);
   addQuadrant(3, tq);

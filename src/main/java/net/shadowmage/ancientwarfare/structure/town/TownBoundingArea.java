@@ -47,6 +47,9 @@ public int getSurfaceY(){return minY+7;}
 public int getCenterX(){return townCenterX;}
 public int getCenterZ(){return townCenterZ;}
 
+public int getTownWidth(){return (getTownMaxX() - getTownMinX())+1;}
+public int getTownLength(){return (getTownMaxZ() - getTownMinZ())+1;}
+
 @Override
 public String toString()
   {

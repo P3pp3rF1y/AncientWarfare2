@@ -3,23 +3,26 @@ package net.shadowmage.ancientwarfare.structure.town;
 import java.util.List;
 
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 public class TownPartQuadrant
 {
 
 protected StructureBB bb;
+TownBoundingArea townBB;
 private Direction xDir, zDir;
 protected int xDivs, zDivs;
 private boolean roadBorders[];
 protected TownPartBlock blocks[];
 
-public TownPartQuadrant(Direction xDir, Direction zDir, StructureBB bb, boolean[] borders)
+public TownPartQuadrant(Direction xDir, Direction zDir, StructureBB bb, boolean[] borders, TownBoundingArea townBounds)
   {  
   this.xDir= xDir;
   this.zDir = zDir;
   this.bb = bb;
   this.roadBorders = borders;  
+  townBB = townBounds;
   }
 
 public boolean hasRoadBorder(Direction d)
@@ -60,6 +63,8 @@ public void subdivide(int blockSize, int plotSize)
   int xSize, zSize;
   int xIndex, zIndex;
   TownPartBlock block;
+  float distFromTownCenter = 0;
+  StructureBB sbb;
 
   widthToUse = totalWidth;
   xStart = xDir.xDirection < 0 ? bb.max.x-1 : bb.min.x+1;
@@ -77,7 +82,10 @@ public void subdivide(int blockSize, int plotSize)
       zEnd = zStart + zDir.zDirection * (zSize - 1);
       zIndex = zDir==Direction.NORTH ? (zDivs-1)-z : z;
       
-      block = new TownPartBlock(this, new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd)), xIndex, zIndex, getBorders(xIndex, zIndex));
+      sbb= new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd));
+      distFromTownCenter = Trig.getDistance(sbb.getCenterX(), 0, sbb.getCenterZ(), townBB.getTownWidth()/2, 0, townBB.getTownLength()/2);
+      block = new TownPartBlock(this, sbb, xIndex, zIndex, getBorders(xIndex, zIndex), distFromTownCenter);
+      
       setBlock(block, xIndex, zIndex);
       block.subdivide(plotSize);
       
