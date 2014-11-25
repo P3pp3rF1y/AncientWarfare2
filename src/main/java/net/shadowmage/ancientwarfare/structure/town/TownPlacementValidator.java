@@ -18,7 +18,7 @@ import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
 public class TownPlacementValidator
 {
 
-private static int maxSize = 8;
+private static int maxSize = 21;
 
 /**
  * input a single X, Y, Z coordinate to examine the nearby area for potential town generation.<br>
