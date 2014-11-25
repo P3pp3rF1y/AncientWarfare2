@@ -2,9 +2,7 @@ package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
-import net.shadowmage.ancientwarfare.vehicle.ballistics.TrajectoryPlotter;
 
 public class VehicleTurreted extends VehicleBase
 {

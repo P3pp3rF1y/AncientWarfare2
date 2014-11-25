@@ -1,13 +1,18 @@
 package net.shadowmage.ancientwarfare.vehicle.entity.movement;
 
 import net.minecraft.util.Vec3;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputKey;
 
 public class VehicleInputHandlerCatapult extends VehicleInputHandler
 {
 
-int firingDelay = 0;
+static int maxFiringDelay = 20;
+static int maxReloadTime = 20;
+int firingDelay = 0;//countdown for fire pressed until missile launched
+int reloadDelay = 0;//countdown for post-fired
 
 public VehicleInputHandlerCatapult(VehicleBase vehicle)
   {
@@ -29,34 +34,43 @@ public void updateVehicleMotion(boolean[] inputStates)
   Vec3 forwardAxis = vehicle.getLookVec();
   double mx = forwardAxis.xCoord * forward;
   double mz = forwardAxis.zCoord * forward;
-  vehicle.moveEntity(mx, -0.25d, mz);
+  
+  double my = vehicle.motionY - Trig.gravityTick;
+  if(vehicle.onGround){my = -Trig.gravityTick;}
+  vehicle.moveEntity(mx, my, mz);
   /**
    * then rotate the vehicle towards its new orientation
    */
   if(rotation!=0)
     {
     vehicle.moveHelper.rotateVehicle(rotation);    
-    }
+    }  
   updateFiringStatus(inputStates[VehicleInputKey.FIRE.ordinal()]);
   }
 
 protected void updateFiringStatus(boolean fire)
   {
-  if(firingDelay>0){firingDelay--;}
+  if(firingDelay>0)//firing was initiated
+    {
+    firingDelay--;
+    if(firingDelay==0)//firing is complete
+      {
+      launchMissile();
+      firingDelay = 0;
+      reloadDelay = maxReloadTime;
+      }
+    }
+  if(reloadDelay>0){reloadDelay--;}
+  if(fire && firingDelay<=0 && reloadDelay<=0)//was not firing or reloading, but fire was pressed
+    {
+    AWLog.logDebug("Initiating firing sequence...");
+    firingDelay = maxFiringDelay;
+    }
   }
 
-@Override
-protected void handleTurretUpdateClient(int data)
+protected void launchMissile()
   {
-  //noop, catapult does not have adjustable aim stuff
-  super.handleTurretUpdateClient(data);
-  }
-
-@Override
-protected void handleTurretUpdateServer(int data)
-  {
-  //noop, catapult does not have adjustable aim stuff
-  super.handleTurretUpdateServer(data);
+  AWLog.logDebug("Should launch missile = true");
   }
 
 }
