@@ -37,7 +37,7 @@ int textureHeight=256;
 HashMap<String, ModelPiece> pieces = new HashMap<String, ModelPiece>();
 private List<ModelPiece> basePieces = new ArrayList<ModelPiece>();
 
-public int iterationNum;
+protected int iterationNum;
 
 public void renderModel()
   {

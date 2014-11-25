@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -386,12 +387,12 @@ private void doSelection()
     pixelColorsb[i] = pixelColors.get(i);
     }
   
-  int r = pixelColorsb[0] &255;
-  int g = pixelColorsb[1] &255;
-  int b = pixelColorsb[2] &255;
+  int r = pixelColorsb[0] & 255;
+  int g = pixelColorsb[1] & 255;
+  int b = pixelColorsb[2] & 255;
 
   GL11.glEnable(GL11.GL_TEXTURE_2D);
-  int color = (r<<16) | (g<<8) | b;
+  int color = (r << 14) | (g << 7) | b;
   
 //  AWLog.logDebug("picked color: "+color+" rgb: "+r+","+g+","+b);
   

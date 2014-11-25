@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 import org.lwjgl.opengl.GL11;
@@ -271,13 +272,14 @@ public void renderForSelection(float tw, float th, ModelBaseAW model)
  
   for(Primitive primitive : this.primitives)
     {
-    int r, g, b;
-    r = ((model.iterationNum >> 16) & 0xff);
-    g = ((model.iterationNum >> 8 ) & 0xff);
-    b = ((model.iterationNum >> 0 ) & 0xff);
+    byte r, g, b;
     
-//    AWLog.logDebug("rendering for selection: "+model.iterationNum+" :: "+r+","+g+","+b);
-    GL11.glColor3b((byte)r, (byte)g, (byte)b);
+    r = (byte)((model.iterationNum >> 14) & 0x7f);
+    g = (byte)((model.iterationNum >> 7 ) & 0x7f);
+    b = (byte)((model.iterationNum >> 0 ) & 0x7f);   
+    
+//    AWLog.logDebug("rendering for selection: "+model.iterationNum+" :: "+r+","+g+","+b);    
+    GL11.glColor3b(r, g, b);
 
     GL11.glPushMatrix();  
     primitive.render(tw, th);
