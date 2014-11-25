@@ -129,6 +129,7 @@ public static final String NPC_FACTION_CUSTOM_3_BARD = "custom_3.bard";
  */
 
 public static final String VEHICLE_TEST = "vehicle_test";
+public static final String VEHICLE_CATAPULT = "catapult";
 public static final String MISSILE_TEST = "missile_test";
 
 /**

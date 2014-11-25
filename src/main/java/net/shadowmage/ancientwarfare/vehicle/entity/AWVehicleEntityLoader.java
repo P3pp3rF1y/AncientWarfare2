@@ -30,6 +30,16 @@ public static void load()
     };
   registerVehicleEntity(reg, "fooicon");
   
+  reg = new EntityDeclaration(VehicleCatapult.class, AWEntityRegistry.VEHICLE_CATAPULT, nextID++, AncientWarfareVehicles.instance, 120, 3, true)
+    {  
+    @Override
+    public Entity createEntity(World world)
+      {
+      return new VehicleCatapult(world);
+      }
+    };
+  registerVehicleEntity(reg, "fooicon");
+  
   reg = new EntityDeclaration(MissileBase.class, AWEntityRegistry.MISSILE_TEST, nextID++, AncientWarfareVehicles.instance, 120, 3, true)
     {
     @Override

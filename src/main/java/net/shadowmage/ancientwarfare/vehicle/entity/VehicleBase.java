@@ -1,11 +1,7 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import io.netty.buffer.ByteBuf;
-
-import java.util.List;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;

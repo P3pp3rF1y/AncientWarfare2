@@ -12,7 +12,9 @@ import net.shadowmage.ancientwarfare.core.input.InputHandler.InputCallback;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleCatapult;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputKey;
+import net.shadowmage.ancientwarfare.vehicle.render.RenderCatapult;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderMissile;
 import net.shadowmage.ancientwarfare.vehicle.render.VehicleBBRender;
 import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
@@ -28,6 +30,7 @@ public void registerClient()
   {
   RenderingRegistry.registerEntityRenderingHandler(VehicleBase.class, new VehicleBBRender());
   RenderingRegistry.registerEntityRenderingHandler(MissileBase.class, new RenderMissile());
+  RenderingRegistry.registerEntityRenderingHandler(VehicleCatapult.class, new RenderCatapult());
   registerClientOptions();
   }
 
