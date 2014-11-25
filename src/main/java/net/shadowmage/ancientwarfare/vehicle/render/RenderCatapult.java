@@ -31,7 +31,7 @@ public void doRender(Entity entity, double x, double y, double z, float yaw, flo
 private void renderVehicle(VehicleBase vehicle, float delta)
   {
   float yawD = vehicle.rotationYaw - vehicle.prevRotationYaw;
-  float yaw = vehicle.rotationYaw - (delta * yawD);
+  float yaw = vehicle.rotationYaw - ((1-delta) * yawD);
   GL11.glRotatef(yaw, 0, 1, 0);
   GL11.glDisable(GL11.GL_TEXTURE_2D);
   model.renderModel();

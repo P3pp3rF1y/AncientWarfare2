@@ -13,7 +13,6 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.collision.VehicleOBBMoveHelper;
 import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleInputHandler;
-import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandlerAirshipTest;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleBaseInputHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
@@ -41,7 +40,6 @@ public VehicleBase(World world)
    
   moveHelper = new VehicleOBBMoveHelper(this);
   inputHandler = new VehicleBaseInputHandler(this);
-  moveHandler = new VehicleMoveHandlerAirshipTest(this);  
   
   width = 1.42f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking
   height = vehicleHeight;

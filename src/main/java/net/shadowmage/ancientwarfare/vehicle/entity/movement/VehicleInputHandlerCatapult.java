@@ -34,9 +34,9 @@ public void updateVehicleMotion(boolean[] inputStates)
   Vec3 forwardAxis = vehicle.getLookVec();
   double mx = forwardAxis.xCoord * forward;
   double mz = forwardAxis.zCoord * forward;
-  
-  double my = vehicle.motionY - Trig.gravityTick;
-  if(vehicle.onGround){my = -Trig.gravityTick;}
+  if(vehicle.onGround){vehicle.motionY = -Trig.gravityTick;}
+  else{vehicle.motionY -= Trig.gravityTick;}
+  double my = vehicle.motionY;
   vehicle.moveEntity(mx, my, mz);
   /**
    * then rotate the vehicle towards its new orientation

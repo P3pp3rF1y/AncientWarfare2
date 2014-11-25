@@ -169,7 +169,8 @@ public void rotateVehicle(float rotationDelta)
       orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
       orientedBoundingBox.setAABBToOBBExtents(boundingBox);
       }    
-    }  
+    }
+  vehicle.rotationYaw = rotationYaw;
   }
 
 /**
