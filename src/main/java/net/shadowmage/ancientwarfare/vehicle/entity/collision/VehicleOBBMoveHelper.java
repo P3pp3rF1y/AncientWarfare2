@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
@@ -39,14 +40,11 @@ public void moveVehicle(double x, double y, double z)
   {
   AxisAlignedBB boundingBox = vehicle.boundingBox;
   World worldObj = vehicle.worldObj;
-  double posX = vehicle.posX;
-  double posY = vehicle.posY;
-  double posZ = vehicle.posZ;
   float rotationYaw = vehicle.rotationYaw;
   float stepHeight = vehicle.stepHeight;
   if(Math.abs(x)<0.001d){x=0.d;}
   if(Math.abs(z)<0.001d){z=0.d;}
-  orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+  orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
   orientedBoundingBox.setAABBToOBBExtents(boundingBox);
   List<AxisAlignedBB>  aabbs = worldObj.getCollidingBoundingBoxes(vehicle, boundingBox.expand(Math.abs(x) + 0.2d, Math.abs(y) + stepHeight + 0.2d, Math.abs(z) + 0.2d));
   //first do Y movement test, use basic OBB vs bbs test, move downard if not collided 
@@ -55,22 +53,22 @@ public void moveVehicle(double x, double y, double z)
   yMove = y < 0 ? getYNegativeMove(y, aabbs) : y > 0 ? getYPositiveMove(y, aabbs) : 0;
   if(yMove!=0)
     {
-    vehicle.setPosition(posX, posY+yMove, posZ);
-    orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+    vehicle.setPosition(vehicle.posX, vehicle.posY+yMove, vehicle.posZ);
+    orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);
     }
   xMove = getXmove(x, aabbs);
   if(xMove!=0)
     {
-    vehicle.setPosition(posX+xMove, posY, posZ);
-    orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+    vehicle.setPosition(vehicle.posX+xMove, vehicle.posY, vehicle.posZ);
+    orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);   
     }
   zMove = getZMove(z, aabbs);
   if(zMove!=0)
     {
-    vehicle.setPosition(posX, posY, posZ+zMove);
-    orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+    vehicle.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ+zMove);
+    orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);    
     }
     
@@ -79,14 +77,14 @@ public void moveVehicle(double x, double y, double z)
     //remainder of movement for x and z axes
     double mx = x - xMove;
     double mz = z - zMove;
-    orientedBoundingBox.updateForPositionAndRotation(posX+mx, posY, posZ+mz, rotationYaw);
+    orientedBoundingBox.updateForPositionAndRotation(vehicle.posX+mx, vehicle.posY, vehicle.posZ+mz, rotationYaw);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);
     double my = getYStepHeight(aabbs);
     if(my>0)
       {
-      vehicle.setPosition(posX+mx, posY+my, posZ+mz);
+      vehicle.setPosition(vehicle.posX+mx, vehicle.posY+my, vehicle.posZ+mz);
       }
-    orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
+    orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
     orientedBoundingBox.setAABBToOBBExtents(boundingBox);
     }  
   }
@@ -94,20 +92,15 @@ public void moveVehicle(double x, double y, double z)
 @SuppressWarnings("unchecked")
 public void rotateVehicle(float rotationDelta)
   {
-  AxisAlignedBB boundingBox = vehicle.boundingBox;
   World worldObj = vehicle.worldObj;
-  double posX = vehicle.posX;
-  double posY = vehicle.posY;
-  double posZ = vehicle.posZ;
-  float rotationYaw = vehicle.rotationYaw;
-  orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw + rotationDelta);
-  orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+  orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw + rotationDelta);
+  orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);
   
   Vec3 mtvTempBase = Vec3.createVectorHelper(0,0,0);
   Vec3 mtvTemp = null;
   Vec3 mtv = null;  
   
-  List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(vehicle, boundingBox.expand(0.2d, 0, 0.2d));  
+  List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(vehicle, vehicle.boundingBox.expand(0.2d, 0, 0.2d));  
   
   AxisAlignedBB bb = null;
   int len = aabbs.size();
@@ -131,16 +124,16 @@ public void rotateVehicle(float rotationDelta)
   
   if(mtv==null)//set position from move as there is no collision
     {
-    rotationYaw += rotationDelta;
+    vehicle.rotationYaw += rotationDelta;
     }
   else
     {
     mtv.xCoord*=1.1d;
     mtv.zCoord*=1.1d;
-    vehicle.setPosition(posX + mtv.xCoord, posY, posZ + mtv.zCoord);
-    orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw + rotationDelta);
-    orientedBoundingBox.setAABBToOBBExtents(boundingBox);    
-    aabbs = worldObj.getCollidingBoundingBoxes(vehicle, boundingBox.expand(0.2d, 0, 0.2d));      
+    vehicle.setPosition(vehicle.posX + mtv.xCoord, vehicle.posY, vehicle.posZ + mtv.zCoord);
+    orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw + rotationDelta);
+    orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);    
+    aabbs = worldObj.getCollidingBoundingBoxes(vehicle, vehicle.boundingBox.expand(0.2d, 0, 0.2d));      
     bb = null;
     len = aabbs.size();
     mtvTemp = null;
@@ -150,27 +143,26 @@ public void rotateVehicle(float rotationDelta)
       mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);    
       if(mtvTemp!=null)
         {
-        orientedBoundingBox.updateForRotation(rotationYaw);
-        orientedBoundingBox.updateForPosition(posX, posY, posZ);
-        orientedBoundingBox.setAABBToOBBExtents(boundingBox);        
+        orientedBoundingBox.updateForRotation(vehicle.rotationYaw);
+        orientedBoundingBox.updateForPosition(vehicle.posX, vehicle.posY, vehicle.posZ);
+        orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);        
         break;
         }
       }
     if(mtvTemp==null)//slide was good
       {
-      rotationYaw += rotationDelta;
-      vehicle.setPosition(posX, posY, posZ);
-      orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
-      orientedBoundingBox.setAABBToOBBExtents(boundingBox); 
+      vehicle.rotationYaw += rotationDelta;
+      vehicle.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ);
+      orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw);
+      orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox); 
       }
     else//slide was no good, revert (do not rotate at all)
       {
-      vehicle.setPosition(posX - mtv.xCoord, posY, posZ-mtv.zCoord);
-      orientedBoundingBox.updateForPositionAndRotation(posX, posY, posZ, rotationYaw);
-      orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+      vehicle.setPosition(vehicle.posX - mtv.xCoord, vehicle.posY, vehicle.posZ-mtv.zCoord);
+      orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw);
+      orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);
       }    
     }
-  vehicle.rotationYaw = rotationYaw;
   }
 
 /**

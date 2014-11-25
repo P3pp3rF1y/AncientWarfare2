@@ -32,9 +32,9 @@ public float vehicleWidth, vehicleHeight, vehicleLength;
 public VehicleBase(World world)
   {
   super(world);
-  vehicleWidth = 3.f;
-  vehicleHeight = 2.0f;
-  vehicleLength = 5.f;
+  vehicleWidth = 2.f;
+  vehicleHeight = 1.50f;
+  vehicleLength = 3.f;
   
   World.MAX_ENTITY_RADIUS = Math.max(World.MAX_ENTITY_RADIUS, Math.max(vehicleWidth*1.4f, vehicleLength*1.4f));
    

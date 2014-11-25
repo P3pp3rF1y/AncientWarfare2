@@ -7,7 +7,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
