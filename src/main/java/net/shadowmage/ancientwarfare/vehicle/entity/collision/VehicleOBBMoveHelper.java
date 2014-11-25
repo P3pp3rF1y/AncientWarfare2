@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
@@ -285,7 +284,6 @@ private double getXmove(double xMotion, List<AxisAlignedBB> aabbs)
     { 
     bb = aabbs.get(i);
     if(bb.maxY <= vehicle.boundingBox.minY || bb.minY >= vehicle.boundingBox.maxY){continue;}//no collision at all, skip
-    AWLog.logDebug("testing vs aabb x: "+bb);
     vec = orientedBoundingBox.getCollisionVectorXMovement(bb, xMotion);
     if(vec!=null)
       {
@@ -319,7 +317,6 @@ private double getZMove(double zMotion, List<AxisAlignedBB> aabbs)
     { 
     bb = aabbs.get(i);
     if(bb.maxY <= vehicle.boundingBox.minY || bb.minY >= vehicle.boundingBox.maxY){continue;}//no collision at all, skip
-    AWLog.logDebug("testing vs aabb z: "+bb);
     vec = orientedBoundingBox.getCollisionVectorZMovement(bb, zMotion);
     if(vec!=null)
       {
