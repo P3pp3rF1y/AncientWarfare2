@@ -16,9 +16,9 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.collision.VehicleOBBMoveHelper;
-import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandler;
+import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleInputHandler;
 import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleMoveHandlerAirshipTest;
-import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputHandler;
+import net.shadowmage.ancientwarfare.vehicle.input.VehicleBaseInputHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,8 +27,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData
 {
 
 public VehicleOBBMoveHelper moveHelper;
-public VehicleInputHandler inputHandler;
-public VehicleMoveHandler moveHandler;
+public VehicleBaseInputHandler inputHandler;
+public VehicleInputHandler moveHandler;
 
 VehiclePart[] parts;
 
@@ -44,7 +44,7 @@ public VehicleBase(World world)
   World.MAX_ENTITY_RADIUS = Math.max(World.MAX_ENTITY_RADIUS, Math.max(vehicleWidth*1.4f, vehicleLength*1.4f));
    
   moveHelper = new VehicleOBBMoveHelper(this);
-  inputHandler = new VehicleInputHandler(this);
+  inputHandler = new VehicleBaseInputHandler(this);
   moveHandler = new VehicleMoveHandlerAirshipTest(this);  
   
   width = 1.42f * Math.max(vehicleWidth, vehicleLength);//due to not using rotated BBs, this can be set to a minimal square extent for the entity-parts used for collision checking

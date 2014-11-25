@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputKey;
 
-public class VehicleMoveHandlerWaterTest extends VehicleMoveHandler
+public class VehicleMoveHandlerWaterTest extends VehicleInputHandler
 {
 
 private float targetSubmergedDepth = 1.f;

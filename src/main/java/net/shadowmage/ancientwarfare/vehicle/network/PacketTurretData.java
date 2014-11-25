@@ -12,13 +12,13 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 public class PacketTurretData extends PacketBase
 {
 int entityId;
-short value;
+int value;
 
 public PacketTurretData(){}//reflection constructor
 
-public PacketTurretData(int id, short value)
+public PacketTurretData(Entity entity, int value)
   {
-  entityId = id;
+  this.entityId = entity.getEntityId();
   this.value = value;
   }
 
@@ -26,14 +26,14 @@ public PacketTurretData(int id, short value)
 protected void writeToStream(ByteBuf data)
   {
   data.writeInt(entityId);
-  data.writeShort(value);
+  data.writeInt(value);
   }
 
 @Override
 protected void readFromStream(ByteBuf data)
   {
   entityId = data.readInt();
-  value = data.readShort();
+  value = data.readInt();
   }
 
 @Override
@@ -41,9 +41,8 @@ protected void execute()
   {
   Entity e = player.worldObj.getEntityByID(entityId);
   if( e instanceof VehicleBase)
-    {
-    
-    //((VehicleBase)e)
+    {    
+    ((VehicleBase)e).moveHandler.onTurretDataReceived(value);
     }
   }
 

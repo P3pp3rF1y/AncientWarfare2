@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketInputReply;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketInputState;
 
-public class VehicleInputHandler
+public class VehicleBaseInputHandler
 {
 
 private VehicleBase vehicle;
@@ -37,7 +37,7 @@ int commandID = 0;
 List<PacketInputState> packetsToProcess = new ArrayList<PacketInputState>();
 List<PacketInputReply> replyPacketsToProcess = new ArrayList<PacketInputReply>();
 
-public VehicleInputHandler(VehicleBase vehicle)
+public VehicleBaseInputHandler(VehicleBase vehicle)
   {
   this.vehicle = vehicle;  
   }
