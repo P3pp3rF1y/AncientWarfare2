@@ -76,31 +76,6 @@ public void onUpdate()
   worldObj.theProfiler.endSection();
   }
 
-//************************************* INPUT HANDLING *************************************//
-// Custom input handling, for input such as fire, openGUI commands, switching stations, etc...
-//
-
-/**
- * The vehicle is responsible for managing its own firing cooldown timer and firing parameters<br>
- * If a missile is fired it should use the launching entity ID of the vehicle rider, which will be used for team-status / collision stuff<br>
- * This input will happen when the 'pilot' of the vehicle presses the fire key (this.riddenByEntity)
- */
-public void onFirePressedPilot(Vec3 target)
-  {
-  
-  }
-
-/**
- * TODO this method should be moved into a subclass for multi-passenger vehicles, and also be passed in a station object parameter
- * Called when a specific non-pilot passenger presses their fire-button
- * @param passenger
- */
-public void onFirePressedPassenger(EntityLivingBase passenger)
-  {
-  
-  }
-
-
 //************************************* MOVEMENT HANDLING *************************************//
 // Custom movement handling using vehicle OBB(s) for terrain collision detection for both movement and rotation.
 // Uses SAT for basic overlap tests for y-movement, uses some custom ray-tracing for testing move extents on x/z axes
@@ -199,18 +174,14 @@ public void setPositionAndRotation2(double x, double y, double z, float yaw, flo
 
 /**
  * Return an array containing the sub-parts to this entity.  These sub-parts are not added to the world and not synchronized between client and server.
- * Any synchronization is left to the implementing class.
+ * Any synchronization is left to the implementing class.<br>
+ * These parts must be created DIRECTLY after the vehicle is initialized from constructor, as entity-IDs for parts must be sequential AND match on client/server
  * <br>Changed return type from Entity to VehiclePart for easier use when VehicleBase is the known type
  * @return
  */
 @Override
 public final VehiclePart[] getParts()
-  {
-  if(parts==null)
-    {
-    buildParts();
-    updatePartPositions();    
-    }//lazy initialization of parts, don't even bother to construct until they are first asked for...perhaps change this to init parts in entity-init?
+  { 
   return parts;
   }
 
@@ -265,9 +236,9 @@ public Vec3 getLookVec()
   return vec;
   }
 
-public final boolean attackEntityFromPart(VehiclePart part, DamageSource p_70965_2_, float p_70965_3_)
+public final boolean attackEntityFromPart(VehiclePart part, DamageSource source, float damage)
   {
-  return attackEntityFrom(p_70965_2_, p_70965_3_);
+  return attackEntityFrom(source, damage);
   }
 
 //************************************* NBT / NETWORK *************************************//

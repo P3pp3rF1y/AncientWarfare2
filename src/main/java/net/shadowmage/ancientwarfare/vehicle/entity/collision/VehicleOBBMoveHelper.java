@@ -9,6 +9,13 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
+/**
+ * Base OBB Movement helper.<br>
+ * Responsible for updating position of the vehicle.<br>
+ * Has a single OBB to represent the main collision box of the vehicle<br>
+ * @author John
+ *
+ */
 public class VehicleOBBMoveHelper
 {
 
@@ -28,6 +35,7 @@ public void update()
   orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw);
   }
 
+@SuppressWarnings("unchecked")
 public void moveVehicle(double x, double y, double z)
   {
   AxisAlignedBB boundingBox = vehicle.boundingBox;

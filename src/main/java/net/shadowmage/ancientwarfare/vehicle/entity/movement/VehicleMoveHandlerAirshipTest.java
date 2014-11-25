@@ -1,10 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.entity.movement;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputKey;
 
@@ -42,15 +38,6 @@ public void updateVehicleMotion(boolean[] inputStates)
   if(rotation!=0)
     {
     vehicle.moveHelper.rotateVehicle(rotation);    
-    }
-  if(!vehicle.worldObj.isRemote && inputStates[VehicleInputKey.FIRE.ordinal()])
-    {
-    MovingObjectPosition pos = RayTraceUtils.getPlayerTarget((EntityPlayer) vehicle.riddenByEntity, 140, 1);
-    if(pos!=null && pos.hitVec!=null)
-      {
-      AWLog.logDebug("fire pressed...target: "+pos+" :: "+pos.hitVec);
-      vehicle.onFirePressedPilot(pos.hitVec);     
-      }
     }
   }
 }
