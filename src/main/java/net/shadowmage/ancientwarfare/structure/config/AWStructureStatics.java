@@ -741,7 +741,7 @@ public static Set<String> getUserDefinedTargetBlocks()
 
 public static String getBiomeName(BiomeGenBase biome)
   {
-  return biome==null ? "null" : biome.biomeName.toLowerCase();
+  return (biome==null || biome.biomeName==null) ? "null" : biome.biomeName.toLowerCase();
   }
 
 public static boolean shouldSkipScan(Block block)
