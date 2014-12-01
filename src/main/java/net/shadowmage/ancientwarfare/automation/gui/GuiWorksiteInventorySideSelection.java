@@ -61,7 +61,7 @@ public void setupElements()
     label = new Label(8, height, side.getTranslationKey());
     addGuiElement(label);
       
-    dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, container.worksite.getBlockMetadata(), side);
+    dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, container.worksite.getPrimaryFacing().ordinal(), side);
     label = new Label(74, height, Direction.getDirectionFor(dir).getTranslationKey());
     addGuiElement(label);
 
