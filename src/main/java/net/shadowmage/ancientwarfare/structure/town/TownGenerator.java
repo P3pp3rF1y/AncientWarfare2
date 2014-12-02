@@ -88,7 +88,6 @@ private void fillStructureMap()
   for(TownStructureEntry e : template.getStructureEntries())
     {
     StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
-    AWLog.logDebug("found template: "+t+" for name: "+e.templateName);
     if(t==null){continue;}
     min = e.min;
     max = e.max;
@@ -119,7 +118,7 @@ private void doGeneration()
   this.generateRoads(world);
   StructureTemplate townHall = null;
   if(template.getTownHallEntry()!=null){townHall=StructureTemplateManager.instance().getTemplate(template.getTownHallEntry().templateName);}
-  this.generateStructures(world, townHall, templatesToGenerate);
+  this.generateStructures(world, townHall);
   }
 
 
@@ -185,9 +184,8 @@ public void generateGrid()
   AWLog.logDebug("grid: \n"+line);
   }
 
-public void generateStructures(World world, StructureTemplate townHall, List<StructureTemplate> toGenerate)
+public void generateStructures(World world, StructureTemplate townHall)
   {  
-  this.templatesToGenerate.addAll(toGenerate);
   List<TownPartBlock> blocks = new ArrayList<TownPartBlock>();
   for(TownPartQuadrant tq : this.quadrants)
     {
