@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks
 {
@@ -51,7 +52,8 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
   tag.setInteger("z", z);
   TileEntity te = world.getTileEntity(x, y, z);
   te.readFromNBT(tag);
-  world.markBlockForUpdate(x, y, z);
+  int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);  
+  world.setBlockMetadataWithNotify(x, y, z, localMeta, 3); 
   }
 
 @Override

@@ -260,12 +260,12 @@ private HashMap<RelativeSide, RelativeSide> accessMap = new HashMap<RelativeSide
 
 private HashMap<RelativeSide, int[]> slotsByInventorySide = new HashMap<RelativeSide, int[]>();
 private HashMap<RelativeSide, boolean[]> extractInsertFlags = new HashMap<RelativeSide, boolean[]>();//inventoryside x boolean[2]; [0]=extract, [1]=insert
-public final TileEntity te;
+public final IRotatableTile te;
 public final RotationType rType;
 private ItemStack[] inventorySlots;
 private ItemSlotFilter[] filtersByInventorySlot;
 
-public InventorySided(TileEntity te, RotationType rType, int inventorySize)
+public InventorySided(IRotatableTile te, RotationType rType, int inventorySize)
   {
   if(te==null || rType==null || inventorySize<=0){throw new IllegalArgumentException("te and rotation type may not be null, inventory size must be greater than 0");}
   this.te = te;
@@ -374,7 +374,7 @@ public void setExtractInsertFlags(RelativeSide inventorySide, boolean[] flags)
 
 public RelativeSide getInventorySide(int mcSide)
   {
-  int meta = te.getBlockMetadata();
+  int meta = te.getPrimaryFacing().ordinal();
   RelativeSide rSide = RelativeSide.getSideViewed(rType, meta, mcSide);
   rSide = accessMap.get(rSide);
   return rSide;
@@ -482,7 +482,7 @@ public int getInventoryStackLimit()
 @Override
 public void markDirty()
   {
-  te.markDirty();
+  ((TileEntity)te).markDirty();
   }
 
 @Override
@@ -551,7 +551,7 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
 
 public int getAccessDirectionFor(RelativeSide blockSide)
   {
-  return RelativeSide.getMCSideToAccess(rType, te.getBlockMetadata(), blockSide);
+  return RelativeSide.getMCSideToAccess(rType, te.getPrimaryFacing().ordinal(), blockSide);
   }
 
 public EnumSet<RelativeSide> getValidSides()

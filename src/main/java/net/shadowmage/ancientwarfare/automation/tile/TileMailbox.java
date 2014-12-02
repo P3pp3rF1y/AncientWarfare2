@@ -9,15 +9,17 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData.DeliverableItem;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
-public class TileMailbox extends TileEntity implements IOwnable, IInventory, ISidedInventory
+public class TileMailbox extends TileEntity implements IOwnable, IInventory, ISidedInventory, IRotatableTile
 {
 
 private boolean autoExport;//should automatically try and export from output side
@@ -234,6 +236,18 @@ public void closeInventory(){}
 public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_)
   {
   return inventory.isItemValidForSlot(p_94041_1_, p_94041_2_);
+  }
+
+@Override
+public ForgeDirection getPrimaryFacing()
+  {
+  return ForgeDirection.getOrientation(getBlockMetadata());
+  }
+
+@Override
+public void setPrimaryFacing(ForgeDirection face)
+  {
+  worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, face.ordinal(), 0);
   }
 
 }

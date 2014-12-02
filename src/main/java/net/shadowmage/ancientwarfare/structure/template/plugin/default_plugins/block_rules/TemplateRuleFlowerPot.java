@@ -42,11 +42,14 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
   {
   super.handlePlacement(world, turns, x, y, z, builder);
   TileEntity te = world.getTileEntity(x, y, z);
-  Item item = (Item)Item.itemRegistry.getObject(itemName);  
-  if(item!=null && te instanceof TileEntityFlowerPot)
+  if(itemName!=null)
     {
-    TileEntityFlowerPot tefp = (TileEntityFlowerPot)te;
-    tefp.func_145964_a(item, itemMeta);
+    Item item = (Item)Item.itemRegistry.getObject(itemName);  
+    if(item!=null && te instanceof TileEntityFlowerPot)
+      {
+      TileEntityFlowerPot tefp = (TileEntityFlowerPot)te;
+      tefp.func_145964_a(item, itemMeta);
+      }    
     }
   }
 
@@ -61,7 +64,7 @@ public void writeRuleData(NBTTagCompound tag)
 @Override
 public void parseRuleData(NBTTagCompound tag)
   {
-  super.parseRuleData(tag);
+  super.parseRuleData(tag);  
   if(tag.hasKey("itemName")){itemName=tag.getString("itemName");}
   itemMeta = tag.getInteger("itemMeta");
   }
