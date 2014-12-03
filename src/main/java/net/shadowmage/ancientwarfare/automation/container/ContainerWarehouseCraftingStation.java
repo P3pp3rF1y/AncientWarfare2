@@ -5,17 +5,27 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
 public class ContainerWarehouseCraftingStation extends ContainerBase
 {
 
 public TileWarehouseCraftingStation station;
+public ItemQuantityMap itemMap = new ItemQuantityMap();
+public ItemQuantityMap cache = new ItemQuantityMap();
+boolean shouldUpdate = true;
 
-public ContainerWarehouseCraftingStation(EntityPlayer player, int x, int y, int z)
+public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
   station = (TileWarehouseCraftingStation) player.worldObj.getTileEntity(x, y, z);
@@ -60,6 +70,16 @@ public ContainerWarehouseCraftingStation(EntityPlayer player, int x, int y, int 
   
   int y1 = 8+3*18+8;
   y1 = this.addPlayerSlots(player, 8, y1, 4);
+  TileWarehouseBase warehouse = station.getWarehouse();
+  if(warehouse!=null){warehouse.addCraftingViewer(this);}  
+  }
+
+@Override
+public void onContainerClosed(EntityPlayer par1EntityPlayer)
+  {
+  TileWarehouseBase warehouse = station.getWarehouse();
+  if(warehouse!=null){warehouse.removeCraftingViewer(this);}
+  super.onContainerClosed(par1EntityPlayer);
   }
 
 @Override
@@ -115,5 +135,109 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
   return slotStackCopy;
   }
 
+@Override
+public void handlePacketData(NBTTagCompound tag)
+  {
+  if(tag.hasKey("changeList"))
+    {
+    AWLog.logDebug("rec. warehouse item map..");
+    handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
+    }
+  refreshGui();
+  }
+
+@Override
+public void detectAndSendChanges()
+  {  
+  super.detectAndSendChanges();  
+  if(shouldUpdate)
+    {
+    synchItemMaps();    
+    shouldUpdate = false;
+    }
+  }
+
+private void handleChangeList(NBTTagList changeList)
+  {
+  NBTTagCompound tag;
+  int qty;
+  ItemHashEntry wrap = null;
+  for(int i = 0; i < changeList.tagCount(); i++)
+    {
+    tag = changeList.getCompoundTagAt(i);
+    wrap = ItemHashEntry.readFromNBT(tag);
+    qty = tag.getInteger("qty");
+    if(qty==0)
+      {
+      itemMap.remove(wrap);
+      }
+    else
+      {
+      itemMap.put(wrap, qty);      
+      }
+    }
+  TileWarehouseBase warehouse = station.getWarehouse();
+  if(warehouse!=null)
+    {
+    warehouse.clearItemCache();
+    warehouse.addItemsToCache(itemMap);
+    }
+  }
+
+private void synchItemMaps()
+  {
+  /**
+   * need to loop through this.itemMap and compare quantities to warehouse.itemMap
+   *    add any changes to change-list
+   * need to loop through warehouse.itemMap and find new entries
+   *    add any new entries to change-list    
+   */
+
+  cache.clear();
+  TileWarehouseBase warehouse = station.getWarehouse();
+  if(warehouse!=null)
+    {
+    warehouse.getItems(cache);    
+    }
+  ItemQuantityMap warehouseItemMap = cache;
+  int qty;
+  NBTTagList changeList = new NBTTagList();
+  NBTTagCompound tag;
+  for(ItemHashEntry wrap : this.itemMap.keySet())
+    {
+    qty = this.itemMap.getCount(wrap);
+    if(qty!=warehouseItemMap.getCount(wrap))
+      {
+      qty = warehouseItemMap.getCount(wrap);
+      tag = wrap.writeToNBT(new NBTTagCompound());
+      tag.setInteger("qty", qty);
+      changeList.appendTag(tag);
+      this.itemMap.put(wrap, qty);
+      }
+    }  
+  for(ItemHashEntry entry : warehouseItemMap.keySet())
+    {
+    if(!itemMap.contains(entry))
+      {
+      qty = warehouseItemMap.getCount(entry);
+      tag = ItemHashEntry.writeToNBT(entry, new NBTTagCompound());
+      tag.setInteger("qty", qty);
+      changeList.appendTag(tag);
+      this.itemMap.put(entry, qty);
+      }
+    }
+  if(changeList.tagCount()>0)
+    {
+    tag = new NBTTagCompound();
+    tag.setTag("changeList", changeList);
+    sendDataToClient(tag);    
+    }
+  }
+
+public void onWarehouseInventoryUpdated()
+  {  
+  AWLog.logDebug("update callback from warehouse...");
+  shouldUpdate = true;
+  }
 
 }

@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceEmptyRequest;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceFillRequest;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBounded;
@@ -46,7 +47,7 @@ protected WarehouseStorageMap storageMap = new WarehouseStorageMap();
 private ItemQuantityMap cachedItemMap = new ItemQuantityMap();
 
 private Set<ContainerWarehouseControl> viewers = new HashSet<ContainerWarehouseControl>();
-
+private Set<ContainerWarehouseCraftingStation> craftingViewers = new HashSet<ContainerWarehouseCraftingStation>();
 
 public TileWarehouseBase()
   {
@@ -265,6 +266,10 @@ public final void getItems(ItemQuantityMap map)
   map.addAll(cachedItemMap);
   }
 
+public final void clearItemCache(){cachedItemMap.clear();}
+
+public final void addItemsToCache(ItemQuantityMap map){cachedItemMap.addAll(map);}
+
 @Override
 public final void updateEntity()
   { 
@@ -345,18 +350,21 @@ public final void addViewer(ContainerWarehouseControl viewer)
   viewers.add(viewer);
   }
 
+public final void addCraftingViewer(ContainerWarehouseCraftingStation viewer)
+  {
+  if(worldObj.isRemote){return;}
+  craftingViewers.add(viewer);
+  }
+
 public final void removeViewer(ContainerWarehouseControl viewer){viewers.remove(viewer);}
+
+public final void removeCraftingViewer(ContainerWarehouseCraftingStation viewer){craftingViewers.remove(viewer);}
 
 public final void updateViewers()
   {
-  for(ContainerWarehouseControl viewer : viewers)
-    {
-    viewer.onWarehouseInventoryUpdated();
-    }
-  for(TileWarehouseStockViewer viewer : stockViewers)
-    {
-    viewer.onWarehouseInventoryUpdated();
-    }
+  for(ContainerWarehouseControl viewer : viewers){viewer.onWarehouseInventoryUpdated();}
+  for(TileWarehouseStockViewer viewer : stockViewers){viewer.onWarehouseInventoryUpdated();}
+  for(ContainerWarehouseCraftingStation viewer : craftingViewers){viewer.onWarehouseInventoryUpdated();}
   }
 
 public final void addStorageTile(IWarehouseStorageTile tile)
@@ -499,7 +507,7 @@ public final boolean onBlockClicked(EntityPlayer player)
 @Override
 public final boolean shouldRenderInPass(int pass)
   {
-  return pass==1;//TODO can render in pass1?
+  return pass==1;//it is for the TESR (for bounds rendering), block renders as per normal
   }
 
 public int getCountOf(ItemStack layoutStack)
@@ -509,6 +517,11 @@ public int getCountOf(ItemStack layoutStack)
 
 public void decreaseCountOf(ItemStack layoutStack, int i)
   {
+  if(worldObj.isRemote)
+    {
+    cachedItemMap.decreaseCount(layoutStack, i);
+    return;
+    }
   List<IWarehouseStorageTile> dest = new ArrayList<IWarehouseStorageTile>();
   storageMap.getDestinations(layoutStack, dest);
   int found = 0;

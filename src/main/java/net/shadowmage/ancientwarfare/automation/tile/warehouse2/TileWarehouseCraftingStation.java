@@ -8,6 +8,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -72,6 +73,7 @@ public void onItemCrafted()
     {
     return;
     }
+  AWLog.logDebug("crafting item...");
   int q;
   ItemStack layoutStack;   
   for(int i = 0; i < 9; i++)
@@ -80,17 +82,19 @@ public void onItemCrafted()
     if(layoutStack==null){continue;}
     if(layoutMatrix.getStackInSlot(i)!=null){continue;}
     q = warehouse.getCountOf(layoutStack);
+    AWLog.logDebug("warehouse count of: "+layoutStack+" :: "+q);
     if(q>0)
       {
       warehouse.decreaseCountOf(layoutStack, 1);
+      layoutStack = layoutStack.copy();
+      layoutStack.stackSize=1;
+      layoutMatrix.setInventorySlotContents(i, layoutStack);      
       }
-    layoutStack = layoutStack.copy();
-    layoutStack.stackSize=1;
-    layoutMatrix.setInventorySlotContents(i, layoutStack);
     }
+  if(!worldObj.isRemote){warehouse.updateViewers();}  
   }
 
-private TileWarehouseBase getWarehouse()
+public final TileWarehouseBase getWarehouse()
   {
   if(yCoord<=1)//could not possibly be a warehouse below...
     {
