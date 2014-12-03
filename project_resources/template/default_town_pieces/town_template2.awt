@@ -18,7 +18,7 @@ biomeWhiteList=false
 biomeList=ocean,beach
 dimensionWhiteList=true
 dimensionList=0
-townHall=TownBlocksMarketSquare
+townHall=TownBlocksTownHall
 lamp=lamp_post
 :endheader
 
@@ -47,12 +47,14 @@ wallPatterns:
 #list of structures, one per line, colon separating min and max values for each
 #template_name:min:max
 structures:
-TownBlocks1Houses:1:1
-TownBlocks1HousesB:1:1
-TownBlocks2Houses:1:1
-TownBlocks2HousesC:1:1
+CivWatchFireBeaconShortMOH:1:1
+CivWatchFireBeaconTallMOH:1:1
 TownBlocksArmourer:1:1
+TownBlocksBakery:1:1
+TownBlocksBurgherTower:1:1
 TownBlocksChurch:1:1
+TownBlocksForgeSmall:1:1
+TownBlocksFoundry:1:1
 TownBlocksGovernorsPalace:1:1
 TownBlocksGovernorsTower:1:1
 TownBlocksLarge3Housing:1:1
@@ -60,28 +62,48 @@ TownBlocksLargeBlockShrine:1:1
 TownBlocksLargeInnAndFountain:1:1
 TownBlocksLargeManufactory:1:1
 TownBlocksLargeMerchantHouse:1:1
+TownBlocksLargeWarehouse:1:1
 TownBlocksManufactory2:1:1
-TownBlockMarketSquare:1:1
+TownBlocksMarketAndShops:1:1
+TownBlocksMarketSquare:1:1
+TownBlocksMCStyleBlacksmith:1:1
+TownBlocksMCStyleGuardHut:1:1
+TownBlocksMCStyleLibrary:1:1
+TownBlocksPrisonTowner:1:1
 TownBlocksSmallMarket:1:1
 TownBlocksSmallMerchantHouse:1:1
 TownBlocksSmallWarehouse:1:1
+TownBlocksStoneMason:1:1
 TownBlocksTavern:1:1
 TownBlocksTownCouncil:1:1
 TownBlocksTownWatchPrison:1:1
 TownBlocksTwoWarehouses:1:1
-village_house_garden:5:8
-village_house:5:8
-village_hut1:5:8
-village_hut2:5:8
-village_library:2:4
-village_smith:1:2
-village_church:1:2
+TownBlocksVillagerMarket:1:1
+TownBlocks1Houses:1:1
+TownBlocks1HousesB:1:1
+TownBlocks2Houses:1:1
+TownBlocks2HousesC:1:1
+TownBlocksSingleHouse1:3:8
+TownBlocksSingleHouse2:3:8
+TownBlocksSingleHouse3:3:8
+TownBlocksSingleHouse4:3:8
+TownBlocksSingleHouse6:3:8
+TownBlocksMCStyleHouseand Farm:3:8
+TownBlocksMCStyleLargeHouseandFields:3:8
+TownBlocksMCStyleSmallHutandField:3:8
+TownBlocksHovel1small:3:8
+TownBlocksHovel2small:3:8
+TownBlocksHovel3small:3:8
 :endstructures
 
 #list of cosmetic structure templates w/weight, to be used to fill in random positions post-generation
 #template_name:weight
 cosmetics:
-village_garden_large:1
-village_garden_small:2
+TownBlocksFillerSmallChickenCoup:1
+TownBlocksFillerSmallLampPost:2
+TownBlocksFillerSmallLogPile:2
+TownBlocksFillerSmallPigPen:1
+TownBlocksFillerSmallStables:1
+TownBlocksFillerSmallWorkshed:2
 TownBlocksTownWell:1
 :endcosmetics
