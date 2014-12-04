@@ -11,7 +11,7 @@ clusterValue=300
 townBlockSize=40
 townPlotSize=3
 wallStyle=2
-wallSize=8
+wallSize=10
 roadBlock=minecraft:gravel
 roadMeta=0
 biomeWhiteList=false
@@ -25,9 +25,8 @@ lamp=lamp_post
 #wall type registry
 #name:type:id:weight
 walls:
-wall_corner1:corner:0:10
-wall_straight1:wall:1:10
-wall_straight2:wall:2:10
+wall_moat_corner:corner:0:10
+wall_moat_straight:wall:1:10
 wall_gate:gate:3:10
 wall_lgate:lgate:4:10
 wall_rgate:rgate:5:10
