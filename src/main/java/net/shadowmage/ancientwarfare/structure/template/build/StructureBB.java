@@ -30,6 +30,11 @@ public class StructureBB
 public BlockPosition min;
 public BlockPosition max;
 
+public StructureBB(int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
+  {
+  this(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+  }
+
 public StructureBB(int x, int y, int z, int face, StructureTemplate template)
   {
   this(x, y, z, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);

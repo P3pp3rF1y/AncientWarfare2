@@ -10,19 +10,19 @@ public class TownPartQuadrant
 {
 
 protected StructureBB bb;
-TownBoundingArea townBB;
+private TownGenerator gen;
 private Direction xDir, zDir;
 protected int xDivs, zDivs;
 private boolean roadBorders[];
 protected TownPartBlock blocks[];
 
-public TownPartQuadrant(Direction xDir, Direction zDir, StructureBB bb, boolean[] borders, TownBoundingArea townBounds)
+public TownPartQuadrant(Direction xDir, Direction zDir, StructureBB bb, boolean[] borders, TownGenerator gen)
   {  
   this.xDir= xDir;
   this.zDir = zDir;
   this.bb = bb;
   this.roadBorders = borders;  
-  townBB = townBounds;
+  this.gen = gen;
   }
 
 public boolean hasRoadBorder(Direction d)
@@ -83,7 +83,7 @@ public void subdivide(int blockSize, int plotSize)
       zIndex = zDir==Direction.NORTH ? (zDivs-1)-z : z;
       
       sbb= new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd));
-      distFromTownCenter = Trig.getDistance(sbb.getCenterX(), 0, sbb.getCenterZ(), townBB.getTownWidth()/2, 0, townBB.getTownLength()/2);
+      distFromTownCenter = Trig.getDistance(sbb.getCenterX(), 0, sbb.getCenterZ(), gen.maximalBounds.getCenterX(), 0, gen.maximalBounds.getCenterZ());
       block = new TownPartBlock(this, sbb, xIndex, zIndex, getBorders(xIndex, zIndex), distFromTownCenter);
       
       setBlock(block, xIndex, zIndex);
