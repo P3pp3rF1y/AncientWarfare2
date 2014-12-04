@@ -194,7 +194,16 @@ public void recalcRequests()
     if(stack==null){continue;}
     if(!matchesFilter(stack))
       {
-      emptyRequests.add(new InterfaceEmptyRequest(i));
+      emptyRequests.add(new InterfaceEmptyRequest(i, stack.stackSize));
+      }
+    else//matches, remove extras
+      {
+      int count = InventoryTools.getCountOf(inventory, -1, stack);
+      int max = getFilterQuantity(stack);
+      if(count > max)
+        {
+        emptyRequests.add(new InterfaceEmptyRequest(i, count-max));
+        }
       }
     }
   
@@ -203,7 +212,7 @@ public void recalcRequests()
     {
     if(filter.getFilterItem()==null){continue;}
     count = InventoryTools.getCountOf(inventory, -1, filter.getFilterItem());
-    if(count<filter.getFilterQuantity())
+    if(count < filter.getFilterQuantity())
       {
       fillRequests.add(new InterfaceFillRequest(filter.getFilterItem().copy(), filter.getFilterQuantity()-count));
       }
@@ -225,6 +234,16 @@ protected boolean matchesFilter(ItemStack stack)
   return false;
   }
 
+protected int getFilterQuantity(ItemStack stack)
+  {
+  int qty = 0;
+  for(WarehouseInterfaceFilter filter : filters)
+    {
+    if(filter.isItemValid(stack)){qty+=filter.getFilterQuantity();}
+    }
+  return qty;
+  }
+
 public List<InterfaceFillRequest> getFillRequests(){return fillRequests;}
 public List<InterfaceEmptyRequest> getEmptyRequests(){return emptyRequests;}
 
@@ -242,7 +261,12 @@ public InterfaceFillRequest(ItemStack item, int amount)
 public static class InterfaceEmptyRequest
 {
 int slotNum;
-public InterfaceEmptyRequest(int slot){slotNum=slot;}
+int count;
+public InterfaceEmptyRequest(int slot, int count)
+  {
+  slotNum=slot;
+  this.count=count;
+  }
 }
 
 }

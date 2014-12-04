@@ -185,17 +185,21 @@ private boolean tryRemoveFromRequest(TileWarehouseInterface tile, InterfaceEmpty
   if(stack==null){return false;}
   int stackSize = stack.stackSize;
   int moved;
+  int toMove = request.count;
+  int stackMove;
   List<IWarehouseStorageTile> potentialStorage = new ArrayList<IWarehouseStorageTile>();
   storageMap.getDestinations(stack, potentialStorage);
   for(IWarehouseStorageTile dest : potentialStorage)
     {
-    moved = dest.insertItem(stack, stack.stackSize);
-    if(moved>0)
+    stackMove = toMove > stack.stackSize ? stack.stackSize : toMove;
+    moved = dest.insertItem(stack, stackMove);
+    if(moved > 0)
       {
       cachedItemMap.addCount(stack, moved);
       updateViewers();
       }
     stack.stackSize -= moved;
+    toMove -= moved;
     if(stack.stackSize!=stackSize)
       {
       if(stack.stackSize<=0)
@@ -204,6 +208,7 @@ private boolean tryRemoveFromRequest(TileWarehouseInterface tile, InterfaceEmpty
         }
       return true;
       }
+    if(toMove<=0){break;}
     }  
   return false;
   }
