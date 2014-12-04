@@ -11,16 +11,16 @@ import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
 public class TownGeneratorWalls
 {
 
-public static void generateWalls(World world, TownBoundingArea area, TownTemplate template, Random rng)
+public static void generateWalls(World world, TownGenerator gen, TownTemplate template, Random rng)
   {
   if(template.getWallStyle()<=0){return;}//no walls
-  int minX = area.getWallMinX();
-  int minZ = area.getWallMinZ();
-  int maxX = area.getWallMaxX();
-  int maxZ = area.getWallMaxZ();
+  int minX = gen.wallsBounds.min.x;
+  int minZ = gen.wallsBounds.min.z;
+  int maxX = gen.wallsBounds.max.x;
+  int maxZ = gen.wallsBounds.max.z;
   int chunkWidth = (maxX-minX+1)/16;
   int chunkLength = (maxZ-minZ+1)/16;
-  int minY = area.getSurfaceY()+1;
+  int minY = gen.wallsBounds.min.y;
   int x, z;
   int facingDirection;
   

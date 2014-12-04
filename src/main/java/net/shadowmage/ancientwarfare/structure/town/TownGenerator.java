@@ -45,7 +45,6 @@ StructureBB townBounds;//walls shrunk by wallSize (configurable), town generatio
 TownPartQuadrant[] quadrants = new TownPartQuadrant[4];
 private Random rng;
 private World world;
-private TownBoundingArea area;
 private TownTemplate template;
 
 private List<StructureTemplate> templatesToGenerate = new ArrayList<StructureTemplate>();
@@ -60,20 +59,20 @@ private List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<Stru
 public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   {
   this.world = world;
-  this.area = area;
   this.template = template;  
   this.rng = new Random(0);//TODO seed random from chunk coordinates  
   
   int y1 = area.getSurfaceY()+1;
   int y2 = y1+20;
   
+  area.wallSize = template.getWallSize();
+  area.exteriorSize = template.getExteriorSize();
+    
   this.maximalBounds = new StructureBB(area.getBlockMinX(), y1, area.getBlockMinZ(), area.getBlockMaxX(), y2, area.getBlockMaxZ());
   this.exteriorBounds = new StructureBB(area.getExteriorMinX(), y1, area.getExteriorMinZ(), area.getExteriorMaxX(), y2, area.getExteriorMaxZ());
   this.wallsBounds = new StructureBB(area.getWallMinX(), y1, area.getWallMinZ(), area.getWallMaxX(), y2, area.getWallMaxZ());
   this.townBounds = new StructureBB(area.getTownMinX(), y1, area.getTownMinZ(), area.getTownMaxX(), y2, area.getTownMaxZ());
-  
-  this.area.wallSize = template.getWallSize(); 
-  this.area.exteriorSize = template.getExteriorSize();
+
   this.blockSize = template.getTownBlockSize();
   this.plotSize = template.getTownPlotSize();    
   int width = maximalBounds.getXSize();
@@ -119,9 +118,9 @@ private void fillStructureMap()
 
 private void doGeneration()
   {
-  TownGeneratorBorders.generateBorders(world, area);  
-  TownGeneratorBorders.levelTownArea(world, area);
-  TownGeneratorWalls.generateWalls(world, area, template, rng);
+  TownGeneratorBorders.generateBorders(world, this);  
+  TownGeneratorBorders.levelTownArea(world, this);
+  TownGeneratorWalls.generateWalls(world, this, template, rng);
   this.generateGrid();
   this.generateRoads(world);
   StructureTemplate townHall = null;
@@ -541,7 +540,7 @@ private void generateStructure(World world, TownPartPlot plot, StructureTemplate
     }
     
   //find corners of the bb for the structure  
-  BlockPosition min = new BlockPosition(plot.bb.min.x+wAdj, 0, plot.bb.min.z+lAdj);
+  BlockPosition min = new BlockPosition(plot.bb.min.x+wAdj, townBounds.min.y, plot.bb.min.z+lAdj);
   BlockPosition max = new BlockPosition(min.x + (width-1), template.ySize, min.z+(length-1));
   StructureBB bb = new StructureBB(min, max);
   

@@ -12,12 +12,17 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator
 public class TownGeneratorBorders
 {
 
-public static void generateBorders(World world, TownBoundingArea area)  
+public static void generateBorders(World world, TownGenerator gen)  
   {
   int minX, maxX, minZ, maxZ;  
   int step;
-  int fillBase = area.getSurfaceY();
+  int fillBase = gen.maximalBounds.min.y;
   int levelBase = fillBase;
+  
+  int eminx = gen.exteriorBounds.min.x;
+  int eminz = gen.exteriorBounds.min.z;
+  int emaxx = gen.exteriorBounds.max.x;
+  int emaxz = gen.exteriorBounds.max.z;
   
   minX = area.getBlockMinX();
   maxX = area.getWallMinX()-1;
@@ -25,7 +30,7 @@ public static void generateBorders(World world, TownBoundingArea area)
     {    
     for(int pz = area.getBlockMinZ(); pz<=area.getBlockMaxZ(); pz++)
       {
-      step = WorldStructureGenerator.getStepNumber(px, pz, area.getExteriorMinX(), area.getExteriorMaxX(), area.getExteriorMinZ(), area.getExteriorMaxZ());
+      step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));
       }
     }  
@@ -36,7 +41,7 @@ public static void generateBorders(World world, TownBoundingArea area)
     {    
     for(int pz = area.getBlockMinZ(); pz<=area.getBlockMaxZ(); pz++)
       {
-      step = WorldStructureGenerator.getStepNumber(px, pz, area.getExteriorMinX(), area.getExteriorMaxX(), area.getExteriorMinZ(), area.getExteriorMaxZ());
+      step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));
       }
     } 
@@ -47,30 +52,30 @@ public static void generateBorders(World world, TownBoundingArea area)
     {
     for(int px = area.getBlockMinX(); px<=area.getBlockMaxX(); px++)
       {
-      step = WorldStructureGenerator.getStepNumber(px, pz, area.getExteriorMinX(), area.getExteriorMaxX(), area.getExteriorMinZ(), area.getExteriorMaxZ());
+      step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));
       }
     }
   
-  minZ = area.getWallMaxZ()+1;
-  maxZ = area.getBlockMaxZ();
+  minZ = gen.wallsBounds.max.z + 1;
+  maxZ = gen.maximalBounds.max.z;
   for(int pz = minZ; pz <= maxZ; pz++)
     {
-    for(int px = area.getBlockMinX(); px<=area.getBlockMaxX(); px++)
+    for(int px = gen.maximalBounds.min.x; px <= gen.maximalBounds.max.x; px++)
       {
-      step = WorldStructureGenerator.getStepNumber(px, pz, area.getExteriorMinX(), area.getExteriorMaxX(), area.getExteriorMinZ(), area.getExteriorMaxZ());
+      step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));
       }
     }  
   }
 
-public static void levelTownArea(World world, TownBoundingArea area)
+public static void levelTownArea(World world, TownGenerator gen)
   {
-  int minX = area.getWallMinX();
-  int minZ = area.getWallMinZ();
-  int maxX = area.getWallMaxX();
-  int maxZ = area.getWallMaxZ();  
-  int desiredTopBlockHeight = area.getSurfaceY();
+  int minX = gen.wallsBounds.min.x;
+  int minZ = gen.wallsBounds.min.z;
+  int maxX = gen.wallsBounds.max.x;
+  int maxZ = gen.wallsBounds.max.z; 
+  int desiredTopBlockHeight = gen.wallsBounds.min.y-1;
   for(int x = minX; x<=maxX; x++)
     {
     for(int z = minZ; z<=maxZ; z++)
