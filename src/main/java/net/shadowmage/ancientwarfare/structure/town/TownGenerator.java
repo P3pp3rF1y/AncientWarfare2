@@ -64,6 +64,7 @@ public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   this.area.townCenterX = area.getBlockMinX() + area.getBlockWidth()/2;
   this.area.townCenterZ = area.getBlockMinZ() + area.getBlockLength()/2;  
   this.area.wallSize = template.getWallSize(); 
+  this.area.exteriorSize = template.getExteriorSize();
   this.boundingArea = area;
   this.blockSize = template.getTownBlockSize();
   this.plotSize = template.getTownPlotSize();

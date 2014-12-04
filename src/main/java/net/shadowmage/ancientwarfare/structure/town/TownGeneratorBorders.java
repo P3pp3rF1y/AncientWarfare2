@@ -25,7 +25,7 @@ public static void generateBorders(World world, TownBoundingArea area)
     {    
     for(int pz = area.getBlockMinZ(); pz<=area.getBlockMaxZ(); pz++)
       {
-      step = WorldStructureGenerator.getStepNumber(px, pz, area.getWallMinX(), area.getWallMaxX(), area.getWallMinZ(), area.getWallMaxZ());
+      step = WorldStructureGenerator.getStepNumber(px, pz, area.getExteriorMinX(), area.getExteriorMaxX(), area.getExteriorMinZ(), area.getExteriorMaxZ());
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));
       }
     }  
@@ -36,7 +36,7 @@ public static void generateBorders(World world, TownBoundingArea area)
     {    
     for(int pz = area.getBlockMinZ(); pz<=area.getBlockMaxZ(); pz++)
       {
-      step = WorldStructureGenerator.getStepNumber(px, pz, area.getWallMinX(), area.getWallMaxX(), area.getWallMinZ(), area.getWallMaxZ()); 
+      step = WorldStructureGenerator.getStepNumber(px, pz, area.getExteriorMinX(), area.getExteriorMaxX(), area.getExteriorMinZ(), area.getExteriorMaxZ());
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));
       }
     } 
@@ -47,7 +47,7 @@ public static void generateBorders(World world, TownBoundingArea area)
     {
     for(int px = area.getBlockMinX(); px<=area.getBlockMaxX(); px++)
       {
-      step = WorldStructureGenerator.getStepNumber(px, pz, area.getWallMinX(), area.getWallMaxX(), area.getWallMinZ(), area.getWallMaxZ());
+      step = WorldStructureGenerator.getStepNumber(px, pz, area.getExteriorMinX(), area.getExteriorMaxX(), area.getExteriorMinZ(), area.getExteriorMaxZ());
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));
       }
     }
@@ -58,7 +58,7 @@ public static void generateBorders(World world, TownBoundingArea area)
     {
     for(int px = area.getBlockMinX(); px<=area.getBlockMaxX(); px++)
       {
-      step = WorldStructureGenerator.getStepNumber(px, pz, area.getWallMinX(), area.getWallMaxX(), area.getWallMinZ(), area.getWallMaxZ());
+      step = WorldStructureGenerator.getStepNumber(px, pz, area.getExteriorMinX(), area.getExteriorMaxX(), area.getExteriorMinZ(), area.getExteriorMaxZ());
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));
       }
     }  

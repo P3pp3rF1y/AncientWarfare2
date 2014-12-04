@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.town;
 import java.util.Random;
 
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
@@ -18,6 +19,14 @@ public static void generateWalls(World world, TownBoundingArea area, TownTemplat
   int minZ = area.getWallMinZ();
   int maxX = area.getWallMaxX();
   int maxZ = area.getWallMaxZ();
+  int chunkWidth = (maxX-minX+1)/16;
+  int chunkLength = (maxZ-minZ+1)/16;
+  AWLog.logDebug("gen walls: "+area.getBlockMinX()+" :: "  + minX);
+  AWLog.logDebug("gen walls: "+area.getBlockMaxX()+" :: "  + maxX);
+  AWLog.logDebug("gen walls: "+area.getBlockMinZ()+" :: "  + minZ);
+  AWLog.logDebug("gen walls: "+area.getBlockMaxZ()+" :: "  + maxZ);
+  AWLog.logDebug("width: "+(maxX-minX));
+  AWLog.logDebug("length: "+(maxZ-minZ));
   int minY = area.getSurfaceY()+1;
   int x, z;
   int facingDirection;
@@ -45,38 +54,38 @@ public static void generateWalls(World world, TownBoundingArea area, TownTemplat
     {
   //construct N wall
     facingDirection = Direction.SOUTH.ordinal();  
-    for(int i = 1; i < area.getChunkWidth()-2; i++)
+    for(int i = 1; i < chunkWidth-1; i++)
       {
       x = minX + 16*i;
       z = minZ;
-      constructTemplate(world, getWallSection(rng, template, i, area.getChunkWidth()-1), facingDirection, x, minY, z);
+      constructTemplate(world, getWallSection(rng, template, i, chunkWidth), facingDirection, x, minY, z);
       }
     
     //construct E wall
     facingDirection = Direction.WEST.ordinal();
-    for(int i = 1; i < area.getChunkLength()-2; i++)
+    for(int i = 1; i < chunkLength-1; i++)
       {
       x = maxX;
       z = minZ + 16*i;
-      constructTemplate(world, getWallSection(rng, template, i, area.getChunkLength()-1), facingDirection, x, minY, z);
+      constructTemplate(world, getWallSection(rng, template, i, chunkLength), facingDirection, x, minY, z);
       }
     
     //construct S wall
     facingDirection = Direction.NORTH.ordinal();
-    for(int i = 1; i < area.getChunkWidth()-2; i++)
+    for(int i = 1; i < chunkWidth-1; i++)
       {
       x = maxX - 16*i;
       z = maxZ;
-      constructTemplate(world, getWallSection(rng, template, i, area.getChunkWidth()-1), facingDirection, x, minY, z);
+      constructTemplate(world, getWallSection(rng, template, i, chunkWidth), facingDirection, x, minY, z);
       }
     
     //construct W wall
     facingDirection = Direction.EAST.ordinal();
-    for(int i = 1; i < area.getChunkLength()-2; i++)
+    for(int i = 1; i < chunkLength-1; i++)
       {
       x = minX;
       z = maxZ - 16*i;
-      constructTemplate(world, getWallSection(rng, template, i, area.getChunkLength()-1), facingDirection, x, minY, z);
+      constructTemplate(world, getWallSection(rng, template, i, chunkLength), facingDirection, x, minY, z);
       }    
     }
   }
