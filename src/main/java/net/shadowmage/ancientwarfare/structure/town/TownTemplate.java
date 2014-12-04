@@ -10,8 +10,6 @@ import net.minecraft.init.Blocks;
 
 public final class TownTemplate
 {
-
-
 private String townTypeName;//
 
 private boolean biomeWhiteList;//
@@ -39,6 +37,9 @@ private int roadFillMeta = 0;
 
 private int wallStyle;//0==no wall, 1==corner only, 2==random walls, 3==by pattern//
 private int wallSize;//size in blocks//
+
+private int exteriorSize;//area outside of the walls, in blocks
+private int exteriorPlotSize;//size of each plot in the area outside of the walls
 
 private HashMap<Integer, TownWallEntry> wallsByID = new HashMap<Integer, TownWallEntry>();
 private HashMap<Integer, int[]> wallPatterns = new HashMap<Integer, int[]>();
@@ -98,6 +99,10 @@ public final Block getRoadFillBlock(){return roadFillBlock;}
 public final void setRoadFillBlock(Block roadFillBlock){this.roadFillBlock = roadFillBlock==null? this.roadFillBlock : roadFillBlock;}
 public final void setRoadFillMeta(int roadFillMeta){this.roadFillMeta = roadFillMeta;}
 public final int getRoadFillMeta(){return roadFillMeta;}
+public final int getExteriorSize(){return exteriorSize;}
+public final int getExteriorPlotSize(){return exteriorPlotSize;}
+public final void setExteriorSize(int exteriorSize){this.exteriorSize = exteriorSize;}
+public final void setExteriorPlotSize(int exteriorPlotSize){this.exteriorPlotSize = exteriorPlotSize;}
 public final int[] getWallPattern(int size){return wallPatterns.get(size);}
 public final int getWallStyle(){return wallStyle;}
 public final int getWallSize(){return wallSize;}

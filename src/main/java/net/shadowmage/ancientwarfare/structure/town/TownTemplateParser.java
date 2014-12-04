@@ -66,6 +66,8 @@ private static void parseHeader(Iterator<String> it, TownTemplate template)
     else if(lower.startsWith("townplotsize")){template.setTownPlotSize(StringTools.safeParseInt("=", line));}
     else if(lower.startsWith("wallstyle")){template.setWallStyle(StringTools.safeParseInt("=", line));}
     else if(lower.startsWith("wallsize")){template.setWallSize(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("exteriorsize")){template.setExteriorSize(StringTools.safeParseInt("=", line));}
+    else if(lower.startsWith("exteriorplotsize")){template.setExteriorPlotSize(StringTools.safeParseInt("=", line));}
     else if(lower.startsWith("roadblock")){template.setRoadFillBlock((Block)Block.blockRegistry.getObject(StringTools.safeParseString("=", line)));}
     else if(lower.startsWith("roadmeta")){template.setRoadFillMeta(StringTools.safeParseInt("=", line));}
     else if(lower.startsWith("biomewhitelist")){template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));}
