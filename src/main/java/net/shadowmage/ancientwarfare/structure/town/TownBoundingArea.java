@@ -15,7 +15,7 @@ int townCenterX;//calculated center of the town area, to be used for main road p
 int townCenterZ;//calculated center of the town area, to be used for main road positioning and generation start
 
 int wallSize = 3;//should be >0 if walls are desired (must be set by generator prior to generating, not used in validation)
-int exteriorSize = 0;
+int exteriorSize = 0;//exterior buffer size, in chunks.  used to inset the walls by this amount, to allow generation of slums/farms on the exterior of the towns
 
 public int getChunkWidth(){return (chunkMaxX-chunkMinX)+1;}
 public int getChunkLength(){return (chunkMaxZ-chunkMinZ)+1;}

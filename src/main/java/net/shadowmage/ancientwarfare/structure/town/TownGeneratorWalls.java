@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.town;
 import java.util.Random;
 
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
@@ -21,12 +20,6 @@ public static void generateWalls(World world, TownBoundingArea area, TownTemplat
   int maxZ = area.getWallMaxZ();
   int chunkWidth = (maxX-minX+1)/16;
   int chunkLength = (maxZ-minZ+1)/16;
-  AWLog.logDebug("gen walls: "+area.getBlockMinX()+" :: "  + minX);
-  AWLog.logDebug("gen walls: "+area.getBlockMaxX()+" :: "  + maxX);
-  AWLog.logDebug("gen walls: "+area.getBlockMinZ()+" :: "  + minZ);
-  AWLog.logDebug("gen walls: "+area.getBlockMaxZ()+" :: "  + maxZ);
-  AWLog.logDebug("width: "+(maxX-minX));
-  AWLog.logDebug("length: "+(maxZ-minZ));
   int minY = area.getSurfaceY()+1;
   int x, z;
   int facingDirection;
