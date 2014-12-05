@@ -128,13 +128,13 @@ public StructureBB offset(int x, int y, int z)
   return this;
   }
 
-public int getXSize(){return max.x-min.x+1;}
+public int getXSize(){return max.x - min.x+1;}
 
-public int getZSize(){return max.z-min.z+1;}
+public int getZSize(){return max.z - min.z+1;}
 
-public int getCenterX(){return min.x + (getXSize()/2);}
+public int getCenterX(){return min.x + (getXSize()/2)-1;}
 
-public int getCenterZ(){return min.z + (getZSize()/2);}
+public int getCenterZ(){return min.z + (getZSize()/2)-1;}
 
 /**
  * 0-- z++==forward x++==left

@@ -35,7 +35,7 @@ protected void setRoadBorder(Direction d, boolean val)
   roadBorders[d.ordinal()]=val;
   }
 
-public void subdivide(int blockSize, int plotSize)
+public void subdivide(int blockSize, int plotSize, boolean gridRoads)
   {
   int totalWidth = (bb.max.x - bb.min.x);
   int totalLength = (bb.max.z - bb.min.z);  
@@ -68,6 +68,7 @@ public void subdivide(int blockSize, int plotSize)
   TownPartBlock block;
   float distFromTownCenter = 0;
   StructureBB sbb;
+  boolean[] borders;
 
   widthToUse = totalWidth;
   xStart = xDir.xDirection < 0 ? bb.max.x-1 : bb.min.x+1;
@@ -86,8 +87,9 @@ public void subdivide(int blockSize, int plotSize)
       zIndex = zDir==Direction.NORTH ? (zDivs-1)-z : z;
       
       sbb= new StructureBB(new BlockPosition(xStart, y1, zStart), new BlockPosition(xEnd, y2, zEnd));
+      borders = gridRoads ? getBordersGrid(xIndex, zIndex) : getBordersExterior(x, z);
       distFromTownCenter = Trig.getDistance(sbb.getCenterX(), y1, sbb.getCenterZ(), gen.maximalBounds.getCenterX(), y1, gen.maximalBounds.getCenterZ());
-      block = new TownPartBlock(this, sbb, xIndex, zIndex, getBorders(xIndex, zIndex), distFromTownCenter);
+      block = new TownPartBlock(this, sbb, xIndex, zIndex, borders, distFromTownCenter);
       
       setBlock(block, xIndex, zIndex);
       block.subdivide(plotSize);
@@ -116,13 +118,13 @@ private int getIndex(int x, int z)
   return z*xDivs + x;
   }
 
-private boolean[] getBorders(int x, int z)
+private boolean[] getBordersGrid(int x, int z)
   {
   boolean[] borders = new boolean[4];
   if(zDir==Direction.NORTH)
     {
     borders[Direction.SOUTH.ordinal()]=true;//has south
-    borders[Direction.NORTH.ordinal()]=z>0;//not on northern edge
+    borders[Direction.NORTH.ordinal()]=z > 0;//not on northern edge
     }
   else//zDir==Direction.SOUTH
     {
@@ -132,13 +134,23 @@ private boolean[] getBorders(int x, int z)
   if(xDir==Direction.WEST)
     {
     borders[Direction.EAST.ordinal()]=true;//has east
-    borders[Direction.WEST.ordinal()]=x>0;
+    borders[Direction.WEST.ordinal()]=x > 0;
     }
   else
     {
     borders[Direction.WEST.ordinal()]=true;
     borders[Direction.EAST.ordinal()]= x < xDivs - 1;
     }  
+  return borders;
+  }
+  
+private boolean[] getBordersExterior(int x, int z)
+  {
+  boolean[] borders = new boolean[4];  
+  borders[Direction.WEST.ordinal()] = roadBorders[Direction.WEST.ordinal()] && x == 0;
+  borders[Direction.EAST.ordinal()] = roadBorders[Direction.EAST.ordinal()] && x == 0;
+  borders[Direction.NORTH.ordinal()] = roadBorders[Direction.NORTH.ordinal()] && z == 0;   
+  borders[Direction.SOUTH.ordinal()] = roadBorders[Direction.SOUTH.ordinal()] && z == 0;
   return borders;
   }
 
