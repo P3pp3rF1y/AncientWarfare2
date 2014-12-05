@@ -209,15 +209,12 @@ private void generateExteriorGrid()
 //  int minZ = exteriorBounds.min.z;
 //  
 //  //1, northwest
-//  roadBorders = new boolean[]{false, false, false, true};
-//  
+//  roadBorders = new boolean[]{false, false, false, true};//  
 //  bb = new StructureBB(new BlockPosition(minX, y1, minZ), new BlockPosition(centerX-2, y2, wallsBounds.min.z - 1));
-//  AWLog.logDebug("created quadrant: "+bb);
 //  tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
 //  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
 //  generateRoads(world, tq);
-//  tq.addBlocks(blocks);
-  
+//  tq.addBlocks(blocks);  
 //  //2, northeast
 //  roadBorders = new boolean[]{false, true, false, false};
 //  bb = new StructureBB(new BlockPosition(centerX, 0, 0), new BlockPosition(width, 0, area.getWallMinZ()-1));
@@ -271,8 +268,7 @@ private void generateExteriorGrid()
 //  tq = new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders, boundingArea);
 //  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize());
 //  generateRoads(world, tq);
-//  tq.addBlocks(blocks);
-  
+//  tq.addBlocks(blocks);  
 //  
 //  for(TownPartBlock block : blocks)
 //    {
