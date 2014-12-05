@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.town;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
@@ -42,7 +41,9 @@ protected void setRoadBorder(Direction d, boolean val)
   }
 
 public void subdivide(int plotSize)
-  {
+  {  
+  int y1 = quadrant.gen.maximalBounds.min.y;
+  int y2 = quadrant.gen.maximalBounds.max.y;
   int xWidth = (bb.max.x - bb.min.x)+1;
   int zLength = (bb.max.z - bb.min.z)+1;
   int xDivs, zDivs;
@@ -52,7 +53,6 @@ public void subdivide(int plotSize)
   if(zLength%plotSize!=0){zDivs++;}  
   plotsWidth = xDivs;
   plotsLength = zDivs;
-  AWLog.logDebug("subdividing town block: "+bb+" :: "+xDivs+" : "+zDivs);
   
   plotsArray = new TownPartPlot[xDivs*zDivs];
   int widthToUse, lengthToUse;
@@ -79,7 +79,7 @@ public void subdivide(int plotSize)
       zEnd = zStart + quadrant.getZDir().zDirection * (zSize - 1);
       zIndex = quadrant.getZDir() == Direction.NORTH ? (zDivs-1)-z : z;
       
-      plot = new TownPartPlot(this, new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd)), xIndex, zIndex);
+      plot = new TownPartPlot(this, new StructureBB(new BlockPosition(xStart, y1, zStart), new BlockPosition(xEnd, y2, zEnd)), xIndex, zIndex);
       setRoadBorders(plot);
       
       plots.add(plot);

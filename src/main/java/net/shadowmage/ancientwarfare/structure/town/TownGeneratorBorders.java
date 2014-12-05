@@ -16,7 +16,7 @@ public static void generateBorders(World world, TownGenerator gen)
   {
   int minX, maxX, minZ, maxZ;  
   int step;
-  int fillBase = gen.maximalBounds.min.y;
+  int fillBase = gen.maximalBounds.min.y - 1;
   int levelBase = fillBase;
   
   int eminx = gen.exteriorBounds.min.x;
@@ -24,33 +24,33 @@ public static void generateBorders(World world, TownGenerator gen)
   int emaxx = gen.exteriorBounds.max.x;
   int emaxz = gen.exteriorBounds.max.z;
   
-  minX = area.getBlockMinX();
-  maxX = area.getWallMinX()-1;
+  minX = gen.maximalBounds.min.x;
+  maxX = gen.wallsBounds.min.x - 1;
   for(int px = minX; px <= maxX; px++)
     {    
-    for(int pz = area.getBlockMinZ(); pz<=area.getBlockMaxZ(); pz++)
+    for(int pz = gen.maximalBounds.min.z; pz <= gen.maximalBounds.max.z; pz++)
       {
       step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));
       }
     }  
   
-  minX = area.getWallMaxX()+1;
-  maxX = area.getBlockMaxX();  
+  minX = gen.wallsBounds.max.x + 1;
+  maxX = gen.maximalBounds.max.x;  
   for(int px = minX; px <= maxX; px++)
     {    
-    for(int pz = area.getBlockMinZ(); pz<=area.getBlockMaxZ(); pz++)
+    for(int pz = gen.maximalBounds.min.z; pz <= gen.maximalBounds.max.z; pz++)
       {
       step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));
       }
     } 
   
-  minZ = area.getBlockMinZ();
-  maxZ = area.getWallMinZ()-1;
+  minZ = gen.maximalBounds.min.z;
+  maxZ = gen.wallsBounds.min.z - 1;
   for(int pz = minZ; pz <= maxZ; pz++)
     {
-    for(int px = area.getBlockMinX(); px<=area.getBlockMaxX(); px++)
+    for(int px = gen.maximalBounds.min.x; px <= gen.maximalBounds.max.x; px++)
       {
       step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
       handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass));

@@ -10,7 +10,7 @@ public class TownPartQuadrant
 {
 
 protected StructureBB bb;
-private TownGenerator gen;
+public final TownGenerator gen;
 private Direction xDir, zDir;
 protected int xDivs, zDivs;
 private boolean roadBorders[];
@@ -41,6 +41,9 @@ public void subdivide(int blockSize, int plotSize)
   int totalLength = (bb.max.z - bb.min.z);  
   int widthToUse = totalWidth;
   int lengthToUse = totalLength;
+  
+  int y1 = gen.maximalBounds.min.y;
+  int y2 = gen.maximalBounds.max.y;
   
   widthToUse--;//the forced road edge for first block
   lengthToUse--;//the forced road edge for first block
@@ -82,8 +85,8 @@ public void subdivide(int blockSize, int plotSize)
       zEnd = zStart + zDir.zDirection * (zSize - 1);
       zIndex = zDir==Direction.NORTH ? (zDivs-1)-z : z;
       
-      sbb= new StructureBB(new BlockPosition(xStart, 0, zStart), new BlockPosition(xEnd, 0, zEnd));
-      distFromTownCenter = Trig.getDistance(sbb.getCenterX(), 0, sbb.getCenterZ(), gen.maximalBounds.getCenterX(), 0, gen.maximalBounds.getCenterZ());
+      sbb= new StructureBB(new BlockPosition(xStart, y1, zStart), new BlockPosition(xEnd, y2, zEnd));
+      distFromTownCenter = Trig.getDistance(sbb.getCenterX(), y1, sbb.getCenterZ(), gen.maximalBounds.getCenterX(), y1, gen.maximalBounds.getCenterZ());
       block = new TownPartBlock(this, sbb, xIndex, zIndex, getBorders(xIndex, zIndex), distFromTownCenter);
       
       setBlock(block, xIndex, zIndex);
