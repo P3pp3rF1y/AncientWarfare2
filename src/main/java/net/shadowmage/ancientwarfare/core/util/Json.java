@@ -154,8 +154,11 @@ private void readRawChar() throws IOException
     currentChar = ' ';
     return;
     }
+  
   rawChar = readBuffer[index];
   currentChar = readBuffer[index];
+  
+  //test if char at index == '\', if so, examine the NEXT char, if it was an escaped char
   }
 
 private void skipBlanks() throws IOException
@@ -280,13 +283,22 @@ private String readString() throws IOException
   if(rawChar!='"'){throw throwUnexpectedException("Did not find string entry while parsing value");}
   StringBuilder builder = new StringBuilder();
   readRawChar();
+  char prevChar = '.';
   while(rawChar!='"')
-    {
-    builder.append(currentChar);
-    readRawChar();
+    {    
+    prevChar = currentChar;   
+    readRawChar();        
+    if(prevChar=='\\' && rawChar=='"')//prev char was an escape sequence, current char is a quote, remove escape from text, add quote
+      {
+      prevChar = currentChar;
+      readRawChar();
+      }
+    builder.append(prevChar);
     }
   readRawChar();
-  return builder.toString();
+  String value = builder.toString();
+//  AWLog.logDebug("Parsed string value: "+value);
+  return value;
   }
 
 private JsonParsingException throwUnexpectedException(String message)
@@ -455,8 +467,11 @@ public String toString()
   }
 
 @Override
-protected String getJsonString(){return "\""+value+"\"";}
-
+protected String getJsonString()
+  {
+  String val = value.replace("\"", "\\\"");
+  return "\""+val+"\"";
+  }
 }
 
 }
