@@ -63,11 +63,19 @@ public void registerBlockIcons(IIconRegister register)
 @Override
 @SideOnly(Side.CLIENT)
 public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side)
-  {
-  int meta = block.getBlockMetadata(x, y, z);
+  {  
   TileEntity t = block.getTileEntity(x, y, z);
   IRotatableTile tt = (IRotatableTile)t;
-  return iconMaps.get(meta).getIcon(this, tt.getPrimaryFacing().ordinal(), side);
+  int meta = 2;
+  if(tt!=null)
+    {
+    ForgeDirection d = tt.getPrimaryFacing();
+    if(d!=null)
+      {
+      meta = d.ordinal();
+      }
+    }
+  return iconMaps.get(meta).getIcon(this, meta, side);
   }
 
 @Override
