@@ -112,6 +112,7 @@ public final void addWallPattern(int size, int[] pattern){wallPatterns.put(size,
 
 public final void addWall(TownWallEntry e)
   {  
+  wallsByID.put(e.id, e);
   if(e.typeName.toLowerCase().equals("wall"))
     {
     walls.add(e);

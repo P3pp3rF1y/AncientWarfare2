@@ -2,7 +2,9 @@ package net.shadowmage.ancientwarfare.structure.town;
 
 import java.util.Random;
 
+import scala.actors.threadpool.Arrays;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
@@ -20,6 +22,7 @@ public static void generateWalls(World world, TownGenerator gen, TownTemplate te
   int maxZ = gen.wallsBounds.max.z;
   int chunkWidth = (maxX-minX+1)/16;
   int chunkLength = (maxZ-minZ+1)/16;
+  AWLog.logDebug("wall chunk size: "+chunkWidth + " :: "+chunkLength);
   int minY = gen.wallsBounds.min.y;
   int x, z;
   int facingDirection;
@@ -118,14 +121,20 @@ private static StructureTemplate getWallSection(Random rng, TownTemplate templat
     }
   else if(template.getWallStyle()==3)//patterned
     {
-    int[] pattern = template.getWallPattern(wallLength);
-    if(pattern!=null && wallLength<pattern.length)
+    int[] pattern = template.getWallPattern(wallLength);    
+    AWLog.logDebug("found pattern for wall size: "+wallLength+ "::" +Arrays.toString(pattern)+" op index: "+index);
+    if(pattern!=null && wallLength <= pattern.length)
       {
       TownWallEntry entry = template.getWall(template.getWallPattern(wallLength)[index]);
       if(entry!=null)
         {
+        AWLog.logDebug("found wall entry for index: "+entry.templateName+" :: "+entry.typeName);
         return StructureTemplateManager.instance().getTemplate(entry.templateName);
-        }        
+        }
+      else
+        {
+        AWLog.logDebug("Could not locate wall entry for index: "+index);
+        }
       }  
     }
   return null;
