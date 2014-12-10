@@ -668,12 +668,3 @@ JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"5",
 :endrule
 
 #### ENTITIES ####
-entity:
-plugin=awGate
-number=0
-data:
-position=0,4,8
-JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-4","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"3","id":"pi"}},"id":"ct"},"gateType":{"val":"gate.drawbridge","id":"ss"}},"id":"ct"}}
-:enddata
-:endentity
-
