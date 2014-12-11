@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -40,8 +39,6 @@ public final List<StructureTemplate> houseTemplatesToGenerate = new ArrayList<St
 public final List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
 public final List<StructureTemplate> exteriorTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
 
-private byte[] testGrid;//TODO used for debug output, can be removed later
-
 public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   {
   this.world = world;
@@ -60,12 +57,12 @@ public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   this.townBounds = new StructureBB(area.getTownMinX(), y1, area.getTownMinZ(), area.getTownMaxX(), y2, area.getTownMaxZ());
 
   this.blockSize = template.getTownBlockSize();
-  this.plotSize = template.getTownPlotSize();    
-  int width = maximalBounds.getXSize();
-  int length = maximalBounds.getZSize();
-  this.testGrid = new byte[width*length];
+  this.plotSize = template.getTownPlotSize(); 
   }
 
+/**
+ * Call this to initialize and start the generation of the town
+ */
 public void generate()
   {
   long t1 = System.nanoTime();
@@ -133,16 +130,10 @@ private void determineStructuresToGenerate()
       exteriorTemplatesToGenerate.add(t);      
       }
     }
-  
-  AWLog.logDebug("parsed unique structures for town template: "+uniqueTemplatesToGenerate);
-  AWLog.logDebug("parsed main structures for town template: "+mainTemplatesToGenerate);
-  AWLog.logDebug("parsed house structures for town template: "+houseTemplatesToGenerate);
-  AWLog.logDebug("parsed cosmetic structures for town template: "+cosmeticTemplatesToGenerate);
-  AWLog.logDebug("parsed exterior structures for town template: "+exteriorTemplatesToGenerate);
   }
 
 /**
- * Splits up the town into quadrants<br>
+ * Splits up the town into four quadrants<br>
  * quadrants into blocks<br>
  * and blocks into plots<br>
  */
@@ -162,7 +153,6 @@ private void generateGrid()
   bb = new StructureBB(new BlockPosition(townBounds.min.x, y1, townBounds.min.z), new BlockPosition(centerX-2, y2, centerZ-2));
   tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
-  write(tq);
   quadrants[0]=tq;
   
   //northeast quadrant
@@ -170,7 +160,6 @@ private void generateGrid()
   bb = new StructureBB(new BlockPosition(centerX+1, y1, townBounds.min.z), new BlockPosition(townBounds.max.x, y2, centerZ-2));
   tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
-  write(tq);
   quadrants[1]=tq;
   
   //southeast quadrant
@@ -178,7 +167,6 @@ private void generateGrid()
   bb = new StructureBB(new BlockPosition(centerX+1, y1, centerZ+1), new BlockPosition(townBounds.max.x, y2, townBounds.max.z));
   tq = new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders, this);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
-  write(tq);
   quadrants[2]=tq;
   
   //southwest quadrant
@@ -186,16 +174,7 @@ private void generateGrid()
   bb = new StructureBB(new BlockPosition(townBounds.min.x, y1, centerZ+1), new BlockPosition(centerX-2, y2, townBounds.max.z));
   tq = new TownPartQuadrant(Direction.WEST, Direction.SOUTH, bb, roadBorders, this);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
-  write(tq);
   quadrants[3]=tq;
-  
-  write(centerX, centerZ, (byte)9);
-  write(centerX-1, centerZ, (byte)9);
-  write(centerX, centerZ-1, (byte)9);
-  write(centerX-1, centerZ-1, (byte)9);
-    
-  String line = writeTestGrid();
-  AWLog.logDebug("grid: \n"+line);
   
   if(template.getExteriorSize()>0)
     {
@@ -203,6 +182,9 @@ private void generateGrid()
     }
   }
 
+/**
+ * Splits any exterior buffer zone into 8 not-quite-quadrants, and those further down into blocks and plots
+ */
 private void generateExteriorGrid()
   {
   StructureBB bb;
@@ -424,103 +406,5 @@ private void genRoadBlock(World world, int x, int y, int z)
   world.setBlock(x, y, z, block, meta, 3);
   world.setBlock(x, y-1, z, Blocks.cobblestone, 0, 3);
   }
-
-private void write(TownPartQuadrant tq)
-  {
-  for(int x = tq.bb.min.x; x<=tq.bb.max.x; x++)
-    {
-    write(x, tq.bb.min.z, (byte)1);
-    write(x, tq.bb.max.z, (byte)1);
-    }
-  for(int z = tq.bb.min.z; z<=tq.bb.max.z; z++)
-    {
-    write(tq.bb.min.x, z, (byte)1);
-    write(tq.bb.max.x, z, (byte)1);
-    }
-  for(TownPartBlock tb : tq.blocks)
-    {
-    write(tb);
-    }
-  }
-
-private void write(TownPartBlock tb)
-  {
-  for(int x = tb.bb.min.x; x<=tb.bb.max.x; x++)
-    {
-    write(x, tb.bb.min.z, (byte)2);
-    write(x, tb.bb.max.z, (byte)2);
-    }
-  for(int z = tb.bb.min.z; z<=tb.bb.max.z; z++)
-    {
-    write(tb.bb.min.x, z, (byte)2);
-    write(tb.bb.max.x, z, (byte)2);
-    }
-  for(TownPartPlot tp : tb.plots)
-    {
-    write(tp);
-    }
-  }
-
-private void write(TownPartPlot tp)
-  {
-  for(int x = tp.bb.min.x; x<=tp.bb.max.x; x++)
-    {
-    write(x, tp.bb.min.z, (byte)3);
-    write(x, tp.bb.max.z, (byte)3);
-    }
-  for(int z = tp.bb.min.z; z<=tp.bb.max.z; z++)
-    {
-    write(tp.bb.min.x, z, (byte)3);
-    write(tp.bb.max.x, z, (byte)3);
-    }
-  }
-
-private void write(int x, int z, byte val)
-  {
-  x-=maximalBounds.min.x;
-  z-=maximalBounds.min.z;
-  testGrid[getIndex(x, z)]=val;
-  }
-
-private int getIndex(int x, int z)
-  {
-  int width = maximalBounds.getXSize();
-  return z*width + x;
-  }
-
-private String writeTestGrid()
-  {
-  int width = maximalBounds.getXSize();
-  int length = maximalBounds.getZSize();
-  String out = "";
-  for(int z = 0; z < length; z++)
-    {
-    for(int x = 0; x< width; x++)
-      {
-      out = out + String.valueOf(testGrid[getIndex(x,z)]);
-      if(x<width-1)
-        {
-        out = out + ",";
-        }
-      }
-    if(z<length-1)
-      {
-      out = out+"\n";
-      }
-    }
-  return out;
-  }
-
-public static class TownPartBlockComparator implements Comparator<TownPartBlock>
-{
-
-@Override
-public int compare(TownPartBlock o1, TownPartBlock o2)
-  {
-  if(o1.distFromTownCenter<o2.distFromTownCenter){return -1;}
-  else if(o1.distFromTownCenter>o2.distFromTownCenter){return 1;}  
-  return 0;
-  }
-}
 
 }

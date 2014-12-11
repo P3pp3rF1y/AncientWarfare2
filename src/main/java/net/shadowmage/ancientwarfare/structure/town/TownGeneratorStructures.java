@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.town;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -11,7 +12,6 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
-import net.shadowmage.ancientwarfare.structure.town.TownGenerator.TownPartBlockComparator;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 
 public class TownGeneratorStructures
@@ -132,8 +132,10 @@ private static void generateLamps(TownPartBlock block, StructureTemplate lamp, T
   size = 5;
   xBits = (block.bb.getXSize()-1) / size;
   zBits = (block.bb.getZSize()-1) / size;
-  if(block.bb.getXSize()%size==size-1){xBits--;}
-  if(block.bb.getZSize()%size==size-1){zBits--;}  
+  
+  if(block.bb.getXSize()%size==size-1){xBits--;}//ensures two lamps are not adjacent near the corner of the road
+  if(block.bb.getZSize()%size==size-1){zBits--;}//ensures two lamps are not adjacent near the corner of the road
+  
   if(xDir==Direction.WEST)
     {
     xStart = block.bb.max.x;
@@ -144,6 +146,7 @@ private static void generateLamps(TownPartBlock block, StructureTemplate lamp, T
     xStart = block.bb.min.x;
     xMove = size;
     }
+  
   if(zDir==Direction.NORTH)
     {
     zStart = block.bb.max.z;
@@ -318,4 +321,16 @@ public static void sortBlocksByDistance(List<TownPartBlock> blocks)
   {
   Collections.sort(blocks, new TownPartBlockComparator());
   }
+
+public static class TownPartBlockComparator implements Comparator<TownPartBlock>
+{
+
+@Override
+public int compare(TownPartBlock o1, TownPartBlock o2)
+  {
+  if(o1.distFromTownCenter<o2.distFromTownCenter){return -1;}
+  else if(o1.distFromTownCenter>o2.distFromTownCenter){return 1;}  
+  return 0;
+  }
+}
 }

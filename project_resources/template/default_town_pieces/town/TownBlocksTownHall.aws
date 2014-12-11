@@ -6,7 +6,7 @@ header:
 version=2.1
 name=TownBlocksTownHall
 size=23,33,21
-offset=11,3,20
+offset=11,4,20
 :endheader
 
 #### VALIDATION ####
