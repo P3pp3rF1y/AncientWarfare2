@@ -6,7 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
 
@@ -86,7 +88,7 @@ private static void parseHeader(Iterator<String> it, TownTemplate template)
     else if(lower.startsWith("biomelist")){template.setBiomeList(parseBiomeList(StringTools.safeParseString("=", line)));}
     else if(lower.startsWith("dimensionwhitelist")){template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));}
     else if(lower.startsWith("dimensionlist")){template.setDimensionList(parseDimensionList(StringTools.safeParseString("=", line)));}
-    else if(lower.startsWith("lamp")){template.setLamp(new TownStructureEntry(StringTools.safeParseString("=", line), 1, 1));}
+    else if(lower.startsWith("lamp")){template.setLamp(new TownStructureEntry(StringTools.safeParseString("=", line), 1));}
     }  
   }
 
@@ -99,7 +101,14 @@ private static void parseUniqueStructures(Iterator<String> it, TownTemplate temp
     else
       {
       TownStructureEntry e = parseStructureName(line);
-      if(e!=null){template.getUniqueStructureEntries().add(e);}
+      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+        {
+        template.getUniqueStructureEntries().add(e);
+        }
+      else
+        {
+        AWLog.logError("There was an error while loading town structure entry: "+e);
+        }
       }
     }  
   }
@@ -113,7 +122,14 @@ private static void parseMainStructures(Iterator<String> it, TownTemplate templa
     else
       {
       TownStructureEntry e = parseStructureName(line);
-      if(e!=null){template.getMainStructureEntries().add(e);}
+      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+        {
+        template.getMainStructureEntries().add(e);
+        }
+      else
+        {
+        AWLog.logError("There was an error while loading town structure entry: "+e);
+        }
       }
     }  
   }
@@ -127,7 +143,14 @@ private static void parseHouseStructures(Iterator<String> it, TownTemplate templ
     else
       {
       TownStructureEntry e = parseStructureWeight(line);
-      if(e!=null){template.getHouseStructureEntries().add(e);}
+      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+        {
+        template.getHouseStructureEntries().add(e);
+        }
+      else
+        {
+        AWLog.logError("There was an error while loading town structure entry: "+e);
+        }
       }
     }  
   }
@@ -137,11 +160,18 @@ private static void parseCosmetics(Iterator<String> it, TownTemplate template)
   String line;
   while(it.hasNext() && (line=it.next())!=null)
     {
-    if(line.toLowerCase().startsWith(":endcosmetics")){break;}
+    if(line.toLowerCase().startsWith(":endcosmeticstructures")){break;}
     else
       {      
       TownStructureEntry e = parseStructureWeight(line);
-      if(e!=null){template.getCosmeticEntries().add(e);}
+      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+        {
+        template.getCosmeticEntries().add(e);
+        }
+      else
+        {
+        AWLog.logError("There was an error while loading town structure entry: "+e);
+        }
       }
     } 
   }
@@ -155,7 +185,14 @@ private static void parseExteriorStructures(Iterator<String> it, TownTemplate te
     else
       {
       TownStructureEntry e = parseStructureWeight(line);
-      if(e!=null){template.getExteriorStructureEntries().add(e);}
+      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+        {
+        template.getExteriorStructureEntries().add(e);
+        }
+      else
+        {
+        AWLog.logError("There was an error while loading town structure entry: "+e);
+        }
       }
     }  
   }
@@ -169,9 +206,13 @@ private static void parseWalls(Iterator<String> it, TownTemplate template)
     else
       {
       TownWallEntry e = parseWall(line);
-      if(e!=null)
+      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
         {
         template.addWall(e);
+        }
+      else
+        {
+        AWLog.logError("There was an error while loading town wall entry: "+e);
         }
       }
     } 
@@ -214,13 +255,13 @@ private static List<Integer> parseDimensionList(String line)
 private static TownStructureEntry parseStructureName(String line)
   {
   String[] bits = line.split(":", -1);
-  return new TownStructureEntry(bits[0], 0, 0);
+  return new TownStructureEntry(bits[0], 0);
   }
 
 private static TownStructureEntry parseStructureWeight(String line)
   {
   String[] bits = line.split(":", -1);
-  return new TownStructureEntry(bits[0], StringTools.safeParseInt(bits[1]), StringTools.safeParseInt(bits[1]));  
+  return new TownStructureEntry(bits[0], StringTools.safeParseInt(bits[1]));  
   }
 
 private static TownWallEntry parseWall(String line)

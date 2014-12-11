@@ -174,12 +174,15 @@ public static final class TownStructureEntry
 {
 String templateName;
 int min;//min # to generate
-int max;//max # to generate
-public TownStructureEntry(String name, int min, int max)
+public TownStructureEntry(String name, int min)
   {
   this.templateName = name;
   this.min = min;
-  this.max = max;
+  }
+@Override
+public String toString()
+  {
+  return "[Town Structure: "+templateName+" :: "+min+"]";
   }
 }
 
@@ -195,6 +198,11 @@ public TownWallEntry(String name, String type, int id, int weight)
   this.typeName = type;
   this.id = id;
   this.weight=weight;  
+  }
+@Override
+public String toString()
+  {
+  return "[Town Wall: "+typeName+" :: "+id+" :: "+templateName+"]";
   }
 }
 

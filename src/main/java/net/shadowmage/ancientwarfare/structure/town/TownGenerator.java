@@ -68,6 +68,7 @@ public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
 
 public void generate()
   {
+  long t1 = System.nanoTime();
   determineStructuresToGenerate();
   TownGeneratorBorders.generateBorders(world, this);  
   TownGeneratorBorders.levelTownArea(world, this);
@@ -75,6 +76,9 @@ public void generate()
   generateRoads();
   TownGeneratorWalls.generateWalls(world, this, template, rng);
   TownGeneratorStructures.generateStructures(this);
+  long t2 = System.nanoTime();
+  
+  AWLog.logDebug("Town gen nanos (no validation, just gen): " + ( t2 - t1 ));
   }
 
 /**
@@ -129,6 +133,12 @@ private void determineStructuresToGenerate()
       exteriorTemplatesToGenerate.add(t);      
       }
     }
+  
+  AWLog.logDebug("parsed unique structures for town template: "+uniqueTemplatesToGenerate);
+  AWLog.logDebug("parsed main structures for town template: "+mainTemplatesToGenerate);
+  AWLog.logDebug("parsed house structures for town template: "+houseTemplatesToGenerate);
+  AWLog.logDebug("parsed cosmetic structures for town template: "+cosmeticTemplatesToGenerate);
+  AWLog.logDebug("parsed exterior structures for town template: "+exteriorTemplatesToGenerate);
   }
 
 /**
@@ -195,88 +205,88 @@ private void generateGrid()
 
 private void generateExteriorGrid()
   {
-  TownPartQuadrant tq;
   StructureBB bb;
   boolean[] roadBorders;
-  List<TownPartBlock> blocks = new ArrayList<TownPartBlock>();
   int centerX = maximalBounds.getCenterX();
   int centerZ = maximalBounds.getCenterZ();
-  int y1 = maximalBounds.min.y;
-  int y2 = maximalBounds.max.y;
-  int minX = exteriorBounds.min.x;
-  int minZ = exteriorBounds.min.z;
+  
+  int minX, minY, minZ, maxX, maxY, maxZ;
+  
+  int eSize = template.getExteriorSize()*16;
+  int pSize = template.getTownPlotSize();
+  
+  minY = maximalBounds.min.y;
+  maxY = maximalBounds.max.y;
   
   //1, northwest
-  roadBorders = new boolean[]{false, false, false, true};//  
-  bb = new StructureBB(new BlockPosition(minX, y1, minZ), new BlockPosition(centerX-2, y2, wallsBounds.min.z - 1));
-  tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
-  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-  generateRoads(world, tq);
-  tq.addBlocks(blocks);
-  externalQuadrants[0]=tq;
+  minX = exteriorBounds.min.x;
+  minZ = exteriorBounds.min.z;
+  maxX = centerX - 3;
+  maxZ = wallsBounds.min.z - 1;
+  roadBorders = new boolean[]{false, false, false, false};//  
+  bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+  externalQuadrants[0]=new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
   
   //2, northeast
-  roadBorders = new boolean[]{false, true, false, false};
-  bb = new StructureBB(new BlockPosition(centerX, y1, 0), new BlockPosition(exteriorBounds.max.x, y2, wallsBounds.min.z - 1));
-  tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
-  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-  generateRoads(world, tq);
-  tq.addBlocks(blocks);
-  externalQuadrants[1]=tq;
+  minX = centerX + 2;
+  minZ = exteriorBounds.min.z;
+  maxX = exteriorBounds.max.x;
+  maxZ = wallsBounds.min.z - 1;
+  bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+  externalQuadrants[1]=new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
   
   //3 west, north-part
-  roadBorders = new boolean[]{true, false, false, false};
-  bb = new StructureBB(new BlockPosition(exteriorBounds.min.x, y1, wallsBounds.min.z), new BlockPosition(wallsBounds.min.x - 1, y2, centerZ-1));
-  tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
-  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-  generateRoads(world, tq);
-  tq.addBlocks(blocks);
-  externalQuadrants[2]=tq;
+  minX = exteriorBounds.min.x;
+  minZ = wallsBounds.min.z;
+  maxX = wallsBounds.min.x -1;
+  maxZ = centerZ - 3;
+  bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+  externalQuadrants[2]=new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
   
   //4 east, north-part
-  roadBorders = new boolean[]{true, false, false, false};
-  bb = new StructureBB(new BlockPosition(wallsBounds.max.x + 1, y1, wallsBounds.min.z), new BlockPosition(exteriorBounds.max.x, y2, centerZ-1));
-  tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
-  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-  generateRoads(world, tq);
-  tq.addBlocks(blocks);
-  externalQuadrants[3]=tq;
+  minX = wallsBounds.max.x + 1;
+  minZ = wallsBounds.min.z;
+  maxX = exteriorBounds.max.x;
+  maxZ = centerZ - 3;
+  bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+  externalQuadrants[3]=new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
   
   //5 west, south-part
-  roadBorders = new boolean[]{false, false, true, false};
-  bb = new StructureBB(new BlockPosition(exteriorBounds.min.x, y1, centerZ), new BlockPosition(wallsBounds.min.x - 1, y2, wallsBounds.max.z));
-  tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
-  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-  generateRoads(world, tq);
-  tq.addBlocks(blocks);
-  externalQuadrants[4]=tq;
+  minX = exteriorBounds.min.x;
+  minZ = centerZ + 2;
+  maxX = wallsBounds.min.x - 1;
+  maxZ = wallsBounds.max.z;
+  bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+  externalQuadrants[4]=new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
   
   //6 east, south-part
-  roadBorders = new boolean[]{false, false, true, false};
-  bb = new StructureBB(new BlockPosition(wallsBounds.max.x + 1, y1, centerZ - 1), new BlockPosition(exteriorBounds.max.x, y2, wallsBounds.max.z));
-  tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
-  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-  generateRoads(world, tq);
-  tq.addBlocks(blocks);
-  externalQuadrants[5]=tq;
+  minX = wallsBounds.max.x + 1;
+  minZ = centerZ + 2;
+  maxX = exteriorBounds.max.x;
+  maxZ = wallsBounds.max.z;
+  bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+  externalQuadrants[5]=new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
   
   //7 southwest
-  roadBorders = new boolean[]{false, false, false, true};
-  bb = new StructureBB(new BlockPosition(exteriorBounds.min.x, y1, wallsBounds.max.z+1), new BlockPosition(centerX-1, y2, exteriorBounds.max.z));
-  tq = new TownPartQuadrant(Direction.WEST, Direction.SOUTH, bb, roadBorders, this);
-  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-  generateRoads(world, tq);
-  tq.addBlocks(blocks);
-  externalQuadrants[6]=tq;
+  minX = exteriorBounds.min.x;
+  minZ = wallsBounds.max.z + 1;
+  maxX = centerX - 3;
+  maxZ = exteriorBounds.max.z;
+  bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+  externalQuadrants[6]=new TownPartQuadrant(Direction.WEST, Direction.SOUTH, bb, roadBorders, this);
   
   //8 southeast 
-  roadBorders = new boolean[]{false, true, false, false};
-  bb = new StructureBB(new BlockPosition(centerX, y1, wallsBounds.max.z + 1), new BlockPosition(exteriorBounds.max.x, y2, exteriorBounds.max.z));
-  tq = new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders, this);
-  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-  generateRoads(world, tq);
-  tq.addBlocks(blocks);  
-  externalQuadrants[7]=tq;  
+  minX = centerX + 2;
+  minZ = wallsBounds.max.z + 1;
+  maxX = exteriorBounds.max.x;
+  maxZ = exteriorBounds.max.z;
+  bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+  externalQuadrants[7]=new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders, this);
+  
+  for(TownPartQuadrant tq1 : externalQuadrants)
+    {
+    tq1.subdivide(eSize, pSize, false);
+    }
   }
 
 private void generateRoads()

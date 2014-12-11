@@ -33,18 +33,17 @@ public static void generateStructures(TownGenerator gen)
 
 private static void generateUniques(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
   {
+  outer:
   for(TownPartBlock block : blocks)
     {
-    int maxRetry = 1;//TODO base this off of townblock distance from center
-    for(TownPartPlot plot : block.plots)
+    for(TownPartPlot plot : block.plots)//iterate through plots, gen on the first valid plot for the block, then break to the next block
       {
       if(plot.closed){continue;}
       if(!plot.hasRoadBorder()){continue;}//no borders
-      if(templatesToGenerate.isEmpty()){break;}
-      for(int i = 0; i < maxRetry; i++)
+      if(templatesToGenerate.isEmpty()){break outer;}      
+      if(generateStructureForPlot(gen, plot, templatesToGenerate.remove(0), false))
         {
-        if(templatesToGenerate.isEmpty()){break;}
-        if(generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), false)){break;}
+        break;
         }
       }
     }
@@ -52,38 +51,68 @@ private static void generateUniques(List<TownPartBlock> blocks, List<StructureTe
 
 private static void generateMains(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
   {
-  
+  outer:
+  for(TownPartBlock block : blocks)
+    {  
+    for(TownPartPlot plot : block.plots)//iterate through plots, gen on the first valid plot for the block, then break to the next block
+      {
+      if(plot.closed){continue;}
+      if(!plot.hasRoadBorder()){continue;}//no borders
+      if(templatesToGenerate.isEmpty()){break outer;}      
+      if(generateStructureForPlot(gen, plot, templatesToGenerate.remove(0), false))
+        {
+        break;
+        }
+      }
+    }
   }
 
 private static void generateHouses(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
   {
-  
+  outer:
+  for(TownPartBlock block : blocks)
+    {
+    for(TownPartPlot plot : block.plots)
+      {
+      if(plot.closed){continue;}
+      if(!plot.hasRoadBorder()){continue;}//no borders
+      if(templatesToGenerate.isEmpty()){break outer;}      
+      generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), false);
+      }
+    }
   }
 
 private static void generateCosmetics(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
   {
+  outer:
   for(TownPartBlock block : blocks)
     {
-    int maxRetry = 1;//TODO base this off of townblock distance from center
     for(TownPartPlot plot : block.plots)
       {
-      if(plot.closed){continue;}        
-      for(int i = 0; i < maxRetry; i++)
-        {
-//        if(generateCosmeticForPlot(world, plot, getRandomCosmeticTemplate())){break;}
-        }
+      if(plot.closed){continue;}
+      if(templatesToGenerate.isEmpty()){break outer;}      
+      generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), true);
       }
     }
   }
 
 private static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, TownGenerator gen)
   {
-  
+  //TODO
   }
 
 private static void generateExteriorStructures(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
   {
-  
+  outer:
+  for(TownPartBlock block : blocks)
+    {
+    for(TownPartPlot plot : block.plots)
+      {
+      if(plot.closed){continue;}
+      if(templatesToGenerate.isEmpty()){break outer;}      
+      generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), true);
+      }
+    }
   }
 
 //************************************************* UTILITY METHODS *******************************************************//
@@ -171,7 +200,6 @@ private static void generateStructure(TownGenerator gen, TownPartPlot plot, Stru
   b.instantConstruction();  
   }
 
-
 //private void generateLamps(TownPartBlock block, StructureTemplate lamp)
 //  {
 //  int tx, tz;
@@ -208,52 +236,6 @@ private static void generateStructure(TownGenerator gen, TownPartPlot plot, Stru
 //      }
 //    }
 //  }
-
-//private void generateStructures(World world, TownPartBlock block)
-//  {  
-//  int maxRetry = 1;//TODO base this off of townblock distance from center
-//  for(TownPartPlot plot : block.plots)
-//    {
-//    if(plot.closed){continue;}
-//    if(!plot.hasRoadBorder()){continue;}//no borders
-//    if(templatesToGenerate.isEmpty()){break;}
-//    for(int i = 0; i < maxRetry; i++)
-//      {
-//      if(templatesToGenerate.isEmpty()){break;}
-//      if(generateStructureForPlot(world, plot, getRandomTemplate())){break;}
-//      }
-//    }
-//  }
-
-
-///**
-// * attempt to generate a structure at the given plot
-// * @param world
-// * @param plot
-// * @return true if generated
-// */
-//private boolean generateCosmeticForPlot(World world, TownPartPlot plot, StructureTemplate template)
-//  {  
-//  int expansion = this.template.getTownBuildingWidthExpansion();
-//  int face = rng.nextInt(4);//select random face  
-//  int width = face==0 || face==2 ? template.xSize : template.zSize;
-//  int length = face==0 || face==2 ? template.zSize : template.xSize;
-//  width+=expansion;
-//  length+=expansion;
-//  if(plot.getWidth()<width || plot.getLength()<length)
-//    {
-//    if(!expandPlot(plot, width, length))
-//      {
-//      return false;
-//      }
-//    }  
-//  plot.markClosed();
-//  width-=expansion;
-//  length-=expansion;
-//  generateStructure(world, plot, template, face, width, length, true); 
-//  return true;
-//  }
-
 
 /**
  * pull a random template from the input generation list, does not remove

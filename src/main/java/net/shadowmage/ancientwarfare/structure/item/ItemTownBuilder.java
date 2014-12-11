@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
@@ -67,7 +68,10 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
     {
     return;
     }
+  long t1 = System.nanoTime();
   WorldTownGenerator.instance().attemptGeneration(player.worldObj, player.worldObj.rand, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ));
+  long t2 = System.nanoTime();
+  AWLog.logDebug("Total Town gen nanos (incl. validation): "+(t2-t1));
   }
 
 @Override
