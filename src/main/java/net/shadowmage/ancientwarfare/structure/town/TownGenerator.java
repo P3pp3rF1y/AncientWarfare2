@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +13,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 
 /**
@@ -25,36 +23,24 @@ import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEn
 public class TownGenerator
 {
 
-
-private byte[] testGrid;
-
+public final TownTemplate template;
+public final World world;
+public final Random rng;
 public final int blockSize;
 public final int plotSize;
+public final StructureBB maximalBounds;
+public final StructureBB exteriorBounds;//maximal, shrunk by borderSize (16 blocks), maximal area encompassing extents of exterior buffer zone
+public final StructureBB wallsBounds;//exterior shrunk by exteriorSize (configurable), maximal area encompassing extents of walls
+public final StructureBB townBounds;//walls shrunk by wallSize (configurable), town generation area
+public final TownPartQuadrant[] quadrants = new TownPartQuadrant[4];
+public final TownPartQuadrant[] externalQuadrants = new TownPartQuadrant[8];//may be null refs if no exterior area is denoted
+public final List<StructureTemplate> uniqueTemplatesToGenerate = new ArrayList<StructureTemplate>();//depleted as used
+public final List<StructureTemplate> mainTemplatesToGenerate = new ArrayList<StructureTemplate>();//depleted as used
+public final List<StructureTemplate> houseTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
+public final List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
+public final List<StructureTemplate> exteriorTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
 
-StructureBB maximalBounds;
-StructureBB exteriorBounds;//maximal, shrunk by borderSize (16 blocks), maximal area encompassing extents of exterior buffer zone
-StructureBB wallsBounds;//exterior shrunk by exteriorSize (configurable), maximal area encompassing extents of walls
-StructureBB townBounds;//walls shrunk by wallSize (configurable), town generation area
-
-/**
- * 0=nw<br>
- * 1=ne<br>
- * 2=se<br>
- * 3=sw
- */
-TownPartQuadrant[] quadrants = new TownPartQuadrant[4];
-private Random rng;
-private World world;
-private TownTemplate template;
-
-private List<StructureTemplate> templatesToGenerate = new ArrayList<StructureTemplate>();
-private List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<StructureTemplate>();
-
-//private List<StructureTemplate> exterior
-//private List<StructureTemplate> uniques
-//private List<StructureTemplate> mains
-//private List<StructureTemplate> houses
-//private List<StructureTemplate> cosmetics
+private byte[] testGrid;//TODO used for debug output, can be removed later
 
 public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   {
@@ -82,28 +68,46 @@ public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
 
 public void generate()
   {
-  fillStructureMap();
-  doGeneration();
+  determineStructuresToGenerate();
+  TownGeneratorBorders.generateBorders(world, this);  
+  TownGeneratorBorders.levelTownArea(world, this);
+  generateGrid();
+  generateRoads();
+  TownGeneratorWalls.generateWalls(world, this, template, rng);
+  TownGeneratorStructures.generateStructures(this);
   }
 
 /**
  * add initial generation entries to list of structures to attempt to generate
  */
-private void fillStructureMap()
+private void determineStructuresToGenerate()
   {
-  int min, max, gen;
-  for(TownStructureEntry e : template.getStructureEntries())
+  int gen;
+  for(TownStructureEntry e : template.getUniqueStructureEntries())
     {
     StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
     if(t==null){continue;}
-    min = e.min;
-    max = e.max;
-    gen = min + (max-min>0 ? rng.nextInt(max-min): 0);
+    uniqueTemplatesToGenerate.add(t);
+    }
+  
+  for(TownStructureEntry e : template.getMainStructureEntries())
+    {
+    StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+    if(t==null){continue;}
+    mainTemplatesToGenerate.add(t);
+    }
+  
+  for(TownStructureEntry e : template.getHouseStructureEntries())
+    {
+    StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+    if(t==null){continue;}    
+    gen = e.min;    
     for(int i = 0; i < gen; i++)
       {
-      templatesToGenerate.add(t);
+      houseTemplatesToGenerate.add(t);      
       }
     }
+    
   for(TownStructureEntry e : template.getCosmeticEntries())
     {
     StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);  
@@ -114,23 +118,17 @@ private void fillStructureMap()
       this.cosmeticTemplatesToGenerate.add(t);
       }
     }
-  }
-
-private void doGeneration()
-  {
-  TownGeneratorBorders.generateBorders(world, this);  
-  TownGeneratorBorders.levelTownArea(world, this);
-  generateGrid();
-  generateRoads();
-  TownGeneratorWalls.generateWalls(world, this, template, rng);
-  StructureTemplate townHall = null;
-  if(template.getTownHallEntry()!=null){townHall=StructureTemplateManager.instance().getTemplate(template.getTownHallEntry().templateName);}
-  generateStructures(world, townHall);
-  }
-
-private void addQuadrant(int index, TownPartQuadrant tq)
-  {
-  quadrants[index]=tq;
+  
+  for(TownStructureEntry e : template.getExteriorStructureEntries())
+    {
+    StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+    if(t==null){continue;}    
+    gen = e.min;    
+    for(int i = 0; i < gen; i++)
+      {
+      exteriorTemplatesToGenerate.add(t);      
+      }
+    }
   }
 
 /**
@@ -155,7 +153,7 @@ private void generateGrid()
   tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
   write(tq);
-  addQuadrant(0, tq);
+  quadrants[0]=tq;
   
   //northeast quadrant
   roadBorders = new boolean[]{true, true, false, false};
@@ -163,7 +161,7 @@ private void generateGrid()
   tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
   write(tq);
-  addQuadrant(1, tq);
+  quadrants[1]=tq;
   
   //southeast quadrant
   roadBorders = new boolean[]{false, true, true, false};
@@ -171,7 +169,7 @@ private void generateGrid()
   tq = new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders, this);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
   write(tq);
-  addQuadrant(2, tq);
+  quadrants[2]=tq;
   
   //southwest quadrant
   roadBorders = new boolean[]{false, false, true, true};
@@ -179,7 +177,7 @@ private void generateGrid()
   tq = new TownPartQuadrant(Direction.WEST, Direction.SOUTH, bb, roadBorders, this);
   tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
   write(tq);
-  addQuadrant(3, tq);
+  quadrants[3]=tq;
   
   write(centerX, centerZ, (byte)9);
   write(centerX-1, centerZ, (byte)9);
@@ -214,7 +212,8 @@ private void generateExteriorGrid()
   tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
   tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
   generateRoads(world, tq);
-  tq.addBlocks(blocks);  
+  tq.addBlocks(blocks);
+  externalQuadrants[0]=tq;
   
   //2, northeast
   roadBorders = new boolean[]{false, true, false, false};
@@ -223,6 +222,7 @@ private void generateExteriorGrid()
   tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
   generateRoads(world, tq);
   tq.addBlocks(blocks);
+  externalQuadrants[1]=tq;
   
   //3 west, north-part
   roadBorders = new boolean[]{true, false, false, false};
@@ -231,326 +231,52 @@ private void generateExteriorGrid()
   tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
   generateRoads(world, tq);
   tq.addBlocks(blocks);
+  externalQuadrants[2]=tq;
   
-//  //4 east, north-part
-//  roadBorders = new boolean[]{true, false, false, false};
-//  bb = new StructureBB(new BlockPosition(wallsBounds.max.x + 1, y1, area.getWallMinZ()), new BlockPosition(width, y2, centerZ-1));
-//  tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
-//  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-//  generateRoads(world, tq);
-//  tq.addBlocks(blocks);
-//  
-//  //5 west, south-part
-//  roadBorders = new boolean[]{false, false, true, false};
-//  bb = new StructureBB(new BlockPosition(0, y1, centerZ), new BlockPosition(area.getWallMinX()-1, y2, area.getWallMaxZ()));
-//  tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
-//  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-//  generateRoads(world, tq);
-//  tq.addBlocks(blocks);
-//  
-//  //6 east, south-part
-//  roadBorders = new boolean[]{false, false, true, false};
-//  bb = new StructureBB(new BlockPosition(area.getWallMaxX()+1, y1, centerZ-1), new BlockPosition(width, y2, area.getWallMaxZ()));
-//  tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
-//  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-//  generateRoads(world, tq);
-//  tq.addBlocks(blocks);
-//  
-//  //7 southwest
-//  roadBorders = new boolean[]{false, false, false, true};
-//  bb = new StructureBB(new BlockPosition(0, y1, area.getWallMaxZ()+1), new BlockPosition(centerX-1, y2, length));
-//  tq = new TownPartQuadrant(Direction.WEST, Direction.SOUTH, bb, roadBorders, this);
-//  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-//  generateRoads(world, tq);
-//  tq.addBlocks(blocks);
-//  
-//  roadBorders = new boolean[]{false, true, false, false};
-//  bb = new StructureBB(new BlockPosition(centerX, y1, area.getWallMaxZ()+1), new BlockPosition(width, y2, length));
-//  tq = new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders, this);
-//  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
-//  generateRoads(world, tq);
-//  tq.addBlocks(blocks);  
+  //4 east, north-part
+  roadBorders = new boolean[]{true, false, false, false};
+  bb = new StructureBB(new BlockPosition(wallsBounds.max.x + 1, y1, wallsBounds.min.z), new BlockPosition(exteriorBounds.max.x, y2, centerZ-1));
+  tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
+  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
+  generateRoads(world, tq);
+  tq.addBlocks(blocks);
+  externalQuadrants[3]=tq;
   
-  for(TownPartBlock block : blocks)
-    {
-    //TODO add special exterior gen pass
-    }
-  }
-
-private void generateStructures(World world, StructureTemplate townHall)
-  {  
-  List<TownPartBlock> blocks = new ArrayList<TownPartBlock>();
-  for(TownPartQuadrant tq : this.quadrants)
-    {
-    tq.addBlocks(blocks);
-    }
-  sortBlocksByDistance(blocks);  
-  if(townHall!=null)
-    {
-    generateTownHall(world, townHall);    
-    }
-  for(TownPartBlock block : blocks)//first pass, actual structures
-    {
-    generateStructures(world, block);
-    if(templatesToGenerate.isEmpty()){break;}//have generated all structures, no reason in continuing anymore
-    }
-  for(TownPartBlock block : blocks)//second pass, cosmetic stuff
-    {
-    generateCosmetics(world, block);
-    }
-  TownStructureEntry e = template.getLamp();
-  if(e!=null)
-    {
-    StructureTemplate lamp = StructureTemplateManager.instance().getTemplate(e.templateName);
-    for(TownPartBlock block : blocks)
-      {
-      generateLamps(block, lamp);
-      }    
-    }
-  }
-
-private void generateTownHall(World world, StructureTemplate townHall)
-  {
-  int quadrantNumber = rng.nextInt(4);
-  TownPartQuadrant tq = quadrants[quadrantNumber];//southeast quadrant 
-  TownPartBlock block = null;
-  TownPartPlot plot = null;  
-  int bx = tq.getXDir()==Direction.EAST ? 0 : tq.xDivs - 1;
-  int bz = tq.getZDir()==Direction.SOUTH ? 0 : tq.zDivs - 1;
-  block = tq.getBlock(bx, bz);
-  int px = tq.getXDir()==Direction.EAST? 0 : block.plotsWidth-1;
-  int pz = tq.getZDir()==Direction.SOUTH? 0 : block.plotsLength-1;
-  plot = block.getPlot(px, pz);
-  generateForPlot(world, plot, townHall);
-  }
-
-/**
- * attempts to expand the input plot, merging it with neighbor plots
- * @param plot
- * @param x how many blocks to add in the x direction
- * @param z how many blocks to add in the z direction
- * @return
- */
-private boolean expandPlot(TownPartPlot plot, int xSize, int zSize)
-  {
-  return plot.expand(xSize, zSize);  
-  }
-
-private void generateLamps(TownPartBlock block, StructureTemplate lamp)
-  {
-  int tx, tz;
-  int wx, wz;
-  int y = block.bb.min.y;
-  for(tx = block.bb.min.x; tx<=block.bb.max.x; tx++)
-    {    
-    wx = tx;
-    if(wx%4!=0){continue;}
-    wz = block.bb.min.z;
-    if(world.getBlock(wx, y, wz)==Blocks.air && world.getBlock(wx, y+1, wz)==Blocks.air)
-      {
-      generateLamp(wx, y, wz, lamp);
-      }
-    wz = block.bb.max.z;
-    if(world.getBlock(wx, y, wz)==Blocks.air && world.getBlock(wx, y+1, wz)==Blocks.air)
-      {
-      generateLamp(wx, y, wz, lamp);
-      }
-    }
-  for(tz = block.bb.min.z; tz<=block.bb.max.z; tz++)
-    {   
-    wz = tz ;
-    if(wz%4!=0){continue;}
-    wx = block.bb.min.x;
-    if(world.getBlock(wx, y, wz)==Blocks.air && world.getBlock(wx, y+1, wz)==Blocks.air)
-      {
-      generateLamp(wx, y, wz, lamp);
-      }
-    wx = block.bb.max.x;
-    if(world.getBlock(wx, y, wz)==Blocks.air && world.getBlock(wx, y+1, wz)==Blocks.air)
-      {
-      generateLamp(wx, y, wz, lamp);
-      }
-    }
-  }
-
-private void generateLamp(int x, int y, int z, StructureTemplate lamp)
-  {
-  new StructureBuilder(world, lamp, 0, x, y, z).instantConstruction();
-  }
-
-private void generateCosmetics(World world, TownPartBlock block)
-  {
-  int maxRetry = 1;//TODO base this off of townblock distance from center
-  for(TownPartPlot plot : block.plots)
-    {
-    if(plot.closed){continue;}        
-    for(int i = 0; i < maxRetry; i++)
-      {
-      if(this.template.getCosmeticEntries().isEmpty()){break;}
-      if(generateCosmeticForPlot(world, plot, getRandomCosmeticTemplate())){break;}
-      }
-    }
-  }
-
-private void generateStructures(World world, TownPartBlock block)
-  {  
-  int maxRetry = 1;//TODO base this off of townblock distance from center
-  for(TownPartPlot plot : block.plots)
-    {
-    if(plot.closed){continue;}
-    if(!plot.hasRoadBorder()){continue;}//no borders
-    if(templatesToGenerate.isEmpty()){break;}
-    for(int i = 0; i < maxRetry; i++)
-      {
-      if(templatesToGenerate.isEmpty()){break;}
-      if(generateForPlot(world, plot, getRandomTemplate())){break;}
-      }
-    }
-  }
-
-/**
- * attempt to generate a structure at the given plot
- * @param world
- * @param plot
- * @return true if generated
- */
-private boolean generateCosmeticForPlot(World world, TownPartPlot plot, StructureTemplate template)
-  {  
-  int expansion = this.template.getTownBuildingWidthExpansion();
-  int face = rng.nextInt(4);//select random face  
-  int width = face==0 || face==2 ? template.xSize : template.zSize;
-  int length = face==0 || face==2 ? template.zSize : template.xSize;
-  width+=expansion;
-  length+=expansion;
-  if(plot.getWidth()<width || plot.getLength()<length)
-    {
-    if(!expandPlot(plot, width, length))
-      {
-      return false;
-      }
-    }  
-  plot.markClosed();
-  width-=expansion;
-  length-=expansion;
-  generateStructure(world, plot, template, face, width, length, true); 
-  return true;
-  }
-
-/**
- * attempt to generate a structure at the given plot
- * @param world
- * @param plot
- * @return true if generated
- */
-private boolean generateForPlot(World world, TownPartPlot plot, StructureTemplate template)
-  {  
-  int expansion = this.template.getTownBuildingWidthExpansion();
-  int face = rng.nextInt(4);//select random face  
-  for(int i = 0, f=face; i < 4; i++, f++)//and then iterate until a valid face is found
-    {
-    if(f>3){f=0;}
-    if(plot.roadBorders[f])
-      {
-      face = f;
-      break;
-      }
-    }
-  face = (face+2)%4;//reverse face from road edge...
-  int width = face==0 || face==2 ? template.xSize : template.zSize;
-  int length = face==0 || face==2 ? template.zSize : template.xSize;
-  if(face==0 || face==2){width+=expansion;}//temporarily expand the size of the bb by the town-template building expansion size, ensures there is room around buildings
-  else{length+=expansion;}
-  if(plot.getWidth()<width || plot.getLength()<length)
-    {
-    if(!expandPlot(plot, width, length))
-      {
-      return false;
-      }
-    }  
-  plot.markClosed();
-  if(face==0 || face==2){width-=expansion;}
-  else{length-=expansion;}
-  generateStructure(world, plot, template, face, width, length, false); 
-  removeTemplate(template);//remove template from 'to generate' list
-  return true;
-  }
-
-/**
- * pull a random template from the generation list, does not remove
- * @return
- */
-private StructureTemplate getRandomTemplate()
-  {
-  if(templatesToGenerate.size()==0){return null;}
-  int rng = this.rng.nextInt(this.templatesToGenerate.size());
-  return templatesToGenerate.get(rng);
-  }
-
-/**
- * pull a random template from the cosmetic list, does not remove
- * @return
- */
-private StructureTemplate getRandomCosmeticTemplate()
-  {
-  List<TownStructureEntry> cosmeticTemplatesToGenerate = this.template.getCosmeticEntries();
-  if(cosmeticTemplatesToGenerate.size()==0){return null;}
-  int rng = this.rng.nextInt(cosmeticTemplatesToGenerate.size());
-  TownStructureEntry entry = cosmeticTemplatesToGenerate.get(rng);
-  return entry==null ? null : StructureTemplateManager.instance().getTemplate(entry.templateName);
-  }
-
-/**
- * remove a template from the list after successfully generated
- * @param t
- */
-private void removeTemplate(StructureTemplate t)
-  {
-  templatesToGenerate.remove(t);
-  }
-
-/**
- * 
- * @param world the world object that is currently being generated
- * @param plot the pre-expanded plot that will have the structure generated on it
- * @param template the template to be generated
- * @param face generation orientation for the structure
- * @param width rotated structure x-dimension
- * @param length rotated structure z-dimension
- * @param center should the structure be centered in plot, or placed along road-edge?
- */
-private void generateStructure(World world, TownPartPlot plot, StructureTemplate template, int face, int width, int length, boolean center)
-  {  
-  int plotWidth = plot.getWidth();
-  int plotLength = plot.getLength();
-  int extraWidth = plotWidth - width;//unused width portion of the plot
-  int extraLength = plotLength - length;//unused length portion of the plot
+  //5 west, south-part
+  roadBorders = new boolean[]{false, false, true, false};
+  bb = new StructureBB(new BlockPosition(exteriorBounds.min.x, y1, centerZ), new BlockPosition(wallsBounds.min.x - 1, y2, wallsBounds.max.z));
+  tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
+  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
+  generateRoads(world, tq);
+  tq.addBlocks(blocks);
+  externalQuadrants[4]=tq;
   
-  int wAdj;
-  int lAdj;
+  //6 east, south-part
+  roadBorders = new boolean[]{false, false, true, false};
+  bb = new StructureBB(new BlockPosition(wallsBounds.max.x + 1, y1, centerZ - 1), new BlockPosition(exteriorBounds.max.x, y2, wallsBounds.max.z));
+  tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
+  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
+  generateRoads(world, tq);
+  tq.addBlocks(blocks);
+  externalQuadrants[5]=tq;
   
-  if(center)
-    {
-    wAdj = extraWidth/2;    
-    lAdj = extraLength/2;
-    }
-  else
-    {
-    wAdj = (face==0 || face==2) ? extraWidth/2 : face==1 ? extraWidth : 0;
-    lAdj = (face==1 || face==3) ? extraLength/2 : face==2 ? extraLength : 0;
-    }
-    
-  //find corners of the bb for the structure  
-  BlockPosition min = new BlockPosition(plot.bb.min.x+wAdj, townBounds.min.y, plot.bb.min.z+lAdj);
-  BlockPosition max = new BlockPosition(min.x + (width-1), template.ySize, min.z+(length-1));
-  StructureBB bb = new StructureBB(min, max);
+  //7 southwest
+  roadBorders = new boolean[]{false, false, false, true};
+  bb = new StructureBB(new BlockPosition(exteriorBounds.min.x, y1, wallsBounds.max.z+1), new BlockPosition(centerX-1, y2, exteriorBounds.max.z));
+  tq = new TownPartQuadrant(Direction.WEST, Direction.SOUTH, bb, roadBorders, this);
+  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
+  generateRoads(world, tq);
+  tq.addBlocks(blocks);
+  externalQuadrants[6]=tq;
   
-  BlockPosition buildKey = bb.getRLCorner(face, new BlockPosition());
-  buildKey.moveRight(face, template.xOffset);
-  buildKey.moveBack(face, template.zOffset);  
-  buildKey.y -= template.yOffset;
-  bb.offset(0, -template.yOffset, 0);
-  StructureBuilder b = new StructureBuilder(world, template, face, buildKey, bb);
-  b.instantConstruction();  
+  //8 southeast 
+  roadBorders = new boolean[]{false, true, false, false};
+  bb = new StructureBB(new BlockPosition(centerX, y1, wallsBounds.max.z + 1), new BlockPosition(exteriorBounds.max.x, y2, exteriorBounds.max.z));
+  tq = new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders, this);
+  tq.subdivide(template.getExteriorSize()*16, template.getTownPlotSize(), false);
+  generateRoads(world, tq);
+  tq.addBlocks(blocks);  
+  externalQuadrants[7]=tq;  
   }
 
 private void generateRoads()
@@ -575,8 +301,8 @@ private void generateRoads(World world, TownPartQuadrant tq)
   if(tq.hasRoadBorder(Direction.EAST)){maxX++;}
   for(int x = minX; x<=maxX; x++)
     {
-    if(tq.hasRoadBorder(Direction.NORTH)){genRoadTestBlock(world, x, tq.bb.min.y-1, tq.bb.min.z-1);}//north
-    if(tq.hasRoadBorder(Direction.SOUTH)){genRoadTestBlock(world, x, tq.bb.min.y-1, tq.bb.max.z+1);}//south
+    if(tq.hasRoadBorder(Direction.NORTH)){genRoadBlock(world, x, tq.bb.min.y-1, tq.bb.min.z-1);}//north
+    if(tq.hasRoadBorder(Direction.SOUTH)){genRoadBlock(world, x, tq.bb.min.y-1, tq.bb.max.z+1);}//south
     }
   int minZ = tq.bb.min.z;
   int maxZ = tq.bb.max.z;
@@ -584,8 +310,8 @@ private void generateRoads(World world, TownPartQuadrant tq)
   if(tq.hasRoadBorder(Direction.SOUTH)){maxZ++;}
   for(int z = minZ; z<=maxZ; z++)
     {
-    if(tq.hasRoadBorder(Direction.WEST)){genRoadTestBlock(world, tq.bb.min.x-1, tq.bb.min.y-1, z);}//west
-    if(tq.hasRoadBorder(Direction.EAST)){genRoadTestBlock(world, tq.bb.max.x+1, tq.bb.min.y-1, z);}//east
+    if(tq.hasRoadBorder(Direction.WEST)){genRoadBlock(world, tq.bb.min.x-1, tq.bb.min.y-1, z);}//west
+    if(tq.hasRoadBorder(Direction.EAST)){genRoadBlock(world, tq.bb.max.x+1, tq.bb.min.y-1, z);}//east
     }
   for(TownPartBlock tb : tq.blocks)
     {
@@ -606,8 +332,8 @@ private void generateRoads(World world, TownPartBlock tb)
   if(tb.hasRoadBorder(Direction.EAST)){maxX++;}
   for(int x = minX; x<=maxX; x++)
     {
-    if(tb.hasRoadBorder(Direction.NORTH)){genRoadTestBlock(world, x, tb.bb.min.y-1, tb.bb.min.z-1);}//north
-    if(tb.hasRoadBorder(Direction.SOUTH)){genRoadTestBlock(world, x, tb.bb.min.y-1, tb.bb.max.z+1);}//south
+    if(tb.hasRoadBorder(Direction.NORTH)){genRoadBlock(world, x, tb.bb.min.y-1, tb.bb.min.z-1);}//north
+    if(tb.hasRoadBorder(Direction.SOUTH)){genRoadBlock(world, x, tb.bb.min.y-1, tb.bb.max.z+1);}//south
     }
   int minZ = tb.bb.min.z;
   int maxZ = tb.bb.max.z;
@@ -615,8 +341,8 @@ private void generateRoads(World world, TownPartBlock tb)
   if(tb.hasRoadBorder(Direction.SOUTH)){maxZ++;}
   for(int z = minZ; z<=maxZ; z++)
     {
-    if(tb.hasRoadBorder(Direction.WEST)){genRoadTestBlock(world, tb.bb.min.x-1, tb.bb.min.y-1, z);}//west
-    if(tb.hasRoadBorder(Direction.EAST)){genRoadTestBlock(world, tb.bb.max.x+1, tb.bb.min.y-1, z);}//east
+    if(tb.hasRoadBorder(Direction.WEST)){genRoadBlock(world, tb.bb.min.x-1, tb.bb.min.y-1, z);}//west
+    if(tb.hasRoadBorder(Direction.EAST)){genRoadBlock(world, tb.bb.max.x+1, tb.bb.min.y-1, z);}//east
     }
   }
 
@@ -637,7 +363,7 @@ private void generateAdditionalRoads()
     {
     for(int z = minZ; z<=maxZ; z++)
       {
-      genRoadTestBlock(world, x, y, z);
+      genRoadBlock(world, x, y, z);
       }
     }
   
@@ -650,7 +376,7 @@ private void generateAdditionalRoads()
     {
     for(int z = minZ; z<=maxZ; z++)
       {
-      genRoadTestBlock(world, x, y, z);
+      genRoadBlock(world, x, y, z);
       }
     }
   
@@ -663,7 +389,7 @@ private void generateAdditionalRoads()
     {
     for(int z = minZ; z<=maxZ; z++)
       {
-      genRoadTestBlock(world, x, y, z);
+      genRoadBlock(world, x, y, z);
       }
     }
   
@@ -676,12 +402,12 @@ private void generateAdditionalRoads()
     {
     for(int z = minZ; z<=maxZ; z++)
       {
-      genRoadTestBlock(world, x, y, z);
+      genRoadBlock(world, x, y, z);
       }
     }
   }
 
-private void genRoadTestBlock(World world, int x, int y, int z)
+private void genRoadBlock(World world, int x, int y, int z)
   {
   Block block = template.getRoadFillBlock();
   int meta = template.getRoadFillMeta();
@@ -773,11 +499,6 @@ private String writeTestGrid()
       }
     }
   return out;
-  }
-
-private void sortBlocksByDistance(List<TownPartBlock> blocks)
-  {
-  Collections.sort(blocks, new TownPartBlockComparator());
   }
 
 public static class TownPartBlockComparator implements Comparator<TownPartBlock>

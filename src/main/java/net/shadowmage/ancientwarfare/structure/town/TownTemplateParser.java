@@ -34,14 +34,26 @@ public static TownTemplate parseTemplate(List<String> lines)
       {
       parseWallPatterns(it, template);
       }
-    else if(line.startsWith("structures:"))
+    else if(line.startsWith("uniquestructures:"))
       {
-      parseStructures(it, template);
+      parseUniqueStructures(it, template);
       }
-    else if(line.startsWith("cosmetics:"))
+    else if(line.startsWith("mainstructures:"))
+      {
+      parseMainStructures(it, template);
+      }
+    else if(line.startsWith("housestructures:"))
+      {
+      parseHouseStructures(it, template);
+      }
+    else if(line.startsWith("cosmeticstructures:"))
       {
       parseCosmetics(it, template);
-      }    
+      } 
+    else if(line.startsWith("exteriorstructures:"))
+      {
+      parseExteriorStructures(it, template);
+      }
     }  
   if(template.isValid()){return template;}
   return null;
@@ -74,21 +86,76 @@ private static void parseHeader(Iterator<String> it, TownTemplate template)
     else if(lower.startsWith("biomelist")){template.setBiomeList(parseBiomeList(StringTools.safeParseString("=", line)));}
     else if(lower.startsWith("dimensionwhitelist")){template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));}
     else if(lower.startsWith("dimensionlist")){template.setDimensionList(parseDimensionList(StringTools.safeParseString("=", line)));}
-    else if(lower.startsWith("townhall")){template.setTownHallEntry(new TownStructureEntry(StringTools.safeParseString("=", line), 1, 1));}
     else if(lower.startsWith("lamp")){template.setLamp(new TownStructureEntry(StringTools.safeParseString("=", line), 1, 1));}
     }  
   }
 
-private static void parseStructures(Iterator<String> it, TownTemplate template)
+private static void parseUniqueStructures(Iterator<String> it, TownTemplate template)
   {
   String line;
   while(it.hasNext() && (line=it.next())!=null)
     {
-    if(line.toLowerCase().startsWith(":endstructures")){break;}
+    if(line.toLowerCase().startsWith(":enduniquestructures")){break;}
     else
       {
-      TownStructureEntry e = parseStructure(line);
-      if(e!=null){template.getStructureEntries().add(e);}
+      TownStructureEntry e = parseStructureName(line);
+      if(e!=null){template.getUniqueStructureEntries().add(e);}
+      }
+    }  
+  }
+
+private static void parseMainStructures(Iterator<String> it, TownTemplate template)
+  {
+  String line;
+  while(it.hasNext() && (line=it.next())!=null)
+    {
+    if(line.toLowerCase().startsWith(":endmainstructures")){break;}
+    else
+      {
+      TownStructureEntry e = parseStructureName(line);
+      if(e!=null){template.getMainStructureEntries().add(e);}
+      }
+    }  
+  }
+
+private static void parseHouseStructures(Iterator<String> it, TownTemplate template)
+  {
+  String line;
+  while(it.hasNext() && (line=it.next())!=null)
+    {
+    if(line.toLowerCase().startsWith(":endhousestructures")){break;}
+    else
+      {
+      TownStructureEntry e = parseStructureWeight(line);
+      if(e!=null){template.getHouseStructureEntries().add(e);}
+      }
+    }  
+  }
+
+private static void parseCosmetics(Iterator<String> it, TownTemplate template)
+  {
+  String line;
+  while(it.hasNext() && (line=it.next())!=null)
+    {
+    if(line.toLowerCase().startsWith(":endcosmetics")){break;}
+    else
+      {      
+      TownStructureEntry e = parseStructureWeight(line);
+      if(e!=null){template.getCosmeticEntries().add(e);}
+      }
+    } 
+  }
+
+private static void parseExteriorStructures(Iterator<String> it, TownTemplate template)
+  {
+  String line;
+  while(it.hasNext() && (line=it.next())!=null)
+    {
+    if(line.toLowerCase().startsWith(":endexteriorstructures")){break;}
+    else
+      {
+      TownStructureEntry e = parseStructureWeight(line);
+      if(e!=null){template.getExteriorStructureEntries().add(e);}
       }
     }  
   }
@@ -126,20 +193,6 @@ private static void parseWallPatterns(Iterator<String> it, TownTemplate template
     } 
   }
 
-private static void parseCosmetics(Iterator<String> it, TownTemplate template)
-  {
-  String line;
-  while(it.hasNext() && (line=it.next())!=null)
-    {
-    if(line.toLowerCase().startsWith(":endcosmetics")){break;}
-    else
-      {      
-      TownStructureEntry e = parseCosmetic(line);
-      if(e!=null){template.getCosmeticEntries().add(e);}
-      }
-    } 
-  }
-
 private static List<String> parseBiomeList(String line)
   {
   String[] bits = line.split(",", -1);
@@ -158,13 +211,13 @@ private static List<Integer> parseDimensionList(String line)
   return dims;
   }
 
-private static TownStructureEntry parseStructure(String line)
+private static TownStructureEntry parseStructureName(String line)
   {
   String[] bits = line.split(":", -1);
-  return new TownStructureEntry(bits[0], StringTools.safeParseInt(bits[1]), StringTools.safeParseInt(bits[2]));
+  return new TownStructureEntry(bits[0], 0, 0);
   }
 
-private static TownStructureEntry parseCosmetic(String line)
+private static TownStructureEntry parseStructureWeight(String line)
   {
   String[] bits = line.split(":", -1);
   return new TownStructureEntry(bits[0], StringTools.safeParseInt(bits[1]), StringTools.safeParseInt(bits[1]));  

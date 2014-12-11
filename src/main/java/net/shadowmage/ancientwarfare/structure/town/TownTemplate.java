@@ -59,13 +59,12 @@ private List<TownWallEntry> gateRightWalls = new ArrayList<TownWallEntry>();
 private int wallTotalWeights;
 private List<TownWallEntry> walls = new ArrayList<TownWallEntry>();
 
-/**
- * A specific template to be generated at the center of town, as the town-hall.  All roads and other buildings will be constructed -around- this one
- */
-private TownStructureEntry townHallEntry;//
 private TownStructureEntry lamp;//
-private List<TownStructureEntry> structureEntries = new ArrayList<TownStructureEntry>();
-private List<TownStructureEntry> cosmeticEntries = new ArrayList<TownStructureEntry>();
+private List<TownStructureEntry> uniqueStructureEntries = new ArrayList<TownStructureEntry>();
+private List<TownStructureEntry> mainStructureEntries = new ArrayList<TownStructureEntry>();
+private List<TownStructureEntry> houseStructureEntries = new ArrayList<TownStructureEntry>();
+private List<TownStructureEntry> cosmeticStructureEntries = new ArrayList<TownStructureEntry>();
+private List<TownStructureEntry> exteriorStructureEntries = new ArrayList<TownStructureEntry>();
 
 public TownTemplate(){}
 
@@ -79,8 +78,11 @@ public final boolean isDimensionWhiteList(){return dimensionWhiteList;}
 public final void setDimensionWhiteList(boolean dimensionWhiteList){this.dimensionWhiteList = dimensionWhiteList;}
 public final List<Integer> getDimensionList(){return dimensionList;}
 public final void setDimensionList(List<Integer> dimensions){this.dimensionList=dimensions;}
-public final List<TownStructureEntry> getStructureEntries(){return structureEntries;}
-public final List<TownStructureEntry> getCosmeticEntries(){return cosmeticEntries;}
+public final List<TownStructureEntry> getUniqueStructureEntries(){return uniqueStructureEntries;}
+public final List<TownStructureEntry> getMainStructureEntries(){return mainStructureEntries;}
+public final List<TownStructureEntry> getHouseStructureEntries(){return houseStructureEntries;}
+public final List<TownStructureEntry> getExteriorStructureEntries(){return exteriorStructureEntries;}
+public final List<TownStructureEntry> getCosmeticEntries(){return cosmeticStructureEntries;}
 public final int getMinSize(){return minSize;}
 public final void setMinSize(int minSize){this.minSize = minSize;}
 public final int getMaxSize(){return maxSize;}
@@ -91,8 +93,6 @@ public final int getSelectionWeight(){return selectionWeight;}
 public final void setSelectionWeight(int selectionWeight){this.selectionWeight = selectionWeight;}
 public final int getClusterValue(){return clusterValue;}
 public final void setClusterValue(int clusterValue){this.clusterValue = clusterValue;}
-public final TownStructureEntry getTownHallEntry(){return townHallEntry;}
-public final void setTownHallEntry(TownStructureEntry townHallEntry){this.townHallEntry = townHallEntry;}
 public final TownStructureEntry getLamp(){return lamp;}
 public final void setLamp(TownStructureEntry lamp){this.lamp = lamp;}
 public final Block getRoadFillBlock(){return roadFillBlock;}
@@ -167,7 +167,7 @@ private static String getRandomWeightedWallPiece(Random rng, List<TownWallEntry>
 
 public final boolean isValid()
   {
-  return townTypeName!=null && !townTypeName.isEmpty() && !structureEntries.isEmpty();
+  return townTypeName!=null && !townTypeName.isEmpty();
   }
 
 public static final class TownStructureEntry
