@@ -5,8 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.TownGenerator.TownPartBlockComparator;
@@ -96,11 +98,6 @@ private static void generateCosmetics(List<TownPartBlock> blocks, List<Structure
     }
   }
 
-private static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, TownGenerator gen)
-  {
-  //TODO
-  }
-
 private static void generateExteriorStructures(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
   {
   outer:
@@ -115,6 +112,112 @@ private static void generateExteriorStructures(List<TownPartBlock> blocks, List<
     }
   }
 
+private static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, TownGenerator gen)
+  {
+  if(templateToGenerate==null){return;}
+  StructureTemplate lamp = StructureTemplateManager.instance().getTemplate(templateToGenerate.templateName);
+  if(lamp==null){return;}
+  for(TownPartBlock block : blocks)
+    {
+    generateLamps(block, lamp, gen);
+    }
+  }
+
+private static void generateLamps(TownPartBlock block, StructureTemplate lamp, TownGenerator gen)
+  {
+  Direction xDir = block.quadrant.getXDir();
+  Direction zDir = block.quadrant.getZDir();  
+  int xStart, zStart, xMove, zMove, size, x, z, xBits, zBits;
+  
+  size = 5;
+  xBits = (block.bb.getXSize()-1) / size;
+  zBits = (block.bb.getZSize()-1) / size;
+  if(block.bb.getXSize()%size==size-1){xBits--;}
+  if(block.bb.getZSize()%size==size-1){zBits--;}  
+  if(xDir==Direction.WEST)
+    {
+    xStart = block.bb.max.x;
+    xMove = -size;
+    }  
+  else
+    {
+    xStart = block.bb.min.x;
+    xMove = size;
+    }
+  if(zDir==Direction.NORTH)
+    {
+    zStart = block.bb.max.z;
+    zMove = -size;
+    }
+  else
+    {
+    zStart = block.bb.min.z;
+    zMove = size;
+    }  
+  
+  if(block.hasRoadBorder(Direction.NORTH))
+    {
+    for(int xBit = 0; xBit <= xBits; xBit++)
+      {
+      x = xBit * xMove + xStart;
+      generateLamp(gen.world, lamp, x, block.bb.min.y, block.bb.min.z);     
+      }
+    }
+  
+  if(block.hasRoadBorder(Direction.SOUTH))
+    {
+    for(int xBit = 0; xBit <= xBits; xBit++)
+      {
+      x = xBit * xMove + xStart;
+      generateLamp(gen.world, lamp, x, block.bb.min.y, block.bb.max.z); 
+      }
+    }  
+  
+  if(block.hasRoadBorder(Direction.WEST))
+    {
+    for(int zBit = 0; zBit <= zBits; zBit++)
+      {
+      z = zBit * zMove + zStart;
+      generateLamp(gen.world, lamp, block.bb.min.x, block.bb.min.y, z);
+      }
+    }
+  
+  if(block.hasRoadBorder(Direction.EAST))
+    {
+    for(int zBit = 0; zBit <= zBits; zBit++)
+      {
+      z = zBit * zMove + zStart;
+      generateLamp(gen.world, lamp, block.bb.max.x, block.bb.min.y, z);
+      }
+    }
+  }
+
+private static void generateLamp(World world, StructureTemplate t, int x, int y, int z)
+  {
+  int minX = x;
+  int minZ = z;
+  int minY = y;
+  int maxX = x + t.xSize - 1;
+  int maxY = y + (t.ySize - 1 - t.yOffset);
+  int maxZ = z + t.zSize - 1;
+  
+  for(int x1 = minX; x1<=maxX; x1++)
+    {
+    for(int z1 = minZ; z1<=maxZ; z1++)
+      {
+      for(int y1 = minY; y1<=maxY; y1++)
+        {
+        if(!world.isAirBlock(x1, y1, z1)){return;}//skip construction if it would overwrite any non-valid block (should ALL be air)
+        }
+      }
+    }  
+  x -= (t.xSize/2);
+  z -= (t.zSize/2);
+  x += t.xOffset;
+  z += t.zOffset;  
+  new StructureBuilder(world, t, 0, x, y, z).instantConstruction();
+  }
+
 //************************************************* UTILITY METHODS *******************************************************//
 
 /**
@@ -123,7 +226,7 @@ private static void generateExteriorStructures(List<TownPartBlock> blocks, List<
  * @param plot
  * @return true if generated
  */
-public static boolean generateStructureForPlot(TownGenerator gen, TownPartPlot plot, StructureTemplate template, boolean centerLength)
+private static boolean generateStructureForPlot(TownGenerator gen, TownPartPlot plot, StructureTemplate template, boolean centerLength)
   {  
   int expansion = gen.template.getTownBuildingWidthExpansion();
   int face = gen.rng.nextInt(4);//select random face  
@@ -199,43 +302,6 @@ private static void generateStructure(TownGenerator gen, TownPartPlot plot, Stru
   StructureBuilder b = new StructureBuilder(gen.world, template, face, buildKey, bb);
   b.instantConstruction();  
   }
-
-//private void generateLamps(TownPartBlock block, StructureTemplate lamp)
-//  {
-//  int tx, tz;
-//  int wx, wz;
-//  int y = block.bb.min.y;
-//  for(tx = block.bb.min.x; tx<=block.bb.max.x; tx++)
-//    {    
-//    wx = tx;
-//    if(wx%4!=0){continue;}
-//    wz = block.bb.min.z;
-//    if(world.getBlock(wx, y, wz)==Blocks.air && world.getBlock(wx, y+1, wz)==Blocks.air)
-//      {
-//      generateLamp(wx, y, wz, lamp);
-//      }
-//    wz = block.bb.max.z;
-//    if(world.getBlock(wx, y, wz)==Blocks.air && world.getBlock(wx, y+1, wz)==Blocks.air)
-//      {
-//      generateLamp(wx, y, wz, lamp);
-//      }
-//    }
-//  for(tz = block.bb.min.z; tz<=block.bb.max.z; tz++)
-//    {   
-//    wz = tz ;
-//    if(wz%4!=0){continue;}
-//    wx = block.bb.min.x;
-//    if(world.getBlock(wx, y, wz)==Blocks.air && world.getBlock(wx, y+1, wz)==Blocks.air)
-//      {
-//      generateLamp(wx, y, wz, lamp);
-//      }
-//    wx = block.bb.max.x;
-//    if(world.getBlock(wx, y, wz)==Blocks.air && world.getBlock(wx, y+1, wz)==Blocks.air)
-//      {
-//      generateLamp(wx, y, wz, lamp);
-//      }
-//    }
-//  }
 
 /**
  * pull a random template from the input generation list, does not remove
