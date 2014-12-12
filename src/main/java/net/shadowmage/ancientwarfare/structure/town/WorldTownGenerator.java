@@ -39,11 +39,11 @@ public void attemptGeneration(World world, Random rng, int blockX, int blockZ)
     AWLog.logDebug("Could not find template for area: "+area);
     return;
     }
-  if(area.getChunkWidth() - 1 > template.getMaxSize())
+  if(area.getChunkWidth() - 1 > template.getMaxSize())//shrink width down to town max size
     {
     area.chunkMaxX = area.chunkMinX + template.getMaxSize();
     }
-  if(area.getChunkLength() - 1 > template.getMaxSize())
+  if(area.getChunkLength() - 1 > template.getMaxSize())//shrink length down to town max size
     {
     area.chunkMaxZ = area.chunkMinZ + template.getMaxSize();
     }

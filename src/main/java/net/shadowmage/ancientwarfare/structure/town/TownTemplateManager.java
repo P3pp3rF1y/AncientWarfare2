@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 public class TownTemplateManager
@@ -31,15 +32,23 @@ public TownTemplate getTemplate(String name)
 public TownTemplate selectTemplateForGeneration(World world, int x, int z, TownBoundingArea area)
   {  
   TownTemplate selection = null;
-  int width = area.getChunkWidth()-1;
-  int length = area.getChunkLength()-1;
+  int width = area.getChunkWidth();
+  int length = area.getChunkLength();
+  
   int min = Math.min(width, length);
+  int templateMinimumSize;
+  
+  AWLog.logDebug("min chunk size for template selection: "+min);
+  
   String biomeName = AWStructureStatics.getBiomeName(world.getBiomeGenForCoords(x, z));   
   int totalWeight = 0; 
   for(TownTemplate t : templates.values())
     {
-    if(min >= t.getMinSize() && isBiomeValid(biomeName, t));
+    AWLog.logDebug("template min size: "+t.getMinSize());
+    templateMinimumSize = t.getMinSize();
+    if(min >= templateMinimumSize && isBiomeValid(biomeName, t))
       {      
+      AWLog.logDebug("Validating town template: "+t.getTownTypeName() + "  "+min + " "+templateMinimumSize);
       searchCache.add(t);
       totalWeight += t.getSelectionWeight();
       }
@@ -62,9 +71,10 @@ public TownTemplate selectTemplateForGeneration(World world, int x, int z, TownB
   }
 
 private boolean isBiomeValid(String biome, TownTemplate t)
-  {
+  {  
   boolean contains = t.getBiomeList().contains(biome);
-  return (t.isBiomeWhiteList() && contains) || (!t.isBiomeWhiteList() && !contains);
+  boolean wl = t.isBiomeWhiteList();
+  return (wl && contains) || (!wl && !contains);
   }
 
 }
