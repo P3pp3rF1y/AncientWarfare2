@@ -8,6 +8,7 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -100,6 +101,15 @@ private static void generateCosmetics(List<TownPartBlock> blocks, List<Structure
 
 private static void generateExteriorStructures(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
   {
+  float l1 = gen.exteriorBounds.getXSize() / 2.f;
+  float l2 = gen.exteriorBounds.getZSize() / 2.f;
+  float maxDistance = Trig.getDistance(l1, 0, l2, 0, 0, 0);
+  l1 = gen.wallsBounds.getXSize()/2.f;
+  l2 = gen.wallsBounds.getZSize()/2.f;
+  float minDistance = l1< l2? l1 : l2;
+  float minMaxDelta = maxDistance - minDistance;
+  float plotDistance, distPercent;  
+      
   outer:
   for(TownPartBlock block : blocks)
     {
@@ -107,7 +117,14 @@ private static void generateExteriorStructures(List<TownPartBlock> blocks, List<
       {
       if(plot.closed){continue;}
       if(templatesToGenerate.isEmpty()){break outer;}      
-      generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), true);
+      plotDistance = Trig.getDistance(plot.bb.getCenterX(), 0, plot.bb.getCenterZ(), gen.maximalBounds.getCenterX(), 0, gen.maximalBounds.getCenterZ()) - minDistance;
+      distPercent = plotDistance / minMaxDelta;
+      distPercent = 1.f - distPercent;
+      distPercent *= distPercent;
+      if(gen.rng.nextFloat() < distPercent)
+        {
+        generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), true);        
+        }
       }
     }
   }
