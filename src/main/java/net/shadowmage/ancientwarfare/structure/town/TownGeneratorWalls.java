@@ -7,6 +7,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
+import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
 
 public class TownGeneratorWalls
 {
@@ -145,7 +146,7 @@ private static StructureTemplate getCornerSection(Random rng, TownTemplate templ
 private static void constructTemplate(World world, StructureTemplate template, int face, int x, int y, int z)
   {
   if(template==null){return;}
-  new StructureBuilder(world, template, face, x, y, z).instantConstruction();
+  WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilder(world, template, face, x, y, z));
   }
 
 }

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -27,10 +28,18 @@ public void generate(Random random, int chunkX, int chunkZ, World world, IChunkP
 public void attemptGeneration(World world, Random rng, int blockX, int blockZ)
   {
   TownBoundingArea area = TownPlacementValidator.findGenerationPosition(world, blockX, blockZ);
-  if(area==null){return;}
+  if(area==null)
+    {
+    AWLog.logDebug("Could not find valid position..");
+    return;
+    }
   TownTemplate template = TownTemplateManager.instance().selectTemplateForGeneration(world, blockX, blockZ, area);
-  if(template==null){return;}
-  if(area.getChunkWidth()-1 > template.getMaxSize())
+  if(template==null)
+    {
+    AWLog.logDebug("Could not find template for area: "+area);
+    return;
+    }
+  if(area.getChunkWidth() - 1 > template.getMaxSize())
     {
     area.chunkMaxX = area.chunkMinX + template.getMaxSize();
     }
@@ -38,7 +47,11 @@ public void attemptGeneration(World world, Random rng, int blockX, int blockZ)
     {
     area.chunkMaxZ = area.chunkMinZ + template.getMaxSize();
     }
-  if(!TownPlacementValidator.validateAreaForPlacement(world, area)){return;}//cannot validate the area until bounds are possibly shrunk by selected template
+  if(!TownPlacementValidator.validateAreaForPlacement(world, area))
+    {
+    AWLog.logDebug("area failed validation.. "+area);
+    return;
+    }//cannot validate the area until bounds are possibly shrunk by selected template
   
   /**
    * add the town to the generated structure map, as a -really- large structure entry

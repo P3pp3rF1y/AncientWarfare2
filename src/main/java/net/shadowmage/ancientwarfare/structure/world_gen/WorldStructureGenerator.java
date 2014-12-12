@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.structure.world_gen;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -65,9 +64,6 @@ defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.iron_
 defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.coal_ore));
 }
 
-
-private boolean isGenerating = false;
-private LinkedList<DelayedGenerationEntry> delayedChunks = new LinkedList<DelayedGenerationEntry>();
 private Random rng = new Random();
 
 @Override
@@ -81,33 +77,14 @@ public void generate(Random random, int chunkX, int chunkZ, World world, IChunkP
     return;
     }
   float rand = rng.nextFloat();
-  if(rand>AWStructureStatics.randomGenerationChance)
+  if(rand > AWStructureStatics.randomGenerationChance)
     {
     return;
     }
-  if(isGenerating)
-    {
-    delayedChunks.add(new DelayedGenerationEntry(chunkX, chunkZ, world, chunkGenerator, chunkProvider));
-    return;
-    }
-  else
-    {
-    isGenerating = true;
-    world.theProfiler.startSection("AWWorldGen");
-    generateAt(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-    world.theProfiler.endSection();
-    }
-  while(!delayedChunks.isEmpty())
-    {    
-    DelayedGenerationEntry entry = delayedChunks.poll();
-    world.theProfiler.startSection("AWWorldGen");
-    generateAt(entry.chunkX, entry.chunkZ, entry.world, entry.generator, entry.provider);
-    world.theProfiler.endSection();
-    }
-  isGenerating = false;
+  WorldGenTickHandler.instance().addChunkForGeneration(world, chunkX, chunkZ); 
   }
 
-private void generateAt(int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
+public void generateAt(int chunkX, int chunkZ, World world)
   {
   long t1 = System.currentTimeMillis();
   long seed = (((long)chunkX)<< 32) | (((long)chunkZ) & 0xffffffffl);
@@ -167,7 +144,7 @@ public static int getStepNumber(int x, int z, int minX, int maxX, int minZ, int 
   return steps;
   }
 
-public boolean attemptStructureGenerationAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map)
+public final boolean attemptStructureGenerationAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map)
   {
   long t1 = System.currentTimeMillis();
   int prevY = y;
@@ -198,28 +175,9 @@ public boolean attemptStructureGenerationAt(World world, int x, int y, int z, in
 
 private void generateStructureAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map, StructureBB bb)
   {
-  StructureBuilderWorldGen builder = new StructureBuilderWorldGen(world, template, face, x, y, z);
-  builder.instantConstruction();
+  WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, x, y, z));
   map.setGeneratedAt(world, x, y, z, face, new StructureEntry(x, y, z, face, template), template.getValidationSettings().isUnique());
   map.markDirty();
   }
-
-private class DelayedGenerationEntry
-{
-int chunkX;
-int chunkZ;
-World world;
-IChunkProvider generator;
-IChunkProvider provider;
-
-public DelayedGenerationEntry(int cx, int cz, World world, IChunkProvider gen, IChunkProvider prov)
-  {
-  this.chunkX = cx;
-  this.chunkZ = cz;
-  this.world = world;
-  this.generator = gen;
-  this.provider = prov;
-  }
-}
 
 }

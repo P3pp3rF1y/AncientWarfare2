@@ -35,6 +35,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
+import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -91,6 +92,7 @@ public void preInit(FMLPreInitializationEvent evt)
    * Forge/FML registry
    */  
   FMLCommonHandler.instance().bus().register(this);
+  FMLCommonHandler.instance().bus().register(WorldGenTickHandler.instance());
   GameRegistry.registerWorldGenerator(WorldStructureGenerator.instance(), 0);
   EntityRegistry.registerModEntity(EntityGate.class, "aw_gate", 0, this, 250, 200, false);
   /**

@@ -83,6 +83,11 @@ public StructureBuilder(World world, StructureTemplate template, int face, Block
   incrementDestination();
   }
 
+public StructureTemplate getTemplate()
+  {
+  return template;
+  }
+
 public StructureBB getBoundingBox()
   {
   return bb;
@@ -148,8 +153,9 @@ protected void placeEntities()
 public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
   {
   if(y<=0 || y>=256){return;}
-  if(priority==0)
+  if(false /** priority==0 **/)
     {
+    //unsurprisingly, direct chunk access is 2X faster than going through the world =\
     world.setBlock(x, y, z, block, meta, 2);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
     }
   else
@@ -172,7 +178,8 @@ public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
       chunk.func_150812_a(x & 15, y, z & 15, te);//set TE in chunk data
       world.addTileEntity(te);//add TE to world added/loaded TE list
       }
-    world.markBlockForUpdate(x, y, z);       
+    world.markBlockForUpdate(x, y, z);    
+    //TODO clean this up to send own list of block-changes, not rely upon vanilla to send changes. (as the client-side of this lags to all hell)
     }
   }
 

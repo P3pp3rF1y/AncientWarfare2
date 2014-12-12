@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -14,6 +15,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
+import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
 
 public class TownGeneratorStructures
 {
@@ -44,12 +46,13 @@ private static void generateUniques(List<TownPartBlock> blocks, List<StructureTe
       if(plot.closed){continue;}
       if(!plot.hasRoadBorder()){continue;}//no borders
       if(templatesToGenerate.isEmpty()){break outer;}      
-      if(generateStructureForPlot(gen, plot, templatesToGenerate.remove(0), false))
+      if(generateStructureForPlot(gen, plot, templatesToGenerate.get(0), false))
         {
-        break;
+        templatesToGenerate.remove(0);
         }
       }
     }
+  AWLog.logDebug("generated first pass structures.  remaining in list:\n"+templatesToGenerate);
   }
 
 private static void generateMains(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
@@ -62,12 +65,13 @@ private static void generateMains(List<TownPartBlock> blocks, List<StructureTemp
       if(plot.closed){continue;}
       if(!plot.hasRoadBorder()){continue;}//no borders
       if(templatesToGenerate.isEmpty()){break outer;}      
-      if(generateStructureForPlot(gen, plot, templatesToGenerate.remove(0), false))
+      if(generateStructureForPlot(gen, plot, templatesToGenerate.get(0), false))
         {
-        break;
+        templatesToGenerate.remove(0);
         }
       }
     }
+  AWLog.logDebug("generated second pass structures.  remaining in list:\n"+templatesToGenerate);
   }
 
 private static void generateHouses(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
@@ -235,7 +239,7 @@ private static void generateLamp(World world, StructureTemplate t, int x, int y,
   z -= (t.zSize/2);
   x += t.xOffset;
   z += t.zOffset;  
-  new StructureBuilder(world, t, 0, x, y, z).instantConstruction();
+  WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilder(world, t, 0, x, y, z));
   }
 
 //************************************************* UTILITY METHODS *******************************************************//
@@ -319,8 +323,7 @@ private static void generateStructure(TownGenerator gen, TownPartPlot plot, Stru
   buildKey.moveBack(face, template.zOffset);  
   buildKey.y -= template.yOffset;
   bb.offset(0, -template.yOffset, 0);
-  StructureBuilder b = new StructureBuilder(gen.world, template, face, buildKey, bb);
-  b.instantConstruction();  
+  WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));
   }
 
 /**
