@@ -75,14 +75,17 @@ public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side)
       meta = d.ordinal();
       }
     }
-  return iconMaps.get(meta).getIcon(this, meta, side);
+  IconRotationMap icr = iconMaps.get(meta);
+  if(icr!=null){return icr.getIcon(this, meta, side);}
+  return null;
   }
 
 @Override
 public IIcon getIcon(int side, int meta)
   {
-//  AWLog.logDebug("fetching texture for block: "+getUnlocalizedName());
-  return iconMaps.get(meta).getIcon(this, 2, side);
+  IconRotationMap icr = iconMaps.get(meta);
+  if(icr!=null){return icr.getIcon(this, meta, side);}
+  return null;
   }
 
 @Override
