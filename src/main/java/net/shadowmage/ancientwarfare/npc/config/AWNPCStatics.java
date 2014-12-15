@@ -65,6 +65,7 @@ public static int npcWorkTicks = 50;
 public static int npcCourierWorkTicks=50;//TODO add to config
 public static int npcDefaultUpkeepWithdraw = 6000;//5 minutes
 public static boolean exportEntityNames = false;
+public static boolean npcAIDebugMode = false;
 
 /**
  * TODO add these to config

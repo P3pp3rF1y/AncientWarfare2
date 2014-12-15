@@ -1,15 +1,19 @@
 package net.shadowmage.ancientwarfare.npc;
 
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.world.WorldEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
+import net.shadowmage.ancientwarfare.npc.command.CommandDebugAI;
 import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
@@ -164,7 +168,21 @@ public void onConfigChanged(OnConfigChangedEvent evt)
 @EventHandler
 public void serverStart(FMLServerStartingEvent evt)
   {
-  evt.registerServerCommand(new CommandFaction());
+  evt.registerServerCommand(new CommandFaction());  
+  evt.registerServerCommand(new CommandDebugAI());
+  }
+
+@SubscribeEvent
+public void worldLoaded(WorldEvent.Load evt)
+  {
+  if(!evt.world.isRemote && evt.world instanceof WorldServer)
+    {
+    WorldData d = (WorldData) evt.world.perWorldStorage.loadData(WorldData.class, WorldData.name);
+    if(d!=null)
+      {
+      AWNPCStatics.npcAIDebugMode = d.get("NpcAIDebugMode");
+      }
+    }
   }
 
 }

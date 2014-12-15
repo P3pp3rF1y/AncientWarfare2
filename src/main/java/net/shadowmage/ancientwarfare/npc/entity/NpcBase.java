@@ -312,7 +312,7 @@ public boolean shouldBeAtHome()
   }
 
 public void setIsAIEnabled(boolean val){this.aiEnabled = val;}
-public boolean getIsAIEnabled(){return aiEnabled;}
+public boolean getIsAIEnabled(){return aiEnabled && !AWNPCStatics.npcAIDebugMode;}
 
 /**
  * should be implemented by any npc that wishes to open a GUI on interact<br>
