@@ -71,10 +71,12 @@ public TownTemplate selectTemplateForGeneration(World world, int x, int z, TownB
   }
 
 private boolean isBiomeValid(String biome, TownTemplate t)
-  {  
+  { 
   boolean contains = t.getBiomeList().contains(biome);
   boolean wl = t.isBiomeWhiteList();
-  return (wl && contains) || (!wl && !contains);
+  AWLog.logDebug("biome check: "+contains+ " :: "+wl);
+  return true;
+//  return (wl && contains) || (!wl && !contains);
   }
 
 }
