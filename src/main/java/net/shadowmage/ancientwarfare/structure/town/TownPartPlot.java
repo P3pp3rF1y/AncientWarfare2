@@ -12,6 +12,7 @@ TownPartBlock block;//the owning block
 StructureBB bb;//bb of the plot
 boolean[] roadBorders;//what directions are adjacent to a road, can be 0-2 total sides (0=center plot, cannot have struct, can only merge with other plots or be 'cosmetic' structs)
 boolean closed;//has been used or not (if true, plot has been used by a structure)
+boolean skipped;//has been marked for skip by empty plot setting
 
 public TownPartPlot(TownPartBlock block, StructureBB bb, int x, int z)
   {

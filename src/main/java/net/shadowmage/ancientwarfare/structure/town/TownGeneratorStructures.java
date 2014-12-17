@@ -89,6 +89,7 @@ private static void generateHouses(List<TownPartBlock> blocks, List<StructureTem
         {
         if(gen.rng.nextInt(100) < gen.template.getInteriorEmtpyPlotChance())
           {
+          plot.skipped = true;//mark skipped, so it is skipped by cosmetic generation as well (do not close, allow expansion onto this plot).
           continue;
           }
         }
@@ -104,15 +105,8 @@ private static void generateCosmetics(List<TownPartBlock> blocks, List<Structure
     {
     for(TownPartPlot plot : block.plots)
       {
-      if(plot.closed){continue;}
-      if(templatesToGenerate.isEmpty()){break outer;}      
-      if(gen.template.getInteriorEmtpyPlotChance()>0)
-        {
-        if(gen.rng.nextInt(100) < gen.template.getInteriorEmtpyPlotChance())
-          {
-          continue;
-          }
-        }
+      if(plot.closed || plot.skipped){continue;}
+      if(templatesToGenerate.isEmpty()){break outer;}  
       generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), true);
       }
     }
