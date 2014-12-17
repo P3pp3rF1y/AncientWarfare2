@@ -5,9 +5,13 @@ import java.util.HashMap;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.event.world.WorldEvent;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * Holds run-time references to world-saved data.
+ * Auto-loads data instances upon world-load.  Data classes must be pre-registered for this mechanism to work.
+ *
+ */
 public class AWGameData
 {
 
@@ -34,11 +38,13 @@ public void registerSaveData(String name, Class <? extends WorldSavedData> clz)
 @SuppressWarnings("unchecked")
 public <T extends WorldSavedData> T getData(String name, World world, Class <T> clz)
   {
-  if(!WorldSavedData.class.isAssignableFrom(clz)){return null;}
+  if(!WorldSavedData.class.isAssignableFrom(clz))
+    {
+    throw new RuntimeException("Attempt to load data class: "+clz+" for name: "+name+" failed because it is not an instance of WorldSavedData.");
+    }
   if(!dataClasses.containsKey(name))
     {
-    AWLog.logError("Attempt to load unregistered data class: "+clz +" for name: "+name);
-    return null;
+    throw new RuntimeException("Attempt to load unregistered data class: "+clz +" for name: "+name+".  Data classes must be registered during mod initialization.");
     }  
   T data = (T) world.mapStorage.loadData(clz, name);
   if(data==null)
@@ -51,14 +57,11 @@ public <T extends WorldSavedData> T getData(String name, World world, Class <T> 
       } 
     catch (InstantiationException e)
       {
-      AWLog.logError("Attempt to load data class: "+clz +" for name: "+name +" failed because class needs a no-param constructor!");
-      e.printStackTrace();
-      return null;
+      throw new RuntimeException("Attempt to load data class: "+clz +" for name: "+name +" failed because class needs a no-param constructor!");
       } 
     catch (IllegalAccessException e)
       {
-      e.printStackTrace();
-      return null;
+      throw new RuntimeException(e);
       }
     }
   return data;

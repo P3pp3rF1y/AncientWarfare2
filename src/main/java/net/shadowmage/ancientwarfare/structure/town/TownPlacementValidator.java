@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
+import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
-import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
 
 public class TownPlacementValidator
 {
@@ -25,16 +26,22 @@ private static int maxSize = 21;
  * First examines the chunk that was at the input coordinates, and expands out from there attempting
  * to create the largest town-bounding area that it can.
  * 
+ * 
+ * 
  * @param world
- * @param x
- * @param y
- * @param z
- * @return bounding area for the town, or null if no acceptable area was found starting in the specified chunk
+ * @param x world x to search from
+ * @param z world z to search from
+ * @return maximal bounding area for a town, or null if no acceptable area was found starting in the specified chunk
  */
 public static TownBoundingArea findGenerationPosition(World world, int x, int z)
   {     
   int cx = x >> 4;
-  int cz = z >> 4;
+  int cz = z >> 4;  
+  
+  TownMap tm = AWGameData.INSTANCE.getData(TownMap.NAME, world, TownMap.class);
+  int minDist = AWStructureStatics.townClosestDistance * 16;
+  float dist = tm.getClosestTown(world, x, z, minDist * 2);
+  if(dist<minDist){AWLog.logDebug("Skipping generation for existing town too close!"); return null;}
    
   int height = getTopFilledHeight(world.getChunkFromChunkCoords(cx, cz), x & 15, z & 15);
   if(height <= 0){return null;}
@@ -110,7 +117,7 @@ private static boolean tryExpandXNeg(World world, TownBoundingArea area)
   boolean valid = true;
   for(int z = minZ; z <= maxZ; z++)
     {
-    if(!isTopHeightWithin(world, cx, z, area.minY, area.maxY))
+    if(!isAverageHeightWithin(world, cx, z, area.minY, area.maxY))
       {
       valid = false;
       break;      
@@ -131,7 +138,7 @@ private static boolean tryExpandXPos(World world, TownBoundingArea area)
   boolean valid = true;
   for(int z = minZ; z <= maxZ; z++)
     {
-    if(!isTopHeightWithin(world, cx, z, area.minY, area.maxY))
+    if(!isAverageHeightWithin(world, cx, z, area.minY, area.maxY))
       {
       valid = false;
       break;      
@@ -152,7 +159,7 @@ private static boolean tryExpandZNeg(World world, TownBoundingArea area)
   boolean valid = true;
   for(int x = minX; x <= maxX; x++)
     {
-    if(!isTopHeightWithin(world, x, cz, area.minY, area.maxY))
+    if(!isAverageHeightWithin(world, x, cz, area.minY, area.maxY))
       {
       valid = false;
       break;      
@@ -173,7 +180,7 @@ private static boolean tryExpandZPos(World world, TownBoundingArea area)
   boolean valid = true;
   for(int x = minX; x <= maxX; x++)
     {
-    if(!isTopHeightWithin(world, x, cz, area.minY, area.maxY))
+    if(!isAverageHeightWithin(world, x, cz, area.minY, area.maxY))
       {
       valid = false;
       break;      
@@ -186,19 +193,22 @@ private static boolean tryExpandZPos(World world, TownBoundingArea area)
   return valid;
   }
 
-private static boolean isTopHeightWithin(World world, int cx, int cz, int min, int max)
+private static boolean isAverageHeightWithin(World world, int cx, int cz, int min, int max)
   {
   Chunk chunk = world.getChunkFromChunkCoords(cx, cz);
   int val;
+  int total = 0;
   for(int x = 0; x<16; x++)
     {
     for(int z = 0; z<16; z++)
       {
-      val = getTopFilledHeight(chunk, x, z);
-      if(val<min || val>max){return false;}
+      val = getTopFilledHeight(chunk, x, z);      
+      total += val;
       }
     }
-  return true;
+  total /= 256;//make it the average top-height
+//  AWLog.logDebug("found top average height of: "+total+" for min/max of: "+min+ " : "+max);
+  return total >= min && total<=max;
   }
 
 /**
@@ -212,12 +222,17 @@ private static boolean isTopHeightWithin(World world, int cx, int cz, int min, i
 private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk)
   {
   int maxY = chunk.getTopFilledSegment()+15;
-  Block block;
+  Block block = null;
   for(int y = maxY; y>0; y--)
     {
     block = chunk.getBlock(xInChunk, y, zInChunk);
-    if(block==null || block==Blocks.air || AWStructureStatics.skippableBlocksContains(block) || block.getMaterial()==Material.water){continue;}
-    if(!AWStructureStatics.isValidTownTargetBlock(block)){return -1;}
+    if(block==null || block==Blocks.air || AWStructureStatics.skippableBlocksContains(block)){continue;}
+    if(block.getMaterial().isLiquid())
+      {
+      if(y>=56){continue;}// >=56 is fillable through underfill/border settings.  below that is too deep for a proper gradient on the border.
+      return -1;//return invalid Y if liquid block is too low
+      }
+    if(!AWStructureStatics.isValidTownTargetBlock(block)){return -1;}    
     return y;//if not skippable and is valid target block, return that y-level
     }
   return -1;

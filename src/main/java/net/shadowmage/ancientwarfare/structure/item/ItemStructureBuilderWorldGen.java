@@ -13,9 +13,9 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
-import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
 public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterface, IItemClickable

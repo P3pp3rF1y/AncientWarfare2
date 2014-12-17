@@ -35,9 +35,9 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
-import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
 
 public class WorldGenStructureManager
 {

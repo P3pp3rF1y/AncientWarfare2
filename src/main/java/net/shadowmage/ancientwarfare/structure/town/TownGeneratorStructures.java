@@ -31,9 +31,12 @@ public static void generateStructures(TownGenerator gen)
   generateCosmetics(blocks, gen.cosmeticTemplatesToGenerate, gen);
   generateLamps(blocks, gen.template.getLamp(), gen);
 
-  blocks.clear();
-  for(TownPartQuadrant tq : gen.externalQuadrants){tq.addBlocks(blocks);}
-  generateExteriorStructures(blocks, gen.exteriorTemplatesToGenerate, gen);
+  if(gen.template.getExteriorSize()>0)
+    {
+    blocks.clear();
+    for(TownPartQuadrant tq : gen.externalQuadrants){tq.addBlocks(blocks);}
+    generateExteriorStructures(blocks, gen.exteriorTemplatesToGenerate, gen);    
+    }
   }
 
 private static void generateUniques(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
@@ -314,16 +317,18 @@ private static void generateStructure(TownGenerator gen, TownPartPlot plot, Stru
     }
     
   //find corners of the bb for the structure  
-  BlockPosition min = new BlockPosition(plot.bb.min.x+wAdj, gen.townBounds.min.y, plot.bb.min.z+lAdj);
-  BlockPosition max = new BlockPosition(min.x + (width-1), template.ySize, min.z+(length-1));
+  BlockPosition min = new BlockPosition(plot.bb.min.x + wAdj, gen.townBounds.min.y, plot.bb.min.z + lAdj);
+  BlockPosition max = new BlockPosition(min.x + (width-1), min.y + template.ySize, min.z+(length-1));
   StructureBB bb = new StructureBB(min, max);
   
   BlockPosition buildKey = bb.getRLCorner(face, new BlockPosition());
   buildKey.moveRight(face, template.xOffset);
   buildKey.moveBack(face, template.zOffset);  
   buildKey.y -= template.yOffset;
+  buildKey.y += gen.townBounds.min.y;
   bb.offset(0, -template.yOffset, 0);
   WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));
+  AWLog.logDebug("added structure to tick handler for generation: "+template.name +" at: "+buildKey+" town bounds: "+gen.townBounds);
   }
 
 /**

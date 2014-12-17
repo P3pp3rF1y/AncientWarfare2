@@ -18,7 +18,7 @@
    You should have received a copy of the GNU General Public License
    along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.shadowmage.ancientwarfare.structure.world_gen;
+package net.shadowmage.ancientwarfare.structure.gamedata;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -32,22 +32,24 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
 
 public class StructureMap extends WorldSavedData
 {
 
 private StructureDimensionMap map;
 
+public static final String NAME = "AWStructureMap";
+
 public StructureMap(String name)
   {
-  super(name);
+  super(NAME);
   map = new StructureDimensionMap();
   }
 
 public StructureMap()
   {
-  super("AWStructureMap");
-  map = new StructureDimensionMap();
+  this(NAME);
   }
 
 @Override

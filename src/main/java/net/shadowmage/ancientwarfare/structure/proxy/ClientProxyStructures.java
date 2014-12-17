@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.proxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
-import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gui.GuiDraftingStation;

@@ -27,6 +27,8 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScann
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.crafting.AWStructureCrafting;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
+import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
@@ -34,7 +36,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
-import net.shadowmage.ancientwarfare.structure.world_gen.StructureMap;
+import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -93,7 +95,8 @@ public void preInit(FMLPreInitializationEvent evt)
    */  
   FMLCommonHandler.instance().bus().register(this);
   FMLCommonHandler.instance().bus().register(WorldGenTickHandler.instance());
-  GameRegistry.registerWorldGenerator(WorldStructureGenerator.instance(), 0);
+  GameRegistry.registerWorldGenerator(WorldStructureGenerator.instance(), 1);
+  GameRegistry.registerWorldGenerator(WorldTownGenerator.instance(), 2);
   EntityRegistry.registerModEntity(EntityGate.class, "aw_gate", 0, this, 250, 200, false);
   /**
    * internal registry
@@ -101,6 +104,7 @@ public void preInit(FMLPreInitializationEvent evt)
   PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);   
   PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class);
   AWGameData.INSTANCE.registerSaveData("AWStructureMap", StructureMap.class);
+  AWGameData.INSTANCE.registerSaveData(TownMap.NAME, TownMap.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER, ContainerSpawnerPlacer.class);

@@ -55,6 +55,8 @@ public static float randomGenerationChance = 0.075f;
 public static int spawnProtectionRange = 12;
 public static int structureImageWidth = 512;
 public static int structureImageHeight = 288;
+public static int townClosestDistance = 40;
+public static float townGenerationChance = 0.125f;
 public static Set<String> excludedSpawnerEntities = new HashSet<String>();
 private static HashSet<String> skippableWorldGenBlocks = new HashSet<String>();
 private static HashSet<String> worldGenTargetBlocks = new HashSet<String>();
@@ -123,6 +125,15 @@ protected void initializeValues()
   		"Will toggle itself back to false after exporting the list a single time.\n" +
   		"Block names be used to populate skippable and target blocks lists.\n" +
   		"If false, no action will be taken.").getBoolean(exportBlockNames); 
+  
+  townClosestDistance = config.get(worldGenCategory, "town_min_distance", townClosestDistance, "Default="+townClosestDistance+"\n"+
+      "Minimum distance between towns.  This should be set to a value quite a bit larger than the largest town" +
+      "that you have configured for generation.  E.G.  Max town size=16, this value should be >= 40.").getInt(townClosestDistance);
+  townGenerationChance = (float)config.get(worldGenCategory, "town_generation_chance", townGenerationChance, "Default="+townGenerationChance+"\n"+
+      "Accepts values between 0 and 1.0.  Decimal percent chance to -attempt- town generation for any given chunk.  Higher settings may result in" +
+      "more towns being generated, but may come with a peformance hit during new chunk generation.  Lower values WILL result in fewer towns, and" +
+      "-may- improve performance during chunk generation.").getDouble(townGenerationChance);
+  
   initializeDefaultSkippableBlocks();
   initializeDefaultSkippedEntities();
   initializeDefaultAdditionalTargetBlocks();
@@ -487,6 +498,7 @@ private void initializeDefaultSkippableBlocks()
             "Metallurgy:precious.ore",
             "Metallurgy:utility.ore",
             "MineFactoryReloaded:tile.mfr.rubberwood.leaves",
+            "MineFactoryReloaded:tile.mfr.rubberwood.log"
         };
 
   defaultSkippableBlocks = config.get(worldGenBlocks, "skippable_blocks", defaultSkippableBlocks).getStringList();

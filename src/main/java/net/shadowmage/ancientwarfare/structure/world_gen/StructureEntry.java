@@ -28,9 +28,9 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 public class StructureEntry
 {
 
-String name;
-int value;
-StructureBB bb;
+public String name;
+private int value;
+public final StructureBB bb;
 
 public StructureEntry(int x, int y, int z, int face, StructureTemplate template)
   {

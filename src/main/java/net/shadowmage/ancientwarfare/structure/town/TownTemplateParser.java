@@ -86,7 +86,7 @@ private static void parseHeader(Iterator<String> it, TownTemplate template)
     else if(lower.startsWith("roadmeta")){template.setRoadFillMeta(StringTools.safeParseInt("=", line));}
     else if(lower.startsWith("biomewhitelist")){template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));}
     else if(lower.startsWith("biomelist")){template.setBiomeList(parseBiomeList(StringTools.safeParseString("=", line)));}
-    else if(lower.startsWith("dimensionwhitelist")){template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));}
+    else if(lower.startsWith("dimensionwhitelist")){template.setDimensionWhiteList(StringTools.safeParseBoolean("=", line));}
     else if(lower.startsWith("dimensionlist")){template.setDimensionList(parseDimensionList(StringTools.safeParseString("=", line)));}
     else if(lower.startsWith("lamp")){template.setLamp(new TownStructureEntry(StringTools.safeParseString("=", line), 1));}
     }  
@@ -104,6 +104,7 @@ private static void parseUniqueStructures(Iterator<String> it, TownTemplate temp
       if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
         {
         template.getUniqueStructureEntries().add(e);
+        AWLog.logDebug("added first pass main structure of: "+e.templateName);
         }
       else
         {
@@ -125,6 +126,7 @@ private static void parseMainStructures(Iterator<String> it, TownTemplate templa
       if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
         {
         template.getMainStructureEntries().add(e);
+        AWLog.logDebug("added second pass main structure of: "+e.templateName);
         }
       else
         {
@@ -146,6 +148,7 @@ private static void parseHouseStructures(Iterator<String> it, TownTemplate templ
       if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
         {
         template.getHouseStructureEntries().add(e);
+        AWLog.logDebug("added housing structure of: "+e.templateName);
         }
       else
         {
@@ -167,6 +170,7 @@ private static void parseCosmetics(Iterator<String> it, TownTemplate template)
       if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
         {
         template.getCosmeticEntries().add(e);
+        AWLog.logDebug("added cosmetic structure of: "+e.templateName);
         }
       else
         {
@@ -188,6 +192,7 @@ private static void parseExteriorStructures(Iterator<String> it, TownTemplate te
       if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
         {
         template.getExteriorStructureEntries().add(e);
+        AWLog.logDebug("added exterior structure of: "+e.templateName);
         }
       else
         {

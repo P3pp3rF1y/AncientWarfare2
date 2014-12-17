@@ -38,7 +38,7 @@ public TownTemplate selectTemplateForGeneration(World world, int x, int z, TownB
   int min = Math.min(width, length);
   int templateMinimumSize;
   
-  AWLog.logDebug("min chunk size for template selection: "+min);
+  AWLog.logDebug("chunk size for template selection: "+min);
   
   String biomeName = AWStructureStatics.getBiomeName(world.getBiomeGenForCoords(x, z));   
   int totalWeight = 0; 
@@ -74,9 +74,7 @@ private boolean isBiomeValid(String biome, TownTemplate t)
   { 
   boolean contains = t.getBiomeList().contains(biome);
   boolean wl = t.isBiomeWhiteList();
-  AWLog.logDebug("biome check: "+contains+ " :: "+wl);
-  return true;
-//  return (wl && contains) || (!wl && !contains);
+  return (wl && contains) || (!wl && !contains);
   }
 
 }
