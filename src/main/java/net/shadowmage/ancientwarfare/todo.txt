@@ -6,12 +6,10 @@ iron: e3e6e6 (180/5/60 recolor from wood)
 steel: d7e4e4 (180/20/50 recolor from wood)
 gearhead: 535353
 
-Towns:
-	Cobble under-layer
+Towns:	
 	Wall-gen, defer to tick-handler.
 	Possibly look into deferring leveling and border operations on a per-chunk basis
 	Possibly look into adding a density setting to lower generation frequency as distance from center increases
-	Add a validation check to discourage long strip-like towns	
 		
 //https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
 	

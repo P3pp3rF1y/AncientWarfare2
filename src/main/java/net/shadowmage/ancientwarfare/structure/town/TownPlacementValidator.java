@@ -54,6 +54,10 @@ public static TownBoundingArea findGenerationPosition(World world, int x, int z)
   area.chunkMinZ = cz;
   area.chunkMaxZ = cz;  
   expandBoundingArea(world, area);
+  
+  /**
+   * Shrink town along x or z axis if ratio of sizes is > 2:1 
+   */
   int cw = area.getChunkWidth();  
   int cl = area.getChunkLength();  
   if(cw > cl * 2)
