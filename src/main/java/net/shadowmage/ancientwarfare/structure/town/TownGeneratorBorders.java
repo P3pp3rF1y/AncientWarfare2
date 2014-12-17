@@ -81,6 +81,7 @@ public static void levelTownArea(World world, TownGenerator gen)
     for(int z = minZ; z<=maxZ; z++)
       {
       handleBorderBlock(world, x, z, desiredTopBlockHeight, desiredTopBlockHeight, getFillBlock(world, x, z, false, Blocks.grass), getFillBlock(world, x, z, true, Blocks.grass));
+      world.setBlock(x, desiredTopBlockHeight-5, z, Blocks.cobblestone);
       }
     }
   }
