@@ -414,7 +414,11 @@ private void loadDefaultFactionStandings()
       {
       this.factionVsFactionStandings.put(name, new HashMap<String, Boolean>());
       }
-    this.defaultFactionStandings.put(name, factionConfig.get(factionSettings, name+".starting_faction_standing", 0, "Default faction standing for: ["+name+"] for new players joining a game.").getInt(0));
+    this.defaultFactionStandings.put(name, factionConfig.get(factionSettings, name+".starting_faction_standing", -50,
+        "Default faction standing for: ["+name+"] for new players joining a game. Less than 0 will be hostile, " +
+        "greater than or equal to zero will be nuetral/friendly.  Default value is -50 for all factions, starting" +
+        " all players with a minor hostile standing.  Players will need to trade with faction-owned traders to" +
+        " improve their standing to become friendly.").getInt(-50));
     for(String name2 : factionNames)
       {
       if(name.equals(name2)){continue;}
