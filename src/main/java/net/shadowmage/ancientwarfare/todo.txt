@@ -7,7 +7,6 @@ steel: d7e4e4 (180/20/50 recolor from wood)
 gearhead: 535353
 
 Towns:	
-	Wall-gen, defer to tick-handler.
 	Possibly look into deferring leveling and border operations on a per-chunk basis
 	Possibly look into adding a density setting to lower generation frequency as distance from center increases
 		

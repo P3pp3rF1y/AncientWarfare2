@@ -10,6 +10,7 @@ selectionWeight=10
 clusterValue=300
 townBlockSize=30
 townPlotSize=3
+interiorEmptyPlotChance=0
 wallStyle=2
 wallSize=8
 roadBlock=minecraft:gravel

@@ -55,7 +55,6 @@ private static void generateUniques(List<TownPartBlock> blocks, List<StructureTe
         }
       }
     }
-  AWLog.logDebug("generated first pass structures.  remaining in list:\n"+templatesToGenerate);
   }
 
 private static void generateMains(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
@@ -74,7 +73,6 @@ private static void generateMains(List<TownPartBlock> blocks, List<StructureTemp
         }
       }
     }
-  AWLog.logDebug("generated second pass structures.  remaining in list:\n"+templatesToGenerate);
   }
 
 private static void generateHouses(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
@@ -86,7 +84,14 @@ private static void generateHouses(List<TownPartBlock> blocks, List<StructureTem
       {
       if(plot.closed){continue;}
       if(!plot.hasRoadBorder()){continue;}//no borders
-      if(templatesToGenerate.isEmpty()){break outer;}      
+      if(templatesToGenerate.isEmpty()){break outer;}
+      if(gen.template.getInteriorEmtpyPlotChance()>0)
+        {
+        if(gen.rng.nextInt(100) < gen.template.getInteriorEmtpyPlotChance())
+          {
+          continue;
+          }
+        }
       generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), false);
       }
     }
@@ -101,6 +106,13 @@ private static void generateCosmetics(List<TownPartBlock> blocks, List<Structure
       {
       if(plot.closed){continue;}
       if(templatesToGenerate.isEmpty()){break outer;}      
+      if(gen.template.getInteriorEmtpyPlotChance()>0)
+        {
+        if(gen.rng.nextInt(100) < gen.template.getInteriorEmtpyPlotChance())
+          {
+          continue;
+          }
+        }
       generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), true);
       }
     }

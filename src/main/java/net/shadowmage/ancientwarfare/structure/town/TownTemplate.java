@@ -30,7 +30,7 @@ private int clusterValue;//value inserted into template gen map to discourage ne
  */
 private int townBlockSize;//
 private int townPlotSize;//
-private int townBuildingWidthExpansion;
+private int townBuildingWidthExpansion;//used to expand buildings by a set size, for use with structure templates that have no surrounding space in them, to ensure room between structures
 
 private Block roadFillBlock = Blocks.gravel;//
 private int roadFillMeta = 0;
@@ -40,6 +40,8 @@ private int wallSize;//size in blocks//
 
 private int exteriorSize;//area outside of the walls, in blocks
 private int exteriorPlotSize;//size of each plot in the area outside of the walls
+
+private int interiorEmtpyPlotChance;
 
 private HashMap<Integer, TownWallEntry> wallsByID = new HashMap<Integer, TownWallEntry>();
 private HashMap<Integer, int[]> wallPatterns = new HashMap<Integer, int[]>();
@@ -103,6 +105,8 @@ public final int getExteriorSize(){return exteriorSize;}
 public final int getExteriorPlotSize(){return exteriorPlotSize;}
 public final void setExteriorSize(int exteriorSize){this.exteriorSize = exteriorSize;}
 public final void setExteriorPlotSize(int exteriorPlotSize){this.exteriorPlotSize = exteriorPlotSize;}
+public int getInteriorEmtpyPlotChance(){return interiorEmtpyPlotChance;}
+public void setInteriorEmtpyPlotChance(int interiorEmtpyPlotChance){this.interiorEmtpyPlotChance = interiorEmtpyPlotChance;}
 public final int[] getWallPattern(int size){return wallPatterns.get(size);}
 public final int getWallStyle(){return wallStyle;}
 public final int getWallSize(){return wallSize;}

@@ -14,6 +14,7 @@ wallStyle=3
 wallSize=22
 exteriorSize=1
 exteriorPlotSize=3
+interiorEmptyPlotChance=0
 roadBlock=minecraft:gravel
 roadMeta=0
 biomeWhiteList=false
