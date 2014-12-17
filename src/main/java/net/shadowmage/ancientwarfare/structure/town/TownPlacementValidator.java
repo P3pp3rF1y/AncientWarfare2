@@ -54,6 +54,36 @@ public static TownBoundingArea findGenerationPosition(World world, int x, int z)
   area.chunkMinZ = cz;
   area.chunkMaxZ = cz;  
   expandBoundingArea(world, area);
+  int cw = area.getChunkWidth();  
+  int cl = area.getChunkLength();  
+  if(cw > cl * 2)
+    {
+    int diff = cw - (cl * 2);
+    while(diff>0)
+      {
+      area.chunkMaxX--;
+      diff--;
+      if(diff>0)
+        {
+        area.chunkMinX++;
+        diff--;
+        }
+      }
+    }
+  if(cl > cw * 2)
+    {
+    int diff = cl - (cw * 2);
+    while(diff>0)
+      {
+      area.chunkMaxZ--;
+      diff--;
+      if(diff>0)
+        {
+        area.chunkMinZ++;
+        diff--;
+        }
+      }
+    }
   return area;
   }
 
