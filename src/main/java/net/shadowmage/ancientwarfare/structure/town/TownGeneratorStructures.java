@@ -82,9 +82,8 @@ private static void generateHouses(List<TownPartBlock> blocks, List<StructureTem
     {
     for(TownPartPlot plot : block.plots)
       {
-      if(plot.closed){continue;}
-      if(!plot.hasRoadBorder()){continue;}//no borders
       if(templatesToGenerate.isEmpty()){break outer;}
+      if(plot.closed || !plot.hasRoadBorder()){continue;}
       if(gen.template.getInteriorEmtpyPlotChance()>0)
         {
         if(gen.rng.nextInt(100) < gen.template.getInteriorEmtpyPlotChance())
