@@ -45,9 +45,9 @@ public static void load()
   builder.setIcon(0, 4, "ancientwarfare:structure/builder_side");
   builder.setIcon(0, 5, "ancientwarfare:structure/builder_side");
   
-  AWBlocks.soundBlock = new BlockSoundBlock("sound_block");
-  GameRegistry.registerBlock(AWBlocks.soundBlock, "sound_block");
-  GameRegistry.registerTileEntity(TileSoundBlock.class, "tile_sound_block");
+//  AWBlocks.soundBlock = new BlockSoundBlock("sound_block");
+//  GameRegistry.registerBlock(AWBlocks.soundBlock, "sound_block");
+//  GameRegistry.registerTileEntity(TileSoundBlock.class, "tile_sound_block");
   }
 
 }
