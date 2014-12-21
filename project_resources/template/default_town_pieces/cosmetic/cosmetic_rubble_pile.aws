@@ -1,0 +1,67 @@
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 12/21/2014 at: 14:17:9
+# Lines beginning with # denote comments
+
+header:
+version=2.1
+name=cosmetic_rubble_pile
+size=6,3,5
+offset=3,0,4
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+validTargetBlocks=
+blockSwap=false
+data:
+:enddata
+:endvalidation
+
+#### LAYERS ####
+layer: 0
+0,0,1,1,1,1
+1,1,1,1,1,1
+0,1,1,1,1,1
+0,0,1,1,1,0
+0,0,0,1,1,1
+:endlayer
+layer: 1
+0,0,0,0,0,0
+0,0,1,1,0,0
+0,0,1,1,1,0
+0,0,0,0,1,0
+0,0,0,0,0,0
+:endlayer
+layer: 2
+0,0,0,0,0,0
+0,0,0,0,0,0
+0,0,0,1,0,0
+0,0,0,0,0,0
+0,0,0,0,0,0
+:endlayer
+
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{{"val":{"blockName":{"val":"minecraft:cobblestone","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+:enddata
+:endrule
+
+#### ENTITIES ####
