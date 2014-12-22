@@ -106,7 +106,11 @@ public void instantConstruction()
     while(!this.isFinished())
       {
       TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
-      this.placeCurrentPosition(rule);
+      if(rule!=null && rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority))
+        {
+        this.placeCurrentPosition(rule);        
+        }
+      increment();
       }
     }
   catch(Exception e)
