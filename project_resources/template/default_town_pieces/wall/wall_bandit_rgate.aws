@@ -1,11 +1,11 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/21/2014 at: 14:32:55
+# Auto-generated structure template file. created on: 12/22/2014 at: 12:4:38
 # Lines beginning with # denote comments
 
 header:
 version=2.1
 name=wall_bandit_rgate
-size=16,7,3
+size=16,6,3
 offset=15,1,2
 :endheader
 
@@ -36,37 +36,32 @@ data:
 layer: 0
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-2,2,2,2,2,2,1,1,1,1,2,2,2,2,2,2
+1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 :endlayer
 layer: 1
-0,0,3,4,0,0,0,0,0,0,0,0,5,6,0,0
-0,0,0,7,0,0,0,0,0,0,0,7,0,0,0,7
-8,8,8,8,8,9,0,0,0,0,9,8,8,8,8,8
+0,0,0,0,8,7,0,0,0,0,6,5,0,0,0,0
+0,0,0,3,0,0,0,3,0,0,0,3,0,0,0,3
+0,0,9,4,4,4,4,4,4,4,4,4,4,4,4,4
 :endlayer
 layer: 2
-10,11,4,0,0,0,0,0,0,0,0,0,0,5,11,10
+0,0,0,0,0,8,10,11,11,10,5,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-8,8,8,8,8,9,0,0,0,0,9,8,8,8,8,8
+0,0,9,4,4,4,4,4,4,4,4,4,4,4,4,4
 :endlayer
 layer: 3
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-12,12,12,12,11,6,0,0,0,0,3,11,12,12,12,12
-8,8,8,8,8,9,0,0,0,0,9,8,8,8,8,8
+0,0,6,10,12,12,12,12,12,12,12,12,12,12,12,12
+0,0,9,4,4,4,4,4,4,4,4,4,4,4,4,4
 :endlayer
 layer: 4
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,5,6,0,0,3,4,0,0,0,0,0
-0,8,0,8,0,9,0,0,0,0,9,8,0,8,0,8
+0,6,5,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,9,4,0,4,0,4,0,4,0,4,0,4,0,4
 :endlayer
 layer: 5
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,12,12,12,12,0,0,0,0,0,0
-0,0,0,7,0,13,9,9,9,9,14,7,0,0,0,7
-:endlayer
-layer: 6
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0
+12,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+9,9,13,3,0,0,0,3,0,0,0,3,0,0,0,3
 :endlayer
 
 #### RULES ####
@@ -90,7 +85,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -98,7 +93,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:log","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -106,7 +101,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -114,7 +109,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -122,7 +117,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -130,7 +125,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -146,7 +141,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_slab","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:double_wooden_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -154,7 +149,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_wooden_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:wooden_slab","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -170,25 +165,6 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
-:enddata
-:endrule
-
-rule:
-plugin=vanillaBlocks
-number=14
-data:
 JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
-
-#### ENTITIES ####
-entity:
-plugin=awGate
-number=0
-data:
-position=8,1,2
-JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-2","id":"pi"}},"id":"ct"},"orientation":{"val":"2","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"3","id":"pi"},"x":{"val":"1","id":"pi"}},"id":"ct"},"gateType":{"val":"gate.verticalWooden","id":"ss"}},"id":"ct"}}
-:enddata
-:endentity
-
