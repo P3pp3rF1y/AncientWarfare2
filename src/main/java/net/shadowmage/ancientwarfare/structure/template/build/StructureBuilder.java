@@ -105,7 +105,8 @@ public void instantConstruction()
     {
     while(!this.isFinished())
       {
-      this.placeCurrentPosition();
+      TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
+      this.placeCurrentPosition(rule);
       }
     }
   catch(Exception e)
@@ -153,7 +154,7 @@ protected void placeEntities()
 public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
   {
   if(y<=0 || y>=256){return;}
-  if(false /** priority==0 **/)
+  if(false /** priority==0 **/)//commented out for testing of using direct chunk-access.  has a few issues with block updates, but overall much faster and acceptable
     {
     //unsurprisingly, direct chunk access is 2X faster than going through the world =\
     world.setBlock(x, y, z, block, meta, 2);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
@@ -183,17 +184,21 @@ public void placeBlock(int x, int y, int z, Block block, int meta, int priority)
     }
   }
 
-protected void placeCurrentPosition()
-  {
-  TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
+protected void placeCurrentPosition(TemplateRule rule)
+  {   
   if(rule!=null)
     {
-    placeRule(rule);
+    placeRule(rule);  
     }
   else
     {
     placeAir();
     }
+  }
+
+protected boolean increment()
+  {
+  if(isFinished){return false;}
   if(incrementPosition())
     {
     incrementDestination();
@@ -201,7 +206,8 @@ protected void placeCurrentPosition()
   else
     {
     this.isFinished = true;
-    }
+    }  
+  return !isFinished;
   }
 
 protected void placeAir()
@@ -215,16 +221,13 @@ protected void placeAir()
 protected void placeRule(TemplateRule rule)
   {  
   if(destination.y<=0){return;}
-  if(rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority))
+  try
+    {    
+    rule.handlePlacement(world, turns, destination.x, destination.y, destination.z, this);
+    }
+  catch (StructureBuildingException e)
     {
-    try
-      {
-      rule.handlePlacement(world, turns, destination.x, destination.y, destination.z, this);
-      }
-    catch (StructureBuildingException e)
-      {
-      e.printStackTrace();
-      }    
+    e.printStackTrace();
     }
   }
 

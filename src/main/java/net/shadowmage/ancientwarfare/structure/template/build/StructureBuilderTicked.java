@@ -23,6 +23,8 @@ package net.shadowmage.ancientwarfare.structure.template.build;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
@@ -44,8 +46,46 @@ public StructureBuilderTicked()//nbt-constructor
 public void tick()
   {
   if(!this.isFinished())
+    {    
+    boolean placed = false;    
+    /**
+     * This loop examines the current rule to be placed to see if it should be placed on this pass / is a null (air) rule.<br>
+     * IF it is air or not for this pass, auto-increment to next position.<br>
+     * ELSE examine current position, break/drop current block, and place the rule.<br>
+     * This loop also handles dropping of block-drops when overwriting existing blocks.<br>
+     */
+    while(!placed && !this.isFinished())
+      {
+      TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
+      if(rule==null)
+        {
+        if(currentPriority==0)//only place air on first pass, save on the world interaction stuff
+          {
+          tryBreakTargetBlock();
+          placeAir();          
+          }
+        increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next        
+        }
+      else if(!rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority))
+        {
+        increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next   
+        }
+      else//place it...
+        {
+        placed = true;
+        tryBreakTargetBlock();
+        this.placeCurrentPosition(rule);
+        }
+      }
+    increment();//finally, increment to next position (will trigger isFinished if actually done, has no problems if already finished)    
+    }
+  }
+
+protected void tryBreakTargetBlock()
+  {
+  if(!world.isAirBlock(destination.x, destination.y, destination.z))//break/drop any existing blocks from ticked builder
     {
-    this.placeCurrentPosition();    
+    BlockTools.breakBlockAndDrop(world, destination.x, destination.y, destination.z, 0);
     }
   }
 
