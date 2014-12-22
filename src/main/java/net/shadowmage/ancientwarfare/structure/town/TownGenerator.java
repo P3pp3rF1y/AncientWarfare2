@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.VillagerRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -80,11 +84,53 @@ public void generate()
       generateRoads();
       TownGeneratorStructures.generateStructures(TownGenerator.this);
       }
-    });  
+    });
   }
 
-public void roadGenCallback()
+public void generateVillagers()
   {
+  float villagers = template.getRandomVillagersPerChunk();  
+  if(villagers>0)//at least a chance to generate a villager per-chunk
+    {
+    int wholeVillagersPerChunk = 0;
+    while(villagers>1)
+      {
+      wholeVillagersPerChunk++;
+      villagers--;
+      }
+    
+    //now, for each chunk within town bounds, attempt to add wholeVillagers + partial chance for additional villager
+    int x = townBounds.min.x;
+    int y = townBounds.min.y;//surface height?
+    int z = townBounds.min.z;
+    
+    for(int bx = x; bx < x+townBounds.getXSize(); bx+=16)
+      {
+      for(int bz = z; bz< z+townBounds.getZSize(); bz+=16)
+        {
+        for(int i = 0; i < wholeVillagersPerChunk; i++){spawnVillager(bx, y, bz);}
+        if(rng.nextFloat()<villagers){spawnVillager(bx, y, bz);}
+        }
+      }
+    }
+  }
+
+private void spawnVillager(int minX, int y, int minZ)
+  {  
+  EntityVillager villager = new EntityVillager(world);
+  VillagerRegistry.applyRandomTrade(villager, rng);
+  for(int i = 0; i < 10; i++)
+    {
+    int x = minX + rng.nextInt(16);
+    int z = minZ + rng.nextInt(16);
+    if(world.isAirBlock(x, y, z) && world.isAirBlock(x, y+1, z) && world.isSideSolid(x, y-1, z, ForgeDirection.UP))
+      {
+      villager.setPosition(x+0.5d, y, z+0.5d);
+      world.spawnEntityInWorld(villager);
+      return ;
+      }
+    }
+  AWLog.logDebug("Could not locate spawning location for villager...");
   }
 
 /**

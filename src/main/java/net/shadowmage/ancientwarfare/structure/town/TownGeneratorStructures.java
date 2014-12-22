@@ -150,7 +150,7 @@ private static void generateExteriorStructures(List<TownPartBlock> blocks, List<
     }
   }
 
-public static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, TownGenerator gen)
+public static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, final TownGenerator gen)
   {
   if(templateToGenerate==null){return;}
   StructureTemplate lamp = StructureTemplateManager.instance().getTemplate(templateToGenerate.templateName);
@@ -159,6 +159,14 @@ public static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry 
     {
     generateLamps(block, lamp, gen);
     }
+  WorldGenTickHandler.instance().addStructureGenCallback(new StructureGenerationCallbackTicket()
+    {
+    @Override
+    public void call()
+      {
+      gen.generateVillagers();
+      }
+    });
   }
 
 private static void generateLamps(TownPartBlock block, StructureTemplate lamp, TownGenerator gen)

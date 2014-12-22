@@ -15,6 +15,7 @@ wallSize=0
 exteriorSize=0
 exteriorPlotSize=3
 interiorEmptyPlotChance=10
+randomVillagersPerChunk=3
 roadBlock=minecraft:gravel
 roadMeta=0
 biomeWhiteList=false

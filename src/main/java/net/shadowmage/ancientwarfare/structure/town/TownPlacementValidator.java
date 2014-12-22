@@ -268,7 +268,11 @@ private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk)
       if(y>=56){continue;}// >=56 is fillable through underfill/border settings.  below that is too deep for a proper gradient on the border.
       return -1;//return invalid Y if liquid block is too low
       }
-    if(!AWStructureStatics.isValidTownTargetBlock(block)){return -1;}    
+    if(!AWStructureStatics.isValidTownTargetBlock(block))
+      {
+      AWLog.logDebug("rejecting chunk for non-target block: "+block+" :: "+chunk.xPosition+":"+chunk.zPosition);
+      return -1;
+      }    
     return y;//if not skippable and is valid target block, return that y-level
     }
   return -1;

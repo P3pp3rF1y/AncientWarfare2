@@ -43,7 +43,7 @@ private int exteriorPlotSize;//size of each plot in the area outside of the wall
 
 private int interiorEmtpyPlotChance;
 
-private int randomVillagersPerChunk;
+private float randomVillagersPerChunk;
 
 private HashMap<Integer, TownWallEntry> wallsByID = new HashMap<Integer, TownWallEntry>();
 private HashMap<Integer, int[]> wallPatterns = new HashMap<Integer, int[]>();
@@ -150,8 +150,8 @@ public final int getTownBlockSize(){return townBlockSize;}
 public final int getTownPlotSize(){return townPlotSize;}
 public final void setTownBlockSize(int townBlockSize){this.townBlockSize = townBlockSize;}
 public final void setTownPlotSize(int townPlotSize){this.townPlotSize = townPlotSize;}
-public int getRandomVillagersPerChunk(){return randomVillagersPerChunk;}
-public void setRandomVillagersPerChunk(int randomVillagersPerChunk){this.randomVillagersPerChunk = randomVillagersPerChunk;}
+public float getRandomVillagersPerChunk(){return randomVillagersPerChunk;}
+public void setRandomVillagersPerChunk(float randomVillagersPerChunk){this.randomVillagersPerChunk = randomVillagersPerChunk;}
 public final TownWallEntry getWall(int id){return wallsByID.get(id);}
 public final String getRandomWeightedWall(Random rng){return getRandomWeightedWallPiece(rng, walls, wallTotalWeights);}
 public final String getRandomWeightedCorner(Random rng){return getRandomWeightedWallPiece(rng, cornerWalls, cornersTotalWeight);}
