@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleTorqueMultiblock;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleTorqueTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleWorksite;
 
@@ -55,6 +56,10 @@ public void addHandledBlocks(IStructurePluginManager manager)
   manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueGeneratorSterling, TemplateRuleTorqueTile.class);
   manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueGeneratorWaterwheel, TemplateRuleTorqueTile.class);
   manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.handCrankedEngine, TemplateRuleTorqueTile.class);
+  manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.windmillControl, TemplateRuleTorqueTile.class);
+  
+  manager.registerBlockHandler("awTorqueMulti", AWAutomationBlockLoader.flywheelStorage, TemplateRuleTorqueMultiblock.class);
+  manager.registerBlockHandler("awTorqueMulti", AWAutomationBlockLoader.windmillBlade, TemplateRuleTorqueMultiblock.class);
   
   manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.warehouseCrafting, TemplateRuleBlockLogic.class);
   manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.warehouseInterface, TemplateRuleBlockLogic.class);
