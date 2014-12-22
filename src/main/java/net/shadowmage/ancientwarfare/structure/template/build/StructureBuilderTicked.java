@@ -32,10 +32,15 @@ public class StructureBuilderTicked extends StructureBuilder
 {
 
 public boolean invalid = false;
+private boolean hasClearedArea;
+private int clearX, clearY, clearZ;
 
 public StructureBuilderTicked(World world, StructureTemplate template, int face, int x, int y, int z)
   {
   super(world, template, face, x, y, z);
+  clearX = bb.min.x;
+  clearY = bb.min.y;
+  clearZ = bb.min.z;
   }
 
 public StructureBuilderTicked()//nbt-constructor
@@ -45,40 +50,65 @@ public StructureBuilderTicked()//nbt-constructor
 
 public void tick()
   {
-  if(!this.isFinished())
+  if(!hasClearedArea)
+    {
+    while(!breakClearTargetBlock())
+      {      
+      if(!incrementClear())
+        {
+        hasClearedArea = true;
+        break;
+        }
+      }
+    if(!incrementClear())
+      {
+      hasClearedArea = true;
+      }
+    }
+  else if(!this.isFinished())
     {    
-    boolean placed = false;    
-    /**
-     * This loop examines the current rule to be placed to see if it should be placed on this pass / is a null (air) rule.<br>
-     * IF it is air or not for this pass, auto-increment to next position.<br>
-     * ELSE examine current position, break/drop current block, and place the rule.<br>
-     * This loop also handles dropping of block-drops when overwriting existing blocks.<br>
-     */
+    boolean placed = false;      
     while(!placed && !this.isFinished())
       {
       TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
-      if(rule==null)
-        {
-        if(currentPriority==0)//only place air on first pass, save on the world interaction stuff
-          {
-          tryBreakTargetBlock();
-          placeAir();          
-          }
+      if(rule==null || !rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority))
+        {       
         increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next        
-        }
-      else if(!rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority))
-        {
-        increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next   
         }
       else//place it...
         {
         placed = true;
-        tryBreakTargetBlock();
         this.placeCurrentPosition(rule);
         }
       }
     increment();//finally, increment to next position (will trigger isFinished if actually done, has no problems if already finished)    
     }
+  }
+
+protected boolean breakClearTargetBlock()
+  {
+  if(world.isAirBlock(clearX, clearY, clearZ)){return false;}
+  BlockTools.breakBlockAndDrop(world, clearX, clearY, clearZ, 0);
+  return true;
+  }
+
+protected boolean incrementClear()
+  {
+  clearX++;
+  if(clearX > bb.max.x)
+    {
+    clearX = bb.min.x;
+    clearZ++;
+    if(clearZ > bb.max.z)
+      {
+      clearY++;
+      if(clearY > bb.max.y)
+        {
+        return false;
+        }
+      }
+    }
+  return true;
   }
 
 protected void tryBreakTargetBlock()
@@ -109,6 +139,10 @@ public void readFromNBT(NBTTagCompound tag)//should be called immediately after 
     this.currentX = tag.getInteger("x");
     this.currentY = tag.getInteger("y");
     this.currentZ = tag.getInteger("z");
+    this.clearX = tag.getInteger("cx");
+    this.clearY = tag.getInteger("cy");
+    this.clearZ = tag.getInteger("cz");
+    this.hasClearedArea = tag.getBoolean("cleared");
     this.turns = tag.getInteger("turns");
     this.buildFace = tag.getInteger("buildFace");
     this.maxPriority = tag.getInteger("maxPriority");
@@ -134,7 +168,11 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setInteger("x", currentX);
   tag.setInteger("y", currentY);
   tag.setInteger("z", currentZ);
-
+  tag.setInteger("cx", clearX);
+  tag.setInteger("cy", clearY);
+  tag.setInteger("cz", clearZ);
+  tag.setBoolean("cleared", hasClearedArea);
+  
   NBTTagCompound originTag = new NBTTagCompound();
   buildOrigin.writeToNBT(originTag);
   tag.setTag("buildOrigin", originTag);

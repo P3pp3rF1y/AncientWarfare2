@@ -11,3 +11,4 @@ screenshots for all new structures (bandit, village, cosmetic, walls)
 scan and add realty office to templates
 scan and add any new structures from build server
 
+fix issue in ticked builder regarding doors; door bit is likely being broken prior to upper block being placed, upper bock then replaces entire door
