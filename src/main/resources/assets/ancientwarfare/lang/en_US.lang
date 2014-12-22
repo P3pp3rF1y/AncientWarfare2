@@ -176,6 +176,14 @@ item.npc_spawner.custom_3.priest.name=Imperial Priest
 item.npc_spawner.custom_3.trader.name=Imperial Trader
 item.npc_spawner.custom_3.civilian.male.name=Imperial Man
 item.npc_spawner.custom_3.civilian.female.name=Imperial Woman
+item.npc_spawner.bandit.bard.name=Bandit Bard
+item.npc_spawner.desert.bard.name=Desert Bard
+item.npc_spawner.native.bard.name=Native Bard
+item.npc_spawner.pirate.bard.name=Pirate Bard
+item.npc_spawner.viking.bard.name=Viking Bard
+item.npc_spawner.custom_1.bard.name=Custom 1 Bard
+item.npc_spawner.custom_2.bard.name=Custom 2 Bard
+item.npc_spawner.custom_3.bard.name=Imperial Bard
 
 
 
@@ -590,6 +598,14 @@ npc.custom_3.priest.name=Imperial Priest
 npc.custom_3.trader.name=Imperial Trader
 npc.custom_3.civilian.male.name=Imperial Man
 npc.custom_3.civilian.female.name=Imperial Woman
+npc.bandit.bard.name=Bandit Bard
+npc.desert.bard.name=Desert Bard
+npc.native.bard.name=Native Bard
+npc.pirate.bard.name=Pirate Bard
+npc.viking.bard.name=Viking Bard
+npc.custom_1.bard.name=Custom 1 Bard
+npc.custom_2.bard.name=Custom 2 Bard
+npc.custom_3.bard.name=Imperial Bard
 
 
 
@@ -679,6 +695,14 @@ entity.ancientwarfarenpc.custom_3.priest.name=Imperial Priest
 entity.ancientwarfarenpc.custom_3.trader.name=Imperial Trader
 entity.ancientwarfarenpc.custom_3.civilian.male.name=Imperial Man
 entity.ancientwarfarenpc.custom_3.civilian.female.name=Imperial Woman
+entity.ancientwarfarenpc.bandit.bard.name=Bandit Bard
+entity.ancientwarfarenpc.desert.bard.name=Desert Bard
+entity.ancientwarfarenpc.native.bard.name=Native Bard
+entity.ancientwarfarenpc.pirate.bard.name=Pirate Bard
+entity.ancientwarfarenpc.viking.bard.name=Viking Bard
+entity.ancientwarfarenpc.custom_1.bard.name=Custom 1 Bard
+entity.ancientwarfarenpc.custom_2.bard.name=Custom 2 Bard
+entity.ancientwarfarenpc.custom_3.bard.name=Imperial Bard
 
 #and capitolized version, apparently you need both
 entity.AncientWarfareNpc.aw_npc_worker.name=Worker
@@ -739,6 +763,15 @@ entity.AncientWarfareNpc.custom_3.priest.name=Imperial Priest
 entity.AncientWarfareNpc.custom_3.trader.name=Imperial Trader
 entity.AncientWarfareNpc.custom_3.civilian.male.name=Imperial Man
 entity.AncientWarfareNpc.custom_3.civilian.female.name=Imperial Woman
+entity.AncientWarfareNpc.bandit.bard.name=Bandit Bard
+entity.AncientWarfareNpc.desert.bard.name=Desert Bard
+entity.AncientWarfareNpc.native.bard.name=Native Bard
+entity.AncientWarfareNpc.pirate.bard.name=Pirate Bard
+entity.AncientWarfareNpc.viking.bard.name=Viking Bard
+entity.AncientWarfareNpc.custom_1.bard.name=Custom 1 Bard
+entity.AncientWarfareNpc.custom_2.bard.name=Custom 2 Bard
+entity.AncientWarfareNpc.custom_3.bard.name=Imperial Bard
+
 
 #commands
 command.aw.structure.usage=Foo Usage (TODO)
