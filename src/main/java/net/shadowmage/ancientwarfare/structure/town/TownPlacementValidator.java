@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
@@ -47,11 +46,10 @@ public static TownBoundingArea findGenerationPosition(World world, int x, int z)
   int height = getTopFilledHeight(world.getChunkFromChunkCoords(cx, cz), x & 15, z & 15);
   if(height <= 0){return null;}
   
-  int minY = 64-7;
-  if(world.provider.terrainType==WorldType.FLAT){minY=0;}
+  int minY = (int)Math.min(0, world.provider.terrainType.getHorizon(world)-7);
   
   TownBoundingArea area = new TownBoundingArea();
-  area.minY = Math.max(minY, height-7);
+  area.minY = Math.max(minY, height-6);
   area.maxY = Math.min(255, area.minY+15);
   area.chunkMinX = cx;
   area.chunkMaxX = cx;
