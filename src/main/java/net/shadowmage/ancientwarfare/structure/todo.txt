@@ -7,9 +7,5 @@ create rgate and lgate of both bandit and cobblestone walls
 add loot to governors house, church?, ranchhouse
 scan and add realty office to templates
 reduce frequency of outhouse generation (2-3 per town would be ideal), or remove gold
-
-remove lamp-post templates from ticked-generation, create those as soon as all other structures have been done
-check for intersection for of blocks for lamp-post templates
-
-post-town-gen callback for the town-generator, for when all current templates are finished, to begin next step
-(e.g. roads -after- walls, lamp post validation -after- cosmetic structures)
+min y-level validation; disallow towns below y=64
+intersection testing vs. vanilla villages is not working properly (should be testing for block-type)

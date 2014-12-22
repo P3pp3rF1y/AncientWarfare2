@@ -19,11 +19,11 @@ public static WorldGenTickHandler instance(){return INSTANCE;}
 
 private List<ChunkGenerationTicket> newWorldGenTickets = new ArrayList<ChunkGenerationTicket>();
 private List<ChunkGenerationTicket> newTownGenTickets = new ArrayList<ChunkGenerationTicket>();
-private List<StructureGenerationTicket> newStructureGenTickets = new ArrayList<StructureGenerationTicket>();
+private List<StructureTicket> newStructureGenTickets = new ArrayList<StructureTicket>();
 
 private List<ChunkGenerationTicket> chunksToGen = new ArrayList<ChunkGenerationTicket>();
 private List<ChunkGenerationTicket> townChunksToGen = new ArrayList<ChunkGenerationTicket>();
-private List<StructureGenerationTicket> structuresToGen = new ArrayList<StructureGenerationTicket>();
+private List<StructureTicket> structuresToGen = new ArrayList<StructureTicket>();
 
 public void addChunkForGeneration(World world, int chunkX, int chunkZ)
   {
@@ -38,6 +38,11 @@ public void addChunkForTownGeneration(World world, int chunkX, int chunkZ)
 public void addStructureForGeneration(StructureBuilder builder)
   {
   newStructureGenTickets.add(new StructureGenerationTicket(builder));
+  }
+
+public void addStructureGenCallback(StructureGenerationCallbackTicket tk)
+  {
+  newStructureGenTickets.add(tk);
   }
 
 @SubscribeEvent
@@ -79,9 +84,7 @@ private void genStructures()
   {
   if(!structuresToGen.isEmpty())
     {
-    StructureGenerationTicket tk = structuresToGen.remove(0);    
-    StructureBuilder b = tk.builder;
-    b.instantConstruction();
+    structuresToGen.remove(0).call();
     }
   }
 
@@ -97,13 +100,36 @@ public ChunkGenerationTicket(World world, int x, int z)
   }
 }
 
-private static class StructureGenerationTicket
+/**
+ * Base structure ticket class.  Changed to a callback mechanism to allow anonymous callback classes, 
+ * to inform town-gen of when first / second pass structures are finished being generated; to allow 
+ * the road to generate after walls, etc
+ * @author Shadowmage
+ *
+ */
+private static class StructureTicket
+{
+public void call(){}
+}
+
+private static class StructureGenerationTicket extends StructureTicket
 {
 StructureBuilder builder;
 public StructureGenerationTicket(StructureBuilder builder)
   {
   this.builder = builder;
   }
+@Override
+public void call()
+  {
+  builder.instantConstruction();
+  }
+}
+
+public abstract static class StructureGenerationCallbackTicket extends StructureTicket
+{
+@Override
+public abstract void call();
 }
 
 }

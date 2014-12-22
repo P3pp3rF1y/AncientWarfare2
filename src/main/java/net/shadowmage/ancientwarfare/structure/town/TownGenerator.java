@@ -7,12 +7,13 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
+import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
+import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler.StructureGenerationCallbackTicket;
 
 /**
  * Responsible for constructing the town -- leveling the area, placing the structures, constructing walls
@@ -65,17 +66,25 @@ public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
  */
 public void generate()
   {
-  long t1 = System.nanoTime();
   determineStructuresToGenerate();
   TownGeneratorBorders.generateBorders(world, this);  
   TownGeneratorBorders.levelTownArea(world, this);
-  generateGrid();
-  generateRoads();
-  TownGeneratorWalls.generateWalls(world, this, template, rng);
-  TownGeneratorStructures.generateStructures(this);
-  long t2 = System.nanoTime();
   
-  AWLog.logDebug("Town gen nanos (no validation, just gen): " + ( t2 - t1 ));
+  generateGrid();  
+  TownGeneratorWalls.generateWalls(world, this, template, rng);
+  WorldGenTickHandler.instance().addStructureGenCallback(new StructureGenerationCallbackTicket()
+    {
+    @Override
+    public void call()
+      {
+      generateRoads();
+      TownGeneratorStructures.generateStructures(TownGenerator.this);
+      }
+    });  
+  }
+
+public void roadGenCallback()
+  {
   }
 
 /**

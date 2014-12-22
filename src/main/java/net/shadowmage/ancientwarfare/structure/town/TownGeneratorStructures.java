@@ -16,20 +16,20 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
+import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler.StructureGenerationCallbackTicket;
 
 public class TownGeneratorStructures
 {
 
-public static void generateStructures(TownGenerator gen)
+public static void generateStructures(final TownGenerator gen)
   {
-  List<TownPartBlock> blocks = new ArrayList<TownPartBlock>();
+  final List<TownPartBlock> blocks = new ArrayList<TownPartBlock>();
   for(TownPartQuadrant tq : gen.quadrants){tq.addBlocks(blocks);}
   sortBlocksByDistance(blocks);   
   generateUniques(blocks, gen.uniqueTemplatesToGenerate, gen);
   generateMains(blocks, gen.mainTemplatesToGenerate, gen);
   generateHouses(blocks, gen.houseTemplatesToGenerate, gen);
   generateCosmetics(blocks, gen.cosmeticTemplatesToGenerate, gen);
-  generateLamps(blocks, gen.template.getLamp(), gen);
 
   if(gen.template.getExteriorSize()>0)
     {
@@ -37,6 +37,15 @@ public static void generateStructures(TownGenerator gen)
     for(TownPartQuadrant tq : gen.externalQuadrants){tq.addBlocks(blocks);}
     generateExteriorStructures(blocks, gen.exteriorTemplatesToGenerate, gen);    
     }
+  
+  WorldGenTickHandler.instance().addStructureGenCallback(new StructureGenerationCallbackTicket()
+    {
+    @Override
+    public void call()
+      {
+      TownGeneratorStructures.generateLamps(blocks, gen.template.getLamp(), gen);
+      }
+    });
   }
 
 private static void generateUniques(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen)
@@ -141,7 +150,7 @@ private static void generateExteriorStructures(List<TownPartBlock> blocks, List<
     }
   }
 
-private static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, TownGenerator gen)
+public static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, TownGenerator gen)
   {
   if(templateToGenerate==null){return;}
   StructureTemplate lamp = StructureTemplateManager.instance().getTemplate(templateToGenerate.templateName);
