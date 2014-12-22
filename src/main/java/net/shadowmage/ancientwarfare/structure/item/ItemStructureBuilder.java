@@ -110,7 +110,8 @@ public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
        */
       return;
       }
-    BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);    
+    BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);   
+    if(bpHit==null){return;}//no hit position, clicked on air
     StructureBuilder builder = new StructureBuilder(player.worldObj, template, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), bpHit.x, bpHit.y, bpHit.z);
     builder.instantConstruction();
     if(!player.capabilities.isCreativeMode)
