@@ -1,11 +1,9 @@
 towns todo:
 
-create rgate and lgate of cobblestone walls
 add bandits to bandit tent templates
 fix lighting in barracks, ranch-house attic
 add loot to governors house, church?, ranchhouse, bandit tents
 reduce frequency of outhouse generation (2-3 per town would be ideal), or remove gold
-need to fix up windmill support (both blades, and generator)
 fix towns generating over vanilla villages, validation -still- not working properly...
 screenshots for all new structures (bandit, village, cosmetic, walls)
 
