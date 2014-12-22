@@ -238,12 +238,12 @@ private static boolean isAverageHeightWithin(World world, int cx, int cz, int mi
     {
     for(int z = 0; z<16; z++)
       {
-      val = getTopFilledHeight(chunk, x, z);      
+      val = getTopFilledHeight(chunk, x, z);  
+      if(val<0){return false;}//exit out if a non-proper block-type is detected
       total += val;
       }
     }
   total /= 256;//make it the average top-height
-//  AWLog.logDebug("found top average height of: "+total+" for min/max of: "+min+ " : "+max);
   return total >= min && total<=max;
   }
 
