@@ -8,4 +8,5 @@ fix towns generating over vanilla villages, validation -still- not working prope
 screenshots for all new structures (bandit, village, cosmetic, walls)
 
 scan and add realty office to templates
+scan and add any new structures from build server
 
