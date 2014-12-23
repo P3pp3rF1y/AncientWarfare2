@@ -37,6 +37,8 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 public class AWStructureStatics extends ModConfiguration
 {
 
+
+
 public AWStructureStatics(Configuration config)
   {
   super(config);
@@ -45,6 +47,7 @@ public AWStructureStatics(Configuration config)
 public static String templateExtension = "aws";
 public static String townTemplateExtension = "awt";
 public static boolean enableVillageGen = true;
+public static boolean enableTownGeneration = false;
 public static boolean enableStructureGeneration = true;
 public static boolean loadDefaultPack = true;
 private static boolean exportBlockNames = false;
@@ -93,6 +96,8 @@ protected void initializeValues()
   		"Enable or disable generation of additional village features.").getBoolean(enableVillageGen);
   enableStructureGeneration = config.get(worldGenCategory, "enable_structure_generation", enableStructureGeneration, "Default="+enableStructureGeneration+"\n" +
   		"Enable or disable structure generation entirely.").getBoolean(enableStructureGeneration);
+  enableTownGeneration = config.get(worldGenCategory, "enable_town_generation", enableTownGeneration, "Default="+enableTownGeneration+"\n" +
+      "Enable or disable custom town generation entirely.").getBoolean(enableTownGeneration);
   loadDefaultPack = config.get(worldGenCategory, "load_default_structure_pack", loadDefaultPack, "If true the default structure pack will be loaded and enabled for world-gen.").getBoolean(loadDefaultPack);
   duplicateStructureSearchRange = config.get(worldGenCategory, "validation_duplicate_search_radius", duplicateStructureSearchRange, "Default="+duplicateStructureSearchRange+"\n" +
   		"The minimum radius in chunks to be searched for duplicate structures.\n" +
