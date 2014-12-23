@@ -6,9 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
 
@@ -102,14 +100,9 @@ private static void parseUniqueStructures(Iterator<String> it, TownTemplate temp
     else
       {
       TownStructureEntry e = parseStructureName(line);
-      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+      if(e!=null)
         {
         template.getUniqueStructureEntries().add(e);
-        AWLog.logDebug("added first pass main structure of: "+e.templateName);
-        }
-      else
-        {
-        AWLog.logError("There was an error while loading town structure entry: "+e);
         }
       }
     }  
@@ -124,14 +117,9 @@ private static void parseMainStructures(Iterator<String> it, TownTemplate templa
     else
       {
       TownStructureEntry e = parseStructureName(line);
-      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+      if(e!=null)
         {
         template.getMainStructureEntries().add(e);
-        AWLog.logDebug("added second pass main structure of: "+e.templateName);
-        }
-      else
-        {
-        AWLog.logError("There was an error while loading town structure entry: "+e);
         }
       }
     }  
@@ -146,14 +134,9 @@ private static void parseHouseStructures(Iterator<String> it, TownTemplate templ
     else
       {
       TownStructureEntry e = parseStructureWeight(line);
-      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+      if(e!=null)
         {
         template.getHouseStructureEntries().add(e);
-        AWLog.logDebug("added housing structure of: "+e.templateName);
-        }
-      else
-        {
-        AWLog.logError("There was an error while loading town structure entry: "+e);
         }
       }
     }  
@@ -168,14 +151,9 @@ private static void parseCosmetics(Iterator<String> it, TownTemplate template)
     else
       {      
       TownStructureEntry e = parseStructureWeight(line);
-      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+      if(e!=null)
         {
         template.getCosmeticEntries().add(e);
-        AWLog.logDebug("added cosmetic structure of: "+e.templateName);
-        }
-      else
-        {
-        AWLog.logError("There was an error while loading town structure entry: "+e);
         }
       }
     } 
@@ -190,14 +168,9 @@ private static void parseExteriorStructures(Iterator<String> it, TownTemplate te
     else
       {
       TownStructureEntry e = parseStructureWeight(line);
-      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+      if(e!=null)
         {
         template.getExteriorStructureEntries().add(e);
-        AWLog.logDebug("added exterior structure of: "+e.templateName);
-        }
-      else
-        {
-        AWLog.logError("There was an error while loading town structure entry: "+e);
         }
       }
     }  
@@ -212,13 +185,9 @@ private static void parseWalls(Iterator<String> it, TownTemplate template)
     else
       {
       TownWallEntry e = parseWall(line);
-      if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)!=null)
+      if(e!=null)
         {
         template.addWall(e);
-        }
-      else
-        {
-        AWLog.logError("There was an error while loading town wall entry: "+e);
         }
       }
     } 

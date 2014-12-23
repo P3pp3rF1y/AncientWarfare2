@@ -144,6 +144,7 @@ private void loadTownTemplates()
     for(TownTemplate t : this.parsedTownTemplates)
       {
       AWLog.log("Loading town template: "+t.getTownTypeName());
+      t.validateStructureEntries();
       TownTemplateManager.instance().loadTemplate(t);
       }
     AWLog.log("Loaded : "+this.parsedTownTemplates.size()+" Town Templates.");    

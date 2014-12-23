@@ -1,12 +1,16 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 public final class TownTemplate
 {
@@ -173,8 +177,64 @@ private static String getRandomWeightedWallPiece(Random rng, List<TownWallEntry>
   return null;
   }
 
+public final void validateStructureEntries()
+  {
+  validateStructureList(uniqueStructureEntries);
+  validateStructureList(mainStructureEntries);
+  validateStructureList(houseStructureEntries);
+  validateStructureList(cosmeticStructureEntries);
+  validateStructureList(exteriorStructureEntries);
+  TownStructureEntry e = getLamp();
+  if(e!=null && StructureTemplateManager.instance().getTemplate(e.templateName)==null){AWLog.logError("Error loading lamp template: "+e.templateName);}
+  wallTotalWeights = validateWallList(walls, wallTotalWeights);
+  cornersTotalWeight = validateWallList(cornerWalls, cornersTotalWeight);
+  gatesCenterTotalWeight = validateWallList(gateCenterWalls, gatesCenterTotalWeight);
+  gatesLeftTotalWeight = validateWallList(gateLeftWalls, gatesLeftTotalWeight);
+  gatesRightTotalWeight = validateWallList(gateRightWalls, gatesRightTotalWeight);
+  }
+
+private void validateStructureList(Collection<TownStructureEntry> entries)
+  {
+  Iterator<TownStructureEntry> it = entries.iterator();
+  TownStructureEntry e;
+  while(it.hasNext() && (e=it.next())!=null)
+    {
+    if(StructureTemplateManager.instance().getTemplate(e.templateName)==null)
+      {
+      AWLog.logError("Error loading structure template: "+e.templateName+" for town: "+townTypeName);
+      it.remove();
+      }
+    }
+  }
+
+private int validateWallList(Collection<TownWallEntry> entries, int originalWeight)
+  {
+  Iterator<TownWallEntry> it = entries.iterator();
+  TownWallEntry e;
+  while(it.hasNext() && (e=it.next())!=null)
+    {
+    if(StructureTemplateManager.instance().getTemplate(e.templateName)==null)
+      {
+      AWLog.logError("Error loading structure template: "+e.templateName+" for town: "+townTypeName);
+      it.remove();
+      originalWeight-=e.weight;
+      }
+    }
+  return originalWeight;
+  }
+
 public final boolean isValid()
   {
+  if(wallStyle>0 && cornerWalls.isEmpty())
+    {
+    AWLog.logError("Town template of: "+townTypeName+" is missing corner wall type for specified wall style of: "+wallStyle);
+    return false;
+    }
+  if(wallStyle>1 && (walls.isEmpty() || gateCenterWalls.isEmpty() || gateLeftWalls.isEmpty() || gateRightWalls.isEmpty()))
+    {
+    AWLog.logError("Town template of: "+townTypeName+" is missing one or more wall types for specified wall style of: "+wallStyle);
+    return false;
+    }
   return townTypeName!=null && !townTypeName.isEmpty();
   }
 
