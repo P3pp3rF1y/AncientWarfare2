@@ -25,6 +25,7 @@ public static WorldTownGenerator instance(){return instance;}
 @Override
 public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
   {
+  if(!AWStructureStatics.enableTownGeneration){return;}
   if(random.nextFloat() < AWStructureStatics.townGenerationChance)
     {
     WorldGenTickHandler.instance().addChunkForTownGeneration(world, chunkX, chunkZ);    
