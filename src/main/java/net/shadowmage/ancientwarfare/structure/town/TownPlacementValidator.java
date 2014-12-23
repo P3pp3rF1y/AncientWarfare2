@@ -38,7 +38,7 @@ public static TownBoundingArea findGenerationPosition(World world, int x, int z)
   int cx = x >> 4;
   int cz = z >> 4;  
   
-  TownMap tm = AWGameData.INSTANCE.getData(TownMap.NAME, world, TownMap.class);
+  TownMap tm = AWGameData.INSTANCE.getPerWorldData(TownMap.NAME, world, TownMap.class);
   int minDist = AWStructureStatics.townClosestDistance * 16;
   float dist = tm.getClosestTown(world, x, z, minDist * 2);
   if(dist<minDist){AWLog.logDebug("Skipping generation for existing town too close!"); return null;}
@@ -101,7 +101,7 @@ public static boolean validateAreaForPlacement(World world, TownBoundingArea are
 
 private static boolean validateStructureCollision(World world, TownBoundingArea area)
   {
-  StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
+  StructureMap map = AWGameData.INSTANCE.getData(StructureMap.NAME, world, StructureMap.class);
   if(map==null){return false;}
   StructureBB bb = new StructureBB(new BlockPosition(area.getBlockMinX(), area.getMinY(), area.getBlockMaxX()), new BlockPosition(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
   int size = Math.max(area.getChunkWidth(), area.getChunkLength());
@@ -109,7 +109,11 @@ private static boolean validateStructureCollision(World world, TownBoundingArea 
   map.getEntriesNear(world, area.getCenterX(), area.getCenterZ(), size, true, entries);
   for(StructureEntry e : entries)
     {
-    if(e.getBB().collidesWith(bb)){return false;}
+    if(e.getBB().collidesWith(bb))
+      {
+      AWLog.logDebug("Skipping town generation at: "+area+" for intersection with existing structure at: "+e.getBB());
+      return false;
+      }
     }
   return true;
   }

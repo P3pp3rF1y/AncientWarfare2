@@ -103,8 +103,7 @@ public void preInit(FMLPreInitializationEvent evt)
    */
   PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);   
   PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class);
-  AWGameData.INSTANCE.registerSaveData("AWStructureMap", StructureMap.class);
-  AWGameData.INSTANCE.registerSaveData(TownMap.NAME, TownMap.class);
+  AWGameData.INSTANCE.registerSaveData("AWStructureMap", StructureMap.class);  
   NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
   NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER, ContainerSpawnerPlacer.class);

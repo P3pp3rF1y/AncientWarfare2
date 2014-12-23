@@ -1,12 +1,14 @@
 package net.shadowmage.ancientwarfare.structure.gamedata;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
+import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
@@ -15,7 +17,7 @@ public class TownMap extends WorldSavedData
 
 public static final String NAME = "AWTownMap";
 
-private HashMap<Integer, List<StructureBB>> townBoundingBoxesByDim = new HashMap<Integer, List<StructureBB>>();
+private List<StructureBB> boundingBoxes = new ArrayList<StructureBB>();
 
 public TownMap(String name)
   {
@@ -29,10 +31,7 @@ public TownMap()
 
 public void setGenerated(World world, StructureBB bb)
   {
-  int dim = world.provider.dimensionId;
-  List<StructureBB> bbs = townBoundingBoxesByDim.get(dim);
-  if(bbs==null){townBoundingBoxesByDim.put(dim, bbs = new ArrayList<StructureBB>());}
-  bbs.add(bb);
+  boundingBoxes.add(bb);
   markDirty();
   }
 
@@ -48,8 +47,7 @@ public float getClosestTown(World world, int bx, int bz, float defaultVal)
   {
   float distance = defaultVal;
   float d;  
-  int dim = world.provider.dimensionId;
-  List<StructureBB> bbs = townBoundingBoxesByDim.get(dim);
+  List<StructureBB> bbs = boundingBoxes;
   if(bbs!=null && !bbs.isEmpty())
     {
     for(StructureBB bb : bbs)
@@ -63,8 +61,7 @@ public float getClosestTown(World world, int bx, int bz, float defaultVal)
 
 public boolean isChunkInUse(World world, int cx, int cz)
   {
-  int dim = world.provider.dimensionId;
-  List<StructureBB> bbs = townBoundingBoxesByDim.get(dim);
+  List<StructureBB> bbs = boundingBoxes;
   if(bbs!=null && !bbs.isEmpty())
     {
     cx *= 16;
@@ -77,16 +74,40 @@ public boolean isChunkInUse(World world, int cx, int cz)
   return false;
   }
 
+public boolean intersectsWithTown(World world, StructureBB bb)
+  {
+  for(StructureBB tbb : boundingBoxes)
+    {
+    if(tbb.collidesWith(bb))
+      {
+      return true;
+      }
+    }
+  return false;
+  }
+
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
-  
+  StructureBB bb;
+  NBTTagList list = tag.getTagList("boundingBoxes", Constants.NBT.TAG_COMPOUND);
+  for(int i = 0; i< list.tagCount(); i++)
+    {
+    bb = new StructureBB(new BlockPosition(), new BlockPosition());
+    bb.readFromNBT(list.getCompoundTagAt(i));
+    boundingBoxes.add(bb);
+    }
   }
 
 @Override
 public void writeToNBT(NBTTagCompound tag)
   {
-  
+  NBTTagList list = new NBTTagList();
+  for(StructureBB bb : boundingBoxes)
+    {
+    list.appendTag(bb.writeToNBT(new NBTTagCompound()));
+    }
+  tag.setTag("boundingBoxes", list);
   }
 
 }

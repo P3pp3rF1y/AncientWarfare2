@@ -71,7 +71,7 @@ public void attemptGeneration(World world, Random rng, int blockX, int blockZ)
   /**
    * add the town to generated town map, to eliminate towns generating too close to eachother
    */
-  TownMap tm = AWGameData.INSTANCE.getData(TownMap.NAME, world, TownMap.class);
+  TownMap tm = AWGameData.INSTANCE.getPerWorldData(TownMap.NAME, world, TownMap.class);
   tm.setGenerated(world, bb); 
   
   /**

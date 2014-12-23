@@ -35,6 +35,7 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
+import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -94,6 +95,9 @@ public void generateAt(int chunkX, int chunkZ, World world)
   int z = chunkZ*16 + rng.nextInt(16); 
   int y = getTargetY(world, x, z, false)+1;  
   if(y<=0){return;}
+  
+  
+    
   int face = rng.nextInt(4);
   world.theProfiler.startSection("AWTemplateSelection");
   StructureTemplate template = WorldGenStructureManager.instance().selectTemplateForGeneration(world, rng, x, y, z, face);
@@ -164,8 +168,16 @@ public final boolean attemptStructureGenerationAt(World world, int x, int y, int
       return false;
       }
     }    
-  boolean val = template.getValidationSettings().validatePlacement(world, x, y, z, face, template, bb);
-  AWLog.logDebug("validation took: "+(System.currentTimeMillis()-t1+" ms"));
+  
+  TownMap townMap = AWGameData.INSTANCE.getData(TownMap.NAME, world, TownMap.class);
+  boolean val = true;
+  if(townMap.intersectsWithTown(world, bb))
+    {
+    val = false;
+    AWLog.logDebug("Skipping structure generation: "+template.name+" at: "+bb+" for intersection with existing town");
+    }
+  val = val && template.getValidationSettings().validatePlacement(world, x, y, z, face, template, bb);//should only change val, if val==true && validation==false, val will then==false;
+  AWLog.logDebug("Validation took: "+(System.currentTimeMillis()-t1+" ms"));
   if(val)
     {
     generateStructureAt(world, x, y, z, face, template, map, bb);
@@ -176,9 +188,9 @@ public final boolean attemptStructureGenerationAt(World world, int x, int y, int
 
 private void generateStructureAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map, StructureBB bb)
   {
-  WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, x, y, z));
   map.setGeneratedAt(world, x, y, z, face, new StructureEntry(x, y, z, face, template), template.getValidationSettings().isUnique());
   map.markDirty();
+  WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, x, y, z));
   }
 
 }

@@ -67,4 +67,27 @@ public <T extends WorldSavedData> T getData(String name, World world, Class <T> 
   return data;
   }
 
+@SuppressWarnings("unchecked")
+public <T extends WorldSavedData> T getPerWorldData(String name, World world, Class <? extends WorldSavedData> clz)
+  {
+  T data = (T) world.perWorldStorage.loadData(clz, name);
+  if(data==null)
+    {
+    try
+      {
+      data = (T) clz.newInstance();
+      world.perWorldStorage.setData(name, data);
+      }
+    catch (InstantiationException e)
+      {
+      e.printStackTrace();
+      }
+    catch (IllegalAccessException e)
+      {
+      e.printStackTrace();
+      }
+    }
+  return data;
+  }
+
 }

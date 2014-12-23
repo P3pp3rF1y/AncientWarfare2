@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -280,6 +281,19 @@ public boolean isPositionInBoundingBox(BlockPosition pos){return isPositionInBou
 public StructureBB copy()
   {
   return new StructureBB(min.copy(), max.copy());
+  }
+
+public NBTTagCompound writeToNBT(NBTTagCompound tag)
+  {
+  tag.setTag("min", min.writeToNBT(new NBTTagCompound()));
+  tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
+  return tag;
+  }
+
+public void readFromNBT(NBTTagCompound tag)
+  {
+  min.read(tag.getCompoundTag("min"));
+  max.read(tag.getCompoundTag("max"));
   }
 
 }
