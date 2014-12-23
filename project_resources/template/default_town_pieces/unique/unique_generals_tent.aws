@@ -1,5 +1,5 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/21/2014 at: 14:45:45
+# Auto-generated structure template file. created on: 12/22/2014 at: 17:8:26
 # Lines beginning with # denote comments
 
 header:
@@ -55,54 +55,54 @@ layer: 0
 :endlayer
 layer: 1
 0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0
-3,4,5,6,6,5,5,7,4,4,8,8,8,8,8,8,4,3
-3,5,5,9,9,5,5,7,8,8,5,5,10,11,12,8,8,3
-3,5,5,5,5,5,5,5,5,5,5,10,8,8,8,12,8,3
-3,5,5,5,5,5,5,7,8,8,5,8,8,4,8,8,8,3
-3,5,5,5,5,5,5,7,8,8,5,10,8,8,8,12,8,3
-3,5,5,5,5,5,5,7,8,8,5,8,8,8,8,8,8,3
-3,5,5,13,13,13,5,7,8,8,5,10,8,8,8,12,8,3
-3,7,7,7,7,7,7,7,4,4,5,8,8,4,8,8,4,3
-3,4,14,15,8,16,17,8,4,4,5,10,8,8,8,12,4,3
-3,8,8,8,8,8,8,8,8,8,5,8,18,0,18,8,8,3
-3,19,5,5,5,5,5,5,5,5,5,5,5,5,5,5,20,3
-3,21,5,8,8,8,8,5,8,8,5,8,8,8,8,5,22,3
-3,8,5,8,8,8,8,5,8,8,5,8,8,8,8,5,23,3
-3,24,5,8,8,8,8,5,8,8,5,8,8,8,8,5,25,3
-3,26,5,5,5,5,5,5,5,5,5,5,5,5,5,5,27,3
-3,4,28,29,8,8,8,8,4,4,8,8,8,10,18,12,4,3
-0,3,3,3,3,3,8,8,3,3,8,8,3,3,3,3,3,0
+3,4,25,21,21,18,12,16,4,4,5,5,5,5,5,5,4,3
+3,12,12,22,22,12,12,16,5,5,12,12,15,14,11,5,5,3
+3,12,12,12,12,12,12,12,12,12,12,15,5,5,5,11,5,3
+3,12,12,12,12,12,12,16,5,5,12,5,5,4,5,5,5,3
+3,12,12,12,12,12,12,16,5,5,12,15,5,5,5,11,5,3
+3,12,12,12,12,12,12,16,5,5,12,5,5,5,5,5,5,3
+3,12,12,19,19,19,12,16,5,5,12,15,5,5,5,11,5,3
+3,16,16,16,16,16,16,16,4,4,12,5,5,4,5,5,4,3
+3,4,26,23,5,20,17,5,4,4,12,15,5,5,5,11,4,3
+3,5,5,5,5,5,5,5,5,5,12,5,13,0,13,5,5,3
+3,28,12,12,12,12,12,12,12,12,12,12,12,12,12,12,6,3
+3,29,12,5,5,5,5,12,5,5,12,5,5,5,5,12,7,3
+3,5,12,5,5,5,5,12,5,5,12,5,5,5,5,12,8,3
+3,30,12,5,5,5,5,12,5,5,12,5,5,5,5,12,9,3
+3,31,12,12,12,12,12,12,12,12,12,12,12,12,12,12,10,3
+3,4,27,24,5,5,5,5,4,4,5,5,5,15,13,11,4,3
+0,3,3,3,3,3,5,5,3,3,5,5,3,3,3,3,3,0
 :endlayer
 layer: 2
 0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0
-3,4,0,0,0,0,0,7,4,4,4,0,0,0,0,0,4,3
-3,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,3
-3,0,0,0,0,0,0,0,0,0,0,0,30,30,30,0,0,3
-3,0,0,0,0,0,0,7,0,0,0,0,30,30,30,0,0,3
-3,0,0,0,0,0,0,7,0,0,0,0,30,30,30,0,0,3
-3,0,0,0,0,0,0,7,0,0,0,0,30,30,30,0,0,3
-3,0,0,13,13,13,0,7,0,0,0,0,30,30,30,0,0,3
-3,7,7,7,7,7,7,7,4,4,0,0,30,30,30,0,4,3
-3,4,0,0,0,0,0,0,4,4,0,0,30,30,30,0,4,3
+3,4,0,0,0,0,0,16,4,4,4,0,0,0,0,0,4,3
+3,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,3
+3,0,0,0,0,0,0,0,0,0,0,0,32,32,32,0,0,3
+3,0,0,0,0,0,0,16,0,0,0,0,32,32,32,0,0,3
+3,0,0,0,0,0,0,16,0,0,0,0,32,32,32,0,0,3
+3,0,0,0,0,0,0,16,0,0,0,0,32,32,32,0,0,3
+3,0,0,19,19,19,0,16,0,0,0,0,32,32,32,0,0,3
+3,16,16,16,16,16,16,16,4,4,0,0,32,32,32,0,4,3
+3,4,0,0,0,0,0,0,4,4,0,0,32,32,32,0,4,3
 3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3
 3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3
-3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,3
-3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,3
-3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,3
-3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,3
+3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,32,3
+3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,32,3
+3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,32,3
+3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,32,3
 3,4,0,0,0,0,0,0,4,4,0,0,0,0,0,0,4,3
 0,3,3,3,3,3,0,0,3,3,0,0,3,3,3,3,3,0
 :endlayer
 layer: 3
 0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0
-3,4,4,0,0,0,0,7,4,4,31,0,0,0,32,0,4,3
-3,4,0,0,0,0,33,7,0,0,0,0,0,0,0,0,4,3
-3,4,0,0,0,0,0,7,0,0,0,0,0,0,0,0,4,3
-3,4,0,0,0,0,0,7,0,0,0,0,0,0,0,0,4,3
-3,4,0,0,0,0,0,7,0,0,0,0,0,0,0,0,4,3
-3,4,0,0,0,0,33,7,34,0,0,0,0,0,0,0,4,3
-3,4,35,0,0,0,0,7,0,0,0,0,0,0,0,0,4,3
-3,7,7,7,7,7,7,7,4,4,4,0,0,0,0,4,4,3
+3,4,4,0,0,0,0,16,4,4,34,0,0,0,33,0,4,3
+3,4,0,0,0,0,36,16,0,0,0,0,0,0,0,0,4,3
+3,4,0,0,0,0,0,16,0,0,0,0,0,0,0,0,4,3
+3,4,0,0,0,0,0,16,0,0,0,0,0,0,0,0,4,3
+3,4,0,0,0,0,0,16,0,0,0,0,0,0,0,0,4,3
+3,4,0,0,0,0,36,16,35,0,0,0,0,0,0,0,4,3
+3,4,37,0,0,0,0,16,0,0,0,0,0,0,0,0,4,3
+3,16,16,16,16,16,16,16,4,4,4,0,0,0,0,4,4,3
 3,4,0,0,0,0,0,4,4,4,4,0,0,0,0,0,4,3
 3,4,0,0,0,0,0,0,4,4,0,0,0,0,0,0,4,3
 3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,3
@@ -115,21 +115,21 @@ layer: 3
 :endlayer
 layer: 4
 0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0
-0,3,4,4,4,4,4,7,4,4,4,4,4,4,4,4,3,0
-0,3,0,0,0,0,0,7,4,4,0,0,0,0,0,0,3,0
-0,3,0,0,0,0,0,7,4,4,0,0,0,0,0,0,3,0
-0,3,0,0,0,0,0,7,4,4,0,0,0,0,0,33,3,0
-0,3,0,0,0,0,0,7,0,0,0,0,0,0,0,0,3,0
-0,3,0,0,0,0,0,7,0,0,0,0,0,0,0,0,3,0
-0,3,0,0,0,0,0,7,0,0,0,0,0,0,0,0,3,0
-0,3,7,7,7,7,7,7,4,4,31,0,4,4,4,4,3,0
-0,3,34,0,0,0,0,31,4,4,31,0,0,0,0,33,3,0
-0,3,0,0,0,0,0,0,31,31,0,0,0,0,0,0,3,0
+0,3,4,4,4,4,4,16,4,4,4,4,4,4,4,4,3,0
+0,3,0,0,0,0,0,16,4,4,0,0,0,0,0,0,3,0
+0,3,0,0,0,0,0,16,4,4,0,0,0,0,0,0,3,0
+0,3,0,0,0,0,0,16,4,4,0,0,0,0,0,36,3,0
+0,3,0,0,0,0,0,16,0,0,0,0,0,0,0,0,3,0
+0,3,0,0,0,0,0,16,0,0,0,0,0,0,0,0,3,0
+0,3,0,0,0,0,0,16,0,0,0,0,0,0,0,0,3,0
+0,3,16,16,16,16,16,16,4,4,34,0,4,4,4,4,3,0
+0,3,35,0,0,0,0,34,4,4,34,0,0,0,0,36,3,0
+0,3,0,0,0,0,0,0,34,34,0,0,0,0,0,0,3,0
 0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0
 0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0
 0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0
-0,3,34,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0
-0,3,0,0,0,0,0,0,31,31,0,0,0,0,0,33,3,0
+0,3,35,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0
+0,3,0,0,0,0,0,0,34,34,0,0,0,0,0,36,3,0
 0,3,4,4,4,4,0,0,4,4,0,0,4,4,4,4,3,0
 0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0
 :endlayer
@@ -138,11 +138,11 @@ layer: 5
 0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0
 0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0
 0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0
-0,0,3,3,3,0,0,7,4,4,0,0,0,3,3,3,0,0
-0,0,3,3,3,0,0,7,4,4,0,0,0,3,3,3,0,0
-0,0,3,3,3,0,0,7,4,4,0,0,0,3,3,3,0,0
-0,0,3,3,3,0,0,7,4,4,0,0,0,3,3,3,0,0
-0,0,3,3,3,7,7,7,4,4,4,4,4,3,3,3,0,0
+0,0,3,3,3,0,0,16,4,4,0,0,0,3,3,3,0,0
+0,0,3,3,3,0,0,16,4,4,0,0,0,3,3,3,0,0
+0,0,3,3,3,0,0,16,4,4,0,0,0,3,3,3,0,0
+0,0,3,3,3,0,0,16,4,4,0,0,0,3,3,3,0,0
+0,0,3,3,3,16,16,16,4,4,4,4,4,3,3,3,0,0
 0,0,3,3,3,0,0,0,4,4,0,0,0,3,3,3,0,0
 0,0,3,3,3,0,0,0,0,0,0,0,0,3,3,3,0,0
 0,0,3,3,3,0,0,0,0,0,0,0,0,3,3,3,0,0
@@ -155,21 +155,21 @@ layer: 5
 :endlayer
 layer: 6
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,31,0,0,0,31,0,0,0,0,31,0,0,0,31,0,0
+0,0,34,0,0,0,34,0,0,0,0,34,0,0,0,34,0,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,3,3,3,3,3,3,3,3,0,0,0,0,0
-0,0,31,0,0,3,3,3,3,3,3,3,3,0,0,31,0,0
+0,0,34,0,0,3,3,3,3,3,3,3,3,0,0,34,0,0
 0,0,0,0,0,3,3,3,3,3,3,3,3,0,0,0,0,0
 0,0,0,0,0,3,3,3,3,3,3,3,3,0,0,0,0,0
 0,0,0,0,0,3,3,3,4,4,3,3,3,0,0,0,0,0
 0,0,0,0,0,3,3,3,4,4,3,3,3,0,0,0,0,0
-0,0,31,0,0,3,3,3,4,4,3,3,3,0,0,31,0,0
+0,0,34,0,0,3,3,3,4,4,3,3,3,0,0,34,0,0
 0,0,0,0,0,3,3,3,4,4,3,3,3,0,0,0,0,0
 0,0,0,0,0,3,3,3,4,4,3,3,3,0,0,0,0,0
 0,0,0,0,0,3,3,3,4,4,3,3,3,0,0,0,0,0
 0,0,0,0,0,3,3,3,4,4,3,3,3,0,0,0,0,0
-0,0,31,0,0,3,3,3,4,4,3,3,3,0,0,31,0,0
+0,0,34,0,0,3,3,3,4,4,3,3,3,0,0,34,0,0
 0,0,0,0,0,3,3,3,4,4,3,3,3,0,0,0,0,0
 0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0
 :endlayer
@@ -179,17 +179,17 @@ layer: 7
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,31,0,0,0,0,31,0,0,0,0,0,0
+0,0,0,0,0,0,34,0,0,0,0,34,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,31,0,3,3,0,31,0,0,0,0,0,0
+0,0,0,0,0,0,34,0,3,3,0,34,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,31,0,3,3,0,31,0,0,0,0,0,0
+0,0,0,0,0,0,34,0,3,3,0,34,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 :endlayer
@@ -231,7 +231,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"14","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -239,7 +239,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:bed","id":"ss"},"meta":{"val":"10","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:cauldron","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -247,23 +247,23 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wool","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:crafting_table","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaBlocks
+plugin=awAutomationLogic
 number=8
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"teData":{"val":{"id":{"val":"Furnace","id":"ss"},"Items":{"val":[],"id":"ls"},"BurnTime":{"val":"0","id":"ps"},"z":{"val":"371","id":"pi"},"y":{"val":"4","id":"pi"},"CookTime":{"val":"0","id":"ps"},"x":{"val":"313","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:furnace","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaBlocks
+plugin=awAutomationLogic
 number=9
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:bed","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"teData":{"val":{"id":{"val":"Furnace","id":"ss"},"Items":{"val":[],"id":"ls"},"BurnTime":{"val":"0","id":"ps"},"z":{"val":"371","id":"pi"},"y":{"val":"4","id":"pi"},"CookTime":{"val":"0","id":"ps"},"x":{"val":"314","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:furnace","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -271,7 +271,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"15","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -279,7 +279,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -287,7 +287,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"14","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -295,31 +295,31 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:bookshelf","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=vanillaBlocks
 number=14
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-31","id":"pi"},"y":{"val":"83","id":"pi"},"x":{"val":"-5","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=vanillaBlocks
 number=15
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-31","id":"pi"},"y":{"val":"83","id":"pi"},"x":{"val":"-4","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=vanillaBlocks
 number=16
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-31","id":"pi"},"y":{"val":"83","id":"pi"},"x":{"val":"-2","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:wool","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -327,39 +327,39 @@ rule:
 plugin=vanillaInventory
 number=17
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-31","id":"pi"},"y":{"val":"83","id":"pi"},"x":{"val":"-1","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"AncientWarfare:research_note","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"},"stackTag":{"val":{"researchName":{"val":"research.mining","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"381","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"309","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaBlocks
+plugin=vanillaInventory
 number=18
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
-:enddata
-:endrule
-
-rule:
-plugin=vanillaInventory
-number=19
-data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-29","id":"pi"},"y":{"val":"83","id":"pi"},"x":{"val":"-6","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:arrow","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"64","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:diamond_leggings","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:diamond_chestplate","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"2","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"382","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"301","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
 plugin=vanillaBlocks
-number=20
+number=19
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:cauldron","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:bookshelf","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
 plugin=vanillaInventory
+number=20
+data:
+JSON:{{"val":{"lootLevel":{"val":"1","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:gold_ingot","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"382","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"309","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
 number=21
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-28","id":"pi"},"y":{"val":"83","id":"pi"},"x":{"val":"-6","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:bed","id":"ss"},"meta":{"val":"10","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -367,15 +367,15 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:crafting_table","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:bed","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=awAutomationLogic
+plugin=vanillaInventory
 number=23
 data:
-JSON:{{"val":{"teData":{"val":{"id":{"val":"Furnace","id":"ss"},"Items":{"val":[],"id":"ls"},"BurnTime":{"val":"0","id":"ps"},"z":{"val":"-27","id":"pi"},"y":{"val":"83","id":"pi"},"CookTime":{"val":"0","id":"ps"},"x":{"val":"9","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:furnace","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"AncientWarfare:research_note","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"},"stackTag":{"val":{"researchName":{"val":"research.agriculture","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"384","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"309","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -383,15 +383,15 @@ rule:
 plugin=vanillaInventory
 number=24
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-26","id":"pi"},"y":{"val":"83","id":"pi"},"x":{"val":"-6","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"AncientWarfare:research_note","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"},"stackTag":{"val":{"researchName":{"val":"research.command","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"384","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"316","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=awAutomationLogic
+plugin=vanillaInventory
 number=25
 data:
-JSON:{{"val":{"teData":{"val":{"id":{"val":"Furnace","id":"ss"},"Items":{"val":[],"id":"ls"},"BurnTime":{"val":"0","id":"ps"},"z":{"val":"-26","id":"pi"},"y":{"val":"83","id":"pi"},"CookTime":{"val":"0","id":"ps"},"x":{"val":"9","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:furnace","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:diamond_sword","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:diamond_helmet","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:bow","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"2","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:diamond_boots","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"3","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"385","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"301","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -399,15 +399,15 @@ rule:
 plugin=vanillaInventory
 number=26
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-25","id":"pi"},"y":{"val":"83","id":"pi"},"x":{"val":"-6","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"1","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:gold_ingot","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"385","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"309","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaBlocks
+plugin=vanillaInventory
 number=27
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"15","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"1","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:gold_ingot","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"385","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"316","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -415,7 +415,7 @@ rule:
 plugin=vanillaInventory
 number=28
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-24","id":"pi"},"y":{"val":"83","id":"pi"},"x":{"val":"-5","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"AncientWarfare:research_note","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"},"stackTag":{"val":{"researchName":{"val":"research.explosives","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"386","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"311","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -423,23 +423,23 @@ rule:
 plugin=vanillaInventory
 number=29
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-24","id":"pi"},"y":{"val":"83","id":"pi"},"x":{"val":"-4","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"1","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:gold_ingot","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"386","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"312","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaBlocks
+plugin=vanillaInventory
 number=30
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"AncientWarfare:research_note","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"},"stackTag":{"val":{"researchName":{"val":"research.seafaring","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"386","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"314","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaBlocks
+plugin=vanillaInventory
 number=31
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"1","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:gold_ingot","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"386","id":"pi"},"y":{"val":"4","id":"pi"},"x":{"val":"315","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -447,7 +447,7 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -455,7 +455,7 @@ rule:
 plugin=vanillaBlocks
 number=33
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -463,7 +463,7 @@ rule:
 plugin=vanillaBlocks
 number=34
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -471,8 +471,78 @@ rule:
 plugin=vanillaBlocks
 number=35
 data:
+JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=36
+data:
+JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=37
+data:
 JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
 #### ENTITIES ####
+entity:
+plugin=AWNpc
+number=0
+data:
+position=5,1,2
+JSON:{{"val":{"entityData":{"val":{"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"302.78019495849105","id":"pd"},{"val":"4.0","id":"pd"},{"val":"382.69999998807907","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"shieldStack":{"val":{"item":{"val":"AncientWarfareNpc:iron_shield","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"}},"id":"ct"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"3.6913087","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.3","id":"pf"},"mobID":{"val":"AncientWarfareNpc.bandit.leader","id":"ss"},"zOffset":{"val":"0.78019494","id":"pf"},"rotation":{"val":"93.69131","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"item":{"val":"minecraft:diamond_sword","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:diamond_boots","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:diamond_leggings","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"2","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:diamond_chestplate","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"3","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:diamond_helmet","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"4","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+:enddata
+:endentity
+
+entity:
+plugin=AWNpc
+number=1
+data:
+position=14,1,12
+JSON:{{"val":{"entityData":{"val":{"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"312.5","id":"pd"},{"val":"4.0","id":"pd"},{"val":"373.5","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"shieldStack":{"val":{"item":{"val":"AncientWarfareNpc:wooden_shield","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"}},"id":"ct"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"2.307051","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.5","id":"pf"},"mobID":{"val":"AncientWarfareNpc.bandit.soldier","id":"ss"},"zOffset":{"val":"0.5","id":"pf"},"rotation":{"val":"92.30705","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"item":{"val":"minecraft:iron_sword","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_boots","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_leggings","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"2","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_chestplate","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"3","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_helmet","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"4","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+:enddata
+:endentity
+
+entity:
+plugin=AWNpc
+number=2
+data:
+position=11,1,12
+JSON:{{"val":{"entityData":{"val":{"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"312.15682502782767","id":"pd"},{"val":"4.0","id":"pd"},{"val":"376.0944085240261","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"shieldStack":{"val":{"item":{"val":"AncientWarfareNpc:wooden_shield","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"}},"id":"ct"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"4.700655","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.9055915","id":"pf"},"mobID":{"val":"AncientWarfareNpc.bandit.soldier","id":"ss"},"zOffset":{"val":"0.15682502","id":"pf"},"rotation":{"val":"94.70065","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"item":{"val":"minecraft:iron_sword","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_boots","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_leggings","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"2","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_chestplate","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"3","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_helmet","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"4","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+:enddata
+:endentity
+
+entity:
+plugin=AWNpc
+number=3
+data:
+position=8,1,13
+JSON:{{"val":{"entityData":{"val":{"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"313.1952729197145","id":"pd"},{"val":"4.0","id":"pd"},{"val":"379.92802567552","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"1.5924827","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.07197434","id":"pf"},"mobID":{"val":"AncientWarfareNpc.bandit.archer","id":"ss"},"zOffset":{"val":"0.19527292","id":"pf"},"rotation":{"val":"91.59248","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"item":{"val":"minecraft:bow","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_boots","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_leggings","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"2","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_chestplate","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"3","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_helmet","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"4","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+:enddata
+:endentity
+
+entity:
+plugin=vanillaEntities
+number=4
+data:
+position=10,1,12
+JSON:{{"val":{"xOffset":{"val":"0.63518256","id":"pf"},"mobID":{"val":"Sheep","id":"ss"},"zOffset":{"val":"0.20349762","id":"pf"},"rotation":{"val":"-184.54694","id":"pf"}},"id":"ct"}}
+:enddata
+:endentity
+
+entity:
+plugin=AWNpc
+number=5
+data:
+position=3,1,12
+JSON:{{"val":{"entityData":{"val":{"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"312.4125627283436","id":"pd"},{"val":"4.0","id":"pd"},{"val":"384.5869555818811","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"3.2967446","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.4130444","id":"pf"},"mobID":{"val":"AncientWarfareNpc.bandit.archer","id":"ss"},"zOffset":{"val":"0.41256273","id":"pf"},"rotation":{"val":"93.296745","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"item":{"val":"minecraft:bow","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_boots","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_leggings","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"2","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_chestplate","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"3","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:chainmail_helmet","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"4","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+:enddata
+:endentity
+

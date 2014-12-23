@@ -3,8 +3,8 @@
 # the line must -start- with # to be ignored, mid-line comments are not allowed
 header:
 name=bandit_settlement
-minSize=3
-maxSize=5
+minSize=4
+maxSize=8
 buildingExpansion=1
 selectionWeight=10
 clusterValue=300
