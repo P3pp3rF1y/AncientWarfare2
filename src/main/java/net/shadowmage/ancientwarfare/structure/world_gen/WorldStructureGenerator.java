@@ -169,7 +169,7 @@ public final boolean attemptStructureGenerationAt(World world, int x, int y, int
       }
     }    
   
-  TownMap townMap = AWGameData.INSTANCE.getData(TownMap.NAME, world, TownMap.class);
+  TownMap townMap = AWGameData.INSTANCE.getPerWorldData(TownMap.NAME, world, TownMap.class);
   boolean val = true;
   if(townMap.intersectsWithTown(world, bb))
     {

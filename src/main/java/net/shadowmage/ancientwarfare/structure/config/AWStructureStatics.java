@@ -47,7 +47,7 @@ public AWStructureStatics(Configuration config)
 public static String templateExtension = "aws";
 public static String townTemplateExtension = "awt";
 public static boolean enableVillageGen = true;
-public static boolean enableTownGeneration = false;
+public static boolean enableTownGeneration = true;
 public static boolean enableStructureGeneration = true;
 public static boolean loadDefaultPack = true;
 private static boolean exportBlockNames = false;
