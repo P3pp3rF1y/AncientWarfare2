@@ -50,7 +50,8 @@ public void processCommand(ICommandSender var1, String[] var2)
   boolean debugMode = AWNPCStatics.npcAIDebugMode;
   debugMode = !debugMode;
   AWNPCStatics.npcAIDebugMode = debugMode;  
-  WorldData d = (WorldData) var1.getEntityWorld().perWorldStorage.loadData(WorldData.class, WorldData.name);  
+  WorldData d = (WorldData) var1.getEntityWorld().perWorldStorage.loadData(WorldData.class, WorldData.name);
+  if(d==null){d = new WorldData();var1.getEntityWorld().perWorldStorage.setData(WorldData.name, d);}
   d.set("NpcAIDebugMode", debugMode);  
   var1.addChatMessage(new ChatComponentText("command.aw.npcdebug.used"));  
   }
