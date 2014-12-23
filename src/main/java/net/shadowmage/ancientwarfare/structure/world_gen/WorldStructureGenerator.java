@@ -53,8 +53,6 @@ public static HashSet<String> defaultTargetBlocks = new HashSet<String>();
 
 static
 {
-
-
 defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.dirt));
 defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.grass));
 defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.stone));

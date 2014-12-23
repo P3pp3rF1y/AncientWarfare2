@@ -110,6 +110,10 @@ public void instantConstruction()
         {
         this.placeCurrentPosition(rule);        
         }
+      else if(rule==null && currentPriority==0)
+        {
+        placeAir();
+        }
       increment();
       }
     }

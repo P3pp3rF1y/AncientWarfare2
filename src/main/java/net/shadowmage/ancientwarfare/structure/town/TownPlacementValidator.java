@@ -49,7 +49,7 @@ public static TownBoundingArea findGenerationPosition(World world, int x, int z)
   int minY = (int)Math.min(0, world.provider.terrainType.getHorizon(world)-7);
   
   TownBoundingArea area = new TownBoundingArea();
-  area.minY = Math.max(minY, height-6);
+  area.minY = Math.max(minY, height);
   area.maxY = Math.min(255, area.minY+15);
   area.chunkMinX = cx;
   area.chunkMaxX = cx;

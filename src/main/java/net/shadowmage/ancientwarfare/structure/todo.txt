@@ -1,8 +1,8 @@
 towns todo:
 
-fix town seed # (set from chunks)
+load/save all chunk-generation and structure generation tickets, find way to load/save the callback tickets...srsly..how?
 reduce frequency of outhouse generation (2-3 per town would be ideal), or remove gold
 screenshots for all new structures (bandit, village, cosmetic, walls)
 ?? (maybe fixed, need lots of testing) fix towns generating over vanilla villages, validation -still- not working properly...
 
-
+* towns still generating in water.  need more validation on minimum Y surface level;
