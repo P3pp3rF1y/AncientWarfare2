@@ -47,8 +47,9 @@ public final List<StructureTemplate> exteriorTemplatesToGenerate = new ArrayList
 public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   {
   this.world = world;
-  this.template = template;  
-  this.rng = new Random(0);//TODO seed random from chunk coordinates  
+  this.template = template;
+  long seed = (area.townCenterX << 32) | area.townCenterZ;
+  this.rng = new Random(seed);  
   
   int y1 = area.getSurfaceY()+1;
   int y2 = y1+20;
