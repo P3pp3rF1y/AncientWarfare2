@@ -1,12 +1,12 @@
 towns todo:
 
-add bandits to bandit tent templates
-add loot to governors house, church?, ranchhouse, bandit tents
+add loot to ranchhouse
 fix lighting in barracks, ranch-house attic
-rescan bandit, governor, ranchhouse, barracks templates after fixing
+rescan ranchhouse, barracks templates after fixing
 reduce frequency of outhouse generation (2-3 per town would be ideal), or remove gold
 screenshots for all new structures (bandit, village, cosmetic, walls)
 ?? (maybe fixed, need lots of testing) fix towns generating over vanilla villages, validation -still- not working properly...
 
-scan and add realty office to templates
-scan and add any new structures from build server
+structure intersection testing -- do not generate structures in town bounds, do not generate 
+
+
