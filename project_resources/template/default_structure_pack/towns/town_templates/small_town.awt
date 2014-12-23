@@ -3,7 +3,7 @@
 # the line must -start- with # to be ignored, mid-line comments are not allowed
 header:
 name=small_town
-minSize=5
+minSize=7
 maxSize=12
 buildingExpansion=1
 selectionWeight=10

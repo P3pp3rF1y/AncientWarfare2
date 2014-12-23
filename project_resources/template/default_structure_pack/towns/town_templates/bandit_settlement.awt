@@ -4,7 +4,7 @@
 header:
 name=bandit_settlement
 minSize=4
-maxSize=8
+maxSize=9
 buildingExpansion=1
 selectionWeight=10
 clusterValue=300
