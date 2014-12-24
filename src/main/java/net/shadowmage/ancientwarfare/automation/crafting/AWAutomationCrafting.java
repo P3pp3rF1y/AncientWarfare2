@@ -459,7 +459,7 @@ public static void loadRecipes()
   enchantedBook.addEnchantment(Enchantment.fortune, 2);
   
   AWCraftingManager.INSTANCE.createRecipe(upgradeEnchantedTools2, "mass_production",
-      " b ",
+      "b b",
       "iii",
       'b', enchantedBook,
       'i', Items.iron_ingot);
