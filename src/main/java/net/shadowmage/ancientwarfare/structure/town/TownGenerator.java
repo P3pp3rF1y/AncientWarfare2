@@ -43,6 +43,7 @@ public final List<StructureTemplate> mainTemplatesToGenerate = new ArrayList<Str
 public final List<StructureTemplate> houseTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
 public final List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
 public final List<StructureTemplate> exteriorTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
+public final List<BlockPosition> structureDoors = new ArrayList<BlockPosition>();//list of all positions for generated doors.  used during lamp-post generation to not generate directly in front of a door
 
 public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
   {

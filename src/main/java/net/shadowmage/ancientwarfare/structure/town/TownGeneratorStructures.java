@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -209,7 +208,7 @@ private static void generateLamps(TownPartBlock block, StructureTemplate lamp, T
     for(int xBit = 0; xBit <= xBits; xBit++)
       {
       x = xBit * xMove + xStart;
-      generateLamp(gen.world, lamp, x, block.bb.min.y, block.bb.min.z);     
+      generateLamp(gen.world, lamp, gen, x, block.bb.min.y, block.bb.min.z, Direction.EAST);     
       }
     }
   
@@ -218,7 +217,7 @@ private static void generateLamps(TownPartBlock block, StructureTemplate lamp, T
     for(int xBit = 0; xBit <= xBits; xBit++)
       {
       x = xBit * xMove + xStart;
-      generateLamp(gen.world, lamp, x, block.bb.min.y, block.bb.max.z); 
+      generateLamp(gen.world, lamp, gen, x, block.bb.min.y, block.bb.max.z, Direction.EAST); 
       }
     }  
   
@@ -227,7 +226,7 @@ private static void generateLamps(TownPartBlock block, StructureTemplate lamp, T
     for(int zBit = 0; zBit <= zBits; zBit++)
       {
       z = zBit * zMove + zStart;
-      generateLamp(gen.world, lamp, block.bb.min.x, block.bb.min.y, z);
+      generateLamp(gen.world, lamp, gen, block.bb.min.x, block.bb.min.y, z, Direction.EAST);
       }
     }
   
@@ -236,13 +235,14 @@ private static void generateLamps(TownPartBlock block, StructureTemplate lamp, T
     for(int zBit = 0; zBit <= zBits; zBit++)
       {
       z = zBit * zMove + zStart;
-      generateLamp(gen.world, lamp, block.bb.max.x, block.bb.min.y, z);
+      generateLamp(gen.world, lamp, gen, block.bb.max.x, block.bb.min.y, z, Direction.EAST);
       }
     }
   }
 
-private static void generateLamp(World world, StructureTemplate t, int x, int y, int z)
+private static void generateLamp(World world, StructureTemplate t, TownGenerator gen, int x, int y, int z, Direction streetSide)
   {
+  if(checkForNeighboringDoor(gen, x, y, z, streetSide.getOpposite())){return;}
   int minX = x;
   int minZ = z;
   int minY = y;
@@ -265,6 +265,20 @@ private static void generateLamp(World world, StructureTemplate t, int x, int y,
   x += t.xOffset;
   z += t.zOffset;  
   WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilder(world, t, 0, x, y, z));
+  }
+
+private static boolean checkForNeighboringDoor(TownGenerator gen, int x, int y, int z, Direction dir)
+  {
+  final int len = gen.structureDoors.size();
+  x += dir.xDirection;
+  z += dir.zDirection;
+  BlockPosition p;
+  for(int i = 0; i < len; i++)
+    {
+    p = gen.structureDoors.get(i);
+    if(p.x==x && p.z==z && p.y==y){return true;}
+    }
+  return false;
   }
 
 //************************************************* UTILITY METHODS *******************************************************//
@@ -349,6 +363,7 @@ private static void generateStructure(TownGenerator gen, TownPartPlot plot, Stru
   buildKey.y -= template.yOffset;
   buildKey.y += gen.townBounds.min.y;
   bb.offset(0, -template.yOffset, 0);
+  gen.structureDoors.add(buildKey.copy());
   WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));
 //  AWLog.logDebug("added structure to tick handler for generation: "+template.name +" at: "+buildKey+" town bounds: "+gen.townBounds);
   }
