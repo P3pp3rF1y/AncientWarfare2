@@ -5,9 +5,9 @@ header:
 name=small_town
 minSize=7
 maxSize=12
-buildingExpansion=1
+buildingExpansion=2
 selectionWeight=10
-clusterValue=300
+clusterValue=500
 townBlockSize=30
 townPlotSize=3
 wallStyle=2

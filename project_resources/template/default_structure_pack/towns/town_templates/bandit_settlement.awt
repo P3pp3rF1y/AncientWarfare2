@@ -5,9 +5,9 @@ header:
 name=bandit_settlement
 minSize=4
 maxSize=9
-buildingExpansion=1
+buildingExpansion=2
 selectionWeight=10
-clusterValue=300
+clusterValue=500
 townBlockSize=21
 townPlotSize=3
 wallStyle=2

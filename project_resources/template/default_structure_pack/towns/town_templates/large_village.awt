@@ -5,9 +5,9 @@ header:
 name=large_village
 minSize=4
 maxSize=7
-buildingExpansion=0
+buildingExpansion=2
 selectionWeight=10
-clusterValue=300
+clusterValue=500
 townBlockSize=24
 townPlotSize=3
 wallStyle=0
