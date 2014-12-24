@@ -189,19 +189,20 @@ public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, 
   
   EntityArrow entityarrow = new EntityArrow(this.worldObj, this, par1EntityLivingBase, 1.6F, (float)(14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
   
-  int i = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, this.getHeldItem());
-  int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, this.getHeldItem());
+  int bonusDamage = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, this.getHeldItem());
+  int knockBackStrenght = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, this.getHeldItem());
   
   entityarrow.setDamage((double)(par2 * 2.0F) + this.rand.nextGaussian() * 0.25D + (double)((float)this.worldObj.difficultySetting.getDifficultyId() * 0.11F));
 
-  if(i > 0)
+  if(bonusDamage > 0)
     {
-    entityarrow.setDamage(entityarrow.getDamage() + (double)i * 0.5D + 0.5D);
+    entityarrow.setDamage(entityarrow.getDamage() + (double)bonusDamage * 0.5D + 0.5D);
     }
 
-  if(j > 0)
+  knockBackStrenght/=2;
+  if(knockBackStrenght > 0)
     {
-    entityarrow.setKnockbackStrength(j);
+    entityarrow.setKnockbackStrength(knockBackStrenght);
     }
 
   if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItem()) > 0)
