@@ -46,7 +46,7 @@ uniqueStructures:
 unique_mayors_mansion
 unique_barracks_pelirow
 unique_creeper_church_dulciphi
-unique_giant_oak
+unique_tavern_pelirow
 :endUniqueStructures
 
 #list of structures, one per line
@@ -56,6 +56,8 @@ unique_waterwheel_dulciphi
 village_smith
 village_church
 unique_windmill
+unique_mayoral_manor_dulciphi
+unique_giant_oak
 :endMainStructures
 
 #list of structure templates w/weight, to be used to fill in random positions post-generation
