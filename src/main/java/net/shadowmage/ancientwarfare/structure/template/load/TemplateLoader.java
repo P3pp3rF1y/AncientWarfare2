@@ -223,12 +223,17 @@ private TownTemplate loadTownTemplateFromFile(File file)
 
 private void loadStructureImage(String imageName, InputStream is)
   {
+  while(imageName.contains("/"))
+    {
+    imageName = imageName.substring(imageName.indexOf("/")+1, imageName.length());
+    }
   try
     {
     BufferedImage image = ImageIO.read(is);
     if(image!=null && image.getWidth()==AWStructureStatics.structureImageWidth && image.getHeight()==AWStructureStatics.structureImageHeight)
       {
       images.put(imageName, image);
+      AWLog.logDebug("loaded structure image of: "+imageName);
       }
     else
       {
@@ -251,27 +256,25 @@ private int loadTemplatesFromZipStream(ZipInputStream zis)
     while((entry = zis.getNextEntry())!=null)
       {
       if(entry.isDirectory()){continue;}//TODO how to handle subfolders in a zip-file?
+      AWLog.logDebug("parsing entry: "+entry.getName());
       if(entry.getName().toLowerCase().endsWith(".png"))
-        {
+        {       
         loadStructureImage(entry.getName(), zis);
-        continue;
         }
       else if(entry.getName().toLowerCase().endsWith("."+AWStructureStatics.townTemplateExtension))
         {
         loadTownTemplateFromZip(entry, zis);
-        continue;
         }
-      else if(!entry.getName().toLowerCase().endsWith("."+AWStructureStatics.templateExtension))
+      else if(entry.getName().toLowerCase().endsWith("."+AWStructureStatics.templateExtension))
         {
-        continue;
-        }
-      template = loadTemplateFromZip(entry, zis);
-      if(template!=null)
-        {
-        AWLog.log("Loaded Structure Template: ["+template.name+"] WorldGen: "+template.getValidationSettings().isWorldGenEnabled()+"  Survival: "+template.getValidationSettings().isSurvival());
-        StructureTemplateManager.instance().addTemplate(template);
-        loadedStructureNames.add(template.name);
-        parsed++;
+        template = loadTemplateFromZip(entry, zis);
+        if(template!=null)
+          {
+          AWLog.log("Loaded Structure Template: ["+template.name+"] WorldGen: "+template.getValidationSettings().isWorldGenEnabled()+"  Survival: "+template.getValidationSettings().isSurvival());
+          StructureTemplateManager.instance().addTemplate(template);
+          loadedStructureNames.add(template.name);
+          parsed++;
+          }
         }
       }
     }

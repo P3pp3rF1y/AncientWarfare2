@@ -269,14 +269,17 @@ private static void generateLamp(World world, StructureTemplate t, TownGenerator
 
 private static boolean checkForNeighboringDoor(TownGenerator gen, int x, int y, int z, Direction dir)
   {
-  final int len = gen.structureDoors.size();
-  x += dir.xDirection;
-  z += dir.zDirection;
+  final int len = gen.structureDoors.size();  
+  int x1 = x;
+  int z1 = z;
+  x1 += dir.xDirection;
+  z1 += dir.zDirection;
   BlockPosition p;
   for(int i = 0; i < len; i++)
     {
     p = gen.structureDoors.get(i);
-    if(p.x==x && p.z==z && p.y==y){return true;}
+    if(p.x==x && p.z==z){return true;}
+    else if(p.x==x1 && p.z==z1){return true;}
     }
   return false;
   }
