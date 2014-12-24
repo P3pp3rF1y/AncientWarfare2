@@ -103,6 +103,7 @@ public boolean canResearch(Set<Integer> knownResearch)
 public boolean tryStart(IInventory inventory, int side)
   {
   boolean canStart = true;
+  if(!AWCoreStatics.enableResearchResourceUse){return true;}
   for(ItemStack stack : this.researchResources)
     {
     if(InventoryTools.getCountOf(inventory, side, stack)<stack.stackSize)

@@ -51,6 +51,7 @@ public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, St
 
 private boolean canPlayerCraft(RecipeResearched recipe, World world, String playerName)
   {
+  if(!AWCoreStatics.useResearchSystem){return true;}
   if(playerName==null || playerName.isEmpty()){return false;}
   boolean canCraft = true;
   for(Integer i : recipe.getNeededResearch())
