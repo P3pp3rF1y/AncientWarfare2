@@ -1,7 +1,7 @@
 towns todo:
 
 load/save all chunk-generation and structure generation tickets, find way to load/save the callback tickets...srsly..how?
-lamp post validation; dont' build in front of doors
+	--cannot solve in time, will need to find a proper way to solve later, not spending all christmas fixing this =\
 update instruction manual with information on town system
 
 
