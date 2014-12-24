@@ -53,6 +53,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.b
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockSign;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleFlowerPot;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaBlocks;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaSkull;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityHanging;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleGates;
@@ -108,8 +109,7 @@ public void addHandledBlocks(IStructurePluginManager manager)
   manager.registerBlockHandler("vanillaLogic", Blocks.mob_spawner, TemplateRuleBlockLogic.class);
   manager.registerBlockHandler("vanillaLogic", Blocks.command_block, TemplateRuleBlockLogic.class);
   manager.registerBlockHandler("vanillaLogic", Blocks.brewing_stand, TemplateRuleBlockLogic.class);
-  manager.registerBlockHandler("vanillaLogic", Blocks.beacon, TemplateRuleBlockLogic.class);
-  manager.registerBlockHandler("vanillaLogic", Blocks.skull, TemplateRuleBlockLogic.class);
+  manager.registerBlockHandler("vanillaLogic", Blocks.beacon, TemplateRuleBlockLogic.class);  
   manager.registerBlockHandler("vanillaLogic", Blocks.lit_furnace, TemplateRuleBlockLogic.class);
   manager.registerBlockHandler("vanillaLogic", Blocks.furnace, TemplateRuleBlockLogic.class);
   manager.registerBlockHandler("vanillaLogic", Blocks.beacon, TemplateRuleBlockLogic.class);
@@ -119,7 +119,8 @@ public void addHandledBlocks(IStructurePluginManager manager)
   manager.registerBlockHandler("vanillaInventory", Blocks.hopper, TemplateRuleBlockInventory.class);  
   manager.registerBlockHandler("vanillaInventory", Blocks.trapped_chest, TemplateRuleBlockInventory.class);  
   manager.registerBlockHandler("vanillaFlowerPot", Blocks.flower_pot, TemplateRuleFlowerPot.class);
-
+  manager.registerBlockHandler("vanillaSkull", Blocks.skull, TemplateRuleVanillaSkull.class);
+  
   manager.registerBlockHandler("awAdvancedSpawner", AWBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
   manager.registerBlockHandler("awCoreLogic", AWBlocks.engineeringStation, TemplateRuleBlockLogic.class);
   manager.registerBlockHandler("awCoreLogic", AWBlocks.researchStation, TemplateRuleBlockLogic.class);
