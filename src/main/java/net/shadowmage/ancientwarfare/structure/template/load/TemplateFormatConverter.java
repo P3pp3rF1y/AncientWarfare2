@@ -322,7 +322,6 @@ private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPas
     rule.blockName = BlockDataManager.instance().getNameForBlock(block);
     rule.meta = meta;
     rule.buildPass = buildPass;
-    ((TemplateRuleBlockSign)rule).wall = block == Blocks.wall_sign;
     ((TemplateRuleBlockSign)rule).signContents = new String[]{"","","",""};        
     }//vanilla sign rule
   else if(block==Blocks.command_block)

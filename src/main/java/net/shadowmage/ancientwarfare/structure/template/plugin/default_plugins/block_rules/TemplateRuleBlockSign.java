@@ -33,7 +33,6 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks
 {
 
 public String signContents[];
-public boolean wall = true;
 
 public TemplateRuleBlockSign(World world, int x, int y, int z, Block block, int meta, int turns)
   {
@@ -46,7 +45,6 @@ public TemplateRuleBlockSign(World world, int x, int y, int z, Block block, int 
     }
   if(block==Blocks.standing_sign)
     {    
-    wall = false;
     this.meta = (meta+4*turns)%16;
     } 
   }
@@ -58,7 +56,8 @@ public TemplateRuleBlockSign()
 @Override
 public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder)
   {
-  Block block = wall? Blocks.wall_sign : Blocks.standing_sign;//BlockDataManager.getBlockByName(blockName);
+  Block block = (Block) Block.blockRegistry.getObject(blockName);
+//  Block block = wall? Blocks.wall_sign : Blocks.standing_sign;//BlockDataManager.getBlockByName(blockName);
   int meta = 0;
   if(block==Blocks.standing_sign)
     {
@@ -81,21 +80,13 @@ public void handlePlacement(World world, int turns, int x, int y, int z, IStruct
 @Override
 public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z)
   {
-  if(te instanceof TileEntitySign)
-    {
-    if(!signContents.equals(((TileEntitySign)te).signText))
-      {
-      return false;
-      }
-    }
-  return ((block==Blocks.standing_sign && !this.wall && (meta+4*turns%16)==this.meta)||(block==Blocks.wall_sign && this.wall && BlockDataManager.instance().getRotatedMeta(block, meta, turns)==this.meta));
+  return false;
   }
 
 @Override
 public void writeRuleData(NBTTagCompound tag)
   {
   super.writeRuleData(tag);
-  tag.setBoolean("wall", wall);
   for(int i =0; i < 4; i++)
     {
     tag.setString("signContents"+i, signContents[i]);
@@ -106,7 +97,6 @@ public void writeRuleData(NBTTagCompound tag)
 public void parseRuleData(NBTTagCompound tag)
   {
   super.parseRuleData(tag);
-  wall = tag.getBoolean("wall");
   this.signContents = new String[4];
   for(int i = 0; i <4 ;i++)
     {

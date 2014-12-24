@@ -3,7 +3,6 @@ towns todo:
 load/save all chunk-generation and structure generation tickets, find way to load/save the callback tickets...srsly..how?
 lamp post validation; dont' build in front of doors
 update instruction manual with information on town system
-sign (post) not generating properly
-trapped chest orientation is wrong
-mob-skull orientation is wrong
+
+
 
