@@ -45,7 +45,7 @@ public TemplateRuleBlockSign(World world, int x, int y, int z, Block block, int 
     signContents[i] = te.signText[i];
     }
   if(block==Blocks.standing_sign)
-    {
+    {    
     wall = false;
     this.meta = (meta+4*turns)%16;
     } 
@@ -95,6 +95,7 @@ public boolean shouldReuseRule(World world, Block block, int meta, int turns, Ti
 public void writeRuleData(NBTTagCompound tag)
   {
   super.writeRuleData(tag);
+  tag.setBoolean("wall", wall);
   for(int i =0; i < 4; i++)
     {
     tag.setString("signContents"+i, signContents[i]);
@@ -105,6 +106,7 @@ public void writeRuleData(NBTTagCompound tag)
 public void parseRuleData(NBTTagCompound tag)
   {
   super.parseRuleData(tag);
+  wall = tag.getBoolean("wall");
   this.signContents = new String[4];
   for(int i = 0; i <4 ;i++)
     {
