@@ -350,7 +350,7 @@ private static void generateStructure(TownGenerator gen, TownPartPlot plot, Stru
   buildKey.y += gen.townBounds.min.y;
   bb.offset(0, -template.yOffset, 0);
   WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));
-  AWLog.logDebug("added structure to tick handler for generation: "+template.name +" at: "+buildKey+" town bounds: "+gen.townBounds);
+//  AWLog.logDebug("added structure to tick handler for generation: "+template.name +" at: "+buildKey+" town bounds: "+gen.townBounds);
   }
 
 /**

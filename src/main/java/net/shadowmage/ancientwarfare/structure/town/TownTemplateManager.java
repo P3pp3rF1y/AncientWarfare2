@@ -38,17 +38,14 @@ public TownTemplate selectTemplateForGeneration(World world, int x, int z, TownB
   int min = Math.min(width, length);
   int templateMinimumSize;
   
-  AWLog.logDebug("chunk size for template selection: "+min);
   
   String biomeName = AWStructureStatics.getBiomeName(world.getBiomeGenForCoords(x, z));   
   int totalWeight = 0; 
   for(TownTemplate t : templates.values())
     {
-    AWLog.logDebug("template min size: "+t.getMinSize());
     templateMinimumSize = t.getMinSize();
     if(min >= templateMinimumSize && isBiomeValid(biomeName, t))
       {      
-      AWLog.logDebug("Validating town template: "+t.getTownTypeName() + "  "+min + " "+templateMinimumSize);
       searchCache.add(t);
       totalWeight += t.getSelectionWeight();
       }

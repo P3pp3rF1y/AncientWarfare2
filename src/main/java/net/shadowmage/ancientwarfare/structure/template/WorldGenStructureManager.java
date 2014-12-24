@@ -112,7 +112,6 @@ public StructureTemplate selectTemplateForGeneration(World world, Random rng, in
   foundValue = 0;
   for(StructureEntry entry : duplicateSearchEntries)
     {
-    foundValue += entry.getValue();
     mx = entry.getBB().getCenterX() - x;
     mz = entry.getBB().getCenterZ() - z;
     foundDistance = MathHelper.sqrt_float(mx * mx + mz * mz);

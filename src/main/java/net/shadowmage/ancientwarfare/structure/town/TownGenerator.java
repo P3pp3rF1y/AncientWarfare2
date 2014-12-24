@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
@@ -18,6 +17,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler.StructureGenerationCallbackTicket;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 
 /**
  * Responsible for constructing the town -- leveling the area, placing the structures, constructing walls
@@ -71,6 +71,7 @@ public TownGenerator(World world, TownBoundingArea area, TownTemplate template)
  */
 public void generate()
   {
+  AWLog.logDebug("Generating town at: "+townBounds.getCenterX()+" : "+townBounds.getCenterZ());
   determineStructuresToGenerate();
   TownGeneratorBorders.generateBorders(world, this);  
   TownGeneratorBorders.levelTownArea(world, this);
@@ -131,7 +132,6 @@ private void spawnVillager(int minX, int y, int minZ)
       return ;
       }
     }
-  AWLog.logDebug("Could not locate spawning location for villager...");
   }
 
 /**

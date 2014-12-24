@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -37,13 +36,11 @@ public void attemptGeneration(World world, Random rng, int blockX, int blockZ)
   TownBoundingArea area = TownPlacementValidator.findGenerationPosition(world, blockX, blockZ);
   if(area==null)
     {
-    AWLog.logDebug("Could not find valid position..");
     return;
     }
   TownTemplate template = TownTemplateManager.instance().selectTemplateForGeneration(world, blockX, blockZ, area);
   if(template==null)
     {
-    AWLog.logDebug("Could not find template for area: "+area);
     return;
     }
   if(area.getChunkWidth() - 1 > template.getMaxSize())//shrink width down to town max size
@@ -56,7 +53,6 @@ public void attemptGeneration(World world, Random rng, int blockX, int blockZ)
     }
   if(!TownPlacementValidator.validateAreaForPlacement(world, area))
     {
-    AWLog.logDebug("area failed validation.. "+area);
     return;
     }//cannot validate the area until bounds are possibly shrunk by selected template
   

@@ -41,7 +41,7 @@ public static TownBoundingArea findGenerationPosition(World world, int x, int z)
   TownMap tm = AWGameData.INSTANCE.getPerWorldData(TownMap.NAME, world, TownMap.class);
   int minDist = AWStructureStatics.townClosestDistance * 16;
   float dist = tm.getClosestTown(world, x, z, minDist * 2);
-  if(dist<minDist){AWLog.logDebug("Skipping generation for existing town too close!"); return null;}
+  if(dist<minDist){return null;}
    
   int height = getTopFilledHeight(world.getChunkFromChunkCoords(cx, cz), x & 15, z & 15);
   if(height <= 0){return null;}
@@ -274,7 +274,7 @@ private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk)
       }
     if(!AWStructureStatics.isValidTownTargetBlock(block))
       {
-      AWLog.logDebug("rejecting chunk for non-target block: "+block+" :: "+chunk.xPosition+":"+chunk.zPosition);
+      AWLog.logDebug("rejecting town chunk for non-target block: "+block+" :: "+chunk.xPosition+":"+chunk.zPosition);
       return -1;
       }    
     return y;//if not skippable and is valid target block, return that y-level
