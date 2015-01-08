@@ -127,6 +127,18 @@ public void onWeaponInventoryChanged()
     this.tasks.removeTask(collideAI);
     ItemStack stack = getEquipmentInSlot(0);
     Item item = stack==null ? null : stack.getItem();
+    
+    // Inserting QuiverBow recognition here (for b78)
+    if (Loader.isModLoaded("quiverchevsky"))
+    {
+    	if (item instanceof com.domochevsky.quiverbow.weapons._WeaponBase)
+    	{
+    		this.tasks.addTask(7, arrowAI);	// Ranged fighter
+    	}
+    	// else, not holding a QB
+    }
+    // else, QB isn't loaded, so nevermind. Back to regular attack handling
+    
     if(item==Items.bow)
       {
       this.tasks.addTask(7, arrowAI);
