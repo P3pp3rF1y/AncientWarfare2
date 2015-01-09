@@ -37,7 +37,7 @@ int textureHeight=256;
 HashMap<String, ModelPiece> pieces = new HashMap<String, ModelPiece>();
 private List<ModelPiece> basePieces = new ArrayList<ModelPiece>();
 
-public int iterationNum;
+protected int iterationNum;
 
 public void renderModel()
   {
@@ -151,9 +151,9 @@ public List<String> getModelLines()
 public void addPiece(ModelPiece piece)
   {
   pieces.put(piece.getName(), piece);
-  if(piece.getParent()==null)
+  if(piece.getParent() == null)
     {
-    getBasePieces().add(piece);
+    basePieces.add(piece);
     }
   }
 

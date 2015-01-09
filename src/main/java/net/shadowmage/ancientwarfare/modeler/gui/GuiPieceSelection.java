@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -80,11 +81,11 @@ public void initElements()
   ModelBaseAW model = parent.modelWidget.getModel();
   List<ModelPiece> pieces = new ArrayList<ModelPiece>(); 
   model.getPieces(pieces);
-  
   Label label;
   for(ModelPiece piece : pieces)
     {
     if(piece==excludedPiece){continue;}
+    
     label = new Label(3, totalHeight, piece.getName());
     label.addNewListener(new Listener(Listener.MOUSE_UP)
       {
@@ -103,6 +104,8 @@ public void initElements()
     pieceMap.put(label, piece);
     totalHeight+=12;
     }  
+  
+  area.setAreaSize(totalHeight+8);
   }
 
 private HashMap<Label, ModelPiece> pieceMap = new HashMap<Label, ModelPiece>();

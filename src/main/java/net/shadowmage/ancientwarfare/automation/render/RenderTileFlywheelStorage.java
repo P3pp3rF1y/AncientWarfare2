@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer implements IItemRenderer
 {
 
-ModelBaseAW cube, smallModel, largeModel;
+ModelBaseAW smallModel, largeModel;
 ResourceLocation smallTex[] = new ResourceLocation[3];
 ResourceLocation largeTex[] = new ResourceLocation[3];
 
@@ -39,7 +39,6 @@ ModelPiece caseBarsLarge;
 public RenderTileFlywheelStorage()
   {
   ModelLoader loader = new ModelLoader();
-  cube = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/cube.m2f"));
   
   smallTex[0] = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_small_light.png");
   smallTex[1] = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_small_medium.png");

@@ -217,6 +217,7 @@ List<InputCallback> inputHandlers = new ArrayList<InputCallback>();
 
 private int key;
 private String name;
+private boolean isPressed;
 
 private Keybind(String name, int key)
   {
@@ -234,16 +235,23 @@ public int getKeyCode()
   return key;
   }
 
-public void onKeyPressed()
+public boolean isPressed()
   {
+  return isPressed;
+  }
+
+private void onKeyPressed()
+  {
+  isPressed = true;
   for(InputCallback c : inputHandlers)
     {
     c.onKeyPressed();
     }
   }
 
-public void onKeyReleased()
+private void onKeyReleased()
   {
+  isPressed = false;
   for(InputCallback c : inputHandlers)
     {    
     c.onKeyReleased();
