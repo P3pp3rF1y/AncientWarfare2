@@ -65,6 +65,15 @@ public void updateTask()
   {  
   double dist = this.npc.getDistanceSq(this.target.posX, this.target.posY, this.target.posZ);
   boolean canSee = this.npc.getEntitySenses().canSee(this.target);  
+  
+  	//Inserting item update, to let it do whatever it needs to do. Used by QuiverBow for burst fire
+	if (npc.getHeldItem() != null) 
+	{ 
+		Item weapon = npc.getHeldItem().getItem();
+		if (weapon != null) { weapon.onUpdate(npc.getHeldItem(), npc.worldObj, npc, 0, true);	}
+		// else ...what? How?
+		// the itemstack, the world the wielder is in, the wielder themselves, something about animation and whether or not the wielder is holding the itemstack right now
+	}
 
   this.attackDelay--;
   this.npc.getLookHelper().setLookPositionWithEntity(this.target, 30.0F, 30.0F);
@@ -91,6 +100,28 @@ public void updateTask()
       {
       float pwr = (float)(attackDistanceSq / dist);
       pwr = pwr < 0.1f ? 0.1f : pwr>1.f ? 1.f : pwr;
+      
+      // Inserting QuiverBow ranged weapon usage here (for b78+)
+      if (Loader.isModLoaded("quiverchevsky"))
+      {
+	      if (npc.getHeldItem() != null && npc.getHeldItem().getItem() instanceof com.domochevsky.quiverbow.weapons._WeaponBase)
+	      {
+		      com.domochevsky.quiverbow.weapons._WeaponBase weapon = (com.domochevsky.quiverbow.weapons._WeaponBase) npc.getHeldItem().getItem();
+		      
+		      if (weapon.isMobUsable())
+		      {
+			      this.npc.faceEntity(target, 30.0F, 30.0F);
+			      weapon.doSingleFire(npc.getHeldItem(), npc.worldObj, npc); 	// Firing in the direction the entity is currently looking. Does not use ammo.
+		    	  this.attackDelay = weapon.getMaxCooldown() + 1; 				// Hold yer horses, sonny (But only as long as the weapon needs to be ready again)
+			     
+		    	  return; // We're done here
+		      }
+		      // else cannot be used by mobs. Nevermind.
+	      }
+	      // else, not holding a QB weapon. Nevermind.
+      }
+      // else, QB isn't loaded. Nevermind.
+      
       this.rangedAttacker.attackEntityWithRangedAttack(target, 1.f);
       this.attackDelay=35;
       }
