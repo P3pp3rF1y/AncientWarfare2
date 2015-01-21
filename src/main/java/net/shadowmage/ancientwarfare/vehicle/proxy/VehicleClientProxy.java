@@ -1,19 +1,16 @@
 package net.shadowmage.ancientwarfare.vehicle.proxy;
 
 
-public class VehicleClientProxy extends VehicleCommonProxy
-{
+public class VehicleClientProxy extends VehicleCommonProxy {
 
-@Override
-public void registerClient()
-  {
-  
-  registerClientOptions();
-  }
+    @Override
+    public void registerClient() {
 
-public void registerClientOptions()
-  {
-  
-  }
+        registerClientOptions();
+    }
+
+    public void registerClientOptions() {
+
+    }
 
 }

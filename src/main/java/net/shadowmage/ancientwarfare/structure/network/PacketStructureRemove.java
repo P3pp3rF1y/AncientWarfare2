@@ -4,37 +4,31 @@ import io.netty.buffer.ByteBuf;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
-public class PacketStructureRemove extends PacketBase
-{
+public class PacketStructureRemove extends PacketBase {
 
-String structureName;
+    String structureName;
 
-public PacketStructureRemove()
-  {
-  // receive side constructor
-  }
+    public PacketStructureRemove() {
+        // receive side constructor
+    }
 
-public PacketStructureRemove(String name)
-  {
-  structureName = name;
-  }
+    public PacketStructureRemove(String name) {
+        structureName = name;
+    }
 
-@Override
-protected void writeToStream(ByteBuf data)
-  {
-  StringTools.writeString(data, structureName);
-  }
+    @Override
+    protected void writeToStream(ByteBuf data) {
+        StringTools.writeString(data, structureName);
+    }
 
-@Override
-protected void readFromStream(ByteBuf data)
-  {
-  structureName = StringTools.readString(data);  
-  }
+    @Override
+    protected void readFromStream(ByteBuf data) {
+        structureName = StringTools.readString(data);
+    }
 
-@Override
-protected void execute()
-  {
-  
-  }
+    @Override
+    protected void execute() {
+
+    }
 
 }

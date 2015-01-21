@@ -2,26 +2,23 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.item.Item;
 
-public class ItemShield extends Item
-{
+public class ItemShield extends Item {
 
-ToolMaterial material;
-int armorValue;
+    ToolMaterial material;
+    int armorValue;
 
-public ItemShield(String name, ToolMaterial material)
-  {
-  setUnlocalizedName(name);
-  setCreativeTab(AWNpcItemLoader.npcTab);
-  this.setFull3D();
-  this.setTextureName("ancientwarfare:npc/"+name);  
-  this.material = material;
-  this.armorValue = material.getHarvestLevel()*2 + 1;
-  }
+    public ItemShield(String name, ToolMaterial material) {
+        setUnlocalizedName(name);
+        setCreativeTab(AWNpcItemLoader.npcTab);
+        this.setFull3D();
+        this.setTextureName("ancientwarfare:npc/" + name);
+        this.material = material;
+        this.armorValue = material.getHarvestLevel() * 2 + 1;
+    }
 
-public int getArmorBonusValue()
-  {
-  return armorValue;
-  }
+    public int getArmorBonusValue() {
+        return armorValue;
+    }
 
 //block action does strange orientation/rendering -- can perhaps try and counter it in render somehow
 //

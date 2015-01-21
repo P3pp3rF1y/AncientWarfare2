@@ -1,17 +1,16 @@
 package net.shadowmage.ancientwarfare.npc.proxy;
 
-import java.io.InputStream;
-
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 
-public class NpcCommonProxy extends CommonProxyBase
-{
+import java.io.InputStream;
 
-public void loadSkins(){}
+public class NpcCommonProxy extends CommonProxyBase {
 
-public ResourceLocation loadSkinPackImage(String packName, String imageName, InputStream is)
-  {
-  return null;
-  }
+    public void loadSkins() {
+    }
+
+    public ResourceLocation loadSkinPackImage(String packName, String imageName, InputStream is) {
+        return null;
+    }
 }

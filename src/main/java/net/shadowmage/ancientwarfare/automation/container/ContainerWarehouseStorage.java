@@ -1,8 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -15,208 +12,186 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
-public class ContainerWarehouseStorage extends ContainerBase
-{
+import java.util.ArrayList;
+import java.util.List;
 
-public IWarehouseStorageTile tile;
-public int guiHeight;
-public int areaSize;
-int playerSlotsSize;
-int playerSlotsY;
+public class ContainerWarehouseStorage extends ContainerBase {
 
-boolean shouldSynch = true;
-public ItemQuantityMap itemMap = new ItemQuantityMap();
-public ItemQuantityMap cache = new ItemQuantityMap();
+    public IWarehouseStorageTile tile;
+    public int guiHeight;
+    public int areaSize;
+    int playerSlotsSize;
+    int playerSlotsY;
 
-public List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
+    boolean shouldSynch = true;
+    public ItemQuantityMap itemMap = new ItemQuantityMap();
+    public ItemQuantityMap cache = new ItemQuantityMap();
 
-public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z)
-  {
-  super(player, x, y, z);
-  tile = (IWarehouseStorageTile) player.worldObj.getTileEntity(x, y, z);
-  tile.addViewer(this);
-  
-  areaSize = 5*18 + 16;
-  playerSlotsY = 148+8;
-  playerSlotsSize = 8+4+4*18;
-  guiHeight = playerSlotsY+playerSlotsSize;
-  
-  filters.addAll(tile.getFilters());
-  addPlayerSlots(player, 8, playerSlotsY, 4);  
-  }
+    public List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
 
-@Override
-public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex)
-  {
-  if(player.worldObj.isRemote){return null;}
-  Slot slot = this.getSlot(slotClickedIndex);
-  if(slot==null || !slot.getHasStack()){return null;}
-  ItemStack stack = slot.getStack();
-  stack = tile.tryAdd(stack);
-  if(stack==null){slot.putStack(null);}
-  detectAndSendChanges();
-  return null;
-  }
-  
-public void handleClientRequestSpecific(ItemStack stack, boolean isShiftClick)
-  {    
-  NBTTagCompound tag = new NBTTagCompound();
-  if(stack!=null)
-    {
-    tag.setTag("reqItem", stack.writeToNBT(new NBTTagCompound()));    
-    }  
-  tag.setBoolean("isShiftClick", isShiftClick);
-  NBTTagCompound pktTag = new NBTTagCompound();
-  pktTag.setTag("slotClick", tag);
-  sendDataToServer(pktTag);
-  }
+    public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
+        tile = (IWarehouseStorageTile) player.worldObj.getTileEntity(x, y, z);
+        tile.addViewer(this);
 
-@Override
-public void sendInitData()
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setTag("filterList", WarehouseStorageFilter.writeFilterList(filters));
-  sendDataToClient(tag);
-  }
+        areaSize = 5 * 18 + 16;
+        playerSlotsY = 148 + 8;
+        playerSlotsSize = 8 + 4 + 4 * 18;
+        guiHeight = playerSlotsY + playerSlotsSize;
 
-public void sendFiltersToServer()
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setTag("filterList", WarehouseStorageFilter.writeFilterList(filters));  
-  sendDataToServer(tag);
-  }
-
-@Override
-public void handlePacketData(NBTTagCompound tag)
-  {
-  if(tag.hasKey("filterList"))
-    {
-    List<WarehouseStorageFilter> filters = WarehouseStorageFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), new ArrayList<WarehouseStorageFilter>());
-    if(player.worldObj.isRemote)
-      {
-      this.filters.clear();
-      this.filters.addAll(filters); 
-      refreshGui();
-      }
-    else
-      {
-      tile.setFilters(filters);      
-      }
+        filters.addAll(tile.getFilters());
+        addPlayerSlots(player, 8, playerSlotsY, 4);
     }
-  if(tag.hasKey("slotClick"))
-    {    
-    NBTTagCompound reqTag = tag.getCompoundTag("slotClick");
-    ItemStack item = null;
-    if(reqTag.hasKey("reqItem"))
-      {
-      item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
-      }      
-    tile.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
+
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
+        if (player.worldObj.isRemote) {
+            return null;
+        }
+        Slot slot = this.getSlot(slotClickedIndex);
+        if (slot == null || !slot.getHasStack()) {
+            return null;
+        }
+        ItemStack stack = slot.getStack();
+        stack = tile.tryAdd(stack);
+        if (stack == null) {
+            slot.putStack(null);
+        }
+        detectAndSendChanges();
+        return null;
     }
-  if(tag.hasKey("changeList"))
-    {
-    handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
-    refreshGui();
+
+    public void handleClientRequestSpecific(ItemStack stack, boolean isShiftClick) {
+        NBTTagCompound tag = new NBTTagCompound();
+        if (stack != null) {
+            tag.setTag("reqItem", stack.writeToNBT(new NBTTagCompound()));
+        }
+        tag.setBoolean("isShiftClick", isShiftClick);
+        NBTTagCompound pktTag = new NBTTagCompound();
+        pktTag.setTag("slotClick", tag);
+        sendDataToServer(pktTag);
     }
-  super.handlePacketData(tag);
-  }
 
-@Override
-public void detectAndSendChanges()
-  {  
-  super.detectAndSendChanges();  
-  if(shouldSynch)
-    {
-    synchItemMaps();    
-    shouldSynch = false;
+    @Override
+    public void sendInitData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setTag("filterList", WarehouseStorageFilter.writeFilterList(filters));
+        sendDataToClient(tag);
     }
-  }
 
-private void handleChangeList(NBTTagList changeList)
-  {
-  NBTTagCompound tag;
-  int qty;
-  ItemHashEntry wrap = null;
-  for(int i = 0; i < changeList.tagCount(); i++)
-    {
-    tag = changeList.getCompoundTagAt(i);
-    wrap = ItemHashEntry.readFromNBT(tag);
-    qty = tag.getInteger("qty");
-    if(qty==0)
-      {
-      itemMap.remove(wrap);
-      }
-    else
-      {
-      itemMap.put(wrap, qty);      
-      }
+    public void sendFiltersToServer() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setTag("filterList", WarehouseStorageFilter.writeFilterList(filters));
+        sendDataToServer(tag);
     }
-  }
 
-private void synchItemMaps()
-  {
-  /**
-   * 
-   * need to loop through this.itemMap and compare quantities to warehouse.itemMap
-   *    add any changes to change-list
-   * need to loop through warehouse.itemMap and find new entries
-   *    add any new entries to change-list    
-   */
-
-  cache.clear();
-  tile.addItems(cache);
-  ItemQuantityMap warehouseItemMap = cache;
-  int qty;
-  NBTTagList changeList = new NBTTagList();
-  NBTTagCompound tag;
-  for(ItemHashEntry wrap : this.itemMap.keySet())
-    {
-    qty = this.itemMap.getCount(wrap);
-    if(qty!=warehouseItemMap.getCount(wrap))
-      {
-      qty = warehouseItemMap.getCount(wrap);
-      tag = wrap.writeToNBT(new NBTTagCompound());
-      tag.setInteger("qty", qty);
-      changeList.appendTag(tag);
-      this.itemMap.put(wrap, qty);
-      }
-    }  
-  for(ItemHashEntry entry : warehouseItemMap.keySet())
-    {
-    if(!itemMap.contains(entry))
-      {
-      qty = warehouseItemMap.getCount(entry);
-      tag = ItemHashEntry.writeToNBT(entry, new NBTTagCompound());
-      tag.setInteger("qty", qty);
-      changeList.appendTag(tag);
-      this.itemMap.put(entry, qty);
-      }
+    @Override
+    public void handlePacketData(NBTTagCompound tag) {
+        if (tag.hasKey("filterList")) {
+            List<WarehouseStorageFilter> filters = WarehouseStorageFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), new ArrayList<WarehouseStorageFilter>());
+            if (player.worldObj.isRemote) {
+                this.filters.clear();
+                this.filters.addAll(filters);
+                refreshGui();
+            } else {
+                tile.setFilters(filters);
+            }
+        }
+        if (tag.hasKey("slotClick")) {
+            NBTTagCompound reqTag = tag.getCompoundTag("slotClick");
+            ItemStack item = null;
+            if (reqTag.hasKey("reqItem")) {
+                item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
+            }
+            tile.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
+        }
+        if (tag.hasKey("changeList")) {
+            handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
+            refreshGui();
+        }
+        super.handlePacketData(tag);
     }
-  if(changeList.tagCount()>0)
-    {
-    tag = new NBTTagCompound();
-    tag.setTag("changeList", changeList);
-    sendDataToClient(tag);    
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        if (shouldSynch) {
+            synchItemMaps();
+            shouldSynch = false;
+        }
     }
-  }
 
-public void onStorageInventoryUpdated()
-  {  
-  shouldSynch = true;
-  }
+    private void handleChangeList(NBTTagList changeList) {
+        NBTTagCompound tag;
+        int qty;
+        ItemHashEntry wrap = null;
+        for (int i = 0; i < changeList.tagCount(); i++) {
+            tag = changeList.getCompoundTagAt(i);
+            wrap = ItemHashEntry.readFromNBT(tag);
+            qty = tag.getInteger("qty");
+            if (qty == 0) {
+                itemMap.remove(wrap);
+            } else {
+                itemMap.put(wrap, qty);
+            }
+        }
+    }
 
-public void onFilterListUpdated()
-  {
-  this.filters.clear();
-  this.filters.addAll(tile.getFilters());
-  sendInitData();
-  }
+    private void synchItemMaps() {
+        /**
+         *
+         * need to loop through this.itemMap and compare quantities to warehouse.itemMap
+         *    add any changes to change-list
+         * need to loop through warehouse.itemMap and find new entries
+         *    add any new entries to change-list
+         */
 
-@Override
-public void onContainerClosed(EntityPlayer par1EntityPlayer)
-  {
-  tile.removeViewer(this);
-  super.onContainerClosed(par1EntityPlayer);
-  }
+        cache.clear();
+        tile.addItems(cache);
+        ItemQuantityMap warehouseItemMap = cache;
+        int qty;
+        NBTTagList changeList = new NBTTagList();
+        NBTTagCompound tag;
+        for (ItemHashEntry wrap : this.itemMap.keySet()) {
+            qty = this.itemMap.getCount(wrap);
+            if (qty != warehouseItemMap.getCount(wrap)) {
+                qty = warehouseItemMap.getCount(wrap);
+                tag = wrap.writeToNBT(new NBTTagCompound());
+                tag.setInteger("qty", qty);
+                changeList.appendTag(tag);
+                this.itemMap.put(wrap, qty);
+            }
+        }
+        for (ItemHashEntry entry : warehouseItemMap.keySet()) {
+            if (!itemMap.contains(entry)) {
+                qty = warehouseItemMap.getCount(entry);
+                tag = ItemHashEntry.writeToNBT(entry, new NBTTagCompound());
+                tag.setInteger("qty", qty);
+                changeList.appendTag(tag);
+                this.itemMap.put(entry, qty);
+            }
+        }
+        if (changeList.tagCount() > 0) {
+            tag = new NBTTagCompound();
+            tag.setTag("changeList", changeList);
+            sendDataToClient(tag);
+        }
+    }
+
+    public void onStorageInventoryUpdated() {
+        shouldSynch = true;
+    }
+
+    public void onFilterListUpdated() {
+        this.filters.clear();
+        this.filters.addAll(tile.getFilters());
+        sendInitData();
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+        tile.removeViewer(this);
+        super.onContainerClosed(par1EntityPlayer);
+    }
 
 }

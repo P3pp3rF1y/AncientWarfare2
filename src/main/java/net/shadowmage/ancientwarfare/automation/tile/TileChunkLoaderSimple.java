@@ -11,114 +11,94 @@ import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.core.interfaces.IChunkLoaderTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
-public class TileChunkLoaderSimple extends TileEntity implements IInteractableTile, IChunkLoaderTile
-{
+public class TileChunkLoaderSimple extends TileEntity implements IInteractableTile, IChunkLoaderTile {
 
-Ticket chunkTicket = null;
+    Ticket chunkTicket = null;
 
-public TileChunkLoaderSimple()
-  {
-  
-  }
+    public TileChunkLoaderSimple() {
 
-public boolean canUpdate()
-  {
-  return false;
-  }
-
-public void releaseTicket()
-  {
-  if(chunkTicket!=null)
-    {
-    for(ChunkCoordIntPair ccip : chunkTicket.getChunkList())
-      {
-      ForgeChunkManager.unforceChunk(chunkTicket, ccip);
-      }
-    ForgeChunkManager.releaseTicket(chunkTicket);
     }
-  chunkTicket=null;    
-  }
 
-@Override
-public void validate()
-  {  
-  super.validate();
-  releaseTicket();
-  }
-
-@Override
-public void invalidate()
-  {
-  super.invalidate();
-  releaseTicket();
-  }
-
-@Override
-public void setTicket(Ticket tk)
-  {
-  if(this.chunkTicket!=null)
-    {
-    ForgeChunkManager.releaseTicket(chunkTicket);
+    public boolean canUpdate() {
+        return false;
     }
-  this.chunkTicket = tk;
-  if(tk!=null)
-    {
-    forceTicketChunks(tk);
+
+    public void releaseTicket() {
+        if (chunkTicket != null) {
+            for (ChunkCoordIntPair ccip : chunkTicket.getChunkList()) {
+                ForgeChunkManager.unforceChunk(chunkTicket, ccip);
+            }
+            ForgeChunkManager.releaseTicket(chunkTicket);
+        }
+        chunkTicket = null;
     }
-  }
 
-public void setupInitialTicket()
-  {
-  Ticket tk = ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, worldObj, Type.NORMAL);
-  this.chunkTicket = tk;
-  if(tk!=null)
-    {
-    writeDataToTicket(tk);
-    forceTicketChunks(tk);
-    } 
-  }
-
-protected void writeDataToTicket(Ticket tk)
-  {
-  NBTTagCompound posTag = new NBTTagCompound();
-  posTag.setInteger("x", xCoord);
-  posTag.setInteger("y", yCoord);
-  posTag.setInteger("z", zCoord);
-  tk.getModData().setTag("tilePosition", posTag);
-  }
-
-protected void forceTicketChunks(Ticket tk)
-  {
-  int cx = xCoord>>4;
-  int cz = zCoord>>4;
-  for(int x = cx-1; x<=cx+1; x++)
-    {
-    for(int z = cz-1; z<=cz+1; z++)
-      {
-      ChunkCoordIntPair ccip = new ChunkCoordIntPair(x, z);
-      ForgeChunkManager.forceChunk(tk, ccip);
-      }
+    @Override
+    public void validate() {
+        super.validate();
+        releaseTicket();
     }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        releaseTicket();
+    }
+
+    @Override
+    public void setTicket(Ticket tk) {
+        if (this.chunkTicket != null) {
+            ForgeChunkManager.releaseTicket(chunkTicket);
+        }
+        this.chunkTicket = tk;
+        if (tk != null) {
+            forceTicketChunks(tk);
+        }
+    }
+
+    public void setupInitialTicket() {
+        Ticket tk = ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, worldObj, Type.NORMAL);
+        this.chunkTicket = tk;
+        if (tk != null) {
+            writeDataToTicket(tk);
+            forceTicketChunks(tk);
+        }
+    }
+
+    protected void writeDataToTicket(Ticket tk) {
+        NBTTagCompound posTag = new NBTTagCompound();
+        posTag.setInteger("x", xCoord);
+        posTag.setInteger("y", yCoord);
+        posTag.setInteger("z", zCoord);
+        tk.getModData().setTag("tilePosition", posTag);
+    }
+
+    protected void forceTicketChunks(Ticket tk) {
+        int cx = xCoord >> 4;
+        int cz = zCoord >> 4;
+        for (int x = cx - 1; x <= cx + 1; x++) {
+            for (int z = cz - 1; z <= cz + 1; z++) {
+                ChunkCoordIntPair ccip = new ChunkCoordIntPair(x, z);
+                ForgeChunkManager.forceChunk(tk, ccip);
+            }
+        }
 //  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
 //  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(worldObj));
-  }
+    }
 
-@Override
-public boolean onBlockClicked(EntityPlayer player)
-  {
-  return true;
-  }
+    @Override
+    public boolean onBlockClicked(EntityPlayer player) {
+        return true;
+    }
 
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  super.readFromNBT(tag);
-  }
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+    }
 
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  super.writeToNBT(tag);
-  }
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+    }
 
 }

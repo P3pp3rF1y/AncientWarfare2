@@ -6,22 +6,18 @@ import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 
-public class AWVehicleEntityLoader
-{
+public class AWVehicleEntityLoader {
 
-private static int nextID = 0;
+    private static int nextID = 0;
 
-public static void load()
-  {
-  EntityDeclaration reg = new EntityDeclaration(VehicleBase.class, AWEntityRegistry.VEHICLE_TEST, nextID++, AncientWarfareVehicles.instance, 120, 3, true)
-    {  
-    @Override
-    public Entity createEntity(World world)
-      {
-      return new VehicleBase(world);
-      }
-    };
-  AWEntityRegistry.registerEntity(reg);
-  }
+    public static void load() {
+        EntityDeclaration reg = new EntityDeclaration(VehicleBase.class, AWEntityRegistry.VEHICLE_TEST, nextID++, AncientWarfareVehicles.instance, 120, 3, true) {
+            @Override
+            public Entity createEntity(World world) {
+                return new VehicleBase(world);
+            }
+        };
+        AWEntityRegistry.registerEntity(reg);
+    }
 
 }

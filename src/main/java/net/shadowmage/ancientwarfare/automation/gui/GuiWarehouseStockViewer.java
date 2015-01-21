@@ -11,113 +11,102 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
-public class GuiWarehouseStockViewer extends GuiContainerBase
-{
+public class GuiWarehouseStockViewer extends GuiContainerBase {
 
-CompositeScrolled area;
-ContainerWarehouseStockViewer container;
-public GuiWarehouseStockViewer(ContainerBase par1Container)
-  {
-  super(par1Container, 178, 172, defaultBackground);
-  container = (ContainerWarehouseStockViewer)par1Container;
-  }
+    CompositeScrolled area;
+    ContainerWarehouseStockViewer container;
 
-@Override
-public void initElements()
-  {
-  area = new CompositeScrolled(this, 0, 0, 178, 80);//240-8-8-4-4*18
-  addGuiElement(area);
-  }
+    public GuiWarehouseStockViewer(ContainerBase par1Container) {
+        super(par1Container, 178, 172, defaultBackground);
+        container = (ContainerWarehouseStockViewer) par1Container;
+    }
 
-@Override
-public void setupElements()
-  {
-  area.clearElements();
-  container.filters.clear();
-  container.filters.addAll(container.tile.getFilters());
-  int totalHeight = 8;
-  
-  ItemSlot slot;
-  Button button;
-  
-  Label label;
-  String text;
-  
-  for(WarehouseStockFilter filter : container.filters)
-    {
-    slot = new FilterItemSlot(8, totalHeight, filter, this);
-    area.addGuiElement(slot);
-    
-    button = new FilterRemoveButton(178-16-12, totalHeight+3, filter);
-    area.addGuiElement(button);
-    
-    text = String.valueOf(filter.getQuantity());
-    label = new Label(178-16-12-2-fontRendererObj.getStringWidth(text), totalHeight+4, String.valueOf(filter.getQuantity()));
-    area.addGuiElement(label);   
-    
-    text = filter.getFilterItem()==null ? "Empty Filter" : filter.getFilterItem().getDisplayName();
-    label = new Label(8+20, totalHeight+4, text);
-    area.addGuiElement(label);
-    
-    totalHeight+=16;
-    }  
-  if(container.filters.size()<4)
-    {
-    button = new Button(8, totalHeight+4, 178-16-8, 12, "guistrings.automation.new_filter")
-      {
-      @Override
-      protected void onPressed()
-        {
-        container.filters.add(new WarehouseStockFilter(null, 0));
-        container.sendFiltersToServer();
-        refreshGui();
+    @Override
+    public void initElements() {
+        area = new CompositeScrolled(this, 0, 0, 178, 80);//240-8-8-4-4*18
+        addGuiElement(area);
+    }
+
+    @Override
+    public void setupElements() {
+        area.clearElements();
+        container.filters.clear();
+        container.filters.addAll(container.tile.getFilters());
+        int totalHeight = 8;
+
+        ItemSlot slot;
+        Button button;
+
+        Label label;
+        String text;
+
+        for (WarehouseStockFilter filter : container.filters) {
+            slot = new FilterItemSlot(8, totalHeight, filter, this);
+            area.addGuiElement(slot);
+
+            button = new FilterRemoveButton(178 - 16 - 12, totalHeight + 3, filter);
+            area.addGuiElement(button);
+
+            text = String.valueOf(filter.getQuantity());
+            label = new Label(178 - 16 - 12 - 2 - fontRendererObj.getStringWidth(text), totalHeight + 4, String.valueOf(filter.getQuantity()));
+            area.addGuiElement(label);
+
+            text = filter.getFilterItem() == null ? "Empty Filter" : filter.getFilterItem().getDisplayName();
+            label = new Label(8 + 20, totalHeight + 4, text);
+            area.addGuiElement(label);
+
+            totalHeight += 16;
         }
-      };
-      
-    area.addGuiElement(button);
-    totalHeight+=16;
+        if (container.filters.size() < 4) {
+            button = new Button(8, totalHeight + 4, 178 - 16 - 8, 12, "guistrings.automation.new_filter") {
+                @Override
+                protected void onPressed() {
+                    container.filters.add(new WarehouseStockFilter(null, 0));
+                    container.sendFiltersToServer();
+                    refreshGui();
+                }
+            };
+
+            area.addGuiElement(button);
+            totalHeight += 16;
+        }
+        area.setAreaSize(totalHeight);
     }
-  area.setAreaSize(totalHeight);
-  }
 
-private class FilterRemoveButton extends Button
-{
-WarehouseStockFilter filter;
-public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseStockFilter filter)
-  {
-  super(topLeftX, topLeftY, 12, 12, "-");
-  this.filter = filter;
-  }
-@Override
-protected void onPressed()
-  {
-  container.filters.remove(filter);
-  container.sendFiltersToServer();
-  refreshGui();
-  }
-}
+    private class FilterRemoveButton extends Button {
+        WarehouseStockFilter filter;
 
-private class FilterItemSlot extends ItemSlot
-{
-WarehouseStockFilter filter;
-public FilterItemSlot(int topLeftX, int topLeftY, WarehouseStockFilter filter, ITooltipRenderer render)
-  {
-  super(topLeftX, topLeftY, filter.getFilterItem(), render);
-  this.filter = filter;
-  this.renderItemQuantity=false;
-  }
+        public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseStockFilter filter) {
+            super(topLeftX, topLeftY, 12, 12, "-");
+            this.filter = filter;
+        }
 
-@Override
-public void onSlotClicked(ItemStack stack)
-  {
-  ItemStack in = stack==null? null : stack.copy();
-  this.setItem(in);  
-  if(in!=null)
-    {
-    in.stackSize = 1;
+        @Override
+        protected void onPressed() {
+            container.filters.remove(filter);
+            container.sendFiltersToServer();
+            refreshGui();
+        }
     }
-  filter.setItem(in==null? null : in.copy());
-  container.sendFiltersToServer();
-  }
-}
+
+    private class FilterItemSlot extends ItemSlot {
+        WarehouseStockFilter filter;
+
+        public FilterItemSlot(int topLeftX, int topLeftY, WarehouseStockFilter filter, ITooltipRenderer render) {
+            super(topLeftX, topLeftY, filter.getFilterItem(), render);
+            this.filter = filter;
+            this.renderItemQuantity = false;
+        }
+
+        @Override
+        public void onSlotClicked(ItemStack stack) {
+            ItemStack in = stack == null ? null : stack.copy();
+            this.setItem(in);
+            if (in != null) {
+                in.stackSize = 1;
+            }
+            filter.setItem(in == null ? null : in.copy());
+            container.sendFiltersToServer();
+        }
+    }
 }

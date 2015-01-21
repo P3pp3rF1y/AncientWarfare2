@@ -19,32 +19,20 @@ buildscript {
     }
 }
 
-allprojects
-{
   apply plugin: 'forge'
   minecraft
   {
-    version = "1.7.10-10.13.2.1236"
-    runDir = "eclipse/assets"
+    version = "1.7.10-10.13.2.1286"
+    runDir = "eclipse"
   }
   version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.releasetype + "-MC" +minecraft.version
-  group = "shadowmage" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+  group = "shadowmage"
   archivesBaseName = "ancientwarfare"
-}
 
 dependencies {
-  compile files {
-    "lib/CodeChickenLib-1.7.10-1.1.1.106-dev.jar"
-  }
-  compile files {
-    "lib/buildcraft-6.1.8-dev.jar" // can remove this, no longer a real dep; can just load as a mod in mods folder
-  }
-  compile files {
-    "lib/CodeChickenCore-1.7.10-1.0.4.29-dev.jar"
-  }
-  compile files {
+  /*compile files {
     "lib/NotEnoughItems-1.7.10-1.0.3.67-dev.jar"
-  }
+  }*/
   compile files {
     "lib/CoFHLib-[1.7.10]1.0.0B7-dev-29.jar"
   }  
