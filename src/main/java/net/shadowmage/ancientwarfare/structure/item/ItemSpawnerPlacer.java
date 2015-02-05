@@ -26,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
@@ -39,9 +40,6 @@ import java.util.List;
 
 public class ItemSpawnerPlacer extends Item implements IItemClickable {
 
-    /**
-     * @param itemID
-     */
     public ItemSpawnerPlacer(String itemName) {
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
@@ -65,7 +63,7 @@ public class ItemSpawnerPlacer extends Item implements IItemClickable {
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
             NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
             String mobID = tag.getString("EntityId");
-            if (mobID.equals("")) {
+            if (mobID.isEmpty()) {
                 mobID = "No Selection!!";
             }
             list.add(mobID);
@@ -104,14 +102,10 @@ public class ItemSpawnerPlacer extends Item implements IItemClickable {
                     }
                 }
             } else {
-                /**
-                 * TODO output chat message about missing NBT-data on item / no selection
-                 */
+                player.addChatComponentMessage(new ChatComponentTranslation("guistrings.spawner.nodata"));
             }
         } else {
-            /**
-             * TODO output chat message about null hit/ w/e
-             */
+            player.addChatComponentMessage(new ChatComponentTranslation("guistrings.spawner.noblock"));
         }
     }
 

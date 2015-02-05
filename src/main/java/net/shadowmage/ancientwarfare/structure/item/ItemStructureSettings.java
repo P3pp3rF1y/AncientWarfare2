@@ -33,17 +33,18 @@ public class ItemStructureSettings {
     int buildFace;
     String name;
 
-    public ItemStructureSettings() {
+    private ItemStructureSettings() {
         pos1 = new BlockPosition();
         pos2 = new BlockPosition();
         key = new BlockPosition();
     }
 
     /**
-     * @param item
+     * @param stack to extract the info from
      * @return
      */
-    public static ItemStructureSettings getSettingsFor(ItemStack stack, ItemStructureSettings settings) {
+    public static ItemStructureSettings getSettingsFor(ItemStack stack) {
+        ItemStructureSettings settings = new ItemStructureSettings();
         NBTTagCompound tag;
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("structData")) {
             tag = stack.getTagCompound().getCompoundTag("structData");

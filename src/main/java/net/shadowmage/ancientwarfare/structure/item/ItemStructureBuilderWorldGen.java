@@ -20,13 +20,6 @@ import java.util.List;
 
 public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterface, IItemClickable {
 
-    ItemStructureSettings buildSettings = new ItemStructureSettings();
-
-    ItemStructureSettings viewSettings = new ItemStructureSettings();
-
-    /**
-     * @param itemID
-     */
     public ItemStructureBuilderWorldGen(String itemName) {
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
@@ -48,7 +41,7 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         String structure = "guistrings.no_selection";
-        ItemStructureSettings.getSettingsFor(stack, viewSettings);
+        ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(stack);
         if (viewSettings.hasName()) {
             structure = viewSettings.name;
         }
@@ -70,7 +63,7 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
         if (player == null || player.worldObj.isRemote) {
             return;
         }
-        ItemStructureSettings.getSettingsFor(stack, buildSettings);
+        ItemStructureSettings buildSettings = ItemStructureSettings.getSettingsFor(stack);
         if (buildSettings.hasName()) {
             StructureTemplate template = StructureTemplateManager.instance().getTemplate(buildSettings.name);
             if (template == null) {

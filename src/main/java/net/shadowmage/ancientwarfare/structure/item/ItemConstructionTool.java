@@ -13,12 +13,13 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 import java.util.Set;
 
-public class ItemConstructionTool extends Item implements IItemClickable, IItemKeyInterface {
+public class ItemConstructionTool extends Item implements IItemClickable, IItemKeyInterface, IBoxRenderer {
 
     public ItemConstructionTool(String regName) {
         this.setUnlocalizedName(regName);
@@ -237,7 +238,7 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
     }
 
     public static ConstructionSettings getSettings(ItemStack item) {
-        if (item.getItem() == AWStructuresItemLoader.constructionTool) {
+        if (item.getItem() instanceof ItemConstructionTool) {
             ConstructionSettings settings = new ConstructionSettings();
             if (item.hasTagCompound() && item.getTagCompound().hasKey("constructionSettings")) {
                 settings.readFromNBT(item.getTagCompound().getCompoundTag("constructionSettings"));
@@ -248,8 +249,23 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
     }
 
     public static void writeConstructionSettings(ItemStack item, ConstructionSettings settings) {
-        if (item.getItem() == AWStructuresItemLoader.constructionTool) {
+        if (item.getItem() instanceof ItemConstructionTool) {
             item.setTagInfo("constructionSettings", settings.writeToNBT(new NBTTagCompound()));
+        }
+    }
+
+    @Override
+    public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+        ConstructionSettings settings = getSettings(stack);
+        BlockPosition p1, p2;
+        BlockPosition p3 = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+        p1 = settings.hasPos1() ? settings.pos1() : p3;
+        p2 = settings.hasPos2() ? settings.pos2() : p3;
+        if (p1 != null && p2 != null) {
+            Util.renderBoundingBox(player, BlockTools.getMin(p1, p2), BlockTools.getMax(p1, p2), delta);
+        }
+        if (p3 != null) {
+            Util.renderBoundingBox(player, p3, p3, delta, 1, 0, 0);
         }
     }
 
