@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
@@ -115,7 +116,7 @@ public class AWCraftingManager {
             if (inputArray[index + 1] instanceof Item) {
                 stackForCharacter = new ItemStack((Item) inputArray[index + 1]);
             } else if (inputArray[index + 1] instanceof Block) {
-                stackForCharacter = new ItemStack((Block) inputArray[index + 1], 1, 32767);
+                stackForCharacter = new ItemStack((Block) inputArray[index + 1], 1, OreDictionary.WILDCARD_VALUE);
             } else if (inputArray[index + 1] instanceof ItemStack) {
                 stackForCharacter = (ItemStack) inputArray[index + 1];
             }

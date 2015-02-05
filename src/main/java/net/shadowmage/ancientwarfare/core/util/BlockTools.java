@@ -400,8 +400,7 @@ public class BlockTools {
         boolean dropBlock = true;
         if (AWCoreStatics.fireBlockBreakEvents) {
             BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(x, y, z, world, block, meta, AncientWarfareCore.proxy.getFakePlayer((WorldServer) world, playerName));
-            MinecraftForge.EVENT_BUS.post(event);
-            if (event.isCanceled()) {
+            if (MinecraftForge.EVENT_BUS.post(event)) {
                 dropBlock = false;
             }
         }

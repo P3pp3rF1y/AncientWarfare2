@@ -7,8 +7,7 @@ import codechicken.nei.recipe.IUsageHandler;
 public class AWNeiProxyActual {
     public AWNeiProxyActual() {
         AWNeiRecipeHandler handler = new AWNeiRecipeHandler();
-        API.registerRecipeHandler((ICraftingHandler) handler);
-        API.registerUsageHandler((IUsageHandler) handler);
+        API.registerRecipeHandler(handler);
+        API.registerUsageHandler(handler);
     }
-
 }

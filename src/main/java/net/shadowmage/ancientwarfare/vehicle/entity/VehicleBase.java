@@ -17,12 +17,12 @@ public class VehicleBase extends Entity {
 
     @Override
     protected void readEntityFromNBT(NBTTagCompound var1) {
-        super.readEntityFromNBT(var1);
+
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound var1) {
-        super.writeEntityToNBT(var1);
+
     }
 
 }
