@@ -27,18 +27,15 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
 
     HashMap<Integer, IconRotationMap> iconMaps = new HashMap<Integer, IconRotationMap>();
 
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof IInteractableTile) {
-            return ((IInteractableTile) te).onBlockClicked(player);
-        }
-        return false;
-    }
-
     protected BlockTorqueBase(Material material) {
         super(material);
         setHardness(2.f);
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
     }
 
     @Override
@@ -141,7 +138,7 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
     @Override
     public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b) {
         TileEntity tileentity = world.getTileEntity(x, y, z);
-        return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
+        return tileentity != null && tileentity.receiveClientEvent(a, b);
     }
 
     @Override

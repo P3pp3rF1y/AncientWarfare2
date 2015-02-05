@@ -9,8 +9,13 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 
 public class BlockAutoCrafting extends BlockWorksiteBase {
 
-    public BlockAutoCrafting(Material p_i45394_1_, String regName) {
-        super(p_i45394_1_, regName);
+    public BlockAutoCrafting(String regName) {
+        super(regName);
+    }
+
+    @Override
+    public boolean hasTileEntity(int metadata) {
+        return true;
     }
 
     @Override

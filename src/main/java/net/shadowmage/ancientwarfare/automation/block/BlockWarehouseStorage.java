@@ -57,8 +57,6 @@ public class BlockWarehouseStorage extends Block {
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
         switch (metadata) {
-            case 0:
-                return new TileWarehouseStorage();
             case 1:
                 return new TileWarehouseStorageMedium();
             case 2:
