@@ -49,8 +49,6 @@ public class AWNpcItemLoader {
     public static final ItemShield goldShield = new ItemShield("gold_shield", ToolMaterial.GOLD);
     public static final ItemShield diamondShield = new ItemShield("diamond_shield", ToolMaterial.EMERALD);
 
-    private static final TabSorter sorter = new TabSorter();
-
     public static void load() {
         GameRegistry.registerItem(npcSpawner, "npc_spawner");
         GameRegistry.registerItem(workOrder, "work_order");
@@ -74,8 +72,7 @@ public class AWNpcItemLoader {
         ((ItemComponent) AWItems.componentItem).addSubItem(ItemComponent.NPC_FOOD_BUNDLE, "ancientwarfare:npc/food_bundle");
     }
 
-
-    private static class TabSorter implements Comparator<ItemStack> {
+    private static final Comparator<ItemStack> sorter = new Comparator<ItemStack>() {
 
         @Override
         public int compare(ItemStack arg0, ItemStack arg1) {
@@ -120,6 +117,6 @@ public class AWNpcItemLoader {
                 return 0;
             }
         }
-    }
+    };
 
 }
