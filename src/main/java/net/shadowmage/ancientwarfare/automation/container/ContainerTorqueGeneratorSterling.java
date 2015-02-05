@@ -7,26 +7,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
-public class ContainerTorqueGeneratorSterling extends ContainerBase {
+public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSterlingEngine> {
 
     public int guiHeight;
     public double energy;
     public int burnTime;
     public int burnTimeBase;
 
-    public TileSterlingEngine tile;
-
     public ContainerTorqueGeneratorSterling(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        tile = (TileSterlingEngine) player.worldObj.getTileEntity(x, y, z);
-        addSlotToContainer(new Slot(tile, 0, 8 + 4 * 18, 8 + 12) {
+        addSlotToContainer(new Slot(tileEntity, 0, 8 + 4 * 18, 8 + 12) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return TileEntityFurnace.isItemFuel(par1ItemStack);
             }
         });
-        addPlayerSlots(player, 8, 8 + 18 + 8 + 12 + 12, 4);
+        addPlayerSlots(8, 8 + 18 + 8 + 12 + 12, 4);
         guiHeight = 8 + 18 + 8 + 4 * 18 + 4 + 8 + 12 + 12;
     }
 
@@ -34,8 +32,7 @@ public class ContainerTorqueGeneratorSterling extends ContainerBase {
     public void updateProgressBar(int par1, int par2) {
         if (par1 == 0) {
             double e = (double) par2;
-            energy = e * 0.001d * tile.getMaxTorque(tile.getPrimaryFacing());
-            energy = (int) energy;
+            energy = e * 0.001d * tileEntity.getMaxTorque(tileEntity.getPrimaryFacing());
             refreshGui();
         }
         if (par1 == 1) {
@@ -51,27 +48,27 @@ public class ContainerTorqueGeneratorSterling extends ContainerBase {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        double g = tile.getTorqueStored(tile.getPrimaryFacing());
+        double g = tileEntity.getTorqueStored(tileEntity.getPrimaryFacing());
         if (g != energy) {
             energy = g;
-            g = g / tile.getMaxTorque(tile.getPrimaryFacing());
+            g = g / tileEntity.getMaxTorque(tileEntity.getPrimaryFacing());
             int e = (int) (g * 1000.d);
-            for (int j = 0; j < this.crafters.size(); ++j) {
-                ((ICrafting) this.crafters.get(j)).sendProgressBarUpdate(this, 0, e);
+            for (Object crafter : this.crafters) {
+                ((ICrafting) crafter).sendProgressBarUpdate(this, 0, e);
             }
         }
-        int b = tile.getBurnTime();
+        int b = tileEntity.getBurnTime();
         if (b != burnTime) {
             burnTime = b;
-            for (int j = 0; j < this.crafters.size(); ++j) {
-                ((ICrafting) this.crafters.get(j)).sendProgressBarUpdate(this, 1, b);
+            for (Object crafter : this.crafters) {
+                ((ICrafting) crafter).sendProgressBarUpdate(this, 1, b);
             }
         }
-        b = tile.getBurnTimeBase();
+        b = tileEntity.getBurnTimeBase();
         if (b != burnTimeBase) {
             burnTimeBase = b;
-            for (int j = 0; j < this.crafters.size(); ++j) {
-                ((ICrafting) this.crafters.get(j)).sendProgressBarUpdate(this, 2, b);
+            for (Object crafter : this.crafters) {
+                ((ICrafting) crafter).sendProgressBarUpdate(this, 2, b);
             }
         }
     }
@@ -95,7 +92,7 @@ public class ContainerTorqueGeneratorSterling extends ContainerBase {
             this.mergeItemStack(stackFromSlot, 0, 1, false);
         }
         if (stackFromSlot.stackSize == 0) {
-            slot.putStack((ItemStack) null);
+            slot.putStack(null);
         } else {
             slot.onSlotChanged();
         }

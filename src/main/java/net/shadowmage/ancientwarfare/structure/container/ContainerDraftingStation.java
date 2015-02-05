@@ -24,9 +24,11 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
     private TileDraftingStation tile;
 
     public ContainerDraftingStation(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         tile = (TileDraftingStation) player.worldObj.getTileEntity(x, y, z);
-
+        if(tile == null){
+            throw new IllegalArgumentException("No drafting station");
+        }
         structureName = tile.getCurrentTemplateName();
         neededResources.addAll(tile.getNeededResources());
         isStarted = tile.isStarted();
@@ -57,7 +59,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
         addSlotToContainer(new SlotFiltered(tile.outputSlot, 0, 8 + 4 * 18, 94 - 16 - 18, filter));
 
-        this.addPlayerSlots(player, 8, 156, 4);
+        this.addPlayerSlots(8, 156, 4);
     }
 
     @Override
@@ -85,7 +87,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
                 }
             }
             if (slotStack.stackSize == 0) {
-                theSlot.putStack((ItemStack) null);
+                theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }
@@ -201,7 +203,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
             } else {
                 tag.setString("structName", structureName);
             }
-        } else if (structureName != null && tileName != null && !structureName.equals(tileName)) {
+        } else if (structureName != null && !structureName.equals(tileName)) {
             structureName = tileName;
             tag = new NBTTagCompound();
             tag.setString("structName", structureName);

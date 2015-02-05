@@ -11,22 +11,20 @@ import net.shadowmage.ancientwarfare.npc.trade.POTrade;
 
 import java.util.ArrayList;
 
-public class GuiNpcPlayerOwnedTrade extends GuiContainerBase {
+public class GuiNpcPlayerOwnedTrade extends GuiContainerBase<ContainerNpcPlayerOwnedTrade> {
 
     CompositeScrolled area;
-    public final ContainerNpcPlayerOwnedTrade container;
     boolean owner;
 
     public GuiNpcPlayerOwnedTrade(ContainerBase container) {
         super(container, 256, 240, defaultBackground);
-        this.container = (ContainerNpcPlayerOwnedTrade) container;
     }
 
     @Override
     public void initElements() {
         int areaSize = ySize - 8 - 4 - 8 - 4 * 18;
         int areaY = 0;
-        if (player.getCommandSenderName().equals(container.trader.getOwnerName())) {
+        if (player.getCommandSenderName().equals(getContainer().entity.getOwnerName())) {
             areaSize -= 12 + 8 + 4;
             areaY = 12 + 8 + 4;
             owner = true;
@@ -42,14 +40,14 @@ public class GuiNpcPlayerOwnedTrade extends GuiContainerBase {
             Button inventory = new Button(8, 8, 240, 12, "guistrings.inventory") {
                 @Override
                 protected void onPressed() {
-                    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, container.trader.getEntityId(), 0, 0);
+                    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getContainer().entity.getEntityId(), 0, 0);
                 }
             };
             addGuiElement(inventory);
         }
         addGuiElement(new Label(8 + 9 * 18 + 8 + 8, 240 - 4 - 8 - 4 * 18, "guistrings.input"));
         addGuiElement(area);
-        if (container.storage != null) {
+        if (getContainer().storage != null) {
             addTrades();
         } else {
             //TODO add label/message stating that trades must be configured for this NPC
@@ -58,13 +56,13 @@ public class GuiNpcPlayerOwnedTrade extends GuiContainerBase {
 
     private void addTrades() {
         ArrayList<POTrade> trades = new ArrayList<POTrade>();
-        container.tradeList.getTrades(trades);
+        getContainer().tradeList.getTrades(trades);
         int totalHeight = 8;
 
         POTrade trade;
         for (int i = 0; i < trades.size(); i++) {
             trade = trades.get(i);
-            if (trade.isAvailable(container.storage)) {
+            if (trade.isAvailable(getContainer().storage)) {
                 totalHeight = addTrade(trade, i, totalHeight);
             }
         }
@@ -96,7 +94,7 @@ public class GuiNpcPlayerOwnedTrade extends GuiContainerBase {
         Button tradeButton = new Button(8 + 6 * 18 + 9 + 8, startHeight + 17, 70, 20, "guistrings.trade") {
             @Override
             protected void onPressed() {
-                trade.perfromTrade(player, container.tradeInput, container.storage);
+                trade.perfromTrade(player, getContainer().tradeInput, getContainer().storage);
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setInteger("doTrade", tradeIndex);
                 sendDataToContainer(tag);

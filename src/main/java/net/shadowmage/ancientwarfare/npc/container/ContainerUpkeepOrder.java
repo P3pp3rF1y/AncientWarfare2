@@ -12,7 +12,7 @@ public class ContainerUpkeepOrder extends ContainerBase {
     private boolean hasChanged;
 
     public ContainerUpkeepOrder(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         ItemStack stack = player.getCurrentEquippedItem();
         if (stack == null || stack.getItem() == null) {
             throw new IllegalArgumentException("Cannot open Work Order GUI for null stack/item.");

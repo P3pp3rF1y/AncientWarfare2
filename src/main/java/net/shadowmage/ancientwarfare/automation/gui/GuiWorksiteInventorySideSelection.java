@@ -12,13 +12,10 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 
 import java.util.EnumSet;
 
-public class GuiWorksiteInventorySideSelection extends GuiContainerBase {
-
-    ContainerWorksiteInventorySideSelection container;
+public class GuiWorksiteInventorySideSelection extends GuiContainerBase<ContainerWorksiteInventorySideSelection> {
 
     public GuiWorksiteInventorySideSelection(ContainerBase par1Container) {
         super(par1Container, 128 + 55 + 8, 106, defaultBackground);
-        container = (ContainerWorksiteInventorySideSelection) par1Container;
     }
 
     @Override
@@ -55,11 +52,11 @@ public class GuiWorksiteInventorySideSelection extends GuiContainerBase {
             label = new Label(8, height, side.getTranslationKey());
             addGuiElement(label);
 
-            dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, container.worksite.getPrimaryFacing().ordinal(), side);
+            dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, getContainer().tileEntity.getPrimaryFacing().ordinal(), side);
             label = new Label(74, height, Direction.getDirectionFor(dir).getTranslationKey());
             addGuiElement(label);
 
-            accessed = container.sideMap.get(side);
+            accessed = getContainer().sideMap.get(side);
             sideButton = new SideButton(128, height, side, accessed);
             addGuiElement(sideButton);
 
@@ -84,7 +81,7 @@ public class GuiWorksiteInventorySideSelection extends GuiContainerBase {
         protected void onPressed() {
             int ordinal = selection.ordinal();
             RelativeSide next;
-            EnumSet<RelativeSide> validSides = container.worksite.inventory.getValidSides();
+            EnumSet<RelativeSide> validSides = getContainer().tileEntity.inventory.getValidSides();
             for (int i = 0; i < RelativeSide.values().length; i++) {
                 ordinal++;
                 if (ordinal >= RelativeSide.values().length) {
@@ -96,9 +93,9 @@ public class GuiWorksiteInventorySideSelection extends GuiContainerBase {
                     break;
                 }
             }
-            container.sideMap.put(side, selection);
+            getContainer().sideMap.put(side, selection);
             setText(selection.getTranslationKey());
-            container.sendSlotChange(side, selection);
+            getContainer().sendSlotChange(side, selection);
         }
 
     }

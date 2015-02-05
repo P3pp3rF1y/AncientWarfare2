@@ -19,7 +19,7 @@ public class GuiResearchStationSelection extends GuiContainerBase {
     CompositeScrolled selectionArea;
 
     public GuiResearchStationSelection(GuiResearchStation parent, int x, int y) {
-        super(parent.container, 400, 240, defaultBackground);
+        super(parent.getContainer(), 400, 240, defaultBackground);
         this.parent = parent;
         Mouse.setCursorPosition(x, y);
     }
@@ -44,7 +44,7 @@ public class GuiResearchStationSelection extends GuiContainerBase {
         selectionArea.clearElements();
         queueArea.clearElements();
         int goal;
-        goal = parent.container.currentGoal;
+        goal = parent.getContainer().currentGoal;
 
         int totalHeight = 8;
 
@@ -52,7 +52,7 @@ public class GuiResearchStationSelection extends GuiContainerBase {
             totalHeight = addQueuedGoal(totalHeight, goal, false);
         }
 
-        for (Integer g : parent.container.queuedResearch) {
+        for (Integer g : parent.getContainer().queuedResearch) {
             totalHeight = addQueuedGoal(totalHeight, g, true);
         }
 
@@ -61,8 +61,8 @@ public class GuiResearchStationSelection extends GuiContainerBase {
 
         totalHeight = 8;
 
-        if (parent.container.researcherName != null) {
-            for (Integer g : ResearchTracker.instance().getResearchableGoals(player.worldObj, parent.container.researcherName)) {
+        if (parent.getContainer().researcherName != null) {
+            for (Integer g : ResearchTracker.instance().getResearchableGoals(player.worldObj, parent.getContainer().researcherName)) {
                 totalHeight = addSelectableGoal(totalHeight, g);
             }
         }
@@ -137,8 +137,8 @@ public class GuiResearchStationSelection extends GuiContainerBase {
     @Override
     protected boolean onGuiCloseRequested() {
         parent.refreshGui();
-        parent.container.setGui(parent);
-        parent.container.addSlots();
+        parent.getContainer().setGui(parent);
+        parent.getContainer().addSlots();
         Minecraft.getMinecraft().displayGuiScreen(parent);
         return false;
     }
@@ -155,7 +155,7 @@ public class GuiResearchStationSelection extends GuiContainerBase {
 
         @Override
         protected void onPressed() {
-            PacketResearchUpdate pkt = new PacketResearchUpdate(parent.container.researcherName, goal.getId(), add, false);
+            PacketResearchUpdate pkt = new PacketResearchUpdate(parent.getContainer().researcherName, goal.getId(), add, false);
             NetworkHandler.sendToServer(pkt);
         }
     }

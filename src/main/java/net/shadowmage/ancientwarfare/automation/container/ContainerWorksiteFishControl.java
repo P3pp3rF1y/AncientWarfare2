@@ -4,19 +4,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
-public class ContainerWorksiteFishControl extends ContainerBase {
-
+public class ContainerWorksiteFishControl extends ContainerTileBase<WorkSiteFishFarm> {
 
     public boolean harvestFish;
     public boolean harvestInk;
-    public WorkSiteFishFarm worksite;
 
     public ContainerWorksiteFishControl(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        worksite = (WorkSiteFishFarm) player.worldObj.getTileEntity(x, y, z);
-        this.harvestFish = worksite.harvestFish;
-        this.harvestInk = worksite.harvestInk;
+        this.harvestFish = tileEntity.harvestFish;
+        this.harvestInk = tileEntity.harvestInk;
     }
 
     @Override
@@ -31,11 +29,11 @@ public class ContainerWorksiteFishControl extends ContainerBase {
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("fish")) {
             harvestFish = tag.getBoolean("fish");
-            worksite.harvestFish = harvestFish;
+            tileEntity.harvestFish = harvestFish;
         }
         if (tag.hasKey("ink")) {
             harvestInk = tag.getBoolean("ink");
-            worksite.harvestInk = harvestInk;
+            tileEntity.harvestInk = harvestInk;
         }
         refreshGui();
     }
@@ -43,7 +41,7 @@ public class ContainerWorksiteFishControl extends ContainerBase {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (harvestFish != worksite.harvestFish || harvestInk != worksite.harvestInk) {
+        if (harvestFish != tileEntity.harvestFish || harvestInk != tileEntity.harvestInk) {
             sendInitData();
         }
     }

@@ -13,17 +13,14 @@ import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiNpcFactionTradeView extends GuiContainerBase {
+public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFactionTradeView> {
 
     Button inventoryButton;
     Button setupButton;
     CompositeScrolled area;
 
-    public final ContainerNpcFactionTradeView container;
-
     public GuiNpcFactionTradeView(ContainerBase container) {
         super(container);
-        this.container = (ContainerNpcFactionTradeView) container;
     }
 
     @Override
@@ -33,13 +30,13 @@ public class GuiNpcFactionTradeView extends GuiContainerBase {
         inventoryButton = new Button(8, 8, (256 - 16) / 2, 12, "guistrings.inventory") {
             @Override
             protected void onPressed() {
-                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, container.trader.getEntityId(), 0, 0);
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getContainer().entity.getEntityId(), 0, 0);
             }
         };
         setupButton = new Button(8 + ((256 - 16) / 2), 8, (256 - 16) / 2, 12, "guistrings.trade_setup") {
             @Override
             protected void onPressed() {
-                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_TRADE_SETUP, container.trader.getEntityId(), 0, 0);
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_TRADE_SETUP, getContainer().entity.getEntityId(), 0, 0);
             }
         };
     }
@@ -60,7 +57,7 @@ public class GuiNpcFactionTradeView extends GuiContainerBase {
         area.clearElements();
 
         List<FactionTrade> trades = new ArrayList<FactionTrade>();
-        container.tradeList.getTrades(trades);
+        getContainer().tradeList.getTrades(trades);
 
         int totalHeight = 8;
         for (int i = 0; i < trades.size(); i++) {
@@ -98,7 +95,7 @@ public class GuiNpcFactionTradeView extends GuiContainerBase {
         Button tradeButton = new Button(8 + 6 * 18 + 9 + 8, startHeight + 17, 70, 20, "guistrings.trade") {
             @Override
             protected void onPressed() {
-                trade.performTrade(player, container.tradeInput);//TODO create input slot trade inventory
+                trade.performTrade(player, getContainer().tradeInput);//TODO create input slot trade inventory
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setInteger("doTrade", tradeNum);
                 sendDataToContainer(tag);

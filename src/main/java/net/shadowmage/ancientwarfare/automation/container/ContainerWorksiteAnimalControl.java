@@ -5,10 +5,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
-public class ContainerWorksiteAnimalControl extends ContainerBase {
+public class ContainerWorksiteAnimalControl extends ContainerTileBase<WorkSiteAnimalFarm> {
 
-    public WorkSiteAnimalFarm worksite;
     public int maxPigs;
     public int maxSheep;
     public int maxCows;
@@ -16,17 +16,10 @@ public class ContainerWorksiteAnimalControl extends ContainerBase {
 
     public ContainerWorksiteAnimalControl(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        TileEntity te = player.worldObj.getTileEntity(x, y, z);
-        if (te instanceof WorkSiteAnimalFarm) {
-            WorkSiteAnimalFarm farm = (WorkSiteAnimalFarm) te;
-            this.worksite = farm;
-            maxPigs = farm.maxPigCount;
-            maxSheep = farm.maxSheepCount;
-            maxCows = farm.maxCowCount;
-            maxChickens = farm.maxChickenCount;
-        } else {
-            throw new IllegalArgumentException("Cannot open animal-farm container/GUI for tile: " + te);
-        }
+        maxPigs = tileEntity.maxPigCount;
+        maxSheep = tileEntity.maxSheepCount;
+        maxCows = tileEntity.maxCowCount;
+        maxChickens = tileEntity.maxChickenCount;
     }
 
     @Override
@@ -46,11 +39,11 @@ public class ContainerWorksiteAnimalControl extends ContainerBase {
         maxChickens = tag.getInteger("chickens");
         maxSheep = tag.getInteger("sheep");
         if (!player.worldObj.isRemote) {
-            worksite.maxCowCount = maxCows;
-            worksite.maxPigCount = maxPigs;
-            worksite.maxChickenCount = maxChickens;
-            worksite.maxSheepCount = maxSheep;
-            worksite.markDirty();//mark dirty so it get saved to nbt
+            tileEntity.maxCowCount = maxCows;
+            tileEntity.maxPigCount = maxPigs;
+            tileEntity.maxChickenCount = maxChickens;
+            tileEntity.maxSheepCount = maxSheep;
+            tileEntity.markDirty();//mark dirty so it get saved to nbt
         }
         refreshGui();
     }
@@ -67,20 +60,20 @@ public class ContainerWorksiteAnimalControl extends ContainerBase {
     @Override
     public void detectAndSendChanges() {
         boolean send = false;
-        if (maxPigs != worksite.maxPigCount) {
-            maxPigs = worksite.maxPigCount;
+        if (maxPigs != tileEntity.maxPigCount) {
+            maxPigs = tileEntity.maxPigCount;
             send = true;
         }
-        if (maxChickens != worksite.maxChickenCount) {
-            maxChickens = worksite.maxChickenCount;
+        if (maxChickens != tileEntity.maxChickenCount) {
+            maxChickens = tileEntity.maxChickenCount;
             send = true;
         }
-        if (maxSheep != worksite.maxSheepCount) {
-            maxSheep = worksite.maxSheepCount;
+        if (maxSheep != tileEntity.maxSheepCount) {
+            maxSheep = tileEntity.maxSheepCount;
             send = true;
         }
-        if (maxCows != worksite.maxCowCount) {
-            maxCows = worksite.maxCowCount;
+        if (maxCows != tileEntity.maxCowCount) {
+            maxCows = tileEntity.maxCowCount;
             send = true;
         }
 

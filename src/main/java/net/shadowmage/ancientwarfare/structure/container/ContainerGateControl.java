@@ -3,21 +3,19 @@ package net.shadowmage.ancientwarfare.structure.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerEntityBase;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
-public class ContainerGateControl extends ContainerBase {
-
-    EntityGate gate;
+public class ContainerGateControl extends ContainerEntityBase<EntityGate> {
 
     public ContainerGateControl(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
-        gate = (EntityGate) player.worldObj.getEntityByID(x);
+        super(player, x);
     }
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("repack")) {
-            gate.repackEntity();
+            entity.repackEntity();
         }
     }
 

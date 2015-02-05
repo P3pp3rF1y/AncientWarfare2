@@ -13,14 +13,13 @@ public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase 
     TileAdvancedSpawner spawner;
 
     public ContainerSpawnerAdvancedBlock(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         TileEntity te = player.worldObj.getTileEntity(x, y, z);
-        if (!player.worldObj.isRemote && te instanceof TileAdvancedSpawner) {
+        if (te instanceof TileAdvancedSpawner) {
             spawner = (TileAdvancedSpawner) te;
             settings = spawner.getSettings();
         } else {
-            spawner = (TileAdvancedSpawner) te;
-            settings = spawner.getSettings();
+            throw new IllegalArgumentException("Spawner not found");
         }
     }
 

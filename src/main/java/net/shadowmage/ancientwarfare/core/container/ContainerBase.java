@@ -16,9 +16,9 @@ import java.util.List;
 public class ContainerBase extends Container {
 
     public EntityPlayer player;
-    IContainerGuiCallback gui;
+    private IContainerGuiCallback gui;
 
-    public ContainerBase(EntityPlayer player, int x, int y, int z) {
+    public ContainerBase(EntityPlayer player) {
         this.player = player;
     }
 
@@ -30,12 +30,11 @@ public class ContainerBase extends Container {
     }
 
     /**
-     * @param player the player to add hotbar from
      * @param tx     the upper-left X coordinate of the 9x3 inventory block
      * @param ty     the upper-left Y coordinate of the 9x3 inventory block
      * @param gap    the gap size between upper (9x3) and lower(9x1) inventory blocks, in pixels
      */
-    protected int addPlayerSlots(EntityPlayer player, int tx, int ty, int gap) {
+    protected int addPlayerSlots(int tx, int ty, int gap) {
         int y;
         int x;
         int slotNum;

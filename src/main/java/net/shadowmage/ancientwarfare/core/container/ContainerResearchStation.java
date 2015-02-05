@@ -14,21 +14,19 @@ import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContainerResearchStation extends ContainerBase {
+public class ContainerResearchStation extends ContainerTileBase<TileResearchStation> {
 
     public boolean useAdjacentInventory;
     public String researcherName;
     public int currentGoal = -1;
     public int progress = 0;
-    public TileResearchStation tile;
     public List<Integer> queuedResearch = new ArrayList<Integer>();
 
     public ContainerResearchStation(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        tile = (TileResearchStation) player.worldObj.getTileEntity(x, y, z);
         if (!player.worldObj.isRemote) {
-            researcherName = tile.getCrafterName();
-            useAdjacentInventory = tile.useAdjacentInventory;
+            researcherName = tileEntity.getCrafterName();
+            useAdjacentInventory = tileEntity.useAdjacentInventory;
             if (researcherName != null) {
                 currentGoal = ResearchTracker.instance().getCurrentGoal(player.worldObj, researcherName);
                 progress = ResearchTracker.instance().getProgress(player.worldObj, researcherName);
@@ -37,7 +35,7 @@ public class ContainerResearchStation extends ContainerBase {
         }
 
         Slot slot;
-        slot = new Slot(tile.bookInventory, 0, 8, 18 + 4) {
+        slot = new Slot(tileEntity.bookInventory, 0, 8, 18 + 4) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return par1ItemStack != null && par1ItemStack.getItem() == AWItems.researchBook && ItemResearchBook.getResearcherName(par1ItemStack) != null;
@@ -51,13 +49,13 @@ public class ContainerResearchStation extends ContainerBase {
             for (int x1 = 0; x1 < 3; x1++) {
                 x2 = x1 * 18 + 8 + 18;//x1*18 + 8 + 3*18;
                 slotNum = y1 * 3 + x1;
-                slot = new Slot(tile.resourceInventory, slotNum, x2, y2);
+                slot = new Slot(tileEntity.resourceInventory, slotNum, x2, y2);
                 addSlotToContainer(slot);
             }
         }
 
         int y1 = 240 - 8 - 4 - 4 * 18;
-        y1 = this.addPlayerSlots(player, 8, y1, 4);
+        y1 = this.addPlayerSlots(8, y1, 4);
     }
 
     @Override
@@ -120,8 +118,8 @@ public class ContainerResearchStation extends ContainerBase {
             tag.setIntArray("queuedResearch", queueData);
         }
         tag.setBoolean("useAdjacentInventory", useAdjacentInventory);
-        tag.setInteger("inventoryDirection", tile.inventoryDirection.ordinal());
-        tag.setInteger("inventorySide", tile.inventorySide.ordinal());
+        tag.setInteger("inventoryDirection", tileEntity.inventoryDirection.ordinal());
+        tag.setInteger("inventorySide", tileEntity.inventorySide.ordinal());
         this.sendDataToClient(tag);
     }
 
@@ -154,14 +152,14 @@ public class ContainerResearchStation extends ContainerBase {
         if (tag.hasKey("useAdjacentInventory")) {
             this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
             if (!player.worldObj.isRemote) {
-                tile.useAdjacentInventory = useAdjacentInventory;
+                tileEntity.useAdjacentInventory = useAdjacentInventory;
             }
         }
         if (tag.hasKey("inventoryDirection")) {
-            tile.inventoryDirection = ForgeDirection.getOrientation(tag.getInteger("inventoryDirection"));
+            tileEntity.inventoryDirection = ForgeDirection.getOrientation(tag.getInteger("inventoryDirection"));
         }
         if (tag.hasKey("inventorySide")) {
-            tile.inventorySide = ForgeDirection.getOrientation(tag.getInteger("inventorySide"));
+            tileEntity.inventorySide = ForgeDirection.getOrientation(tag.getInteger("inventorySide"));
         }
         this.refreshGui();
     }
@@ -172,9 +170,9 @@ public class ContainerResearchStation extends ContainerBase {
         if (player.worldObj.isRemote) {
             return;
         }
-        tile.addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
+        tileEntity.addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
         NBTTagCompound tag = null;
-        String name = tile.getCrafterName();
+        String name = tileEntity.getCrafterName();
 
         boolean checkGoal = true;
         /**
@@ -256,11 +254,11 @@ public class ContainerResearchStation extends ContainerBase {
         /**
          * synch use-adjacent inventory status
          */
-        if (tile.useAdjacentInventory != useAdjacentInventory) {
+        if (tileEntity.useAdjacentInventory != useAdjacentInventory) {
             if (tag == null) {
                 tag = new NBTTagCompound();
             }
-            this.useAdjacentInventory = tile.useAdjacentInventory;
+            this.useAdjacentInventory = tileEntity.useAdjacentInventory;
             tag.setBoolean("useAdjacentInventory", useAdjacentInventory);
         }
 

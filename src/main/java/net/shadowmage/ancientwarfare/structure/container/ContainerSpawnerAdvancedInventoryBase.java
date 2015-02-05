@@ -20,7 +20,7 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
     InventoryBasic inventory;
 
     public ContainerSpawnerAdvancedInventoryBase(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
     }
 
     protected void addSettingsInventorySlots() {
@@ -82,7 +82,7 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
                 }
             }
             if (slotStack.stackSize == 0) {
-                theSlot.putStack((ItemStack) null);
+                theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }

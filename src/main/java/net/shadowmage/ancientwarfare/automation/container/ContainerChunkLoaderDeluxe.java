@@ -7,31 +7,27 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class ContainerChunkLoaderDeluxe extends ContainerBase {
+public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoaderDeluxe> {
 
     public Set<ChunkCoordIntPair> ccipSet = new HashSet<ChunkCoordIntPair>();
-    public TileChunkLoaderDeluxe chunkLoader;
 
     public ContainerChunkLoaderDeluxe(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        chunkLoader = (TileChunkLoaderDeluxe) player.worldObj.getTileEntity(x, y, z);
-        if (chunkLoader == null) {
-            throw new IllegalArgumentException("cannot have null CL tile:");
-        }
         if (!player.worldObj.isRemote) {
-            ccipSet.addAll(chunkLoader.getForcedChunks());
-            chunkLoader.addViewer(this);
+            ccipSet.addAll(tileEntity.getForcedChunks());
+            tileEntity.addViewer(this);
         }
     }
 
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
-        chunkLoader.removeViewer(this);
+        tileEntity.removeViewer(this);
     }
 
     @Override
@@ -51,7 +47,7 @@ public class ContainerChunkLoaderDeluxe extends ContainerBase {
         }
         if (tag.hasKey("forced")) {
             ChunkCoordIntPair ccip = new ChunkCoordIntPair(tag.getInteger("x"), tag.getInteger("z"));
-            chunkLoader.addOrRemoveChunk(ccip);
+            tileEntity.addOrRemoveChunk(ccip);
             //should trigger an updateViewers and then a re-send of forced chunk list from tile
         }
     }

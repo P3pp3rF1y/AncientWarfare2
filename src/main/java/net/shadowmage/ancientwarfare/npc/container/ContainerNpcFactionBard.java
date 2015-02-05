@@ -6,18 +6,13 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionBard;
 
-public class ContainerNpcFactionBard extends ContainerBase {
+public class ContainerNpcFactionBard extends ContainerNpcBase<NpcFactionBard> {
 
     public SongPlayData data;
-    public NpcFactionBard npc;
 
     public ContainerNpcFactionBard(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
-        npc = (NpcFactionBard) player.worldObj.getEntityByID(x);
-        if (npc == null) {
-            throw new IllegalArgumentException("Npc must be a faction bard for faction bard container");
-        }
-        data = npc.getTuneData();
+        super(player, x);
+        data = entity.getTuneData();
     }
 
     @Override

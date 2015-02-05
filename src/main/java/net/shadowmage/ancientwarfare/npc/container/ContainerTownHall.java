@@ -9,37 +9,29 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall.NpcDeathEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContainerTownHall extends ContainerBase {
-
-    public TileTownHall townHall;
+public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
 
     List<NpcDeathEntry> deathList = new ArrayList<NpcDeathEntry>();
 
     public ContainerTownHall(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        TileEntity te = player.worldObj.getTileEntity(x, y, z);
-        if (te instanceof TileTownHall) {
-            townHall = (TileTownHall) te;
-            IInventory inv = (IInventory) te;
-            int xPos, yPos;
-            for (int i = 0; i < inv.getSizeInventory(); i++) {
-                xPos = (i % 9) * 18 + 8;
-                yPos = (i / 9) * 18 + 8 + 16;
-                addSlotToContainer(new Slot(inv, i, xPos, yPos));
-            }
-            addPlayerSlots(player, 8, 8 + 3 * 18 + 8 + 16, 4);
-            if (!player.worldObj.isRemote) {
-                deathList.addAll(townHall.getDeathList());
-                townHall.addViewer(this);
-            }
-        } else {
-            throw new IllegalArgumentException("cannot open town hall gui for tile: " + te);
+        int xPos, yPos;
+        for (int i = 0; i < tileEntity.getSizeInventory(); i++) {
+            xPos = (i % 9) * 18 + 8;
+            yPos = (i / 9) * 18 + 8 + 16;
+            addSlotToContainer(new Slot(tileEntity, i, xPos, yPos));
+        }
+        addPlayerSlots(8, 8 + 3 * 18 + 8 + 16, 4);
+        if (!player.worldObj.isRemote) {
+            deathList.addAll(tileEntity.getDeathList());
+            tileEntity.addViewer(this);
         }
     }
 
@@ -54,7 +46,7 @@ public class ContainerTownHall extends ContainerBase {
             refreshGui();
         }
         if (tag.hasKey("clear")) {
-            townHall.clearDeathNotices();
+            tileEntity.clearDeathNotices();
         }
     }
 
@@ -66,12 +58,12 @@ public class ContainerTownHall extends ContainerBase {
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
-        townHall.removeViewer(this);
+        tileEntity.removeViewer(this);
     }
 
     public void onTownHallDeathListUpdated() {
         this.deathList.clear();
-        this.deathList.addAll(townHall.getDeathList());
+        this.deathList.addAll(tileEntity.getDeathList());
         sendDeathListToClient();
     }
 
@@ -96,20 +88,20 @@ public class ContainerTownHall extends ContainerBase {
         if (theSlot != null && theSlot.getHasStack()) {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
-            if (slotClickedIndex < townHall.getSizeInventory())//book slot
+            if (slotClickedIndex < tileEntity.getSizeInventory())//book slot
             {
-                if (!this.mergeItemStack(slotStack, townHall.getSizeInventory(), townHall.getSizeInventory() + 36, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, tileEntity.getSizeInventory(), tileEntity.getSizeInventory() + 36, false))//merge into player inventory
                 {
                     return null;
                 }
             } else {
-                if (!this.mergeItemStack(slotStack, 0, townHall.getSizeInventory(), false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))//merge into player inventory
                 {
                     return null;
                 }
             }
             if (slotStack.stackSize == 0) {
-                theSlot.putStack((ItemStack) null);
+                theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }

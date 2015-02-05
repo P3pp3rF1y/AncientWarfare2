@@ -8,29 +8,28 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContainerWarehouseInterface extends ContainerBase {
+public class ContainerWarehouseInterface extends ContainerTileBase<TileWarehouseInterface> {
 
-    public TileWarehouseInterface tile;
     public List<WarehouseInterfaceFilter> filters = new ArrayList<WarehouseInterfaceFilter>();
 
     public ContainerWarehouseInterface(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        tile = (TileWarehouseInterface) player.worldObj.getTileEntity(x, y, z);
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(tile, i, (i % 3) * 18 + 8 + 3 * 18, (i / 3) * 18 + 8 + 80 + 8));
+            addSlotToContainer(new Slot(tileEntity, i, (i % 3) * 18 + 8 + 3 * 18, (i / 3) * 18 + 8 + 80 + 8));
         }
-        tile.addViewer(this);
-        filters.addAll(tile.getFilters());
-        addPlayerSlots(player, 8, 8 + 8 + 3 * 18 + 80 + 8, 4);
+        tileEntity.addViewer(this);
+        filters.addAll(tileEntity.getFilters());
+        addPlayerSlots(8, 8 + 8 + 3 * 18 + 80 + 8, 4);
     }
 
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        tile.removeViewer(this);
+        tileEntity.removeViewer(this);
         super.onContainerClosed(par1EntityPlayer);
     }
 
@@ -59,14 +58,14 @@ public class ContainerWarehouseInterface extends ContainerBase {
                 this.filters.addAll(filters);
                 refreshGui();
             } else {
-                tile.setFilters(filters);
+                tileEntity.setFilters(filters);
             }
         }
     }
 
     public void onInterfaceFiltersChanged() {
         filters.clear();
-        filters.addAll(tile.getFilters());
+        filters.addAll(tileEntity.getFilters());
         sendInitData();
     }
 

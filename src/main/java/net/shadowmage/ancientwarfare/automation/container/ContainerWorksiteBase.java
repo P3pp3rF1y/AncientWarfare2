@@ -6,19 +6,18 @@ import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBoundedInventory;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 
-public class ContainerWorksiteBase extends ContainerBase {
+public class ContainerWorksiteBase extends ContainerTileBase<TileWorksiteBoundedInventory> {
 
-    public final TileWorksiteBoundedInventory worksite;
     public final InventorySided inventory;
     public int guiHeight, topLabel, frontLabel, bottomLabel, rearLabel, leftLabel, rightLabel, playerLabel;
 
     public ContainerWorksiteBase(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        worksite = (TileWorksiteBoundedInventory) player.worldObj.getTileEntity(x, y, z);
-        inventory = worksite.inventory;
+        inventory = tileEntity.inventory;
     }
 
     protected int addSlots(int xPosStart, int yPosStart, int firstSlotIndex, int numberOfSlots) {
@@ -46,7 +45,7 @@ public class ContainerWorksiteBase extends ContainerBase {
      */
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        int slots = worksite.getSizeInventory();
+        int slots = tileEntity.getSizeInventory();
         Slot slot = (Slot) this.inventorySlots.get(slotClickedIndex);
         if (slot == null || !slot.getHasStack()) {
             return null;
@@ -58,7 +57,7 @@ public class ContainerWorksiteBase extends ContainerBase {
             this.mergeItemStack(stackFromSlot, 0, slots, true);
         }
         if (stackFromSlot.stackSize == 0) {
-            slot.putStack((ItemStack) null);
+            slot.putStack(null);
         } else {
             slot.onSlotChanged();
         }

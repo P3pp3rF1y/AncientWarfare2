@@ -25,7 +25,7 @@ public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdva
         }
         inventory = settings.getInventory();
         this.addSettingsInventorySlots();
-        this.addPlayerSlots(player, 8, 70, 8);
+        this.addPlayerSlots(8, 70, 8);
     }
 
     @Override

@@ -14,9 +14,8 @@ import net.shadowmage.ancientwarfare.npc.trade.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiTradeOrder extends GuiContainerBase {
+public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
 
-    ContainerTradeOrder container;
     CompositeScrolled tradesArea, routeArea, restockArea;
     Button tradeButton, routeButton, restockButton;
 
@@ -24,13 +23,12 @@ public class GuiTradeOrder extends GuiContainerBase {
 
     public GuiTradeOrder(ContainerBase container) {
         super(container, 256, 240, defaultBackground);
-        this.container = (ContainerTradeOrder) container;
     }
 
     @Override
     protected boolean onGuiCloseRequested() {
         NBTTagCompound outer = new NBTTagCompound();
-        outer.setTag("tradeOrder", container.orders.writeToNBT(new NBTTagCompound()));
+        outer.setTag("tradeOrder", getContainer().orders.writeToNBT(new NBTTagCompound()));
         sendDataToContainer(outer);
         return super.onGuiCloseRequested();
     }
@@ -113,7 +111,7 @@ public class GuiTradeOrder extends GuiContainerBase {
 
     private void setupTradeMode() {
         tradesArea.clearElements();
-        final POTradeList tradeList = container.orders.getTradeList();
+        final POTradeList tradeList = getContainer().orders.getTradeList();
         ArrayList<POTrade> trades = new ArrayList<POTrade>();
         tradeList.getTrades(trades);
 
@@ -166,7 +164,7 @@ public class GuiTradeOrder extends GuiContainerBase {
     }
 
     private void addTradeControls(final POTrade trade, int startHeight, final int tradeNum) {
-        final POTradeList tradeList = container.orders.getTradeList();
+        final POTradeList tradeList = getContainer().orders.getTradeList();
         startHeight -= 1;//offset by 1 to lineup better with the item slot boxes, as they align to the inner slot rather than border
         int infoX = 6 * 18 + 8 + 9 + 4;
         Button upButton = new Button(infoX, startHeight, 55, 12, "guistrings.up") {
@@ -227,7 +225,7 @@ public class GuiTradeOrder extends GuiContainerBase {
 
     private void setupRouteMode() {
         routeArea.clearElements();
-        POTradeRoute route = container.orders.getRoute();
+        POTradeRoute route = getContainer().orders.getRoute();
         int totalHeight = 8;
         for (int i = 0; i < route.size(); i++) {
             totalHeight = addRoutePoint(route.get(i), i, totalHeight);
@@ -248,7 +246,7 @@ public class GuiTradeOrder extends GuiContainerBase {
         Button up = new Button(120, startHeight, 55, 12, "guistrings.up") {
             @Override
             protected void onPressed() {
-                POTradeRoute route = container.orders.getRoute();
+                POTradeRoute route = getContainer().orders.getRoute();
                 route.decrementRoutePoint(index);
                 refreshGui();
             }
@@ -258,7 +256,7 @@ public class GuiTradeOrder extends GuiContainerBase {
         Button down = new Button(120, startHeight + 12 + 12, 55, 12, "guistrings.down") {
             @Override
             protected void onPressed() {
-                POTradeRoute route = container.orders.getRoute();
+                POTradeRoute route = getContainer().orders.getRoute();
                 route.incrementRoutePoint(index);
                 refreshGui();
             }
@@ -268,7 +266,7 @@ public class GuiTradeOrder extends GuiContainerBase {
         Button delete = new Button(120, startHeight + 12, 55, 12, "guistrings.delete") {
             @Override
             protected void onPressed() {
-                POTradeRoute route = container.orders.getRoute();
+                POTradeRoute route = getContainer().orders.getRoute();
                 route.deleteRoutePoint(index);
                 refreshGui();
             }
@@ -278,7 +276,7 @@ public class GuiTradeOrder extends GuiContainerBase {
         Checkbox upkeep = new Checkbox(120 + 55 + 4, startHeight, 12, 12, "guistrings.upkeep") {
             @Override
             public void onToggled() {
-                POTradeRoute route = container.orders.getRoute();
+                POTradeRoute route = getContainer().orders.getRoute();
                 route.setUpkeep(index, checked());
             }
         };
@@ -291,7 +289,7 @@ public class GuiTradeOrder extends GuiContainerBase {
         NumberInput delayInput = new NumberInput(120 + 55 + 4, startHeight + 24, 55, point.getDelay(), this) {
             @Override
             public void onValueUpdated(float value) {
-                POTradeRoute route = container.orders.getRoute();
+                POTradeRoute route = getContainer().orders.getRoute();
                 route.setPointDelay(index, (int) value);
             }
         };
@@ -305,7 +303,7 @@ public class GuiTradeOrder extends GuiContainerBase {
     }
 
     private void setupRestockMode() {
-        final POTradeRestockData restock = container.orders.getRestockData();
+        final POTradeRestockData restock = getContainer().orders.getRestockData();
         restockArea.clearElements();
         int totalHeight = 8;
 
@@ -411,7 +409,7 @@ public class GuiTradeOrder extends GuiContainerBase {
         Button deleteButton = new Button(8 + 18 + 4 + 4 + 120, startHeight + 3, 55, 12, "guistrings.delete") {
             @Override
             protected void onPressed() {
-                container.orders.getRestockData().removeDepositEntry(index);
+                getContainer().orders.getRestockData().removeDepositEntry(index);
                 refreshGui();
             }
         };
@@ -446,7 +444,7 @@ public class GuiTradeOrder extends GuiContainerBase {
         Button deleteButton = new Button(8 + 18 + 4 + 4 + 120, startHeight + 3, 55, 12, "guistrings.delete") {
             @Override
             protected void onPressed() {
-                container.orders.getRestockData().removeWithdrawEntry(index);
+                getContainer().orders.getRestockData().removeWithdrawEntry(index);
                 refreshGui();
             }
         };

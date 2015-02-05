@@ -10,11 +10,11 @@ public class ContainerTradeOrder extends ContainerBase {
     public final TradeOrder orders;
 
     public ContainerTradeOrder(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         orders = TradeOrder.getTradeOrder(player.getCurrentEquippedItem());
 
         int startY = 240 - 4 - 8 - 4 * 18;
-        addPlayerSlots(player, 8, startY, 4);
+        addPlayerSlots(8, startY, 4);
     }
 
     @Override

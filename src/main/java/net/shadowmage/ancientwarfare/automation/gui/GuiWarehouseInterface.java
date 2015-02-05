@@ -13,15 +13,13 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
 import java.util.List;
 
-public class GuiWarehouseInterface extends GuiContainerBase {
+public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseInterface> {
 
     CompositeScrolled area;
-    ContainerWarehouseInterface container;
     boolean hasChanged = false;
 
     public GuiWarehouseInterface(ContainerBase par1Container) {
         super(par1Container, 178, 240, defaultBackground);
-        this.container = (ContainerWarehouseInterface) par1Container;
     }
 
     @Override
@@ -33,7 +31,7 @@ public class GuiWarehouseInterface extends GuiContainerBase {
     @Override
     public void setupElements() {
         area.clearElements();
-        List<WarehouseInterfaceFilter> filters = container.filters;
+        List<WarehouseInterfaceFilter> filters = getContainer().filters;
 
         int totalHeight = 8;
 
@@ -61,8 +59,8 @@ public class GuiWarehouseInterface extends GuiContainerBase {
                 protected void onPressed() {
                     WarehouseInterfaceFilter filter = new WarehouseInterfaceFilter();
                     filter.setFilterQuantity(64);
-                    container.filters.add(filter);
-                    container.sendFiltersToServer();
+                    getContainer().filters.add(filter);
+                    getContainer().sendFiltersToServer();
                     refreshGui();
                 }
             };
@@ -84,8 +82,8 @@ public class GuiWarehouseInterface extends GuiContainerBase {
 
         @Override
         protected void onPressed() {
-            container.filters.remove(filter);
-            container.sendFiltersToServer();
+            getContainer().filters.remove(filter);
+            getContainer().sendFiltersToServer();
             refreshGui();
         }
     }
@@ -103,7 +101,7 @@ public class GuiWarehouseInterface extends GuiContainerBase {
             int val = (int) value;
             this.filter.setFilterQuantity(val);
             refreshGui();
-            container.sendFiltersToServer();
+            getContainer().sendFiltersToServer();
         }
 
     }
@@ -126,7 +124,7 @@ public class GuiWarehouseInterface extends GuiContainerBase {
             }
             filter.setFilterQuantity(0);
             filter.setFilterItem(in == null ? null : in.copy());
-            container.sendFiltersToServer();
+            getContainer().sendFiltersToServer();
         }
     }
 

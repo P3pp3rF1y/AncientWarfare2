@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 public class ContainerSpawnerAdvanced extends ContainerSpawnerAdvancedBase {
 
     public ContainerSpawnerAdvanced(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         settings = new SpawnerSettings();
         ItemStack item = player.inventory.getCurrentItem();
         if (item == null || !item.hasTagCompound() || !item.getTagCompound().hasKey("spawnerSettings")) {

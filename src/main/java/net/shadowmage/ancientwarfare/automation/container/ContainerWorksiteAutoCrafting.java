@@ -9,17 +9,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
-public class ContainerWorksiteAutoCrafting extends ContainerBase {
-
-    TileAutoCrafting worksite;
+public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCrafting> {
 
     public ContainerWorksiteAutoCrafting(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        worksite = (TileAutoCrafting) player.worldObj.getTileEntity(x, y, z);
-
-        IInventory inventory = worksite.craftMatrix;
+        IInventory inventory = tileEntity.craftMatrix;
 
 
         //slot 0 = outputSlot
@@ -31,7 +28,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerBase {
 
         Slot slot;
 
-        slot = new SlotCrafting(player, inventory, worksite.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+        slot = new SlotCrafting(player, inventory, tileEntity.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
             public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
                 return false;
@@ -39,7 +36,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerBase {
         };
         addSlotToContainer(slot);
 
-        slot = new Slot(worksite.bookSlot, 0, 8, 18 + 8) {
+        slot = new Slot(tileEntity.bookSlot, 0, 8, 18 + 8) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return par1ItemStack != null && par1ItemStack.getItem() == AWItems.researchBook && ItemResearchBook.getResearcherName(par1ItemStack) != null;
@@ -63,7 +60,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerBase {
             for (int x1 = 0; x1 < 9; x1++) {
                 x2 = x1 * 18 + 8;
                 slotNum = y1 * 9 + x1;
-                slot = new Slot(worksite.resourceInventory, slotNum, x2, y2);
+                slot = new Slot(tileEntity.resourceInventory, slotNum, x2, y2);
                 addSlotToContainer(slot);
             }
         }
@@ -72,18 +69,18 @@ public class ContainerWorksiteAutoCrafting extends ContainerBase {
         for (int x1 = 0; x1 < 9; x1++) {
             x2 = x1 * 18 + 8;
             slotNum = x1;
-            slot = new Slot(worksite.outputInventory, slotNum, x2, y2);
+            slot = new Slot(tileEntity.outputInventory, slotNum, x2, y2);
             addSlotToContainer(slot);
         }
 
         int y1 = 8 + 8 + 3 * 18 + 2 * 18 + 4 + 4 + 18;
-        y1 = this.addPlayerSlots(player, 8, y1, 4);
+        y1 = this.addPlayerSlots(8, y1, 4);
     }
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (!player.worldObj.isRemote && tag.hasKey("craft")) {
-            worksite.tryCraftItem();
+            tileEntity.tryCraftItem();
         }
     }
 
@@ -136,7 +133,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerBase {
                 }
             }
             if (slotStack.stackSize == 0) {
-                theSlot.putStack((ItemStack) null);
+                theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }

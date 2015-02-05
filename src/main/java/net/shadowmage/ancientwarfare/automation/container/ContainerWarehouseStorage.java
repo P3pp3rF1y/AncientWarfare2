@@ -7,17 +7,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.IWarehouseStorageTile;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileControlled;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContainerWarehouseStorage extends ContainerBase {
+public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseStorage> {
 
-    public IWarehouseStorageTile tile;
     public int guiHeight;
     public int areaSize;
     int playerSlotsSize;
@@ -31,16 +33,15 @@ public class ContainerWarehouseStorage extends ContainerBase {
 
     public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        tile = (IWarehouseStorageTile) player.worldObj.getTileEntity(x, y, z);
-        tile.addViewer(this);
+        tileEntity.addViewer(this);
 
         areaSize = 5 * 18 + 16;
         playerSlotsY = 148 + 8;
         playerSlotsSize = 8 + 4 + 4 * 18;
         guiHeight = playerSlotsY + playerSlotsSize;
 
-        filters.addAll(tile.getFilters());
-        addPlayerSlots(player, 8, playerSlotsY, 4);
+        filters.addAll(tileEntity.getFilters());
+        addPlayerSlots(8, playerSlotsY, 4);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ContainerWarehouseStorage extends ContainerBase {
             return null;
         }
         ItemStack stack = slot.getStack();
-        stack = tile.tryAdd(stack);
+        stack = tileEntity.tryAdd(stack);
         if (stack == null) {
             slot.putStack(null);
         }
@@ -94,7 +95,7 @@ public class ContainerWarehouseStorage extends ContainerBase {
                 this.filters.addAll(filters);
                 refreshGui();
             } else {
-                tile.setFilters(filters);
+                tileEntity.setFilters(filters);
             }
         }
         if (tag.hasKey("slotClick")) {
@@ -103,7 +104,7 @@ public class ContainerWarehouseStorage extends ContainerBase {
             if (reqTag.hasKey("reqItem")) {
                 item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
             }
-            tile.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
+            tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
         }
         if (tag.hasKey("changeList")) {
             handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
@@ -147,7 +148,7 @@ public class ContainerWarehouseStorage extends ContainerBase {
          */
 
         cache.clear();
-        tile.addItems(cache);
+        tileEntity.addItems(cache);
         ItemQuantityMap warehouseItemMap = cache;
         int qty;
         NBTTagList changeList = new NBTTagList();
@@ -184,13 +185,13 @@ public class ContainerWarehouseStorage extends ContainerBase {
 
     public void onFilterListUpdated() {
         this.filters.clear();
-        this.filters.addAll(tile.getFilters());
+        this.filters.addAll(tileEntity.getFilters());
         sendInitData();
     }
 
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        tile.removeViewer(this);
+        tileEntity.removeViewer(this);
         super.onContainerClosed(par1EntityPlayer);
     }
 

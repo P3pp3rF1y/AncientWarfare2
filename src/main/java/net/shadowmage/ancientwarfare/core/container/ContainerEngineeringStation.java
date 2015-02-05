@@ -14,7 +14,7 @@ public class ContainerEngineeringStation extends ContainerBase {
     public TileEngineeringStation station;
 
     public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         TileEngineeringStation t = (TileEngineeringStation) player.worldObj.getTileEntity(x, y, z);
         station = t;
         if (t == null) {
@@ -64,7 +64,7 @@ public class ContainerEngineeringStation extends ContainerBase {
         }
 
         int y1 = 8 + 3 * 18 + 8 + 2 * 18 + 4;
-        y1 = this.addPlayerSlots(player, 8, y1, 4);
+        y1 = this.addPlayerSlots(8, y1, 4);
     }
 
     @Override

@@ -13,18 +13,16 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 
-public class ContainerNpcPlayerOwnedTrade extends ContainerBase {
+public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
 
     public POTradeList tradeList;
-    public final NpcTrader trader;
     public final IInventory tradeInput = new InventoryBasic(9);
     public final InventoryBackpack storage;
 
     public ContainerNpcPlayerOwnedTrade(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
-        trader = (NpcTrader) player.worldObj.getEntityByID(x);//will crash if something is fubar on entity-ids, probably not a bad thing
-        this.tradeList = trader.getTradeList();
-        this.trader.trader = player;
+        super(player, x);
+        this.tradeList = entity.getTradeList();
+        this.entity.trader = player;
 
         int startY = 240 - 4 - 8 - 4 * 18;
         int gx = 0, gy = 0, sx, sy;
@@ -42,9 +40,9 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerBase {
             }
         }
 
-        addPlayerSlots(player, 8, startY, 4);
+        addPlayerSlots(8, startY, 4);
 
-        storage = ItemBackpack.getInventoryFor(trader.getEquipmentInSlot(0));
+        storage = ItemBackpack.getInventoryFor(entity.getEquipmentInSlot(0));
         if(storage!=null){
             for (int i = 0; i < storage.getSizeInventory(); i++) {
                 /**
@@ -82,9 +80,9 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerBase {
 
     @Override
     public void onContainerClosed(EntityPlayer player) {
-        this.trader.trader = null;
+        this.entity.trader = null;
         if (storage != null) {
-            ItemBackpack.writeBackpackToItem(storage, this.trader.getEquipmentInSlot(0));
+            ItemBackpack.writeBackpackToItem(storage, this.entity.getEquipmentInSlot(0));
         }
         super.onContainerClosed(player);
         if (!player.worldObj.isRemote) {

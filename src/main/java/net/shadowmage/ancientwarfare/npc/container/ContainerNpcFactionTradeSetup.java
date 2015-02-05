@@ -6,19 +6,17 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 
-public class ContainerNpcFactionTradeSetup extends ContainerBase {
+public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTrader> {
 
-    public final NpcFactionTrader trader;
     public FactionTradeList tradeList;
     public boolean tradesChanged = false;
 
     public ContainerNpcFactionTradeSetup(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
-        trader = (NpcFactionTrader) player.worldObj.getEntityByID(x);//will crash if something is fubar on entity-ids, probably not a bad thing
-        this.tradeList = trader.getTradeList();
-        this.trader.trader = player;
+        super(player, x);
+        this.tradeList = entity.getTradeList();
+        this.entity.trader = player;
 
-        addPlayerSlots(player, 8, 240 - 4 - 8 - 4 * 18, 4);
+        addPlayerSlots(8, 240 - 4 - 8 - 4 * 18, 4);
     }
 
     @Override
@@ -42,7 +40,7 @@ public class ContainerNpcFactionTradeSetup extends ContainerBase {
 
     @Override
     public void onContainerClosed(EntityPlayer p_75134_1_) {
-        this.trader.trader = null;
+        this.entity.trader = null;
         super.onContainerClosed(p_75134_1_);
     }
 

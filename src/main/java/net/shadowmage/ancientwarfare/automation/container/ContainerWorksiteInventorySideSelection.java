@@ -6,19 +6,18 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBounde
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
 import java.util.HashMap;
 
-public class ContainerWorksiteInventorySideSelection extends ContainerBase {
+public class ContainerWorksiteInventorySideSelection extends ContainerTileBase<TileWorksiteBoundedInventory> {
 
     public HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<RelativeSide, RelativeSide>();
-    public TileWorksiteBoundedInventory worksite;
     public InventorySided inventory;
 
     public ContainerWorksiteInventorySideSelection(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        worksite = (TileWorksiteBoundedInventory) player.worldObj.getTileEntity(x, y, z);
-        inventory = worksite.inventory;
+        inventory = tileEntity.inventory;
 
         for (RelativeSide rSide : inventory.rType.getValidSides()) {
             sideMap.put(rSide, inventory.getRemappedSide(rSide));
@@ -34,7 +33,7 @@ public class ContainerWorksiteInventorySideSelection extends ContainerBase {
     public void handlePacketData(NBTTagCompound tag) {
         handleAccessMapTag(tag);
         if (tag.hasKey("closeGUI")) {
-            worksite.onBlockClicked(player);//hack to open the worksites GUI
+            tileEntity.onBlockClicked(player);//hack to open the worksites GUI
         }
         refreshGui();
     }
@@ -64,7 +63,7 @@ public class ContainerWorksiteInventorySideSelection extends ContainerBase {
             RelativeSide access = RelativeSide.values()[slotTag.getInteger("accessSide")];
             sideMap.put(base, access);
             if (!player.worldObj.isRemote) {
-                worksite.inventory.remapSideAccess(base, access);
+                tileEntity.inventory.remapSideAccess(base, access);
             }
         }
     }
@@ -88,7 +87,7 @@ public class ContainerWorksiteInventorySideSelection extends ContainerBase {
     }
 
     private void synchAccessMap() {
-        InventorySided inventory = worksite.inventory;
+        InventorySided inventory = tileEntity.inventory;
         NBTTagCompound tag;
         NBTTagCompound slotTag;
         RelativeSide rSide2, rSide3;

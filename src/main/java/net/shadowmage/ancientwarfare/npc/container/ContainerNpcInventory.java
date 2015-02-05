@@ -6,9 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.shadowmage.ancientwarfare.core.inventory.SlotArmor;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.inventory.InventoryNpcEquipment;
 
-public class ContainerNpcInventory extends ContainerNpcBase {
+public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 
     InventoryNpcEquipment inventory;
     public int guiHeight;
@@ -17,35 +18,35 @@ public class ContainerNpcInventory extends ContainerNpcBase {
     ItemStack orderStack;
 
     public ContainerNpcInventory(final EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
-        inventory = new InventoryNpcEquipment(npc);
+        super(player, x);
+        inventory = new InventoryNpcEquipment(entity);
         addSlotToContainer(new Slot(inventory, 0, 8, 8) {
             @Override
             public void onSlotChanged() {
                 if (!player.worldObj.isRemote) {
-                    npc.onWeaponInventoryChanged();
+                    entity.onWeaponInventoryChanged();
                 }
                 super.onSlotChanged();
             }
         }); //weapon slot
         addSlotToContainer(new Slot(inventory, 7, 8, 8 + 18 * 1));//shield slot
-        addSlotToContainer(new SlotArmor(inventory, 1, 8, 8 + 18 * 5, 3, npc));//boots
-        addSlotToContainer(new SlotArmor(inventory, 2, 8, 8 + 18 * 4, 2, npc));//legs
-        addSlotToContainer(new SlotArmor(inventory, 3, 8, 8 + 18 * 3, 1, npc));//chest
-        addSlotToContainer(new SlotArmor(inventory, 4, 8, 8 + 18 * 2, 0, npc));//helm
+        addSlotToContainer(new SlotArmor(inventory, 1, 8, 8 + 18 * 5, 3, entity));//boots
+        addSlotToContainer(new SlotArmor(inventory, 2, 8, 8 + 18 * 4, 2, entity));//legs
+        addSlotToContainer(new SlotArmor(inventory, 3, 8, 8 + 18 * 3, 1, entity));//chest
+        addSlotToContainer(new SlotArmor(inventory, 4, 8, 8 + 18 * 2, 0, entity));//helm
         addSlotToContainer(new Slot(inventory, 6, 8 + 18 * 2, 8 + 18 * 2));//upkeep orders slot  TODO add slot validation
         addSlotToContainer(new Slot(inventory, 5, 8 + 18 * 2, 8 + 18 * 3) {
             @Override
             public void onSlotChanged() {
                 if (!player.worldObj.isRemote) {
-                    npc.onOrdersInventoryChanged();
+                    entity.onOrdersInventoryChanged();
                 }
                 super.onSlotChanged();
             }
         });//work/combat/route orders slot   TODO add slot validation
 
-        guiHeight = addPlayerSlots(player, 8, 8 + 5 * 18 + 8 + 18, 4) + 8;
-        name = npc.getCustomNameTag();
+        guiHeight = addPlayerSlots(8, 8 + 5 * 18 + 8 + 18, 4) + 8;
+        name = entity.getCustomNameTag();
     }
 
     @Override
@@ -54,16 +55,16 @@ public class ContainerNpcInventory extends ContainerNpcBase {
             this.name = tag.getString("customName");
         }
         if (tag.hasKey("repack")) {
-            npc.repackEntity(player);
+            entity.repackEntity(player);
         }
         if (tag.hasKey("setHome")) {
-            npc.setHomeArea(MathHelper.floor_double(npc.posX), MathHelper.floor_double(npc.posY), MathHelper.floor_double(npc.posZ), 40);
+            entity.setHomeArea(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ), 40);
         }
         if (tag.hasKey("clearHome")) {
-            npc.detachHome();
+            entity.detachHome();
         }
         if (tag.hasKey("customTexture")) {
-            npc.setCustomTexRef(tag.getString("customTexture"));
+            entity.setCustomTexRef(tag.getString("customTexture"));
         }
     }
 
@@ -83,8 +84,8 @@ public class ContainerNpcInventory extends ContainerNpcBase {
     @Override
     public void onContainerClosed(EntityPlayer p_75134_1_) {
         super.onContainerClosed(p_75134_1_);
-        npc.setCustomNameTag(name);
-        npc.updateTexture();
+        entity.setCustomNameTag(name);
+        entity.updateTexture();
     }
 
 }

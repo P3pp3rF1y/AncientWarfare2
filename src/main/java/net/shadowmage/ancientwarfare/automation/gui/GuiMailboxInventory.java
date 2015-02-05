@@ -9,18 +9,16 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import org.lwjgl.input.Mouse;
 
-public class GuiMailboxInventory extends GuiContainerBase {
+public class GuiMailboxInventory extends GuiContainerBase<ContainerMailbox> {
 
     Label inputName, outputName;
     Button inputNameSelect, outputNameSelect, sideSelectButton;
     Checkbox autoExportFromRear;
     Checkbox privateBox;
-    ContainerMailbox container;
 
     public GuiMailboxInventory(ContainerBase par1Container) {
         super(par1Container, 178, 240, defaultBackground);
-        container = (ContainerMailbox) par1Container;
-        ySize = container.guiHeight;
+        ySize = getContainer().guiHeight;
     }
 
     @Override
@@ -28,7 +26,7 @@ public class GuiMailboxInventory extends GuiContainerBase {
         inputNameSelect = new Button(178 - 8 - 75, 8, 75, 12, "guistrings.automation.mailbox_name_select") {
             @Override
             protected void onPressed() {
-                container.removeSlots();
+                getContainer().removeSlots();
                 int x = Mouse.getX();
                 int y = Mouse.getY();
                 Minecraft.getMinecraft().displayGuiScreen(new GuiMailboxNameSelect(GuiMailboxInventory.this, true));
@@ -40,7 +38,7 @@ public class GuiMailboxInventory extends GuiContainerBase {
         outputNameSelect = new Button(178 - 8 - 75, 8 + 12 + 2 * 18, 75, 12, "guistrings.automation.mailbox_target_select") {
             @Override
             protected void onPressed() {
-                container.removeSlots();
+                getContainer().removeSlots();
                 int x = Mouse.getX();
                 int y = Mouse.getY();
                 Minecraft.getMinecraft().displayGuiScreen(new GuiMailboxNameSelect(GuiMailboxInventory.this, false));
@@ -52,7 +50,7 @@ public class GuiMailboxInventory extends GuiContainerBase {
         sideSelectButton = new Button(178 - 8 - 75, ySize - 8 - 12 - 12, 75, 12, "guistrings.inventory.setsides") {
             @Override
             protected void onPressed() {
-                container.removeSlots();
+                getContainer().removeSlots();
                 int x = Mouse.getX();
                 int y = Mouse.getY();
                 Minecraft.getMinecraft().displayGuiScreen(new GuiMailboxInventorySideSetup(GuiMailboxInventory.this));
@@ -64,19 +62,19 @@ public class GuiMailboxInventory extends GuiContainerBase {
         autoExportFromRear = new Checkbox(8, ySize - 12 - 12 - 8, 12, 12, "guistrings.automation.auto_output") {
             @Override
             public void onToggled() {
-                container.handleAutoExportToggle(checked());
+                getContainer().handleAutoExportToggle(checked());
             }
         };
-        autoExportFromRear.setChecked(container.autoExport);
+        autoExportFromRear.setChecked(getContainer().autoExport);
         addGuiElement(autoExportFromRear);
 
         privateBox = new Checkbox(8, ySize - 12 - 8, 12, 12, "guistrings.automation.private_mailbox") {
             @Override
             public void onToggled() {
-                container.handlePrivateBoxToggle(checked());
+                getContainer().handlePrivateBoxToggle(checked());
             }
         };
-        privateBox.setChecked(container.privateBox);
+        privateBox.setChecked(getContainer().privateBox);
         addGuiElement(privateBox);
 
         inputName = new Label(8, 8, "");
@@ -88,8 +86,8 @@ public class GuiMailboxInventory extends GuiContainerBase {
 
     @Override
     public void setupElements() {
-        inputName.setText(container.mailboxName);
-        outputName.setText(container.targetName);
+        inputName.setText(getContainer().mailboxName);
+        outputName.setText(getContainer().targetName);
     }
 
 }

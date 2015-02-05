@@ -7,18 +7,13 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
-public class GuiWorksiteFishControl extends GuiContainerBase {
-
-    ContainerWorksiteFishControl container;
-    WorkSiteFishFarm worksite;
+public class GuiWorksiteFishControl extends GuiContainerBase<ContainerWorksiteFishControl> {
 
     Checkbox fishBox;
     Checkbox inkBox;
 
     public GuiWorksiteFishControl(ContainerBase par1Container) {
         super(par1Container, 168, 32 + 16, defaultBackground);
-        container = (ContainerWorksiteFishControl) par1Container;
-        this.worksite = container.worksite;
     }
 
     @Override
@@ -26,8 +21,8 @@ public class GuiWorksiteFishControl extends GuiContainerBase {
         fishBox = new Checkbox(8, 8, 16, 16, "guistrings.automation.harvest_fish") {
             @Override
             public void onToggled() {
-                container.harvestFish = checked();
-                container.sendSettingsToServer();
+                getContainer().harvestFish = checked();
+                getContainer().sendSettingsToServer();
             }
         };
         addGuiElement(fishBox);
@@ -35,8 +30,8 @@ public class GuiWorksiteFishControl extends GuiContainerBase {
         inkBox = new Checkbox(8, 8 + 16, 16, 16, "guistrings.automation.harvest_ink") {
             @Override
             public void onToggled() {
-                container.harvestInk = checked();
-                container.sendSettingsToServer();
+                getContainer().harvestInk = checked();
+                getContainer().sendSettingsToServer();
             }
         };
         addGuiElement(inkBox);
@@ -44,14 +39,14 @@ public class GuiWorksiteFishControl extends GuiContainerBase {
 
     @Override
     public void setupElements() {
-        fishBox.setChecked(container.harvestFish);
-        inkBox.setChecked(container.harvestInk);
+        fishBox.setChecked(getContainer().harvestFish);
+        inkBox.setChecked(getContainer().harvestInk);
     }
 
     @Override
     protected boolean onGuiCloseRequested() {
-        container.sendSettingsToServer();
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_FARM, worksite.xCoord, worksite.yCoord, worksite.zCoord);
+        getContainer().sendSettingsToServer();
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_FARM, getContainer().tileEntity.xCoord, getContainer().tileEntity.yCoord, getContainer().tileEntity.zCoord);
         return false;
     }
 

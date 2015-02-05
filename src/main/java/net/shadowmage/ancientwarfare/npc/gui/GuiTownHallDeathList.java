@@ -9,17 +9,18 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Line;
+import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall.NpcDeathEntry;
 
 import java.util.List;
 
-public class GuiTownHallDeathList extends GuiContainerBase {
+public class GuiTownHallDeathList extends GuiContainerBase<ContainerTownHall> {
 
     GuiTownHallInventory parent;
     CompositeScrolled area;
 
     public GuiTownHallDeathList(GuiTownHallInventory parent) {
-        super((ContainerBase) parent.inventorySlots);
+        super(parent.getContainer());
         this.parent = parent;
     }
 
@@ -41,7 +42,7 @@ public class GuiTownHallDeathList extends GuiContainerBase {
     @Override
     public void setupElements() {
         area.clearElements();
-        List<NpcDeathEntry> deathList = parent.container.getDeathList();
+        List<NpcDeathEntry> deathList = parent.getContainer().getDeathList();
         int totalHeight = 8;
 
         Label label;
@@ -83,7 +84,7 @@ public class GuiTownHallDeathList extends GuiContainerBase {
     @Override
     protected boolean onGuiCloseRequested() {
         Minecraft.getMinecraft().displayGuiScreen(parent);
-        parent.container.addSlots();
+        parent.getContainer().addSlots();
         parent.refreshGui();
         return false;
     }
