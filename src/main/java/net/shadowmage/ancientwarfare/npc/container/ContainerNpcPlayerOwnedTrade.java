@@ -44,9 +44,8 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerBase {
 
         addPlayerSlots(player, 8, startY, 4);
 
-        ItemStack backpack = trader.getEquipmentInSlot(0);
-        if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
-            storage = ItemBackpack.getInventoryFor(backpack);
+        storage = ItemBackpack.getInventoryFor(trader.getEquipmentInSlot(0));
+        if(storage!=null){
             for (int i = 0; i < storage.getSizeInventory(); i++) {
                 /**
                  * add backpack items to slots in container so that they are synchronized to client side inventory/container
@@ -54,8 +53,6 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerBase {
                  */
                 addSlotToContainer(new Slot(storage, i, 100000, 100000));
             }
-        } else {
-            storage = null;
         }
     }
 

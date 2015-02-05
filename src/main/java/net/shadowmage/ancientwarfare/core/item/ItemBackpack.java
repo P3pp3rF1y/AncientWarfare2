@@ -21,6 +21,7 @@ public class ItemBackpack extends Item implements IItemClickable {
         this.setUnlocalizedName(regName);
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
         this.setTextureName("ancientwarfare:core/backpack");
+        this.setMaxStackSize(1);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -80,22 +81,21 @@ public class ItemBackpack extends Item implements IItemClickable {
     }
 
     public static InventoryBackpack getInventoryFor(ItemStack stack) {
-        if (stack == null || stack.getItem() != AWItems.backpack) {
-            return null;
+        if (stack != null && stack.getItem() instanceof ItemBackpack) {
+            InventoryBackpack pack = new InventoryBackpack((stack.getItemDamage() + 1) * 9);
+            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("backpackItems")) {
+                InventoryTools.readInventoryFromNBT(pack, stack.getTagCompound().getCompoundTag("backpackItems"));
+            }
+            return pack;
         }
-        InventoryBackpack pack = new InventoryBackpack((stack.getItemDamage() + 1) * 9);
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("backpackItems")) {
-            InventoryTools.readInventoryFromNBT(pack, stack.getTagCompound().getCompoundTag("backpackItems"));
-        }
-        return pack;
+        return null;
     }
 
     public static void writeBackpackToItem(InventoryBackpack pack, ItemStack stack) {
-        if (stack == null || stack.getItem() != AWItems.backpack) {
-            return;
+        if (stack != null && stack.getItem() instanceof ItemBackpack) {
+            NBTTagCompound invTag = InventoryTools.writeInventoryToNBT(pack, new NBTTagCompound());
+            stack.setTagInfo("backpackItems", invTag);
         }
-        NBTTagCompound invTag = InventoryTools.writeInventoryToNBT(pack, new NBTTagCompound());
-        stack.setTagInfo("backpackItems", invTag);
     }
 
 
