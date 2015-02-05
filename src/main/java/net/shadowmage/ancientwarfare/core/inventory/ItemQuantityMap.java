@@ -340,14 +340,11 @@ public class ItemQuantityMap {
                 return false;
             }
             ItemHashEntry wrap = (ItemHashEntry) obj;
-            boolean tagsMatch = false;
+            boolean tagsMatch;
             if (itemTag == null) {
                 tagsMatch = wrap.itemTag == null;
-            } else if (wrap.itemTag == null) {
-                tagsMatch = itemTag == null;
-            } else {
-                tagsMatch = itemTag.equals(wrap.itemTag);
-            }
+            } else
+                tagsMatch = wrap.itemTag != null && itemTag.equals(wrap.itemTag);
             return item == wrap.item && damage == wrap.damage && tagsMatch;
         }
 
@@ -390,8 +387,7 @@ public class ItemQuantityMap {
             Item item = (Item) Item.itemRegistry.getObject(tag.getString("itemName"));
             int dmg = tag.getInteger("damage");
             NBTTagCompound itemTag = tag.hasKey("itemTag") ? tag.getCompoundTag("itemTag") : null;
-            ItemHashEntry entry = new ItemHashEntry(item, dmg, itemTag);
-            return entry;
+            return new ItemHashEntry(item, dmg, itemTag);
         }
     }
 

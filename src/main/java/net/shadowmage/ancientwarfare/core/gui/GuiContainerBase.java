@@ -63,7 +63,7 @@ public abstract class GuiContainerBase extends GuiContainer implements IContaine
             this.backgroundTextureName = backgroundTexture;
             this.backgroundTexture = new ResourceLocation("ancientwarfare", "textures/gui/" + backgroundTextureName);
         }
-        this.player = ((ContainerBase) container).player;
+        this.player = container.player;
     }
 
     public GuiContainerBase(ContainerBase container) {

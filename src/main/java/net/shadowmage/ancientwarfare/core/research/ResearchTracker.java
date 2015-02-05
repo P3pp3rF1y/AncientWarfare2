@@ -20,7 +20,6 @@ public class ResearchTracker {
     private ResearchTracker() {
     }
 
-    ;
     private static ResearchTracker INSTANCE = new ResearchTracker();
 
     public static ResearchTracker instance() {

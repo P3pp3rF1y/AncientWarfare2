@@ -27,7 +27,6 @@ public class WorldTools {
      */
     @SuppressWarnings("unchecked")
     public static Entity getEntityByUUID(World world, long msb, long lsb) {
-        world.getEntityByID(0);
         for (Entity e : (List<Entity>) world.loadedEntityList) {
             if (e.getPersistentID().getMostSignificantBits() == msb && e.getPersistentID().getLeastSignificantBits() == lsb) {
                 return e;

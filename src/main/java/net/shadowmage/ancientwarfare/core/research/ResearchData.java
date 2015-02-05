@@ -105,10 +105,7 @@ public class ResearchData extends WorldSavedData {
     }
 
     public boolean hasPlayerCompletedResearch(String playerName, int research) {
-        if (playerResearchEntries.containsKey(playerName)) {
-            return playerResearchEntries.get(playerName).knowsResearch(research);
-        }
-        return false;
+        return playerResearchEntries.containsKey(playerName) && playerResearchEntries.get(playerName).knowsResearch(research);
     }
 
     public int getInProgressResearch(String playerName) {
@@ -167,17 +164,11 @@ public class ResearchData extends WorldSavedData {
     }
 
     public boolean addProgress(String playerName, int amount) {
-        if (playerResearchEntries.containsKey(playerName)) {
-            return playerResearchEntries.get(playerName).addProgress(amount);
-        }
-        return false;
+        return playerResearchEntries.containsKey(playerName) && playerResearchEntries.get(playerName).addProgress(amount);
     }
 
     public boolean hasResearchStarted(String playerName) {
-        if (playerResearchEntries.containsKey(playerName)) {
-            return playerResearchEntries.get(playerName).hasResearchStarted();
-        }
-        return false;
+        return playerResearchEntries.containsKey(playerName) && playerResearchEntries.get(playerName).hasResearchStarted();
     }
 
     private static final class ResearchEntry {

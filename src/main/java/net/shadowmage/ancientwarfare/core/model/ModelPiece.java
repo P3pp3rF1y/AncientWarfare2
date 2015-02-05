@@ -370,6 +370,7 @@ public class ModelPiece {
         if (displayList >= 0) {
             GL11.glDeleteLists(displayList, 1);
         }
+        super.finalize();
     }
 
 }

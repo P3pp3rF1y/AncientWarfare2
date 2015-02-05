@@ -44,8 +44,7 @@ public class TileCraftingTableRender extends TileEntitySpecialRenderer implement
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
-        ForgeDirection rot = ForgeDirection.NORTH;
-        rot = ((IRotatableTile) te).getPrimaryFacing();
+        ForgeDirection rot = ((IRotatableTile) te).getPrimaryFacing();
 
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

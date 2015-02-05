@@ -35,10 +35,7 @@ public class GuiBackpack extends GuiContainerBase {
                 callSuper = false;
             }
         }
-        if (callSuper) {
-            return super.checkHotbarKeys(keyCode);
-        }
-        return false;
+        return callSuper && super.checkHotbarKeys(keyCode);
     }
 
 }

@@ -90,7 +90,7 @@ public class ContainerResearchStation extends ContainerBase {
                 }
             }
             if (slotStack.stackSize == 0) {
-                theSlot.putStack((ItemStack) null);
+                theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }
@@ -182,14 +182,14 @@ public class ContainerResearchStation extends ContainerBase {
          */
         if (name == null && researcherName == null) {
             checkGoal = false;
-        } else if (name == null && researcherName != null) {
+        } else if (name == null) {
             checkGoal = false;
             tag = new NBTTagCompound();
             researcherName = null;
             tag.setBoolean("clearResearcher", true);
             tag.setInteger("currentGoal", -1);
             tag.setInteger("progress", 0);
-        } else if (name != null && researcherName == null) {
+        } else if (researcherName == null) {
             checkGoal = false;
             tag = new NBTTagCompound();
             researcherName = name;

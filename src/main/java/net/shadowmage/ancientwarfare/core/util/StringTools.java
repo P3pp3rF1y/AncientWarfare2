@@ -185,8 +185,7 @@ public class StringTools {
     }
 
     public static String[] parseStringArray(String csv) {
-        String[] splits = csv.split(",", -1);
-        return splits;
+        return csv.split(",", -1);
     }
 
     /**
@@ -201,10 +200,7 @@ public class StringTools {
      */
     public static boolean safeParseBoolean(String regex, String test) {
         String[] split = test.split(regex);
-        if (split.length > 1) {
-            return Boolean.parseBoolean(split[1].trim());
-        }
-        return false;
+        return split.length > 1 && Boolean.parseBoolean(split[1].trim());
     }
 
     /**
@@ -216,10 +212,7 @@ public class StringTools {
 
     public static boolean safeParseIntAsBoolean(String regex, String test) {
         String[] split = test.split(regex);
-        if (split.length > 1 && Integer.parseInt(split[1].trim()) == 1) {
-            return true;
-        }
-        return false;
+        return split.length > 1 && Integer.parseInt(split[1].trim()) == 1;
     }
 
     public static float safeParseFloat(String regex, String test) {
@@ -345,8 +338,7 @@ public class StringTools {
             line = line + "\n";
             baos.write(line.getBytes("UTF-8"));
         }
-        byte[] allBytes = baos.toByteArray();
-        return allBytes;
+        return baos.toByteArray();
     }
 
     /**
@@ -410,10 +402,7 @@ public class StringTools {
             return true;
         } else if (a != null && b == null) {
             return false;
-        } else if (a == null && b != null) {
-            return false;
-        } else {
-            return a.equals(b);
-        }
+        } else
+            return a != null && a.equals(b);
     }
 }

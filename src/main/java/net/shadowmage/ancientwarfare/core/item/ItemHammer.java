@@ -68,7 +68,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
      */
     @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return this.material.func_150995_f() == par2ItemStack.getItem() ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+        return this.material.func_150995_f() == par2ItemStack.getItem() || super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 
     /**
@@ -96,7 +96,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
     @Override
     public Multimap getItemAttributeModifiers() {
         Multimap multimap = super.getItemAttributeModifiers();
-        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", (double) this.attackDamage, 0));
+        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", this.attackDamage, 0));
         return multimap;
     }
 
@@ -185,10 +185,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
     @Override
     public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
         MovingObjectPosition hit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
-        if (hit == null) {
-            return false;
-        }
-        return true;
+        return hit != null;
     }
 
     @Override

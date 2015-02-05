@@ -230,9 +230,7 @@ public class Json {
          * raw char should == '"' at the start of this call
          */
         protected JsonValue readValue() throws IOException {
-            String value = readString();
-            JsonValue jsonValue = new JsonValue(value);
-            return jsonValue;
+            return new JsonValue(readString());
         }
 
         private String readName() throws IOException {
@@ -260,9 +258,8 @@ public class Json {
                 builder.append(prevChar);
             }
             readRawChar();
-            String value = builder.toString();
-//  AWLog.logDebug("Parsed string value: "+value);
-            return value;
+            //  AWLog.logDebug("Parsed string value: "+value);
+            return builder.toString();
         }
 
         private JsonParsingException throwUnexpectedException(String message) {

@@ -82,10 +82,7 @@ public class CompositeScrolled extends Composite implements IScrollableCallback 
                         scrollbar.handleMouseInput(evt);//in case input was directly over scrollbar
                         for (GuiElement element : elements) {
                             if (element.isMouseOverElement(evt.mx, evt.my)) {
-                                overElement = true;
-                                if (evt.mw != 0 && !element.scrollInput) {
-                                    overElement = false;
-                                }
+                                overElement = evt.mw == 0 || element.scrollInput;
                             }
                             element.handleMouseInput(evt);
                         }

@@ -43,7 +43,6 @@ public class ContainerBase extends Container {
         int yPos;
         for (x = 0; x < 9; ++x)//add player hotbar slots
         {
-            slotNum = x;
             xPos = tx + x * 18;
             yPos = ty + gap + 3 * 18;
             this.addSlotToContainer(new Slot(player.inventory, x, xPos, yPos));

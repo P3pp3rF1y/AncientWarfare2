@@ -170,7 +170,7 @@ public final class BlockPosition {
     }
 
     public final boolean equals(BlockPosition pos) {
-        return pos != null && this.x == pos.x && this.y == pos.y && this.z == pos.z ? true : false;
+        return pos != null && this.x == pos.x && this.y == pos.y && this.z == pos.z;
     }
 
     public final BlockPosition copy() {
@@ -232,13 +232,7 @@ public final class BlockPosition {
         if (getClass() != obj.getClass())
             return false;
         BlockPosition other = (BlockPosition) obj;
-        if (x != other.x)
-            return false;
-        if (y != other.y)
-            return false;
-        if (z != other.z)
-            return false;
-        return true;
+        return x == other.x && y == other.y && z == other.z;
     }
 
 }

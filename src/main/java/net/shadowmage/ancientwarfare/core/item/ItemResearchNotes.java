@@ -88,12 +88,11 @@ public class ItemResearchNotes extends Item implements IItemClickable {
     @Override
     public void onRightClick(EntityPlayer player, ItemStack stack) {
         NBTTagCompound tag = stack.getTagCompound();
-        boolean known = false;
         if (tag != null && tag.hasKey("researchName")) {
             String name = tag.getString("researchName");
             ResearchGoal goal = ResearchGoal.getGoal(name);
             if (goal != null) {
-                known = ResearchTracker.instance().hasPlayerCompleted(player.worldObj, player.getCommandSenderName(), goal.getId());
+                boolean known = ResearchTracker.instance().hasPlayerCompleted(player.worldObj, player.getCommandSenderName(), goal.getId());
                 if (!known) {
                     if (ResearchTracker.instance().addResearchFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
                         player.addChatMessage(new ChatComponentTranslation("guistrings.research.learned_from_item"));

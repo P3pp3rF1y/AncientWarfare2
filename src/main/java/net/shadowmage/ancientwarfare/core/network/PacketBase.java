@@ -33,8 +33,7 @@ public abstract class PacketBase {
     protected static PacketBase readHeaderFromStream(ByteBuf data) {
         int typeNum = data.readByte();
         try {
-            PacketBase pkt = packetTypes.get(typeNum).newInstance();
-            return pkt;
+            return packetTypes.get(typeNum).newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
