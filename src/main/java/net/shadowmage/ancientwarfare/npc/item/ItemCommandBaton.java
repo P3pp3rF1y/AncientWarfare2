@@ -25,7 +25,6 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
-import org.lwjgl.input.Keyboard;
 
 import java.util.*;
 
@@ -52,23 +51,23 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
         text = "RMB" + " = " + StatCollector.translateToLocal("guistrings.npc.baton.add_remove");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_0).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.clear");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_1).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_1);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.attack");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_2).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_2);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.move");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_3).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_3);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.home");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_4).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_4);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.upkeep");
         list.add(text);
     }
@@ -96,7 +95,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
      */
     @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return this.material.func_150995_f() == par2ItemStack.getItem() ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+        return this.material.func_150995_f() == par2ItemStack.getItem() || super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 
     /**
@@ -219,20 +218,17 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
         if (player == null || npc == null || stack == null || stack.getItem() != this) {
             return;
         }
-        CommandSet set = new CommandSet();
-        set.loadFromStack(stack);
-        set.onNpcClicked(npc);
-        set.validateEntities(player.worldObj);
-        set.writeToStack(stack);
+        CommandSet.loadFromStack(stack).onNpcClicked(npc, stack);
     }
 
-    public static void getCommandedEntities(World world, ItemStack stack, List<Entity> entities) {
-        if (world == null || stack == null || entities == null || !(stack.getItem() instanceof ItemCommandBaton)) {
-            return;
+    public static List<Entity> getCommandedEntities(World world, ItemStack stack) {
+        List<Entity> entities = new ArrayList<Entity>();
+        if (world == null || stack == null || !(stack.getItem() instanceof ItemCommandBaton)) {
+            return entities;
         }
-        CommandSet set = new CommandSet();
-        set.loadFromStack(stack);
+        CommandSet set = CommandSet.loadFromStack(stack);
         set.getEntities(world, entities);
+        return entities;
     }
 
     /**
@@ -242,15 +238,18 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
      */
     private static class CommandSet {
         private Set<UUID> ids = new HashSet<UUID>();
+        private CommandSet(){}
 
-        public void loadFromStack(ItemStack stack) {
+        public static CommandSet loadFromStack(ItemStack stack) {
+            CommandSet set = new CommandSet();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("entityList")) {
-                readFromNBT(stack.getTagCompound().getCompoundTag("entityList"));
+                set.readFromNBT(stack.getTagCompound().getCompoundTag("entityList"));
             }
+            return set;
         }
 
-        public void writeToStack(ItemStack stack) {
-            stack.setTagInfo("entityList", writeToNBT(new NBTTagCompound()));
+        private void writeToStack(ItemStack stack) {
+            stack.setTagInfo("entityList", writeToNBT());
         }
 
         private void readFromNBT(NBTTagCompound tag) {
@@ -262,7 +261,8 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
             }
         }
 
-        private NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        private NBTTagCompound writeToNBT() {
+            NBTTagCompound tag = new NBTTagCompound();
             NBTTagList entryList = new NBTTagList();
             NBTTagCompound idTag;
             for (UUID id : ids) {
@@ -275,18 +275,20 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
             return tag;
         }
 
-        public void onNpcClicked(NpcBase npc) {
+        public void onNpcClicked(NpcBase npc, ItemStack stack) {
             if (ids.contains(npc.getPersistentID())) {
                 ids.remove(npc.getPersistentID());
             } else {
                 ids.add(npc.getPersistentID());
             }
+            validateEntities(npc.worldObj);
+            writeToStack(stack);
         }
 
         public void getEntities(World world, List<Entity> in) {
             Entity e;
             for (UUID id : ids) {
-                e = WorldTools.getEntityByUUID(world, id.getMostSignificantBits(), id.getLeastSignificantBits());
+                e = WorldTools.getEntityByUUID(world, id);
                 if (e != null) {
                     in.add(e);
                 }
@@ -297,11 +299,12 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
          * should be called server side to clear out any old un-findable entity references.<br>
          * should probably only be called on-right click, as operation may be costly
          */
-        public void validateEntities(World world) {
+        private void validateEntities(World world) {
             Iterator<UUID> it = ids.iterator();
             UUID id;
-            while (it.hasNext() && (id = it.next()) != null) {
-                if (WorldTools.getEntityByUUID(world, id.getMostSignificantBits(), id.getLeastSignificantBits()) == null) {
+            while (it.hasNext()) {
+                id = it.next();
+                if (id == null || WorldTools.getEntityByUUID(world, id) == null) {
                     it.remove();
                 }
             }

@@ -5,14 +5,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ItemRoutingOrder extends ItemOrders {
 
     public ItemRoutingOrder(String name) {
         super(name);
-        this.setTextureName("ancientwarfare:npc/routing_order");
+        this.setTextureName("ancientwarfare:npc/"+name);
+    }
+
+    @Override
+    public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
+        Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
+        RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
+        if (order != null && order.getEntries().size() > 0) {
+            for (RoutingOrder.RoutePoint e : order.getEntries()) {
+                positionList.add(e.getTarget());
+            }
+        }
+        return positionList;
     }
 
     @Override

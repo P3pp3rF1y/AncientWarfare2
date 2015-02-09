@@ -8,12 +8,26 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ItemWorkOrder extends ItemOrders {
 
     public ItemWorkOrder(String name) {
         super(name);
-        this.setTextureName("ancientwarfare:npc/work_order");
+        this.setTextureName("ancientwarfare:npc/"+name);
+    }
+
+    @Override
+    public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
+        Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
+        WorkOrder order = WorkOrder.getWorkOrder(stack);
+        if (order != null && order.getEntries().size() > 0) {
+            for (WorkOrder.WorkEntry e : order.getEntries()) {
+                positionList.add(e.getPosition());
+            }
+        }
+        return positionList;
     }
 
     @Override

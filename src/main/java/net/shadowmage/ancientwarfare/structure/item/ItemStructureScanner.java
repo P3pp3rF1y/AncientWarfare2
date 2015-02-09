@@ -51,7 +51,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         if (par1ItemStack != null) {
             ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(par1ItemStack);
-            String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+            String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
             if (viewSettings.hasPos1() && viewSettings.hasPos2() && viewSettings.hasBuildKey()) {
                 list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.click_to_process"));
                 list.add("(4/4)");

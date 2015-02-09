@@ -7,6 +7,7 @@ import net.minecraft.world.WorldServer;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class WorldTools {
 
@@ -26,9 +27,9 @@ public class WorldTools {
      * ONLY WORKS SERVER SIDE UNLESS ENTITY-UNIQUE ID HAS BEEN SYNCHED BY MODDER
      */
     @SuppressWarnings("unchecked")
-    public static Entity getEntityByUUID(World world, long msb, long lsb) {
+    public static Entity getEntityByUUID(World world, UUID id) {
         for (Entity e : (List<Entity>) world.loadedEntityList) {
-            if (e.getPersistentID().getMostSignificantBits() == msb && e.getPersistentID().getLeastSignificantBits() == lsb) {
+            if (e.isEntityAlive() && e.getPersistentID().equals(id)) {
                 return e;
             }
         }

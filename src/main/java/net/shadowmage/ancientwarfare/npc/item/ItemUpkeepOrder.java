@@ -8,11 +8,23 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class ItemUpkeepOrder extends ItemOrders {
 
     public ItemUpkeepOrder(String name) {
         super(name);
-        this.setTextureName("ancientwarfare:npc/upkeep_order");
+        this.setTextureName("ancientwarfare:npc/"+name);
+    }
+
+    @Override
+    public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
+        Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
+        UpkeepOrder order = UpkeepOrder.getUpkeepOrder(stack);
+        if (order != null && order.getUpkeepPosition() != null)
+            positionList.add(order.getUpkeepPosition());
+        return positionList;
     }
 
     @Override

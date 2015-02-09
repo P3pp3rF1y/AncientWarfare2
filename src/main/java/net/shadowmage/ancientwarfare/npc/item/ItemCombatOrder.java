@@ -7,11 +7,26 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class ItemCombatOrder extends ItemOrders {
 
     public ItemCombatOrder(String name) {
         super(name);
-        this.setTextureName("ancientwarfare:npc/combat_order");
+        this.setTextureName("ancientwarfare:npc/"+name);
+    }
+
+    @Override
+    public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
+        Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
+        CombatOrder order = CombatOrder.getCombatOrder(stack);
+        if (order != null && order.getPatrolSize() > 0) {
+            for (int i = 0; i < order.getPatrolSize(); i++) {
+                positionList.add(order.getPatrolPoint(i).copy().offset(0, 1, 0));
+            }
+        }
+        return positionList;
     }
 
     @Override

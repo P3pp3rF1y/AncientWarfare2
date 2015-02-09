@@ -10,7 +10,7 @@ public class ItemEventHandler {
 
     @SubscribeEvent
     public void onItemUse(PlayerInteractEvent evt) {
-        ItemStack stack = evt.entityPlayer.inventory.getCurrentItem();
+        ItemStack stack = evt.entityPlayer.getCurrentEquippedItem();
         if (stack != null && stack.getItem() instanceof IItemClickable) {
             IItemClickable clickable = (IItemClickable) stack.getItem();
             if (evt.action == Action.LEFT_CLICK_BLOCK && clickable.cancelLeftClick(evt.entityPlayer, stack)) {

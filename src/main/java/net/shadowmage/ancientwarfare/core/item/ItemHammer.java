@@ -39,6 +39,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
         this.material = material;
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
+        this.setHarvestLevel("hammer", material.getHarvestLevel());
     }
 
     @Override
@@ -104,7 +105,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+        String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
         list.add(StatCollector.translateToLocalFormatted("guistrings.core.hammer.use_primary_item_key", key));
         if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("workMode")) {
             list.add(StatCollector.translateToLocal("guistrings.core.hammer.work_mode_1"));

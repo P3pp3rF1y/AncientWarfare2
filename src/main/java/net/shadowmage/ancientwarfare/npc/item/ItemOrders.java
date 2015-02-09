@@ -7,7 +7,9 @@ import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
+import java.util.Collection;
 import java.util.List;
 
 public abstract class ItemOrders extends Item implements IItemClickable, IItemKeyInterface {
@@ -21,7 +23,7 @@ public abstract class ItemOrders extends Item implements IItemClickable, IItemKe
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         list.add(StatCollector.translateToLocal("guistrings.npc.orders.open_gui"));
-        String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+        String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
         list.add(StatCollector.translateToLocalFormatted("guistrings.npc.orders.add_position", key));
     }
 
@@ -55,4 +57,5 @@ public abstract class ItemOrders extends Item implements IItemClickable, IItemKe
         return false;
     }
 
+    public abstract Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack);
 }

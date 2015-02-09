@@ -83,11 +83,11 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IItemCli
             list.add(StatCollector.translateToLocal("guistrings.gate.construct"));
             list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));
         } else if (tag.hasKey("pos1")) {
-            String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+            String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
             list.add(StatCollector.translateToLocalFormatted("guistrings.gate.use_primary_item_key", key));
             list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));
         } else {
-            String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+            String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
             list.add(StatCollector.translateToLocalFormatted("guistrings.gate.use_primary_item_key", key));
             list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));
         }

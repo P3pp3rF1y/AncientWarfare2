@@ -27,28 +27,21 @@ public class InputHandler {
     public static final String KEY_ALT_ITEM_USE_3 = "keybind.alt_item_use_4";
     public static final String KEY_ALT_ITEM_USE_4 = "keybind.alt_item_use_5";
 
-    private static InputHandler instance = new InputHandler();
-
-    public static InputHandler instance() {
-        return instance;
-    }
-
-    private InputHandler() {
-    }
-
+    public static final InputHandler instance = new InputHandler();
     /**
      * map of keys by their registry-name
      */
-    private HashMap<String, Keybind> keybindMap = new HashMap<String, Keybind>();
+    private final HashMap<String, Keybind> keybindMap;
     /**
      * map of a -set- of keys by their key-id
      */
-    private HashMap<Integer, Set<Keybind>> bindsByKey = new HashMap<Integer, Set<Keybind>>();
-
-    Configuration config;
-    private static final String keybinds = AWCoreStatics.keybinds;
-
+    private final HashMap<Integer, Set<Keybind>> bindsByKey;
+    private Configuration config;
     private long lastMouseInput = -1;
+    private InputHandler() {
+        keybindMap = new HashMap<String, Keybind>();
+        bindsByKey = new HashMap<Integer, Set<Keybind>>();
+    }
 
     public void loadConfig(Configuration config) {
         this.config = config;
@@ -77,32 +70,29 @@ public class InputHandler {
     }
 
     private Property getKeybindProp(String keyName, int defaultVal) {
-        return config.get(keybinds, keyName, defaultVal);
+        return config.get(AWCoreStatics.keybinds, keyName, defaultVal);
     }
 
     @SubscribeEvent
     public void onMouseInput(MouseInputEvent evt) {
-        int button = Mouse.getEventButton();
-        if (button < 0 || !Mouse.getEventButtonState()) {
-            return;
-        }
         Minecraft minecraft = Minecraft.getMinecraft();
         if (minecraft == null || minecraft.currentScreen != null || minecraft.thePlayer == null || minecraft.theWorld == null) {
+            return;
+        }
+        int button = Mouse.getEventButton();
+        if (button < 0 || !Mouse.getEventButtonState()) {
             return;
         }
         long time = System.currentTimeMillis();
         if (lastMouseInput == -1 || time - lastMouseInput > 250) {
             lastMouseInput = time;
-            EntityPlayer player = minecraft.thePlayer;
-            ItemStack stack = player.getCurrentEquippedItem();
+            ItemStack stack = minecraft.thePlayer.getCurrentEquippedItem();
             if (stack != null && stack.getItem() instanceof IItemClickable) {
                 IItemClickable click = (IItemClickable) stack.getItem();
-                if (button == 1 && click.onRightClickClient(player, stack)) {
-                    PacketItemInteraction pkt = new PacketItemInteraction(2);
-                    NetworkHandler.sendToServer(pkt);
-                } else if (button == 2 && click.onLeftClickClient(player, stack)) {
-                    PacketItemInteraction pkt = new PacketItemInteraction(1);
-                    NetworkHandler.sendToServer(pkt);
+                if (button == 1 && click.onRightClickClient(minecraft.thePlayer, stack)) {
+                    NetworkHandler.sendToServer(new PacketItemInteraction(2));
+                } else if (button == 0 && click.onLeftClickClient(minecraft.thePlayer, stack)) {
+                    NetworkHandler.sendToServer(new PacketItemInteraction(1));
                 }
             }
         }
@@ -144,7 +134,7 @@ public class InputHandler {
 
     public void registerKeybind(String name, int keyCode, InputCallback cb) {
         if (!keybindMap.containsKey(name)) {
-            int key = config.get(keybinds, name, keyCode).getInt(keyCode);
+            int key = config.get(AWCoreStatics.keybinds, name, keyCode).getInt(keyCode);
             Keybind k = new Keybind(name, key);
             keybindMap.put(name, k);
             if (!bindsByKey.containsKey(key)) {
@@ -166,7 +156,7 @@ public class InputHandler {
             return;
         }
 
-        config.get(keybinds, name, 0).set(newKey);
+        config.get(AWCoreStatics.keybinds, name, 0).set(newKey);
         reassignKeyCode(k, newKey);
         config.save();
     }
@@ -193,7 +183,7 @@ public class InputHandler {
         List<InputCallback> inputHandlers = new ArrayList<InputCallback>();
 
         private int key;
-        private String name;
+        private final String name;
 
         private Keybind(String name, int key) {
             this.name = name;
@@ -226,13 +216,13 @@ public class InputHandler {
         }
     }
 
-    public static abstract class InputCallback {
-        public abstract void onKeyPressed();
+    public static interface InputCallback {
+        public void onKeyPressed();
 
-        public abstract void onKeyReleased();
+        public void onKeyReleased();
     }
 
-    private static final class ItemInputCallback extends InputCallback {
+    private static final class ItemInputCallback implements InputCallback {
         ItemKey key;
 
         public ItemInputCallback(ItemKey key) {

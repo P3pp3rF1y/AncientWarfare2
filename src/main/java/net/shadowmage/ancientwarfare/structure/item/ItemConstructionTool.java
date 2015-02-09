@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
-import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 import java.util.Set;
@@ -44,23 +43,23 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
         text = "RMB" + " = " + StatCollector.translateToLocal("guistrings.construction.do_action");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_0).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.toggle_mode");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_1).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_1);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.set_fill_block");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_2).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_2);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.set_pos_1");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_3).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_3);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.set_pos_2");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_4).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_4);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.clear_positions");
         list.add(text);
     }
