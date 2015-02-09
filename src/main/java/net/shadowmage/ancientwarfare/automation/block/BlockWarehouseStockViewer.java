@@ -109,10 +109,7 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
 
     @Override
     public void setBlockBoundsForItemRender() {
-        float wmax = 0.875f;
-        float hmin = 0.375f;
-        float hmax = 0.875f;
-        setBlockBounds(wmax, hmin, 0.f, 1.f, hmax, 1.f);
+        setBlockBounds(0.875f, 0.375f, 0.f, 1.f, 0.875f, 1.f);
     }
 
     @Override
@@ -149,7 +146,7 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
     public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b) {
         super.onBlockEventReceived(world, x, y, z, a, b);
         TileEntity tileentity = world.getTileEntity(x, y, z);
-        return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
+        return tileentity != null && tileentity.receiveClientEvent(a, b);
     }
 
 }

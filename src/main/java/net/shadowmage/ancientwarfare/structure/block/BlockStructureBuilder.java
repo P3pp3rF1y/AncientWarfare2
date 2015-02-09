@@ -17,9 +17,8 @@ public class BlockStructureBuilder extends Block {
 
     private BlockIconMap iconMap = new BlockIconMap();
 
-    public BlockStructureBuilder(String regName) {
+    public BlockStructureBuilder() {
         super(Material.rock);
-        this.setBlockName(regName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         setHardness(2.f);
     }
@@ -72,6 +71,5 @@ public class BlockStructureBuilder extends Block {
         }
         return true;
     }
-
 
 }

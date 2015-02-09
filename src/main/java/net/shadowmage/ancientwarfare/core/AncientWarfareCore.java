@@ -36,8 +36,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
                 name = "Ancient Warfare Core",
                 modid = AncientWarfareCore.modID,
                 version = "@VERSION@",
-                dependencies = "after:BuildCraft|Core;"
-                        + "after:CoFHCore",
+                dependencies = "after:BuildCraft|Core;after:CoFHCore",
                 guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory"
         )
 
@@ -51,7 +50,7 @@ public class AncientWarfareCore {
     @SidedProxy
             (
                     clientSide = "net.shadowmage.ancientwarfare.core.proxy.ClientProxy",
-                    serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy"
+                    serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase"
             )
     public static CommonProxyBase proxy;
 
@@ -70,6 +69,11 @@ public class AncientWarfareCore {
         AWLog.log("Ancient Warfare Core Pre-Init Started");
         AWCoreStatics.loadConfig(config);
 
+        /**
+         * register blocks, items, tile entities, and entities
+         */
+        AWCoreBlockLoader.INSTANCE.load();
+        AWCoreItemLoader.INSTANCE.load();
 
         /**
          * register server-side network handler and anything that needs loaded on the event busses
@@ -80,11 +84,6 @@ public class AncientWarfareCore {
         FMLCommonHandler.instance().bus().register(ResearchTracker.instance());
         FMLCommonHandler.instance().bus().register(this);
 
-        /**
-         * register blocks, items, tile entities, and entities
-         */
-        AWCoreBlockLoader.INSTANCE.load();
-        AWCoreItemLoader.INSTANCE.load();
 
         /**
          * register GUIs, containers, client-side network handler, renderers

@@ -13,16 +13,15 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class BlockEngineeringStation extends BlockRotatableTile {
 
-    protected BlockEngineeringStation(String regName) {
+    protected BlockEngineeringStation() {
         super(Material.rock);
-        this.setBlockName(regName);
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
-        iconMap.setIcon(this, RelativeSide.BOTTOM, "ancientwarfare:core/engineering_station_bottom");
-        iconMap.setIcon(this, RelativeSide.TOP, "ancientwarfare:core/engineering_station_bottom");
-        iconMap.setIcon(this, RelativeSide.FRONT, "ancientwarfare:core/engineering_station_bottom");
-        iconMap.setIcon(this, RelativeSide.REAR, "ancientwarfare:core/engineering_station_bottom");
-        iconMap.setIcon(this, RelativeSide.LEFT, "ancientwarfare:core/engineering_station_bottom");
-        iconMap.setIcon(this, RelativeSide.RIGHT, "ancientwarfare:core/engineering_station_bottom");
+        setIcon(RelativeSide.BOTTOM, "ancientwarfare:core/engineering_station_bottom");
+        setIcon(RelativeSide.TOP, "ancientwarfare:core/engineering_station_bottom");
+        setIcon(RelativeSide.FRONT, "ancientwarfare:core/engineering_station_bottom");
+        setIcon(RelativeSide.REAR, "ancientwarfare:core/engineering_station_bottom");
+        setIcon(RelativeSide.LEFT, "ancientwarfare:core/engineering_station_bottom");
+        setIcon(RelativeSide.RIGHT, "ancientwarfare:core/engineering_station_bottom");
         setHardness(2.f);
     }
 
@@ -63,12 +62,6 @@ public class BlockEngineeringStation extends BlockRotatableTile {
     @Override
     public boolean invertFacing() {
         return true;
-    }
-
-    @Override
-    public Block setIcon(RelativeSide side, String texName) {
-        iconMap.setIcon(this, side, texName);
-        return this;
     }
 
     @Override

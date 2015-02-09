@@ -68,7 +68,7 @@ public class BlockWarehouseStorage extends Block {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void getSubBlocks(Item item, CreativeTabs p_149666_2_, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         list.add(new ItemStack(item, 1, 0));
         list.add(new ItemStack(item, 1, 1));
         list.add(new ItemStack(item, 1, 2));
@@ -103,7 +103,7 @@ public class BlockWarehouseStorage extends Block {
     public boolean onBlockEventReceived(World world, int x, int y, int z, int eventID, int eventParam) {
         super.onBlockEventReceived(world, x, y, z, eventID, eventParam);
         TileEntity tileentity = world.getTileEntity(x, y, z);
-        return tileentity != null ? tileentity.receiveClientEvent(eventID, eventParam) : false;
+        return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
     }
 
 }

@@ -3,8 +3,11 @@ package net.shadowmage.ancientwarfare.core.block;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
@@ -27,13 +30,22 @@ public class AWCoreBlockLoader {
     };
 
     public void load() {
-        AWBlocks.engineeringStation = new BlockEngineeringStation("engineering_station");
-        GameRegistry.registerBlock(AWBlocks.engineeringStation, ItemBlockRotatableMetaTile.class, "engineering_station");
-        GameRegistry.registerTileEntity(TileEngineeringStation.class, "engineering_station_tile");
+        AWBlocks.engineeringStation = register(new BlockEngineeringStation(), "engineering_station", ItemBlockRotatableMetaTile.class, TileEngineeringStation.class);
 
-        AWBlocks.researchStation = new BlockResearchStation("research_station");
-        GameRegistry.registerBlock(AWBlocks.researchStation, ItemBlockRotatableMetaTile.class, "research_station");
-        GameRegistry.registerTileEntity(TileResearchStation.class, "research_station_tile");
+        AWBlocks.researchStation = register(new BlockResearchStation(), "research_station", ItemBlockRotatableMetaTile.class, TileResearchStation.class);
     }
 
+    public Block register(Block block, String name){
+        return GameRegistry.registerBlock(block, name);
+    }
+
+    public Block register(Block block, String name, Class<? extends ItemBlock> clazz){
+        return GameRegistry.registerBlock(block, clazz, name);
+    }
+
+    public Block register(Block block, String name, Class<? extends ItemBlock> blockItem, Class<? extends TileEntity> blockTile){
+        block.setBlockName(name);
+        GameRegistry.registerTileEntity(blockTile, name+"_tile");
+        return GameRegistry.registerBlock(block, blockItem, name);
+    }
 }

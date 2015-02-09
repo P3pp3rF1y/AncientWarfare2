@@ -33,14 +33,6 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransportConduit {
         return new TileTorqueShaftLight();
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    @Override
-    public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list) {
-        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 0));
-        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 1));
-        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 2));
-    }
-
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         float min = 0.1875f, max = 0.8125f;

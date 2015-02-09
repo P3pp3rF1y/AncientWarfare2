@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 
 public abstract class BlockRotatableTile extends Block implements IRotatableBlock {
 
-    IconRotationMap iconMap = new IconRotationMap();
+    private final IconRotationMap iconMap = new IconRotationMap();
 
     protected BlockRotatableTile(Material material) {
         super(material);

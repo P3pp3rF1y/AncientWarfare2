@@ -19,10 +19,9 @@ public class BlockAdvancedSpawner extends Block {
 
     IIcon transparentIcon;
 
-    public BlockAdvancedSpawner(String regName) {
+    public BlockAdvancedSpawner() {
         super(Material.rock);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
-        this.setBlockName(regName);
         this.setBlockTextureName("ancientwarfare:structure/advanced_spawner");
         setHardness(2.f);
     }
