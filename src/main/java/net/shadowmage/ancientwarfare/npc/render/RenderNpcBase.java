@@ -191,7 +191,7 @@ public class RenderNpcBase extends RenderBiped {
     }
 
     private String getNameForRender(NpcBase npc, boolean hostile) {
-        String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : "npc." + npc.getNpcFullType() + ".name";
+        String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : "entity.AncientWarfareNpc." + npc.getNpcFullType() + ".name";
         customName = StatCollector.translateToLocal(customName);
         boolean addHealth = (hostile && AWNPCStatics.renderHostileHealth.getBoolean()) || (!hostile && AWNPCStatics.renderFriendlyHealth.getBoolean());
         if (addHealth) {
@@ -201,8 +201,7 @@ public class RenderNpcBase extends RenderBiped {
     }
 
     private String getHealthForRender(NpcBase npc) {
-        String health = String.format("%.1f", npc.getHealth());
-        return health;
+        return String.format("%.1f", npc.getHealth());
     }
 
     private void renderNpcAITasks(NpcBase entity, double x, double y, double z, int renderDistance) {

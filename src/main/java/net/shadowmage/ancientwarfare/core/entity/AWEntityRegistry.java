@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.core.entity;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 import java.util.HashMap;
 
@@ -125,28 +127,11 @@ public class AWEntityRegistry {
     //TODO add gates?? where are they registered at?
     public static final String AW_GATES = "aw_gate";
 
-    private static HashMap<String, EntityDeclaration> entityRegistrations = new HashMap<String, EntityDeclaration>();
-    @SuppressWarnings("rawtypes")
-    private static HashMap<Class, String> classToRegistration = new HashMap<Class, String>();
-
     public static void registerEntity(EntityDeclaration reg) {
-        entityRegistrations.put(reg.entityName, reg);
-        classToRegistration.put(reg.entityClass, reg.entityName);
-        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(reg.entityClass, reg.entityName, reg.id, reg.mod, reg.trackingRange, reg.updateFrequency, reg.sendsVelocityUpdates);
+        EntityRegistry.registerModEntity(reg.entityClass, reg.entityName, reg.id, reg.mod, reg.trackingRange, reg.updateFrequency, reg.sendsVelocityUpdates);
     }
 
-    public static String getRegistryNameFor(@SuppressWarnings("rawtypes") Class clz) {
-        return classToRegistration.get(clz);
-    }
-
-    public static Entity createEntity(String type, World world) {
-        if (entityRegistrations.containsKey(type)) {
-            return entityRegistrations.get(type).createEntity(world);
-        }
-        return null;
-    }
-
-    public static abstract class EntityDeclaration {
+    public static class EntityDeclaration {
 
         Class<? extends Entity> entityClass;
         String entityName;
@@ -166,7 +151,14 @@ public class AWEntityRegistry {
             this.sendsVelocityUpdates = sendsVelocityUpdates;
         }
 
-        public abstract Entity createEntity(World world);
+        public Entity createEntity(World world){
+            try{
+                return entityClass.getConstructor(World.class).newInstance(world);
+            }catch (Exception e){
+                AWLog.logError("Couldn't create entity:" + e.getMessage());
+            }
+            return null;
+        }
 
         public String getEntityName() {
             return entityName;
