@@ -109,31 +109,24 @@ public final class NetworkHandler implements IGuiHandler {
         NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
     }
 
-    /**
-     * should be called from core-client-proxy to register client-side packet handler
-     */
-    public final static void registerClientHandler(Object o) {
-        INSTANCE.channel.register(o);
-    }
-
-    public final static void sendToServer(PacketBase pkt) {
+    public static void sendToServer(PacketBase pkt) {
         INSTANCE.channel.sendToServer(pkt.getFMLPacket());
     }
 
-    public final static void sendToPlayer(EntityPlayerMP player, PacketBase pkt) {
+    public static void sendToPlayer(EntityPlayerMP player, PacketBase pkt) {
         INSTANCE.channel.sendTo(pkt.getFMLPacket(), player);
     }
 
-    public final static void sendToAllPlayers(PacketBase pkt) {
+    public static void sendToAllPlayers(PacketBase pkt) {
         INSTANCE.channel.sendToAll(pkt.getFMLPacket());
     }
 
-    public final static void sendToAllTracking(Entity e, PacketBase pkt) {
+    public static void sendToAllTracking(Entity e, PacketBase pkt) {
         WorldServer server = (WorldServer) e.worldObj;
         server.getEntityTracker().func_151247_a(e, pkt.getFMLPacket());
     }
 
-    public final static void sendToAllNear(World world, int x, int y, int z, double range, PacketBase pkt) {
+    public static void sendToAllNear(World world, int x, int y, int z, double range, PacketBase pkt) {
         INSTANCE.channel.sendToAllAround(pkt.getFMLPacket(), new TargetPoint(world.provider.dimensionId, x, y, z, range));
     }
 
@@ -144,7 +137,7 @@ public final class NetworkHandler implements IGuiHandler {
      * @param pkt   the packet
      */
     @SuppressWarnings("unchecked")
-    public static final void sendToAllTrackingChunk(World world, int cx, int cz, PacketBase pkt) {
+    public static void sendToAllTrackingChunk(World world, int cx, int cz, PacketBase pkt) {
         WorldServer server = (WorldServer) world;
         for (EntityPlayer p : (List<EntityPlayer>) server.playerEntities) {
             if (server.getPlayerManager().isPlayerWatchingChunk((EntityPlayerMP) p, cx, cz)) {
@@ -186,11 +179,11 @@ public final class NetworkHandler implements IGuiHandler {
         return gui;
     }
 
-    public static final void registerContainer(int id, Class<? extends ContainerBase> containerClazz) {
+    public static void registerContainer(int id, Class<? extends ContainerBase> containerClazz) {
         INSTANCE.containerClasses.put(id, containerClazz);
     }
 
-    public static final void registerGui(int id, Class<? extends GuiContainerBase> guiClazz) {
+    public static void registerGui(int id, Class<? extends GuiContainerBase> guiClazz) {
         INSTANCE.guiClasses.put(id, guiClazz);
     }
 

@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
@@ -61,7 +62,7 @@ public class PacketNpcCommand extends PacketBase {
     }
 
     @Override
-    protected void execute() {
+    protected void execute(EntityPlayer player) {
         NpcCommand.handleServerCommand(player, type, blockTarget, x, y, z);
     }
 
