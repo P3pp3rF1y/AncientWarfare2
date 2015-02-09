@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.nei_plugin;
 
 import codechicken.nei.PositionedStack;
+import codechicken.nei.api.API;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -36,6 +37,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AWNeiRecipeHandler extends TemplateRecipeHandler {
+
+    public AWNeiRecipeHandler(){
+        API.registerRecipeHandler(this);
+        API.registerUsageHandler(this);
+    }
 
     @Override
     public String getRecipeName() {

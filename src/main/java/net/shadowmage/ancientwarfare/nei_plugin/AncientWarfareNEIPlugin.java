@@ -34,7 +34,7 @@ public class AncientWarfareNEIPlugin {
                 Class clz = Class.forName("codechicken.nei.api.API");
                 if (clz != null) {
                     AWLog.log("NEI Detected, attempting load of NEI Plugin");
-                    Class clz2 = Class.forName("net.shadowmage.ancientwarfare.nei_plugin.AWNeiProxyActual");
+                    Class clz2 = Class.forName("net.shadowmage.ancientwarfare.nei_plugin.AWNeiRecipeHandler");
                     try {
                         Object proxy = clz2.newInstance();
                         AWLog.log("NEI Plugin loaded successfully");
