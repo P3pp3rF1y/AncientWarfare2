@@ -10,6 +10,7 @@ public class ClientProxyBase extends CommonProxyBase {
 
     }
 
+    @Override
     public final EntityPlayer getClientPlayer() {
         return Minecraft.getMinecraft().thePlayer;
     }

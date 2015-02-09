@@ -15,12 +15,12 @@ import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 
 public class FactionTracker {
 
-    private FactionTracker() {
-    }
-
     public static final FactionTracker INSTANCE = new FactionTracker();
-
-    FactionEntry clientEntry = new FactionEntry("client_entry");
+    private static final FactionEntry DEFAULT = new FactionEntry("client_entry");
+    private FactionEntry clientEntry;
+    private FactionTracker() {
+        clientEntry = DEFAULT;
+    }
 
     @SubscribeEvent
     public void onPlayerLogin(PlayerLoggedInEvent evt) {
@@ -29,12 +29,12 @@ public class FactionTracker {
 
     @SubscribeEvent
     public void onClientConnect(ClientConnectedToServerEvent evt) {
-        clientEntry = new FactionEntry("client_entry");
+        clientEntry = DEFAULT;
     }
 
     @SubscribeEvent
     public void onClientDisconnect(ClientDisconnectionFromServerEvent evt) {
-        clientEntry = new FactionEntry("client_entry");
+        clientEntry = DEFAULT;
     }
 
     private void onPlayerLogin(EntityPlayer player) {

@@ -77,7 +77,7 @@ public class AWCraftingManager {
     }
 
     public RecipeResearched createRecipe(ItemStack result, String research, Object... inputArray) {
-        if (research == null || research.equals("")) {
+        if (research == null || research.isEmpty()) {
             return createRecipe(result, emptyStringArray, inputArray);
         } else {
             singleInputArray[0] = research;

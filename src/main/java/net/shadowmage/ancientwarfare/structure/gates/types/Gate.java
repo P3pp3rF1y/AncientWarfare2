@@ -264,19 +264,17 @@ public abstract class Gate implements IGateType {
         if (gate.worldObj.isRemote) {
             return;
         }
-        Block id;
         BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
         for (int x = min.x; x <= max.x; x++) {
             for (int y = min.y; y <= max.y; y++) {
                 for (int z = min.z; z <= max.z; z++) {
-                    id = gate.worldObj.getBlock(x, y, z);
-                    if (id == Blocks.air) {
-                        gate.worldObj.setBlock(x, y, z, AWBlocks.gateProxy);
-                        TileEntity te = gate.worldObj.getTileEntity(x, y, z);
-                        if (te != null && te instanceof TEGateProxy) {
-                            TEGateProxy teg = (TEGateProxy) te;
-                            teg.setOwner(gate);
+                    if (gate.worldObj.isAirBlock(x, y, z)) {
+                        if(gate.worldObj.setBlock(x, y, z, AWBlocks.gateProxy)) {
+                            TileEntity te = gate.worldObj.getTileEntity(x, y, z);
+                            if (te instanceof TEGateProxy) {
+                                ((TEGateProxy) te).setOwner(gate);
+                            }
                         }
                     }
                 }
