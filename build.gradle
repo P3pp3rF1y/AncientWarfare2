@@ -74,45 +74,43 @@ task expand_jar<<{
     }
   }   
 
-task packFullJar(type: Jar){
+task packFullJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-FULL.jar'
   from 'build/tmp/expanded'
   include '**/*'
   exclude 'net/shadowmage/ancientwarfare/modeler/**/*'
 }
 
-task packCoreJar(type: Jar){
+task packCoreJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-CORE.jar'
   from 'build/tmp/expanded'
   exclude 'net/shadowmage/ancientwarfare/automation/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/npc/**/*', 'net/shadowmage/ancientwarfare/structure/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*'
 }
 
-task packAutomationJar(type: Jar){
+task packAutomationJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-AUTOMATION.jar'
   from 'build/tmp/expanded'
   exclude 'net/shadowmage/ancientwarfare/core/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/npc/**/*', 'net/shadowmage/ancientwarfare/structure/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*', 'net/shadowmage/ancientwarfare/nei_plugin/**/*'
 }
 
-task packNpcJar(type: Jar){
+task packNpcJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-NPC.jar'
   from 'build/tmp/expanded'
   exclude 'net/shadowmage/ancientwarfare/core/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/automation/**/*', 'net/shadowmage/ancientwarfare/structure/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*', 'net/shadowmage/ancientwarfare/nei_plugin/**/*'
 }
 
-task packStructureJar(type: Jar){
+task packStructureJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-STRUCTURE.jar'
   from 'build/tmp/expanded'
   exclude 'net/shadowmage/ancientwarfare/core/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/npc/**/*', 'net/shadowmage/ancientwarfare/automation/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*', 'net/shadowmage/ancientwarfare/nei_plugin/**/*'
 }
 
-//hack the entire thing to fire after check()
-check.dependsOn packStructureJar
-
-packFullJar.dependsOn expand_jar
-packCoreJar.dependsOn packFullJar
-packAutomationJar.dependsOn packCoreJar
-packNpcJar.dependsOn packAutomationJar
-packStructureJar.dependsOn packNpcJar
+artifacts{
+    archives packCoreJar
+    archives packAutomationJar
+    archives packNpcJar
+    archives packStructureJar
+}
 
 
 
