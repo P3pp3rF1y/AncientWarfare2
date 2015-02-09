@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;
@@ -24,7 +23,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
     boolean showAddTagButton = true;
 
     public GuiSpawnerAdvancedAddEntity(GuiContainerBase parent, EntitySpawnGroup group, EntitySpawnSettings settings) {
-        super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);
+        super(parent.getContainer(), 256, 240, defaultBackground);
         this.parent = parent;
         this.group = group;
         this.settings = settings;

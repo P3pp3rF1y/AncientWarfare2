@@ -79,7 +79,7 @@ public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSter
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         int slots = 1;
-        Slot slot = (Slot) this.inventorySlots.get(slotClickedIndex);
+        Slot slot = this.getSlot(slotClickedIndex);
         if (slot == null || !slot.getHasStack()) {
             return null;
         }

@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class GuiStructureSelectionDraftingStation extends GuiStructureSelectionB
     List<StructureTemplateClient> templateList = new ArrayList<StructureTemplateClient>();
 
     public GuiStructureSelectionDraftingStation(GuiDraftingStation parent) {
-        super((ContainerBase) parent.inventorySlots);
+        super(parent.getContainer());
         this.parent = parent;
     }
 

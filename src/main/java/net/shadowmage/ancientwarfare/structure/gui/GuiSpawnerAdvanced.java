@@ -12,20 +12,17 @@ import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnS
 import java.util.HashMap;
 import java.util.List;
 
-public class GuiSpawnerAdvanced extends GuiContainerBase {
+public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvancedBase> {
 
     CompositeScrolled area;
 
-    ContainerSpawnerAdvancedBase container;
-
     public GuiSpawnerAdvanced(ContainerBase par1Container) {
         super(par1Container, 256, 240, defaultBackground);
-        container = (ContainerSpawnerAdvancedBase) par1Container;
     }
 
     @Override
     protected boolean onGuiCloseRequested() {
-        container.sendSettingsToServer();
+        getContainer().sendSettingsToServer();
         return true;
     }
 
@@ -63,50 +60,50 @@ public class GuiSpawnerAdvanced extends GuiContainerBase {
         box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal("guistrings.spawner.light_sensitive")) {
             @Override
             public void onToggled() {
-                container.settings.setLightSensitive(checked());
+                getContainer().settings.setLightSensitive(checked());
             }
         };
-        box.setChecked(container.settings.isLightSensitive());
+        box.setChecked(getContainer().settings.isLightSensitive());
         area.addGuiElement(box);
         totalHeight += 16;
 
         box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal("guistrings.spawner.redstone_sensitive")) {
             @Override
             public void onToggled() {
-                container.settings.setRespondToRedstone(checked());
+                getContainer().settings.setRespondToRedstone(checked());
             }
         };
-        box.setChecked(container.settings.isRespondToRedstone());
+        box.setChecked(getContainer().settings.isRespondToRedstone());
         area.addGuiElement(box);
         totalHeight += 16;
 
         box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal("guistrings.spawner.redstone_mode")) {
             @Override
             public void onToggled() {
-                container.settings.setRedstoneMode(checked());
+                getContainer().settings.setRedstoneMode(checked());
             }
         };
-        box.setChecked(container.settings.getRedstoneMode());
+        box.setChecked(getContainer().settings.getRedstoneMode());
         area.addGuiElement(box);
         totalHeight += 16;
 
         box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal("guistrings.spawner.transparent")) {
             @Override
             public void onToggled() {
-                container.settings.setTransparent(checked());
+                getContainer().settings.setTransparent(checked());
             }
         };
-        box.setChecked(container.settings.isTransparent());
+        box.setChecked(getContainer().settings.isTransparent());
         area.addGuiElement(box);
         totalHeight += 16;
 
         box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal("guistrings.spawner.debug_mode")) {
             @Override
             public void onToggled() {
-                container.settings.setDebugMode(checked());
+                getContainer().settings.setDebugMode(checked());
             }
         };
-        box.setChecked(container.settings.isDebugMode());
+        box.setChecked(getContainer().settings.isDebugMode());
         area.addGuiElement(box);
         totalHeight += 16;
 
@@ -114,11 +111,11 @@ public class GuiSpawnerAdvanced extends GuiContainerBase {
 
         label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.required_player_range"));
         area.addGuiElement(label);
-        input = new NumberInput(180, totalHeight, 50, container.settings.getPlayerRange(), this) {
+        input = new NumberInput(180, totalHeight, 50, getContainer().settings.getPlayerRange(), this) {
             @Override
             public void onValueUpdated(float value) {
                 int val = (int) value;
-                container.settings.setPlayerRange(val);
+                getContainer().settings.setPlayerRange(val);
             }
         };
         input.setIntegerValue();
@@ -127,11 +124,11 @@ public class GuiSpawnerAdvanced extends GuiContainerBase {
 
         label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.max_nearby_entities"));
         area.addGuiElement(label);
-        input = new NumberInput(180, totalHeight, 50, container.settings.getMaxNearbyMonsters(), this) {
+        input = new NumberInput(180, totalHeight, 50, getContainer().settings.getMaxNearbyMonsters(), this) {
             @Override
             public void onValueUpdated(float value) {
                 int val = (int) value;
-                container.settings.setMaxNearbyMonsters(val);
+                getContainer().settings.setMaxNearbyMonsters(val);
             }
         };
         input.setIntegerValue();
@@ -140,11 +137,11 @@ public class GuiSpawnerAdvanced extends GuiContainerBase {
 
         label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.min_spawn_delay"));
         area.addGuiElement(label);
-        input = new NumberInput(180, totalHeight, 50, container.settings.getMinDelay(), this) {
+        input = new NumberInput(180, totalHeight, 50, getContainer().settings.getMinDelay(), this) {
             @Override
             public void onValueUpdated(float value) {
                 int val = (int) value;
-                container.settings.setMinDelay(val);
+                getContainer().settings.setMinDelay(val);
             }
         };
         input.setIntegerValue();
@@ -153,11 +150,11 @@ public class GuiSpawnerAdvanced extends GuiContainerBase {
 
         label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.max_spawn_delay"));
         area.addGuiElement(label);
-        input = new NumberInput(180, totalHeight, 50, container.settings.getMaxDelay(), this) {
+        input = new NumberInput(180, totalHeight, 50, getContainer().settings.getMaxDelay(), this) {
             @Override
             public void onValueUpdated(float value) {
                 int val = (int) value;
-                container.settings.setMaxDelay(val);
+                getContainer().settings.setMaxDelay(val);
             }
         };
         input.setIntegerValue();
@@ -166,11 +163,11 @@ public class GuiSpawnerAdvanced extends GuiContainerBase {
 
         label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.xp_to_drop"));
         area.addGuiElement(label);
-        input = new NumberInput(180, totalHeight, 50, container.settings.getXpToDrop(), this) {
+        input = new NumberInput(180, totalHeight, 50, getContainer().settings.getXpToDrop(), this) {
             @Override
             public void onValueUpdated(float value) {
                 int val = (int) value;
-                container.settings.setXpToDrop(val);
+                getContainer().settings.setXpToDrop(val);
             }
         };
         input.setIntegerValue();
@@ -179,10 +176,10 @@ public class GuiSpawnerAdvanced extends GuiContainerBase {
 
         label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.block_hardness"));
         area.addGuiElement(label);
-        input = new NumberInput(180, totalHeight, 50, container.settings.getBlockHardness(), this) {
+        input = new NumberInput(180, totalHeight, 50, getContainer().settings.getBlockHardness(), this) {
             @Override
             public void onValueUpdated(float value) {
-                container.settings.setBlockHardness(value);
+                getContainer().settings.setBlockHardness(value);
             }
         };
         area.addGuiElement(input);
@@ -195,7 +192,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase {
         area.addGuiElement(label);
         totalHeight += 12;
 
-        List<EntitySpawnGroup> spawnGroups = container.settings.getSpawnGroups();
+        List<EntitySpawnGroup> spawnGroups = getContainer().settings.getSpawnGroups();
         List<EntitySpawnSettings> entitySettings;
 
         for (EntitySpawnGroup group : spawnGroups) {
@@ -204,7 +201,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase {
                 @Override
                 protected void onPressed() {
                     EntitySpawnGroup g = groupMapByButton.get(this);
-                    container.settings.getSpawnGroups().remove(g);
+                    getContainer().settings.getSpawnGroups().remove(g);
                     groupMapByButton.remove(this);
                     refreshGui();
                 }
@@ -332,7 +329,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase {
             protected void onPressed() {
                 EntitySpawnGroup g = new EntitySpawnGroup();
                 g.setWeight(1);
-                container.settings.addSpawnGroup(g);
+                getContainer().settings.addSpawnGroup(g);
                 refreshGui();
             }
         };

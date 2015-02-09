@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
@@ -27,7 +26,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
 
     public GuiStructureValidationSettings(GuiStructureScanner parent) {
-        super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);
+        super(parent.getContainer(), 256, 240, defaultBackground);
         this.parent = parent;
         this.shouldCloseOnVanillaKeys = false;
     }

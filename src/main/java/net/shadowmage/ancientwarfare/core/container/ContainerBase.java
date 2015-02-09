@@ -182,7 +182,7 @@ public class ContainerBase extends Container {
         stop = iterateBackwards ? startIndex : endBeforeIndex;
         if (incomingStack.isStackable()) {
             for (currentIndex = start; incomingStack.stackSize > 0 && currentIndex != stop; currentIndex += iterator) {
-                slotFromContainer = (Slot) this.inventorySlots.get(currentIndex);
+                slotFromContainer = this.getSlot(currentIndex);
                 if (!slotFromContainer.isItemValid(incomingStack)) {
                     continue;
                 }
@@ -203,7 +203,7 @@ public class ContainerBase extends Container {
         }
         if (incomingStack.stackSize > 0) {
             for (currentIndex = start; incomingStack.stackSize > 0 && currentIndex != stop; currentIndex += iterator) {
-                slotFromContainer = (Slot) this.inventorySlots.get(currentIndex);
+                slotFromContainer = this.getSlot(currentIndex);
                 if (!slotFromContainer.isItemValid(incomingStack)) {
                     continue;
                 }

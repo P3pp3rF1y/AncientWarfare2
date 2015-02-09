@@ -7,14 +7,12 @@ import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData.SongEntry;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
 
-public class GuiSoundBlock extends GuiContainerBase {
+public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 
-    ContainerSoundBlock container;
     CompositeScrolled area;
 
     public GuiSoundBlock(ContainerBase container) {
         super(container, 256, 240, defaultBackground);
-        this.container = (ContainerSoundBlock) container;
     }
 
     @Override
@@ -29,7 +27,7 @@ public class GuiSoundBlock extends GuiContainerBase {
         addGuiElement(area);
 
         int totalHeight = 8;
-        final SongPlayData data = container.data;
+        final SongPlayData data = getContainer().data;
 
         Checkbox playerEntry = new Checkbox(8, totalHeight, 16, 16, "guistrings.play_on_player_entry") {
             @Override
@@ -53,10 +51,10 @@ public class GuiSoundBlock extends GuiContainerBase {
         Checkbox redstone = new Checkbox(128, totalHeight, 16, 16, "guistrings.redstone") {
             @Override
             public void onToggled() {
-                container.redstoneInteraction = checked();
+                getContainer().redstoneInteraction = checked();
             }
         };
-        redstone.setChecked(container.redstoneInteraction);
+        redstone.setChecked(getContainer().redstoneInteraction);
         area.addGuiElement(redstone);
         totalHeight += 16;
 
@@ -142,7 +140,7 @@ public class GuiSoundBlock extends GuiContainerBase {
         area.addGuiElement(new Button(160, y, 55, 12, "guistrings.up") {
             @Override
             protected void onPressed() {
-                final SongPlayData data = container.data;
+                final SongPlayData data = getContainer().data;
                 data.decrementEntry(index);
                 refreshGui();
             }
@@ -151,7 +149,7 @@ public class GuiSoundBlock extends GuiContainerBase {
         area.addGuiElement(new Button(160, y + 12, 55, 12, "guistrings.delete") {
             @Override
             protected void onPressed() {
-                final SongPlayData data = container.data;
+                final SongPlayData data = getContainer().data;
                 data.deleteEntry(index);
                 refreshGui();
             }
@@ -160,7 +158,7 @@ public class GuiSoundBlock extends GuiContainerBase {
         area.addGuiElement(new Button(160, y + 24, 55, 12, "guistrings.down") {
             @Override
             protected void onPressed() {
-                final SongPlayData data = container.data;
+                final SongPlayData data = getContainer().data;
                 data.incrementEntry(index);
                 refreshGui();
             }
@@ -173,7 +171,7 @@ public class GuiSoundBlock extends GuiContainerBase {
 
     @Override
     protected boolean onGuiCloseRequested() {
-        container.sendTuneDataToServer(player);
+        getContainer().sendTuneDataToServer(player);
         return true;
     }
 

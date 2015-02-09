@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 
 import java.util.*;
 
-public class GuiStructureSelectionBase extends GuiContainerBase {
+public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructureSelectionBase> {
 
     Text filterInput;
     StructureTemplateClient currentSelection;
@@ -25,15 +25,12 @@ public class GuiStructureSelectionBase extends GuiContainerBase {
 
     TexturedRectangle rect;
 
-    ContainerStructureSelectionBase container;
-
     CompositeScrolled resourceArea;
 
     public GuiStructureSelectionBase(ContainerBase par1Container) {
         super(par1Container, 400, 240, defaultBackground);
         sorter = new ComparatorStructureTemplateClient();
         sorter.setFilterText("");
-        container = (ContainerStructureSelectionBase) par1Container;
     }
 
     @Override
@@ -42,8 +39,8 @@ public class GuiStructureSelectionBase extends GuiContainerBase {
             @Override
             protected void onPressed() {
                 if (currentSelection != null) {
-                    container.handleNameSelection(currentSelection.name);
-                    container.addSlots();
+                    getContainer().handleNameSelection(currentSelection.name);
+                    getContainer().addSlots();
                     closeGui();
                 }
             }
@@ -74,7 +71,7 @@ public class GuiStructureSelectionBase extends GuiContainerBase {
         resourceArea = new CompositeScrolled(this, 256, 40, 144, 200);
         addGuiElement(resourceArea);
 
-        StructureTemplateClient t = StructureTemplateManagerClient.instance().getClientTemplate(container.structureName);
+        StructureTemplateClient t = StructureTemplateManagerClient.instance().getClientTemplate(getContainer().structureName);
         this.setSelection(t);
     }
 

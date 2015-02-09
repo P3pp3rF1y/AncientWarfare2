@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.gui.research;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -11,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import org.lwjgl.input.Mouse;
 
-public class GuiResearchStationSelection extends GuiContainerBase {
+public class GuiResearchStationSelection extends GuiContainerBase<ContainerResearchStation> {
 
     GuiResearchStation parent;
 
@@ -44,7 +45,7 @@ public class GuiResearchStationSelection extends GuiContainerBase {
         selectionArea.clearElements();
         queueArea.clearElements();
         int goal;
-        goal = parent.getContainer().currentGoal;
+        goal = getContainer().currentGoal;
 
         int totalHeight = 8;
 
@@ -52,7 +53,7 @@ public class GuiResearchStationSelection extends GuiContainerBase {
             totalHeight = addQueuedGoal(totalHeight, goal, false);
         }
 
-        for (Integer g : parent.getContainer().queuedResearch) {
+        for (Integer g : getContainer().queuedResearch) {
             totalHeight = addQueuedGoal(totalHeight, g, true);
         }
 
@@ -61,8 +62,8 @@ public class GuiResearchStationSelection extends GuiContainerBase {
 
         totalHeight = 8;
 
-        if (parent.getContainer().researcherName != null) {
-            for (Integer g : ResearchTracker.instance().getResearchableGoals(player.worldObj, parent.getContainer().researcherName)) {
+        if (getContainer().researcherName != null) {
+            for (Integer g : ResearchTracker.instance().getResearchableGoals(player.worldObj, getContainer().researcherName)) {
                 totalHeight = addSelectableGoal(totalHeight, g);
             }
         }
@@ -137,8 +138,8 @@ public class GuiResearchStationSelection extends GuiContainerBase {
     @Override
     protected boolean onGuiCloseRequested() {
         parent.refreshGui();
-        parent.getContainer().setGui(parent);
-        parent.getContainer().addSlots();
+        getContainer().setGui(parent);
+        getContainer().addSlots();
         Minecraft.getMinecraft().displayGuiScreen(parent);
         return false;
     }
@@ -155,7 +156,7 @@ public class GuiResearchStationSelection extends GuiContainerBase {
 
         @Override
         protected void onPressed() {
-            PacketResearchUpdate pkt = new PacketResearchUpdate(parent.getContainer().researcherName, goal.getId(), add, false);
+            PacketResearchUpdate pkt = new PacketResearchUpdate(getContainer().researcherName, goal.getId(), add, false);
             NetworkHandler.sendToServer(pkt);
         }
     }

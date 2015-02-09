@@ -75,7 +75,7 @@ public class ContainerBackpack extends ContainerBase {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         ItemStack slotStackCopy = null;
-        Slot theSlot = (Slot) this.inventorySlots.get(slotClickedIndex);
+        Slot theSlot = this.getSlot(slotClickedIndex);
         int size = inventory.getSizeInventory();
         int playerSize = 35;// skipped one due to backpack slot
         if (theSlot != null && theSlot.getHasStack()) {

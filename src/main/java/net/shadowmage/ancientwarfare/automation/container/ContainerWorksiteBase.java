@@ -46,7 +46,7 @@ public class ContainerWorksiteBase extends ContainerTileBase<TileWorksiteBounded
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         int slots = tileEntity.getSizeInventory();
-        Slot slot = (Slot) this.inventorySlots.get(slotClickedIndex);
+        Slot slot = this.getSlot(slotClickedIndex);
         if (slot == null || !slot.getHasStack()) {
             return null;
         }

@@ -43,7 +43,7 @@ public class GuiUVEditor extends GuiContainerBase {
     private HashMap<String, GuiElement> widgetMap = new HashMap<String, GuiElement>();
 
     public GuiUVEditor(GuiModelEditor parent) {
-        super((ContainerBase) parent.inventorySlots, 256, 256, defaultBackground);
+        super(parent.getContainer(), 256, 256, defaultBackground);
         this.parent = parent;
         loc = new ResourceLocation(GuiModelEditor.uvMapTextureName);
     }
