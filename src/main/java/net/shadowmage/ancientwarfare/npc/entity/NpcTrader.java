@@ -119,10 +119,7 @@ public class NpcTrader extends NpcPlayerOwned {
 
     @Override
     public boolean shouldBeAtHome() {
-        if ((!worldObj.provider.hasNoSky && !worldObj.provider.isDaytime()) || worldObj.isRaining()) {
-            return true;
-        }
-        return false;
+        return (!worldObj.provider.hasNoSky && !worldObj.provider.isDaytime()) || worldObj.isRaining();
     }
 
     @Override

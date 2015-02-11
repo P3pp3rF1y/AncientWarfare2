@@ -326,9 +326,7 @@ public class AWNPCStatics extends ModConfiguration {
         targets = targetConfig.get(targetSettings, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
                 "Should work with any new-ai enabled mob type; vanilla or mod-added (but might not work with mod-added entities with custom AI).").getStringList();
 
-        for (String target : targets) {
-            entitiesToTargetNpcs.add(target);
-        }
+        Collections.addAll(entitiesToTargetNpcs, targets);
     }
 
     private void addTargetMapping(String npcType, String npcSubtype, String[] targets) {
@@ -336,10 +334,7 @@ public class AWNPCStatics extends ModConfiguration {
         if (!entityTargetSettings.containsKey(type)) {
             entityTargetSettings.put(type, new ArrayList<String>());
         }
-        List<String> t = entityTargetSettings.get(type);
-        for (String target : targets) {
-            t.add(target);
-        }
+        Collections.addAll(entityTargetSettings.get(type), targets);
     }
 
     public boolean shouldEntityTargetNpcs(String entityName) {

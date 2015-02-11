@@ -864,27 +864,22 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     private void handlePickEntity(EntityPlayer player) {
         ItemStack item = this.getItemToSpawn();
-        boolean found = false;
         for (int i = 0; i < 9; i++) {
             if (ItemStack.areItemStacksEqual(player.inventory.getStackInSlot(i), item)) {
-                found = true;
                 return;
             }
         }
-        if (!found)//attempt to merge into inventory
+        int slotNum = player.inventory.currentItem;
+        if (player.inventory.getCurrentItem() != null)//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
         {
-            int slotNum = player.inventory.currentItem;
-            if (player.inventory.getCurrentItem() != null)//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
-            {
-                for (int i = 0; i < 9; i++) {
-                    if (player.inventory.getStackInSlot(i) == null) {
-                        slotNum = i;
-                        break;
-                    }
+            for (int i = 0; i < 9; i++) {
+                if (player.inventory.getStackInSlot(i) == null) {
+                    slotNum = i;
+                    break;
                 }
             }
-            player.inventory.setInventorySlotContents(slotNum, item);
         }
+        player.inventory.setInventorySlotContents(slotNum, item);
     }
 
     public double getDistanceSq(BlockPosition pos) {
