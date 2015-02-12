@@ -18,146 +18,132 @@ import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileEngineeringStation extends TileEntity implements IRotatableTile
-{
+public class TileEngineeringStation extends TileEntity implements IRotatableTile {
 
-ForgeDirection facing = ForgeDirection.NORTH;
+    ForgeDirection facing = ForgeDirection.NORTH;
 
-public InventoryCrafting layoutMatrix;
-public InventoryCraftResult result;
-public InventoryBasic bookInventory = new InventoryBasic(1)
-  {
-  public void markDirty()
-    {
-    onLayoutMatrixChanged(layoutMatrix);
+    public InventoryCrafting layoutMatrix;
+    public InventoryCraftResult result;
+    public InventoryBasic bookInventory = new InventoryBasic(1) {
+        public void markDirty() {
+            onLayoutMatrixChanged(layoutMatrix);
+        }
+
+        ;
     };
-  };
-public InventoryBasic extraSlots = new InventoryBasic(18);
+    public InventoryBasic extraSlots = new InventoryBasic(18);
 
-public TileEngineeringStation()
-  {
-  Container c = new Container()
-    {
-    @Override
-    public boolean canInteractWith(EntityPlayer var1)
-      {
-      return true;
-      }
-    
-    @Override
-    public void onCraftMatrixChanged(IInventory par1iInventory)
-      {
-      onLayoutMatrixChanged(par1iInventory);
-      }
-    };
-  layoutMatrix = new InventoryCrafting(c, 3, 3);
-  result = new InventoryCraftResult();
-  }
+    public TileEngineeringStation() {
+        Container c = new Container() {
+            @Override
+            public boolean canInteractWith(EntityPlayer var1) {
+                return true;
+            }
 
-@Override
-public boolean canUpdate()
-  {
-  return true;
-  }
-
-public String getCrafterName()
-  {
-  return ItemResearchBook.getResearcherName(bookInventory.getStackInSlot(0));
-  }
-
-ItemStack[] matrixShadow = new ItemStack[9];
-
-/**
- * called to shadow a copy of the input matrix, to know what to refill
- */
-public void preItemCrafted()
-  {
-  ItemStack stack;
-  for(int i = 0; i < 9; i++)
-    {
-    stack = layoutMatrix.getStackInSlot(i);
-    matrixShadow[i] = stack==null ? null : stack.copy();
+            @Override
+            public void onCraftMatrixChanged(IInventory par1iInventory) {
+                onLayoutMatrixChanged(par1iInventory);
+            }
+        };
+        layoutMatrix = new InventoryCrafting(c, 3, 3);
+        result = new InventoryCraftResult();
     }
-  }
 
-public void onItemCrafted()
-  {
-  ItemStack layoutStack;   
-  for(int i = 0; i < 9; i++)
-    {
-    layoutStack = matrixShadow[i];
-    if(layoutStack==null){continue;}
-    if(layoutMatrix.getStackInSlot(i)!=null){continue;}
-    layoutMatrix.setInventorySlotContents(i, InventoryTools.removeItems(extraSlots, -1, layoutStack, 1));
+    @Override
+    public boolean canUpdate() {
+        return true;
     }
-  }
 
-private void onLayoutMatrixChanged(IInventory matrix)
-  {
-  this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, worldObj, getCrafterName()));
-  }
+    public String getCrafterName() {
+        return ItemResearchBook.getResearcherName(bookInventory.getStackInSlot(0));
+    }
 
-@Override
-public Packet getDescriptionPacket()
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  tag.setInteger("facing", facing.ordinal());
-  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
-  }
+    ItemStack[] matrixShadow = new ItemStack[9];
 
-@Override
-public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-  {  
-  facing = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("facing"));
-  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  }
+    /**
+     * called to shadow a copy of the input matrix, to know what to refill
+     */
+    public void preItemCrafted() {
+        ItemStack stack;
+        for (int i = 0; i < 9; i++) {
+            stack = layoutMatrix.getStackInSlot(i);
+            matrixShadow[i] = stack == null ? null : stack.copy();
+        }
+    }
 
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  super.readFromNBT(tag);
-  InventoryTools.readInventoryFromNBT(bookInventory, tag.getCompoundTag("bookInventory"));
-  InventoryTools.readInventoryFromNBT(extraSlots, tag.getCompoundTag("extraInventory"));
-  InventoryTools.readInventoryFromNBT(result, tag.getCompoundTag("resultInventory"));
-  InventoryTools.readInventoryFromNBT(layoutMatrix, tag.getCompoundTag("layoutMatrix"));
-  facing = ForgeDirection.values()[tag.getInteger("facing")];
-  }
+    public void onItemCrafted() {
+        ItemStack layoutStack;
+        for (int i = 0; i < 9; i++) {
+            layoutStack = matrixShadow[i];
+            if (layoutStack == null) {
+                continue;
+            }
+            if (layoutMatrix.getStackInSlot(i) != null) {
+                continue;
+            }
+            layoutMatrix.setInventorySlotContents(i, InventoryTools.removeItems(extraSlots, -1, layoutStack, 1));
+        }
+    }
 
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  super.writeToNBT(tag);
-  
-  NBTTagCompound inventoryTag = new NBTTagCompound();
-  InventoryTools.writeInventoryToNBT(bookInventory, inventoryTag);
-  tag.setTag("bookInventory", inventoryTag);
-  
-  inventoryTag = new NBTTagCompound();
-  InventoryTools.writeInventoryToNBT(extraSlots, inventoryTag);
-  tag.setTag("extraInventory", inventoryTag);
-  
-  inventoryTag = new NBTTagCompound();
-  InventoryTools.writeInventoryToNBT(result, inventoryTag);
-  tag.setTag("resultInventory", inventoryTag);
-  
-  inventoryTag = new NBTTagCompound();
-  InventoryTools.writeInventoryToNBT(layoutMatrix, inventoryTag);
-  tag.setTag("layoutMatrix", inventoryTag);
-  
-  tag.setInteger("facing", facing.ordinal());
-  }
+    private void onLayoutMatrixChanged(IInventory matrix) {
+        this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, worldObj, getCrafterName()));
+    }
 
-@Override
-public ForgeDirection getPrimaryFacing()
-  {
-  return facing;
-  }
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("facing", facing.ordinal());
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
+    }
 
-@Override
-public void setPrimaryFacing(ForgeDirection face)
-  {
-  this.facing = face;
-  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  }
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        facing = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("facing"));
+        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        InventoryTools.readInventoryFromNBT(bookInventory, tag.getCompoundTag("bookInventory"));
+        InventoryTools.readInventoryFromNBT(extraSlots, tag.getCompoundTag("extraInventory"));
+        InventoryTools.readInventoryFromNBT(result, tag.getCompoundTag("resultInventory"));
+        InventoryTools.readInventoryFromNBT(layoutMatrix, tag.getCompoundTag("layoutMatrix"));
+        facing = ForgeDirection.values()[tag.getInteger("facing")];
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+
+        NBTTagCompound inventoryTag = new NBTTagCompound();
+        InventoryTools.writeInventoryToNBT(bookInventory, inventoryTag);
+        tag.setTag("bookInventory", inventoryTag);
+
+        inventoryTag = new NBTTagCompound();
+        InventoryTools.writeInventoryToNBT(extraSlots, inventoryTag);
+        tag.setTag("extraInventory", inventoryTag);
+
+        inventoryTag = new NBTTagCompound();
+        InventoryTools.writeInventoryToNBT(result, inventoryTag);
+        tag.setTag("resultInventory", inventoryTag);
+
+        inventoryTag = new NBTTagCompound();
+        InventoryTools.writeInventoryToNBT(layoutMatrix, inventoryTag);
+        tag.setTag("layoutMatrix", inventoryTag);
+
+        tag.setInteger("facing", facing.ordinal());
+    }
+
+    @Override
+    public ForgeDirection getPrimaryFacing() {
+        return facing;
+    }
+
+    @Override
+    public void setPrimaryFacing(ForgeDirection face) {
+        this.facing = face;
+        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 
 }

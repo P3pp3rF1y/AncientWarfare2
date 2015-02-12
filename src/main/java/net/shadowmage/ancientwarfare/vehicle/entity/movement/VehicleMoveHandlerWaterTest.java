@@ -1,26 +1,18 @@
 package net.shadowmage.ancientwarfare.vehicle.entity.movement;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputKey;
 
-public class VehicleMoveHandlerWaterTest extends VehicleInputHandler
-{
+public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 
-private float targetSubmergedDepth = 1.f;
+    private float targetSubmergedDepth = 1.f;
 
-public VehicleMoveHandlerWaterTest(VehicleBase vehicle)
-  {
-  super(vehicle);
-  // TODO Auto-generated constructor stub
-  }
+    public VehicleMoveHandlerWaterTest(VehicleBase vehicle) {
+        super(vehicle);
+        // TODO Auto-generated constructor stub
+    }
 
-@Override
-public void updateVehicleMotion(boolean[] inputStates)
-  {
+    @Override
+    public void updateVehicleMotion(boolean[] inputStates) {
 //  float rotation = 0;
 //  double forward = 0;
 //  if(inputStates[VehicleInputKey.FORWARD.ordinal()]){forward+=0.25d;}
@@ -124,6 +116,6 @@ public void updateVehicleMotion(boolean[] inputStates)
 //    {
 //    vehicle.moveHelper.rotateVehicle(rotation);     
 //    }
-  }
+    }
 
 }

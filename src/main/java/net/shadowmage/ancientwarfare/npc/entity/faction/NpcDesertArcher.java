@@ -2,18 +2,15 @@ package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import net.minecraft.world.World;
 
-public class NpcDesertArcher extends NpcFactionArcher
-{
+public class NpcDesertArcher extends NpcFactionArcher {
 
-public NpcDesertArcher(World par1World)
-  {
-  super(par1World);
-  }
+    public NpcDesertArcher(World par1World) {
+        super(par1World);
+    }
 
-@Override
-public String getNpcType()
-  {
-  return "desert.archer";
-  }
+    @Override
+    public String getNpcType() {
+        return "desert.archer";
+    }
 
 }

@@ -1,17 +1,14 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
 
-public class InventoryBackpack extends InventoryBasic
-{
+public class InventoryBackpack extends InventoryBasic {
 
-public InventoryBackpack(int size)
-  {
-  super(size);
-  }
+    public InventoryBackpack(int size) {
+        super(size);
+    }
 
-@Override
-public String toString()
-  {
-  return "Backpack size: "+getSizeInventory();
-  }
+    @Override
+    public String toString() {
+        return "Backpack size: " + getSizeInventory();
+    }
 }

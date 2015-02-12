@@ -9,69 +9,61 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class RenderShield implements IItemRenderer
-{
+public class RenderShield implements IItemRenderer {
 
-public RenderShield()
-  {
-  }
-
-@Override
-public boolean handleRenderType(ItemStack item, ItemRenderType type)
-  {
-  return type==ItemRenderType.EQUIPPED;
-  }
-
-@Override
-public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
-  {
-  return type==ItemRenderType.EQUIPPED && helper==ItemRendererHelper.EQUIPPED_BLOCK;
-  }
-
-@Override
-public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-  {  
-  EntityLivingBase entity = (EntityLivingBase)data[1];
-  render(entity, item);
-  }
-
-private void render(EntityLivingBase entity, ItemStack stack)
-  {
-  TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-  IIcon iicon = entity.getItemIcon(stack, stack.getItemDamage());
-  if (iicon == null)
-    {
-    return;
+    public RenderShield() {
     }
-  GL11.glPushMatrix();
-  texturemanager.bindTexture(texturemanager.getResourceLocation(stack.getItemSpriteNumber()));
-//  TextureUtil.func_147950_a(false, false);//TODO wtf was/is this?
-  Tessellator tessellator = Tessellator.instance;
-  float f = iicon.getMinU();
-  float f1 = iicon.getMaxU();
-  float f2 = iicon.getMinV();
-  float f3 = iicon.getMaxV();
-  float f4 = 0.0F;
-  float f5 = 0.3F;
-  GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
-  GL11.glTranslatef(-f4, -f5, 0.0F);
-  float f6 = 1.5F;
-  GL11.glScalef(f6, f6, f6);
-  GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-  GL11.glTranslatef(0.0625f, 0.125F, 0.6875f - 3.f*0.0625f);
-  GL11.glRotatef(90, 0, 1, 0);
-  GL11.glTranslatef(-8.f*0.0625f, 10.f*0.0625f, 0);
-  GL11.glRotatef(-80.f, 1, 0, 0);
-  GL11.glTranslatef(0, -3.f*0.0625f, 0);
-  ItemRenderer.renderItemIn2D(tessellator, f1, f2, f, f3, iicon.getIconWidth(), iicon.getIconHeight(), 0.0625F);
-  
-  
-  //TODO reenable for enchanted glint effect -- need to get a ref to the glint texture cleanly
+    @Override
+    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+        return type == ItemRenderType.EQUIPPED;
+    }
+
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return type == ItemRenderType.EQUIPPED && helper == ItemRendererHelper.EQUIPPED_BLOCK;
+    }
+
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        EntityLivingBase entity = (EntityLivingBase) data[1];
+        render(entity, item);
+    }
+
+    private void render(EntityLivingBase entity, ItemStack stack) {
+        TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
+        IIcon iicon = entity.getItemIcon(stack, stack.getItemDamage());
+        if (iicon == null) {
+            return;
+        }
+        GL11.glPushMatrix();
+        texturemanager.bindTexture(texturemanager.getResourceLocation(stack.getItemSpriteNumber()));
+//  TextureUtil.func_147950_a(false, false);//TODO wtf was/is this?
+        Tessellator tessellator = Tessellator.instance;
+        float f = iicon.getMinU();
+        float f1 = iicon.getMaxU();
+        float f2 = iicon.getMinV();
+        float f3 = iicon.getMaxV();
+        float f4 = 0.0F;
+        float f5 = 0.3F;
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+
+        GL11.glTranslatef(-f4, -f5, 0.0F);
+        float f6 = 1.5F;
+        GL11.glScalef(f6, f6, f6);
+        GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(0.0625f, 0.125F, 0.6875f - 3.f * 0.0625f);
+        GL11.glRotatef(90, 0, 1, 0);
+        GL11.glTranslatef(-8.f * 0.0625f, 10.f * 0.0625f, 0);
+        GL11.glRotatef(-80.f, 1, 0, 0);
+        GL11.glTranslatef(0, -3.f * 0.0625f, 0);
+        ItemRenderer.renderItemIn2D(tessellator, f1, f2, f, f3, iicon.getIconWidth(), iicon.getIconHeight(), 0.0625F);
+
+
+        //TODO reenable for enchanted glint effect -- need to get a ref to the glint texture cleanly
 //  if (stack.hasEffect(stack.getItemDamage()))
 //  {
 //      GL11.glDepthFunc(GL11.GL_EQUAL);
@@ -103,11 +95,11 @@ private void render(EntityLivingBase entity, ItemStack stack)
 //      GL11.glDepthFunc(GL11.GL_LEQUAL);
 //  }
 
-  GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-  texturemanager.bindTexture(texturemanager.getResourceLocation(stack.getItemSpriteNumber()));
-  TextureUtil.func_147945_b();
-  GL11.glPopMatrix();
-  }
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        texturemanager.bindTexture(texturemanager.getResourceLocation(stack.getItemSpriteNumber()));
+        TextureUtil.func_147945_b();
+        GL11.glPopMatrix();
+    }
 
 
 }

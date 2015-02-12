@@ -9,64 +9,52 @@ import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
-public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdvancedInventoryBase
-{
+public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdvancedInventoryBase {
 
-TileAdvancedSpawner spawner;
-public ContainerSpawnerAdvancedInventoryBlock(EntityPlayer player, int x, int y, int z)
-  {
-  super(player, x, y, z);
-  
-  TileEntity te = player.worldObj.getTileEntity(x, y, z);
-  if(!player.worldObj.isRemote && te instanceof TileAdvancedSpawner)
-    {
-    spawner = (TileAdvancedSpawner)te;
-    settings = spawner.getSettings();
+    TileAdvancedSpawner spawner;
+
+    public ContainerSpawnerAdvancedInventoryBlock(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
+
+        TileEntity te = player.worldObj.getTileEntity(x, y, z);
+        if (!player.worldObj.isRemote && te instanceof TileAdvancedSpawner) {
+            spawner = (TileAdvancedSpawner) te;
+            settings = spawner.getSettings();
+        } else {
+            settings = SpawnerSettings.getDefaultSettings();
+        }
+        inventory = settings.getInventory();
+        this.addSettingsInventorySlots();
+        this.addPlayerSlots(player, 8, 70, 8);
     }
-  else
-    {
-    settings = SpawnerSettings.getDefaultSettings();
-    } 
-  inventory = settings.getInventory();  
-  this.addSettingsInventorySlots();
-  this.addPlayerSlots(player, 8, 70, 8);
-  }
 
-@Override
-public void sendInitData()
-  {
-  if(!player.worldObj.isRemote)
-    {
-    sendSettingsToClient();
+    @Override
+    public void sendInitData() {
+        if (!player.worldObj.isRemote) {
+            sendSettingsToClient();
+        }
     }
-  }
 
-private void sendSettingsToClient()
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  settings.writeToNBT(tag);
-  
-  PacketGui pkt = new PacketGui();
-  pkt.packetData.setTag("spawnerSettings", tag);
-  NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
-  }
+    private void sendSettingsToClient() {
+        NBTTagCompound tag = new NBTTagCompound();
+        settings.writeToNBT(tag);
 
-@Override
-public void handlePacketData(NBTTagCompound tag)
-  {
-  if(tag.hasKey("spawnerSettings"))
-    {
-    if(player.worldObj.isRemote)
-      {
-      settings.readFromNBT(tag.getCompoundTag("spawnerSettings"));
-      this.refreshGui();
-      }
-    else
-      {
-      spawner.readFromNBT(tag);
-      player.worldObj.markBlockForUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
-      }
+        PacketGui pkt = new PacketGui();
+        pkt.packetData.setTag("spawnerSettings", tag);
+        NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
     }
-  }
+
+    @Override
+    public void handlePacketData(NBTTagCompound tag) {
+        if (tag.hasKey("spawnerSettings")) {
+            if (player.worldObj.isRemote) {
+                settings.readFromNBT(tag.getCompoundTag("spawnerSettings"));
+                this.refreshGui();
+            } else {
+                spawner.readFromNBT(tag);
+                player.worldObj.markBlockForUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
+            }
+        }
+    }
 
 }

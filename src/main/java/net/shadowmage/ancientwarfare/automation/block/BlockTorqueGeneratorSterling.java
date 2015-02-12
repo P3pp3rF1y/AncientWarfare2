@@ -7,38 +7,39 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
 
-public class BlockTorqueGeneratorSterling extends BlockTorqueGenerator
-{
+public class BlockTorqueGeneratorSterling extends BlockTorqueGenerator {
 
-public BlockTorqueGeneratorSterling(String regName)
-  {
-  super(regName);
-  }
+    public BlockTorqueGeneratorSterling(String regName) {
+        super(regName);
+    }
 
-@Override
-public TileEntity createTileEntity(World world, int metadata)
-  {
-  return new TileSterlingEngine();
-  }
+    @Override
+    public TileEntity createTileEntity(World world, int metadata) {
+        return new TileSterlingEngine();
+    }
 
-@Override
-public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
+    @Override
+    public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+        return false;
+    }
 
-@Override
-public boolean isOpaqueCube() {return false;}
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
 
-@Override
-public boolean isNormalCube() {return false;}
+    @Override
+    public boolean isNormalCube() {
+        return false;
+    }
 
-@Override
-public void registerBlockIcons(IIconRegister register)
-  {
-  }
+    @Override
+    public void registerBlockIcons(IIconRegister register) {
+    }
 
-@Override
-public IIcon getIcon(int side, int meta)
-  {
-  return Blocks.iron_block.getIcon(side, 0);
-  }
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        return Blocks.iron_block.getIcon(side, 0);
+    }
 
 }
