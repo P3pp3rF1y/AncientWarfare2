@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.network;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
@@ -35,7 +36,7 @@ public class PacketResearchStart extends PacketBase {
     }
 
     @Override
-    protected void execute() {
+    protected void execute(EntityPlayer player) {
         if (start) {
             ResearchTracker.instance().startResearch(player.worldObj, playerName, toAdd);
         } else {

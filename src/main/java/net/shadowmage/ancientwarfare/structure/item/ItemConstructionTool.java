@@ -13,12 +13,11 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import org.lwjgl.input.Keyboard;
-
+import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import java.util.List;
 import java.util.Set;
 
-public class ItemConstructionTool extends Item implements IItemClickable, IItemKeyInterface {
+public class ItemConstructionTool extends Item implements IItemClickable, IItemKeyInterface, IBoxRenderer {
 
     public ItemConstructionTool(String regName) {
         this.setUnlocalizedName(regName);
@@ -43,23 +42,23 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
         text = "RMB" + " = " + StatCollector.translateToLocal("guistrings.construction.do_action");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_0).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.toggle_mode");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_1).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_1);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.set_fill_block");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_2).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_2);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.set_pos_1");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_3).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_3);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.set_pos_2");
         list.add(text);
 
-        keyText = Keyboard.getKeyName(InputHandler.instance().getKeybind(InputHandler.KEY_ALT_ITEM_USE_4).getKeyCode());
+        keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_4);
         text = keyText + " = " + StatCollector.translateToLocal("guistrings.construction.clear_positions");
         list.add(text);
     }
@@ -237,7 +236,7 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
     }
 
     public static ConstructionSettings getSettings(ItemStack item) {
-        if (item.getItem() == AWStructuresItemLoader.constructionTool) {
+        if (item.getItem() instanceof ItemConstructionTool) {
             ConstructionSettings settings = new ConstructionSettings();
             if (item.hasTagCompound() && item.getTagCompound().hasKey("constructionSettings")) {
                 settings.readFromNBT(item.getTagCompound().getCompoundTag("constructionSettings"));
@@ -248,8 +247,23 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
     }
 
     public static void writeConstructionSettings(ItemStack item, ConstructionSettings settings) {
-        if (item.getItem() == AWStructuresItemLoader.constructionTool) {
+        if (item.getItem() instanceof ItemConstructionTool) {
             item.setTagInfo("constructionSettings", settings.writeToNBT(new NBTTagCompound()));
+        }
+    }
+
+    @Override
+    public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+        ConstructionSettings settings = getSettings(stack);
+        BlockPosition p1, p2;
+        BlockPosition p3 = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+        p1 = settings.hasPos1() ? settings.pos1() : p3;
+        p2 = settings.hasPos2() ? settings.pos2() : p3;
+        if (p1 != null && p2 != null) {
+            Util.renderBoundingBox(player, BlockTools.getMin(p1, p2), BlockTools.getMax(p1, p2), delta);
+        }
+        if (p3 != null) {
+            Util.renderBoundingBox(player, p3, p3, delta, 1, 0, 0);
         }
     }
 

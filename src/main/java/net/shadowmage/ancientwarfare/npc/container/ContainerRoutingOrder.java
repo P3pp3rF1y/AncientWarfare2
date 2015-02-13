@@ -12,7 +12,7 @@ public class ContainerRoutingOrder extends ContainerBase {
     public RoutingOrder routingOrder;
 
     public ContainerRoutingOrder(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         ItemStack stack = player.getCurrentEquippedItem();
         if (stack == null || stack.getItem() == null) {
             throw new IllegalArgumentException("Cannot open Routing Order GUI for null stack/item.");
@@ -23,7 +23,7 @@ public class ContainerRoutingOrder extends ContainerBase {
         }
 
         int x1 = ((256 - (9 * 18) - 16) / 2) + 8;
-        addPlayerSlots(player, x1, 240 - 4 * 18 - 8 - 4, 4);
+        addPlayerSlots(x1, 240 - 4 * 18 - 8 - 4, 4);
     }
 
     @Override

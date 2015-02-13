@@ -130,15 +130,15 @@ public class AncientWarfareStructures {
         StructurePluginManager.instance().loadPlugins();
         WorldGenStructureManager.instance().loadBiomeList();
         TemplateLoader.instance().loadTemplates();
-        config.save();
+        if(config.hasChanged())
+            config.save();
         AWLog.log("Ancient Warfare Structures Post-Init completed.  Successfully completed all loading stages.");
     }
 
     @SubscribeEvent
     public void onLogin(PlayerEvent.PlayerLoggedInEvent evt) {
-        EntityPlayer player = evt.player;
-        if (!player.worldObj.isRemote) {
-            StructureTemplateManager.instance().onPlayerConnect((EntityPlayerMP) player);
+        if (!evt.player.worldObj.isRemote) {
+            StructureTemplateManager.instance().onPlayerConnect((EntityPlayerMP) evt.player);
         }
     }
 

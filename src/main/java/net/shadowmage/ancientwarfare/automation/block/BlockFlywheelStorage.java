@@ -26,7 +26,7 @@ public class BlockFlywheelStorage extends Block {
     @Override
     public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b) {
         TileEntity tileentity = world.getTileEntity(x, y, z);
-        return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
+        return tileentity != null && tileentity.receiveClientEvent(a, b);
     }
 
     @Override

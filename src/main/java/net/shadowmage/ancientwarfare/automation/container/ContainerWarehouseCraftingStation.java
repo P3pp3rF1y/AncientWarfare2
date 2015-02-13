@@ -13,35 +13,32 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCra
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
-public class ContainerWarehouseCraftingStation extends ContainerBase {
+public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> {
 
-    public TileWarehouseCraftingStation station;
     public ItemQuantityMap itemMap = new ItemQuantityMap();
     public ItemQuantityMap cache = new ItemQuantityMap();
     boolean shouldUpdate = true;
 
     public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        station = (TileWarehouseCraftingStation) player.worldObj.getTileEntity(x, y, z);
-        IInventory inventory = station.layoutMatrix;
+        IInventory inventory = tileEntity.layoutMatrix;
 
-        Slot slot;
-
-        slot = new SlotCrafting(player, inventory, station.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+        Slot slot = new SlotCrafting(player, inventory, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
             public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
-                station.preItemCrafted();
+                tileEntity.preItemCrafted();
                 super.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
-                station.onItemCrafted();
+                tileEntity.onItemCrafted();
             }
         };
         addSlotToContainer(slot);
 
-        slot = new Slot(station.bookInventory, 0, 8, 18 + 8) {
+        slot = new Slot(tileEntity.bookInventory, 0, 8, 18 + 8) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return par1ItemStack != null && par1ItemStack.getItem() == AWItems.researchBook && ItemResearchBook.getResearcherName(par1ItemStack) != null;
@@ -61,8 +58,8 @@ public class ContainerWarehouseCraftingStation extends ContainerBase {
         }
 
         int y1 = 8 + 3 * 18 + 8;
-        y1 = this.addPlayerSlots(player, 8, y1, 4);
-        TileWarehouseBase warehouse = station.getWarehouse();
+        y1 = this.addPlayerSlots(8, y1, 4);
+        TileWarehouseBase warehouse = tileEntity.getWarehouse();
         if (warehouse != null) {
             warehouse.addCraftingViewer(this);
         }
@@ -70,9 +67,10 @@ public class ContainerWarehouseCraftingStation extends ContainerBase {
 
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        TileWarehouseBase warehouse = station.getWarehouse();
+        TileWarehouseBase warehouse = tileEntity.getWarehouse();
         if (warehouse != null) {
             warehouse.removeCraftingViewer(this);
+        }
         }
         super.onContainerClosed(par1EntityPlayer);
     }
@@ -80,7 +78,7 @@ public class ContainerWarehouseCraftingStation extends ContainerBase {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         ItemStack slotStackCopy = null;
-        Slot theSlot = (Slot) this.inventorySlots.get(slotClickedIndex);
+        Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
@@ -109,7 +107,7 @@ public class ContainerWarehouseCraftingStation extends ContainerBase {
 
             }
             if (slotStack.stackSize == 0) {
-                theSlot.putStack((ItemStack) null);
+                theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }
@@ -153,7 +151,7 @@ public class ContainerWarehouseCraftingStation extends ContainerBase {
                 itemMap.put(wrap, qty);
             }
         }
-        TileWarehouseBase warehouse = station.getWarehouse();
+        TileWarehouseBase warehouse = tileEntity.getWarehouse();
         if (warehouse != null) {
             warehouse.clearItemCache();
             warehouse.addItemsToCache(itemMap);
@@ -169,7 +167,7 @@ public class ContainerWarehouseCraftingStation extends ContainerBase {
          */
 
         cache.clear();
-        TileWarehouseBase warehouse = station.getWarehouse();
+        TileWarehouseBase warehouse = tileEntity.getWarehouse();
         if (warehouse != null) {
             warehouse.getItems(cache);
         }

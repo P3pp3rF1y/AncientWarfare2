@@ -3,13 +3,11 @@ package net.shadowmage.ancientwarfare.core.gui;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
-public class GuiBackpack extends GuiContainerBase {
-    ContainerBackpack container;
+public class GuiBackpack extends GuiContainerBase<ContainerBackpack> {
 
     public GuiBackpack(ContainerBase container) {
         super(container, 178, 192, defaultBackground);
-        this.container = (ContainerBackpack) container;
-        this.ySize = this.container.guiHeight;
+        this.ySize = this.getContainer().guiHeight;
     }
 
     @Override
@@ -31,14 +29,11 @@ public class GuiBackpack extends GuiContainerBase {
     {
         boolean callSuper = true;
         for (int slot = 0; slot < 9; slot++) {
-            if (keyCode == this.mc.gameSettings.keyBindsHotbar[slot].getKeyCode() && slot == container.backpackSlotIndex) {
+            if (keyCode == this.mc.gameSettings.keyBindsHotbar[slot].getKeyCode() && slot == getContainer().backpackSlotIndex) {
                 callSuper = false;
             }
         }
-        if (callSuper) {
-            return super.checkHotbarKeys(keyCode);
-        }
-        return false;
+        return callSuper && super.checkHotbarKeys(keyCode);
     }
 
 }

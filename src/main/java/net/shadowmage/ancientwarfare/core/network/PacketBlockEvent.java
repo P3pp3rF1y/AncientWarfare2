@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketBlockEvent extends PacketBase {
 
@@ -50,7 +51,7 @@ public class PacketBlockEvent extends PacketBase {
     }
 
     @Override
-    protected void execute() {
+    protected void execute(EntityPlayer player) {
         player.worldObj.addBlockEvent(x, y, z, Block.getBlockById(id), a, b);
     }
 

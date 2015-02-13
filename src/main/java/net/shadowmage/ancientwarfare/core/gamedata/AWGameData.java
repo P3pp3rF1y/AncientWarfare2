@@ -43,8 +43,8 @@ public class AWGameData {
         T data = (T) world.mapStorage.loadData(clz, name);
         if (data == null) {
             try {
-                data = (T) clz.newInstance();
-                world.mapStorage.setData(name, (WorldSavedData) data);
+                data = clz.newInstance();
+                world.mapStorage.setData(name, data);
                 return data;
             } catch (InstantiationException e) {
                 throw new RuntimeException("Attempt to load data class: " + clz + " for name: " + name + " failed because class needs a no-param constructor!");

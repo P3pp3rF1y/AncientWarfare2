@@ -66,7 +66,7 @@ public class RecipeResearched extends ShapedRecipes {
             for (int y = 0; y < 3; y++) {
                 int subX = x - startX;
                 int subY = y - startY;
-                Object target = null;
+                ItemStack target = null;
                 if (subX >= 0 && subY >= 0 && subX < width && subY < height) {
                     if (mirror) {
                         target = recipeItems[width - subX - 1 + subY * width];
@@ -75,11 +75,11 @@ public class RecipeResearched extends ShapedRecipes {
                     }
                 }
                 ItemStack slot = inv.getStackInRowAndColumn(x, y);
-                if (target instanceof ItemStack) {
-                    if (!OreDictionary.itemMatches((ItemStack) target, slot, false)) {
+                if (target != null) {
+                    if (!OreDictionary.itemMatches(target, slot, false)) {
                         return false;
                     }
-                } else if (target == null && slot != null) {
+                } else if (slot != null) {
                     return false;
                 }
             }

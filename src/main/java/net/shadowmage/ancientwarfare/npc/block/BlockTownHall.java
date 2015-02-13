@@ -20,11 +20,16 @@ public class BlockTownHall extends Block implements IRotatableBlock {
 
     IconRotationMap iconMap = new IconRotationMap();
 
-    public BlockTownHall(String regName) {
+    public BlockTownHall() {
         super(Material.rock);
-        this.setBlockName(regName);
         this.setCreativeTab(AWNpcItemLoader.npcTab);
         setHardness(2.f);
+        setIcon(RelativeSide.TOP, "ancientwarfare:npc/town_hall_top");
+        setIcon(RelativeSide.BOTTOM, "ancientwarfare:npc/town_hall_bottom");
+        setIcon(RelativeSide.LEFT, "ancientwarfare:npc/town_hall_side");
+        setIcon(RelativeSide.RIGHT, "ancientwarfare:npc/town_hall_side");
+        setIcon(RelativeSide.FRONT, "ancientwarfare:npc/town_hall_side");
+        setIcon(RelativeSide.REAR, "ancientwarfare:npc/town_hall_side");
     }
 
     @Override

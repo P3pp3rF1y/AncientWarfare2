@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.network;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -56,7 +57,7 @@ public class PacketGui extends PacketBase {
     }
 
     @Override
-    protected void execute() {
+    protected void execute(EntityPlayer player) {
         if (packetData.hasKey("openGui")) {
             NetworkHandler.INSTANCE.openGui(player, packetData.getInteger("id"), packetData.getInteger("x"), packetData.getInteger("y"), packetData.getInteger("z"));
         } else if (player.openContainer instanceof ContainerBase) {

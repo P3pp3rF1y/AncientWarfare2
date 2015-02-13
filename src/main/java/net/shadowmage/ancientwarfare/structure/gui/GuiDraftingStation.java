@@ -10,11 +10,10 @@ import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
-public class GuiDraftingStation extends GuiContainerBase {
+public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStation> {
 
     //right-side column @ X=176
 //max X size == 352?
-    ContainerDraftingStation container;
     CompositeScrolled resourceListArea;
     TexturedRectangle rect;
     Button selectButton;
@@ -24,7 +23,6 @@ public class GuiDraftingStation extends GuiContainerBase {
 
     public GuiDraftingStation(ContainerBase par1Container) {
         super(par1Container, 400, 240, defaultBackground);
-        container = (ContainerDraftingStation) par1Container;
     }
 
     @Override
@@ -38,26 +36,26 @@ public class GuiDraftingStation extends GuiContainerBase {
         selectButton = new Button(8, 8, 95, 12, StatCollector.translateToLocal("guistrings.structure.select_structure")) {
             @Override
             protected void onPressed() {
-                container.removeSlots();
+                getContainer().removeSlots();
                 Minecraft.getMinecraft().displayGuiScreen(new GuiStructureSelectionDraftingStation(GuiDraftingStation.this));
             }
         };
         addGuiElement(selectButton);
 
-        selectionLabel = new Label(8, 20, container.structureName == null ? StatCollector.translateToLocal("guistrings.structure.no_selection") : container.structureName);
+        selectionLabel = new Label(8, 20, getContainer().structureName == null ? StatCollector.translateToLocal("guistrings.structure.no_selection") : getContainer().structureName);
         addGuiElement(selectionLabel);
 
         stopButton = new Button(8, 32, 55, 12, StatCollector.translateToLocal("guistrings.stop")) {
             @Override
             protected void onPressed() {
-                container.handleStopInput();
+                getContainer().handleStopInput();
             }
         };
 
         startButton = new Button(8, 32, 55, 12, StatCollector.translateToLocal("guistrings.start")) {
             @Override
             protected void onPressed() {
-                container.handleStartInput();
+                getContainer().handleStartInput();
             }
         };
 
@@ -72,11 +70,11 @@ public class GuiDraftingStation extends GuiContainerBase {
     public void setupElements() {
         removeGuiElement(startButton);
         removeGuiElement(stopButton);
-        container.setGui(this);
+        getContainer().setGui(this);
         resourceListArea.clearElements();
         ItemSlot slot;
         int totalHeight = 8;
-        for (ItemStack stack : container.neededResources) {
+        for (ItemStack stack : getContainer().neededResources) {
             slot = new ItemSlot(8, totalHeight, stack, this);
             slot.setRenderLabel(true);
             resourceListArea.addGuiElement(slot);
@@ -84,7 +82,7 @@ public class GuiDraftingStation extends GuiContainerBase {
         }
         resourceListArea.setAreaSize(totalHeight + 8);
 
-        String name = container.structureName;
+        String name = getContainer().structureName;
         if (name == null) {
             rect.setTexture(null);
             selectionLabel.setText(StatCollector.translateToLocal("guistrings.structure.no_selection"));
@@ -92,9 +90,9 @@ public class GuiDraftingStation extends GuiContainerBase {
             rect.setTexture(StructureTemplateManagerClient.instance().getImageFor(name));
             selectionLabel.setText(name);
         }
-        if (container.isStarted) {
+        if (getContainer().isStarted) {
             addGuiElement(stopButton);
-        } else if (container.structureName != null) {
+        } else if (getContainer().structureName != null) {
             addGuiElement(startButton);
         }
     }

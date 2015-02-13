@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
@@ -22,7 +21,7 @@ public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
     Label selectionLabel;
 
     public GuiSpawnerAdvancedEntitySelection(GuiContainerBase parent, EntitySpawnSettings settings) {
-        super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);
+        super(parent.getContainer(), 256, 240, defaultBackground);
         this.parent = parent;
         this.settings = settings;
     }

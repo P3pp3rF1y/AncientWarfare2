@@ -13,14 +13,12 @@ import org.lwjgl.input.Mouse;
 
 import java.util.EnumSet;
 
-public class GuiMailboxInventorySideSetup extends GuiContainerBase {
+public class GuiMailboxInventorySideSetup extends GuiContainerBase<ContainerMailbox> {
 
     GuiMailboxInventory parent;
-    ContainerMailbox container;
 
     public GuiMailboxInventorySideSetup(GuiMailboxInventory parent) {
-        super((ContainerBase) parent.inventorySlots, 240, 108, defaultBackground);
-        container = (ContainerMailbox) parent.inventorySlots;
+        super(parent.getContainer(), 240, 108, defaultBackground);
         this.parent = parent;
     }
 
@@ -50,11 +48,11 @@ public class GuiMailboxInventorySideSetup extends GuiContainerBase {
             label = new Label(8, height, side.getTranslationKey());
             addGuiElement(label);
 
-            dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, container.worksite.getBlockMetadata(), side);
+            dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, getContainer().tileEntity.getBlockMetadata(), side);
             label = new Label(74, height, Direction.getDirectionFor(dir).getTranslationKey());
             addGuiElement(label);
 
-            accessed = container.sideMap.get(side);
+            accessed = getContainer().sideMap.get(side);
             sideButton = new SideButton(128, height, side, accessed);
             addGuiElement(sideButton);
 
@@ -64,7 +62,7 @@ public class GuiMailboxInventorySideSetup extends GuiContainerBase {
 
     @Override
     protected boolean onGuiCloseRequested() {
-        container.addSlots();
+        getContainer().addSlots();
         int x = Mouse.getX();
         int y = Mouse.getY();
         Minecraft.getMinecraft().displayGuiScreen(parent);
@@ -89,7 +87,7 @@ public class GuiMailboxInventorySideSetup extends GuiContainerBase {
         protected void onPressed() {
             int ordinal = selection.ordinal();
             RelativeSide next;
-            EnumSet<RelativeSide> validSides = container.worksite.inventory.getValidSides();
+            EnumSet<RelativeSide> validSides = getContainer().tileEntity.inventory.getValidSides();
             for (int i = 0; i < RelativeSide.values().length; i++) {
                 ordinal++;
                 if (ordinal >= RelativeSide.values().length) {
@@ -101,9 +99,9 @@ public class GuiMailboxInventorySideSetup extends GuiContainerBase {
                     break;
                 }
             }
-            container.sideMap.put(side, selection);
+            getContainer().sideMap.put(side, selection);
             setText(selection.getTranslationKey());
-            container.sendSlotChange(side, selection);
+            getContainer().sendSlotChange(side, selection);
         }
 
     }

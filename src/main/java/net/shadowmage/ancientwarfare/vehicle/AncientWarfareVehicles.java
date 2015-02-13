@@ -28,7 +28,7 @@ import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
                 name = "Ancient Warfare Vehicles",
                 modid = "AncientWarfareVehicle",
                 version = "@VERSION@",
-                dependencies = "required-after:" + AncientWarfareCore.modID
+                dependencies = "required-after:AncientWarfare"
         )
 
 public class AncientWarfareVehicles {
@@ -50,6 +50,7 @@ public class AncientWarfareVehicles {
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         AWLog.log("Ancient Warfare Vehicles Pre-Init started");
+
         ModuleStatus.vehiclesLoaded = true;
 
         /**
@@ -63,6 +64,7 @@ public class AncientWarfareVehicles {
          * load pre-init (items, blocks, entities)
          */
         proxy.registerClient();
+        statics.load();//load config settings
         AWVehicleEntityLoader.load();
         AWVehicleItemLoader.load();
 
@@ -85,17 +87,11 @@ public class AncientWarfareVehicles {
          * construct recipes, load plugins
          */
         AWVehicleCrafting.loadRecipes();
-        AWLog.log("Ancient Warfare Vehicles Init completed");
-    }
-
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Vehicles Post-Init started");
         /**
          * save config for any changes that were made during loading stages
          */
-        config.save();
-        AWLog.log("Ancient Warfare Vehicles Post-Init completed.  Successfully completed all loading stages.");
+        if(config.hasChanged())
+            config.save();
+        AWLog.log("Ancient Warfare Vehicles Init completed");
     }
-
 }

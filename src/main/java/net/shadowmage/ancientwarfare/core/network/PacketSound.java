@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.network;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketSound extends PacketBase {
 
@@ -37,7 +38,7 @@ public class PacketSound extends PacketBase {
     }
 
     @Override
-    protected void execute() {
+    protected void execute(EntityPlayer player) {
         player.worldObj.playSound(x, y, z, sound, 1.f, 1.f, false);
     }
 

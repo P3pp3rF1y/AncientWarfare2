@@ -29,7 +29,7 @@ public class GuiFileSelect extends GuiContainerBase {
     Text input;
 
     public GuiFileSelect(GuiContainerBase parent, String basePath, boolean allowNewFiles) {
-        super(((ContainerBase) parent.inventorySlots), 256, 240, defaultBackground);
+        super(parent.getContainer(), 256, 240, defaultBackground);
         this.parent = parent;
         this.currentPath = basePath;
         this.parentPathName = new File(basePath).getParent();
@@ -116,7 +116,7 @@ public class GuiFileSelect extends GuiContainerBase {
     }
 
     private void closeWindow() {
-        ((ContainerBase) parent.inventorySlots).setGui(parent);
+        getContainer().setGui(parent);
         Minecraft.getMinecraft().displayGuiScreen(parent);
     }
 

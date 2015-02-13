@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
 
 import java.util.List;
 
-public class GuiWorkOrder extends GuiContainerBase {
+public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
 
 //TODO display work priority type via button
 //TODO add number-input for changing work-length
@@ -20,11 +20,8 @@ public class GuiWorkOrder extends GuiContainerBase {
     boolean hasChanged = false;
     CompositeScrolled area;
 
-    ContainerWorkOrder container;
-
     public GuiWorkOrder(ContainerBase container) {
         super(container, 256, 240, defaultBackground);
-        this.container = (ContainerWorkOrder) container;
     }
 
     @Override
@@ -38,7 +35,7 @@ public class GuiWorkOrder extends GuiContainerBase {
     @Override
     public void setupElements() {
         area.clearElements();
-        List<WorkEntry> entries = container.wo.getEntries();
+        List<WorkEntry> entries = getContainer().wo.getEntries();
         ItemStack blockStack;
         ItemSlot slot;
         Label label;
@@ -57,7 +54,7 @@ public class GuiWorkOrder extends GuiContainerBase {
             button = new IndexedButton(8 + 20 + 20, totalHeight + 10, 12, 12, "+", index) {
                 @Override
                 protected void onPressed() {
-                    container.wo.incrementPosition(index);
+                    getContainer().wo.incrementPosition(index);
                     hasChanged = true;
                     refreshGui();
                 }
@@ -67,7 +64,7 @@ public class GuiWorkOrder extends GuiContainerBase {
             button = new IndexedButton(8 + 20 + 12 + 20, totalHeight + 10, 12, 12, "-", index) {
                 @Override
                 protected void onPressed() {
-                    container.wo.decrementPosition(index);
+                    getContainer().wo.decrementPosition(index);
                     hasChanged = true;
                     refreshGui();
                 }
@@ -77,7 +74,7 @@ public class GuiWorkOrder extends GuiContainerBase {
             button = new IndexedButton(8 + 20 + 12 + 12 + 20, totalHeight + 10, 60, 12, "guistrings.npc.remove_work_point", index) {
                 @Override
                 protected void onPressed() {
-                    container.wo.removePosition(index);
+                    getContainer().wo.removePosition(index);
                     hasChanged = true;
                     refreshGui();
                 }
@@ -108,7 +105,7 @@ public class GuiWorkOrder extends GuiContainerBase {
     protected boolean onGuiCloseRequested() {
         if (hasChanged) {
             NBTTagCompound outer = new NBTTagCompound();
-            outer.setTag("wo", container.wo.writeToNBT(new NBTTagCompound()));
+            outer.setTag("wo", getContainer().wo.writeToNBT(new NBTTagCompound()));
             sendDataToContainer(outer);
         }
         return super.onGuiCloseRequested();

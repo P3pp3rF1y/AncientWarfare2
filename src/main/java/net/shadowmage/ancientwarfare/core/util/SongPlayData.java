@@ -105,8 +105,8 @@ public class SongPlayData {
         tag.setBoolean("random", random);
         tag.setBoolean("playerEntry", playOnPlayerEntry);
         NBTTagList l = new NBTTagList();
-        for (int i = 0; i < tunes.size(); i++) {
-            l.appendTag(tunes.get(i).writeToNBT(new NBTTagCompound()));
+        for (SongEntry tune : tunes) {
+            l.appendTag(tune.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("entries", l);
         return tag;

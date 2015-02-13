@@ -11,14 +11,12 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
-public class GuiWarehouseStockViewer extends GuiContainerBase {
+public class GuiWarehouseStockViewer extends GuiContainerBase<ContainerWarehouseStockViewer> {
 
     CompositeScrolled area;
-    ContainerWarehouseStockViewer container;
 
     public GuiWarehouseStockViewer(ContainerBase par1Container) {
         super(par1Container, 178, 172, defaultBackground);
-        container = (ContainerWarehouseStockViewer) par1Container;
     }
 
     @Override
@@ -30,8 +28,8 @@ public class GuiWarehouseStockViewer extends GuiContainerBase {
     @Override
     public void setupElements() {
         area.clearElements();
-        container.filters.clear();
-        container.filters.addAll(container.tile.getFilters());
+        getContainer().filters.clear();
+        getContainer().filters.addAll(getContainer().tileEntity.getFilters());
         int totalHeight = 8;
 
         ItemSlot slot;
@@ -40,7 +38,7 @@ public class GuiWarehouseStockViewer extends GuiContainerBase {
         Label label;
         String text;
 
-        for (WarehouseStockFilter filter : container.filters) {
+        for (WarehouseStockFilter filter : getContainer().filters) {
             slot = new FilterItemSlot(8, totalHeight, filter, this);
             area.addGuiElement(slot);
 
@@ -57,12 +55,12 @@ public class GuiWarehouseStockViewer extends GuiContainerBase {
 
             totalHeight += 16;
         }
-        if (container.filters.size() < 4) {
+        if (getContainer().filters.size() < 4) {
             button = new Button(8, totalHeight + 4, 178 - 16 - 8, 12, "guistrings.automation.new_filter") {
                 @Override
                 protected void onPressed() {
-                    container.filters.add(new WarehouseStockFilter(null, 0));
-                    container.sendFiltersToServer();
+                    getContainer().filters.add(new WarehouseStockFilter(null, 0));
+                    getContainer().sendFiltersToServer();
                     refreshGui();
                 }
             };
@@ -83,8 +81,8 @@ public class GuiWarehouseStockViewer extends GuiContainerBase {
 
         @Override
         protected void onPressed() {
-            container.filters.remove(filter);
-            container.sendFiltersToServer();
+            getContainer().filters.remove(filter);
+            getContainer().sendFiltersToServer();
             refreshGui();
         }
     }
@@ -106,7 +104,7 @@ public class GuiWarehouseStockViewer extends GuiContainerBase {
                 in.stackSize = 1;
             }
             filter.setItem(in == null ? null : in.copy());
-            container.sendFiltersToServer();
+            getContainer().sendFiltersToServer();
         }
     }
 }

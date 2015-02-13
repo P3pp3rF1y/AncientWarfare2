@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.nei_plugin;
 
 import codechicken.nei.PositionedStack;
+import codechicken.nei.api.API;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -37,11 +38,11 @@ import java.util.List;
 
 public class AWNeiRecipeHandler extends TemplateRecipeHandler {
 
-    /**
-     *
-     */
-    public AWNeiRecipeHandler() {
-        // TODO Auto-generated constructor stub
+public class AWNeiRecipeHandler extends TemplateRecipeHandler {
+
+    public AWNeiRecipeHandler(){
+        API.registerRecipeHandler(this);
+        API.registerUsageHandler(this);
     }
 
     @Override
@@ -94,6 +95,7 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
         }
     }
 
+    @Override
     public boolean hasOverlay(GuiContainer gui, Container container, int recipe) {
         return super.hasOverlay(gui, container, recipe) || RecipeInfo.hasDefaultOverlay(gui, "awcrafting");
     }

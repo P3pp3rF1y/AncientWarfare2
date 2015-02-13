@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
@@ -21,9 +22,9 @@ import java.util.List;
 
 public class ContainerMailbox extends ContainerBase {
 
-    public TileMailbox worksite;
-    public int guiHeight;
+public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
 
+    public int guiHeight;
     /**
      * synched stats
      */
@@ -37,8 +38,7 @@ public class ContainerMailbox extends ContainerBase {
 
     public ContainerMailbox(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        worksite = (TileMailbox) player.worldObj.getTileEntity(x, y, z);
-        InventorySided inventory = worksite.inventory;
+        InventorySided inventory = tileEntity.inventory;
 
         for (RelativeSide rSide : inventory.rType.getValidSides()) {
             sideMap.put(rSide, inventory.getRemappedSide(rSide));
@@ -62,16 +62,16 @@ public class ContainerMailbox extends ContainerBase {
         }
 
         y1 = 8 + 12 + 12 + 4 * 18;
-        guiHeight = addPlayerSlots(player, 8, y1 + 12, 4) + 8 + 24;
+        guiHeight = addPlayerSlots(8, y1 + 12, 4) + 8 + 24;
 
         if (!player.worldObj.isRemote) {
             MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, player.worldObj, MailboxData.class);
             publicBoxNames.addAll(data.getPublicBoxNames());
-            privateBoxNames.addAll(data.getPrivateBoxNames(worksite.getOwnerName()));
-            privateBox = worksite.isPrivateBox();
-            autoExport = worksite.isAutoExport();
-            mailboxName = worksite.getMailboxName();
-            targetName = worksite.getTargetName();
+            privateBoxNames.addAll(data.getPrivateBoxNames(tileEntity.getOwnerName()));
+            privateBox = tileEntity.isPrivateBox();
+            autoExport = tileEntity.isAutoExport();
+            mailboxName = tileEntity.getMailboxName();
+            targetName = tileEntity.getTargetName();
         }
     }
 
@@ -108,27 +108,27 @@ public class ContainerMailbox extends ContainerBase {
         handleAccessMapTag(tag);
         if (tag.hasKey("autoExport")) {
             autoExport = tag.getBoolean("autoExport");
-            worksite.setAutoExport(autoExport);
+            tileEntity.setAutoExport(autoExport);
         }
         if (tag.hasKey("privateBox")) {
             privateBox = tag.getBoolean("privateBox");
-            worksite.setPrivateBox(privateBox);
+            tileEntity.setPrivateBox(privateBox);
         }
         if (tag.hasKey("clearMailbox")) {
             mailboxName = null;
-            worksite.setMailboxName(mailboxName);
+            tileEntity.setMailboxName(mailboxName);
         }
         if (tag.hasKey("clearTarget")) {
             targetName = null;
-            worksite.setTargetName(targetName);
+            tileEntity.setTargetName(targetName);
         }
         if (tag.hasKey("mailboxName")) {
             mailboxName = tag.getString("mailboxName");
-            worksite.setMailboxName(mailboxName);
+            tileEntity.setMailboxName(mailboxName);
         }
         if (tag.hasKey("targetName")) {
             targetName = tag.getString("targetName");
-            worksite.setTargetName(targetName);
+            tileEntity.setTargetName(targetName);
         }
         if (tag.hasKey("publicBoxNames")) {
             publicBoxNames.clear();
@@ -147,12 +147,12 @@ public class ContainerMailbox extends ContainerBase {
         if (tag.hasKey("addMailbox")) {
             String name = tag.getString("addMailbox");
             MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, player.worldObj, MailboxData.class);
-            data.addMailbox(worksite.isPrivateBox() ? worksite.getOwnerName() : null, name);
+            data.addMailbox(tileEntity.isPrivateBox() ? tileEntity.getOwnerName() : null, name);
         }
         if (tag.hasKey("deleteMailbox")) {
             String name = tag.getString("deleteMailbox");
             MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, player.worldObj, MailboxData.class);
-            data.deleteMailbox(worksite.isPrivateBox() ? worksite.getOwnerName() : null, name);
+            data.deleteMailbox(tileEntity.isPrivateBox() ? tileEntity.getOwnerName() : null, name);
         }
         refreshGui();
     }
@@ -194,13 +194,13 @@ public class ContainerMailbox extends ContainerBase {
             RelativeSide access = RelativeSide.values()[slotTag.getInteger("accessSide")];
             sideMap.put(base, access);
             if (!player.worldObj.isRemote) {
-                worksite.inventory.remapSideAccess(base, access);
+                tileEntity.inventory.remapSideAccess(base, access);
             }
         }
     }
 
     private void synchAccessMap() {
-        InventorySided inventory = worksite.inventory;
+        InventorySided inventory = tileEntity.inventory;
         NBTTagCompound tag;
         NBTTagCompound slotTag;
         RelativeSide rSide2, rSide3;
@@ -239,24 +239,26 @@ public class ContainerMailbox extends ContainerBase {
         /**
          * DETECT CHANGES TO NAME AND TARGET AND SEND TO CLIENT
          */
-        String name = worksite.getMailboxName();
+        String name = tileEntity.getMailboxName();
         if (!StringTools.doStringsMatch(name, mailboxName)) {
             if (tag == null) {
                 tag = new NBTTagCompound();
             }
-            mailboxName = worksite.getMailboxName();
+            }
+            mailboxName = tileEntity.getMailboxName();
             if (mailboxName == null) {
                 tag.setBoolean("clearMailbox", true);
             } else {
                 tag.setString("mailboxName", mailboxName);
             }
         }
-        name = worksite.getTargetName();
+        name = tileEntity.getTargetName();
         if (!StringTools.doStringsMatch(name, targetName)) {
             if (tag == null) {
                 tag = new NBTTagCompound();
             }
-            targetName = worksite.getTargetName();
+            }
+            targetName = tileEntity.getTargetName();
             if (targetName == null) {
                 tag.setBoolean("clearTarget", true);
             } else {
@@ -266,18 +268,18 @@ public class ContainerMailbox extends ContainerBase {
         /**
          * detect changes to auto export and private box setting
          */
-        if (autoExport != worksite.isAutoExport()) {
+        if (autoExport != tileEntity.isAutoExport()) {
             if (tag == null) {
                 tag = new NBTTagCompound();
             }
-            autoExport = worksite.isAutoExport();
+            autoExport = tileEntity.isAutoExport();
             tag.setBoolean("autoExport", autoExport);
         }
-        if (privateBox != worksite.isPrivateBox()) {
+        if (privateBox != tileEntity.isPrivateBox()) {
             if (tag == null) {
                 tag = new NBTTagCompound();
             }
-            privateBox = worksite.isPrivateBox();
+            privateBox = tileEntity.isPrivateBox();
             tag.setBoolean("privateBox", privateBox);
         }
         /**
@@ -296,12 +298,12 @@ public class ContainerMailbox extends ContainerBase {
             }
             tag.setTag("publicBoxNames", nameList);
         }
-        if (!privateBoxNames.equals(data.getPrivateBoxNames(worksite.getOwnerName()))) {
+        if (!privateBoxNames.equals(data.getPrivateBoxNames(tileEntity.getOwnerName()))) {
             if (tag == null) {
                 tag = new NBTTagCompound();
             }
             privateBoxNames.clear();
-            privateBoxNames.addAll(data.getPrivateBoxNames(worksite.getOwnerName()));
+            privateBoxNames.addAll(data.getPrivateBoxNames(tileEntity.getOwnerName()));
             NBTTagList nameList = new NBTTagList();
             for (String boxName : privateBoxNames) {
                 nameList.appendTag(new NBTTagString(boxName));
@@ -384,12 +386,12 @@ public class ContainerMailbox extends ContainerBase {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         ItemStack slotStackCopy = null;
-        Slot theSlot = (Slot) this.inventorySlots.get(slotClickedIndex);
+        Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
             if (slotStack.stackSize == 0) {
-                theSlot.putStack((ItemStack) null);
+                theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }

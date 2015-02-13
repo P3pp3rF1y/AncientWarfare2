@@ -139,10 +139,9 @@ public class CompositeItemSlots extends CompositeScrolled {
             return;
         }
         Minecraft mc = Minecraft.getMinecraft();
-        FontRenderer font = null;
-        font = stack.getItem().getFontRenderer(stack);
+        FontRenderer font = stack.getItem().getFontRenderer(stack);
         if (font == null) {
-            font = Minecraft.getMinecraft().fontRenderer;
+            font = mc.fontRenderer;
         }
         if (slot.renderItemQuantity && slot.getStack().stackSize > 1) {
             itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), stack, slot.renderX + 1, slot.renderY + 1, "");
@@ -156,10 +155,9 @@ public class CompositeItemSlots extends CompositeScrolled {
             return;
         }
         Minecraft mc = Minecraft.getMinecraft();
-        FontRenderer font = null;
-        font = stack.getItem().getFontRenderer(stack);
+        FontRenderer font = stack.getItem().getFontRenderer(stack);
         if (font == null) {
-            font = Minecraft.getMinecraft().fontRenderer;
+            font = mc.fontRenderer;
         }
         itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), stack, slot.renderX + 1, slot.renderY + 1);
     }

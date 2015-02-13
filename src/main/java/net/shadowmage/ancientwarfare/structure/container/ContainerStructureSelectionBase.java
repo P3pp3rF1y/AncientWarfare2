@@ -8,8 +8,8 @@ public class ContainerStructureSelectionBase extends ContainerBase {
 
     public String structureName;
 
-    public ContainerStructureSelectionBase(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerStructureSelectionBase(EntityPlayer player) {
+        super(player);
     }
 
     public void handleNameSelection(String name) {

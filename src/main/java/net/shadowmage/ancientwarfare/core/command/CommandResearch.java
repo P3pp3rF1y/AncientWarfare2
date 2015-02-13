@@ -41,13 +41,13 @@ public class CommandResearch implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] commandParts) {
         if (commandParts == null || commandParts.length < 2) {
-            throw new WrongUsageException("command.aw.research.usage", new Object[]{});
+            throw new WrongUsageException("command.aw.research.usage");
         }
         String operation = commandParts[0];
         String target = commandParts[1];
         if (operation.equals("add")) {
             if (commandParts.length < 3) {
-                throw new WrongUsageException("command.aw.research.usage", new Object[]{});
+                throw new WrongUsageException("command.aw.research.usage");
             }
             String goal = commandParts[2];
             if (!goal.startsWith("research.")) {
@@ -55,12 +55,12 @@ public class CommandResearch implements ICommand {
             }
             ResearchGoal rGoal = ResearchGoal.getGoal(goal);
             if (rGoal == null) {
-                throw new WrongUsageException("command.aw.research.usage", new Object[]{});
+                throw new WrongUsageException("command.aw.research.usage");
             }
             ResearchTracker.instance().addResearchFromNotes(sender.getEntityWorld(), target, rGoal.getId());
         } else if (operation.equals("remove")) {
             if (commandParts.length < 3) {
-                throw new WrongUsageException("command.aw.research.usage", new Object[]{});
+                throw new WrongUsageException("command.aw.research.usage");
             }
             String goal = commandParts[2];
             if (!goal.startsWith("research.")) {
@@ -68,7 +68,7 @@ public class CommandResearch implements ICommand {
             }
             ResearchGoal rGoal = ResearchGoal.getGoal(goal);
             if (rGoal == null) {
-                throw new WrongUsageException("command.aw.research.usage", new Object[]{});
+                throw new WrongUsageException("command.aw.research.usage");
             }
             ResearchTracker.instance().removeResearch(sender.getEntityWorld(), target, rGoal.getId());
         } else if (operation.equals("fill")) {
@@ -76,7 +76,7 @@ public class CommandResearch implements ICommand {
         } else if (operation.equals("clear")) {
             ResearchTracker.instance().clearResearch(sender.getEntityWorld(), target);
         } else {
-            throw new WrongUsageException("command.aw.research.usage", new Object[]{});
+            throw new WrongUsageException("command.aw.research.usage");
         }
     }
 

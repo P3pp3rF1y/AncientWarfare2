@@ -13,7 +13,7 @@ public class GuiPieceNameInput extends GuiContainerBase {
     Text input;
 
     public GuiPieceNameInput(GuiModelEditor parent) {
-        super((ContainerBase) parent.inventorySlots, 256, 60, defaultBackground);
+        super(parent.getContainer(), 256, 60, defaultBackground);
         this.parent = parent;
     }
 
@@ -29,7 +29,7 @@ public class GuiPieceNameInput extends GuiContainerBase {
             @Override
             protected void onPressed() {
                 onNameSelected(input.getText());
-                ((ContainerBase) parent.inventorySlots).setGui(parent);
+                getContainer().setGui(parent);
                 Minecraft.getMinecraft().displayGuiScreen(parent);
             }
         };
@@ -38,7 +38,7 @@ public class GuiPieceNameInput extends GuiContainerBase {
         button = new Button(8 + 55 + 4, 24, 55, 12, "Cancel") {
             @Override
             protected void onPressed() {
-                ((ContainerBase) parent.inventorySlots).setGui(parent);
+                getContainer().setGui(parent);
                 Minecraft.getMinecraft().displayGuiScreen(parent);
             }
         };

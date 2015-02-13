@@ -39,6 +39,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
         this.material = material;
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
+        this.setHarvestLevel("hammer", material.getHarvestLevel());
     }
 
     @Override
@@ -68,7 +69,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
      */
     @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return this.material.func_150995_f() == par2ItemStack.getItem() ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+        return this.material.func_150995_f() == par2ItemStack.getItem() || super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 
     /**
@@ -96,7 +97,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
     @Override
     public Multimap getItemAttributeModifiers() {
         Multimap multimap = super.getItemAttributeModifiers();
-        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", (double) this.attackDamage, 0));
+        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", this.attackDamage, 0));
         return multimap;
     }
 
@@ -104,7 +105,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+        String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
         list.add(StatCollector.translateToLocalFormatted("guistrings.core.hammer.use_primary_item_key", key));
         if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("workMode")) {
             list.add(StatCollector.translateToLocal("guistrings.core.hammer.work_mode_1"));
@@ -185,10 +186,9 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
     @Override
     public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
         MovingObjectPosition hit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
-        if (hit == null) {
+        return hit != null;
             return false;
         }
-        return true;
     }
 
     @Override

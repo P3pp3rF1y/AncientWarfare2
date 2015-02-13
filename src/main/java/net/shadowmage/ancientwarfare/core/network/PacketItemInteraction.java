@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.network;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -8,9 +9,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 
 public class PacketItemInteraction extends PacketBase {
 
-    byte type = 0;
-    byte key = 0;
-    ItemKey iKey;
+    private byte type, key;
 
     public PacketItemInteraction() {
 
@@ -23,7 +22,6 @@ public class PacketItemInteraction extends PacketBase {
     public PacketItemInteraction(int type, ItemKey iKey) {
         this.type = (byte) type;
         this.key = (byte) iKey.ordinal();
-        this.iKey = iKey;
     }
 
     @Override
@@ -36,17 +34,17 @@ public class PacketItemInteraction extends PacketBase {
     protected void readFromStream(ByteBuf data) {
         type = data.readByte();
         key = data.readByte();
-        iKey = ItemKey.values()[key];
     }
 
     @Override
-    protected void execute() {
-        if (player != null && player.inventory.getCurrentItem() != null) {
+    protected void execute(EntityPlayer player) {
+        if (player != null) {
             ItemStack stack = player.inventory.getCurrentItem();
+            if(stack == null)
+                return;
             if (type == 0) {
-                if (stack.getItem() instanceof IItemKeyInterface) {
-                    IItemKeyInterface interf = (IItemKeyInterface) player.inventory.getCurrentItem().getItem();
-                    interf.onKeyAction(player, player.inventory.getCurrentItem(), iKey);
+                if (key>=0 && key<ItemKey.values().length && stack.getItem() instanceof IItemKeyInterface) {
+                    ((IItemKeyInterface) stack.getItem()).onKeyAction(player, stack, ItemKey.values()[key]);
                 }
             } else if (type == 1)//item left-click
             {

@@ -35,14 +35,10 @@ import java.util.Random;
 
 public class BlockGateProxy extends Block {
 
-    /**
-     * @param par1
-     * @param par2Material
-     * @param baseName
-     */
-    public BlockGateProxy(String regName) {
+public class BlockGateProxy extends Block {
+
+    public BlockGateProxy() {
         super(Material.rock);
-        this.setBlockName(regName);
         this.setBlockTextureName("ancientwarfare:structure/gate_proxy");
         this.setCreativeTab(null);
         this.setResistance(2000.f);
@@ -98,6 +94,5 @@ public class BlockGateProxy extends Block {
     public int quantityDropped(Random par1Random) {
         return 0;
     }
-
 
 }

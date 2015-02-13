@@ -7,13 +7,9 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 
-public class GuiChunkLoaderDeluxe extends GuiContainerBase {
-
-    ContainerChunkLoaderDeluxe container;
-
+public class GuiChunkLoaderDeluxe extends GuiContainerBase<ContainerChunkLoaderDeluxe> {
     public GuiChunkLoaderDeluxe(ContainerBase container) {
         super(container);
-        this.container = (ContainerChunkLoaderDeluxe) container;
         this.xSize = 76;
         this.ySize = 76;
     }
@@ -26,8 +22,8 @@ public class GuiChunkLoaderDeluxe extends GuiContainerBase {
     @Override
     public void setupElements() {
         clearElements();
-        int cx = container.chunkLoader.xCoord >> 4;
-        int cz = container.chunkLoader.zCoord >> 4;
+        int cx = getContainer().tileEntity.xCoord >> 4;
+        int cz = getContainer().tileEntity.zCoord >> 4;
         ChunkCoordIntPair ccip;
         Button button;
 
@@ -37,7 +33,7 @@ public class GuiChunkLoaderDeluxe extends GuiContainerBase {
                     continue;
                 }//center button added manually...
                 ccip = new ChunkCoordIntPair(x, z);
-                button = new ButtonChunk(8 + xPos * 12, 8 + yPos * 12, 12, 12, container.ccipSet.contains(ccip), ccip) {
+                button = new ButtonChunk(8 + xPos * 12, 8 + yPos * 12, 12, 12, getContainer().ccipSet.contains(ccip), ccip) {
                     @Override
                     protected void onPressed() {
                         NBTTagCompound tag = new NBTTagCompound();

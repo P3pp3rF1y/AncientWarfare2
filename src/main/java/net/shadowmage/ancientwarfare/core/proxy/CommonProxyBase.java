@@ -24,10 +24,6 @@ public class CommonProxyBase {
         return FakePlayerFactory.get(world, new GameProfile(null, name));
     }
 
-    public boolean isKeyPressed(String keyName) {
-        return false;
-    }
-
     public void onConfigChanged() {
 
     }

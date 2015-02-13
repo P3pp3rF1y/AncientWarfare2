@@ -36,11 +36,9 @@ public class NpcCommand {
     public static void handleCommandClient(CommandType type, MovingObjectPosition hit) {
         if (hit != null && hit.typeOfHit != MovingObjectType.MISS) {
             if (hit.typeOfHit == MovingObjectType.ENTITY && hit.entityHit != null) {
-                PacketNpcCommand pkt = new PacketNpcCommand(type, hit.entityHit);
-                NetworkHandler.sendToServer(pkt);
+                NetworkHandler.sendToServer(new PacketNpcCommand(type, hit.entityHit));
             } else if (hit.typeOfHit == MovingObjectType.BLOCK) {
-                PacketNpcCommand pkt = new PacketNpcCommand(type, hit.blockX, hit.blockY, hit.blockZ);
-                NetworkHandler.sendToServer(pkt);
+                NetworkHandler.sendToServer(new PacketNpcCommand(type, hit.blockX, hit.blockY, hit.blockZ));
             }
         }
     }
@@ -55,8 +53,7 @@ public class NpcCommand {
         } else {
             cmd = new Command(type, x);
         }
-        List<Entity> targets = new ArrayList<Entity>();
-        ItemCommandBaton.getCommandedEntities(player.worldObj, player.getCurrentEquippedItem(), targets);
+        List<Entity> targets = ItemCommandBaton.getCommandedEntities(player.worldObj, player.getCurrentEquippedItem());
         for (Entity e : targets) {
             if (e instanceof NpcBase) {
                 ((NpcBase) e).handlePlayerCommand(cmd);
@@ -146,7 +143,7 @@ public class NpcCommand {
                     entityID = entity.getPersistentID();
                 }
             } else {
-                entity = WorldTools.getEntityByUUID(world, entityID.getMostSignificantBits(), entityID.getLeastSignificantBits());
+                entity = WorldTools.getEntityByUUID(world, entityID);
             }
         }
 

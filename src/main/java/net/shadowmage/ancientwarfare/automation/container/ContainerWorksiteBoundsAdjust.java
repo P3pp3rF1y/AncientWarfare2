@@ -15,7 +15,7 @@ public class ContainerWorksiteBoundsAdjust extends ContainerBase {
     public IWorkSite worksite;
 
     public ContainerWorksiteBoundsAdjust(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         this.x = x;
         this.y = y;
         this.z = z;

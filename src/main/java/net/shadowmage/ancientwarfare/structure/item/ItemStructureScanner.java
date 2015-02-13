@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
@@ -26,7 +27,7 @@ import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 import java.io.File;
 import java.util.List;
 
-public class ItemStructureScanner extends Item implements IItemKeyInterface, IItemClickable {
+public class ItemStructureScanner extends Item implements IItemKeyInterface, IItemClickable, IBoxRenderer {
 
     public ItemStructureScanner(String localizationKey) {
         this.setUnlocalizedName(localizationKey);
@@ -45,14 +46,13 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
         return false;
     }
 
-    ItemStructureSettings viewSettings = new ItemStructureSettings();
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         if (par1ItemStack != null) {
-            ItemStructureSettings.getSettingsFor(par1ItemStack, viewSettings);
-            String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+            ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(par1ItemStack);
+            String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
             if (viewSettings.hasPos1() && viewSettings.hasPos2() && viewSettings.hasBuildKey()) {
                 list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.click_to_process"));
                 list.add("(4/4)");
@@ -69,11 +69,10 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
         }
     }
 
-    ItemStructureSettings scanSettings = new ItemStructureSettings();
 
     @Override
     public void onRightClick(EntityPlayer player, ItemStack stack) {
-        ItemStructureSettings.getSettingsFor(stack, scanSettings);
+        ItemStructureSettings scanSettings = ItemStructureSettings.getSettingsFor(stack);
         if (player.isSneaking()) {
             scanSettings.clearSettings();
             ItemStructureSettings.setSettingsFor(stack, scanSettings);
@@ -121,7 +120,8 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
         if (hit == null) {
             return;
         }
-        ItemStructureSettings.getSettingsFor(stack, scanSettings);
+        }
+        ItemStructureSettings scanSettings = ItemStructureSettings.getSettingsFor(stack);
         if (scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey()) {
             player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.click_to_process"));
         } else if (!scanSettings.hasPos1()) {
@@ -152,5 +152,24 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
 
     }
 
-
+    @Override
+    public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+        ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
+        BlockPosition pos1, pos2, min, max;
+        if (settings.hasPos1()) {
+            pos1 = settings.pos1();
+        } else {
+            pos1 = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+        }
+        if (settings.hasPos2()) {
+            pos2 = settings.pos2();
+        } else {
+            pos2 = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+        }
+        if (pos1 != null && pos2 != null) {
+            min = BlockTools.getMin(pos1, pos2);
+            max = BlockTools.getMax(pos1, pos2);
+            Util.renderBoundingBox(player, min, max, delta);
+        }
+    }
 }

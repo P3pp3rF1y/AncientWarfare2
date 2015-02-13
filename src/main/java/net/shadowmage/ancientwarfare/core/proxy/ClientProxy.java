@@ -24,7 +24,6 @@ import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelEngineeringStation;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelResearchStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.network.PacketHandlerClient;
 import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
@@ -45,13 +44,12 @@ public class ClientProxy extends ClientProxyBase {
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void registerClient() {
-        NetworkHandler.registerClientHandler(new PacketHandlerClient());
-        FMLCommonHandler.instance().bus().register(InputHandler.instance());
+        FMLCommonHandler.instance().bus().register(InputHandler.instance);
         NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_STATION, GuiResearchStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_BOOK, GuiResearchBook.class);
-        InputHandler.instance().loadConfig(AncientWarfareCore.config);
+        InputHandler.instance.loadConfig(AncientWarfareCore.config);
 
         TileCraftingTableRender render = new TileCraftingTableRender(new ModelEngineeringStation(), "textures/model/core/tile_engineering_station.png");
         ClientRegistry.bindTileEntitySpecialRenderer(TileEngineeringStation.class, render);
@@ -78,7 +76,7 @@ public class ClientProxy extends ClientProxyBase {
     }
 
     public void onConfigChanged() {
-        InputHandler.instance().updateFromConfig();
+        InputHandler.instance.updateFromConfig();
     }
 
     public static final class KeybindCategoryEntry extends CategoryEntry {

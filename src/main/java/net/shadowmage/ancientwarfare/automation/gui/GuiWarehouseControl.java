@@ -18,10 +18,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GuiWarehouseControl extends GuiContainerBase {
+public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseControl> {
 
     CompositeScrolled area;
-    ContainerWarehouseControl container;
     Button sortChange;
     Text input;
     Checkbox sortOrderBox;
@@ -32,7 +31,6 @@ public class GuiWarehouseControl extends GuiContainerBase {
 
     public GuiWarehouseControl(ContainerBase par1Container) {
         super(par1Container, 178, 240, defaultBackground);
-        container = (ContainerWarehouseControl) par1Container;
         sorter = new ComparatorItemStack(sortType, sortOrder);
     }
 
@@ -76,7 +74,7 @@ public class GuiWarehouseControl extends GuiContainerBase {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area.isMouseOverSubElement(evt.mx, evt.my)) {
-                    container.handleClientRequestSpecific(null, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
+                    getContainer().handleClientRequestSpecific(null, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
                 }
                 return true;
             }
@@ -87,12 +85,12 @@ public class GuiWarehouseControl extends GuiContainerBase {
         Button b = new Button(8, 240 - 8 - 12, 40, 12, StatCollector.translateToLocal("guistrings.automation.adjust_bounds")) {
             @Override
             protected void onPressed() {
-                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, container.warehouse.xCoord, container.warehouse.yCoord, container.warehouse.zCoord);
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, getContainer().tileEntity.xCoord, getContainer().tileEntity.yCoord, getContainer().tileEntity.zCoord);
             }
         };
         addGuiElement(b);
 
-        storedLabel = new Label(8 + 40 + 4, 240 - 8 - 11, StatCollector.translateToLocal("guistrings.warehouse.storage") + ": " + container.currentStored + "/" + container.maxStorage);
+        storedLabel = new Label(8 + 40 + 4, 240 - 8 - 11, StatCollector.translateToLocal("guistrings.warehouse.storage") + ": " + getContainer().currentStored + "/" + getContainer().maxStorage);
         addGuiElement(storedLabel);
     }
 
@@ -100,7 +98,7 @@ public class GuiWarehouseControl extends GuiContainerBase {
     public void setupElements() {
         area.clearElements();
         addInventoryViewElements();
-        storedLabel.setText(StatCollector.translateToLocal("guistrings.warehouse.storage") + ": " + container.currentStored + "/" + container.maxStorage);
+        storedLabel.setText(StatCollector.translateToLocal("guistrings.warehouse.storage") + ": " + getContainer().currentStored + "/" + getContainer().maxStorage);
     }
 
     private void addInventoryViewElements() {
@@ -110,8 +108,8 @@ public class GuiWarehouseControl extends GuiContainerBase {
         int x = 0, y = 0;
         int totalSize = 8;
         List<ItemStack> displayStacks = new ArrayList<ItemStack>();
-        for (ItemHashEntry entry : container.itemMap.keySet()) {
-            qty = container.itemMap.getCount(entry);
+        for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
+            qty = getContainer().itemMap.getCount(entry);
             stack = entry.getItemStack();
             stack.stackSize = qty;
             displayStacks.add(stack);
@@ -123,7 +121,7 @@ public class GuiWarehouseControl extends GuiContainerBase {
             slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
                 @Override
                 public void onSlotClicked(ItemStack stack) {
-                    container.handleClientRequestSpecific(getStack(), Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
+                    getContainer().handleClientRequestSpecific(getStack(), Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
                 }
             };
             area.addGuiElement(slot);

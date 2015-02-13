@@ -31,9 +31,11 @@ import java.util.UUID;
 
 public class TEGateProxy extends TileEntity {
 
-    public EntityGate owner = null;
-    UUID entityID = null;
-    int noParentTicks = 0;
+public class TEGateProxy extends TileEntity {
+
+    private EntityGate owner = null;
+    private UUID entityID = null;
+    private int noParentTicks = 0;
 
     public void setOwner(EntityGate gate) {
         this.owner = gate;
@@ -76,11 +78,9 @@ public class TEGateProxy extends TileEntity {
             this.noParentTicks++;
             List<Entity> entities = this.worldObj.loadedEntityList;
             for (Entity ent : entities) {
-                if (ent.getPersistentID() != null && ent.getPersistentID().getLeastSignificantBits() == entityID.getLeastSignificantBits() && ent.getPersistentID().getMostSignificantBits() == entityID.getMostSignificantBits()) {
-                    if (ent instanceof EntityGate) {
-                        this.owner = (EntityGate) ent;
-                        this.noParentTicks = 0;
-                    }
+                if (ent.getPersistentID() != null && ent.getPersistentID().equals(entityID) && ent instanceof EntityGate) {
+                    this.owner = (EntityGate) ent;
+                    this.noParentTicks = 0;
                 }
             }
         } else if (this.entityID == null) {

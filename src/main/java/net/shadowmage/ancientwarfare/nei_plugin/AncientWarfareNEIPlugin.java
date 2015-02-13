@@ -1,15 +1,13 @@
 package net.shadowmage.ancientwarfare.nei_plugin;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 @Mod
@@ -17,34 +15,14 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
                 name = "Ancient Warfare NEI Plugin",
                 modid = "AncientWarfareNEIPlugin",
                 version = "@VERSION@",
-                dependencies = "required-after:AncientWarfare"
+                dependencies = "required-after:AncientWarfare;after:NotEnoughItems"
         )
-
 public class AncientWarfareNEIPlugin {
-    @Instance(value = "AncientWarfareNEIPlugin")
-    public static AncientWarfareNEIPlugin instance;
-
-
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent evt) {
-        MinecraftForge.EVENT_BUS.register(this);
-//  AWLog.log("Ancient Warfare NEI Plugin Pre-Init started");
-//    
-//  AWLog.log("Ancient Warfare NEI Plugin Pre-Init completed");
-    }
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-//  AWLog.log("Ancient Warfare NEI Plugin Init started"); 
-//
-//  AWLog.log("Ancient Warfare NEI Plugin Init completed");
-    }
-
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent evt) {
-//  AWLog.log("Ancient Warfare NEI Plugin Post-Init started"); 
-// 
-//  AWLog.log("Ancient Warfare NEI Plugin Post-Init completed.  Successfully completed all loading stages.");
+        if (Loader.isModLoaded("NotEnoughItems"))
+            MinecraftForge.EVENT_BUS.register(this);
     }
 
     boolean loaded = false;
@@ -53,17 +31,13 @@ public class AncientWarfareNEIPlugin {
     public void worldLoaded(WorldEvent.Load evt) {
         if (evt.world.isRemote && !loaded) {
             loaded = true;
-            @SuppressWarnings("rawtypes")
-            Class clz;
             try {
-                clz = Class.forName("codechicken.nei.api.API");
+                Class clz = Class.forName("codechicken.nei.api.API");
                 if (clz != null) {
                     AWLog.log("NEI Detected, attempting load of NEI Plugin");
-                    @SuppressWarnings("rawtypes")
-                    Class clz2 = Class.forName("net.shadowmage.ancientwarfare.nei_plugin.AWNeiProxyActual");
+                    Class clz2 = Class.forName("net.shadowmage.ancientwarfare.nei_plugin.AWNeiRecipeHandler");
                     try {
-                        AWNeiProxyBase proxy = (AWNeiProxyBase) clz2.newInstance();
-                        proxy.load();
+                        Object proxy = clz2.newInstance();
                         AWLog.log("NEI Plugin loaded successfully");
                     } catch (InstantiationException e) {
                         e.printStackTrace();
@@ -76,11 +50,6 @@ public class AncientWarfareNEIPlugin {
                 AWLog.log("Skipping loading of NEI plugin, NEI not found!");
             }
         }
+        MinecraftForge.EVENT_BUS.unregister(this);
     }
-
-    public void clientLoginEvent(ClientConnectedToServerEvent evt) {
-//  evt.
-    }
-
-
 }

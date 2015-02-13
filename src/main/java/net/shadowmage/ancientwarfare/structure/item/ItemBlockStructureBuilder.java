@@ -14,17 +14,19 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemBlockStructureBuilder extends ItemBlock {
+public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer {
 
     List<ItemStack> displayCache = null;
 
@@ -87,4 +89,27 @@ public class ItemBlockStructureBuilder extends ItemBlock {
         return val;
     }
 
+    @Override
+    public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+        if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("structureName")) {
+            return;
+        }
+        String name = stack.getTagCompound().getString("structureName");
+        StructureTemplateClient t = StructureTemplateManagerClient.instance().getClientTemplate(name);
+        if (t == null) {
+            return;
+        }
+        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+        if (hit == null) {
+            return;
+        }
+        int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
+        BlockPosition p1 = new BlockPosition(hit.x, hit.y, hit.z);
+        BlockPosition p2 = p1.copy();
+        Util.renderBoundingBox(player, p1, p2, delta);
+        p2.moveForward(face, t.zSize - 1 - t.zOffset + 1);
+        StructureBB bb = new StructureBB(p2.x, p2.y, p2.z, face, t.xSize, t.ySize, t.zSize, t.xOffset, t.yOffset, t.zOffset);
+        p2.reassign(bb.max.x, bb.max.y, bb.max.z);
+        Util.renderBoundingBox(player, bb.min, p2, delta);
+    }
 }

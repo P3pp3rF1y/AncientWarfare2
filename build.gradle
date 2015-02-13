@@ -19,32 +19,20 @@ buildscript {
     }
 }
 
-allprojects
-{
   apply plugin: 'forge'
   minecraft
   {
-    version = "1.7.10-10.13.2.1236"
-    runDir = "eclipse/assets"
+    version = "1.7.10-10.13.2.1286"
+    runDir = "eclipse"
   }
   version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.releasetype + "-MC" +minecraft.version
-  group = "shadowmage" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+  group = "shadowmage"
   archivesBaseName = "ancientwarfare"
-}
 
 dependencies {
-  compile files {
-    "lib/CodeChickenLib-1.7.10-1.1.1.106-dev.jar"
-  }
-  compile files {
-    "lib/buildcraft-6.1.8-dev.jar" // can remove this, no longer a real dep; can just load as a mod in mods folder
-  }
-  compile files {
-    "lib/CodeChickenCore-1.7.10-1.0.4.29-dev.jar"
-  }
-  compile files {
+  /*compile files {
     "lib/NotEnoughItems-1.7.10-1.0.3.67-dev.jar"
-  }
+  }*/
   compile files {
     "lib/CoFHLib-[1.7.10]1.0.0B7-dev-29.jar"
   }  
@@ -86,45 +74,43 @@ task expand_jar<<{
     }
   }   
 
-task packFullJar(type: Jar){
+task packFullJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-FULL.jar'
   from 'build/tmp/expanded'
   include '**/*'
   exclude 'net/shadowmage/ancientwarfare/modeler/**/*'
 }
 
-task packCoreJar(type: Jar){
+task packCoreJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-CORE.jar'
   from 'build/tmp/expanded'
   exclude 'net/shadowmage/ancientwarfare/automation/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/npc/**/*', 'net/shadowmage/ancientwarfare/structure/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*'
 }
 
-task packAutomationJar(type: Jar){
+task packAutomationJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-AUTOMATION.jar'
   from 'build/tmp/expanded'
   exclude 'net/shadowmage/ancientwarfare/core/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/npc/**/*', 'net/shadowmage/ancientwarfare/structure/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*', 'net/shadowmage/ancientwarfare/nei_plugin/**/*'
 }
 
-task packNpcJar(type: Jar){
+task packNpcJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-NPC.jar'
   from 'build/tmp/expanded'
   exclude 'net/shadowmage/ancientwarfare/core/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/automation/**/*', 'net/shadowmage/ancientwarfare/structure/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*', 'net/shadowmage/ancientwarfare/nei_plugin/**/*'
 }
 
-task packStructureJar(type: Jar){
+task packStructureJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-STRUCTURE.jar'
   from 'build/tmp/expanded'
   exclude 'net/shadowmage/ancientwarfare/core/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/npc/**/*', 'net/shadowmage/ancientwarfare/automation/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*', 'net/shadowmage/ancientwarfare/nei_plugin/**/*'
 }
 
-//hack the entire thing to fire after check()
-check.dependsOn packStructureJar
-
-packFullJar.dependsOn expand_jar
-packCoreJar.dependsOn packFullJar
-packAutomationJar.dependsOn packCoreJar
-packNpcJar.dependsOn packAutomationJar
-packStructureJar.dependsOn packNpcJar
+artifacts{
+    archives packCoreJar
+    archives packAutomationJar
+    archives packNpcJar
+    archives packStructureJar
+}
 
 
 

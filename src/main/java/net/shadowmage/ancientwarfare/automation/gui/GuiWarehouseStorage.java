@@ -16,15 +16,14 @@ import java.util.List;
 
 public class GuiWarehouseStorage extends GuiContainerBase {
 
-    CompositeScrolled area;
+public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStorage> {
 
-    ContainerWarehouseStorage container;
+    CompositeScrolled area;
 
     CompositeItemSlots area2;
 
     public GuiWarehouseStorage(ContainerBase par1Container) {
         super(par1Container, 178, 240, defaultBackground);
-        this.container = (ContainerWarehouseStorage) par1Container;
 //  this.ySize = container.guiHeight;
     }
 
@@ -38,7 +37,7 @@ public class GuiWarehouseStorage extends GuiContainerBase {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area2.isMouseOverSubElement(evt.mx, evt.my)) {
-                    container.handleClientRequestSpecific(null, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
+                    getContainer().handleClientRequestSpecific(null, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
                 }
                 return true;
             }
@@ -53,7 +52,7 @@ public class GuiWarehouseStorage extends GuiContainerBase {
         area.clearElements();
         area2.clearElements();
         addInventoryViewElements();
-        List<WarehouseStorageFilter> filters = container.filters;
+        List<WarehouseStorageFilter> filters = getContainer().filters;
 
         int totalHeight = 8;
 
@@ -82,8 +81,8 @@ public class GuiWarehouseStorage extends GuiContainerBase {
                 @Override
                 protected void onPressed() {
                     WarehouseStorageFilter filter = new WarehouseStorageFilter(null);
-                    container.filters.add(filter);
-                    container.sendFiltersToServer();
+                    getContainer().filters.add(filter);
+                    getContainer().sendFiltersToServer();
                     refreshGui();
                 }
             };
@@ -100,8 +99,8 @@ public class GuiWarehouseStorage extends GuiContainerBase {
         int x = 0, y = 0;
         int totalSize = 8;
         List<ItemStack> displayStacks = new ArrayList<ItemStack>();
-        for (ItemHashEntry entry : container.itemMap.keySet()) {
-            qty = container.itemMap.getCount(entry);
+        for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
+            qty = getContainer().itemMap.getCount(entry);
             stack = entry.getItemStack();
             stack.stackSize = qty;
             displayStacks.add(stack);
@@ -111,7 +110,7 @@ public class GuiWarehouseStorage extends GuiContainerBase {
             slot = new ItemSlot(4 + x * 18, 8 + y * 18, displayStack, this) {
                 @Override
                 public void onSlotClicked(ItemStack stack) {
-                    container.handleClientRequestSpecific(getStack(), Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
+                    getContainer().handleClientRequestSpecific(getStack(), Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
                 }
             };
             area2.addGuiElement(slot);
@@ -135,8 +134,8 @@ public class GuiWarehouseStorage extends GuiContainerBase {
 
         @Override
         protected void onPressed() {
-            container.filters.remove(filter);
-            container.sendFiltersToServer();
+            getContainer().filters.remove(filter);
+            getContainer().sendFiltersToServer();
             refreshGui();
         }
     }
@@ -157,7 +156,7 @@ public class GuiWarehouseStorage extends GuiContainerBase {
                 in.stackSize = 1;
             }
             filter.setFilterItem(in == null ? null : in.copy());
-            container.sendFiltersToServer();
+            getContainer().sendFiltersToServer();
         }
     }
 

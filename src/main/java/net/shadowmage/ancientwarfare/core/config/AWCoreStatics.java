@@ -150,12 +150,12 @@ public class AWCoreStatics {
 
     public static boolean isItemCraftable(Item item) {
         String name = Item.itemRegistry.getNameForObject(item);
-        return config.get(recipeDetailSettings, name, true).getBoolean(true);
+        return config.getBoolean(name, recipeDetailSettings, true, "");
     }
 
     public static boolean isItemResearched(Item item) {
         String name = Item.itemRegistry.getNameForObject(item);
-        return config.get(recipeResearchDetails, name, true).getBoolean(true);
+        return config.getBoolean(name, recipeResearchDetails, true, "");
     }
 
     public static Configuration getConfigFor(String modID) {

@@ -127,16 +127,13 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
 
-        NBTTagCompound inventoryTag = new NBTTagCompound();
-        InventoryTools.writeInventoryToNBT(bookInventory, inventoryTag);
+        NBTTagCompound inventoryTag = InventoryTools.writeInventoryToNBT(bookInventory, new NBTTagCompound());
         tag.setTag("bookInventory", inventoryTag);
 
-        inventoryTag = new NBTTagCompound();
-        InventoryTools.writeInventoryToNBT(result, inventoryTag);
+        inventoryTag = InventoryTools.writeInventoryToNBT(result, new NBTTagCompound());
         tag.setTag("resultInventory", inventoryTag);
 
-        inventoryTag = new NBTTagCompound();
-        InventoryTools.writeInventoryToNBT(layoutMatrix, inventoryTag);
+        inventoryTag = InventoryTools.writeInventoryToNBT(layoutMatrix, new NBTTagCompound());
         tag.setTag("layoutMatrix", inventoryTag);
 
     }

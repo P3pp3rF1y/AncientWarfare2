@@ -26,7 +26,7 @@ public class ClientProxyStructures extends ClientProxyBase {
         NetworkHandler.registerGui(NetworkHandler.GUI_GATE_CONTROL, GuiGateControl.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_DRAFTING_STATION, GuiDraftingStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_SOUND_BLOCK, GuiSoundBlock.class);
-        MinecraftForge.EVENT_BUS.register(StructureBoundingBoxRenderer.instance());
+        MinecraftForge.EVENT_BUS.register(StructureBoundingBoxRenderer.INSTANCE);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityGate.class, new RenderGateHelper());
         ClientRegistry.bindTileEntitySpecialRenderer(TileStructureBuilder.class, new RenderStructureBuilder());

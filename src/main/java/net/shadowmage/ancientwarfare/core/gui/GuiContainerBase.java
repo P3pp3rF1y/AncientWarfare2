@@ -6,6 +6,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class GuiContainerBase extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer, IWidgetSelection {
+public abstract class GuiContainerBase<T extends ContainerBase> extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer, IWidgetSelection {
 
     protected static final String defaultBackground = "guiBackgroundLarge.png";
 
@@ -63,11 +64,15 @@ public abstract class GuiContainerBase extends GuiContainer implements IContaine
             this.backgroundTextureName = backgroundTexture;
             this.backgroundTexture = new ResourceLocation("ancientwarfare", "textures/gui/" + backgroundTextureName);
         }
-        this.player = ((ContainerBase) container).player;
+        this.player = container.player;
     }
 
     public GuiContainerBase(ContainerBase container) {
         this(container, 256, 240, defaultBackground);
+    }
+
+    public final T getContainer(){
+        return (T) this.inventorySlots;
     }
 
     @Override
@@ -312,7 +317,7 @@ public abstract class GuiContainerBase extends GuiContainer implements IContaine
      *
      * @author Shadowmage
      */
-    public class ActivationEvent {
+    public static class ActivationEvent {
         /**
          * the type of event:<br>
          * 0=Key up <br>

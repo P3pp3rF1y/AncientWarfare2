@@ -141,8 +141,7 @@ public abstract class NpcFaction extends NpcBase {
 
     public String getFaction() {
         String type = getNpcType();
-        String faction = type.substring(0, type.indexOf("."));
-        return faction;
+        return type.substring(0, type.indexOf("."));
     }
 
     @Override

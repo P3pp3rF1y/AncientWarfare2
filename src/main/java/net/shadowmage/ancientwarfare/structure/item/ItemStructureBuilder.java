@@ -30,22 +30,19 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 
 import java.util.List;
 
 
-public class ItemStructureBuilder extends Item implements IItemKeyInterface, IItemClickable {
+public class ItemStructureBuilder extends Item implements IItemKeyInterface, IItemClickable, IBoxRenderer {
 
-    ItemStructureSettings buildSettings = new ItemStructureSettings();
-
-    ItemStructureSettings viewSettings = new ItemStructureSettings();
-
-    /**
-     * @param itemID
-     */
     public ItemStructureBuilder(String itemName) {
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
@@ -67,7 +64,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IIt
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         String structure = "guistrings.no_selection";
-        ItemStructureSettings.getSettingsFor(stack, viewSettings);
+        ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(stack);
         if (viewSettings.hasName()) {
             structure = viewSettings.name;
         }
@@ -89,7 +86,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IIt
         if (player == null || player.worldObj.isRemote) {
             return;
         }
-        ItemStructureSettings.getSettingsFor(stack, buildSettings);
+        ItemStructureSettings buildSettings = ItemStructureSettings.getSettingsFor(stack);
         if (buildSettings.hasName()) {
             StructureTemplate template = StructureTemplateManager.instance().getTemplate(buildSettings.name);
             if (template == null) {
@@ -141,4 +138,25 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IIt
 
     }
 
+    @Override
+    public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+        ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
+        if (!settings.hasName()) {
+            return;
+        }
+        String name = settings.name();
+        StructureTemplateClient structure = StructureTemplateManagerClient.instance().getClientTemplate(name);
+        if (structure == null) {
+            return;
+        }
+        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+        int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
+        if (hit == null) {
+            return;
+        }
+        StructureBB bb = new StructureBB(hit.x, hit.y, hit.z, face, structure.xSize, structure.ySize, structure.zSize, structure.xOffset, structure.yOffset, structure.zOffset);
+        BlockPosition pos1 = bb.min;
+        BlockPosition pos2 = bb.max.copy();
+        Util.renderBoundingBox(player, pos1, pos2, delta);
+    }
 }

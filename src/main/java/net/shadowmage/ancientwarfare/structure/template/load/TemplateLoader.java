@@ -259,8 +259,8 @@ public class TemplateLoader {
         int parsed = 0;
         int totalParsed = 0;
         for (File f : this.probableZipFiles) {
-            AWLog.logDebug("Parsing templates from zip file: " + f.getName());
             parsed = 0;
+            AWLog.log("Loading templates from zip file: " + f.getName());
             try {
                 fis = new FileInputStream(f);
                 zis = new ZipInputStream(fis);

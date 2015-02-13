@@ -30,11 +30,11 @@ public enum WorksiteUpgrade {
         this.flag = flag;
         this.exclusive = new HashSet<Integer>(exc.length);
         this.overrides = new HashSet<Integer>(ovr.length);
-        for (int i = 0; i < exc.length; i++) {
-            exclusive.add(exc[i]);
+        for (int anExc : exc) {
+            exclusive.add(anExc);
         }
-        for (int i = 0; i < ovr.length; i++) {
-            overrides.add(ovr[i]);
+        for (int anOvr : ovr) {
+            overrides.add(anOvr);
         }
     }
 

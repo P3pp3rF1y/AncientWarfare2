@@ -25,6 +25,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     public InventoryCrafting layoutMatrix;
     public InventoryCraftResult result;
     public InventoryBasic bookInventory = new InventoryBasic(1) {
+        @Override
         public void markDirty() {
             onLayoutMatrixChanged(layoutMatrix);
         }

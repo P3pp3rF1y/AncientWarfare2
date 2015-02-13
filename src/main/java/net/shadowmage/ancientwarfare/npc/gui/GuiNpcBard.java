@@ -8,14 +8,12 @@ import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData.SongEntry;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
 
-public class GuiNpcBard extends GuiContainerBase {
+public class GuiNpcBard extends GuiContainerBase<ContainerNpcBard> {
 
-    ContainerNpcBard container;
     CompositeScrolled area;
 
     public GuiNpcBard(ContainerBase container) {
         super(container, 256, 240, defaultBackground);
-        this.container = (ContainerNpcBard) container;
     }
 
     @Override
@@ -30,7 +28,7 @@ public class GuiNpcBard extends GuiContainerBase {
         addGuiElement(area);
 
         int totalHeight = 8;
-        final SongPlayData data = container.data;
+        final SongPlayData data = getContainer().data;
 
         Checkbox playerEntry = new Checkbox(8, totalHeight, 16, 16, "guistrings.play_on_player_entry") {
             @Override
@@ -134,7 +132,7 @@ public class GuiNpcBard extends GuiContainerBase {
         area.addGuiElement(new Button(160, y, 55, 12, "guistrings.up") {
             @Override
             protected void onPressed() {
-                final SongPlayData data = container.data;
+                final SongPlayData data = getContainer().data;
                 data.decrementEntry(index);
                 refreshGui();
             }
@@ -143,7 +141,7 @@ public class GuiNpcBard extends GuiContainerBase {
         area.addGuiElement(new Button(160, y + 12, 55, 12, "guistrings.delete") {
             @Override
             protected void onPressed() {
-                final SongPlayData data = container.data;
+                final SongPlayData data = getContainer().data;
                 data.deleteEntry(index);
                 refreshGui();
             }
@@ -152,7 +150,7 @@ public class GuiNpcBard extends GuiContainerBase {
         area.addGuiElement(new Button(160, y + 24, 55, 12, "guistrings.down") {
             @Override
             protected void onPressed() {
-                final SongPlayData data = container.data;
+                final SongPlayData data = getContainer().data;
                 data.incrementEntry(index);
                 refreshGui();
             }
@@ -165,8 +163,8 @@ public class GuiNpcBard extends GuiContainerBase {
 
     @Override
     protected boolean onGuiCloseRequested() {
-        container.sendTuneDataToServer(player);
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, container.npc.getEntityId(), 0, 0);
+        getContainer().sendTuneDataToServer(player);
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getContainer().entity.getEntityId(), 0, 0);
         return false;
     }
 

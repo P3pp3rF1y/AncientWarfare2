@@ -23,14 +23,17 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public abstract class BlockWorksiteBase extends Block implements IRotatableBlock {
+import java.lang.reflect.Constructor;
+
+public class BlockWorksiteBase extends Block implements IRotatableBlock {
 
     IconRotationMap iconMap = new IconRotationMap();
     public int maxWorkSize = 16;
     public int maxWorkSizeVertical = 1;
+    private Constructor<? extends TileEntity> tile;
 
-    public BlockWorksiteBase(Material p_i45394_1_, String regName) {
-        super(p_i45394_1_);
+    public BlockWorksiteBase(String regName) {
+        super(Material.rock);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
         this.setBlockName(regName);
         setHardness(2.f);
@@ -51,19 +54,30 @@ public abstract class BlockWorksiteBase extends Block implements IRotatableBlock
         return this;
     }
 
+    public BlockWorksiteBase setTileEntity(Class<? extends TileEntity> clzz){
+        try {
+            tile = clzz.getConstructor();
+        }catch (Exception e){}
+        return this;
+    }
+
     /**
-     * made into an abstract method so that derived classes must write an implementation
-     * --used to make anonymous classes easier to setup
+     * made into a generic method so that farm blocks are easier to setup
      * returned tiles must implement IWorksite (for team reference) and IInteractableTile (for interaction callback) if they wish to receive onBlockActivated calls<br>
      * returned tiles must implement IBoundedTile if they want workbounds set from ItemBlockWorksite<br>
      * returned tiles must implement IOwnable if they want owner-name set from ItemBlockWorksite<br>
      */
     @Override
-    public abstract TileEntity createTileEntity(World world, int metadata);
+    public TileEntity createTileEntity(World world, int metadata){
+        try{
+            return tile.newInstance();
+        }catch (Exception e){}
+        return null;
+    }
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return true;
+        return tile!=null;
     }
 
     @Override

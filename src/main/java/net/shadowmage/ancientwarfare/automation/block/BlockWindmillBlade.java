@@ -28,7 +28,7 @@ public class BlockWindmillBlade extends Block {
     @Override
     public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b) {
         TileEntity tileentity = world.getTileEntity(x, y, z);
-        return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
+        return tileentity != null && tileentity.receiveClientEvent(a, b);
     }
 
     @Override
@@ -82,12 +82,6 @@ public class BlockWindmillBlade extends Block {
     @Override
     public boolean hasTileEntity(int metadata) {
         return true;
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list) {
-        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 0));
     }
 
 }

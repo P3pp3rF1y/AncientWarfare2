@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcCreativeControls;
 
-public class GuiNpcCreativeControls extends GuiContainerBase {
+public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativeControls> {
 
     Text ownerNameInput;
     Text customTexInput;
@@ -19,11 +19,8 @@ public class GuiNpcCreativeControls extends GuiContainerBase {
 
     boolean hasChanged = false;
 
-    ContainerNpcCreativeControls container;
-
     public GuiNpcCreativeControls(ContainerBase container) {
         super(container);
-        this.container = (ContainerNpcCreativeControls) container;
     }
 
     @Override
@@ -37,7 +34,7 @@ public class GuiNpcCreativeControls extends GuiContainerBase {
         ownerNameInput = new Text(100, totalHeight, 256 - 16 - 100, "", this) {
             @Override
             public void onTextUpdated(String oldText, String newText) {
-                container.ownerName = newText;
+                getContainer().ownerName = newText;
                 hasChanged = true;
             }
         };
@@ -50,7 +47,7 @@ public class GuiNpcCreativeControls extends GuiContainerBase {
         customTexInput = new Text(100, totalHeight, 256 - 16 - 100, "", this) {
             @Override
             public void onTextUpdated(String oldText, String newText) {
-                container.customTexRef = newText;
+                getContainer().customTexRef = newText;
                 hasChanged = true;
             }
         };
@@ -63,7 +60,7 @@ public class GuiNpcCreativeControls extends GuiContainerBase {
         maxHealthOverrideInput = new NumberInput(120, totalHeight, 60, 0, this) {
             @Override
             public void onValueUpdated(float value) {
-                container.maxHealth = (int) value;
+                getContainer().maxHealth = (int) value;
                 hasChanged = true;
             }
         };
@@ -77,7 +74,7 @@ public class GuiNpcCreativeControls extends GuiContainerBase {
         attackDamageOverrideInput = new NumberInput(120, totalHeight, 60, 0, this) {
             @Override
             public void onValueUpdated(float value) {
-                container.attackDamage = (int) value;
+                getContainer().attackDamage = (int) value;
                 hasChanged = true;
             }
         };
@@ -91,7 +88,7 @@ public class GuiNpcCreativeControls extends GuiContainerBase {
         armorValueOverrideInput = new NumberInput(120, totalHeight, 60, 0, this) {
             @Override
             public void onValueUpdated(float value) {
-                container.armorValue = (int) value;
+                getContainer().armorValue = (int) value;
                 hasChanged = true;
             }
         };
@@ -102,7 +99,7 @@ public class GuiNpcCreativeControls extends GuiContainerBase {
         wanderCheckbox = new Checkbox(8, totalHeight, 16, 16, "guistrings.npc.allow_wander") {
             @Override
             public void onToggled() {
-                container.wander = checked();
+                getContainer().wander = checked();
                 hasChanged = true;
             }
         };
@@ -114,12 +111,12 @@ public class GuiNpcCreativeControls extends GuiContainerBase {
 
     @Override
     public void setupElements() {
-        ownerNameInput.setText(container.ownerName);
-        customTexInput.setText(container.customTexRef);
-        attackDamageOverrideInput.setValue(container.attackDamage);
-        armorValueOverrideInput.setValue(container.armorValue);
-        maxHealthOverrideInput.setValue(container.maxHealth);
-        wanderCheckbox.setChecked(container.wander);
+        ownerNameInput.setText(getContainer().ownerName);
+        customTexInput.setText(getContainer().customTexRef);
+        attackDamageOverrideInput.setValue(getContainer().attackDamage);
+        armorValueOverrideInput.setValue(getContainer().armorValue);
+        maxHealthOverrideInput.setValue(getContainer().maxHealth);
+        wanderCheckbox.setChecked(getContainer().wander);
     }
 
     @Override
@@ -128,13 +125,13 @@ public class GuiNpcCreativeControls extends GuiContainerBase {
          * if changes were made while gui was open, send these to server
          */
         if (hasChanged) {
-            container.sendChangesToServer();
+            getContainer().sendChangesToServer();
         }
 
         /**
          * force opening of normal gui (whatever that may be for the npc) when advanced controls is closed
          */
-        container.npc.openGUI(player);
+        getContainer().entity.openGUI(player);
         return false;
     }
 

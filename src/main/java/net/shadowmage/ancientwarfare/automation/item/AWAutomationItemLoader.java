@@ -46,8 +46,8 @@ public class AWAutomationItemLoader {
         ((ItemComponent) AWItems.componentItem).addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "ancientwarfare:automation/iron_shaft");
         ((ItemComponent) AWItems.componentItem).addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "ancientwarfare:automation/steel_shaft");
 
-        AWItems.worksiteUpgrade = new ItemWorksiteUpgrade("worksite_upgrade");
-        ItemWorksiteUpgrade item = (ItemWorksiteUpgrade) AWItems.worksiteUpgrade;
+        ItemWorksiteUpgrade item = new ItemWorksiteUpgrade("worksite_upgrade");
+        AWItems.worksiteUpgrade = item;
         item.addSubItemIcon(WorksiteUpgrade.SIZE_MEDIUM.flag(), "ancientwarfare:automation/upgrade_bounds_medium");
         item.addSubItemIcon(WorksiteUpgrade.SIZE_LARGE.flag(), "ancientwarfare:automation/upgrade_bounds_large");
         item.addSubItemIcon(WorksiteUpgrade.QUARRY_MEDIUM.flag(), "ancientwarfare:automation/upgrade_quarry_medium");
@@ -62,9 +62,7 @@ public class AWAutomationItemLoader {
         GameRegistry.registerItem(AWItems.worksiteUpgrade, "worksite_upgrade");
     }
 
-    private static final TabSorter sorter = new TabSorter();
-
-    private static class TabSorter implements Comparator<ItemStack> {
+    private static final Comparator sorter = new Comparator<ItemStack>() {
 
         @Override
         public int compare(ItemStack arg0, ItemStack arg1) {
@@ -103,8 +101,9 @@ public class AWAutomationItemLoader {
                         || block == worksiteAnimalFarm || block == worksiteReedFarm || block == worksiteFishFarm) {
                     return 2;
                 }
+                }
             }
             return 0;
         }
-    }
+    };
 }

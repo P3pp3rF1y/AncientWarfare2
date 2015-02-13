@@ -106,7 +106,7 @@ public class NumberInput extends Text {
 
     @Override
     public void setText(String text) {
-        if (text == "" || text == null) {
+        if (text == null || text.isEmpty()) {
             this.setValue(0);
             this.text = "";
             return;

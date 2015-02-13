@@ -75,5 +75,4 @@ public class BlockWarehouseCraftingStation extends Block {
         super.breakBlock(world, x, y, z, block, fortune);
     }
 
-
 }

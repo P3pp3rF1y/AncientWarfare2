@@ -10,22 +10,20 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
-import net.shadowmage.ancientwarfare.npc.orders.*;
-import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder.RoutePoint;
-import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
+import net.shadowmage.ancientwarfare.npc.item.ItemOrders;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RenderWorkLines {
-    private RenderWorkLines() {
-    }
 
     public static final RenderWorkLines INSTANCE = new RenderWorkLines();
 
-    private List<BlockPosition> positionList = new ArrayList<BlockPosition>();
+    private final List<BlockPosition> positionList;
+    private RenderWorkLines() {
+        positionList = new ArrayList<BlockPosition>();
+    }
 
     @SubscribeEvent
     public void renderLastEvent(RenderWorldLastEvent evt) {
@@ -48,73 +46,20 @@ public class RenderWorkLines {
         Item item = stack.getItem();
 
         GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-        if (item == AWNpcItemLoader.upkeepOrder) {
-            renderUpkeepList(player, stack, evt.partialTicks);
-        } else if (item == AWNpcItemLoader.workOrder) {
-            renderWorkList(player, stack, evt.partialTicks);
-        } else if (item == AWNpcItemLoader.routingOrder) {
-            renderCourierList(player, stack, evt.partialTicks);
-        } else if (item == AWNpcItemLoader.combatOrder) {
-            renderCombatList(player, stack, evt.partialTicks);
-        } else if (item == AWNpcItemLoader.tradeOrder) {
-            renderTradeList(player, stack, evt.partialTicks);
+        if(item instanceof ItemOrders){
+            positionList.addAll(((ItemOrders) item).getPositionsForRender(stack));
         }
-        positionList.clear();
-    }
-
-    private void renderUpkeepList(EntityPlayer player, ItemStack orderStack, float partialTick) {
-        UpkeepOrder order = UpkeepOrder.getUpkeepOrder(orderStack);
-        if (order != null && order.getUpkeepPosition() != null) {
-            positionList.add(order.getUpkeepPosition());
-            renderListOfPoints(player, positionList, partialTick);
+        if(positionList.size()>0) {
+            renderListOfPoints(player, evt.partialTicks);
+            positionList.clear();
         }
     }
 
-    private void renderWorkList(EntityPlayer player, ItemStack orderStack, float partialTick) {
-        WorkOrder order = WorkOrder.getWorkOrder(orderStack);
-        if (order != null && order.getEntries().size() > 0) {
-            for (WorkEntry e : order.getEntries()) {
-                positionList.add(e.getPosition());
-            }
-            renderListOfPoints(player, positionList, partialTick);
-        }
-    }
-
-    private void renderCourierList(EntityPlayer player, ItemStack orderStack, float partialTick) {
-        RoutingOrder order = RoutingOrder.getRoutingOrder(orderStack);
-        if (order != null && order.getEntries().size() > 0) {
-            for (RoutePoint e : order.getEntries()) {
-                positionList.add(e.getTarget());
-            }
-            renderListOfPoints(player, positionList, partialTick);
-        }
-    }
-
-    private void renderCombatList(EntityPlayer player, ItemStack orderStack, float partialTick) {
-        CombatOrder order = CombatOrder.getCombatOrder(orderStack);
-        if (order != null && order.getPatrolSize() > 0) {
-            for (int i = 0; i < order.getPatrolSize(); i++) {
-                positionList.add(order.getPatrolPoint(i).copy().offset(0, 1, 0));
-            }
-            renderListOfPoints(player, positionList, partialTick);
-        }
-    }
-
-    private void renderTradeList(EntityPlayer player, ItemStack orderStack, float partialTick) {
-        TradeOrder order = TradeOrder.getTradeOrder(orderStack);
-        if (order != null && order.getRoute().size() > 0) {
-            for (int i = 0; i < order.getRoute().size(); i++) {
-                positionList.add(order.getRoute().get(i).getPosition());
-            }
-            renderListOfPoints(player, positionList, partialTick);
-        }
-    }
-
-    private void renderListOfPoints(EntityPlayer player, List<BlockPosition> points, float partialTick) {
+    private void renderListOfPoints(EntityPlayer player, float partialTick) {
         AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
         BlockPosition prev = null;
         int index = 1;
-        for (BlockPosition point : points) {
+        for (BlockPosition point : positionList) {
             bb.setBounds(0, 0, 0, 1, 1, 1);
             bb.offset(point.x, point.y, point.z);
             bb = RenderTools.adjustBBForPlayerPos(bb, player, partialTick);

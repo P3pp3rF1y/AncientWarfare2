@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -14,7 +13,7 @@ public class GuiStructureIncorrectName extends GuiContainerBase {
     GuiStructureScanner parent;
 
     public GuiStructureIncorrectName(GuiStructureScanner parent) {
-        super((ContainerBase) parent.inventorySlots, 256, 16 + 10 + 10 + 12 + 12, defaultBackground);
+        super(parent.getContainer(), 256, 16 + 10 + 10 + 12 + 12, defaultBackground);
         this.parent = parent;
         this.shouldCloseOnVanillaKeys = false;
     }

@@ -43,10 +43,10 @@ public class BlockTorqueTransportConduit extends BlockTorqueBase {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list) {
-        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 0));
-        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 1));
-        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 2));
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        list.add(new ItemStack(item, 1, 0));
+        list.add(new ItemStack(item, 1, 1));
+        list.add(new ItemStack(item, 1, 2));
     }
 
     @Override

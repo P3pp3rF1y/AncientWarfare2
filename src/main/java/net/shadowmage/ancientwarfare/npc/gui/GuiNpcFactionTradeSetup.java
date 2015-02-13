@@ -11,16 +11,13 @@ import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiNpcFactionTradeSetup extends GuiContainerBase {
+public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactionTradeSetup> {
 
     CompositeScrolled area;
     FactionTradeList tradeList;
 
-    public final ContainerNpcFactionTradeSetup container;
-
     public GuiNpcFactionTradeSetup(ContainerBase container) {
         super(container, 320, 240, defaultBackground);
-        this.container = (ContainerNpcFactionTradeSetup) container;
     }
 
     @Override
@@ -32,7 +29,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase {
     @Override
     public void setupElements() {
         area.clearElements();
-        tradeList = container.tradeList;
+        tradeList = getContainer().tradeList;
         if (tradeList == null) {
             return;
         }
@@ -49,7 +46,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase {
             @Override
             protected void onPressed() {
                 tradeList.addNewTrade();
-                container.tradesChanged = true;
+                getContainer().tradesChanged = true;
                 refreshGui();
             }
         };
@@ -95,7 +92,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase {
             protected void onPressed() {
                 tradeList.decrementTradePosition(tradeNum);
                 refreshGui();
-                container.tradesChanged = true;
+                getContainer().tradesChanged = true;
             }
         };
         area.addGuiElement(upButton);
@@ -105,7 +102,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase {
             protected void onPressed() {
                 tradeList.incrementTradePosition(tradeNum);
                 refreshGui();
-                container.tradesChanged = true;
+                getContainer().tradesChanged = true;
             }
         };
         area.addGuiElement(downButton);
@@ -115,7 +112,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase {
             protected void onPressed() {
                 tradeList.deleteTrade(tradeNum);
                 refreshGui();
-                container.tradesChanged = true;
+                getContainer().tradesChanged = true;
             }
         };
         area.addGuiElement(delete);
@@ -130,7 +127,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase {
             @Override
             public void onValueUpdated(float value) {
                 trade.setMaxAvailable((int) value);
-                container.tradesChanged = true;
+                getContainer().tradesChanged = true;
             }
         };
         tradeInput.setIntegerValue();
@@ -140,7 +137,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase {
             @Override
             public void onValueUpdated(float value) {
                 trade.setRefillFrequency((int) value);
-                container.tradesChanged = true;
+                getContainer().tradesChanged = true;
             }
         };
         refillInput.setIntegerValue();
@@ -157,7 +154,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase {
                 stack = stack == null ? stack : stack.copy();
                 setItem(stack);
                 trade.getInput()[slotNum] = stack;
-                container.tradesChanged = true;
+                getContainer().tradesChanged = true;
             }
         };
         area.addGuiElement(slot);
@@ -172,7 +169,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase {
                 stack = stack == null ? stack : stack.copy();
                 setItem(stack);
                 trade.getOutput()[slotNum] = stack;
-                container.tradesChanged = true;
+                getContainer().tradesChanged = true;
             }
         };
         area.addGuiElement(slot);
@@ -180,7 +177,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase {
 
     @Override
     protected boolean onGuiCloseRequested() {
-        container.onGuiClosed();
+        getContainer().onGuiClosed();
         return super.onGuiCloseRequested();
     }
 

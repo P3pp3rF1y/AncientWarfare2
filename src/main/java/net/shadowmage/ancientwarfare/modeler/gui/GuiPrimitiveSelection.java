@@ -12,7 +12,7 @@ public class GuiPrimitiveSelection extends GuiContainerBase {
     GuiModelEditor parent;
 
     public GuiPrimitiveSelection(GuiModelEditor parent) {
-        super((ContainerBase) parent.inventorySlots, 256, 60, defaultBackground);
+        super(parent.getContainer(), 256, 60, defaultBackground);
         this.parent = parent;
     }
 
@@ -27,7 +27,7 @@ public class GuiPrimitiveSelection extends GuiContainerBase {
                 ModelPiece piece = parent.getModelPiece();
                 Primitive p = new PrimitiveBox(piece, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0);
                 onPrimitiveCreated(p);
-                ((ContainerBase) parent.inventorySlots).setGui(parent);
+                getContainer().setGui(parent);
                 Minecraft.getMinecraft().displayGuiScreen(parent);
             }
         };
@@ -40,7 +40,7 @@ public class GuiPrimitiveSelection extends GuiContainerBase {
                 PrimitiveTriangle p = new PrimitiveTriangle(piece);
                 p.setBounds(0, 0, 0, 1, 1, 0, 1, 0, 0);
                 onPrimitiveCreated(p);
-                ((ContainerBase) parent.inventorySlots).setGui(parent);
+                getContainer().setGui(parent);
                 Minecraft.getMinecraft().displayGuiScreen(parent);
             }
         };
@@ -53,7 +53,7 @@ public class GuiPrimitiveSelection extends GuiContainerBase {
                 PrimitiveQuad p = new PrimitiveQuad(piece);
                 p.setBounds(0, 0, 1, 1);
                 onPrimitiveCreated(p);
-                ((ContainerBase) parent.inventorySlots).setGui(parent);
+                getContainer().setGui(parent);
                 Minecraft.getMinecraft().displayGuiScreen(parent);
             }
         };
@@ -62,7 +62,7 @@ public class GuiPrimitiveSelection extends GuiContainerBase {
         button = new Button(8 + 60 + 60 + 60, 24, 60, 12, "Cancel") {
             @Override
             protected void onPressed() {
-                ((ContainerBase) parent.inventorySlots).setGui(parent);
+                getContainer().setGui(parent);
                 Minecraft.getMinecraft().displayGuiScreen(parent);
             }
         };

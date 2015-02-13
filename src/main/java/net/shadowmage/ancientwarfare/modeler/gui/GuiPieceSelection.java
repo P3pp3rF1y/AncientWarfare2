@@ -27,12 +27,12 @@ public class GuiPieceSelection extends GuiContainerBase {
     ModelPiece excludedPiece;
 
     public GuiPieceSelection(GuiModelEditor parent) {
-        super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);
+        super(parent.getContainer(), 256, 240, defaultBackground);
         this.parent = parent;
     }
 
     public GuiPieceSelection(GuiModelEditor parent, ModelPiece excludedPiece) {
-        super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);
+        super(parent.getContainer(), 256, 240, defaultBackground);
         this.parent = parent;
         this.excludedPiece = excludedPiece;
     }
@@ -48,7 +48,7 @@ public class GuiPieceSelection extends GuiContainerBase {
         Button button = new Button(256 - 8 - 55 - 55 - 4, 8, 55, 12, "Cancel") {
             @Override
             protected void onPressed() {
-                ((ContainerBase) parent.inventorySlots).setGui(parent);
+                getContainer().setGui(parent);
                 Minecraft.getMinecraft().displayGuiScreen(parent);
             }
         };
@@ -59,7 +59,7 @@ public class GuiPieceSelection extends GuiContainerBase {
             protected void onPressed() {
                 if (selectedPiece != null) {
                     onPieceSelected(pieceMap.get(selectedPiece));
-                    ((ContainerBase) parent.inventorySlots).setGui(parent);
+                    getContainer().setGui(parent);
                     Minecraft.getMinecraft().displayGuiScreen(parent);
                 }
             }
@@ -71,6 +71,7 @@ public class GuiPieceSelection extends GuiContainerBase {
         ModelBaseAW model = parent.modelWidget.getModel();
         List<ModelPiece> pieces = new ArrayList<ModelPiece>();
         model.getPieces(pieces);
+
         Label label;
         for (ModelPiece piece : pieces) {
             if (piece == excludedPiece) {

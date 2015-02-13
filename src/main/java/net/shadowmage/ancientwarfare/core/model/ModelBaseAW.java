@@ -124,7 +124,7 @@ public class ModelBaseAW {
     public void addPiece(ModelPiece piece) {
         pieces.put(piece.getName(), piece);
         if (piece.getParent() == null) {
-            basePieces.add(piece);
+            getBasePieces().add(piece);
         }
     }
 

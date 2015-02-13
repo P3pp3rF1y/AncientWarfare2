@@ -63,17 +63,10 @@ public class AncientWarfareModeler {
     }
 
     @EventHandler
-    public void init(FMLInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Modeler Init started");
-
-        AWLog.log("Ancient Warfare Modeler Init completed.");
-    }
-
-    @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
         AWLog.log("Ancient Warfare Modeler Post-Init started");
-
-        config.save();
+        if(config.hasChanged())
+            config.save();
         AWLog.log("Ancient Warfare Modeler Post-Init completed.  Successfully completed all loading stages.");
     }
 

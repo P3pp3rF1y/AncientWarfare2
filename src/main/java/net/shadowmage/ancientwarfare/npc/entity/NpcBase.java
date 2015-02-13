@@ -255,11 +255,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (!hasHome()) {
             return false;
         }
-        if ((!worldObj.provider.hasNoSky && !worldObj.provider.isDaytime()) || worldObj.isRaining())//if is at night (and not an underground world type), or if it is raining, return true
-        {
-            return true;
-        }
-        return false;
+        return (!worldObj.provider.hasNoSky && !worldObj.provider.isDaytime()) || worldObj.isRaining();//if is at night (and not an underground world type), or if it is raining, return true
     }
 
     public void setIsAIEnabled(boolean val) {
@@ -547,7 +543,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public abstract boolean isValidOrdersStack(ItemStack stack);
 
     /**
-     * callback for when orders-stack changes.  implemenations should inform any neccessary AI tasks of the
+     * callback for when orders-stack changes.  implementations should inform any necessary AI tasks of the
      * change to order-items
      */
     public abstract void onOrdersInventoryChanged();
@@ -579,15 +575,24 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         String type = getNpcType();
         String sub = getNpcSubType();
         if (type == null || type.isEmpty()) {
-            throw new RuntimeException("Type must not be null or empty:" + type);
+            throw new RuntimeException("Type must not be null or empty:");
         }
         if (sub == null) {
-            throw new RuntimeException("Subtype must not be null...type: " + type + "::" + sub);
+            throw new RuntimeException("Subtype must not be null...type: " + type);
         }
         if (!sub.isEmpty()) {
             type = type + "." + sub;
         }
         return type;
+    }
+
+    @Override
+    public String getCommandSenderName(){
+        String name = StatCollector.translateToLocal("entity.AncientWarfareNpc." + getNpcFullType() + ".name");
+        if (hasCustomNameTag()) {
+            name = name + " : " + getCustomNameTag();
+        }
+        return name;
     }
 
     public final NpcLevelingStats getLevelingStats() {
@@ -859,27 +864,22 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     private void handlePickEntity(EntityPlayer player) {
         ItemStack item = this.getItemToSpawn();
-        boolean found = false;
         for (int i = 0; i < 9; i++) {
             if (ItemStack.areItemStacksEqual(player.inventory.getStackInSlot(i), item)) {
-                found = true;
                 return;
             }
         }
-        if (!found)//attempt to merge into inventory
+        int slotNum = player.inventory.currentItem;
+        if (player.inventory.getCurrentItem() != null)//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
         {
-            int slotNum = player.inventory.currentItem;
-            if (player.inventory.getCurrentItem() != null)//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
-            {
-                for (int i = 0; i < 9; i++) {
-                    if (player.inventory.getStackInSlot(i) == null) {
-                        slotNum = i;
-                        break;
-                    }
+            for (int i = 0; i < 9; i++) {
+                if (player.inventory.getStackInSlot(i) == null) {
+                    slotNum = i;
+                    break;
                 }
             }
-            player.inventory.setInventorySlotContents(slotNum, item);
         }
+        player.inventory.setInventorySlotContents(slotNum, item);
     }
 
     public double getDistanceSq(BlockPosition pos) {

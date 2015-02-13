@@ -3,20 +3,19 @@ package net.shadowmage.ancientwarfare.structure.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
-public class ContainerSoundBlock extends ContainerBase {
+public class ContainerSoundBlock extends ContainerTileBase<TileSoundBlock> {
 
     public SongPlayData data;
-    public TileSoundBlock tile;
     public boolean redstoneInteraction;
 
     public ContainerSoundBlock(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        tile = (TileSoundBlock) player.worldObj.getTileEntity(x, y, z);
-        data = tile.getTuneData();
-        redstoneInteraction = tile.isRedstoneInteraction();
+        data = tileEntity.getTuneData();
+        redstoneInteraction = tileEntity.isRedstoneInteraction();
     }
 
     @Override
@@ -33,7 +32,7 @@ public class ContainerSoundBlock extends ContainerBase {
             data.readFromNBT(tag.getCompoundTag("tuneData"));
         }
         redstoneInteraction = tag.getBoolean("redstone");
-        tile.setRedstoneInteraction(redstoneInteraction);
+        tileEntity.setRedstoneInteraction(redstoneInteraction);
         refreshGui();
     }
 

@@ -95,10 +95,9 @@ public class ItemSlot extends GuiElement {
             if (this.item != null && this.item.getItem() != null) {
                 RenderHelper.enableGUIStandardItemLighting();
                 itemRender.zLevel = 10.0F;
-                FontRenderer font = null;
-                font = item.getItem().getFontRenderer(item);
+                FontRenderer font = item.getItem().getFontRenderer(item);
                 if (font == null) {
-                    font = Minecraft.getMinecraft().fontRenderer;
+                    font = mc.fontRenderer;
                 }
 
                 GL11.glEnable(GL11.GL_LIGHTING);

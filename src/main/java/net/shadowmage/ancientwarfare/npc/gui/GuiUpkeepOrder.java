@@ -12,15 +12,12 @@ import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 
-public class GuiUpkeepOrder extends GuiContainerBase {
+public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
 
     boolean hasChanged = false;
 
-    ContainerUpkeepOrder container;
-
     public GuiUpkeepOrder(ContainerBase container) {
         super(container, 8 + 60 + 55 + 55 + 60 + 8, 8 + 12 + 10 + 8, defaultBackground);
-        this.container = (ContainerUpkeepOrder) container;
     }
 
     @Override
@@ -31,13 +28,13 @@ public class GuiUpkeepOrder extends GuiContainerBase {
     @Override
     public void setupElements() {
         clearElements();
-        BlockPosition pos = container.upkeepOrder.getUpkeepPosition();
+        BlockPosition pos = getContainer().upkeepOrder.getUpkeepPosition();
         ItemSlot slot;
         Button button;
         Label label;
 
-        if (pos != null && container.upkeepOrder.getBlock() != null) {
-            ItemStack blockStack = new ItemStack(Item.getItemFromBlock(container.upkeepOrder.getBlock()));
+        if (pos != null && getContainer().upkeepOrder.getBlock() != null) {
+            ItemStack blockStack = new ItemStack(Item.getItemFromBlock(getContainer().upkeepOrder.getBlock()));
             slot = new ItemSlot(8, 10, blockStack, this);
             addGuiElement(slot);
 
@@ -47,7 +44,7 @@ public class GuiUpkeepOrder extends GuiContainerBase {
             button = new Button(8 + 18 + 10, 8 + 10, 55, 12, "guistrings.npc.remove_upkeep_point") {
                 @Override
                 protected void onPressed() {
-                    container.upkeepOrder.removeUpkeepPoint();
+                    getContainer().upkeepOrder.removeUpkeepPoint();
                     hasChanged = true;
                     refreshGui();
                 }
@@ -55,11 +52,11 @@ public class GuiUpkeepOrder extends GuiContainerBase {
 
             addGuiElement(button);
 
-            button = new Button(8 + 18 + 55 + 20, 8 + 10, 55, 12, getSideName(container.upkeepOrder.getUpkeepBlockSide())) {
+            button = new Button(8 + 18 + 55 + 20, 8 + 10, 55, 12, getSideName(getContainer().upkeepOrder.getUpkeepBlockSide())) {
                 @Override
                 protected void onPressed() {
-                    container.upkeepOrder.changeBlockSide();
-                    setText(getSideName(container.upkeepOrder.getUpkeepBlockSide()));
+                    getContainer().upkeepOrder.changeBlockSide();
+                    setText(getSideName(getContainer().upkeepOrder.getUpkeepBlockSide()));
                     hasChanged = true;
                     refreshGui();
                 }
@@ -69,11 +66,11 @@ public class GuiUpkeepOrder extends GuiContainerBase {
             label = new Label(8 + 18 + 55 + 55 + 30, 8, "guistrings.npc.upkeep_time");
             addGuiElement(label);
 
-            NumberInput input = new NumberInput(8 + 18 + 55 + 55 + 30, 8 + 10, 60, (float) container.upkeepOrder.getUpkeepAmount() / 1200.f, this) {
+            NumberInput input = new NumberInput(8 + 18 + 55 + 55 + 30, 8 + 10, 60, (float) getContainer().upkeepOrder.getUpkeepAmount() / 1200.f, this) {
                 @Override
                 public void onValueUpdated(float value) {
                     float val = value * 1200.f;
-                    container.upkeepOrder.setUpkeepAmount((int) val);
+                    getContainer().upkeepOrder.setUpkeepAmount((int) val);
                     hasChanged = true;
                 }
             };
@@ -106,7 +103,7 @@ public class GuiUpkeepOrder extends GuiContainerBase {
     protected boolean onGuiCloseRequested() {
         if (hasChanged) {
             NBTTagCompound outer = new NBTTagCompound();
-            outer.setTag("upkeepOrder", container.upkeepOrder.writeToNBT(new NBTTagCompound()));
+            outer.setTag("upkeepOrder", getContainer().upkeepOrder.writeToNBT(new NBTTagCompound()));
             sendDataToContainer(outer);
         }
         return super.onGuiCloseRequested();

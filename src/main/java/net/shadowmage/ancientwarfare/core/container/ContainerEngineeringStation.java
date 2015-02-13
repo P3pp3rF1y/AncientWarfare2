@@ -14,7 +14,7 @@ public class ContainerEngineeringStation extends ContainerBase {
     public TileEngineeringStation station;
 
     public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         TileEngineeringStation t = (TileEngineeringStation) player.worldObj.getTileEntity(x, y, z);
         station = t;
         if (t == null) {
@@ -64,13 +64,13 @@ public class ContainerEngineeringStation extends ContainerBase {
         }
 
         int y1 = 8 + 3 * 18 + 8 + 2 * 18 + 4;
-        y1 = this.addPlayerSlots(player, 8, y1, 4);
+        y1 = this.addPlayerSlots(8, y1, 4);
     }
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         ItemStack slotStackCopy = null;
-        Slot theSlot = (Slot) this.inventorySlots.get(slotClickedIndex);
+        Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
@@ -109,7 +109,7 @@ public class ContainerEngineeringStation extends ContainerBase {
                 }
             }
             if (slotStack.stackSize == 0) {
-                theSlot.putStack((ItemStack) null);
+                theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }

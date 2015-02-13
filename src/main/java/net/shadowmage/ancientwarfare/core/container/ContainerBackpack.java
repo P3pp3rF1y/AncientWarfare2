@@ -15,7 +15,7 @@ public class ContainerBackpack extends ContainerBase {
     public int guiHeight;
 
     public ContainerBackpack(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
 
         ItemStack stack = player.getCurrentEquippedItem();
         backpackSlotIndex = player.inventory.currentItem;
@@ -25,10 +25,15 @@ public class ContainerBackpack extends ContainerBase {
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             xPos = (i % 9) * 18 + 8;
             yPos = (i / 9) * 18 + 8;
-            addSlotToContainer(new Slot(inventory, i, xPos, yPos));
+            addSlotToContainer(new Slot(inventory, i, xPos, yPos){
+                @Override
+                public boolean isItemValid(ItemStack itemStack){
+                    return this.inventory.isItemValidForSlot(this.getSlotIndex(), itemStack);
+                }
+            });
         }
         int height = (stack.getItemDamage() + 1) * 18 + 8;
-        guiHeight = addPlayerSlots(player, 8, height + 8, 4) + 8;
+        guiHeight = addPlayerSlots(8, height + 8, 4) + 8;
     }
 
     @Override
@@ -40,7 +45,7 @@ public class ContainerBackpack extends ContainerBase {
     }
 
     @Override
-    protected int addPlayerSlots(EntityPlayer player, int tx, int ty, int gap) {
+    protected int addPlayerSlots(int tx, int ty, int gap) {
         int y;
         int x;
         int slotNum;
@@ -70,7 +75,7 @@ public class ContainerBackpack extends ContainerBase {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         ItemStack slotStackCopy = null;
-        Slot theSlot = (Slot) this.inventorySlots.get(slotClickedIndex);
+        Slot theSlot = this.getSlot(slotClickedIndex);
         int size = inventory.getSizeInventory();
         int playerSize = 35;// skipped one due to backpack slot
         if (theSlot != null && theSlot.getHasStack()) {
@@ -89,7 +94,7 @@ public class ContainerBackpack extends ContainerBase {
                 }
             }
             if (slotStack.stackSize == 0) {
-                theSlot.putStack((ItemStack) null);
+                theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }

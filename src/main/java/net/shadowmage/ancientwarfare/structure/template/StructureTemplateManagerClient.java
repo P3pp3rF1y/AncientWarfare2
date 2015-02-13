@@ -46,7 +46,7 @@ public class StructureTemplateManagerClient {
             NBTTagList list = tag.getTagList("structureList", Constants.NBT.TAG_COMPOUND);
             NBTTagCompound structureTag;
             for (int i = 0; i < list.tagCount(); i++) {
-                structureTag = (NBTTagCompound) list.getCompoundTagAt(i);
+                structureTag = list.getCompoundTagAt(i);
                 readClientStructure(structureTag);
             }
         }

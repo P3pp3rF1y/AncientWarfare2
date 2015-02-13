@@ -54,11 +54,14 @@ public class ItemNpcSpawner extends Item implements IItemClickable {
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {
         String npcName = getNpcType(par1ItemStack);
-        String npcSub = getNpcSubtype(par1ItemStack);
-        if (!npcSub.isEmpty()) {
-            npcName = npcName + "." + npcSub;
+        if(npcName!=null) {
+            String npcSub = getNpcSubtype(par1ItemStack);
+            if (!npcSub.isEmpty()) {
+                npcName = npcName + "." + npcSub;
+            }
+            return "entity.AncientWarfareNpc." + npcName;
         }
-        return super.getUnlocalizedName(par1ItemStack) + (npcName == null ? "" : "." + npcName);
+        return super.getUnlocalizedName(par1ItemStack);
     }
 
     @Override
@@ -97,7 +100,7 @@ public class ItemNpcSpawner extends Item implements IItemClickable {
             return null;
         }
         String subType = getNpcSubtype(stack);
-        NpcBase npc = (NpcBase) AWNPCEntityLoader.createNpc(world, type, subType);
+        NpcBase npc = AWNPCEntityLoader.createNpc(world, type, subType);
         if (npc == null) {
             return null;
         }

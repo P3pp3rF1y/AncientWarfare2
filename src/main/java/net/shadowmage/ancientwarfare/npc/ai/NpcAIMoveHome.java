@@ -27,10 +27,7 @@ public class NpcAIMoveHome extends NpcAI {
         }
         ChunkCoordinates cc = npc.getHomePosition();
         float distSq = (float) npc.getDistanceSq(cc.posX + 0.5d, cc.posY, cc.posZ + 0.5d);
-        if (npc.shouldBeAtHome() || exceedsRange(distSq)) {
-            return true;
-        }
-        return false;
+        return npc.shouldBeAtHome() || exceedsRange(distSq);
     }
 
     @Override

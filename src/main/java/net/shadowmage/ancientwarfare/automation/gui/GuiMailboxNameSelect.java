@@ -11,10 +11,9 @@ import org.lwjgl.input.Mouse;
 
 import java.util.List;
 
-public class GuiMailboxNameSelect extends GuiContainerBase {
+public class GuiMailboxNameSelect extends GuiContainerBase<ContainerMailbox> {
 
     GuiMailboxInventory parent;
-    ContainerMailbox container;
     boolean name;//true if setting mailbox name, false for setting target name
     boolean privateBox;
 
@@ -25,16 +24,15 @@ public class GuiMailboxNameSelect extends GuiContainerBase {
     Button selectButton;
 
     public GuiMailboxNameSelect(GuiMailboxInventory parent, boolean name) {
-        super((ContainerBase) parent.inventorySlots, 256, 240, defaultBackground);
+        super(parent.getContainer(), 256, 240, defaultBackground);
         this.parent = parent;
-        this.container = parent.container;
         this.name = name;
-        this.privateBox = parent.container.privateBox;
+        this.privateBox = getContainer().privateBox;
     }
 
     @Override
     public void initElements() {
-        nameInputArea = new Text(8, 8, 120, name ? container.mailboxName : container.targetName, this);
+        nameInputArea = new Text(8, 8, 120, name ? getContainer().mailboxName : getContainer().targetName, this);
         addGuiElement(nameInputArea);
 
         addNameButton = new Button(8, 22, 55, 12, "guistrings.automation.add_mailbox") {
@@ -42,7 +40,7 @@ public class GuiMailboxNameSelect extends GuiContainerBase {
             protected void onPressed() {
                 String name = nameInputArea.getText();
                 if (!name.isEmpty()) {
-                    container.handleNameAdd(name);
+                    getContainer().handleNameAdd(name);
                 }
             }
         };
@@ -52,9 +50,9 @@ public class GuiMailboxNameSelect extends GuiContainerBase {
             @Override
             protected void onPressed() {
                 if (name) {
-                    container.handleNameSelection(nameInputArea.getText());
+                    getContainer().handleNameSelection(nameInputArea.getText());
                 } else {
-                    container.handleTargetSelection(nameInputArea.getText());
+                    getContainer().handleTargetSelection(nameInputArea.getText());
                 }
                 closeGui();
             }
@@ -66,7 +64,7 @@ public class GuiMailboxNameSelect extends GuiContainerBase {
             protected void onPressed() {
                 String name = nameInputArea.getText();
                 if (!name.isEmpty()) {
-                    container.handleNameDelete(name);
+                    getContainer().handleNameDelete(name);
                 }
             }
         };
@@ -80,11 +78,11 @@ public class GuiMailboxNameSelect extends GuiContainerBase {
     public void setupElements() {
         nameSelectArea.clearElements();
 
-        List<String> names = privateBox ? container.privateBoxNames : container.publicBoxNames;
+        List<String> names = privateBox ? getContainer().privateBoxNames : getContainer().publicBoxNames;
         Button button;
         int totalHeight = 8;
         for (String name : names) {
-            if (name.equals(container.mailboxName) || name.equals(container.targetName)) {
+            if (name.equals(getContainer().mailboxName) || name.equals(getContainer().targetName)) {
                 continue;
             }
             button = new Button(8, totalHeight, 240 - 24 - 14, 12, name) {
@@ -101,8 +99,8 @@ public class GuiMailboxNameSelect extends GuiContainerBase {
 
     @Override
     protected boolean onGuiCloseRequested() {
-        container.addSlots();
-        container.setGui(parent);
+        getContainer().addSlots();
+        getContainer().setGui(parent);
         int x = Mouse.getX();
         int y = Mouse.getY();
         Minecraft.getMinecraft().displayGuiScreen(parent);

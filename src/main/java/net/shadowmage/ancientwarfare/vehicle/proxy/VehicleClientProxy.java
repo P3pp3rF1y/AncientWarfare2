@@ -33,17 +33,17 @@ public class VehicleClientProxy extends VehicleCommonProxy {
     }
 
     public void registerClientOptions() {
-        InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_FORWARD, AWVehicleStatics.keybindForward.getInt(), new VehicleInputCallback(VehicleInputKey.FORWARD));
-        InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_REVERSE, AWVehicleStatics.keybindReverse.getInt(), new VehicleInputCallback(VehicleInputKey.REVERSE));
-        InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_LEFT, AWVehicleStatics.keybindLeft.getInt(), new VehicleInputCallback(VehicleInputKey.LEFT));
-        InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_RIGHT, AWVehicleStatics.keybindRight.getInt(), new VehicleInputCallback(VehicleInputKey.RIGHT));
-        InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_FIRE, AWVehicleStatics.keybindFire.getInt(), new VehicleInputCallback(VehicleInputKey.FIRE));
-        InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_ASCEND, AWVehicleStatics.keybindAscend.getInt(), new VehicleInputCallback(VehicleInputKey.ASCEND));
-        InputHandler.instance().registerKeybind(AWVehicleStatics.KEY_VEHICLE_DESCEND, AWVehicleStatics.keybindDescend.getInt(), new VehicleInputCallback(VehicleInputKey.DESCEND));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_FORWARD, AWVehicleStatics.keybindForward.getInt(), new VehicleInputCallback(VehicleInputKey.FORWARD));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_REVERSE, AWVehicleStatics.keybindReverse.getInt(), new VehicleInputCallback(VehicleInputKey.REVERSE));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_LEFT, AWVehicleStatics.keybindLeft.getInt(), new VehicleInputCallback(VehicleInputKey.LEFT));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_RIGHT, AWVehicleStatics.keybindRight.getInt(), new VehicleInputCallback(VehicleInputKey.RIGHT));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_FIRE, AWVehicleStatics.keybindFire.getInt(), new VehicleInputCallback(VehicleInputKey.FIRE));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_ASCEND, AWVehicleStatics.keybindAscend.getInt(), new VehicleInputCallback(VehicleInputKey.ASCEND));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_DESCEND, AWVehicleStatics.keybindDescend.getInt(), new VehicleInputCallback(VehicleInputKey.DESCEND));
         ConfigManager.registerConfigCategory(new VehicleCategory("awconfig.vehicle_keybinds", "awconfig.vehicle_keybinds"));
     }
 
-    public static final class VehicleInputCallback extends InputCallback {
+    public static final class VehicleInputCallback implements InputCallback {
         VehicleInputKey key;
 
         public VehicleInputCallback(VehicleInputKey key) {

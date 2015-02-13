@@ -10,18 +10,18 @@ import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 
 public class ContainerStructureScanner extends ContainerBase {
 
-    ItemStructureSettings settings = new ItemStructureSettings();
+    private ItemStructureSettings settings;
 
     public ContainerStructureScanner(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         if (player.worldObj.isRemote) {
             return;
         }
         ItemStack builderItem = player.inventory.getCurrentItem();
-        if (builderItem == null || builderItem.getItem() == null || builderItem.getItem() != AWStructuresItemLoader.scanner) {
-            return;
+        if (isInvalid(builderItem)) {
+            throw new IllegalArgumentException("No scanner in hand");
         }
-        ItemStructureSettings.getSettingsFor(builderItem, settings);
+        settings = ItemStructureSettings.getSettingsFor(builderItem);
     }
 
     @Override
@@ -44,11 +44,15 @@ public class ContainerStructureScanner extends ContainerBase {
         if (par1EntityPlayer.worldObj.isRemote) {
             return;
         }
-        ItemStack builderItem = player.inventory.getCurrentItem();
-        if (builderItem == null || builderItem.getItem() == null || builderItem.getItem() != AWStructuresItemLoader.scanner) {
+        ItemStack builderItem = par1EntityPlayer.inventory.getCurrentItem();
+        if (isInvalid(builderItem)) {
             return;
         }
         ItemStructureSettings.setSettingsFor(builderItem, settings);
+    }
+
+    private boolean isInvalid(ItemStack stack){
+        return stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemStructureScanner);
     }
 
 }

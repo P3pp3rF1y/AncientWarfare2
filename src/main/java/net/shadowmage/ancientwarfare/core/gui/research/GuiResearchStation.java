@@ -16,9 +16,8 @@ import org.lwjgl.input.Mouse;
 
 import java.util.List;
 
-public class GuiResearchStation extends GuiContainerBase {
+public class GuiResearchStation extends GuiContainerBase<ContainerResearchStation> {
 
-    ContainerResearchStation container;
     Label researcherLabel;
     Label researchGoalLabel;
     ProgressBar bar;
@@ -29,18 +28,16 @@ public class GuiResearchStation extends GuiContainerBase {
 
     public GuiResearchStation(ContainerBase par1Container) {
         super(par1Container, 178, 240, defaultBackground);
-        container = (ContainerResearchStation) par1Container;
-        container.setGui(this);
     }
 
     @Override
     public void initElements() {
-        String name = container.researcherName == null ? "guistrings.research.no_researcher" : container.researcherName;
+        String name = getContainer().researcherName == null ? "guistrings.research.no_researcher" : getContainer().researcherName;
         researcherLabel = new Label(8, 8, name);
         addGuiElement(researcherLabel);
 
         name = "guistrings.research.no_research";
-        int goalNumber = container.currentGoal;
+        final int goalNumber = getContainer().currentGoal;
         if (goalNumber >= 0) {
             ResearchGoal g = ResearchGoal.getGoal(goalNumber);
             if (g != null) {
@@ -57,7 +54,7 @@ public class GuiResearchStation extends GuiContainerBase {
         Button button = new Button(178 - 8 - 140, 8 + 12 + 4, 140, 12, "guistrings.research.research_queue") {
             @Override
             protected void onPressed() {
-                container.removeSlots();
+                getContainer().removeSlots();
                 Minecraft.getMinecraft().displayGuiScreen(new GuiResearchStationSelection(GuiResearchStation.this, Mouse.getX(), Mouse.getY()));
             }
         };
@@ -77,16 +74,16 @@ public class GuiResearchStation extends GuiContainerBase {
         useAdjacentInventory = new Checkbox(8, 8 + 3 * 18 + 6, 16, 16, "guistrings.research.use_adjacent_inventory") {
             @Override
             public void onToggled() {
-                container.toggleUseAdjacentInventory();
-                setChecked(container.useAdjacentInventory);
+                getContainer().toggleUseAdjacentInventory();
+                setChecked(getContainer().useAdjacentInventory);
             }
         };
         addGuiElement(useAdjacentInventory);
 
-        invDir = button = new Button(80, 8 + 3 * 18 + 6, 40, 16, StatCollector.translateToLocal(Direction.getDirectionFor(container.tile.inventoryDirection.ordinal()).getTranslationKey())) {
+        invDir = button = new Button(80, 8 + 3 * 18 + 6, 40, 16, StatCollector.translateToLocal(Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection.ordinal()).getTranslationKey())) {
             @Override
             protected void onPressed() {
-                int o = container.tile.inventoryDirection.ordinal();
+                int o = getContainer().tileEntity.inventoryDirection.ordinal();
                 o++;
                 if (o > 6) {
                     o = 0;
@@ -94,15 +91,15 @@ public class GuiResearchStation extends GuiContainerBase {
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setInteger("inventoryDirection", o);
                 sendDataToContainer(tag);
-                container.tile.inventoryDirection = ForgeDirection.getOrientation(o);
+                getContainer().tileEntity.inventoryDirection = ForgeDirection.getOrientation(o);
                 refreshGui();
             }
         };
         addGuiElement(button);
-        invSide = button = new Button(120, 8 + 3 * 18 + 6, 40, 16, StatCollector.translateToLocal(Direction.getDirectionFor(container.tile.inventorySide.ordinal()).getTranslationKey())) {
+        invSide = button = new Button(120, 8 + 3 * 18 + 6, 40, 16, StatCollector.translateToLocal(Direction.getDirectionFor(getContainer().tileEntity.inventorySide.ordinal()).getTranslationKey())) {
             @Override
             protected void onPressed() {
-                int o = container.tile.inventorySide.ordinal();
+                int o = getContainer().tileEntity.inventorySide.ordinal();
                 o++;
                 if (o > 6) {
                     o = 0;
@@ -110,7 +107,7 @@ public class GuiResearchStation extends GuiContainerBase {
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setInteger("inventoryDirection", o);
                 sendDataToContainer(tag);
-                container.tile.inventorySide = ForgeDirection.getOrientation(o);
+                getContainer().tileEntity.inventorySide = ForgeDirection.getOrientation(o);
                 refreshGui();
             }
         };
@@ -119,17 +116,17 @@ public class GuiResearchStation extends GuiContainerBase {
 
     @Override
     public void setupElements() {
-        String name = container.researcherName == null ? "guistrings.research.no_researcher" : container.researcherName;
+        String name = getContainer().researcherName == null ? "guistrings.research.no_researcher" : getContainer().researcherName;
         researcherLabel.setText(name);
 
-        if (container.researcherName == null) {
+        if (getContainer().researcherName == null) {
             for (int i = 0; i < 9; i++) {
                 layoutSlots[i].setItem(null);
             }
         }
 
         name = "guistrings.research.no_research";
-        int goalNumber = container.currentGoal;
+        int goalNumber = getContainer().currentGoal;
         float progress = 0.f;
         if (goalNumber >= 0) {
             ResearchGoal g = ResearchGoal.getGoal(goalNumber);
@@ -137,7 +134,7 @@ public class GuiResearchStation extends GuiContainerBase {
                 name = g.getName();
 
                 float total = g.getTotalResearchTime();
-                float time = container.progress;
+                float time = getContainer().progress;
                 if (total == 0) {
                     total = time;
                 }
@@ -147,7 +144,7 @@ public class GuiResearchStation extends GuiContainerBase {
                 layoutSlots[i].setItem(null);
             }
         } else {
-            List<Integer> queue = container.queuedResearch;
+            List<Integer> queue = getContainer().queuedResearch;
             if (!queue.isEmpty()) {
                 int g1 = queue.get(0);
                 ResearchGoal g = ResearchGoal.getGoal(g1);
@@ -174,9 +171,9 @@ public class GuiResearchStation extends GuiContainerBase {
         bar.setProgress(progress);
         researchGoalLabel.setText(name);
 
-        useAdjacentInventory.setChecked(container.useAdjacentInventory);
-        invDir.setText(StatCollector.translateToLocal(Direction.getDirectionFor(container.tile.inventoryDirection.ordinal()).getTranslationKey()));
-        invSide.setText(StatCollector.translateToLocal(Direction.getDirectionFor(container.tile.inventorySide.ordinal()).getTranslationKey()));
+        useAdjacentInventory.setChecked(getContainer().useAdjacentInventory);
+        invDir.setText(StatCollector.translateToLocal(Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection.ordinal()).getTranslationKey()));
+        invSide.setText(StatCollector.translateToLocal(Direction.getDirectionFor(getContainer().tileEntity.inventorySide.ordinal()).getTranslationKey()));
     }
 
 

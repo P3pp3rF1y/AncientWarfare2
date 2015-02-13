@@ -6,24 +6,21 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 
-public class GuiTownHallInventory extends GuiContainerBase {
-
-    ContainerTownHall container;
+public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
 
     public GuiTownHallInventory(ContainerBase container) {
         super(container);
-        this.container = (ContainerTownHall) container;
         this.ySize = 3 * 18 + 4 * 18 + 8 + 8 + 4 + 8 + 16;
         this.xSize = 178;
     }
 
     @Override
     public void initElements() {
-        this.container.addSlots();
+        this.getContainer().addSlots();
         Button button = new Button(8, 8, 75, 12, "guistrings.npc.death_list") {
             @Override
             protected void onPressed() {
-                container.removeSlots();
+                getContainer().removeSlots();
                 Minecraft.getMinecraft().displayGuiScreen(new GuiTownHallDeathList(GuiTownHallInventory.this));
             }
         };

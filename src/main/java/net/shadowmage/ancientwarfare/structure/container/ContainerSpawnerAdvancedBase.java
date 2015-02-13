@@ -11,8 +11,8 @@ public abstract class ContainerSpawnerAdvancedBase extends ContainerBase {
 
     public SpawnerSettings settings;
 
-    public ContainerSpawnerAdvancedBase(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerSpawnerAdvancedBase(EntityPlayer player) {
+        super(player);
     }
 
     public void sendSettingsToServer() {

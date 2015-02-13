@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
@@ -46,7 +47,7 @@ public class PacketEntity extends PacketBase {
     }
 
     @Override
-    protected void execute() {
+    protected void execute(EntityPlayer player) {
         Entity e = player.worldObj.getEntityByID(entityId);
         if (e instanceof IEntityPacketHandler) {
             ((IEntityPacketHandler) e).handlePacketData(packetData);

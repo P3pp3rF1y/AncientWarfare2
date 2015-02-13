@@ -13,7 +13,7 @@ public class ClientProxyModeler extends CommonProxyModeler {
 
     @Override
     public void openGui(EntityPlayer player) {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiModelEditor(new ContainerBase(player, 0, 0, 0)));
+        Minecraft.getMinecraft().displayGuiScreen(new GuiModelEditor(new ContainerBase(player)));
     }
 
 }

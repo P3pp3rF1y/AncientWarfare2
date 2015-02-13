@@ -55,19 +55,15 @@ public class InventoryTools {
     }
 
     public static boolean canInventoryHold(IInventory inventory, int[] slots, List<ItemStack> stacks) {
-        int slot;
         int emptySlots = 0;
-        ItemStack stack;
         ItemQuantityMap itemQuantities = new ItemQuantityMap();
 
-        for (int i = 0; i < stacks.size(); i++) {
-            stack = stacks.get(i);
+        for (ItemStack stack : stacks) {
             itemQuantities.addCount(stack, stack.stackSize);
         }
 
-        for (int i = 0; i < slots.length; i++) {
-            slot = slots[i];
-            stack = inventory.getStackInSlot(slot);
+        for (int slot : slots) {
+            ItemStack stack = inventory.getStackInSlot(slot);
             if (stack == null) {
                 emptySlots++;
             } else if (itemQuantities.contains(stack)) {
@@ -139,9 +135,9 @@ public class InventoryTools {
         int index;
         int toMove;
         ItemStack slotStack;
-        for (int i = 0; i < slotIndices.length; i++) {
+        for (int slotIndice1 : slotIndices) {
             toMove = stack.stackSize;
-            index = slotIndices[i];
+            index = slotIndice1;
             slotStack = inventory.getStackInSlot(index);
             if (doItemStacksMatch(stack, slotStack)) {
                 if (toMove > slotStack.getMaxStackSize() - slotStack.stackSize) {
@@ -158,8 +154,8 @@ public class InventoryTools {
             }
         }
         if (stack.stackSize > 0) {
-            for (int i = 0; i < slotIndices.length; i++) {
-                index = slotIndices[i];
+            for (int slotIndice : slotIndices) {
+                index = slotIndice;
                 slotStack = inventory.getStackInSlot(index);
                 if (slotStack == null && inventory.isItemValidForSlot(index, stack)) {
                     inventory.setInventorySlotContents(index, stack);
@@ -193,8 +189,8 @@ public class InventoryTools {
             int index;
             int toMove;
             ItemStack slotStack;
-            for (int i = 0; i < slotIndices.length; i++) {
-                index = slotIndices[i];
+            for (int slotIndice : slotIndices) {
+                index = slotIndice;
                 slotStack = inventory.getStackInSlot(index);
                 if (slotStack == null || !doItemStacksMatch(slotStack, filter)) {
                     continue;
@@ -348,11 +344,9 @@ public class InventoryTools {
                 return 0;
             }
             ItemStack stack;
-            for (int i = 0; i < slotIndices.length; i++) {
-                stack = inv.getStackInSlot(slotIndices[i]);
-                if (stack == null) {
-                    continue;
-                } else if (doItemStacksMatch(filter, stack)) {
+            for (int slotIndice : slotIndices) {
+                stack = inv.getStackInSlot(slotIndice);
+                if (stack != null && doItemStacksMatch(filter, stack)) {
                     count++;
                 }
             }
@@ -360,9 +354,7 @@ public class InventoryTools {
             ItemStack stack;
             for (int i = 0; i < inv.getSizeInventory(); i++) {
                 stack = inv.getStackInSlot(i);
-                if (stack == null) {
-                    continue;
-                } else if (doItemStacksMatch(filter, stack)) {
+                if (stack != null && doItemStacksMatch(filter, stack)) {
                     count++;
                 }
             }
@@ -386,11 +378,9 @@ public class InventoryTools {
                 return 0;
             }
             ItemStack stack;
-            for (int i = 0; i < slotIndices.length; i++) {
-                stack = inv.getStackInSlot(slotIndices[i]);
-                if (stack == null) {
-                    continue;
-                } else if (doItemStacksMatch(filter, stack)) {
+            for (int slotIndice : slotIndices) {
+                stack = inv.getStackInSlot(slotIndice);
+                if (stack != null && doItemStacksMatch(filter, stack)) {
                     count += stack.stackSize;
                 }
             }
@@ -398,9 +388,7 @@ public class InventoryTools {
             ItemStack stack;
             for (int i = 0; i < inv.getSizeInventory(); i++) {
                 stack = inv.getStackInSlot(i);
-                if (stack == null) {
-                    continue;
-                } else if (doItemStacksMatch(filter, stack)) {
+                if (stack != null && doItemStacksMatch(filter, stack)) {
                     count += stack.stackSize;
                 }
             }
@@ -416,12 +404,9 @@ public class InventoryTools {
             return stack2 == null;
         }
         if (stack2 == null) {
-            return stack1 == null;
+            return false;
         }
-        if (stack1.getItem() == stack2.getItem() && stack1.getItemDamage() == stack2.getItemDamage() && ItemStack.areItemStackTagsEqual(stack1, stack2)) {
-            return true;
-        }
-        return false;
+        return stack1.getItem() == stack2.getItem() && stack1.getItemDamage() == stack2.getItemDamage() && ItemStack.areItemStackTagsEqual(stack1, stack2);
     }
 
     public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean ignoreDamage, boolean ignoreNBT) {
@@ -432,7 +417,7 @@ public class InventoryTools {
             return stack2 == null;
         }
         if (stack2 == null) {
-            return stack1 == null;
+            return false;
         }
         if (stack1.getItem() != stack2.getItem()) {
             return false;
@@ -440,10 +425,7 @@ public class InventoryTools {
         if (!ignoreDamage && stack1.getItemDamage() != stack2.getItemDamage()) {
             return false;
         }
-        if (!ignoreNBT && !ItemStack.areItemStackTagsEqual(stack1, stack2)) {
-            return false;
-        }
-        return true;
+        return ignoreNBT || ItemStack.areItemStackTagsEqual(stack1, stack2);
     }
 
     /**
@@ -457,7 +439,7 @@ public class InventoryTools {
                 return stack2 == null;
             }
             if (stack2 == null) {
-                return stack1 == null;
+                return false;
             }
             if (stack1.getItem() == stack2.getItem()) {
                 int id[] = OreDictionary.getOreIDs(stack1);
@@ -465,9 +447,9 @@ public class InventoryTools {
                 if (id == null || id2 == null || id.length == 0 || id2.length == 0) {
                     return false;
                 }
-                for (int i = 0; i < id.length; i++) {
-                    for (int k = 0; k < id2.length; k++) {
-                        if (id[i] == id2[k]) {
+                for (int anId : id) {
+                    for (int anId2 : id2) {
+                        if (anId == anId2) {
                             return true;
                         }
                     }

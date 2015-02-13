@@ -146,10 +146,8 @@ public class BlockTools {
 
         Vec3 var25 = player.getLook(scaleFactor);
         float var27 = 1.0F;
-        List entitiesPossiblyHitByVector = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.addCoord(var25.xCoord * reachLength, var25.yCoord * reachLength, var25.zCoord * reachLength).expand(var27, var27, var27));
-        Iterator entityIterator = entitiesPossiblyHitByVector.iterator();
-        while (entityIterator.hasNext()) {
-            Entity testEntity = (Entity) entityIterator.next();
+        List<Entity> entitiesPossiblyHitByVector = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.addCoord(var25.xCoord * reachLength, var25.yCoord * reachLength, var25.zCoord * reachLength).expand(var27, var27, var27));
+        for (Entity testEntity : entitiesPossiblyHitByVector) {
             if (testEntity.canBeCollidedWith()) {
                 float bbExpansionSize = testEntity.getCollisionBorderSize();
                 AxisAlignedBB entityBB = testEntity.boundingBox.expand(bbExpansionSize, bbExpansionSize, bbExpansionSize);
@@ -282,8 +280,7 @@ public class BlockTools {
      * return a new BlockPosition containing the minimum coordinates from the two passed in BlockPositions
      */
     public static BlockPosition getMin(BlockPosition pos1, BlockPosition pos2) {
-        BlockPosition pos = new BlockPosition(Trig.getMin(pos1.x, pos2.x), Trig.getMin(pos1.y, pos2.y), Trig.getMin(pos1.z, pos2.z));
-        return pos;
+        return new BlockPosition(Trig.getMin(pos1.x, pos2.x), Trig.getMin(pos1.y, pos2.y), Trig.getMin(pos1.z, pos2.z));
     }
 
     public static BlockPosition getMin(BlockPosition pos1, BlockPosition pos2, BlockPosition out) {
@@ -295,8 +292,7 @@ public class BlockTools {
      * return a new BlockPosition containing the maximum coordinates from the two passed in BlockPositions
      */
     public static BlockPosition getMax(BlockPosition pos1, BlockPosition pos2) {
-        BlockPosition pos = new BlockPosition(Trig.getMax(pos1.x, pos2.x), Trig.getMax(pos1.y, pos2.y), Trig.getMax(pos1.z, pos2.z));
-        return pos;
+        return new BlockPosition(Trig.getMax(pos1.x, pos2.x), Trig.getMax(pos1.y, pos2.y), Trig.getMax(pos1.z, pos2.z));
     }
 
     public static BlockPosition getMax(BlockPosition pos1, BlockPosition pos2, BlockPosition out) {
@@ -320,8 +316,7 @@ public class BlockTools {
         double adjYaw = yaw + 45;
         adjYaw *= 4;//multiply by four
         adjYaw /= 360.d;
-        int facing = (MathHelper.floor_double(adjYaw)) % 4;//round down, mod 4 for a 0-3 range
-        return facing;
+        return (MathHelper.floor_double(adjYaw)) % 4;
     }
 
     public static ForgeDirection getForgeDirectionFromFacing(int facing) {
@@ -405,8 +400,7 @@ public class BlockTools {
         boolean dropBlock = true;
         if (AWCoreStatics.fireBlockBreakEvents) {
             BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(x, y, z, world, block, meta, AncientWarfareCore.proxy.getFakePlayer((WorldServer) world, playerName));
-            MinecraftForge.EVENT_BUS.post(event);
-            if (event.isCanceled()) {
+            if (MinecraftForge.EVENT_BUS.post(event)) {
                 dropBlock = false;
             }
         }

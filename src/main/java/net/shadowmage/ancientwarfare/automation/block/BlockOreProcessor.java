@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.TileOreProcessor;
 public class BlockOreProcessor extends BlockWorksiteBase {
 
     public BlockOreProcessor(String regName) {
-        super(Material.rock, regName);
+        super(regName);
     }
 
     @Override

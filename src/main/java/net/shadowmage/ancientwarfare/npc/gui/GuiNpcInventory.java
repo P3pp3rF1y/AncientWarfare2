@@ -4,16 +4,16 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
-public class GuiNpcInventory extends GuiNpcBase {
+public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 
     Button repackButton;
     Text nameInput;
-    ContainerNpcInventory container;
 
     Text textureInput;
 
@@ -22,8 +22,7 @@ public class GuiNpcInventory extends GuiNpcBase {
     public GuiNpcInventory(ContainerBase container) {
         super(container);
         this.xSize = 178;
-        this.ySize = ((ContainerNpcInventory) container).guiHeight;
-        this.container = (ContainerNpcInventory) container;
+        this.ySize = getContainer().guiHeight;
     }
 
     @Override
@@ -31,21 +30,21 @@ public class GuiNpcInventory extends GuiNpcBase {
         Label label = new Label(8 + 18 + 18 + 4, 9, "guistrings.npc.npc_name");
         addGuiElement(label);
 
-        nameInput = new Text(75, 8, 95, container.npc.getCustomNameTag(), this) {
+        nameInput = new Text(75, 8, 95, getContainer().entity.getCustomNameTag(), this) {
             @Override
             public void onTextUpdated(String oldText, String newText) {
-                container.handleNpcNameUpdate(newText);
+                getContainer().handleNpcNameUpdate(newText);
             }
         };
         addGuiElement(nameInput);
 
         label = new Label(8 + 18 + 18 + 4, 21, "guistrings.npc.npc_texture");
         addGuiElement(label);
-        textureInput = new Text(75, 20, 95, container.npc.getCustomTex(), this) {
+        textureInput = new Text(75, 20, 95, getContainer().entity.getCustomTex(), this) {
             @Override
             public void onTextUpdated(String oldText, String newText) {
-                container.handleNpcTextureUpdate(newText);
-                container.npc.setCustomTexRef(newText);
+                getContainer().handleNpcTextureUpdate(newText);
+                getContainer().entity.setCustomTexRef(newText);
             }
         };
         addGuiElement(textureInput);
@@ -81,11 +80,11 @@ public class GuiNpcInventory extends GuiNpcBase {
         };
         addGuiElement(button);
 
-        if (container.npc.hasAltGui()) {
+        if (getContainer().entity.hasAltGui()) {
             button = new Button(buttonX, 72, 75, 12, "guistrings.npc.alt_gui") {
                 @Override
                 protected void onPressed() {
-                    container.npc.openAltGui(player);
+                    getContainer().entity.openAltGui(player);
                 }
             };
             addGuiElement(button);
@@ -95,7 +94,7 @@ public class GuiNpcInventory extends GuiNpcBase {
             button = new Button(buttonX, 84, 75, 12, "guistrings.npc.creative_gui") {
                 @Override
                 protected void onPressed() {
-                    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_CREATIVE, container.npc.getEntityId(), 0, 0);
+                    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_CREATIVE, getContainer().entity.getEntityId(), 0, 0);
                 }
             };
             addGuiElement(button);
@@ -184,7 +183,7 @@ public class GuiNpcInventory extends GuiNpcBase {
     protected boolean onGuiCloseRequested() {
         if (player.worldObj.isRemote) {
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setString("customName", container.name);
+            tag.setString("customName", getContainer().name);
             sendDataToContainer(tag);
         }
         return super.onGuiCloseRequested();
@@ -192,7 +191,7 @@ public class GuiNpcInventory extends GuiNpcBase {
 
     @Override
     public void setupElements() {
-        nameInput.setText(container.npc.getCustomNameTag());
+        nameInput.setText(getContainer().entity.getCustomNameTag());
     }
 
 }

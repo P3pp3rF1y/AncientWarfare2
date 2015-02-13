@@ -1,11 +1,13 @@
 package net.shadowmage.ancientwarfare.core.crafting;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
@@ -37,7 +39,7 @@ public class AWCraftingManager {
         }
         int recipeIndex;
         for (recipeIndex = 0; recipeIndex < this.recipes.size(); ++recipeIndex) {
-            RecipeResearched recipe = (RecipeResearched) this.recipes.get(recipeIndex);
+            RecipeResearched recipe = this.recipes.get(recipeIndex);
             if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
                 return recipe.getCraftingResult(inventory);
             }
@@ -62,7 +64,6 @@ public class AWCraftingManager {
         return canCraft;
     }
 
-    @SuppressWarnings("unchecked")
     private void addRecipe(RecipeResearched recipe) {
         Item item = recipe.getRecipeOutput().getItem();
         boolean craftable = AWCoreStatics.isItemCraftable(item);
@@ -70,13 +71,13 @@ public class AWCraftingManager {
             if (!recipe.getNeededResearch().isEmpty() && AWCoreStatics.isItemResearched(item)) {
                 this.recipes.add(recipe);
             } else {
-                CraftingManager.getInstance().getRecipeList().add(recipe);
+                GameRegistry.addRecipe(recipe);
             }
         }
     }
 
     public RecipeResearched createRecipe(ItemStack result, String research, Object... inputArray) {
-        if (research == null || research.equals("")) {
+        if (research == null || research.isEmpty()) {
             return createRecipe(result, emptyStringArray, inputArray);
         } else {
             singleInputArray[0] = research;
@@ -91,10 +92,9 @@ public class AWCraftingManager {
         int recipeHeight = 0;
 
         if (inputArray[index] instanceof String[]) {
-            String[] characterInputArray = (String[]) ((String[]) inputArray[index++]);
+            String[] characterInputArray = ((String[]) inputArray[index++]);
 
-            for (int l = 0; l < characterInputArray.length; ++l) {
-                String recipeLine = characterInputArray[l];
+            for (String recipeLine : characterInputArray) {
                 ++recipeHeight;
                 recipeWidth = recipeLine.length();
                 recipeCharactersAsSequence = recipeCharactersAsSequence + recipeLine;
@@ -116,7 +116,7 @@ public class AWCraftingManager {
             if (inputArray[index + 1] instanceof Item) {
                 stackForCharacter = new ItemStack((Item) inputArray[index + 1]);
             } else if (inputArray[index + 1] instanceof Block) {
-                stackForCharacter = new ItemStack((Block) inputArray[index + 1], 1, 32767);
+                stackForCharacter = new ItemStack((Block) inputArray[index + 1], 1, OreDictionary.WILDCARD_VALUE);
             } else if (inputArray[index + 1] instanceof ItemStack) {
                 stackForCharacter = (ItemStack) inputArray[index + 1];
             }
@@ -129,7 +129,7 @@ public class AWCraftingManager {
             char c0 = recipeCharactersAsSequence.charAt(i1);
 
             if (characterToStack.containsKey(Character.valueOf(c0))) {
-                recipeItemArray[i1] = ((ItemStack) characterToStack.get(Character.valueOf(c0))).copy();
+                recipeItemArray[i1] = (characterToStack.get(Character.valueOf(c0))).copy();
             } else {
                 recipeItemArray[i1] = null;
             }

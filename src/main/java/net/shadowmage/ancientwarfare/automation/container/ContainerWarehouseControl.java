@@ -8,12 +8,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
-public class ContainerWarehouseControl extends ContainerBase {
+public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBase> {
 
-    public TileWarehouseBase warehouse;
     public ItemQuantityMap itemMap = new ItemQuantityMap();
     public ItemQuantityMap cache = new ItemQuantityMap();
     boolean shouldUpdate = true;
@@ -23,14 +23,13 @@ public class ContainerWarehouseControl extends ContainerBase {
 
     public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        warehouse = (TileWarehouseBase) player.worldObj.getTileEntity(x, y, z);
-        addPlayerSlots(player, 8, 142, 4);
-        warehouse.addViewer(this);
+        addPlayerSlots(8, 142, 4);
+        tileEntity.addViewer(this);
     }
 
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        warehouse.removeViewer(this);
+        tileEntity.removeViewer(this);
         super.onContainerClosed(par1EntityPlayer);
     }
 
@@ -44,7 +43,7 @@ public class ContainerWarehouseControl extends ContainerBase {
             return null;
         }
         ItemStack stack = slot.getStack();
-        stack = warehouse.tryAdd(stack);
+        stack = tileEntity.tryAdd(stack);
         if (stack == null) {
             slot.putStack(null);
         }
@@ -60,7 +59,7 @@ public class ContainerWarehouseControl extends ContainerBase {
             if (reqTag.hasKey("reqItem")) {
                 item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
             }
-            warehouse.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
+            tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
         }
         if (tag.hasKey("changeList")) {
             handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
@@ -90,8 +89,8 @@ public class ContainerWarehouseControl extends ContainerBase {
             synchItemMaps();
             shouldUpdate = false;
         }
-        if (maxStorage != warehouse.getMaxStorage()) {
-            maxStorage = warehouse.getMaxStorage();
+        if (maxStorage != tileEntity.getMaxStorage()) {
+            maxStorage = tileEntity.getMaxStorage();
             NBTTagCompound tag = new NBTTagCompound();
             tag.setInteger("maxStorage", maxStorage);
             sendDataToClient(tag);
@@ -117,14 +116,14 @@ public class ContainerWarehouseControl extends ContainerBase {
     private void synchItemMaps() {
         /**
          *
-         * need to loop through this.itemMap and compare quantities to warehouse.itemMap
+         * need to loop through this.itemMap and compare quantities to tileEntity.itemMap
          *    add any changes to change-list
-         * need to loop through warehouse.itemMap and find new entries
+         * need to loop through tileEntity.itemMap and find new entries
          *    add any new entries to change-list
          */
 
         cache.clear();
-        warehouse.getItems(cache);
+        tileEntity.getItems(cache);
         ItemQuantityMap warehouseItemMap = cache;
         int qty;
         NBTTagList changeList = new NBTTagList();

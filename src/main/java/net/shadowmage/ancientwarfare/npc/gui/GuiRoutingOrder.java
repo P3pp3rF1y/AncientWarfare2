@@ -19,15 +19,13 @@ import org.lwjgl.input.Mouse;
 
 import java.util.List;
 
-public class GuiRoutingOrder extends GuiContainerBase {
+public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
 
     boolean hasChanged = false;
-    ContainerRoutingOrder container;
     CompositeScrolled area;
 
     public GuiRoutingOrder(ContainerBase container) {
         super(container, 256, 240, defaultBackground);
-        this.container = (ContainerRoutingOrder) container;
     }
 
     @Override
@@ -39,7 +37,7 @@ public class GuiRoutingOrder extends GuiContainerBase {
     @Override
     public void setupElements() {
         area.clearElements();
-        List<RoutePoint> entries = container.routingOrder.getEntries();
+        List<RoutePoint> entries = getContainer().routingOrder.getEntries();
         ItemSlot slot;
         Label label;
         Button button;
@@ -63,7 +61,7 @@ public class GuiRoutingOrder extends GuiContainerBase {
             button = new IndexedButton(8, totalHeight + 10, 55, 12, labelString, index) {
                 @Override
                 protected void onPressed() {
-                    container.routingOrder.changeBlockSide(index);
+                    getContainer().routingOrder.changeBlockSide(index);
                     refreshGui();
                     hasChanged = true;
                 }
@@ -74,7 +72,7 @@ public class GuiRoutingOrder extends GuiContainerBase {
             button = new IndexedButton(8 + 55 + 2, totalHeight + 10, 80, 12, labelString, index) {
                 @Override
                 protected void onPressed() {
-                    container.routingOrder.changeRouteType(index);
+                    getContainer().routingOrder.changeRouteType(index);
                     refreshGui();
                     hasChanged = true;
                 }
@@ -84,7 +82,7 @@ public class GuiRoutingOrder extends GuiContainerBase {
             button = new IndexedButton(8 + 55 + 80 + 4, totalHeight + 10, 12, 12, "+", index) {
                 @Override
                 protected void onPressed() {
-                    container.routingOrder.incrementPosition(index);
+                    getContainer().routingOrder.incrementPosition(index);
                     refreshGui();
                     hasChanged = true;
                 }
@@ -94,7 +92,7 @@ public class GuiRoutingOrder extends GuiContainerBase {
             button = new IndexedButton(8 + 55 + 80 + 12 + 6, totalHeight + 10, 12, 12, "-", index) {
                 @Override
                 protected void onPressed() {
-                    container.routingOrder.decrementPosition(index);
+                    getContainer().routingOrder.decrementPosition(index);
                     refreshGui();
                     hasChanged = true;
                 }
@@ -104,7 +102,7 @@ public class GuiRoutingOrder extends GuiContainerBase {
             button = new IndexedButton(8 + 55 + 80 + 12 + 12 + 8, totalHeight + 10, 55, 12, "guistrings.npc.remove_point", index) {
                 @Override
                 protected void onPressed() {
-                    container.routingOrder.removePosition(index);
+                    getContainer().routingOrder.removePosition(index);
                     refreshGui();
                     hasChanged = true;
                 }
@@ -126,7 +124,7 @@ public class GuiRoutingOrder extends GuiContainerBase {
             button = new IndexedButton(8 + 8 * 18, totalHeight + 10 + 12 + 2, 40, 12, labelString, index) {
                 @Override
                 protected void onPressed() {
-                    container.routingOrder.toggleIgnoreDamage(index);
+                    getContainer().routingOrder.toggleIgnoreDamage(index);
                     hasChanged = true;
                     refreshGui();
                 }
@@ -138,7 +136,7 @@ public class GuiRoutingOrder extends GuiContainerBase {
             button = new IndexedButton(8 + 8 * 18 + 40, totalHeight + 10 + 12 + 2, 40, 12, labelString, index) {
                 @Override
                 protected void onPressed() {
-                    container.routingOrder.toggleIgnoreTag(index);
+                    getContainer().routingOrder.toggleIgnoreTag(index);
                     hasChanged = true;
                     refreshGui();
                 }
@@ -214,7 +212,7 @@ public class GuiRoutingOrder extends GuiContainerBase {
     protected boolean onGuiCloseRequested() {
         if (hasChanged) {
             NBTTagCompound outer = new NBTTagCompound();
-            outer.setTag("routingOrder", container.routingOrder.writeToNBT(new NBTTagCompound()));
+            outer.setTag("routingOrder", getContainer().routingOrder.writeToNBT(new NBTTagCompound()));
             sendDataToContainer(outer);
         }
         return super.onGuiCloseRequested();

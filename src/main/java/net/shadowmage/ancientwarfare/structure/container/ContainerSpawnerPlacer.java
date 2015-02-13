@@ -7,6 +7,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
+import net.shadowmage.ancientwarfare.structure.item.ItemSpawnerPlacer;
 
 public class ContainerSpawnerPlacer extends ContainerBase {
 
@@ -35,13 +36,10 @@ public class ContainerSpawnerPlacer extends ContainerBase {
      */
 
     public ContainerSpawnerPlacer(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+        super(player);
         ItemStack stack = player.inventory.getCurrentItem();
-        if (stack == null || stack.getItem() != AWStructuresItemLoader.spawner) {
-            /**
-             * TODO throw an error, close GUI somehow
-             */
-            return;
+        if (isInValid(stack)) {
+            throw new IllegalArgumentException("Incorrect held item");
         }
         if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerData")) {
             entityId = "Pig";
@@ -72,7 +70,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("spawnerData")) {
             ItemStack stack = player.inventory.getCurrentItem();
-            if (stack == null || stack.getItem() != AWStructuresItemLoader.spawner) {
+            if (isInValid(stack)) {
                 return;
             }
             stack.setTagInfo("spawnerData", tag.getCompoundTag("spawnerData"));
@@ -102,4 +100,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
         NetworkHandler.sendToServer(pkt);
     }
 
+    private boolean isInValid(ItemStack stack){
+        return stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemSpawnerPlacer);
+    }
 }

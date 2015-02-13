@@ -139,17 +139,9 @@ public class AncientWarfareAutomation {
          * construct recipes, load plugins
          */
         AWAutomationCrafting.loadRecipes();
+        if(config.hasChanged())
+            config.save();
         AWLog.log("Ancient Warfare Automation Init completed");
-    }
-
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Automation Post-Init started");
-        /**
-         * save config for any changes that were made during loading stages
-         */
-        config.save();
-        AWLog.log("Ancient Warfare Automation Post-Init completed.  Successfully completed all loading stages.");
     }
 
     @SubscribeEvent

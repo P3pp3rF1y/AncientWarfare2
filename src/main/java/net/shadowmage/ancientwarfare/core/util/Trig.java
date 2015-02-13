@@ -225,7 +225,7 @@ public class Trig {
     }
 
     public static int getDifference(int a, int b) {
-        return Math.abs(a - b);
+        return a < b ? b - a : a - b;
     }
 
     public static int getMin(int a, int b) {

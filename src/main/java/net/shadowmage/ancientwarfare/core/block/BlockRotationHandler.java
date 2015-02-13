@@ -391,7 +391,7 @@ public class BlockRotationHandler {
                 return false;
             }
             boolean[] flags = extractInsertFlags.get(iSide);
-            return flags != null ? flags[0] : true;
+            return flags == null || flags[0];
         }
 
         @Override
@@ -474,10 +474,7 @@ public class BlockRotationHandler {
         @Override
         public boolean isItemValidForSlot(int var1, ItemStack var2) {
             ItemSlotFilter filter = filtersByInventorySlot[var1];
-            if (filter != null) {
-                return filter.isItemValid(var2);
-            }
-            return true;
+            return filter == null || filter.isItemValid(var2);
         }
 
         @Override

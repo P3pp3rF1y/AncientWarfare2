@@ -25,12 +25,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -39,9 +39,6 @@ import java.util.List;
 
 public class ItemSpawnerPlacer extends Item implements IItemClickable {
 
-    /**
-     * @param itemID
-     */
     public ItemSpawnerPlacer(String itemName) {
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
@@ -65,10 +62,11 @@ public class ItemSpawnerPlacer extends Item implements IItemClickable {
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
             NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
             String mobID = tag.getString("EntityId");
-            if (mobID.equals("")) {
-                mobID = "No Selection!!";
+            if (mobID.isEmpty()) {
+                list.add(StatCollector.translateToLocal("guistrings.no_selection"));
+            }else {
+                list.add(StatCollector.translateToLocal("entity." + mobID + ".name"));
             }
-            list.add(mobID);
         } else {
             list.add(StatCollector.translateToLocal("guistrings.no_selection"));
         }
@@ -86,32 +84,28 @@ public class ItemSpawnerPlacer extends Item implements IItemClickable {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
         } else if (mophit != null && mophit.typeOfHit == MovingObjectType.BLOCK) {
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
-                World world = player.worldObj;
                 BlockPosition hit = new BlockPosition(mophit.blockX, mophit.blockY, mophit.blockZ);
                 hit.offsetForMCSide(mophit.sideHit);
-                world.setBlock(hit.x, hit.y, hit.z, Blocks.mob_spawner);
-                NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-                TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(hit.x, hit.y, hit.z);
-                tag.setInteger("x", hit.x);
-                tag.setInteger("y", hit.y);
-                tag.setInteger("z", hit.z);
-                te.readFromNBT(tag);
+                if(player.worldObj.setBlock(hit.x, hit.y, hit.z, Blocks.mob_spawner)) {
+                    NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
+                    tag.setInteger("x", hit.x);
+                    tag.setInteger("y", hit.y);
+                    tag.setInteger("z", hit.z);
+                    TileEntity te = player.worldObj.getTileEntity(hit.x, hit.y, hit.z);
+                    te.readFromNBT(tag);
 
-                if (!player.capabilities.isCreativeMode) {
-                    stack.stackSize--;
-                    if (stack.stackSize <= 0) {
-                        player.inventory.mainInventory[player.inventory.currentItem] = null;
+                    if (!player.capabilities.isCreativeMode) {
+                        stack.stackSize--;
+                        if (stack.stackSize <= 0) {
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                        }
                     }
                 }
             } else {
-                /**
-                 * TODO output chat message about missing NBT-data on item / no selection
-                 */
+                player.addChatComponentMessage(new ChatComponentTranslation("guistrings.spawner.nodata"));
             }
         } else {
-            /**
-             * TODO output chat message about null hit/ w/e
-             */
+            player.addChatComponentMessage(new ChatComponentTranslation("guistrings.spawner.noblock"));
         }
     }
 

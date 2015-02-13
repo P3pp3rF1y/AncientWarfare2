@@ -9,12 +9,26 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ItemTradeOrder extends ItemOrders {
 
     public ItemTradeOrder(String name) {
         super(name);
-        this.setTextureName("ancientwarfare:npc/combat_order");
+        this.setTextureName("ancientwarfare:npc/"+name);
+    }
+
+    @Override
+    public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
+        Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
+        TradeOrder order = TradeOrder.getTradeOrder(stack);
+        if (order != null && order.getRoute().size() > 0) {
+            for (int i = 0; i < order.getRoute().size(); i++) {
+                positionList.add(order.getRoute().get(i).getPosition());
+            }
+        }
+        return positionList;
     }
 
     @Override
