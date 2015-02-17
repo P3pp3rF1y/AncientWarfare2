@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.vehicle.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
@@ -52,7 +53,7 @@ public class PacketInputReply extends PacketBase {
     }
 
     @Override
-    protected void execute() {
+    protected void execute(EntityPlayer player) {
         Entity e = player.worldObj.getEntityByID(entityID);
         if (e instanceof VehicleBase) {
             ((VehicleBase) e).inputHandler.handleReplyPacket(this);

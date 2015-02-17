@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.block;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 

@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.npc.orders;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
@@ -17,7 +17,7 @@ public class TradeOrder extends NpcOrders {
     }
 
     public static TradeOrder getTradeOrder(ItemStack stack) {
-        if (stack != null && stack.getItem() == AWNpcItemLoader.tradeOrder) {
+        if (stack != null && stack.getItem() instanceof ItemTradeOrder) {
             TradeOrder order = new TradeOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
                 order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
@@ -28,7 +28,7 @@ public class TradeOrder extends NpcOrders {
     }
 
     public static void writeTradeOrder(ItemStack stack, TradeOrder order) {
-        if (stack != null && stack.getItem() == AWNpcItemLoader.tradeOrder) {
+        if (stack != null && stack.getItem() instanceof ItemTradeOrder) {
             stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
         }
     }

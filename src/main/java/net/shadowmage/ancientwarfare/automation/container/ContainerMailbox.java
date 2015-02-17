@@ -11,7 +11,6 @@ import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
@@ -19,8 +18,6 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-public class ContainerMailbox extends ContainerBase {
 
 public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
 
@@ -244,7 +241,6 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
             if (tag == null) {
                 tag = new NBTTagCompound();
             }
-            }
             mailboxName = tileEntity.getMailboxName();
             if (mailboxName == null) {
                 tag.setBoolean("clearMailbox", true);
@@ -256,7 +252,6 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         if (!StringTools.doStringsMatch(name, targetName)) {
             if (tag == null) {
                 tag = new NBTTagCompound();
-            }
             }
             targetName = tileEntity.getTargetName();
             if (targetName == null) {

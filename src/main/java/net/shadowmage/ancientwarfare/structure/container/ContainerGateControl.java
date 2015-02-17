@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerEntityBase;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 

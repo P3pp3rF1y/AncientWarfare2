@@ -5,13 +5,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer.WarehouseStockFilter;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class ContainerWarehouseStockViewer extends ContainerBase {
 
 public class ContainerWarehouseStockViewer extends ContainerTileBase<TileWarehouseStockViewer> {
 

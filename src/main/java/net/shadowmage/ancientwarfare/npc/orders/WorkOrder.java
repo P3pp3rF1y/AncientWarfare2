@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +84,7 @@ public class WorkOrder extends NpcOrders {
     }
 
     public static WorkOrder getWorkOrder(ItemStack stack) {
-        if (stack != null && stack.getItem() == AWNpcItemLoader.workOrder) {
+        if (stack != null && stack.getItem() instanceof ItemWorkOrder) {
             WorkOrder order = new WorkOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
                 order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
@@ -95,7 +95,7 @@ public class WorkOrder extends NpcOrders {
     }
 
     public static void writeWorkOrder(ItemStack stack, WorkOrder order) {
-        if (stack != null && stack.getItem() == AWNpcItemLoader.workOrder) {
+        if (stack != null && stack.getItem() instanceof ItemWorkOrder) {
             stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
         }
     }

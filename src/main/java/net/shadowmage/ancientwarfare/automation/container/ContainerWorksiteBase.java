@@ -5,7 +5,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBoundedInventory;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
@@ -49,7 +48,6 @@ public class ContainerWorksiteBase extends ContainerTileBase<TileWorksiteBounded
         Slot slot = this.getSlot(slotClickedIndex);
         if (slot == null || !slot.getHasStack()) {
             return null;
-        }
         }
         ItemStack stackFromSlot = slot.getStack();
         if (slotClickedIndex < slots) {

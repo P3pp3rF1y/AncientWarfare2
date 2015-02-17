@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
@@ -14,7 +13,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
 
 public class NpcCourier extends NpcPlayerOwned {
 
@@ -43,7 +42,7 @@ public class NpcCourier extends NpcPlayerOwned {
 
     @Override
     public boolean isValidOrdersStack(ItemStack stack) {
-        return stack != null && stack.getItem() == AWNpcItemLoader.routingOrder;
+        return stack != null && stack.getItem() instanceof ItemRoutingOrder;
     }
 
     @Override

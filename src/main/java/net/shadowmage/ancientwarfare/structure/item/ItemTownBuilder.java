@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import codechicken.lib.math.MathHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

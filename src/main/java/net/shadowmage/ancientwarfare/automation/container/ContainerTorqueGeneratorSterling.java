@@ -6,7 +6,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
 public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSterlingEngine> {

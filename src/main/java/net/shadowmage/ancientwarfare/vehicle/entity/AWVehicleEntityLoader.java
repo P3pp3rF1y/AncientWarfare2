@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
@@ -18,28 +17,13 @@ public class AWVehicleEntityLoader {
     private static HashMap<String, String> regNameToIcon = new HashMap<String, String>();
 
     public static void load() {
-        EntityDeclaration reg = new EntityDeclaration(VehicleTurreted.class, AWEntityRegistry.VEHICLE_TEST, nextID++, AncientWarfareVehicles.instance, 120, 3, true) {
-            @Override
-            public Entity createEntity(World world) {
-                return new VehicleTurreted(world);
-            }
-        };
+        EntityDeclaration reg = new VehiculeDeclaration(VehicleTurreted.class, AWEntityRegistry.VEHICLE_TEST);
         registerVehicleEntity(reg, "fooicon");
 
-        reg = new EntityDeclaration(VehicleCatapult.class, AWEntityRegistry.VEHICLE_CATAPULT, nextID++, AncientWarfareVehicles.instance, 120, 3, true) {
-            @Override
-            public Entity createEntity(World world) {
-                return new VehicleCatapult(world);
-            }
-        };
+        reg = new VehiculeDeclaration(VehicleCatapult.class, AWEntityRegistry.VEHICLE_CATAPULT);
         registerVehicleEntity(reg, "fooicon");
 
-        reg = new EntityDeclaration(MissileBase.class, AWEntityRegistry.MISSILE_TEST, nextID++, AncientWarfareVehicles.instance, 120, 3, true) {
-            @Override
-            public Entity createEntity(World world) {
-                return new MissileBase(world);
-            }
-        };
+        reg = new VehiculeDeclaration(MissileBase.class, AWEntityRegistry.MISSILE_TEST);
         AWEntityRegistry.registerEntity(reg);
     }
 
@@ -59,4 +43,10 @@ public class AWVehicleEntityLoader {
         return regNameToIcon.get(vehicleType);
     }
 
+    private static class VehiculeDeclaration extends EntityDeclaration{
+
+        public VehiculeDeclaration(Class<? extends Entity> entityClass, String entityName) {
+            super(entityClass, entityName, nextID++, AncientWarfareVehicles.instance, 120, 3, true);
+        }
+    }
 }

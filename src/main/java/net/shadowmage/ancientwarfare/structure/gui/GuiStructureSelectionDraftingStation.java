@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 import net.minecraft.client.Minecraft;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;

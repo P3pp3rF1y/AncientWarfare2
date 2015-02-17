@@ -28,8 +28,6 @@ public class InputHandler {
     public static final String KEY_ALT_ITEM_USE_4 = "keybind.alt_item_use_5";
 
     public static final InputHandler instance = new InputHandler();
-    private InputHandler() {
-    }
     /**
      * map of keys by their registry-name
      */
@@ -201,8 +199,6 @@ public class InputHandler {
             return key;
         }
 
-        public void onKeyPressed() {
-            for (InputCallback c : inputHandlers) {
         private void onKeyPressed() {
             isPressed = true;
             for (InputCallback c : inputHandlers) {
@@ -219,6 +215,10 @@ public class InputHandler {
         @Override
         public String toString() {
             return "Keybind [" + key + "," + name + "]";
+        }
+
+        public boolean isPressed() {
+            return isPressed;
         }
     }
 

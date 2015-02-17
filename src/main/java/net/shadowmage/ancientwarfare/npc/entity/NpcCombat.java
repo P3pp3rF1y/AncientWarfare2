@@ -18,7 +18,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 
 public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
@@ -73,7 +73,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
     @Override
     public boolean isValidOrdersStack(ItemStack stack) {
-        return stack != null && stack.getItem() == AWNpcItemLoader.combatOrder;
+        return stack != null && stack.getItem() instanceof ItemCombatOrder;
     }
 
     @Override

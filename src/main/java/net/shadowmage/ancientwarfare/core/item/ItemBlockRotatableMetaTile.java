@@ -6,7 +6,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -28,14 +27,12 @@ public class ItemBlockRotatableMetaTile extends ItemBlock {
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
         boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
         if (val) {
-            ForgeDirection face = BlockRotationHandler.getFaceForPlacement(player, rotatable, side);
-            String name = player.getCommandSenderName();
             TileEntity te = player.worldObj.getTileEntity(x, y, z);
             if (te instanceof IOwnable) {
-                ((IOwnable) te).setOwnerName(name);
+                ((IOwnable) te).setOwnerName(player.getCommandSenderName());
             }
             if (te instanceof IRotatableTile) {
-                ((IRotatableTile) te).setPrimaryFacing(face);
+                ((IRotatableTile) te).setPrimaryFacing(BlockRotationHandler.getFaceForPlacement(player, rotatable, side));
             }
             player.worldObj.markBlockForUpdate(x, y, z);
         }

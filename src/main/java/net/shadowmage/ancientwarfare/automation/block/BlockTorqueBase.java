@@ -22,7 +22,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.HashMap;
-public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
 
 public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
 

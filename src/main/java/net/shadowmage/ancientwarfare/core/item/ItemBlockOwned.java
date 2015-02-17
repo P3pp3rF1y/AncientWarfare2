@@ -18,10 +18,9 @@ public class ItemBlockOwned extends ItemBlock {
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
         boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
         if (val) {
-            String name = player.getCommandSenderName();
             TileEntity te = player.worldObj.getTileEntity(x, y, z);
             if (te instanceof IOwnable) {
-                ((IOwnable) te).setOwnerName(name);
+                ((IOwnable) te).setOwnerName(player.getCommandSenderName());
             }
         }
         return val;

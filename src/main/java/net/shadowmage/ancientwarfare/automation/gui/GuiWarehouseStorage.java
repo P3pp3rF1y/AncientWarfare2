@@ -14,8 +14,6 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiWarehouseStorage extends GuiContainerBase {
-
 public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStorage> {
 
     CompositeScrolled area;

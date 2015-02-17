@@ -12,7 +12,6 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

@@ -187,8 +187,6 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
     public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
         MovingObjectPosition hit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
         return hit != null;
-            return false;
-        }
     }
 
     @Override

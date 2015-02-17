@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.render;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
@@ -19,10 +18,6 @@ import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-public class RenderCommandOverlay {
-    private RenderCommandOverlay() {
-    }
-
 
 public class RenderCommandOverlay {
     public static final RenderCommandOverlay INSTANCE = new RenderCommandOverlay();
@@ -82,10 +77,6 @@ public class RenderCommandOverlay {
             return;
         }
         if (mc.thePlayer.getCurrentEquippedItem() == null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)) {
-            return;
-        }
-        }
-        if (player.getCurrentEquippedItem() == null || !(player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)) {
             return;
         }
         MovingObjectPosition pos = target;

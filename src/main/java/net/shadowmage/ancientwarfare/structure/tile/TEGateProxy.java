@@ -31,8 +31,6 @@ import java.util.UUID;
 
 public class TEGateProxy extends TileEntity {
 
-public class TEGateProxy extends TileEntity {
-
     private EntityGate owner = null;
     private UUID entityID = null;
     private int noParentTicks = 0;

@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 

@@ -11,7 +11,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 
 import java.util.EnumSet;
-public class GuiWorksiteInventorySideSelection extends GuiContainerBase {
 
 public class GuiWorksiteInventorySideSelection extends GuiContainerBase<ContainerWorksiteInventorySideSelection> {
 

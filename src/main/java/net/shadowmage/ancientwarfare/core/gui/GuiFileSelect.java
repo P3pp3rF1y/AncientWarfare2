@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 
 import java.io.File;

@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 
 public class NpcWorker extends NpcPlayerOwned implements IWorker {
 
@@ -126,7 +126,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
 
     @Override
     public boolean isValidOrdersStack(ItemStack stack) {
-        return stack != null && stack.getItem() == AWNpcItemLoader.workOrder;
+        return stack != null && stack.getItem() instanceof ItemWorkOrder;
     }
 
     protected WorkType getWorkTypeFromEquipment() {

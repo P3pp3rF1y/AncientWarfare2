@@ -120,7 +120,6 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
         if (hit == null) {
             return;
         }
-        }
         ItemStructureSettings scanSettings = ItemStructureSettings.getSettingsFor(stack);
         if (scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey()) {
             player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.click_to_process"));

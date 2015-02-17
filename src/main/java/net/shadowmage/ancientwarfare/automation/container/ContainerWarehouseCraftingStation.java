@@ -12,7 +12,6 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBas
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
@@ -70,7 +69,6 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
         TileWarehouseBase warehouse = tileEntity.getWarehouse();
         if (warehouse != null) {
             warehouse.removeCraftingViewer(this);
-        }
         }
         super.onContainerClosed(par1EntityPlayer);
     }

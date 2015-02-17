@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +95,7 @@ public class RoutingOrder extends NpcOrders {
     }
 
     public static RoutingOrder getRoutingOrder(ItemStack stack) {
-        if (stack != null && stack.getItem() == AWNpcItemLoader.routingOrder) {
+        if (stack != null && stack.getItem() instanceof ItemRoutingOrder) {
             RoutingOrder order = new RoutingOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
                 order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
@@ -106,7 +106,7 @@ public class RoutingOrder extends NpcOrders {
     }
 
     public static void writeRoutingOrder(ItemStack stack, RoutingOrder order) {
-        if (stack != null && stack.getItem() == AWNpcItemLoader.routingOrder) {
+        if (stack != null && stack.getItem() instanceof ItemRoutingOrder) {
             stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
         }
     }

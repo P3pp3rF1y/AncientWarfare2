@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.modeler.gui;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;

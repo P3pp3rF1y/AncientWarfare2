@@ -30,7 +30,6 @@ import net.shadowmage.ancientwarfare.core.util.JsonTagReader;
 import net.shadowmage.ancientwarfare.core.util.JsonTagWriter;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

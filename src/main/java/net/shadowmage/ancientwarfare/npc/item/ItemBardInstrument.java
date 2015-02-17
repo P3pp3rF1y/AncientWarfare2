@@ -10,8 +10,8 @@ import java.util.List;
 
 public class ItemBardInstrument extends Item {
 
-    String[] instrumentNames = new String[]{"lute", "flute", "harp", "drum"};
-    IIcon[] icons = new IIcon[instrumentNames.length];
+    private final String[] instrumentNames = new String[]{"lute", "flute", "harp", "drum"};
+    private final IIcon[] icons = new IIcon[instrumentNames.length];
 
     public ItemBardInstrument(String regName) {
         setUnlocalizedName(regName);

@@ -19,7 +19,7 @@ public class ClientProxyBase extends CommonProxyBase {
 
     @Override
     public boolean isKeyPressed(String keyName) {
-        Keybind kb = InputHandler.instance().getKeybind(keyName);
+        Keybind kb = InputHandler.instance.getKeybind(keyName);
         return kb != null && kb.isPressed();
     }
 

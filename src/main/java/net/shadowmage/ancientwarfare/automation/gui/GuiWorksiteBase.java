@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBase;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBoundedInventory;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;

@@ -35,8 +35,6 @@ import java.util.Random;
 
 public class BlockGateProxy extends Block {
 
-public class BlockGateProxy extends Block {
-
     public BlockGateProxy() {
         super(Material.rock);
         this.setBlockTextureName("ancientwarfare:structure/gate_proxy");

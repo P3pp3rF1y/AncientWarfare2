@@ -1,9 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockTorqueTile;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteStatic;

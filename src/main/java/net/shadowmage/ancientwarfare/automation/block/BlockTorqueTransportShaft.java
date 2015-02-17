@@ -1,8 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -11,8 +8,6 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftLight;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftMedium;
-
-import java.util.List;
 
 public class BlockTorqueTransportShaft extends BlockTorqueTransportConduit {
 
