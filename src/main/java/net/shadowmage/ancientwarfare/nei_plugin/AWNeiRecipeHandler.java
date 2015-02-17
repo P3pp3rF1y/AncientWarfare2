@@ -38,8 +38,6 @@ import java.util.List;
 
 public class AWNeiRecipeHandler extends TemplateRecipeHandler {
 
-public class AWNeiRecipeHandler extends TemplateRecipeHandler {
-
     public AWNeiRecipeHandler(){
         API.registerRecipeHandler(this);
         API.registerUsageHandler(this);
@@ -84,11 +82,11 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
     public void loadUsageRecipes(ItemStack ingredient) {
         List<RecipeResearched> allrecipes = AWCraftingManager.INSTANCE.getRecipes();
         for (RecipeResearched irecipe : allrecipes) {
-            for (ItemStack stack : irecipe.recipeItems) {
+            for (Object stack : irecipe.getInput()) {
                 if (stack == null) {
                     continue;
                 }
-                if (ItemStack.areItemStacksEqual(stack, ingredient)) {
+                if (ItemStack.areItemStacksEqual((ItemStack)stack, ingredient)) {
                     arecipes.add(new AWCachedRecipe(irecipe));
                 }
             }
@@ -102,16 +100,16 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
 
     public class AWCachedRecipe extends CachedRecipe {
 
-        public ArrayList<PositionedStack> ingredients;
-        public PositionedStack result;
+        private final ArrayList<PositionedStack> ingredients;
+        private final PositionedStack result;
 
         public AWCachedRecipe(RecipeResearched recipe) {
             result = new PositionedStack(recipe.getRecipeOutput().copy(), 119, 24);
             ingredients = new ArrayList<PositionedStack>();
-            setIngredients(recipe.recipeWidth, recipe.recipeHeight, recipe.recipeItems);
+            setIngredients(recipe.getRecipeWidth(), recipe.getRecipeHeight(), recipe.getInput());
         }
 
-        public void setIngredients(int width, int height, Object[] items) {
+        private void setIngredients(int width, int height, Object[] items) {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (items[y * width + x] == null) {

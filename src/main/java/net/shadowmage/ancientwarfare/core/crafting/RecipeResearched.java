@@ -1,21 +1,21 @@
 package net.shadowmage.ancientwarfare.core.crafting;
 
-import net.minecraft.inventory.InventoryCrafting;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class RecipeResearched extends ShapedRecipes {
+public class RecipeResearched extends ShapedOreRecipe {
 
-    private Set<Integer> neededResearch = new HashSet<Integer>();
+    private final Set<Integer> neededResearch = new HashSet<Integer>();
+    private int recipeWidth, recipeHeight;
 
-    public RecipeResearched(int par1, int par2, ItemStack[] par3ArrayOfItemStack, ItemStack par4ItemStack) {
-        super(par1, par2, par3ArrayOfItemStack, par4ItemStack);
+    public RecipeResearched(ItemStack output, Object... input) {
+        super(output, input);
+        setMirrored(false);
     }
 
     protected final RecipeResearched addResearch(String... names) {
@@ -47,44 +47,17 @@ public class RecipeResearched extends ShapedRecipes {
         return neededResearch;
     }
 
-    @Override
-    public boolean matches(InventoryCrafting inv, World world) {
-        for (int x = 0; x <= 3 - recipeWidth; x++) {
-            for (int y = 0; y <= 3 - recipeHeight; ++y) {
-                if (checkMatch(inv, x, y, false)) {
-                    return true;
-                }
-            }
+    public int getRecipeWidth(){
+        if(recipeWidth == 0) {
+            recipeWidth = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, this, "width");
         }
-        return false;
+        return recipeWidth;
     }
 
-    private boolean checkMatch(InventoryCrafting inv, int startX, int startY, boolean mirror) {
-        int width = recipeWidth;
-        int height = recipeHeight;
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 3; y++) {
-                int subX = x - startX;
-                int subY = y - startY;
-                ItemStack target = null;
-                if (subX >= 0 && subY >= 0 && subX < width && subY < height) {
-                    if (mirror) {
-                        target = recipeItems[width - subX - 1 + subY * width];
-                    } else {
-                        target = recipeItems[subX + subY * width];
-                    }
-                }
-                ItemStack slot = inv.getStackInRowAndColumn(x, y);
-                if (target != null) {
-                    if (!OreDictionary.itemMatches(target, slot, false)) {
-                        return false;
-                    }
-                } else if (slot != null) {
-                    return false;
-                }
-            }
+    public int getRecipeHeight(){
+        if(recipeHeight == 0) {
+            recipeHeight = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, this, "height");
         }
-        return true;
+        return recipeHeight;
     }
-
 }
