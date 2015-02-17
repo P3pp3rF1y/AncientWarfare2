@@ -26,10 +26,10 @@ public class AWNpcCrafting {
     @SuppressWarnings("unchecked")
     public static void loadRecipes() {
         RecipeSorter.register("ancientwarfare:order_copy", OrderCopyingRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
-        CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWNpcItemLoader.upkeepOrder));
-        CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWNpcItemLoader.routingOrder));
-        CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWNpcItemLoader.combatOrder));
-        CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWNpcItemLoader.workOrder));
+        CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWItems.upkeepOrder));
+        CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWItems.routingOrder));
+        CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWItems.combatOrder));
+        CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWItems.workOrder));
 
 
         ItemStack foodBundle = new ItemStack(AWItems.componentItem, 1, ItemComponent.NPC_FOOD_BUNDLE);
@@ -128,7 +128,7 @@ public class AWNpcCrafting {
                 'i', Items.iron_ingot);
 
         //upkeep order
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.upkeepOrder), "leadership",
+        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.upkeepOrder), "leadership",
                 "d",
                 "p",
                 "w",
@@ -136,7 +136,7 @@ public class AWNpcCrafting {
                 'w', Blocks.planks,
                 'p', Items.paper);
         //work order
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.workOrder), "leadership",
+        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.workOrder), "leadership",
                 "d",
                 "p",
                 "w",
@@ -144,7 +144,7 @@ public class AWNpcCrafting {
                 'w', Blocks.planks,
                 'p', Items.paper);
         //route order
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.routingOrder), "trade",
+        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.routingOrder), "trade",
                 "d",
                 "p",
                 "w",
@@ -152,7 +152,7 @@ public class AWNpcCrafting {
                 'w', Blocks.planks,
                 'p', Items.paper);
         //combat order
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.combatOrder), "leadership",
+        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.combatOrder), "leadership",
                 "d",
                 "p",
                 "w",
@@ -160,7 +160,7 @@ public class AWNpcCrafting {
                 'w', Blocks.planks,
                 'p', Items.paper);
         //trade order
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWNpcItemLoader.tradeOrder), "trade",
+        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWItems.tradeOrder), "trade",
                 "d",
                 "p",
                 "w",
@@ -208,7 +208,7 @@ public class AWNpcCrafting {
 
 
     private static class OrderCopyingRecipe implements IRecipe {
-        Item item;
+        private final Item item;
 
         private OrderCopyingRecipe(Item item) {
             this.item = item;
@@ -280,7 +280,7 @@ public class AWNpcCrafting {
 
         @Override
         public int getRecipeSize() {
-            return 9;
+            return 2;
         }
 
         @Override

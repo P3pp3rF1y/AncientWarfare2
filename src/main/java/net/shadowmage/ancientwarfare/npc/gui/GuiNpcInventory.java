@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.gui;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
@@ -160,7 +161,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
         addGuiElement(slot);
 
 
-        slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 2, new ItemStack(AWNpcItemLoader.upkeepOrder), this);
+        slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 2, new ItemStack(AWItems.upkeepOrder), this);
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
         text = "guistrings.npc.upkeep_order_slot";
         tw = fontRendererObj.getStringWidth(text);
@@ -169,7 +170,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
         slot.setTooltip(t);
         addGuiElement(slot);
 
-        slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 3, new ItemStack(AWNpcItemLoader.routingOrder), this);
+        slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 3, new ItemStack(AWItems.routingOrder), this);
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
         text = "guistrings.npc.manual_order_slot";
         tw = fontRendererObj.getStringWidth(text);

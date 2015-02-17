@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.api;
 
 import net.minecraft.item.Item;
+import net.shadowmage.ancientwarfare.core.item.ItemBase;
 
 public class AWItems {
 
@@ -20,7 +21,7 @@ public class AWItems {
     public static Item quillIron;
     public static Item quillGold;
     public static Item quillDiamond;
-    public static Item componentItem;
+    public static ItemBase componentItem;
     public static Item steel_ingot;
 
     /**
@@ -29,13 +30,15 @@ public class AWItems {
      */
     public static Item npcSpawner;
     public static Item workOrder;
+    public static Item upkeepOrder;
     public static Item combatOrder;
     public static Item routingOrder;
+    public static Item tradeOrder;
 
     /**
      * AUTOMATION module
      */
-    public static Item worksiteUpgrade;
+    public static ItemBase worksiteUpgrade;
 
 /**
  * STRUCTURE module

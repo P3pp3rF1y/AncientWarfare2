@@ -14,11 +14,6 @@ import java.util.Collection;
 
 public class ItemTradeOrder extends ItemOrders {
 
-    public ItemTradeOrder(String name) {
-        super(name);
-        this.setTextureName("ancientwarfare:npc/"+name);
-    }
-
     @Override
     public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
         Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();

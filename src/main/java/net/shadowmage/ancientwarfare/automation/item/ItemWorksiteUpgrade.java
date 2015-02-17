@@ -1,12 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -16,18 +12,12 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 public class ItemWorksiteUpgrade extends ItemBase implements IItemClickable {
 
-    private HashMap<Integer, String> subItems = new HashMap<Integer, String>();
-    private HashMap<Integer, IIcon> subItemIcons = new HashMap<Integer, IIcon>();
-
-    public ItemWorksiteUpgrade(String localizationKey) {
-        super(localizationKey);
-        this.setHasSubtypes(true);
+    public ItemWorksiteUpgrade() {
+        this.setUnlocalizedName("worksite_upgrade");
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
     }
 
@@ -40,35 +30,6 @@ public class ItemWorksiteUpgrade extends ItemBase implements IItemClickable {
 
     public static ItemStack getStack(WorksiteUpgrade upgrade) {
         return upgrade == null ? null : new ItemStack(AWItems.worksiteUpgrade, 1, upgrade.ordinal());
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        return super.getUnlocalizedName(par1ItemStack) + "." + par1ItemStack.getItemDamage();
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    public void getSubItems(Item item, CreativeTabs p_150895_2_, List list) {
-        for (Integer num : subItems.keySet()) {
-            list.add(new ItemStack(item, 1, num));
-        }
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int par1) {
-        return subItemIcons.get(par1);
-    }
-
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister) {
-        for (Integer num : subItems.keySet()) {
-            subItemIcons.put(num, par1IconRegister.registerIcon(subItems.get(num)));
-        }
-    }
-
-    public void addSubItemIcon(int num, String texture) {
-        subItems.put(num, texture);
     }
 
     @Override

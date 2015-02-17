@@ -16,11 +16,9 @@ import java.util.List;
 
 public class ItemResearchBook extends Item implements IItemClickable {
 
-    public ItemResearchBook(String localizationKey) {
-        this.setUnlocalizedName(localizationKey);
+    public ItemResearchBook() {
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
         this.setMaxStackSize(1);
-        this.setTextureName("ancientwarfare:core/research_book");
     }
 
     @Override

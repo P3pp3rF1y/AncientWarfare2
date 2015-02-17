@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -29,9 +30,8 @@ public class ItemNpcSpawner extends Item implements IItemClickable {
 
     private HashMap<String, IIcon> iconMap = new HashMap<String, IIcon>();
 
-    public ItemNpcSpawner(String regName) {
+    public ItemNpcSpawner() {
         this.setCreativeTab(AWNpcItemLoader.npcTab);
-        this.setUnlocalizedName(regName);
         this.setTextureName("ancientwarfare:npc/spawner_miner");
     }
 
@@ -145,7 +145,7 @@ public class ItemNpcSpawner extends Item implements IItemClickable {
     }
 
     public static ItemStack getStackForNpcType(String type, String npcSubtype) {
-        ItemStack stack = new ItemStack(AWNpcItemLoader.npcSpawner);
+        ItemStack stack = new ItemStack(AWItems.npcSpawner);
         stack.setTagInfo("npcType", new NBTTagString(type));
         stack.setTagInfo("npcSubtype", new NBTTagString(npcSubtype));
         return stack;

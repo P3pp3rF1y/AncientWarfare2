@@ -20,10 +20,8 @@ public class ItemResearchNotes extends Item implements IItemClickable {
 
     private List<ItemStack> displayCache = null;
 
-    public ItemResearchNotes(String localizationKey) {
-        this.setUnlocalizedName(localizationKey);
+    public ItemResearchNotes() {
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
-        setTextureName("ancientwarfare:core/research_note");
     }
 
     @Override

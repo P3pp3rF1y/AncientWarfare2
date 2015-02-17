@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
 
 import java.util.Collections;
@@ -20,7 +21,7 @@ public class AWNpcItemLoader {
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            return npcSpawner;
+            return AWItems.npcSpawner;
         }
 
         @SuppressWarnings({"rawtypes", "unchecked"})
@@ -30,13 +31,7 @@ public class AWNpcItemLoader {
             Collections.sort(par1List, sorter);
         }
     };
-
-    public static final ItemNpcSpawner npcSpawner = new ItemNpcSpawner("npc_spawner");
-    public static final ItemWorkOrder workOrder = new ItemWorkOrder("work_order");
-    public static final ItemUpkeepOrder upkeepOrder = new ItemUpkeepOrder("upkeep_order");
-    public static final ItemCombatOrder combatOrder = new ItemCombatOrder("combat_order");
-    public static final ItemRoutingOrder routingOrder = new ItemRoutingOrder("routing_order");
-    public static final ItemTradeOrder tradeOrder = new ItemTradeOrder("trade_order");
+    public static final String PREFIX = "ancientwarfare:npc/";
     public static final ItemCommandBaton commandBatonWood = new ItemCommandBaton("wooden_command_baton", ToolMaterial.WOOD);
     public static final ItemCommandBaton commandBatonStone = new ItemCommandBaton("stone_command_baton", ToolMaterial.STONE);
     public static final ItemCommandBaton commandBatonIron = new ItemCommandBaton("iron_command_baton", ToolMaterial.IRON);
@@ -50,12 +45,12 @@ public class AWNpcItemLoader {
     public static final ItemShield diamondShield = new ItemShield("diamond_shield", ToolMaterial.EMERALD);
 
     public static void load() {
-        GameRegistry.registerItem(npcSpawner, "npc_spawner");
-        GameRegistry.registerItem(workOrder, "work_order");
-        GameRegistry.registerItem(upkeepOrder, "upkeep_order");
-        GameRegistry.registerItem(combatOrder, "combat_order");
-        GameRegistry.registerItem(routingOrder, "routing_order");
-        GameRegistry.registerItem(tradeOrder, "trade_order");
+        AWItems.npcSpawner = AWCoreItemLoader.INSTANCE.register(new ItemNpcSpawner(), "npc_spawner");
+        AWItems.workOrder = AWCoreItemLoader.INSTANCE.register(new ItemWorkOrder(), "work_order", PREFIX);
+        AWItems.upkeepOrder = AWCoreItemLoader.INSTANCE.register(new ItemUpkeepOrder(), "upkeep_order", PREFIX);
+        AWItems.combatOrder = AWCoreItemLoader.INSTANCE.register(new ItemCombatOrder(), "combat_order", PREFIX);
+        AWItems.routingOrder = AWCoreItemLoader.INSTANCE.register(new ItemRoutingOrder(), "routing_order", PREFIX);
+        AWItems.tradeOrder = AWCoreItemLoader.INSTANCE.register(new ItemTradeOrder(), "trade_order", PREFIX);
         GameRegistry.registerItem(commandBatonWood, "wooden_command_baton");
         GameRegistry.registerItem(commandBatonStone, "stone_command_baton");
         GameRegistry.registerItem(commandBatonIron, "iron_command_baton");
@@ -69,7 +64,7 @@ public class AWNpcItemLoader {
         GameRegistry.registerItem(goldShield, "gold_shield");
         GameRegistry.registerItem(diamondShield, "diamond_shield");
 
-        ((ItemComponent) AWItems.componentItem).addSubItem(ItemComponent.NPC_FOOD_BUNDLE, "ancientwarfare:npc/food_bundle");
+        AWItems.componentItem.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, PREFIX+"food_bundle");
     }
 
     private static final Comparator<ItemStack> sorter = new Comparator<ItemStack>() {
@@ -81,7 +76,7 @@ public class AWNpcItemLoader {
             int i1p = getItemPriority(i1);
             int i2p = getItemPriority(i2);
             if (i1p == i2p) {
-                if (i1 == npcSpawner && i2 == npcSpawner) {
+                if (i1 == AWItems.npcSpawner && i2 == AWItems.npcSpawner) {
                     return compareSpawnerStacks(arg0, arg1);
                 }
                 return arg0.getDisplayName().compareTo(arg1.getDisplayName());
@@ -95,9 +90,7 @@ public class AWNpcItemLoader {
             String s2 = arg1.getUnlocalizedName();
             boolean f1 = s1.contains("bandit") || s1.contains("viking") || s1.contains("native") || s1.contains("desert") || s1.contains("pirate") || s1.contains("custom_1") || s1.contains("custom_2") || s1.contains("custom_3");
             boolean f2 = s2.contains("bandit") || s2.contains("viking") || s2.contains("native") || s2.contains("desert") || s2.contains("pirate") || s2.contains("custom_1") || s2.contains("custom_2") || s2.contains("custom_3");
-            if (f1 && f2) {
-                return s1.compareTo(s2);
-            } else if (!f1 && !f2) {
+            if (f1 == f2) {
                 return s1.compareTo(s2);
             } else {
                 return f1 ? 1 : -1;
@@ -105,7 +98,7 @@ public class AWNpcItemLoader {
         }
 
         private int getItemPriority(Item item) {
-            if (item == npcSpawner) {
+            if (item instanceof ItemNpcSpawner) {
                 return 4;
             } else if (item == bardInstrument) {
                 return 3;

@@ -14,8 +14,7 @@ import java.util.List;
 
 public abstract class ItemOrders extends Item implements IItemClickable, IItemKeyInterface {
 
-    public ItemOrders(String name) {
-        this.setUnlocalizedName(name);
+    public ItemOrders() {
         this.setCreativeTab(AWNpcItemLoader.npcTab);
     }
 

@@ -1,25 +1,27 @@
 package net.shadowmage.ancientwarfare.core.item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
+
+import java.util.Locale;
 
 public class AWCoreItemLoader {
 
+    public static final String PREFIX = "ancientwarfare:core/";
     public static final AWCoreItemLoader INSTANCE = new AWCoreItemLoader();
 
     private AWCoreItemLoader() {
     }
 
     public void load() {
-        AWItems.researchBook = new ItemResearchBook("research_book");
-        GameRegistry.registerItem(AWItems.researchBook, "research_book");
+        AWItems.researchBook = register(new ItemResearchBook(), "research_book", PREFIX);
 
-        AWItems.researchNote = new ItemResearchNotes("research_note");
-        GameRegistry.registerItem(AWItems.researchNote, "research_note");
+        AWItems.researchNote = register(new ItemResearchNotes(), "research_note", PREFIX);
 
-        AWItems.backpack = new ItemBackpack("backpack");
-        GameRegistry.registerItem(AWItems.backpack, "backpack");
+        AWItems.backpack = register(new ItemBackpack(), "backpack", PREFIX);
 
         AWItems.automationHammerWood = new ItemHammer("wooden_hammer", ToolMaterial.WOOD);
         GameRegistry.registerItem(AWItems.automationHammerWood, "wooden_hammer");
@@ -43,11 +45,27 @@ public class AWCoreItemLoader {
         AWItems.quillDiamond = new ItemQuill("diamond_quill", ToolMaterial.EMERALD);
         GameRegistry.registerItem(AWItems.quillDiamond, "diamond_quill");
 
-        AWItems.componentItem = new ItemComponent("component");
-        GameRegistry.registerItem(AWItems.componentItem, "component");
+        AWItems.componentItem = (ItemBase)register(new ItemComponent(), "component");
 
-        AWItems.steel_ingot = new ItemSteelIngot("steel_ingot");
-        GameRegistry.registerItem(AWItems.steel_ingot, "steel_ingot");
+        AWItems.steel_ingot = register(new Item().setCreativeTab(AWCoreBlockLoader.coreTab), "steel_ingot", PREFIX);
     }
 
+    public Item register(Item item, String name){
+        item.setUnlocalizedName(name);
+        GameRegistry.registerItem(item, name);
+        return item;
+    }
+
+    public Item register(Item item, String name, String textPrefix){
+        item.setTextureName(textPrefix+name);
+        return register(item, name);
+    }
+
+    public String getName(ToolMaterial material){
+        if(material == ToolMaterial.WOOD)
+            return "wooden";
+        else if(material == ToolMaterial.EMERALD)
+            return "diamond";
+        return material.toString().toLowerCase(Locale.ENGLISH);
+    }
 }

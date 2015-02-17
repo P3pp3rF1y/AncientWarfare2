@@ -16,10 +16,8 @@ import java.util.List;
 
 public class ItemBackpack extends Item implements IItemClickable {
 
-    public ItemBackpack(String regName) {
-        this.setUnlocalizedName(regName);
+    public ItemBackpack() {
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
-        this.setTextureName("ancientwarfare:core/backpack");
         this.setMaxStackSize(1);
     }
 

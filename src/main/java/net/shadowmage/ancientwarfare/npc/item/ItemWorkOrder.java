@@ -13,11 +13,6 @@ import java.util.Collection;
 
 public class ItemWorkOrder extends ItemOrders {
 
-    public ItemWorkOrder(String name) {
-        super(name);
-        this.setTextureName("ancientwarfare:npc/"+name);
-    }
-
     @Override
     public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
         Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
