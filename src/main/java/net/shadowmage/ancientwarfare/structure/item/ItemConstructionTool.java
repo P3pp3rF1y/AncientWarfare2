@@ -283,7 +283,7 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
                 pos2 = new BlockPosition(tag.getCompoundTag("pos2"));
             }
             if (tag.hasKey("block")) {
-                block = (Block) Block.blockRegistry.getObject(tag.getString("block"));
+                block = Block.getBlockFromName(tag.getString("block"));
             }
             if (tag.hasKey("meta")) {
                 meta = tag.getInteger("meta");

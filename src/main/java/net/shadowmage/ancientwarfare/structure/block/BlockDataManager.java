@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -55,10 +56,8 @@ public class BlockDataManager {
         loadBlockPriorities(StringTools.getResourceLines(AWCoreStatics.resourcePath + "block_priorities.csv"));
         loadBlockItems(StringTools.getResourceLines(AWCoreStatics.resourcePath + "block_items.csv"));
 
-        Set keys = Block.blockRegistry.getKeys();
-        Block block;
-        for (Object key : keys) {
-            block = (Block) Block.blockRegistry.getObject(key);
+        Iterable<Block> blocks = GameData.getBlockRegistry().typeSafeIterable();
+        for (Block block : blocks) {
             if (block == null) {
                 return;
             }
@@ -162,7 +161,7 @@ public class BlockDataManager {
                 }
                 //leave null;
             } else {
-                item = (Item) Item.itemRegistry.getObject("minecraft:" + itemName);
+                item = (Item) Item.itemRegistry.getObject(itemName);
                 if (item != null) {
                     info.metaStacks[blockMeta] = new ItemStack(item, itemQuantity, itemDamage);
                 } else {
@@ -244,7 +243,7 @@ public class BlockDataManager {
      * get the Block for the 1.7 name
      */
     public Block getBlockForName(String name) {
-        Block b = (Block) Block.blockRegistry.getObject(name);
+        Block b = Block.getBlockFromName(name);
         if (b == null) {
             if (blockNameToBlock.containsKey(name)) {
                 return blockNameToBlock.get(name);

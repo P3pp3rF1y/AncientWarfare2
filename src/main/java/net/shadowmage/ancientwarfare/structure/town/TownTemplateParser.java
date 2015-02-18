@@ -79,7 +79,7 @@ public class TownTemplateParser {
             } else if (lower.startsWith("randomvillagersperchunk")) {
                 template.setRandomVillagersPerChunk(StringTools.safeParseFloat("=", line));
             } else if (lower.startsWith("roadblock")) {
-                template.setRoadFillBlock((Block) Block.blockRegistry.getObject(StringTools.safeParseString("=", line)));
+                template.setRoadFillBlock(Block.getBlockFromName(StringTools.safeParseString("=", line)));
             } else if (lower.startsWith("roadmeta")) {
                 template.setRoadFillMeta(StringTools.safeParseInt("=", line));
             } else if (lower.startsWith("biomewhitelist")) {
