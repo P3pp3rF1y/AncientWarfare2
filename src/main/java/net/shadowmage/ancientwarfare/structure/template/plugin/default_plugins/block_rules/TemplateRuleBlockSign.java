@@ -58,13 +58,16 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
         } else {
             meta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);
         }
-        world.setBlock(x, y, z, block, meta, 2);
-        TileEntitySign te = (TileEntitySign) world.getTileEntity(x, y, z);
-        te.signText = new String[this.signContents.length];
-        for (int i = 0; i < this.signContents.length; i++) {
-            te.signText[i] = this.signContents[i];
+        if(world.setBlock(x, y, z, block, meta, 2)) {
+            TileEntitySign te = (TileEntitySign) world.getTileEntity(x, y, z);
+            if(te!=null) {
+                te.signText = new String[this.signContents.length];
+                for (int i = 0; i < this.signContents.length; i++) {
+                    te.signText[i] = this.signContents[i];
+                }
+            }
+            world.markBlockForUpdate(x, y, z);
         }
-        world.markBlockForUpdate(x, y, z);
     }
 
     @Override
