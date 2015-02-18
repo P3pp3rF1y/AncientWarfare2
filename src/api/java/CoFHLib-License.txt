@@ -1,0 +1,22 @@
+
+License and Modpacks
+
+
+We’ve had a LOT of requests for something formal up here as well as tons of modpack requests, and we’re grateful for the community’s enthusiasm for the mod. Thank you. :) So here you go.
+
+Thermal Expansion License
+
+Thermal Expansion is a mod for an awesome game (MineCraft) made possible by a fantastic API (Forge) and the efforts of a lot of really great coders (not us) who contribute a LOT to the community. The fact that Mojang is willing to allow mods to their game combined with the efforts of those who make the community what it is means that any sort of legal, enforceable claim over the contents of this mod is absurd.
+
+Having said that, I (King Lemming) am somewhat particular about my code and this started as a personal project to learn Java. I request that anyone who decompiles Thermal Expansion please ask first. Realistically, I have no way of stopping you and do not plan on being a jerk and obfuscating the code, so fire away I guess, but a courtesy ping would be nice. Also, if you copy any features or ideas from what you glean from the code, I also request that you give credit for said ideas or features.
+
+One Exception (sorry):
+The Tabbed GUI interface must remain Open Source as it was derived from BuildCraft and that is part of the BuildCraft license.
+
+Regarding Modpacks
+
+This is the Internet. Even if you don’t like us (we still like you, really) for some reason, we can’t (and wouldn’t) stop you and maintain any semblance of a moral high ground, so have fun. Permission granted. This was made to be played, after all.
+
+A courtesy notification is definitely appreciated, as well as a link to the wiki. As a consideration to the community, I would request that you make all possible efforts in order to comply with the respective licenses and terms of all other mods in your pack.
+
+If anything here is not acceptable to you (not sure what), please feel free to contact us and we can work something out.

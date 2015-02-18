@@ -21,10 +21,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
 
-@Optional.InterfaceList(value =
-        {
-                @Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore", striprefs = true),
-        })
+@Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore", striprefs = true)
 public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler {
 
     /**

@@ -33,10 +33,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
 
-@Optional.InterfaceList(value =
-        {
-                @Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore", striprefs = true)
-        })
+@Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore", striprefs = true)
 public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInteractableTile, IOwnable, ITorqueTile, IRotatableTile, IEnergyHandler, IChunkLoaderTile {
 
     protected String owningPlayer = "";
