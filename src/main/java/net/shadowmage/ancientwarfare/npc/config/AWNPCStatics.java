@@ -350,21 +350,21 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     private void loadFoodValues() {
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.apple), 3000);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.mushroom_stew), 4500);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.bread), 3750);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.carrot), 3000);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.potato), 1750);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.baked_potato), 4500);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.beef), 2250);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_beef), 6000);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.chicken), 1500);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_chicken), 4500);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_fished), 4500);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.porkchop), 2250);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cooked_porkchop), 6000);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.cookie), 1500);
-        foodConfig.get(foodSettings, Item.itemRegistry.getNameForObject(Items.pumpkin_pie), 6000);
+        foodConfig.get(foodSettings, "apple", 3000);
+        foodConfig.get(foodSettings, "mushroom_stew", 4500);
+        foodConfig.get(foodSettings, "bread", 3750);
+        foodConfig.get(foodSettings, "carrot", 3000);
+        foodConfig.get(foodSettings, "potato", 1750);
+        foodConfig.get(foodSettings, "baked_potato", 4500);
+        foodConfig.get(foodSettings, "beef", 2250);
+        foodConfig.get(foodSettings, "cooked_beef", 6000);
+        foodConfig.get(foodSettings, "chicken", 1500);
+        foodConfig.get(foodSettings, "cooked_chicken", 4500);
+        foodConfig.get(foodSettings, "cooked_fished", 4500);
+        foodConfig.get(foodSettings, "porkchop", 2250);
+        foodConfig.get(foodSettings, "cooked_porkchop", 6000);
+        foodConfig.get(foodSettings, "cookie", 1500);
+        foodConfig.get(foodSettings, "pumpkin_pie", 6000);
 
 
         ConfigCategory category = foodConfig.getCategory(foodSettings);
