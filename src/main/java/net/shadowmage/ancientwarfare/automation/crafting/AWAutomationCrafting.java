@@ -158,90 +158,6 @@ public class AWAutomationCrafting {
                 'c', Blocks.chest,
                 'g', woodenGear.copy());
 
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteWarehouse), "trade",
-                "_p_",
-                "_c_",
-                "_c_",
-                '_', Blocks.planks,
-                'p', Items.paper,
-                'c', Blocks.chest);
-
-        //warehouse interface
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.warehouseInterface), "trade",
-                "_p_",
-                "_c_",
-                "___",
-                '_', Blocks.planks,
-                'p', Items.paper,
-                'c', Blocks.chest);
-
-        //warehouse crafting
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.warehouseCrafting), "trade",
-                "_p_",
-                "_w_",
-                "_i_",
-                '_', Blocks.planks,
-                'p', Items.paper,
-                'w', Blocks.crafting_table,
-                'i', Items.iron_ingot);
-
-        //warehouse small storage
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.warehouseStorageBlock, 1, 0), "trade",
-                "p_p",
-                "_c_",
-                "p_p",
-                'p', Blocks.planks,
-                'c', Blocks.chest);
-
-        //warehouse med storage
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.warehouseStorageBlock, 1, 1), "trade",
-                "pip",
-                "_c_",
-                "pip",
-                'p', Blocks.planks,
-                'c', Blocks.chest,
-                'i', Items.iron_ingot);
-
-        //warehouse large storage
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.warehouseStorageBlock, 1, 2), "trade",
-                "pip",
-                "ici",
-                "pip",
-                'p', Blocks.planks,
-                'c', Blocks.chest,
-                'i', Items.iron_ingot);
-
-        //warehouse stock-viewer
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.warehouseStockViewer), "trade",
-                "p",
-                "s",
-                's', Items.sign,
-                'p', Items.paper);
-
-        //mailbox
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.mailbox), "navigation",
-                "ici",
-                "i_i",
-                "ici",
-                'i', Items.iron_ingot,
-                'c', Blocks.chest);
-
-        //chunkloader simple
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderSimple), "mathematics",
-                "bbb",
-                "beb",
-                "bbb",
-                'b', Blocks.stonebrick,
-                'e', Items.ender_pearl);
-
-        //chunkloader deluxe
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.chunkLoaderDeluxe), "machinery",
-                "bbb",
-                "beb",
-                "bbb",
-                'b', Blocks.obsidian,
-                'e', Items.ender_pearl);
-
         //torque conduit s
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit, 1, 0), "the_wheel",
                 "_s_",
@@ -338,30 +254,6 @@ public class AWAutomationCrafting {
                 'i', AWItems.steel_ingot,
                 'g', steelGear.copy());
 
-        //torque flywheel s
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheelStorage, 1, 0), "theory_of_gravity",
-                "gpg",
-                "ppp",
-                "gpg",
-                'p', Blocks.planks,
-                'g', Blocks.glass_pane);
-
-        //torque flywheel m
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheelStorage, 1, 1), "theory_of_gravity",
-                "gpg",
-                "ppp",
-                "ggg",
-                'p', Items.iron_ingot,
-                'g', Blocks.glass_pane);
-
-        //torque flywheel l
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheelStorage, 1, 2), "mass_production",
-                "gpg",
-                "ppp",
-                "ggg",
-                'p', AWItems.steel_ingot,
-                'g', Blocks.glass_pane);
-
         //torque generator hand
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.handCrankedEngine), "the_wheel",
                 "igi",
@@ -394,14 +286,6 @@ public class AWAutomationCrafting {
                 "ppp",
                 'i', Blocks.planks,
                 'g', woodenGear.copy());
-
-        //torque generator windmill blade
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.windmillBlade), "the_wheel",
-                "scs",
-                "csc",
-                "scs",
-                'c', Blocks.wool,
-                's', Items.stick);
 
         ItemStack upgradeBoundsMed = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.SIZE_MEDIUM.flag());//engineering
         ItemStack upgradeBoundsLarge = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.SIZE_LARGE.flag());//mathematics

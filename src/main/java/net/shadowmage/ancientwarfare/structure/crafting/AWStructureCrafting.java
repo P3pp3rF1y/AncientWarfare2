@@ -14,11 +14,6 @@ public class AWStructureCrafting {
      * load any recipes for automation module recipes
      */
     public static void loadRecipes() {
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWBlocks.draftingStation), "construction",
-                "_p_",
-                "_w_",
-                "_s_",
-                '_', Blocks.planks, 'p', Items.paper, 'w', Blocks.crafting_table, 's', Blocks.stone);
 
         AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.verticalWooden"), "construction",
                 "sps",

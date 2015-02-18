@@ -1,0 +1,60 @@
+#Define crafts that use the research system
+#research_name, item_name, item_damage, item_count, crafting_row ...(any number, width limited at 3 chars max), (crafting_char, crafting_item_name)... as often as needed to define all characters
+#Crafting items can be alternatively defined with: (craft_item_name, craft_item_damage, craft_item_count) or by "forge dictionary" name
+##CORE
+engineering,AncientWarfare:wooden_hammer,0,1,_s_,msm,_s_,m,planks,s,stick
+engineering,AncientWarfare:stone_hammer,0,1,_s_,msm,_s_,m,stone,s,stick
+engineering,AncientWarfare:iron_hammer,0,1,_s_,msm,_s_,m,iron_ingot,s,stick
+engineering,AncientWarfare:gold_hammer,0,1,_s_,msm,_s_,m,gold_ingot,s,stick
+engineering,AncientWarfare:diamond_hammer,0,1,_s_,msm,_s_,m,diamond,s,stick
+engineering,AncientWarfare:wooden_quill,0,1,__f,_s_,m__,m,planks,s,stick,f,feather
+engineering,AncientWarfare:stone_quill,0,1,__f,_s_,m__,m,stone,s,stick,f,feather
+engineering,AncientWarfare:iron_quill,0,1,__f,_s_,m__,m,iron_ingot,s,stick,f,feather
+engineering,AncientWarfare:gold_quill,0,1,__f,_s_,m__,m,gold_ingot,s,stick,f,feather
+engineering,AncientWarfare:diamond_quill,0,1,__f,_s_,m__,m,diamond,s,stick,f,feather
+refining,AncientWarfare:steel_ingot,0,1,c,i,c,coal,i,iron_ingot
+#Backpacks by increasing size:
+trade,AncientWarfare:backpack,0,1,lwl,www,lwl,l,leather,w,wool
+trade,AncientWarfare:backpack,1,1,lwl,wcw,lwl,l,leather,w,wool,c,chest
+trade,AncientWarfare:backpack,2,1,lcl,wcw,lwl,l,leather,w,wool,c,chest
+trade,AncientWarfare:backpack,3,1,lcl,wcw,lcl,l,leather,w,wool,c,chest
+
+##AUTOMATION
+trade,AncientWarfareAutomation:civic_warehouse,0,1,_p_,_c_,_c_,_,planks,p,paper,c,chest
+trade,AncientWarfareAutomation:warehouse_interface,0,1,_p_,_c_,___,_,planks,p,paper,c,chest
+trade,AncientWarfareAutomation:warehouse_crafting_station,0,1,_p_,_w_,_i_,_,planks,p,paper,w,crafting_table,i,iron_ingot
+#Warehouse storage by increasing size:
+trade,AncientWarfareAutomation:warehouse_storage,0,1,p_p,_c_,p_p,p,planks,c,chest
+trade,AncientWarfareAutomation:warehouse_storage,1,1,pip,_c_,pip,p,planks,c,chest,i,iron_ingot
+trade,AncientWarfareAutomation:warehouse_storage,2,1,pip,ici,pip,p,planks,c,chest,i,iron_ingot
+trade,AncientWarfareAutomation:warehouse_stock_viewer,0,1,p,s,s,sign,p,paper
+navigation,AncientWarfareAutomation:mailbox,0,1,ici,i_i,ici,i,iron_ingot,c,chest
+mathematics,AncientWarfareAutomation:chunk_loader_simple,0,1,bbb,beb,bbb,b,stonebrick,e,ender_pearl
+machinery,AncientWarfareAutomation:chunk_loader_deluxe,0,1,bbb,beb,bbb,b,obsidian,e,ender_pearl
+#torque flywheel small, medium, large
+theory_of_gravity,AncientWarfareAutomation:flywheel_storage,0,1,gpg,ppp,gpg,p,planks,g,glass_pane
+theory_of_gravity,AncientWarfareAutomation:flywheel_storage,1,1,gpg,ppp,ggg,p,iron_ingot,g,glass_pane
+mass_production,AncientWarfareAutomation:flywheel_storage,2,1,gpg,ppp,ggg,p,AncientWarfare:steel_ingot,g,glass_pane
+the_wheel,AncientWarfareAutomation:windmill_blade,0,1,scs,csc,scs,c,wool,s,stick
+
+##NPC
+command,AncientWarfareNpc:wooden_command_baton,0,1,__m,_i_,s__,m,planks,s,stick,i,iron_ingot
+command,AncientWarfareNpc:stone_command_baton,0,1,__m,_i_,s__,m,stone,s,stick,i,iron_ingot
+command,AncientWarfareNpc:iron_command_baton,0,1,__i,_i_,s__,s,stick,i,iron_ingot
+command,AncientWarfareNpc:gold_command_baton,0,1,__m,_i_,s__,m,gold_ingot,s,stick,i,iron_ingot
+command,AncientWarfareNpc:diamond_command_baton,0,1,__m,_i_,s__,m,diamond,s,stick,i,iron_ingot
+#Orders use dictionary names for dyes
+leadership,AncientWarfareNpc:upkeep_order,0,1,d,p,w,d,dyeBlack,w,planks,p,paper
+leadership,AncientWarfareNpc:work_order,0,1,d,p,w,d,dyeGray,w,planks,p,paper
+trade,AncientWarfareNpc:routing_order,0,1,d,p,w,d,dyeLightGray,w,planks,p,paper
+leadership,AncientWarfareNpc:combat_order,0,1,d,p,w,d,dyeRed,w,planks,p,paper
+trade,AncientWarfareNpc:trade_order,0,1,d,p,w,d,dyeGreen,w,planks,p,paper
+#lute, flute, harp, drum
+leadership,AncientWarfareNpc:bard_instrument,0,1,__s,pi_,pp_,s,stick,p,planks,i,iron_ingot
+leadership,AncientWarfareNpc:bard_instrument,1,1,__s,_s_,i__,s,stick,i,iron_ingot
+leadership,AncientWarfareNpc:bard_instrument,2,1,ss_,SSs,ss_,s,stick,S,string
+leadership,AncientWarfareNpc:bard_instrument,3,1,plp,_p_,p,planks,l,leather
+leadership,AncientWarfareNpc:town_hall,0,1,sgs,_c_,s_s,_,logWood,c,chest,s,stonebrick
+
+##STRUCTURE
+construction,AncientWarfareStructure:drafting_station,0,1,_p_,_w_,_s_,_,planks,p,paper,w,crafting_table,s,stone
