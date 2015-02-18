@@ -20,8 +20,12 @@
  */
 package net.shadowmage.ancientwarfare.core.util;
 
+import cpw.mods.fml.common.registry.GameData;
 import io.netty.buffer.ByteBuf;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.io.*;
 import java.util.*;
@@ -242,6 +246,43 @@ public class StringTools {
         return "";
     }
 
+    /**
+     *
+     * @param name of the item to search in the registries
+     * @return the item instance, or null if none is found
+     */
+    public static Item safeParseItem(String name){
+        Item item = GameData.getItemRegistry().getObject(name);
+        if(item == GameData.getItemRegistry().getDefaultValue()) {
+            Block block = GameData.getBlockRegistry().getObject(name);
+            if (block == GameData.getBlockRegistry().getDefaultValue())
+                return null;
+            else
+                return Item.getItemFromBlock(block);
+        }
+        return item;
+    }
+
+    /**
+     *
+     * @param name of the item to search in the registries
+     * @param meta to parse for item damage
+     * @param qty to parse for item stack size
+     * @return the ItemStack instance, or null if any necessary argument is invalid
+     */
+    public static ItemStack safeParseStack(String name, String meta, String qty){
+
+        Item item = safeParseItem(name);
+        if(item == null) {
+            return null;
+        }
+        int i = StringTools.safeParseInt(qty);
+        if(i <= 0){
+            return null;
+        }
+        return new ItemStack(item, i, StringTools.safeParseInt(meta));
+    }
+
     public static int safeParseInt(String num) {
         try {
             return Integer.parseInt(num.trim());
@@ -362,7 +403,7 @@ public class StringTools {
      * @param path to file, incl. filename + extension, running-dir relative
      */
     public static List<String> getResourceLines(String path) {
-        InputStream is = BlockDataManager.class.getResourceAsStream(path);
+        InputStream is = AncientWarfareCore.class.getResourceAsStream(path);
         ArrayList<String> lines = new ArrayList<String>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String line;
