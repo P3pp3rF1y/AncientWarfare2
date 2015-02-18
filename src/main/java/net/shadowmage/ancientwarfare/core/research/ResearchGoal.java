@@ -1,9 +1,6 @@
 package net.shadowmage.ancientwarfare.core.research;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -122,8 +119,7 @@ public class ResearchGoal {
                 split = StringTools.parseStringArray(line);
                 id = StringTools.safeParseInt(split[0]);
                 name = split[1].startsWith("research.") ? split[1] : "research." + split[1];
-                time = StringTools.safeParseInt(split[2]);
-                time = AWCoreStatics.getResearchTimeFor(name, time);
+                time = AWCoreStatics.getResearchTimeFor(name, StringTools.safeParseInt(split[2]));
                 goal = new ResearchGoal(id, name);
                 goalsByID.put(id, goal);
                 goalsByName.put(name, goal);
@@ -153,33 +149,19 @@ public class ResearchGoal {
     private static void parseGoalResources(List<String> lines) {
         String[] split;
         String name;
-        String itemName;
-        int meta, qty;
-        Item item;
-        Block block;
-        ItemStack stack;
         for (String line : lines) {
             split = StringTools.parseStringArray(line);
             name = split[0].startsWith("research.") ? split[0] : "research." + split[0];
-            itemName = split[1];
-            meta = StringTools.safeParseInt(split[2]);
-            qty = StringTools.safeParseInt(split[3]);
             if (!goalsByName.containsKey(name)) {
-                throw new RuntimeException("Could not locate goal for name: " + name);
+                AWLog.logError("Could not locate goal for name: " + name);
+                continue;
             }
-            item = (Item) Item.itemRegistry.getObject(itemName);
-            if (item == null) {
-                block = (Block) Block.blockRegistry.getObject(itemName);
-                if (block == null || block == Blocks.air) {
-                    throw new RuntimeException("Could not locate item for name: " + itemName);
-                } else {
-                    stack = new ItemStack(block, qty, meta);
-                    goalsByName.get(name).addResource(stack);
-                }
-            } else {
-                stack = new ItemStack(item, qty, meta);
-                goalsByName.get(name).addResource(stack);
+            ItemStack stack = StringTools.safeParseStack(split[1], split[2], split[3]);
+            if(stack == null) {
+                AWLog.logError("Could not locate item for name: " + split[1]);
+                continue;
             }
+            goalsByName.get(name).addResource(stack);
         }
     }
 
