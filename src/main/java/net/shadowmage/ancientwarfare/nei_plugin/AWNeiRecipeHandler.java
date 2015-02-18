@@ -59,6 +59,13 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
     }
 
     @Override
+    public TemplateRecipeHandler newInstance() {
+        transferRects.clear();
+        arecipes.clear();
+        return this;
+    }
+
+    @Override
     public void loadTransferRects() {
         transferRects.add(new RecipeTransferRect(new Rectangle(84, 23, 24, 18), "awcrafting"));
     }
@@ -73,7 +80,7 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
         List<RecipeResearched> allrecipes = AWCraftingManager.INSTANCE.getRecipes();
         for (RecipeResearched irecipe : allrecipes) {
             if (InventoryTools.doItemStacksMatch(irecipe.getRecipeOutput(), result)) {
-                this.arecipes.add(new AWCachedRecipe(irecipe));
+                arecipes.add(new AWCachedRecipe(irecipe));
             }
         }
     }

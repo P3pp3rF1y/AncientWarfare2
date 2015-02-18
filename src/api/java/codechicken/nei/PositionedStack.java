@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Simply an {@link ItemStack} with position.
- * Mainly used in the recipe handlers.
+ * From NotEnoughItems.
+ * A dummy class, keeping only signatures and docs.
  */
 public class PositionedStack
 {
@@ -26,11 +26,6 @@ public class PositionedStack
     {
         relx = x;
         rely = y;
-
-        if(genPerms)
-            generatePermutations();
-        else
-            setPermutationToRender(0);
     }
 
     public PositionedStack(Object object, int x, int y)
@@ -40,36 +35,10 @@ public class PositionedStack
 
     public void generatePermutations()
     {
-        if(permutated)
-            return;
-
-        ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
-        for(ItemStack item : items)
-        {
-            if(item == null || item.getItem() == null)
-                continue;
-
-            if(item.getItemDamage() == Short.MAX_VALUE)
-            {
-                continue;
-            }
-
-            stacks.add(item.copy());
-        }
-        items = stacks.toArray(new ItemStack[0]);
-
-        if(items.length == 0)
-            items = new ItemStack[]{new ItemStack(Blocks.fire)};
-
-        permutated = true;
-        setPermutationToRender(0);
     }
 
     public void setMaxSize(int i)
     {
-        for(ItemStack item : items)
-            if(item.stackSize > i)
-                item.stackSize = i;
     }
 
     public PositionedStack copy()
@@ -79,11 +48,6 @@ public class PositionedStack
 
     public void setPermutationToRender(int index)
     {
-        item = items[index].copy();
-        if(item.getItem() == null)
-            item = new ItemStack(Blocks.fire);
-        else if(item.getItemDamage() == OreDictionary.WILDCARD_VALUE)
-            item.setItemDamage(0);
     }
 
     public boolean contains(ItemStack ingredient)
@@ -93,10 +57,6 @@ public class PositionedStack
 
     public boolean contains(Item ingred)
     {
-        for(ItemStack item : items)
-            if(item.getItem() == ingred)
-                return true;
-
         return false;
     }
 }

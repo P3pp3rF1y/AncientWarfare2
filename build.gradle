@@ -29,15 +29,6 @@ buildscript {
   group = "shadowmage"
   archivesBaseName = "ancientwarfare"
 
-dependencies {
-  /*compile files {
-    "lib/NotEnoughItems-1.7.10-1.0.3.67-dev.jar"
-  }*/
-  compile files {
-    "lib/CoFHLib-[1.7.10]1.0.0B7-dev-29.jar"
-  }  
-}
-
 task updateVersion(type:Copy){
   ant.propertyfile(file: versionFile) {
     entry(key: 'build', type: 'int', operation: '+', value: 001)

@@ -22,7 +22,6 @@
     <orderEntry type="library" exported="" name="Gradle: guava-17.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: log4j-api-2.0-beta9" level="project" />
     <orderEntry type="library" exported="" name="Gradle: log4j-core-2.0-beta9" level="project" />
-    <orderEntry type="library" exported="" name="CoFHLib-[1.7.10]1.0.0B7-dev-29" level="project" />
     <orderEntry type="library" exported="" name="Gradle: net.minecraft:launchwrapper:1.11" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.ow2.asm:asm-debug-all:5.0.3" level="project" />
@@ -80,15 +79,6 @@
     <orderEntry type="library" exported="" name="Gradle: tv.twitch:twitch-platform:5.16:natives-windows-64" level="project" />
     <orderEntry type="library" exported="" name="Gradle: tv.twitch:twitch-external-platform:4.5:natives-windows-32" level="project" />
     <orderEntry type="library" exported="" name="Gradle: tv.twitch:twitch-external-platform:4.5:natives-windows-64" level="project" />
-    <orderEntry type="module-library" exported="">
-      <library name="Gradle: CoFHLib-[1.7.10]1.0.0B7-dev-29">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/CoFHLib-[1.7.10]1.0.0B7-dev-29.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="module-library" exported="" scope="RUNTIME">
       <library name="Gradle: D__Modding_Caches__gradle_caches_minecraft_net_minecraftforge_forge_1_7_10_10_13_2_1286_start">
         <CLASSES>

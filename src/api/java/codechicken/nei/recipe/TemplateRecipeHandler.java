@@ -11,11 +11,8 @@ import java.util.*;
 import java.util.List;
 
 /**
- * A Template Recipe Handler!
- * How about that.
- * Because it was sooo hard, and more seriously required lots of copied code to make a handler in the past.
- * you can now extend this class to make your custom recipe handlers much easier to create.
- * Just look at the 5 handlers included by default to work out how to do stuff if you are still stuck.
+ * From NotEnoughItems Template Recipe Handler.
+ * A dummy class, keeping only signatures and docs.
  */
 public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageHandler {
     /**
@@ -23,7 +20,6 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      * Fill the recipe array with subclasses of this to make transforming the different types of recipes out there into a nice format for NEI a much easier job.
      */
     public abstract class CachedRecipe {
-        final long offset = System.currentTimeMillis();
 
         /**
          * @return The item produced by this recipe, with position
@@ -37,11 +33,7 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
          * @return A list of positioned ingredient items.
          */
         public List<PositionedStack> getIngredients() {
-            ArrayList<PositionedStack> stacks = new ArrayList<PositionedStack>();
-            PositionedStack stack = getIngredient();
-            if (stack != null)
-                stacks.add(stack);
-            return stacks;
+            return new ArrayList<PositionedStack>();
         }
 
         /**
@@ -55,15 +47,10 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
          * This will perform default cycling of ingredients, mulitItem capable
          */
         public List<PositionedStack> getCycledIngredients(int cycle, List<PositionedStack> ingredients) {
-            for (int itemIndex = 0; itemIndex < ingredients.size(); itemIndex++)
-                randomRenderPermutation(ingredients.get(itemIndex), cycle + itemIndex);
-
             return ingredients;
         }
 
         public void randomRenderPermutation(PositionedStack stack, long cycle) {
-            Random rand = new Random(cycle + offset);
-            stack.setPermutationToRender(Math.abs(rand.nextInt()) % stack.items.length);
         }
     }
 
@@ -77,17 +64,6 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
             rect = rectangle;
             this.outputId = outputId;
             this.results = results;
-        }
-
-        public boolean equals(Object obj) {
-            if (!(obj instanceof RecipeTransferRect))
-                return false;
-
-            return rect.equals(((RecipeTransferRect) obj).rect);
-        }
-
-        public int hashCode() {
-            return rect.hashCode();
         }
 
         Rectangle rect;
@@ -125,8 +101,6 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      * @param results  Objects representing the results that matching recipes must produce.
      */
     public void loadCraftingRecipes(String outputId, Object... results) {
-        if (outputId.equals("item"))
-            loadCraftingRecipes((ItemStack) results[0]);
     }
 
     /**
@@ -144,8 +118,6 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      * @param ingredients Objects representing the ingredients that matching recipes must contain.
      */
     public void loadUsageRecipes(String inputId, Object... ingredients) {
-        if (inputId.equals("item"))
-            loadUsageRecipes((ItemStack) ingredients[0]);
     }
 
     /**
@@ -174,12 +146,6 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      * @return The gui classes to which the transfer rects added in the constructor are to be located over. null if none.
      */
     public List<Class<? extends GuiContainer>> getRecipeTransferRectGuis() {
-        Class<? extends GuiContainer> clazz = getGuiClass();
-        if (clazz != null) {
-            LinkedList<Class<? extends GuiContainer>> list = new LinkedList<Class<? extends GuiContainer>>();
-            list.add(clazz);
-            return list;
-        }
         return null;
     }
 
@@ -211,6 +177,6 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
     }
 
     public boolean hasOverlay(GuiContainer gui, net.minecraft.inventory.Container container, int recipe) {
-        return RecipeInfo.hasDefaultOverlay(gui, getOverlayIdentifier()) || RecipeInfo.hasOverlayHandler(gui, getOverlayIdentifier());
+        return false;
     }
 }
