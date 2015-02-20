@@ -380,7 +380,7 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
         if (!player.worldObj.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_STATION, xCoord, yCoord, zCoord);
         }
-        return false;
+        return true;
     }
 
     @Override

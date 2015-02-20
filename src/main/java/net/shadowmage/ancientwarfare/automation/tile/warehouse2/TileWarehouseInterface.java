@@ -163,7 +163,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
         if (!player.worldObj.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_OUTPUT, xCoord, yCoord, zCoord);
         }
-        return false;
+        return true;
     }
 
     @Override

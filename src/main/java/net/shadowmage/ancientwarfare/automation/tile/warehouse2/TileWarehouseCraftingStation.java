@@ -143,7 +143,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         if (!player.worldObj.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CRAFTING, xCoord, yCoord, zCoord);
         }
-        return false;
+        return true;
     }
 
 }

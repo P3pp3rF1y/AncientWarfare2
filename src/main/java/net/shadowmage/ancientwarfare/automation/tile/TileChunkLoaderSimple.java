@@ -19,6 +19,7 @@ public class TileChunkLoaderSimple extends TileEntity implements IInteractableTi
 
     }
 
+    @Override
     public boolean canUpdate() {
         return false;
     }
@@ -88,7 +89,7 @@ public class TileChunkLoaderSimple extends TileEntity implements IInteractableTi
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        return true;
+        return false;
     }
 
     @Override

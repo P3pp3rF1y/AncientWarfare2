@@ -254,7 +254,6 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     public boolean onBlockClicked(EntityPlayer player) {
         if (!player.worldObj.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_QUARRY, xCoord, yCoord, zCoord);
-            return true;
         }
         return true;
     }

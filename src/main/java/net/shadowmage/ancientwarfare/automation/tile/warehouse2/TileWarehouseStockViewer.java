@@ -109,7 +109,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         if (!player.worldObj.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STOCK, xCoord, yCoord, zCoord);
         }
-        return false;
+        return true;
     }
 
     @Override

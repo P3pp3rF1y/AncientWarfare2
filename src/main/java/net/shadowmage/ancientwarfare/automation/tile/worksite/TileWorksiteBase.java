@@ -191,9 +191,6 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 //*************************************** TILE INTERACTION METHODS ***************************************//
 
     @Override
-    public abstract boolean onBlockClicked(EntityPlayer player);
-
-    @Override
     public final Team getTeam() {
         if (owningPlayer != null) {
             return worldObj.getScoreboard().getPlayersTeam(owningPlayer);

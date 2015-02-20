@@ -56,10 +56,7 @@ public class BlockWarehouseCraftingStation extends Block {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ) {
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof IInteractableTile) {
-            ((IInteractableTile) te).onBlockClicked(player);
-        }
-        return true;
+        return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
     }
 
     @Override

@@ -302,7 +302,6 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
     public boolean onBlockClicked(EntityPlayer player) {
         if (!player.worldObj.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_CROP_FARM, xCoord, yCoord, zCoord);
-            return true;
         }
         return true;
     }

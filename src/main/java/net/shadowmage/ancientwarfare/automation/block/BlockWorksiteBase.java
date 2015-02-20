@@ -113,7 +113,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
                 return ((IInteractableTile) te).onBlockClicked(player);
             }
         }
-        return true;
+        return false;
     }
 
     @Override

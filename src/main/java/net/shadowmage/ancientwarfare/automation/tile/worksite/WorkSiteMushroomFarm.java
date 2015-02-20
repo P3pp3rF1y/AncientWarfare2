@@ -198,7 +198,6 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
     public boolean onBlockClicked(EntityPlayer player) {
         if (!player.worldObj.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, xCoord, yCoord, zCoord);
-            return true;
         }
         return true;
     }

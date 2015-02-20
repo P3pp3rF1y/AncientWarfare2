@@ -77,9 +77,6 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     }
 
     @Override
-    public abstract boolean onBlockClicked(EntityPlayer player);
-
-    @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (inventory != null) {

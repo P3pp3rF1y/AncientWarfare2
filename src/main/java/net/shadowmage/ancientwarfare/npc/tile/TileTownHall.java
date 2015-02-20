@@ -241,7 +241,7 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
         if (!player.worldObj.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TOWN_HALL, xCoord, yCoord, zCoord);
         }
-        return false;
+        return true;
     }
 
     public List<NpcDeathEntry> getDeathList() {
