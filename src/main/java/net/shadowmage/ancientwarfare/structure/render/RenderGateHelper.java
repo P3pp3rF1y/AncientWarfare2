@@ -35,14 +35,8 @@ import java.util.HashMap;
 
 public class RenderGateHelper extends Render {
 
-    Minecraft mc = Minecraft.getMinecraft();
-
-
     private HashMap<Integer, Render> gateRenders = new HashMap<Integer, Render>();
 
-    /**
-     *
-     */
     public RenderGateHelper() {
         this.addGateRender(0, new RenderGateBasic());
         this.addGateRender(1, new RenderGateBasic());

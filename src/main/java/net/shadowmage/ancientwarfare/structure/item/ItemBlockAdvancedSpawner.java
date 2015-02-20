@@ -62,8 +62,6 @@ public class ItemBlockAdvancedSpawner extends ItemBlock implements IItemKeyInter
         }
     }
 
-    SpawnerSettings tooltipSettings = new SpawnerSettings();
-
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     @SideOnly(Side.CLIENT)
@@ -73,6 +71,7 @@ public class ItemBlockAdvancedSpawner extends ItemBlock implements IItemKeyInter
             list.add(StatCollector.translateToLocal("guistrings.corrupt_item"));
             return;
         }
+        SpawnerSettings tooltipSettings = new SpawnerSettings();
         tooltipSettings.readFromNBT(par1ItemStack.getTagCompound().getCompoundTag("spawnerSettings"));
         List<EntitySpawnGroup> groups = tooltipSettings.getSpawnGroups();
         list.add(StatCollector.translateToLocal("guistrings.spawner.group_count") + ": " + groups.size());

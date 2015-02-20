@@ -12,6 +12,6 @@ public class ModuleStatus {
     //checked in automation module pre-init
     public static boolean buildCraftLoaded;
 
-    //checked...who knows where...
+    //checked in automation module pre-init
     public static boolean redstoneFluxEnabled;
 }

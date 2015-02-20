@@ -317,7 +317,7 @@ public class ResearchData extends WorldSavedData {
                 if (found) {
                     goalsToValidate.add(exam);
                     it.remove();
-                } else if (!found && exam.intValue() == goalObject.intValue()) {
+                } else if (exam.intValue() == goalObject.intValue()) {
                     found = true;
                     it.remove();
                 }
@@ -333,9 +333,7 @@ public class ResearchData extends WorldSavedData {
             ResearchGoal g;
             for (Integer g1 : goalsToValidate) {
                 g = ResearchGoal.getGoal(g1);
-                if (g == null) {
-                    continue;
-                } else if (g.canResearch(totalResearch)) {
+                if (g != null && g.canResearch(totalResearch)) {
                     totalResearch.add(g1);
                     queuedResearch.add(g1);
                 }

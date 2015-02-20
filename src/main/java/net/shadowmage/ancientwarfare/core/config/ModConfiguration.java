@@ -64,7 +64,7 @@ public abstract class ModConfiguration {
     }
 
     public boolean autoExportOnUpdate() {
-        return this.autoExportOnUpdate();
+        return autoExportOnUpdate;
     }
 
 }

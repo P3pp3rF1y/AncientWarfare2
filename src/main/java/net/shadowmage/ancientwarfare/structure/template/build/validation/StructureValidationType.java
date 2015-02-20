@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -63,9 +64,7 @@ public enum StructureValidationType {
 
         properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_SWAP, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
 
-        for (StructureValidationProperty prop : props) {
-            properties.add(prop);
-        }
+        Collections.addAll(properties, props);
     }
 
     public List<StructureValidationProperty> getValidationProperties() {
