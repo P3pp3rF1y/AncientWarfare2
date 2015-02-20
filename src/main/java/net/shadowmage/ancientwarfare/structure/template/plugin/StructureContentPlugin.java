@@ -23,19 +23,18 @@ package net.shadowmage.ancientwarfare.structure.template.plugin;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 
 
-public abstract class StructureContentPlugin {
+public interface StructureContentPlugin {
 
     /**
      * implementing classes should use this callback to register any
      * block handlers with the passed in manager
      */
-    public abstract void addHandledBlocks(IStructurePluginManager manager);
+    public void addHandledBlocks(IStructurePluginManager manager);
 
     /**
      * implementing classes should use this callback to register any
      * entity handlers with the passed in manager
      */
-    public abstract void addHandledEntities(IStructurePluginManager manager);
-
+    public void addHandledEntities(IStructurePluginManager manager);
 
 }

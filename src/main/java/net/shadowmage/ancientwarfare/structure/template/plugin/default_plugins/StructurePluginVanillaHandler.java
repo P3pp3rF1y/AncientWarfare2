@@ -39,9 +39,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.e
 
 import java.util.HashSet;
 
-public class StructurePluginVanillaHandler extends StructureContentPlugin {
-
-    HashSet<Block> specialHandledBlocks = new HashSet<Block>();//just a temp cache to keep track of what blocks to not register with blanket block rule
+public class StructurePluginVanillaHandler implements StructureContentPlugin {
 
     public StructurePluginVanillaHandler() {
 
@@ -49,17 +47,17 @@ public class StructurePluginVanillaHandler extends StructureContentPlugin {
 
     @Override
     public void addHandledBlocks(IStructurePluginManager manager) {
+        HashSet<Block> specialHandledBlocks = new HashSet<Block>();
         specialHandledBlocks.add(Blocks.iron_door);
         specialHandledBlocks.add(Blocks.wooden_door);
         specialHandledBlocks.add(Blocks.standing_sign);
         specialHandledBlocks.add(Blocks.wall_sign);
         specialHandledBlocks.add(Blocks.mob_spawner);
         specialHandledBlocks.add(Blocks.command_block);
-        specialHandledBlocks.add(Blocks.skull);
-        specialHandledBlocks.add(Blocks.lit_furnace);
         specialHandledBlocks.add(Blocks.brewing_stand);
         specialHandledBlocks.add(Blocks.beacon);
         specialHandledBlocks.add(Blocks.dispenser);
+        specialHandledBlocks.add(Blocks.lit_furnace);
         specialHandledBlocks.add(Blocks.furnace);
         specialHandledBlocks.add(Blocks.chest);
         specialHandledBlocks.add(Blocks.dropper);
@@ -67,6 +65,7 @@ public class StructurePluginVanillaHandler extends StructureContentPlugin {
         specialHandledBlocks.add(Blocks.beacon);
         specialHandledBlocks.add(Blocks.trapped_chest);
         specialHandledBlocks.add(Blocks.flower_pot);
+        specialHandledBlocks.add(Blocks.skull);
 
         Block block;
         for (int i = 0; i < 256; i++) {
@@ -101,7 +100,6 @@ public class StructurePluginVanillaHandler extends StructureContentPlugin {
         manager.registerBlockHandler("awCoreLogic", AWBlocks.researchStation, TemplateRuleBlockLogic.class);
     }
 
-
     @Override
     public void addHandledEntities(IStructurePluginManager manager) {
         manager.registerEntityHandler("vanillaEntities", EntityPig.class, TemplateRuleVanillaEntity.class);
@@ -128,5 +126,4 @@ public class StructurePluginVanillaHandler extends StructureContentPlugin {
 
         manager.registerEntityHandler("awGate", EntityGate.class, TemplateRuleGates.class);
     }
-
 }

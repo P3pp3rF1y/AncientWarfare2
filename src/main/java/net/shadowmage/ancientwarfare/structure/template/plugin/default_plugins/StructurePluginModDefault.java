@@ -21,13 +21,23 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityHanging;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.inventory.IInventory;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleModBlocks;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityHanging;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleVanillaEntity;
 
 import java.util.Iterator;
 
-public class StructurePluginModDefault extends StructureContentPlugin {
+public class StructurePluginModDefault implements StructureContentPlugin {
 
     public StructurePluginModDefault() {
 
@@ -36,15 +46,28 @@ public class StructurePluginModDefault extends StructureContentPlugin {
     @SuppressWarnings("unchecked")
     @Override
     public void addHandledBlocks(IStructurePluginManager manager) {
-        Iterator<Block> it = Block.blockRegistry.iterator();
-        while (it.hasNext()) {
-            manager.registerBlockHandler("modBlockDefault", it.next(), TemplateRuleModBlocks.class);
+        for (Block aBlock : (Iterable<Block>) Block.blockRegistry) {
+            if(aBlock instanceof BlockContainer){
+                manager.registerBlockHandler("modBlockDefault", aBlock, TemplateRuleBlockLogic.class);
+            }else {
+                manager.registerBlockHandler("modBlockDefault", aBlock, TemplateRuleModBlocks.class);
+            }
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void addHandledEntities(IStructurePluginManager manager) {
-
+        for(Object obj : EntityList.classToStringMapping.keySet()) {
+            Class<? extends Entity> clazz = (Class<? extends Entity>) obj;
+            if(EntityHanging.class.isAssignableFrom(clazz)){
+                manager.registerEntityHandler("modEntityDefault", clazz, TemplateRuleEntityHanging.class);
+            }else if(IInventory.class.isAssignableFrom(clazz)){
+                manager.registerEntityHandler("modEntityDefault", clazz, TemplateRuleEntityLogic.class);
+            }else if(EntityAnimal.class.isAssignableFrom(clazz)){
+                manager.registerEntityHandler("modEntityDefault", clazz, TemplateRuleVanillaEntity.class);
+            }
+        }
     }
 
 }

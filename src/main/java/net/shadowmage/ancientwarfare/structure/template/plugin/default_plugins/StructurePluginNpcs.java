@@ -20,6 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.entity.*;
 import net.shadowmage.ancientwarfare.npc.entity.faction.*;
@@ -29,7 +31,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentP
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityNpc;
 
-public class StructurePluginNpcs extends StructureContentPlugin {
+public class StructurePluginNpcs implements StructureContentPlugin {
 
     public StructurePluginNpcs() {
 
@@ -42,56 +44,12 @@ public class StructurePluginNpcs extends StructureContentPlugin {
 
     @Override
     public void addHandledEntities(IStructurePluginManager manager) {
-        manager.registerEntityHandler("AWNpc", NpcCombat.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcWorker.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcCourier.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcTrader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcPriest.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcBard.class, TemplateRuleEntityNpc.class);
-
-        manager.registerEntityHandler("AWNpc", NpcBanditArcher.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcBanditSoldier.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcBanditLeader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcBanditPriest.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcBanditTrader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcBanditMountedArcher.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcBanditMountedSoldier.class, TemplateRuleEntityNpc.class);
-
-        manager.registerEntityHandler("AWNpc", NpcDesertArcher.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcDesertSoldier.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcDesertLeader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcDesertPriest.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcDesertTrader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcDesertMountedArcher.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcDesertMountedSoldier.class, TemplateRuleEntityNpc.class);
-
-        manager.registerEntityHandler("AWNpc", NpcVikingArcher.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcVikingSoldier.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcVikingLeader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcVikingPriest.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcVikingTrader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcVikingMountedArcher.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcVikingMountedSoldier.class, TemplateRuleEntityNpc.class);
-
-        manager.registerEntityHandler("AWNpc", NpcPirateArcher.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcPirateSoldier.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcPirateLeader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcPiratePriest.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcPirateTrader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcPirateMountedArcher.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcPirateMountedSoldier.class, TemplateRuleEntityNpc.class);
-
-        manager.registerEntityHandler("AWNpc", NpcNativeArcher.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcNativeSoldier.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcNativeLeader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcNativePriest.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcNativeTrader.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcNativeMountedArcher.class, TemplateRuleEntityNpc.class);
-        manager.registerEntityHandler("AWNpc", NpcNativeMountedSoldier.class, TemplateRuleEntityNpc.class);
-    }
-
-    public static void load() {
-        StructurePluginManager.instance().addPlugin(new StructurePluginNpcs());
+        for(Object obj : EntityList.classToStringMapping.keySet()) {
+            Class<? extends Entity> clazz = (Class<? extends Entity>) obj;
+            if(NpcBase.class.isAssignableFrom(clazz)){
+                manager.registerEntityHandler("AWNpc", clazz, TemplateRuleEntityNpc.class);
+            }
+        }
     }
 
 }

@@ -28,7 +28,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.b
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleTorqueTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleWorksite;
 
-public class StructurePluginAutomation extends StructureContentPlugin {
+public class StructurePluginAutomation implements StructureContentPlugin {
 
 
     public StructurePluginAutomation() {

@@ -24,7 +24,7 @@ import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 
-public class StructurePluginVehicles extends StructureContentPlugin {
+public class StructurePluginVehicles implements StructureContentPlugin {
 
     public StructurePluginVehicles() {
 
@@ -39,9 +39,4 @@ public class StructurePluginVehicles extends StructureContentPlugin {
     public void addHandledEntities(IStructurePluginManager manager) {
         //manager.registerEntityHandler("ancientWarfareVehicle", EntityVehicle.class, TemplateRuleEntityLogic.class);
     }
-
-    public static void load() {
-        StructurePluginManager.instance().addPlugin(new StructurePluginVehicles());
-    }
-
 }
