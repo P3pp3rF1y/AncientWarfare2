@@ -65,7 +65,7 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
         }
         ItemStructureSettings buildSettings = ItemStructureSettings.getSettingsFor(stack);
         if (buildSettings.hasName()) {
-            StructureTemplate template = StructureTemplateManager.instance().getTemplate(buildSettings.name);
+            StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(buildSettings.name);
             if (template == null) {
                 /**
                  * TODO add chat message
@@ -74,7 +74,7 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
             }
             BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
             StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", player.worldObj, StructureMap.class);
-            WorldStructureGenerator.instance().attemptStructureGenerationAt(player.worldObj, bpHit.x, bpHit.y, bpHit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), template, map);
+            WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt(player.worldObj, bpHit.x, bpHit.y, bpHit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), template, map);
         } else {
             /**
              * TODO add chat message

@@ -31,11 +31,11 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 public class AWStructureStatics extends ModConfiguration {
-
 
     public AWStructureStatics(Configuration config) {
         super(config);
@@ -131,7 +131,7 @@ public class AWStructureStatics extends ModConfiguration {
                 "that you have configured for generation.  E.G.  Max town size=16, this value should be >= 40.").getInt(townClosestDistance);
         townGenerationChance = (float) config.get(worldGenCategory, "town_generation_chance", townGenerationChance, "Default=" + townGenerationChance + "\n" +
                 "Accepts values between 0 and 1.0.  Decimal percent chance to -attempt- town generation for any given chunk.  Higher settings may result in" +
-                "more towns being generated, but may come with a peformance hit during new chunk generation.  Lower values WILL result in fewer towns, and" +
+                "more towns being generated, but may come with a performance hit during new chunk generation.  Lower values WILL result in fewer towns, and" +
                 "-may- improve performance during chunk generation.").getDouble(townGenerationChance);
 
         initializeDefaultSkippableBlocks();
@@ -772,17 +772,15 @@ public class AWStructureStatics extends ModConfiguration {
 
                 };
         targetBlocks = config.get(AWStructureStatics.targetBlocks, "target_blocks", targetBlocks).getStringList();
-        for (String st : targetBlocks) {
-            worldGenTargetBlocks.add(st);
-        }
+        Collections.addAll(worldGenTargetBlocks, targetBlocks);
     }
 
     public static boolean isValidTownTargetBlock(Block block) {
-        return block == null || block == Blocks.air ? false : townValidTargetBlocks.contains(BlockDataManager.instance().getNameForBlock(block));
+        return block == null || block == Blocks.air ? false : townValidTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block));
     }
 
     public static boolean skippableBlocksContains(Block block) {
-        return block == null ? true : block == Blocks.air ? true : skippableWorldGenBlocks.contains(BlockDataManager.instance().getNameForBlock(block));
+        return block == null ? true : block == Blocks.air ? true : skippableWorldGenBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block));
     }
 
     public static Set<String> getUserDefinedTargetBlocks() {
@@ -796,6 +794,10 @@ public class AWStructureStatics extends ModConfiguration {
     public static boolean shouldSkipScan(Block block) {
         return scannerSkippedBlocks.contains(Block.blockRegistry.getNameForObject(block));
     }
+
+        public static boolean withinProtectionRange(float dist){
+                return dist < spawnProtectionRange * spawnProtectionRange * 16 * 16;
+        }
 
     public void loadPostInitValues() {
         if (exportBlockNames) {
@@ -827,5 +829,4 @@ public class AWStructureStatics extends ModConfiguration {
             }
         }
     }
-
 }

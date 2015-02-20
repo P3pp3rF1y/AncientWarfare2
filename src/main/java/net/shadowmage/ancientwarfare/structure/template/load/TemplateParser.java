@@ -36,17 +36,13 @@ import java.util.List;
 
 public class TemplateParser {
 
+    public static final TemplateParser INSTANCE = new TemplateParser();
+
+    private final TemplateFormatConverter converter;
     private TemplateParser() {
+        converter = new TemplateFormatConverter();
     }
 
-    private static TemplateParser instance = new TemplateParser() {
-    };
-
-    public static TemplateParser instance() {
-        return instance;
-    }
-
-    private TemplateFormatConverter converter = new TemplateFormatConverter();
 
     public StructureTemplate parseTemplate(String fileName, List<String> templateLines) {
         try {

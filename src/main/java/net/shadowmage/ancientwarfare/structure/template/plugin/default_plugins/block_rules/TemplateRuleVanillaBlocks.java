@@ -44,10 +44,10 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
      */
     public TemplateRuleVanillaBlocks(World world, int x, int y, int z, Block block, int meta, int turns) {
         super(world, x, y, z, block, meta, turns);
-        this.blockName = BlockDataManager.instance().getNameForBlock(block);
+        this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.block = block;
-        this.meta = BlockDataManager.instance().getRotatedMeta(block, meta, turns);
-        this.buildPass = BlockDataManager.instance().getPriorityForBlock(block);
+        this.meta = BlockDataManager.INSTANCE.getRotatedMeta(block, meta, turns);
+        this.buildPass = BlockDataManager.INSTANCE.getPriorityForBlock(block);
     }
 
     public TemplateRuleVanillaBlocks() {
@@ -56,13 +56,13 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
-        int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);
+        int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         builder.placeBlock(x, y, z, block, localMeta, buildPass);
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z) {
-        return block != null && block == this.block && BlockDataManager.instance().getRotatedMeta(block, meta, turns) == this.meta;
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
+        return block != null && block == this.block && BlockDataManager.INSTANCE.getRotatedMeta(block, meta, turns) == this.meta;
     }
 
     @Override
@@ -71,8 +71,7 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
             return;
         }
 
-        ItemStack stack = null;
-        stack = BlockDataManager.instance().getInventoryStackForBlock(block, meta);
+        ItemStack stack = BlockDataManager.INSTANCE.getInventoryStackForBlock(block, meta);
         if (stack != null && stack.getItem() == null) {
             throw new IllegalArgumentException("Could not create item for block: " + block + " (lookup name: " + blockName + ") meta: " + meta);
         }
@@ -101,7 +100,7 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
     @Override
     public void parseRuleData(NBTTagCompound tag) {
         this.blockName = tag.getString("blockName");
-        this.block = BlockDataManager.instance().getBlockForName(blockName);
+        this.block = BlockDataManager.INSTANCE.getBlockForName(blockName);
         this.meta = tag.getInteger("meta");
         this.buildPass = tag.getInteger("buildPass");
     }

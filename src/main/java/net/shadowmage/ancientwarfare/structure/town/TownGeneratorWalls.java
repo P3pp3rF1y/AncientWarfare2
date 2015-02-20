@@ -88,19 +88,19 @@ public class TownGeneratorWalls {
                 int middle = (wallLength / 2);
                 if (index == middle)//return a rgate piece
                 {
-                    return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedGateLeft(rng));
+                    return StructureTemplateManager.INSTANCE.getTemplate(template.getRandomWeightedGateLeft(rng));
                 } else if (index == middle - 1) {
-                    return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedGateRight(rng));
+                    return StructureTemplateManager.INSTANCE.getTemplate(template.getRandomWeightedGateRight(rng));
                 } else {
-                    return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedWall(rng));
+                    return StructureTemplateManager.INSTANCE.getTemplate(template.getRandomWeightedWall(rng));
                 }
             } else {
                 int middle = (wallLength / 2);
                 if (index == middle)//return a gate piece
                 {
-                    return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedGate(rng));
+                    return StructureTemplateManager.INSTANCE.getTemplate(template.getRandomWeightedGate(rng));
                 } else {
-                    return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedWall(rng));
+                    return StructureTemplateManager.INSTANCE.getTemplate(template.getRandomWeightedWall(rng));
                 }
             }
         } else if (template.getWallStyle() == 3)//patterned
@@ -111,7 +111,7 @@ public class TownGeneratorWalls {
                 TownWallEntry entry = template.getWall(template.getWallPattern(wallLength)[index]);
                 if (entry != null) {
 //        AWLog.logDebug("found wall entry for index: "+entry.templateName+" :: "+entry.typeName);
-                    return StructureTemplateManager.instance().getTemplate(entry.templateName);
+                    return StructureTemplateManager.INSTANCE.getTemplate(entry.templateName);
                 } else {
 //        AWLog.logDebug("Could not locate wall entry for index: "+index);
                 }
@@ -121,14 +121,14 @@ public class TownGeneratorWalls {
     }
 
     private static StructureTemplate getCornerSection(Random rng, TownTemplate template) {
-        return StructureTemplateManager.instance().getTemplate(template.getRandomWeightedCorner(rng));
+        return StructureTemplateManager.INSTANCE.getTemplate(template.getRandomWeightedCorner(rng));
     }
 
     private static void constructTemplate(World world, StructureTemplate template, int face, int x, int y, int z) {
         if (template == null) {
             return;
         }
-        WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilder(world, template, face, x, y, z));
+        WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(world, template, face, x, y, z));
     }
 
 }

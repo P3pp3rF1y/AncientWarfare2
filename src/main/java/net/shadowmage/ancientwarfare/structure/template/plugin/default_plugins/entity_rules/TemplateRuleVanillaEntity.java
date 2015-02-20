@@ -60,7 +60,7 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException {
+    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws StructureBuildingException.EntityPlacementException {
         Entity e = EntityList.createEntityByName(mobID, world);
         if (e == null) {
             throw new StructureBuildingException.EntityPlacementException("Could not create entity for type: " + mobID);

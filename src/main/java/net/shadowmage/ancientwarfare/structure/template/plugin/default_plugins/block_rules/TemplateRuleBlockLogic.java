@@ -48,12 +48,12 @@ public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks {
         tag.setInteger("z", z);
         TileEntity te = world.getTileEntity(x, y, z);
         te.readFromNBT(tag);
-        int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);
+        int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
         return false;
     }
 

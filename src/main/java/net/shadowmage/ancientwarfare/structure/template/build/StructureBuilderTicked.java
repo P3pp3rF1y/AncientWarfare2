@@ -115,7 +115,7 @@ public class StructureBuilderTicked extends StructureBuilder {
     public void readFromNBT(NBTTagCompound tag)//should be called immediately after construction
     {
         String name = tag.getString("name");
-        StructureTemplate template = StructureTemplateManager.instance().getTemplate(name);
+        StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(name);
         if (template != null) {
             this.template = template;
             this.currentX = tag.getInteger("x");

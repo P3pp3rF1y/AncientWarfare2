@@ -88,7 +88,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IIt
         }
         ItemStructureSettings buildSettings = ItemStructureSettings.getSettingsFor(stack);
         if (buildSettings.hasName()) {
-            StructureTemplate template = StructureTemplateManager.instance().getTemplate(buildSettings.name);
+            StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(buildSettings.name);
             if (template == null) {
                 /**
                  * TODO add chat message

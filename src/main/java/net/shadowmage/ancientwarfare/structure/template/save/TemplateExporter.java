@@ -36,7 +36,7 @@ import java.util.Calendar;
 public class TemplateExporter {
 
 
-    public static void exportTo(StructureTemplate template, File directory) {
+    public static boolean exportTo(StructureTemplate template, File directory) {
         File exportFile = new File(directory, template.name + "." + AWStructureStatics.templateExtension);
         if (!exportFile.exists()) {
             try {
@@ -44,7 +44,7 @@ public class TemplateExporter {
             } catch (IOException e) {
                 AWLog.logError("Could not export template..could not create file : " + exportFile.getAbsolutePath());
                 e.printStackTrace();
-                return;
+                return false;
             }
         }
         BufferedWriter writer = null;
@@ -70,6 +70,7 @@ public class TemplateExporter {
         } catch (IOException e) {
             AWLog.logError("Could not export template..could not create file : " + exportFile.getAbsolutePath());
             e.printStackTrace();
+            return false;
         } finally {
             if (writer != null) {
                 try {
@@ -80,6 +81,7 @@ public class TemplateExporter {
                 }
             }
         }
+        return true;
     }
 
     private static void writeValidationSettings(StructureValidator settings, BufferedWriter writer) throws IOException {

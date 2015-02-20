@@ -20,7 +20,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 
     public TemplateRuleTorqueMultiblock(World world, int x, int y, int z, Block block, int meta, int turns) {
         super(world, x, y, z, block, meta, turns);
-        this.blockName = BlockDataManager.instance().getNameForBlock(block);
+        this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.meta = meta;
         this.tag = new NBTTagCompound();
         TileEntity tile = world.getTileEntity(x, y, z);
@@ -31,13 +31,13 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
         return false;
     }
 
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
-        Block block = BlockDataManager.instance().getBlockForName(blockName);
+        Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
         world.setBlock(x, y, z, block, meta, 2);
         TileEntity tile = world.getTileEntity(x, y, z);
         tag.setInteger("x", x);
@@ -64,7 +64,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 
     @Override
     public void addResources(List<ItemStack> resources) {
-        resources.add(new ItemStack(Item.getItemFromBlock(BlockDataManager.instance().getBlockForName(blockName)), 1, meta));
+        resources.add(new ItemStack(Item.getItemFromBlock(BlockDataManager.INSTANCE.getBlockForName(blockName)), 1, meta));
     }
 
     @Override

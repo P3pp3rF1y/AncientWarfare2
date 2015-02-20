@@ -43,30 +43,21 @@ import java.util.List;
 
 public class StructurePluginManager implements IStructurePluginManager, IStructurePluginLookup, IStructurePluginRegister {
 
+    private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<StructureContentPlugin>();
 
-    private List<StructureContentPlugin> loadedContentPlugins = new ArrayList<StructureContentPlugin>();
+    private final HashMap<Class<? extends Entity>, Class<? extends TemplateRuleEntity>> entityRules = new HashMap<Class<? extends Entity>, Class<? extends TemplateRuleEntity>>();
+    private final HashMap<Block, Class<? extends TemplateRuleBlock>> blockRules = new HashMap<Block, Class<? extends TemplateRuleBlock>>();
+    private final HashMap<Class<? extends TemplateRule>, String> idByRuleClass = new HashMap<Class<? extends TemplateRule>, String>();
+    private final HashMap<String, Class<? extends TemplateRule>> ruleByID = new HashMap<String, Class<? extends TemplateRule>>();
+    private final HashMap<Block, String> pluginByBlock = new HashMap<Block, String>();
 
-    private HashMap<Class<? extends Entity>, Class<? extends TemplateRule>> entityRules = new HashMap<Class<? extends Entity>, Class<? extends TemplateRule>>();
-    private HashMap<Block, Class<? extends TemplateRule>> blockRules = new HashMap<Block, Class<? extends TemplateRule>>();
-    private HashMap<Class<? extends TemplateRule>, String> idByRuleClass = new HashMap<Class<? extends TemplateRule>, String>();
-    private HashMap<String, Class<? extends TemplateRule>> ruleByID = new HashMap<String, Class<? extends TemplateRule>>();
-    private HashMap<Block, String> pluginByBlock = new HashMap<Block, String>();
-    private HashMap<Class<? extends Entity>, String> pluginByEntity = new HashMap<Class<? extends Entity>, String>();
-
-    private StructurePluginVanillaHandler vanillaPlugin;
-
-    private static StructurePluginManager instance = new StructurePluginManager();
+    public static final StructurePluginManager INSTANCE = new StructurePluginManager();
 
     private StructurePluginManager() {
     }
 
-    public static StructurePluginManager instance() {
-        return instance;
-    }
-
     public void loadPlugins() {
-        vanillaPlugin = new StructurePluginVanillaHandler();
-        this.addPlugin(vanillaPlugin);
+        this.addPlugin(new StructurePluginVanillaHandler());
 
         MinecraftForge.EVENT_BUS.post(new StructurePluginRegistrationEvent(this));
 
@@ -140,10 +131,6 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
         loadedContentPlugins.add(plugin);
     }
 
-    public String getPluginNameForEntity(Class<? extends Entity> entityClass) {
-        return this.pluginByEntity.get(entityClass);
-    }
-
     public String getPluginNameFor(Block block) {
         return pluginByBlock.get(block);
     }
@@ -157,24 +144,12 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
     }
 
     public TemplateRuleBlock getRuleForBlock(World world, Block block, int turns, int x, int y, int z) {
-        TemplateRule rule;
-        Class<? extends TemplateRule> clz = blockRules.get(block);
+        Class<? extends TemplateRuleBlock> clz = blockRules.get(block);
         if (clz != null) {
             int meta = world.getBlockMetadata(x, y, z);
             try {
-                rule = clz.getConstructor(World.class, int.class, int.class, int.class, Block.class, int.class, int.class).newInstance(world, x, y, z, block, meta, turns);
-                return (TemplateRuleBlock) rule;
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (SecurityException e) {
+                return clz.getConstructor(World.class, int.class, int.class, int.class, Block.class, int.class, int.class).newInstance(world, x, y, z, block, meta, turns);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -184,21 +159,11 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
     public TemplateRuleEntity getRuleForEntity(World world, Entity entity, int turns, int x, int y, int z) {
         Class<? extends Entity> entityClass = entity.getClass();
         if (this.entityRules.containsKey(entityClass)) {
-            Class<? extends TemplateRule> entityRuleClass = this.entityRules.get(entityClass);
+            Class<? extends TemplateRuleEntity> entityRuleClass = this.entityRules.get(entityClass);
             if (entityRuleClass != null) {
                 try {
-                    return (TemplateRuleEntity) entityRuleClass.getConstructor(World.class, Entity.class, int.class, int.class, int.class, int.class).newInstance(world, entity, turns, x, y, z);
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (SecurityException e) {
+                    return entityRuleClass.getConstructor(World.class, Entity.class, int.class, int.class, int.class, int.class).newInstance(world, entity, turns, x, y, z);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -216,7 +181,6 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
         entityRules.put(entityClass, ruleClass);
         ruleByID.put(pluginName, ruleClass);
         idByRuleClass.put(ruleClass, pluginName);
-        pluginByEntity.put(entityClass, pluginName);
     }
 
     public void registerBlockHandler(String pluginName, Block block, Class<? extends TemplateRuleBlock> ruleClass) {
@@ -268,7 +232,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
                 }
             }
         }
-        Class<? extends TemplateRule> clz = StructurePluginManager.instance().getRuleByName(name);
+        Class<? extends TemplateRule> clz = StructurePluginManager.INSTANCE.getRuleByName(name);
         if (clz == null) {
             throw new TemplateRuleParsingException("Not enough data to create template rule.\n" +
                     "Missing plugin for name: " + name + "\n" +
@@ -287,17 +251,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
             TemplateRule rule = clz.getConstructor().newInstance();
             rule.parseRule(ruleNumber, ruleDataPackage);
             return rule;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -307,7 +261,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
         if (rule == null) {
             return;
         }
-        String id = StructurePluginManager.instance().getPluginNameFor(rule.getClass());
+        String id = StructurePluginManager.INSTANCE.getPluginNameFor(rule.getClass());
         if (id == null) {
             return;
         }

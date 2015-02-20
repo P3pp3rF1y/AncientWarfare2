@@ -49,15 +49,15 @@ public class CommandStructure implements ICommand {
     @Override
     public void processCommand(ICommandSender var1, String[] var2) {
         if (var2.length == 0) {
-            throw new WrongUsageException(getCommandUsage(var1), new Object[0]);
+            throw new WrongUsageException(getCommandUsage(var1));
         }
         String cmd = var2[0];
         if (cmd.toLowerCase().equals("delete")) {
             if (var2.length < 2) {
-                throw new WrongUsageException(getCommandUsage(var1), new Object[0]);
+                throw new WrongUsageException(getCommandUsage(var1));
             }
             String name = var2[1];
-            boolean flag = StructureTemplateManager.instance().removeTemplate(name);
+            boolean flag = StructureTemplateManager.INSTANCE.removeTemplate(name);
             if (flag)//check if var2.len>=3, pull string of end...if string==true, try delete template file for name
             {
                 ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.template_removed", name);
@@ -67,21 +67,19 @@ public class CommandStructure implements ICommand {
                     if (shouldDelete) {
                         if (deleteTemplateFile(name)) {
                             txt = new ChatComponentTranslation("command.aw.structure.file_deleted", name);
-                            var1.addChatMessage(txt);
                         } else {
                             txt = new ChatComponentTranslation("command.aw.structure.file_not_found", name);
-                            var1.addChatMessage(txt);
                         }
+                        var1.addChatMessage(txt);
                     }
                 }
             } else//send template not found message
             {
-                ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.not_found", name);
-                var1.addChatMessage(txt);
+                var1.addChatMessage(new ChatComponentTranslation("command.aw.structure.not_found", name));
             }
         } else if (cmd.toLowerCase().equals("build")) {
             if (var2.length < 6) {
-                throw new WrongUsageException(getCommandUsage(var1), new Object[0]);
+                throw new WrongUsageException(getCommandUsage(var1));
             }
             String name = var2[1];
             String xs = var2[2];
@@ -105,7 +103,7 @@ public class CommandStructure implements ICommand {
             } else {
                 face = CommandBase.parseInt(var1, direction);
             }
-            StructureTemplate template = StructureTemplateManager.instance().getTemplate(name);
+            StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(name);
             if (template == null) {
                 ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.not_found", name);
                 var1.addChatMessage(txt);

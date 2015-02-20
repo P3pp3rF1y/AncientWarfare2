@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import cpw.mods.fml.common.IWorldGenerator;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
@@ -16,31 +17,29 @@ import java.util.Random;
 
 public class WorldTownGenerator implements IWorldGenerator {
 
-    private static WorldTownGenerator instance = new WorldTownGenerator();
+    public static final WorldTownGenerator INSTANCE = new WorldTownGenerator();
 
     private WorldTownGenerator() {
     }
 
-    public static WorldTownGenerator instance() {
-        return instance;
-    }
-
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        if (!AWStructureStatics.enableTownGeneration) {
+        ChunkCoordinates cc = world.getSpawnPoint();
+        float distSq = cc.getDistanceSquared(chunkX * 16, cc.posY, chunkZ * 16);
+        if (AWStructureStatics.withinProtectionRange(distSq)) {
             return;
         }
         if (random.nextFloat() < AWStructureStatics.townGenerationChance) {
-            WorldGenTickHandler.instance().addChunkForTownGeneration(world, chunkX, chunkZ);
+            WorldGenTickHandler.INSTANCE.addChunkForTownGeneration(world, chunkX, chunkZ);
         }
     }
 
-    public void attemptGeneration(World world, Random rng, int blockX, int blockZ) {
+    public void attemptGeneration(World world, int blockX, int blockZ) {
         TownBoundingArea area = TownPlacementValidator.findGenerationPosition(world, blockX, blockZ);
         if (area == null) {
             return;
         }
-        TownTemplate template = TownTemplateManager.instance().selectTemplateForGeneration(world, blockX, blockZ, area);
+        TownTemplate template = TownTemplateManager.INSTANCE.selectTemplateForGeneration(world, blockX, blockZ, area);
         if (template == null) {
             return;
         }

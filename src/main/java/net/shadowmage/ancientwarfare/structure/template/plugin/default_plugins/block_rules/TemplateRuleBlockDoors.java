@@ -47,8 +47,8 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
-        Block block = BlockDataManager.instance().getBlockForName(blockName);
-        int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);
+        Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
+        int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         if (world.getBlock(x, y - 1, z) != block)//this is the bottom door block, call placeDoor from our block...
         {
             world.setBlock(x, y, z, block, localMeta, 2);
@@ -73,9 +73,9 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
         Block block1 = world.getBlock(x, y + 1, z);
-        return super.shouldReuseRule(world, block, meta, turns, te, x, y, z) && block1 != null && blockName.equals(BlockDataManager.instance().getNameForBlock(block1)) && world.getBlockMetadata(x, y + 1, z) == sideFlag;
+        return block1 != null && blockName.equals(BlockDataManager.INSTANCE.getNameForBlock(block1)) && world.getBlockMetadata(x, y + 1, z) == sideFlag;
     }
 
     @Override

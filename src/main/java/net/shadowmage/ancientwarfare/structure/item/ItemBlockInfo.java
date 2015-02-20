@@ -34,7 +34,7 @@ public class ItemBlockInfo extends Item implements IItemClickable {
         if (pos != null) {
             Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
             int meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);
-            AWLog.logDebug("block: " + BlockDataManager.instance().getNameForBlock(block) + " meta: " + meta);
+            AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " meta: " + meta);
         }
     }
 

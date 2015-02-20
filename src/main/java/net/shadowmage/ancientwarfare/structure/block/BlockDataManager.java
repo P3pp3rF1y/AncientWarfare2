@@ -36,14 +36,8 @@ public class BlockDataManager {
 
     private HashMap<Block, BlockInfo> blockInfoMap = new HashMap<Block, BlockInfo>();
 
+    public static final BlockDataManager INSTANCE = new BlockDataManager();
     private BlockDataManager() {
-    }
-
-    private static BlockDataManager instance = new BlockDataManager() {
-    };
-
-    public static BlockDataManager instance() {
-        return instance;
     }
 
     /**
@@ -306,6 +300,5 @@ public class BlockDataManager {
             return new ItemStack(Item.getItemFromBlock(block), 1, meta);
         }
     }
-
 
 }

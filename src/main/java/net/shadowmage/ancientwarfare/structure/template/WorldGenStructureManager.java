@@ -36,14 +36,17 @@ import java.util.*;
 public class WorldGenStructureManager {
 
     private HashMap<String, Set<StructureTemplate>> templatesByBiome = new HashMap<String, Set<StructureTemplate>>();
+    /**
+     * cached list objects, used for temp searching, as to not allocate new lists for every chunk-generated....
+     */
+    List<StructureEntry> searchCache = new ArrayList<StructureEntry>();
+    List<StructureTemplate> trimmedPotentialStructures = new ArrayList<StructureTemplate>();
+    HashMap<String, Integer> distancesFound = new HashMap<String, Integer>();
+    BlockPosition rearBorderPos = new BlockPosition(0, 0, 0);
 
-    private static WorldGenStructureManager instance = new WorldGenStructureManager();
+    public static final WorldGenStructureManager INSTANCE = new WorldGenStructureManager();
 
     private WorldGenStructureManager() {
-    }
-
-    public static WorldGenStructureManager instance() {
-        return instance;
     }
 
     public void loadBiomeList() {
@@ -79,14 +82,6 @@ public class WorldGenStructureManager {
             }
         }
     }
-
-    /**
-     * cached list objects, used for temp searching, as to not allocate new lists for every chunk-generated....
-     */
-    List<StructureEntry> searchCache = new ArrayList<StructureEntry>();
-    List<StructureTemplate> trimmedPotentialStructures = new ArrayList<StructureTemplate>();
-    HashMap<String, Integer> distancesFound = new HashMap<String, Integer>();
-    BlockPosition rearBorderPos = new BlockPosition(0, 0, 0);
 
     public StructureTemplate selectTemplateForGeneration(World world, Random rng, int x, int y, int z, int face) {
         searchCache.clear();

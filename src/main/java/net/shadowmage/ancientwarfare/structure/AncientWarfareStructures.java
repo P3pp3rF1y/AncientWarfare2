@@ -81,9 +81,11 @@ public class AncientWarfareStructures {
          * Forge/FML registry
          */
         FMLCommonHandler.instance().bus().register(this);
-        FMLCommonHandler.instance().bus().register(WorldGenTickHandler.instance());
-        GameRegistry.registerWorldGenerator(WorldStructureGenerator.instance(), 1);
-        GameRegistry.registerWorldGenerator(WorldTownGenerator.instance(), 2);
+        FMLCommonHandler.instance().bus().register(WorldGenTickHandler.INSTANCE);
+        if(AWStructureStatics.enableStructureGeneration)
+            GameRegistry.registerWorldGenerator(WorldStructureGenerator.INSTANCE, 1);
+        if(AWStructureStatics.enableTownGeneration)
+            GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
         EntityRegistry.registerModEntity(EntityGate.class, "aw_gate", 0, this, 250, 200, false);
         /**
          * internal registry
@@ -110,14 +112,14 @@ public class AncientWarfareStructures {
         AWStructuresItemLoader.load();
         AWStructuresBlockLoader.load();
         String path = evt.getModConfigurationDirectory().getAbsolutePath();
-        TemplateLoader.instance().initializeAndExportDefaults(path);
+        TemplateLoader.INSTANCE.initializeAndExportDefaults(path);
         AWLog.log("Ancient Warfare Structures Pre-Init completed");
     }
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
         AWLog.log("Ancient Warfare Structures Init started");
-        BlockDataManager.instance().load();
+        BlockDataManager.INSTANCE.load();
         AWStructureCrafting.loadRecipes();
         AWLog.log("Ancient Warfare Structures Init completed");
     }
@@ -126,9 +128,9 @@ public class AncientWarfareStructures {
     public void postInit(FMLPostInitializationEvent evt) {
         AWLog.log("Ancient Warfare Structures Post-Init started");
         statics.loadPostInitValues();//needs to be called prior to worldgen biome loading, as biome aliases are loaded in this stage
-        StructurePluginManager.instance().loadPlugins();
-        WorldGenStructureManager.instance().loadBiomeList();
-        TemplateLoader.instance().loadTemplates();
+        StructurePluginManager.INSTANCE.loadPlugins();
+        WorldGenStructureManager.INSTANCE.loadBiomeList();
+        TemplateLoader.INSTANCE.loadTemplates();
         if(config.hasChanged())
             config.save();
         AWLog.log("Ancient Warfare Structures Post-Init completed.  Successfully completed all loading stages.");
@@ -137,7 +139,7 @@ public class AncientWarfareStructures {
     @SubscribeEvent
     public void onLogin(PlayerEvent.PlayerLoggedInEvent evt) {
         if (!evt.player.worldObj.isRemote) {
-            StructureTemplateManager.instance().onPlayerConnect((EntityPlayerMP) evt.player);
+            StructureTemplateManager.INSTANCE.onPlayerConnect((EntityPlayerMP) evt.player);
         }
     }
 

@@ -56,7 +56,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
         if (block == Blocks.standing_sign) {
             meta = (this.meta + 4 * turns) % 16;
         } else {
-            meta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);
+            meta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         }
         if(world.setBlock(x, y, z, block, meta, 2)) {
             TileEntitySign te = (TileEntitySign) world.getTileEntity(x, y, z);
@@ -71,7 +71,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
         return false;
     }
 

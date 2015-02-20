@@ -96,7 +96,7 @@ public class StructureValidatorIsland extends StructureValidator {
             for (int bz = bb.min.z; bz <= bb.max.z; bz++) {
                 for (int by = bb.min.y - 1; by > 0; by--) {
                     block = world.getBlock(bx, by, bz);
-                    if (block != null && validTargetBlocks.contains(BlockDataManager.instance().getNameForBlock(block))) {
+                    if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
                         break;
                     } else {
                         world.setBlock(bx, by, bz, Blocks.dirt);

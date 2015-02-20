@@ -30,7 +30,7 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
         return false;
     }
 

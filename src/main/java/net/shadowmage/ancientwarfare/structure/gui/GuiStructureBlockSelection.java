@@ -81,7 +81,7 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
                 continue;
             }
 
-            name = BlockDataManager.instance().getNameForBlock(block);
+            name = BlockDataManager.INSTANCE.getNameForBlock(block);
             box = new Checkbox(8 + 18, totalHeight + 1, 16, 16, name);
             area.addGuiElement(box);
             if (blockNames.contains(name)) {
@@ -97,12 +97,12 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         }
 
         for (String blockName : AWStructureStatics.getUserDefinedTargetBlocks()) {
-            block = BlockDataManager.instance().getBlockForName(blockName);
+            block = BlockDataManager.INSTANCE.getBlockForName(blockName);
             if (block == null || block == Blocks.air || blockToBox.containsKey(block)) {
                 continue;
             }
 
-            name = BlockDataManager.instance().getNameForBlock(block);
+            name = BlockDataManager.INSTANCE.getNameForBlock(block);
             box = new Checkbox(8 + 18, totalHeight + 1, 16, 16, name);
             area.addGuiElement(box);
             if (blockNames.contains(name)) {
@@ -131,7 +131,7 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         for (Checkbox box : boxToBlock.keySet()) {
             block = boxToBlock.get(box);
             if (box.checked()) {
-                targetBlocks.add(BlockDataManager.instance().getNameForBlock(block));
+                targetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(block));
             }
         }
         parent.validator.setTargetBlocks(targetBlocks);

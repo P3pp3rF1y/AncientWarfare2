@@ -96,7 +96,7 @@ public class StructureTemplateManagerClient {
         ResourceLocation loc = new ResourceLocation("ancientwarfare", pathBase + imageName);
 
         if (!file.exists()) {
-            BufferedImage image = StructureTemplateManager.instance().getTemplateImage(imageName);
+            BufferedImage image = StructureTemplateManager.INSTANCE.getTemplateImage(imageName);
             if (image != null) {
                 Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
                 clientTemplateImages.put(imageName, loc);

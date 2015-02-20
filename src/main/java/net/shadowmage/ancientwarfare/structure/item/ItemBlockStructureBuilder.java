@@ -76,7 +76,7 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
                 TileStructureBuilder tb = (TileStructureBuilder) te;
                 tb.setOwnerName(player.getCommandSenderName());
                 String name = stack.getTagCompound().getString("structureName");
-                StructureTemplate t = StructureTemplateManager.instance().getTemplate(name);
+                StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
                 if (t != null) {
                     int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
                     BlockPosition p = new BlockPosition(x, y, z);

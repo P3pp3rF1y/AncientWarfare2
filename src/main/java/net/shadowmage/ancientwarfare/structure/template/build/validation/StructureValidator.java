@@ -444,8 +444,8 @@ public abstract class StructureValidator {
             AWLog.logDebug("rejected for non-matching block: air" + " at: " + x + "," + y + "," + z);
             return false;
         }
-        if (!validBlocks.contains(BlockDataManager.instance().getNameForBlock(block))) {
-            AWLog.logDebug("Rejected for non-matching block: " + BlockDataManager.instance().getNameForBlock(block) + " at: " + x + "," + y + "," + z + " Valid blocks: " + validBlocks);
+        if (!validBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
+            AWLog.logDebug("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z + " Valid blocks: " + validBlocks);
             return false;
         }
         return true;

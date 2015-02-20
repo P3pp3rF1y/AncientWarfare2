@@ -44,46 +44,34 @@ import java.util.Random;
 
 public class WorldStructureGenerator implements IWorldGenerator {
 
-    private static WorldStructureGenerator instance = new WorldStructureGenerator();
-
-    private WorldStructureGenerator() {
-    }
-
-    public static WorldStructureGenerator instance() {
-        return instance;
-    }
-
-    public static HashSet<String> defaultTargetBlocks = new HashSet<String>();
-
+    public static final HashSet<String> defaultTargetBlocks = new HashSet<String>();
     static {
-        defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.dirt));
-        defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.grass));
-        defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.stone));
-        defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.sand));
-        defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.gravel));
-        defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.sandstone));
-        defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.clay));
-        defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.iron_ore));
-        defaultTargetBlocks.add(BlockDataManager.instance().getNameForBlock(Blocks.coal_ore));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.dirt));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.grass));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.stone));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.sand));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.gravel));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.sandstone));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.clay));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.iron_ore));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.coal_ore));
     }
+    public static final WorldStructureGenerator INSTANCE = new WorldStructureGenerator();
 
-    private Random rng = new Random();
+    private final Random rng;
+    private WorldStructureGenerator() {
+        rng = new Random();
+    }
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        if (!AWStructureStatics.enableStructureGeneration) {
-            return;
-        }
         ChunkCoordinates cc = world.getSpawnPoint();
         float distSq = cc.getDistanceSquared(chunkX * 16, cc.posY, chunkZ * 16);
-        if (distSq < (AWStructureStatics.spawnProtectionRange * 16) * (AWStructureStatics.spawnProtectionRange * 16)) {
+        if (AWStructureStatics.withinProtectionRange(distSq)) {
             return;
         }
-        float rand = rng.nextFloat();
-        if (rand > AWStructureStatics.randomGenerationChance) {
-            return;
-        }
-        WorldGenTickHandler.instance().addChunkForGeneration(world, chunkX, chunkZ);
+        if (rng.nextFloat() < AWStructureStatics.randomGenerationChance)
+            WorldGenTickHandler.INSTANCE.addChunkForGeneration(world, chunkX, chunkZ);
     }
 
     public void generateAt(int chunkX, int chunkZ, World world) {
@@ -100,7 +88,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 
         int face = rng.nextInt(4);
         world.theProfiler.startSection("AWTemplateSelection");
-        StructureTemplate template = WorldGenStructureManager.instance().selectTemplateForGeneration(world, rng, x, y, z, face);
+        StructureTemplate template = WorldGenStructureManager.INSTANCE.selectTemplateForGeneration(world, rng, x, y, z, face);
         world.theProfiler.endSection();
         AWLog.logDebug("Template selection took: " + (System.currentTimeMillis() - t1) + " ms.");
         if (template == null) {
@@ -182,7 +170,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
     private void generateStructureAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map, StructureBB bb) {
         map.setGeneratedAt(world, x, y, z, face, new StructureEntry(x, y, z, face, template), template.getValidationSettings().isUnique());
         map.markDirty();
-        WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, x, y, z));
+        WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, x, y, z));
     }
 
 }

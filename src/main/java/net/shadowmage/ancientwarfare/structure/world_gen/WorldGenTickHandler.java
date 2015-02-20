@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 
@@ -12,22 +13,17 @@ import java.util.List;
 
 public class WorldGenTickHandler {
 
+    public static final WorldGenTickHandler INSTANCE = new WorldGenTickHandler();
+    private final List<ChunkGenerationTicket> newWorldGenTickets, newTownGenTickets, chunksToGen, townChunksToGen;
+    private final List<StructureTicket> newStructureGenTickets, structuresToGen;
     private WorldGenTickHandler() {
+        newWorldGenTickets = new ArrayList<ChunkGenerationTicket>();
+        newTownGenTickets = new ArrayList<ChunkGenerationTicket>();
+        newStructureGenTickets = new ArrayList<StructureTicket>();
+        chunksToGen = new ArrayList<ChunkGenerationTicket>();
+        townChunksToGen = new ArrayList<ChunkGenerationTicket>();
+        structuresToGen = new ArrayList<StructureTicket>();
     }
-
-    private static WorldGenTickHandler INSTANCE = new WorldGenTickHandler();
-
-    public static WorldGenTickHandler instance() {
-        return INSTANCE;
-    }
-
-    private List<ChunkGenerationTicket> newWorldGenTickets = new ArrayList<ChunkGenerationTicket>();
-    private List<ChunkGenerationTicket> newTownGenTickets = new ArrayList<ChunkGenerationTicket>();
-    private List<StructureTicket> newStructureGenTickets = new ArrayList<StructureTicket>();
-
-    private List<ChunkGenerationTicket> chunksToGen = new ArrayList<ChunkGenerationTicket>();
-    private List<ChunkGenerationTicket> townChunksToGen = new ArrayList<ChunkGenerationTicket>();
-    private List<StructureTicket> structuresToGen = new ArrayList<StructureTicket>();
 
     public void addChunkForGeneration(World world, int chunkX, int chunkZ) {
         newWorldGenTickets.add(new ChunkGenerationTicket(world, chunkX, chunkZ));
@@ -51,26 +47,28 @@ public class WorldGenTickHandler {
             genChunks();
             genStructures();
             genTowns();
-            chunksToGen.addAll(newWorldGenTickets);
-            newWorldGenTickets.clear();
-            structuresToGen.addAll(newStructureGenTickets);
-            newStructureGenTickets.clear();
-            townChunksToGen.addAll(newTownGenTickets);
-            newTownGenTickets.clear();
         }
     }
 
     private void genChunks() {
         if (!chunksToGen.isEmpty()) {
             ChunkGenerationTicket tk = chunksToGen.remove(0);
-            WorldStructureGenerator.instance().generateAt(tk.chunkX, tk.chunkZ, tk.world);
+            WorldStructureGenerator.INSTANCE.generateAt(tk.chunkX, tk.chunkZ, tk.getWorld());
+        }
+        if(!newWorldGenTickets.isEmpty()) {
+            chunksToGen.addAll(newWorldGenTickets);
+            newWorldGenTickets.clear();
         }
     }
 
     private void genTowns() {
         if (!townChunksToGen.isEmpty()) {
             ChunkGenerationTicket tk = townChunksToGen.remove(0);
-            WorldTownGenerator.instance().attemptGeneration(tk.world, tk.world.rand, tk.chunkX * 16, tk.chunkZ * 16);
+            WorldTownGenerator.INSTANCE.attemptGeneration(tk.getWorld(), tk.chunkX * 16, tk.chunkZ * 16);
+        }
+        if(!newTownGenTickets.isEmpty()) {
+            townChunksToGen.addAll(newTownGenTickets);
+            newTownGenTickets.clear();
         }
     }
 
@@ -78,16 +76,23 @@ public class WorldGenTickHandler {
         if (!structuresToGen.isEmpty()) {
             structuresToGen.remove(0).call();
         }
+        if(!newStructureGenTickets.isEmpty()) {
+            structuresToGen.addAll(newStructureGenTickets);
+            newStructureGenTickets.clear();
+        }
     }
 
     private static class ChunkGenerationTicket {
-        World world;
-        int chunkX, chunkZ;
+        final int world, chunkX, chunkZ;
 
         public ChunkGenerationTicket(World world, int x, int z) {
-            this.world = world;
+            this.world = world.provider.dimensionId;
             this.chunkX = x;
             this.chunkZ = z;
+        }
+
+        public World getWorld() {
+            return DimensionManager.getWorld(world);
         }
     }
 
@@ -98,13 +103,12 @@ public class WorldGenTickHandler {
      *
      * @author Shadowmage
      */
-    private static class StructureTicket {
-        public void call() {
-        }
+    private static interface StructureTicket {
+        public void call();
     }
 
-    private static class StructureGenerationTicket extends StructureTicket {
-        StructureBuilder builder;
+    private static final class StructureGenerationTicket implements StructureTicket {
+        private final StructureBuilder builder;
 
         public StructureGenerationTicket(StructureBuilder builder) {
             this.builder = builder;
@@ -116,9 +120,8 @@ public class WorldGenTickHandler {
         }
     }
 
-    public abstract static class StructureGenerationCallbackTicket extends StructureTicket {
-        @Override
-        public abstract void call();
+    public static interface StructureGenerationCallbackTicket extends StructureTicket {
+
     }
 
 }

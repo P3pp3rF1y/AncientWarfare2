@@ -32,27 +32,21 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class StructureTemplateManager {
-    private StructureTemplateManager() {
-    }
-
-    private static StructureTemplateManager instance = new StructureTemplateManager() {
-    };
-
-    public static StructureTemplateManager instance() {
-        return instance;
-    }
-
     private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<String, StructureTemplateClient>();//server-side client-templates
     private HashMap<String, BufferedImage> templateImages = new HashMap<String, BufferedImage>();//server-side images
     //private HashMap<String,String> imageMD5s = new HashMap<String,String>();
     private HashMap<String, StructureTemplate> loadedTemplates = new HashMap<String, StructureTemplate>();
+    private StructureTemplateManager() {
+    }
+
+    public static final StructureTemplateManager INSTANCE = new StructureTemplateManager();
 
     public void addTemplate(StructureTemplate template) {
         if (template.getValidationSettings() == null) {
             return;
         }
         if (template.getValidationSettings().isWorldGenEnabled()) {
-            WorldGenStructureManager.instance().registerWorldGenStructure(template);
+            WorldGenStructureManager.INSTANCE.registerWorldGenStructure(template);
         }
         loadedTemplates.put(template.name, template);
         StructureTemplateClient cl = new StructureTemplateClient(template);

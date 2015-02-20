@@ -34,7 +34,7 @@ public class TownGeneratorStructures {
             generateExteriorStructures(blocks, gen.exteriorTemplatesToGenerate, gen);
         }
 
-        WorldGenTickHandler.instance().addStructureGenCallback(new StructureGenerationCallbackTicket() {
+        WorldGenTickHandler.INSTANCE.addStructureGenCallback(new StructureGenerationCallbackTicket() {
             @Override
             public void call() {
                 TownGeneratorStructures.generateLamps(blocks, gen.template.getLamp(), gen);
@@ -154,14 +154,14 @@ public class TownGeneratorStructures {
         if (templateToGenerate == null) {
             return;
         }
-        StructureTemplate lamp = StructureTemplateManager.instance().getTemplate(templateToGenerate.templateName);
+        StructureTemplate lamp = StructureTemplateManager.INSTANCE.getTemplate(templateToGenerate.templateName);
         if (lamp == null) {
             return;
         }
         for (TownPartBlock block : blocks) {
             generateLamps(block, lamp, gen);
         }
-        WorldGenTickHandler.instance().addStructureGenCallback(new StructureGenerationCallbackTicket() {
+        WorldGenTickHandler.INSTANCE.addStructureGenCallback(new StructureGenerationCallbackTicket() {
             @Override
             public void call() {
                 gen.generateVillagers();
@@ -254,7 +254,7 @@ public class TownGeneratorStructures {
         z -= (t.zSize / 2);
         x += t.xOffset;
         z += t.zOffset;
-        WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilder(world, t, 0, x, y, z));
+        WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(world, t, 0, x, y, z));
     }
 
     private static boolean checkForNeighboringDoor(TownGenerator gen, int x, int y, int z, Direction dir) {
@@ -357,7 +357,7 @@ public class TownGeneratorStructures {
         buildKey.y += gen.townBounds.min.y;
         bb.offset(0, -template.yOffset, 0);
         gen.structureDoors.add(buildKey.copy());
-        WorldGenTickHandler.instance().addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));
+        WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));
 //  AWLog.logDebug("added structure to tick handler for generation: "+template.name +" at: "+buildKey+" town bounds: "+gen.townBounds);
     }
 

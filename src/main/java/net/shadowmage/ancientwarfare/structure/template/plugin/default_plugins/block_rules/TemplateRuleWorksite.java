@@ -27,7 +27,7 @@ public class TemplateRuleWorksite extends TemplateRuleBlock {
 
     public TemplateRuleWorksite(World world, int x, int y, int z, Block block, int meta, int turns) {
         super(world, x, y, z, block, meta, turns);
-        this.blockName = BlockDataManager.instance().getNameForBlock(block);
+        this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.meta = meta;
         TileWorksiteBase worksite = (TileWorksiteBase) world.getTileEntity(x, y, z);
         ForgeDirection o = worksite.getPrimaryFacing();
@@ -51,13 +51,13 @@ public class TemplateRuleWorksite extends TemplateRuleBlock {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
         return false;
     }
 
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
-        Block block = BlockDataManager.instance().getBlockForName(blockName);
+        Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
         BlockPosition pos1, pos2;
         world.setBlock(x, y, z, block, meta, 2);
         TileWorksiteBase worksite = (TileWorksiteBase) world.getTileEntity(x, y, z);
@@ -116,7 +116,7 @@ public class TemplateRuleWorksite extends TemplateRuleBlock {
 
     @Override
     public void addResources(List<ItemStack> resources) {
-        resources.add(new ItemStack(Item.getItemFromBlock(BlockDataManager.instance().getBlockForName(blockName)), 1, meta));
+        resources.add(new ItemStack(Item.getItemFromBlock(BlockDataManager.INSTANCE.getBlockForName(blockName)), 1, meta));
     }
 
     @Override

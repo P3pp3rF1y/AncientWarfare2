@@ -329,7 +329,7 @@ public final class TownTemplate {
         validateStructureList(cosmeticStructureEntries);
         validateStructureList(exteriorStructureEntries);
         TownStructureEntry e = getLamp();
-        if (e != null && StructureTemplateManager.instance().getTemplate(e.templateName) == null) {
+        if (e != null && StructureTemplateManager.INSTANCE.getTemplate(e.templateName) == null) {
             AWLog.logError("Error loading lamp template: " + e.templateName);
         }
         wallTotalWeights = validateWallList(walls, wallTotalWeights);
@@ -343,7 +343,7 @@ public final class TownTemplate {
         Iterator<TownStructureEntry> it = entries.iterator();
         TownStructureEntry e;
         while (it.hasNext() && (e = it.next()) != null) {
-            if (StructureTemplateManager.instance().getTemplate(e.templateName) == null) {
+            if (StructureTemplateManager.INSTANCE.getTemplate(e.templateName) == null) {
                 AWLog.logError("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
                 it.remove();
             }
@@ -354,7 +354,7 @@ public final class TownTemplate {
         Iterator<TownWallEntry> it = entries.iterator();
         TownWallEntry e;
         while (it.hasNext() && (e = it.next()) != null) {
-            if (StructureTemplateManager.instance().getTemplate(e.templateName) == null) {
+            if (StructureTemplateManager.INSTANCE.getTemplate(e.templateName) == null) {
                 AWLog.logError("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
                 it.remove();
                 originalWeight -= e.weight;

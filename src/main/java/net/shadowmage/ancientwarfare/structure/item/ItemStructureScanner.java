@@ -53,10 +53,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
         if (par1ItemStack != null) {
             ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(par1ItemStack);
             String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
-            if (viewSettings.hasPos1() && viewSettings.hasPos2() && viewSettings.hasBuildKey()) {
-                list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.click_to_process"));
-                list.add("(4/4)");
-            } else if (!viewSettings.hasPos1()) {
+            if (!viewSettings.hasPos1()) {
                 list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.select_first_pos"));
                 list.add("(1/4)");
             } else if (!viewSettings.hasPos2()) {
@@ -65,10 +62,12 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
             } else if (!viewSettings.hasBuildKey()) {
                 list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.select_offset"));
                 list.add("(3/4)");
+            }else {
+                list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.click_to_process"));
+                list.add("(4/4)");
             }
         }
     }
-
 
     @Override
     public void onRightClick(EntityPlayer player, ItemStack stack) {
@@ -90,20 +89,21 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
     public static boolean scanStructure(World world, BlockPosition pos1, BlockPosition pos2, BlockPosition key, int face, String name, boolean include, NBTTagCompound tag) {
         BlockPosition min = BlockTools.getMin(pos1, pos2);
         BlockPosition max = BlockTools.getMax(pos1, pos2);
-        TemplateScanner scanner = new TemplateScanner();
         int turns = face == 0 ? 2 : face == 1 ? 1 : face == 2 ? 0 : face == 3 ? 3 : 0; //because for some reason my mod math was off?
-        StructureTemplate template = scanner.scan(world, min, max, key, turns, name);
+        StructureTemplate template = TemplateScanner.scan(world, min, max, key, turns, name);
 
-        String validationType = tag.getString("validationType");
-        StructureValidationType type = StructureValidationType.getTypeFromName(validationType);
+        StructureValidationType type = StructureValidationType.getTypeFromName(tag.getString("validationType"));
+        if(type == null)
+            return false;
         StructureValidator validator = type.getValidator();
+        if(validator == null)
+            return false;
         validator.readFromNBT(tag);
         template.setValidationSettings(validator);
         if (include) {
-            StructureTemplateManager.instance().addTemplate(template);
+            StructureTemplateManager.INSTANCE.addTemplate(template);
         }
-        TemplateExporter.exportTo(template, new File(include ? TemplateLoader.includeDirectory : TemplateLoader.outputDirectory));
-        return true;
+        return TemplateExporter.exportTo(template, new File(include ? TemplateLoader.includeDirectory : TemplateLoader.outputDirectory));
     }
 
     @Override
@@ -121,9 +121,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
             return;
         }
         ItemStructureSettings scanSettings = ItemStructureSettings.getSettingsFor(stack);
-        if (scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey()) {
-            player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.click_to_process"));
-        } else if (!scanSettings.hasPos1()) {
+        if (!scanSettings.hasPos1()) {
             scanSettings.setPos1(hit.x, hit.y, hit.z);
             player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.set_first_pos"));
         } else if (!scanSettings.hasPos2()) {
@@ -132,6 +130,8 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
         } else if (!scanSettings.hasBuildKey()) {
             scanSettings.setBuildKey(hit.x, hit.y, hit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw));
             player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.set_offset_pos"));
+        }else {
+            player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.click_to_process"));
         }
         ItemStructureSettings.setSettingsFor(stack, scanSettings);
     }

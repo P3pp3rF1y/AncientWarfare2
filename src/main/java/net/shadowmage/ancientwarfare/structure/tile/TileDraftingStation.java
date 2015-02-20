@@ -41,7 +41,7 @@ public class TileDraftingStation extends TileEntity {
             return;
         }
         if (structureName != null) {
-            StructureTemplate t = StructureTemplateManager.instance().getTemplate(structureName);
+            StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(structureName);
             if (t == null) {
                 stopCurrentWork();
             }
@@ -90,7 +90,7 @@ public class TileDraftingStation extends TileEntity {
     }
 
     public void tryStart() {
-        if (structureName != null && StructureTemplateManager.instance().getTemplate(structureName) != null) {
+        if (structureName != null && StructureTemplateManager.INSTANCE.getTemplate(structureName) != null) {
             this.isStarted = true;
         }
     }
@@ -150,7 +150,7 @@ public class TileDraftingStation extends TileEntity {
         this.structureName = null;
         this.neededResources.clear();
         this.remainingTime = 0;
-        StructureTemplate t = StructureTemplateManager.instance().getTemplate(templateName);
+        StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(templateName);
         if (t != null && t.getValidationSettings().isSurvival()) {
             this.structureName = templateName;
         }

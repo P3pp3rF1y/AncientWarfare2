@@ -76,7 +76,7 @@ public class TownGenerator {
 
         generateGrid();
         TownGeneratorWalls.generateWalls(world, this, template, rng);
-        WorldGenTickHandler.instance().addStructureGenCallback(new StructureGenerationCallbackTicket() {
+        WorldGenTickHandler.INSTANCE.addStructureGenCallback(new StructureGenerationCallbackTicket() {
             @Override
             public void call() {
                 generateRoads();
@@ -133,7 +133,7 @@ public class TownGenerator {
     private void determineStructuresToGenerate() {
         int gen;
         for (TownStructureEntry e : template.getUniqueStructureEntries()) {
-            StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+            StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
             if (t == null) {
                 continue;
             }
@@ -141,7 +141,7 @@ public class TownGenerator {
         }
 
         for (TownStructureEntry e : template.getMainStructureEntries()) {
-            StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+            StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
             if (t == null) {
                 continue;
             }
@@ -149,7 +149,7 @@ public class TownGenerator {
         }
 
         for (TownStructureEntry e : template.getHouseStructureEntries()) {
-            StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+            StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
             if (t == null) {
                 continue;
             }
@@ -160,7 +160,7 @@ public class TownGenerator {
         }
 
         for (TownStructureEntry e : template.getCosmeticEntries()) {
-            StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+            StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
             if (t == null) {
                 continue;
             }
@@ -171,7 +171,7 @@ public class TownGenerator {
         }
 
         for (TownStructureEntry e : template.getExteriorStructureEntries()) {
-            StructureTemplate t = StructureTemplateManager.instance().getTemplate(e.templateName);
+            StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
             if (t == null) {
                 continue;
             }

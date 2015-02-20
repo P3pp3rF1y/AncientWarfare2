@@ -53,14 +53,8 @@ public class TemplateLoader {
 
     private HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 
+    public static final TemplateLoader INSTANCE = new TemplateLoader();
     private TemplateLoader() {
-    }
-
-    private static TemplateLoader instance = new TemplateLoader() {
-    };
-
-    public static TemplateLoader instance() {
-        return instance;
     }
 
     public void initializeAndExportDefaults(String path) {
@@ -93,7 +87,7 @@ public class TemplateLoader {
             template = loadTemplateFromFile(f);
             if (template != null) {
                 AWLog.log("Loaded Structure Template: [" + template.name + "] WorldGen: " + template.getValidationSettings().isWorldGenEnabled() + "  Survival: " + template.getValidationSettings().isSurvival());
-                StructureTemplateManager.instance().addTemplate(template);
+                StructureTemplateManager.INSTANCE.addTemplate(template);
                 loadedStructureNames.add(template.name);
                 loadedCount++;
             }
@@ -125,7 +119,7 @@ public class TemplateLoader {
             for (TownTemplate t : this.parsedTownTemplates) {
                 AWLog.log("Loading town template: " + t.getTownTypeName());
                 t.validateStructureEntries();
-                TownTemplateManager.instance().loadTemplate(t);
+                TownTemplateManager.INSTANCE.loadTemplate(t);
             }
             AWLog.log("Loaded : " + this.parsedTownTemplates.size() + " Town Templates.");
         }
@@ -139,7 +133,7 @@ public class TemplateLoader {
                 it.remove();
                 continue;
             }
-            StructureTemplateManager.instance().addTemplateImage(name, images.get(name));
+            StructureTemplateManager.INSTANCE.addTemplateImage(name, images.get(name));
         }
     }
 
@@ -153,7 +147,7 @@ public class TemplateLoader {
             while (scan.hasNext()) {
                 templateLines.add(scan.nextLine());
             }
-            return TemplateParser.instance().parseTemplate(file.getName(), templateLines);
+            return TemplateParser.INSTANCE.parseTemplate(file.getName(), templateLines);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -225,7 +219,7 @@ public class TemplateLoader {
                     template = loadTemplateFromZip(entry, zis);
                     if (template != null) {
                         AWLog.log("Loaded Structure Template: [" + template.name + "] WorldGen: " + template.getValidationSettings().isWorldGenEnabled() + "  Survival: " + template.getValidationSettings().isSurvival());
-                        StructureTemplateManager.instance().addTemplate(template);
+                        StructureTemplateManager.INSTANCE.addTemplate(template);
                         loadedStructureNames.add(template.name);
                         parsed++;
                     }
@@ -311,7 +305,7 @@ public class TemplateLoader {
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
             }
-            template = TemplateParser.instance().parseTemplate(entry.getName(), lines);
+            template = TemplateParser.INSTANCE.parseTemplate(entry.getName(), lines);
         } catch (IOException e1) {
             e1.printStackTrace();
             template = null;

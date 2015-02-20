@@ -48,10 +48,10 @@ public class StructureValidatorHarbor extends StructureValidator {
         validTargetBlocksRear = new HashSet<String>();
         validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks);
         validTargetBlocksSide.addAll(WorldStructureGenerator.defaultTargetBlocks);
-        validTargetBlocksRear.add(BlockDataManager.instance().getNameForBlock(Blocks.water));
-        validTargetBlocksRear.add(BlockDataManager.instance().getNameForBlock(Blocks.flowing_water));
-        validTargetBlocksSide.add(BlockDataManager.instance().getNameForBlock(Blocks.water));
-        validTargetBlocksSide.add(BlockDataManager.instance().getNameForBlock(Blocks.flowing_water));
+        validTargetBlocksRear.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.water));
+        validTargetBlocksRear.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.flowing_water));
+        validTargetBlocksSide.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.water));
+        validTargetBlocksSide.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.flowing_water));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class StructureValidatorHarbor extends StructureValidator {
          * or at an acceptable level difference
          */
         Block block = world.getBlock(x, y - 1, z);
-        if (block != null && validTargetBlocks.contains(BlockDataManager.instance().getNameForBlock(block))) {
+        if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
             testMin.reassign(x, y, z);
             testMin.moveForward(face, template.zOffset);
             int by = WorldStructureGenerator.getTargetY(world, testMin.x, testMin.z, false);

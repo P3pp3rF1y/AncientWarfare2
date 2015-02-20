@@ -39,27 +39,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TemplateScanner {
-
-    TemplateRule[] rules;
-
-    public TemplateScanner() {
-
-    }
+public final class TemplateScanner {
 
     /**
      * @param turns # of turns for proper orientation
      */
     @SuppressWarnings("unchecked")
-    public StructureTemplate scan(World world, BlockPosition min, BlockPosition max, BlockPosition key, int turns, String name) {
+    public static StructureTemplate scan(World world, BlockPosition min, BlockPosition max, BlockPosition key, int turns, String name) {
         int xSize = max.x - min.x + 1;
         int ySize = max.y - min.y + 1;
         int zSize = max.z - min.z + 1;
 
-        int xOutSize, zOutSize;
-        xOutSize = xSize;
-        zOutSize = zSize;
-
+        int xOutSize = xSize, zOutSize = zSize;
         int swap;
         for (int i = 0; i < turns; i++) {
             swap = xOutSize;
@@ -83,7 +74,6 @@ public class TemplateScanner {
         String pluginId;
         int index;
         int meta;
-        TileEntity te;
         int scanX, scanZ, scanY;
         BlockPosition destination = new BlockPosition();
         int nextRuleID = 1;
@@ -98,10 +88,9 @@ public class TemplateScanner {
                     scannedBlock = world.getBlock(scanX, scanY, scanZ);
 
                     if (scannedBlock != null && !AWStructureStatics.shouldSkipScan(scannedBlock) && !world.isAirBlock(scanX, scanY, scanZ)) {
-                        pluginId = StructurePluginManager.instance().getPluginNameFor(scannedBlock);
+                        pluginId = StructurePluginManager.INSTANCE.getPluginNameFor(scannedBlock);
                         if (pluginId != null) {
                             meta = world.getBlockMetadata(scanX, scanY, scanZ);
-                            te = world.getTileEntity(scanX, scanY, scanZ);
                             pluginBlockRules = pluginBlockRuleMap.get(pluginId);
                             if (pluginBlockRules == null) {
                                 pluginBlockRules = new ArrayList<TemplateRuleBlock>();
@@ -109,14 +98,14 @@ public class TemplateScanner {
                             }
                             boolean found = false;
                             for (TemplateRuleBlock rule : pluginBlockRules) {
-                                if (rule.shouldReuseRule(world, scannedBlock, meta, turns, te, scanX, scanY, scanZ)) {
+                                if (rule.shouldReuseRule(world, scannedBlock, meta, turns, scanX, scanY, scanZ)) {
                                     scannedBlockRule = rule;
                                     found = true;
                                     break;
                                 }
                             }
                             if (!found) {
-                                scannedBlockRule = (TemplateRuleBlock) StructurePluginManager.instance().getRuleForBlock(world, scannedBlock, turns, scanX, scanY, scanZ);
+                                scannedBlockRule = StructurePluginManager.INSTANCE.getRuleForBlock(world, scannedBlock, turns, scanX, scanY, scanZ);
                                 scannedBlockRule.ruleNumber = nextRuleID;
                                 nextRuleID++;
                                 pluginBlockRules.add(scannedBlockRule);
@@ -130,22 +119,14 @@ public class TemplateScanner {
             }//end scan z-level for
         }//end scan y-level for
 
-
-        TemplateRuleEntity scannedEntityRule;
         List<TemplateRuleEntity> scannedEntityRules = new ArrayList<TemplateRuleEntity>();
-        int ex, ey, ez;
         List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1));
-        String entityPluginId = null;
         nextRuleID = 0;
         for (Entity e : entitiesInAABB) {
-            ex = MathHelper.floor_double(e.posX);
-            ey = MathHelper.floor_double(e.posY);
-            ez = MathHelper.floor_double(e.posZ);
-            entityPluginId = StructurePluginManager.instance().getPluginNameForEntity(e.getClass());
-            if (entityPluginId == null) {
-                continue;
-            }
-            scannedEntityRule = StructurePluginManager.instance().getRuleForEntity(world, e, turns, ex, ey, ez);
+            int ex = MathHelper.floor_double(e.posX);
+            int ey = MathHelper.floor_double(e.posY);
+            int ez = MathHelper.floor_double(e.posZ);
+            TemplateRuleEntity scannedEntityRule = StructurePluginManager.INSTANCE.getRuleForEntity(world, e, turns, ex, ey, ez);
             if (scannedEntityRule != null) {
                 destination.x = ex - min.x;
                 destination.y = ey - min.y;

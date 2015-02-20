@@ -38,7 +38,7 @@ public class TemplateRuleModBlocks extends TemplateRuleBlock {
 
     public TemplateRuleModBlocks(World world, int x, int y, int z, Block block, int meta, int turns) {
         super(world, x, y, z, block, meta, turns);
-        this.blockName = BlockDataManager.instance().getNameForBlock(block);
+        this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.meta = meta;
     }
 
@@ -47,13 +47,13 @@ public class TemplateRuleModBlocks extends TemplateRuleBlock {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z) {
-        return BlockDataManager.instance().getNameForBlock(block).equals(blockName) && meta == this.meta;
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
+        return BlockDataManager.INSTANCE.getNameForBlock(block).equals(blockName) && meta == this.meta;
     }
 
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
-        Block block = BlockDataManager.instance().getBlockForName(blockName);
+        Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
         world.setBlock(x, y, z, block, meta, 3);
     }
 

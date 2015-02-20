@@ -43,7 +43,7 @@ public class StructureValidatorGround extends StructureValidator {
     public boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template) {
         Block block = world.getBlock(x, y - 1, z);
         Set<String> validTargetBlocks = getTargetBlocks();
-        String name = BlockDataManager.instance().getNameForBlock(block);
+        String name = BlockDataManager.INSTANCE.getNameForBlock(block);
         if (block == null || !validTargetBlocks.contains(name)) {
             AWLog.logDebug("Rejecting due to target block mismatch of: " + name + " at: " + x + "," + y + "," + z + " Valid blocks are: " + validTargetBlocks);
             return false;

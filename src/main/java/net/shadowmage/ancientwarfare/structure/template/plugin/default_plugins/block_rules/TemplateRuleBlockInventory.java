@@ -27,12 +27,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.NBTTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
-import net.shadowmage.ancientwarfare.structure.template.build.LootGenerator;
+
+import java.util.Random;
+
+import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
 
 public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 
@@ -83,19 +88,19 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
         super.handlePlacement(world, turns, x, y, z, builder);
         TileEntity te = world.getTileEntity(x, y, z);
+        if (!(te instanceof IInventory)) {
+            return;
+        }
         IInventory inventory = (IInventory) te;
         tag.setInteger("x", x);
         tag.setInteger("y", y);
         tag.setInteger("z", z);
         te.readFromNBT(tag);
-        if (inventory == null) {
-            return;
-        }
         if (randomLootLevel > 0) {
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
                 inventory.setInventorySlotContents(i, null);
             }//clear the inventory in prep for random loot stuff
-            LootGenerator.INSTANCE.generateLootFor(inventory, randomLootLevel - 1, world.rand);
+            generateLootFor(inventory, world.rand);
         } else if (inventoryStacks != null) {
             ItemStack stack;
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
@@ -103,13 +108,19 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
                 inventory.setInventorySlotContents(i, stack == null ? null : stack.copy());
             }
         }
-        int localMeta = BlockDataManager.instance().getRotatedMeta(block, this.meta, turns);
+        int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
         world.markBlockForUpdate(x, y, z);
     }
 
+    public void generateLootFor(IInventory inventory, Random rng) {
+        for (int i = 0; i < randomLootLevel; i++) {
+            WeightedRandomChestContent.generateChestContents(rng, ChestGenHooks.getItems(DUNGEON_CHEST, rng), inventory, ChestGenHooks.getCount(DUNGEON_CHEST, rng));
+        }
+    }
+
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
         return false;
     }
 

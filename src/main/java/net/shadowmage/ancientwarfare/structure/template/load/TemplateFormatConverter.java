@@ -162,9 +162,7 @@ public class TemplateFormatConverter {
         }
 
         TemplateRule[] rules = new TemplateRule[highestRuleNumber + 1];
-        TemplateRule rule;
-        for (int i = 0; i < parsedRules.size(); i++) {
-            rule = parsedRules.get(i);
+        for (TemplateRule rule : parsedRules) {
             if (rule.ruleNumber >= 1 && rules[rule.ruleNumber] == null) {
                 rules[rule.ruleNumber] = rule;
             } else {
@@ -233,7 +231,7 @@ public class TemplateFormatConverter {
         } else {
             TemplateRuleVanillaBlocks rule = new TemplateRuleVanillaBlocks();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.block = block;
             rule.meta = meta;
             rule.buildPass = buildPass;
@@ -246,14 +244,14 @@ public class TemplateFormatConverter {
         if (block == Blocks.wooden_door || block == Blocks.iron_door) {
             rule = new TemplateRuleBlockDoors();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
         }//vanilla door rule
         else if (block == Blocks.standing_sign || block == Blocks.wall_sign) {
             rule = new TemplateRuleBlockSign();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
             ((TemplateRuleBlockSign) rule).signContents = new String[]{"", "", "", ""};
@@ -264,7 +262,7 @@ public class TemplateFormatConverter {
 
             rule = new TemplateRuleBlockLogic();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
             ((TemplateRuleBlockLogic) rule).tag = tag;
@@ -277,7 +275,7 @@ public class TemplateFormatConverter {
 
             rule = new TemplateRuleBlockLogic();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
             ((TemplateRuleBlockLogic) rule).tag = tag;
@@ -287,7 +285,7 @@ public class TemplateFormatConverter {
 
             rule = new TemplateRuleBlockLogic();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
             ((TemplateRuleBlockLogic) rule).tag = tag;
@@ -297,7 +295,7 @@ public class TemplateFormatConverter {
 
             rule = new TemplateRuleBlockLogic();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
             ((TemplateRuleBlockLogic) rule).tag = tag;
@@ -307,7 +305,7 @@ public class TemplateFormatConverter {
 
             rule = new TemplateRuleBlockInventory();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
             ((TemplateRuleBlockInventory) rule).tag = tag;
@@ -319,7 +317,7 @@ public class TemplateFormatConverter {
 
             rule = new TemplateRuleBlockInventory();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
             ((TemplateRuleBlockInventory) rule).tag = tag;
@@ -330,7 +328,7 @@ public class TemplateFormatConverter {
 
             rule = new TemplateRuleBlockInventory();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
             ((TemplateRuleBlockInventory) rule).tag = tag;
@@ -341,7 +339,7 @@ public class TemplateFormatConverter {
 
             rule = new TemplateRuleBlockInventory();
             rule.ruleNumber = number;
-            rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+            rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
             ((TemplateRuleBlockInventory) rule).tag = tag;
@@ -353,7 +351,7 @@ public class TemplateFormatConverter {
     private TemplateRule parseModBlock(Block block, int number, int buildPass, int meta) {
         TemplateRuleModBlocks rule = new TemplateRuleModBlocks();
         rule.ruleNumber = number;
-        rule.blockName = BlockDataManager.instance().getNameForBlock(block);
+        rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         rule.meta = meta;
         return rule;
     }

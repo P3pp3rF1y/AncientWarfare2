@@ -9,18 +9,14 @@ import java.util.List;
 
 public class TownTemplateManager {
 
+    public static final TownTemplateManager INSTANCE = new TownTemplateManager();
+
+    private final HashMap<String, TownTemplate> templates;
+    private final List<TownTemplate> searchCache;
     private TownTemplateManager() {
+        templates = new HashMap<String, TownTemplate>();
+        searchCache = new ArrayList<TownTemplate>();
     }
-
-    private static TownTemplateManager INSTANCE = new TownTemplateManager();
-
-    public static TownTemplateManager instance() {
-        return INSTANCE;
-    }
-
-    private HashMap<String, TownTemplate> templates = new HashMap<String, TownTemplate>();
-
-    private List<TownTemplate> searchCache = new ArrayList<TownTemplate>();
 
     public void loadTemplate(TownTemplate template) {
         templates.put(template.getTownTypeName(), template);

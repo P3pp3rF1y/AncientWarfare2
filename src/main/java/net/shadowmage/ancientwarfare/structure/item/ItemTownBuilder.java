@@ -58,7 +58,7 @@ public class ItemTownBuilder extends Item implements IItemKeyInterface, IItemCli
             return;
         }
         long t1 = System.nanoTime();
-        WorldTownGenerator.instance().attemptGeneration(player.worldObj, player.worldObj.rand, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ));
+        WorldTownGenerator.INSTANCE.attemptGeneration(player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ));
         long t2 = System.nanoTime();
         AWLog.logDebug("Total Town gen nanos (incl. validation): " + (t2 - t1));
     }
