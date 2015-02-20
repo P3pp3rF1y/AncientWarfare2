@@ -74,6 +74,8 @@ public class NpcAIFactionRideHorse extends NpcAI {
     private void onMountHorse() {
         removeHorseAI();
         horse.setHorseSaddled(false);
+        horse.setEatingHaystack(false);
+        horse.setRearing(false);
         applyModifiers();
     }
 
