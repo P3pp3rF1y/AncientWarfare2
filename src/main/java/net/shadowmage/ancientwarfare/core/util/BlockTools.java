@@ -23,6 +23,7 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -370,50 +371,37 @@ public class BlockTools {
         return pos;
     }
 
-    public static void breakBlockAndDrop(World world, int x, int y, int z, int fortune) {
-        List<ItemStack> drops = breakBlock(world, x, y, z, fortune);
-        for (ItemStack stack : drops) {
-            float f = 0.7F;
-            double d0 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-            double d1 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-            double d2 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-            EntityItem entityitem = new EntityItem(world, (double) x + d0, (double) y + d1, (double) z + d2, stack);
-            entityitem.delayBeforeCanPickup = 10;
-            world.spawnEntityInWorld(entityitem);
-        }
+    public static boolean breakBlockAndDrop(World world, int x, int y, int z, int fortune) {
+        return breakBlock(world, x, y, z, fortune, true);
     }
 
-    public static List<ItemStack> breakBlock(World world, int x, int y, int z, int fortune) {
-        return breakBlock(world, "AncientWarfare", x, y, z, fortune);
+    public static boolean breakBlock(World world, int x, int y, int z, int fortune, boolean doDrop) {
+        return breakBlock(world, "AncientWarfare", x, y, z, fortune, doDrop);
     }
 
-    public static List<ItemStack> breakBlock(World world, String playerName, int x, int y, int z, int fortune) {
+    public static boolean breakBlock(World world, String playerName, int x, int y, int z, int fortune, boolean doDrop) {
         if (world.isRemote) {
-            return Collections.emptyList();
+            return false;
         }
-        int meta = world.getBlockMetadata(x, y, z);
         Block block = world.getBlock(x, y, z);
-        if (block == null || block.getBlockHardness(world, x, y, z) < 0) {
-            return Collections.emptyList();
+        if (block.getMaterial() == Material.air || block.getBlockHardness(world, x, y, z) < 0 ) {
+            return false;
         }
-        boolean dropBlock = true;
-        if (AWCoreStatics.fireBlockBreakEvents) {
-            BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(x, y, z, world, block, meta, AncientWarfareCore.proxy.getFakePlayer((WorldServer) world, playerName));
-            if (MinecraftForge.EVENT_BUS.post(event)) {
-                dropBlock = false;
+        if(doDrop) {
+            int meta = world.getBlockMetadata(x, y, z);
+            if (AWCoreStatics.fireBlockBreakEvents) {
+                if (!canBreakBlock(world, AncientWarfareCore.proxy.getFakePlayer(world, playerName), x, y, z, block, meta)) {
+                    return false;
+                }
             }
+            block.dropBlockAsItem(world, x, y, z, meta, fortune);
         }
-        if (dropBlock) {
-            ArrayList<ItemStack> drops = block.getDrops(world, x, y, z, world.getBlockMetadata(x, y, z), fortune);
-            world.setBlockToAir(x, y, z);
-            return drops;
-        }
-        return Collections.emptyList();
+        return world.setBlockToAir(x, y, z);
     }
 
 
-    public static boolean canBreakBlock(World world, String playerName, int x, int y, int z, Block block, int meta) {
-        return !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(x, y, z, world, block, meta, AncientWarfareCore.proxy.getFakePlayer((WorldServer) world, playerName)));
+    public static boolean canBreakBlock(World world, EntityPlayer player, int x, int y, int z, Block block, int meta) {
+        return !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(x, y, z, world, block, meta, player));
     }
 
 }

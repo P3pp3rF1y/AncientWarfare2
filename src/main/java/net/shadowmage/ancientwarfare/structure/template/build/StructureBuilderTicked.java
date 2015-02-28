@@ -74,11 +74,7 @@ public class StructureBuilderTicked extends StructureBuilder {
     }
 
     protected boolean breakClearTargetBlock() {
-        if (world.isAirBlock(clearX, clearY, clearZ)) {
-            return false;
-        }
-        BlockTools.breakBlockAndDrop(world, clearX, clearY, clearZ, 0);
-        return true;
+        return BlockTools.breakBlockAndDrop(world, clearX, clearY, clearZ, 0);
     }
 
     protected boolean incrementClear() {
@@ -96,11 +92,9 @@ public class StructureBuilderTicked extends StructureBuilder {
         return true;
     }
 
+    //break/drop any existing blocks from ticked builder
     protected void tryBreakTargetBlock() {
-        if (!world.isAirBlock(destination.x, destination.y, destination.z))//break/drop any existing blocks from ticked builder
-        {
-            BlockTools.breakBlockAndDrop(world, destination.x, destination.y, destination.z, 0);
-        }
+        BlockTools.breakBlockAndDrop(world, destination.x, destination.y, destination.z, 0);
     }
 
     public void setWorld(World world)//should be called on first-update of the TE (after its world is set)
