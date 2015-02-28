@@ -21,19 +21,11 @@ public class AWAutomationBlockLoader {
 
     public static final BlockWorksiteBase worksiteQuarry = new BlockWorksiteBase("civic_quarry").setTileEntity(WorkSiteQuarry.class);
 
-        ;
-
     public static final BlockWorksiteBase worksiteForestry = new BlockWorksiteBase("civic_forestry").setTileEntity(WorkSiteTreeFarm.class);
-
-        ;
 
     public static final BlockWorksiteBase worksiteCropFarm = new BlockWorksiteBase("civic_crop_farm").setTileEntity(WorkSiteCropFarm.class);
 
-        ;
-
     public static final BlockWorksiteBase worksiteMushroomFarm = new BlockWorksiteBase("civic_mushroom_farm").setTileEntity(WorkSiteMushroomFarm.class);
-
-        ;
 
     public static final BlockWorksiteBase worksiteAnimalFarm = new BlockWorksiteBase("civic_animal_farm").setTileEntity(WorkSiteAnimalFarm.class);
 

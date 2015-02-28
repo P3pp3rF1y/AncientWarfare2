@@ -52,7 +52,7 @@ public class BlockFinder {
             meta = world.getBlockMetadata(pos.x, pos.y, pos.z);
             if (block == blockType && meta == metaValue) {
                 foundPositions.add(pos);
-                findNeighborsSixWay(world, pos.x, pos.y, pos.z, neighborSet);
+                findNeighborsSixWay(pos.x, pos.y, pos.z, neighborSet);
                 for (BlockPosition p : neighborSet) {
                     if (!openSet.contains(p) && !foundPositions.contains(p) && !closedSet.contains(p)) {
                         openSet.add(p);
@@ -66,7 +66,7 @@ public class BlockFinder {
         positions.addAll(foundPositions);
     }
 
-    public static void findNeighborsSixWay(World world, int x, int y, int z, Set<BlockPosition> neighbors) {
+    public static void findNeighborsSixWay(int x, int y, int z, Set<BlockPosition> neighbors) {
         BlockPosition pos;
         ForgeDirection d;
         for (int i = 0; i < 6; i++) {

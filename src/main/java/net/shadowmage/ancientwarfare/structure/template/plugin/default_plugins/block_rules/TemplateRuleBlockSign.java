@@ -50,7 +50,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
-        Block block = (Block) Block.blockRegistry.getObject(blockName);
+        Block block = Block.getBlockFromName(blockName);
 //  Block block = wall? Blocks.wall_sign : Blocks.standing_sign;//BlockDataManager.getBlockByName(blockName);
         int meta = 0;
         if (block == Blocks.standing_sign) {
@@ -61,7 +61,6 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
         if(world.setBlock(x, y, z, block, meta, 2)) {
             TileEntitySign te = (TileEntitySign) world.getTileEntity(x, y, z);
             if(te!=null) {
-                te.signText = new String[this.signContents.length];
                 for (int i = 0; i < this.signContents.length; i++) {
                     te.signText[i] = this.signContents[i];
                 }

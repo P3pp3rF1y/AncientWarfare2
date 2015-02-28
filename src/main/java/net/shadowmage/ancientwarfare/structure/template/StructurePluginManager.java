@@ -238,8 +238,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
                     "Missing plugin for name: " + name + "\n" +
                     "name: " + name + "\n" +
                     "number:" + ruleNumber + "\n" +
-                    "ruleDataPackage.size:" + ruleDataPackage.size() + "\n" +
-                    "ruleClass: " + clz);
+                    "ruleDataPackage.size:" + ruleDataPackage.size() + "\n");
         } else if (name == null || ruleNumber < 0 || ruleDataPackage.isEmpty()) {
             throw new TemplateRuleParsingException("Not enough data to create template rule.\n" +
                     "name: " + name + "\n" +

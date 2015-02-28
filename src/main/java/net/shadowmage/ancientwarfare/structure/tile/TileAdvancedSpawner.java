@@ -59,8 +59,7 @@ public class TileAdvancedSpawner extends TileEntity {
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
         settings.writeToNBT(tag);
-        S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
-        return pkt;
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
     }
 
     @Override

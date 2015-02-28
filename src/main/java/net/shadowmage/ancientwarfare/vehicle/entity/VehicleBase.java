@@ -194,7 +194,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     public boolean interactFirst(EntityPlayer player) {
-        AWLog.logDebug("interact with vehicle: " + player);
         if (!worldObj.isRemote && this.riddenByEntity == null && player.ridingEntity == null) {
             player.mountEntity(this);
         }

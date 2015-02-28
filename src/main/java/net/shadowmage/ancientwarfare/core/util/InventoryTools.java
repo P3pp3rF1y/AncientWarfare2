@@ -471,7 +471,6 @@ public class InventoryTools {
         y += world.rand.nextFloat() * 0.6f + 1 - 0.3f;
         z += world.rand.nextFloat() * 0.6f - 0.3f;
         entityToSpawn = new EntityItem(world, x, y, z, item);
-        entityToSpawn.setPosition(x, y, z);
         world.spawnEntityInWorld(entityToSpawn);
     }
 
