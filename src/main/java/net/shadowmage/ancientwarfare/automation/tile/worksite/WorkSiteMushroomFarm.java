@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockMushroom;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -61,7 +62,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                     return true;
                 } else if (item instanceof ItemBlock) {
                     ItemBlock ib = (ItemBlock) item;
-                    if (ib.field_150939_a == Blocks.red_mushroom || ib.field_150939_a == Blocks.brown_mushroom) {
+                    if (isMushroom(ib.field_150939_a)) {
                         return true;
                     }
                 }
@@ -69,6 +70,10 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
             }
         };
         this.inventory.setFilterForSlots(filter, frontIndices);
+    }
+
+    private boolean isMushroom(Block block){
+        return block instanceof BlockMushroom;
     }
 
     @Override
@@ -109,7 +114,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
             }
             if (item.getItem() instanceof ItemBlock) {
                 ItemBlock ib = (ItemBlock) item.getItem();
-                if (ib.field_150939_a == Blocks.red_mushroom || ib.field_150939_a == Blocks.brown_mushroom) {
+                if (isMushroom(ib.field_150939_a)) {
                     mushroomCount += item.stackSize;
                 }
             }
@@ -130,7 +135,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                 }
                 if (item.getItem() instanceof ItemBlock) {
                     ItemBlock ib = (ItemBlock) item.getItem();
-                    if (ib.field_150939_a == Blocks.red_mushroom || ib.field_150939_a == Blocks.brown_mushroom) {
+                    if (isMushroom(ib.field_150939_a)) {
                         while (it.hasNext() && (pos = it.next()) != null) {
                             it.remove();
                             if (worldObj.isAirBlock(pos.x, pos.y, pos.z) && ib.field_150939_a.canBlockStay(worldObj, pos.x, pos.y, pos.z)) {
@@ -233,7 +238,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
             block = worldObj.getBlock(pos.x, pos.y, pos.z);
             if (block == Blocks.nether_wart && worldObj.getBlockMetadata(pos.x, pos.y, pos.z) >= 3) {
                 blocksToHarvest.add(pos);
-            } else if (block == Blocks.red_mushroom || block == Blocks.brown_mushroom) {
+            } else if (isMushroom(block)) {
                 Set<BlockPosition> harvestSet = new HashSet<BlockPosition>();
                 TreeFinder.findAttachedTreeBlocks(block, worldObj, pos.x, pos.y, pos.z, harvestSet);
                 for (BlockPosition tp : harvestSet) {

@@ -101,10 +101,6 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
         return ItemResearchBook.getResearcherName(bookSlot.getStackInSlot(0));
     }
 
-    public final void setOwningPlayer(String name) {
-        this.owningPlayer = name;
-    }
-
     public boolean tryCraftItem() {
         if (canCraft() && canHold()) {
             craftItem();

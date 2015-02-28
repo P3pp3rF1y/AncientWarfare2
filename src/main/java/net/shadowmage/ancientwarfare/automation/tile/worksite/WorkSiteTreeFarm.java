@@ -171,7 +171,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                         stack = inventory.getStackInSlot(i);
                         if (stack != null && stack.getItem() == Items.dye && stack.getItemDamage() == 15) {
                             bonemealCount--;
-                            ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, AncientWarfareCore.proxy.getFakePlayer((WorldServer) worldObj, owningPlayer));
+                            ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, getOwnerAsPlayer());
                             if (stack.stackSize <= 0) {
                                 inventory.setInventorySlotContents(i, null);
                             }

@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.*;
@@ -36,7 +37,7 @@ import java.util.EnumSet;
 @Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore", striprefs = true)
 public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInteractableTile, IOwnable, ITorqueTile, IRotatableTile, IEnergyHandler, IChunkLoaderTile {
 
-    protected String owningPlayer = "";
+    private String owningPlayer = "";
 
     private double efficiencyBonusFactor = 0.f;
 
@@ -201,6 +202,14 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     @Override
     public final String getOwnerName() {
         return owningPlayer;
+    }
+
+    public final EntityPlayer getOwnerAsPlayer(){
+        EntityPlayer player = this.getWorldObj().getPlayerEntityByName(owningPlayer);
+        if(player==null){
+            return AncientWarfareCore.proxy.getFakePlayer(this.getWorldObj(), owningPlayer);
+        }
+        return player;
     }
 
     @Override

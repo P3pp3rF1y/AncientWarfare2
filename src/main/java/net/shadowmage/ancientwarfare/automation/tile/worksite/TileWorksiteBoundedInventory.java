@@ -57,10 +57,12 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
         if (!InventoryTools.canInventoryHold(inventory, combindedIndices, stacks)) {
             return false;
         }
-        if (!BlockTools.canBreakBlock(worldObj, getOwnerName(), x, y, z, block, meta)) {
+        if (!BlockTools.canBreakBlock(worldObj, getOwnerAsPlayer(), x, y, z, block, meta)) {
             return false;
         }
-        worldObj.setBlockToAir(x, y, z);
+        if(!worldObj.setBlockToAir(x, y, z)){
+            return false;
+        }
         for (ItemStack stack : stacks) {
             stack = InventoryTools.mergeItemStack(inventory, stack, combindedIndices);//was already validated that items would fit via canInventoryHold call
             if (stack != null)//but just in case, drop into world anyway if not null..

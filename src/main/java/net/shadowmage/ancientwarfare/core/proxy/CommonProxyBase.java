@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.proxy;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
@@ -16,12 +17,12 @@ public class CommonProxyBase {
         return null;
     }
 
-    public EntityPlayer getFakePlayer(WorldServer world) {
+    public EntityPlayer getFakePlayer(World world) {
         return getFakePlayer(world, "AncientWarfare");
     }
 
-    public EntityPlayer getFakePlayer(WorldServer world, String name) {
-        return FakePlayerFactory.get(world, new GameProfile(null, name));
+    public EntityPlayer getFakePlayer(World world, String name) {
+        return FakePlayerFactory.get((WorldServer)world, new GameProfile(null, name));
     }
 
     public boolean isKeyPressed(String keyName) {
