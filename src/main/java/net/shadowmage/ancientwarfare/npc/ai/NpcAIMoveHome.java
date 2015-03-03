@@ -5,8 +5,8 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIMoveHome extends NpcAI {
 
-    float dayRange, nightRange;
-    float dayLeash, nightLeash;
+    private final float dayRange, nightRange;
+    private final float dayLeash, nightLeash;
 
     public NpcAIMoveHome(NpcBase npc, float dayRange, float nightRange, float dayLeash, float nightLeash) {
         super(npc);
@@ -40,10 +40,7 @@ public class NpcAIMoveHome extends NpcAI {
         }
         ChunkCoordinates cc = npc.getHomePosition();
         float distSq = (float) npc.getDistanceSq(cc.posX + 0.5d, cc.posY, cc.posZ + 0.5d);
-        if (npc.shouldBeAtHome() || exceedsLeash(distSq)) {
-            return true;
-        }
-        return false;
+        return npc.shouldBeAtHome() || exceedsLeash(distSq);
     }
 
     protected boolean exceedsRange(float distSq) {

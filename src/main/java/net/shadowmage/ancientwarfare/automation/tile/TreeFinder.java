@@ -50,14 +50,8 @@ public class TreeFinder {
     }
 
     private static void addNeighborNodes(World world, int x, int y, int z, Block blockType, List<BlockPosition> openList, List<BlockPosition> badNodes, List<BlockPosition> foundNodes) {
-        int[] offset;
-        int x1, y1, z1;
-        for (int i = 0; i < offsets.length; i++) {
-            offset = offsets[i];
-            x1 = x + offset[0];
-            y1 = y + offset[1];
-            z1 = z + offset[2];
-            BlockPosition n = new BlockPosition(x1, y1, z1);
+        for (int[] offset : offsets) {
+            BlockPosition n = new BlockPosition(x + offset[0], y + offset[1], z + offset[2]);
             if (!badNodes.contains(n) && !openList.contains(n) && !foundNodes.contains(n)) {
                 if (isTree(world, n, blockType)) {
                     openList.add(n);

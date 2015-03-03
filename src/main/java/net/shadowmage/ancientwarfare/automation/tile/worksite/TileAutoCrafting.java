@@ -271,19 +271,13 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
     @Override
     public boolean canInsertItem(int slot, ItemStack var2, int side) {
         ForgeDirection d = ForgeDirection.getOrientation(side);
-        if (d == ForgeDirection.UP) {
-            return true;//top, insert-only
-        }
-        return false;
+        return d == ForgeDirection.UP;//top, insert only
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack var2, int side) {
         ForgeDirection d = ForgeDirection.getOrientation(side);
-        if (d == ForgeDirection.DOWN) {
-            return true;//bottom, extract only
-        }
-        return false;
+        return d == ForgeDirection.DOWN;//bottom, extract only
     }
 
     @Override
