@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -49,22 +50,23 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
         }
     }
 
-    protected boolean harvestBlock(int x, int y, int z, int fortune, RelativeSide... relativeSides) {
-        int[] combindedIndices = inventory.getRawIndicesCombined(relativeSides);
+    protected boolean harvestBlock(int x, int y, int z, RelativeSide... relativeSides) {
+        int[] combinedIndices = inventory.getRawIndicesCombined(relativeSides);
         Block block = worldObj.getBlock(x, y, z);
         int meta = worldObj.getBlockMetadata(x, y, z);
-        List<ItemStack> stacks = block.getDrops(worldObj, x, y, z, meta, fortune);
-        if (!InventoryTools.canInventoryHold(inventory, combindedIndices, stacks)) {
+        List<ItemStack> stacks = block.getDrops(worldObj, x, y, z, meta, getFortune());
+        if (!InventoryTools.canInventoryHold(inventory, combinedIndices, stacks)) {
             return false;
         }
         if (!BlockTools.canBreakBlock(worldObj, getOwnerAsPlayer(), x, y, z, block, meta)) {
             return false;
         }
+        worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
         if(!worldObj.setBlockToAir(x, y, z)){
             return false;
         }
         for (ItemStack stack : stacks) {
-            stack = InventoryTools.mergeItemStack(inventory, stack, combindedIndices);//was already validated that items would fit via canInventoryHold call
+            stack = InventoryTools.mergeItemStack(inventory, stack, combinedIndices);//was already validated that items would fit via canInventoryHold call
             if (stack != null)//but just in case, drop into world anyway if not null..
             {
                 InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);

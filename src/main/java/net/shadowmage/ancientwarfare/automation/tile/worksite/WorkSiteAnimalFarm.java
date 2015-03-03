@@ -42,7 +42,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     private List<EntityPair> pigsToBreed = new ArrayList<EntityPair>();
     private List<EntityPair> chickensToBreed = new ArrayList<EntityPair>();
     private List<EntityPair> cowsToBreed = new ArrayList<EntityPair>();
-    private List<Integer> cowsToMilk = new ArrayList<Integer>();
+    private int cowsToMilk;
     private List<EntityPair> sheepToBreed = new ArrayList<EntityPair>();
     private List<Integer> sheepToShear = new ArrayList<Integer>();
     private List<Integer> entitiesToCull = new ArrayList<Integer>();
@@ -174,7 +174,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         worldObj.theProfiler.startSection("Animal Rescan");
         pigsToBreed.clear();
         cowsToBreed.clear();
-        cowsToMilk.clear();
+        cowsToMilk = 0;
         sheepToBreed.clear();
         chickensToBreed.clear();
         entitiesToCull.clear();
@@ -270,7 +270,11 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         scanForAnimals(animals, cowsToBreed, maxCowCount);
         for (EntityAnimal animal : animals) {
             if (animal.getGrowingAge() >= 0) {
-                cowsToMilk.add(animal.getEntityId());
+                cowsToMilk++;
+                if(cowsToMilk > maxCowCount) {
+                    cowsToMilk = maxCowCount;
+                    break;
+                }
             }
         }
     }
@@ -318,8 +322,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 return true;
             }
         }
-        if (bucketCount > 0 && !cowsToMilk.isEmpty()) {
-            didWork = tryMilking(cowsToMilk);
+        if (bucketCount > 0) {
+            didWork = tryMilking();
             if (didWork) {
                 InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.BOTTOM), new ItemStack(Items.bucket), 1);
                 this.addStackToInventory(new ItemStack(Items.milk_bucket), RelativeSide.TOP);
@@ -345,15 +349,17 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             if (!(animalA instanceof EntityAnimal) || !(animalB instanceof EntityAnimal)) {
                 return false;
             }
-            ((EntityAnimal) animalA).func_146082_f(null);//setInLove(EntityPlayer breeder)
-            ((EntityAnimal) animalB).func_146082_f(null);//setInLove(EntityPlayer breeder)
-            return true;
+            if(animalA.isEntityAlive() && animalB.isEntityAlive()) {
+                ((EntityAnimal) animalA).func_146082_f(null);//setInLove(EntityPlayer breeder)
+                ((EntityAnimal) animalB).func_146082_f(null);//setInLove(EntityPlayer breeder)
+                return true;
+            }
         }
         return false;
     }
 
-    private boolean tryMilking(List<Integer> targets) {
-        return false;
+    private boolean tryMilking() {
+        return cowsToMilk > 0 && worldObj.rand.nextInt(cowsToMilk + getFortune()) > maxCowCount / 2;
     }
 
     private boolean tryShearing(List<Integer> targets) {
@@ -361,10 +367,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             return false;
         }
         EntitySheep sheep = (EntitySheep) worldObj.getEntityByID(targets.remove(0));
-        if (sheep == null) {
-            return false;
-        }
-        if (sheep.getSheared()) {
+        if (sheep == null || sheep.getSheared()) {
             return false;
         }
         ArrayList<ItemStack> items = sheep.onSheared(shears, worldObj, xCoord, yCoord, zCoord, 0);
@@ -375,30 +378,29 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     private boolean tryCulling(List<Integer> targets) {
-        int entityId;
         Entity entity;
         EntityAnimal animal;
-        int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
+        int fortune = getFortune();
         while (!targets.isEmpty()) {
-            entityId = targets.remove(0);
-            entity = worldObj.getEntityByID(entityId);
-            if (entity instanceof EntityAnimal) {
+            entity = worldObj.getEntityByID(targets.remove(0));
+            if (entity instanceof EntityAnimal && entity.isEntityAlive()) {
                 animal = (EntityAnimal) entity;
                 if (animal.isInLove() || animal.getGrowingAge() < 0) {
                     continue;
                 }
 
                 animal.captureDrops = true;
-                animal.captureDrops = true;
                 animal.arrowHitTimer = 10;
                 animal.attackEntityFrom(DamageSource.generic, animal.getHealth() + 1);
                 ItemStack stack;
                 for (EntityItem item : animal.capturedDrops) {
                     stack = item.getEntityItem();
-                    if (fortune > 0) {
-                        stack.stackSize += worldObj.rand.nextInt(fortune);
+                    if(stack!=null) {
+                        if (fortune > 0) {
+                            stack.stackSize += worldObj.rand.nextInt(fortune);
+                        }
+                        this.addStackToInventory(stack, RelativeSide.TOP);
                     }
-                    this.addStackToInventory(stack, RelativeSide.TOP);
                     item.setDead();
                 }
                 return true;
@@ -442,7 +444,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 || (carrotCount > 0 && !pigsToBreed.isEmpty())
                 || (seedCount > 0 && !chickensToBreed.isEmpty())
                 || (wheatCount > 0 && (!cowsToBreed.isEmpty() || !sheepToBreed.isEmpty()))
-                || (bucketCount > 0 && !cowsToMilk.isEmpty())
+                || (bucketCount > 0 && cowsToMilk > 0)
                 || (shears != null && !sheepToShear.isEmpty());
     }
 

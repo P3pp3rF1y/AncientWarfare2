@@ -1,6 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCrops;
+import net.minecraft.block.BlockStem;
+import net.minecraft.block.IGrowable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -8,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.IPlantable;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
@@ -73,29 +77,12 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         this.inventory.setFilterForSlots(filter, bottomIndices);
     }
 
-    private boolean isBonemeal(ItemStack stack){
-        return stack.getItem() == Items.dye && stack.getItemDamage() == 15;
-    }
-
     private boolean isPlantable(Item item){
-        return item == Items.carrot || item == Items.potato || item == Items.wheat_seeds || item == Items.melon_seeds || item == Items.pumpkin_seeds;
-    }
-
-    private Block getPlantFromSeed(Item item){
-        if (item == Items.wheat_seeds) {
-            return Blocks.wheat;
-        } else if (item == Items.carrot) {
-            return Blocks.carrots;
-        } else if (item == Items.potato) {
-            return Blocks.potatoes;
-        } else if (item == Items.melon_seeds) {
-            return Blocks.melon_stem;
-        }
-        return Blocks.pumpkin_stem;
+        return item instanceof IPlantable;
     }
 
     private boolean isPlant(Block block){
-        return block == Blocks.wheat || block == Blocks.carrots || block == Blocks.potatoes || block == Blocks.pumpkin_stem || block == Blocks.melon_stem;
+        return block instanceof BlockCrops || block instanceof BlockStem;
     }
 
     @Override
@@ -158,21 +145,21 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
     @Override
     protected void scanBlockPosition(BlockPosition position) {
         Block block = worldObj.getBlock(position.x, position.y, position.z);
-        if (worldObj.isAirBlock(position.x, position.y, position.z)) {
+        if (block.isAir(worldObj, position.x, position.y, position.z)) {
             block = worldObj.getBlock(position.x, position.y - 1, position.z);
             if (block == Blocks.dirt || block == Blocks.grass) {
                 blocksToTill.add(new BlockPosition(position.x, position.y - 1, position.z));
             } else if (block == Blocks.farmland) {
                 blocksToPlant.add(position);
             }
-        } else if (block == Blocks.wheat || block == Blocks.carrots || block == Blocks.potatoes) {
-            if (worldObj.getBlockMetadata(position.x, position.y, position.z) >= 7) {
+        } else if (block instanceof BlockCrops) {
+            if (!((IGrowable)block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                 blocksToHarvest.add(position);
             } else {
                 blocksToFertilize.add(position);
             }
-        } else if (block == Blocks.melon_stem || block == Blocks.pumpkin_stem) {
-            if (worldObj.getBlockMetadata(position.x, position.y, position.z) >= 7) {
+        } else if (block instanceof BlockStem) {
+            if (!((IGrowable)block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                 block = worldObj.getBlock(position.x - 1, position.y, position.z);
                 if (block == Blocks.melon_block || block == Blocks.pumpkin) {
                     blocksToHarvest.add(new BlockPosition(position.x - 1, position.y, position.z));
@@ -200,13 +187,12 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         Iterator<BlockPosition> it;
         BlockPosition position;
         Block block;
-        int meta;
         if (!blocksToTill.isEmpty()) {
             it = blocksToTill.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if (worldObj.isAirBlock(position.x, position.y + 1, position.z) && (block == Blocks.grass || block == Blocks.dirt)) {
+                if ((block == Blocks.grass || block == Blocks.dirt) && worldObj.isAirBlock(position.x, position.y + 1, position.z)) {
                     worldObj.setBlock(position.x, position.y, position.z, Blocks.farmland);
                     return true;
                 }
@@ -216,16 +202,13 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if (block == Blocks.wheat || block == Blocks.carrots || block == Blocks.potatoes) {
-                    int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
-                    meta = worldObj.getBlockMetadata(position.x, position.y, position.z);
-                    if (meta < 7) {
+                if (block instanceof BlockCrops) {
+                    if (((IGrowable)block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                         continue;
                     }
-                    return harvestBlock(position.x, position.y, position.z, fortune, RelativeSide.FRONT, RelativeSide.TOP);
+                    return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
                 } else if (block == Blocks.pumpkin || block == Blocks.melon_block) {
-                    int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
-                    return harvestBlock(position.x, position.y, position.z, fortune, RelativeSide.FRONT, RelativeSide.TOP);
+                    return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
                 }
             }
         } else if (!blocksToPlant.isEmpty() && plantableCount > 0) {
@@ -234,21 +217,19 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 it.remove();
                 if (worldObj.getBlock(position.x, position.y - 1, position.z) == Blocks.farmland && worldObj.isAirBlock(position.x, position.y, position.z)) {
                     ItemStack stack;
-                    Item item;
                     for (int i = 27; i < 30; i++) {
                         stack = inventory.getStackInSlot(i);
                         if (stack == null) {
                             continue;
                         }
-                        item = stack.getItem();
-                        if (isPlantable(item)) {
+                        if (isPlantable(stack.getItem())) {
                             plantableCount--;
                             stack.stackSize--;
                             if (stack.stackSize <= 0) {
                                 inventory.setInventorySlotContents(i, null);
                             }
-                            block = getPlantFromSeed(item);
-                            worldObj.setBlock(position.x, position.y, position.z, block);
+                            block = ((IPlantable)stack.getItem()).getPlant(worldObj, position.x, position.y, position.z);
+                            worldObj.setBlock(position.x, position.y, position.z, block, ((IPlantable)stack.getItem()).getPlantMetadata(worldObj, position.x, position.y, position.z), 3);
                             return true;
                         }
                     }
@@ -275,10 +256,10 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                             }
                             block = worldObj.getBlock(position.x, position.y, position.z);
                             if (isPlant(block)) {
-                                if (worldObj.getBlockMetadata(position.x, position.y, position.z) < 7) {
+                                if (((IGrowable)block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                                     blocksToFertilize.add(position);
                                 } else {
-                                    if (block == Blocks.wheat || block == Blocks.carrots || block == Blocks.potatoes) {
+                                    if (block instanceof BlockCrops) {
                                         blocksToHarvest.add(position);
                                     }
                                 }

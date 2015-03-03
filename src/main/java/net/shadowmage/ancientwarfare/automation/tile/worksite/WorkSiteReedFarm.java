@@ -85,10 +85,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         filter = new ItemSlotFilter() {
             @Override
             public boolean isItemValid(ItemStack stack) {
-                if (stack == null) {
-                    return true;
-                }
-                return stack.getItem() == Items.dye && stack.getItemDamage() == 15;
+                return stack == null || isBonemeal(stack);
             }
         };
         this.inventory.setFilterForSlots(filter, bottomIndices);
@@ -172,8 +169,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     private boolean harvestBlock(BlockPosition p) {
         Block block = worldObj.getBlock(p.x, p.y, p.z);
         if (block == Blocks.cactus || block == Blocks.reeds || block == Blocks.cocoa) {
-            int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
-            return harvestBlock(p.x, p.y, p.z, fortune, RelativeSide.FRONT, RelativeSide.TOP);
+            return harvestBlock(p.x, p.y, p.z, RelativeSide.FRONT, RelativeSide.TOP);
         }
         return false;
     }

@@ -136,15 +136,11 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
         /**
          * if made it this far, a valid position was found, break it and add blocks to inventory
          */
-        int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
-        return harvestBlock(currentX, currentY, currentZ, fortune, RelativeSide.TOP);
+        return harvestBlock(currentX, currentY, currentZ, RelativeSide.TOP);
     }
 
     private boolean validatePosition(int x, int y, int z) {
-        if (!worldObj.isAirBlock(x, y, z) && canHarvest(worldObj.getBlock(x, y, z))) {
-            return true;
-        }
-        return false;
+        return !worldObj.isAirBlock(x, y, z) && canHarvest(worldObj.getBlock(x, y, z));
     }
 
     private boolean incrementPosition() {
@@ -195,10 +191,10 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
             if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_3)) {
                 toolLevel = Integer.MAX_VALUE;
             }
-            if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_2)) {
+            else if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_2)) {
                 toolLevel = 3;
             }
-            if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_1)) {
+            else if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_1)) {
                 toolLevel = 2;
             }
             if (toolLevel < harvestLevel) {

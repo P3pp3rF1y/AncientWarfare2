@@ -112,7 +112,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
             if (item.getItem() == Items.nether_wart) {
                 netherWartCount += item.stackSize;
             }
-            if (item.getItem() instanceof ItemBlock) {
+            else if (item.getItem() instanceof ItemBlock) {
                 ItemBlock ib = (ItemBlock) item.getItem();
                 if (isMushroom(ib.field_150939_a)) {
                     mushroomCount += item.stackSize;
@@ -138,7 +138,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                     if (isMushroom(ib.field_150939_a)) {
                         while (it.hasNext() && (pos = it.next()) != null) {
                             it.remove();
-                            if (worldObj.isAirBlock(pos.x, pos.y, pos.z) && ib.field_150939_a.canBlockStay(worldObj, pos.x, pos.y, pos.z)) {
+                            if (ib.field_150939_a.canPlaceBlockAt(worldObj, pos.x, pos.y, pos.z)) {
                                 worldObj.setBlock(pos.x, pos.y, pos.z, ib.field_150939_a);
                                 //plant the mushroom, decrease stack size
                                 item.stackSize--;
@@ -165,7 +165,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                 if (item.getItem() == Items.nether_wart) {
                     while (it.hasNext() && (pos = it.next()) != null) {
                         it.remove();
-                        if (worldObj.isAirBlock(pos.x, pos.y, pos.z) && Blocks.nether_wart.canBlockStay(worldObj, pos.x, pos.y, pos.z)) {
+                        if (Blocks.nether_wart.canPlaceBlockAt(worldObj, pos.x, pos.y, pos.z)) {
                             worldObj.setBlock(pos.x, pos.y, pos.z, Blocks.nether_wart);
                             item.stackSize--;
                             netherWartCount--;
@@ -186,8 +186,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                 it.remove();
                 block = worldObj.getBlock(pos.x, pos.y, pos.z);
                 if (block == Blocks.nether_wart || block == Blocks.red_mushroom || block == Blocks.brown_mushroom_block) {
-                    int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
-                    return harvestBlock(pos.x, pos.y, pos.z, fortune, RelativeSide.FRONT, RelativeSide.TOP);
+                    return harvestBlock(pos.x, pos.y, pos.z, RelativeSide.FRONT, RelativeSide.TOP);
                 }
             }
         }
@@ -225,17 +224,15 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected void scanBlockPosition(BlockPosition pos) {
-        Block block;
-        if (worldObj.isAirBlock(pos.x, pos.y, pos.z)) {
-            block = worldObj.getBlock(pos.x, pos.y - 1, pos.z);
-            if (block == Blocks.soul_sand) {
+        Block block = worldObj.getBlock(pos.x, pos.y, pos.z);
+        if (block.isAir(worldObj, pos.x, pos.y, pos.z)) {
+            if (Blocks.nether_wart.canPlaceBlockAt(worldObj, pos.x, pos.y, pos.z)) {
                 blocksToPlantNetherWart.add(pos);
             } else if (Blocks.brown_mushroom.canPlaceBlockAt(worldObj, pos.x, pos.y, pos.z)) {
                 blocksToPlantMushroom.add(pos);
             }
         } else//not an air block, check for harvestable nether-wart
         {
-            block = worldObj.getBlock(pos.x, pos.y, pos.z);
             if (block == Blocks.nether_wart && worldObj.getBlockMetadata(pos.x, pos.y, pos.z) >= 3) {
                 blocksToHarvest.add(pos);
             } else if (isMushroom(block)) {

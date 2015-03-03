@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -79,7 +80,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
                     }
 
                     ItemStack fishStack = new ItemStack(Items.fish, 1, fishMeta);
-                    int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
+                    int fortune = getFortune();
                     if (fortune > 0) {
                         fishStack.stackSize += worldObj.rand.nextInt(fortune);
                     }
@@ -88,7 +89,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
                 }
                 if (ink) {
                     ItemStack inkItem = new ItemStack(Items.dye, 1, 0);
-                    int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
+                    int fortune = getFortune();
                     if (fortune > 0) {
                         inkItem.stackSize += worldObj.rand.nextInt(fortune);
                     }
@@ -108,7 +109,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
             for (int z = min.z; z <= max.z; z++) {
                 for (int y = min.y; y > min.y - 5; y--) {
                     block = worldObj.getBlock(x, y, z);
-                    if (block == Blocks.flowing_water || block == Blocks.water) {
+                    if (block.getMaterial() == Material.water) {
                         waterBlockCount++;
                     } else {
                         break;

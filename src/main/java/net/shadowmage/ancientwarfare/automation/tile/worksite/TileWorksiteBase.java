@@ -144,6 +144,10 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         }
     }
 
+    public int getFortune(){
+        return getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
+    }
+
 //*************************************** TILE UPDATE METHODS ***************************************//
 
     protected abstract boolean processWork();
@@ -205,7 +209,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     }
 
     public final EntityPlayer getOwnerAsPlayer(){
-        EntityPlayer player = this.getWorldObj().getPlayerEntityByName(owningPlayer);
+        EntityPlayer player = owningPlayer != null ? this.getWorldObj().getPlayerEntityByName(owningPlayer) : null;
         if(player==null){
             return AncientWarfareCore.proxy.getFakePlayer(this.getWorldObj(), owningPlayer);
         }

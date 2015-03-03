@@ -69,11 +69,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 if (stack == null) {
                     return true;
                 }
-                if (stack.getItem() instanceof ItemBlock) {
-                    ItemBlock item = (ItemBlock) stack.getItem();
-                    return item.field_150939_a instanceof BlockSapling;
-                }
-                return false;
+                return isSapling(stack);
             }
         };
         this.inventory.setFilterForSlots(filter, frontIndices);
@@ -83,10 +79,14 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 if (stack == null) {
                     return true;
                 }
-                return stack.getItem() == Items.dye && stack.getItemDamage() == 15;
+                return isBonemeal(stack);
             }
         };
         this.inventory.setFilterForSlots(filter, bottomIndices);
+    }
+
+    private boolean isSapling(ItemStack stack) {
+        return stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).field_150939_a instanceof BlockSapling;
     }
 
     @Override
@@ -113,12 +113,9 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             if (stack == null) {
                 continue;
             }
-            if (stack.getItem() instanceof ItemBlock) {
-                ItemBlock item = (ItemBlock) stack.getItem();
-                if (item.field_150939_a instanceof BlockSapling) {
-                    saplingCount += stack.stackSize;
-                }
-            } else if (stack.getItem() == Items.dye && stack.getItemDamage() == 15) {
+            if (isSapling(stack)) {
+                saplingCount += stack.stackSize;
+            } else if (isBonemeal(stack)) {
                 bonemealCount += stack.stackSize;
             }
         }
@@ -131,15 +128,14 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             Iterator<BlockPosition> it = blocksToChop.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
-                int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
-                return harvestBlock(position.x, position.y, position.z, fortune, RelativeSide.TOP);
+                return harvestBlock(position.x, position.y, position.z, RelativeSide.TOP);
             }
         } else if (saplingCount > 0 && !blocksToPlant.isEmpty()) {
             ItemStack stack = null;
             int slot = 27;
             for (int i = 27; i < 30; i++) {
                 stack = inventory.getStackInSlot(i);
-                if (stack != null && stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).field_150939_a instanceof BlockSapling) {
+                if (stack != null && isSapling(stack)) {
                     slot = i;
                     break;
                 } else {
@@ -169,7 +165,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                     ItemStack stack = null;
                     for (int i = 30; i < 33; i++) {
                         stack = inventory.getStackInSlot(i);
-                        if (stack != null && stack.getItem() == Items.dye && stack.getItemDamage() == 15) {
+                        if (stack != null && isBonemeal(stack)) {
                             bonemealCount--;
                             ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, getOwnerAsPlayer());
                             if (stack.stackSize <= 0) {
@@ -211,15 +207,12 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 addStackToInventory(stack, RelativeSide.TOP);
                 continue;
             }
-            if (stack.getItem() instanceof ItemBlock) {
-                ItemBlock ib = (ItemBlock) stack.getItem();
-                if (ib.field_150939_a instanceof BlockSapling) {
-                    if (!InventoryTools.canInventoryHold(inventory, inventory.getRawIndicesCombined(RelativeSide.FRONT, RelativeSide.TOP), stack)) {
-                        break;
-                    }
-                    item.setDead();
-                    addStackToInventory(stack, RelativeSide.FRONT, RelativeSide.TOP);
+            if (isSapling(stack)) {
+                if (!InventoryTools.canInventoryHold(inventory, inventory.getRawIndicesCombined(RelativeSide.FRONT, RelativeSide.TOP), stack)) {
+                    break;
                 }
+                item.setDead();
+                addStackToInventory(stack, RelativeSide.FRONT, RelativeSide.TOP);
             }
         }
     }

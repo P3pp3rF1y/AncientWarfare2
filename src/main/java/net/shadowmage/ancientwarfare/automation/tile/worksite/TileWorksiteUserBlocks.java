@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -31,6 +33,10 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         int x = x1 - bbMin.x;
         int z = y1 - bbMin.z;
         return targetMap[z * 16 + x] == 1;
+    }
+
+    protected boolean isBonemeal(ItemStack stack){
+        return stack.getItem() == Items.dye && stack.getItemDamage() == 15;
     }
 
     @Override
