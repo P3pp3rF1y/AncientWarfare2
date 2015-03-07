@@ -17,7 +17,7 @@ public class GuiMailboxInventorySideSetup extends GuiContainerBase<ContainerMail
     GuiMailboxInventory parent;
 
     public GuiMailboxInventorySideSetup(GuiMailboxInventory parent) {
-        super(parent.getContainer(), 240, 108, defaultBackground);
+        super(parent.getContainer(), 240, 108);
         this.parent = parent;
     }
 

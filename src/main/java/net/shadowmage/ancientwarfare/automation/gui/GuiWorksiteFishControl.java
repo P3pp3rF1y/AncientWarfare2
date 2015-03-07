@@ -12,7 +12,7 @@ public class GuiWorksiteFishControl extends GuiContainerBase<ContainerWorksiteFi
     Checkbox inkBox;
 
     public GuiWorksiteFishControl(ContainerBase par1Container) {
-        super(par1Container, 168, 32 + 16, defaultBackground);
+        super(par1Container, 168, 48);
     }
 
     @Override

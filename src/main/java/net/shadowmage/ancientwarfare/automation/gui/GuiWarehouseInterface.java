@@ -19,7 +19,7 @@ public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseIn
     boolean hasChanged = false;
 
     public GuiWarehouseInterface(ContainerBase par1Container) {
-        super(par1Container, 178, 240, defaultBackground);
+        super(par1Container, 178, 240);
     }
 
     @Override

@@ -44,7 +44,7 @@ public class RenderTools {
         //draw top-right quadrant
         renderTexturedQuad(renderStartX + halfRenderWidth, renderStartY, renderStartX + halfRenderWidth * 2, renderStartY + halfRenderHeight, texMaxX - halfWidth, texMinY, texMaxX, texMinY + halfHeight);
 
-//  draw bottom-left quadrant
+        //draw bottom-left quadrant
         renderTexturedQuad(renderStartX, renderStartY + halfRenderHeight, renderStartX + halfRenderWidth, renderStartY + halfRenderHeight * 2, texMinX, texMaxY - halfHeight, texMinX + halfWidth, texMaxY);
 
         //draw bottom-right quadrant

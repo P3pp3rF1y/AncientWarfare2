@@ -13,7 +13,7 @@ public class GuiNpcBard extends GuiContainerBase<ContainerNpcBard> {
     CompositeScrolled area;
 
     public GuiNpcBard(ContainerBase container) {
-        super(container, 256, 240, defaultBackground);
+        super(container);
     }
 
     @Override

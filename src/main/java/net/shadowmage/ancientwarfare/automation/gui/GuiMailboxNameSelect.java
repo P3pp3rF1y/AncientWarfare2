@@ -23,7 +23,7 @@ public class GuiMailboxNameSelect extends GuiContainerBase<ContainerMailbox> {
     Button selectButton;
 
     public GuiMailboxNameSelect(GuiMailboxInventory parent, boolean name) {
-        super(parent.getContainer(), 256, 240, defaultBackground);
+        super(parent.getContainer());
         this.parent = parent;
         this.name = name;
         this.privateBox = getContainer().privateBox;

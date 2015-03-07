@@ -26,7 +26,7 @@ public class GuiResearchBook extends GuiContainerBase {
     Checkbox modeBox;
 
     public GuiResearchBook(ContainerBase container) {
-        super(container, 400, 240, defaultBackground);
+        super(container, 400, 240);
     }
 
     @Override

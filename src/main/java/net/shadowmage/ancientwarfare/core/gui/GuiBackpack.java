@@ -6,7 +6,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 public class GuiBackpack extends GuiContainerBase<ContainerBackpack> {
 
     public GuiBackpack(ContainerBase container) {
-        super(container, 178, 192, defaultBackground);
+        super(container, 178, 192);
         this.ySize = this.getContainer().guiHeight;
     }
 

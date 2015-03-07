@@ -22,7 +22,7 @@ public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStatio
     Label selectionLabel;
 
     public GuiDraftingStation(ContainerBase par1Container) {
-        super(par1Container, 400, 240, defaultBackground);
+        super(par1Container, 400, 240);
     }
 
     @Override

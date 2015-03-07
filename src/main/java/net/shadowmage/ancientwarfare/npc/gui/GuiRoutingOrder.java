@@ -25,7 +25,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
     CompositeScrolled area;
 
     public GuiRoutingOrder(ContainerBase container) {
-        super(container, 256, 240, defaultBackground);
+        super(container);
     }
 
     @Override

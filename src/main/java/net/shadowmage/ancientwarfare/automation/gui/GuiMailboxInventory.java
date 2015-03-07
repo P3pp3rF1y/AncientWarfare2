@@ -17,7 +17,7 @@ public class GuiMailboxInventory extends GuiContainerBase<ContainerMailbox> {
     Checkbox privateBox;
 
     public GuiMailboxInventory(ContainerBase par1Container) {
-        super(par1Container, 178, 240, defaultBackground);
+        super(par1Container, 178, 240);
         ySize = getContainer().guiHeight;
     }
 

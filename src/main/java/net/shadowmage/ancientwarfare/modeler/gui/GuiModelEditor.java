@@ -76,7 +76,7 @@ public class GuiModelEditor extends GuiContainerBase {
     Label primitiveNameLabel;
 
     public GuiModelEditor(ContainerBase par1Container) {
-        super(par1Container, 256, 240, defaultBackground);
+        super(par1Container);
     }
 
     public void initTexture() {

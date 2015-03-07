@@ -30,7 +30,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
     private Label storedLabel;
 
     public GuiWarehouseControl(ContainerBase par1Container) {
-        super(par1Container, 178, 240, defaultBackground);
+        super(par1Container, 178, 240);
         sorter = new ComparatorItemStack(sortType, sortOrder);
     }
 

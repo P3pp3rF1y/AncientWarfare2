@@ -22,7 +22,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
     private HashMap<Label, String> labelToClass = new HashMap<Label, String>();
 
     public GuiSpawnerPlacer(ContainerBase par1Container) {
-        super(par1Container, 256, 240, defaultBackground);
+        super(par1Container);
     }
 
     @Override

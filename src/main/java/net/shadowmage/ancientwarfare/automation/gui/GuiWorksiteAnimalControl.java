@@ -15,7 +15,7 @@ public class GuiWorksiteAnimalControl extends GuiContainerBase<ContainerWorksite
     NumberInput pigCount, sheepCount, cowCount, chickenCount;
 
     public GuiWorksiteAnimalControl(ContainerBase par1Container) {
-        super(par1Container, 168, 48 + 16, defaultBackground);
+        super(par1Container, 168, 64);
         worksite = getContainer().tileEntity;
     }
 

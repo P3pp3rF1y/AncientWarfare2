@@ -22,7 +22,7 @@ public class GuiStructureScanner extends GuiContainerBase {
     protected StructureValidator validator;
 
     public GuiStructureScanner(ContainerBase par1Container) {
-        super(par1Container, 256, 240, defaultBackground);
+        super(par1Container);
         validator = validationType.getValidator();
         this.shouldCloseOnVanillaKeys = false;
     }

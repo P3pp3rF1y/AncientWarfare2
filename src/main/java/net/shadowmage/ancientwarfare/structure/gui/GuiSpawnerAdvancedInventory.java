@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvance
 public class GuiSpawnerAdvancedInventory extends GuiContainerBase {
 
     public GuiSpawnerAdvancedInventory(ContainerBase par1Container) {
-        super(par1Container, 256, 240, defaultBackground);
+        super(par1Container);
     }
 
     @Override

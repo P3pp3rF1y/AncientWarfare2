@@ -17,12 +17,11 @@ import java.util.List;
 public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStorage> {
 
     CompositeScrolled area;
-
     CompositeItemSlots area2;
 
     public GuiWarehouseStorage(ContainerBase par1Container) {
-        super(par1Container, 178, 240, defaultBackground);
-//  this.ySize = container.guiHeight;
+        super(par1Container, 178, 240);
+    //  this.ySize = container.guiHeight;
     }
 
     @Override

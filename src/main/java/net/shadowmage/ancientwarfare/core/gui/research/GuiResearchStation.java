@@ -27,7 +27,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
     ItemSlot[] layoutSlots = new ItemSlot[9];
 
     public GuiResearchStation(ContainerBase par1Container) {
-        super(par1Container, 178, 240, defaultBackground);
+        super(par1Container, 178, 240);
     }
 
     @Override

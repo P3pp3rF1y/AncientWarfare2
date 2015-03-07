@@ -23,7 +23,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
     Set<Integer> dims = new HashSet<Integer>();
 
     public GuiDimensionSelection(GuiStructureScanner parent) {
-        super(parent.getContainer(), 256, 240, defaultBackground);
+        super(parent.getContainer());
         this.parent = parent;
         this.shouldCloseOnVanillaKeys = false;
         this.validator = parent.validator;

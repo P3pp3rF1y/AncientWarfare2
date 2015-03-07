@@ -15,7 +15,7 @@ public class GuiCombatOrder extends GuiContainerBase<ContainerCombatOrder> {
     CompositeScrolled area;
 
     public GuiCombatOrder(ContainerBase container) {
-        super(container, 256, 120 + 12 + 12 + 60 + 16, defaultBackground);
+        super(container, 256, 220);
     }
 
     @Override

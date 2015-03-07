@@ -18,7 +18,7 @@ public class GuiTorqueGeneratorSterling extends GuiContainerBase<ContainerTorque
     CompositeScrolled comp;
 
     public GuiTorqueGeneratorSterling(ContainerBase par1Container) {
-        super(par1Container, 178, ((ContainerTorqueGeneratorSterling) par1Container).guiHeight, defaultBackground);
+        super(par1Container, 178, ((ContainerTorqueGeneratorSterling) par1Container).guiHeight);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
     CompositeScrolled area;
 
     public GuiSpawnerAdvanced(ContainerBase par1Container) {
-        super(par1Container, 256, 240, defaultBackground);
+        super(par1Container);
     }
 
     @Override

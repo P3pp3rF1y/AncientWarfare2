@@ -28,7 +28,7 @@ public class GuiFileSelect extends GuiContainerBase {
     Text input;
 
     public GuiFileSelect(GuiContainerBase parent, String basePath, boolean allowNewFiles) {
-        super(parent.getContainer(), 256, 240, defaultBackground);
+        super(parent.getContainer());
         this.parent = parent;
         this.currentPath = basePath;
         this.parentPathName = new File(basePath).getParent();

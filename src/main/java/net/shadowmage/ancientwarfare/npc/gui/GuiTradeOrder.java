@@ -22,7 +22,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
     private Button currentMode;
 
     public GuiTradeOrder(ContainerBase container) {
-        super(container, 256, 240, defaultBackground);
+        super(container);
     }
 
     @Override

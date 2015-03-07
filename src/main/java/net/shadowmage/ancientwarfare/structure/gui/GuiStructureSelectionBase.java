@@ -28,7 +28,7 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
     CompositeScrolled resourceArea;
 
     public GuiStructureSelectionBase(ContainerBase par1Container) {
-        super(par1Container, 400, 240, defaultBackground);
+        super(par1Container, 400, 240);
         sorter = new ComparatorStructureTemplateClient();
         sorter.setFilterText("");
     }

@@ -29,8 +29,7 @@ import java.util.List;
 
 public abstract class GuiContainerBase<T extends ContainerBase> extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer, IWidgetSelection {
 
-    protected static final String defaultBackground = "guiBackgroundLarge.png";
-
+    protected static final String defaultBackground = "ancientwarfare:textures/gui/guiBackgroundLarge.png";
 
     private static LinkedList<Viewport> viewportStack = new LinkedList<Viewport>();
 
@@ -49,25 +48,25 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
     private int tooltipX;
     private int tooltipY;
 
-    private String backgroundTextureName;
     private ResourceLocation backgroundTexture;
 
     protected EntityPlayer player;
 
-    protected GuiContainerBase(ContainerBase container, int xSize, int ySize, String backgroundTexture) {
+    protected GuiContainerBase(ContainerBase container, int xSize, int ySize) {
         super(container);
         container.setGui(this);
         this.xSize = xSize;
         this.ySize = ySize;
-        if (backgroundTexture != null) {
-            this.backgroundTextureName = backgroundTexture;
-            this.backgroundTexture = new ResourceLocation("ancientwarfare", "textures/gui/" + backgroundTextureName);
-        }
         this.player = container.player;
+        this.backgroundTexture = GuiElement.backgroundTextureLocation;
     }
 
     public GuiContainerBase(ContainerBase container) {
-        this(container, 256, 240, defaultBackground);
+        this(container, 256, 240);
+    }
+
+    public final void setTexture(String name){
+        this.backgroundTexture = new ResourceLocation(name);
     }
 
     public final T getContainer(){
@@ -204,12 +203,9 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
     @SuppressWarnings("unchecked")
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
-        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
         RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         if (backgroundTexture != null) {
             Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTexture);
             RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, width / 2 - xSize / 2, (height / 2) - (ySize / 2), xSize, ySize);
@@ -234,8 +230,8 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         }
     }
 
+    @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glPushMatrix();
         GL11.glTranslatef(-guiLeft, -guiTop, 0);
         long time = System.currentTimeMillis();
@@ -245,7 +241,6 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
             element.postRender(par1, par2, partialRenderTick, time, this);
         }
         GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_LIGHTING);
     }
 
     /**

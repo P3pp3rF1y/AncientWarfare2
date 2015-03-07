@@ -17,7 +17,7 @@ public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
     boolean hasChanged = false;
 
     public GuiUpkeepOrder(ContainerBase container) {
-        super(container, 8 + 60 + 55 + 55 + 60 + 8, 8 + 12 + 10 + 8, defaultBackground);
+        super(container, 246, 38);
     }
 
     @Override

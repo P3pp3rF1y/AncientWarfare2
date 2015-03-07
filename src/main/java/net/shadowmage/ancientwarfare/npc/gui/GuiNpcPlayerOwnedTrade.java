@@ -17,7 +17,7 @@ public class GuiNpcPlayerOwnedTrade extends GuiContainerBase<ContainerNpcPlayerO
     boolean owner;
 
     public GuiNpcPlayerOwnedTrade(ContainerBase container) {
-        super(container, 256, 240, defaultBackground);
+        super(container);
     }
 
     @Override

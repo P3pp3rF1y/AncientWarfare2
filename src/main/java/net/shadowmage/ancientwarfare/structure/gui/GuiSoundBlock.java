@@ -12,7 +12,7 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
     CompositeScrolled area;
 
     public GuiSoundBlock(ContainerBase container) {
-        super(container, 256, 240, defaultBackground);
+        super(container);
     }
 
     @Override

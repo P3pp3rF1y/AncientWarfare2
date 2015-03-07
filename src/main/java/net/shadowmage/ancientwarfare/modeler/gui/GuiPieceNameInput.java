@@ -12,7 +12,7 @@ public class GuiPieceNameInput extends GuiContainerBase {
     Text input;
 
     public GuiPieceNameInput(GuiModelEditor parent) {
-        super(parent.getContainer(), 256, 60, defaultBackground);
+        super(parent.getContainer(), 256, 60);
         this.parent = parent;
     }
 

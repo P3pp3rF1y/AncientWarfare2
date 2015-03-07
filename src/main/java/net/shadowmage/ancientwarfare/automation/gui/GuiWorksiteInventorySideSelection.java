@@ -15,7 +15,7 @@ import java.util.EnumSet;
 public class GuiWorksiteInventorySideSelection extends GuiContainerBase<ContainerWorksiteInventorySideSelection> {
 
     public GuiWorksiteInventorySideSelection(ContainerBase par1Container) {
-        super(par1Container, 128 + 55 + 8, 106, defaultBackground);
+        super(par1Container, 128 + 55 + 8, 106);
     }
 
     @Override

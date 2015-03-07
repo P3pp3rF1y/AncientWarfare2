@@ -11,7 +11,7 @@ public class GuiPrimitiveSelection extends GuiContainerBase {
     GuiModelEditor parent;
 
     public GuiPrimitiveSelection(GuiModelEditor parent) {
-        super(parent.getContainer(), 256, 60, defaultBackground);
+        super(parent.getContainer(), 256, 60);
         this.parent = parent;
     }
 

@@ -16,7 +16,7 @@ public class GuiWarehouseStockViewer extends GuiContainerBase<ContainerWarehouse
     CompositeScrolled area;
 
     public GuiWarehouseStockViewer(ContainerBase par1Container) {
-        super(par1Container, 178, 172, defaultBackground);
+        super(par1Container, 178, 172);
     }
 
     @Override

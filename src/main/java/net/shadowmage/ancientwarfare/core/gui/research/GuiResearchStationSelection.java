@@ -20,7 +20,7 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
     CompositeScrolled selectionArea;
 
     public GuiResearchStationSelection(GuiResearchStation parent, int x, int y) {
-        super(parent.getContainer(), 400, 240, defaultBackground);
+        super(parent.getContainer(), 400, 240);
         this.parent = parent;
         Mouse.setCursorPosition(x, y);
     }

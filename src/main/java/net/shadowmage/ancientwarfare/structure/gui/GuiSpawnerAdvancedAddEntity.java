@@ -23,7 +23,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
     boolean showAddTagButton = true;
 
     public GuiSpawnerAdvancedAddEntity(GuiContainerBase parent, EntitySpawnGroup group, EntitySpawnSettings settings) {
-        super(parent.getContainer(), 256, 240, defaultBackground);
+        super(parent.getContainer());
         this.parent = parent;
         this.group = group;
         this.settings = settings;

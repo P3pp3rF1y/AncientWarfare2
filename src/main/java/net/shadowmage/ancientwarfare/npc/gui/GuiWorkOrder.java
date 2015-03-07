@@ -21,7 +21,7 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
     CompositeScrolled area;
 
     public GuiWorkOrder(ContainerBase container) {
-        super(container, 256, 240, defaultBackground);
+        super(container);
     }
 
     @Override

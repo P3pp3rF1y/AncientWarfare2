@@ -17,7 +17,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
     FactionTradeList tradeList;
 
     public GuiNpcFactionTradeSetup(ContainerBase container) {
-        super(container, 320, 240, defaultBackground);
+        super(container, 320, 240);
     }
 
     @Override

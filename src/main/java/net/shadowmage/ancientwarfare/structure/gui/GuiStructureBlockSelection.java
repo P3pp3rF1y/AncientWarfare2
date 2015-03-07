@@ -22,7 +22,7 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
     CompositeScrolled area;
 
     public GuiStructureBlockSelection(GuiStructureScanner parent) {
-        super(parent.getContainer(), 256, 240, defaultBackground);
+        super(parent.getContainer());
         this.parent = parent;
         this.shouldCloseOnVanillaKeys = false;
     }

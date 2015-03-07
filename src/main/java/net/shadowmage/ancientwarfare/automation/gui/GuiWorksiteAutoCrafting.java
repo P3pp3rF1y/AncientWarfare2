@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 public class GuiWorksiteAutoCrafting extends GuiContainerBase {
 
     public GuiWorksiteAutoCrafting(ContainerBase par1Container) {
-        super(par1Container, 176, 216, defaultBackground);
+        super(par1Container, 176, 216);
     }
 
     @Override

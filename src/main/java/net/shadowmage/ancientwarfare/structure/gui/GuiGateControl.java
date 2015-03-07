@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 public class GuiGateControl extends GuiContainerBase {
 
     public GuiGateControl(ContainerBase par1Container) {
-        super(par1Container, 55 + 8 + 8, 12 + 8 + 8, defaultBackground);
+        super(par1Container, 55 + 8 + 8, 12 + 8 + 8);
     }
 
     @Override

@@ -13,7 +13,7 @@ public class GuiStructureIncorrectName extends GuiContainerBase {
     GuiStructureScanner parent;
 
     public GuiStructureIncorrectName(GuiStructureScanner parent) {
-        super(parent.getContainer(), 256, 16 + 10 + 10 + 12 + 12, defaultBackground);
+        super(parent.getContainer(), 256, 60);
         this.parent = parent;
         this.shouldCloseOnVanillaKeys = false;
     }

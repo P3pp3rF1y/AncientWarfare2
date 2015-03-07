@@ -40,15 +40,9 @@ public abstract class GuiElement {
     protected int width;
     protected int height;
 
-    public static ResourceLocation backgroundTextureLocation;
-    public static ResourceLocation widgetTexture1;
-    public static ResourceLocation widgetTexture2;
-
-    static {
-        backgroundTextureLocation = new ResourceLocation("ancientwarfare", "textures/gui/guiBackgroundLarge.png");
-        widgetTexture1 = new ResourceLocation("ancientwarfare", "textures/gui/guiButtons1.png");
-        widgetTexture2 = new ResourceLocation("ancientwarfare", "textures/gui/guiButtons2.png");
-    }
+    public static ResourceLocation backgroundTextureLocation = new ResourceLocation("ancientwarfare", "textures/gui/guiBackgroundLarge.png");
+    public static ResourceLocation widgetTexture1 = new ResourceLocation("ancientwarfare", "textures/gui/guiButtons1.png");
+    public static ResourceLocation widgetTexture2 = new ResourceLocation("ancientwarfare", "textures/gui/guiButtons2.png");
 
     public GuiElement(int topLeftX, int topLeftY) {
         this.topLeftX = topLeftX;

@@ -26,13 +26,12 @@ public class GuiPieceSelection extends GuiContainerBase {
     ModelPiece excludedPiece;
 
     public GuiPieceSelection(GuiModelEditor parent) {
-        super(parent.getContainer(), 256, 240, defaultBackground);
+        super(parent.getContainer());
         this.parent = parent;
     }
 
     public GuiPieceSelection(GuiModelEditor parent, ModelPiece excludedPiece) {
-        super(parent.getContainer(), 256, 240, defaultBackground);
-        this.parent = parent;
+        this(parent);
         this.excludedPiece = excludedPiece;
     }
 
