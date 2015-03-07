@@ -44,8 +44,6 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
             public void markDirty() {
                 onLayoutMatrixChanged(layoutMatrix);
             }
-
-            ;
         };
     }
 

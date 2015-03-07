@@ -15,9 +15,6 @@ public abstract class BlockTorqueGenerator extends BlockTorqueBase {
     }
 
     @Override
-    public abstract TileEntity createTileEntity(World world, int metadata);
-
-    @Override
     public RotationType getRotationType() {
         return RotationType.FOUR_WAY;
     }

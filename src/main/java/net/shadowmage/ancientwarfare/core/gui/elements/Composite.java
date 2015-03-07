@@ -73,7 +73,6 @@ public class Composite extends GuiElement {
         if (!isMouseOverElement(mouseX, mouseY)) {
             mouseX = Integer.MIN_VALUE;
             mouseY = Integer.MIN_VALUE;
-        } else {
         }
         setViewport();
         Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);

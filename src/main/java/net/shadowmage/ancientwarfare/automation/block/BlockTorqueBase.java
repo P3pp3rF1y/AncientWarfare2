@@ -58,8 +58,7 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side) {
-        TileEntity t = block.getTileEntity(x, y, z);
-        IRotatableTile tt = (IRotatableTile) t;
+        IRotatableTile tt = (IRotatableTile) block.getTileEntity(x, y, z);
         int meta = 2;
         if (tt != null) {
             ForgeDirection d = tt.getPrimaryFacing();
@@ -123,8 +122,7 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
         if (worldObj.isRemote) {
             return false;
         }
-        TileEntity t = worldObj.getTileEntity(x, y, z);
-        TileTorqueBase tt = (TileTorqueBase) t;
+        TileTorqueBase tt = (TileTorqueBase) worldObj.getTileEntity(x, y, z);
         int meta = tt.getPrimaryFacing().ordinal();
         int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
         if (rMeta != meta) {

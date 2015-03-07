@@ -17,9 +17,9 @@ import java.util.Set;
 
 public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple {
 
-    Set<ChunkCoordIntPair> ccipSet = new HashSet<ChunkCoordIntPair>();
+    private final Set<ChunkCoordIntPair> ccipSet = new HashSet<ChunkCoordIntPair>();
 
-    List<ContainerChunkLoaderDeluxe> viewers = new ArrayList<ContainerChunkLoaderDeluxe>();
+    private final List<ContainerChunkLoaderDeluxe> viewers = new ArrayList<ContainerChunkLoaderDeluxe>();
 
     public TileChunkLoaderDeluxe() {
 
@@ -38,10 +38,7 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple {
     }
 
     public void removeViewer(ContainerChunkLoaderDeluxe viewer) {
-        while (viewers.contains(viewer)) {
-            viewers.remove(viewer);
-        }
-        ;
+        viewers.remove(viewer);
     }
 
     public void addOrRemoveChunk(ChunkCoordIntPair ccip) {
@@ -67,7 +64,7 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple {
         }
         Set<ChunkCoordIntPair> set = new HashSet<ChunkCoordIntPair>();
         set.addAll(ccipSet);
-        set.remove(ccips);//at this point, set is the list of chunks that should be unforced
+        set.removeAll(ccips);//at this point, set is the list of chunks that should be unforced
         ccipSet.removeAll(set);//remove them from the set, and unforce
         for (ChunkCoordIntPair ccip : set) {
             ForgeChunkManager.unforceChunk(chunkTicket, ccip);

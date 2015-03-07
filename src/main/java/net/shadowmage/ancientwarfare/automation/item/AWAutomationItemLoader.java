@@ -31,8 +31,6 @@ public class AWAutomationItemLoader {
             super.displayAllReleventItems(par1List);
             Collections.sort(par1List, sorter);
         }
-
-        ;
     };
 
     public static void load() {
@@ -65,10 +63,8 @@ public class AWAutomationItemLoader {
 
         @Override
         public int compare(ItemStack arg0, ItemStack arg1) {
-            Item i1 = arg0.getItem();
-            Item i2 = arg1.getItem();
-            int i1p = getItemPriority(i1);
-            int i2p = getItemPriority(i2);
+            int i1p = getItemPriority(arg0.getItem());
+            int i2p = getItemPriority(arg1.getItem());
             if (i1p == i2p) {
                 return arg0.getDisplayName().compareTo(arg1.getDisplayName());
             } else {

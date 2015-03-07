@@ -32,8 +32,7 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
         if (pos != null && controller != null) {
             TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IControllerTile && isValidController((IControllerTile) te)) {
-                IControllerTile controller = (IControllerTile) te;
-                controller.addControlledTile(this);
+                ((IControllerTile) te).addControlledTile(this);
             }
         }
         return controller != null;

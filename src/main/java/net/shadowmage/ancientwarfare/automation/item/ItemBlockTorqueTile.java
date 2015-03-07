@@ -29,10 +29,9 @@ public class ItemBlockTorqueTile extends ItemBlock {
         metadata = BlockRotationHandler.getMetaForPlacement(player, rotatable, side);
         boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, stack.getItemDamage());
         if (val) {
-            String name = player.getCommandSenderName();
             TileTorqueBase te = (TileTorqueBase) player.worldObj.getTileEntity(x, y, z);
             if (te instanceof IOwnable) {
-                ((IOwnable) te).setOwnerName(name);
+                ((IOwnable) te).setOwnerName(player.getCommandSenderName());
             }
             te.setPrimaryFacing(ForgeDirection.getOrientation(metadata));
         }
