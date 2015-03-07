@@ -221,10 +221,7 @@ public abstract class NpcPlayerOwned extends NpcBase {
 
     protected boolean isHostileTowards(Team team) {
         Team a = getTeam();
-        if (a != null && team != null && a != team) {
-            return true;
-        }
-        return false;
+        return a != null && team != null && a != team;
     }
 
     @Override
@@ -289,28 +286,10 @@ public abstract class NpcPlayerOwned extends NpcBase {
     }
 
     @Override
-    protected boolean interact(EntityPlayer player) {
-        if (player.worldObj.isRemote) {
-            return false;
+    protected void tryCommand(EntityPlayer player) {
+        if (player.getTeam() == getTeam() && this.canBeCommandedBy(player.getCommandSenderName())){
+            super.tryCommand(player);
         }
-        Team t = player.getTeam();
-        Team t1 = getTeam();
-        boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
-        if (t == t1 && this.canBeCommandedBy(player.getCommandSenderName()) && !baton) {
-            if (player.isSneaking()) {
-                if (this.followingPlayerName == null) {
-                    this.followingPlayerName = player.getCommandSenderName();
-                } else if (this.followingPlayerName.equals(player.getCommandSenderName())) {
-                    this.followingPlayerName = null;
-                } else {
-                    this.followingPlayerName = player.getCommandSenderName();
-                }
-            } else {
-                openGUI(player);
-            }
-            return true;
-        }
-        return true;
     }
 
     public boolean withdrawFood(IInventory inventory, int side) {
@@ -357,11 +336,6 @@ public abstract class NpcPlayerOwned extends NpcBase {
         }
         setFoodRemaining(getFoodRemaining() + eaten);
         return getFoodRemaining() >= getUpkeepAmount();
-    }
-
-    @Override
-    public void openGUI(EntityPlayer player) {
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);
     }
 
     @Override

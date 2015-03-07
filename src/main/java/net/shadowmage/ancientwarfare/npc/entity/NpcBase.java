@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
+import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
@@ -266,13 +267,22 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return aiEnabled && !AWNPCStatics.npcAIDebugMode;
     }
 
+    @Override
+    protected boolean interact(EntityPlayer player) {
+        if (player.worldObj.isRemote) {
+            return false;
+        }
+        tryCommand(player);
+        return true;
+    }
+
     /**
      * should be implemented by any npc that wishes to open a GUI on interact<br>
      * must be called from interact code to actually open the GUI<br>
      * allows for subtypes/etc to vary the opened GUI without re-implementing the interact logic
      */
     public void openGUI(EntityPlayer player) {
-
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);
     }
 
     /**
@@ -306,6 +316,21 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return playerName.equals(ownerName);
         } else {
             return team == worldObj.getScoreboard().getPlayersTeam(playerName);
+        }
+    }
+
+    protected void tryCommand(EntityPlayer player){
+        boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
+        if(!baton) {
+            if (player.isSneaking()) {
+                if (this.followingPlayerName != null && this.followingPlayerName.equals(player.getCommandSenderName())) {
+                    this.followingPlayerName = null;
+                } else {
+                    this.followingPlayerName = player.getCommandSenderName();
+                }
+            } else {
+                openGUI(player);
+            }
         }
     }
 

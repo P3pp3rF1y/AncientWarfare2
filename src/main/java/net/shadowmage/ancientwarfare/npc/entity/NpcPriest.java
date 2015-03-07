@@ -25,7 +25,7 @@ public class NpcPriest extends NpcPlayerOwned {
         this.tasks.addTask(3, new NpcAIFleeHostiles(this));
         this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
         this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
-        this.tasks.addTask(6, new NpcAIMoveHome(this, 50.f, 8.f, 30.f, 3.f));
+        this.tasks.addTask(6, new NpcAIMoveHome(this, 50F, 8F, 30F, 3F));
         this.tasks.addTask(7, new NpcAIPlayerOwnedPriest(this));
 
         //post-100 -- used by delayed shared tasks (look at random stuff, wander)

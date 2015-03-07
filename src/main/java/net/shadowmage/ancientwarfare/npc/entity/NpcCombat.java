@@ -8,10 +8,7 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
@@ -52,7 +49,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         this.tasks.addTask(8, new NpcAIMedicBase(this));
         this.tasks.addTask(9, (patrolAI = new NpcAIPlayerOwnedPatrol(this)));
 
-        this.tasks.addTask(10, new NpcAIMoveHome(this, 50.f, 5.f, 20.f, 5.f));
+        this.tasks.addTask(10, new NpcAIMoveHome(this, 50F, 5F, 20F, 5F));
 
         //post-100 -- used by delayed shared tasks (look at random stuff, wander)
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
@@ -82,14 +79,6 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     }
 
     @Override
-    public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack) {
-        super.setCurrentItemOrArmor(par1, par2ItemStack);
-        if (par1 == 0) {
-            onWeaponInventoryChanged();
-        }
-    }
-
-    @Override
     public void onWeaponInventoryChanged() {
         super.onWeaponInventoryChanged();
         if (!worldObj.isRemote) {
@@ -97,7 +86,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
             this.tasks.removeTask(collideAI);
             ItemStack stack = getEquipmentInSlot(0);
             Item item = stack == null ? null : stack.getItem();
-            if (item == Items.bow) {
+            if (item instanceof ItemBow) {
                 this.tasks.addTask(7, arrowAI);
             } else {
                 this.tasks.addTask(7, collideAI);

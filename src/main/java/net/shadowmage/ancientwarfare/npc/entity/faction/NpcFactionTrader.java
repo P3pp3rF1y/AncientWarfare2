@@ -25,7 +25,7 @@ public abstract class NpcFactionTrader extends NpcFaction {
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-        this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f));
+        this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
 
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
@@ -46,10 +46,12 @@ public abstract class NpcFactionTrader extends NpcFaction {
 
     @Override
     protected boolean interact(EntityPlayer player) {
-        boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
-        if (!player.worldObj.isRemote && !baton && trader == null) {
-            trader = player;
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_TRADE_VIEW, getEntityId(), 0, 0);
+        if (!player.worldObj.isRemote && trader == null) {
+            boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
+            if(!baton) {
+                trader = player;
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_TRADE_VIEW, getEntityId(), 0, 0);
+            }
         }
         return false;
     }

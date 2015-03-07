@@ -37,7 +37,7 @@ public class NpcTrader extends NpcPlayerOwned {
         this.tasks.addTask(4, tradeAI = new NpcAIPlayerOwnedTrader(this));
         this.tasks.addTask(5, new NpcAIPlayerOwnedGetFood(this));
         this.tasks.addTask(6, new NpcAIPlayerOwnedIdleWhenHungry(this));
-        this.tasks.addTask(7, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
+        this.tasks.addTask(7, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
 
         //post-100 -- used by delayed shared tasks (look at random stuff, wander)
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
@@ -81,17 +81,7 @@ public class NpcTrader extends NpcPlayerOwned {
         }
         if (player.getCommandSenderName().equals(getOwnerName()))//owner
         {
-            if (player.isSneaking()) {
-                if (this.followingPlayerName == null) {
-                    this.followingPlayerName = player.getCommandSenderName();
-                } else if (this.followingPlayerName.equals(player.getCommandSenderName())) {
-                    this.followingPlayerName = null;
-                } else {
-                    this.followingPlayerName = player.getCommandSenderName();
-                }
-            } else {
-                openGUI(player);
-            }
+            tryCommand(player);
         } else//non-owner
         {
             if (!player.worldObj.isRemote && getFoodRemaining() > 0 && trader == null) {
@@ -100,11 +90,6 @@ public class NpcTrader extends NpcPlayerOwned {
             }
         }
         return true;
-    }
-
-    @Override
-    public void openGUI(EntityPlayer player) {
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);
     }
 
     @Override

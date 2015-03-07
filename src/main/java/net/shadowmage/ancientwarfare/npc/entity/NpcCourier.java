@@ -32,7 +32,7 @@ public class NpcCourier extends NpcPlayerOwned {
         this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
         this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
         this.tasks.addTask(6, (courierAI = new NpcAIPlayerOwnedCourier(this)));
-        this.tasks.addTask(7, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
+        this.tasks.addTask(7, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
 
         //post-100 -- used by delayed shared tasks (look at random stuff, wander)
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));

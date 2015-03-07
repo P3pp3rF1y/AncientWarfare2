@@ -20,7 +20,7 @@ public abstract class NpcFactionPriest extends NpcFaction {
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-        this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f));
+        this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
         this.tasks.addTask(3, new NpcAIFactionPriest(this));
 
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));

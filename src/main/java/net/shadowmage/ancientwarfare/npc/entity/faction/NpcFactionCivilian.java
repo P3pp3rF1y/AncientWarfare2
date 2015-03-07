@@ -18,7 +18,7 @@ public abstract class NpcFactionCivilian extends NpcFaction {
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-        this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
+        this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
 
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(102, new NpcAIWander(this, 0.625D));

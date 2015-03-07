@@ -30,7 +30,7 @@ public class NpcBard extends NpcPlayerOwned {
         this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
         this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
 
-        this.tasks.addTask(7, new NpcAIMoveHome(this, 50.f, 3.f, 30.f, 3.f));
+        this.tasks.addTask(7, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
         this.tasks.addTask(8, new NpcAIPlayerOwnedBard(this));
 
         //post-100 -- used by delayed shared tasks (look at random stuff, wander)

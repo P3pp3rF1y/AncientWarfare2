@@ -18,14 +18,7 @@ public abstract class NpcFactionMountedSoldier extends NpcFactionMounted {
 
     public NpcFactionMountedSoldier(World par1World) {
         super(par1World);
-//  this.setCurrentItemOrArmor(0, new ItemStack(Items.iron_sword));  
-
-        IEntitySelector selector = new IEntitySelector() {
-            @Override
-            public boolean isEntityApplicable(Entity entity) {
-                return isHostileTowards(entity);
-            }
-        };
+//  this.setCurrentItemOrArmor(0, new ItemStack(Items.iron_sword));
 
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
@@ -33,7 +26,7 @@ public abstract class NpcFactionMountedSoldier extends NpcFactionMounted {
         this.tasks.addTask(0, (horseAI = new NpcAIFactionRideHorse(this)));
         this.tasks.addTask(1, new NpcAIFactionFindCommander(this));
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-        this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f));
+        this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
         this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
 
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));

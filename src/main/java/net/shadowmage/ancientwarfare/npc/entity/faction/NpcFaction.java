@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,6 +20,12 @@ import java.util.List;
 
 public abstract class NpcFaction extends NpcBase {
 
+    protected final IEntitySelector selector = new IEntitySelector() {
+        @Override
+        public boolean isEntityApplicable(Entity entity) {
+            return isHostileTowards(entity);
+        }
+    };
     public NpcFaction(World par1World) {
         super(par1World);
         String type = this.getNpcFullType();
@@ -40,30 +47,10 @@ public abstract class NpcFaction extends NpcBase {
     }
 
     @Override
-    protected boolean interact(EntityPlayer player) {
-        if (player.worldObj.isRemote) {
-            return false;
+    protected void tryCommand(EntityPlayer player) {
+        if (player.capabilities.isCreativeMode){
+            super.tryCommand(player);
         }
-        boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
-        if (player.capabilities.isCreativeMode && !baton) {
-            if (player.isSneaking()) {
-                if (this.followingPlayerName == null) {
-                    this.followingPlayerName = player.getCommandSenderName();
-                } else if (this.followingPlayerName.equals(player.getCommandSenderName())) {
-                    this.followingPlayerName = null;
-                } else {
-                    this.followingPlayerName = player.getCommandSenderName();
-                }
-            } else {
-                openGUI(player);
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void openGUI(EntityPlayer player) {
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);
     }
 
     @Override
