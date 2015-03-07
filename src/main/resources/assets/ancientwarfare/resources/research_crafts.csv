@@ -36,6 +36,25 @@ theory_of_gravity,AncientWarfareAutomation:flywheel_storage,0,1,gpg,ppp,gpg,p,pl
 theory_of_gravity,AncientWarfareAutomation:flywheel_storage,1,1,gpg,ppp,ggg,p,iron_ingot,g,glass_pane
 mass_production,AncientWarfareAutomation:flywheel_storage,2,1,gpg,ppp,ggg,p,AncientWarfare:steel_ingot,g,glass_pane
 the_wheel,AncientWarfareAutomation:windmill_blade,0,1,scs,csc,scs,c,wool,s,stick
+#Wooden gear based
+mass_production,AncientWarfareAutomation:civic_auto_crafting,0,1,_c_,gwg,_i_,_,planks,c,chest,w,crafting_table,i,iron_ingot,g,(AncientWarfare:component,0,1)
+agriculture,AncientWarfareAutomation:civic_crop_farm,0,1,___,gwg,_c_,_,planks,w,iron_hoe,c,chest,g,(AncientWarfare:component,0,1)
+farming,AncientWarfareAutomation:civic_reed_farm,0,1,___,gwg,_c_,_,planks,w,iron_shovel,c,chest,g,(AncientWarfare:component,0,1)
+farming,AncientWarfareAutomation:civic_mushroom_farm,0,1,___,gwg,_c_,_,planks,w,wooden_shovel,c,chest,g,(AncientWarfare:component,0,1)
+animal_husbandry,AncientWarfareAutomation:civic_animal_farm,0,1,___,gwg,_c_,_,planks,w,iron_sword,c,chest,g,(AncientWarfare:component,0,1)
+engineering,AncientWarfareAutomation:civic_quarry,0,1,___,gwg,_c_,_,planks,w,iron_pickaxe,c,chest,g,(AncientWarfare:component,0,1)
+farming,AncientWarfareAutomation:civic_forestry,0,1,___,gwg,_c_,_,planks,w,iron_axe,c,chest,g,(AncientWarfare:component,0,1)
+fishing,AncientWarfareAutomation:civic_fish_farm,0,1,___,gwg,_c_,_,planks,w,fishing_rod,c,chest,g,(AncientWarfare:component,0,1)
+#Flywheel controller small
+theory_of_gravity,AncientWarfareAutomation:flywheel,0,1,pgp,ppp,pgp,p,planks,g,(AncientWarfare:component,0,1)
+#Windmill control
+the_wheel,AncientWarfareAutomation:windmill_control,0,1,ppp,gpg,ppp,p,planks,g,(AncientWarfare:component,0,1)
+#Iron gear based
+#Flywheel controller medium
+theory_of_gravity,AncientWarfareAutomation:flywheel,1,1,igi,iii,ihi,i,iron_ingot,g,(AncientWarfare:component,1,1)
+the_wheel,AncientWarfareAutomation:hand_cranked_engine,0,1,igi,gig,iii,i,iron_ingot,g,(AncientWarfare:component,1,1)
+machinery,AncientWarfareAutomation:torque_generator_sterling,0,1,iii,ggg,igi,i,iron_ingot,g,(AncientWarfare:component,1,1)
+theory_of_gravity,AncientWarfareAutomation:torque_generator_waterwheel,0,1,igi,gwg,iwi,i,planks,g,(AncientWarfare:component,1,1),w,(AncientWarfare:component,0,1)
 
 ##NPC
 command,AncientWarfareNpc:wooden_command_baton,0,1,__m,_i_,s__,m,planks,s,stick,i,iron_ingot

@@ -85,79 +85,6 @@ public class AWAutomationCrafting {
                 "_i_",
                 'i', AWItems.steel_ingot);
 
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteAutoCrafting), "mass_production",
-                "_c_",
-                "gwg",
-                "_i_",
-                '_', Blocks.planks,
-                'c', Blocks.chest,
-                'w', Blocks.crafting_table,
-                'i', Items.iron_ingot,
-                'g', woodenGear.copy());
-
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteCropFarm), "agriculture",
-                "___",
-                "gwg",
-                "_c_",
-                '_', Blocks.planks,
-                'w', Items.iron_hoe,
-                'c', Blocks.chest,
-                'g', woodenGear.copy());
-
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteReedFarm), "farming",
-                "___",
-                "gwg",
-                "_c_",
-                '_', Blocks.planks,
-                'w', Items.iron_shovel,
-                'c', Blocks.chest,
-                'g', woodenGear.copy());
-
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteMushroomFarm), "farming",
-                "___",
-                "gwg",
-                "_c_",
-                '_', Blocks.planks,
-                'w', Items.wooden_shovel,
-                'c', Blocks.chest,
-                'g', woodenGear.copy());
-
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteAnimalFarm), "animal_husbandry",
-                "___",
-                "gwg",
-                "_c_",
-                '_', Blocks.planks,
-                'w', Items.iron_sword,
-                'c', Blocks.chest,
-                'g', woodenGear.copy());
-
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteQuarry), "engineering",
-                "___",
-                "gwg",
-                "_c_",
-                '_', Blocks.planks,
-                'w', Items.iron_pickaxe,
-                'c', Blocks.chest,
-                'g', woodenGear.copy());
-
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteForestry), "farming",
-                "___",
-                "gwg",
-                "_c_",
-                '_', Blocks.planks,
-                'w', Items.iron_axe,
-                'c', Blocks.chest,
-                'g', woodenGear.copy());
-
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.worksiteFishFarm), "fishing",
-                "___",
-                "gwg",
-                "_c_",
-                '_', Blocks.planks,
-                'w', Items.fishing_rod,
-                'c', Blocks.chest,
-                'g', woodenGear.copy());
-
         //torque conduit s
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit, 1, 0), "the_wheel",
                 "_s_",
@@ -214,7 +141,7 @@ public class AWAutomationCrafting {
                 's', woodShaft.copy(),
                 'g', woodenGear.copy());
 
-//torque shaft m
+        //torque shaft m
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft, 1, 1), "the_wheel",
                 "s",
                 "s",
@@ -222,29 +149,13 @@ public class AWAutomationCrafting {
                 's', ironShaft.copy(),
                 'g', ironGear.copy());
 
-//torque shaft l
+        //torque shaft l
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft, 1, 2), "mass_production",
                 "s",
                 "s",
                 "g",
                 's', steelShaft.copy(),
                 'g', steelGear.copy());
-
-        //torque flywheel control s
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheel, 1, 0), "theory_of_gravity",
-                "pgp",
-                "ppp",
-                "pgp",
-                'p', Blocks.planks,
-                'g', woodenGear.copy());
-
-        //torque flywheel control m
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheel, 1, 1), "theory_of_gravity",
-                "igi",
-                "iii",
-                "igi",
-                'i', Items.iron_ingot,
-                'g', ironGear.copy());
 
         //torque flywheel control l
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheel, 1, 2), "mass_production",
@@ -253,39 +164,6 @@ public class AWAutomationCrafting {
                 "igi",
                 'i', AWItems.steel_ingot,
                 'g', steelGear.copy());
-
-        //torque generator hand
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.handCrankedEngine), "the_wheel",
-                "igi",
-                "gig",
-                "iii",
-                'i', Items.iron_ingot,
-                'g', ironGear.copy());
-
-        //torque generator waterwheel
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueGeneratorWaterwheel), "theory_of_gravity",
-                "igi",
-                "gwg",
-                "iwi",
-                'i', Blocks.planks,
-                'g', ironGear.copy(),
-                'w', woodenGear.copy());
-
-        //torque generator sterling
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueGeneratorSterling), "machinery",
-                "iii",
-                "ggg",
-                "igi",
-                'i', Items.iron_ingot,
-                'g', ironGear.copy());
-
-        //torque generator windmill control
-        AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.windmillControl), "the_wheel",
-                "ppp",
-                "gpg",
-                "ppp",
-                'i', Blocks.planks,
-                'g', woodenGear.copy());
 
         ItemStack upgradeBoundsMed = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.SIZE_MEDIUM.flag());//engineering
         ItemStack upgradeBoundsLarge = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.SIZE_LARGE.flag());//mathematics
