@@ -83,28 +83,23 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
     public float getWorkEffectiveness(WorkType type) {
         float effectiveness = 1.f;
         if (type == this.getWorkTypeFromEquipment()) {
-            float level = this.getLevelingStats().getLevel(getNpcFullType());
+            float level = this.getLevelingStats().getLevel();
 
             effectiveness += level * 0.05f;
             if (getEquipmentInSlot(0) == null) {
                 return effectiveness;
             }
             Item item = getEquipmentInSlot(0).getItem();
-            if (item instanceof ItemTool)//TODO handle hoe item
+            if (item instanceof ItemTool)
             {
-                ItemTool tool = (ItemTool) getEquipmentInSlot(0).getItem();
-                effectiveness += tool.func_150913_i().getEfficiencyOnProperMaterial() * 0.05f;
+                effectiveness += ((ItemTool) item).func_150913_i().getEfficiencyOnProperMaterial() * 0.05f;
             } else if (item instanceof ItemHoe) {
-                ItemHoe hammer = (ItemHoe) item;
-                String name = hammer.getToolMaterialName();
-                ToolMaterial mat = ToolMaterial.valueOf(name);
+                ToolMaterial mat = ToolMaterial.valueOf(((ItemHoe) item).getToolMaterialName());
                 effectiveness += mat.getEfficiencyOnProperMaterial() * 0.05f;
             } else if (item instanceof ItemHammer) {
-                ItemHammer hammer = (ItemHammer) item;
-                effectiveness += hammer.getMaterial().getEfficiencyOnProperMaterial() * 0.05f;
+                effectiveness += ((ItemHammer) item).getMaterial().getEfficiencyOnProperMaterial() * 0.05f;
             } else if (item instanceof ItemQuill) {
-                ItemQuill quill = (ItemQuill) item;
-                effectiveness += quill.getMaterial().getEfficiencyOnProperMaterial() * 0.05f;
+                effectiveness += ((ItemQuill) item).getMaterial().getEfficiencyOnProperMaterial() * 0.05f;
             } else if (getEquipmentInSlot(0) != null) {
                 effectiveness += level * 0.05f;
             }

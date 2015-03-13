@@ -62,13 +62,6 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(AWNPCStatics.npcAttackDamage);
-    }
-
-
-    @Override
     public boolean isValidOrdersStack(ItemStack stack) {
         return stack != null && stack.getItem() instanceof ItemCombatOrder;
     }

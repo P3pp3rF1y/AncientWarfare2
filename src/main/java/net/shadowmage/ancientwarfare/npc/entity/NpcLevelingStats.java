@@ -11,23 +11,25 @@ import java.util.HashMap;
 
 public class NpcLevelingStats {
 
-    private HashMap<String, ExperienceEntry> experienceMap = new HashMap<String, ExperienceEntry>();
+    private final HashMap<String, ExperienceEntry> experienceMap = new HashMap<String, ExperienceEntry>();
     private int xp;//'generic' xp, always incremented for all xp-types
     private int level;
-    private NpcBase npc;
+    private final NpcBase npc;
 
     public NpcLevelingStats(NpcBase npc) {
         this.npc = npc;
     }
 
-    public int getExperience(String type) {
+    public int getExperience() {
+        String type = npc.getNpcFullType();
         if (experienceMap.containsKey(type)) {
             return experienceMap.get(type).xp;
         }
         return 0;
     }
 
-    public int getLevel(String type) {
+    public int getLevel() {
+        String type = npc.getNpcFullType();
         if (experienceMap.containsKey(type)) {
             return experienceMap.get(type).level;
         }
@@ -42,10 +44,11 @@ public class NpcLevelingStats {
         return level;
     }
 
-    public void addExperience(String type, int xpGained) {
+    public void addExperience(int xpGained) {
         if (npc.worldObj.isRemote) {
             return;
         }
+        String type = npc.getNpcFullType();
         if (!experienceMap.containsKey(type)) {
             experienceMap.put(type, new ExperienceEntry());
         }
@@ -54,7 +57,7 @@ public class NpcLevelingStats {
         while (entry.level < AWNPCStatics.maxNpcLevel && entry.xp >= getXPToLevel(entry.level + 1)) {
             entry.xp -= getXPToLevel(entry.level + 1);
             entry.level++;
-            onSubLevelGained(type, entry.level);
+            onSubLevelGained(entry.level);
         }
         this.xp += xpGained;
         while (level < AWNPCStatics.maxNpcLevel && this.xp >= getXPToLevel(level)) {
@@ -66,14 +69,14 @@ public class NpcLevelingStats {
     private void onBaseLevelGained(int newLevel) {
         level = newLevel;
         if (newLevel <= AWNPCStatics.maxNpcLevel && npc.getMaxHealthOverride() <= 0) {
-            int health = AncientWarfareNPC.statics.getMaxHealthFor(npc.getNpcType());
+            double health = AncientWarfareNPC.statics.getMaxHealthFor(npc.getNpcType());
             health += newLevel;
             npc.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health);
             npc.updateDamageFromLevel();
         }
     }
 
-    private void onSubLevelGained(String type, int newLevel) {
+    private void onSubLevelGained(int newLevel) {
         npc.updateDamageFromLevel();
     }
 

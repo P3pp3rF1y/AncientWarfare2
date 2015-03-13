@@ -62,28 +62,24 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         super(par1World);
         baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
         levelingStats = new NpcLevelingStats(this);
-        this.getNavigator().setBreakDoors(true);
-        this.getNavigator().setAvoidsWater(false);
         this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
         this.width = 0.6f;
         this.func_110163_bv();//set persistence required==true
+        AncientWarfareNPC.statics.applyPathConfig(this);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
         this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks
-        this.getDataWatcher().addObjectByDataType(21, 5);//5==itemStack?? (see EntityItemFrame)
+        this.getDataWatcher().addObjectByDataType(21, 5);//5 for ItemStack
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        int health = AncientWarfareNPC.statics.getMaxHealthFor(getNpcType());
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(AWNPCStatics.npcPathfindRange);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.325D);//TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
+        AncientWarfareNPC.statics.applyAttributes(this);
     }
 
     public ItemStack getShieldStack() {
@@ -153,9 +149,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (getAttackDamageOverride() >= 0) {
             damage = (float) this.getAttackDamageOverride();
         } else if (getShieldStack() != null && getHeldItem() != null) {
-            if (getShieldStack().getAttributeModifiers().containsKey(SharedMonsterAttributes.attackDamage)) {
+            if (getShieldStack().getAttributeModifiers().containsKey(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())) {
                 damage *= 1.5f;
-                //TODO verify that this works
             }
         }
         int knockback = 0;
@@ -459,8 +454,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
      * experience is added for base level, and subtype level(if any)
      */
     public final void addExperience(int amount) {
-        String type = getNpcFullType();
-        getLevelingStats().addExperience(type, amount);
+        getLevelingStats().addExperience(amount);
     }
 
     /**
@@ -598,10 +592,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
      */
     public final String getNpcFullType() {
         String type = getNpcType();
-        String sub = getNpcSubType();
         if (type == null || type.isEmpty()) {
             throw new RuntimeException("Type must not be null or empty:");
         }
+        String sub = getNpcSubType();
         if (sub == null) {
             throw new RuntimeException("Subtype must not be null...type: " + type);
         }
@@ -693,10 +687,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
      * called whenever level changes, to update the damage-done stat for the entity
      */
     public final void updateDamageFromLevel() {
-        float dmg = AWNPCStatics.npcAttackDamage;
-        float lvl = getLevelingStats().getLevel(getNpcFullType());
-        dmg += dmg * lvl * AWNPCStatics.npcLevelDamageMultiplier;
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(dmg);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(AncientWarfareNPC.statics.getAttack(this));
     }
 
     public int getFoodRemaining() {
@@ -783,8 +774,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public final void repackEntity(EntityPlayer player) {
         if (!player.worldObj.isRemote) {
             onRepack();
-            ItemStack item = this.getItemToSpawn();
-            item = InventoryTools.mergeItemStack(player.inventory, item, -1);
+            ItemStack item = InventoryTools.mergeItemStack(player.inventory, this.getItemToSpawn(), -1);
             if (item != null) {
                 InventoryTools.dropItemInWorld(player.worldObj, item, player.posX, player.posY, player.posZ);
             }

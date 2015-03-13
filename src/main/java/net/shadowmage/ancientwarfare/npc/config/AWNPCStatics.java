@@ -21,14 +21,16 @@
 package net.shadowmage.ancientwarfare.npc.config;
 
 import net.minecraft.entity.EntityList;
-import net.minecraft.init.Items;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNavigate;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -69,11 +71,9 @@ public class AWNPCStatics extends ModConfiguration {
     /**
      * TODO add these to config
      */
-    public static int npcAttackDamage = 1;//base attack damage for npcs--further multiplied by their equipped weapon
-    public static float npcLevelDamageMultiplier = 0.05f;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
+    public static double npcLevelDamageMultiplier = 0.05;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
     public static int npcArcherAttackDamage = 3;//damage for npc archers...can be increased via enchanted weapons
     public static double npcPathfindRange = 60.d;//max pathfind range
-
     /** *********************************************CLIENT SETTINGS************************************************ */
     public static final String clientSettings = "03_client_settings";
     public static boolean loadDefaultSkinPack = true;
@@ -113,9 +113,14 @@ public class AWNPCStatics extends ModConfiguration {
 /************************************************HEALTH CONFIG*************************************************/
     /** *********************************************NPC HEALTH SETTINGS************************************************ */
     public static final String npcDefaultHealthSettings = "01_npc_base_health";
-    private HashMap<String, Integer> healthValues = new HashMap<String, Integer>();
+    public static final String npcDefaultAttackSettings = "02_npc_base_attack";
+    public static final String npcDefaultSpeedSettings = "03_npc_base_speed";
+    private HashMap<String, Attribute> attributes = new HashMap<String, Attribute>();
 
-
+    /** *********************************************NPC PATH SETTINGS************************************************ */
+    public static final String npcWaterPathSettings = "01_npc_path_avoidWater";
+    public static final String npcDoorPathSettings = "02_npc_path_breakDoors";
+    private HashMap<String, Path> pathValues = new HashMap<String, Path>();
 /************************************************EQUIPMENT CONFIG*************************************************/
     /** *********************************************NPC WEAPON SETTINGS************************************************ */
 
@@ -128,11 +133,12 @@ public class AWNPCStatics extends ModConfiguration {
     public static final String npcWorkItem = "07_npc_work_slot";
     public static final String npcUpkeepItem = "08_npc_upkeep_slot";
 
-    public Configuration equipmentConfig;
-    public Configuration targetConfig;
-    public Configuration healthConfig;
-    public Configuration foodConfig;
-    public Configuration factionConfig;
+    private final Configuration equipmentConfig;
+    private final Configuration targetConfig;
+    private final Configuration valuesConfig;
+    private final Configuration foodConfig;
+    private final Configuration factionConfig;
+    private final Configuration pathConfig;
 
     public static Property renderAI, renderWorkPoints, renderFriendlyNames, renderHostileNames, renderFriendlyHealth, renderHostileHealth, renderTeamColors;
 
@@ -140,7 +146,8 @@ public class AWNPCStatics extends ModConfiguration {
         super(config);
         equipmentConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcEquipment");
         targetConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcTargeting");
-        healthConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcHealth");
+        valuesConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcValues");
+        pathConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcPath");
         foodConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcFood");
         factionConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcFactionStandings");
     }
@@ -195,7 +202,8 @@ public class AWNPCStatics extends ModConfiguration {
         loadFoodValues();
         loadTargetValues();
         loadDefaultFactionStandings();
-        initializeCustomHealthValues();
+        initializeCustomValues();
+        initializeCustomPathValues();
         initializeNpcEquipmentConfigs();
 
         maxNpcLevel = config.get(serverSettings, "npc_max_level", maxNpcLevel, "Max NPC Level\nDefault=" + maxNpcLevel + "\n" +
@@ -424,24 +432,74 @@ public class AWNPCStatics extends ModConfiguration {
         return 0;
     }
 
-    private void initializeCustomHealthValues() {
+    private void initializeCustomValues() {
         String key;
         for (String name : factionNames) {
             for (String type : factionNpcSubtypes) {
                 key = name + "." + type;
-                healthValues.put(key, healthConfig.get(npcDefaultHealthSettings, key, 20).getInt(20));
+                attributes.put(key, getDefault(key));
             }
         }
-        healthValues.put("combat", healthConfig.get(npcDefaultHealthSettings, "combat", 20).getInt(20));
-        healthValues.put("worker", healthConfig.get(npcDefaultHealthSettings, "worker", 20).getInt(20));
-        healthValues.put("courier", healthConfig.get(npcDefaultHealthSettings, "courier", 20).getInt(20));
-        healthValues.put("trader", healthConfig.get(npcDefaultHealthSettings, "trader", 20).getInt(20));
-        healthValues.put("priest", healthConfig.get(npcDefaultHealthSettings, "priest", 20).getInt(20));
-        healthValues.put("bard", healthConfig.get(npcDefaultHealthSettings, "bard", 20).getInt(20));
+        attributes.put("combat", getDefault("combat"));
+        attributes.put("worker", getDefault("worker"));
+        attributes.put("courier", getDefault("courier"));
+        attributes.put("trader", getDefault("trader"));
+        attributes.put("priest", getDefault("priest"));
+        attributes.put("bard", getDefault("bard"));
     }
 
-    public int getMaxHealthFor(String type) {
-        return healthValues.get(type);
+    //TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
+    private Attribute getDefault(String type){
+        return new Attribute(valuesConfig.get(npcDefaultHealthSettings, type, 20).getDouble(), valuesConfig.get(npcDefaultAttackSettings, type, 1).getDouble(), valuesConfig.get(npcDefaultSpeedSettings, type, 0.325D).getDouble());
+    }
+
+    public double getMaxHealthFor(String type) {
+        return attributes.get(type).baseHealth();
+    }
+
+    public double getAttack(NpcBase npcBase){
+        String type = npcBase.getNpcType();
+        Attribute attribute = attributes.get(type);
+        if(attribute!=null) {
+            double dmg = attribute.baseAttack();
+            int level = npcBase.getLevelingStats().getLevel();
+            return dmg + dmg * level * npcLevelDamageMultiplier;
+        }
+        return 0;
+    }
+
+    private void initializeCustomPathValues() {
+        String key;
+        for (String name : factionNames) {
+            for (String type : factionNpcSubtypes) {
+                key = name + "." + type;
+                pathValues.put(key, new Path(pathConfig.get(npcWaterPathSettings, key, false).getBoolean(),pathConfig.get(npcDoorPathSettings, key, true).getBoolean()));
+            }
+        }
+        pathValues.put("combat", new Path(pathConfig.get(npcWaterPathSettings, "combat", false).getBoolean(),pathConfig.get(npcDoorPathSettings, "combat", true).getBoolean()));
+        pathValues.put("worker", new Path(pathConfig.get(npcWaterPathSettings, "worker", false).getBoolean(),pathConfig.get(npcDoorPathSettings, "worker", true).getBoolean()));
+        pathValues.put("courier", new Path(pathConfig.get(npcWaterPathSettings, "courier", false).getBoolean(),pathConfig.get(npcDoorPathSettings, "courier", true).getBoolean()));
+        pathValues.put("trader", new Path(pathConfig.get(npcWaterPathSettings, "trader", false).getBoolean(),pathConfig.get(npcDoorPathSettings, "trader", true).getBoolean()));
+        pathValues.put("priest", new Path(pathConfig.get(npcWaterPathSettings, "priest", false).getBoolean(),pathConfig.get(npcDoorPathSettings, "priest", true).getBoolean()));
+        pathValues.put("bard", new Path(pathConfig.get(npcWaterPathSettings, "bard", false).getBoolean(),pathConfig.get(npcDoorPathSettings, "bard", true).getBoolean()));
+    }
+
+    public void applyAttributes(NpcBase npc){
+        Attribute type = attributes.get(npc.getNpcType());
+        if(type!=null) {
+            npc.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(type.baseHealth());
+            npc.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(type.baseSpeed());
+            npc.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(type.baseAttack());
+            npc.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(npcPathfindRange);
+        }
+    }
+
+    public void applyPathConfig(NpcBase npc){
+        String type = npc.getNpcType();
+        Path path = pathValues.get(type);
+        if(path!=null){
+            path.applyTo(npc.getNavigator());
+        }
     }
 
     public boolean shouldFactionBeHostileTowards(String faction1, String faction2) {
@@ -537,9 +595,44 @@ public class AWNPCStatics extends ModConfiguration {
         config.save();
         equipmentConfig.save();
         targetConfig.save();
-        healthConfig.save();
+        valuesConfig.save();
+        pathConfig.save();
         foodConfig.save();
         factionConfig.save();
+    }
+
+    private static class Path{
+        private final boolean avoidWater, breakDoor;
+        private Path(boolean water, boolean door){
+            avoidWater = water;
+            breakDoor = door;
+        }
+
+        public void applyTo(PathNavigate navigate){
+            navigate.setAvoidsWater(avoidWater);
+            navigate.setBreakDoors(breakDoor);
+        }
+    }
+
+    private static class Attribute{
+        private final double health, attack, speed;
+        private Attribute(double hp, double ap, double sp){
+            health = hp;
+            attack = ap;
+            speed = sp;
+        }
+
+        public double baseHealth(){
+            return health;
+        }
+        //base attack damage for npcs--further multiplied by their equipped weapon
+        public double baseAttack(){
+            return attack;
+        }
+
+        public double baseSpeed(){
+            return speed;
+        }
     }
 
 }
