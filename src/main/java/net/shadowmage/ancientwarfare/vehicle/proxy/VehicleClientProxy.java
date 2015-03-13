@@ -40,7 +40,7 @@ public class VehicleClientProxy extends VehicleCommonProxy {
         InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_FIRE, AWVehicleStatics.keybindFire.getInt(), new VehicleInputCallback(VehicleInputKey.FIRE));
         InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_ASCEND, AWVehicleStatics.keybindAscend.getInt(), new VehicleInputCallback(VehicleInputKey.ASCEND));
         InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_DESCEND, AWVehicleStatics.keybindDescend.getInt(), new VehicleInputCallback(VehicleInputKey.DESCEND));
-        ConfigManager.registerConfigCategory(new VehicleCategory("awconfig.vehicle_keybinds", "awconfig.vehicle_keybinds"));
+        ConfigManager.registerConfigCategory(new VehicleCategory("awconfig.vehicle_keybinds"));
     }
 
     public static final class VehicleInputCallback implements InputCallback {
@@ -72,8 +72,8 @@ public class VehicleClientProxy extends VehicleCommonProxy {
     public static final class VehicleCategory extends DummyCategoryElement {
 
         @SuppressWarnings("unchecked")
-        public VehicleCategory(String name, String tooltipkey) {
-            super(name, tooltipkey, getElementList());
+        public VehicleCategory(String name) {
+            super(name, name, getElementList());
         }
 
         private static List<IConfigElement> getElementList() {

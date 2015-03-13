@@ -65,7 +65,7 @@ public class NpcClientProxy extends NpcCommonProxy {
     }
 
     private void registerClientOptions() {
-        ConfigManager.registerConfigCategory(new NpcCategory("awconfig.npc_config", "awconfig.npc_config"));
+        ConfigManager.registerConfigCategory(new NpcCategory("awconfig.npc_config"));
     }
 
     @Override
@@ -96,8 +96,8 @@ public class NpcClientProxy extends NpcCommonProxy {
     public static final class NpcCategory extends DummyCategoryElement {
 
         @SuppressWarnings("unchecked")
-        public NpcCategory(String arg0, String arg1) {
-            super(arg0, arg1, getElementList());
+        public NpcCategory(String arg0) {
+            super(arg0, arg0, getElementList());
         }
 
         private static List<IConfigElement> getElementList() {

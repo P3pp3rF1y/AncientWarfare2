@@ -112,7 +112,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
     }
 
     private void registerClientOptions() {
-        ConfigManager.registerConfigCategory(new AutomationCategory("awconfig.automation_config", "awconfig.automation_config"));
+        ConfigManager.registerConfigCategory(new AutomationCategory("awconfig.automation_config"));
     }
 
     @Override
@@ -124,8 +124,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
     public static final class AutomationCategory extends DummyCategoryElement {
 
         @SuppressWarnings("unchecked")
-        public AutomationCategory(String name, String tooltipkey) {
-            super(name, tooltipkey, getElementList());
+        public AutomationCategory(String name) {
+            super(name, name, getElementList());
         }
 
         private static List<IConfigElement> getElementList() {
