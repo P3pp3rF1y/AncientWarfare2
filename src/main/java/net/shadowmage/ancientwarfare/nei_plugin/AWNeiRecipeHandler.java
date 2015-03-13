@@ -27,6 +27,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
@@ -34,11 +35,12 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AWNeiRecipeHandler extends TemplateRecipeHandler {
 
-    public AWNeiRecipeHandler(){
+    public AWNeiRecipeHandler() {
         API.registerRecipeHandler(this);
         API.registerUsageHandler(this);
     }
@@ -89,13 +91,25 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
     public void loadUsageRecipes(ItemStack ingredient) {
         List<RecipeResearched> allrecipes = AWCraftingManager.INSTANCE.getRecipes();
         for (RecipeResearched irecipe : allrecipes) {
-            for (Object stack : irecipe.getInput()) {
-                if (stack == null) {
+            for (Object target : irecipe.getInput()) {
+                if (target == null) {
                     continue;
                 }
-                if (ItemStack.areItemStacksEqual((ItemStack)stack, ingredient)) {
-                    arecipes.add(new AWCachedRecipe(irecipe));
+                if (target instanceof ItemStack) {
+                    if (!OreDictionary.itemMatches((ItemStack) target, ingredient, false)) {
+                        continue;
+                    }
+                } else if (target instanceof Iterable) {
+                    boolean matched = false;
+                    Iterator<?> itr = ((Iterable) target).iterator();
+                    while (itr.hasNext() && !matched) {
+                        matched = OreDictionary.itemMatches((ItemStack) itr.next(), ingredient, false);
+                    }
+                    if (!matched) {
+                        continue;
+                    }
                 }
+                arecipes.add(new AWCachedRecipe(irecipe));
             }
         }
     }

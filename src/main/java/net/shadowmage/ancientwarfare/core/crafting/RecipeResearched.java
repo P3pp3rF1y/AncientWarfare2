@@ -47,15 +47,15 @@ public class RecipeResearched extends ShapedOreRecipe {
         return neededResearch;
     }
 
-    public int getRecipeWidth(){
-        if(recipeWidth == 0) {
+    public int getRecipeWidth() {
+        if (recipeWidth == 0) {
             recipeWidth = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, this, "width");
         }
         return recipeWidth;
     }
 
-    public int getRecipeHeight(){
-        if(recipeHeight == 0) {
+    public int getRecipeHeight() {
+        if (recipeHeight == 0) {
             recipeHeight = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, this, "height");
         }
         return recipeHeight;
