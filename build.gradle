@@ -19,15 +19,14 @@ buildscript {
     }
 }
 
-  apply plugin: 'forge'
-  minecraft
-  {
+apply plugin: 'forge'
+minecraft{
     version = "1.7.10-10.13.2.1286"
     runDir = "eclipse"
-  }
-  version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.releasetype + "-MC" +minecraft.version
-  group = "shadowmage"
-  archivesBaseName = "ancientwarfare"
+}
+version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.releasetype + "-MC" +minecraft.version
+group = "shadowmage"
+archivesBaseName = "ancientwarfare"
 
 task updateVersion(type:Copy){
   ant.propertyfile(file: versionFile) {
@@ -57,43 +56,39 @@ processResources{
     }
 }
 
-task expand_jar<<{
-  copy{    
-    println 'EXPANDING FINALIZED FILES'
+task expand_jar(type: Copy, dependsOn: reobf){
     from zipTree('build/libs/ancientwarfare-'+version+'.jar')
-    into 'build/tmp/expanded'   
-    }
-  }   
+    into 'build/tmp/expanded'
+}
 
 task packFullJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-FULL.jar'
   from 'build/tmp/expanded'
-  include '**/*'
   exclude 'net/shadowmage/ancientwarfare/modeler/**/*'
 }
 
 task packCoreJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-CORE.jar'
   from 'build/tmp/expanded'
-  exclude 'net/shadowmage/ancientwarfare/automation/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/npc/**/*', 'net/shadowmage/ancientwarfare/structure/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*'
+  include 'net/shadowmage/ancientwarfare/core/', 'assets/', 'AW_logo.png', 'mcmod.info', 'net/shadowmage/ancientwarfare/nei_plugin/'
 }
 
 task packAutomationJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-AUTOMATION.jar'
   from 'build/tmp/expanded'
-  exclude 'net/shadowmage/ancientwarfare/core/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/npc/**/*', 'net/shadowmage/ancientwarfare/structure/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*', 'net/shadowmage/ancientwarfare/nei_plugin/**/*'
+  include 'net/shadowmage/ancientwarfare/automation/'
 }
 
 task packNpcJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-NPC.jar'
   from 'build/tmp/expanded'
-  exclude 'net/shadowmage/ancientwarfare/core/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/automation/**/*', 'net/shadowmage/ancientwarfare/structure/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*', 'net/shadowmage/ancientwarfare/nei_plugin/**/*'
+  include 'net/shadowmage/ancientwarfare/npc/'
 }
 
 task packStructureJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-STRUCTURE.jar'
   from 'build/tmp/expanded'
-  exclude 'net/shadowmage/ancientwarfare/core/**/*', 'net/shadowmage/ancientwarfare/modeler/**/*', 'net/shadowmage/ancientwarfare/npc/**/*', 'net/shadowmage/ancientwarfare/automation/**/*', 'net/shadowmage/ancientwarfare/vehicle/**/*', 'net/shadowmage/ancientwarfare/nei_plugin/**/*'
+  include 'net/shadowmage/ancientwarfare/structure/'
 }
 
 artifacts{
