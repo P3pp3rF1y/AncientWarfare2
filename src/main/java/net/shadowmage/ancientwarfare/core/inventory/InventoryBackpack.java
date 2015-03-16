@@ -17,7 +17,7 @@ public class InventoryBackpack extends InventoryBasic {
 
     @Override
     public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        if(var2!=null && var2.getItem() instanceof ItemBackpack)
+        if (var2 != null && var2.getItem() instanceof ItemBackpack)
             return false;
         return super.isItemValidForSlot(var1, var2);
     }

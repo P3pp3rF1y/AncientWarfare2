@@ -41,7 +41,6 @@ public class ItemStructureSettings {
 
     /**
      * @param stack to extract the info from
-     * @return
      */
     public static ItemStructureSettings getSettingsFor(ItemStack stack) {
         ItemStructureSettings settings = new ItemStructureSettings();

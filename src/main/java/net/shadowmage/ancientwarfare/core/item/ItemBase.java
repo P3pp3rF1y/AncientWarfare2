@@ -16,6 +16,7 @@ public class ItemBase extends Item {
 
     private final HashMap<Integer, String> subItems = new HashMap<Integer, String>();
     private final HashMap<Integer, IIcon> subItemIcons = new HashMap<Integer, IIcon>();
+
     public ItemBase() {
         super();
         this.setHasSubtypes(true);
@@ -47,7 +48,7 @@ public class ItemBase extends Item {
     }
 
     public void addSubItem(int num, String texture) {
-        if(!subItems.containsKey(num))
+        if (!subItems.containsKey(num))
             subItems.put(num, texture);
     }
 }

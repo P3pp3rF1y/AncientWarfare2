@@ -112,7 +112,7 @@ public class AncientWarfareCore {
          * register recipes
          */
         AWCoreCrafting.loadRecipes();
-        if(config.hasChanged())
+        if (config.hasChanged())
             config.save();
         AWLog.log("Ancient Warfare Core Init Completed");
     }

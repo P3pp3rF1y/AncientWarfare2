@@ -45,26 +45,26 @@ public class AWCoreItemLoader {
         AWItems.quillDiamond = new ItemQuill("diamond_quill", ToolMaterial.EMERALD);
         GameRegistry.registerItem(AWItems.quillDiamond, "diamond_quill");
 
-        AWItems.componentItem = (ItemBase)register(new ItemComponent(), "component");
+        AWItems.componentItem = (ItemBase) register(new ItemComponent(), "component");
 
         AWItems.steel_ingot = register(new Item().setCreativeTab(AWCoreBlockLoader.coreTab), "steel_ingot", PREFIX);
     }
 
-    public Item register(Item item, String name){
+    public Item register(Item item, String name) {
         item.setUnlocalizedName(name);
         GameRegistry.registerItem(item, name);
         return item;
     }
 
-    public Item register(Item item, String name, String textPrefix){
-        item.setTextureName(textPrefix+name);
+    public Item register(Item item, String name, String textPrefix) {
+        item.setTextureName(textPrefix + name);
         return register(item, name);
     }
 
-    public String getName(ToolMaterial material){
-        if(material == ToolMaterial.WOOD)
+    public String getName(ToolMaterial material) {
+        if (material == ToolMaterial.WOOD)
             return "wooden";
-        else if(material == ToolMaterial.EMERALD)
+        else if (material == ToolMaterial.EMERALD)
             return "diamond";
         return material.toString().toLowerCase(Locale.ENGLISH);
     }

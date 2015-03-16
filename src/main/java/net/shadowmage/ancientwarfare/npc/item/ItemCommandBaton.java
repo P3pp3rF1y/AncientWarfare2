@@ -238,7 +238,9 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
      */
     private static class CommandSet {
         private Set<UUID> ids = new HashSet<UUID>();
-        private CommandSet(){}
+
+        private CommandSet() {
+        }
 
         public static CommandSet loadFromStack(ItemStack stack) {
             CommandSet set = new CommandSet();

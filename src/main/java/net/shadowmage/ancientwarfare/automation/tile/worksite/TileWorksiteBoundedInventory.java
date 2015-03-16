@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -62,7 +61,7 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
             return false;
         }
         worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
-        if(!worldObj.setBlockToAir(x, y, z)){
+        if (!worldObj.setBlockToAir(x, y, z)) {
             return false;
         }
         for (ItemStack stack : stacks) {

@@ -88,7 +88,7 @@ public class AncientWarfareVehicles {
         /**
          * save config for any changes that were made during loading stages
          */
-        if(config.hasChanged())
+        if (config.hasChanged())
             config.save();
         AWLog.log("Ancient Warfare Vehicles Init completed");
     }

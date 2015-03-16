@@ -170,7 +170,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
         tag.setTag("craftMatrix", InventoryTools.writeInventoryToNBT(craftMatrix, new NBTTagCompound()));
     }
 
-    /** ************************************INVENTORY METHODS*********************************************** */
+    /** ***********************************INVENTORY METHODS*********************************************** */
     private void onLayoutMatrixChanged(IInventory matrix) {
         this.outputSlot.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(craftMatrix, worldObj, getCrafterName()));
     }

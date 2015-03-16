@@ -10,10 +10,11 @@ public class AWStructuresItemLoader {
 
     public static final CreativeTabs structureTab = new CreativeTabs("tabs.structures") {
         private Item cache;
+
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            if(cache == null)
+            if (cache == null)
                 cache = GameRegistry.findItem("AncientWarfareStructure", "structure_scanner");
             return cache;
         }

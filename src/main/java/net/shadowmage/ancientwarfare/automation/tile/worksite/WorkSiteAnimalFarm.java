@@ -16,7 +16,6 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -271,7 +270,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         for (EntityAnimal animal : animals) {
             if (animal.getGrowingAge() >= 0) {
                 cowsToMilk++;
-                if(cowsToMilk > maxCowCount) {
+                if (cowsToMilk > maxCowCount) {
                     cowsToMilk = maxCowCount;
                     break;
                 }
@@ -349,7 +348,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             if (!(animalA instanceof EntityAnimal) || !(animalB instanceof EntityAnimal)) {
                 return false;
             }
-            if(animalA.isEntityAlive() && animalB.isEntityAlive()) {
+            if (animalA.isEntityAlive() && animalB.isEntityAlive()) {
                 ((EntityAnimal) animalA).func_146082_f(null);//setInLove(EntityPlayer breeder)
                 ((EntityAnimal) animalB).func_146082_f(null);//setInLove(EntityPlayer breeder)
                 return true;
@@ -395,7 +394,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 ItemStack stack;
                 for (EntityItem item : animal.capturedDrops) {
                     stack = item.getEntityItem();
-                    if(stack!=null) {
+                    if (stack != null) {
                         if (fortune > 0) {
                             stack.stackSize += worldObj.rand.nextInt(fortune);
                         }
@@ -479,17 +478,17 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (tag.hasKey("maxChickens")) {
-        tag.setInteger("maxChickens", maxChickenCount);
+            tag.setInteger("maxChickens", maxChickenCount);
         }
         if (tag.hasKey("maxCows")) {
-        tag.setInteger("maxCows", maxCowCount);
+            tag.setInteger("maxCows", maxCowCount);
         }
         if (tag.hasKey("maxPigs")) {
-        tag.setInteger("maxPigs", maxPigCount);
+            tag.setInteger("maxPigs", maxPigCount);
         }
         if (tag.hasKey("maxSheep")) {
-        tag.setInteger("maxSheep", maxSheepCount);
-    }
+            tag.setInteger("maxSheep", maxSheepCount);
+        }
     }
 
     private static class EntityPair {

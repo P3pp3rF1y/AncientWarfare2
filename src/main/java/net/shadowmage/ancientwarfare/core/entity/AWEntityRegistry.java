@@ -140,10 +140,12 @@ public class AWEntityRegistry {
     public static final String AW_GATES = "aw_gate";
 
     private static HashMap<String, EntityDeclaration> entityRegistrations = new HashMap<String, EntityDeclaration>();
+
     public static void registerEntity(EntityDeclaration reg) {
         entityRegistrations.put(reg.getEntityName(), reg);
         EntityRegistry.registerModEntity(reg.entityClass, reg.entityName, reg.id, reg.mod, reg.trackingRange, reg.updateFrequency, reg.sendsVelocityUpdates);
     }
+
     public static Entity createEntity(String type, World world) {
         if (entityRegistrations.containsKey(type)) {
             return entityRegistrations.get(type).createEntity(world);
@@ -177,10 +179,10 @@ public class AWEntityRegistry {
             this.sendsVelocityUpdates = sendsVelocityUpdates;
         }
 
-        public Entity createEntity(World world){
-            try{
+        public Entity createEntity(World world) {
+            try {
                 return entityClass.getConstructor(World.class).newInstance(world);
-            }catch (Exception e){
+            } catch (Exception e) {
                 AWLog.logError("Couldn't create entity:" + e.getMessage());
             }
             return null;

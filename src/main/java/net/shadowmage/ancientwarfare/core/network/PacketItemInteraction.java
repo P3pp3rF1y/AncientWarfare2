@@ -40,10 +40,10 @@ public class PacketItemInteraction extends PacketBase {
     protected void execute(EntityPlayer player) {
         if (player != null) {
             ItemStack stack = player.inventory.getCurrentItem();
-            if(stack == null)
+            if (stack == null)
                 return;
             if (type == 0) {
-                if (key>=0 && key<ItemKey.values().length && stack.getItem() instanceof IItemKeyInterface) {
+                if (key >= 0 && key < ItemKey.values().length && stack.getItem() instanceof IItemKeyInterface) {
                     ((IItemKeyInterface) stack.getItem()).onKeyAction(player, stack, ItemKey.values()[key]);
                 }
             } else if (type == 1)//item left-click

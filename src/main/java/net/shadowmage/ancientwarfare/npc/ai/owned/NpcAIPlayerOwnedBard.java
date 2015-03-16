@@ -86,8 +86,8 @@ public class NpcAIPlayerOwnedBard extends NpcAI {
         SongPlayData data = bard.getTuneData();
         SongEntry entry = data.get(tuneIndex);
         maxPlayTime = (int) (entry.length() * 20.f * 60.f);//convert minutes into ticks
-        float volume = (float) entry.volume() * 0.01f;
-        bard.worldObj.playSoundAtEntity(bard, entry.name(), 3.0f * volume, 1.f);
+        float volume = (float) entry.volume() * 0.03f;
+        bard.worldObj.playSoundAtEntity(bard, entry.name(), volume, 1.f);
         playing = true;
         playTime = 0;
     }

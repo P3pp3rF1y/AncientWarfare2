@@ -31,14 +31,14 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
         this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.meta = meta;
         TileEntity worksite = world.getTileEntity(x, y, z);
-        ForgeDirection o = ((BlockRotationHandler.IRotatableTile)worksite).getPrimaryFacing();
+        ForgeDirection o = ((BlockRotationHandler.IRotatableTile) worksite).getPrimaryFacing();
         for (int i = 0; i < turns; i++) {
             o = o.getRotation(ForgeDirection.UP);
         }
         this.orientation = o.ordinal();
-        if (worksite instanceof IWorkSite && ((IWorkSite)worksite).hasWorkBounds()) {
-            p1 = ((IWorkSite)worksite).getWorkBoundsMin().copy();
-            p2 = ((IWorkSite)worksite).getWorkBoundsMax().copy();
+        if (worksite instanceof IWorkSite && ((IWorkSite) worksite).hasWorkBounds()) {
+            p1 = ((IWorkSite) worksite).getWorkBoundsMin().copy();
+            p2 = ((IWorkSite) worksite).getWorkBoundsMax().copy();
             p1.offset(-x, -y, -z);
             p2.offset(-x, -y, -z);
             BlockTools.rotateAroundOrigin(p1, turns);
@@ -70,7 +70,7 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
         for (int i = 0; i < turns; i++) {
             o = o.getRotation(ForgeDirection.UP);
         }
-        ((BlockRotationHandler.IRotatableTile)worksite).setPrimaryFacing(o);
+        ((BlockRotationHandler.IRotatableTile) worksite).setPrimaryFacing(o);
         if (p1 != null && p2 != null) {
             pos1 = p1.copy();
             pos2 = p2.copy();
@@ -78,7 +78,7 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
             BlockTools.rotateAroundOrigin(pos2, turns);
             pos1.offset(x, y, z);
             pos2.offset(x, y, z);
-            ((IWorkSite)worksite).setBounds(pos1, pos2);
+            ((IWorkSite) worksite).setBounds(pos1, pos2);
         }
         world.markBlockForUpdate(x, y, z);
     }

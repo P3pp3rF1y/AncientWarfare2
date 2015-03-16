@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 

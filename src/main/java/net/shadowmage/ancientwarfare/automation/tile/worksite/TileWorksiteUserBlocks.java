@@ -35,7 +35,7 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         return targetMap[z * 16 + x] == 1;
     }
 
-    protected boolean isBonemeal(ItemStack stack){
+    protected boolean isBonemeal(ItemStack stack) {
         return stack.getItem() == Items.dye && stack.getItemDamage() == 15;
     }
 

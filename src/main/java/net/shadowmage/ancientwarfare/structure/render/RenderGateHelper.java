@@ -20,7 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.render;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;

@@ -26,7 +26,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
     public ContainerDraftingStation(EntityPlayer player, int x, int y, int z) {
         super(player);
         tile = (TileDraftingStation) player.worldObj.getTileEntity(x, y, z);
-        if(tile == null){
+        if (tile == null) {
             throw new IllegalArgumentException("No drafting station");
         }
         structureName = tile.getCurrentTemplateName();

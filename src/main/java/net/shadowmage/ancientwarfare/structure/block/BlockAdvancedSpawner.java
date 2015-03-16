@@ -104,8 +104,8 @@ public class BlockAdvancedSpawner extends Block {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ) {
-        if (player.capabilities.isCreativeMode){
-            if(!world.isRemote) {
+        if (player.capabilities.isCreativeMode) {
+            if (!world.isRemote) {
                 if (player.isSneaking()) {
                     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY, x, y, z);
                 } else {

@@ -80,7 +80,7 @@ public class ItemBlockAdvancedSpawner extends ItemBlock implements IItemKeyInter
             group = groups.get(i);
             list.add(StatCollector.translateToLocal("guistrings.spawner.group_number") + ": " + (i + 1) + " " + StatCollector.translateToLocal("guistrings.spawner.group_weight") + ": " + group.getWeight());
             for (EntitySpawnSettings set : group.getEntitiesToSpawn()) {
-                list.add("  " + StatCollector.translateToLocal("guistrings.spawner.entity_type") + ": " + StatCollector.translateToLocal("entity."+set.getEntityId()+".name") + " " + set.getSpawnMin() + " to " + set.getSpawnMax() + " (" + (set.getSpawnTotal() < 0 ? "infinite" : set.getSpawnTotal()) + " total)");
+                list.add("  " + StatCollector.translateToLocal("guistrings.spawner.entity_type") + ": " + StatCollector.translateToLocal("entity." + set.getEntityId() + ".name") + " " + set.getSpawnMin() + " to " + set.getSpawnMax() + " (" + (set.getSpawnTotal() < 0 ? "infinite" : set.getSpawnTotal()) + " total)");
             }
         }
     }

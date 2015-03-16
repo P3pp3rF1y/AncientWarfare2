@@ -25,7 +25,6 @@ import net.minecraft.entity.EntityList;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityNpc;
@@ -43,9 +42,9 @@ public class StructurePluginNpcs implements StructureContentPlugin {
 
     @Override
     public void addHandledEntities(IStructurePluginManager manager) {
-        for(Object obj : EntityList.classToStringMapping.keySet()) {
+        for (Object obj : EntityList.classToStringMapping.keySet()) {
             Class<? extends Entity> clazz = (Class<? extends Entity>) obj;
-            if(NpcBase.class.isAssignableFrom(clazz)){
+            if (NpcBase.class.isAssignableFrom(clazz)) {
                 manager.registerEntityHandler("AWNpc", clazz, TemplateRuleEntityNpc.class);
             }
         }

@@ -35,8 +35,6 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.e
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleVanillaEntity;
 
-import java.util.Iterator;
-
 public class StructurePluginModDefault implements StructureContentPlugin {
 
     public StructurePluginModDefault() {
@@ -47,9 +45,9 @@ public class StructurePluginModDefault implements StructureContentPlugin {
     @Override
     public void addHandledBlocks(IStructurePluginManager manager) {
         for (Block aBlock : (Iterable<Block>) Block.blockRegistry) {
-            if(aBlock instanceof BlockContainer){
+            if (aBlock instanceof BlockContainer) {
                 manager.registerBlockHandler("modBlockDefault", aBlock, TemplateRuleBlockLogic.class);
-            }else {
+            } else {
                 manager.registerBlockHandler("modBlockDefault", aBlock, TemplateRuleModBlocks.class);
             }
         }
@@ -58,13 +56,13 @@ public class StructurePluginModDefault implements StructureContentPlugin {
     @SuppressWarnings("unchecked")
     @Override
     public void addHandledEntities(IStructurePluginManager manager) {
-        for(Object obj : EntityList.classToStringMapping.keySet()) {
+        for (Object obj : EntityList.classToStringMapping.keySet()) {
             Class<? extends Entity> clazz = (Class<? extends Entity>) obj;
-            if(EntityHanging.class.isAssignableFrom(clazz)){
+            if (EntityHanging.class.isAssignableFrom(clazz)) {
                 manager.registerEntityHandler("modEntityDefault", clazz, TemplateRuleEntityHanging.class);
-            }else if(IInventory.class.isAssignableFrom(clazz)){
+            } else if (IInventory.class.isAssignableFrom(clazz)) {
                 manager.registerEntityHandler("modEntityDefault", clazz, TemplateRuleEntityLogic.class);
-            }else if(EntityAnimal.class.isAssignableFrom(clazz)){
+            } else if (EntityAnimal.class.isAssignableFrom(clazz)) {
                 manager.registerEntityHandler("modEntityDefault", clazz, TemplateRuleVanillaEntity.class);
             }
         }

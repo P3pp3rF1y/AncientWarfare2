@@ -379,10 +379,10 @@ public class BlockTools {
             return false;
         }
         Block block = world.getBlock(x, y, z);
-        if (block.getMaterial() == Material.air || block.getBlockHardness(world, x, y, z) < 0 ) {
+        if (block.getMaterial() == Material.air || block.getBlockHardness(world, x, y, z) < 0) {
             return false;
         }
-        if(doDrop) {
+        if (doDrop) {
             int meta = world.getBlockMetadata(x, y, z);
             if (AWCoreStatics.fireBlockBreakEvents) {
                 if (!canBreakBlock(world, AncientWarfareCore.proxy.getFakePlayer(world, playerName), x, y, z, block, meta)) {

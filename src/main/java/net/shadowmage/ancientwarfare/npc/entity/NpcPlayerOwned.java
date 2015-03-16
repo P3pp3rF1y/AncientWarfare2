@@ -13,13 +13,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
-import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
@@ -42,7 +40,7 @@ public abstract class NpcPlayerOwned extends NpcBase {
     }
 
     @Override
-    public void setCurrentItemOrArmor(int slot, ItemStack stack) {
+    public final void setCurrentItemOrArmor(int slot, ItemStack stack) {
         super.setCurrentItemOrArmor(slot, stack);
         if (slot == 0) {
             onWeaponInventoryChanged();
@@ -287,7 +285,7 @@ public abstract class NpcPlayerOwned extends NpcBase {
 
     @Override
     protected void tryCommand(EntityPlayer player) {
-        if (player.getTeam() == getTeam() && this.canBeCommandedBy(player.getCommandSenderName())){
+        if (player.getTeam() == getTeam() && this.canBeCommandedBy(player.getCommandSenderName())) {
             super.tryCommand(player);
         }
     }

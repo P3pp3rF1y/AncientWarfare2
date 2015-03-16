@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -72,7 +71,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
         this.inventory.setFilterForSlots(filter, frontIndices);
     }
 
-    private boolean isMushroom(Block block){
+    private boolean isMushroom(Block block) {
         return block instanceof BlockMushroom;
     }
 
@@ -111,8 +110,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
             }
             if (item.getItem() == Items.nether_wart) {
                 netherWartCount += item.stackSize;
-            }
-            else if (item.getItem() instanceof ItemBlock) {
+            } else if (item.getItem() instanceof ItemBlock) {
                 ItemBlock ib = (ItemBlock) item.getItem();
                 if (isMushroom(ib.field_150939_a)) {
                     mushroomCount += item.stackSize;

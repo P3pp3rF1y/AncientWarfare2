@@ -21,7 +21,6 @@
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 

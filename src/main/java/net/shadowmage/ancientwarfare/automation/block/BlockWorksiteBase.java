@@ -54,10 +54,11 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
         return this;
     }
 
-    public BlockWorksiteBase setTileEntity(Class<? extends TileEntity> clzz){
+    public BlockWorksiteBase setTileEntity(Class<? extends TileEntity> clzz) {
         try {
             tile = clzz.getConstructor();
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
         return this;
     }
 
@@ -68,16 +69,17 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
      * returned tiles must implement IOwnable if they want owner-name set from ItemBlockWorksite<br>
      */
     @Override
-    public TileEntity createTileEntity(World world, int metadata){
-        try{
+    public TileEntity createTileEntity(World world, int metadata) {
+        try {
             return tile.newInstance();
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
         return null;
     }
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return tile!=null;
+        return tile != null;
     }
 
     @Override

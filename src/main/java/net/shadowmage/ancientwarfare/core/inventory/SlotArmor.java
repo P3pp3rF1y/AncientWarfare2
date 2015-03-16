@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 
 public class SlotArmor extends Slot {
 
-    int armorSlotID;
-    Entity entity;
+    private final int armorSlotID;
+    private final Entity entity;
 
     public SlotArmor(IInventory par1iInventory, int par2, int par3, int par4, int armorSlotID, Entity entity) {
         super(par1iInventory, par2, par3, par4);
@@ -23,10 +23,7 @@ public class SlotArmor extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack par1ItemStack) {
-        if (par1ItemStack == null) {
-            return false;
-        }
-        return par1ItemStack.getItem().isValidArmor(par1ItemStack, armorSlotID, entity);
+        return par1ItemStack != null && par1ItemStack.getItem().isValidArmor(par1ItemStack, armorSlotID, entity);
     }
 
 //@Override

@@ -180,7 +180,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
     }
 
     private void updateSelectionName() {
-        currentSelectionName.setText(StatCollector.translateToLocal("guistrings.current_selection") + ": " + StatCollector.translateToLocal("entity."+getContainer().entityId+".name"));
+        currentSelectionName.setText(StatCollector.translateToLocal("guistrings.current_selection") + ": " + StatCollector.translateToLocal("entity." + getContainer().entityId + ".name"));
     }
 
 }

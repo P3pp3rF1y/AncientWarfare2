@@ -53,9 +53,8 @@ public class NpcTrader extends NpcPlayerOwned {
     @Override
     public void onOrdersInventoryChanged() {
         tradeList = null;
-        ItemStack order = ordersStack;
-        if (order != null && order.getItem() instanceof ItemTradeOrder) {
-            tradeList = TradeOrder.getTradeOrder(order).getTradeList();
+        if (isValidOrdersStack(ordersStack)) {
+            tradeList = TradeOrder.getTradeOrder(ordersStack).getTradeList();
         }
         tradeAI.onOrdersUpdated();
     }

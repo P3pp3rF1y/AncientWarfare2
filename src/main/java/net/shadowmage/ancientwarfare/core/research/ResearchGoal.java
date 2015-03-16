@@ -157,7 +157,7 @@ public class ResearchGoal {
                 continue;
             }
             ItemStack stack = StringTools.safeParseStack(split[1], split[2], split[3]);
-            if(stack == null) {
+            if (stack == null) {
                 AWLog.logError("Could not locate item for name: " + split[1]);
                 continue;
             }

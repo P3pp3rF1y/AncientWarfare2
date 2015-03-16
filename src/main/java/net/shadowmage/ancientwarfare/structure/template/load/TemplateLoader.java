@@ -54,6 +54,7 @@ public class TemplateLoader {
     private HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 
     public static final TemplateLoader INSTANCE = new TemplateLoader();
+
     private TemplateLoader() {
     }
 

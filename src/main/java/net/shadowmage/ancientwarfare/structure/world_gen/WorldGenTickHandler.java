@@ -16,6 +16,7 @@ public class WorldGenTickHandler {
     public static final WorldGenTickHandler INSTANCE = new WorldGenTickHandler();
     private final List<ChunkGenerationTicket> newWorldGenTickets, newTownGenTickets, chunksToGen, townChunksToGen;
     private final List<StructureTicket> newStructureGenTickets, structuresToGen;
+
     private WorldGenTickHandler() {
         newWorldGenTickets = new ArrayList<ChunkGenerationTicket>();
         newTownGenTickets = new ArrayList<ChunkGenerationTicket>();
@@ -55,7 +56,7 @@ public class WorldGenTickHandler {
             ChunkGenerationTicket tk = chunksToGen.remove(0);
             WorldStructureGenerator.INSTANCE.generateAt(tk.chunkX, tk.chunkZ, tk.getWorld());
         }
-        if(!newWorldGenTickets.isEmpty()) {
+        if (!newWorldGenTickets.isEmpty()) {
             chunksToGen.addAll(newWorldGenTickets);
             newWorldGenTickets.clear();
         }
@@ -66,7 +67,7 @@ public class WorldGenTickHandler {
             ChunkGenerationTicket tk = townChunksToGen.remove(0);
             WorldTownGenerator.INSTANCE.attemptGeneration(tk.getWorld(), tk.chunkX * 16, tk.chunkZ * 16);
         }
-        if(!newTownGenTickets.isEmpty()) {
+        if (!newTownGenTickets.isEmpty()) {
             townChunksToGen.addAll(newTownGenTickets);
             newTownGenTickets.clear();
         }
@@ -76,7 +77,7 @@ public class WorldGenTickHandler {
         if (!structuresToGen.isEmpty()) {
             structuresToGen.remove(0).call();
         }
-        if(!newStructureGenTickets.isEmpty()) {
+        if (!newStructureGenTickets.isEmpty()) {
             structuresToGen.addAll(newStructureGenTickets);
             newStructureGenTickets.clear();
         }

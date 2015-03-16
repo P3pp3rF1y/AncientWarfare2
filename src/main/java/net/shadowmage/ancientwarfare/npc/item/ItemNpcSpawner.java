@@ -54,7 +54,7 @@ public class ItemNpcSpawner extends Item implements IItemClickable {
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {
         String npcName = getNpcType(par1ItemStack);
-        if(npcName!=null) {
+        if (npcName != null) {
             String npcSub = getNpcSubtype(par1ItemStack);
             if (!npcSub.isEmpty()) {
                 npcName = npcName + "." + npcSub;

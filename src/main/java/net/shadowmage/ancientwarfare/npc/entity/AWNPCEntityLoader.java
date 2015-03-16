@@ -449,7 +449,7 @@ public class AWNPCEntityLoader {
     private static void addNpcRegistration(NpcDeclaration reg, String icon) {
         AWEntityRegistry.registerEntity(reg);
         if (reg.canSpawnBaseEntity) {
-            ((ItemNpcSpawner)AWItems.npcSpawner).addNpcType(reg.getType(), icon);
+            ((ItemNpcSpawner) AWItems.npcSpawner).addNpcType(reg.getType(), icon);
         }
         npcMap.put(reg.getType(), reg);
     }
@@ -467,7 +467,7 @@ public class AWNPCEntityLoader {
             throw new IllegalArgumentException("npc type must first be mapped");
         }
         npcMap.get(npcType).addSubtype(npcSubtype, icon);
-        ((ItemNpcSpawner)AWItems.npcSpawner).addNpcType(npcType + "." + npcSubtype, icon);
+        ((ItemNpcSpawner) AWItems.npcSpawner).addNpcType(npcType + "." + npcSubtype, icon);
     }
 
     private static void addNpcSubtypeEquipment(String npcType, String npcSubtype, ItemStack equipment) {
@@ -508,7 +508,7 @@ public class AWNPCEntityLoader {
             this.npcType = npcType;
         }
 
-        public String getType(){
+        public String getType() {
             return npcType;
         }
 

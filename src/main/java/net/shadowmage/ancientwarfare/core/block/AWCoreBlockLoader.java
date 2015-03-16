@@ -35,17 +35,17 @@ public class AWCoreBlockLoader {
         AWBlocks.researchStation = register(new BlockResearchStation(), "research_station", ItemBlockRotatableMetaTile.class, TileResearchStation.class);
     }
 
-    public Block register(Block block, String name){
+    public Block register(Block block, String name) {
         return GameRegistry.registerBlock(block, name);
     }
 
-    public Block register(Block block, String name, Class<? extends ItemBlock> clazz){
+    public Block register(Block block, String name, Class<? extends ItemBlock> clazz) {
         return GameRegistry.registerBlock(block, clazz, name);
     }
 
-    public Block register(Block block, String name, Class<? extends ItemBlock> blockItem, Class<? extends TileEntity> blockTile){
+    public Block register(Block block, String name, Class<? extends ItemBlock> blockItem, Class<? extends TileEntity> blockTile) {
         block.setBlockName(name);
-        GameRegistry.registerTileEntity(blockTile, name+"_tile");
+        GameRegistry.registerTileEntity(blockTile, name + "_tile");
         return GameRegistry.registerBlock(block, blockItem, name);
     }
 }

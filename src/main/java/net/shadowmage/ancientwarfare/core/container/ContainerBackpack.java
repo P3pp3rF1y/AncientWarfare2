@@ -25,9 +25,9 @@ public class ContainerBackpack extends ContainerBase {
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             xPos = (i % 9) * 18 + 8;
             yPos = (i / 9) * 18 + 8;
-            addSlotToContainer(new Slot(inventory, i, xPos, yPos){
+            addSlotToContainer(new Slot(inventory, i, xPos, yPos) {
                 @Override
-                public boolean isItemValid(ItemStack itemStack){
+                public boolean isItemValid(ItemStack itemStack) {
                     return this.inventory.isItemValidForSlot(this.getSlotIndex(), itemStack);
                 }
             });

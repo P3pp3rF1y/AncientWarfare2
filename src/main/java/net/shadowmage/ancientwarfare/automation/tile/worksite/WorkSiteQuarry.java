@@ -190,11 +190,9 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
             int toolLevel = 1;
             if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_3)) {
                 toolLevel = Integer.MAX_VALUE;
-            }
-            else if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_2)) {
+            } else if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_2)) {
                 toolLevel = 3;
-            }
-            else if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_1)) {
+            } else if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_1)) {
                 toolLevel = 2;
             }
             if (toolLevel < harvestLevel) {

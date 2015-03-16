@@ -27,6 +27,7 @@ public class RenderCommandOverlay {
     private List<Entity> targetEntities;
     private MovingObjectPosition target;
     private String targetString;
+
     private RenderCommandOverlay() {
         targetEntities = Collections.emptyList();
     }
@@ -41,7 +42,7 @@ public class RenderCommandOverlay {
         if (mc == null || mc.thePlayer == null || mc.currentScreen != null || mc.thePlayer.getCurrentEquippedItem() == null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)) {
             return;
         }
-        if(evt.phase == TickEvent.Phase.START) {
+        if (evt.phase == TickEvent.Phase.START) {
             target = RayTraceUtils.getPlayerTarget(mc.thePlayer, 120, 0);
             if (target != null) {
                 if (target.typeOfHit == MovingObjectType.BLOCK) {
@@ -51,7 +52,7 @@ public class RenderCommandOverlay {
                 }
             }
             targetEntities = ItemCommandBaton.getCommandedEntities(mc.theWorld, mc.thePlayer.getCurrentEquippedItem());
-        }else if(!mc.gameSettings.showDebugInfo) {
+        } else if (!mc.gameSettings.showDebugInfo) {
             List<String> entityNames = new ArrayList<String>();
             for (Entity e : targetEntities) {
                 entityNames.add(e.getCommandSenderName());

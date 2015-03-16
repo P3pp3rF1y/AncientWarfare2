@@ -64,7 +64,7 @@ public class ItemSpawnerPlacer extends Item implements IItemClickable {
             String mobID = tag.getString("EntityId");
             if (mobID.isEmpty()) {
                 list.add(StatCollector.translateToLocal("guistrings.no_selection"));
-            }else {
+            } else {
                 list.add(StatCollector.translateToLocal("entity." + mobID + ".name"));
             }
         } else {
@@ -86,7 +86,7 @@ public class ItemSpawnerPlacer extends Item implements IItemClickable {
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
                 BlockPosition hit = new BlockPosition(mophit.blockX, mophit.blockY, mophit.blockZ);
                 hit.offsetForMCSide(mophit.sideHit);
-                if(player.worldObj.setBlock(hit.x, hit.y, hit.z, Blocks.mob_spawner)) {
+                if (player.worldObj.setBlock(hit.x, hit.y, hit.z, Blocks.mob_spawner)) {
                     NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
                     tag.setInteger("x", hit.x);
                     tag.setInteger("y", hit.y);

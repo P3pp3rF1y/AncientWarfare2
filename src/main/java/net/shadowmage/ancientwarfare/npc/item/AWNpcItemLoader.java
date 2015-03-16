@@ -64,7 +64,7 @@ public class AWNpcItemLoader {
         GameRegistry.registerItem(goldShield, "gold_shield");
         GameRegistry.registerItem(diamondShield, "diamond_shield");
 
-        AWItems.componentItem.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, PREFIX+"food_bundle");
+        AWItems.componentItem.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, PREFIX + "food_bundle");
     }
 
     private static final Comparator<ItemStack> sorter = new Comparator<ItemStack>() {

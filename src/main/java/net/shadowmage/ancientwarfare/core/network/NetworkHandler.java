@@ -156,7 +156,7 @@ public final class NetworkHandler implements IGuiHandler {
                 container = clz.getConstructor(EntityPlayer.class, int.class, int.class, int.class).newInstance(player, x, y, z);
             } catch (IllegalArgumentException e) {
                 return null;
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
@@ -171,7 +171,7 @@ public final class NetworkHandler implements IGuiHandler {
         if (clz != null) {
             ContainerBase container = (ContainerBase) getServerGuiElement(ID, player, world, x, y, z);
             try {
-                if(container != null)
+                if (container != null)
                     gui = clz.getConstructor(ContainerBase.class).newInstance(container);
             } catch (Exception e) {
                 e.printStackTrace();

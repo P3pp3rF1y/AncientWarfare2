@@ -18,6 +18,7 @@ public class FactionTracker {
     public static final FactionTracker INSTANCE = new FactionTracker();
     private static final FactionEntry DEFAULT = new FactionEntry("client_entry");
     private FactionEntry clientEntry;
+
     private FactionTracker() {
         clientEntry = DEFAULT;
     }

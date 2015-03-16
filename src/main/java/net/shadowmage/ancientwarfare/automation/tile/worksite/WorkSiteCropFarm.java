@@ -6,19 +6,15 @@ import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.IPlantable;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -77,11 +73,11 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         this.inventory.setFilterForSlots(filter, bottomIndices);
     }
 
-    private boolean isPlantable(Item item){
+    private boolean isPlantable(Item item) {
         return item instanceof IPlantable;
     }
 
-    private boolean isPlant(Block block){
+    private boolean isPlant(Block block) {
         return block instanceof BlockCrops || block instanceof BlockStem;
     }
 
@@ -153,13 +149,13 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 blocksToPlant.add(position);
             }
         } else if (block instanceof BlockCrops) {
-            if (!((IGrowable)block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
+            if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                 blocksToHarvest.add(position);
             } else {
                 blocksToFertilize.add(position);
             }
         } else if (block instanceof BlockStem) {
-            if (!((IGrowable)block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
+            if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                 block = worldObj.getBlock(position.x - 1, position.y, position.z);
                 if (block == Blocks.melon_block || block == Blocks.pumpkin) {
                     blocksToHarvest.add(new BlockPosition(position.x - 1, position.y, position.z));
@@ -203,7 +199,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
                 if (block instanceof BlockCrops) {
-                    if (((IGrowable)block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
+                    if (((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                         continue;
                     }
                     return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
@@ -228,8 +224,8 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                             if (stack.stackSize <= 0) {
                                 inventory.setInventorySlotContents(i, null);
                             }
-                            block = ((IPlantable)stack.getItem()).getPlant(worldObj, position.x, position.y, position.z);
-                            worldObj.setBlock(position.x, position.y, position.z, block, ((IPlantable)stack.getItem()).getPlantMetadata(worldObj, position.x, position.y, position.z), 3);
+                            block = ((IPlantable) stack.getItem()).getPlant(worldObj, position.x, position.y, position.z);
+                            worldObj.setBlock(position.x, position.y, position.z, block, ((IPlantable) stack.getItem()).getPlantMetadata(worldObj, position.x, position.y, position.z), 3);
                             return true;
                         }
                     }
@@ -256,7 +252,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                             }
                             block = worldObj.getBlock(position.x, position.y, position.z);
                             if (isPlant(block)) {
-                                if (((IGrowable)block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
+                                if (((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                                     blocksToFertilize.add(position);
                                 } else {
                                     if (block instanceof BlockCrops) {

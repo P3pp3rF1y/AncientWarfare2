@@ -11,7 +11,6 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Block data manager
@@ -37,6 +36,7 @@ public class BlockDataManager {
     private HashMap<Block, BlockInfo> blockInfoMap = new HashMap<Block, BlockInfo>();
 
     public static final BlockDataManager INSTANCE = new BlockDataManager();
+
     private BlockDataManager() {
     }
 

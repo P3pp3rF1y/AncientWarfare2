@@ -62,7 +62,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
             } else if (!viewSettings.hasBuildKey()) {
                 list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.select_offset"));
                 list.add("(3/4)");
-            }else {
+            } else {
                 list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.click_to_process"));
                 list.add("(4/4)");
             }
@@ -93,10 +93,10 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
         StructureTemplate template = TemplateScanner.scan(world, min, max, key, turns, name);
 
         StructureValidationType type = StructureValidationType.getTypeFromName(tag.getString("validationType"));
-        if(type == null)
+        if (type == null)
             return false;
         StructureValidator validator = type.getValidator();
-        if(validator == null)
+        if (validator == null)
             return false;
         validator.readFromNBT(tag);
         template.setValidationSettings(validator);
@@ -130,7 +130,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
         } else if (!scanSettings.hasBuildKey()) {
             scanSettings.setBuildKey(hit.x, hit.y, hit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw));
             player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.set_offset_pos"));
-        }else {
+        } else {
             player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.click_to_process"));
         }
         ItemStructureSettings.setSettingsFor(stack, scanSettings);

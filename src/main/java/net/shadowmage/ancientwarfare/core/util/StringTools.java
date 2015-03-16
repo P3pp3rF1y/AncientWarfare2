@@ -247,13 +247,12 @@ public class StringTools {
     }
 
     /**
-     *
      * @param name of the item to search in the registries
      * @return the item instance, or null if none is found
      */
-    public static Item safeParseItem(String name){
+    public static Item safeParseItem(String name) {
         Item item = GameData.getItemRegistry().getObject(name);
-        if(item == GameData.getItemRegistry().getDefaultValue()) {
+        if (item == GameData.getItemRegistry().getDefaultValue()) {
             Block block = GameData.getBlockRegistry().getObject(name);
             if (block == GameData.getBlockRegistry().getDefaultValue())
                 return null;
@@ -264,20 +263,19 @@ public class StringTools {
     }
 
     /**
-     *
      * @param name of the item to search in the registries
      * @param meta to parse for item damage
-     * @param qty to parse for item stack size
+     * @param qty  to parse for item stack size
      * @return the ItemStack instance, or null if any necessary argument is invalid
      */
-    public static ItemStack safeParseStack(String name, String meta, String qty){
+    public static ItemStack safeParseStack(String name, String meta, String qty) {
 
         Item item = safeParseItem(name);
-        if(item == null) {
+        if (item == null) {
             return null;
         }
         int i = StringTools.safeParseInt(qty);
-        if(i <= 0){
+        if (i <= 0) {
             return null;
         }
         return new ItemStack(item, i, StringTools.safeParseInt(meta));

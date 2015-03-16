@@ -138,7 +138,7 @@ public class AncientWarfareAutomation {
          * construct recipes, load plugins
          */
         AWAutomationCrafting.loadRecipes();
-        if(config.hasChanged())
+        if (config.hasChanged())
             config.save();
         AWLog.log("Ancient Warfare Automation Init completed");
     }

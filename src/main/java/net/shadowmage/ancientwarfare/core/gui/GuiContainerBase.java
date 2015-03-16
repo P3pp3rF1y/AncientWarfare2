@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.core.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -65,11 +64,11 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         this(container, 256, 240);
     }
 
-    public final void setTexture(String name){
+    public final void setTexture(String name) {
         this.backgroundTexture = new ResourceLocation(name);
     }
 
-    public final T getContainer(){
+    public final T getContainer() {
         return (T) this.inventorySlots;
     }
 

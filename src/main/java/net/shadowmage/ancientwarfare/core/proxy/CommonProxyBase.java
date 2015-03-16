@@ -22,7 +22,7 @@ public class CommonProxyBase {
     }
 
     public EntityPlayer getFakePlayer(World world, String name) {
-        return FakePlayerFactory.get((WorldServer)world, new GameProfile(null, name));
+        return FakePlayerFactory.get((WorldServer) world, new GameProfile(null, name));
     }
 
     public boolean isKeyPressed(String keyName) {

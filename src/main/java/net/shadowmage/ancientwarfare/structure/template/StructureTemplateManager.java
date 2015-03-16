@@ -36,6 +36,7 @@ public class StructureTemplateManager {
     private HashMap<String, BufferedImage> templateImages = new HashMap<String, BufferedImage>();//server-side images
     //private HashMap<String,String> imageMD5s = new HashMap<String,String>();
     private HashMap<String, StructureTemplate> loadedTemplates = new HashMap<String, StructureTemplate>();
+
     private StructureTemplateManager() {
     }
 

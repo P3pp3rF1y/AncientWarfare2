@@ -144,7 +144,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         }
     }
 
-    public int getFortune(){
+    public int getFortune() {
         return getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
     }
 
@@ -208,9 +208,9 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         return owningPlayer;
     }
 
-    public final EntityPlayer getOwnerAsPlayer(){
+    public final EntityPlayer getOwnerAsPlayer() {
         EntityPlayer player = owningPlayer != null ? this.getWorldObj().getPlayerEntityByName(owningPlayer) : null;
-        if(player==null){
+        if (player == null) {
             return AncientWarfareCore.proxy.getFakePlayer(this.getWorldObj(), owningPlayer);
         }
         return player;

@@ -39,6 +39,7 @@ public class TemplateParser {
     public static final TemplateParser INSTANCE = new TemplateParser();
 
     private final TemplateFormatConverter converter;
+
     private TemplateParser() {
         converter = new TemplateFormatConverter();
     }

@@ -48,7 +48,7 @@ public abstract class NpcFactionTrader extends NpcFaction {
     protected boolean interact(EntityPlayer player) {
         if (!player.worldObj.isRemote && trader == null) {
             boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
-            if(!baton) {
+            if (!baton) {
                 trader = player;
                 NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_TRADE_VIEW, getEntityId(), 0, 0);
             }

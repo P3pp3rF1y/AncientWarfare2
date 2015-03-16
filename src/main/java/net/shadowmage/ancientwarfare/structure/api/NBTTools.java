@@ -290,7 +290,7 @@ public class NBTTools {
     }
 
 
-    /** ********************************************************* NBT PROXY HANDLING ******************************************************************************* */
+    /** ******************************************************** NBT PROXY HANDLING ******************************************************************************* */
 
     private static NBTTagCompound parseNBTFromLines(List<String> lines) {
         TagCompound tag = parseTagFromLines(lines);

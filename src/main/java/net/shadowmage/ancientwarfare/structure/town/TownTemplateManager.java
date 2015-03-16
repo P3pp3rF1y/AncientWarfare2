@@ -13,6 +13,7 @@ public class TownTemplateManager {
 
     private final HashMap<String, TownTemplate> templates;
     private final List<TownTemplate> searchCache;
+
     private TownTemplateManager() {
         templates = new HashMap<String, TownTemplate>();
         searchCache = new ArrayList<TownTemplate>();

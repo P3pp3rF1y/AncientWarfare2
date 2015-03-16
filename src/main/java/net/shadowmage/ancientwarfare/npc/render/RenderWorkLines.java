@@ -21,6 +21,7 @@ public class RenderWorkLines {
     public static final RenderWorkLines INSTANCE = new RenderWorkLines();
 
     private final List<BlockPosition> positionList;
+
     private RenderWorkLines() {
         positionList = new ArrayList<BlockPosition>();
     }
@@ -46,10 +47,10 @@ public class RenderWorkLines {
         Item item = stack.getItem();
 
         GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-        if(item instanceof ItemOrders){
+        if (item instanceof ItemOrders) {
             positionList.addAll(((ItemOrders) item).getPositionsForRender(stack));
         }
-        if(positionList.size()>0) {
+        if (positionList.size() > 0) {
             renderListOfPoints(player, evt.partialTicks);
             positionList.clear();
         }

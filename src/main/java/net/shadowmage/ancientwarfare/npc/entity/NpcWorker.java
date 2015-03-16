@@ -90,8 +90,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
                 return effectiveness;
             }
             Item item = getEquipmentInSlot(0).getItem();
-            if (item instanceof ItemTool)
-            {
+            if (item instanceof ItemTool) {
                 effectiveness += ((ItemTool) item).func_150913_i().getEfficiencyOnProperMaterial() * 0.05f;
             } else if (item instanceof ItemHoe) {
                 ToolMaterial mat = ToolMaterial.valueOf(((ItemHoe) item).getToolMaterialName());

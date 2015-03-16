@@ -99,7 +99,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
         NetworkHandler.sendToServer(pkt);
     }
 
-    private boolean isInValid(ItemStack stack){
+    private boolean isInValid(ItemStack stack) {
         return stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemSpawnerPlacer);
     }
 }

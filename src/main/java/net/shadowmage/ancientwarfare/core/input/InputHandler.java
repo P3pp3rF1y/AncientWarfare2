@@ -38,6 +38,7 @@ public class InputHandler {
     private final HashMap<Integer, Set<Keybind>> bindsByKey;
     private Configuration config;
     private long lastMouseInput = -1;
+
     private InputHandler() {
         keybindMap = new HashMap<String, Keybind>();
         bindsByKey = new HashMap<Integer, Set<Keybind>>();

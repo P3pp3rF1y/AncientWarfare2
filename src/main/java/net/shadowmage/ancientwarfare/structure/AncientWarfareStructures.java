@@ -82,9 +82,9 @@ public class AncientWarfareStructures {
          */
         FMLCommonHandler.instance().bus().register(this);
         FMLCommonHandler.instance().bus().register(WorldGenTickHandler.INSTANCE);
-        if(AWStructureStatics.enableStructureGeneration)
+        if (AWStructureStatics.enableStructureGeneration)
             GameRegistry.registerWorldGenerator(WorldStructureGenerator.INSTANCE, 1);
-        if(AWStructureStatics.enableTownGeneration)
+        if (AWStructureStatics.enableTownGeneration)
             GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
         EntityRegistry.registerModEntity(EntityGate.class, "aw_gate", 0, this, 250, 200, false);
         /**
@@ -131,7 +131,7 @@ public class AncientWarfareStructures {
         StructurePluginManager.INSTANCE.loadPlugins();
         WorldGenStructureManager.INSTANCE.loadBiomeList();
         TemplateLoader.INSTANCE.loadTemplates();
-        if(config.hasChanged())
+        if (config.hasChanged())
             config.save();
         AWLog.log("Ancient Warfare Structures Post-Init completed.  Successfully completed all loading stages.");
     }

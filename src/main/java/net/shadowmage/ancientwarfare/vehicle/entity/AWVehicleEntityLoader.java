@@ -43,7 +43,7 @@ public class AWVehicleEntityLoader {
         return regNameToIcon.get(vehicleType);
     }
 
-    private static class VehiculeDeclaration extends EntityDeclaration{
+    private static class VehiculeDeclaration extends EntityDeclaration {
 
         public VehiculeDeclaration(Class<? extends Entity> entityClass, String entityName) {
             super(entityClass, entityName, nextID++, AncientWarfareVehicles.instance, 120, 3, true);

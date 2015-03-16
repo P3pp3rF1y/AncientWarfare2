@@ -45,6 +45,7 @@ import java.util.Random;
 public class WorldStructureGenerator implements IWorldGenerator {
 
     public static final HashSet<String> defaultTargetBlocks = new HashSet<String>();
+
     static {
         defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.dirt));
         defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.grass));
@@ -56,9 +57,11 @@ public class WorldStructureGenerator implements IWorldGenerator {
         defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.iron_ore));
         defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.coal_ore));
     }
+
     public static final WorldStructureGenerator INSTANCE = new WorldStructureGenerator();
 
     private final Random rng;
+
     private WorldStructureGenerator() {
         rng = new Random();
     }

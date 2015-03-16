@@ -3,18 +3,19 @@ package net.shadowmage.ancientwarfare.npc.entity;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 
@@ -102,7 +103,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
                 return "medic";
             } else if (item instanceof ItemHammer) {
                 return "engineer";
-            } else if (item == Items.bow) {
+            } else if (item instanceof ItemBow) {
                 return "archer";
             } else if (item instanceof ItemCommandBaton) {
                 return "commander";

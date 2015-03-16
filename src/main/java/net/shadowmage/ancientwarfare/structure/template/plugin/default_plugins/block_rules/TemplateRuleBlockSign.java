@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -58,9 +57,9 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
         } else {
             meta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         }
-        if(world.setBlock(x, y, z, block, meta, 2)) {
+        if (world.setBlock(x, y, z, block, meta, 2)) {
             TileEntitySign te = (TileEntitySign) world.getTileEntity(x, y, z);
-            if(te!=null) {
+            if (te != null) {
                 for (int i = 0; i < this.signContents.length; i++) {
                     te.signText[i] = this.signContents[i];
                 }

@@ -795,9 +795,9 @@ public class AWStructureStatics extends ModConfiguration {
         return scannerSkippedBlocks.contains(Block.blockRegistry.getNameForObject(block));
     }
 
-        public static boolean withinProtectionRange(float dist){
-                return dist < spawnProtectionRange * spawnProtectionRange * 16 * 16;
-        }
+    public static boolean withinProtectionRange(float dist) {
+        return dist < spawnProtectionRange * spawnProtectionRange * 16 * 16;
+    }
 
     public void loadPostInitValues() {
         if (exportBlockNames) {
