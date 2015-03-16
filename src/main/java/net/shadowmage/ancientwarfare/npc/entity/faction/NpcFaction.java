@@ -8,13 +8,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
-import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 
 import java.util.List;
 
@@ -26,6 +24,7 @@ public abstract class NpcFaction extends NpcBase {
             return isHostileTowards(entity);
         }
     };
+
     public NpcFaction(World par1World) {
         super(par1World);
         String type = this.getNpcFullType();
@@ -48,7 +47,7 @@ public abstract class NpcFaction extends NpcBase {
 
     @Override
     protected void tryCommand(EntityPlayer player) {
-        if (player.capabilities.isCreativeMode){
+        if (player.capabilities.isCreativeMode) {
             super.tryCommand(player);
         }
     }
@@ -130,21 +129,4 @@ public abstract class NpcFaction extends NpcBase {
         String type = getNpcType();
         return type.substring(0, type.indexOf("."));
     }
-
-    @Override
-    public boolean isValidOrdersStack(ItemStack stack) {
-        //noop, no orders
-        return false;
-    }
-
-    @Override
-    public void onOrdersInventoryChanged() {
-        //noop, no orders
-    }
-
-    @Override
-    public void onWeaponInventoryChanged() {
-        //noop, no inventory changing
-    }
-
 }

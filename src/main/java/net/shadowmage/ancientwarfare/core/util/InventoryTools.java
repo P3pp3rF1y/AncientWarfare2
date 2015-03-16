@@ -504,7 +504,7 @@ public class InventoryTools {
             if (item == null) {
                 continue;
             }
-            itemTag = writeItemStack(item, new NBTTagCompound());
+            itemTag = writeItemStack(item);
             itemTag.setShort("slot", (short) i);
             itemList.appendTag(itemTag);
         }
@@ -534,7 +534,8 @@ public class InventoryTools {
      * writes an item stack to nbt in a item-id agnostic format.<br>
      * suitable for cross-save item-stack saving.
      */
-    public static NBTTagCompound writeItemStack(ItemStack stack, NBTTagCompound tag) {
+    public static NBTTagCompound writeItemStack(ItemStack stack) {
+        NBTTagCompound tag = new NBTTagCompound();
         tag.setString("item", Item.itemRegistry.getNameForObject(stack.getItem()));
         tag.setInteger("damage", stack.getItemDamage());
         tag.setInteger("quantity", stack.stackSize);
@@ -545,7 +546,7 @@ public class InventoryTools {
     }
 
     /**
-     * reads an item-stack written out via {@link #InventoryTools.writeItemStack(ItemStack, NBTTagCompound)}
+     * reads an item-stack written out via {@link #InventoryTools.writeItemStack(ItemStack)}
      */
     public static ItemStack readItemStack(NBTTagCompound tag) {
         if (tag.hasKey("item") && tag.hasKey("damage") && tag.hasKey("quantity")) {

@@ -37,7 +37,7 @@ public class WarehouseStorageFilter {
 
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         if (item != null) {
-            tag.setTag("item", InventoryTools.writeItemStack(item, new NBTTagCompound()));
+            tag.setTag("item", InventoryTools.writeItemStack(item));
         }
         return tag;
     }

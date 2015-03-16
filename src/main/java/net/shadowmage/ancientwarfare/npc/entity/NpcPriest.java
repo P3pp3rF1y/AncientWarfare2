@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
@@ -32,11 +31,6 @@ public class NpcPriest extends NpcPlayerOwned {
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-    }
-
-    @Override
-    public boolean isValidOrdersStack(ItemStack stack) {
-        return false;
     }
 
     @Override

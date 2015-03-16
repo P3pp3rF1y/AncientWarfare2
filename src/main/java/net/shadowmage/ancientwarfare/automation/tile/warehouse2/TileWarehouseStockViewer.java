@@ -228,7 +228,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
         public NBTTagCompound writeToNBT(NBTTagCompound tag) {
             if (item != null) {
-                tag.setTag("item", InventoryTools.writeItemStack(item, new NBTTagCompound()));
+                tag.setTag("item", InventoryTools.writeItemStack(item));
             }
             tag.setInteger("quantity", quantity);
             return tag;

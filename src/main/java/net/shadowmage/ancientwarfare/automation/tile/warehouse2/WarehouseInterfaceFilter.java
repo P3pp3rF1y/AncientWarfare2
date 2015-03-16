@@ -40,7 +40,7 @@ public final class WarehouseInterfaceFilter extends ItemSlotFilter {
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         tag.setInteger("quantity", quantity);
         if (filterItem != null) {
-            tag.setTag("filter", InventoryTools.writeItemStack(filterItem, new NBTTagCompound()));
+            tag.setTag("filter", InventoryTools.writeItemStack(filterItem));
         }
         return tag;
     }

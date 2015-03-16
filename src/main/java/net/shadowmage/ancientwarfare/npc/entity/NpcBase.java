@@ -314,9 +314,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
     }
 
-    protected void tryCommand(EntityPlayer player){
+    protected void tryCommand(EntityPlayer player) {
         boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
-        if(!baton) {
+        if (!baton) {
             if (player.isSneaking()) {
                 if (this.followingPlayerName != null && this.followingPlayerName.equals(player.getCommandSenderName())) {
                     this.followingPlayerName = null;
@@ -376,6 +376,31 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             ordersStack = null;
             upkeepStack = null;
             setShieldStack(null);
+        }
+    }
+
+    @Override
+    public final ItemStack getEquipmentInSlot(int slot) {
+        if (slot == 5)
+            return ordersStack;
+        else if (slot == 6)
+            return upkeepStack;
+        else if (slot == 7)
+            return getShieldStack();
+        else
+            return super.getEquipmentInSlot(slot);
+    }
+
+    @Override
+    public void setCurrentItemOrArmor(int slot, ItemStack stack) {
+        if (slot == 7) {
+            setShieldStack(stack);
+        } else if (slot == 6) {
+            upkeepStack = stack;
+        } else if (slot == 5) {
+            ordersStack = stack;
+        } else {
+            super.setCurrentItemOrArmor(slot, stack);
         }
     }
 
@@ -525,19 +550,19 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             if (stack == null) {
                 continue;
             }
-            equipmentTag = InventoryTools.writeItemStack(stack, new NBTTagCompound());
+            equipmentTag = InventoryTools.writeItemStack(stack);
             equipmentTag.setInteger("slotNum", i);
             equipmentList.appendTag(equipmentTag);
         }
         tag.setTag("equipment", equipmentList);
         if (ordersStack != null) {
-            tag.setTag("ordersStack", InventoryTools.writeItemStack(ordersStack, new NBTTagCompound()));
+            tag.setTag("ordersStack", InventoryTools.writeItemStack(ordersStack));
         }
         if (upkeepStack != null) {
-            tag.setTag("upkeepStack", InventoryTools.writeItemStack(upkeepStack, new NBTTagCompound()));
+            tag.setTag("upkeepStack", InventoryTools.writeItemStack(upkeepStack));
         }
         if (getShieldStack() != null) {
-            tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack(), new NBTTagCompound()));
+            tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack()));
         }
         tag.setTag("levelingStats", getLevelingStats().writeToNBT(new NBTTagCompound()));
         tag.setFloat("maxHealth", getMaxHealth());
@@ -556,23 +581,26 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     /**
      * is the input stack a valid orders-item for this npc?<br>
-     * used by player-owned NPCs
-     * TODO noop this in base, re-abstract in npc-player owned class
+     * only used by player-owned NPCs
      */
-    public abstract boolean isValidOrdersStack(ItemStack stack);
+    public boolean isValidOrdersStack(ItemStack stack) {
+        return false;
+    }
 
     /**
      * callback for when orders-stack changes.  implementations should inform any necessary AI tasks of the
      * change to order-items
      */
-    public abstract void onOrdersInventoryChanged();
+    public void onOrdersInventoryChanged() {
+    }
 
     /**
      * callback for when weapon slot has been changed.<br>
      * Implementations should re-set any subtype or inform any AI that need to know when
      * weapon was changed.
      */
-    public abstract void onWeaponInventoryChanged();
+    public void onWeaponInventoryChanged() {
+    }
 
     /**
      * return the NPCs subtype.<br>
@@ -606,7 +634,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
-    public String getCommandSenderName(){
+    public String getCommandSenderName() {
         String name = StatCollector.translateToLocal("entity.AncientWarfareNpc." + getNpcFullType() + ".name");
         if (hasCustomNameTag()) {
             name = name + " : " + getCustomNameTag();
@@ -831,13 +859,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         super.writeEntityToNBT(tag);
         tag.setString("owner", ownerName);
         if (ordersStack != null) {
-            tag.setTag("ordersStack", InventoryTools.writeItemStack(ordersStack, new NBTTagCompound()));
+            tag.setTag("ordersStack", InventoryTools.writeItemStack(ordersStack));
         }
         if (upkeepStack != null) {
-            tag.setTag("upkeepStack", InventoryTools.writeItemStack(upkeepStack, new NBTTagCompound()));
+            tag.setTag("upkeepStack", InventoryTools.writeItemStack(upkeepStack));
         }
         if (getShieldStack() != null) {
-            tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack(), new NBTTagCompound()));
+            tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack()));
         }
         if (getHomePosition() != null) {
             ChunkCoordinates cc = getHomePosition();

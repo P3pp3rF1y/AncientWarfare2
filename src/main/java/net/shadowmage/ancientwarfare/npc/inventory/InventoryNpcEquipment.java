@@ -8,19 +8,16 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class InventoryNpcEquipment implements IInventory {
 
-    NpcBase npc;
+    private final NpcBase npc;
 
-    ItemStack[] inventory;
+    private final ItemStack[] inventory;
 
     public InventoryNpcEquipment(NpcBase npc) {
         this.npc = npc;
-        inventory = new ItemStack[8];
-        for (int i = 0; i < 5; i++) {
+        inventory = new ItemStack[getSizeInventory()];
+        for (int i = 0; i < inventory.length; i++) {
             inventory[i] = npc.getEquipmentInSlot(i) == null ? null : npc.getEquipmentInSlot(i).copy();
         }
-        inventory[5] = npc.ordersStack == null ? null : npc.ordersStack.copy();
-        inventory[6] = npc.upkeepStack == null ? null : npc.upkeepStack.copy();
-        inventory[7] = npc.getShieldStack() == null ? null : npc.getShieldStack().copy();
     }
 
     @Override
@@ -33,15 +30,7 @@ public class InventoryNpcEquipment implements IInventory {
         if (npc.worldObj.isRemote) {
             return inventory[slot];
         } else {
-            if (slot == 7) {
-                return npc.getShieldStack();
-            } else if (slot == 6) {
-                return npc.upkeepStack;
-            } else if (slot == 5) {
-                return npc.ordersStack;
-            } else {
-                return npc.getEquipmentInSlot(slot);
-            }
+            return npc.getEquipmentInSlot(slot);
         }
     }
 
@@ -50,15 +39,7 @@ public class InventoryNpcEquipment implements IInventory {
         if (npc.worldObj.isRemote) {
             inventory[slot] = stack;
         } else {
-            if (slot == 7) {
-                npc.setShieldStack(stack);
-            } else if (slot == 6) {
-                npc.upkeepStack = stack;
-            } else if (slot == 5) {
-                npc.ordersStack = stack;
-            } else {
-                npc.setCurrentItemOrArmor(slot, stack);
-            }
+            npc.setCurrentItemOrArmor(slot, stack);
         }
     }
 

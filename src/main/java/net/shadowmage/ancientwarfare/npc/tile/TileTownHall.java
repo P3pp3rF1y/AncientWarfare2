@@ -226,7 +226,7 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
         }
 
         public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-            tag.setTag("spawnerStack", InventoryTools.writeItemStack(stackToSpawn, new NBTTagCompound()));
+            tag.setTag("spawnerStack", InventoryTools.writeItemStack(stackToSpawn));
             tag.setString("npcType", npcType);
             tag.setString("npcName", npcName);
             tag.setString("deathCause", deathCause);

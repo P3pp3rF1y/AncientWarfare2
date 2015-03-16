@@ -72,7 +72,7 @@ public class POTradeDepositEntry {
 
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         if (filter != null) {
-            tag.setTag("item", InventoryTools.writeItemStack(filter, new NBTTagCompound()));
+            tag.setTag("item", InventoryTools.writeItemStack(filter));
         }
         tag.setInteger("type", type.ordinal());
         return tag;

@@ -313,7 +313,7 @@ public class RoutingOrder extends NpcOrders {
                 if (filters[i] == null) {
                     continue;
                 }
-                itemTag = InventoryTools.writeItemStack(filters[i], new NBTTagCompound());
+                itemTag = InventoryTools.writeItemStack(filters[i]);
                 itemTag.setInteger("slot", i);
                 filterList.appendTag(itemTag);
             }

@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -41,15 +40,6 @@ public class NpcBard extends NpcPlayerOwned {
 
     public SongPlayData getTuneData() {
         return tuneData;
-    }
-
-    @Override
-    public boolean isValidOrdersStack(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onOrdersInventoryChanged() {
     }
 
     @Override

@@ -126,8 +126,7 @@ public class POTrade {
             if (input[i] == null) {
                 continue;
             }
-            itemTag = new NBTTagCompound();
-            InventoryTools.writeItemStack(input[i], itemTag);
+            itemTag = InventoryTools.writeItemStack(input[i]);
             itemTag.setInteger("slot", i);
             list.appendTag(itemTag);
         }
@@ -138,8 +137,7 @@ public class POTrade {
             if (output[i] == null) {
                 continue;
             }
-            itemTag = new NBTTagCompound();
-            InventoryTools.writeItemStack(output[i], itemTag);
+            itemTag = InventoryTools.writeItemStack(output[i]);
             itemTag.setInteger("slot", i);
             list.appendTag(itemTag);
         }
