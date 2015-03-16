@@ -43,7 +43,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     /**
      * a single base texture for ALL npcs to share, used in case other textures were not set
      */
-    private final ResourceLocation baseDefaultTexture;
+    private static final ResourceLocation baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
 
     private ResourceLocation currentTexture = null;
 
@@ -60,7 +60,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     public NpcBase(World par1World) {
         super(par1World);
-        baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
         levelingStats = new NpcLevelingStats(this);
         this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
         this.width = 0.6f;
@@ -773,6 +772,18 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     public Team getTeam() {
         return worldObj.getScoreboard().getPlayersTeam(ownerName);
+    }
+
+    @Override
+    protected int getExperiencePoints(EntityPlayer attacker){
+        if(isHostileTowards(attacker) && canBeAttackedBy(attacker)){
+            return super.getExperiencePoints(attacker);
+        }
+        return 0;
+    }
+
+    public void setExperienceDrop(int exp){
+        this.experienceValue = exp;
     }
 
     public abstract boolean isHostileTowards(Entity e);

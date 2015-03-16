@@ -16,12 +16,12 @@ public class NpcSkinManager {
 
     public static final NpcSkinManager INSTANCE = new NpcSkinManager();
 
-    private HashMap<String, SkinGroup> skinGroups = new HashMap<String, SkinGroup>();
+    private final HashMap<String, SkinGroup> skinGroups = new HashMap<String, SkinGroup>();
 
-    private Random rng = new Random();
+    private final Random rng = new Random();
 
     private final String skinMainPath = AWCoreStatics.configPathForFiles + "npc/skins/";
-    private final String defaultSkinPack = "/assets/ancientwarfare/skin_pack/default_skin_pack.zip";
+    private static final String defaultSkinPack = "/assets/ancientwarfare/skin_pack/default_skin_pack.zip";
 
     public ResourceLocation getTextureFor(NpcBase npc) {
         ResourceLocation loc = null;
@@ -111,7 +111,7 @@ public class NpcSkinManager {
 
     private void recursiveScan(File directory, List<File> zipFileList) {
         if (directory == null) {
-            AWLog.logError("Could not locate " + directory + " directory to load structures!");
+            AWLog.logError("Could not locate directory to load structures!");
             return;
         }
         File[] allFiles = directory.listFiles();
@@ -119,9 +119,7 @@ public class NpcSkinManager {
             AWLog.logError("Could not locate " + directory + " directory to load skin packs!--no files in directory file list!");
             return;
         }
-        File currentFile;
-        for (int i = 0; i < allFiles.length; i++) {
-            currentFile = allFiles[i];
+        for (File currentFile : allFiles) {
             if (currentFile.isDirectory()) {
                 recursiveScan(currentFile, zipFileList);
             } else if (isProbableZip(currentFile)) {
@@ -174,19 +172,17 @@ public class NpcSkinManager {
     }
 
     private void loadSkinImage(String npcType, ResourceLocation texture) {
-        SkinGroup group = getOrCreateSkinGroup(npcType);
-        group.addTexture(texture);
+        getOrCreateSkinGroup(npcType).addTexture(texture);
     }
 
     private SkinGroup getOrCreateSkinGroup(String npcType) {
-        SkinGroup group = null;
         if (!skinGroups.containsKey(npcType)) {
-            group = new SkinGroup();
+            SkinGroup group = new SkinGroup();
             skinGroups.put(npcType, group);
+            return group;
         } else {
-            group = skinGroups.get(npcType);
+            return skinGroups.get(npcType);
         }
-        return group;
     }
 
     private ResourceLocation loadSkinPackImage(String packName, String imageName, InputStream is) {

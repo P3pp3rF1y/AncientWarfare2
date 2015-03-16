@@ -103,35 +103,30 @@ public class AWNPCStatics extends ModConfiguration {
     private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings = new HashMap<String, HashMap<String, Boolean>>();
 
 
-/************************************************NAMES CONFIG*************************************************/
-    /** ********************************************CUSTOM NAME SETTINGS************************************************ */
+/************************************************FACTION NAMES*************************************************/
 
     public static final String[] factionNames = new String[]{"bandit", "viking", "pirate", "desert", "native", "custom_1", "custom_2", "custom_3"};
     public static final String[] factionNpcSubtypes = new String[]{"soldier", "soldier.elite", "cavalry", "archer", "archer.elite", "mounted_archer", "leader", "leader.elite", "priest", "trader", "civilian.male", "civilian.female", "bard"};
 
 
-/************************************************HEALTH CONFIG*************************************************/
-    /** ********************************************NPC HEALTH SETTINGS************************************************ */
-    public static final String npcDefaultHealthSettings = "01_npc_base_health";
-    public static final String npcDefaultAttackSettings = "02_npc_base_attack";
-    public static final String npcDefaultSpeedSettings = "03_npc_base_speed";
+/************************************************NPC CONFIG*************************************************/
+    /** ********************************************NPC VALUES SETTINGS************************************************ */
     private HashMap<String, Attribute> attributes = new HashMap<String, Attribute>();
 
     /** ********************************************NPC PATH SETTINGS************************************************ */
-    public static final String npcWaterPathSettings = "01_npc_path_avoidWater";
-    public static final String npcDoorPathSettings = "02_npc_path_breakDoors";
     private HashMap<String, Path> pathValues = new HashMap<String, Path>();
+
 /************************************************EQUIPMENT CONFIG*************************************************/
     /** ********************************************NPC WEAPON SETTINGS************************************************ */
 
-    public static final String npcDefaultWeapons = "01_npc_weapons";
-    public static final String npcOffhandItems = "02_npc_offhand";
-    public static final String npcArmorHead = "03_npc_helmet";
-    public static final String npcArmorChest = "04_npc_chest";
-    public static final String npcArmorLegs = "05_npc_legs";
-    public static final String npcArmorBoots = "06_npc_boots";
-    public static final String npcWorkItem = "07_npc_work_slot";
-    public static final String npcUpkeepItem = "08_npc_upkeep_slot";
+    private static final String npcDefaultWeapons = "01_npc_weapons";
+    private static final String npcOffhandItems = "02_npc_offhand";
+    private static final String npcArmorHead = "03_npc_helmet";
+    private static final String npcArmorChest = "04_npc_chest";
+    private static final String npcArmorLegs = "05_npc_legs";
+    private static final String npcArmorBoots = "06_npc_boots";
+    private static final String npcWorkItem = "07_npc_work_slot";
+    private static final String npcUpkeepItem = "08_npc_upkeep_slot";
 
     private final Configuration equipmentConfig;
     private final Configuration targetConfig;
@@ -203,53 +198,51 @@ public class AWNPCStatics extends ModConfiguration {
         loadTargetValues();
         loadDefaultFactionStandings();
         initializeCustomValues();
-        initializeCustomPathValues();
         initializeNpcEquipmentConfigs();
 
         maxNpcLevel = config.get(serverSettings, "npc_max_level", maxNpcLevel, "Max NPC Level\nDefault=" + maxNpcLevel + "\n" +
                 "How high can NPCs level up?  Npcs gain more health, attack damage, and overall\n" +
                 "improved stats with each level.  Levels can go very high, but higher values may\n" +
-                "result in overpowered NPCs once leveled up.").getInt(maxNpcLevel);
+                "result in overpowered NPCs once leveled up.").getInt();
 
         npcXpFromAttack = config.get(serverSettings, "npc_xp_per_attack", npcXpFromAttack, "XP Per Attack\nDefault=" + npcXpFromAttack + "\n" +
                 "How much xp should an NPC gain each time they damage but do not kill an enemy?\n" +
                 "Higher values will result in faster npc leveling.\n" +
-                "Applies to both player-owned and faction-based NPCs.").getInt(npcXpFromAttack);
+                "Applies to both player-owned and faction-based NPCs.").getInt();
 
         npcXpFromKill = config.get(serverSettings, "npc_xp_per_kill", npcXpFromKill, "XP Per Killnefault=" + npcXpFromKill + "\n" +
                 "How much xp should an NPC gain each time they kill an enemy?\n" +
                 "Higher values will result in faster npc leveling.\n" +
-                "Applies to both player-owned and faction-based NPCs.").getInt(npcXpFromKill);
+                "Applies to both player-owned and faction-based NPCs.").getInt();
 
         npcXpFromTrade = config.get(serverSettings, "npc_xp_per_trade", npcXpFromTrade, "XP Per Trade\nDefault=" + npcXpFromTrade + "\n" +
                 "How much xp should an NPC gain each time are sucessfully traded with?\n" +
                 "Higher values will result in faster npc leveling and unlock more trade recipes.\n" +
-                "Applies to both player-owned and faction-based NPCs.").getInt(npcXpFromTrade);
+                "Applies to both player-owned and faction-based NPCs.").getInt();
 
         npcXpFromWork = config.get(serverSettings, "npc_xp_per_work", npcXpFromWork, "XP Per Work\nDefault=" + npcXpFromWork + "\n" +
                 "How much xp should an NPC gain each time do work at a worksite?\n" +
                 "Higher values will result in faster npc leveling.\n" +
-                "Applies to player-owned NPCs only.").getInt(npcXpFromWork);
+                "Applies to player-owned NPCs only.").getInt();
 
         npcWorkTicks = config.get(serverSettings, "npc_work_ticks", npcWorkTicks, "Time Between Work Ticks\nDefault=" + npcWorkTicks + "\n" +
                 "How many game ticks should pass between workers' processing work at a work-site.\n" +
-                "Lower values result in more work output, higher values result in less work output.").getInt(npcWorkTicks);
+                "Lower values result in more work output, higher values result in less work output.").getInt();
 
-        factionLossOnDeath = factionConfig.get(factionSettings, "faction_loss_on_kill", 10, "Faction Loss On Kill\nDefault=10\n" +
-                "How much faction standing should be lost if you or one of your minions kills a faction\n" +
-                "based NPC.").getInt(10);
+        factionLossOnDeath = factionConfig.get(factionSettings, "faction_loss_on_kill", factionLossOnDeath, "Faction Loss On Kill\nDefault=10\n" +
+                "How much faction standing should be lost if you or one of your minions kills a faction based NPC.").getInt();
 
-        factionGainOnTrade = factionConfig.get(factionSettings, "faction_gain_on_trade", 2, "Faction Gain On Trade\nDefault=2\n" +
-                "How much faction standing should be gained when you trade with a faction based trader.").getInt(2);
+        factionGainOnTrade = factionConfig.get(factionSettings, "faction_gain_on_trade", factionGainOnTrade, "Faction Gain On Trade\nDefault=2\n" +
+                "How much faction standing should be gained when you trade with a faction based trader.").getInt();
 
         loadDefaultSkinPack = config.get(clientSettings, "load_default_skin_pack", loadDefaultSkinPack, "Load Default Skin Pack\nDefault=true\n" +
                 "If true, default skin pack will be loaded.\n" +
                 "If false, default skin pack will NOT be loaded -- you will need to supply your own\n" +
-                "skin packs or all npcs will use the default skin.").getBoolean(loadDefaultSkinPack);
+                "skin packs or all npcs will use the default skin.").getBoolean();
 
-        exportEntityNames = config.get(serverSettings, "export_entity_names", false, "Export entity name list\nDefault=" + exportEntityNames + "\n" +
+        exportEntityNames = config.get(serverSettings, "export_entity_names", exportEntityNames, "Export entity name list\nDefault=" + exportEntityNames + "\n" +
                 "If true, a text file will be created in the main ancientwarfare config directory containing a list of all registered in-game entity names.\n" +
-                "These names may be used to populate the NPC target lists.").getBoolean(exportEntityNames);
+                "These names may be used to populate the NPC target lists.").getBoolean();
 
         renderAI = config.get(clientSettings, "render_npc_ai", true);
         renderWorkPoints = config.get(clientSettings, "render_work_points", true);
@@ -394,17 +387,17 @@ public class AWNPCStatics extends ModConfiguration {
                 this.factionVsFactionStandings.put(name, new HashMap<String, Boolean>());
             }
             this.defaultFactionStandings.put(name, factionConfig.get(factionSettings, name + ".starting_faction_standing", -50,
-                    "Default faction standing for: [" + name + "] for new players joining a game. Less than 0 will be hostile, " +
-                            "greater than or equal to zero will be nuetral/friendly.  Default value is -50 for all factions, starting" +
-                            " all players with a minor hostile standing.  Players will need to trade with faction-owned traders to" +
-                            " improve their standing to become friendly.").getInt(-50));
+                    "Default faction standing for: [" + name + "] for new players joining a game." +
+                            " Less than 0 will be hostile, greater than or equal to zero will be neutral/friendly." +
+                            " Default value is -50 for all factions, starting all players with a minor hostile standing." +
+                            " Players will need to trade with faction-owned traders to improve their standing to become friendly.").getInt());
             for (String name2 : factionNames) {
                 if (name.equals(name2)) {
                     continue;
                 }
                 key = name + ":" + name2;
                 val = factionConfig.get(factionSettings, key, false, "How does: " + name + " faction view: " + name2 + " faction?\n" +
-                        "If true, " + name + "s will be hostile towards " + name2 + "s").getBoolean(false);
+                        "If true, " + name + "s will be hostile towards " + name2 + "s").getBoolean();
                 this.factionVsFactionStandings.get(name).put(name2, val);
             }
         }
@@ -417,12 +410,11 @@ public class AWNPCStatics extends ModConfiguration {
         if (stack == null || stack.getItem() == null) {
             return 0;
         }
-        int food = 0;
         String name = Item.itemRegistry.getNameForObject(stack.getItem());
         if (foodValues.containsKey(name)) {
-            food = foodValues.get(name);
+            return foodValues.get(name);
         }
-        return food;
+        return 0;
     }
 
     public int getDefaultFaction(String factionName) {
@@ -438,6 +430,7 @@ public class AWNPCStatics extends ModConfiguration {
             for (String type : factionNpcSubtypes) {
                 key = name + "." + type;
                 attributes.put(key, getDefault(key));
+                pathValues.put(key, getDefaultPath(key));
             }
         }
         attributes.put("combat", getDefault("combat"));
@@ -446,11 +439,17 @@ public class AWNPCStatics extends ModConfiguration {
         attributes.put("trader", getDefault("trader"));
         attributes.put("priest", getDefault("priest"));
         attributes.put("bard", getDefault("bard"));
+        pathValues.put("combat", getDefaultPath("combat"));
+        pathValues.put("worker", getDefaultPath("worker"));
+        pathValues.put("courier", getDefaultPath("courier"));
+        pathValues.put("trader", getDefaultPath("trader"));
+        pathValues.put("priest", getDefaultPath("priest"));
+        pathValues.put("bard", getDefaultPath("bard"));
     }
 
     //TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
     private Attribute getDefault(String type) {
-        return new Attribute(valuesConfig.get(npcDefaultHealthSettings, type, 20).getDouble(), valuesConfig.get(npcDefaultAttackSettings, type, 1).getDouble(), valuesConfig.get(npcDefaultSpeedSettings, type, 0.325D).getDouble());
+        return new Attribute(valuesConfig.get("01_npc_base_health", type, 20).getDouble(), valuesConfig.get("02_npc_base_attack", type, 1).getDouble(), valuesConfig.get("03_npc_base_speed", type, 0.325D).getDouble(), valuesConfig.get("04_npc_exp_drop", type, 0).getInt());
     }
 
     public double getMaxHealthFor(String type) {
@@ -468,20 +467,8 @@ public class AWNPCStatics extends ModConfiguration {
         return 0;
     }
 
-    private void initializeCustomPathValues() {
-        String key;
-        for (String name : factionNames) {
-            for (String type : factionNpcSubtypes) {
-                key = name + "." + type;
-                pathValues.put(key, new Path(pathConfig.get(npcWaterPathSettings, key, false).getBoolean(), pathConfig.get(npcDoorPathSettings, key, true).getBoolean()));
-            }
-        }
-        pathValues.put("combat", new Path(pathConfig.get(npcWaterPathSettings, "combat", false).getBoolean(), pathConfig.get(npcDoorPathSettings, "combat", true).getBoolean()));
-        pathValues.put("worker", new Path(pathConfig.get(npcWaterPathSettings, "worker", false).getBoolean(), pathConfig.get(npcDoorPathSettings, "worker", true).getBoolean()));
-        pathValues.put("courier", new Path(pathConfig.get(npcWaterPathSettings, "courier", false).getBoolean(), pathConfig.get(npcDoorPathSettings, "courier", true).getBoolean()));
-        pathValues.put("trader", new Path(pathConfig.get(npcWaterPathSettings, "trader", false).getBoolean(), pathConfig.get(npcDoorPathSettings, "trader", true).getBoolean()));
-        pathValues.put("priest", new Path(pathConfig.get(npcWaterPathSettings, "priest", false).getBoolean(), pathConfig.get(npcDoorPathSettings, "priest", true).getBoolean()));
-        pathValues.put("bard", new Path(pathConfig.get(npcWaterPathSettings, "bard", false).getBoolean(), pathConfig.get(npcDoorPathSettings, "bard", true).getBoolean()));
+    private Path getDefaultPath(String key){
+        return new Path(pathConfig.get("01_npc_path_avoidWater", key, false).getBoolean(), pathConfig.get("02_npc_path_breakDoors", key, true).getBoolean());
     }
 
     public void applyAttributes(NpcBase npc) {
@@ -491,12 +478,12 @@ public class AWNPCStatics extends ModConfiguration {
             npc.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(type.baseSpeed());
             npc.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(type.baseAttack());
             npc.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(npcPathfindRange);
+            npc.setExperienceDrop(type.expDrop());
         }
     }
 
     public void applyPathConfig(NpcBase npc) {
-        String type = npc.getNpcType();
-        Path path = pathValues.get(type);
+        Path path = pathValues.get(npc.getNpcType());
         if (path != null) {
             path.applyTo(npc.getNavigator());
         }
@@ -617,11 +604,13 @@ public class AWNPCStatics extends ModConfiguration {
 
     private static class Attribute {
         private final double health, attack, speed;
+        private final int exp;
 
-        private Attribute(double hp, double ap, double sp) {
+        private Attribute(double hp, double ap, double sp, int xp) {
             health = hp;
             attack = ap;
             speed = sp;
+            exp = xp;
         }
 
         public double baseHealth() {
@@ -635,6 +624,10 @@ public class AWNPCStatics extends ModConfiguration {
 
         public double baseSpeed() {
             return speed;
+        }
+
+        public int expDrop(){
+            return exp;
         }
     }
 
