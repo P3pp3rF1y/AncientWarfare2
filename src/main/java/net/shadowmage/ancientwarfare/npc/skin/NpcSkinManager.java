@@ -190,7 +190,7 @@ public class NpcSkinManager {
     }
 
     private boolean isProbableZip(File file) {
-        return file.getName().toLowerCase().endsWith(".zip");
+        return file.getName().toLowerCase(Locale.ENGLISH).endsWith(".zip");
     }
 
     private class SkinGroup {

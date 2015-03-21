@@ -9,7 +9,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
@@ -201,8 +201,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         ItemStack stack = player.getCurrentEquippedItem();
         if (stack == null) {
             if (!worldObj.isRemote) {
-                String e = String.format("Stored | In | Out | Loss :: %.2f | %.2f | %.2f | %.2f", getTotalTorque(), getTorqueIn(), getTorqueOut(), getTorqueLoss());
-                player.addChatMessage(new ChatComponentText(e));
+                player.addChatMessage(new ChatComponentTranslation("guistrings.automation.torque.values", getTotalTorque(), getTorqueIn(), getTorqueOut(), getTorqueLoss()));
             }
             return true;
         }
@@ -212,15 +211,15 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
 //*************************************** Utility Methods ***************************************//
 
     protected void updateRotation() {
-        throw new RuntimeException("Call on undeclared method!!");
+        throw new UnsupportedOperationException();
     }
 
     protected void clientNetworkUpdate() {
-        throw new RuntimeException("Call on undeclared method!!");
+        throw new UnsupportedOperationException();
     }
 
     protected void serverNetworkSynch() {
-        throw new RuntimeException("Call on undeclared method!!");
+        throw new UnsupportedOperationException();
     }
 
     protected abstract void handleClientRotationData(ForgeDirection side, int value);

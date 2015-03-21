@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class BlockRotationHandler {
 
@@ -238,6 +239,11 @@ public class BlockRotationHandler {
                 }
             }
             return -1;
+        }
+
+        @Override
+        public String toString(){
+            return name().toLowerCase(Locale.ENGLISH);
         }
     }
 

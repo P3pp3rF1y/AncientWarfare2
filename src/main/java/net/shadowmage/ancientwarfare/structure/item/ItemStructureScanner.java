@@ -5,7 +5,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -54,16 +53,16 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
             ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(par1ItemStack);
             String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
             if (!viewSettings.hasPos1()) {
-                list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.select_first_pos"));
+                list.add(StatCollector.translateToLocalFormatted("guistrings.structure.scanner.select_first_pos", key));
                 list.add("(1/4)");
             } else if (!viewSettings.hasPos2()) {
-                list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.select_second_pos"));
+                list.add(StatCollector.translateToLocalFormatted("guistrings.structure.scanner.select_second_pos", key));
                 list.add("(2/4)");
             } else if (!viewSettings.hasBuildKey()) {
-                list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.select_offset"));
+                list.add(StatCollector.translateToLocalFormatted("guistrings.structure.scanner.select_offset", key));
                 list.add("(3/4)");
             } else {
-                list.add(key + " = " + StatCollector.translateToLocal("guistrings.structure.scanner.click_to_process"));
+                list.add(key + " : " + StatCollector.translateToLocal("guistrings.structure.scanner.click_to_process"));
                 list.add("(4/4)");
             }
         }
@@ -78,10 +77,10 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
         } else if (scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey()) {
             BlockPosition key = scanSettings.key;
             if (player.getDistance(key.x + 0.5d, key.y, key.z + 0.5d) > 10) {
-                player.addChatMessage(new ChatComponentText("You are too far away to scan that building, move closer to chosen build-key position"));
+                player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.too_far"));
                 return;
             }
-            player.addChatMessage(new ChatComponentText("Initiating Scan"));
+            player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.exporting"));
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SCANNER, 0, 0, 0);
         }
     }
@@ -89,7 +88,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
     public static boolean scanStructure(World world, BlockPosition pos1, BlockPosition pos2, BlockPosition key, int face, String name, boolean include, NBTTagCompound tag) {
         BlockPosition min = BlockTools.getMin(pos1, pos2);
         BlockPosition max = BlockTools.getMax(pos1, pos2);
-        int turns = face == 0 ? 2 : face == 1 ? 1 : face == 2 ? 0 : face == 3 ? 3 : 0; //because for some reason my mod math was off?
+        int turns = (6-face)%4 ;
         StructureTemplate template = TemplateScanner.scan(world, min, max, key, turns, name);
 
         StructureValidationType type = StructureValidationType.getTypeFromName(tag.getString("validationType"));

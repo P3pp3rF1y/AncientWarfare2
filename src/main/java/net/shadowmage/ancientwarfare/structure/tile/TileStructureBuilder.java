@@ -13,7 +13,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -170,12 +170,12 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorq
         if (builder == null || builder.invalid || builder.isFinished()) {
             shouldRemove = true;
         }
-        if (builder.getWorld() == null) {
-            builder.setWorld(worldObj);
-        }
         if (shouldRemove) {
             worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
             return;
+        }
+        if (builder.getWorld() == null) {
+            builder.setWorld(worldObj);
         }
         if (ModuleStatus.automationLoaded || ModuleStatus.npcsLoaded) {
             if (storedEnergy >= AWCoreStatics.energyPerWorkUnit) {
@@ -183,10 +183,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorq
                 processWork();
             }
         } else {
-            if (workDelay > 0) {
-                workDelay--;
-            }
-            if (workDelay <= 0) {
+            if (workDelay-- <= 0) {
                 processWork();
                 workDelay = 20;
             }
@@ -228,8 +225,8 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorq
         int pass = builder.getPass() + 1;
         int max = builder.getMaxPasses();
         float percent = builder.getPercentDoneWithPass() * 100.f;
-        String perc = String.format("%.2f", percent);
-        player.addChatMessage(new ChatComponentText(perc + "% done with build pass: " + pass + " of " + max));
+        String perc = String.format("%.2f", percent)+"%";
+        player.addChatMessage(new ChatComponentTranslation("guistrings.structure.builder.state", perc, pass, max));
     }
 
     @Override

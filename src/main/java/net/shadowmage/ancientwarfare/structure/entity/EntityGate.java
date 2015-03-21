@@ -28,7 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -208,7 +208,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
             this.activateGate();
             return true;
         } else {
-            par1EntityPlayer.addChatMessage(new ChatComponentText("guistrings.gate.use_error"));
+            par1EntityPlayer.addChatMessage(new ChatComponentTranslation("guistrings.gate.use_error"));
         }
         return false;
     }

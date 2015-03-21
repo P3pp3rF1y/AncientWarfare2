@@ -3,7 +3,9 @@ package net.shadowmage.ancientwarfare.npc.command;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.command.WrongUsageException;
+import net.minecraft.util.ChatComponentTranslation;
+import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 
@@ -13,13 +15,9 @@ public class CommandDebugAI extends CommandBase {
 
     private int permissionLevel = 2;
 
-    public int compareTo(ICommand par1ICommand) {
-        return this.getCommandName().compareTo(par1ICommand.getCommandName());
-    }
-
     @Override
     public int compareTo(Object par1Obj) {
-        return this.compareTo((ICommand) par1Obj);
+        return super.compareTo((ICommand) par1Obj);
     }
 
     @Override
@@ -40,16 +38,13 @@ public class CommandDebugAI extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender var1, String[] var2) {
-        boolean debugMode = AWNPCStatics.npcAIDebugMode;
-        debugMode = !debugMode;
-        AWNPCStatics.npcAIDebugMode = debugMode;
-        WorldData d = (WorldData) var1.getEntityWorld().perWorldStorage.loadData(WorldData.class, WorldData.name);
+        AWNPCStatics.npcAIDebugMode = !AWNPCStatics.npcAIDebugMode;
+        WorldData d = AWGameData.INSTANCE.getPerWorldData(var1.getEntityWorld(), WorldData.class);
         if (d == null) {
-            d = new WorldData();
-            var1.getEntityWorld().perWorldStorage.setData(WorldData.name, d);
+            throw new WrongUsageException("Couldn't find or build relevant data");
         }
-        d.set("NpcAIDebugMode", debugMode);
-        var1.addChatMessage(new ChatComponentText("command.aw.npcdebug.used"));
+        d.set("NpcAIDebugMode", AWNPCStatics.npcAIDebugMode);
+        var1.addChatMessage(new ChatComponentTranslation("command.aw.npcdebug.used"));
     }
 
     @Override
