@@ -104,19 +104,12 @@ public class SpawnerSettings {
     }
 
     private void updateRedstoneModeToggle() {
-        boolean powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) || worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
-        prevRedstoneState = powered;
+        prevRedstoneState = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) || worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
         if (respondToRedstone && !redstoneMode && !prevRedstoneState) {
             //noop
             return;
         }
-        if (spawnDelay > 0) {
-            spawnDelay--;
-        }
-        if (spawnDelay <= 0) {
-            spawnDelay = minDelay + worldObj.rand.nextInt(maxDelay - minDelay);
-            spawnEntities();
-        }
+        updateNormalMode();
     }
 
     private void updateRedstoneModePulse() {
@@ -133,7 +126,7 @@ public class SpawnerSettings {
         }
         if (spawnDelay <= 0) {
             int range = maxDelay - minDelay;
-            spawnDelay = minDelay + range <= 0 ? 0 : worldObj.rand.nextInt(range);
+            spawnDelay = minDelay + (range <= 0 ? 0 :  worldObj.rand.nextInt(range));
             spawnEntities();
         }
     }
