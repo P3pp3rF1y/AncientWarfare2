@@ -64,7 +64,7 @@ task expand_jar(type: Copy, dependsOn: reobf){
 task packFullJar(type: Jar, dependsOn: expand_jar){
   archiveName 'ancientwarfare-'+version+'-FULL.jar'
   from 'build/tmp/expanded'
-  exclude 'net/shadowmage/ancientwarfare/modeler/**/*'
+  exclude 'net/shadowmage/ancientwarfare/modeler/', 'net/shadowmage/ancientwarfare/vehicle'
 }
 
 task packCoreJar(type: Jar, dependsOn: expand_jar){
