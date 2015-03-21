@@ -156,34 +156,14 @@ public class Trig {
         return in;
     }
 
-    public static int getAbsDiff(int a, int b) {
-        if (a < b) {
-            return b - a;
-        }
-        return a - b;
-    }
-
-    public static float getAbsDiff(float a, float b) {
-        if (a < b) {
-            return b - a;
-        }
-        return a - b;
-    }
-
-    public static double getAbsDiff(double a, double b) {
-        if (a < b) {
-            return b - a;
-        }
-        return a - b;
-    }
-
     /**
-     * tests if _test_ is >=min && <=max
+     * @return true if test is between a and b (inclusive)
      */
     public static boolean isBetween(int test, int a, int b) {
-        int min = a < b ? a : b;
-        int max = a < b ? b : a;
-        return test >= min && test <= max;
+        if(a < b)
+            return test >= a && test <= b;
+        else
+            return test >= b && test <= a;
     }
 
     /**
@@ -196,10 +176,7 @@ public class Trig {
         if (min > max) {
             return test >= min || test <= max;
         }
-        if (test >= min && test <= max) {
-            return true;
-        }
-        return false;
+        return test >= min && test <= max;
     }
 
     /**
@@ -210,7 +187,7 @@ public class Trig {
     }
 
     public static float getVelocity(double x, double y, double z) {
-        return Trig.getVelocity((float) x, (float) y, (float) z);
+        return MathHelper.sqrt_double(x * x + y * y + z * z);
     }
 
     public static float getDistance(double x, double y, double z, double x1, double y1, double z1) {
@@ -226,14 +203,6 @@ public class Trig {
 
     public static int getDifference(int a, int b) {
         return a < b ? b - a : a - b;
-    }
-
-    public static int getMin(int a, int b) {
-        return a < b ? a : b;
-    }
-
-    public static int getMax(int a, int b) {
-        return a < b ? b : a;
     }
 
     public static float getAngle(float x, float y) {
@@ -279,7 +248,7 @@ public class Trig {
     }
 
     public static float getYawDifference(float yaw, float dest) {
-        float diff = Trig.getAbsDiff(yaw, dest);
+        float diff = Math.abs(dest-yaw);
         while (diff < -180) {
             diff += 360.f;
         }
@@ -290,14 +259,8 @@ public class Trig {
     }
 
     public static byte getTurnDirection(float yaw, float dest) {
-        float diff = Trig.getAbsDiff(yaw, dest);
-        while (diff < -180) {
-            diff += 360.f;
-        }
-        while (diff >= 180) {
-            diff -= 360.f;
-        }
-        return (byte) (diff < 0 ? -1 : 1);
+        float diff = Math.signum(getYawDifference(yaw, dest));
+        return (byte) (diff);
     }
 
     public static double min(double... vals) {

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RenderCommandOverlay {
+public final class RenderCommandOverlay {
     public static final RenderCommandOverlay INSTANCE = new RenderCommandOverlay();
     /**
      * TODO move this off into separate class for datas, as this is a _render_ class...

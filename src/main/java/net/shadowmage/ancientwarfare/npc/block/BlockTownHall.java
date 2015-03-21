@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -18,7 +19,7 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 public class BlockTownHall extends Block implements IRotatableBlock {
 
-    IconRotationMap iconMap = new IconRotationMap();
+    private final IconRotationMap iconMap = new IconRotationMap();
 
     public BlockTownHall() {
         super(Material.rock);
@@ -34,7 +35,7 @@ public class BlockTownHall extends Block implements IRotatableBlock {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileTownHall tile = (TileTownHall) world.getTileEntity(x, y, z);
+        IInventory tile = (IInventory) world.getTileEntity(x, y, z);
         if (tile != null) {
             InventoryTools.dropInventoryInWorld(world, tile, x, y, z);
         }

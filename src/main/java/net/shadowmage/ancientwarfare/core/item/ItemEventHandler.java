@@ -6,7 +6,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 
-public class ItemEventHandler {
+public final class ItemEventHandler {
 
     @SubscribeEvent
     public void onItemUse(PlayerInteractEvent evt) {

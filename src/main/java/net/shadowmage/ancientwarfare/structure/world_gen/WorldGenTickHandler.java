@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorldGenTickHandler {
+public final class WorldGenTickHandler {
 
     public static final WorldGenTickHandler INSTANCE = new WorldGenTickHandler();
     private final List<ChunkGenerationTicket> newWorldGenTickets, newTownGenTickets, chunksToGen, townChunksToGen;

@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderWorkLines {
+public final class RenderWorkLines {
 
     public static final RenderWorkLines INSTANCE = new RenderWorkLines();
 

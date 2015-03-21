@@ -135,7 +135,7 @@ public class StructureBuilderWorldGen extends StructureBuilder {
                 y = p2.y;
                 while (y >= p1.y) {
                     block = world.getBlock(x, y, z);
-                    if (block != null && block != Blocks.air && block.isSideSolid(world, x, y, z, ForgeDirection.UP)) {
+                    if (block != Blocks.air && block.isSideSolid(world, x, y, z, ForgeDirection.UP)) {
                         y++;
                         if (world.isAirBlock(x, y, z) && world.canBlockSeeTheSky(x, y, z)) {
                             world.setBlock(x, y, z, Blocks.snow_layer);

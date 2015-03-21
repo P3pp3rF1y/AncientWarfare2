@@ -20,27 +20,22 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public enum StructureValidationType {
-    GROUND("ground", StructureValidatorGround.class),
-    UNDERGROUND("underground", StructureValidatorUnderground.class, new StructureValidationProperty("minGenDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxGenDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("minOverfill", StructureValidationProperty.DATA_TYPE_INT, 0)),
-    SKY("sky", StructureValidatorSky.class, new StructureValidationProperty("minGenHeight", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxGenHeight", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("minFlyingHeight", StructureValidationProperty.DATA_TYPE_INT, 0)),
-    WATER("water", StructureValidatorWater.class),
-    UNDERWATER("underwater", StructureValidatorUnderwater.class, new StructureValidationProperty("minWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0)),
-    HARBOR("harbor", StructureValidatorHarbor.class),
-    ISLAND("island", StructureValidatorIsland.class, new StructureValidationProperty("minWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0));
+    GROUND(StructureValidatorGround.class),
+    UNDERGROUND(StructureValidatorUnderground.class, new StructureValidationProperty("minGenDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxGenDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("minOverfill", StructureValidationProperty.DATA_TYPE_INT, 0)),
+    SKY(StructureValidatorSky.class, new StructureValidationProperty("minGenHeight", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxGenHeight", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("minFlyingHeight", StructureValidationProperty.DATA_TYPE_INT, 0)),
+    WATER(StructureValidatorWater.class),
+    UNDERWATER(StructureValidatorUnderwater.class, new StructureValidationProperty("minWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0)),
+    HARBOR(StructureValidatorHarbor.class),
+    ISLAND(StructureValidatorIsland.class, new StructureValidationProperty("minWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0));
 
-    private String name;
     private Class<? extends StructureValidator> validatorClass;
 
     private List<StructureValidationProperty> properties = new ArrayList<StructureValidationProperty>();
 
-    StructureValidationType(String name, Class<? extends StructureValidator> validatorClass, StructureValidationProperty... props) {
-        this.name = name;
+    StructureValidationType(Class<? extends StructureValidator> validatorClass, StructureValidationProperty... props) {
         this.validatorClass = validatorClass;
 
         properties.add(new StructureValidationProperty("survival", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
@@ -72,7 +67,7 @@ public enum StructureValidationType {
     }
 
     public String getName() {
-        return name;
+        return name().toLowerCase(Locale.ENGLISH);
     }
 
     public StructureValidator getValidator() {
@@ -90,23 +85,11 @@ public enum StructureValidationType {
         if (name == null) {
             return null;
         }
-        name = name.toLowerCase();
-        if (name.equals(GROUND.name)) {
-            return GROUND;
-        } else if (name.equals(UNDERGROUND.name)) {
-            return UNDERGROUND;
-        } else if (name.equals(SKY.name)) {
-            return SKY;
-        } else if (name.equals(WATER.name)) {
-            return WATER;
-        } else if (name.equals(UNDERWATER.name)) {
-            return UNDERWATER;
-        } else if (name.equals(HARBOR.name)) {
-            return HARBOR;
-        } else if (name.equals(ISLAND.name)) {
-            return ISLAND;
+        try {
+            return StructureValidationType.valueOf(name.toUpperCase(Locale.ENGLISH));
+        }catch (IllegalArgumentException illegal){
+            return null;
         }
-        return null;
     }
 
     /**

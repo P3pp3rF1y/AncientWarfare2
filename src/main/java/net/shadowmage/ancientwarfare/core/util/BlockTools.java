@@ -275,11 +275,11 @@ public class BlockTools {
      * return a new BlockPosition containing the minimum coordinates from the two passed in BlockPositions
      */
     public static BlockPosition getMin(BlockPosition pos1, BlockPosition pos2) {
-        return new BlockPosition(Trig.getMin(pos1.x, pos2.x), Trig.getMin(pos1.y, pos2.y), Trig.getMin(pos1.z, pos2.z));
+        return new BlockPosition(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z));
     }
 
     public static BlockPosition getMin(BlockPosition pos1, BlockPosition pos2, BlockPosition out) {
-        out.reassign(Trig.getMin(pos1.x, pos2.x), Trig.getMin(pos1.y, pos2.y), Trig.getMin(pos1.z, pos2.z));
+        out.reassign(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z));
         return out;
     }
 
@@ -287,11 +287,11 @@ public class BlockTools {
      * return a new BlockPosition containing the maximum coordinates from the two passed in BlockPositions
      */
     public static BlockPosition getMax(BlockPosition pos1, BlockPosition pos2) {
-        return new BlockPosition(Trig.getMax(pos1.x, pos2.x), Trig.getMax(pos1.y, pos2.y), Trig.getMax(pos1.z, pos2.z));
+        return new BlockPosition(Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z));
     }
 
     public static BlockPosition getMax(BlockPosition pos1, BlockPosition pos2, BlockPosition out) {
-        out.reassign(Trig.getMax(pos1.x, pos2.x), Trig.getMax(pos1.y, pos2.y), Trig.getMax(pos1.z, pos2.z));
+        out.reassign(Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z));
         return out;
     }
 
