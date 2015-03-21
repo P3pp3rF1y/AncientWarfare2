@@ -18,28 +18,25 @@ public class AWStructuresBlockLoader {
 
         AWBlocks.gateProxy = AWCoreBlockLoader.INSTANCE.register(new BlockGateProxy(), "gate_proxy", ItemBlock.class, TEGateProxy.class);
 
-        BlockDraftingStation draftingStation = new BlockDraftingStation("drafting_station");
-        AWBlocks.draftingStation = GameRegistry.registerBlock(draftingStation, "drafting_station");
-        GameRegistry.registerTileEntity(TileDraftingStation.class, "drafting_station_tile");
-        draftingStation.setIcon(0, 0, "ancientwarfare:structure/drafting_station_bottom");
-        draftingStation.setIcon(0, 1, "ancientwarfare:structure/drafting_station_top");
-        draftingStation.setIcon(0, 2, "ancientwarfare:structure/drafting_station_front");
-        draftingStation.setIcon(0, 3, "ancientwarfare:structure/drafting_station_front");
-        draftingStation.setIcon(0, 4, "ancientwarfare:structure/drafting_station_side");
-        draftingStation.setIcon(0, 5, "ancientwarfare:structure/drafting_station_side");
+        BlockDraftingStation draftingStation = new BlockDraftingStation();
+        AWBlocks.draftingStation = AWCoreBlockLoader.INSTANCE.register(draftingStation, "drafting_station", ItemBlock.class, TileDraftingStation.class);
+        draftingStation.setIcon(0, "ancientwarfare:structure/drafting_station_bottom");
+        draftingStation.setIcon(1, "ancientwarfare:structure/drafting_station_top");
+        draftingStation.setIcon(2, "ancientwarfare:structure/drafting_station_front");
+        draftingStation.setIcon(3, "ancientwarfare:structure/drafting_station_front");
+        draftingStation.setIcon(4, "ancientwarfare:structure/drafting_station_side");
+        draftingStation.setIcon(5, "ancientwarfare:structure/drafting_station_side");
 
         BlockStructureBuilder builder = new BlockStructureBuilder();
         AWBlocks.builderBlock = AWCoreBlockLoader.INSTANCE.register(builder, "structure_builder_ticked", ItemBlockStructureBuilder.class, TileStructureBuilder.class);
-        builder.setIcon(0, 0, "ancientwarfare:structure/builder_bottom");
-        builder.setIcon(0, 1, "ancientwarfare:structure/builder_top");
-        builder.setIcon(0, 2, "ancientwarfare:structure/builder_side");
-        builder.setIcon(0, 3, "ancientwarfare:structure/builder_side");
-        builder.setIcon(0, 4, "ancientwarfare:structure/builder_side");
-        builder.setIcon(0, 5, "ancientwarfare:structure/builder_side");
+        builder.setIcon(0, "ancientwarfare:structure/builder_bottom");
+        builder.setIcon(1, "ancientwarfare:structure/builder_top");
+        builder.setIcon(2, "ancientwarfare:structure/builder_side");
+        builder.setIcon(3, "ancientwarfare:structure/builder_side");
+        builder.setIcon(4, "ancientwarfare:structure/builder_side");
+        builder.setIcon(5, "ancientwarfare:structure/builder_side");
 
-//  AWBlocks.soundBlock = new BlockSoundBlock("sound_block");
-//  GameRegistry.registerBlock(AWBlocks.soundBlock, "sound_block");
-//  GameRegistry.registerTileEntity(TileSoundBlock.class, "tile_sound_block");
+//  AWBlocks.soundBlock = AWCoreBlockLoader.INSTANCE.register(new BlockSoundBlock(), "sound_block", ItemBlock.class, TileSoundBlock.class);
     }
 
 }

@@ -11,9 +11,8 @@ import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
 public class BlockSoundBlock extends Block {
 
-    public BlockSoundBlock(String regName) {
+    public BlockSoundBlock() {
         super(Material.rock);
-        this.setBlockName(regName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
     }
 

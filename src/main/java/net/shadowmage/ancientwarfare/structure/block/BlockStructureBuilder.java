@@ -23,8 +23,8 @@ public class BlockStructureBuilder extends Block {
         setHardness(2.f);
     }
 
-    public BlockStructureBuilder setIcon(int meta, int side, String texName) {
-        this.iconMap.setIconTexture(side, meta, texName);
+    public BlockStructureBuilder setIcon(int side, String texName) {
+        this.iconMap.setIconTexture(side, 0, texName);
         return this;
     }
 

@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.ArrayList;
@@ -116,6 +117,7 @@ public class SongPlayData {
         String name;
         float length;//length in seconds, used to determine when count down for next tune should start
         int volume;// percentage, as integer 0 = 0%, 100=100%, 150=150%
+        boolean isRecord;
 
         public SongEntry() {
             name = "";
@@ -163,6 +165,14 @@ public class SongPlayData {
             tag.setFloat("length", length);
             tag.setInteger("volume", volume);
             return tag;
+        }
+
+        public int play(World world, int x, int y, int z){
+            if(isRecord)
+                world.playRecord(name, x, y, z);
+            else
+                world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, name, volume * 0.03F, 1);
+            return (int) (length * 1200);//minutes(decimal) to ticks conversion
         }
     }
 

@@ -16,6 +16,7 @@ public class TileSoundBlock extends TileEntity {
     private int currentDelay;//the current cooldown delay.  if not playing, this delay will be incremented before attempting to start next song
     private int tuneIndex = -1;//the index of the song being played / to play, incremented/updated on songStart()
     private int playerCheckDelay;//used to not check for players -every- tick. checks every 10 ticks
+    private int playerRange = 20;
     private int playTime;//tracking current play time.  when this exceeds length, cooldown delay is triggered
     private SongPlayData tuneData;
 
@@ -29,17 +30,15 @@ public class TileSoundBlock extends TileEntity {
             return;
         }
         if (playing) {
-            playTime--;
-            if (playTime <= 0) {
+            if (playTime-- <= 0) {
                 endSong();
             }
         } else {
-            currentDelay--;
-            if (currentDelay <= 0) {
+            if (currentDelay-- <= 0) {
                 if (tuneData.getPlayOnPlayerEntry()) {
-                    if (playerCheckDelay <= 0) {
+                    if (playerCheckDelay-- <= 0) {
                         playerCheckDelay = 20;
-                        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(xCoord - 20, yCoord - 20, zCoord - 20, xCoord + 21, yCoord + 21, zCoord + 21);
+                        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange);
                         @SuppressWarnings("unchecked")
                         List<EntityPlayer> list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, aabb);
                         if (list != null && !list.isEmpty()) {
@@ -66,30 +65,24 @@ public class TileSoundBlock extends TileEntity {
                 tuneIndex = worldObj.rand.nextInt(tuneData.size());
             }
         } else {
-            tuneIndex++;
-            if (tuneIndex >= tuneData.size()) {
+            if (tuneIndex++ >= tuneData.size()) {
                 tuneIndex = 0;
             }
         }
         if (tuneData.size() <= 0) {
             return;
         }
-        SongEntry entry = tuneData.get(tuneIndex);
-        playTime = (int) (entry.length() * 60.f * 20.f);//minutes(decimal) to ticks conversion
-
-        float volume = 3.f * (float) entry.volume() * 0.01f;
-        worldObj.playSoundEffect(xCoord + 0.5d, yCoord + 0.5d, zCoord + 0.5d, entry.name(), volume, 1.f);
+        playTime = tuneData.get(tuneIndex).play(worldObj, xCoord, yCoord, zCoord);
     }
 
     private void endSong() {
         playing = false;
         playTime = 0;
-        int delay = tuneData.getMinDelay();
-        int diff = tuneData.getMaxDelay() - delay;
+        currentDelay = tuneData.getMinDelay();
+        int diff = tuneData.getMaxDelay() - currentDelay;
         if (diff > 0) {
-            delay += worldObj.rand.nextInt(diff);
+            currentDelay += worldObj.rand.nextInt(diff);
         }
-        currentDelay = delay;
     }
 
     @Override

@@ -18,15 +18,14 @@ public class BlockDraftingStation extends Block {
 
     private BlockIconMap iconMap = new BlockIconMap();
 
-    public BlockDraftingStation(String regName) {
+    public BlockDraftingStation() {
         super(Material.rock);
-        this.setBlockName(regName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         setHardness(2.f);
     }
 
-    public BlockDraftingStation setIcon(int meta, int side, String texName) {
-        this.iconMap.setIconTexture(side, meta, texName);
+    public BlockDraftingStation setIcon(int side, String texName) {
+        this.iconMap.setIconTexture(side, 0, texName);
         return this;
     }
 
