@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.automation.block.*;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
@@ -34,28 +35,28 @@ public class AWAutomationItemLoader {
     };
 
     public static void load() {
-        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_GEAR_SET, "ancientwarfare:automation/wooden_gear");
-        AWItems.componentItem.addSubItem(ItemComponent.IRON_GEAR_SET, "ancientwarfare:automation/iron_gear");
-        AWItems.componentItem.addSubItem(ItemComponent.STEEL_GEAR_SET, "ancientwarfare:automation/steel_gear");
+        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_GEAR_SET, "ancientwarfare:automation/wooden_gear", "gearWood");
+        AWItems.componentItem.addSubItem(ItemComponent.IRON_GEAR_SET, "ancientwarfare:automation/iron_gear", "gearIron");
+        AWItems.componentItem.addSubItem(ItemComponent.STEEL_GEAR_SET, "ancientwarfare:automation/steel_gear", "gearSteel");
         AWItems.componentItem.addSubItem(ItemComponent.WOODEN_BUSHINGS, "ancientwarfare:automation/wooden_bearings");
         AWItems.componentItem.addSubItem(ItemComponent.IRON_BEARINGS, "ancientwarfare:automation/iron_bearings");
         AWItems.componentItem.addSubItem(ItemComponent.STEEL_BEARINGS, "ancientwarfare:automation/steel_bearings");
-        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT, "ancientwarfare:automation/wooden_shaft");
-        AWItems.componentItem.addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "ancientwarfare:automation/iron_shaft");
-        AWItems.componentItem.addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "ancientwarfare:automation/steel_shaft");
+        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT, "ancientwarfare:automation/wooden_shaft", "torqueShaftWood");
+        AWItems.componentItem.addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "ancientwarfare:automation/iron_shaft", "torqueShaftIron");
+        AWItems.componentItem.addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "ancientwarfare:automation/steel_shaft", "torqueShaftSteel");
 
         AWItems.worksiteUpgrade = new ItemWorksiteUpgrade();
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.SIZE_MEDIUM.flag(), "ancientwarfare:automation/upgrade_bounds_medium");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.SIZE_LARGE.flag(), "ancientwarfare:automation/upgrade_bounds_large");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_MEDIUM.flag(), "ancientwarfare:automation/upgrade_quarry_medium");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_LARGE.flag(), "ancientwarfare:automation/upgrade_quarry_large");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_1.flag(), "ancientwarfare:automation/upgrade_enchanted_tools_1");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_2.flag(), "ancientwarfare:automation/upgrade_enchanted_tools_2");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_1.flag(), "ancientwarfare:automation/upgrade_quality_tools_1");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_2.flag(), "ancientwarfare:automation/upgrade_quality_tools_2");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_3.flag(), "ancientwarfare:automation/upgrade_quality_tools_3");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.BASIC_CHUNK_LOADER.flag(), "ancientwarfare:automation/upgrade_chunkloader_basic");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_CHUNK_LOADER.flag(), "ancientwarfare:automation/upgrade_chunkloader_quarry");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.SIZE_MEDIUM.ordinal(), "ancientwarfare:automation/upgrade_bounds_medium");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.SIZE_LARGE.ordinal(), "ancientwarfare:automation/upgrade_bounds_large");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_MEDIUM.ordinal(), "ancientwarfare:automation/upgrade_quarry_medium");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_LARGE.ordinal(), "ancientwarfare:automation/upgrade_quarry_large");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_1.ordinal(), "ancientwarfare:automation/upgrade_enchanted_tools_1");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_2.ordinal(), "ancientwarfare:automation/upgrade_enchanted_tools_2");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_1.ordinal(), "ancientwarfare:automation/upgrade_quality_tools_1");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_2.ordinal(), "ancientwarfare:automation/upgrade_quality_tools_2");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_3.ordinal(), "ancientwarfare:automation/upgrade_quality_tools_3");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.BASIC_CHUNK_LOADER.ordinal(), "ancientwarfare:automation/upgrade_chunkloader_basic");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_CHUNK_LOADER.ordinal(), "ancientwarfare:automation/upgrade_chunkloader_quarry");
         GameRegistry.registerItem(AWItems.worksiteUpgrade, "worksite_upgrade");
     }
 
@@ -68,32 +69,30 @@ public class AWAutomationItemLoader {
             if (i1p == i2p) {
                 return arg0.getDisplayName().compareTo(arg1.getDisplayName());
             } else {
-                return i1p < i2p ? -1 : 1;
+                return i1p - i2p;
             }
         }
 
         private int getItemPriority(Item item) {
             if (item instanceof ItemBlock) {
-                ItemBlock iblock = (ItemBlock) item;
-                Block block = iblock.field_150939_a;
-                if (block == chunkLoaderSimple || block == chunkLoaderDeluxe) {
+                Block block = ((ItemBlock) item).field_150939_a;
+                if (block instanceof BlockChunkLoaderSimple) {
                     return 10;
-                } else if (block == flywheel) {
+                } else if (block instanceof BlockFlywheel) {
                     return 9;
-                } else if (block == torqueGeneratorSterling || block == torqueGeneratorWaterwheel || block == handCrankedEngine) {
+                } else if (block instanceof BlockTorqueGenerator || block instanceof BlockHandCrankedEngine) {
                     return 8;
-                } else if (block == torqueDistributor || block == torqueConduit) {
+                } else if (block instanceof BlockTorqueBase) {
                     return 7;
-                } else if (block == mailbox) {
+                } else if (block instanceof BlockMailbox) {
                     return 6;
                 } else if (block == warehouseInterface || block == warehouseCrafting) {
                     return 5;
                 } else if (block == worksiteWarehouse) {
                     return 4;
-                } else if (block == worksiteAutoCrafting) {
+                } else if (block instanceof BlockAutoCrafting) {
                     return 3;
-                } else if (block == worksiteQuarry || block == worksiteForestry || block == worksiteCropFarm || block == worksiteMushroomFarm
-                        || block == worksiteAnimalFarm || block == worksiteReedFarm || block == worksiteFishFarm) {
+                } else if (block instanceof BlockWorksiteBase) {
                     return 2;
                 }
             }

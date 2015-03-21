@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
@@ -16,74 +17,73 @@ public class AWAutomationCrafting {
      * load any recipes for automation module recipes
      */
     public static void loadRecipes() {
-        ItemStack woodenGear = new ItemStack(AWItems.componentItem, 1, ItemComponent.WOODEN_GEAR_SET);
-        ItemStack ironGear = new ItemStack(AWItems.componentItem, 1, ItemComponent.IRON_GEAR_SET);
-        ItemStack steelGear = new ItemStack(AWItems.componentItem, 1, ItemComponent.STEEL_GEAR_SET);
-        ItemStack woodenBushing = new ItemStack(AWItems.componentItem, 1, ItemComponent.WOODEN_BUSHINGS);
-        ItemStack ironBearing = new ItemStack(AWItems.componentItem, 1, ItemComponent.IRON_BEARINGS);
-        ItemStack steelBearing = new ItemStack(AWItems.componentItem, 1, ItemComponent.STEEL_BEARINGS);
-        ItemStack woodShaft = new ItemStack(AWItems.componentItem, 1, ItemComponent.WOODEN_TORQUE_SHAFT);
-        ItemStack ironShaft = new ItemStack(AWItems.componentItem, 1, ItemComponent.IRON_TORQUE_SHAFT);
-        ItemStack steelShaft = new ItemStack(AWItems.componentItem, 1, ItemComponent.STEEL_TORQUE_SHAFT);
-
+        ItemStack woodenGear = AWItems.componentItem.getSubItem(ItemComponent.WOODEN_GEAR_SET);
+        ItemStack ironGear = AWItems.componentItem.getSubItem(ItemComponent.IRON_GEAR_SET);
+        ItemStack steelGear = AWItems.componentItem.getSubItem(ItemComponent.STEEL_GEAR_SET);
+        ItemStack woodenBushing = AWItems.componentItem.getSubItem(ItemComponent.WOODEN_BUSHINGS);
+        ItemStack ironBearing = AWItems.componentItem.getSubItem(ItemComponent.IRON_BEARINGS);
+        ItemStack steelBearing = AWItems.componentItem.getSubItem(ItemComponent.STEEL_BEARINGS);
+        ItemStack woodShaft = AWItems.componentItem.getSubItem(ItemComponent.WOODEN_TORQUE_SHAFT);
+        ItemStack ironShaft = AWItems.componentItem.getSubItem(ItemComponent.IRON_TORQUE_SHAFT);
+        ItemStack steelShaft = AWItems.componentItem.getSubItem(ItemComponent.STEEL_TORQUE_SHAFT);
         //wooden gear set
         AWCraftingManager.INSTANCE.createRecipe(woodenGear.copy(), "",
                 "s_s",
                 "_p_",
                 "s_s",
-                's', Items.stick,
-                'p', Blocks.planks);
+                's', "stickWood",
+                'p', "plankWood");
         //iron gear
         AWCraftingManager.INSTANCE.createRecipe(ironGear.copy(), "",
                 "i_i",
                 "_i_",
                 "i_i",
-                'i', Items.iron_ingot);
+                'i', "ingotIron");
         //steel gear
         AWCraftingManager.INSTANCE.createRecipe(steelGear.copy(), "",
                 "i_i",
                 "_i_",
                 "i_i",
-                'i', AWItems.steel_ingot);
+                'i', "ingotSteel");
 
         //wooden bushing set
         AWCraftingManager.INSTANCE.createRecipe(woodenBushing.copy(), "",
                 "s_s",
                 "___",
                 "s_s",
-                's', Items.stick,
-                'p', Blocks.planks);
+                's', "stickWood",
+                'p', "plankWood");
         //iron bearing
         AWCraftingManager.INSTANCE.createRecipe(ironBearing.copy(), "",
                 "_i_",
                 "i_i",
                 "_i_",
-                'i', Items.iron_ingot);
+                'i', "ingotIron");
         //steel bearing
         AWCraftingManager.INSTANCE.createRecipe(steelBearing.copy(), "",
                 "_i_",
                 "i_i",
                 "_i_",
-                'i', AWItems.steel_ingot);
+                'i', "ingotSteel");
 
         //wooden shaft
         AWCraftingManager.INSTANCE.createRecipe(woodShaft.copy(), "",
                 "_p_",
                 "_p_",
                 "_p_",
-                'p', Blocks.planks);
+                'p', "plankWood");
         //iron shaft
         AWCraftingManager.INSTANCE.createRecipe(ironShaft.copy(), "",
                 "_i_",
                 "_i_",
                 "_i_",
-                'i', Items.iron_ingot);
+                'i', "ingotIron");
         //steel shaft
         AWCraftingManager.INSTANCE.createRecipe(steelShaft.copy(), "",
                 "_i_",
                 "_i_",
                 "_i_",
-                'i', AWItems.steel_ingot);
+                'i', "ingotSteel");
 
         //torque conduit s
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit, 1, 0), "the_wheel",
@@ -91,23 +91,23 @@ public class AWAutomationCrafting {
                 "sgs",
                 "_s_",
                 's', woodShaft.copy(),
-                'g', woodenGear.copy());
+                'g', "gearWood");
 
-//torque conduit m
+        //torque conduit m
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit, 1, 1), "the_wheel",
                 "_s_",
                 "sgs",
                 "_s_",
                 's', ironShaft.copy(),
-                'g', ironGear.copy());
+                'g', "gearIron");
 
-//torque conduit l
+        //torque conduit l
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueConduit, 1, 2), "mass_production",
                 "_s_",
                 "sgs",
                 "_s_",
                 's', steelShaft.copy(),
-                'g', steelGear.copy());
+                'g', "gearSteel");
 
         //torque distributor s
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueDistributor, 1, 0), "the_wheel",
@@ -115,7 +115,7 @@ public class AWAutomationCrafting {
                 "ggg",
                 "_s_",
                 's', woodShaft.copy(),
-                'g', woodenGear.copy());
+                'g', "gearWood");
 
         //torque distributor m
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueDistributor, 1, 1), "the_wheel",
@@ -123,7 +123,7 @@ public class AWAutomationCrafting {
                 "ggg",
                 "_s_",
                 's', ironShaft.copy(),
-                'g', ironGear.copy());
+                'g', "gearIron");
 
         //torque distributor l
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueDistributor, 1, 2), "mass_production",
@@ -131,7 +131,7 @@ public class AWAutomationCrafting {
                 "ggg",
                 "_s_",
                 's', steelShaft.copy(),
-                'g', steelGear.copy());
+                'g', "gearSteel");
 
         //torque shaft s
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft, 1, 0), "the_wheel",
@@ -139,7 +139,7 @@ public class AWAutomationCrafting {
                 "s",
                 "g",
                 's', woodShaft.copy(),
-                'g', woodenGear.copy());
+                'g', "gearWood");
 
         //torque shaft m
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft, 1, 1), "the_wheel",
@@ -147,7 +147,7 @@ public class AWAutomationCrafting {
                 "s",
                 "g",
                 's', ironShaft.copy(),
-                'g', ironGear.copy());
+                'g', "gearIron");
 
         //torque shaft l
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.torqueShaft, 1, 2), "mass_production",
@@ -155,27 +155,27 @@ public class AWAutomationCrafting {
                 "s",
                 "g",
                 's', steelShaft.copy(),
-                'g', steelGear.copy());
+                'g', "gearSteel");
 
         //torque flywheel control l
         AWCraftingManager.INSTANCE.createRecipe(new ItemStack(AWAutomationBlockLoader.flywheel, 1, 2), "mass_production",
                 "igi",
                 "iii",
                 "igi",
-                'i', AWItems.steel_ingot,
-                'g', steelGear.copy());
+                'i', "ingotSteel",
+                'g', "gearSteel");
 
-        ItemStack upgradeBoundsMed = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.SIZE_MEDIUM.flag());//engineering
-        ItemStack upgradeBoundsLarge = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.SIZE_LARGE.flag());//mathematics
-        ItemStack upgradeQuarryMed = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.QUARRY_MEDIUM.flag());//mining
-        ItemStack upgradeQuarryLarge = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.QUARRY_LARGE.flag());//machinery
-        ItemStack upgradeEnchantedTools1 = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.ENCHANTED_TOOLS_1.flag());//mathematics
-        ItemStack upgradeEnchantedTools2 = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.ENCHANTED_TOOLS_2.flag());//mass production
-        ItemStack upgradeQualityTools1 = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.TOOL_QUALITY_1.flag());//engineering
-        ItemStack upgradeQualityTools2 = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.TOOL_QUALITY_2.flag());//construction
-        ItemStack upgradeQualityTools3 = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.TOOL_QUALITY_3.flag());//refining
-        ItemStack upgradeBasicChunkloader = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.BASIC_CHUNK_LOADER.flag());//mathematics
-        ItemStack upgradeQuarryChunkloader = new ItemStack(AWItems.worksiteUpgrade, 1, WorksiteUpgrade.QUARRY_CHUNK_LOADER.flag());//machinery
+        ItemStack upgradeBoundsMed = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.SIZE_MEDIUM.ordinal());//engineering
+        ItemStack upgradeBoundsLarge = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.SIZE_LARGE.ordinal());//mathematics
+        ItemStack upgradeQuarryMed = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.QUARRY_MEDIUM.ordinal());//mining
+        ItemStack upgradeQuarryLarge = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.QUARRY_LARGE.ordinal());//machinery
+        ItemStack upgradeEnchantedTools1 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_1.ordinal());//mathematics
+        ItemStack upgradeEnchantedTools2 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_2.ordinal());//mass production
+        ItemStack upgradeQualityTools1 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.TOOL_QUALITY_1.ordinal());//engineering
+        ItemStack upgradeQualityTools2 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.TOOL_QUALITY_2.ordinal());//construction
+        ItemStack upgradeQualityTools3 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.TOOL_QUALITY_3.ordinal());//refining
+        ItemStack upgradeBasicChunkloader = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.BASIC_CHUNK_LOADER.ordinal());//mathematics
+        ItemStack upgradeQuarryChunkloader = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.QUARRY_CHUNK_LOADER.ordinal());//machinery
 
         AWCraftingManager.INSTANCE.createRecipe(upgradeBoundsMed, "engineering",
                 " s ",
@@ -195,16 +195,16 @@ public class AWAutomationCrafting {
                 "ppp",
                 "f f",
                 "f f",
-                'p', Blocks.planks,
+                'p', "plankWood",
                 'f', Blocks.fence);
 
         AWCraftingManager.INSTANCE.createRecipe(upgradeQuarryLarge, "machinery",
                 "ppp",
                 "fif",
                 "fif",
-                'p', Blocks.planks,
+                'p', "plankWood",
                 'f', Blocks.fence,
-                'i', Items.iron_ingot);
+                'i', "ingotIron");
 
         ItemStack enchantedBook = new ItemStack(Items.enchanted_book, 1, 0);
         enchantedBook.addEnchantment(Enchantment.fortune, 1);
@@ -213,7 +213,7 @@ public class AWAutomationCrafting {
                 " b ",
                 "iii",
                 'b', enchantedBook,
-                'i', Items.iron_ingot);
+                'i', "ingotIron");
 
         enchantedBook = new ItemStack(Items.enchanted_book, 1, 0);
         enchantedBook.addEnchantment(Enchantment.fortune, 2);
@@ -222,7 +222,7 @@ public class AWAutomationCrafting {
                 "b b",
                 "iii",
                 'b', enchantedBook,
-                'i', Items.iron_ingot);
+                'i', "ingotIron");
 
         AWCraftingManager.INSTANCE.createRecipe(upgradeQualityTools1, "engineering",
                 "psa",
@@ -240,7 +240,7 @@ public class AWAutomationCrafting {
                 "oto",
                 "psa",
                 "oto",
-                't', AWItems.steel_ingot,
+                't', "ingotSteel",
                 'o', Blocks.obsidian,
                 'p', Items.diamond_pickaxe,
                 's', Items.diamond_shovel,
@@ -250,14 +250,14 @@ public class AWAutomationCrafting {
                 " i ",
                 "ici",
                 " i ",
-                'i', Items.iron_ingot,
+                'i', "ingotIron",
                 'c', AWAutomationBlockLoader.chunkLoaderSimple);
 
         AWCraftingManager.INSTANCE.createRecipe(upgradeQuarryChunkloader, "machinery",
                 " i ",
                 "ici",
                 " i ",
-                'i', Items.iron_ingot,
+                'i', "ingotIron",
                 'c', AWAutomationBlockLoader.chunkLoaderDeluxe);
 
     }

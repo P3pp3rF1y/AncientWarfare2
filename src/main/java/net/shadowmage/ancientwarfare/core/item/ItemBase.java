@@ -5,6 +5,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,5 +51,14 @@ public class ItemBase extends Item {
     public void addSubItem(int num, String texture) {
         if (!subItems.containsKey(num))
             subItems.put(num, texture);
+    }
+
+    public void addSubItem(int num, String text, String ore){
+        addSubItem(num, text);
+        OreDictionary.registerOre(ore, new ItemStack(this, 1, num));
+    }
+
+    public ItemStack getSubItem(int num){
+        return new ItemStack(this, 1, num);
     }
 }

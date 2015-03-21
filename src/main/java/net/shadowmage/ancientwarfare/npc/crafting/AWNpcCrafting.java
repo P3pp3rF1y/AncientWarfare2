@@ -9,6 +9,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
@@ -31,8 +32,7 @@ public class AWNpcCrafting {
         CraftingManager.getInstance().getRecipeList().add(new OrderCopyingRecipe(AWItems.workOrder));
 
 
-        ItemStack foodBundle = new ItemStack(AWItems.componentItem, 1, ItemComponent.NPC_FOOD_BUNDLE);
-
+        ItemStack foodBundle = AWItems.componentItem.getSubItem(ItemComponent.NPC_FOOD_BUNDLE);
         //food bundle
         AWCraftingManager.INSTANCE.createRecipe(foodBundle.copy(), "leadership",
                 "ap",

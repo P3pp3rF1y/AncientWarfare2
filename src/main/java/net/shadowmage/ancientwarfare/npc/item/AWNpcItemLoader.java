@@ -32,11 +32,7 @@ public class AWNpcItemLoader {
         }
     };
     public static final String PREFIX = "ancientwarfare:npc/";
-    public static final ItemCommandBaton commandBatonWood = new ItemCommandBaton("wooden_command_baton", ToolMaterial.WOOD);
-    public static final ItemCommandBaton commandBatonStone = new ItemCommandBaton("stone_command_baton", ToolMaterial.STONE);
     public static final ItemCommandBaton commandBatonIron = new ItemCommandBaton("iron_command_baton", ToolMaterial.IRON);
-    public static final ItemCommandBaton commandBatonGold = new ItemCommandBaton("gold_command_baton", ToolMaterial.GOLD);
-    public static final ItemCommandBaton commandBatonDiamond = new ItemCommandBaton("diamond_command_baton", ToolMaterial.EMERALD);
     public static final ItemBardInstrument bardInstrument = new ItemBardInstrument("bard_instrument");
     public static final ItemShield woodenShield = new ItemShield("wooden_shield", ToolMaterial.WOOD);
     public static final ItemShield stoneShield = new ItemShield("stone_shield", ToolMaterial.STONE);
@@ -51,11 +47,11 @@ public class AWNpcItemLoader {
         AWItems.combatOrder = AWCoreItemLoader.INSTANCE.register(new ItemCombatOrder(), "combat_order", PREFIX);
         AWItems.routingOrder = AWCoreItemLoader.INSTANCE.register(new ItemRoutingOrder(), "routing_order", PREFIX);
         AWItems.tradeOrder = AWCoreItemLoader.INSTANCE.register(new ItemTradeOrder(), "trade_order", PREFIX);
-        GameRegistry.registerItem(commandBatonWood, "wooden_command_baton");
-        GameRegistry.registerItem(commandBatonStone, "stone_command_baton");
+        GameRegistry.registerItem(new ItemCommandBaton("wooden_command_baton", ToolMaterial.WOOD), "wooden_command_baton");
+        GameRegistry.registerItem(new ItemCommandBaton("stone_command_baton", ToolMaterial.STONE), "stone_command_baton");
         GameRegistry.registerItem(commandBatonIron, "iron_command_baton");
-        GameRegistry.registerItem(commandBatonGold, "gold_command_baton");
-        GameRegistry.registerItem(commandBatonDiamond, "diamond_command_baton");
+        GameRegistry.registerItem(new ItemCommandBaton("gold_command_baton", ToolMaterial.GOLD), "gold_command_baton");
+        GameRegistry.registerItem(new ItemCommandBaton("diamond_command_baton", ToolMaterial.EMERALD), "diamond_command_baton");
         GameRegistry.registerItem(bardInstrument, "bard_instrument");
 
         GameRegistry.registerItem(woodenShield, "wooden_shield");
@@ -64,7 +60,7 @@ public class AWNpcItemLoader {
         GameRegistry.registerItem(goldShield, "gold_shield");
         GameRegistry.registerItem(diamondShield, "diamond_shield");
 
-        AWItems.componentItem.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, PREFIX + "food_bundle");
+        AWItems.componentItem.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, PREFIX + "food_bundle", "foodBundle");
     }
 
     private static final Comparator<ItemStack> sorter = new Comparator<ItemStack>() {
