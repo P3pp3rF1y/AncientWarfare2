@@ -21,6 +21,8 @@ import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import java.util.Locale;
+
 public class BlockMailbox extends Block implements IRotatableBlock {
 
     IconRotationMap iconMap = new IconRotationMap();
@@ -30,6 +32,13 @@ public class BlockMailbox extends Block implements IRotatableBlock {
         this.setBlockName(regName);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
         setHardness(2.f);
+        String icon = "ancientwarfare:automation/"+regName;
+        setIcon(RelativeSide.TOP, icon);
+        setIcon(RelativeSide.FRONT, icon);
+        setIcon(RelativeSide.REAR, icon);
+        setIcon(RelativeSide.BOTTOM, icon);
+        setIcon(RelativeSide.LEFT, icon);
+        setIcon(RelativeSide.RIGHT, icon);
     }
 
     @Override
@@ -43,7 +52,7 @@ public class BlockMailbox extends Block implements IRotatableBlock {
     }
 
     public BlockMailbox setIcon(RelativeSide relativeSide, String texName) {
-        this.iconMap.setIcon(this, relativeSide, texName);
+        this.iconMap.setIcon(this, relativeSide, texName+"_"+relativeSide);
         return this;
     }
 

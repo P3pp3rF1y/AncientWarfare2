@@ -188,12 +188,6 @@ public class AWAutomationBlockLoader {
 
         GameRegistry.registerBlock(mailbox, ItemBlockOwnedRotatable.class, "mailbox");
         GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");
-        mailbox.setIcon(RelativeSide.TOP, "ancientwarfare:automation/mailbox_top");
-        mailbox.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/mailbox_front");
-        mailbox.setIcon(RelativeSide.REAR, "ancientwarfare:automation/mailbox_rear");
-        mailbox.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/mailbox_bottom");
-        mailbox.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/mailbox_left");
-        mailbox.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mailbox_right");
 
         GameRegistry.registerBlock(flywheel, ItemBlockTorqueTile.class, "flywheel");
         GameRegistry.registerTileEntity(TileFlywheelControlLight.class, "flywheel_tile");
@@ -235,21 +229,9 @@ public class AWAutomationBlockLoader {
 
         GameRegistry.registerBlock(chunkLoaderSimple, "chunk_loader_simple");
         GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");
-        chunkLoaderSimple.iconMap.setIconTexture(0, 0, "ancientwarfare:automation/chunk_loader_simple_bottom");
-        chunkLoaderSimple.iconMap.setIconTexture(1, 0, "ancientwarfare:automation/chunk_loader_simple_bottom");
-        chunkLoaderSimple.iconMap.setIconTexture(2, 0, "ancientwarfare:automation/chunk_loader_simple_side");
-        chunkLoaderSimple.iconMap.setIconTexture(3, 0, "ancientwarfare:automation/chunk_loader_simple_side");
-        chunkLoaderSimple.iconMap.setIconTexture(4, 0, "ancientwarfare:automation/chunk_loader_simple_side");
-        chunkLoaderSimple.iconMap.setIconTexture(5, 0, "ancientwarfare:automation/chunk_loader_simple_side");
 
         GameRegistry.registerBlock(chunkLoaderDeluxe, "chunk_loader_deluxe");
         GameRegistry.registerTileEntity(TileChunkLoaderDeluxe.class, "chunk_loader_deluxe_tile");
-        chunkLoaderDeluxe.iconMap.setIconTexture(0, 0, "ancientwarfare:automation/chunk_loader_deluxe_bottom");
-        chunkLoaderDeluxe.iconMap.setIconTexture(1, 0, "ancientwarfare:automation/chunk_loader_deluxe_bottom");
-        chunkLoaderDeluxe.iconMap.setIconTexture(2, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
-        chunkLoaderDeluxe.iconMap.setIconTexture(3, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
-        chunkLoaderDeluxe.iconMap.setIconTexture(4, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
-        chunkLoaderDeluxe.iconMap.setIconTexture(5, 0, "ancientwarfare:automation/chunk_loader_deluxe_side");
     }
 
 }

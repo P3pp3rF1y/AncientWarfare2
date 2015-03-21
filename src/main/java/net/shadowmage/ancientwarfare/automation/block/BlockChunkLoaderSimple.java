@@ -23,6 +23,14 @@ public class BlockChunkLoaderSimple extends Block {
         this.setBlockName(regName);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
         setHardness(2.f);
+        String icon = "ancientwarfare:automation/" + regName + "_bottom";
+        setIcon(0, 0, icon);
+        setIcon(0, 1, icon);
+        icon = "ancientwarfare:automation/" + regName + "_side";
+        setIcon(0, 2, icon);
+        setIcon(0, 3, icon);
+        setIcon(0, 4, icon);
+        setIcon(0, 5, icon);
     }
 
     public BlockChunkLoaderSimple setIcon(int meta, int side, String texName) {
