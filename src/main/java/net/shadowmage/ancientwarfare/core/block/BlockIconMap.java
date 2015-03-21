@@ -4,23 +4,29 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class BlockIconMap {
 
-    HashMap<Integer, IIcon> iconMap = new HashMap<Integer, IIcon>();
-    HashMap<Integer, String> iconTexMap = new HashMap<Integer, String>();
+    private final HashMap<Integer, IIcon> iconMap = new HashMap<Integer, IIcon>();
+    private final HashMap<Integer, String> iconTexMap = new HashMap<Integer, String>();
 
     public void setIconTexture(int side, int meta, String texName) {
         iconTexMap.put(side + meta * 16, texName);
     }
 
     public void registerIcons(IIconRegister reg) {
-        String tex;
+        HashMap<String, IIcon> temp = new HashMap<String, IIcon>();
         IIcon icon;
-        for (Integer key : iconTexMap.keySet()) {
-            tex = iconTexMap.get(key);
-            icon = reg.registerIcon(tex);
-            iconMap.put(key, icon);
+        for (Map.Entry<Integer,String> entry : iconTexMap.entrySet()) {
+            String tex = entry.getValue();
+            if(temp.containsKey(tex)){
+                icon = temp.get(tex);
+            }else {
+                icon = reg.registerIcon(tex);
+                temp.put(tex, icon);
+            }
+            iconMap.put(entry.getKey(), icon);
         }
     }
 

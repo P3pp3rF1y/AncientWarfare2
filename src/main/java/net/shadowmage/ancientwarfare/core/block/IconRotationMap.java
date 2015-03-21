@@ -7,10 +7,11 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class IconRotationMap {
-    private HashMap<RelativeSide, String> texNames = new HashMap<RelativeSide, String>();
-    private HashMap<RelativeSide, IIcon> icons = new HashMap<RelativeSide, IIcon>();
+    private final HashMap<RelativeSide, String> texNames = new HashMap<RelativeSide, String>();
+    private final HashMap<RelativeSide, IIcon> icons = new HashMap<RelativeSide, IIcon>();
 
     public void setIcon(IRotatableBlock block, RelativeSide side, String texName) {
         RotationType t = block.getRotationType();
@@ -25,16 +26,22 @@ public class IconRotationMap {
     }
 
     public void registerIcons(IIconRegister register) {
-        String name;
-        for (RelativeSide key : texNames.keySet()) {
-            name = texNames.get(key);
-            icons.put(key, register.registerIcon(name));
+        HashMap<String, IIcon> temp = new HashMap<String, IIcon>();
+        IIcon icon;
+        for (Map.Entry<RelativeSide,String> entry : texNames.entrySet()) {
+            String name = entry.getValue();
+            if(temp.containsKey(name)){
+                icon = temp.get(name);
+            }else{
+                icon = register.registerIcon(name);
+                temp.put(name, icon);
+            }
+            icons.put(entry.getKey(), icon);
         }
     }
 
     public IIcon getIcon(IRotatableBlock block, int meta, int side) {
-        RelativeSide rSide = RelativeSide.getSideViewed(block.getRotationType(), meta, side);
-        return icons.get(rSide);
+        return getIcon(RelativeSide.getSideViewed(block.getRotationType(), meta, side));
     }
 
     public IIcon getIcon(RelativeSide side) {
