@@ -50,7 +50,7 @@ public class TileMailbox extends TileEntity implements IOwnable, IInventory, ISi
         }
         if (mailboxName != null)//try to receive mail
         {
-            MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, worldObj, MailboxData.class);
+            MailboxData data = AWGameData.INSTANCE.getData(worldObj, MailboxData.class);
 
             List<DeliverableItem> items = new ArrayList<DeliverableItem>();
             data.getDeliverableItems(privateBox ? owningPlayerName : null, mailboxName, items, worldObj, xCoord, yCoord, zCoord);

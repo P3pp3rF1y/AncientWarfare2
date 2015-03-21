@@ -176,7 +176,7 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
         if (name == null) {
             return;
         }
-        int goal = ResearchTracker.instance().getCurrentGoal(worldObj, name);
+        int goal = ResearchTracker.INSTANCE.getCurrentGoal(worldObj, name);
         boolean started = goal >= 0;
         if (started && storedEnergy >= AWCoreStatics.energyPerResearchUnit) {
             workTick(name, goal, 1);
@@ -223,19 +223,19 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
 
     private void workTick(String name, int goal, int tickCount) {
         ResearchGoal g1 = ResearchGoal.getGoal(goal);
-        int progress = ResearchTracker.instance().getProgress(worldObj, name);
+        int progress = ResearchTracker.INSTANCE.getProgress(worldObj, name);
         progress += tickCount;
         if (progress >= g1.getTotalResearchTime()) {
-            ResearchTracker.instance().finishResearch(worldObj, getCrafterName(), goal);
+            ResearchTracker.INSTANCE.finishResearch(worldObj, getCrafterName(), goal);
             tryStartNextResearch(name);
         } else {
-            ResearchTracker.instance().setProgress(worldObj, name, progress);
+            ResearchTracker.INSTANCE.setProgress(worldObj, name, progress);
         }
         storedEnergy -= AWCoreStatics.energyPerResearchUnit;
     }
 
     private void tryStartNextResearch(String name) {
-        List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(worldObj, name);
+        List<Integer> queue = ResearchTracker.INSTANCE.getResearchQueueFor(worldObj, name);
         if (!queue.isEmpty()) {
             int goalId = queue.get(0);
             ResearchGoal goalInstance = ResearchGoal.getGoal(goalId);
@@ -243,7 +243,7 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
                 return;
             }
             if (goalInstance.tryStart(resourceInventory, -1)) {
-                ResearchTracker.instance().startResearch(worldObj, name, goalId);
+                ResearchTracker.INSTANCE.startResearch(worldObj, name, goalId);
             } else if (useAdjacentInventory) {
                 TileEntity t;
                 boolean started = false;
@@ -256,7 +256,7 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
                     started = goalInstance.tryStart((IInventory) t, side);
                 }
                 if (started) {
-                    ResearchTracker.instance().startResearch(worldObj, name, goalId);
+                    ResearchTracker.INSTANCE.startResearch(worldObj, name, goalId);
                 }
             }
         }

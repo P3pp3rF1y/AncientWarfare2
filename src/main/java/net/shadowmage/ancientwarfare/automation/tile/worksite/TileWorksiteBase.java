@@ -316,7 +316,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     }
 
     protected final void writeDataToTicket(Ticket tk) {
-        AWChunkLoader.writeDataToTicket(tk, xCoord, yCoord, zCoord);
+        AWChunkLoader.INSTANCE.writeDataToTicket(tk, xCoord, yCoord, zCoord);
     }
 
     public final void setupInitialTicket() {

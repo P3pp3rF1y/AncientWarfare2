@@ -28,9 +28,9 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             researcherName = tileEntity.getCrafterName();
             useAdjacentInventory = tileEntity.useAdjacentInventory;
             if (researcherName != null) {
-                currentGoal = ResearchTracker.instance().getCurrentGoal(player.worldObj, researcherName);
-                progress = ResearchTracker.instance().getProgress(player.worldObj, researcherName);
-                queuedResearch.addAll(ResearchTracker.instance().getResearchQueueFor(player.worldObj, researcherName));
+                currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.worldObj, researcherName);
+                progress = ResearchTracker.INSTANCE.getProgress(player.worldObj, researcherName);
+                queuedResearch.addAll(ResearchTracker.INSTANCE.getResearchQueueFor(player.worldObj, researcherName));
             }
         }
 
@@ -192,9 +192,9 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             tag = new NBTTagCompound();
             researcherName = name;
             tag.setString("researcherName", name);
-            currentGoal = ResearchTracker.instance().getCurrentGoal(player.worldObj, researcherName);
+            currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.worldObj, researcherName);
             tag.setInteger("currentGoal", currentGoal);
-            progress = ResearchTracker.instance().getProgress(player.worldObj, researcherName);
+            progress = ResearchTracker.INSTANCE.getProgress(player.worldObj, researcherName);
             tag.setInteger("progress", progress);
         } else if (!name.equals(researcherName))//updated book/name
         {
@@ -202,9 +202,9 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             tag = new NBTTagCompound();
             researcherName = name;
             tag.setString("researcherName", name);
-            currentGoal = ResearchTracker.instance().getCurrentGoal(player.worldObj, researcherName);
+            currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.worldObj, researcherName);
             tag.setInteger("currentGoal", currentGoal);
-            progress = ResearchTracker.instance().getProgress(player.worldObj, researcherName);
+            progress = ResearchTracker.INSTANCE.getProgress(player.worldObj, researcherName);
             tag.setInteger("progress", progress);
         }
 
@@ -212,7 +212,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
          * synch progress and current goal --
          */
         if (checkGoal && researcherName != null) {
-            int g = ResearchTracker.instance().getCurrentGoal(player.worldObj, researcherName);
+            int g = ResearchTracker.INSTANCE.getCurrentGoal(player.worldObj, researcherName);
             if (g != currentGoal) {
                 if (tag == null) {
                     tag = new NBTTagCompound();
@@ -220,7 +220,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
                 currentGoal = g;
                 tag.setInteger("currentGoal", currentGoal);
             }
-            int p = ResearchTracker.instance().getProgress(player.worldObj, researcherName);
+            int p = ResearchTracker.INSTANCE.getProgress(player.worldObj, researcherName);
             if (p != progress) {
                 if (tag == null) {
                     tag = new NBTTagCompound();
@@ -234,7 +234,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
          * synch queued research
          */
         if (researcherName != null) {
-            List<Integer> queue = ResearchTracker.instance().getResearchQueueFor(player.worldObj, researcherName);
+            List<Integer> queue = ResearchTracker.INSTANCE.getResearchQueueFor(player.worldObj, researcherName);
             if (!queue.equals(queuedResearch)) {
                 if (tag == null) {
                     tag = new NBTTagCompound();

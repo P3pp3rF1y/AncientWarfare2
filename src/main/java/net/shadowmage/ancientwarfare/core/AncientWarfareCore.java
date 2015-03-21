@@ -78,9 +78,8 @@ public class AncientWarfareCore {
          * register server-side network handler and anything that needs loaded on the event busses
          */
         NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
-        MinecraftForge.EVENT_BUS.register(AWGameData.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new ItemEventHandler());
-        FMLCommonHandler.instance().bus().register(ResearchTracker.instance());
+        FMLCommonHandler.instance().bus().register(ResearchTracker.INSTANCE);
         FMLCommonHandler.instance().bus().register(this);
 
 
@@ -92,10 +91,6 @@ public class AncientWarfareCore {
         NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_STATION, ContainerResearchStation.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_BACKPACK, ContainerBackpack.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_BOOK, ContainerResearchBook.class);
-        /**
-         * register Saved-data classes for core module
-         */
-        AWGameData.INSTANCE.registerSaveData(ResearchData.name, ResearchData.class);
 
         /**
          * initialize any other core module information

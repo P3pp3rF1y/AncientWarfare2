@@ -115,18 +115,14 @@ public class AncientWarfareAutomation {
         NetworkHandler.registerContainer(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, ContainerChunkLoaderDeluxe.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STOCK, ContainerWarehouseStockViewer.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_BOUNDS, ContainerWorksiteBoundsAdjust.class);
-        /**
-         * register persistent game-data handlers
-         */
-        AWGameData.INSTANCE.registerSaveData(MailboxData.name, MailboxData.class);
 
         /**
          * register tick-handlers
          */
-        FMLCommonHandler.instance().bus().register(new MailboxTicker());
+        FMLCommonHandler.instance().bus().register(MailboxTicker.INSTANCE);
         FMLCommonHandler.instance().bus().register(this);
 
-        ForgeChunkManager.setForcedChunkLoadingCallback(this, new AWChunkLoader());
+        ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);
 
         AWLog.log("Ancient Warfare Automation Pre-Init completed");
     }

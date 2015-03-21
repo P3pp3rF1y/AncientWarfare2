@@ -11,21 +11,16 @@ import java.util.HashMap;
 
 public class FactionData extends WorldSavedData {
 
-    public static final String name = "AWFactionData";
-
     private HashMap<String, FactionEntry> playerFactionEntries = new HashMap<String, FactionEntry>();
 
     public FactionData(String par1Str) {
         super(par1Str);
     }
 
-    public FactionData() {
-        super(name);
-    }
-
     public void onPlayerLogin(EntityPlayer player) {
-        if (!playerFactionEntries.containsKey(player.getCommandSenderName())) {
-            playerFactionEntries.put(player.getCommandSenderName(), new FactionEntry(player.getCommandSenderName()));
+        String name = player.getCommandSenderName();
+        if (!playerFactionEntries.containsKey(name)) {
+            playerFactionEntries.put(name, new FactionEntry(name));
             markDirty();
         }
     }
@@ -44,15 +39,15 @@ public class FactionData extends WorldSavedData {
     public void adjustStandingFor(String playerName, String faction, int adjustment) {
         if (playerFactionEntries.containsKey(playerName)) {
             playerFactionEntries.get(playerName).adjustStandingFor(faction, adjustment);
+            markDirty();
         }
-        markDirty();
     }
 
     public void setStandingFor(String playerName, String faction, int setting) {
         if (playerFactionEntries.containsKey(playerName)) {
             playerFactionEntries.get(playerName).setStandingFor(faction, setting);
+            markDirty();
         }
-        markDirty();
     }
 
     @Override

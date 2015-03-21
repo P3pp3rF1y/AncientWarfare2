@@ -45,7 +45,7 @@ public class ItemResearchNotes extends Item implements IItemClickable {
             ResearchGoal goal = ResearchGoal.getGoal(name);
             if (goal != null) {
                 researchName = StatCollector.translateToLocal(name);
-                known = ResearchTracker.instance().hasPlayerCompleted(par2EntityPlayer.worldObj, par2EntityPlayer.getCommandSenderName(), goal.getId());
+                known = ResearchTracker.INSTANCE.hasPlayerCompleted(par2EntityPlayer.worldObj, par2EntityPlayer.getCommandSenderName(), goal.getId());
             } else {
                 researchName = "missing_goal_for_id_" + researchName;
             }
@@ -90,9 +90,9 @@ public class ItemResearchNotes extends Item implements IItemClickable {
             String name = tag.getString("researchName");
             ResearchGoal goal = ResearchGoal.getGoal(name);
             if (goal != null) {
-                boolean known = ResearchTracker.instance().hasPlayerCompleted(player.worldObj, player.getCommandSenderName(), goal.getId());
+                boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.worldObj, player.getCommandSenderName(), goal.getId());
                 if (!known) {
-                    if (ResearchTracker.instance().addResearchFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
+                    if (ResearchTracker.INSTANCE.addResearchFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
                         player.addChatMessage(new ChatComponentTranslation("guistrings.research.learned_from_item"));
                         stack.stackSize--;
                         if (stack.stackSize <= 0) {
@@ -100,7 +100,7 @@ public class ItemResearchNotes extends Item implements IItemClickable {
                         }
                     }
                 } else {
-                    if (ResearchTracker.instance().addProgressFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
+                    if (ResearchTracker.INSTANCE.addProgressFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
                         player.addChatMessage(new ChatComponentTranslation("guistrings.research.added_progress"));
                         stack.stackSize--;
                         if (stack.stackSize <= 0) {

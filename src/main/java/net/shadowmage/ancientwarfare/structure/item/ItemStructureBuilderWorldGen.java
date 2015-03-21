@@ -73,7 +73,7 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
                 return;
             }
             BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
-            StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", player.worldObj, StructureMap.class);
+            StructureMap map = AWGameData.INSTANCE.getData(player.worldObj, StructureMap.class);
             WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt(player.worldObj, bpHit.x, bpHit.y, bpHit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), template, map);
         } else {
             /**

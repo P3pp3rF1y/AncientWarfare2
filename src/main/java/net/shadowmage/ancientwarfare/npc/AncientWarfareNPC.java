@@ -107,11 +107,6 @@ public class AncientWarfareNPC {
         NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_FACTION_BARD, ContainerNpcFactionBard.class);
         PacketBase.registerPacketType(NetworkHandler.PACKET_NPC_COMMAND, PacketNpcCommand.class);
         PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class);
-
-        /**
-         * register persistent game-data handlers
-         */
-        AWGameData.INSTANCE.registerSaveData(FactionData.name, FactionData.class);
         /**
          * register tick-handlers
          */
@@ -157,8 +152,8 @@ public class AncientWarfareNPC {
 
     @SubscribeEvent
     public void worldLoaded(WorldEvent.Load evt) {
-        if (!evt.world.isRemote && evt.world instanceof WorldServer) {
-            WorldData d = (WorldData) evt.world.perWorldStorage.loadData(WorldData.class, WorldData.name);
+        if (!evt.world.isRemote) {
+            WorldData d = AWGameData.INSTANCE.getPerWorldData(evt.world, WorldData.class);
             if (d != null) {
                 AWNPCStatics.npcAIDebugMode = d.get("NpcAIDebugMode");
             }

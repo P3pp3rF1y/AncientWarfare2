@@ -15,18 +15,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class ResearchTracker {
+public final class ResearchTracker {
 
+    public static final ResearchTracker INSTANCE = new ResearchTracker();
+    private final ResearchData clientData;
     private ResearchTracker() {
+        clientData = new ResearchData("AWResearchData");
     }
-
-    private static ResearchTracker INSTANCE = new ResearchTracker();
-
-    public static ResearchTracker instance() {
-        return INSTANCE;
-    }
-
-    private ResearchData clientData = new ResearchData();
 
     /**
      * SERVER ONLY
@@ -142,7 +137,7 @@ public class ResearchTracker {
         if (world.isRemote) {
             return clientData;
         }
-        return AWGameData.INSTANCE.getData(ResearchData.name, world, ResearchData.class);
+        return AWGameData.INSTANCE.getData(world, ResearchData.class);
     }
 
     /**

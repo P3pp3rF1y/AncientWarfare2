@@ -92,7 +92,6 @@ public class AncientWarfareStructures {
          */
         PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);
         PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class);
-        AWGameData.INSTANCE.registerSaveData("AWStructureMap", StructureMap.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER, ContainerSpawnerPlacer.class);

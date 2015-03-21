@@ -15,17 +15,11 @@ import java.util.*;
 
 public class MailboxData extends WorldSavedData {
 
-    public static final String name = "AWMailboxData";
-
     private MailboxSet publicMailboxes = new MailboxSet("public");
     private HashMap<String, MailboxSet> privateMailboxes = new HashMap<String, MailboxSet>();
 
     public MailboxData(String par1Str) {
         super(par1Str);
-    }
-
-    public MailboxData() {
-        super(name);
     }
 
     @Override
@@ -329,7 +323,7 @@ public class MailboxData extends WorldSavedData {
 
         @Override
         public String toString() {
-            return "MailboxEntry: " + name + " Items List: " + incomingItems;
+            return "MailboxEntry: " + mapName + " Items List: " + incomingItems;
         }
     }
 

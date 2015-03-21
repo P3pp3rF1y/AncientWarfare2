@@ -14,16 +14,10 @@ import java.util.List;
 
 public class TownMap extends WorldSavedData {
 
-    public static final String NAME = "AWTownMap";
-
     private List<StructureBB> boundingBoxes = new ArrayList<StructureBB>();
 
     public TownMap(String name) {
         super(name);
-    }
-
-    public TownMap() {
-        this(NAME);
     }
 
     public void setGenerated(World world, StructureBB bb) {

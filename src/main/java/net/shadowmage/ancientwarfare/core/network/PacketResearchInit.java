@@ -44,7 +44,7 @@ public class PacketResearchInit extends PacketBase {
 
     @Override
     protected void execute() {
-        ResearchTracker.instance().onClientResearchReceived(researchDataTag);
+        ResearchTracker.INSTANCE.onClientResearchReceived(researchDataTag);
     }
 
 }

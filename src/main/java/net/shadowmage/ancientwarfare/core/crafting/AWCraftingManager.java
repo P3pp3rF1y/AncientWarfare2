@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
@@ -48,7 +49,7 @@ public class AWCraftingManager {
     private boolean canPlayerCraft(RecipeResearched recipe, World world, String playerName) {
         if (AWCoreStatics.useResearchSystem) {
             for (Integer i : recipe.getNeededResearch()) {
-                if (!ResearchTracker.instance().hasPlayerCompleted(world, playerName, i)) {
+                if (!ResearchTracker.INSTANCE.hasPlayerCompleted(world, playerName, i)) {
                     return false;
                 }
             }
@@ -116,7 +117,7 @@ public class AWCraftingManager {
             try {
                 createRecipe(stack, split[0], list.toArray());
             } catch (Throwable throwable) {
-                throwable.printStackTrace();
+                AWLog.logError("Error creating recipe for parsed line: " + line);
             }
         }
     }

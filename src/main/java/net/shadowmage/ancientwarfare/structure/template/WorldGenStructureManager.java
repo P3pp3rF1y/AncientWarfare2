@@ -87,7 +87,7 @@ public class WorldGenStructureManager {
         searchCache.clear();
         trimmedPotentialStructures.clear();
         distancesFound.clear();
-        StructureMap map = AWGameData.INSTANCE.getData("AWStructureMap", world, StructureMap.class);
+        StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
         if (map == null) {
             return null;
         }

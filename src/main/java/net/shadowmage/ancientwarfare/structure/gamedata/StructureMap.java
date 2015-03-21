@@ -34,15 +34,9 @@ public class StructureMap extends WorldSavedData {
 
     private StructureDimensionMap map;
 
-    public static final String NAME = "AWStructureMap";
-
     public StructureMap(String name) {
-        super(NAME);
+        super(name);
         map = new StructureDimensionMap();
-    }
-
-    public StructureMap() {
-        this(NAME);
     }
 
     @Override
@@ -188,7 +182,7 @@ public class StructureMap extends WorldSavedData {
             NBTTagCompound entryTag;
             int x, z;
             for (int i = 0; i < entryList.tagCount(); i++) {
-                entryTag = (NBTTagCompound) entryList.getCompoundTagAt(i);
+                entryTag = entryList.getCompoundTagAt(i);
                 x = entryTag.getInteger("x");
                 z = entryTag.getInteger("z");
                 entry = new StructureEntry();

@@ -39,7 +39,7 @@ public class FactionTracker {
     }
 
     private void onPlayerLogin(EntityPlayer player) {
-        FactionData data = AWGameData.INSTANCE.getData(FactionData.name, player.worldObj, FactionData.class);
+        FactionData data = AWGameData.INSTANCE.getData(player.worldObj, FactionData.class);
         data.onPlayerLogin(player);
         sendFactionEntry(player, data);
     }
@@ -48,7 +48,7 @@ public class FactionTracker {
         if (world.isRemote) {
             throw new IllegalArgumentException("Cannot adjust standing on client world!");
         }
-        FactionData data = AWGameData.INSTANCE.getData(FactionData.name, world, FactionData.class);
+        FactionData data = AWGameData.INSTANCE.getData(world, FactionData.class);
         data.adjustStandingFor(playerName, factionName, adjustment);
         sendFactionUpdate(world, playerName, factionName, data);
     }
@@ -57,7 +57,7 @@ public class FactionTracker {
         if (world.isRemote) {
             throw new IllegalArgumentException("Cannot set standing on client world!");
         }
-        FactionData data = AWGameData.INSTANCE.getData(FactionData.name, world, FactionData.class);
+        FactionData data = AWGameData.INSTANCE.getData(world, FactionData.class);
         data.setStandingFor(playerName, factionName, setting);
         sendFactionUpdate(world, playerName, factionName, data);
     }
@@ -70,7 +70,7 @@ public class FactionTracker {
                 throw new RuntimeException("Client side faction data was null while attempting lookup for: " + playerName + " for faction: " + factionName + " for client world: " + world);
             }
         } else {
-            FactionData data = AWGameData.INSTANCE.getData(FactionData.name, world, FactionData.class);
+            FactionData data = AWGameData.INSTANCE.getData(world, FactionData.class);
             return data.getStandingFor(playerName, factionName);
         }
     }

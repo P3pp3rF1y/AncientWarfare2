@@ -12,14 +12,8 @@ public class ResearchData extends WorldSavedData {
 
     private HashMap<String, ResearchEntry> playerResearchEntries = new HashMap<String, ResearchEntry>();
 
-    public static final String name = "AWResearchData";
-
-    public ResearchData() {
-        super(name);
-    }
-
     public ResearchData(String par1Str) {
-        super(name);
+        super(par1Str);
     }
 
     public void onPlayerLogin(EntityPlayer player) {

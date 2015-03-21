@@ -63,7 +63,7 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
         totalHeight = 8;
 
         if (getContainer().researcherName != null) {
-            for (Integer g : ResearchTracker.instance().getResearchableGoals(player.worldObj, getContainer().researcherName)) {
+            for (Integer g : ResearchTracker.INSTANCE.getResearchableGoals(player.worldObj, getContainer().researcherName)) {
                 totalHeight = addSelectableGoal(totalHeight, g);
             }
         }

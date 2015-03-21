@@ -4,19 +4,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
 
 public class WorldData extends WorldSavedData {
-    public static final String name = "AWWorldData";
 
     NBTTagCompound dataTag = new NBTTagCompound();
 
     /**
      * reflection constructor for mc-vanilla code
      */
-    public WorldData(String p_i2141_1_) {
-        super(name);
-    }
-
-    public WorldData() {
-        this(name);
+    public WorldData(String par) {
+        super(par);
     }
 
     public final boolean get(String key) {

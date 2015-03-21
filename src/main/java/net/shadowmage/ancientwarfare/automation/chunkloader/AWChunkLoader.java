@@ -9,9 +9,10 @@ import net.shadowmage.ancientwarfare.core.interfaces.IChunkLoaderTile;
 
 import java.util.List;
 
-public class AWChunkLoader implements LoadingCallback {
+public final class AWChunkLoader implements LoadingCallback {
 
-    public AWChunkLoader() {
+    public final static AWChunkLoader INSTANCE = new AWChunkLoader();
+    private AWChunkLoader() {
 
     }
 
@@ -31,7 +32,7 @@ public class AWChunkLoader implements LoadingCallback {
         }
     }
 
-    public static void writeDataToTicket(Ticket tk, int x, int y, int z) {
+    public void writeDataToTicket(Ticket tk, int x, int y, int z) {
         NBTTagCompound posTag = new NBTTagCompound();
         posTag.setInteger("x", x);
         posTag.setInteger("y", y);

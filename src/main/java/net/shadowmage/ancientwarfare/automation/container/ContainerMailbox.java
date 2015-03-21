@@ -62,7 +62,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         guiHeight = addPlayerSlots(8, y1 + 12, 4) + 8 + 24;
 
         if (!player.worldObj.isRemote) {
-            MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, player.worldObj, MailboxData.class);
+            MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);
             publicBoxNames.addAll(data.getPublicBoxNames());
             privateBoxNames.addAll(data.getPrivateBoxNames(tileEntity.getOwnerName()));
             privateBox = tileEntity.isPrivateBox();
@@ -143,12 +143,12 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         }
         if (tag.hasKey("addMailbox")) {
             String name = tag.getString("addMailbox");
-            MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, player.worldObj, MailboxData.class);
+            MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);
             data.addMailbox(tileEntity.isPrivateBox() ? tileEntity.getOwnerName() : null, name);
         }
         if (tag.hasKey("deleteMailbox")) {
             String name = tag.getString("deleteMailbox");
-            MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, player.worldObj, MailboxData.class);
+            MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);
             data.deleteMailbox(tileEntity.isPrivateBox() ? tileEntity.getOwnerName() : null, name);
         }
         refreshGui();
@@ -280,7 +280,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         /**
          * detect changes to public or private names list
          */
-        MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, player.worldObj, MailboxData.class);
+        MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);
         if (!publicBoxNames.equals(data.getPublicBoxNames())) {
             if (tag == null) {
                 tag = new NBTTagCompound();

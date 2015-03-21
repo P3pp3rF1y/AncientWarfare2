@@ -33,7 +33,7 @@ public class TownPlacementValidator {
         int cx = x >> 4;
         int cz = z >> 4;
 
-        TownMap tm = AWGameData.INSTANCE.getPerWorldData(TownMap.NAME, world, TownMap.class);
+        TownMap tm = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
         int minDist = AWStructureStatics.townClosestDistance * 16;
         float dist = tm.getClosestTown(world, x, z, minDist * 2);
         if (dist < minDist) {
@@ -87,14 +87,11 @@ public class TownPlacementValidator {
     }
 
     public static boolean validateAreaForPlacement(World world, TownBoundingArea area) {
-        if (!validateStructureCollision(world, area)) {
-            return false;
-        }
-        return true;
+        return validateStructureCollision(world, area);
     }
 
     private static boolean validateStructureCollision(World world, TownBoundingArea area) {
-        StructureMap map = AWGameData.INSTANCE.getData(StructureMap.NAME, world, StructureMap.class);
+        StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
         if (map == null) {
             return false;
         }
@@ -138,70 +135,46 @@ public class TownPlacementValidator {
 
     private static boolean tryExpandXNeg(World world, TownBoundingArea area) {
         int cx = area.chunkMinX - 1;
-        int minZ = area.chunkMinZ;
-        int maxZ = area.chunkMaxZ;
-        boolean valid = true;
-        for (int z = minZ; z <= maxZ; z++) {
+        for (int z = area.chunkMinZ; z <= area.chunkMaxZ; z++) {
             if (!isAverageHeightWithin(world, cx, z, area.minY, area.maxY)) {
-                valid = false;
-                break;
+                return false;
             }
         }
-        if (valid) {
-            area.chunkMinX = cx;
-        }
-        return valid;
+        area.chunkMinX = cx;
+        return true;
     }
 
     private static boolean tryExpandXPos(World world, TownBoundingArea area) {
         int cx = area.chunkMaxX + 1;
-        int minZ = area.chunkMinZ;
-        int maxZ = area.chunkMaxZ;
-        boolean valid = true;
-        for (int z = minZ; z <= maxZ; z++) {
+        for (int z = area.chunkMinZ; z <= area.chunkMaxZ; z++) {
             if (!isAverageHeightWithin(world, cx, z, area.minY, area.maxY)) {
-                valid = false;
-                break;
+                return false;
             }
         }
-        if (valid) {
-            area.chunkMaxX = cx;
-        }
-        return valid;
+        area.chunkMaxX = cx;
+        return true;
     }
 
     private static boolean tryExpandZNeg(World world, TownBoundingArea area) {
         int cz = area.chunkMinZ - 1;
-        int minX = area.chunkMinX;
-        int maxX = area.chunkMaxX;
-        boolean valid = true;
-        for (int x = minX; x <= maxX; x++) {
+        for (int x = area.chunkMinX; x <= area.chunkMaxX; x++) {
             if (!isAverageHeightWithin(world, x, cz, area.minY, area.maxY)) {
-                valid = false;
-                break;
+                return false;
             }
         }
-        if (valid) {
-            area.chunkMinZ = cz;
-        }
-        return valid;
+        area.chunkMinZ = cz;
+        return true;
     }
 
     private static boolean tryExpandZPos(World world, TownBoundingArea area) {
         int cz = area.chunkMaxZ + 1;
-        int minX = area.chunkMinX;
-        int maxX = area.chunkMaxX;
-        boolean valid = true;
-        for (int x = minX; x <= maxX; x++) {
+        for (int x = area.chunkMinX; x <= area.chunkMaxX; x++) {
             if (!isAverageHeightWithin(world, x, cz, area.minY, area.maxY)) {
-                valid = false;
-                break;
+                return false;
             }
         }
-        if (valid) {
-            area.chunkMaxZ = cz;
-        }
-        return valid;
+        area.chunkMaxZ = cz;
+        return true;
     }
 
     private static boolean isAverageHeightWithin(World world, int cx, int cz, int min, int max) {
@@ -229,10 +202,10 @@ public class TownPlacementValidator {
      */
     private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk) {
         int maxY = chunk.getTopFilledSegment() + 15;
-        Block block = null;
+        Block block;
         for (int y = maxY; y > 0; y--) {
             block = chunk.getBlock(xInChunk, y, zInChunk);
-            if (block == null || block == Blocks.air || AWStructureStatics.skippableBlocksContains(block)) {
+            if (block == Blocks.air || AWStructureStatics.skippableBlocksContains(block)) {
                 continue;
             }
             if (block.getMaterial().isLiquid()) {
