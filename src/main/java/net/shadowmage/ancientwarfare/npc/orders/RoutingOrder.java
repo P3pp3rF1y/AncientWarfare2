@@ -177,7 +177,6 @@ public class RoutingOrder extends NpcOrders {
         private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide) {
             int moved = 0;
             ItemStack stack;
-            ItemStack filter;
             int stackSize = 0;
             int fromIndices[];
             boolean shouldMove;
@@ -193,8 +192,7 @@ public class RoutingOrder extends NpcOrders {
                     continue;
                 }
                 stackSize = stack.stackSize;
-                for (int i = 0; i < filters.length; i++) {
-                    filter = filters[i];
+                for (ItemStack filter : filters) {
                     if (filter == null) {
                         continue;
                     }
@@ -220,7 +218,6 @@ public class RoutingOrder extends NpcOrders {
         private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide) {
             int moved = 0;
             ItemStack stack;
-            ItemStack filter;
             int stackSize = 0;
             int fromIndices[];
             boolean shouldMove;
@@ -236,8 +233,7 @@ public class RoutingOrder extends NpcOrders {
                     continue;
                 }
                 stackSize = stack.stackSize;
-                for (int i = 0; i < filters.length; i++) {
-                    filter = filters[i];
+                for (ItemStack filter : filters) {
                     if (filter == null) {
                         continue;
                     }
@@ -264,10 +260,8 @@ public class RoutingOrder extends NpcOrders {
             int moved = 0;
             int toMove = 0;
             int foundCount = 0;
-            ItemStack filter;
             int m1;
-            for (int i = 0; i < filters.length; i++) {
-                filter = filters[i];
+            for (ItemStack filter : filters) {
                 if (filter == null) {
                     continue;
                 }

@@ -103,9 +103,7 @@ public class POTrade {
                 }
                 InventoryTools.mergeItemStack(storage, tradeGrid.decrStackSize(i, inputStack.stackSize), -1);//remove from trade grid and merge into storage
             }
-            ItemStack outputStack;
-            for (int i = 0; i < output.length; i++) {
-                outputStack = output[i];
+            for (ItemStack outputStack : output) {
                 if (outputStack == null) {
                     continue;
                 }

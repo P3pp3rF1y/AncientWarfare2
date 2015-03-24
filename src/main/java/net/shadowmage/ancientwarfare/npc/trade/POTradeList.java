@@ -45,8 +45,8 @@ public class POTradeList {
 
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagList list = new NBTTagList();
-        for (int i = 0; i < this.tradeList.size(); i++) {
-            list.appendTag(this.tradeList.get(i).writeToNBT(new NBTTagCompound()));
+        for (POTrade aTrade : this.tradeList) {
+            list.appendTag(aTrade.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("tradeList", list);
         return tag;

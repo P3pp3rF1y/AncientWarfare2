@@ -72,8 +72,8 @@ public final class POTradeRoute {
 
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagList list = new NBTTagList();
-        for (int i = 0; i < route.size(); i++) {
-            list.appendTag(route.get(i).writeToNBT(new NBTTagCompound()));
+        for (POTradePoint point : route) {
+            list.appendTag(point.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("route", list);
         return tag;

@@ -72,8 +72,8 @@ public final class FactionTradeList {
      * Will use the internal stored tick number value for updating the trades list.<br>
      */
     public void updateTradesForView() {
-        for (int i = 0; i < tradeList.size(); i++) {
-            tradeList.get(i).updateTrade(ticks);
+        for (FactionTrade aTrade : tradeList) {
+            aTrade.updateTrade(ticks);
         }
         ticks = 0;
     }
@@ -115,8 +115,8 @@ public final class FactionTradeList {
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         tag.setInteger("ticks", ticks);
         NBTTagList list = new NBTTagList();
-        for (int i = 0; i < tradeList.size(); i++) {
-            list.appendTag(tradeList.get(i).writeToNBT(new NBTTagCompound()));
+        for (FactionTrade aTrade : tradeList) {
+            list.appendTag(aTrade.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("tradeList", list);
         return tag;
