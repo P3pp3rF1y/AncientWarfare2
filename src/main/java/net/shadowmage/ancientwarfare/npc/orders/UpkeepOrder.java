@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 
@@ -12,8 +13,6 @@ public class UpkeepOrder extends NpcOrders {
     BlockPosition upkeepPosition;
     int upkeepDimension;
     int blockSide;
-    Block block;
-    int blockMeta;
     int upkeepAmount = 6000;
 
     public UpkeepOrder() {
@@ -29,8 +28,6 @@ public class UpkeepOrder extends NpcOrders {
 
     public void removeUpkeepPoint() {
         upkeepPosition = null;
-        block = null;
-        blockMeta = 0;
         blockSide = 0;
         upkeepDimension = 0;
         upkeepAmount = 6000;
@@ -57,11 +54,11 @@ public class UpkeepOrder extends NpcOrders {
     }
 
     public Block getBlock() {
-        return block;
+        return upkeepPosition == null ?  null : upkeepPosition.get(upkeepDimension);
     }
 
     public int getBlockMeta() {
-        return blockMeta;
+        return upkeepPosition == null ?  0 : DimensionManager.getWorld(upkeepDimension).getBlockMetadata(upkeepPosition.x, upkeepPosition.y, upkeepPosition.z);
     }
 
     public final int getUpkeepAmount() {
@@ -72,8 +69,6 @@ public class UpkeepOrder extends NpcOrders {
         upkeepPosition = pos;
         upkeepDimension = world.provider.dimensionId;
         blockSide = 0;
-        block = world.getBlock(pos.x, pos.y, pos.z);
-        blockMeta = world.getBlockMetadata(pos.x, pos.y, pos.z);
         upkeepAmount = 6000;
         return true;
     }
@@ -84,8 +79,6 @@ public class UpkeepOrder extends NpcOrders {
             upkeepPosition = new BlockPosition(tag.getCompoundTag("upkeepPosition"));
             upkeepDimension = tag.getInteger("dim");
             blockSide = tag.getInteger("side");
-            block = Block.getBlockFromName(tag.getString("block"));
-            blockMeta = tag.getInteger("blockMeta");
             upkeepAmount = tag.getInteger("upkeepAmount");
         }
     }
@@ -96,8 +89,6 @@ public class UpkeepOrder extends NpcOrders {
             tag.setTag("upkeepPosition", upkeepPosition.writeToNBT(new NBTTagCompound()));
             tag.setInteger("dim", upkeepDimension);
             tag.setInteger("side", blockSide);
-            tag.setString("block", Block.blockRegistry.getNameForObject(block));
-            tag.setInteger("blockMeta", blockMeta);
             tag.setInteger("upkeepAmount", upkeepAmount);
         }
         return tag;

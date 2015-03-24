@@ -52,7 +52,7 @@ public class WorkOrder extends NpcOrders {
 
     public boolean addWorkPosition(World world, BlockPosition position, int length) {
         if (entries.size() < 8) {
-            entries.add(new WorkEntry(world, position, world.provider.dimensionId, length));
+            entries.add(new WorkEntry(position, world.provider.dimensionId, length));
             return true;
         }
         return false;//return true if successfully added
@@ -102,8 +102,6 @@ public class WorkOrder extends NpcOrders {
 
     public static final class WorkEntry {
 
-        private Block block;
-        int blockMeta;
         private BlockPosition position = new BlockPosition();
         int dimension;
         private int workLength;
@@ -111,9 +109,7 @@ public class WorkOrder extends NpcOrders {
         private WorkEntry() {
         }//nbt constructor
 
-        public WorkEntry(World world, BlockPosition position, int dimension, int workLength) {
-            this.setBlock(world.getBlock(position.x, position.y, position.z));
-            this.blockMeta = world.getBlockMetadata(position.x, position.y, position.z);
+        public WorkEntry(BlockPosition position, int dimension, int workLength) {
             this.setPosition(position);
             this.dimension = dimension;
             this.setWorkLength(workLength);
@@ -123,16 +119,12 @@ public class WorkOrder extends NpcOrders {
             setPosition(new BlockPosition(tag.getCompoundTag("pos")));
             dimension = tag.getInteger("dim");
             setWorkLength(tag.getInteger("length"));
-            setBlock(Block.getBlockFromName(tag.getString("block")));
-            blockMeta = tag.getInteger("blockMeta");
         }
 
         public NBTTagCompound writeToNBT(NBTTagCompound tag) {
             tag.setTag("pos", getPosition().writeToNBT(new NBTTagCompound()));
             tag.setInteger("dim", dimension);
             tag.setInteger("length", getWorkLength());
-            tag.setString("block", Block.blockRegistry.getNameForObject(getBlock()));
-            tag.setInteger("blockMeta", blockMeta);
             return tag;
         }
 
@@ -140,14 +132,7 @@ public class WorkOrder extends NpcOrders {
          * @return the block
          */
         public Block getBlock() {
-            return block;
-        }
-
-        /**
-         * @param block the block to set
-         */
-        public void setBlock(Block block) {
-            this.block = block;
+            return getPosition().get(dimension);
         }
 
         /**
