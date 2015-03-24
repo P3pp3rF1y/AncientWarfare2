@@ -137,26 +137,9 @@ public class SpawnerSettings {
             return;
         }
         if (lightSensitive) {
-            int light = worldObj.getFullBlockLightValue(xCoord, yCoord + 1, zCoord);
+            int light = worldObj.getBlockLightValue(xCoord, yCoord, zCoord);
 
-            int l1 = worldObj.getFullBlockLightValue(xCoord + 1, yCoord, zCoord);
-            if (l1 > light) {
-                light = l1;
-            }
-            l1 = worldObj.getFullBlockLightValue(xCoord - 1, yCoord, zCoord);
-            if (l1 > light) {
-                light = l1;
-            }
-            l1 = worldObj.getFullBlockLightValue(xCoord, yCoord, zCoord + 1);
-            if (l1 > light) {
-                light = l1;
-            }
-            l1 = worldObj.getFullBlockLightValue(xCoord, yCoord, zCoord - 1);
-            if (l1 > light) {
-                light = l1;
-            }
-
-            //TODO this light calculation stuff is -not- correct...
+            //TODO check this light calculation stuff...
             if (light >= 8) {
                 return;
             }
@@ -535,6 +518,10 @@ public class SpawnerSettings {
 
         public final String getEntityId() {
             return entityId;
+        }
+
+        public final String getEntityName(){
+            return "entity." + entityId + ".name";
         }
 
         public final int getSpawnMin() {

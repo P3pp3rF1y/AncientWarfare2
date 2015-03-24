@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.modeler.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -167,7 +166,7 @@ public class GuiUVEditor extends GuiContainerBase {
         NumberInput input;
         Button button;
 
-        label = new Label(c0, totalHeight, StatCollector.translateToLocal("guistrings.texture_size") + ":");
+        label = new Label(c0, totalHeight, "guistrings.texture_size");
         textureControlArea.addGuiElement(label);
         totalHeight += 12;
 

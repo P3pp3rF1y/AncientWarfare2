@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
@@ -10,7 +9,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnSettings;
 
-import java.util.Map;
+import java.util.Set;
 
 public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
 
@@ -37,10 +36,10 @@ public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
         area = new CompositeScrolled(this, 0, 40, 256, 200);
         addGuiElement(area);
 
-        Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.spawner.select_entity"));
+        Label label = new Label(8, 8, "guistrings.spawner.select_entity");
         addGuiElement(label);
 
-        Button button = new Button(xSize - 8 - 55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done")) {
+        Button button = new Button(xSize - 8 - 55, 8, 55, 12, "guistrings.done") {
             @Override
             protected void onPressed() {
                 Minecraft.getMinecraft().displayGuiScreen(parent);
@@ -48,7 +47,7 @@ public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
         };
         addGuiElement(button);
 
-        selectionLabel = new Label(8, 20, settings.getEntityId());
+        selectionLabel = new Label(8, 20, settings.getEntityName());
         addGuiElement(selectionLabel);
     }
 
@@ -58,18 +57,18 @@ public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
 
         int totalHeight = 8;
         @SuppressWarnings({"unchecked", "rawtypes"})
-        Map<String, Class> mp = EntityList.stringToClassMapping;
+        Set<String> mp = EntityList.stringToClassMapping.keySet();
 
         Button button;
-        for (String name : mp.keySet()) {
-            if (AWStructureStatics.excludedSpawnerEntities.contains(name)) {
+        for (final String name : mp) {
+            if (name == null || name.isEmpty() || AWStructureStatics.excludedSpawnerEntities.contains(name)) {
                 continue;//skip excluded entities
             }
-            button = new Button(8, totalHeight, 256 - 8 - 16, 12, name) {
+            button = new Button(8, totalHeight, 256 - 8 - 16, 12, "entity." + name + ".name") {
                 @Override
                 protected void onPressed() {
-                    settings.setEntityToSpawn(text);
-                    selectionLabel.setText(text);
+                    settings.setEntityToSpawn(name);
+                    selectionLabel.setText(settings.getEntityName());
                     refreshGui();
                 }
             };

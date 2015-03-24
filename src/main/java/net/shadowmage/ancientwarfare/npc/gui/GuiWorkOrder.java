@@ -44,11 +44,11 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
         int totalHeight = 8;
         int index = 0;
         for (WorkEntry entry : entries) {
-            blockStack = new ItemStack(Item.getItemFromBlock(entry.getBlock()));
+            blockStack = new ItemStack(entry.getBlock());
             slot = new ItemSlot(8, totalHeight + 2, blockStack, this);
             area.addGuiElement(slot);
 
-            label = new Label(8 + 20, totalHeight, String.valueOf(entry.getPosition()));
+            label = new Label(8 + 20, totalHeight, entry.getPosition().toString());
             area.addGuiElement(label);
 
             button = new IndexedButton(8 + 20 + 20, totalHeight + 10, 12, 12, "+", index) {

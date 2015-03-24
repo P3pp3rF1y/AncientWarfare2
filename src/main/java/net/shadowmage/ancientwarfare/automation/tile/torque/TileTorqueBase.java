@@ -201,7 +201,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         ItemStack stack = player.getCurrentEquippedItem();
         if (stack == null) {
             if (!worldObj.isRemote) {
-                player.addChatMessage(new ChatComponentTranslation("guistrings.automation.torque.values", getTotalTorque(), getTorqueIn(), getTorqueOut(), getTorqueLoss()));
+                player.addChatMessage(new ChatComponentTranslation("guistrings.automation.torque.values", String.format("%.2f", getTotalTorque()), String.format("%.2f", getTorqueIn()), String.format("%.2f",getTorqueOut()), String.format("%.2f",getTorqueLoss())));
             }
             return true;
         }

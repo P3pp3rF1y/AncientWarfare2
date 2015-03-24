@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;
@@ -51,7 +50,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         Button button;
 
         if (showAddButton) {
-            button = new Button(8, 8, 160, 12, StatCollector.translateToLocal("guistrings.spawner.add_entity")) {
+            button = new Button(8, 8, 160, 12, "guistrings.spawner.add_entity") {
                 @Override
                 protected void onPressed() {
                     group.addSpawnSetting(settings);
@@ -62,7 +61,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
             addGuiElement(button);
         }
 
-        button = new Button(256 - 8 - 55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done")) {
+        button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done") {
             @Override
             protected void onPressed() {
                 Minecraft.getMinecraft().displayGuiScreen(parent);
@@ -71,7 +70,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         };
         addGuiElement(button);
 
-        Label label = new Label(8, 40 - 14, StatCollector.translateToLocal("guistrings.spawner.set_entity_properties"));
+        Label label = new Label(8, 40 - 14, "guistrings.spawner.set_entity_properties");
         addGuiElement(label);
 
         area = new CompositeScrolled(this, 0, 40, 256, 200);
@@ -91,10 +90,10 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         int lineNumber = 0;
         int totalHeight = 8;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.select_entity"));
+        label = new Label(8, totalHeight, "guistrings.spawner.select_entity");
         area.addGuiElement(label);
 
-        button = new Button(100, totalHeight, 120, 12, settings.getEntityId()) {
+        button = new Button(100, totalHeight, 120, 12, settings.getEntityName()) {
             @Override
             protected void onPressed() {
                 Minecraft.getMinecraft().displayGuiScreen(new GuiSpawnerAdvancedEntitySelection(GuiSpawnerAdvancedAddEntity.this, settings));
@@ -103,39 +102,36 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         area.addGuiElement(button);
         totalHeight += 12;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.min"));
+        label = new Label(8, totalHeight, "guistrings.spawner.min");
         area.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 30, settings.getSpawnMin(), this) {
             @Override
             public void onValueUpdated(float value) {
-                int val = (int) value;
-                settings.setSpawnCountMin(val);
+                settings.setSpawnCountMin((int)value);
             }
         };
         input.setIntegerValue();
         area.addGuiElement(input);
         totalHeight += 12;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.max"));
+        label = new Label(8, totalHeight, "guistrings.spawner.max");
         area.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 30, settings.getSpawnMax(), this) {
             @Override
             public void onValueUpdated(float value) {
-                int val = (int) value;
-                settings.setSpawnCountMax(val);
+                settings.setSpawnCountMax((int)value);
             }
         };
         input.setIntegerValue();
         area.addGuiElement(input);
         totalHeight += 12;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.total"));
+        label = new Label(8, totalHeight, "guistrings.spawner.total");
         area.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 30, settings.getSpawnTotal(), this) {
             @Override
             public void onValueUpdated(float value) {
-                int val = (int) value;
-                settings.setSpawnLimitTotal(val);
+                settings.setSpawnLimitTotal((int)value);
             }
         };
         input.setIntegerValue();
@@ -146,12 +142,12 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
 
 
         totalHeight += 8;
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.custom_tag"));
+        label = new Label(8, totalHeight, "guistrings.spawner.custom_tag");
         area.addGuiElement(label);
         totalHeight += 12;
 
         if (showAddTagButton) {
-            button = new Button(8, totalHeight, 120, 12, StatCollector.translateToLocal("guistrings.spawner.add_custom_tag")) {
+            button = new Button(8, totalHeight, 120, 12, "guistrings.spawner.add_custom_tag") {
                 @Override
                 protected void onPressed() {
                     tagInput.add("TAG=10={");
@@ -179,7 +175,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
             textToLineMap.put(text, lineNumber);
             area.addGuiElement(text);
 
-            button = new Button(208, totalHeight, 12, 12, StatCollector.translateToLocal("guistrings.spawner.add")) {
+            button = new Button(208, totalHeight, 12, 12, "guistrings.spawner.add") {
                 @Override
                 protected void onPressed() {
                     int lineNumber = buttonToLineMap.get(this);
@@ -190,7 +186,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
             buttonToLineMap.put(button, lineNumber);
             area.addGuiElement(button);
 
-            button = new Button(220, totalHeight, 12, 12, StatCollector.translateToLocal("guistrings.spawner.remove")) {
+            button = new Button(220, totalHeight, 12, 12, "guistrings.spawner.remove") {
                 @Override
                 protected void onPressed() {
                     int lineNumber = buttonToLineMap.get(this);
@@ -209,7 +205,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         }
 
         if (!showAddTagButton) {
-            button = new Button(8, totalHeight, 120, 12, StatCollector.translateToLocal("guistrings.spawner.add_custom_tag_line")) {
+            button = new Button(8, totalHeight, 120, 12, "guistrings.spawner.add_custom_tag_line") {
                 @Override
                 protected void onPressed() {
                     tagInput.add("");

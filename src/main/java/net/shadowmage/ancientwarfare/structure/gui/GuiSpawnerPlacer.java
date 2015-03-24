@@ -33,15 +33,15 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
 
     @Override
     public void initElements() {
-        Button button = new Button(256 - 8 - 55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done")) {
+        Button button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done") {
             @Override
             protected void onPressed() {
                 closeGui();
             }
         };
         addGuiElement(button);
-
-        currentSelectionName = new Label(8, 8, "");
+        addGuiElement(new Label(8, 8, "guistrings.current_selection"));
+        currentSelectionName = new Label(8, 18, "");
         updateSelectionName();
         addGuiElement(currentSelectionName);
 
@@ -78,7 +78,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
             if (AWStructureStatics.excludedSpawnerEntities.contains(name)) {
                 continue;//skip excluded entities
             }
-            label = new Label(8, totalHeight, name);
+            label = new Label(8, totalHeight, "entity." + name + ".name");
             label.addNewListener(listener);
             typeSelectionArea.addGuiElement(label);
             labelToClass.put(label, name);
@@ -92,7 +92,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
 
         NumberInput input;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.delay"));
+        label = new Label(8, totalHeight, "guistrings.spawner.delay");
         attributesArea.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 112, getContainer().delay, this) {
             @Override
@@ -104,7 +104,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         attributesArea.addGuiElement(input);
         totalHeight += 12;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.min_spawn_delay"));
+        label = new Label(8, totalHeight, "guistrings.spawner.min_spawn_delay");
         attributesArea.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 112, getContainer().minSpawnDelay, this) {
             @Override
@@ -116,7 +116,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         attributesArea.addGuiElement(input);
         totalHeight += 12;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.max_spawn_delay"));
+        label = new Label(8, totalHeight, "guistrings.spawner.max_spawn_delay");
         attributesArea.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 112, getContainer().maxSpawnDelay, this) {
             @Override
@@ -128,7 +128,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         attributesArea.addGuiElement(input);
         totalHeight += 12;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.spawn_count"));
+        label = new Label(8, totalHeight, "guistrings.spawner.spawn_count");
         attributesArea.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 112, getContainer().spawnCount, this) {
             @Override
@@ -140,7 +140,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         attributesArea.addGuiElement(input);
         totalHeight += 12;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.max_nearby_entities"));
+        label = new Label(8, totalHeight, "guistrings.spawner.max_nearby_entities");
         attributesArea.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 112, getContainer().maxNearbyEntities, this) {
             @Override
@@ -152,7 +152,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         attributesArea.addGuiElement(input);
         totalHeight += 12;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.required_player_range"));
+        label = new Label(8, totalHeight, "guistrings.spawner.required_player_range");
         attributesArea.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 112, getContainer().requiredPlayerRange, this) {
             @Override
@@ -164,7 +164,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         attributesArea.addGuiElement(input);
         totalHeight += 12;
 
-        label = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.spawner.spawn_range"));
+        label = new Label(8, totalHeight, "guistrings.spawner.spawn_range");
         attributesArea.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 112, getContainer().spawnRange, this) {
             @Override
@@ -180,7 +180,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
     }
 
     private void updateSelectionName() {
-        currentSelectionName.setText(StatCollector.translateToLocal("guistrings.current_selection") + ": " + StatCollector.translateToLocal("entity." + getContainer().entityId + ".name"));
+        currentSelectionName.setText("entity." + getContainer().entityId + ".name");
     }
 
 }

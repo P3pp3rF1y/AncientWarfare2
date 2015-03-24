@@ -201,7 +201,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? stack : stack.copy();
+                stack = stack == null ? null : stack.copy();
                 setItem(stack);
                 trade.setInputStack(slotNum, stack);
             }
@@ -215,7 +215,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? stack : stack.copy();
+                stack = stack == null ? null : stack.copy();
                 setItem(stack);
                 trade.setOutputStack(slotNum, stack);
             }
@@ -283,7 +283,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         upkeep.setChecked(point.shouldUpkeep());
         routeArea.addGuiElement(upkeep);
 
-        Label delayLabel = new Label(120 + 55 + 4, startHeight + 12 + 1, StatCollector.translateToLocal("guistrings.delay") + ":");
+        Label delayLabel = new Label(120 + 55 + 4, startHeight + 12 + 1, "guistrings.delay");
         routeArea.addGuiElement(delayLabel);
 
         NumberInput delayInput = new NumberInput(120 + 55 + 4, startHeight + 24, 55, point.getDelay(), this) {
@@ -390,7 +390,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? stack : stack.copy();
+                stack = stack == null ? null : stack.copy();
                 entry.setFilter(stack);
                 setItem(stack);
             }
@@ -425,7 +425,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? stack : stack.copy();
+                stack = stack == null ? null : stack.copy();
                 entry.setFilter(stack);
                 setItem(stack);
             }

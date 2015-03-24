@@ -33,12 +33,12 @@ public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
         Button button;
         Label label;
 
-        if (pos != null && getContainer().upkeepOrder.getBlock() != null) {
-            ItemStack blockStack = new ItemStack(Item.getItemFromBlock(getContainer().upkeepOrder.getBlock()));
+        if (pos != null) {
+            ItemStack blockStack = new ItemStack(getContainer().upkeepOrder.getBlock());
             slot = new ItemSlot(8, 10, blockStack, this);
             addGuiElement(slot);
 
-            label = new Label(8 + 18 + 4, 8, String.valueOf(pos));
+            label = new Label(8 + 18 + 4, 8, pos.toString());
             addGuiElement(label);
 
             button = new Button(8 + 18 + 10, 8 + 10, 55, 12, "guistrings.npc.remove_upkeep_point") {

@@ -26,7 +26,7 @@ public class GuiTorqueGeneratorSterling extends GuiContainerBase<ContainerTorque
         pg1 = new ProgressBar(8, 8, 178 - 16, 10);
         addGuiElement(pg1);
 
-        energyLabel = new Label(8, 8, StatCollector.translateToLocal("guistrings.automation.energy_stored") + ": " + getContainer().energy);
+        energyLabel = new Label(8, 8, StatCollector.translateToLocalFormatted("guistrings.automation.current_energy",  String.format("%.2f",getContainer().energy)));
         addGuiElement(energyLabel);
 
         pg = new ProgressBar(8, 8 + 10 + 18 + 4, 178 - 16, 16);
@@ -35,7 +35,7 @@ public class GuiTorqueGeneratorSterling extends GuiContainerBase<ContainerTorque
 
     @Override
     public void setupElements() {
-        energyLabel.setText(StatCollector.translateToLocal("guistrings.automation.energy_stored") + ": " + getContainer().energy);
+        energyLabel.setText(StatCollector.translateToLocalFormatted("guistrings.automation.current_energy", String.format("%.2f",getContainer().energy)));
         float progress = 0;
         if (getContainer().burnTimeBase > 0) {
             progress = (float) getContainer().burnTime / (float) getContainer().burnTimeBase;

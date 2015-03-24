@@ -82,7 +82,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
         area.addNewListener(l);
         addGuiElement(area);
 
-        Button b = new Button(8, 240 - 8 - 12, 40, 12, StatCollector.translateToLocal("guistrings.automation.adjust_bounds")) {
+        Button b = new Button(8, 240 - 8 - 12, 40, 12, "guistrings.automation.adjust_bounds") {
             @Override
             protected void onPressed() {
                 NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, getContainer().tileEntity.xCoord, getContainer().tileEntity.yCoord, getContainer().tileEntity.zCoord);
