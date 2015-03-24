@@ -183,7 +183,7 @@ public abstract class NpcPlayerOwned extends NpcBase {
             NpcFaction npc = (NpcFaction) e;
             return npc.isHostileTowards(this);//cheap trick to determine if should be hostile or not using the faction-based npcs standing towards this players npcs...handled in NpcFaction
         } else if (e instanceof EntityPlayer) {
-            Team t = worldObj.getScoreboard().getPlayersTeam(e.getCommandSenderName());
+            Team t = ((EntityPlayer) e).getTeam();
             return t != getTeam();
         } else {
             String n = EntityList.getEntityString(e);
@@ -198,11 +198,10 @@ public abstract class NpcPlayerOwned extends NpcBase {
     @Override
     public boolean canTarget(Entity e) {
         if (e instanceof NpcPlayerOwned) {
-            NpcPlayerOwned npc = (NpcPlayerOwned) e;
-            Team t = npc.getTeam();
+            Team t = ((NpcPlayerOwned) e).getTeam();
             return t != getTeam();//do not allow npcs to target their own teams npcs
         } else if (e instanceof EntityPlayer) {
-            Team t = worldObj.getScoreboard().getPlayersTeam(e.getCommandSenderName());
+            Team t = ((EntityPlayer) e).getTeam();
             return t != getTeam();//do not allow npcs to target their own teams players
         }
         return e instanceof EntityLivingBase;
@@ -211,15 +210,14 @@ public abstract class NpcPlayerOwned extends NpcBase {
     @Override
     public boolean canBeAttackedBy(Entity e) {
         if (e instanceof NpcPlayerOwned) {
-            NpcPlayerOwned npc = (NpcPlayerOwned) e;
-            return npc.getTeam() != getTeam();//can only be attacked by non-same team -- disable friendly fire and combat amongst neutrals
+            return ((NpcPlayerOwned) e).getTeam() != getTeam();//can only be attacked by non-same team -- disable friendly fire and combat amongst neutrals
         }
         return true;
     }
 
     protected boolean isHostileTowards(Team team) {
         Team a = getTeam();
-        return a != null && team != null && a != team;
+        return a != null && !a.isSameTeam(team);
     }
 
     @Override
@@ -285,7 +283,7 @@ public abstract class NpcPlayerOwned extends NpcBase {
 
     @Override
     protected void tryCommand(EntityPlayer player) {
-        if (player.getTeam() == getTeam() && this.canBeCommandedBy(player.getCommandSenderName())) {
+        if (this.canBeCommandedBy(player.getCommandSenderName()) && (getTeam() == null || getTeam().isSameTeam(player.getTeam()))) {
             super.tryCommand(player);
         }
     }

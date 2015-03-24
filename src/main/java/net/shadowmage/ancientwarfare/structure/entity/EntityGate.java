@@ -104,9 +104,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         gateType.onGateStartOpen(this);//catch gates that have proxy blocks still in the world
         gateType.onGateStartClose(this);//
         ItemStack item = Gate.getItemToConstruct(this.gateType.getGlobalID());
-        EntityItem entity = new EntityItem(worldObj);
-        entity.setEntityItemStack(item);
-        entity.setPosition(posX, posY + 0.5d, posZ);
+        EntityItem entity = new EntityItem(worldObj, posX, posY + 0.5d, posZ, item);
         this.worldObj.spawnEntityInWorld(entity);
         this.setDead();
     }
@@ -199,13 +197,15 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     @Override
     public boolean interactFirst(EntityPlayer par1EntityPlayer) {
         if (this.worldObj.isRemote) {
-            return false;
+            return true;
         }
-        boolean canInteract = par1EntityPlayer.getTeam() == this.getTeam();
-        if (par1EntityPlayer.isSneaking() && canInteract) {
-            NetworkHandler.INSTANCE.openGui(par1EntityPlayer, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
-        } else if (canInteract) {
-            this.activateGate();
+        boolean canInteract = par1EntityPlayer.getCommandSenderName().equals(ownerName) || par1EntityPlayer.getTeam()!=null && par1EntityPlayer.getTeam().isSameTeam(this.getTeam());
+        if(canInteract){
+            if (par1EntityPlayer.isSneaking()) {
+                NetworkHandler.INSTANCE.openGui(par1EntityPlayer, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
+            } else {
+                this.activateGate();
+            }
             return true;
         } else {
             par1EntityPlayer.addChatMessage(new ChatComponentTranslation("guistrings.gate.use_error"));
@@ -276,13 +276,10 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         if (this.worldObj.isRemote) {
             return;
         }
-        boolean foundPowerA = false;
-        boolean foundPowerB = false;
         boolean activate = false;
-        int y = pos1.y;
-        y = pos2.y < y ? pos2.y : y;
-        foundPowerA = this.worldObj.isBlockIndirectlyGettingPowered(pos1.x, y, pos1.z);
-        foundPowerB = this.worldObj.isBlockIndirectlyGettingPowered(pos2.x, y, pos2.z);
+        int y = pos2.y < pos1.y ? pos2.y : pos1.y;
+        boolean foundPowerA = this.worldObj.isBlockIndirectlyGettingPowered(pos1.x, y, pos1.z);
+        boolean foundPowerB = this.worldObj.isBlockIndirectlyGettingPowered(pos2.x, y, pos2.z);
         if (foundPowerA && !wasPoweredA) {
             activate = true;
         }
@@ -338,7 +335,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     }
 
     public String getTexture() {
-        return "textures/" + "models/gate/" + gateType.getTexture();
+        return "textures/models/gate/" + gateType.getTexture();
     }
 
     @Override

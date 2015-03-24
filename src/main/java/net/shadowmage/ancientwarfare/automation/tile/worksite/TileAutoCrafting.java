@@ -270,20 +270,17 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
 
     @Override
     public boolean canInsertItem(int slot, ItemStack var2, int side) {
-        ForgeDirection d = ForgeDirection.getOrientation(side);
-        return d == ForgeDirection.UP;//top, insert only
+        return ForgeDirection.getOrientation(side) == ForgeDirection.UP;//top, insert only
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack var2, int side) {
-        ForgeDirection d = ForgeDirection.getOrientation(side);
-        return d == ForgeDirection.DOWN;//bottom, extract only
+        return ForgeDirection.getOrientation(side) == ForgeDirection.DOWN;//bottom, extract only
     }
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
         if (!player.worldObj.isRemote) {
-            //TODO validate team status?
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, xCoord, yCoord, zCoord);
         }
         return true;

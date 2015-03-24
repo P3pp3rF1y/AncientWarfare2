@@ -8,11 +8,14 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
+import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -110,10 +113,11 @@ public class ItemQuill extends Item implements IItemClickable {
         BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
         if (pos != null) {
             TileEntity te = player.worldObj.getTileEntity(pos.x, pos.y, pos.z);
-            if (te instanceof TileResearchStation) {
-                TileResearchStation ters = (TileResearchStation) te;
+            if (te instanceof IWorkSite && ((IWorkSite) te).getWorkType() == IWorkSite.WorkType.RESEARCH) {
+                IWorkSite ters = (IWorkSite) te;
                 if (ters.hasWork()) {
-                    if (ters.getTeam() == player.getTeam() || player.getCommandSenderName().equals(ters.getOwnerName())) {
+                    Team team = ters.getTeam();
+                    if ((team!=null && team.isSameTeam(player.getTeam())) || (te instanceof IOwnable && player.getCommandSenderName().equals(((IOwnable)te).getOwnerName()))) {
                         ters.addEnergyFromPlayer(player);
                         stack.damageItem(1, player);
                         //TODO add chat message

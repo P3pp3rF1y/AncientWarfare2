@@ -14,12 +14,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -98,9 +99,8 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TileWorksiteBase) {
-            TileWorksiteBase twb = (TileWorksiteBase) te;
-            return getIcon(side, twb.getPrimaryFacing().ordinal());
+        if (te instanceof IRotatableTile) {
+            return getIcon(side, ((IRotatableTile) te).getPrimaryFacing().ordinal());
         }
         return super.getIcon(world, x, y, z, side);
     }
@@ -108,10 +108,16 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof IWorkSite && te instanceof IInteractableTile) {
-            Team t = player.getTeam();
-            Team t1 = ((IWorkSite) te).getTeam();
-            if (t == t1) {
+        if (te instanceof IInteractableTile) {
+            boolean canClick = false;
+            if(te instanceof IOwnable && player.getCommandSenderName().equals(((IOwnable) te).getOwnerName())){
+                canClick = true;
+            }else if(te instanceof IWorkSite) {
+                Team t1 = ((IWorkSite) te).getTeam();
+                if(player.getTeam() == t1)
+                    canClick = true;
+            }
+            if (canClick) {
                 return ((IInteractableTile) te).onBlockClicked(player);
             }
         }
@@ -131,12 +137,10 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     @Override
     public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
         TileEntity te = worldObj.getTileEntity(x, y, z);
-        if (te instanceof TileWorksiteBase) {
-            TileWorksiteBase twb = (TileWorksiteBase) te;
-            ForgeDirection o = twb.getPrimaryFacing();
+        if (te instanceof IRotatableTile) {
             if (axis == ForgeDirection.DOWN || axis == ForgeDirection.UP) {
-                o = o.getRotation(axis);
-                twb.setPrimaryFacing(o);//twb will send update packets / etc
+                ForgeDirection o = ((IRotatableTile) te).getPrimaryFacing().getRotation(axis);
+                ((IRotatableTile) te).setPrimaryFacing(o);//twb will send update packets / etc
             }
         }
         return false;

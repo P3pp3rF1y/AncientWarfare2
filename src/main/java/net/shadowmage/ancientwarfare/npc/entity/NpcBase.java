@@ -309,7 +309,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (team == null) {
             return playerName.equals(ownerName);
         } else {
-            return team == worldObj.getScoreboard().getPlayersTeam(playerName);
+            return team.isSameTeam(worldObj.getScoreboard().getPlayersTeam(playerName));
         }
     }
 

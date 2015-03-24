@@ -88,8 +88,7 @@ public abstract class NpcFaction extends NpcBase {
     @Override
     public boolean canTarget(Entity e) {
         if (e instanceof NpcFaction) {
-            NpcFaction npc = (NpcFaction) e;
-            return !npc.getFaction().equals(getFaction());
+            return !((NpcFaction) e).getFaction().equals(getFaction());
         }
         return e instanceof EntityLivingBase;
     }
@@ -97,8 +96,7 @@ public abstract class NpcFaction extends NpcBase {
     @Override
     public boolean canBeAttackedBy(Entity e) {
         if (e instanceof NpcFaction) {
-            NpcFaction npc = (NpcFaction) e;
-            return !getFaction().equals(npc.getFaction());//can only be attacked by other factions, not your own...disable friendly fire
+            return !getFaction().equals(((NpcFaction) e).getFaction());//can only be attacked by other factions, not your own...disable friendly fire
         }
         return true;
     }
@@ -107,15 +105,12 @@ public abstract class NpcFaction extends NpcBase {
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
         if (damageSource.getEntity() instanceof EntityPlayer) {
-            String faction = getFaction();
             EntityPlayer player = (EntityPlayer) damageSource.getEntity();
-            FactionTracker.INSTANCE.adjustStandingFor(worldObj, player.getCommandSenderName(), faction, -AWNPCStatics.factionLossOnDeath);
+            FactionTracker.INSTANCE.adjustStandingFor(worldObj, player.getCommandSenderName(), getFaction(), -AWNPCStatics.factionLossOnDeath);
         } else if (damageSource.getEntity() instanceof NpcPlayerOwned) {
-            NpcBase npc = (NpcBase) damageSource.getEntity();
-            String faction = getFaction();
-            String playerName = npc.getOwnerName();
-            if (!playerName.isEmpty()) {
-                FactionTracker.INSTANCE.adjustStandingFor(worldObj, playerName, faction, -AWNPCStatics.factionLossOnDeath);
+            String playerName = ((NpcBase) damageSource.getEntity()).getOwnerName();
+            if (playerName != null) {
+                FactionTracker.INSTANCE.adjustStandingFor(worldObj, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
             }
         }
     }
