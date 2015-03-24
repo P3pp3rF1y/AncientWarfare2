@@ -76,14 +76,14 @@ public class POTradeRestockData {
     }
 
     public void doDeposit(IInventory storage, IInventory deposit, int side) {
-        for (int i = 0; i < depositList.size(); i++) {
-            depositList.get(i).process(storage, deposit, side);
+        for (POTradeDepositEntry aDeposit : depositList) {
+            aDeposit.process(storage, deposit, side);
         }
     }
 
     public void doWithdraw(IInventory storage, IInventory withdraw, int side) {
-        for (int i = 0; i < withdrawList.size(); i++) {
-            withdrawList.get(i).process(storage, withdraw, side);
+        for (POTradeWithdrawEntry aWithdraw : withdrawList) {
+            aWithdraw.process(storage, withdraw, side);
         }
     }
 
@@ -125,29 +125,16 @@ public class POTradeRestockData {
         }
 
         NBTTagList depositTagList = new NBTTagList();
-        for (int i = 0; i < this.depositList.size(); i++) {
-            depositTagList.appendTag(this.depositList.get(i).writeToNBT(new NBTTagCompound()));
+        for (POTradeDepositEntry aDeposit : this.depositList) {
+            depositTagList.appendTag(aDeposit.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("depositList", depositTagList);
 
         NBTTagList withdrawTagList = new NBTTagList();
-        for (int i = 0; i < this.withdrawList.size(); i++) {
-            withdrawTagList.appendTag(this.withdrawList.get(i).writeToNBT(new NBTTagCompound()));
+        for (POTradeWithdrawEntry aWithdraw : this.withdrawList) {
+            withdrawTagList.appendTag(aWithdraw.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("withdrawList", withdrawTagList);
         return tag;
     }
-
-    public static enum POTradeWithdrawType {
-        ALL_OF,
-        FILL_TO
-    }
-
-    public static enum POTradeDepositType {
-        ALL_OF,
-        QUANTITY,
-        DEPOSIT_EXCESS
-    }
-
-
 }
