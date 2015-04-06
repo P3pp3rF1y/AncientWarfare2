@@ -251,7 +251,8 @@ public class AWNPCStatics extends ModConfiguration {
         renderFriendlyHealth = config.get(clientSettings, "render_friendly_health", true);
         renderHostileHealth = config.get(clientSettings, "render_hostile_health", true);
         renderTeamColors = config.get(clientSettings, "render_team_colors", true);
-        this.config.save();
+        if(this.config.hasChanged())
+            this.config.save();
     }
 
     public void postInitCallback() {
@@ -302,26 +303,10 @@ public class AWNPCStatics extends ModConfiguration {
         addTargetMapping("combat", "engineer", targets);
 
         for (String name : factionNames) {
-            targets = targetConfig.get(targetSettings, name + ".archer.targets", defaultTargets, "Default targets for: " + name + " archers").getStringList();
-            addTargetMapping(name, "archer", targets);
-
-            targets = targetConfig.get(targetSettings, name + ".archer.elite.targets", defaultTargets, "Default targets for: " + name + " elite archers").getStringList();
-            addTargetMapping(name, "archer.elite", targets);
-
-            targets = targetConfig.get(targetSettings, name + ".soldier.targets", defaultTargets, "Default targets for: " + name + " soldiers").getStringList();
-            addTargetMapping(name, "soldier", targets);
-
-            targets = targetConfig.get(targetSettings, name + ".soldier.elite.targets", defaultTargets, "Default targets for: " + name + " elite soldiers").getStringList();
-            addTargetMapping(name, "soldier.elite", targets);
-
-            targets = targetConfig.get(targetSettings, name + ".leader.targets", defaultTargets, "Default targets for: " + name + " leaders").getStringList();
-            addTargetMapping(name, "leader", targets);
-
-            targets = targetConfig.get(targetSettings, name + ".leader.elite.targets", defaultTargets, "Default targets for: " + name + " elite leaders").getStringList();
-            addTargetMapping(name, "leader.elite", targets);
-
-            targets = targetConfig.get(targetSettings, name + ".priest.targets", defaultTargets, "Default targets for: " + name + " priests").getStringList();
-            addTargetMapping(name, "priest", targets);
+            for(String sub : factionNpcSubtypes){
+                targets = targetConfig.get(targetSettings, name + "." + sub + ".targets", defaultTargets, "Default targets for: " + name + " "+ asName(sub)).getStringList();
+                addTargetMapping(name, sub, targets);
+            }
         }
 
         targets = targetConfig.get(targetSettings, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
@@ -330,12 +315,25 @@ public class AWNPCStatics extends ModConfiguration {
         Collections.addAll(entitiesToTargetNpcs, targets);
     }
 
+    private String asName(String npcSubtype){
+        String[] txt = npcSubtype.split("\\.");
+        StringBuilder build = new StringBuilder();
+        for(int i = txt.length - 1; i >= 0; i--){
+            build.append(txt[i]).append(" ");
+        }
+        return build.replace(build.length()-1, build.length(), "s").toString().replace("_", " ");
+    }
+
     private void addTargetMapping(String npcType, String npcSubtype, String[] targets) {
         String type = npcType + (npcSubtype.isEmpty() ? "" : "." + npcSubtype);
+        List<String> collection;
         if (!entityTargetSettings.containsKey(type)) {
-            entityTargetSettings.put(type, new ArrayList<String>());
+            collection = new ArrayList<String>();
+        }else{
+            collection = entityTargetSettings.get(type);
         }
-        Collections.addAll(entityTargetSettings.get(type), targets);
+        Collections.addAll(collection, targets);
+        entityTargetSettings.put(type, collection);
     }
 
     public boolean shouldEntityTargetNpcs(String entityName) {
@@ -579,7 +577,8 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     public void save() {
-        config.save();
+        if(config.hasChanged())
+            config.save();
         equipmentConfig.save();
         targetConfig.save();
         valuesConfig.save();
