@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="AncientWarfare2" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="shadowmage" external.system.module.version="2.4.89-beta-MC1.7.10" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+<module external.linked.project.id="AncientWarfare2" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="shadowmage" external.system.module.version="2.4.94-beta-MC1.7.10" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/build/classes/main" />
+    <output-test url="file://$MODULE_DIR$/build/classes/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/api/java" isTestSource="false" />
@@ -14,14 +16,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="Gradle: :forgeSrc:1.7.10-10.13.2.1230" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: netty-all-4.0.10.Final" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: authlib-1.5.16" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: lwjgl-2.9.1" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: lwjgl_util-2.9.1" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: guava-17.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: log4j-api-2.0-beta9" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: log4j-core-2.0-beta9" level="project" />
     <orderEntry type="library" exported="" name="Gradle: net.minecraft:launchwrapper:1.11" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.ow2.asm:asm-debug-all:5.0.3" level="project" />
@@ -83,10 +77,12 @@
       <library name="Gradle: D__Modding_Caches__gradle_caches_minecraft_net_minecraftforge_forge_1_7_10_10_13_2_1286_start">
         <CLASSES>
           <root url="file://$MODULE_DIR$/../../Caches/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1286/start" />
+          <root url="file://$MODULE_DIR$/../../Caches/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1286/start" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="Gradle: :forgeBin:1.7.10-10.13.2.1286" level="project" />
   </component>
 </module>
