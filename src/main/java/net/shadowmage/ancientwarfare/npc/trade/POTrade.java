@@ -42,9 +42,9 @@ public class POTrade {
 
     private void updateCompactInput() {
         ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-        for (int i = 0; i < 9; i++) {
-            if (input[i] != null) {
-                list.add(input[i].copy());
+        for (ItemStack temp : input) {
+            if (temp != null) {
+                list.add(temp.copy());
             }
         }
         compactInput.clear();
@@ -53,9 +53,9 @@ public class POTrade {
 
     private void updateCompactOutput() {
         ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-        for (int i = 0; i < 9; i++) {
-            if (output[i] != null) {
-                list.add(output[i].copy());
+        for (ItemStack temp : output) {
+            if (temp != null) {
+                list.add(temp.copy());
             }
         }
         compactOutput.clear();
@@ -66,9 +66,7 @@ public class POTrade {
      * Check through the input inventory and ensure it contains all materials necessary to complete this trade.<br>
      */
     public boolean isAvailable(IInventory storage) {
-        ItemStack stack;
-        for (int i = 0; i < compactOutput.size(); i++) {
-            stack = compactOutput.get(i);
+        for (ItemStack stack : compactOutput) {
             if (InventoryTools.getCountOf(storage, -1, stack) < stack.stackSize) {
                 return false;
             }

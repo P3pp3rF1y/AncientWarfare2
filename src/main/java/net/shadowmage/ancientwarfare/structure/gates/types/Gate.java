@@ -66,7 +66,7 @@ public abstract class Gate implements IGateType {
         gateIDByName.put("gate.drawbridge", 12);
     }
 
-    protected int globalID = 0;
+    protected final int globalID;
     protected String displayName = "";
     protected String tooltip = "";
     protected String iconTexture = "";
@@ -77,9 +77,9 @@ public abstract class Gate implements IGateType {
 
     protected float moveSpeed = 0.5f * 0.05f; ///1/2 block / second
 
-    protected ItemStack displayStack;
+    protected final ItemStack displayStack;
 
-    protected ResourceLocation textureLocation;
+    protected final ResourceLocation textureLocation;
     protected IIcon itemIcon;
 
     /**

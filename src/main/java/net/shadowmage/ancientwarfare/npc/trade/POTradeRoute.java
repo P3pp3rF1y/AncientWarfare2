@@ -46,7 +46,7 @@ public final class POTradeRoute {
     public void addRoutePoint(BlockPosition pos) {
         POTradePoint p = new POTradePoint();
         p.position = pos;
-        p.delay = 20 * 60 * 1;
+        p.delay = 20 * 60;
         p.shouldUpkeep = false;
         route.add(p);
     }

@@ -123,7 +123,6 @@ public class FactionTrade {
         } else if (refillFrequency == 0)//full refill automatically if frequency==0
         {
             currentAvailable = maxAvailable;
-        } else {
         }//dont refill if frequency<0
     }
 
@@ -153,9 +152,7 @@ public class FactionTrade {
                     }
                     inputInventory.decrStackSize(i, inputStack.stackSize);
                 }
-                ItemStack outputStack;
-                for (int i = 0; i < output.length; i++) {
-                    outputStack = output[i];
+                for (ItemStack outputStack : output) {
                     if (outputStack == null) {
                         continue;
                     }
