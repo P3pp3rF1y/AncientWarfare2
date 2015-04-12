@@ -183,7 +183,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (pos = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(pos.x, pos.y, pos.z);
-                if (block == Blocks.nether_wart || block == Blocks.red_mushroom || block == Blocks.brown_mushroom_block) {
+                if (block == Blocks.nether_wart || isMushroom(block)) {
                     return harvestBlock(pos.x, pos.y, pos.z, RelativeSide.FRONT, RelativeSide.TOP);
                 }
             }
