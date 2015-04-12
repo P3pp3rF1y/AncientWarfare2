@@ -2,12 +2,12 @@ package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
@@ -33,6 +33,8 @@ public class SpawnerSettings {
     boolean prevRedstoneState;//used to cache the powered status from last tick, to compare to this tick
 
     int playerRange;
+    int mobRange;
+    int range = 4;
 
     int maxDelay = 20 * 20;
     int minDelay = 20 * 10;
@@ -66,6 +68,7 @@ public class SpawnerSettings {
         settings.maxDelay = 20 * 20;
         settings.minDelay = 10 * 20;
         settings.playerRange = 16;
+        settings.mobRange = 4;
         settings.maxNearbyMonsters = 8;
         settings.respondToRedstone = false;
 
@@ -133,9 +136,6 @@ public class SpawnerSettings {
 
     @SuppressWarnings("unchecked")
     private void spawnEntities() {
-        if (worldObj.difficultySetting == EnumDifficulty.PEACEFUL) {
-            return;
-        }
         if (lightSensitive) {
             int light = worldObj.getBlockLightValue(xCoord, yCoord, zCoord);
 
@@ -145,7 +145,7 @@ public class SpawnerSettings {
             }
         }
         if (playerRange > 0) {
-            List<EntityPlayer> nearbyPlayers = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord - playerRange, yCoord - playerRange, zCoord - playerRange, xCoord + playerRange + 1, yCoord + playerRange + 1, zCoord + playerRange + 1));
+            List<EntityPlayer> nearbyPlayers = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange));
             if (nearbyPlayers.isEmpty()) {
                 return;
             }
@@ -162,15 +162,8 @@ public class SpawnerSettings {
             }
         }
 
-        if (maxNearbyMonsters > 0) {
-            List<Entity> nearbyEntities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord - 4, yCoord - 4, zCoord - 4, xCoord + 5, yCoord + 5, zCoord + 5));
-            int nearbyCount = 0;
-            for (Entity e : nearbyEntities) {
-                if (e.getClass() == EntityItem.class) {
-                    continue;
-                }
-                nearbyCount++;
-            }
+        if (maxNearbyMonsters > 0 && mobRange > 0) {
+            int nearbyCount = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(mobRange, mobRange, mobRange)).size();
             if (nearbyCount >= maxNearbyMonsters) {
                 AWLog.logDebug("skipping spawning because of too many nearby entities");
                 return;
@@ -198,7 +191,7 @@ public class SpawnerSettings {
         }
 
         if (toSpawn != null) {
-            toSpawn.spawnEntities(worldObj, xCoord, yCoord, zCoord, index);
+            toSpawn.spawnEntities(worldObj, xCoord, yCoord, zCoord, index, range);
             if (toSpawn.shouldRemove()) {
                 spawnGroups.remove(toSpawn);
             }
@@ -215,6 +208,8 @@ public class SpawnerSettings {
         tag.setInteger("maxDelay", maxDelay);
         tag.setInteger("spawnDelay", spawnDelay);
         tag.setInteger("playerRange", playerRange);
+        tag.setInteger("mobRange", mobRange);
+        tag.setInteger("spawnRange", range);
         tag.setInteger("maxNearbyMonsters", maxNearbyMonsters);
         tag.setInteger("xpToDrop", xpToDrop);
         tag.setBoolean("lightSensitive", lightSensitive);
@@ -245,6 +240,8 @@ public class SpawnerSettings {
         maxDelay = tag.getInteger("maxDelay");
         spawnDelay = tag.getInteger("spawnDelay");
         playerRange = tag.getInteger("playerRange");
+        mobRange = tag.getInteger("mobRange");
+        range = tag.getInteger("spawnRange");
         maxNearbyMonsters = tag.getInteger("maxNearbyMonsters");
         xpToDrop = tag.getInteger("xpToDrop");
         lightSensitive = tag.getBoolean("lightSensitive");
@@ -302,11 +299,29 @@ public class SpawnerSettings {
         this.playerRange = playerRange;
     }
 
+    public final int getMobRange(){
+        return mobRange;
+    }
+
+    public final void setMobRange(int mobRange){
+        this.mobRange = mobRange;
+    }
+
+    public final int getSpawnRange(){
+        return this.range;
+    }
+
+    public final void setSpawnRange(int range){
+        this.range = range;
+    }
+
     public final int getMaxDelay() {
         return maxDelay;
     }
 
     public final void setMaxDelay(int maxDelay) {
+        if(minDelay>maxDelay)
+            minDelay = maxDelay;
         this.maxDelay = maxDelay;
     }
 
@@ -315,6 +330,8 @@ public class SpawnerSettings {
     }
 
     public final void setMinDelay(int minDelay) {
+        if(minDelay>maxDelay)
+            maxDelay = minDelay;
         this.minDelay = minDelay;
     }
 
@@ -323,6 +340,10 @@ public class SpawnerSettings {
     }
 
     public final void setSpawnDelay(int spawnDelay) {
+        if(spawnDelay>maxDelay)
+            maxDelay = spawnDelay;
+        if(spawnDelay<minDelay)
+            minDelay = spawnDelay;
         this.spawnDelay = spawnDelay;
     }
 
@@ -389,22 +410,20 @@ public class SpawnerSettings {
             entitiesToSpawn.add(setting);
         }
 
-        public void spawnEntities(World world, int x, int y, int z, int grpIndex) {
+        public void spawnEntities(World world, int x, int y, int z, int grpIndex, int range) {
             EntitySpawnSettings settings;
             Iterator<EntitySpawnSettings> it = entitiesToSpawn.iterator();
             int index = 0;
             while (it.hasNext() && (settings = it.next()) != null) {
-                settings.spawnEntities(world, x, y, z, grpIndex, index);
+                settings.spawnEntities(world, x, y, z, range);
                 if (settings.shouldRemove()) {
                     it.remove();
                 }
 
                 int a1 = 0;
-                int a2 = grpIndex;
-                int b1 = index;
                 int b2 = settings.remainingSpawnCount;
-                int a = (a1 << 16) | (a2 & 0x0000ffff);
-                int b = (b1 << 16) | (b2 & 0x0000ffff);
+                int a = (a1 << 16) | (grpIndex & 0x0000ffff);
+                int b = (index << 16) | (b2 & 0x0000ffff);
                 world.addBlockEvent(x, y, z, AWBlocks.advancedSpawner, a, b);
                 index++;
             }
@@ -482,11 +501,9 @@ public class SpawnerSettings {
             remainingSpawnCount = tag.getInteger("remainingSpawnCount");
         }
 
-        @SuppressWarnings("unchecked")
         public final void setEntityToSpawn(String entityId) {
             this.entityId = entityId;
-            Class<? extends Entity> entityClass = (Class<? extends Entity>) EntityList.stringToClassMapping.get(this.entityId);
-            if (entityClass == null) {
+            if (!EntityList.stringToClassMapping.containsKey(this.entityId)) {
                 AWLog.logError(entityId + " is not a valid entityId.  Spawner default to Zombie.");
                 this.entityId = "Zombie";
             }
@@ -505,14 +522,17 @@ public class SpawnerSettings {
         }
 
         public final void setSpawnCountMax(int max) {
-            this.maxToSpawn = max;
+            if(minToSpawn<max)
+                this.maxToSpawn = max;
+            else
+                this.maxToSpawn = this.minToSpawn;
         }
 
         public final void setSpawnLimitTotal(int total) {
             this.remainingSpawnCount = total;
         }
 
-        private final boolean shouldRemove() {
+        private boolean shouldRemove() {
             return remainingSpawnCount == 0;
         }
 
@@ -540,7 +560,7 @@ public class SpawnerSettings {
             return customTag;
         }
 
-        private final int getNumToSpawn(Random rand) {
+        private int getNumToSpawn(Random rand) {
             int randRange = maxToSpawn - minToSpawn;
             int toSpawn = 0;
             if (randRange <= 0) {
@@ -554,64 +574,52 @@ public class SpawnerSettings {
             return toSpawn;
         }
 
-        private final void decrementSpawnCounter(int numSpawned) {
-            if (remainingSpawnCount == -1) {
-                //noop, unlimited spawns
-            } else {
-                remainingSpawnCount -= numSpawned;
-                if (remainingSpawnCount < 0) {
-                    remainingSpawnCount = 0;
-                }
-            }
-        }
-
-//private final void sendSoundPacket(World world, int x, int y, int z)
-//  {
-//  PacketSound packet = new PacketSound(x+0.5d, y, z+0.5d, "");
-//  NetworkHandler.sendToAllNear(world, x, y, z, 60, packet);
-//  }
-
-        private final void spawnEntities(World world, int xCoord, int yCoord, int zCoord, int grpIndex, int setIndex) {
-//  sendSoundPacket(world, xCoord, yCoord, zCoord);
-            //TODO
+        private void spawnEntities(World world, int xCoord, int yCoord, int zCoord, int range) {
             int toSpawn = getNumToSpawn(world.rand);
-            decrementSpawnCounter(toSpawn);
 
-            int x, y, z;
-            int spawnTry = 0;
-            boolean doSpawn;
             for (int i = 0; i < toSpawn; i++) {
-                doSpawn = false;
-                while (true) {
-                    x = xCoord - 4 + world.rand.nextInt(9);
-                    z = zCoord - 4 + world.rand.nextInt(9);
-                    for (y = yCoord - 5; y <= yCoord + 4; y++) {
-                        if (world.isAirBlock(x, y, z) && world.isAirBlock(x, y + 1, z)) {
+                Entity e = EntityList.createEntityByName(entityId, world);
+                if (e != null) {
+                    if (customTag != null) {
+                        e.readFromNBT(customTag);
+                    }
+                }else
+                    return;
+                boolean doSpawn = false;
+                int spawnTry = 0;
+                while (!doSpawn && spawnTry < range + 5) {
+                    int x = xCoord - range + world.rand.nextInt(range*2+1);
+                    int z = zCoord - range + world.rand.nextInt(range*2+1);
+                    for (int y = yCoord - range; y <= yCoord + range; y++) {
+                        e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
+                        if (e instanceof EntityLiving) {
+                            doSpawn = ((EntityLiving) e).getCanSpawnHere();
+                            if(doSpawn)
+                                break;
+                        }else{
                             doSpawn = true;
                             break;
                         }
                     }
-
                     spawnTry++;
-                    if (spawnTry >= 10 || doSpawn) {
-                        break;
-                    }
                 }
                 if (doSpawn) {
-                    spawnEntityAt(world, x, y, z);
+                    spawnEntityAt(e, world);
+                    if (remainingSpawnCount > 0) {
+                        remainingSpawnCount--;
+                    }
                 }
             }
         }
 
-        private final void spawnEntityAt(World world, int x, int y, int z) {
-            Entity e = EntityList.createEntityByName(entityId, world);
-            if (e != null) {
-                if (customTag != null) {
-                    e.readFromNBT(customTag);
-                }
-                e.setPosition(x + 0.5d, y, z + 0.5d);
-                world.spawnEntityInWorld(e);
+        //  sendSoundPacket(world, xCoord, yCoord, zCoord);
+        //TODO
+        private void spawnEntityAt(Entity e, World world) {
+            if(e instanceof EntityLiving){
+                ((EntityLiving)e).onSpawnWithEgg(null);
+                ((EntityLiving) e).spawnExplosionParticle();
             }
+            world.spawnEntityInWorld(e);
         }
 
     }

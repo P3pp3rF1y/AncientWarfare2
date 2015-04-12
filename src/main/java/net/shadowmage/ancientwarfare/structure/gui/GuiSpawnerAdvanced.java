@@ -125,7 +125,43 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
         input = new NumberInput(180, totalHeight, 50, getContainer().settings.getMaxNearbyMonsters(), this) {
             @Override
             public void onValueUpdated(float value) {
-                getContainer().settings.setMaxNearbyMonsters((int)value);
+                getContainer().settings.setMaxNearbyMonsters((int) value);
+            }
+        };
+        input.setIntegerValue();
+        area.addGuiElement(input);
+        totalHeight += 12;
+
+        label = new Label(8, totalHeight, "guistrings.spawner.mob_range");
+        area.addGuiElement(label);
+        input = new NumberInput(180, totalHeight, 50, getContainer().settings.getMobRange(), this) {
+            @Override
+            public void onValueUpdated(float value) {
+                getContainer().settings.setMobRange((int) value);
+            }
+        };
+        input.setIntegerValue();
+        area.addGuiElement(input);
+        totalHeight += 12;
+
+        label = new Label(8, totalHeight, "guistrings.spawner.spawn_range");
+        area.addGuiElement(label);
+        input = new NumberInput(180, totalHeight, 50, getContainer().settings.getSpawnRange(), this) {
+            @Override
+            public void onValueUpdated(float value) {
+                getContainer().settings.setSpawnRange((int) value);
+            }
+        };
+        input.setIntegerValue();
+        area.addGuiElement(input);
+        totalHeight += 12;
+
+        label = new Label(8, totalHeight, "guistrings.spawner.delay");
+        area.addGuiElement(label);
+        input = new NumberInput(180, totalHeight, 50, getContainer().settings.getSpawnDelay(), this) {
+            @Override
+            public void onValueUpdated(float value) {
+                getContainer().settings.setSpawnDelay((int) value);
             }
         };
         input.setIntegerValue();
@@ -252,8 +288,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
                 input = new NumberInput(130, totalHeight, 30, settings.getSpawnMin(), this) {
                     @Override
                     public void onValueUpdated(float value) {
-                        EntitySpawnSettings set = settingsMapByInput.get(this);
-                        set.setSpawnCountMin((int)value);
+                        settingsMapByInput.get(this).setSpawnCountMin((int) value);
                     }
                 };
                 settingsMapByInput.put(input, settings);
@@ -263,8 +298,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
                 input = new NumberInput(160, totalHeight, 30, settings.getSpawnMax(), this) {
                     @Override
                     public void onValueUpdated(float value) {
-                        EntitySpawnSettings set = settingsMapByInput.get(this);
-                        set.setSpawnCountMax((int)value);
+                        settingsMapByInput.get(this).setSpawnCountMax((int) value);
                     }
                 };
                 settingsMapByInput.put(input, settings);
@@ -274,8 +308,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
                 input = new NumberInput(190, totalHeight, 30, settings.getSpawnTotal(), this) {
                     @Override
                     public void onValueUpdated(float value) {
-                        EntitySpawnSettings set = settingsMapByInput.get(this);
-                        set.setSpawnLimitTotal((int)value);
+                        settingsMapByInput.get(this).setSpawnLimitTotal((int)value);
                     }
                 };
                 settingsMapByInput.put(input, settings);

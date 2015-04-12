@@ -3,10 +3,12 @@ package net.shadowmage.ancientwarfare.structure.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
@@ -14,6 +16,8 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
+
+import java.util.List;
 
 public class BlockAdvancedSpawner extends Block {
 
@@ -51,6 +55,13 @@ public class BlockAdvancedSpawner extends Block {
     @Override
     public boolean isOpaqueCube() {
         return false;
+    }
+
+    @Override
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB maskBB, List list, Entity entity){
+        if(world.loadedEntityList.contains(entity)){
+            super.addCollisionBoxesToList(world, x, y, z, maskBB, list, entity);
+        }
     }
 
     @Override
