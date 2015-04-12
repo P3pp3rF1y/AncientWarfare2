@@ -4,31 +4,26 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryBase;
 
-public class GuiSpawnerAdvancedInventory extends GuiContainerBase
-{
+public class GuiSpawnerAdvancedInventory extends GuiContainerBase {
 
-public GuiSpawnerAdvancedInventory(ContainerBase par1Container)
-  {
-  super(par1Container, 256, 240, defaultBackground);
-  }
+    public GuiSpawnerAdvancedInventory(ContainerBase par1Container) {
+        super(par1Container);
+    }
 
-@Override
-public void initElements()
-  {
+    @Override
+    public void initElements() {
 
-  }
+    }
 
-@Override
-public void setupElements()
-  {
+    @Override
+    public void setupElements() {
 
-  }
+    }
 
-@Override
-protected boolean onGuiCloseRequested()
-  {
-  ((ContainerSpawnerAdvancedInventoryBase)inventorySlots).sendSettingsToServer();
-  return true;
-  }
+    @Override
+    protected boolean onGuiCloseRequested() {
+        ((ContainerSpawnerAdvancedInventoryBase) inventorySlots).sendSettingsToServer();
+        return true;
+    }
 
 }

@@ -33,6 +33,7 @@ tallgrass,-1,wheat_seeds,0,1
 deadbush,-1,wheat_seeds,0,1
 web,-1,string,0,4
 tripwire,-1,string,0,1
+ladder,-1,ladder,0,1
 #remapped for unobtainable blocks#########################################,,,,
 grass,-1,dirt,0,1
 melon_block,-1,melon_seeds,0,4

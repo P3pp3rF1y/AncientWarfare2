@@ -7,40 +7,44 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 
-public class ItemCombatOrder extends ItemOrders
-{
+import java.util.ArrayList;
+import java.util.Collection;
 
-public ItemCombatOrder(String name)
-  {
-  super(name);
-  this.setTextureName("ancientwarfare:npc/combat_order");
-  }
+public class ItemCombatOrder extends ItemOrders {
 
-@Override
-public void onRightClick(EntityPlayer player, ItemStack stack)
-  {
-  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_COMBAT_ORDER, 0, 0, 0);
-  }
-
-@Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  CombatOrder order = CombatOrder.getCombatOrder(stack);
-  if(order==null){return;}
-  if(player.isSneaking())
-    {
-    order.clearPatrol();
-    CombatOrder.writeCombatOrder(stack, order);
+    @Override
+    public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
+        Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
+        CombatOrder order = CombatOrder.getCombatOrder(stack);
+        if (order != null && order.getPatrolSize() > 0) {
+            for (int i = 0; i < order.getPatrolSize(); i++) {
+                positionList.add(order.getPatrolPoint(i).copy().offset(0, 1, 0));
+            }
+        }
+        return positionList;
     }
-  else
-    {
-    BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
-    if(pos!=null)
-      {
-      order.addPatrolPoint(player.worldObj, pos);
-      CombatOrder.writeCombatOrder(stack, order);
-      }    
+
+    @Override
+    public void onRightClick(EntityPlayer player, ItemStack stack) {
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_COMBAT_ORDER, 0, 0, 0);
     }
-  }
+
+    @Override
+    public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+        CombatOrder order = CombatOrder.getCombatOrder(stack);
+        if (order == null) {
+            return;
+        }
+        if (player.isSneaking()) {
+            order.clearPatrol();
+            CombatOrder.writeCombatOrder(stack, order);
+        } else {
+            BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
+            if (pos != null) {
+                order.addPatrolPoint(player.worldObj, pos);
+                CombatOrder.writeCombatOrder(stack, order);
+            }
+        }
+    }
 
 }

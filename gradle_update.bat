@@ -1,5 +1,4 @@
 pushd %~dp0
-gradlew --refresh-dependencies
-gradlew setupDecompWorkspace
+gradlew --refresh-dependencies setupDecompWorkspace
 gradlew eclipse
 pause

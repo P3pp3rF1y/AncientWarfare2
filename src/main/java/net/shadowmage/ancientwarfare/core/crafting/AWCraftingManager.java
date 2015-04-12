@@ -1,172 +1,144 @@
 package net.shadowmage.ancientwarfare.core.crafting;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import net.minecraft.block.Block;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
+import net.shadowmage.ancientwarfare.core.util.StringTools;
 
-public class AWCraftingManager
-{
+import java.util.ArrayList;
+import java.util.List;
 
-public static final AWCraftingManager INSTANCE = new AWCraftingManager();
-private AWCraftingManager(){}
+public class AWCraftingManager {
 
-List<RecipeResearched> recipes = new ArrayList<RecipeResearched>();
-private static final String[] emptyStringArray = new String[]{};
-private static final String[] singleInputArray = new String[]{""};
+    private static final String[] emptyStringArray = new String[]{};
+    private static final String[] singleInputArray = new String[]{""};
+    public static final AWCraftingManager INSTANCE = new AWCraftingManager();
 
-/**
- * shameless copy of CraftingManager.findMatchingRecipe, with added param for player
- * @param inventory
- * @param world
- * @return
- */
-public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, String playerName)
-  {
-  ItemStack item1 = CraftingManager.getInstance().findMatchingRecipe(inventory, world);
-  if(item1!=null)
-    {
-    return item1;
-    }  
-  if(playerName==null || playerName.isEmpty()){return null;}
-  int recipeIndex;  
-  for (recipeIndex = 0; recipeIndex < this.recipes.size(); ++recipeIndex)
-    {
-    RecipeResearched recipe = (RecipeResearched)this.recipes.get(recipeIndex);
-    if(recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName))
-      {
-      return recipe.getCraftingResult(inventory);
-      }
-    }
-  return null;
-  }
+    private final List<RecipeResearched> recipes;
 
-private boolean canPlayerCraft(RecipeResearched recipe, World world, String playerName)
-  {
-  if(playerName==null || playerName.isEmpty()){return false;}
-  boolean canCraft = true;
-  for(Integer i : recipe.getNeededResearch())
-    {
-    if(!ResearchTracker.instance().hasPlayerCompleted(world, playerName, i))
-      {
-      canCraft = false;
-      break;
-      }
-    }
-  return canCraft;
-  }
-
-@SuppressWarnings("unchecked")
-private void addRecipe(RecipeResearched recipe)
-  {
-  Item item = recipe.getRecipeOutput().getItem();
-  boolean craftable = AWCoreStatics.isItemCraftable(item);
-  if(craftable)
-    {
-    if(!recipe.getNeededResearch().isEmpty() && AWCoreStatics.isItemResearched(item))
-      {
-      this.recipes.add(recipe);
-      }
-    else
-      {
-      CraftingManager.getInstance().getRecipeList().add(recipe);      
-      }
-    }
-  }
-
-public RecipeResearched createRecipe(ItemStack result, String research, Object ... inputArray)
-  {
-  if(research==null || research.equals(""))
-    {
-    return createRecipe(result, emptyStringArray, inputArray);
-    }
-  else
-    {
-    singleInputArray[0]=research;
-    return createRecipe(result, singleInputArray, inputArray);
-    }  
-  }
-
-public RecipeResearched createRecipe(ItemStack result, String[] research, Object ... inputArray)
-  {
-  String recipeCharactersAsSequence = "";
-  int index = 0;
-  int recipeWidth = 0;
-  int recipeHeight = 0;
-
-  if (inputArray[index] instanceof String[])
-    {
-    String[] characterInputArray = (String[])((String[])inputArray[index++]);
-
-    for (int l = 0; l < characterInputArray.length; ++l)
-      {
-      String recipeLine = characterInputArray[l];
-      ++recipeHeight;
-      recipeWidth = recipeLine.length();
-      recipeCharactersAsSequence = recipeCharactersAsSequence + recipeLine;
-      }
-    }
-  else
-    {
-    while (inputArray[index] instanceof String)
-      {
-      String s2 = (String)inputArray[index++];
-      ++recipeHeight;
-      recipeWidth = s2.length();
-      recipeCharactersAsSequence = recipeCharactersAsSequence + s2;
-      }
+    private AWCraftingManager() {
+        recipes = new ArrayList<RecipeResearched>();
     }
 
-  HashMap<Character, ItemStack> characterToStack;
-
-  for (characterToStack = new HashMap<Character, ItemStack>(); index < inputArray.length; index += 2)
-    {
-    Character itemCharacter = (Character)inputArray[index];
-    ItemStack stackForCharacter = null;
-    if (inputArray[index + 1] instanceof Item)
-      {
-      stackForCharacter = new ItemStack((Item)inputArray[index + 1]);
-      }
-    else if (inputArray[index + 1] instanceof Block)
-      {
-      stackForCharacter = new ItemStack((Block)inputArray[index + 1], 1, 32767);
-      }
-    else if (inputArray[index + 1] instanceof ItemStack)
-      {
-      stackForCharacter = (ItemStack)inputArray[index + 1];
-      }
-    characterToStack.put(itemCharacter, stackForCharacter);
+    /**
+     * shameless copy of CraftingManager.findMatchingRecipe, with added param for player
+     */
+    public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, String playerName) {
+        ItemStack item1 = CraftingManager.getInstance().findMatchingRecipe(inventory, world);
+        if (item1 != null) {
+            return item1;
+        }
+        if (playerName == null || playerName.isEmpty()) {
+            return null;
+        }
+        for (RecipeResearched recipe : this.recipes) {
+            if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
+                return recipe.getCraftingResult(inventory);
+            }
+        }
+        return null;
     }
 
-  ItemStack[] recipeItemArray = new ItemStack[recipeWidth * recipeHeight];
-
-  for (int i1 = 0; i1 < recipeWidth * recipeHeight; ++i1)
-    {
-    char c0 = recipeCharactersAsSequence.charAt(i1);
-
-    if (characterToStack.containsKey(Character.valueOf(c0)))
-      {
-      recipeItemArray[i1] = ((ItemStack)characterToStack.get(Character.valueOf(c0))).copy();
-      }
-    else
-      {
-      recipeItemArray[i1] = null;
-      }
+    private boolean canPlayerCraft(RecipeResearched recipe, World world, String playerName) {
+        if (AWCoreStatics.useResearchSystem) {
+            for (Integer i : recipe.getNeededResearch()) {
+                if (!ResearchTracker.INSTANCE.hasPlayerCompleted(world, playerName, i)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
-  RecipeResearched recipe = new RecipeResearched(recipeWidth, recipeHeight, recipeItemArray, result);
-  recipe.addResearch(research);
-  addRecipe(recipe);
-  return recipe;
-  }
 
-public List<RecipeResearched> getRecipes(){return recipes;}
+    private void addRecipe(RecipeResearched recipe) {
+        Item item = recipe.getRecipeOutput().getItem();
+        boolean craftable = AWCoreStatics.isItemCraftable(item);
+        if (craftable) {
+            if (!recipe.getNeededResearch().isEmpty() && AWCoreStatics.isItemResearched(item)) {
+                this.recipes.add(recipe);
+            } else {
+                GameRegistry.addRecipe(recipe);
+            }
+        }
+    }
+
+    /**
+     * Create Research-dependent crafts from a config file.
+     * Parse configuration data from in-jar resource file.
+     *
+     * @param path to file, incl. filename + extension, running-dir relative
+     */
+    public void parseRecipes(String path) {
+        List<String> lines = StringTools.getResourceLines(path);
+        for (String line : lines) {
+            String[] split = StringTools.parseStringArray(line);
+            if (split.length < 7) {
+                continue;
+            }
+            ItemStack stack = StringTools.safeParseStack(split[1], split[2], split[3]);
+            if (stack == null) {
+                continue;
+            }
+            Object[] craft_par = new Object[split.length - 4];//All the inputs
+            int i = 4;
+            while (split[i].length() > 0 && split[i + 1].length() < 4) {//Any height of crafting grid, width limited at 1-3
+                craft_par[i - 4] = split[i];
+                i++;
+            }
+            for (; i < split.length; i += 2) {
+                craft_par[i - 4] = split[i].charAt(0);//The character key
+                if (split[i + 1].startsWith("(") && split[i + 3].endsWith(")")) {
+                    craft_par[i - 3] = StringTools.safeParseStack(split[i + 1].substring(1), split[i + 2], split[i + 3].substring(0, split[i + 3].length() - 1));
+                    i = i + 2;
+                } else {
+                    Object crafting_item = GameData.getItemRegistry().getObject(split[i + 1]);
+                    if (crafting_item == GameData.getItemRegistry().getDefaultValue()) {//Not an item name
+                        crafting_item = GameData.getBlockRegistry().getObject(split[i + 1]);
+                        if (crafting_item == GameData.getBlockRegistry().getDefaultValue()) {//Not a block name
+                            crafting_item = split[i + 1];//Maybe a generic "ore" name ?
+                        }
+                    }
+                    craft_par[i - 3] = crafting_item;//The item value
+                }
+            }
+            ArrayList list = new ArrayList();
+            for (Object object : craft_par) {
+                if (object != null) {
+                    list.add(object);
+                }
+            }
+            try {
+                createRecipe(stack, split[0], list.toArray());
+            } catch (Throwable throwable) {
+                AWLog.logError("Error creating recipe for parsed line: " + line);
+            }
+        }
+    }
+
+    public RecipeResearched createRecipe(ItemStack result, String research, Object... inputArray) {
+        if (research == null || research.isEmpty()) {
+            return createRecipe(result, emptyStringArray, inputArray);
+        } else {
+            singleInputArray[0] = research;
+            return createRecipe(result, singleInputArray, inputArray);
+        }
+    }
+
+    public RecipeResearched createRecipe(ItemStack result, String[] research, Object... inputArray) {
+        RecipeResearched recipe = new RecipeResearched(result, inputArray).addResearch(research);
+        addRecipe(recipe);
+        return recipe;
+    }
+
+    public List<RecipeResearched> getRecipes() {
+        return recipes;
+    }
 
 }

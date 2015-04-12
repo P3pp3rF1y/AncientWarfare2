@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,99 +18,83 @@ import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBlockAdvancedSpawner extends ItemBlock implements IItemKeyInterface
-{
+import java.util.List;
 
-public ItemBlockAdvancedSpawner(Block p_i45328_1_)
-  {
-  super(p_i45328_1_);
-  }
+public class ItemBlockAdvancedSpawner extends ItemBlock implements IItemKeyInterface {
 
-@Override
-public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
-  {
-  if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerSettings"))
-    {
-    SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
-    NBTTagCompound defaultTag = new NBTTagCompound();
-    settings.writeToNBT(defaultTag);
-    stack.setTagInfo("spawnerSettings", defaultTag);
+    public ItemBlockAdvancedSpawner(Block p_i45328_1_) {
+        super(p_i45328_1_);
     }
-  boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
-  if(!world.isRemote && val)
-    {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileAdvancedSpawner)
-      {
-      TileAdvancedSpawner tile = (TileAdvancedSpawner)te;
-      SpawnerSettings settings = new SpawnerSettings();
-      settings.readFromNBT(stack.getTagCompound().getCompoundTag("spawnerSettings"));      
-      tile.setSettings(settings);
-      }    
+
+    @Override
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+        if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerSettings")) {
+            SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
+            NBTTagCompound defaultTag = new NBTTagCompound();
+            settings.writeToNBT(defaultTag);
+            stack.setTagInfo("spawnerSettings", defaultTag);
+        }
+        boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
+        if (!world.isRemote && val) {
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof TileAdvancedSpawner) {
+                TileAdvancedSpawner tile = (TileAdvancedSpawner) te;
+                SpawnerSettings settings = new SpawnerSettings();
+                settings.readFromNBT(stack.getTagCompound().getCompoundTag("spawnerSettings"));
+                tile.setSettings(settings);
+            }
+        }
+        return val;
     }
-  return val;  
-  }
 
-@Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  return key==ItemKey.KEY_0;
-  }
-
-@Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  if(player.isSneaking())
-    {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, 0, 0, 0);      
-    }    
-  else
-    {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED, 0, 0, 0);
+    @Override
+    public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
+        return key == ItemKey.KEY_0;
     }
-  }
 
-SpawnerSettings tooltipSettings = new SpawnerSettings();
-@SuppressWarnings({ "unchecked", "rawtypes" })
-@Override
-@SideOnly(Side.CLIENT)
-public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-  {
-  List<String> list = (List<String>)par3List;
-  if(!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("spawnerSettings"))
-    {
-    list.add(StatCollector.translateToLocal("guistrings.corrupt_item"));
-    return;
+    @Override
+    public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+        if (player.isSneaking()) {
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, 0, 0, 0);
+        } else {
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED, 0, 0, 0);
+        }
     }
-  tooltipSettings.readFromNBT(par1ItemStack.getTagCompound().getCompoundTag("spawnerSettings"));
-  List<EntitySpawnGroup> groups = tooltipSettings.getSpawnGroups();
-  list.add(StatCollector.translateToLocal("guistrings.spawner.group_count")+": "+groups.size());
-  EntitySpawnGroup group;
-  for(int i = 0; i < groups.size(); i++)
-    {
-    group = groups.get(i);
-    list.add(StatCollector.translateToLocal("guistrings.spawner.group_number")+": "+(i+1) + " "+StatCollector.translateToLocal("guistrings.spawner.group_weight")+": "+group.getWeight());
-    for(EntitySpawnSettings set : group.getEntitiesToSpawn())
-      {
-      list.add("  "+StatCollector.translateToLocal("guistrings.spawner.entity_type")+": "+set.getEntityId() +" "+set.getSpawnMin()+" to "+set.getSpawnMax()+" ("+ (set.getSpawnTotal()<0 ? "infinite" :set.getSpawnTotal()) +" total)");      
-      }
-    }  
-  }
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
-@Override
-@SideOnly(Side.CLIENT)
-public void getSubItems(Item item, CreativeTabs creativeTab, List stackList)
-  {
-  ItemStack stack = new ItemStack(this.field_150939_a);
-  SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
-  NBTTagCompound defaultTag = new NBTTagCompound();
-  settings.writeToNBT(defaultTag);
-  stack.setTagInfo("spawnerSettings", defaultTag);
-  stackList.add(stack);
-  }
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+        List<String> list = (List<String>) par3List;
+        if (!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("spawnerSettings")) {
+            list.add(StatCollector.translateToLocal("guistrings.corrupt_item"));
+            return;
+        }
+        SpawnerSettings tooltipSettings = new SpawnerSettings();
+        tooltipSettings.readFromNBT(par1ItemStack.getTagCompound().getCompoundTag("spawnerSettings"));
+        List<EntitySpawnGroup> groups = tooltipSettings.getSpawnGroups();
+        list.add(StatCollector.translateToLocal("guistrings.spawner.group_count") + ": " + groups.size());
+        EntitySpawnGroup group;
+        for (int i = 0; i < groups.size(); i++) {
+            group = groups.get(i);
+            list.add(StatCollector.translateToLocal("guistrings.spawner.group_number") + ": " + (i + 1) + " " + StatCollector.translateToLocal("guistrings.spawner.group_weight") + ": " + group.getWeight());
+            for (EntitySpawnSettings set : group.getEntitiesToSpawn()) {
+                list.add("  " + StatCollector.translateToLocal("guistrings.spawner.entity_type") + ": " + StatCollector.translateToLocal(set.getEntityName()) + " " + set.getSpawnMin() + " to " + set.getSpawnMax() + " (" + (set.getSpawnTotal() < 0 ? "infinite" : set.getSpawnTotal()) + " total)");
+            }
+        }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item item, CreativeTabs creativeTab, List stackList) {
+        ItemStack stack = new ItemStack(this.field_150939_a);
+        SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
+        NBTTagCompound defaultTag = new NBTTagCompound();
+        settings.writeToNBT(defaultTag);
+        stack.setTagInfo("spawnerSettings", defaultTag);
+        stackList.add(stack);
+    }
 
 }

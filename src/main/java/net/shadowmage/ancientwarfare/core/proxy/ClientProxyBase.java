@@ -5,26 +5,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.input.InputHandler.Keybind;
 
-public class ClientProxyBase extends CommonProxyBase
-{
+public class ClientProxyBase extends CommonProxyBase {
 
-@Override
-public void registerClient()
-  {
-  
-  }
+    @Override
+    public void registerClient() {
 
-@Override
-public final EntityPlayer getClientPlayer()
-  {  
-  return Minecraft.getMinecraft().thePlayer;
-  }
+    }
 
-@Override
-public boolean isKeyPressed(String keyName)
-  {
-  Keybind kb = InputHandler.instance().getKeybind(keyName);
-  return kb!=null && kb.isPressed();
-  }
+    @Override
+    public final EntityPlayer getClientPlayer() {
+        return Minecraft.getMinecraft().thePlayer;
+    }
+
+    @Override
+    public boolean isKeyPressed(String keyName) {
+        Keybind kb = InputHandler.instance.getKeybind(keyName);
+        return kb != null && kb.isPressed();
+    }
 
 }

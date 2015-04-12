@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
-import java.util.EnumSet;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
@@ -9,122 +7,131 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-public interface IWorkSite extends ITorqueTile
-{
+import java.util.EnumSet;
 
-/**
- * workers should call this before calling doWork() to make sure that the site
- * actually has work to do.
- */
-public boolean hasWork();
+public interface IWorkSite extends ITorqueTile {
 
-/**
- * can be called by a worker if hasWork() returns true.
- */
-public void addEnergyFromWorker(IWorker worker);
+    /**
+     * workers should call this before calling doWork() to make sure that the site
+     * actually has work to do.
+     */
+    public boolean hasWork();
 
-public void addEnergyFromPlayer(EntityPlayer player);
+    /**
+     * can be called by a worker if hasWork() returns true.
+     */
+    public void addEnergyFromWorker(IWorker worker);
 
-/**
- * called by workers to validate work-type when IWorker.canWorkAt(IWorkSite) is called
- * workers should be responsible for maintaining their own list of acceptable work types
- */
-public WorkType getWorkType();
+    public void addEnergyFromPlayer(EntityPlayer player);
 
-public Team getTeam();
+    /**
+     * called by workers to validate work-type when IWorker.canWorkAt(IWorkSite) is called
+     * workers should be responsible for maintaining their own list of acceptable work types
+     */
+    public WorkType getWorkType();
 
-public BlockPosition getWorkBoundsMin();
+    public Team getTeam();
 
-public BlockPosition getWorkBoundsMax();
+    public BlockPosition getWorkBoundsMin();
 
-public boolean userAdjustableBlocks();
+    public BlockPosition getWorkBoundsMax();
 
-public boolean hasWorkBounds();
+    public boolean userAdjustableBlocks();
 
-public int getBoundsMaxWidth();
+    public boolean hasWorkBounds();
 
-public int getBoundsMaxHeight();
+    public int getBoundsMaxWidth();
 
-public void setBounds(BlockPosition p1, BlockPosition p2);
+    public int getBoundsMaxHeight();
 
-public void setWorkBoundsMax(BlockPosition max);
+    public void setBounds(BlockPosition p1, BlockPosition p2);
 
-public void setWorkBoundsMin(BlockPosition min);
+    public void setWorkBoundsMax(BlockPosition max);
 
-/**
- * Called from container when a user adjusts work bounds for a block.
- * Tile should take the opportunity to revalidate the selection and/or offset bounds
- * for tile special placement/offset/whatever
- */
-public void onBoundsAdjusted();
+    public void setWorkBoundsMin(BlockPosition min);
 
-/**
- * Called from container AFTER bounds have been adjusted.  Tile should take this opportunity
- * to reseat any chunkloading or re-init any scan stuff
- */
-public void onPostBoundsAdjusted();
+    /**
+     * Called from container when a user adjusts work bounds for a block.
+     * Tile should take the opportunity to revalidate the selection and/or offset bounds
+     * for tile special placement/offset/whatever
+     */
+    public void onBoundsAdjusted();
 
-public EnumSet<WorksiteUpgrade> getUpgrades();
+    /**
+     * Called from container AFTER bounds have been adjusted.  Tile should take this opportunity
+     * to reseat any chunkloading or re-init any scan stuff
+     */
+    public void onPostBoundsAdjusted();
 
-public EnumSet<WorksiteUpgrade> getValidUpgrades();
+    public EnumSet<WorksiteUpgrade> getUpgrades();
 
-/**
- * Add the input upgrade to the present upgrade set.  Apply any necessary bonuses at this time.<br>
- * Calling this method with an upgrade that is already present has undefined results.
- * @param upgrade
- */
-public void addUpgrade(WorksiteUpgrade upgrade);
+    public EnumSet<WorksiteUpgrade> getValidUpgrades();
 
-/**
- * Remove the input upgrade from the present upgrade set.  Remove any bonuses that it had applied.<br>
- * Calling this method with an upgrade that is not present has undefined results.
- * @param upgrade
- */
-public void removeUpgrade(WorksiteUpgrade upgrade);
+    /**
+     * Add the input upgrade to the present upgrade set.  Apply any necessary bonuses at this time.<br>
+     * Calling this method with an upgrade that is already present has undefined results.
+     */
+    public void addUpgrade(WorksiteUpgrade upgrade);
 
-public void onBlockBroken();
+    /**
+     * Remove the input upgrade from the present upgrade set.  Remove any bonuses that it had applied.<br>
+     * Calling this method with an upgrade that is not present has undefined results.
+     */
+    public void removeUpgrade(WorksiteUpgrade upgrade);
 
-public static enum WorkType
-{
-/**
- * any change to reg. names will fubar npc-leveling system, as they use these names to store accumulated xp
- */
-MINING("work_type.mining"),
-FARMING("work_type.farming"),
-FORESTRY("work_type.forestry"),
-CRAFTING("work_type.crafting"),
-RESEARCH("work_type.research"),
-NONE("work_type.none");
-public final String regName;
-WorkType(String regName){this.regName=regName;}
-}
+    public void onBlockBroken();
 
-/**
- * Static methods for default implementation of worksite logic.
- * @author Shadowmage
- *
- */
-public static final class WorksiteImplementation
-{
+    public static enum WorkType {
+        /**
+         * any change to reg. names will fubar npc-leveling system, as they use these names to store accumulated xp
+         */
+        MINING("work_type.mining"),
+        FARMING("work_type.farming"),
+        FORESTRY("work_type.forestry"),
+        CRAFTING("work_type.crafting"),
+        RESEARCH("work_type.research"),
+        NONE("work_type.none");
+        public final String regName;
 
-private WorksiteImplementation(){}
+        WorkType(String regName) {
+            this.regName = regName;
+        }
+    }
 
-public static double getEnergyPerActivation(double efficiencyBonusFactor)
-  {
-  return AWCoreStatics.energyPerWorkUnit * 1.f - efficiencyBonusFactor;
-  }
+    /**
+     * Static methods for default implementation of worksite logic.
+     *
+     * @author Shadowmage
+     */
+    public static final class WorksiteImplementation {
 
-public static double getEfficiencyFactor(EnumSet<WorksiteUpgrade> upgrades)
-  {
-  double efficiencyBonusFactor = 0.d;
-  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)){efficiencyBonusFactor+=0.05;}
-  if(upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)){efficiencyBonusFactor+=0.1;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_1)){efficiencyBonusFactor+=0.05;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_2)){efficiencyBonusFactor+=0.15;}
-  if(upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_3)){efficiencyBonusFactor+=0.25;}
-  return efficiencyBonusFactor;
-  }
+        private WorksiteImplementation() {
+        }
 
-}
+        public static double getEnergyPerActivation(double efficiencyBonusFactor) {
+            return AWCoreStatics.energyPerWorkUnit * 1.f - efficiencyBonusFactor;
+        }
+
+        public static double getEfficiencyFactor(EnumSet<WorksiteUpgrade> upgrades) {
+            double efficiencyBonusFactor = 0.d;
+            if (upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)) {
+                efficiencyBonusFactor += 0.05;
+            }
+            if (upgrades.contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)) {
+                efficiencyBonusFactor += 0.1;
+            }
+            if (upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_1)) {
+                efficiencyBonusFactor += 0.05;
+            }
+            if (upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_2)) {
+                efficiencyBonusFactor += 0.15;
+            }
+            if (upgrades.contains(WorksiteUpgrade.TOOL_QUALITY_3)) {
+                efficiencyBonusFactor += 0.25;
+            }
+            return efficiencyBonusFactor;
+        }
+
+    }
 
 }

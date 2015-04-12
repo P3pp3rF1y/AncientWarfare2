@@ -1,0 +1,93 @@
+### Ancient Warfare Town Template ###
+# a line beginning with # denotes a comment line, and is ignored during parsing
+# the line must -start- with # to be ignored, mid-line comments are not allowed
+header:
+name=small_town
+minSize=7
+maxSize=12
+buildingExpansion=2
+selectionWeight=100
+clusterValue=100
+townBlockSize=30
+townPlotSize=3
+wallStyle=2
+wallSize=8
+exteriorSize=0
+exteriorPlotSize=3
+interiorEmptyPlotChance=10
+randomVillagersPerChunk=1.5
+roadBlock=minecraft:gravel
+roadMeta=0
+biomeWhiteList=false
+biomeList=ocean,beach,river
+dimensionWhiteList=true
+dimensionList=0
+lamp=lamp_post
+:endheader
+
+#wall type registry
+#name:type:id:weight
+walls:
+wall_cobble_corner:corner:0:10
+wall_cobble_straight:wall:1:10
+wall_cobble_gate:gate:2:10
+wall_cobble_rgate:rgate:3:10
+wall_cobble_lgate:lgate:4:10
+:endwalls
+
+#wall patterns
+#size:pattern
+#patterns reference the wall id number from above.  enter a non-registered number in the pattern for an empty spot (used for large-sized wall corners)
+wallPatterns:
+:endWallPaterns
+
+#list of structures, one per line
+uniqueStructures:
+unique_mayors_mansion
+unique_barracks_pelirow
+unique_creeper_church_dulciphi
+unique_tavern_pelirow
+:endUniqueStructures
+
+#list of structures, one per line
+mainStructures:
+unique_ranchhouse_pelirow
+unique_waterwheel_dulciphi
+village_smith
+village_church
+unique_windmill
+unique_mayoral_manor_dulciphi
+unique_giant_oak
+:endMainStructures
+
+#list of structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+houseStructures:
+house_officer_house:2
+house_tinkers_house:1
+house_empty_lot:1
+village_house_garden:1
+village_house:2
+village_hut1:3
+village_hut2:3
+village_library:1
+:endHouseStructures
+
+#list of structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+cosmeticStructures:
+village_garden_large:2
+village_garden_small:2
+cosmetic_fountain_dulciphi:1
+cosmetic_log_pile:1
+cosmetic_outhouse_pelirow:1
+cosmetic_pavillion_dulciphi:1
+cosmetic_rubble_pile:1
+cosmetic_stable:1
+cosmetic_tree_swing_dulciphi:1
+:endCosmeticStructures
+
+#list of structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+exteriorStructures:
+:endExteriorStructures

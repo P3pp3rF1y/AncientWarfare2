@@ -1,16 +1,14 @@
 package net.shadowmage.ancientwarfare.vehicle.crafting;
 
 
-public class AWVehicleCrafting
-{
+public class AWVehicleCrafting {
 
-/**
- * load any recipes for automation module recipes
- */
-public static void loadRecipes()
-  {
- 
-    
-  }
+    /**
+     * load any recipes for vehicle module recipes
+     */
+    public static void loadRecipes() {
+
+
+    }
 
 }

@@ -3,41 +3,40 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIWander extends EntityAIWander
-{
-NpcBase npc;
-public NpcAIWander(NpcBase npc, double par2)
-  {
-  super(npc, par2);
-  this.npc = npc;
-  }
+public class NpcAIWander extends EntityAIWander {
+    NpcBase npc;
 
-@Override
-public boolean shouldExecute()
-  {
-  if(!npc.getIsAIEnabled() || npc.shouldBeAtHome()){return false;}
-  return super.shouldExecute();
-  }
+    public NpcAIWander(NpcBase npc, double par2) {
+        super(npc, par2);
+        this.npc = npc;
+    }
 
-@Override
-public boolean continueExecuting()
-  {
-  if(!npc.getIsAIEnabled() || npc.shouldBeAtHome()){return false;}
-  return super.continueExecuting();
-  }
+    @Override
+    public boolean shouldExecute() {
+        if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
+            return false;
+        }
+        return super.shouldExecute();
+    }
 
-@Override
-public void startExecuting()
-  {
-  npc.addAITask(NpcAI.TASK_WANDER+NpcAI.TASK_MOVE);
-  super.startExecuting();  
-  }
+    @Override
+    public boolean continueExecuting() {
+        if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
+            return false;
+        }
+        return super.continueExecuting();
+    }
 
-@Override
-public void resetTask()
-  {
-  npc.removeAITask(NpcAI.TASK_WANDER+NpcAI.TASK_MOVE);
-  super.resetTask();
-  }
+    @Override
+    public void startExecuting() {
+        npc.addAITask(NpcAI.TASK_WANDER + NpcAI.TASK_MOVE);
+        super.startExecuting();
+    }
+
+    @Override
+    public void resetTask() {
+        npc.removeAITask(NpcAI.TASK_WANDER + NpcAI.TASK_MOVE);
+        super.resetTask();
+    }
 
 }

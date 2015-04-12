@@ -1,0 +1,69 @@
+### Ancient Warfare Town Template ###
+# a line beginning with # denotes a comment line, and is ignored during parsing
+# the line must -start- with # to be ignored, mid-line comments are not allowed
+header:
+name=large_village
+minSize=4
+maxSize=7
+buildingExpansion=2
+selectionWeight=10
+clusterValue=100
+townBlockSize=24
+townPlotSize=3
+wallStyle=0
+wallSize=0
+exteriorSize=0
+exteriorPlotSize=3
+interiorEmptyPlotChance=10
+randomVillagersPerChunk=1
+roadBlock=minecraft:gravel
+roadMeta=0
+biomeWhiteList=false
+biomeList=ocean,beach,river
+dimensionWhiteList=true
+dimensionList=0
+lamp=lamp_post
+:endheader
+
+#wall type registry
+#name:type:id:weight
+walls:
+:endwalls
+
+#wall patterns
+#size:pattern
+#patterns reference the wall id number from above.  enter a non-registered number in the pattern for an empty spot (used for large-sized wall corners)
+wallPatterns:
+:endWallPaterns
+
+#list of structures, one per line
+uniqueStructures:
+village_church
+:endUniqueStructures
+
+#list of structures, one per line
+mainStructures:
+village_smith
+:endMainStructures
+
+#list of structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+houseStructures:
+village_house_garden:1
+village_house:2
+village_hut1:3
+village_hut2:3
+village_library:1
+:endHouseStructures
+
+#list of structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+cosmeticStructures:
+village_garden_large:1
+village_garden_small:1
+:endCosmeticStructures
+
+#list of structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+exteriorStructures:
+:endExteriorStructures

@@ -1,36 +1,37 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import java.util.HashMap;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
-public class BlockIconMap
-{
+import java.util.HashMap;
+import java.util.Map;
 
-HashMap<Integer, IIcon> iconMap = new HashMap<Integer, IIcon>();
-HashMap<Integer, String> iconTexMap = new HashMap<Integer, String>();
+public class BlockIconMap {
 
-public void setIconTexture(int side, int meta, String texName)
-  {
-  iconTexMap.put(side + meta*16, texName);
-  }
+    private final HashMap<Integer, IIcon> iconMap = new HashMap<Integer, IIcon>();
+    private final HashMap<Integer, String> iconTexMap = new HashMap<Integer, String>();
 
-public void registerIcons(IIconRegister reg)
-  {
-  String tex;
-  IIcon icon;
-  for(Integer key : iconTexMap.keySet())
-    {
-    tex = iconTexMap.get(key);
-    icon = reg.registerIcon(tex);
-    iconMap.put(key, icon);
+    public void setIconTexture(int side, int meta, String texName) {
+        iconTexMap.put(side + meta * 16, texName);
     }
-  }
 
-public IIcon getIconFor(int mcSide, int meta)
-  {
-  return iconMap.get(mcSide + meta*16);
-  }
+    public void registerIcons(IIconRegister reg) {
+        HashMap<String, IIcon> temp = new HashMap<String, IIcon>();
+        IIcon icon;
+        for (Map.Entry<Integer,String> entry : iconTexMap.entrySet()) {
+            String tex = entry.getValue();
+            if(temp.containsKey(tex)){
+                icon = temp.get(tex);
+            }else {
+                icon = reg.registerIcon(tex);
+                temp.put(tex, icon);
+            }
+            iconMap.put(entry.getKey(), icon);
+        }
+    }
+
+    public IIcon getIconFor(int mcSide, int meta) {
+        return iconMap.get(mcSide + meta * 16);
+    }
 
 }
