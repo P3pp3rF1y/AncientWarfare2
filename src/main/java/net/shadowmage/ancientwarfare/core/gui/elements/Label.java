@@ -1,21 +1,18 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.StatCollector;
 
 public class Label extends GuiElement {
 
-    FontRenderer fr;
-    String text;
-    boolean renderCentered = false;
+    private String text;
+    private boolean renderCentered = false;
 
     public Label(int topLeftX, int topLeftY, String text) {
         super(topLeftX, topLeftY);
         setText(text);
         this.height = 8;
-        fr = Minecraft.getMinecraft().fontRenderer;
-        this.width = fr.getStringWidth(this.text);
+        this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(this.text);
     }
 
     public Label setRenderCentered() {
@@ -27,10 +24,10 @@ public class Label extends GuiElement {
     public void render(int mouseX, int mouseY, float partialTick) {
         if (visible) {
             if (renderCentered) {
-                int len = fr.getStringWidth(text) / 2;
-                fr.drawStringWithShadow(text, renderX - len, renderY, 0xffffffff);
+                int len = Minecraft.getMinecraft().fontRenderer.getStringWidth(text) / 2;
+                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, renderX - len, renderY, 0xffffffff);
             } else {
-                fr.drawStringWithShadow(text, renderX, renderY, 0xffffffff);
+                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, renderX, renderY, 0xffffffff);
             }
         }
     }

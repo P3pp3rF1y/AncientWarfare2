@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
@@ -23,11 +22,9 @@ public class Text extends GuiElement {
     IWidgetSelection selector;
     String text;
     int cursorIndex;
-    FontRenderer fr;
 
     public Text(int topLeftX, int topLeftY, int width, String defaultText, IWidgetSelection selector) {
         super(topLeftX, topLeftY, width, 12);
-        fr = Minecraft.getMinecraft().fontRenderer;
         if (defaultText == null) {
             defaultText = "";
         }
@@ -249,14 +246,14 @@ public class Text extends GuiElement {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.f);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
-        fr.drawString(text, renderX + 2, renderY + 2, 0xffffffff);
+        Minecraft.getMinecraft().fontRenderer.drawString(text, renderX + 2, renderY + 2, 0xffffffff);
 
         if (selected) {
             int w = 0;
             for (int i = 0; i < cursorIndex; i++) {
-                w += fr.getCharWidth(text.charAt(i));
+                w += Minecraft.getMinecraft().fontRenderer.getCharWidth(text.charAt(i));
             }
-            fr.drawString("_", renderX + 2 + w, renderY + 3, 0xffff0000);
+            Minecraft.getMinecraft().fontRenderer.drawString("_", renderX + 2 + w, renderY + 3, 0xffff0000);
         }
 
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.f);

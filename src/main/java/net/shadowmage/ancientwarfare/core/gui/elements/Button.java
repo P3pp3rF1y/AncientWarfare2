@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
@@ -12,16 +11,13 @@ import org.lwjgl.opengl.GL11;
 
 public class Button extends GuiElement {
 
-
     private boolean pressed = false;
-    protected FontRenderer fr;
     protected String text;
     protected int textX;
     protected int textY;
 
     public Button(int topLeftX, int topLeftY, int width, int height, String text) {
         super(topLeftX, topLeftY, width, height);
-        fr = Minecraft.getMinecraft().fontRenderer;
         this.setText(text);
         this.addNewListener(new Listener(Listener.MOUSE_UP) {
             @Override
@@ -47,7 +43,7 @@ public class Button extends GuiElement {
 
     public final void setText(String text) {
         this.text = StatCollector.translateToLocal(text);
-        int tw = fr.getStringWidth(this.text);
+        int tw = Minecraft.getMinecraft().fontRenderer.getStringWidth(this.text);
         textX = (width - tw) / 2;
         textY = (height - 8) / 2;
     }
@@ -63,7 +59,7 @@ public class Button extends GuiElement {
             int usedWidth = 256;
             int usedHeight = 40;
             RenderTools.renderQuarteredTexture(textureSize, textureSize, startX, startY, usedWidth, usedHeight, renderX, renderY, width, height);
-            fr.drawStringWithShadow(text, renderX + textX, renderY + textY, textColor);
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, renderX + textX, renderY + textY, textColor);
             GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
         }
     }
