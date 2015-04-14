@@ -9,40 +9,34 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 
-public abstract class BlockRotatableTile extends Block implements IRotatableBlock
-{
+public abstract class BlockRotatableTile extends Block implements IRotatableBlock {
 
-IconRotationMap iconMap = new IconRotationMap();
+    private final IconRotationMap iconMap = new IconRotationMap();
 
-protected BlockRotatableTile(Material material)
-  {
-  super(material);
-  }
+    protected BlockRotatableTile(Material material) {
+        super(material);
+    }
 
-@Override
-public Block setIcon(RelativeSide side, String texName)
-  {
-  iconMap.setIcon(this, side, texName);
-  return this;
-  }
+    @Override
+    public Block setIcon(RelativeSide side, String texName) {
+        iconMap.setIcon(this, side, texName);
+        return this;
+    }
 
-@Override
-public void registerBlockIcons(IIconRegister reg)
-  {
-  iconMap.registerIcons(reg);
-  }
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        iconMap.registerIcons(reg);
+    }
 
-@Override
-public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
-  {
-  IRotatableTile tile = (IRotatableTile)world.getTileEntity(x, y, z);
-  return iconMap.getIcon(this, tile.getPrimaryFacing().ordinal(), side);
-  }
+    @Override
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+        IRotatableTile tile = (IRotatableTile) world.getTileEntity(x, y, z);
+        return iconMap.getIcon(this, tile.getPrimaryFacing().ordinal(), side);
+    }
 
-@Override
-public IIcon getIcon(int side, int meta)
-  {
-  return iconMap.getIcon(this, meta, side);
-  }
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        return iconMap.getIcon(this, meta, side);
+    }
 
 }

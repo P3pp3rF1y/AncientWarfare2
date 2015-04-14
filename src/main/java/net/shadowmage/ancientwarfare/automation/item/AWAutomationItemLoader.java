@@ -1,127 +1,102 @@
 package net.shadowmage.ancientwarfare.automation.item;
 
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.chunkLoaderDeluxe;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.chunkLoaderSimple;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.flywheel;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.handCrankedEngine;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.mailbox;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.torqueConduit;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.torqueDistributor;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.torqueGeneratorSterling;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.torqueGeneratorWaterwheel;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.warehouseCrafting;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.warehouseInterface;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteAnimalFarm;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteAutoCrafting;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteCropFarm;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteFishFarm;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteForestry;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteMushroomFarm;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteQuarry;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteReedFarm;
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.worksiteWarehouse;
-
-import java.util.Collections;
-import java.util.Comparator;
-
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.automation.block.*;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-public class AWAutomationItemLoader
-{
 
-public static final CreativeTabs automationTab = new CreativeTabs("tabs.automation")
-  {
-  @Override
-  @SideOnly(Side.CLIENT)
-  public Item getTabIconItem()
-    {  
-    return AWItems.automationHammerIron;
-    }  
-  
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  public void displayAllReleventItems(java.util.List par1List) 
-    {
-    super.displayAllReleventItems(par1List);
-    Collections.sort(par1List, sorter);    
+import java.util.Collections;
+import java.util.Comparator;
+
+import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.*;
+
+public class AWAutomationItemLoader {
+
+    public static final CreativeTabs automationTab = new CreativeTabs("tabs.automation") {
+        @Override
+        @SideOnly(Side.CLIENT)
+        public Item getTabIconItem() {
+            return AWItems.automationHammerIron;
+        }
+
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        public void displayAllReleventItems(java.util.List par1List) {
+            super.displayAllReleventItems(par1List);
+            Collections.sort(par1List, sorter);
+        }
     };
-  };
-  
-public static void load()
-  {
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_GEAR_SET, "ancientwarfare:automation/wooden_gear");
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_GEAR_SET, "ancientwarfare:automation/iron_gear");
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_GEAR_SET, "ancientwarfare:automation/steel_gear");
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_BUSHINGS, "ancientwarfare:automation/wooden_bearings");
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_BEARINGS, "ancientwarfare:automation/iron_bearings");
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_BEARINGS, "ancientwarfare:automation/steel_bearings");
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT, "ancientwarfare:automation/wooden_shaft");
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "ancientwarfare:automation/iron_shaft");
-  ((ItemComponent)AWItems.componentItem).addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "ancientwarfare:automation/steel_shaft");
-  
-  AWItems.worksiteUpgrade = new ItemWorksiteUpgrade("worksite_upgrade");
-  ItemWorksiteUpgrade item = (ItemWorksiteUpgrade)AWItems.worksiteUpgrade;
-  item.addSubItemIcon(WorksiteUpgrade.SIZE_MEDIUM.flag(), "ancientwarfare:automation/upgrade_bounds_medium");
-  item.addSubItemIcon(WorksiteUpgrade.SIZE_LARGE.flag(), "ancientwarfare:automation/upgrade_bounds_large");
-  item.addSubItemIcon(WorksiteUpgrade.QUARRY_MEDIUM.flag(), "ancientwarfare:automation/upgrade_quarry_medium");
-  item.addSubItemIcon(WorksiteUpgrade.QUARRY_LARGE.flag(), "ancientwarfare:automation/upgrade_quarry_large");
-  item.addSubItemIcon(WorksiteUpgrade.ENCHANTED_TOOLS_1.flag(), "ancientwarfare:automation/upgrade_enchanted_tools_1");
-  item.addSubItemIcon(WorksiteUpgrade.ENCHANTED_TOOLS_2.flag(), "ancientwarfare:automation/upgrade_enchanted_tools_2");
-  item.addSubItemIcon(WorksiteUpgrade.TOOL_QUALITY_1.flag(), "ancientwarfare:automation/upgrade_quality_tools_1");
-  item.addSubItemIcon(WorksiteUpgrade.TOOL_QUALITY_2.flag(), "ancientwarfare:automation/upgrade_quality_tools_2");
-  item.addSubItemIcon(WorksiteUpgrade.TOOL_QUALITY_3.flag(), "ancientwarfare:automation/upgrade_quality_tools_3");
-  item.addSubItemIcon(WorksiteUpgrade.BASIC_CHUNK_LOADER.flag(), "ancientwarfare:automation/upgrade_chunkloader_basic");
-  item.addSubItemIcon(WorksiteUpgrade.QUARRY_CHUNK_LOADER.flag(),"ancientwarfare:automation/upgrade_chunkloader_quarry");
-  GameRegistry.registerItem(AWItems.worksiteUpgrade, "worksite_upgrade");
-  }
 
-private static final TabSorter sorter = new TabSorter();
-private static class TabSorter implements Comparator<ItemStack>
-{
+    public static void load() {
+        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_GEAR_SET, "ancientwarfare:automation/wooden_gear", "gearWood");
+        AWItems.componentItem.addSubItem(ItemComponent.IRON_GEAR_SET, "ancientwarfare:automation/iron_gear", "gearIron");
+        AWItems.componentItem.addSubItem(ItemComponent.STEEL_GEAR_SET, "ancientwarfare:automation/steel_gear", "gearSteel");
+        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_BUSHINGS, "ancientwarfare:automation/wooden_bearings");
+        AWItems.componentItem.addSubItem(ItemComponent.IRON_BEARINGS, "ancientwarfare:automation/iron_bearings");
+        AWItems.componentItem.addSubItem(ItemComponent.STEEL_BEARINGS, "ancientwarfare:automation/steel_bearings");
+        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT, "ancientwarfare:automation/wooden_shaft", "torqueShaftWood");
+        AWItems.componentItem.addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "ancientwarfare:automation/iron_shaft", "torqueShaftIron");
+        AWItems.componentItem.addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "ancientwarfare:automation/steel_shaft", "torqueShaftSteel");
 
-@Override
-public int compare(ItemStack arg0, ItemStack arg1)
-  {
-  Item i1 = arg0.getItem();
-  Item i2 = arg1.getItem();
-  int i1p = getItemPriority(i1);
-  int i2p = getItemPriority(i2);
-  if(i1p==i2p)
-    {
-    return arg0.getDisplayName().compareTo(arg1.getDisplayName());
+        AWItems.worksiteUpgrade = new ItemWorksiteUpgrade();
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.SIZE_MEDIUM.ordinal(), "ancientwarfare:automation/upgrade_bounds_medium");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.SIZE_LARGE.ordinal(), "ancientwarfare:automation/upgrade_bounds_large");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_MEDIUM.ordinal(), "ancientwarfare:automation/upgrade_quarry_medium");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_LARGE.ordinal(), "ancientwarfare:automation/upgrade_quarry_large");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_1.ordinal(), "ancientwarfare:automation/upgrade_enchanted_tools_1");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_2.ordinal(), "ancientwarfare:automation/upgrade_enchanted_tools_2");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_1.ordinal(), "ancientwarfare:automation/upgrade_quality_tools_1");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_2.ordinal(), "ancientwarfare:automation/upgrade_quality_tools_2");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_3.ordinal(), "ancientwarfare:automation/upgrade_quality_tools_3");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.BASIC_CHUNK_LOADER.ordinal(), "ancientwarfare:automation/upgrade_chunkloader_basic");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_CHUNK_LOADER.ordinal(), "ancientwarfare:automation/upgrade_chunkloader_quarry");
+        GameRegistry.registerItem(AWItems.worksiteUpgrade, "worksite_upgrade");
     }
-  else
-    {
-    return i1p < i2p ? -1 : 1;
-    }
-  }
 
-private int getItemPriority(Item item)
-  {
-  if(item instanceof ItemBlock)
-    {
-    ItemBlock iblock = (ItemBlock)item;
-    Block block = iblock.field_150939_a;
-    if(block==chunkLoaderSimple || block==chunkLoaderDeluxe){return 10;}
-    else if(block==flywheel){return 9;}
-    else if(block==torqueGeneratorSterling || block==torqueGeneratorWaterwheel || block==handCrankedEngine){return 8;}
-    else if(block==torqueDistributor || block==torqueConduit){return 7;}
-    else if(block==mailbox){return 6;}
-    else if(block==warehouseInterface || block==warehouseCrafting){return 5;}
-    else if(block==worksiteWarehouse){return 4;}
-    else if(block==worksiteAutoCrafting){return 3;}
-    else if(block==worksiteQuarry || block==worksiteForestry || block==worksiteCropFarm || block==worksiteMushroomFarm
-        || block==worksiteAnimalFarm || block==worksiteReedFarm || block==worksiteFishFarm){return 2;}    
-    }
-  return 0;
-  }
-}
+    private static final Comparator sorter = new Comparator<ItemStack>() {
+
+        @Override
+        public int compare(ItemStack arg0, ItemStack arg1) {
+            int i1p = getItemPriority(arg0.getItem());
+            int i2p = getItemPriority(arg1.getItem());
+            if (i1p == i2p) {
+                return arg0.getDisplayName().compareTo(arg1.getDisplayName());
+            } else {
+                return i1p - i2p;
+            }
+        }
+
+        private int getItemPriority(Item item) {
+            if (item instanceof ItemBlock) {
+                Block block = ((ItemBlock) item).field_150939_a;
+                if (block instanceof BlockChunkLoaderSimple) {
+                    return 10;
+                } else if (block instanceof BlockFlywheel) {
+                    return 9;
+                } else if (block instanceof BlockTorqueGenerator || block instanceof BlockHandCrankedEngine) {
+                    return 8;
+                } else if (block instanceof BlockTorqueBase) {
+                    return 7;
+                } else if (block instanceof BlockMailbox) {
+                    return 6;
+                } else if (block == warehouseInterface || block == warehouseCrafting) {
+                    return 5;
+                } else if (block == worksiteWarehouse) {
+                    return 4;
+                } else if (block instanceof BlockAutoCrafting) {
+                    return 3;
+                } else if (block instanceof BlockWorksiteBase) {
+                    return 2;
+                }
+            }
+            return 0;
+        }
+    };
 }

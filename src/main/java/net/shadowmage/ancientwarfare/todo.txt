@@ -1,4 +1,14 @@
+//https://raw.githubusercontent.com/coolAlias/Forge_Tutorials/master/ModdingWithAPIs.java
+//http://asawicki.info/news_1376_calculating_aabb_of_a_rotated_2d_rectangle.html
+//http://www.jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf
+//http://www.geometrictools.com/Documentation/DynamicCollisionDetection.pdf
+//http://www.gamedev.net/page/resources/_/technical/game-programming/2d-rotated-rectangle-collision-r2604
+//http://www.codezealot.org/archives/55#sat-mtv
+//http://www.codezealot.org/archives/394
 
+//http://www.videogamesblogger.com/2014/10/13/borderlands-the-pre-sequel-cheats.htm
+//http://www.gamedev.net/topic/588070-seperating-axis-theorem---how-to-resolve-contact-points/
+//http://gamedev.stackexchange.com/questions/26888/finding-the-contact-point-with-sat
 
 colors for textures:
 wood: d5bf82

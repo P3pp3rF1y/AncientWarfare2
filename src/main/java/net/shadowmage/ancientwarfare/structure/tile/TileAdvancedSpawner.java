@@ -11,113 +11,101 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileAdvancedSpawner extends TileEntity
-{
+public class TileAdvancedSpawner extends TileEntity {
 
-private SpawnerSettings settings = new SpawnerSettings();
+    private SpawnerSettings settings = new SpawnerSettings();
 
-public TileAdvancedSpawner()
-  {
-  
-  }
+    public TileAdvancedSpawner() {
 
-@Override
-public boolean canUpdate()
-  {
-  return true;
-  }
-
-@Override
-public void setWorldObj(World world)
-  {
-  super.setWorldObj(world);
-  settings.setWorld(world, xCoord, yCoord, zCoord);
-  }
-
-@Override
-public void updateEntity()
-  {
-  if(worldObj.isRemote){return;}
-  if(settings.worldObj==null)
-    {
-    settings.setWorld(worldObj, xCoord, yCoord, zCoord);
     }
-  settings.onUpdate();
-  }
 
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  super.writeToNBT(tag);
-  NBTTagCompound ntag = new NBTTagCompound();  
-  settings.writeToNBT(ntag);
-  tag.setTag("spawnerSettings", ntag);
-  }
-
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  super.readFromNBT(tag);
-  settings.readFromNBT(tag.getCompoundTag("spawnerSettings"));
-  }
-
-@Override
-public Packet getDescriptionPacket()
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  settings.writeToNBT(tag);
-  S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);  
-  return pkt;
-  }
-
-@Override
-public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-  {
-  settings.readFromNBT(pkt.func_148857_g());
-  super.onDataPacket(net, pkt);
-  worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  }
-
-public SpawnerSettings getSettings()
-  {
-  return settings;
-  }
-
-public void setSettings(SpawnerSettings settings)
-  {
-  this.settings = settings;
-  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  }
-
-public float getBlockHardness()
-  {
-  return settings.blockHardness;
-  }
-
-public void onBlockBroken()
-  {
-  if(worldObj.isRemote){return;}
-  int xp = settings.getXpToDrop();
-  while (xp > 0)
-    {
-    int j = EntityXPOrb.getXPSplit(xp);
-    xp -= j;
-    this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.xCoord+0.5d, this.yCoord, this.zCoord+0.5d, j));
+    @Override
+    public boolean canUpdate() {
+        return true;
     }
-  InventoryBasic inv = settings.getInventory();
-  ItemStack item;
-  for(int i = 0; i < inv.getSizeInventory(); i++)
-    {
-    item = inv.getStackInSlot(i);
-    if(item == null){continue;}
-    InventoryTools.dropItemInWorld(worldObj, item, xCoord, yCoord, zCoord);
-    }
-  }
 
-public void handleClientEvent(int a, int b)
-  {
-  
-  }
+    @Override
+    public void setWorldObj(World world) {
+        super.setWorldObj(world);
+        settings.setWorld(world, xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public void updateEntity() {
+        if (worldObj.isRemote) {
+            return;
+        }
+        if (settings.worldObj == null) {
+            settings.setWorld(worldObj, xCoord, yCoord, zCoord);
+        }
+        settings.onUpdate();
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        NBTTagCompound ntag = new NBTTagCompound();
+        settings.writeToNBT(ntag);
+        tag.setTag("spawnerSettings", ntag);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        settings.readFromNBT(tag.getCompoundTag("spawnerSettings"));
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tag = new NBTTagCompound();
+        settings.writeToNBT(tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        settings.readFromNBT(pkt.func_148857_g());
+        super.onDataPacket(net, pkt);
+        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    public SpawnerSettings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(SpawnerSettings settings) {
+        this.settings = settings;
+        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    public float getBlockHardness() {
+        return settings.blockHardness;
+    }
+
+    public void onBlockBroken() {
+        if (worldObj.isRemote) {
+            return;
+        }
+        int xp = settings.getXpToDrop();
+        while (xp > 0) {
+            int j = EntityXPOrb.getXPSplit(xp);
+            xp -= j;
+            this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.xCoord + 0.5d, this.yCoord, this.zCoord + 0.5d, j));
+        }
+        InventoryBasic inv = settings.getInventory();
+        ItemStack item;
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            item = inv.getStackInSlot(i);
+            if (item == null) {
+                continue;
+            }
+            InventoryTools.dropItemInWorld(worldObj, item, xCoord, yCoord, zCoord);
+        }
+    }
+
+    public void handleClientEvent(int a, int b) {
+
+    }
 
 }
