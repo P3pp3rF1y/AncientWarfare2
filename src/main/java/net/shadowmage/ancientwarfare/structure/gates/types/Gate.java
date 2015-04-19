@@ -20,8 +20,10 @@
  */
 package net.shadowmage.ancientwarfare.structure.gates.types;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -31,11 +33,13 @@ import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.IGateType;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public abstract class Gate implements IGateType {
@@ -202,6 +206,13 @@ public abstract class Gate implements IGateType {
         }
         BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
+        if(!(gate.boundingBox instanceof DualBoundingBox)) {
+            try {
+                ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new DualBoundingBox(min, max), "boundingBox", "field_70121_D");
+            } catch (Exception ignored) {
+
+            }
+        }
         if (gate.edgePosition > 0) {
             gate.boundingBox.setBounds(min.x, max.y + 0.5d, min.z, max.x + 1, max.y + 1, max.z + 1);
         } else {
