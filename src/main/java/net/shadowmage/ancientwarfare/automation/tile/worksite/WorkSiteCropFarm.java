@@ -9,7 +9,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -32,7 +34,6 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
     int plantableCount;
     int bonemealCount;
-    boolean shouldCountResources;
 
     public WorkSiteCropFarm() {
         this.shouldCountResources = true;
@@ -77,8 +78,16 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         return item instanceof IPlantable;
     }
 
-    private boolean isPlant(Block block) {
+    @Override
+    protected boolean isFarmable(Block block, int x, int y, int z) {
+        if(super.isFarmable(block, x, y, z)){
+            return ((IPlantable) block).getPlantType(worldObj, x, y, z) == EnumPlantType.Crop;
+        }
         return block instanceof BlockCrops || block instanceof BlockStem;
+    }
+
+    private boolean isTillable(Block block){
+        return block == Blocks.grass || block == Blocks.dirt;
     }
 
     @Override
@@ -97,45 +106,28 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         validateCollection(blocksToTill);
     }
 
-    private void countResources() {
-        shouldCountResources = false;
+    @Override
+    protected void countResources() {
+        super.countResources();
         plantableCount = 0;
         bonemealCount = 0;
         ItemStack stack;
-        for (int i = 27; i < 30; i++) {
+        for (int i = 27; i < inventory.getSizeInventory(); i++) {
             stack = inventory.getStackInSlot(i);
             if (stack == null) {
                 continue;
             }
-            if (isPlantable(stack.getItem())) {
+            if (i < 30 && isPlantable(stack.getItem())) {
                 plantableCount += stack.stackSize;
-            }
-        }
-        for (int i = 30; i < 33; i++) {
-            stack = inventory.getStackInSlot(i);
-            if (stack == null) {
-                continue;
-            }
-            if (isBonemeal(stack)) {
+            }else if(i > 29 && isBonemeal(stack)){
                 bonemealCount += stack.stackSize;
             }
         }
     }
 
     @Override
-    protected void fillBlocksToProcess(Collection<BlockPosition> targets) {
-        int w = bbMax.x - bbMin.x + 1;
-        int h = bbMax.z - bbMin.z + 1;
-        BlockPosition p;
-        for (int x = 0; x < w; x++) {
-            for (int z = 0; z < h; z++) {
-                if (isTarget(bbMin.x + x, bbMin.z + z)) {
-                    p = new BlockPosition(bbMin);
-                    p.offset(x, 0, z);
-                    targets.add(p);
-                }
-            }
-        }
+    protected int[] getIndicesForPickup(){
+        return inventory.getRawIndicesCombined(RelativeSide.BOTTOM, RelativeSide.FRONT, RelativeSide.TOP);
     }
 
     @Override
@@ -143,16 +135,10 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         Block block = worldObj.getBlock(position.x, position.y, position.z);
         if (block.isAir(worldObj, position.x, position.y, position.z)) {
             block = worldObj.getBlock(position.x, position.y - 1, position.z);
-            if (block == Blocks.dirt || block == Blocks.grass) {
+            if (isTillable(block)) {
                 blocksToTill.add(new BlockPosition(position.x, position.y - 1, position.z));
             } else if (block == Blocks.farmland) {
                 blocksToPlant.add(position);
-            }
-        } else if (block instanceof BlockCrops) {
-            if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
-                blocksToHarvest.add(position);
-            } else {
-                blocksToFertilize.add(position);
             }
         } else if (block instanceof BlockStem) {
             if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
@@ -175,6 +161,10 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             } else {
                 blocksToFertilize.add(position);
             }
+        } else if (block instanceof IGrowable && ((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
+            blocksToFertilize.add(position);
+        } else if (isFarmable(block, position.x, position.y, position.z)) {
+            blocksToHarvest.add(position);
         }
     }
 
@@ -188,7 +178,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if ((block == Blocks.grass || block == Blocks.dirt) && worldObj.isAirBlock(position.x, position.y + 1, position.z)) {
+                if (isTillable(block) && worldObj.isAirBlock(position.x, position.y + 1, position.z)) {
                     worldObj.setBlock(position.x, position.y, position.z, Blocks.farmland);
                     return true;
                 }
@@ -198,12 +188,14 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if (block instanceof BlockCrops) {
-                    if (((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
-                        continue;
-                    }
+                if (block == Blocks.pumpkin || block == Blocks.melon_block) {
                     return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
-                } else if (block == Blocks.pumpkin || block == Blocks.melon_block) {
+                }
+                else if (block instanceof IGrowable) {
+                    if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote) && !(block instanceof BlockStem)) {
+                        return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
+                    }
+                }else if(isFarmable(block, position.x, position.y, position.z)){
                     return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
                 }
             }
@@ -211,7 +203,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             it = blocksToPlant.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
-                if (worldObj.getBlock(position.x, position.y - 1, position.z) == Blocks.farmland && worldObj.isAirBlock(position.x, position.y, position.z)) {
+                if (worldObj.isAirBlock(position.x, position.y, position.z)) {
                     ItemStack stack;
                     for (int i = 27; i < 30; i++) {
                         stack = inventory.getStackInSlot(i);
@@ -219,14 +211,13 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                             continue;
                         }
                         if (isPlantable(stack.getItem())) {
-                            plantableCount--;
-                            stack.stackSize--;
-                            if (stack.stackSize <= 0) {
-                                inventory.setInventorySlotContents(i, null);
+                            if(tryPlace(stack, position.x, position.y, position.z, ForgeDirection.UP)) {
+                                plantableCount--;
+                                if (stack.stackSize <= 0) {
+                                    inventory.setInventorySlotContents(i, null);
+                                }
+                                return true;
                             }
-                            block = ((IPlantable) stack.getItem()).getPlant(worldObj, position.x, position.y, position.z);
-                            worldObj.setBlock(position.x, position.y, position.z, block, ((IPlantable) stack.getItem()).getPlantMetadata(worldObj, position.x, position.y, position.z), 3);
-                            return true;
                         }
                     }
                     return false;
@@ -237,27 +228,26 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if (isPlant(block)) {
+                if (isFarmable(block, position.x, position.y, position.z)) {
                     ItemStack stack;
-                    for (int i = 30; i < 33; i++) {
+                    for (int i = 30; i < inventory.getSizeInventory(); i++) {
                         stack = inventory.getStackInSlot(i);
                         if (stack == null) {
                             continue;
                         }
                         if (isBonemeal(stack)) {
-                            bonemealCount--;
-                            ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, getOwnerAsPlayer());
-                            if (stack.stackSize <= 0) {
-                                inventory.setInventorySlotContents(i, null);
+                            if(ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, getOwnerAsPlayer())){
+                                bonemealCount--;
+                                if (stack.stackSize <= 0) {
+                                    inventory.setInventorySlotContents(i, null);
+                                }
                             }
                             block = worldObj.getBlock(position.x, position.y, position.z);
-                            if (isPlant(block)) {
+                            if (isFarmable(block, position.x, position.y, position.z)) {
                                 if (((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                                     blocksToFertilize.add(position);
                                 } else {
-                                    if (block instanceof BlockCrops) {
-                                        blocksToHarvest.add(position);
-                                    }
+                                    blocksToHarvest.add(position);
                                 }
                             }
                             return true;
@@ -286,15 +276,6 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
     @Override
     protected boolean hasWorksiteWork() {
         return (plantableCount > 0 && !blocksToPlant.isEmpty()) || (bonemealCount > 0 && !blocksToFertilize.isEmpty()) || !blocksToTill.isEmpty() || !blocksToHarvest.isEmpty();
-    }
-
-    @Override
-    protected void updateBlockWorksite() {
-        worldObj.theProfiler.startSection("Count Resources");
-        if (shouldCountResources) {
-            countResources();
-        }
-        worldObj.theProfiler.endSection();
     }
 
 }

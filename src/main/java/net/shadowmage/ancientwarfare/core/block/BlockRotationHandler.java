@@ -296,6 +296,10 @@ public class BlockRotationHandler {
             return slotsByInventorySide.get(side);
         }
 
+        public int[] getRawIndicesCombined(){
+            return getRawIndicesCombined(validSides.toArray(new RelativeSide[validSides.size()]));
+        }
+
         public int[] getRawIndicesCombined(RelativeSide... sides) {
             int len = 0;
             int[] indices, combindedIndices;
