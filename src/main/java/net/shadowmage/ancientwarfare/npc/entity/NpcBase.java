@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.npc.entity;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -204,6 +206,20 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
+    public float getBlockPathWeight(int varX, int varY, int varZ) {
+        Block below = worldObj.getBlock(varX, varY - 1, varZ);
+        if(below.getMaterial() == Material.lava || below.getMaterial() == Material.cactus)//Avoid cacti and lava when wandering
+            return -10;
+        else if(below.getMaterial().isLiquid())//Don't try swimming too much
+            return 0;
+        float level = worldObj.getLightBrightness(varX, varY, varZ);//Prefer lit areas
+        if(level < 0)
+            return 0;
+        else
+            return level;
+    }
+
+    @Override
     public void onEntityUpdate() {
         /**
          * this is pushOutOfBlocks ...
@@ -239,18 +255,26 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         //NOOP on non-player owned npc
     }
 
+    public void setHomeAreaAtCurrentPosition(){
+        setHomeArea(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), getHomeRange());
+    }
+
+    public int getHomeRange(){
+        if(hasHome()){
+            return MathHelper.floor_float(func_110174_bM());
+        }
+        return 5;
+    }
+
     /**
      * Return true if this NPC should be within his home range.<br>
      * Should still allow for a combat NPC to attack targets outside his home range.
      */
     public boolean shouldBeAtHome() {
-        if (getAttackTarget() != null) {
+        if (getAttackTarget() != null || !hasHome() || worldObj.provider.hasNoSky) {
             return false;
-        }
-        if (!hasHome()) {
-            return false;
-        }
-        return (!worldObj.provider.hasNoSky && !worldObj.provider.isDaytime()) || worldObj.isRaining();//if is at night (and not an underground world type), or if it is raining, return true
+        }//if is at night, or if it is under rain, return true
+        return !worldObj.provider.isDaytime() || worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
     }
 
     public void setIsAIEnabled(boolean val) {
@@ -878,11 +902,16 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (getShieldStack() != null) {
             tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack()));
         }
-        if (getHomePosition() != null) {
-            ChunkCoordinates cc = getHomePosition();
-            int[] ccia = new int[]{cc.posX, cc.posY, cc.posZ, (int) func_110174_bM()};
-            tag.setIntArray("home", ccia);
+        if (!hasHome()) {
+            BlockPosition position = getTownHallPosition();
+            if(position != null)
+                setHomeArea(position.x, position.y, position.z, getHomeRange());
+            else
+                setHomeAreaAtCurrentPosition();
         }
+        ChunkCoordinates cc = getHomePosition();
+        int[] ccia = new int[]{cc.posX, cc.posY, cc.posZ, getHomeRange()};
+        tag.setIntArray("home", ccia);
         tag.setTag("levelingStats", levelingStats.writeToNBT(new NBTTagCompound()));
         tag.setInteger("attackDamageOverride", attackDamage);
         tag.setInteger("armorValueOverride", armorValue);

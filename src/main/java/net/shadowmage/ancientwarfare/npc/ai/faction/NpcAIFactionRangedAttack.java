@@ -66,7 +66,7 @@ public class NpcAIFactionRangedAttack extends NpcAI {
             this.moveToEntity(target, dist);
         } else {
             double homeDist = npc.getDistanceSqFromHome();
-            if (npc.getDistanceSqFromHome() > 9 && dist < 8 * 8) {
+            if (homeDist > 9 && dist < 8 * 8) {
                 npc.addAITask(TASK_MOVE);
                 ChunkCoordinates home = npc.getHomePosition();
                 this.moveToPosition(home.posX, home.posY, home.posZ, homeDist);
@@ -77,7 +77,7 @@ public class NpcAIFactionRangedAttack extends NpcAI {
             if (this.attackDelay <= 0) {
                 float pwr = (float) (attackDistanceSq / dist);
                 pwr = pwr < 0.1f ? 0.1f : pwr > 1.f ? 1.f : pwr;
-                this.rangedAttacker.attackEntityWithRangedAttack(target, 1.f);
+                this.rangedAttacker.attackEntityWithRangedAttack(target, pwr);
                 this.attackDelay = 35;
             }
         }

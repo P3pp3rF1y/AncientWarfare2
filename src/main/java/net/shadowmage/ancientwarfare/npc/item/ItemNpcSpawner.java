@@ -79,7 +79,7 @@ public class ItemNpcSpawner extends Item implements IItemClickable {
         if (npc != null) {
             npc.setOwnerName(player.getCommandSenderName());
             npc.setPosition(hit.x + 0.5d, hit.y, hit.z + 0.5d);
-            npc.setHomeArea(hit.x, hit.y, hit.z, 60);
+            npc.setHomeAreaAtCurrentPosition();
             player.worldObj.spawnEntityInWorld(npc);
             if (!player.capabilities.isCreativeMode) {
                 stack.stackSize--;

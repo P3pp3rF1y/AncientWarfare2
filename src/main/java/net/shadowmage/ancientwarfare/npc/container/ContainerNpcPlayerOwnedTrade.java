@@ -20,7 +20,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
     public ContainerNpcPlayerOwnedTrade(EntityPlayer player, int x, int y, int z) {
         super(player, x);
         this.tradeList = entity.getTradeList();
-        this.entity.trader = player;
+        this.entity.startTrade(player);
 
         int startY = 240 - 4 - 8 - 4 * 18;
         int gx = 0, gy = 0, sx, sy;
@@ -78,7 +78,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
 
     @Override
     public void onContainerClosed(EntityPlayer player) {
-        this.entity.trader = null;
+        this.entity.closeTrade();
         if (storage != null) {
             ItemBackpack.writeBackpackToItem(storage, this.entity.getEquipmentInSlot(0));
         }
