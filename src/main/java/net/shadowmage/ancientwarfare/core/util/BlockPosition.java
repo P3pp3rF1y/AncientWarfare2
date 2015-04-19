@@ -190,8 +190,8 @@ public final class BlockPosition {
      * 1=up<br>
      * 2=north<br>
      * 3=south<br>
-     * 4=east<br>
-     * 5=west<br>
+     * 4=west<br>
+     * 5=east<br>
      */
     public final void offsetForMCSide(int mcSide) {
         switch (mcSide) {
