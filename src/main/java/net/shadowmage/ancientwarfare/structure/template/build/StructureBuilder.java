@@ -152,12 +152,12 @@ public class StructureBuilder implements IStructureBuilder {
             if (stc == null) {
                 stc = st[y >> 4] = new ExtendedBlockStorage(y >> 4 << 4, !world.provider.hasNoSky);
             }
-            world.removeTileEntity(x, y, z);
+            chunk.removeTileEntity(cx, y, cz);
             stc.func_150818_a(cx, y & 15, cz, block);
             stc.setExtBlockMetadata(cx, y & 15, cz, meta);
             if (block.hasTileEntity(meta)) {
                 TileEntity te = block.createTileEntity(world, meta);
-                chunk.func_150812_a(x & 15, y, z & 15, te);//set TE in chunk data
+                chunk.func_150812_a(cx, y, cz, te);//set TE in chunk data
                 world.addTileEntity(te);//add TE to world added/loaded TE list
             }
             world.markBlockForUpdate(x, y, z);
