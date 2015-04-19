@@ -34,7 +34,12 @@ public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks {
     public TemplateRuleBlockLogic(World world, int x, int y, int z, Block block, int meta, int turns) {
         super(world, x, y, z, block, meta, turns);
         TileEntity te = world.getTileEntity(x, y, z);
-        te.writeToNBT(tag);
+        if(te!=null) {
+            te.writeToNBT(tag);
+            tag.removeTag("x");
+            tag.removeTag("y");
+            tag.removeTag("z");
+        }
     }
 
     public TemplateRuleBlockLogic() {
@@ -47,7 +52,8 @@ public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks {
         tag.setInteger("y", y);
         tag.setInteger("z", z);
         TileEntity te = world.getTileEntity(x, y, z);
-        te.readFromNBT(tag);
+        if(te!=null)
+            te.readFromNBT(tag);
         int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
     }
