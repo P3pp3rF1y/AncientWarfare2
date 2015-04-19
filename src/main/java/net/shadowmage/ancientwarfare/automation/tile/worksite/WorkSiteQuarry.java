@@ -199,7 +199,7 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
                 return false;
             }//else is harvestable, check the rest of the checks
         }
-        return block.getMaterial() != Material.lava && block.getMaterial() != Material.water && block.getBlockHardness(worldObj, currentX, currentY, currentZ) >= 0;
+        return !block.getMaterial().isLiquid() && block.getBlockHardness(worldObj, currentX, currentY, currentZ) >= 0;
     }
 
     public void initWorkSite() {
