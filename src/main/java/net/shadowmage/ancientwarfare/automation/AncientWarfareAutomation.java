@@ -34,7 +34,7 @@ import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
                 name = "Ancient Warfare Automation",
                 modid = "AncientWarfareAutomation",
                 version = "@VERSION@",
-                dependencies = "required-after:AncientWarfare"
+                dependencies = "required-after:AncientWarfare;after:CoFHCore;after:BuildCraft|Core"
         )
 
 public class AncientWarfareAutomation {
