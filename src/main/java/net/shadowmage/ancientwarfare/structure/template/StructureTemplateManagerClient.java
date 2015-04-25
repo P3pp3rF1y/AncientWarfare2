@@ -23,18 +23,17 @@ import java.util.HashMap;
 import java.util.List;
 
 public class StructureTemplateManagerClient {
+
+    private HashMap<String, ResourceLocation> clientTemplateImages = new HashMap<String, ResourceLocation>();
+    private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<String, StructureTemplateClient>();
     private StructureTemplateManagerClient() {
     }
 
-    private static StructureTemplateManagerClient instance = new StructureTemplateManagerClient() {
-    };
+    private static final StructureTemplateManagerClient instance = new StructureTemplateManagerClient();
 
     public static StructureTemplateManagerClient instance() {
         return instance;
     }
-
-    private HashMap<String, ResourceLocation> clientTemplateImages = new HashMap<String, ResourceLocation>();
-    private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<String, StructureTemplateClient>();
 
     public void onTemplateData(NBTTagCompound tag) {
         if (tag.hasKey("singleStructure")) {

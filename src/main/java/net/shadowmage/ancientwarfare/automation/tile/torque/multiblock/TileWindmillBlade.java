@@ -188,8 +188,8 @@ public class TileWindmillBlade extends TileEntity {
             te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof TileWindmillBlade) {
                 ((TileWindmillBlade) te).setController(cp);
+                ((TileWindmillBlade) te).isControl = (pos.x == cx && pos.y == cy && pos.z == cz);
             }
-            ((TileWindmillBlade) te).isControl = (pos.x == cx && pos.y == cy && pos.z == cz);
         }
         setTileAsController(cp.x, cp.y, cp.z, xs, ys, zs, face);
     }
@@ -262,8 +262,7 @@ public class TileWindmillBlade extends TileEntity {
     public AxisAlignedBB getRenderBoundingBox() {
         if (isControl) {
             int expand = (windmillSize - 1) / 2;
-            AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord - expand, yCoord - expand, zCoord - expand, xCoord + 1 + expand, yCoord + 1 + expand, zCoord + 1 + expand);
-            return bb;
+            return AxisAlignedBB.getBoundingBox(xCoord - expand, yCoord - expand, zCoord - expand, xCoord + 1 + expand, yCoord + 1 + expand, zCoord + 1 + expand);
         }
         return super.getRenderBoundingBox();
     }

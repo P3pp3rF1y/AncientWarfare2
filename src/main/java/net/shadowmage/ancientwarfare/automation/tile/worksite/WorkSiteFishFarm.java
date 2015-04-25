@@ -100,14 +100,13 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
     }
 
     private void countWater() {
+        waterBlockCount = 0;
         BlockPosition min = getWorkBoundsMin();
         BlockPosition max = getWorkBoundsMax();
-        Block block;
         for (int x = min.x; x <= max.x; x++) {
             for (int z = min.z; z <= max.z; z++) {
                 for (int y = min.y; y > min.y - 5; y--) {
-                    block = worldObj.getBlock(x, y, z);
-                    if (block.getMaterial() == Material.water) {
+                    if (worldObj.getBlock(x, y, z).getMaterial() == Material.water) {
                         waterBlockCount++;
                     } else {
                         break;
@@ -157,11 +156,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
     @Override
     protected void updateWorksite() {
         worldObj.theProfiler.startSection("WaterCount");
-        if (waterRescanDelay > 0) {
-            waterRescanDelay--;
-        }
-        if (waterRescanDelay <= 0) {
-            waterBlockCount = 0;
+        if (waterRescanDelay-- <= 0) {
             countWater();
             waterRescanDelay = 200;
         }

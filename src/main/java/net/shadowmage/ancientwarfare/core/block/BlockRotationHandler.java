@@ -247,7 +247,7 @@ public class BlockRotationHandler {
         }
     }
 
-    public static class InventorySided implements IInventory, ISidedInventory, IInventorySaveable {
+    public static class InventorySided implements ISidedInventory, IInventorySaveable {
 
         private EnumSet<RelativeSide> validSides = EnumSet.of(RelativeSide.NONE);
 

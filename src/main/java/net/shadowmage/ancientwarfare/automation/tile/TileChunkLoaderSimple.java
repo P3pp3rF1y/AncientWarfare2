@@ -53,34 +53,33 @@ public class TileChunkLoaderSimple extends TileEntity implements IInteractableTi
         }
         this.chunkTicket = tk;
         if (tk != null) {
-            forceTicketChunks(tk);
+            forceTicketChunks();
         }
     }
 
     public void setupInitialTicket() {
-        Ticket tk = ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, worldObj, Type.NORMAL);
-        this.chunkTicket = tk;
-        if (tk != null) {
-            writeDataToTicket(tk);
-            forceTicketChunks(tk);
+        this.chunkTicket = ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, worldObj, Type.NORMAL);
+        if (this.chunkTicket != null) {
+            writeDataToTicket();
+            forceTicketChunks();
         }
     }
 
-    protected void writeDataToTicket(Ticket tk) {
+    protected void writeDataToTicket() {
         NBTTagCompound posTag = new NBTTagCompound();
         posTag.setInteger("x", xCoord);
         posTag.setInteger("y", yCoord);
         posTag.setInteger("z", zCoord);
-        tk.getModData().setTag("tilePosition", posTag);
+        this.chunkTicket.getModData().setTag("tilePosition", posTag);
     }
 
-    protected void forceTicketChunks(Ticket tk) {
+    protected void forceTicketChunks() {
         int cx = xCoord >> 4;
         int cz = zCoord >> 4;
         for (int x = cx - 1; x <= cx + 1; x++) {
             for (int z = cz - 1; z <= cz + 1; z++) {
                 ChunkCoordIntPair ccip = new ChunkCoordIntPair(x, z);
-                ForgeChunkManager.forceChunk(tk, ccip);
+                ForgeChunkManager.forceChunk(this.chunkTicket, ccip);
             }
         }
 //  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());

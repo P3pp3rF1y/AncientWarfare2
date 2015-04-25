@@ -523,7 +523,7 @@ public abstract class StructureValidator {
         }
         for (int y = maxFillY; y > 1; y--) {
             block = world.getBlock(x, y, z);
-            if (block == null || block == Blocks.air || AWStructureStatics.skippableBlocksContains(block) || block == Blocks.water || block == Blocks.flowing_water) {
+            if (AWStructureStatics.skippableBlocksContains(block) || block == Blocks.water || block == Blocks.flowing_water) {
                 world.setBlock(x, y, z, fillBlockID);
             }
         }

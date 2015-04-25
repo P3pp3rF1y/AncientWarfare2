@@ -26,7 +26,6 @@ public class AWItems {
 
     /**
      * NPC module
-     * TODO populate refs from npc-item loader
      */
     public static Item npcSpawner;
     public static Item workOrder;

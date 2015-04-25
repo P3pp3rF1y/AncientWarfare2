@@ -59,7 +59,7 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple {
     }
 
     public void setChunkSet(Set<ChunkCoordIntPair> ccips) {
-        if (worldObj.isRemote) {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
         Set<ChunkCoordIntPair> set = new HashSet<ChunkCoordIntPair>();
@@ -84,13 +84,13 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple {
     }
 
     @Override
-    protected void forceTicketChunks(Ticket tk) {
+    protected void forceTicketChunks() {
         int cx = xCoord >> 4;
         int cz = zCoord >> 4;
         ChunkCoordIntPair ccip1 = new ChunkCoordIntPair(cx, cz);
-        ForgeChunkManager.forceChunk(tk, ccip1);
+        ForgeChunkManager.forceChunk(this.chunkTicket, ccip1);
         for (ChunkCoordIntPair ccip : ccipSet) {
-            ForgeChunkManager.forceChunk(tk, ccip);
+            ForgeChunkManager.forceChunk(this.chunkTicket, ccip);
         }
 //  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
 //  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(worldObj));
