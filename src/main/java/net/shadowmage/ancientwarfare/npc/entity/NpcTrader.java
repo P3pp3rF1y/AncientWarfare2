@@ -115,7 +115,7 @@ public class NpcTrader extends NpcPlayerOwned {
 
     @Override
     public boolean shouldBeAtHome() {
-        return (!worldObj.provider.hasNoSky && !worldObj.provider.isDaytime()) || worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+        return (!worldObj.provider.hasNoSky && !worldObj.isDaytime()) || worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
     }
 
     @Override

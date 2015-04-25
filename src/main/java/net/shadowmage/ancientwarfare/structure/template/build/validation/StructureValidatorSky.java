@@ -70,7 +70,7 @@ public class StructureValidatorSky extends StructureValidator {
 
     @Override
     public boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template) {
-        int remainingHeight = world.provider.getActualHeight() - minFlyingHeight - (template.ySize - template.yOffset);
+        int remainingHeight = world.getActualHeight() - minFlyingHeight - (template.ySize - template.yOffset);
         return y < remainingHeight;
     }
 

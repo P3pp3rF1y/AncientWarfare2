@@ -274,7 +274,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (getAttackTarget() != null || !hasHome() || worldObj.provider.hasNoSky) {
             return false;
         }//if is at night, or if it is under rain, return true
-        return !worldObj.provider.isDaytime() || worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+        return !worldObj.isDaytime() || worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
     }
 
     public void setIsAIEnabled(boolean val) {

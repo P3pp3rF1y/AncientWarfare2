@@ -91,7 +91,7 @@ public class StructureValidatorGround extends StructureValidator {
         }
 
         int skipCount = 0;
-        for (int y1 = y + 1; y1 < world.provider.getHeight(); y1++)//lazy clear block handling
+        for (int y1 = y + 1; y1 < world.getHeight(); y1++)//lazy clear block handling
         {
             block = world.getBlock(x, y1, z);
             if (block == Blocks.air) {
