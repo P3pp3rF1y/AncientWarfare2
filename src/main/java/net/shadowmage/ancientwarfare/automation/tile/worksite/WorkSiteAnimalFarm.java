@@ -69,15 +69,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                     return true;
                 }
                 Item item = stack.getItem();
-                if (item == Items.wheat_seeds || item == Items.wheat || item == Items.carrot) {
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public String toString() {
-                return "Anon filter -- wheat / seeds / carrot";
+                return item == Items.wheat_seeds || item == Items.wheat || item == Items.carrot;
             }
         };
         inventory.setFilterForSlots(filter, frontIndices);
@@ -89,15 +81,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                     return true;
                 }
                 Item item = stack.getItem();
-                if (item == Items.bucket || item == Items.shears) {
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public String toString() {
-                return "Anon filter -- bucker / shears";
+                return item == Items.bucket || item == Items.shears;
             }
         };
         inventory.setFilterForSlots(filter, bottomIndices);
@@ -110,7 +94,12 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
     @Override
     protected boolean hasWorksiteWork() {
-        return hasAnimalWork();
+        return !entitiesToCull.isEmpty()
+                || (carrotCount > 0 && !pigsToBreed.isEmpty())
+                || (seedCount > 0 && !chickensToBreed.isEmpty())
+                || (wheatCount > 0 && (!cowsToBreed.isEmpty() || !sheepToBreed.isEmpty()))
+                || (bucketCount > 0 && cowsToMilk > 0)
+                || (shears != null && !sheepToShear.isEmpty());
     }
 
     @Override
@@ -120,8 +109,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             countResources();
         }
         worldObj.theProfiler.endStartSection("Animal Rescan");
-        workerRescanDelay--;
-        if (workerRescanDelay <= 0) {
+        if (workerRescanDelay-- <= 0) {
             rescan();
         }
         worldObj.theProfiler.endStartSection("EggPickup");
@@ -153,7 +141,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 wheatCount += stack.stackSize;
             }
         }
-        for (int i = 30; i < 33; i++) {
+        for (int i = 30; i < inventory.getSizeInventory(); i++) {
             stack = inventory.getStackInSlot(i);
             if (stack == null) {
                 continue;
@@ -178,11 +166,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         chickensToBreed.clear();
         entitiesToCull.clear();
 
-        BlockPosition min = getWorkBoundsMin();
-        BlockPosition max = getWorkBoundsMax();
-        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
-
-        List<EntityAnimal> entityList = worldObj.getEntitiesWithinAABB(EntityAnimal.class, bb);
+        List<EntityAnimal> entityList = getEntitiesWithinBounds(EntityAnimal.class);
 
         List<EntityAnimal> cows = new ArrayList<EntityAnimal>();
         List<EntityAnimal> pigs = new ArrayList<EntityAnimal>();
@@ -282,59 +266,43 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     protected boolean processWork() {
 //  AWLog.logDebug("processing animal farm work!");
 
-        boolean didWork = false;
         if (!cowsToBreed.isEmpty() && wheatCount >= 2) {
-            didWork = tryBreeding(cowsToBreed);
-            if (didWork) {
+            if (tryBreeding(cowsToBreed)) {
                 wheatCount -= 2;
                 InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat), 2);
                 return true;
             }
         }
         if (!sheepToBreed.isEmpty() && wheatCount >= 2) {
-            didWork = tryBreeding(sheepToBreed);
-            if (didWork) {
+            if (tryBreeding(sheepToBreed)) {
                 wheatCount -= 2;
                 InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat), 2);
                 return true;
             }
         }
         if (!chickensToBreed.isEmpty() && seedCount >= 2) {
-            didWork = tryBreeding(chickensToBreed);
-            if (didWork) {
+            if (tryBreeding(chickensToBreed)) {
                 seedCount -= 2;
                 InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat_seeds), 2);
                 return true;
             }
         }
         if (!pigsToBreed.isEmpty() && carrotCount >= 2) {
-            didWork = tryBreeding(pigsToBreed);
-            if (didWork) {
+            if (tryBreeding(pigsToBreed)) {
                 carrotCount -= 2;
                 InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.carrot), 2);
                 return true;
             }
         }
-        if (shears != null && !sheepToShear.isEmpty()) {
-            didWork = tryShearing(sheepToShear);
-            if (didWork) {
-                return true;
-            }
+        if (tryShearing()) {
+            return true;
         }
-        if (bucketCount > 0) {
-            didWork = tryMilking();
-            if (didWork) {
-                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.BOTTOM), new ItemStack(Items.bucket), 1);
-                this.addStackToInventory(new ItemStack(Items.milk_bucket), RelativeSide.TOP);
-                return true;
-            }
+        if (bucketCount > 0 && tryMilking()) {
+            InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.BOTTOM), new ItemStack(Items.bucket), 1);
+            this.addStackToInventory(new ItemStack(Items.milk_bucket), RelativeSide.TOP);
+            return true;
         }
-        if (!entitiesToCull.isEmpty()) {
-            if (tryCulling(entitiesToCull)) {
-                return true;
-            }
-        }
-        return false;
+        return tryCulling();
     }
 
     private boolean tryBreeding(List<EntityPair> targets) {
@@ -349,8 +317,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 return false;
             }
             if (animalA.isEntityAlive() && animalB.isEntityAlive()) {
-                ((EntityAnimal) animalA).func_146082_f(null);//setInLove(EntityPlayer breeder)
-                ((EntityAnimal) animalB).func_146082_f(null);//setInLove(EntityPlayer breeder)
+                ((EntityAnimal) animalA).func_146082_f(getOwnerAsPlayer());//setInLove(EntityPlayer breeder)
+                ((EntityAnimal) animalB).func_146082_f(getOwnerAsPlayer());//setInLove(EntityPlayer breeder)
                 return true;
             }
         }
@@ -361,27 +329,27 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         return cowsToMilk > 0 && worldObj.rand.nextInt(cowsToMilk + getFortune()) > maxCowCount / 2;
     }
 
-    private boolean tryShearing(List<Integer> targets) {
-        if (targets.isEmpty()) {
+    private boolean tryShearing() {
+        if(shears == null || sheepToShear.isEmpty()) {
             return false;
         }
-        EntitySheep sheep = (EntitySheep) worldObj.getEntityByID(targets.remove(0));
-        if (sheep == null || sheep.getSheared()) {
+        EntitySheep sheep = (EntitySheep) worldObj.getEntityByID(sheepToShear.remove(0));
+        if (sheep == null || !sheep.isShearable(shears, worldObj, xCoord, yCoord, zCoord)) {
             return false;
         }
-        ArrayList<ItemStack> items = sheep.onSheared(shears, worldObj, xCoord, yCoord, zCoord, 0);
+        ArrayList<ItemStack> items = sheep.onSheared(shears, worldObj, xCoord, yCoord, zCoord, getFortune());
         for (ItemStack item : items) {
             addStackToInventory(item, RelativeSide.TOP);
         }
         return true;
     }
 
-    private boolean tryCulling(List<Integer> targets) {
+    private boolean tryCulling() {
         Entity entity;
         EntityAnimal animal;
         int fortune = getFortune();
-        while (!targets.isEmpty()) {
-            entity = worldObj.getEntityByID(targets.remove(0));
+        while (!entitiesToCull.isEmpty()) {
+            entity = worldObj.getEntityByID(entitiesToCull.remove(0));
             if (entity instanceof EntityAnimal && entity.isEntityAlive()) {
                 animal = (EntityAnimal) entity;
                 if (animal.isInLove() || animal.getGrowingAge() < 0) {
@@ -400,8 +368,9 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                         }
                         this.addStackToInventory(stack, RelativeSide.TOP);
                     }
-                    item.setDead();
                 }
+                animal.capturedDrops.clear();
+                animal.captureDrops = false;
                 return true;
             }
         }
@@ -418,33 +387,19 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
     @SuppressWarnings("unchecked")
     private void pickupEggs() {
-        BlockPosition p1 = getWorkBoundsMin();
-        BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
-        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-        List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, bb);
+        List<EntityItem> items = getEntitiesWithinBounds(EntityItem.class);
         ItemStack stack;
         for (EntityItem item : items) {
             stack = item.getEntityItem();
-            if (stack == null) {
-                continue;
-            }
-            if (stack.getItem() == Items.egg) {
-                if (!InventoryTools.canInventoryHold(inventory, inventory.getRawIndices(RelativeSide.TOP), stack)) {
-                    break;
+            if (item.isEntityAlive() && stack != null && stack.getItem() == Items.egg) {
+                stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getRawIndices(RelativeSide.TOP));
+                if (stack != null) {
+                    item.setEntityItemStack(stack);
+                }else{
+                    item.setDead();
                 }
-                item.setDead();
-                addStackToInventory(stack, RelativeSide.TOP);
             }
         }
-    }
-
-    private boolean hasAnimalWork() {
-        return !entitiesToCull.isEmpty()
-                || (carrotCount > 0 && !pigsToBreed.isEmpty())
-                || (seedCount > 0 && !chickensToBreed.isEmpty())
-                || (wheatCount > 0 && (!cowsToBreed.isEmpty() || !sheepToBreed.isEmpty()))
-                || (bucketCount > 0 && cowsToMilk > 0)
-                || (shears != null && !sheepToShear.isEmpty());
     }
 
     @Override

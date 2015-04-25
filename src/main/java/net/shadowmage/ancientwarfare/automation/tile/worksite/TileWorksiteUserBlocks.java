@@ -70,14 +70,6 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         return stack.tryPlaceItemIntoWorld(getOwnerAsPlayer(), worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, face.ordinal(), 0.25F, 0.25F, 0.25F);
     }
 
-    @SuppressWarnings("unchecked")
-    protected <T> List<T> getEntitiesWithinBounds(Class<T> clazz){
-        BlockPosition p1 = getWorkBoundsMin();
-        BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
-        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-        return worldObj.getEntitiesWithinAABB(clazz, bb);
-    }
-
     protected final void pickupItems() {
         List<EntityItem> items = getEntitiesWithinBounds(EntityItem.class);
         ItemStack stack;
