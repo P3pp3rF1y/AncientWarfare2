@@ -15,16 +15,12 @@ public class ContainerEngineeringStation extends ContainerBase {
 
     public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
         super(player);
-        TileEngineeringStation t = (TileEngineeringStation) player.worldObj.getTileEntity(x, y, z);
-        station = t;
-        if (t == null) {
+        station = (TileEngineeringStation) player.worldObj.getTileEntity(x, y, z);
+        if (station == null) {
             throw new IllegalArgumentException(" tile may not be null!!");
         }
-        IInventory inventory = t.layoutMatrix;
 
-        Slot slot;
-
-        slot = new SlotCrafting(player, inventory, t.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+        Slot slot = new SlotCrafting(player, station.layoutMatrix, station.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
             public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
                 station.preItemCrafted();
@@ -34,7 +30,7 @@ public class ContainerEngineeringStation extends ContainerBase {
         };
         addSlotToContainer(slot);
 
-        slot = new Slot(t.bookInventory, 0, 8, 18 + 8) {
+        slot = new Slot(station.bookInventory, 0, 8, 18 + 8) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return par1ItemStack != null && par1ItemStack.getItem() == AWItems.researchBook && ItemResearchBook.getResearcherName(par1ItemStack) != null;
@@ -48,7 +44,7 @@ public class ContainerEngineeringStation extends ContainerBase {
             for (int x1 = 0; x1 < 3; x1++) {
                 x2 = x1 * 18 + 8 + 3 * 18;
                 slotNum = y1 * 3 + x1;
-                slot = new Slot(inventory, slotNum, x2, y2);
+                slot = new Slot(station.layoutMatrix, slotNum, x2, y2);
                 addSlotToContainer(slot);
             }
         }
@@ -58,7 +54,7 @@ public class ContainerEngineeringStation extends ContainerBase {
             for (int x1 = 0; x1 < 9; x1++) {
                 x2 = x1 * 18 + 8;
                 slotNum = y1 * 9 + x1;
-                slot = new Slot(t.extraSlots, slotNum, x2, y2);
+                slot = new Slot(station.extraSlots, slotNum, x2, y2);
                 addSlotToContainer(slot);
             }
         }
@@ -77,35 +73,20 @@ public class ContainerEngineeringStation extends ContainerBase {
 
             int playerSlotStart = 1 + 1 + 18 + 9;
             int storageSlotsStart = 1 + 1 + 9;
-            if (slotClickedIndex == 0)//result slot
+            if (slotClickedIndex == 0 || slotClickedIndex == 1)//book or result slot
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
-                {
                     return null;
-                }
-            } else if (slotClickedIndex == 1)//book slot
-            {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
-                {
-                    return null;
-                }
-            } else if (slotClickedIndex >= 2 && slotClickedIndex < 2 + 9)//craft matrix
-            {
-                if (!this.mergeItemStack(slotStack, storageSlotsStart, storageSlotsStart + 18, false))//merge into storage
-                {
-                    return null;
-                }
-            } else if (slotClickedIndex >= storageSlotsStart && slotClickedIndex < storageSlotsStart + 18)//storage slots
-            {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
-                {
-                    return null;
-                }
-            } else if (slotClickedIndex >= playerSlotStart && slotClickedIndex < 36 + playerSlotStart)//player slots, merge into storage
-            {
-                if (!this.mergeItemStack(slotStack, storageSlotsStart, storageSlotsStart + 18, false))//merge into storage
-                {
-                    return null;
+            } else if (slotClickedIndex >= 2) {
+                if (slotClickedIndex < storageSlotsStart) {//craft matrix
+                    if (!this.mergeItemStack(slotStack, storageSlotsStart, storageSlotsStart + 18, false))//merge into storage
+                        return null;
+                } else if (slotClickedIndex < playerSlotStart) {//storage slots
+                    if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
+                        return null;
+                } else if (slotClickedIndex < 36 + playerSlotStart) {//player slots, merge into storage
+                    if (!this.mergeItemStack(slotStack, storageSlotsStart, storageSlotsStart + 18, false))//merge into storage
+                        return null;
                 }
             }
             if (slotStack.stackSize == 0) {

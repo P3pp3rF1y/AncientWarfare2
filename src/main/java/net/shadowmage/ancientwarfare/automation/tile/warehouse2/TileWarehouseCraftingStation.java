@@ -22,7 +22,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     public InventoryCraftResult result;
     public InventoryBasic bookInventory;
 
-    ItemStack[] matrixShadow = new ItemStack[9];
+    ItemStack[] matrixShadow;
 
     public TileWarehouseCraftingStation() {
         Container c = new Container() {
@@ -33,16 +33,17 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
 
             @Override
             public void onCraftMatrixChanged(IInventory par1iInventory) {
-                onLayoutMatrixChanged(par1iInventory);
+                onLayoutMatrixChanged();
             }
         };
 
         layoutMatrix = new InventoryCrafting(c, 3, 3);
+        matrixShadow = new ItemStack[layoutMatrix.getSizeInventory()];
         result = new InventoryCraftResult();
 
         bookInventory = new InventoryBasic(1) {
             public void markDirty() {
-                onLayoutMatrixChanged(layoutMatrix);
+                onLayoutMatrixChanged();
             }
         };
     }
@@ -105,7 +106,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         return true;
     }
 
-    private void onLayoutMatrixChanged(IInventory matrix) {
+    private void onLayoutMatrixChanged() {
         this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, worldObj, getCrafterName()));
     }
 

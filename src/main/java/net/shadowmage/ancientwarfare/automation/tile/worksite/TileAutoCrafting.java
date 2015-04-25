@@ -43,7 +43,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
 
             @Override
             public void onCraftMatrixChanged(IInventory par1iInventory) {
-                onLayoutMatrixChanged(par1iInventory);
+                onLayoutMatrixChanged();
             }
         };
         craftMatrix = new InventoryCrafting(dummy, 3, 3);
@@ -157,7 +157,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
         this.outputInventory.readFromNBT(tag.getCompoundTag("outputInventory"));
         this.outputSlot.readFromNBT(tag.getCompoundTag("outputSlot"));
         InventoryTools.readInventoryFromNBT(craftMatrix, tag.getCompoundTag("craftMatrix"));
-        onLayoutMatrixChanged(craftMatrix);
+        onLayoutMatrixChanged();
     }
 
     @Override
@@ -171,7 +171,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
     }
 
     /** ***********************************INVENTORY METHODS*********************************************** */
-    private void onLayoutMatrixChanged(IInventory matrix) {
+    private void onLayoutMatrixChanged() {
         this.outputSlot.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(craftMatrix, worldObj, getCrafterName()));
     }
 
