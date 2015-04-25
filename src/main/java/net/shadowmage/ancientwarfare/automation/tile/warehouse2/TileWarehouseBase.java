@@ -312,14 +312,14 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     public final void addViewer(ContainerWarehouseControl viewer) {
-        if (worldObj.isRemote) {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
         viewers.add(viewer);
     }
 
     public final void addCraftingViewer(ContainerWarehouseCraftingStation viewer) {
-        if (worldObj.isRemote) {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
         craftingViewers.add(viewer);
