@@ -15,10 +15,10 @@ import org.lwjgl.opengl.GL12;
 
 public class RenderTileWaterwheel extends TileEntitySpecialRenderer implements IItemRenderer {
 
-    private float[][] gearboxRotationMatrix = new float[6][];
-    ModelBaseAW model;
-    ModelPiece waterwheel, outputGear;
-    ResourceLocation tex;
+    private final float[][] gearboxRotationMatrix = new float[6][];
+    private final ModelBaseAW model;
+    private final ModelPiece waterwheel, outputGear;
+    private final ResourceLocation tex;
 
     public RenderTileWaterwheel() {
         this.tex = new ResourceLocation("ancientwarfare", "textures/model/automation/waterwheel.png");

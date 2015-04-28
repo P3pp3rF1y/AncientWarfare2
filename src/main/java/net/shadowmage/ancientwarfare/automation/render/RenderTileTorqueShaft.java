@@ -15,10 +15,10 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements IItemRenderer {
 
-    private float[][] gearboxRotationMatrix = new float[6][];
-    private ModelBaseAW model = null;
-    ModelPiece inputHead, outputHead, shaft, gearbox;
-    ResourceLocation[] textures = new ResourceLocation[3];
+    private final float[][] gearboxRotationMatrix = new float[6][];
+    private final ModelBaseAW model;
+    private final ModelPiece inputHead, outputHead, shaft, gearbox;
+    private final ResourceLocation[] textures = new ResourceLocation[3];
 
     public RenderTileTorqueShaft(ResourceLocation light, ResourceLocation med, ResourceLocation heavy) {
         this.textures[0] = light;
@@ -74,7 +74,7 @@ public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements 
             inputHead.setRotation(0, 0, -rotation);
         }
 
-        bindTexture(textures[te.getBlockMetadata()]);
+        bindTexture(textures[te.getBlockMetadata() % textures.length]);
         model.renderModel();
         GL11.glPopMatrix();
     }
@@ -112,7 +112,7 @@ public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements 
         this.outputHead.setRotation(0, 0, 0);
         this.inputHead.setRotation(0, 0, 0);
 
-        bindTexture(textures[item.getItemDamage()]);
+        bindTexture(textures[item.getItemDamage() % textures.length]);
         model.renderModel();
         GL11.glPopMatrix();
     }

@@ -28,7 +28,7 @@ public class BlockFlywheel extends BlockTorqueBase {
     }
 
     @Override
-    public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
         return false;
     }
 
@@ -62,15 +62,15 @@ public class BlockFlywheel extends BlockTorqueBase {
             case 2:
                 return new TileFlywheelControlLarge();
         }
-        return new TileFlywheelControlLight();
+        return null;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list) {
-        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 0));
-        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 1));
-        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 2));
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        list.add(new ItemStack(item, 1, 0));
+        list.add(new ItemStack(item, 1, 1));
+        list.add(new ItemStack(item, 1, 2));
     }
 
     @Override
