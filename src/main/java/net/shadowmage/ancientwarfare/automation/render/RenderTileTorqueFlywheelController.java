@@ -16,10 +16,10 @@ import org.lwjgl.opengl.GL11;
 public class RenderTileTorqueFlywheelController extends TileEntitySpecialRenderer implements IItemRenderer {
 
     private float[][] gearboxRotationMatrix = new float[6][];
-    ModelBaseAW controllerModel;
-    ModelPiece controlInput, controlOutput, controlSpindle;
+    private final ModelBaseAW controllerModel;
+    private final ModelPiece controlInput, controlOutput, controlSpindle;
 
-    ResourceLocation texture[] = new ResourceLocation[3];//1, tex2, tex3;
+    private final ResourceLocation texture[] = new ResourceLocation[3];//1, tex2, tex3;
 
     public RenderTileTorqueFlywheelController() {
         texture[0] = new ResourceLocation("ancientwarfare", "textures/model/automation/flywheel_controller_light.png");
@@ -59,7 +59,7 @@ public class RenderTileTorqueFlywheelController extends TileEntitySpecialRendere
             inputRotation = inputNeighbor.getClientOutputRotation(d.getOpposite(), delta);
         }
 
-        bindTexture(texture[te.getBlockMetadata()]);
+        bindTexture(texture[te.getBlockMetadata() % texture.length]);
         renderModel(outputRotation, inputRotation, flywheelRotation, d.ordinal());
         GL11.glPopMatrix();
     }
@@ -75,12 +75,9 @@ public class RenderTileTorqueFlywheelController extends TileEntitySpecialRendere
         if (rot[2] != 0) {
             GL11.glRotatef(rot[2], 0, 0, 1);
         }
-        float outputRotation = outR;
-        float inputRotation = inR;
-        float flywheelRotation = wheelR;
-        controlInput.setRotation(0, 0, -inputRotation);
-        controlOutput.setRotation(0, 0, -outputRotation);
-        controlSpindle.setRotation(0, -flywheelRotation, 0);
+        controlInput.setRotation(0, 0, -inR);
+        controlOutput.setRotation(0, 0, -outR);
+        controlSpindle.setRotation(0, -wheelR, 0);
         controllerModel.renderModel();
     }
 
@@ -98,7 +95,7 @@ public class RenderTileTorqueFlywheelController extends TileEntitySpecialRendere
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
         GL11.glTranslatef(0.5f, 0, 0.5f);
-        bindTexture(texture[item.getItemDamage()]);
+        bindTexture(texture[item.getItemDamage() % texture.length]);
         renderModel(0, 0, 0, 2);
         GL11.glPopMatrix();
     }

@@ -20,10 +20,9 @@ public class RFProxyActual extends RFProxy {
 
     @Override
     public double transferPower(ITorqueTile generator, ForgeDirection from, TileEntity target) {
-        IEnergyConnection iec = (IEnergyConnection) target;
-        if (iec instanceof IEnergyHandler) {
-            IEnergyHandler h = (IEnergyHandler) iec;
-            return generator.drainTorque(from, (double) (h.receiveEnergy(from.getOpposite(), (int) (generator.getMaxTorqueOutput(from) * AWAutomationStatics.torqueToRf), false) * AWAutomationStatics.rfToTorque));
+        if (target instanceof IEnergyHandler) {
+            IEnergyHandler h = (IEnergyHandler) target;
+            return generator.drainTorque(from, (h.receiveEnergy(from.getOpposite(), (int) (generator.getMaxTorqueOutput(from) * AWAutomationStatics.torqueToRf), false) * AWAutomationStatics.rfToTorque));
         }
         return 0;
     }

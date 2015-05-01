@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
@@ -20,7 +21,7 @@ import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 
 public class NpcTrader extends NpcPlayerOwned {
 
-    public EntityPlayer trader;//used by guis/containers to prevent further interaction
+    private EntityPlayer trader;//used by guis/containers to prevent further interaction
     private POTradeList tradeList = new POTradeList();
     private NpcAIPlayerOwnedTrader tradeAI;
 
@@ -83,12 +84,23 @@ public class NpcTrader extends NpcPlayerOwned {
             tryCommand(player);
         } else//non-owner
         {
-            if (!player.worldObj.isRemote && getFoodRemaining() > 0 && trader == null) {
-                trader = player;
+            if(trader!=null && !trader.isEntityAlive()){
+                closeTrade();
+            }
+            if (getFoodRemaining() > 0 && trader == null) {
+                startTrade(player);
                 openAltGui(player);
             }
         }
         return true;
+    }
+
+    public void startTrade(EntityPlayer player){
+        trader = player;
+    }
+
+    public void closeTrade(){
+        trader = null;
     }
 
     @Override
@@ -103,7 +115,7 @@ public class NpcTrader extends NpcPlayerOwned {
 
     @Override
     public boolean shouldBeAtHome() {
-        return (!worldObj.provider.hasNoSky && !worldObj.provider.isDaytime()) || worldObj.isRaining();
+        return (!worldObj.provider.hasNoSky && !worldObj.isDaytime()) || worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
     }
 
     @Override

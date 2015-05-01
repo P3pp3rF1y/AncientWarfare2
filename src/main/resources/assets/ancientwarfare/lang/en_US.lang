@@ -456,6 +456,7 @@ guistrings.research.click_to_add_progress1=Right Click To Add Progress
 guistrings.research.click_to_add_progress2=    To Current Research
 guistrings.research.learned_from_item=Learned %s from Research Notes!
 guistrings.research.added_progress=Added progress towards your current research from the research notes.
+guistrings.research.book_bound=Researcher set for book
 guistrings.research.right_click_to_bind=Right Click To Assign
 guistrings.research.right_click_to_view=Right Click To View
 guistrings.research.research_mode=Research View Mode (or recipe view mode)?

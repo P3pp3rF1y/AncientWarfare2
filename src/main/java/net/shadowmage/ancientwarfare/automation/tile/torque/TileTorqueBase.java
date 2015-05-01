@@ -305,10 +305,8 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
     public boolean receiveClientEvent(int a, int b) {
         if (worldObj.isRemote) {
             if (a < 6) {
-                int side = a;
-                int val = b;
                 networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
-                handleClientRotationData(ForgeDirection.values()[side], val);
+                handleClientRotationData(ForgeDirection.values()[a], b);
             }
         }
         return true;

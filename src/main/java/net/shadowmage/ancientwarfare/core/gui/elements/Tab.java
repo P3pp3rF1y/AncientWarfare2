@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -17,14 +16,12 @@ import net.shadowmage.ancientwarfare.core.util.RenderTools;
 public class Tab extends GuiElement {
 
     ITabCallback parent;
-    FontRenderer fr;
     String label;
     boolean top;
 
     public Tab(int topLeftX, int topLeftY, boolean top, String label, ITabCallback parentCaller) {
         super(topLeftX, topLeftY);
-        fr = Minecraft.getMinecraft().fontRenderer;
-        this.width = fr.getStringWidth(label) + 6;
+        this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(label) + 6;
         this.label = label;
         this.height = 14;
         this.parent = parentCaller;
@@ -56,7 +53,7 @@ public class Tab extends GuiElement {
             }
             Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
             RenderTools.renderQuarteredTexture(256, 256, 152, y, 104, 24, renderX, renderY, width, 16);
-            fr.drawStringWithShadow(label, renderX + 3, renderY + 4, 0xffffffff);
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(label, renderX + 3, renderY + 4, 0xffffffff);
         }
     }
 

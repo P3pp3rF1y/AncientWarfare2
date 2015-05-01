@@ -28,9 +28,9 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.model.ModelGateBridge;
 import org.lwjgl.opengl.GL11;
 
-public class RenderGateRotatingBridge extends Render {
+public final class RenderGateRotatingBridge extends Render {
 
-    ModelGateBridge model = new ModelGateBridge();
+    private final ModelGateBridge model = new ModelGateBridge();
 
     public RenderGateRotatingBridge() {
 

@@ -58,7 +58,7 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
             entity.repackEntity(player);
         }
         if (tag.hasKey("setHome")) {
-            entity.setHomeArea(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ), 40);
+            entity.setHomeAreaAtCurrentPosition();
         }
         if (tag.hasKey("clearHome")) {
             entity.detachHome();

@@ -22,8 +22,7 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
     private static ModelPiece gearbox = null;
     private static float textureWidth, textureHeight;
 
-
-    private ResourceLocation[] textures = new ResourceLocation[3];
+    private final ResourceLocation[] textures = new ResourceLocation[3];
 
     public RenderTileTorqueTransport(ResourceLocation light, ResourceLocation med, ResourceLocation heavy) {
         constructModel();
@@ -83,7 +82,7 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
         ModelPiece piece;
 
         //render heads
-        bindTexture(textures[te.getBlockMetadata()]);
+        bindTexture(textures[te.getBlockMetadata() % textures.length]);
         for (int i = 0; i < 6; i++) {
             if (connections[i]) {
                 piece = gearHeads[i];
@@ -95,7 +94,7 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
                     piece.setRotation(rx, ry, rz);
                 } else {
                     if (neighbors != null && neighbors[i] != null && neighbors[i].useOutputRotation(null)) {
-                        float r = (float) neighbors[i].getClientOutputRotation(ForgeDirection.values()[i].getOpposite(), delta);
+                        float r = neighbors[i].getClientOutputRotation(ForgeDirection.values()[i].getOpposite(), delta);
                         rx = rotationArray[0] * r;
                         ry = rotationArray[1] * r;
                         rz = rotationArray[2] * r;
@@ -133,7 +132,7 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
         GL11.glTranslated(0.5d, 0.5d, 0.5d);
-        bindTexture(textures[item.getItemDamage()]);
+        bindTexture(textures[item.getItemDamage() % textures.length]);
         for (int i = 0; i < 2; i++) {
             gearHeads[i].setRotation(0, 0, 0);
             gearHeads[i].render(textureWidth, textureHeight);

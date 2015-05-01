@@ -93,7 +93,7 @@ public class GateRotatingBridge extends Gate {
             return false;
         }
         if (!open) {
-            return true;
+            return super.canActivate(gate, false);
         } else {
 //    boolean wideOnXAxis = gate.pos1.x!=gate.pos2.x;  
             BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
@@ -106,21 +106,16 @@ public class GateRotatingBridge extends Gate {
             min = BlockTools.getMin(min, pos3);
             max = BlockTools.getMax(minTemp, pos3);
             Block id;
-            boolean badBlock = false;
             for (int x = min.x; x <= max.x; x++) {
                 for (int z = min.z; z <= max.z; z++) {
                     id = gate.worldObj.getBlock(x, min.y, z);
                     if (!gate.worldObj.isAirBlock(x, min.y, z) && id != AWBlocks.gateProxy) {
-                        badBlock = true;
-                        break;
+                        return false;
                     }
 
                 }
-                if (badBlock) {
-                    break;
-                }
             }
-            return !badBlock;
+            return true;
         }
     }
 

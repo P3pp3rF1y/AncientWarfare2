@@ -21,18 +21,12 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 public class TileEngineeringStation extends TileEntity implements IRotatableTile {
 
     ForgeDirection facing = ForgeDirection.NORTH;
+    ItemStack[] matrixShadow;
 
     public InventoryCrafting layoutMatrix;
     public InventoryCraftResult result;
-    public InventoryBasic bookInventory = new InventoryBasic(1) {
-        @Override
-        public void markDirty() {
-            onLayoutMatrixChanged(layoutMatrix);
-        }
-
-        ;
-    };
-    public InventoryBasic extraSlots = new InventoryBasic(18);
+    public InventoryBasic bookInventory;
+    public InventoryBasic extraSlots;
 
     public TileEngineeringStation() {
         Container c = new Container() {
@@ -43,30 +37,36 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
 
             @Override
             public void onCraftMatrixChanged(IInventory par1iInventory) {
-                onLayoutMatrixChanged(par1iInventory);
+                onLayoutMatrixChanged();
             }
         };
         layoutMatrix = new InventoryCrafting(c, 3, 3);
+        matrixShadow = new ItemStack[layoutMatrix.getSizeInventory()];
+        bookInventory = new InventoryBasic(1) {
+            @Override
+            public void markDirty() {
+                onLayoutMatrixChanged();
+            }
+        };
         result = new InventoryCraftResult();
+        extraSlots = new InventoryBasic(18);
     }
 
     @Override
     public boolean canUpdate() {
-        return true;
+        return false;
     }
 
     public String getCrafterName() {
         return ItemResearchBook.getResearcherName(bookInventory.getStackInSlot(0));
     }
 
-    ItemStack[] matrixShadow = new ItemStack[9];
-
     /**
      * called to shadow a copy of the input matrix, to know what to refill
      */
     public void preItemCrafted() {
         ItemStack stack;
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             stack = layoutMatrix.getStackInSlot(i);
             matrixShadow[i] = stack == null ? null : stack.copy();
         }
@@ -74,7 +74,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
 
     public void onItemCrafted() {
         ItemStack layoutStack;
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             layoutStack = matrixShadow[i];
             if (layoutStack == null) {
                 continue;
@@ -86,7 +86,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
         }
     }
 
-    private void onLayoutMatrixChanged(IInventory matrix) {
+    private void onLayoutMatrixChanged() {
         this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, worldObj, getCrafterName()));
     }
 
@@ -145,6 +145,12 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     public void setPrimaryFacing(ForgeDirection face) {
         this.facing = face;
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    public void onBlockBreak(){
+        InventoryTools.dropInventoryInWorld(worldObj, bookInventory, xCoord, yCoord, zCoord);
+        InventoryTools.dropInventoryInWorld(worldObj, extraSlots, xCoord, yCoord, zCoord);
+        InventoryTools.dropInventoryInWorld(worldObj, layoutMatrix, xCoord, yCoord, zCoord);
     }
 
 }

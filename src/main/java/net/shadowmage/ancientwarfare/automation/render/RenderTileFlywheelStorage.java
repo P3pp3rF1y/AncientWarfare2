@@ -14,25 +14,11 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer implements IItemRenderer {
 
-    ModelBaseAW smallModel, largeModel;
-    ResourceLocation smallTex[] = new ResourceLocation[3];
-    ResourceLocation largeTex[] = new ResourceLocation[3];
+    private final ModelBaseAW smallModel, largeModel;
+    private final ResourceLocation smallTex[] = new ResourceLocation[3], largeTex[] = new ResourceLocation[3];
 
-    ModelPiece spindleSmall;
-    ModelPiece upperShroudSmall;
-    ModelPiece lowerShroudSmall;
-    ModelPiece flywheelExtensionSmall;
-    ModelPiece lowerWindowSmall;
-    ModelPiece upperWindowSmall;
-    ModelPiece caseBarsSmall;
-
-    ModelPiece spindleLarge;
-    ModelPiece upperShroudLarge;
-    ModelPiece lowerShroudLarge;
-    ModelPiece flywheelExtensionLarge;
-    ModelPiece lowerWindowLarge;
-    ModelPiece upperWindowLarge;
-    ModelPiece caseBarsLarge;
+    private final ModelPiece spindleSmall, upperShroudSmall, lowerShroudSmall, flywheelExtensionSmall, lowerWindowSmall, upperWindowSmall, caseBarsSmall;
+    private final ModelPiece spindleLarge, upperShroudLarge, lowerShroudLarge, flywheelExtensionLarge, lowerWindowLarge, upperWindowLarge, caseBarsLarge;
 
     public RenderTileFlywheelStorage() {
         ModelLoader loader = new ModelLoader();

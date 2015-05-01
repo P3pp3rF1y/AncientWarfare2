@@ -28,6 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -67,9 +68,6 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     public boolean wasPoweredA = false;
     public boolean wasPoweredB = false;
 
-    /**
-     * @param par1World
-     */
     public EntityGate(World par1World) {
         super(par1World);
         this.yOffset = 0;
@@ -183,8 +181,6 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         this.posZ = par5;
         if (this.gateType != null) {
             this.gateType.setCollisionBoundingBox(this);
-        } else {
-            this.boundingBox.setBounds(par1, par3, par5, par1, par3, par5);
         }
     }
 
@@ -322,6 +318,11 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
             this.setDead();
         }
         return !this.isDead;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(){
+        return this.boundingBox;
     }
 
     @Override

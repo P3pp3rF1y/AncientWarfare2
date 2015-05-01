@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class TreeFinder {
 
-    static int[][] offsets = new int[17][3];
+    static int[][] offsets = new int[21][3];
 
     static {
         offsets[0] = new int[]{-1, 0, 0};
@@ -31,6 +31,10 @@ public class TreeFinder {
         offsets[14] = new int[]{+1, 1, -1};
         offsets[15] = new int[]{+1, 1, +1};
         offsets[16] = new int[]{0, 1, 0};
+        offsets[17] = new int[]{-2, 0, 0};
+        offsets[18] = new int[]{+2, 0, 0};
+        offsets[19] = new int[]{0, 0, -2};
+        offsets[20] = new int[]{0, 0, +2};
     }
 
     public static void findAttachedTreeBlocks(Block blockType, World world, int x, int y, int z, Set<BlockPosition> addTo) {

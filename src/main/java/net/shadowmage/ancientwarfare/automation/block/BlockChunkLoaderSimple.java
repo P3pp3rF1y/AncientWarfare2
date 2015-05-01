@@ -63,9 +63,9 @@ public class BlockChunkLoaderSimple extends Block {
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int wtf) {
         if (!world.isRemote) {
-            TileChunkLoaderSimple chunkLoader = (TileChunkLoaderSimple) world.getTileEntity(x, y, z);
-            if (chunkLoader != null) {
-                chunkLoader.releaseTicket();
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof TileChunkLoaderSimple) {
+                ((TileChunkLoaderSimple) te).releaseTicket();
             }
         }
         super.breakBlock(world, x, y, z, block, wtf);
@@ -81,9 +81,9 @@ public class BlockChunkLoaderSimple extends Block {
     public void onPostBlockPlaced(World world, int x, int y, int z, int blockMeta) {
         super.onPostBlockPlaced(world, x, y, z, blockMeta);
         if (!world.isRemote) {
-            TileChunkLoaderSimple chunkLoader = (TileChunkLoaderSimple) world.getTileEntity(x, y, z);
-            if (chunkLoader != null) {
-                chunkLoader.setupInitialTicket();
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof TileChunkLoaderSimple) {
+                ((TileChunkLoaderSimple) te).setupInitialTicket();
             }
         }
     }

@@ -6,8 +6,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -72,6 +74,14 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
             }
         }
         return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> List<T> getEntitiesWithinBounds(Class<T> clazz){
+        BlockPosition p1 = getWorkBoundsMin();
+        BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
+        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+        return worldObj.getEntitiesWithinAABB(clazz, bb);
     }
 
     @Deprecated

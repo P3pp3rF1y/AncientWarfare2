@@ -159,7 +159,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
     @Override
     public void addViewer(ContainerWarehouseStorage containerWarehouseStorage) {
-        if (worldObj.isRemote) {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
         viewers.add(containerWarehouseStorage);

@@ -17,8 +17,7 @@ public final class MailboxTicker {
         if (evt.phase == Phase.END) {
             MinecraftServer server = MinecraftServer.getServer();
             if (server != null && server.getEntityWorld() != null) {
-                MailboxData data = AWGameData.INSTANCE.getData(server.getEntityWorld(), MailboxData.class);
-                data.onTick(1);
+                AWGameData.INSTANCE.getData(server.getEntityWorld(), MailboxData.class).onTick(1);
             }
         }
     }

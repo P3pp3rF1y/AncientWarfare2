@@ -43,12 +43,12 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
         return storage.torqueLoss;
     }
 
+    /**
+     * fill output from input
+     * fill output from storage
+     * fill storage from input
+     */
     protected void balancePower() {
-        /**
-         * fill output from input
-         * fill output from storage
-         * fill storage from input
-         */
         TileFlywheelStorage storage = getControlledFlywheel();
         double in = inputCell.getEnergy();
         double out = torqueCell.getEnergy();

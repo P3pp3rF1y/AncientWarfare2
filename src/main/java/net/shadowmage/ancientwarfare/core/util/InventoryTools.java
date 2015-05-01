@@ -493,7 +493,7 @@ public class InventoryTools {
     /**
      * Writes out the input inventory to the input nbt-tag.<br>
      * The written out inventory is suitable for reading back using
-     * {@link #InventoryTools.readInventoryFromNBT(IInventory, NBTTagCompound)}
+     * {@link InventoryTools#readInventoryFromNBT(IInventory, NBTTagCompound)}
      */
     public static NBTTagCompound writeInventoryToNBT(IInventory inventory, NBTTagCompound tag) {
         NBTTagList itemList = new NBTTagList();
@@ -515,7 +515,7 @@ public class InventoryTools {
     /**
      * Reads an inventory contents into the input inventory from the given nbt-tag.<br>
      * Should only be passed nbt-tags / inventories that have been saved using
-     * {@link #InventoryTools.writeInventoryToNBT(IInventory, NBTTagCompound)}
+     * {@link InventoryTools#writeInventoryToNBT(IInventory, NBTTagCompound)}
      */
     public static void readInventoryFromNBT(IInventory inventory, NBTTagCompound tag) {
         NBTTagList itemList = tag.getTagList("itemList", Constants.NBT.TAG_COMPOUND);
@@ -546,7 +546,7 @@ public class InventoryTools {
     }
 
     /**
-     * reads an item-stack written out via {@link #InventoryTools.writeItemStack(ItemStack)}
+     * reads an item-stack written out via {@link InventoryTools#writeItemStack(ItemStack)}
      */
     public static ItemStack readItemStack(NBTTagCompound tag) {
         if (tag.hasKey("item") && tag.hasKey("damage") && tag.hasKey("quantity")) {

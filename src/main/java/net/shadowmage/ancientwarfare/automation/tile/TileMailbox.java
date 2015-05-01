@@ -91,14 +91,14 @@ public class TileMailbox extends TileEntity implements IOwnable, IInventory, ISi
     }
 
     public void setMailboxName(String name) {
-        if (worldObj.isRemote) {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
         mailboxName = name;
     }
 
     public void setTargetName(String name) {
-        if (worldObj.isRemote) {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
         destinationName = name;

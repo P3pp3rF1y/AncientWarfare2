@@ -15,10 +15,9 @@ import org.lwjgl.opengl.GL12;
 
 public class RenderWindmillBlades extends TileEntitySpecialRenderer implements IItemRenderer {
 
-    ResourceLocation texture, cubeTexture;
-    ModelBaseAW model, cube;
-    ModelPiece windmillShaft;
-    ModelPiece blade, bladeJoint, bladeShaft;
+    private final ResourceLocation texture, cubeTexture;
+    private final ModelBaseAW model, cube;
+    private final ModelPiece windmillShaft, blade, bladeJoint, bladeShaft;
 
     public RenderWindmillBlades() {
         ModelLoader loader = new ModelLoader();

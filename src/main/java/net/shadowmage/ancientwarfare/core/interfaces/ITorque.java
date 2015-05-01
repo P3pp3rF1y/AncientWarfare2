@@ -21,16 +21,6 @@ public final class ITorque {
         forgeDiretctionToRotationMatrix[5] = new float[]{0, 270, 0};//e
     }
 
-    public static interface foo1 {
-    }
-
-    public static interface foo2 {
-    }
-
-    public static interface foo3 extends foo1, foo2 {
-    }
-
-
     /**
      * Interface for implementation by torque tiles.  Tiles may handle their power internally by any means.<br>
      * Tiles are responsible for outputting their own power, but should not request power from other torque tiles
@@ -38,7 +28,7 @@ public final class ITorque {
      *
      * @author Shadowmage
      */
-    public static interface ITorqueTile {
+    public interface ITorqueTile {
 
         /**
          * Return the maximum amount of energy store-able in the passed in block side

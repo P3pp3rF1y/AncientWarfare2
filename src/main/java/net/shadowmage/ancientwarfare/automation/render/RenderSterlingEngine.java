@@ -16,13 +16,9 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderSterlingEngine extends TileEntitySpecialRenderer implements IItemRenderer {
 
-    ModelBaseAW model;
-
-    float rotation;
-    ResourceLocation texture;
-
-    ModelPiece flywheel, pistonCrank, pistonCrank2, flywheel_arm, piston_arm, piston_arm2;
-
+    private final ModelBaseAW model;
+    private final ResourceLocation texture;
+    private final ModelPiece flywheel, pistonCrank, pistonCrank2, flywheel_arm, piston_arm, piston_arm2;
 
     public RenderSterlingEngine() {
         ModelLoader loader = new ModelLoader();
@@ -43,7 +39,7 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer implements I
         ForgeDirection d = tt.getPrimaryFacing();
         float baseRotation = d == ForgeDirection.SOUTH ? 180.f : d == ForgeDirection.WEST ? 270.f : d == ForgeDirection.EAST ? 90.f : 0.f;
 
-        rotation = -(tt.getClientOutputRotation(d, partialTick));
+        float rotation = -(tt.getClientOutputRotation(d, partialTick));
 
         GL11.glPushMatrix();
 

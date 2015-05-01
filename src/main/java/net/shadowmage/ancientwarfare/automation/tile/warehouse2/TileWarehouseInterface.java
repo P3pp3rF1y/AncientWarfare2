@@ -34,7 +34,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     }
 
     public void addViewer(ContainerWarehouseInterface viewer) {
-        if (worldObj.isRemote) {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
         viewers.add(viewer);

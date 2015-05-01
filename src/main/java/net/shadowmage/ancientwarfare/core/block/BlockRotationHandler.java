@@ -247,7 +247,7 @@ public class BlockRotationHandler {
         }
     }
 
-    public static class InventorySided implements IInventory, ISidedInventory, IInventorySaveable {
+    public static class InventorySided implements ISidedInventory, IInventorySaveable {
 
         private EnumSet<RelativeSide> validSides = EnumSet.of(RelativeSide.NONE);
 
@@ -294,6 +294,10 @@ public class BlockRotationHandler {
 
         public int[] getRawIndices(RelativeSide side) {
             return slotsByInventorySide.get(side);
+        }
+
+        public int[] getRawIndicesCombined(){
+            return getRawIndicesCombined(validSides.toArray(new RelativeSide[validSides.size()]));
         }
 
         public int[] getRawIndicesCombined(RelativeSide... sides) {

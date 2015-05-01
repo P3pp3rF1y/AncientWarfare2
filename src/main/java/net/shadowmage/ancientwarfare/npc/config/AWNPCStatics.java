@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.npc.config;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraftforge.common.config.ConfigCategory;
@@ -85,7 +86,7 @@ public class AWNPCStatics extends ModConfiguration {
     /** ********************************************FOOD SETTINGS************************************************ */
     public static final String foodSettings = "01_food_settings";
     private HashMap<String, Integer> foodValues = new HashMap<String, Integer>();
-
+    private int foodMultiplier = 750;
 
 /************************************************TARGET CONFIG*************************************************/
     /** ********************************************TARGET SETTINGS************************************************ */
@@ -167,8 +168,9 @@ public class AWNPCStatics extends ModConfiguration {
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
         foodConfig.addCustomCategoryComment(foodSettings, "Food Value Options\n" +
-                "Only the food items here will be useable as food for NPCs.  The value specified is\n" +
-                "the number of ticks that the food item will feed the NPC for.\n" +
+                "The value specified is the number of ticks that the item will feed the NPC for.\n" +
+                "Add a new line for each item. The item type is not checked, and the default multiplier is not applied.\n" +
+                "0 or under will make the item unusable as a food.\n" +
                 "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
@@ -349,22 +351,12 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     private void loadFoodValues() {
-        foodConfig.get(foodSettings, "apple", 3000);
-        foodConfig.get(foodSettings, "mushroom_stew", 4500);
-        foodConfig.get(foodSettings, "bread", 3750);
-        foodConfig.get(foodSettings, "carrot", 3000);
-        foodConfig.get(foodSettings, "potato", 1750);
-        foodConfig.get(foodSettings, "baked_potato", 4500);
-        foodConfig.get(foodSettings, "beef", 2250);
-        foodConfig.get(foodSettings, "cooked_beef", 6000);
-        foodConfig.get(foodSettings, "chicken", 1500);
-        foodConfig.get(foodSettings, "cooked_chicken", 4500);
-        foodConfig.get(foodSettings, "cooked_fished", 4500);
-        foodConfig.get(foodSettings, "porkchop", 2250);
-        foodConfig.get(foodSettings, "cooked_porkchop", 6000);
-        foodConfig.get(foodSettings, "cookie", 1500);
-        foodConfig.get(foodSettings, "pumpkin_pie", 6000);
-
+        foodMultiplier = foodConfig.getInt("Food Multiplier", "Default", foodMultiplier, 0, Integer.MAX_VALUE/10, "Food items which don't have a custom duration time set will have their nourishing amount multiplied by this number, to get the number of ticks feeding the npc.");
+        foodConfig.get(foodSettings, "minecraft:apple", 3000, "Example of a food usual tick duration. Default food multiplier included.");
+        foodConfig.get(foodSettings, "minecraft:mushroom_stew", 4500, "Example of a food usual tick duration. Default food multiplier included.");
+        foodConfig.get(foodSettings, "minecraft:rotten_flesh", 0, "Rotten flesh is a rejected food by default.");
+        foodConfig.get(foodSettings, "minecraft:poisonous_potato", 0, "Poisonous potato is a rejected food by default.");
+        foodConfig.get(foodSettings, "minecraft:spider_eye", 0, "Spider eye is a rejected food by default.");
 
         ConfigCategory category = foodConfig.getCategory(foodSettings);
 
@@ -411,6 +403,8 @@ public class AWNPCStatics extends ModConfiguration {
         String name = Item.itemRegistry.getNameForObject(stack.getItem());
         if (foodValues.containsKey(name)) {
             return foodValues.get(name);
+        }else if(stack.getItem() instanceof ItemFood){
+            return ((ItemFood) stack.getItem()).func_150905_g(stack) * foodMultiplier;
         }
         return 0;
     }

@@ -45,7 +45,7 @@ public class TownPlacementValidator {
             return null;
         }
 
-        int minY = (int) Math.min(0, world.provider.terrainType.getHorizon(world) - 7);
+        int minY = (int) Math.min(0, world.provider.getHorizon() - 7);
 
         TownBoundingArea area = new TownBoundingArea();
         area.minY = Math.max(minY, height);
@@ -205,7 +205,7 @@ public class TownPlacementValidator {
         Block block;
         for (int y = maxY; y > 0; y--) {
             block = chunk.getBlock(xInChunk, y, zInChunk);
-            if (block == Blocks.air || AWStructureStatics.skippableBlocksContains(block)) {
+            if (AWStructureStatics.skippableBlocksContains(block)) {
                 continue;
             }
             if (block.getMaterial().isLiquid()) {

@@ -15,9 +15,9 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderTileHandEngine extends TileEntitySpecialRenderer implements IItemRenderer {
 
-    ResourceLocation texture;
-    ModelBaseAW model;
-    ModelPiece outputGear, inputGear;
+    private final ResourceLocation texture;
+    private final ModelBaseAW model;
+    private final ModelPiece outputGear, inputGear;
 
     public RenderTileHandEngine() {
         ModelLoader loader = new ModelLoader();

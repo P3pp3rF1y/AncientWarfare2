@@ -96,6 +96,7 @@ artifacts{
     archives packAutomationJar
     archives packNpcJar
     archives packStructureJar
+    archives packFullJar
 }
 
 

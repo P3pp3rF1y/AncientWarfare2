@@ -9,7 +9,6 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class BlockEngineeringStation extends BlockRotatableTile {
 
@@ -47,9 +46,7 @@ public class BlockEngineeringStation extends BlockRotatableTile {
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         TileEngineeringStation tile = (TileEngineeringStation) world.getTileEntity(x, y, z);
         if (tile != null) {
-            InventoryTools.dropInventoryInWorld(world, tile.bookInventory, x, y, z);
-            InventoryTools.dropInventoryInWorld(world, tile.extraSlots, x, y, z);
-            InventoryTools.dropInventoryInWorld(world, tile.layoutMatrix, x, y, z);
+            tile.onBlockBreak();
         }
         super.breakBlock(world, x, y, z, block, meta);
     }

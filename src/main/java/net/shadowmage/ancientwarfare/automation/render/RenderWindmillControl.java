@@ -14,9 +14,9 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderWindmillControl extends TileEntitySpecialRenderer implements IItemRenderer {
 
-    ResourceLocation texture;
-    ModelBaseAW model;
-    ModelPiece outputGear;
+    private final ResourceLocation texture;
+    private final ModelBaseAW model;
+    private final ModelPiece outputGear;
 
     public RenderWindmillControl() {
         ModelLoader loader = new ModelLoader();

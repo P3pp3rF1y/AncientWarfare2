@@ -65,7 +65,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
                 break;
             }
             case CLEAR_HOME: {
-                npc.setHomeArea(0, 0, 0, -1);
+                npc.detachHome();
                 npc.setPlayerCommand(null);
                 break;
             }
@@ -75,7 +75,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
                 break;
             }
             case SET_HOME: {
-                npc.setHomeArea(cmd.x, cmd.y, cmd.z, 16);
+                npc.setHomeArea(cmd.x, cmd.y, cmd.z, npc.getHomeRange());
                 npc.setPlayerCommand(null);
                 break;
             }

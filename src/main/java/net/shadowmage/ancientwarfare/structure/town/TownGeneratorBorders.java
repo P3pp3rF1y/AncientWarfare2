@@ -76,7 +76,7 @@ public class TownGeneratorBorders {
     private static void handleBorderBlock(World world, int x, int z, int fillLevel, int cutLevel, Block fillBlock, Block topBlock, boolean skippables) {
         int y = getTopFilledHeight(world.getChunkFromBlockCoords(x, z), x & 15, z & 15, skippables);
         if (y >= cutLevel) {
-            for (int py = world.provider.getActualHeight(); py > cutLevel; py--) {
+            for (int py = world.getActualHeight(); py > cutLevel; py--) {
                 world.setBlockToAir(x, py, z);
             }
             world.setBlock(x, cutLevel, z, topBlock);

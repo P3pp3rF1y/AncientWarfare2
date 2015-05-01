@@ -97,8 +97,8 @@ public class NpcAIFleeHostiles extends NpcAI {
             }
         } else if (npc.hasHome()) {
             double distSq = npc.getDistanceSqFromHome();
-            ChunkCoordinates cc = npc.getHomePosition();
             if (distSq > 3 * 3) {
+                ChunkCoordinates cc = npc.getHomePosition();
                 moveToPosition(cc.posX, cc.posY, cc.posZ, distSq);
                 stayAtHomeTimer = 20 * 20;//30 seconds...
             } else {

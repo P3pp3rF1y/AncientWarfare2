@@ -31,6 +31,8 @@ public class AWCraftingManager {
      * shameless copy of CraftingManager.findMatchingRecipe, with added param for player
      */
     public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, String playerName) {
+        if(world == null)
+            return null;
         ItemStack item1 = CraftingManager.getInstance().findMatchingRecipe(inventory, world);
         if (item1 != null) {
             return item1;

@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
@@ -71,8 +72,8 @@ public class ItemResearchBook extends Item implements IItemClickable {
     @Override
     public void onRightClick(EntityPlayer player, ItemStack stack) {
         if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("researcherName")) {
-            //TODO add chat message stating book is bound
             stack.setTagInfo("researcherName", new NBTTagString(player.getCommandSenderName()));
+            player.addChatComponentMessage(new ChatComponentTranslation("guistrings.research.book_bound"));
         } else {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_BOOK, 0, 0, 0);
         }

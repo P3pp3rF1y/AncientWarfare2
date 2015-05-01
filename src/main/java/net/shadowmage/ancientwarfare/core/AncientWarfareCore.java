@@ -35,7 +35,6 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
                 name = "Ancient Warfare Core",
                 modid = AncientWarfareCore.modID,
                 version = "@VERSION@",
-                dependencies = "after:BuildCraft|Core;after:CoFHCore",
                 guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory"
         )
 
