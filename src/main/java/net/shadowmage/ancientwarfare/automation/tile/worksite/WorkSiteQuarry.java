@@ -83,12 +83,8 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
             initWorkSite();
             hasDoneInit = true;
         }
-        incrementalScan();
-    }
-
-    private void incrementalScan() {
         worldObj.theProfiler.startSection("Incremental Scan");
-        if (validatePosition(validateX, validateY, validateZ)) {
+        if (canHarvest(validateX, validateY, validateZ)) {
             currentX = validateX;
             currentY = validateY;
             currentZ = validateZ;
@@ -124,7 +120,7 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
          * while the current position is invalid, increment to a valid one. generally the incremental scan
          * should have take care of this prior to processWork being called, but just in case...
          */
-        while (!validatePosition(currentX, currentY, currentZ)) {
+        while (!canHarvest(currentX, currentY, currentZ)) {
             if (!incrementPosition()) {
                 /**
                  * if no valid position was found, set finished, exit
@@ -137,10 +133,6 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
          * if made it this far, a valid position was found, break it and add blocks to inventory
          */
         return harvestBlock(currentX, currentY, currentZ, RelativeSide.TOP);
-    }
-
-    private boolean validatePosition(int x, int y, int z) {
-        return !worldObj.isAirBlock(x, y, z) && canHarvest(worldObj.getBlock(x, y, z));
     }
 
     private boolean incrementPosition() {
@@ -183,9 +175,13 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
         }
     }
 
-    private boolean canHarvest(Block block) {
+    private boolean canHarvest(int x, int y, int z) {
         //TODO add block-breaking exclusion list to config
-        int harvestLevel = block.getHarvestLevel(worldObj.getBlockMetadata(currentX, currentY, currentZ));
+        Block block = worldObj.getBlock(x, y, z);
+        if(block.isAir(worldObj, x, y, z)){
+            return false;
+        }
+        int harvestLevel = block.getHarvestLevel(worldObj.getBlockMetadata(x, y, z));
         if (harvestLevel >= 2) {
             int toolLevel = 1;
             if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_3)) {
@@ -199,7 +195,7 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
                 return false;
             }//else is harvestable, check the rest of the checks
         }
-        return !block.getMaterial().isLiquid() && block.getBlockHardness(worldObj, currentX, currentY, currentZ) >= 0;
+        return !block.getMaterial().isLiquid() && block.getBlockHardness(worldObj, x, y, z) >= 0;
     }
 
     public void initWorkSite() {
