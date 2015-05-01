@@ -32,7 +32,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 
-public class RenderGateHelper extends Render {
+public final class RenderGateHelper extends Render {
 
     private HashMap<Integer, Render> gateRenders = new HashMap<Integer, Render>();
 
@@ -50,15 +50,10 @@ public class RenderGateHelper extends Render {
         this.gateRenders.put(type, rend);
     }
 
-    protected Render getGateRender(int type) {
-        return this.gateRenders.get(type);
-    }
-
     @Override
     public void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) {
         GL11.glPushMatrix();
         EntityGate gate = (EntityGate) entity;
-        int typeNum = gate.getGateType().getGlobalID();
 
         if (gate.hurtAnimationTicks > 0) {
             float percent = ((float) gate.hurtAnimationTicks / 20.f);
@@ -68,7 +63,7 @@ public class RenderGateHelper extends Render {
         GL11.glTranslated(d0, d1, d2);
         GL11.glRotatef(f, 0, 1, 0);
         GL11.glScalef(-1, -1, 1);
-        getGateRender(typeNum).doRender(entity, d0, d1, d2, f, f1);
+        this.gateRenders.get(gate.getGateType().getGlobalID()).doRender(entity, d0, d1, d2, f, f1);
         GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
         GL11.glPopMatrix();
     }

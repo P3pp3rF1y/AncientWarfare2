@@ -29,89 +29,50 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.model.ModelGateBasic;
 import org.lwjgl.opengl.GL11;
 
-public class RenderGateSingle extends Render {
-
-    ModelGateBasic model = new ModelGateBasic();
-
+public final class RenderGateSingle extends RenderGateBasic {
     public RenderGateSingle() {
 
     }
 
     @Override
-    public void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) {
-        GL11.glPushMatrix();
-        EntityGate g = (EntityGate) entity;
-        BlockPosition min = BlockTools.getMin(g.pos1, g.pos2);//g.pos1;
-        BlockPosition max = BlockTools.getMax(g.pos1, g.pos2);
-
-        boolean wideOnXAxis = min.x != max.x;
-        float width = wideOnXAxis ? max.x - min.x + 1 : max.z - min.z + 1;
-        float height = max.y - min.y + 1;
-        float xOffset = wideOnXAxis ? width * 0.5f - 0.5f : 0f;
-        float zOffset = wideOnXAxis ? 0f : -width * 0.5f + 0.5f;
-
-        float tx = wideOnXAxis ? 1 : 0;
-        float ty = -1;
-        float tz = wideOnXAxis ? 0 : 1;
-        float axisRotation = wideOnXAxis ? 90 : 0;
-        GL11.glTranslatef(-xOffset, 0, zOffset);
-        for (int y = 0; y < height; y++) {
-            GL11.glPushMatrix();
-            for (int x = 0; x < width; x++) {
-                model.setModelRotation(axisRotation);
-                if (y == height - 1 && x > 0 && x < width - 1) {
-                    model.renderTop();
-                } else if (y == height - 1 && x == 0) {
-                    model.renderCorner();
-                } else if (y == height - 1 && x == width - 1) {
-                    model.setModelRotation(axisRotation + 180);
-                    model.renderCorner();
-                } else if (x == 0) {
-                    model.renderSide();
-                } else if (x == width - 1) {
-                    model.setModelRotation(axisRotation + 180);
-                    model.renderSide();
-                }
-
-                boolean opensReverse = g.pos1.x > g.pos2.x || g.pos1.z > g.pos2.z;
-                float wallTx = wideOnXAxis ? g.edgePosition + g.openingSpeed * (1 - f1) : 0;
-                float wallTz = wideOnXAxis ? 0 : g.edgePosition + g.openingSpeed * (1 - f1);
-                boolean render = false;
-                if (opensReverse) {
-                    if ((wideOnXAxis && x - wallTx > -0.5f) || (!wideOnXAxis && x - wallTz > -0.5f)) {
-                        render = true;
-                    }
-                } else {
-                    if ((wideOnXAxis && wallTx + x < g.edgeMax - 0.5f) || (!wideOnXAxis && wallTz + x < g.edgeMax - 0.5f)) {
-                        render = true;
-                    }
-                }
-                if (render) {
-                    if (opensReverse) {
-                        wallTx *= -1;
-                        wallTz *= -1;
-                    }
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(wallTx, 0, wallTz);
-                    model.setModelRotation(axisRotation);
-                    if (g.getGateType().getModelType() == 0) {
-                        model.renderSolidWall();
-                    } else {
-                        model.renderBars();
-                    }
-                    GL11.glPopMatrix();
-                }
-
-                GL11.glTranslatef(tx, 0, tz);
-            }
-            GL11.glPopMatrix();
-            GL11.glTranslatef(0, ty, 0);
-        }
-        GL11.glPopMatrix();
+    protected BlockPosition getMin(EntityGate gate) {
+        return BlockTools.getMin(gate.pos1, gate.pos2);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-        return ((EntityGate) entity).getGateType().getTexture();
+    protected BlockPosition getMax(EntityGate gate) {
+        return BlockTools.getMax(gate.pos1, gate.pos2);
+    }
+
+    @Override
+    protected void postRender(EntityGate gate, int x, float width, int y, float height, boolean wideOnXAxis, float axisRotation, float frame) {
+        boolean opensReverse = gate.pos1.x > gate.pos2.x || gate.pos1.z > gate.pos2.z;
+        float wallTx = wideOnXAxis ? gate.edgePosition + gate.openingSpeed * (1 - frame) : 0;
+        float wallTz = wideOnXAxis ? 0 : gate.edgePosition + gate.openingSpeed * (1 - frame);
+        boolean render = false;
+        if (opensReverse) {
+            if ((wideOnXAxis && x - wallTx > -0.5f) || (!wideOnXAxis && x - wallTz > -0.5f)) {
+                render = true;
+            }
+        } else {
+            if ((wideOnXAxis && wallTx + x < gate.edgeMax - 0.5f) || (!wideOnXAxis && wallTz + x < gate.edgeMax - 0.5f)) {
+                render = true;
+            }
+        }
+        if (render) {
+            if (opensReverse) {
+                wallTx *= -1;
+                wallTz *= -1;
+            }
+            GL11.glPushMatrix();
+            GL11.glTranslatef(wallTx, 0, wallTz);
+            model.setModelRotation(axisRotation);
+            if (gate.getGateType().getModelType() == 0) {
+                model.renderSolidWall();
+            } else {
+                model.renderBars();
+            }
+            GL11.glPopMatrix();
+        }
     }
 }
