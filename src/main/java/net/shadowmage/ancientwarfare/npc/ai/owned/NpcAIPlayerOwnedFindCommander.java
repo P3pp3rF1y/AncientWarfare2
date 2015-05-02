@@ -54,9 +54,6 @@ public class NpcAIPlayerOwnedFindCommander extends NpcAI {
         return false;
     }
 
-    /**
-     * TODO override for faction npc to test for faction-type
-     */
     protected boolean isCommander(NpcBase npc) {
         return npc.getNpcFullType().equals("combat.commander");
     }

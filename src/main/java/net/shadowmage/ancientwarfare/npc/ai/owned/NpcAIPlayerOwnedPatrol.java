@@ -96,6 +96,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI {
         }
     }
 
+    @Override
     public void resetTask() {
         ticksAtPoint = 0;
         moveRetryDelay = 0;
