@@ -35,6 +35,7 @@ public class ItemQuill extends Item implements IItemClickable {
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
+        this.setHarvestLevel("quill", material.getHarvestLevel());
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

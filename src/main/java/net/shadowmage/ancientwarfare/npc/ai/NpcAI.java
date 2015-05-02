@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -50,6 +51,14 @@ public abstract class NpcAI extends EntityAIBase {
         maxPFDist = AWNPCStatics.npcPathfindRange * 0.90d;
 
         maxPFDistSq = maxPFDist * maxPFDist;
+    }
+
+    //Inserting Item#onUpdate, to let it do whatever it needs to do. Used by QuiverBow for burst fire
+    protected final void updateHeldItem(){
+        ItemStack stack = npc.getHeldItem();
+        if (stack != null) {
+            stack.getItem().onUpdate(stack, npc.worldObj, npc, 0, true);
+        }
     }
 
     protected final void moveToEntity(Entity target, double sqDist) {

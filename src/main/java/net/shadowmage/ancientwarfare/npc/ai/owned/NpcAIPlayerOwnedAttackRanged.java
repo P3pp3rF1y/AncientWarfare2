@@ -2,6 +2,8 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -57,7 +59,7 @@ public class NpcAIPlayerOwnedAttackRanged extends NpcAI {
     public void updateTask() {
         double dist = this.npc.getDistanceSq(this.target.posX, this.target.posY, this.target.posZ);
         boolean canSee = this.npc.getEntitySenses().canSee(this.target);
-
+        updateHeldItem();
         this.npc.getLookHelper().setLookPositionWithEntity(this.target, 30.0F, 30.0F);
         if (dist > attackDistance || !canSee) {
             this.npc.addAITask(TASK_MOVE);
@@ -67,9 +69,14 @@ public class NpcAIPlayerOwnedAttackRanged extends NpcAI {
             this.npc.getNavigator().clearPathEntity();
             this.attackDelay--;
             if (this.attackDelay <= 0) {
+                int val = AIHelper.doQuiverBowThing(npc, target);
+                if(val>0){
+                    this.attackDelay = val;
+                    return;
+                }
                 float pwr = (float) (attackDistance / dist);
                 pwr = pwr < 0.1f ? 0.1f : pwr > 1.f ? 1.f : pwr;
-                this.rangedAttacker.attackEntityWithRangedAttack(target, 1.f);
+                this.rangedAttacker.attackEntityWithRangedAttack(target, pwr);
                 this.attackDelay = 35;
             }
         }
