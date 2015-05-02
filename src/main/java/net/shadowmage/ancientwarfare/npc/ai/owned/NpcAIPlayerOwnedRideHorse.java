@@ -86,8 +86,7 @@ public class NpcAIPlayerOwnedRideHorse extends NpcAI {
     }
 
     private void applyModifiers() {
-        horse.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(moveSpeedModifier);
-        horse.getEntityAttribute(SharedMonsterAttributes.followRange).removeModifier(followRangeModifier);
+        removeModifiers();
         horse.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(moveSpeedModifier);
         horse.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(followRangeModifier);
     }

@@ -40,7 +40,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
 
         addPlayerSlots(8, startY, 4);
 
-        storage = ItemBackpack.getInventoryFor(entity.getEquipmentInSlot(0));
+        storage = ItemBackpack.getInventoryFor(entity.getHeldItem());
         if (storage != null) {
             for (int i = 0; i < storage.getSizeInventory(); i++) {
                 /**
@@ -80,7 +80,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
     public void onContainerClosed(EntityPlayer player) {
         this.entity.closeTrade();
         if (storage != null) {
-            ItemBackpack.writeBackpackToItem(storage, this.entity.getEquipmentInSlot(0));
+            ItemBackpack.writeBackpackToItem(storage, this.entity.getHeldItem());
         }
         super.onContainerClosed(player);
         if (!player.worldObj.isRemote) {

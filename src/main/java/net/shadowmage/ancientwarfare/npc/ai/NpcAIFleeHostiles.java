@@ -15,6 +15,7 @@ import java.util.List;
 
 public class NpcAIFleeHostiles extends NpcAI {
 
+    private static int MAX_FLEE_RANGE = 16, HEIGHT_CHECK = 7;
     IEntitySelector selector;
     double distanceFromEntity = 16;
     Vec3 fleeVector;
@@ -50,7 +51,7 @@ public class NpcAIFleeHostiles extends NpcAI {
         if (npc.getTownHallPosition() != null || npc.hasHome()) {
             flee = true;
         } else {
-            fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, 16, 7, Vec3.createVectorHelper(fleeTarget.posX, fleeTarget.posY, fleeTarget.posZ));
+            fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3.createVectorHelper(fleeTarget.posX, fleeTarget.posY, fleeTarget.posZ));
             if (fleeVector == null || fleeTarget.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord) < fleeTarget.getDistanceSqToEntity(this.npc)) {
                 flee = false;//did not find random flee-towards target, perhaps retry next tick
             } else {
@@ -114,7 +115,7 @@ public class NpcAIFleeHostiles extends NpcAI {
             } else {
                 if (npc.getDistanceSqToEntity(npc.getAttackTarget()) < 16 * 16)//entity still chasing, find a new flee vector
                 {
-                    fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, 16, 7, Vec3.createVectorHelper(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
+                    fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3.createVectorHelper(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
                     if (fleeVector == null) {
                         npc.setAttackTarget(null);//retry next tick..perhaps...
                     }

@@ -53,14 +53,14 @@ public class NpcCourier extends NpcPlayerOwned {
     @Override
     public void onWeaponInventoryChanged() {
         super.onWeaponInventoryChanged();
-        backpackInventory = ItemBackpack.getInventoryFor(getEquipmentInSlot(0));
+        backpackInventory = ItemBackpack.getInventoryFor(getHeldItem());
     }
 
     /**
      * should be called from courier routing AI whenever work done>0, to ensure items are saved to backpack
      */
     public void updateBackpackItemContents() {
-        ItemBackpack.writeBackpackToItem(backpackInventory, getEquipmentInSlot(0));
+        ItemBackpack.writeBackpackToItem(backpackInventory, getHeldItem());
     }
 
     @Override

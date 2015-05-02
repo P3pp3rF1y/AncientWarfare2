@@ -280,7 +280,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
     }
 
     private void doDeposit() {
-        ItemStack backpack = npc.getEquipmentInSlot(0);
+        ItemStack backpack = npc.getHeldItem();
         if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
             InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
             BlockPosition pos = orders.getRestockData().getDepositPoint();
@@ -294,7 +294,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
     }
 
     private void doWithdraw() {
-        ItemStack backpack = npc.getEquipmentInSlot(0);
+        ItemStack backpack = npc.getHeldItem();
         if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
             InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
             BlockPosition pos = orders.getRestockData().getWithdrawPoint();
