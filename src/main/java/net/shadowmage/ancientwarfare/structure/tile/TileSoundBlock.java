@@ -1,7 +1,12 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
@@ -19,6 +24,7 @@ public class TileSoundBlock extends TileEntity {
     private int playerRange = 20;
     private int playTime;//tracking current play time.  when this exceeds length, cooldown delay is triggered
     private SongPlayData tuneData;
+    private Block blockCache;
 
     public TileSoundBlock() {
         tuneData = new SongPlayData();
@@ -57,21 +63,21 @@ public class TileSoundBlock extends TileEntity {
     }
 
     private void startSong() {
-        playing = true;
-        playTime = 0;
         if (tuneData.getIsRandom()) {
             tuneIndex = 0;
             if (tuneData.size() > 0) {
                 tuneIndex = worldObj.rand.nextInt(tuneData.size());
             }
         } else {
-            if (tuneIndex++ >= tuneData.size()) {
-                tuneIndex = 0;
-            }
+            tuneIndex++;
+        }
+        if (tuneIndex >= tuneData.size()) {
+            tuneIndex = 0;
         }
         if (tuneData.size() <= 0) {
             return;
         }
+        playing = true;
         playTime = tuneData.get(tuneIndex).play(worldObj, xCoord, yCoord, zCoord);
     }
 
@@ -86,11 +92,39 @@ public class TileSoundBlock extends TileEntity {
     }
 
     @Override
+    public Packet getDescriptionPacket(){
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, cacheToNBT(new NBTTagCompound()));
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt){
+        if(worldObj.isRemote && pkt.func_148853_f() == 0){
+            cacheFromNBT(pkt.func_148857_g());
+        }
+    }
+
+    private void cacheFromNBT(NBTTagCompound tag){
+        String id = tag.getString("block");
+        if(!id.isEmpty()){
+            blockCache = Block.getBlockFromName(id);
+        }
+    }
+
+    private NBTTagCompound cacheToNBT(NBTTagCompound tag){
+        if(blockCache!=null){
+            tag.setString("block", Block.blockRegistry.getNameForObject(blockCache));
+        }
+        return tag;
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         tuneData.readFromNBT(tag.getCompoundTag("tuneData"));
         redstoneInteraction = tag.getBoolean("redstone");
         tuneIndex = tag.getInteger("tuneIndex");
+        playerRange = tag.getInteger("range");
+        cacheFromNBT(tag);
     }
 
     @Override
@@ -99,6 +133,8 @@ public class TileSoundBlock extends TileEntity {
         tag.setTag("tuneData", tuneData.writeToNBT(new NBTTagCompound()));
         tag.setBoolean("redstone", redstoneInteraction);
         tag.setInteger("tuneIndex", tuneIndex);
+        tag.setInteger("range", playerRange);
+        cacheToNBT(tag);
     }
 
     public SongPlayData getTuneData() {
@@ -113,4 +149,21 @@ public class TileSoundBlock extends TileEntity {
         this.redstoneInteraction = redstoneInteraction;
     }
 
+    public void setPlayerRange(int value){
+        playerRange = value;
+    }
+
+    public int getPlayerRange(){
+        return playerRange;
+    }
+
+    public Block getBlockCache(){
+        return blockCache;
+    }
+
+    public void setBlockCache(ItemStack itemStack){
+        blockCache = Block.getBlockFromItem(itemStack.getItem());
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        worldObj.notifyBlockChange(xCoord, yCoord, zCoord, this.blockType);
+    }
 }

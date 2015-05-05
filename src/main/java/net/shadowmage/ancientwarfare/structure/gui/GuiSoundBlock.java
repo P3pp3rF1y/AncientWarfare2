@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
+import net.minecraft.client.Minecraft;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
@@ -58,7 +59,18 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
         area.addGuiElement(redstone);
         totalHeight += 16;
 
-        NumberInput minDelay = new NumberInput(88, totalHeight, 55, data.getMinDelay(), this) {
+        NumberInput playerRange = new NumberInput(100, totalHeight, 55, getContainer().range, this) {
+            @Override
+            public void onValueUpdated(float value) {
+                getContainer().range = (int) value;
+            }
+        };
+        playerRange.setIntegerValue();
+        area.addGuiElement(playerRange);
+        area.addGuiElement(new Label(8, totalHeight + 1, "guistrings.required_player_range"));
+        totalHeight += 12;
+
+        NumberInput minDelay = new NumberInput(100, totalHeight, 55, data.getMinDelay(), this) {
             @Override
             public void onValueUpdated(float value) {
                 data.setMinDelay((int) value);
@@ -69,7 +81,7 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
         area.addGuiElement(new Label(8, totalHeight + 1, "guistrings.min_delay"));
         totalHeight += 12;
 
-        NumberInput maxDelay = new NumberInput(88, totalHeight, 55, data.getMaxDelay(), this) {
+        NumberInput maxDelay = new NumberInput(100, totalHeight, 55, data.getMaxDelay(), this) {
             @Override
             public void onValueUpdated(float value) {
                 data.setMaxDelay((int) value);
@@ -107,11 +119,11 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 
     private int addTuneEntry(final SongEntry entry, final int index, int startHeight) {
         int y = startHeight;
-        Text input = new Text(8, startHeight, 120, entry.name(), this) {
+        Button input = new Button(8, startHeight, 120, 12, entry.name()) {
             @Override
-            public void onTextUpdated(String oldText, String newText) {
-                super.onTextUpdated(oldText, newText);
-                entry.setName(newText);
+            public void onPressed() {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiSoundSelect(GuiSoundBlock.this, entry));
+                refreshGui();
             }
         };
         area.addGuiElement(input);

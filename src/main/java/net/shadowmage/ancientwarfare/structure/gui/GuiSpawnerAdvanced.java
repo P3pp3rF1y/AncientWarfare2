@@ -108,7 +108,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
 
         totalHeight += 4;
 
-        label = new Label(8, totalHeight, "guistrings.spawner.required_player_range");
+        label = new Label(8, totalHeight, "guistrings.required_player_range");
         area.addGuiElement(label);
         input = new NumberInput(180, totalHeight, 50, getContainer().settings.getPlayerRange(), this) {
             @Override
