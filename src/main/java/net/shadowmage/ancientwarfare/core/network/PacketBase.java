@@ -28,9 +28,7 @@ public abstract class PacketBase {
         int typeNum = data.readByte();
         try {
             return packetTypes.get(typeNum).newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (ReflectiveOperationException e) {
             e.printStackTrace();
         }
         return null;
