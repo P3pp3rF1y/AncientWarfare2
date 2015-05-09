@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
