@@ -38,24 +38,24 @@ public enum StructureValidationType {
     StructureValidationType(Class<? extends StructureValidator> validatorClass, StructureValidationProperty... props) {
         this.validatorClass = validatorClass;
 
-        properties.add(new StructureValidationProperty("survival", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
-        properties.add(new StructureValidationProperty("enableWorldGen", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
-        properties.add(new StructureValidationProperty("unique", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
-        properties.add(new StructureValidationProperty("preserveBlocks", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_SURVIVAL, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_WORLD_GEN, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_UNIQUE, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_PRESERVE_BLOCKS, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
 
-        properties.add(new StructureValidationProperty("selectionWeight", StructureValidationProperty.DATA_TYPE_INT, 0));
-        properties.add(new StructureValidationProperty("clusterValue", StructureValidationProperty.DATA_TYPE_INT, 0));
-        properties.add(new StructureValidationProperty("minDuplicateDistance", StructureValidationProperty.DATA_TYPE_INT, 0));
-        properties.add(new StructureValidationProperty("borderSize", StructureValidationProperty.DATA_TYPE_INT, 0));
-        properties.add(new StructureValidationProperty("maxLeveling", StructureValidationProperty.DATA_TYPE_INT, 0));
-        properties.add(new StructureValidationProperty("maxFill", StructureValidationProperty.DATA_TYPE_INT, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_SELECTION_WEIGHT, StructureValidationProperty.DATA_TYPE_INT, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_CLUSTER_VALUE, StructureValidationProperty.DATA_TYPE_INT, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_MIN_DUPLICATE_DISTANCE, StructureValidationProperty.DATA_TYPE_INT, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BORDER_SIZE, StructureValidationProperty.DATA_TYPE_INT, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_MAX_LEVELING, StructureValidationProperty.DATA_TYPE_INT, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_MAX_FILL, StructureValidationProperty.DATA_TYPE_INT, 0));
 
-        properties.add(new StructureValidationProperty("biomeWhiteList", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
-        properties.add(new StructureValidationProperty("dimensionWhiteList", StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_WHITE_LIST, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_DIMENSION_WHITE_LIST, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
 
-        properties.add(new StructureValidationProperty("biomeList", StructureValidationProperty.DATA_TYPE_STRING_SET, new HashSet<String>()));
-        properties.add(new StructureValidationProperty("blockList", StructureValidationProperty.DATA_TYPE_STRING_SET, new HashSet<String>()));
-        properties.add(new StructureValidationProperty("dimensionList", StructureValidationProperty.DATA_TYPE_INT_ARRAY, new int[]{}));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_LIST, StructureValidationProperty.DATA_TYPE_STRING_SET, new HashSet<String>()));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_LIST, StructureValidationProperty.DATA_TYPE_STRING_SET, new HashSet<String>()));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_DIMENSION_LIST, StructureValidationProperty.DATA_TYPE_INT_ARRAY, new int[]{}));
 
         properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_SWAP, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
 

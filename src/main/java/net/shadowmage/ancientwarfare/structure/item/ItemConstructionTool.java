@@ -91,6 +91,9 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
     @Override
     public void onRightClick(EntityPlayer player, ItemStack stack) {
         ConstructionSettings settings = getSettings(stack);
+        if(settings==null){
+            return;
+        }
         switch (settings.type) {
             case SOLID_FILL: {
                 handleSolidFill(player, settings);
@@ -186,54 +189,52 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
 
     @Override
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+        ConstructionSettings settings = getSettings(stack);
+        if(settings==null){
+            return;
+        }
         switch (key) {
             case KEY_0://toggle mode
             {
-                ConstructionSettings settings = getSettings(stack);
                 settings.type = settings.type.next();
-                writeConstructionSettings(stack, settings);
             }
             break;
             case KEY_1://source block
             {
                 BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
                 if (pos != null) {
-                    ConstructionSettings settings = getSettings(stack);
                     settings.block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
                     settings.meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);
                     writeConstructionSettings(stack, settings);
                 }
             }
-            break;
+            return;
             case KEY_2://pos1
             {
                 BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
                 if (pos != null) {
-                    ConstructionSettings settings = getSettings(stack);
                     settings.pos1 = pos;
                     writeConstructionSettings(stack, settings);
                 }
             }
-            break;
+            return;
             case KEY_3://pos2
             {
                 BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
                 if (pos != null) {
-                    ConstructionSettings settings = getSettings(stack);
                     settings.pos2 = pos;
                     writeConstructionSettings(stack, settings);
                 }
             }
-            break;
+            return;
             case KEY_4://clear pos
             {
-                ConstructionSettings settings = getSettings(stack);
                 settings.pos1 = null;
                 settings.pos2 = null;
-                writeConstructionSettings(stack, settings);
             }
             break;
         }
+        writeConstructionSettings(stack, settings);
     }
 
     public static ConstructionSettings getSettings(ItemStack item) {
@@ -256,6 +257,9 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
     @Override
     public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
         ConstructionSettings settings = getSettings(stack);
+        if(settings==null){
+            return;
+        }
         BlockPosition p1, p2;
         BlockPosition p3 = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
         p1 = settings.hasPos1() ? settings.pos1() : p3;
@@ -326,7 +330,7 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
 
     }
 
-    public static enum ConstructionType {
+    public enum ConstructionType {
 
         /**
          * Fills current layer and downwards with chosen block

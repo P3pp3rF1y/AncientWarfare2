@@ -64,23 +64,11 @@ public class StructureBuilderWorldGen extends StructureBuilder {
 
     protected Block getBiomeSpecificBlock(Block par1, int par2, BiomeGenBase biome) {
         if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.sand) {
-            if (par1 == Blocks.log) {
+            if (par1 == Blocks.log || par1 == Blocks.cobblestone || par1 == Blocks.planks) {
                 return Blocks.sandstone;
             }
 
-            if (par1 == Blocks.cobblestone) {
-                return Blocks.sandstone;
-            }
-
-            if (par1 == Blocks.planks) {
-                return Blocks.sandstone;
-            }
-
-            if (par1 == Blocks.oak_stairs) {
-                return Blocks.sandstone_stairs;
-            }
-
-            if (par1 == Blocks.stone_stairs) {
+            if (par1 == Blocks.oak_stairs || par1 == Blocks.stone_stairs) {
                 return Blocks.sandstone_stairs;
             }
 
