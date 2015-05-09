@@ -20,11 +20,14 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
+import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.inventory.IInventory;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
@@ -35,20 +38,25 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.e
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleVanillaEntity;
 
+import java.util.Map;
+
 public class StructurePluginModDefault implements StructureContentPlugin {
 
-    public StructurePluginModDefault() {
-
+    private final String mod;
+    public StructurePluginModDefault(String id) {
+        this.mod = id;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void addHandledBlocks(IStructurePluginManager manager) {
-        for (Block aBlock : (Iterable<Block>) Block.blockRegistry) {
-            if (aBlock instanceof BlockContainer) {
-                manager.registerBlockHandler("modBlockDefault", aBlock, TemplateRuleBlockLogic.class);
-            } else {
-                manager.registerBlockHandler("modBlockDefault", aBlock, TemplateRuleModBlocks.class);
+        for (Block aBlock : (Iterable<Block>) GameData.getBlockRegistry()) {
+            if(aBlock!=null && GameData.getBlockRegistry().getNameForObject(aBlock).startsWith(mod)) {
+                if (aBlock.hasTileEntity(0)) {
+                    manager.registerBlockHandler("modContainerDefault", aBlock, TemplateRuleBlockLogic.class);
+                } else {
+                    manager.registerBlockHandler("modBlockDefault", aBlock, TemplateRuleModBlocks.class);
+                }
             }
         }
     }
@@ -56,14 +64,16 @@ public class StructurePluginModDefault implements StructureContentPlugin {
     @SuppressWarnings("unchecked")
     @Override
     public void addHandledEntities(IStructurePluginManager manager) {
-        for (Object obj : EntityList.classToStringMapping.keySet()) {
-            Class<? extends Entity> clazz = (Class<? extends Entity>) obj;
-            if (EntityHanging.class.isAssignableFrom(clazz)) {
-                manager.registerEntityHandler("modEntityDefault", clazz, TemplateRuleEntityHanging.class);
-            } else if (IInventory.class.isAssignableFrom(clazz)) {
-                manager.registerEntityHandler("modEntityDefault", clazz, TemplateRuleEntityLogic.class);
-            } else if (EntityAnimal.class.isAssignableFrom(clazz)) {
-                manager.registerEntityHandler("modEntityDefault", clazz, TemplateRuleVanillaEntity.class);
+        for (Object key : EntityList.stringToClassMapping.keySet()) {
+            if(key.toString().startsWith(mod)) {
+                Class<? extends Entity> clazz = (Class<? extends Entity>) EntityList.stringToClassMapping.get(key);
+                if (EntityHanging.class.isAssignableFrom(clazz)) {
+                    manager.registerEntityHandler("modHangingDefault", clazz, TemplateRuleEntityHanging.class);
+                } else if (EntityAnimal.class.isAssignableFrom(clazz)) {
+                    manager.registerEntityHandler("modAnimalDefault", clazz, TemplateRuleVanillaEntity.class);
+                } else if (EntityLiving.class.isAssignableFrom(clazz) || IInventory.class.isAssignableFrom(clazz)) {
+                    manager.registerEntityHandler("modEquippedDefault", clazz, TemplateRuleEntityLogic.class);
+                }
             }
         }
     }

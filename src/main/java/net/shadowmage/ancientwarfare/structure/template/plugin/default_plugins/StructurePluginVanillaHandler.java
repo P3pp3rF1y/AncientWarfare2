@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
+import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.*;
@@ -67,10 +68,8 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
         specialHandledBlocks.add(Blocks.flower_pot);
         specialHandledBlocks.add(Blocks.skull);
 
-        Block block;
-        for (int i = 0; i < 256; i++) {
-            block = Block.getBlockById(i);
-            if (block != null && !specialHandledBlocks.contains(block)) {
+        for (Block block : (Iterable<Block>) GameData.getBlockRegistry()) {
+            if (block != null && GameData.getBlockRegistry().getNameForObject(block).startsWith("minecraft:") && !specialHandledBlocks.contains(block)) {
                 manager.registerBlockHandler("vanillaBlocks", block, TemplateRuleVanillaBlocks.class);
             }
         }
@@ -98,6 +97,9 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
         manager.registerBlockHandler("awAdvancedSpawner", AWBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
         manager.registerBlockHandler("awCoreLogic", AWBlocks.engineeringStation, TemplateRuleBlockLogic.class);
         manager.registerBlockHandler("awCoreLogic", AWBlocks.researchStation, TemplateRuleBlockLogic.class);
+        manager.registerBlockHandler("awStructureLogic", AWBlocks.draftingStation, TemplateRuleBlockLogic.class);
+        manager.registerBlockHandler("awStructureLogic", AWBlocks.builderBlock, TemplateRuleBlockLogic.class);
+        manager.registerBlockHandler("awStructureLogic", AWBlocks.soundBlock, TemplateRuleBlockLogic.class);
     }
 
     @Override
