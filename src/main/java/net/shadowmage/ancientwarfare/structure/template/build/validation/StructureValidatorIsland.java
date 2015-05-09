@@ -46,9 +46,9 @@ public class StructureValidatorIsland extends StructureValidator {
     @Override
     protected void readFromLines(List<String> lines) {
         for (String line : lines) {
-            if (line.toLowerCase().startsWith("minwaterdepth=")) {
+            if (startLow(line, "minwaterdepth=")) {
                 minWaterDepth = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("maxwaterdepth=")) {
+            } else if (startLow(line, "maxwaterdepth=")) {
                 maxWaterDepth = StringTools.safeParseInt("=", line);
             }
         }

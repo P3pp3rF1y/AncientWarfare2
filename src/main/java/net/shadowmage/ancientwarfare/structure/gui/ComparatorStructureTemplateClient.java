@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.gui;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 
 import java.util.Comparator;
+import java.util.Locale;
 
 public class ComparatorStructureTemplateClient implements Comparator<StructureTemplateClient> {
 
@@ -41,9 +42,9 @@ public class ComparatorStructureTemplateClient implements Comparator<StructureTe
         } else if (arg0 == null && arg1 == null) {
             return 0;
         }
-        String a = arg0.name.toLowerCase();
-        String b = arg1.name.toLowerCase();
-        String tex = filterText.toLowerCase();
+        String a = arg0.name.toLowerCase(Locale.ENGLISH);
+        String b = arg1.name.toLowerCase(Locale.ENGLISH);
+        String tex = filterText.toLowerCase(Locale.ENGLISH);
         if (a.startsWith(tex) && b.startsWith(tex)) {
             return arg0.name.compareTo(arg1.name);
         } else if (a.startsWith(tex)) {

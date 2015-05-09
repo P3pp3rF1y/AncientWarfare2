@@ -212,11 +212,11 @@ public class TemplateLoader {
                     continue;
                 }//TODO how to handle subfolders in a zip-file?
                 AWLog.logDebug("parsing entry: " + entry.getName());
-                if (entry.getName().toLowerCase().endsWith(".png")) {
+                if (entry.getName().toLowerCase(Locale.ENGLISH).endsWith(".png")) {
                     loadStructureImage(entry.getName(), zis);
-                } else if (entry.getName().toLowerCase().endsWith("." + AWStructureStatics.townTemplateExtension)) {
+                } else if (entry.getName().toLowerCase(Locale.ENGLISH).endsWith("." + AWStructureStatics.townTemplateExtension)) {
                     loadTownTemplateFromZip(entry, zis);
-                } else if (entry.getName().toLowerCase().endsWith("." + AWStructureStatics.templateExtension)) {
+                } else if (entry.getName().toLowerCase(Locale.ENGLISH).endsWith("." + AWStructureStatics.templateExtension)) {
                     template = loadTemplateFromZip(entry, zis);
                     if (template != null) {
                         AWLog.log("Loaded Structure Template: [" + template.name + "] WorldGen: " + template.getValidationSettings().isWorldGenEnabled() + "  Survival: " + template.getValidationSettings().isSurvival());
@@ -355,15 +355,15 @@ public class TemplateLoader {
     }
 
     private boolean isProbableFile(File file, String extension) {
-        return file.getName().toLowerCase().endsWith(extension);
+        return file.getName().toLowerCase(Locale.ENGLISH).endsWith(extension);
     }
 
     private boolean isProbableZip(File file) {
-        return file.getName().toLowerCase().endsWith(".zip");
+        return isProbableFile(file, ".zip");
     }
 
     private boolean isProbableImage(File file) {
-        return file.getName().toLowerCase().endsWith(".png");
+        return isProbableFile(file, ".png");
     }
 
 }

@@ -64,7 +64,7 @@ public class ModelLoader {
         String split[];
         while (it.hasNext()) {
             line = it.next();
-            if (line.toLowerCase().startsWith("part=")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith("part=")) {
                 split = StringTools.safeParseStringArray("=", line);
                 String name = split[0];
                 String parent = split[1];
@@ -86,7 +86,7 @@ public class ModelLoader {
                 }
                 txMap.put(name, tx);
                 tyMap.put(name, ty);
-            } else if (line.toLowerCase().startsWith("box=")) {
+            } else if (line.toLowerCase(Locale.ENGLISH).startsWith("box=")) {
                 split = StringTools.safeParseStringArray("=", line);
                 String name = split[0];
                 float x = StringTools.safeParseFloat(split[1]) * importScale;

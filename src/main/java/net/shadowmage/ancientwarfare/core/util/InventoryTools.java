@@ -13,10 +13,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InventoryTools {
 
@@ -760,8 +757,8 @@ public class InventoryTools {
         }
 
         private int compareViaTextInput(String name1, String name2, ItemStack o1, ItemStack o2) {
-            String input = textInput.toLowerCase();
-            String n1 = name1.toLowerCase(), n2 = name2.toLowerCase();
+            String input = textInput.toLowerCase(Locale.ENGLISH);
+            String n1 = name1.toLowerCase(Locale.ENGLISH), n2 = name2.toLowerCase(Locale.ENGLISH);
             if (n1.startsWith(input) && n2.startsWith(input)) {
                 return compareViaNames(name1, name2, o1, o2);
             } else if (n1.startsWith(input)) {

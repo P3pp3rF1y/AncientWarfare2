@@ -26,6 +26,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class ModelBaseAW {
 
@@ -66,9 +67,9 @@ public class ModelBaseAW {
     public void parseFromLines(List<String> lines) {
         String[] bits;
         for (String line : lines) {
-            if (line.toLowerCase().startsWith("#")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith("#")) {
                 continue;
-            } else if (line.toLowerCase().startsWith("texturesize=")) {
+            } else if (line.toLowerCase(Locale.ENGLISH).startsWith("texturesize=")) {
                 bits = line.split("=")[1].split(",");
                 textureWidth = StringTools.safeParseInt(bits[0]);
                 textureHeight = StringTools.safeParseInt(bits[1]);
@@ -86,7 +87,7 @@ public class ModelBaseAW {
                 PrimitiveBox box = new PrimitiveBox(piece);
                 box.readFromLine(bits);
                 piece.addPrimitive(box);
-            } else if (line.toLowerCase().startsWith("quad")) {
+            } else if (line.toLowerCase(Locale.ENGLISH).startsWith("quad")) {
                 bits = line.split("=")[1].split(",");
                 //parse old-style x,y,z, w,h,l
                 String parentName = bits[0];
@@ -97,7 +98,7 @@ public class ModelBaseAW {
                 PrimitiveQuad box = new PrimitiveQuad(piece);
                 box.readFromLine(bits);
                 piece.addPrimitive(box);
-            } else if (line.toLowerCase().startsWith("triangle")) {
+            } else if (line.toLowerCase(Locale.ENGLISH).startsWith("triangle")) {
                 bits = line.split("=")[1].split(",");
                 //parse old-style x,y,z, w,h,l
                 String parentName = bits[0];

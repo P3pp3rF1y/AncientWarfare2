@@ -28,15 +28,27 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.Temp
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public abstract class TemplateRuleEntity extends TemplateRule {
 
     public int x, y, z;
 
+    /**
+     * Called by reflection
+     * @param world
+     * @param entity
+     * @param turns
+     * @param x
+     * @param y
+     * @param z
+     */
     public TemplateRuleEntity(World world, Entity entity, int turns, int x, int y, int z) {
 
     }
-
+    /**
+     * Called by reflection
+     */
     public TemplateRuleEntity() {
 
     }
@@ -50,7 +62,7 @@ public abstract class TemplateRuleEntity extends TemplateRule {
     public final void parseRule(int ruleNumber, List<String> lines) throws TemplateRuleParsingException {
         this.ruleNumber = ruleNumber;
         for (String line : lines) {
-            if (line.toLowerCase().startsWith("position=")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith("position=")) {
                 int[] pos = NBTTools.safeParseIntArray("=", line);
                 x = pos[0];
                 y = pos[1];

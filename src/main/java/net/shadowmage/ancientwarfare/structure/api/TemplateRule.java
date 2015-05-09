@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * base template-rule class.  Plugins should define their own rule classes.
@@ -96,7 +97,7 @@ public abstract class TemplateRule {
         }
         for (String line : ruleData)//old json format
         {
-            if (line.toLowerCase().startsWith("jsontag=")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith("jsontag=")) {
                 try {
                     NBTBase tag = JsonToNBT.func_150315_a(line.split("=", -1)[1]);
                     if (tag instanceof NBTTagCompound) {

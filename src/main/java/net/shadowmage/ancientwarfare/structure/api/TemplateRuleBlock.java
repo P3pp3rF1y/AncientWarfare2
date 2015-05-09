@@ -28,10 +28,22 @@ import java.util.List;
 
 public abstract class TemplateRuleBlock extends TemplateRule {
 
+    /**
+     * Called by reflection
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param block
+     * @param meta
+     * @param turns
+     */
     public TemplateRuleBlock(World world, int x, int y, int z, Block block, int meta, int turns) {
 
     }
-
+    /**
+     * Called by reflection
+     */
     public TemplateRuleBlock() {
 
     }

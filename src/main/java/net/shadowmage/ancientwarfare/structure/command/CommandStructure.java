@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 public class CommandStructure implements ICommand {
 
@@ -52,7 +53,7 @@ public class CommandStructure implements ICommand {
             throw new WrongUsageException(getCommandUsage(var1));
         }
         String cmd = var2[0];
-        if (cmd.toLowerCase().equals("delete")) {
+        if (cmd.toLowerCase(Locale.ENGLISH).equals("delete")) {
             if (var2.length < 2) {
                 throw new WrongUsageException(getCommandUsage(var1));
             }
@@ -63,7 +64,7 @@ public class CommandStructure implements ICommand {
                 ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.template_removed", name);
                 var1.addChatMessage(txt);
                 if (var2.length >= 3) {
-                    boolean shouldDelete = var2[2].toLowerCase().equals("true");
+                    boolean shouldDelete = var2[2].toLowerCase(Locale.ENGLISH).equals("true");
                     if (shouldDelete) {
                         if (deleteTemplateFile(name)) {
                             txt = new ChatComponentTranslation("command.aw.structure.file_deleted", name);
@@ -77,7 +78,7 @@ public class CommandStructure implements ICommand {
             {
                 var1.addChatMessage(new ChatComponentTranslation("command.aw.structure.not_found", name));
             }
-        } else if (cmd.toLowerCase().equals("build")) {
+        } else if (cmd.toLowerCase(Locale.ENGLISH).equals("build")) {
             if (var2.length < 6) {
                 throw new WrongUsageException(getCommandUsage(var1));
             }
@@ -91,7 +92,7 @@ public class CommandStructure implements ICommand {
             int y = CommandBase.parseInt(var1, ys);
             int z = CommandBase.parseInt(var1, zs);
             int face = 0;
-            String dl = direction.toLowerCase();
+            String dl = direction.toLowerCase(Locale.ENGLISH);
             if (dl.equals("north")) {
                 face = 2;
             } else if (dl.equals("east")) {

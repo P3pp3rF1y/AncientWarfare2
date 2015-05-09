@@ -85,9 +85,9 @@ public class NpcSkinManager {
             while ((entry = zis.getNextEntry()) != null) {
                 if (entry.isDirectory()) {
                     continue;
-                } else if (entry.getName().toLowerCase().equals("skin_pack.meta")) {
+                } else if (entry.getName().toLowerCase(Locale.ENGLISH).equals("skin_pack.meta")) {
                     metaFile = new SkinMeta(zis);
-                } else if (entry.getName().toLowerCase().endsWith(".png")) {
+                } else if (entry.getName().toLowerCase(Locale.ENGLISH).endsWith(".png")) {
                     loc = loadSkinPackImage(fileName, entry.getName(), zis);
                     if (loc != null) {
                         parsedImages.put(entry.getName(), loc);

@@ -44,11 +44,11 @@ public class StructureValidatorUnderground extends StructureValidator {
     @Override
     protected void readFromLines(List<String> lines) {
         for (String line : lines) {
-            if (line.toLowerCase().startsWith("mingenerationdepth=")) {
+            if (startLow(line, "mingenerationdepth=")) {
                 minGenerationDepth = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("maxgenerationdepth=")) {
+            } else if (startLow(line, "maxgenerationdepth=")) {
                 maxGenerationDepth = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("minoverfill=")) {
+            } else if (startLow(line, "minoverfill=")) {
                 minOverfill = StringTools.safeParseInt("=", line);
             }
         }

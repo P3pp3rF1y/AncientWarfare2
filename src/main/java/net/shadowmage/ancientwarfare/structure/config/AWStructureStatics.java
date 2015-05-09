@@ -33,6 +33,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 public class AWStructureStatics extends ModConfiguration {
@@ -922,7 +923,7 @@ public class AWStructureStatics extends ModConfiguration {
     }
 
     public static String getBiomeName(BiomeGenBase biome) {
-        return (biome == null || biome.biomeName == null) ? "null" : biome.biomeName.toLowerCase();
+        return (biome == null || biome.biomeName == null) ? "null" : biome.biomeName.toLowerCase(Locale.ENGLISH);
     }
 
     public static boolean shouldSkipScan(Block block) {

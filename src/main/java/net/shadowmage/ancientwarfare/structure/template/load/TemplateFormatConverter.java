@@ -35,10 +35,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.b
 import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 public class TemplateFormatConverter {
@@ -93,37 +90,38 @@ public class TemplateFormatConverter {
         }
         Iterator<String> it = templateLines.iterator();
         List<String> groupedLines = new ArrayList<String>();
-        String line;
+        String line, lower;
         int parsedLayers = 0;
         int readSizeParams = 0;
         int highestRuleNumber = 0;
         while (it.hasNext() && (line = it.next()) != null) {
             lineNumber++;
-            if (line.toLowerCase().startsWith("xsize=")) {
+            lower = line.toLowerCase(Locale.ENGLISH);
+            if (lower.startsWith("xsize=")) {
                 xSize = StringTools.safeParseInt("=", line);
                 readSizeParams++;
                 if (readSizeParams == 3) {
                     templateData = new short[xSize * ySize * zSize];
                 }
-            } else if (line.toLowerCase().startsWith("ysize=")) {
+            } else if (lower.startsWith("ysize=")) {
                 ySize = StringTools.safeParseInt("=", line);
                 readSizeParams++;
                 if (readSizeParams == 3) {
                     templateData = new short[xSize * ySize * zSize];
                 }
-            } else if (line.toLowerCase().startsWith("zsize=")) {
+            } else if (lower.startsWith("zsize=")) {
                 zSize = StringTools.safeParseInt("=", line);
                 readSizeParams++;
                 if (readSizeParams == 3) {
                     templateData = new short[xSize * ySize * zSize];
                 }
-            } else if (line.toLowerCase().startsWith("verticaloffset=")) {
+            } else if (lower.startsWith("verticaloffset=")) {
                 yOffset = (StringTools.safeParseInt("=", line));
-            } else if (line.toLowerCase().startsWith("xoffset=")) {
+            } else if (lower.startsWith("xoffset=")) {
                 xOffset = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("zoffset")) {
+            } else if (lower.startsWith("zoffset")) {
                 zOffset = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("rule:")) {
+            } else if (lower.startsWith("rule:")) {
                 parseTag("rule", it, groupedLines);
                 TemplateRule rule = parseOldBlockRule(groupedLines);
                 if (rule != null) {
@@ -133,28 +131,28 @@ public class TemplateFormatConverter {
                     parsedRules.add(rule);
                 }
                 groupedLines.clear();
-            } else if (line.toLowerCase().startsWith("layer:")) {
+            } else if (lower.startsWith("layer:")) {
                 parseTag("layer", it, groupedLines);
                 parseLayer(groupedLines, templateData, parsedLayers, xSize, ySize, zSize);
                 parsedLayers++;
                 groupedLines.clear();
-            } else if (line.toLowerCase().startsWith("entity:")) {
+            } else if (lower.startsWith("entity:")) {
                 parseTag("entity", it, groupedLines);
                 //NO SUPPORT FOR CARYING ENTITIES OVER FROM OLD VERSION
                 groupedLines.clear();
-            } else if (line.toLowerCase().startsWith("npc:")) {
+            } else if (lower.startsWith("npc:")) {
                 parseTag("npc", it, groupedLines);
                 //NO SUPPORT FOR CARYING NPCS OVER FROM OLD VERSION
                 groupedLines.clear();
-            } else if (line.toLowerCase().startsWith("gate:")) {
+            } else if (lower.startsWith("gate:")) {
                 parseTag("gate", it, groupedLines);
                 //NO SUPPORT FOR CARYING NPCS OVER FROM OLD VERSION
                 groupedLines.clear();
-            } else if (line.toLowerCase().startsWith("vehicle:")) {
+            } else if (lower.startsWith("vehicle:")) {
                 parseTag("vehicle", it, groupedLines);
                 //NO SUPPORT FOR CARYING VEHICLES OVER FROM OLD VERSION
                 groupedLines.clear();
-            } else if (line.toLowerCase().startsWith("civic:")) {
+            } else if (lower.startsWith("civic:")) {
                 parseTag("civic", it, groupedLines);
                 //NO DIRECT SUPPORT FOR CARYING CIVICS OVER FROM OLD VERSION
                 groupedLines.clear();
@@ -191,7 +189,7 @@ public class TemplateFormatConverter {
     private List<String> parseTag(String tag, Iterator<String> it, List<String> output) {
         String line;
         while (it.hasNext() && (line = it.next()) != null) {
-            if (line.toLowerCase().startsWith(":end" + tag)) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith(":end" + tag)) {
                 break;
             }
             output.add(line);
@@ -208,14 +206,14 @@ public class TemplateFormatConverter {
         int buildPass = 0;
         for (String line : lines) {
             lineNumber++;
-            if (line.toLowerCase().startsWith("number=")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith("number=")) {
                 number = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("blocks=")) {
+            } else if (line.toLowerCase(Locale.ENGLISH).startsWith("blocks=")) {
                 String[] blockLines = StringTools.safeParseString("=", line).split(",");
                 String[] blockData = blockLines[0].split("-");
                 id = StringTools.safeParseInt(blockData[0]);
                 meta = StringTools.safeParseInt(blockData[1]);
-            } else if (line.toLowerCase().startsWith("order=")) {
+            } else if (line.toLowerCase(Locale.ENGLISH).startsWith("order=")) {
                 buildPass = StringTools.safeParseInt("=", line);
             }
         }
