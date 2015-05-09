@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.gamedata;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.event.world.WorldEvent;
 
 import java.util.HashMap;
@@ -10,34 +11,26 @@ import java.util.HashMap;
 /**
  * Helps building specific world data.
  */
-public class AWGameData {
+public final class AWGameData {
 
     public static final AWGameData INSTANCE = new AWGameData();
 
-    @SuppressWarnings("unchecked")
     public <T extends WorldSavedData> T getData(World world, Class<T> clz) {
-        String name = "AW"+clz.getSimpleName();
-        T data = (T) world.loadItemData(clz, name);
-        if (data == null) {
-            try {
-                data = clz.getConstructor(String.class).newInstance(name);
-                world.setItemData(name, data);
-                return data;
-            } catch (Exception e) {
-                throw new RuntimeException("Attempt to load data class: " + clz + " for name: " + name + " failed !");
-            }
-        }
-        return data;
+        return initData(world.mapStorage, clz);
+    }
+
+    public <T extends WorldSavedData> T getPerWorldData(World world, Class<T> clz) {
+        return initData(world.perWorldStorage, clz);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends WorldSavedData> T getPerWorldData(World world, Class<T> clz) {
+    private <T extends WorldSavedData> T initData(MapStorage storage, Class<T> clz){
         String name = "AW"+clz.getSimpleName();
-        T data = (T) world.perWorldStorage.loadData(clz, name);
+        T data = (T) storage.loadData(clz, name);
         if (data == null) {
             try {
                 data = clz.getConstructor(String.class).newInstance(name);
-                world.perWorldStorage.setData(name, data);
+                storage.setData(name, data);
             } catch (Exception e) {
                 e.printStackTrace();
             }

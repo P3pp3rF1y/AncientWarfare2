@@ -66,7 +66,7 @@ public class WorldTownGenerator implements IWorldGenerator {
         /**
          * add the town to generated town map, to eliminate towns generating too close to eachother
          */
-        AWGameData.INSTANCE.getPerWorldData(world, TownMap.class).setGenerated(world, bb);
+        AWGameData.INSTANCE.getPerWorldData(world, TownMap.class).setGenerated(bb);
 
         /**
          * and finally initialize generation.  The townGenerator will do borders, walls, roads, and add any structures to the world-gen tick handler for generation.

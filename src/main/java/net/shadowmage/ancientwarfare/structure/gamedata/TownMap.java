@@ -20,7 +20,7 @@ public class TownMap extends WorldSavedData {
         super(name);
     }
 
-    public void setGenerated(World world, StructureBB bb) {
+    public void setGenerated(StructureBB bb) {
         boundingBoxes.add(bb);
         markDirty();
     }
@@ -28,12 +28,11 @@ public class TownMap extends WorldSavedData {
     /**
      * return the distance of the closest found town or defaultVal if no town was found closer
      */
-    public float getClosestTown(World world, int bx, int bz, float defaultVal) {
+    public float getClosestTown(int bx, int bz, float defaultVal) {
         float distance = defaultVal;
         float d;
-        List<StructureBB> bbs = boundingBoxes;
-        if (bbs != null && !bbs.isEmpty()) {
-            for (StructureBB bb : bbs) {
+        if (boundingBoxes!=null) {
+            for (StructureBB bb : boundingBoxes) {
                 d = Trig.getDistance(bx, 0, bz, bb.getCenterX(), 0, bb.getCenterZ());
                 if (d < distance) {
                     distance = d;
@@ -43,12 +42,11 @@ public class TownMap extends WorldSavedData {
         return distance;
     }
 
-    public boolean isChunkInUse(World world, int cx, int cz) {
-        List<StructureBB> bbs = boundingBoxes;
-        if (bbs != null && !bbs.isEmpty()) {
+    public boolean isChunkInUse(int cx, int cz) {
+        if (!boundingBoxes.isEmpty()) {
             cx *= 16;
             cz *= 16;
-            for (StructureBB bb : bbs) {
+            for (StructureBB bb : boundingBoxes) {
                 if (bb.isPositionInBoundingBox(cx, bb.min.y, cz)) {
                     return true;
                 }
@@ -57,7 +55,7 @@ public class TownMap extends WorldSavedData {
         return false;
     }
 
-    public boolean intersectsWithTown(World world, StructureBB bb) {
+    public boolean intersectsWithTown(StructureBB bb) {
         for (StructureBB tbb : boundingBoxes) {
             if (tbb.collidesWith(bb)) {
                 return true;
@@ -68,6 +66,7 @@ public class TownMap extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
+        boundingBoxes.clear();
         StructureBB bb;
         NBTTagList list = tag.getTagList("boundingBoxes", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < list.tagCount(); i++) {

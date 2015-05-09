@@ -30,15 +30,21 @@ public class TownPlacementValidator {
      * @return maximal bounding area for a town, or null if no acceptable area was found starting in the specified chunk
      */
     public static TownBoundingArea findGenerationPosition(World world, int x, int z) {
-        int cx = x >> 4;
-        int cz = z >> 4;
+        if(world==null){
+            return null;
+        }
 
         TownMap tm = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
+        if(tm==null){
+            return null;
+        }
         int minDist = AWStructureStatics.townClosestDistance * 16;
-        float dist = tm.getClosestTown(world, x, z, minDist * 2);
+        float dist = tm.getClosestTown(x, z, minDist * 2);
         if (dist < minDist) {
             return null;
         }
+        int cx = x >> 4;
+        int cz = z >> 4;
 
         int height = getTopFilledHeight(world.getChunkFromChunkCoords(cx, cz), x & 15, z & 15);
         if (height <= 0) {
@@ -93,7 +99,7 @@ public class TownPlacementValidator {
     private static boolean validateStructureCollision(World world, TownBoundingArea area) {
         StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
         if (map == null) {
-            return false;
+            return true;
         }
         StructureBB bb = new StructureBB(new BlockPosition(area.getBlockMinX(), area.getMinY(), area.getBlockMaxX()), new BlockPosition(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
         int size = Math.max(area.getChunkWidth(), area.getChunkLength());
