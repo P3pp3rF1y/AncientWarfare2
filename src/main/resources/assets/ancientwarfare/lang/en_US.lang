@@ -272,6 +272,7 @@ guistrings.spawner.add_custom_tag_line=Add New Line
 guistrings.spawner.select_entity=Selected Entity
 guistrings.spawner.xp_to_drop=XP To Drop
 guistrings.spawner.block_hardness=Hardness (-1 for invulnerable)
+guistrings.template.not_found=Couldn't find template
 guistrings.structure.select_structure=Select Structure
 guistrings.structure.no_selection=No Selection
 guistrings.structure.structure_name=Structure Name
