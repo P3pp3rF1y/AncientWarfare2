@@ -57,8 +57,6 @@ public class AncientWarfareAutomation {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Automation Pre-Init started");
-
         ModuleStatus.automationLoaded = true;
         if (Loader.isModLoaded("BuildCraft|Core")) {
             ModuleStatus.buildCraftLoaded = true;
@@ -87,9 +85,9 @@ public class AncientWarfareAutomation {
         AWAutomationBlockLoader.load();
         AWAutomationItemLoader.load();
 
-/**
- * must be loaded after items/blocks, as it needs them registered
- */
+        /**
+         * must be loaded after items/blocks, as it needs them registered
+         */
         proxy.registerClient();
 
         /**
@@ -123,20 +121,16 @@ public class AncientWarfareAutomation {
         FMLCommonHandler.instance().bus().register(this);
 
         ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);
-
-        AWLog.log("Ancient Warfare Automation Pre-Init completed");
     }
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Automation Init started");
         /**
          * construct recipes, load plugins
          */
         AWAutomationCrafting.loadRecipes();
         if (config.hasChanged())
             config.save();
-        AWLog.log("Ancient Warfare Automation Init completed");
     }
 
     @SubscribeEvent

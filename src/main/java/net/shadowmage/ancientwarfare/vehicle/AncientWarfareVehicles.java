@@ -47,7 +47,6 @@ public class AncientWarfareVehicles {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Vehicles Pre-Init started");
 
         ModuleStatus.vehiclesLoaded = true;
 
@@ -71,7 +70,6 @@ public class AncientWarfareVehicles {
          */
         PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_STATE, PacketInputState.class);
         PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_RESPONSE, PacketInputReply.class);
-        AWLog.log("Ancient Warfare Vehicles Pre-Init completed");
         for (int i = 0; i < 100; i++) {
             TrajectoryPlotter.loadTest();
         }
@@ -79,7 +77,6 @@ public class AncientWarfareVehicles {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Vehicles Init started");
 
         /**
          * construct recipes, load plugins
@@ -90,6 +87,5 @@ public class AncientWarfareVehicles {
          */
         if (config.hasChanged())
             config.save();
-        AWLog.log("Ancient Warfare Vehicles Init completed");
     }
 }
