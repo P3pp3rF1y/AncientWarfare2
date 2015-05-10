@@ -67,22 +67,23 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             slotStackCopy = slotStack.copy();
 
             int storageSlotsStart = 1;
-            int playerSlotStart = 1 + 9;
-            if (slotClickedIndex == 0)//book slot
+            int playerSlotStart = storageSlotsStart + tileEntity.resourceInventory.getSizeInventory();
+            int playerSlotEnd = playerSlotStart + 36;
+            if (slotClickedIndex < storageSlotsStart)//book slot
             {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= storageSlotsStart && slotClickedIndex < storageSlotsStart + 9)//storage slots
+            } else if (slotClickedIndex >= storageSlotsStart && slotClickedIndex < playerSlotStart)//storage slots
             {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= playerSlotStart && slotClickedIndex < 36 + playerSlotStart)//player slots, merge into storage
+            } else if (slotClickedIndex >= playerSlotStart && slotClickedIndex < playerSlotEnd)//player slots, merge into storage
             {
-                if (!this.mergeItemStack(slotStack, storageSlotsStart, storageSlotsStart + 9, false))//merge into storage
+                if (!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
                 {
                     return null;
                 }

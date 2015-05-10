@@ -91,42 +91,43 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
 
-            int playerSlotStart = 1 + 1 + 18 + 9 + 9;
-            int storageSlotsStart = 1 + 1 + 9;
-            int outputSlotsStart = 1 + 1 + 9 + 18;
+            int storageSlotsStart = 1 + 1 + tileEntity.craftMatrix.getSizeInventory();
+            int outputSlotsStart = storageSlotsStart + tileEntity.resourceInventory.getSizeInventory();
+            int playerSlotStart = outputSlotsStart + tileEntity.outputSlot.getSizeInventory();
+            int playerSlotEnd = playerSlotStart + 36;
             if (slotClickedIndex == 0)//result slot
             {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
                     return null;
                 }
             } else if (slotClickedIndex == 1)//book slot
             {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= 2 && slotClickedIndex < 2 + 9)//craft matrix
+            } else if (slotClickedIndex >= 2 && slotClickedIndex < storageSlotsStart)//craft matrix
             {
-                if (!this.mergeItemStack(slotStack, storageSlotsStart, storageSlotsStart + 18, false))//merge into storage
+                if (!this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false))//merge into storage
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= storageSlotsStart && slotClickedIndex < storageSlotsStart + 18)//storage slots
+            } else if (slotClickedIndex >= storageSlotsStart && slotClickedIndex < outputSlotsStart)//storage slots
             {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= outputSlotsStart && slotClickedIndex < outputSlotsStart + 9)//storage slots
+            } else if (slotClickedIndex >= outputSlotsStart && slotClickedIndex < playerSlotStart)//storage slots
             {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= playerSlotStart && slotClickedIndex < 36 + playerSlotStart)//player slots, merge into storage
+            } else if (slotClickedIndex >= playerSlotStart && slotClickedIndex < playerSlotEnd)//player slots, merge into storage
             {
-                if (!this.mergeItemStack(slotStack, storageSlotsStart, storageSlotsStart + 18, false))//merge into storage
+                if (!this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false))//merge into storage
                 {
                     return null;
                 }

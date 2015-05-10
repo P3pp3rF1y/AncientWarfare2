@@ -167,7 +167,7 @@ public class ContainerBase extends Container {
     }
 
     /**
-     * merges provided ItemStack with the first avaliable one in the container/player inventory<br>
+     * merges provided ItemStack with the first available one in the container/player inventory<br>
      * overriden to clean up the mess of the code that was the vanilla code.
      *
      * @return true if item-stack was fully-consumed/merged

@@ -56,8 +56,8 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 
     protected double applyPowerLoss() {
         double loss = 0;
-        for (int i = 0; i < 6; i++) {
-            loss += applyPowerDrain(storage[i]);
+        for (SidedTorqueCell aStorage : storage) {
+            loss += applyPowerDrain(aStorage);
         }
         return loss;
     }
@@ -71,7 +71,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
         TorqueCell out = storage[face];
         double total = 0;
         TorqueCell in;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < storage.length; i++) {
             if (i == face) {
                 continue;
             }
@@ -82,7 +82,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
             double percent = transfer / total;
             transfer = 0;
             double fromEach;
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < storage.length; i++) {
                 if (i == face) {
                     continue;
                 }
@@ -160,7 +160,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
         boolean[] connections = new boolean[6];
         ITorqueTile[] cache = getTorqueCache();
         ForgeDirection dir;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < cache.length; i++) {
             dir = ForgeDirection.values()[i];
             if (cache[i] != null) {
                 connections[i] = (cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i].canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
@@ -168,7 +168,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
         }
         if (ModuleStatus.redstoneFluxEnabled) {
             TileEntity[] tes = getRFCache();
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < tes.length; i++) {
                 if (cache[i] != null) {
                     continue;
                 }//already examined that side..
@@ -223,7 +223,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     @Override
     public NBTTagCompound getDescriptionTag() {
         NBTTagCompound tag = super.getDescriptionTag();
-        tag.setInteger("clientEnergy", (int) clientDestEnergyState);
+        tag.setInteger("clientEnergy", clientDestEnergyState);
         return tag;
     }
 
@@ -238,7 +238,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         NBTTagList list = tag.getTagList("energyList", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < storage.length; i++) {
             storage[i].readFromNBT(list.getCompoundTagAt(i));
         }
         clientDestEnergyState = tag.getInteger("clientEnergy");
@@ -248,8 +248,8 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         NBTTagList list = new NBTTagList();
-        for (int i = 0; i < 6; i++) {
-            list.appendTag(storage[i].writeToNBT(new NBTTagCompound()));
+        for (SidedTorqueCell aStorage : storage) {
+            list.appendTag(aStorage.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("energyList", list);
         tag.setInteger("clientEnergy", clientDestEnergyState);
@@ -259,7 +259,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     protected double getTotalTorque() {
         double d = 0;
         ForgeDirection dir;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < storage.length; i++) {
             dir = ForgeDirection.values()[i];
             if (canInputTorque(dir) || canOutputTorque(dir)) {
                 d += storage[i].getEnergy();

@@ -154,7 +154,7 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
     @Override
     public NBTTagCompound getDescriptionTag() {
         NBTTagCompound tag = super.getDescriptionTag();
-        tag.setInteger("clientEnergy", (int) clientDestEnergyState);
+        tag.setInteger("clientEnergy", clientDestEnergyState);
         return tag;
     }
 

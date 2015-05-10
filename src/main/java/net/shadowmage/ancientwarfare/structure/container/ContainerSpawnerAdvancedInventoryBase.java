@@ -67,16 +67,17 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
         if (theSlot != null && theSlot.getHasStack()) {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
-            int storageSlots = 9;
+            int playerSlotEnd = 36;
+            int storageSlots = playerSlotEnd + 9;
             if (slotClickedIndex < 36)//player slots...
             {
-                if (!this.mergeItemStack(slotStack, 36, 36 + storageSlots, false))//merge into storage inventory
+                if (!this.mergeItemStack(slotStack, playerSlotEnd, storageSlots, false))//merge into storage inventory
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= 36 && slotClickedIndex < 36 + storageSlots)//storage slots, merge to player inventory
+            } else if (slotClickedIndex >= playerSlotEnd && slotClickedIndex < storageSlots)//storage slots, merge to player inventory
             {
-                if (!this.mergeItemStack(slotStack, 0, 36, true))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, 0, playerSlotEnd, true))//merge into player inventory
                 {
                     return null;
                 }

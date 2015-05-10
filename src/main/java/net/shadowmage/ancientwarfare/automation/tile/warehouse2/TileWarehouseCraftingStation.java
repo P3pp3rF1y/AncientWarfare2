@@ -53,7 +53,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
      */
     public void preItemCrafted() {
         ItemStack stack;
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             stack = layoutMatrix.getStackInSlot(i);
             matrixShadow[i] = stack == null ? null : stack.copy();
         }
@@ -67,7 +67,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         AWLog.logDebug("crafting item...");
         int q;
         ItemStack layoutStack;
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             layoutStack = matrixShadow[i];
             if (layoutStack == null) {
                 continue;

@@ -32,7 +32,6 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
 
     int[] outputSlotIndices;
     int[] resourceSlotIndices;
-    ItemStack[] matrixShadow = new ItemStack[9];//shadow copy of input matrix
 
     public TileAutoCrafting() {
         Container dummy = new Container() {
@@ -47,17 +46,17 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
             }
         };
         craftMatrix = new InventoryCrafting(dummy, 3, 3);
-        resourceInventory = new InventoryBasic(27);
+        resourceInventory = new InventoryBasic(18);
         outputInventory = new InventoryBasic(9);
         outputSlot = new InventoryBasic(1);
         bookSlot = new InventoryBasic(1);
-        resourceSlotIndices = new int[18];
-        for (int i = 0; i < 18; i++) {
+        resourceSlotIndices = new int[resourceInventory.getSizeInventory()];
+        for (int i = 0; i < resourceSlotIndices.length; i++) {
             resourceSlotIndices[i] = i;
         }
-        outputSlotIndices = new int[9];
-        for (int i = 0, k = 18; i < 9; i++, k++) {
-            outputSlotIndices[i] = k;
+        outputSlotIndices = new int[outputInventory.getSizeInventory()];
+        for (int i = 0; i < outputSlotIndices.length; i++) {
+            outputSlotIndices[i] = i + resourceSlotIndices.length;
         }
     }
 
@@ -68,7 +67,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
         ArrayList<ItemStack> compactedCraft = new ArrayList<ItemStack>();
         ItemStack stack1, stack2;
         boolean found;
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             stack1 = craftMatrix.getStackInSlot(i);
             if (stack1 == null) {
                 continue;
@@ -120,7 +119,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
 
     private void useResources() {
         ItemStack stack1;
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             stack1 = craftMatrix.getStackInSlot(i);
             if (stack1 == null) {
                 continue;
@@ -177,41 +176,37 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IW
 
     @Override
     public int getSizeInventory() {
-        return 18 + 9;
+        return resourceInventory.getSizeInventory() + outputInventory.getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(int slotIndex) {
-        if (slotIndex >= 18) {
-            slotIndex -= 18;
-            return outputInventory.getStackInSlot(slotIndex);
+        if (slotIndex >= resourceInventory.getSizeInventory()) {
+            return outputInventory.getStackInSlot(slotIndex-resourceInventory.getSizeInventory());
         }
         return resourceInventory.getStackInSlot(slotIndex);
     }
 
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
-        if (slot >= 18) {
-            slot -= 18;
-            return outputInventory.decrStackSize(slot, amount);
+        if (slot >= resourceInventory.getSizeInventory()) {
+            return outputInventory.decrStackSize(slot-resourceInventory.getSizeInventory(), amount);
         }
         return resourceInventory.decrStackSize(slot, amount);
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(int var1) {
-        if (var1 >= 18) {
-            var1 -= 18;
-            return outputInventory.getStackInSlotOnClosing(var1);
+        if (var1 >= resourceInventory.getSizeInventory()) {
+            return outputInventory.getStackInSlotOnClosing(var1-resourceInventory.getSizeInventory());
         }
         return resourceInventory.getStackInSlotOnClosing(var1);
     }
 
     @Override
     public void setInventorySlotContents(int var1, ItemStack var2) {
-        if (var1 >= 18) {
-            var1 -= 18;
-            outputInventory.setInventorySlotContents(var1, var2);
+        if (var1 >= resourceInventory.getSizeInventory()) {
+            outputInventory.setInventorySlotContents(var1-resourceInventory.getSizeInventory(), var2);
             return;
         }
         resourceInventory.setInventorySlotContents(var1, var2);

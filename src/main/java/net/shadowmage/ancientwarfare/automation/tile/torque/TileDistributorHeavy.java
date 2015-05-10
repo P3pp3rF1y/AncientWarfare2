@@ -9,7 +9,7 @@ public class TileDistributorHeavy extends TileDistributor {
     public TileDistributorHeavy() {
         double max = AWAutomationStatics.high_transfer_max;
         double eff = AWAutomationStatics.high_efficiency_factor;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < storage.length; i++) {
             storage[i] = new SidedTorqueCell(max, max, max, eff, ForgeDirection.values()[i], this);//TODO set from config
         }
     }
