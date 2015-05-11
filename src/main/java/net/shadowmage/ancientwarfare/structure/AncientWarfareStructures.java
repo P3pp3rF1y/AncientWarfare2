@@ -5,10 +5,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -139,6 +136,11 @@ public class AncientWarfareStructures {
     @EventHandler
     public void serverStart(FMLServerStartingEvent evt) {
         evt.registerServerCommand(new CommandStructure());
+    }
+
+    @EventHandler
+    public void serverStop(FMLServerStoppingEvent evt){
+        WorldGenTickHandler.INSTANCE.finalTick();
     }
 
 }
