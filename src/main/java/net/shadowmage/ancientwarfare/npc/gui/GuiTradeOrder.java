@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -11,7 +10,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
 import net.shadowmage.ancientwarfare.npc.trade.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
@@ -111,9 +109,8 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
 
     private void setupTradeMode() {
         tradesArea.clearElements();
-        final POTradeList tradeList = getContainer().orders.getTradeList();
-        ArrayList<POTrade> trades = new ArrayList<POTrade>();
-        tradeList.getTrades(trades);
+        final TradeList tradeList = getContainer().orders.getTradeList();
+        List<Trade> trades = tradeList.getTrades();
 
         int totalHeight = 8;
 
@@ -134,11 +131,9 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         tradesArea.setAreaSize(totalHeight);
     }
 
-    private int addTrade(final POTrade trade, final int tradeIndex, int startHeight) {
-        int gridX, gridY, slotX, slotY;
-        gridX = 0;
-        gridY = 0;
-        for (int i = 0; i < 9; i++) {
+    private int addTrade(final Trade trade, final int tradeIndex, int startHeight) {
+        int gridX = 0, gridY = 0, slotX, slotY;
+        for (int i = 0; i < trade.size(); i++) {
             slotX = gridX * 18 + 8;
             slotY = gridY * 18 + startHeight;
             addTradeInputSlot(trade, slotX, slotY, i);
@@ -149,24 +144,24 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
                 gridX = 0;
                 gridY++;
             }
-            if (gridY >= 3) {
-                break;
-            }
         }
+        int startWidth = 8 + 3 * 18;
+        if (trade.size() < 3) {
+            startWidth += (trade.size() - 3) * 18;
+        }
+        tradesArea.addGuiElement(new Label(startWidth + 1, startHeight + (gridY + 1) * 5, ">"));
+        addTradeControls(startWidth, startHeight, tradeIndex);
 
-        tradesArea.addGuiElement(new Label(8 + 3 * 18 + 1, startHeight + 20, "="));
-        addTradeControls(trade, startHeight, tradeIndex);
-
-        startHeight += 18 * 3;
+        startHeight += 18 * gridY;
         tradesArea.addGuiElement(new Line(0, startHeight + 1, xSize, startHeight + 1, 1, 0x000000ff));
         startHeight += 5;
         return startHeight;
     }
 
-    private void addTradeControls(final POTrade trade, int startHeight, final int tradeNum) {
-        final POTradeList tradeList = getContainer().orders.getTradeList();
+    private void addTradeControls(int startWidth, int startHeight, final int tradeNum) {
+        final TradeList tradeList = getContainer().orders.getTradeList();
         startHeight -= 1;//offset by 1 to lineup better with the item slot boxes, as they align to the inner slot rather than border
-        int infoX = 6 * 18 + 8 + 9 + 4;
+        int infoX = 2 * startWidth + 5;
         Button upButton = new Button(infoX, startHeight, 55, 12, "guistrings.up") {
             @Override
             protected void onPressed() {
@@ -195,7 +190,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         tradesArea.addGuiElement(delete);
     }
 
-    private void addTradeInputSlot(final POTrade trade, int x, int y, final int slotNum) {
+    private void addTradeInputSlot(final Trade trade, int x, int y, final int slotNum) {
         ItemStack stack = trade.getInputStack(slotNum);
         stack = stack == null ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
@@ -206,10 +201,13 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
                 trade.setInputStack(slotNum, stack);
             }
         };
+        if (stack == null) {
+            slot.addTooltip("guistrings.npc.trade_input_slot");
+        }
         tradesArea.addGuiElement(slot);
     }
 
-    private void addTradeOutputSlot(final POTrade trade, int x, int y, final int slotNum) {
+    private void addTradeOutputSlot(final Trade trade, int x, int y, final int slotNum) {
         ItemStack stack = trade.getOutputStack(slotNum);
         stack = stack == null ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
@@ -220,6 +218,9 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
                 trade.setOutputStack(slotNum, stack);
             }
         };
+        if (stack == null) {
+            slot.addTooltip("guistrings.npc.trade_output_slot");
+        }
         tradesArea.addGuiElement(slot);
     }
 

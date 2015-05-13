@@ -162,11 +162,10 @@ public class ItemQuantityMap {
 
     /**
      * Return the most compact set of item-stacks that can represent the contents of this map.<br>
-     * May return multiple stacks of the same item if the quantity contained is > maxStackSize.<br> *
-     *
-     * @param items will be filled with the item-stacks from this map, must not be NULL
+     * May return multiple stacks of the same item if the quantity contained is > maxStackSize.<br>
      */
-    public void getItems(List<ItemStack> items) {
+    public List<ItemStack> getItems() {
+        List<ItemStack> items = new ArrayList<ItemStack>();
         ItemStack outStack;
         int qty;
         for (ItemHashEntry wrap1 : map.keySet()) {
@@ -178,6 +177,7 @@ public class ItemQuantityMap {
                 items.add(outStack);
             }
         }
+        return items;
     }
 
     /**

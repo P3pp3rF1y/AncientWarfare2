@@ -3,15 +3,15 @@ package net.shadowmage.ancientwarfare.npc.orders;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
-import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
+import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 public class TradeOrder extends NpcOrders {
 
     private POTradeRoute tradeRoute = new POTradeRoute();
     private POTradeRestockData restockEntry = new POTradeRestockData();
-    private POTradeList tradeList = new POTradeList();
+    private TradeList tradeList = new TradeList();
 
     public TradeOrder() {
     }
@@ -33,7 +33,7 @@ public class TradeOrder extends NpcOrders {
         }
     }
 
-    public POTradeList getTradeList() {
+    public TradeList getTradeList() {
         return tradeList;
     }
 
@@ -47,7 +47,7 @@ public class TradeOrder extends NpcOrders {
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        tradeList = new POTradeList();
+        tradeList = new TradeList();
         tradeRoute = new POTradeRoute();
         restockEntry = new POTradeRestockData();
         tradeList.readFromNBT(tag.getCompoundTag("tradeList"));

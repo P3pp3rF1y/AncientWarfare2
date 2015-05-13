@@ -7,13 +7,13 @@ import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 
 public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTrader> {
 
-    public FactionTradeList tradeList;
+    public final FactionTradeList tradeList;
     public boolean tradesChanged = false;
 
     public ContainerNpcFactionTradeSetup(EntityPlayer player, int x, int y, int z) {
         super(player, x);
         this.tradeList = entity.getTradeList();
-        this.entity.trader = player;
+        this.entity.startTrade(player);
 
         addPlayerSlots(8, 240 - 4 - 8 - 4 * 18, 4);
     }
@@ -39,7 +39,7 @@ public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTr
 
     @Override
     public void onContainerClosed(EntityPlayer p_75134_1_) {
-        this.entity.trader = null;
+        this.entity.closeTrade();
         super.onContainerClosed(p_75134_1_);
     }
 

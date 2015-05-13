@@ -49,6 +49,14 @@ public class ItemSlot extends GuiElement {
         addNewListener(listener);
     }
 
+    public void addTooltip(String text){
+        if(tooltip==null) {
+            tooltip = new Tooltip(Minecraft.getMinecraft().fontRenderer.getStringWidth(text), 10);
+        }
+        tooltip.addTooltipElement(new Label(0, 0, text));
+        this.renderTooltip = true;
+    }
+
     public void setRenderLabel(boolean val) {
         this.renderLabel = val;
     }
@@ -138,10 +146,10 @@ public class ItemSlot extends GuiElement {
                     GL11.glDisable(GL11.GL_BLEND);
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                 }
-                if (renderTooltip && this.item != null && this.render != null) {
+                if (renderTooltip && this.render != null) {
                     if (this.tooltip != null) {
                         this.render.handleElementTooltipRender(tooltip);
-                    } else {
+                    } else if(this.item != null){
                         this.render.handleItemStackTooltipRender(item);
                     }
                 }

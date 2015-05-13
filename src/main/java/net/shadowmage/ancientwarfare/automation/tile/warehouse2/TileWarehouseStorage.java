@@ -57,8 +57,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
         if (getController() != null) {
             getController().removeControlledTile(this);
         }
-        ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-        qtm.getItems(list);
+        List<ItemStack> list = qtm.getItems();
         for (ItemStack stack : list) {
             InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
         }

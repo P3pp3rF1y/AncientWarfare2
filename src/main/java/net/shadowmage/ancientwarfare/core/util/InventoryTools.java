@@ -23,7 +23,7 @@ public class InventoryTools {
 
     public static boolean canInventoryHold(IInventory inventory, int[] slots, ItemStack stack) {
         int toMerge = stack.stackSize;
-        ItemStack existing = null;
+        ItemStack existing;
         for (int index : slots) {
             existing = inventory.getStackInSlot(index);
             if (existing == null) {
@@ -397,13 +397,10 @@ public class InventoryTools {
      * validates that stacks are the same item / damage / tag, ignores quantity
      */
     public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2) {
-        if (stack1 == null) {
-            return stack2 == null;
+        if (stack1 == stack2) {
+            return true;
         }
-        if (stack2 == null) {
-            return false;
-        }
-        return stack1.getItem() == stack2.getItem() && stack1.getItemDamage() == stack2.getItemDamage() && ItemStack.areItemStackTagsEqual(stack1, stack2);
+        return OreDictionary.itemMatches(stack1, stack2, true) && ItemStack.areItemStackTagsEqual(stack1, stack2);
     }
 
     public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean ignoreDamage, boolean ignoreNBT) {
@@ -440,8 +437,11 @@ public class InventoryTools {
             }
             if (stack1.getItem() == stack2.getItem()) {
                 int id[] = OreDictionary.getOreIDs(stack1);
+                if (id == null || id.length == 0) {
+                    return false;
+                }
                 int id2[] = OreDictionary.getOreIDs(stack2);
-                if (id == null || id2 == null || id.length == 0 || id2.length == 0) {
+                if (id2 == null || id2.length == 0) {
                     return false;
                 }
                 for (int anId : id) {
@@ -637,12 +637,12 @@ public class InventoryTools {
      * but does use more memory in the process.  On average 2x faster than compactStackList and 4x+ faster than
      * compacctStackList2
      */
-    public static void compactStackList3(List<ItemStack> in, List<ItemStack> out) {
+    public static List<ItemStack> compactStackList3(List<ItemStack> in) {
         ItemQuantityMap map = new ItemQuantityMap();
         for (ItemStack stack : in) {
             map.addCount(stack, stack.stackSize);
         }
-        map.getItems(out);
+        return map.getItems();
     }
 
     /**

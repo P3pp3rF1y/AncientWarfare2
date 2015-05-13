@@ -9,8 +9,8 @@ import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeView;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
+import net.shadowmage.ancientwarfare.npc.trade.Trade;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFactionTradeView> {
@@ -44,7 +44,6 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
     @Override
     public void setupElements() {
         clearElements();
-        addGuiElement(new Label(8 + 9 * 18 + 8 + 8, 240 - 4 - 8 - 4 * 18, "guistrings.input"));
         addGuiElement(area);
         if (player.capabilities.isCreativeMode) {
             addGuiElement(inventoryButton);
@@ -56,12 +55,15 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
     private void addTrades() {
         area.clearElements();
 
-        List<FactionTrade> trades = new ArrayList<FactionTrade>();
-        getContainer().tradeList.getTrades(trades);
+        List<Trade> trades = getContainer().tradeList.getTrades();
 
         int totalHeight = 8;
-        for (int i = 0; i < trades.size(); i++) {
-            totalHeight = addTrade(trades.get(i), i, totalHeight);
+        if(trades.isEmpty()){
+            area.addGuiElement(new Label(8, 8, "guistrings.trader.no_trade"));
+        }else {
+            for (int i = 0; i < trades.size(); i++) {
+                totalHeight = addTrade((FactionTrade) trades.get(i), i, totalHeight);
+            }
         }
 
         area.setAreaSize(totalHeight);
@@ -71,10 +73,8 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
         if (trade.getCurrentAvailable() <= 0) {
             return startHeight;
         }
-        int gridX, gridY, slotX, slotY;
-        gridX = 0;
-        gridY = 0;
-        for (int i = 0; i < 9; i++) {
+        int gridX = 0, gridY = 0, slotX, slotY;
+        for (int i = 0; i < trade.size(); i++) {
             slotX = gridX * 18 + 8;
             slotY = gridY * 18 + startHeight;
             addTradeInputSlot(trade, slotX, slotY, i);
@@ -85,17 +85,18 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
                 gridX = 0;
                 gridY++;
             }
-            if (gridY >= 3) {
-                break;
-            }
         }
-
-        area.addGuiElement(new Label(8 + 3 * 18 + 1, startHeight + 20, "="));
-
-        Button tradeButton = new Button(8 + 6 * 18 + 9 + 8, startHeight + 17, 70, 20, "guistrings.trade") {
+        int startWidth = 8 + 3 * 18;
+        if (trade.size() < 3) {
+            startWidth += (trade.size() - 3) * 18;
+        }
+        area.addGuiElement(new Label(startWidth + 1, startHeight + (gridY + 1) * 5, ">"));
+        startWidth *= 2;
+        startWidth += 9;
+        Button tradeButton = new Button(startWidth, startHeight + 17, 70, 20, "guistrings.trade") {
             @Override
             protected void onPressed() {
-                trade.performTrade(player, getContainer().tradeInput);//TODO create input slot trade inventory
+                trade.performTrade(player, null);
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setInteger("doTrade", tradeNum);
                 sendDataToContainer(tag);
@@ -104,26 +105,32 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
         };
         area.addGuiElement(tradeButton);
 
-        Label available = new Label(8 + 6 * 18 + 9 + 8, startHeight, StatCollector.translateToLocal("guistrings.trades_available") + ": " + trade.getCurrentAvailable());
+        Label available = new Label(startWidth, startHeight, StatCollector.translateToLocal("guistrings.trades_available") + ": " + trade.getCurrentAvailable());
         area.addGuiElement(available);
 
-        startHeight += 18 * 3;//input/output grid size
+        startHeight += 18 * gridY;//input/output grid size
         area.addGuiElement(new Line(0, startHeight + 1, xSize, startHeight + 1, 1, 0x000000ff));
         startHeight += 5;//separator line and padding
         return startHeight;
     }
 
     private void addTradeInputSlot(final FactionTrade trade, int x, int y, final int slotNum) {
-        ItemStack stack = trade.getInput()[slotNum];
+        ItemStack stack = trade.getInputStack(slotNum);
         stack = stack == null ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this);
+        if (stack == null) {
+            slot.addTooltip("guistrings.npc.trade_input_slot");
+        }
         area.addGuiElement(slot);
     }
 
     private void addTradeOutputSlot(final FactionTrade trade, int x, int y, final int slotNum) {
-        ItemStack stack = trade.getOutput()[slotNum];
+        ItemStack stack = trade.getOutputStack(slotNum);
         stack = stack == null ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this);
+        if (stack == null) {
+            slot.addTooltip("guistrings.npc.trade_output_slot");
+        }
         area.addGuiElement(slot);
     }
 

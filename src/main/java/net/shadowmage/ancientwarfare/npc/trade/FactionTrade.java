@@ -2,16 +2,10 @@ package net.shadowmage.ancientwarfare.npc.trade;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class FactionTrade {
+public class FactionTrade extends Trade {
 
-    private ItemStack[] input;
-    private ItemStack[] output;
     private int refillFrequency;
     private int ticksTilRefill;
     private int maxAvailable;
@@ -19,20 +13,19 @@ public class FactionTrade {
 //TODO add minLevel stat -- used to determine if trade should be available
 
     public FactionTrade() {
-        input = new ItemStack[9];
-        output = new ItemStack[9];
         refillFrequency = 20 * 60 * 5;//five minutes per item refilled
         ticksTilRefill = refillFrequency;
         maxAvailable = 1;
         currentAvailable = 1;
     }
 
-    public ItemStack[] getInput() {
-        return input;
-    }
-
-    public ItemStack[] getOutput() {
-        return output;
+    public boolean hasItems() {
+        for (int i = 0; i < size(); i++) {
+            if (getInputStack(i) != null || getOutputStack(i) != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getRefillFrequency() {
@@ -57,57 +50,22 @@ public class FactionTrade {
         currentAvailable = max;
     }
 
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         tag.setInteger("refillFrequency", refillFrequency);
         tag.setInteger("ticksTilRefill", ticksTilRefill);
         tag.setInteger("maxAvailable", maxAvailable);
         tag.setInteger("currentAvailable", currentAvailable);
-
-        NBTTagList list = new NBTTagList();
-        NBTTagCompound itemTag;
-
-        for (int i = 0; i < input.length; i++) {
-            if (input[i] == null) {
-                continue;
-            }
-            itemTag = InventoryTools.writeItemStack(input[i]);
-            itemTag.setInteger("slot", i);
-            list.appendTag(itemTag);
-        }
-        tag.setTag("inputItems", list);
-
-        list = new NBTTagList();
-        for (int i = 0; i < output.length; i++) {
-            if (output[i] == null) {
-                continue;
-            }
-            itemTag = InventoryTools.writeItemStack(output[i]);
-            itemTag.setInteger("slot", i);
-            list.appendTag(itemTag);
-        }
-        tag.setTag("outputItems", list);
-        return tag;
+        return super.writeToNBT(tag);
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         refillFrequency = tag.getInteger("refillFrequency");
         ticksTilRefill = tag.getInteger("ticksTilRefill");
         maxAvailable = tag.getInteger("maxAvailable");
         currentAvailable = tag.getInteger("currentAvailable");
-
-        NBTTagCompound itemTag;
-
-        NBTTagList inputList = tag.getTagList("inputItems", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < inputList.tagCount(); i++) {
-            itemTag = inputList.getCompoundTagAt(i);
-            input[itemTag.getInteger("slot")] = InventoryTools.readItemStack(itemTag);
-        }
-
-        NBTTagList outputList = tag.getTagList("outputItems", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < outputList.tagCount(); i++) {
-            itemTag = outputList.getCompoundTagAt(i);
-            output[itemTag.getInteger("slot")] = InventoryTools.readItemStack(itemTag);
-        }
+        super.readFromNBT(tag);
     }
 
     public void updateTrade(int ticks) {
@@ -126,43 +84,18 @@ public class FactionTrade {
         }//dont refill if frequency<0
     }
 
-    public void performTrade(EntityPlayer player, IInventory inputInventory) {
+    @Override
+    public void performTrade(EntityPlayer player, IInventory storage) {
         if (currentAvailable > 0) {
-            boolean found = true;
-            ItemStack inputStack, invStack;
-            for (int i = 0; i < input.length; i++) {
-                inputStack = input[i];
-                if (inputStack == null) {
-                    continue;
-                }
-                invStack = inputInventory.getStackInSlot(i);
-                if (invStack == null || !InventoryTools.doItemStacksMatch(inputStack, invStack) || invStack.stackSize < inputStack.stackSize) {
-                    found = false;
-                    break;
-                }
-            }
-            if (found) {
-                if (refillFrequency != 0) {
-                    currentAvailable--;
-                }//0 denotes instant restock, no reason to decrease qty if it will just be instantly restocked when GUI is opened next
-                for (int i = 0; i < input.length; i++) {
-                    inputStack = input[i];
-                    if (inputStack == null) {
-                        continue;
-                    }
-                    inputInventory.decrStackSize(i, inputStack.stackSize);
-                }
-                for (ItemStack outputStack : output) {
-                    if (outputStack == null) {
-                        continue;
-                    }
-                    outputStack = InventoryTools.mergeItemStack(player.inventory, outputStack.copy(), -1);
-                    if (outputStack != null && !player.worldObj.isRemote) {
-                        InventoryTools.dropItemInWorld(player.worldObj, outputStack, player.posX, player.posY, player.posZ);
-                    }
-                }
-            }
+            super.performTrade(player, null);
         }
     }
 
+    @Override
+    protected void doTrade(EntityPlayer player, IInventory storage) {
+        if (refillFrequency != 0) {
+            currentAvailable--;
+        }//0 denotes instant restock, no reason to decrease qty if it will just be instantly restocked when GUI is opened next
+        super.doTrade(player, storage);
+    }
 }
