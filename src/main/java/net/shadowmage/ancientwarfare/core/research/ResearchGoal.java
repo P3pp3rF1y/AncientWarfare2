@@ -18,9 +18,9 @@ public class ResearchGoal {
 
     private final int researchId;
     private final String researchName;
-    private Set<Integer> dependencies;//parsed shallow-dependency list
+    private final Set<Integer> dependencies;//parsed shallow-dependency list
 
-    private List<ItemStack> researchResources = new ArrayList<ItemStack>();
+    private final List<ItemStack> researchResources;
     private int researchTime;
 
     /**
@@ -33,6 +33,7 @@ public class ResearchGoal {
         researchId = id;
         researchName = name;
         dependencies = new HashSet<Integer>();
+        researchResources = new ArrayList<ItemStack>();
     }
 
     public void addResource(ItemStack resource) {
@@ -56,8 +57,8 @@ public class ResearchGoal {
     }
 
     public ResearchGoal addDependencies(int... deps) {
-        for (int i = 0; i < deps.length; i++) {
-            dependencies.add(deps[i]);
+        for (int dep : deps) {
+            dependencies.add(dep);
         }
         return this;
     }
@@ -79,10 +80,10 @@ public class ResearchGoal {
     }
 
     public boolean tryStart(IInventory inventory, int side) {
-        boolean canStart = true;
         if (!AWCoreStatics.enableResearchResourceUse) {
             return true;
         }
+        boolean canStart = true;
         for (ItemStack stack : this.researchResources) {
             if (InventoryTools.getCountOf(inventory, side, stack) < stack.stackSize) {
                 canStart = false;
@@ -138,6 +139,10 @@ public class ResearchGoal {
         String dep;
         for (String line : lines) {
             split = StringTools.parseStringArray(line);
+            if(split.length<2){
+                AWLog.logError("Could not parse goal dependency for line: " + line);
+                continue;
+            }
             name = split[0].startsWith("research.") ? split[0] : "research." + split[0];
             dep = split[1].startsWith("research.") ? split[1] : "research." + split[1];
             if (goalsByName.containsKey(name) && goalsByName.containsKey(dep)) {
@@ -156,9 +161,14 @@ public class ResearchGoal {
                 AWLog.logError("Could not locate goal for name: " + name);
                 continue;
             }
-            ItemStack stack = StringTools.safeParseStack(split[1], split[2], split[3]);
+            ItemStack stack = null;
+            if(split.length>3) {
+                stack = StringTools.safeParseStack(split[1], split[2], split[3]);
+            }else if(split.length==3){
+                stack = StringTools.safeParseStack(split[1], "0", split[2]);
+            }
             if (stack == null) {
-                AWLog.logError("Could not locate item for name: " + split[1]);
+                AWLog.logError("Could not define item from line: " + line);
                 continue;
             }
             goalsByName.get(name).addResource(stack);
