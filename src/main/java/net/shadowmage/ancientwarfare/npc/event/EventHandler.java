@@ -22,9 +22,9 @@ public class EventHandler {
         if (evt.entity instanceof NpcBase) {
             return;
         }
-        String s = EntityList.getEntityString(evt.entity);
-        if (AncientWarfareNPC.statics.shouldEntityTargetNpcs(s)) {
-            if (evt.entity instanceof EntityCreature) {
+        if (evt.entity instanceof EntityCreature) {
+            String s = EntityList.getEntityString(evt.entity);
+            if (AncientWarfareNPC.statics.shouldEntityTargetNpcs(s)) {
                 EntityCreature e = (EntityCreature) evt.entity;
                 if (evt.entity instanceof EntitySkeleton) {
                     EntitySkeleton skel = (EntitySkeleton) evt.entity;
