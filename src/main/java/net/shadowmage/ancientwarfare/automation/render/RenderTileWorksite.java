@@ -19,8 +19,8 @@ public class RenderTileWorksite extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         IWorkSite worksite = (IWorkSite) var1;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0.f, 240.f);
         if (worksite.hasWorkBounds() && AWAutomationStatics.renderWorkBounds.getBoolean()) {
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0.f, 240.f);
             GL11.glPushMatrix();
             GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
             GL11.glTranslated(var2, var4, var6);
