@@ -7,87 +7,66 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.OrderingList;
 import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class RoutingOrder extends NpcOrders {
+public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implements INBTSerialable {
 
-    private List<RoutePoint> routingPoints = new ArrayList<RoutePoint>();
     int routeDimension;
 
     public RoutingOrder() {
     }
 
-    public void removePosition(int index) {
-        if (index >= 0 && index < routingPoints.size()) {
-            routingPoints.remove(index);
-        }
-    }
-
-    public void incrementPosition(int index) {
-        if (index >= 1 && index < routingPoints.size()) {
-            RoutePoint entry = routingPoints.remove(index);
-            routingPoints.add(index - 1, entry);
-        }
-    }
-
-    public void decrementPosition(int index) {
-        if (index >= 0 && index < routingPoints.size() - 1) {
-            RoutePoint entry = routingPoints.remove(index);
-            routingPoints.add(index + 1, entry);
-        }
-    }
-
     public void addRoutePoint(World world, int x, int y, int z) {
-        RoutePoint p = new RoutePoint(x, y, z);
-        routingPoints.add(p);
+        add(new RoutePoint(x, y, z));
     }
 
     public void changeRouteType(int index) {
-        if (index >= 0 && index < routingPoints.size()) {
-            RoutePoint entry = routingPoints.get(index);
+        if (index >= 0 && index < size()) {
+            RoutePoint entry = get(index);
             entry.changeRouteType();
         }
     }
 
     public void changeBlockSide(int index) {
-        if (index >= 0 && index < routingPoints.size()) {
-            RoutePoint entry = routingPoints.get(index);
+        if (index >= 0 && index < size()) {
+            RoutePoint entry = get(index);
             entry.changeBlockSide();
         }
     }
 
     public void toggleIgnoreDamage(int index) {
-        if (index >= 0 && index < routingPoints.size()) {
-            RoutePoint entry = routingPoints.get(index);
+        if (index >= 0 && index < size()) {
+            RoutePoint entry = get(index);
             entry.setIgnoreDamage(!entry.getIgnoreDamage());
         }
     }
 
     public void toggleIgnoreTag(int index) {
-        if (index >= 0 && index < routingPoints.size()) {
-            RoutePoint entry = routingPoints.get(index);
+        if (index >= 0 && index < size()) {
+            RoutePoint entry = get(index);
             entry.setIgnoreTag(!entry.getIgnoreTag());
         }
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        routingPoints.clear();
+        clear();
         NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < entryList.tagCount(); i++) {
-            routingPoints.add(new RoutePoint(entryList.getCompoundTagAt(i)));
+            add(new RoutePoint(entryList.getCompoundTagAt(i)));
         }
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagList list = new NBTTagList();
-        for (RoutePoint p : routingPoints) {
+        for (RoutePoint p : points) {
             list.appendTag(p.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("entryList", list);
@@ -317,7 +296,7 @@ public class RoutingOrder extends NpcOrders {
 
     }
 
-    public static enum RouteType {
+    public enum RouteType {
         /**
          * fill target up to the specified quantity from couriers inventory
          */
@@ -408,7 +387,7 @@ public class RoutingOrder extends NpcOrders {
 
 
     public List<RoutePoint> getEntries() {
-        return routingPoints;
+        return points;
     }
 
 }

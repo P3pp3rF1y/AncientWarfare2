@@ -17,7 +17,7 @@ public class ItemWorkOrder extends ItemOrders {
     public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
         Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
         WorkOrder order = WorkOrder.getWorkOrder(stack);
-        if (order != null && order.getEntries().size() > 0) {
+        if (order != null && !order.isEmpty()) {
             for (WorkOrder.WorkEntry e : order.getEntries()) {
                 positionList.add(e.getPosition());
             }

@@ -110,12 +110,11 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
     private void setupTradeMode() {
         tradesArea.clearElements();
         final TradeList tradeList = getContainer().orders.getTradeList();
-        List<Trade> trades = tradeList.getTrades();
 
         int totalHeight = 8;
 
-        for (int i = 0; i < trades.size(); i++) {
-            totalHeight = addTrade(trades.get(i), i, totalHeight);
+        for (int i = 0; i < tradeList.size(); i++) {
+            totalHeight = addTrade(tradeList.get(i), i, totalHeight);
         }
 
         Button newTradeButton = new Button(8, totalHeight, xSize - 20, 12, "guistrings.new_trade") {
@@ -165,7 +164,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         Button upButton = new Button(infoX, startHeight, 55, 12, "guistrings.up") {
             @Override
             protected void onPressed() {
-                tradeList.decrementTrade(tradeNum);
+                tradeList.increment(tradeNum);
                 refreshGui();
             }
         };
@@ -174,7 +173,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         Button downButton = new Button(infoX, startHeight + 3 * 18 - 12, 55, 12, "guistrings.down") {
             @Override
             protected void onPressed() {
-                tradeList.incrementTrade(tradeNum);
+                tradeList.decrement(tradeNum);
                 refreshGui();
             }
         };
@@ -183,7 +182,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         Button delete = new Button(infoX, startHeight + 21, 55, 12, "guistrings.delete") {
             @Override
             protected void onPressed() {
-                tradeList.deleteTrade(tradeNum);
+                tradeList.remove(tradeNum);
                 refreshGui();
             }
         };

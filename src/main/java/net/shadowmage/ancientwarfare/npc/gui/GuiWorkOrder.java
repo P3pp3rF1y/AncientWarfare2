@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -15,7 +14,6 @@ import java.util.List;
 public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
 
 //TODO display work priority type via button
-//TODO add number-input for changing work-length
 
     boolean hasChanged = false;
     CompositeScrolled area;
@@ -36,55 +34,49 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
     public void setupElements() {
         area.clearElements();
         List<WorkEntry> entries = getContainer().wo.getEntries();
-        ItemStack blockStack;
-        ItemSlot slot;
-        Label label;
-        Button button;
-        NumberInput input;
         int totalHeight = 8;
         int index = 0;
         for (WorkEntry entry : entries) {
-            blockStack = new ItemStack(entry.getBlock());
-            slot = new ItemSlot(8, totalHeight + 2, blockStack, this);
-            area.addGuiElement(slot);
+            GuiElement element = new ItemSlot(8, totalHeight + 2, new ItemStack(entry.getBlock()), this);
+            area.addGuiElement(element);
 
-            label = new Label(8 + 20, totalHeight, entry.getPosition().toString());
-            area.addGuiElement(label);
+            element = new Label(8 + 20, totalHeight, entry.getPosition().toString());
+            area.addGuiElement(element);
 
-            button = new IndexedButton(8 + 20 + 20, totalHeight + 10, 12, 12, "+", index) {
+            element = new IndexedButton(8 + 20 + 20, totalHeight + 10, 12, 12, "+", index) {
                 @Override
                 protected void onPressed() {
-                    getContainer().wo.incrementPosition(index);
+                    getContainer().wo.increment(index);
                     hasChanged = true;
                     refreshGui();
                 }
             };
-            area.addGuiElement(button);
+            area.addGuiElement(element);
 
-            button = new IndexedButton(8 + 20 + 12 + 20, totalHeight + 10, 12, 12, "-", index) {
+            element = new IndexedButton(8 + 20 + 12 + 20, totalHeight + 10, 12, 12, "-", index) {
                 @Override
                 protected void onPressed() {
-                    getContainer().wo.decrementPosition(index);
+                    getContainer().wo.decrement(index);
                     hasChanged = true;
                     refreshGui();
                 }
             };
-            area.addGuiElement(button);
+            area.addGuiElement(element);
 
-            button = new IndexedButton(8 + 20 + 12 + 12 + 20, totalHeight + 10, 60, 12, "guistrings.npc.remove_work_point", index) {
+            element = new IndexedButton(8 + 20 + 12 + 12 + 20, totalHeight + 10, 60, 12, "guistrings.npc.remove_work_point", index) {
                 @Override
                 protected void onPressed() {
-                    getContainer().wo.removePosition(index);
+                    getContainer().wo.remove(index);
                     hasChanged = true;
                     refreshGui();
                 }
             };
-            area.addGuiElement(button);
+            area.addGuiElement(element);
 
-            label = new Label(8 + 20 + 12 + 12 + 60 + 40 + 20, totalHeight, "guistrings.npc.work_length");
-            area.addGuiElement(label);
+            element = new Label(8 + 20 + 12 + 12 + 60 + 40 + 20, totalHeight, "guistrings.npc.work_length");
+            area.addGuiElement(element);
 
-            input = new WorkEntryNumberInput(8 + 20 + 12 + 12 + 60 + 40 + 20, totalHeight + 10, 60, entry.getWorkLength() / 1200, this, entry) {
+            element = new WorkEntryNumberInput(8 + 20 + 12 + 12 + 60 + 40 + 20, totalHeight + 10, 60, entry.getWorkLength() / 1200, this, entry) {
                 @Override
                 public void onValueUpdated(float value) {
                     int ticks = (int) (value * 1200.f);
@@ -93,7 +85,7 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
                 }
             };
 
-            area.addGuiElement(input);
+            area.addGuiElement(element);
 
             totalHeight += 25;
             index++;

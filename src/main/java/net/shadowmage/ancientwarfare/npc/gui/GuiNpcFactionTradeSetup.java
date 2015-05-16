@@ -9,8 +9,6 @@ import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
 import net.shadowmage.ancientwarfare.npc.trade.Trade;
 import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
-import java.util.List;
-
 public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactionTradeSetup> {
 
     CompositeScrolled area;
@@ -34,11 +32,9 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
             return;
         }
 
-        List<Trade> trades = tradeList.getTrades();
-
         int totalHeight = 8;
-        for (int i = 0; i < trades.size(); i++) {
-            totalHeight = addTrade(trades.get(i), totalHeight, i);
+        for (int i = 0; i < tradeList.size(); i++) {
+            totalHeight = addTrade(tradeList.get(i), totalHeight, i);
         }
 
         Button newTradeButton = new Button(8, totalHeight, xSize - 8 - 16, 12, "guistrings.new_trade") {
@@ -88,7 +84,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
         Button upButton = new Button(infoX, startHeight, 55, 12, "guistrings.up") {
             @Override
             protected void onPressed() {
-                tradeList.decrementTrade(tradeNum);
+                tradeList.increment(tradeNum);
                 refreshGui();
                 getContainer().tradesChanged = true;
             }
@@ -98,7 +94,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
         Button downButton = new Button(infoX, startHeight + 3 * 18 - 12, 55, 12, "guistrings.down") {
             @Override
             protected void onPressed() {
-                tradeList.incrementTrade(tradeNum);
+                tradeList.decrement(tradeNum);
                 refreshGui();
                 getContainer().tradesChanged = true;
             }
@@ -108,7 +104,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
         Button delete = new Button(infoX, startHeight + 21, 55, 12, "guistrings.delete") {
             @Override
             protected void onPressed() {
-                tradeList.deleteTrade(tradeNum);
+                tradeList.remove(tradeNum);
                 refreshGui();
                 getContainer().tradesChanged = true;
             }

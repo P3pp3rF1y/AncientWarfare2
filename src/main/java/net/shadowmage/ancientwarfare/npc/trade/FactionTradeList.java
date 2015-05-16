@@ -26,7 +26,7 @@ public final class FactionTradeList extends TradeList {
      * Will use the internal stored tick number value for updating the trades list.<br>
      */
     public void updateTradesForView() {
-        for (Trade aTrade : tradeList) {
+        for (Trade aTrade : points) {
             ((FactionTrade) aTrade).updateTrade(ticks);
         }
         ticks = 0;
@@ -37,7 +37,7 @@ public final class FactionTradeList extends TradeList {
      * should be called before the changed list is sent from client->server from setup GUI.
      */
     public void removeEmptyTrades() {
-        Iterator<Trade> it = tradeList.iterator();
+        Iterator<Trade> it = points.iterator();
         Trade t;
         while (it.hasNext() && (t = it.next()) != null) {
             if (!((FactionTrade) t).hasItems()) {
@@ -47,7 +47,7 @@ public final class FactionTradeList extends TradeList {
     }
 
     public void performTrade(EntityPlayer player, int tradeNum) {
-        tradeList.get(tradeNum).performTrade(player, null);
+        get(tradeNum).performTrade(player, null);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI {
             init = true;
             ordersStack = npc.ordersStack;
             orders = CombatOrder.getCombatOrder(ordersStack);
-            if (orders == null || patrolIndex >= orders.getPatrolSize()) {
+            if (orders == null || patrolIndex >= orders.size()) {
                 patrolIndex = 0;
             }
         }
@@ -47,7 +47,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI {
         if (npc.getAttackTarget() != null) {
             return false;
         }
-        return orders != null && ordersStack != null && orders.getPatrolDimension() == npc.worldObj.provider.dimensionId && orders.getPatrolSize() > 0;
+        return orders != null && ordersStack != null && orders.getPatrolDimension() == npc.worldObj.provider.dimensionId && !orders.isEmpty();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI {
         if (npc.getAttackTarget() != null) {
             return false;
         }
-        return orders != null && ordersStack != null && orders.getPatrolDimension() == npc.worldObj.provider.dimensionId && orders.getPatrolSize() > 0;
+        return orders != null && ordersStack != null && orders.getPatrolDimension() == npc.worldObj.provider.dimensionId && !orders.isEmpty();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI {
                 setMoveToNextPoint();
             }
         } else {
-            BlockPosition pos = orders.getPatrolPoint(patrolIndex);
+            BlockPosition pos = orders.get(patrolIndex);
             double dist = npc.getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
             if (dist > 2.d * 2.d) {
                 moveToPosition(pos, dist);
@@ -91,7 +91,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI {
         ticksAtPoint = 0;
         patrolIndex++;
         moveRetryDelay = 0;
-        if (patrolIndex >= orders.getPatrolSize()) {
+        if (patrolIndex >= orders.size()) {
             patrolIndex = 0;
         }
     }

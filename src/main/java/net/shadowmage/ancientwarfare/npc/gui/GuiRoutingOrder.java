@@ -82,7 +82,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             button = new IndexedButton(8 + 55 + 80 + 4, totalHeight + 10, 12, 12, "+", index) {
                 @Override
                 protected void onPressed() {
-                    getContainer().routingOrder.incrementPosition(index);
+                    getContainer().routingOrder.increment(index);
                     refreshGui();
                     hasChanged = true;
                 }
@@ -92,7 +92,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             button = new IndexedButton(8 + 55 + 80 + 12 + 6, totalHeight + 10, 12, 12, "-", index) {
                 @Override
                 protected void onPressed() {
-                    getContainer().routingOrder.decrementPosition(index);
+                    getContainer().routingOrder.decrement(index);
                     refreshGui();
                     hasChanged = true;
                 }
@@ -102,7 +102,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             button = new IndexedButton(8 + 55 + 80 + 12 + 12 + 8, totalHeight + 10, 55, 12, "guistrings.npc.remove_point", index) {
                 @Override
                 protected void onPressed() {
-                    getContainer().routingOrder.removePosition(index);
+                    getContainer().routingOrder.remove(index);
                     refreshGui();
                     hasChanged = true;
                 }

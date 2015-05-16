@@ -18,7 +18,7 @@ public class ItemRoutingOrder extends ItemOrders {
     public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
         Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
         RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
-        if (order != null && order.getEntries().size() > 0) {
+        if (order != null && !order.isEmpty()) {
             for (RoutingOrder.RoutePoint e : order.getEntries()) {
                 positionList.add(e.getTarget());
             }
@@ -38,7 +38,7 @@ public class ItemRoutingOrder extends ItemOrders {
             MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
             if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
                 order.addRoutePoint(player.worldObj, hit.blockX, hit.blockY, hit.blockZ);
-                order.getEntries().get(order.getEntries().size() - 1).setBlockSide(hit.sideHit);
+                order.get(order.size() - 1).setBlockSide(hit.sideHit);
                 RoutingOrder.writeRoutingOrder(stack, order);
             }
         }

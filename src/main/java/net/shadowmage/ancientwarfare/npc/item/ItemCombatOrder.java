@@ -16,9 +16,9 @@ public class ItemCombatOrder extends ItemOrders {
     public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
         Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
         CombatOrder order = CombatOrder.getCombatOrder(stack);
-        if (order != null && order.getPatrolSize() > 0) {
-            for (int i = 0; i < order.getPatrolSize(); i++) {
-                positionList.add(order.getPatrolPoint(i).copy().offset(0, 1, 0));
+        if (order != null && !order.isEmpty()) {
+            for (int i = 0; i < order.size(); i++) {
+                positionList.add(order.get(i).copy().offset(0, 1, 0));
             }
         }
         return positionList;
@@ -36,7 +36,7 @@ public class ItemCombatOrder extends ItemOrders {
             return;
         }
         if (player.isSneaking()) {
-            order.clearPatrol();
+            order.clear();
             CombatOrder.writeCombatOrder(stack, order);
         } else {
             BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);

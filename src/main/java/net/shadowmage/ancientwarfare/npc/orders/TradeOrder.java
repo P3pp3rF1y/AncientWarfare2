@@ -2,12 +2,13 @@ package net.shadowmage.ancientwarfare.npc.orders;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
 import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
-public class TradeOrder extends NpcOrders {
+public class TradeOrder implements INBTSerialable {
 
     private POTradeRoute tradeRoute = new POTradeRoute();
     private POTradeRestockData restockEntry = new POTradeRestockData();

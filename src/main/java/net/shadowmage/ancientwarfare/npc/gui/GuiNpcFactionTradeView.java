@@ -9,9 +9,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeView;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
-import net.shadowmage.ancientwarfare.npc.trade.Trade;
-
-import java.util.List;
 
 public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFactionTradeView> {
 
@@ -55,14 +52,12 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
     private void addTrades() {
         area.clearElements();
 
-        List<Trade> trades = getContainer().tradeList.getTrades();
-
         int totalHeight = 8;
-        if(trades.isEmpty()){
+        if(getContainer().tradeList.isEmpty()){
             area.addGuiElement(new Label(8, 8, "guistrings.trader.no_trade"));
         }else {
-            for (int i = 0; i < trades.size(); i++) {
-                totalHeight = addTrade((FactionTrade) trades.get(i), i, totalHeight);
+            for (int i = 0; i < getContainer().tradeList.size(); i++) {
+                totalHeight = addTrade((FactionTrade) getContainer().tradeList.get(i), i, totalHeight);
             }
         }
 

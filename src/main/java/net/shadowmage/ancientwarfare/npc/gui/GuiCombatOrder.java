@@ -31,15 +31,15 @@ public class GuiCombatOrder extends GuiContainerBase<ContainerCombatOrder> {
         Button button;
         BlockPosition pos;
         int totalHeight = 8;
-        for (int i = 0; i < getContainer().combatOrder.getPatrolSize(); i++) {
-            pos = getContainer().combatOrder.getPatrolPoint(i);
+        for (int i = 0; i < getContainer().combatOrder.size(); i++) {
+            pos = getContainer().combatOrder.get(i);
             label = new Label(8, totalHeight + 1, pos.toString());
             area.addGuiElement(label);
 
             button = new IndexedButton(120, totalHeight, 12, 12, "+", i) {
                 @Override
                 protected void onPressed() {
-                    getContainer().combatOrder.incrementPointPosition(index);
+                    getContainer().combatOrder.increment(index);
                     hasChanged = true;
                     refreshGui();
                 }
@@ -49,7 +49,7 @@ public class GuiCombatOrder extends GuiContainerBase<ContainerCombatOrder> {
             button = new IndexedButton(120 + 12, totalHeight, 12, 12, "-", i) {
                 @Override
                 protected void onPressed() {
-                    getContainer().combatOrder.decrementPointPosition(index);
+                    getContainer().combatOrder.decrement(index);
                     hasChanged = true;
                     refreshGui();
                 }
@@ -60,7 +60,7 @@ public class GuiCombatOrder extends GuiContainerBase<ContainerCombatOrder> {
                 @Override
                 protected void onPressed() {
                     hasChanged = true;
-                    getContainer().combatOrder.removePatrolPoint(index);
+                    getContainer().combatOrder.remove(index);
                     refreshGui();
                 }
             };

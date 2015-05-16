@@ -5,10 +5,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 
-public class UpkeepOrder extends NpcOrders {
+public class UpkeepOrder implements INBTSerialable {
 
     BlockPosition upkeepPosition;
     int upkeepDimension;

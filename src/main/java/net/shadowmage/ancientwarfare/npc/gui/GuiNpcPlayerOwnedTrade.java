@@ -10,8 +10,6 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerNpcPlayerOwnedTrade;
 import net.shadowmage.ancientwarfare.npc.trade.POTrade;
 import net.shadowmage.ancientwarfare.npc.trade.Trade;
 
-import java.util.List;
-
 public class GuiNpcPlayerOwnedTrade extends GuiContainerBase<ContainerNpcPlayerOwnedTrade> {
 
     CompositeScrolled area;
@@ -59,14 +57,13 @@ public class GuiNpcPlayerOwnedTrade extends GuiContainerBase<ContainerNpcPlayerO
     }
 
     private void addTrades() {
-        List<Trade> trades = getContainer().tradeList.getTrades();
         int totalHeight = 8;
-        if(trades.isEmpty()){
+        if(getContainer().tradeList.isEmpty()){
             addSingleMessage("guistrings.trader.no_trade");
         }else {
             POTrade trade;
-            for (int i = 0; i < trades.size(); i++) {
-                trade = (POTrade) trades.get(i);
+            for (int i = 0; i < getContainer().tradeList.size(); i++) {
+                trade = (POTrade) getContainer().tradeList.get(i);
                 if (trade.isAvailable(getContainer().storage)) {
                     totalHeight = addTrade(trade, i, totalHeight);
                 }
