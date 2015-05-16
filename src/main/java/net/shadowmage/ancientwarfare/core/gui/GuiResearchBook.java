@@ -1,16 +1,16 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
+import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class GuiResearchBook extends GuiContainerBase {
 
@@ -51,39 +51,64 @@ public class GuiResearchBook extends GuiContainerBase {
     public void setupElements() {
         area.clearElements();
         detailsArea.clearElements();
+        modeBox.setChecked(researchMode);
         if (researchMode) {
             addResearchModeControls();
         } else {
-            addRecipeModeControsl();
+            addRecipeModeControls();
         }
     }
 
-    private void addRecipeModeControsl() {
+    private void addRecipeModeControls() {
         int totalHeight = 8;
 
         for (RecipeResearched recipe : AWCraftingManager.INSTANCE.getRecipes()) {
-            area.addGuiElement(new RecipeButton(8, totalHeight, recipe) {
-                @Override
-                protected void onPressed() {
-                    selectedRecipe = recipe;
-                    refreshGui();
-                }
-            });
+            area.addGuiElement(new RecipeButton(8, totalHeight, recipe));
             totalHeight += 12;
         }
         area.setAreaSize(totalHeight);
 
         totalHeight = 8;
-        detailsArea.addGuiElement(new RecipeButton(8, totalHeight, selectedRecipe));
-        totalHeight += 12;
-
-        detailsArea.addGuiElement(new Label(8, totalHeight, "guistrings.research.research_needed"));
+        detailsArea.addGuiElement(getRecipeButton(8, totalHeight, selectedRecipe));
         totalHeight += 14;
 
         if (selectedRecipe != null) {
+            Set<Integer> depIds = selectedRecipe.getNeededResearch();
+            boolean canShow = true;
+            for (int num : depIds) {
+                if (!ResearchTracker.INSTANCE.hasPlayerCompleted(mc.theWorld, mc.thePlayer.getCommandSenderName(), num)) {
+                    canShow = false;
+                    break;
+                }
+            }
+            if(canShow){
+                ItemStack[] ingredients = new ItemStack[selectedRecipe.getRecipeSize()];
+                for(int i = 0; i < ingredients.length; i++){
+                    Object object = selectedRecipe.getInput()[i];
+                    if(object instanceof ItemStack){
+                        ingredients[i] = (ItemStack) object;
+                    }else if(object instanceof Iterable){
+                        ingredients[i] = (ItemStack) ((Iterable) object).iterator().next();
+                    }
+                }
+                for(int i = 0; i < selectedRecipe.getRecipeWidth(); i++){
+                    for(int j = 0; j < selectedRecipe.getRecipeHeight(); j++){
+                        detailsArea.addGuiElement(new ItemSlot(9 + 18 * i, totalHeight + 18 * j, ingredients[i + j * selectedRecipe.getRecipeWidth()], this));
+                    }
+                }
+                totalHeight += (selectedRecipe.getRecipeHeight()-1) * 9;
+                detailsArea.addGuiElement(new Label(8 + 18 * (selectedRecipe.getRecipeWidth()+1), totalHeight + 2, "->"));
+            }
+            detailsArea.addGuiElement(new ItemSlot(9 + 18 * (selectedRecipe.getRecipeWidth()+2), totalHeight, selectedRecipe.getRecipeOutput(), this));
+            if(canShow)
+                totalHeight += (selectedRecipe.getRecipeHeight()+1) * 9;
+            else
+                totalHeight += 20;
+            detailsArea.addGuiElement(new Label(8, totalHeight, "guistrings.research.research_needed"));
+            totalHeight += 14;
             GoalButton button;
             ResearchGoal goal;
-            for (int num : selectedRecipe.getNeededResearch()) {
+            for (int num : depIds) {
                 goal = ResearchGoal.getGoal(num);
                 if (goal != null) {
                     button = new GoalButton(8, totalHeight, goal);
@@ -100,23 +125,14 @@ public class GuiResearchBook extends GuiContainerBase {
         Collections.sort(goals, new ResearchSorter());
         int totalHeight = 8;
         for (ResearchGoal goal : goals) {
-            area.addGuiElement(new GoalButton(8, totalHeight, goal) {
-                @Override
-                protected void onPressed() {
-                    selectedGoal = goal;
-                    refreshGui();
-                }
-            });
+            area.addGuiElement(new GoalButton(8, totalHeight, goal));
             totalHeight += 12;
         }
         area.setAreaSize(totalHeight);
 
         totalHeight = 8;
-        detailsArea.addGuiElement(new GoalButton(8, totalHeight, selectedGoal));
+        detailsArea.addGuiElement(getResearchButton(8, totalHeight, selectedGoal));
         totalHeight += 16;
-
-        detailsArea.addGuiElement(new Label(8, totalHeight, "guistrings.research.researched_items"));
-        totalHeight += 14;
 
         if (selectedGoal != null) {
             List<RecipeResearched> recipes = AWCraftingManager.INSTANCE.getRecipes();
@@ -126,26 +142,68 @@ public class GuiResearchBook extends GuiContainerBase {
                     list.add(recipe);
                 }
             }
-            ItemSlot slot;
-            int x, y;
-            for (int i = 0; i < list.size(); i++) {
-                x = 8 + (18 * (i % 9));
-                y = totalHeight + 18 * (i / 9);
-                slot = new ItemSlot(x, y, list.get(i).getRecipeOutput(), this);
-                detailsArea.addGuiElement(slot);
+            if(!list.isEmpty()) {
+                detailsArea.addGuiElement(new Label(8, totalHeight, "guistrings.research.researched_items"));
+                totalHeight += 14;
+                ItemSlot slot;
+                for (int i = 0; i < list.size(); i++) {
+                    slot = new RecipeSlot(i, totalHeight, list.get(i), this);
+                    detailsArea.addGuiElement(slot);
+                }
+                totalHeight += 18 * (1 + list.size() / 9);
+            }
+            Set<ResearchGoal> deps = selectedGoal.getDependencies();
+            if(!deps.isEmpty()) {
+                detailsArea.addGuiElement(new Label(8, totalHeight, "guistrings.research.research_needed"));
+                totalHeight += 14;
+                GoalButton button;
+                for (ResearchGoal goal : deps) {
+                    button = new GoalButton(8, totalHeight, goal);
+                    detailsArea.addGuiElement(button);
+                    totalHeight += 12;
+                }
             }
         }
+    }
+
+    private class RecipeSlot extends ItemSlot{
+
+        private RecipeResearched researched;
+        public RecipeSlot(int i, int totalHeight, RecipeResearched recipe, ITooltipRenderer render) {
+            super(8 + (18 * (i % 9)), totalHeight + 18 * (i / 9), recipe.getRecipeOutput(), render);
+            setRenderItemQuantity(false);
+            researched = recipe;
+        }
+
+        @Override
+        public void onSlotClicked(ItemStack stack) {
+            selectedRecipe = researched;
+            researchMode = false;
+            refreshGui();
+        }
+    }
+
+    private Button getRecipeButton(int topLeftX, int topLeftY, RecipeResearched recipe){
+        return new Button(topLeftX, topLeftY, 160, 12, recipe == null ? "guistrings.no_selection" : recipe.getRecipeOutput().getDisplayName());
     }
 
     private class RecipeButton extends Button {
         RecipeResearched recipe;
 
         public RecipeButton(int topLeftX, int topLeftY, RecipeResearched recipe) {
-            super(topLeftX, topLeftY, 160, 12, "");
+            super(topLeftX, topLeftY, 160, 12, recipe == null ? "guistrings.no_selection" : recipe.getRecipeOutput().getDisplayName());
             this.recipe = recipe;
-            this.text = recipe == null ? "guistrings.no_selection" : recipe.getRecipeOutput().getDisplayName();
-            this.setText(text);
         }
+
+        @Override
+        protected void onPressed() {
+            selectedRecipe = recipe;
+            refreshGui();
+        }
+    }
+
+    private Button getResearchButton(int topLeftX, int topLeftY, ResearchGoal goal){
+        return new Button(topLeftX, topLeftY, 160, 10, goal == null ? "guistrings.no_selection" : goal.getName());
     }
 
     private class GoalButton extends Button {
@@ -154,6 +212,13 @@ public class GuiResearchBook extends GuiContainerBase {
         public GoalButton(int topLeftX, int topLeftY, ResearchGoal goal) {
             super(topLeftX, topLeftY, 160, 10, goal == null ? "guistrings.no_selection" : goal.getName());
             this.goal = goal;
+        }
+
+        @Override
+        protected void onPressed() {
+            selectedGoal = goal;
+            researchMode = true;
+            refreshGui();
         }
     }
 

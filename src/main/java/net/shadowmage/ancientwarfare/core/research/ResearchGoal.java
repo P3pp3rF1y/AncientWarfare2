@@ -56,9 +56,9 @@ public class ResearchGoal {
         return researchId;
     }
 
-    public ResearchGoal addDependencies(int... deps) {
-        for (int dep : deps) {
-            dependencies.add(dep);
+    public ResearchGoal addDependencies(ResearchGoal... deps) {
+        for (ResearchGoal dep : deps) {
+            dependencies.add(dep.researchId);
         }
         return this;
     }
@@ -70,8 +70,8 @@ public class ResearchGoal {
     /**
      * return the direct dependencies for this goal -- does not include any sub-dependencies -- see {@link #resolveDependeciesFor(ResearchGoal)}
      */
-    public Set<Integer> getDependencies() {
-        return dependencies;
+    public Set<ResearchGoal> getDependencies() {
+        return getGoalsFor(dependencies);
     }
 
     public boolean canResearch(Set<Integer> knownResearch) {
@@ -146,7 +146,7 @@ public class ResearchGoal {
             name = split[0].startsWith("research.") ? split[0] : "research." + split[0];
             dep = split[1].startsWith("research.") ? split[1] : "research." + split[1];
             if (goalsByName.containsKey(name) && goalsByName.containsKey(dep)) {
-                goalsByName.get(name).addDependencies(goalsByName.get(dep).researchId);
+                goalsByName.get(name).addDependencies(goalsByName.get(dep));
             }
         }
     }

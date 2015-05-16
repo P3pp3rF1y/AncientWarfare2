@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class ItemSlot extends GuiElement {
     protected static RenderItem itemRender = new RenderItem();
-    ItemStack item;
+    private ItemStack item;
     protected ITooltipRenderer render;
     protected boolean highlightOnMouseOver = true;
     protected boolean renderTooltip = true;

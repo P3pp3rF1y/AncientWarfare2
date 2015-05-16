@@ -465,7 +465,7 @@ guistrings.research.added_progress=Added progress towards your current research 
 guistrings.research.book_bound=Researcher set for book
 guistrings.research.right_click_to_bind=Right Click To Assign
 guistrings.research.right_click_to_view=Right Click To View
-guistrings.research.research_mode=Research View Mode (or recipe view mode)?
+guistrings.research.research_mode=Research/Item View
 guistrings.research.researched_items=Researched Items
 guistrings.research.research_needed=Research Needed
 
