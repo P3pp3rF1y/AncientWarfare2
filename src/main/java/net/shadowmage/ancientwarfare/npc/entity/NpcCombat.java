@@ -59,7 +59,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-        this.targetTasks.addTask(0, new NpcAIPlayerOwnedFindCommander(this));
+        this.targetTasks.addTask(0, new NpcAIPlayerOwnedCommander(this));
         this.targetTasks.addTask(1, new NpcAIHurt(this));
         this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
     }
