@@ -28,7 +28,6 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
-import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
@@ -146,13 +145,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public boolean attackEntityAsMob(Entity target) {
-        float damage = (float) this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-        if (getAttackDamageOverride() >= 0) {
-            damage = (float) this.getAttackDamageOverride();
-        } else if (getShieldStack() != null && getHeldItem() != null) {
-            if (getShieldStack().getAttributeModifiers().containsKey(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())) {
-                damage *= 1.5f;
+        float damage = (float) this.getAttackDamageOverride();
+        ItemStack shield = null;
+        if (damage < 0) {
+            if (getShieldStack() != null) {
+                shield = getShieldStack().copy();
+                getAttributeMap().applyAttributeModifiers(shield.getAttributeModifiers());
             }
+            damage = (float) this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
         }
         int knockback = 0;
         if (target instanceof EntityLivingBase) {
@@ -175,6 +175,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 EnchantmentHelper.func_151384_a((EntityLivingBase) target, this);
             }
             EnchantmentHelper.func_151385_b(this, target);
+        }
+        if (shield != null) {
+            getAttributeMap().removeAttributeModifiers(shield.getAttributeModifiers());
         }
         return targetHit;
     }
@@ -436,24 +439,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 this.setAttackTarget(null);
             }
         }
-    }
-
-    /**
-     * Returns the currently following player-issues command, or null if none
-     */
-    public Command getCurrentCommand() {
-        return null;//NOOP on non-player owned npc
-    }
-
-    /**
-     * input path from command baton - default implementation for player-owned NPC is to set current command==input command and then let AI do the rest
-     */
-    public void handlePlayerCommand(Command cmd) {
-//NOOP on non-player owned npc
-    }
-
-    public void setPlayerCommand(Command cmd) {
-
     }
 
     /**
@@ -722,6 +707,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
         super.onUpdate();
         worldObj.theProfiler.endSection();
+    }
+
+    @Override
+    public boolean canAttackClass(Class claz) {
+        return !EntityFlying.class.isAssignableFrom(claz);
     }
 
     @Override

@@ -137,30 +137,25 @@ public abstract class NpcPlayerOwned extends NpcBase {
         return false;
     }
 
-    @Override
+    /**
+     * Returns the currently following player-issues command, or null if none
+     */
     public Command getCurrentCommand() {
         return playerIssuedCommand;
     }
 
-    @Override
+    /**
+     * input path from command baton - default implementation for player-owned NPC is to set current command==input command and then let AI do the rest
+     */
     public void handlePlayerCommand(Command cmd) {
         if (cmd != null && cmd.type == CommandType.ATTACK) {
             Entity e = cmd.getEntityTarget(worldObj);
             AWLog.logDebug("handling attack command : " + e);
             if (e instanceof EntityLivingBase) {
                 EntityLivingBase elb = (EntityLivingBase) e;
-                if (isHostileTowards(elb))//only allow targets npc is hostile towards
+                if (canTarget(elb))//only attacked allowed targets
                 {
-                    if (elb instanceof NpcPlayerOwned)//if target is also a player-owned npc
-                    {
-                        NpcPlayerOwned n = (NpcPlayerOwned) elb;
-                        if (n.getTeam() != getTeam())//only allow target if they are not on the same team (non-teamed cannot attack other non-teamed, cannot attack team-mates npcs either)
-                        {
-                            setAttackTarget(n);
-                        }
-                    } else {
-                        setAttackTarget(elb);
-                    }
+                    setAttackTarget(elb);
                 }
             }
             cmd = null;
@@ -168,7 +163,6 @@ public abstract class NpcPlayerOwned extends NpcBase {
         this.setPlayerCommand(cmd);
     }
 
-    @Override
     public void setPlayerCommand(Command cmd) {
         this.playerIssuedCommand = cmd;
     }

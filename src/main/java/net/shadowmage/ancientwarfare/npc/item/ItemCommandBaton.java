@@ -116,14 +116,11 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
         return true;
     }
 
-    /**
-     * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
-     */
-    @SuppressWarnings({"unchecked", "rawtypes", "deprecation"})
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public Multimap getItemAttributeModifiers() {
-        Multimap multimap = super.getItemAttributeModifiers();
-        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", (double) this.attackDamage, 0));
+    public Multimap getAttributeModifiers(ItemStack stack) {
+        Multimap multimap = super.getAttributeModifiers(stack);
+        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", this.attackDamage, 0));
         return multimap;
     }
 
@@ -139,13 +136,11 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
 
     @Override
     public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        //noop
         return false;
     }
 
     @Override
     public void onLeftClick(EntityPlayer player, ItemStack stack) {
-        //noop
     }
 
     @Override
@@ -222,13 +217,10 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
     }
 
     public static List<Entity> getCommandedEntities(World world, ItemStack stack) {
-        List<Entity> entities = new ArrayList<Entity>();
         if (world == null || stack == null || !(stack.getItem() instanceof ItemCommandBaton)) {
-            return entities;
+            return new ArrayList<Entity>();
         }
-        CommandSet set = CommandSet.loadFromStack(stack);
-        set.getEntities(world, entities);
-        return entities;
+        return CommandSet.loadFromStack(stack).getEntities(world);
     }
 
     /**
@@ -287,7 +279,8 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
             writeToStack(stack);
         }
 
-        public void getEntities(World world, List<Entity> in) {
+        public List<Entity> getEntities(World world) {
+            List<Entity> in = new ArrayList<Entity>();
             Entity e;
             for (UUID id : ids) {
                 e = WorldTools.getEntityByUUID(world, id);
@@ -295,6 +288,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
                     in.add(e);
                 }
             }
+            return in;
         }
 
         /**

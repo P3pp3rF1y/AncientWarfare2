@@ -8,7 +8,7 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 
@@ -27,6 +27,10 @@ public class NpcCommand {
         CLEAR_HOME,
         CLEAR_UPKEEP,
         CLEAR_COMMAND;
+
+        public boolean isPersistent() {
+            return (this == ATTACK || this == GUARD || this == ATTACK_AREA);
+        }
     }
 
     /**
@@ -54,8 +58,8 @@ public class NpcCommand {
         }
         List<Entity> targets = ItemCommandBaton.getCommandedEntities(player.worldObj, player.getCurrentEquippedItem());
         for (Entity e : targets) {
-            if (e instanceof NpcBase) {
-                ((NpcBase) e).handlePlayerCommand(cmd);
+            if (e instanceof NpcPlayerOwned) {
+                ((NpcPlayerOwned) e).handlePlayerCommand(cmd);
             }
         }
     }
