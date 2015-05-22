@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.render;
 
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -14,7 +13,7 @@ public class RenderStructureBuilder extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         TileStructureBuilder builder = (TileStructureBuilder) var1;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0.f, 240.f);
+        RenderTools.setFullColorLightmap();
         if (builder.clientBB != null) {
             GL11.glPushMatrix();
             GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
