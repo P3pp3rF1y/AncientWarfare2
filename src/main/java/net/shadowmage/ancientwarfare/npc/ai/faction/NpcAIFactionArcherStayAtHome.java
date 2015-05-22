@@ -29,7 +29,7 @@ public class NpcAIFactionArcherStayAtHome extends NpcAI {
 
     @Override
     public boolean continueExecuting() {
-        return target != null && npc.getAttackTarget() == null || npc.getAttackTarget().isDead && npc.hasHome();
+        return target != null && shouldExecute();
     }
 
     @Override

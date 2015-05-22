@@ -19,11 +19,6 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
 
     @Override
     public boolean shouldExecute() {
-        return continueExecuting();
-    }
-
-    @Override
-    public boolean continueExecuting() {
         if (!npc.getIsAIEnabled()) {
             return false;
         }

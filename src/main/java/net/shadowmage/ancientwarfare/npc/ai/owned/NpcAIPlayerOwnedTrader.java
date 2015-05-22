@@ -96,11 +96,6 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
     }
 
     @Override
-    public boolean continueExecuting() {
-        return orders != null && waypoint != null;
-    }
-
-    @Override
     public void updateTask() {
         if (trader.shouldBeAtHome() || shelter) {
             updateShelter();

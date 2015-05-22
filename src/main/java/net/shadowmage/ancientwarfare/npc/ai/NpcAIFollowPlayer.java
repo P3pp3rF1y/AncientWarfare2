@@ -32,23 +32,6 @@ public class NpcAIFollowPlayer extends NpcAI {
     }
 
     /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-    @Override
-    public boolean continueExecuting() {
-        target = this.npc.getFollowingEntity();
-        if (target == null) {
-            return false;
-        }
-        if (npc.getAttackTarget() != null) {
-            if (npc.getDistanceSqToEntity(target) < attackIgnoreDistance && npc.getDistanceSqToEntity(npc.getAttackTarget()) < attackIgnoreDistance) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Execute a one shot task or start executing a continuous task
      */
     @Override

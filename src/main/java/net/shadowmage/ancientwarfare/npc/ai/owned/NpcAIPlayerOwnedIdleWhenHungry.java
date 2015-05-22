@@ -21,14 +21,6 @@ public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI {
         return npc.getAttackTarget() == null && npc.requiresUpkeep() && npc.getFoodRemaining() == 0;
     }
 
-    @Override
-    public boolean continueExecuting() {
-        if (!npc.getIsAIEnabled()) {
-            return false;
-        }
-        return npc.getAttackTarget() == null && npc.requiresUpkeep() && npc.getFoodRemaining() == 0;
-    }
-
     /**
      * Execute a one shot task or start executing a continuous task
      */
