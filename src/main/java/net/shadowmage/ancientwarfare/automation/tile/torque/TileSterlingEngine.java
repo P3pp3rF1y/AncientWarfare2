@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 public class TileSterlingEngine extends TileTorqueSingleCell implements IInventory {
 
     InventoryBasic fuelInventory = new InventoryBasic(1) {
+        @Override
         public boolean isItemValidForSlot(int var1, net.minecraft.item.ItemStack var2) {
             return TileEntityFurnace.getItemBurnTime(var2) > 0;
         }

@@ -42,6 +42,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         result = new InventoryCraftResult();
 
         bookInventory = new InventoryBasic(1) {
+            @Override
             public void markDirty() {
                 onLayoutMatrixChanged();
             }
