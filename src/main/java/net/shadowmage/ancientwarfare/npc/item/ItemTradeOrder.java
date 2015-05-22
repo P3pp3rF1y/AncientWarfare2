@@ -46,13 +46,13 @@ public class ItemTradeOrder extends ItemOrders {
         BlockPosition pos = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
         if (key == ItemKey.KEY_0) {
             order.getRoute().addRoutePoint(pos);
-            TradeOrder.writeTradeOrder(stack, order);
+            order.write(stack);
         } else if (key == ItemKey.KEY_1) {
             order.getRestockData().setDepositPoint(pos, hit.sideHit);
-            TradeOrder.writeTradeOrder(stack, order);
+            order.write(stack);
         } else if (key == ItemKey.KEY_2) {
             order.getRestockData().setWithdrawPoint(pos, hit.sideHit);
-            TradeOrder.writeTradeOrder(stack, order);
+            order.write(stack);
         }
     }
 

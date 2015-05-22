@@ -66,9 +66,9 @@ public class CombatOrder extends OrderingList<BlockPosition> implements INBTSeri
         return null;
     }
 
-    public static void writeCombatOrder(ItemStack stack, CombatOrder order) {
+    public void write(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemCombatOrder) {
-            stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+            stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
     }
 

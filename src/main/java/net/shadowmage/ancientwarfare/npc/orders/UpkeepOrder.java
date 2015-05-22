@@ -111,9 +111,9 @@ public class UpkeepOrder implements INBTSerialable {
         return null;
     }
 
-    public static void writeUpkeepOrder(ItemStack stack, UpkeepOrder order) {
+    public void write(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemUpkeepOrder) {
-            stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+            stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
     }
 

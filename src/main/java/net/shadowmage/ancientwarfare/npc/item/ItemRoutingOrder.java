@@ -39,7 +39,7 @@ public class ItemRoutingOrder extends ItemOrders {
             if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
                 order.addRoutePoint(player.worldObj, hit.blockX, hit.blockY, hit.blockZ);
                 order.get(order.size() - 1).setBlockSide(hit.sideHit);
-                RoutingOrder.writeRoutingOrder(stack, order);
+                order.write(stack);
             }
         }
     }

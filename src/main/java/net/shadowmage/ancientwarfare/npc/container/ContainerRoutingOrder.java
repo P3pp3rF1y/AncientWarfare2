@@ -38,7 +38,7 @@ public class ContainerRoutingOrder extends ContainerBase {
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
         if (hasChanged && !player.worldObj.isRemote) {
-            RoutingOrder.writeRoutingOrder(player.getCurrentEquippedItem(), routingOrder);
+            routingOrder.write(player.getCurrentEquippedItem());
         }
     }
 }

@@ -28,9 +28,9 @@ public class TradeOrder implements INBTSerialable {
         return null;
     }
 
-    public static void writeTradeOrder(ItemStack stack, TradeOrder order) {
+    public void write(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemTradeOrder) {
-            stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+            stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
     }
 

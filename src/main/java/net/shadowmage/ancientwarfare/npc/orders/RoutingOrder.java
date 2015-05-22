@@ -84,9 +84,9 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         return null;
     }
 
-    public static void writeRoutingOrder(ItemStack stack, RoutingOrder order) {
+    public void write(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemRoutingOrder) {
-            stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+            stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
     }
 
@@ -153,7 +153,13 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             ignoreTag = val;
         }
 
-        private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide) {
+        private int depositAllItems(IInventory from, IInventory to, boolean reversed) {
+            int fromSide = -1;
+            int toSide = getBlockSide();
+            if (reversed) {
+                fromSide = getBlockSide();
+                toSide = -1;
+            }
             int moved = 0;
             ItemStack stack;
             int stackSize = 0;
@@ -194,7 +200,13 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             return moved;
         }
 
-        private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide) {
+        private int depositAllItemsExcept(IInventory from, IInventory to, boolean reversed) {
+            int fromSide = -1;
+            int toSide = getBlockSide();
+            if (reversed) {
+                fromSide = getBlockSide();
+                toSide = -1;
+            }
             int moved = 0;
             ItemStack stack;
             int stackSize = 0;
@@ -235,7 +247,13 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             return moved;
         }
 
-        private int fillTo(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide) {
+        private int fillTo(IInventory from, IInventory to, boolean reversed) {
+            int fromSide = -1;
+            int toSide = getBlockSide();
+            if (reversed) {
+                fromSide = getBlockSide();
+                toSide = -1;
+            }
             int moved = 0;
             int toMove = 0;
             int foundCount = 0;
@@ -360,25 +378,24 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
      * returns the number of stacks processed for determining the length the courier should 'work' at the point
      */
     public int handleRouteAction(RoutePoint p, IInventory npc, IInventory target) {
-        int side = p.getBlockSide();
         switch (p.routeType) {
             case FILL_COURIER_TO:
-                return p.fillTo(p.filters, target, npc, side, -1);
+                return p.fillTo(target, npc, true);
 
             case FILL_TARGET_TO:
-                return p.fillTo(p.filters, npc, target, -1, side);
+                return p.fillTo(npc, target, false);
 
             case DEPOSIT_ALL_EXCEPT:
-                return p.depositAllItemsExcept(p.filters, npc, target, -1, side);
+                return p.depositAllItemsExcept(npc, target, false);
 
             case DEPOSIT_ALL_OF:
-                return p.depositAllItems(p.filters, npc, target, -1, side);
+                return p.depositAllItems(npc, target, false);
 
             case WITHDRAW_ALL_EXCEPT:
-                return p.depositAllItemsExcept(p.filters, target, npc, side, -1);
+                return p.depositAllItemsExcept(target, npc, true);
 
             case WITHDRAW_ALL_OF:
-                return p.depositAllItems(p.filters, target, npc, side, -1);
+                return p.depositAllItems(target, npc, true);
 
             default:
                 return 0;

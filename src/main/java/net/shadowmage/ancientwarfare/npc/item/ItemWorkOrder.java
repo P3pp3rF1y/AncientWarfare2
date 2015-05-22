@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -35,14 +34,11 @@ public class ItemWorkOrder extends ItemOrders {
         WorkOrder wo = WorkOrder.getWorkOrder(stack);
         if (wo != null) {
             BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
-            if (hit != null && player.worldObj.getTileEntity(hit.x, hit.y, hit.z) instanceof IWorkSite) {
-                if (wo.addWorkPosition(player.worldObj, hit, 0)) {
-                    WorkOrder.writeWorkOrder(stack, wo);
-                    player.openContainer.detectAndSendChanges();
-                    //TODO add chat output message regarding adding a worksite to the work-orders
-                    //TODO possibly open the gui after setting the work-point?
-//        player.setCurrentItemOrArmor(0, stack);//TODO probably un-necessary        
-                }
+            if (wo.addWorkPosition(player.worldObj, hit)) {
+                wo.write(stack);
+                player.openContainer.detectAndSendChanges();
+                //TODO add chat output message regarding adding a worksite to the work-orders
+                //TODO possibly open the gui after setting the work-point?
             }
         }
     }

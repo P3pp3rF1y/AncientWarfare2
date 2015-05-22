@@ -53,9 +53,9 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
         return points;
     }
 
-    public boolean addWorkPosition(World world, BlockPosition position, int length) {
-        if (size() < 8) {
-            add(new WorkEntry(position, world.provider.dimensionId, length));
+    public boolean addWorkPosition(World world, BlockPosition position) {
+        if (position != null && size() < 8 && world.getTileEntity(position.x, position.y, position.z) instanceof IWorkSite) {
+            add(new WorkEntry(position, world.provider.dimensionId, 0));
             return true;
         }
         return false;//return true if successfully added
@@ -77,9 +77,9 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
         return null;
     }
 
-    public static void writeWorkOrder(ItemStack stack, WorkOrder order) {
+    public void write(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemWorkOrder) {
-            stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+            stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
     }
 

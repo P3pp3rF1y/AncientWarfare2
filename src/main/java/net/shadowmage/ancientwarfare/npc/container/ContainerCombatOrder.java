@@ -15,11 +15,11 @@ public class ContainerCombatOrder extends ContainerBase {
         super(player);
         ItemStack stack = player.getCurrentEquippedItem();
         if (stack == null || stack.getItem() == null) {
-            throw new IllegalArgumentException("Cannot open Work Order GUI for null stack/item.");
+            throw new IllegalArgumentException("Cannot open Combat Order GUI for null stack/item.");
         }
         combatOrder = CombatOrder.getCombatOrder(stack);
         if (combatOrder == null) {
-            throw new IllegalArgumentException("Upkeep orders was null for some reason");
+            throw new IllegalArgumentException("Combat orders was null for some reason");
         }
     }
 
@@ -35,7 +35,7 @@ public class ContainerCombatOrder extends ContainerBase {
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
         if (hasChanged && !player.worldObj.isRemote) {
-            CombatOrder.writeCombatOrder(player.getCurrentEquippedItem(), combatOrder);
+            combatOrder.write(player.getCurrentEquippedItem());
         }
     }
 }

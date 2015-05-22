@@ -37,12 +37,12 @@ public class ItemCombatOrder extends ItemOrders {
         }
         if (player.isSneaking()) {
             order.clear();
-            CombatOrder.writeCombatOrder(stack, order);
+            order.write(stack);
         } else {
             BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
             if (pos != null) {
                 order.addPatrolPoint(player.worldObj, pos);
-                CombatOrder.writeCombatOrder(stack, order);
+                order.write(stack);
             }
         }
     }
