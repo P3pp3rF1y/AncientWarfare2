@@ -329,6 +329,21 @@ public abstract class NpcPlayerOwned extends NpcBase {
     }
 
     @Override
+    protected boolean interact(EntityPlayer player) {
+        if(getFoodRemaining() < getUpkeepAmount()){
+            int value = AncientWarfareNPC.statics.getFoodValue(player.getHeldItem());
+            if(value>0){
+                if(!worldObj.isRemote){
+                    player.getHeldItem().stackSize--;
+                }
+                foodValueRemaining += value;
+                return true;
+            }
+        }
+        return super.interact(player);
+    }
+
+    @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if (foodValueRemaining > 0) {
