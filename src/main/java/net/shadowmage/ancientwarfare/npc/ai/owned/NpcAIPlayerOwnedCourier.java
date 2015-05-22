@@ -36,14 +36,14 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
             init = true;
             routeStack = npc.ordersStack;
             order = RoutingOrder.getRoutingOrder(routeStack);
-            if ((order != null && routeIndex >= order.getEntries().size()) || order == null) {
+            if ((order != null && routeIndex >= order.size()) || order == null) {
                 routeIndex = 0;
             }
         }
         if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
             return false;
         }
-        return courier.backpackInventory != null && order != null && !order.getEntries().isEmpty();
+        return courier.backpackInventory != null && order != null && !order.isEmpty();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
         if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
             return false;
         }
-        return courier.backpackInventory != null && order != null && !order.getEntries().isEmpty();
+        return courier.backpackInventory != null && order != null && !order.isEmpty();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
 
     @Override
     public void updateTask() {
-        BlockPosition pos = order.getEntries().get(routeIndex).getTarget();
+        BlockPosition pos = order.get(routeIndex).getTarget();
         double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
         if (dist > 5.d * 5.d) {
             npc.addAITask(TASK_MOVE);
@@ -104,7 +104,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
         IInventory npcInv = courier.backpackInventory;
         if (target != null) {
             ticksAtSite = 0;
-            int moved = order.handleRouteAction(order.getEntries().get(routeIndex), npcInv, target);
+            int moved = order.handleRouteAction(order.get(routeIndex), npcInv, target);
             courier.updateBackpackItemContents();
             if (moved > 0) {
                 ticksToWork = AWNPCStatics.npcCourierWorkTicks * moved;
@@ -123,7 +123,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
     }
 
     private IInventory getTargetInventory() {
-        BlockPosition pos = order.getEntries().get(routeIndex).getTarget();
+        BlockPosition pos = order.get(routeIndex).getTarget();
         TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
         if (te instanceof IInventory) {
             return (IInventory) te;
@@ -136,7 +136,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
         ticksToWork = 0;
         moveRetryDelay = 0;
         routeIndex++;
-        if (routeIndex >= order.getEntries().size()) {
+        if (routeIndex >= order.size()) {
             routeIndex = 0;
         }
     }

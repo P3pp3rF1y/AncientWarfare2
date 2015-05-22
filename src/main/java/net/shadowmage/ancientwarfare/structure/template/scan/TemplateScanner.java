@@ -86,7 +86,7 @@ public final class TemplateScanner {
 
                     scannedBlock = world.getBlock(scanX, scanY, scanZ);
 
-                    if (scannedBlock != null && !AWStructureStatics.shouldSkipScan(scannedBlock) && !world.isAirBlock(scanX, scanY, scanZ)) {
+                    if (scannedBlock != null && !AWStructureStatics.shouldSkipScan(scannedBlock) && !scannedBlock.isAir(world, scanX, scanY, scanZ)) {
                         pluginId = StructurePluginManager.INSTANCE.getPluginNameFor(scannedBlock);
                         if (pluginId != null) {
                             meta = world.getBlockMetadata(scanX, scanY, scanZ);
@@ -105,10 +105,12 @@ public final class TemplateScanner {
                             }
                             if (!found) {
                                 scannedBlockRule = StructurePluginManager.INSTANCE.getRuleForBlock(world, scannedBlock, turns, scanX, scanY, scanZ);
-                                scannedBlockRule.ruleNumber = nextRuleID;
-                                nextRuleID++;
-                                pluginBlockRules.add(scannedBlockRule);
-                                currentRulesAll.add(scannedBlockRule);
+                                if(scannedBlockRule!=null) {
+                                    scannedBlockRule.ruleNumber = nextRuleID;
+                                    nextRuleID++;
+                                    pluginBlockRules.add(scannedBlockRule);
+                                    currentRulesAll.add(scannedBlockRule);
+                                }
                             }
                             index = StructureTemplate.getIndex(destination.x, destination.y, destination.z, xOutSize, ySize, zOutSize);
                             templateRuleData[index] = (short) scannedBlockRule.ruleNumber;

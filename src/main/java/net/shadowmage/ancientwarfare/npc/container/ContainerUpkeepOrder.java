@@ -35,7 +35,7 @@ public class ContainerUpkeepOrder extends ContainerBase {
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
         if (hasChanged && !player.worldObj.isRemote) {
-            UpkeepOrder.writeUpkeepOrder(player.getCurrentEquippedItem(), upkeepOrder);
+            upkeepOrder.write(player.getCurrentEquippedItem());
         }
     }
 

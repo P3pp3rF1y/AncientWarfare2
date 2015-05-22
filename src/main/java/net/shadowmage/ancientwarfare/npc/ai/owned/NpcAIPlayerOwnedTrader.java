@@ -96,11 +96,6 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
     }
 
     @Override
-    public boolean continueExecuting() {
-        return orders != null && waypoint != null;
-    }
-
-    @Override
     public void updateTask() {
         if (trader.shouldBeAtHome() || shelter) {
             updateShelter();
@@ -280,7 +275,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
     }
 
     private void doDeposit() {
-        ItemStack backpack = npc.getEquipmentInSlot(0);
+        ItemStack backpack = npc.getHeldItem();
         if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
             InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
             BlockPosition pos = orders.getRestockData().getDepositPoint();
@@ -294,7 +289,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
     }
 
     private void doWithdraw() {
-        ItemStack backpack = npc.getEquipmentInSlot(0);
+        ItemStack backpack = npc.getHeldItem();
         if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
             InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
             BlockPosition pos = orders.getRestockData().getWithdrawPoint();

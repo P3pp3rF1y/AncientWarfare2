@@ -1,16 +1,15 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class InventoryBasic implements IInventorySaveable {
+public class InventoryBasic implements IInventory, INBTSerialable {
 
     private ItemStack[] inventorySlots;
-
-    protected InventoryBasic() {
-    }
 
     public InventoryBasic(int size) {
         inventorySlots = new ItemStack[size];

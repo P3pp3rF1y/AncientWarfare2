@@ -54,8 +54,11 @@ public class NpcAIFactionRideHorse extends NpcAI {
     private void spawnHorse() {
         EntityHorse horse = new EntityHorse(npc.worldObj);
         horse.setLocationAndAngles(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
-        horse.setHorseType(0);
-        //TODO set horse variant randomly...need to find how/where to set this at/from
+        do {
+            horse.setHorseType(0);
+            horse.setGrowingAge(0);
+            horse.onSpawnWithEgg(null);
+        }while (horse.getHorseType()!=0 || horse.isChild());
         horse.setHorseSaddled(false);
         horse.setHorseTamed(true);
         this.horse = horse;
@@ -86,8 +89,7 @@ public class NpcAIFactionRideHorse extends NpcAI {
     }
 
     private void applyModifiers() {
-        horse.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(moveSpeedModifier);
-        horse.getEntityAttribute(SharedMonsterAttributes.followRange).removeModifier(followRangeModifier);
+        removeModifiers();
         horse.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(moveSpeedModifier);
         horse.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(followRangeModifier);
     }

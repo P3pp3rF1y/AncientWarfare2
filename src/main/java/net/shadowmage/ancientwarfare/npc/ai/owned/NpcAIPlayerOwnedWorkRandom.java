@@ -32,17 +32,6 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI {
     }
 
     @Override
-    public boolean continueExecuting() {
-        if (!npc.getIsAIEnabled()) {
-            return false;
-        }
-        if (npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) {
-            return false;
-        }
-        return npc.ordersStack == null && worker.autoWorkTarget != null;
-    }
-
-    @Override
     public void startExecuting() {
         npc.addAITask(TASK_WORK);
         ticksAtSite = 0;

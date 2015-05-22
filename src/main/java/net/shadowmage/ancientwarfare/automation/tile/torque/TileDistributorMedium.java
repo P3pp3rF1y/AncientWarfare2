@@ -9,7 +9,7 @@ public class TileDistributorMedium extends TileDistributor {
     public TileDistributorMedium() {
         double max = AWAutomationStatics.med_transfer_max;
         double eff = AWAutomationStatics.med_efficiency_factor;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < storage.length; i++) {
             storage[i] = new SidedTorqueCell(max, max, max, eff, ForgeDirection.values()[i], this);//TODO set from config
         }
     }

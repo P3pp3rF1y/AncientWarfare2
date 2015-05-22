@@ -392,8 +392,8 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
             NBTBase upgradeTag = tag.getTag("upgrades");
             if (upgradeTag instanceof NBTTagIntArray) {
                 int[] ug = tag.getIntArray("upgrades");
-                for (int i = 0; i < ug.length; i++) {
-                    upgrades.add(WorksiteUpgrade.values()[ug[i]]);
+                for (int anUg : ug) {
+                    upgrades.add(WorksiteUpgrade.values()[anUg]);
                 }
             } else if (upgradeTag instanceof NBTTagList)//template parser reads int-arrays as a tag list for some reason
             {
@@ -456,8 +456,8 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         upgrades.clear();
         if (pkt.func_148857_g().hasKey("upgrades")) {
             int[] ugs = pkt.func_148857_g().getIntArray("upgrades");
-            for (int i = 0; i < ugs.length; i++) {
-                upgrades.add(WorksiteUpgrade.values()[ugs[i]]);
+            for (int ug : ugs) {
+                upgrades.add(WorksiteUpgrade.values()[ug]);
             }
         }
         orientation = ForgeDirection.values()[pkt.func_148857_g().getInteger("orientation")];

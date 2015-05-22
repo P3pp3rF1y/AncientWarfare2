@@ -1,23 +1,25 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
+import cpw.mods.fml.common.Loader;
 import net.minecraft.command.IEntitySelector;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
+
+import java.util.Collection;
 
 public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
@@ -57,9 +59,9 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-        this.targetTasks.addTask(0, new NpcAIPlayerOwnedFindCommander(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, true, false, selector));
+        this.targetTasks.addTask(0, new NpcAIPlayerOwnedCommander(this));
+        this.targetTasks.addTask(1, new NpcAIHurt(this));
+        this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
     }
 
     @Override
@@ -78,9 +80,9 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         if (!worldObj.isRemote) {
             this.tasks.removeTask(arrowAI);
             this.tasks.removeTask(collideAI);
-            ItemStack stack = getEquipmentInSlot(0);
+            ItemStack stack = getHeldItem();
             Item item = stack == null ? null : stack.getItem();
-            if (item instanceof ItemBow) {
+            if (isBow(item)) {
                 this.tasks.addTask(7, arrowAI);
             } else {
                 this.tasks.addTask(7, collideAI);
@@ -89,21 +91,37 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     }
 
     @Override
+    public boolean canAttackClass(Class claz) {
+        return (getHeldItem() != null && isBow(getHeldItem().getItem())) || super.canAttackClass(claz);
+    }
+
+    private boolean isBow(Item item){
+        // Inserting QuiverBow recognition here (for b78)
+        if (Loader.isModLoaded("quiverchevsky")) {
+            if (item instanceof com.domochevsky.quiverbow.weapons._WeaponBase) {
+                return true;
+            }
+        }
+        return item instanceof ItemBow;
+    }
+
+    @Override
     public String getNpcSubType() {
         return getSubtypeFromEquipment();
     }
 
     protected String getSubtypeFromEquipment() {
-        ItemStack stack = getEquipmentInSlot(0);
+        ItemStack stack = getHeldItem();
         if (stack != null && stack.getItem() != null) {
             Item item = stack.getItem();
+            Collection<String> tools = item.getToolClasses(stack);
+            if(tools.contains("axe")){
+                return "medic";
+            }else if(tools.contains("hammer"))
+                return "engineer";
             if (item instanceof ItemSword) {
                 return "soldier";
-            } else if (item instanceof ItemAxe) {
-                return "medic";
-            } else if (item instanceof ItemHammer) {
-                return "engineer";
-            } else if (item instanceof ItemBow) {
+            } else if (isBow(item)) {
                 return "archer";
             } else if (item instanceof ItemCommandBaton) {
                 return "commander";
@@ -134,32 +152,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2) {
-        // TODO clean this up, increase max attack distance
-
-        //TODO get attack damage to use from monster attributes
-
-        EntityArrow entityarrow = new EntityArrow(this.worldObj, this, par1EntityLivingBase, 1.6F, (float) (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
-
-        int bonusDamage = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, this.getHeldItem());
-        int knockBackStrenght = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, this.getHeldItem());
-
-        entityarrow.setDamage((double) (par2 * 2.0F) + this.rand.nextGaussian() * 0.25D + (double) ((float) this.worldObj.difficultySetting.getDifficultyId() * 0.11F));
-
-        if (bonusDamage > 0) {
-            entityarrow.setDamage(entityarrow.getDamage() + (double) bonusDamage * 0.5D + 0.5D);
-        }
-
-        knockBackStrenght /= 2;
-        if (knockBackStrenght > 0) {
-            entityarrow.setKnockbackStrength(knockBackStrenght);
-        }
-
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItem()) > 0) {
-            entityarrow.setFire(100);
-        }
-
-        this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(entityarrow);
+        RangeAttackHelper.doRangedAttack(this, par1EntityLivingBase, par2);
     }
 
 }

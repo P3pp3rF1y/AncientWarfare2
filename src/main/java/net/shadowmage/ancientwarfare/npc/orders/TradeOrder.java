@@ -2,16 +2,17 @@ package net.shadowmage.ancientwarfare.npc.orders;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
-import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
+import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
-public class TradeOrder extends NpcOrders {
+public class TradeOrder implements INBTSerialable {
 
     private POTradeRoute tradeRoute = new POTradeRoute();
     private POTradeRestockData restockEntry = new POTradeRestockData();
-    private POTradeList tradeList = new POTradeList();
+    private TradeList tradeList = new TradeList();
 
     public TradeOrder() {
     }
@@ -27,13 +28,13 @@ public class TradeOrder extends NpcOrders {
         return null;
     }
 
-    public static void writeTradeOrder(ItemStack stack, TradeOrder order) {
+    public void write(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemTradeOrder) {
-            stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+            stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
     }
 
-    public POTradeList getTradeList() {
+    public TradeList getTradeList() {
         return tradeList;
     }
 
@@ -47,7 +48,7 @@ public class TradeOrder extends NpcOrders {
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        tradeList = new POTradeList();
+        tradeList = new TradeList();
         tradeRoute = new POTradeRoute();
         restockEntry = new POTradeRestockData();
         tradeList.readFromNBT(tag.getCompoundTag("tradeList"));

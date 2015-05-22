@@ -1,4 +1,4 @@
-#research_name, item_name, item_damage, item_count
+#research_name, item_name, item_damage(optional), item_count
 invention,stick,0,12
 invention,string,0,3
 invention,coal,1,4

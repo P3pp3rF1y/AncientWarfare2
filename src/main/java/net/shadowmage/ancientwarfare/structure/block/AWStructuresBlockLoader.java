@@ -6,10 +6,7 @@ import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
-import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
-import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
-import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.tile.*;
 
 public class AWStructuresBlockLoader {
 
@@ -36,7 +33,7 @@ public class AWStructuresBlockLoader {
         builder.setIcon(4, "ancientwarfare:structure/builder_side");
         builder.setIcon(5, "ancientwarfare:structure/builder_side");
 
-//  AWBlocks.soundBlock = AWCoreBlockLoader.INSTANCE.register(new BlockSoundBlock(), "sound_block", ItemBlock.class, TileSoundBlock.class);
+        AWBlocks.soundBlock = AWCoreBlockLoader.INSTANCE.register(new BlockSoundBlock(), "sound_block", ItemBlock.class, TileSoundBlock.class);
     }
 
 }

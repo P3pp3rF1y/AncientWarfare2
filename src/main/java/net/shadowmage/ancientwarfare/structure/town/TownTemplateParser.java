@@ -5,10 +5,7 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class TownTemplateParser {
 
@@ -18,7 +15,7 @@ public class TownTemplateParser {
         String line;
 
         while (it.hasNext() && (line = it.next()) != null) {
-            line = line.toLowerCase();
+            line = line.toLowerCase(Locale.ENGLISH);
             if (line.startsWith("header:")) {
                 parseHeader(it, template);
             } else if (line.startsWith("walls:")) {
@@ -47,7 +44,7 @@ public class TownTemplateParser {
         String line;
         String lower;
         while (it.hasNext() && (line = it.next()) != null) {
-            lower = line.toLowerCase();
+            lower = line.toLowerCase(Locale.ENGLISH);
             if (lower.startsWith(":endheader")) {
                 break;
             } else if (lower.startsWith("name")) {
@@ -99,7 +96,7 @@ public class TownTemplateParser {
     private static void parseUniqueStructures(Iterator<String> it, TownTemplate template) {
         String line;
         while (it.hasNext() && (line = it.next()) != null) {
-            if (line.toLowerCase().startsWith(":enduniquestructures")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith(":enduniquestructures")) {
                 break;
             } else {
                 TownStructureEntry e = parseStructureName(line);
@@ -113,7 +110,7 @@ public class TownTemplateParser {
     private static void parseMainStructures(Iterator<String> it, TownTemplate template) {
         String line;
         while (it.hasNext() && (line = it.next()) != null) {
-            if (line.toLowerCase().startsWith(":endmainstructures")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith(":endmainstructures")) {
                 break;
             } else {
                 TownStructureEntry e = parseStructureName(line);
@@ -127,7 +124,7 @@ public class TownTemplateParser {
     private static void parseHouseStructures(Iterator<String> it, TownTemplate template) {
         String line;
         while (it.hasNext() && (line = it.next()) != null) {
-            if (line.toLowerCase().startsWith(":endhousestructures")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith(":endhousestructures")) {
                 break;
             } else {
                 TownStructureEntry e = parseStructureWeight(line);
@@ -141,7 +138,7 @@ public class TownTemplateParser {
     private static void parseCosmetics(Iterator<String> it, TownTemplate template) {
         String line;
         while (it.hasNext() && (line = it.next()) != null) {
-            if (line.toLowerCase().startsWith(":endcosmeticstructures")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith(":endcosmeticstructures")) {
                 break;
             } else {
                 TownStructureEntry e = parseStructureWeight(line);
@@ -155,7 +152,7 @@ public class TownTemplateParser {
     private static void parseExteriorStructures(Iterator<String> it, TownTemplate template) {
         String line;
         while (it.hasNext() && (line = it.next()) != null) {
-            if (line.toLowerCase().startsWith(":endexteriorstructures")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith(":endexteriorstructures")) {
                 break;
             } else {
                 TownStructureEntry e = parseStructureWeight(line);
@@ -169,7 +166,7 @@ public class TownTemplateParser {
     private static void parseWalls(Iterator<String> it, TownTemplate template) {
         String line;
         while (it.hasNext() && (line = it.next()) != null) {
-            if (line.toLowerCase().startsWith(":endwalls")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith(":endwalls")) {
                 break;
             } else {
                 TownWallEntry e = parseWall(line);
@@ -183,7 +180,7 @@ public class TownTemplateParser {
     private static void parseWallPatterns(Iterator<String> it, TownTemplate template) {
         String line;
         while (it.hasNext() && (line = it.next()) != null) {
-            if (line.toLowerCase().startsWith(":endwallpaterns")) {
+            if (line.toLowerCase(Locale.ENGLISH).startsWith(":endwallpaterns")) {
                 break;
             } else {
                 String[] bits = line.split(":", -1);
@@ -200,8 +197,8 @@ public class TownTemplateParser {
             return Collections.emptyList();
         }
         List<String> names = new ArrayList<String>();
-        for (int i = 0; i < bits.length; i++) {
-            names.add(bits[i].toLowerCase());
+        for (String bit : bits) {
+            names.add(bit.toLowerCase(Locale.ENGLISH));
         }
         return names;
     }
@@ -212,8 +209,8 @@ public class TownTemplateParser {
             return Collections.emptyList();
         }
         List<Integer> dims = new ArrayList<Integer>();
-        for (int i = 0; i < bits.length; i++) {
-            dims.add(StringTools.safeParseInt(bits[i].toLowerCase()));
+        for (String bit : bits) {
+            dims.add(StringTools.safeParseInt(bit.toLowerCase(Locale.ENGLISH)));
         }
         return dims;
     }

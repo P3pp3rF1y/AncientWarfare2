@@ -98,6 +98,9 @@ public class WorldStructureGenerator implements IWorldGenerator {
             return;
         }
         StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
+        if(map == null){
+            return;
+        }
         world.theProfiler.startSection("AWTemplateGeneration");
         if (attemptStructureGenerationAt(world, x, y, z, face, template, map)) {
             AWLog.log(String.format("Generated structure: %s at %s, %s, %s, time: %sms", template.name, x, y, z, (System.currentTimeMillis() - t1)));
@@ -145,15 +148,17 @@ public class WorldStructureGenerator implements IWorldGenerator {
         int xs = bb.getXSize();
         int zs = bb.getZSize();
         int size = ((xs > zs ? xs : zs) / 16) + 3;
-        Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, x, z, size, true, new ArrayList<StructureEntry>());
-        for (StructureEntry entry : bbCheckList) {
-            if (bb.collidesWith(entry.getBB())) {
-                return false;
+        if(map!=null) {
+            Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, x, z, size, true, new ArrayList<StructureEntry>());
+            for (StructureEntry entry : bbCheckList) {
+                if (bb.collidesWith(entry.getBB())) {
+                    return false;
+                }
             }
         }
 
         TownMap townMap = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
-        if (townMap.intersectsWithTown(world, bb)) {
+        if (townMap!=null && townMap.intersectsWithTown(bb)) {
             AWLog.logDebug("Skipping structure generation: " + template.name + " at: " + bb + " for intersection with existing town");
             return false;
         }
@@ -166,7 +171,9 @@ public class WorldStructureGenerator implements IWorldGenerator {
     }
 
     private void generateStructureAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map, StructureBB bb) {
-        map.setGeneratedAt(world, x, y, z, face, new StructureEntry(x, y, z, face, template), template.getValidationSettings().isUnique());
+        if(map!=null) {
+            map.setGeneratedAt(world, x, y, z, face, new StructureEntry(x, y, z, face, template), template.getValidationSettings().isUnique());
+        }
         WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, x, y, z));
     }
 

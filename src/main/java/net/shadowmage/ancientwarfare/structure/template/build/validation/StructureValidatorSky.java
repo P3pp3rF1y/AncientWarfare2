@@ -43,11 +43,11 @@ public class StructureValidatorSky extends StructureValidator {
     @Override
     protected void readFromLines(List<String> lines) {
         for (String line : lines) {
-            if (line.toLowerCase().startsWith("mingenerationheight=")) {
+            if (startLow(line, "mingenerationheight=")) {
                 minGenerationHeight = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("maxgenerationheight=")) {
+            } else if (startLow(line, "maxgenerationheight=")) {
                 maxGenerationHeight = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("minflyingheight=")) {
+            } else if (startLow(line, "minflyingheight=")) {
                 minFlyingHeight = StringTools.safeParseInt("=", line);
             }
         }

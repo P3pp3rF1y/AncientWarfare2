@@ -150,6 +150,10 @@ public abstract class StructureValidator {
      */
     public abstract void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb);
 
+    public static boolean startLow(String text, String test){
+        return text.toLowerCase(Locale.ENGLISH).startsWith(test);
+    }
+
     public static final StructureValidator parseValidator(List<String> lines) {
         String type = null;
         List<String> tagLines = new ArrayList<String>();
@@ -162,45 +166,45 @@ public abstract class StructureValidator {
         Set<String> validTargetBlocks = new HashSet<String>();
 
         while (it.hasNext() && (line = it.next()) != null) {
-            if (line.toLowerCase().startsWith("type=")) {
+            if (startLow(line, "type=")) {
                 type = StringTools.safeParseString("=", line);
-            } else if (line.toLowerCase().startsWith("unique=")) {
+            } else if (startLow(line, "unique=")) {
                 unique = StringTools.safeParseBoolean("=", line);
-            } else if (line.toLowerCase().startsWith("survival=")) {
+            } else if (startLow(line, "survival=")) {
                 survival = StringTools.safeParseBoolean("=", line);
-            } else if (line.toLowerCase().startsWith("worldgenenabled=")) {
+            } else if (startLow(line, "worldgenenabled=")) {
                 worldGen = StringTools.safeParseBoolean("=", line);
-            } else if (line.toLowerCase().startsWith("biomewhitelist=")) {
+            } else if (startLow(line, "biomewhitelist=")) {
                 biome = StringTools.safeParseBoolean("=", line);
-            } else if (line.toLowerCase().startsWith("dimensionwhitelist=")) {
+            } else if (startLow(line, "dimensionwhitelist=")) {
                 dimension = StringTools.safeParseBoolean("=", line);
-            } else if (line.toLowerCase().startsWith("preserveblocks=")) {
+            } else if (startLow(line, "preserveblocks=")) {
                 blocks = StringTools.safeParseBoolean("=", line);
-            } else if (line.toLowerCase().startsWith("dimensionlist=")) {
+            } else if (startLow(line, "dimensionlist=")) {
                 dimensions = StringTools.safeParseIntArray("=", line);
-            } else if (line.toLowerCase().startsWith("biomelist=")) {
+            } else if (startLow(line, "biomelist=")) {
                 StringTools.safeParseStringsToSet(biomes, "=", line, true);
-            } else if (line.toLowerCase().startsWith("selectionweight=")) {
+            } else if (startLow(line, "selectionweight=")) {
                 selectionWeight = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("clustervalue=")) {
+            } else if (startLow(line, "clustervalue=")) {
                 clusterValue = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("minduplicatedistance=")) {
+            } else if (startLow(line, "minduplicatedistance=")) {
                 duplicate = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("leveling=")) {
+            } else if (startLow(line, "leveling=")) {
                 maxLeveling = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("fill=")) {
+            } else if (startLow(line, "fill=")) {
                 maxFill = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("border=")) {
+            } else if (startLow(line, "border=")) {
                 borderSize = StringTools.safeParseInt("=", line);
-            } else if (line.toLowerCase().startsWith("validtargetblocks=")) {
+            } else if (startLow(line, "validtargetblocks=")) {
                 StringTools.safeParseStringsToSet(validTargetBlocks, "=", line, false);
-            } else if (line.toLowerCase().startsWith(StructureValidator.PROP_BLOCK_SWAP + "=")) {
+            } else if (startLow(line, StructureValidator.PROP_BLOCK_SWAP + "=")) {
                 swap = StringTools.safeParseBoolean("=", line);
-            } else if (line.toLowerCase().startsWith("data:")) {
+            } else if (startLow(line, "data:")) {
                 tagLines.add(line);
                 while (it.hasNext() && (line = it.next()) != null) {
                     tagLines.add(line);
-                    if (line.toLowerCase().startsWith(":enddata")) {
+                    if (startLow(line, ":enddata")) {
                         break;
                     }
                 }
@@ -586,7 +590,7 @@ public abstract class StructureValidator {
     }
 
     public boolean isSurvival() {
-        return properties.get("survival").getDataBoolean();
+        return properties.get(PROP_SURVIVAL).getDataBoolean();
     }
 
 }

@@ -6,15 +6,13 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeSetup;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
-import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.shadowmage.ancientwarfare.npc.trade.Trade;
+import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactionTradeSetup> {
 
     CompositeScrolled area;
-    FactionTradeList tradeList;
+    TradeList tradeList;
 
     public GuiNpcFactionTradeSetup(ContainerBase container) {
         super(container, 320, 240);
@@ -34,12 +32,9 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
             return;
         }
 
-        List<FactionTrade> trades = new ArrayList<FactionTrade>();
-        tradeList.getTrades(trades);
-
         int totalHeight = 8;
-        for (int i = 0; i < trades.size(); i++) {
-            totalHeight = addTrade(trades.get(i), totalHeight, i);
+        for (int i = 0; i < tradeList.size(); i++) {
+            totalHeight = addTrade(tradeList.get(i), totalHeight, i);
         }
 
         Button newTradeButton = new Button(8, totalHeight, xSize - 8 - 16, 12, "guistrings.new_trade") {
@@ -56,11 +51,9 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
         area.setAreaSize(totalHeight);
     }
 
-    private int addTrade(final FactionTrade trade, int startHeight, final int tradeNum) {
-        int gridX, gridY, slotX, slotY;
-        gridX = 0;
-        gridY = 0;
-        for (int i = 0; i < 9; i++) {
+    private int addTrade(final Trade trade, int startHeight, final int tradeNum) {
+        int gridX = 0, gridY = 0, slotX, slotY;
+        for (int i = 0; i < trade.size(); i++) {
             slotX = gridX * 18 + 8;
             slotY = gridY * 18 + startHeight;
             addTradeInputSlot(trade, slotX, slotY, i);
@@ -71,14 +64,11 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
                 gridX = 0;
                 gridY++;
             }
-            if (gridY >= 3) {
-                break;
-            }
         }
 
-        addTradeControls(trade, startHeight, tradeNum);
+        addTradeControls((FactionTrade) trade, startHeight, tradeNum);
 
-        startHeight += 18 * 3;//input/output grid size
+        startHeight += 18 * gridY;//input/output grid size
         area.addGuiElement(new Line(0, startHeight + 1, xSize, startHeight + 1, 1, 0x000000ff));
         startHeight += 5;//separator line and padding
         return startHeight;
@@ -86,11 +76,15 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
 
     private void addTradeControls(final FactionTrade trade, int startHeight, final int tradeNum) {
         startHeight -= 1;//offset by 1 to lineup better with the item slot boxes, as they align to the inner slot rather than border
-        int infoX = 6 * 18 + 8 + 9 + 4;
+        int startWidth = 8 + 3 * 18;
+        if (trade.size() < 3) {
+            startWidth += (trade.size() - 3) * 18;
+        }
+        int infoX = startWidth * 2 + 5;
         Button upButton = new Button(infoX, startHeight, 55, 12, "guistrings.up") {
             @Override
             protected void onPressed() {
-                tradeList.decrementTradePosition(tradeNum);
+                tradeList.increment(tradeNum);
                 refreshGui();
                 getContainer().tradesChanged = true;
             }
@@ -100,7 +94,7 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
         Button downButton = new Button(infoX, startHeight + 3 * 18 - 12, 55, 12, "guistrings.down") {
             @Override
             protected void onPressed() {
-                tradeList.incrementTradePosition(tradeNum);
+                tradeList.decrement(tradeNum);
                 refreshGui();
                 getContainer().tradesChanged = true;
             }
@@ -110,14 +104,14 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
         Button delete = new Button(infoX, startHeight + 21, 55, 12, "guistrings.delete") {
             @Override
             protected void onPressed() {
-                tradeList.deleteTrade(tradeNum);
+                tradeList.remove(tradeNum);
                 refreshGui();
                 getContainer().tradesChanged = true;
             }
         };
         area.addGuiElement(delete);
 
-        area.addGuiElement(new Label(8 + 3 * 18 + 1, startHeight + 20, "="));
+        area.addGuiElement(new Label(startWidth + 1, startHeight + 20, ">"));
 
         area.addGuiElement(new Label(infoX + 55 + 4, startHeight + 1, "guistrings.max_trades"));
 
@@ -145,33 +139,39 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
         area.addGuiElement(refillInput);
     }
 
-    private void addTradeInputSlot(final FactionTrade trade, int x, int y, final int slotNum) {
-        ItemStack stack = trade.getInput()[slotNum];
+    private void addTradeInputSlot(final Trade trade, int x, int y, final int slotNum) {
+        ItemStack stack = trade.getInputStack(slotNum);
         stack = stack == null ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? stack : stack.copy();
+                stack = stack == null ? null : stack.copy();
                 setItem(stack);
-                trade.getInput()[slotNum] = stack;
+                trade.setInputStack(slotNum, stack);
                 getContainer().tradesChanged = true;
             }
         };
+        if (stack == null) {
+            slot.addTooltip("guistrings.npc.trade_input_slot");
+        }
         area.addGuiElement(slot);
     }
 
-    private void addTradeOutputSlot(final FactionTrade trade, int x, int y, final int slotNum) {
-        ItemStack stack = trade.getOutput()[slotNum];
+    private void addTradeOutputSlot(final Trade trade, int x, int y, final int slotNum) {
+        ItemStack stack = trade.getOutputStack(slotNum);
         stack = stack == null ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? stack : stack.copy();
+                stack = stack == null ? null : stack.copy();
                 setItem(stack);
-                trade.getOutput()[slotNum] = stack;
+                trade.setOutputStack(slotNum, stack);
                 getContainer().tradesChanged = true;
             }
         };
+        if (stack == null) {
+            slot.addTooltip("guistrings.npc.trade_output_slot");
+        }
         area.addGuiElement(slot);
     }
 

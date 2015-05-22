@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import net.minecraft.item.ItemRecord;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -117,11 +119,10 @@ public class SongPlayData {
         String name;
         float length;//length in seconds, used to determine when count down for next tune should start
         int volume;// percentage, as integer 0 = 0%, 100=100%, 150=150%
-        boolean isRecord;
 
         public SongEntry() {
             name = "";
-            length = 0;
+            length = 5;
             volume = 100;
         }
 
@@ -130,7 +131,15 @@ public class SongPlayData {
         }
 
         public void setName(String name) {
-            this.name = name == null ? " " : name;
+            if(name == null){
+                this.name = "";
+            }else{
+                this.name = name;
+                ResourceLocation resource = new ResourceLocation(name);
+                boolean isRecord = resource.getResourcePath().startsWith("records.") || ItemRecord.getRecord("records."+resource.getResourcePath()) != null;
+                if(isRecord && length()<120)
+                    setLength(120);
+            }
         }
 
         public void setVolume(int volume) {
@@ -150,10 +159,7 @@ public class SongPlayData {
         }
 
         public void readFromNBT(NBTTagCompound tag) {
-            name = "";
-            if (tag.hasKey("name")) {
-                name = tag.getString("name");
-            }
+            name = tag.getString("name");
             length = tag.getFloat("length");
             volume = tag.getInteger("volume");
         }
@@ -168,13 +174,10 @@ public class SongPlayData {
         }
 
         public int play(World world, int x, int y, int z){
-            if(isRecord)
-                world.playRecord(name, x, y, z);
-            else
-                world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, name, volume * 0.03F, 1);
-            return (int) (length * 1200);//minutes(decimal) to ticks conversion
+            world.playRecord(null, x, y, z);
+            world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, name, volume * 0.03F, 1);
+            return (int) (length * 20);//seconds(decimal) to ticks conversion
         }
     }
-
 
 }

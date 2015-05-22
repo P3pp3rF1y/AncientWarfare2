@@ -264,7 +264,7 @@ guistrings.spawner.min_spawn_delay=最小重生延遲
 guistrings.spawner.max_spawn_delay=最大重生延遲
 guistrings.spawner.spawn_count=重生數量
 guistrings.spawner.max_nearby_entities=最大鄰近實體
-guistrings.spawner.required_player_range=所需物品，玩家範圍
+guistrings.required_player_range=所需物品，玩家範圍
 guistrings.spawner.spawn_range=重生範圍
 guistrings.spawner.warning_1=警告!一些生物會在放置時崩潰
 guistrings.spawner.warning_2=TEST ALL MOBS / SETTINGS ON AN UNCARED FOR WORLD FIRST
@@ -564,7 +564,7 @@ guistrings.research.learned_from_item=Learned %s from Research Notes!
 guistrings.research.added_progress=Added progress towards your current research from the research notes.
 guistrings.research.right_click_to_bind=Right Click To Assign
 guistrings.research.right_click_to_view=Right Click To View
-guistrings.research.research_mode=Research View Mode (or recipe view mode)?
+guistrings.research.research_mode=Research/Item View
 guistrings.research.researched_items=Researched Items
 guistrings.research.research_needed=Research Needed
 

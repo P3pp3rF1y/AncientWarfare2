@@ -66,8 +66,8 @@ public class WorldGenStructureManager {
         Set<String> biomes = validation.getBiomeList();
         if (validation.isBiomeWhiteList()) {
             for (String biome : biomes) {
-                if (templatesByBiome.containsKey(biome.toLowerCase())) {
-                    templatesByBiome.get(biome.toLowerCase()).add(template);
+                if (templatesByBiome.containsKey(biome.toLowerCase(Locale.ENGLISH))) {
+                    templatesByBiome.get(biome.toLowerCase(Locale.ENGLISH)).add(template);
                 } else {
                     AWLog.logError("Could not locate biome: " + biome + " while registering template: " + template.name + " for world generation.");
                 }
@@ -75,7 +75,7 @@ public class WorldGenStructureManager {
         } else//blacklist, skip template-biomes
         {
             for (String biome : templatesByBiome.keySet()) {
-                if (!biomes.isEmpty() && biomes.contains(biome.toLowerCase())) {
+                if (!biomes.isEmpty() && biomes.contains(biome.toLowerCase(Locale.ENGLISH))) {
                     continue;
                 }
                 templatesByBiome.get(biome).add(template);
@@ -91,13 +91,12 @@ public class WorldGenStructureManager {
         if (map == null) {
             return null;
         }
-        int foundValue, chunkDistance;
+        int foundValue = 0, chunkDistance;
         float foundDistance, mx, mz;
 
         BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
         String biomeName = AWStructureStatics.getBiomeName(biome);
         Collection<StructureEntry> duplicateSearchEntries = map.getEntriesNear(world, x, z, AWStructureStatics.duplicateStructureSearchRange, false, searchCache);
-        foundValue = 0;
         for (StructureEntry entry : duplicateSearchEntries) {
             mx = entry.getBB().getCenterX() - x;
             mz = entry.getBB().getCenterZ() - z;
@@ -117,13 +116,13 @@ public class WorldGenStructureManager {
         for (StructureEntry entry : clusterValueSearchEntries) {
             foundValue += entry.getValue();
         }
-
-        int remainingValueCache = AWStructureStatics.maxClusterValue - foundValue;
-        Collection<String> generatedUniques = map.getGeneratedUniques();
-        Set<StructureTemplate> potentialStructures = templatesByBiome.get(biomeName.toLowerCase());
+        Set<StructureTemplate> potentialStructures = templatesByBiome.get(biomeName.toLowerCase(Locale.ENGLISH));
         if (potentialStructures == null || potentialStructures.isEmpty()) {
             return null;
         }
+
+        int remainingValueCache = AWStructureStatics.maxClusterValue - foundValue;
+        Collection<String> generatedUniques = map.getGeneratedUniques();
         StructureValidator settings;
         int dim = world.provider.dimensionId;
         for (StructureTemplate template : potentialStructures)//loop through initial structures, only adding to 2nd list those which meet biome, unique, value, and minDuplicate distance settings

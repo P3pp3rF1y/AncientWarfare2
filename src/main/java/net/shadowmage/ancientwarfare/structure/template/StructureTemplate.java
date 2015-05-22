@@ -130,8 +130,7 @@ public class StructureTemplate {
                     }
                 }
             }
-            resourceList = new ArrayList<ItemStack>();
-            InventoryTools.compactStackList3(stacks, resourceList);
+            resourceList = InventoryTools.compactStackList3(stacks);
         }
         return resourceList;
     }

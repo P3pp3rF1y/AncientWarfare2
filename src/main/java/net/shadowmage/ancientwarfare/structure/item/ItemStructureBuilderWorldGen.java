@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
@@ -40,7 +41,7 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        String structure = "guistrings.no_selection";
+        String structure = "guistrings.structure.no_selection";
         ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(stack);
         if (viewSettings.hasName()) {
             structure = viewSettings.name;
@@ -67,18 +68,18 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
         if (buildSettings.hasName()) {
             StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(buildSettings.name);
             if (template == null) {
-                /**
-                 * TODO add chat message
-                 */
+                player.addChatComponentMessage(new ChatComponentTranslation("guistrings.template.not_found"));
                 return;
             }
             BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+            if(bpHit == null){
+                player.addChatComponentMessage(new ChatComponentTranslation("block.not_found"));
+                return;
+            }
             StructureMap map = AWGameData.INSTANCE.getData(player.worldObj, StructureMap.class);
             WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt(player.worldObj, bpHit.x, bpHit.y, bpHit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), template, map);
         } else {
-            /**
-             * TODO add chat message
-             */
+            player.addChatComponentMessage(new ChatComponentTranslation("guistrings.structure.no_selection"));
         }
     }
 

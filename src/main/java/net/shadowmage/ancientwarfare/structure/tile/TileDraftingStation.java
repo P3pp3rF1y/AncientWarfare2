@@ -66,7 +66,7 @@ public class TileDraftingStation extends TileEntity {
     private boolean tryRemoveResource() {
         ItemStack stack1, stack2;
         outerLoopLabel:
-        for (int k = 0; k < 27; k++) {
+        for (int k = 0; k < inputSlots.getSizeInventory(); k++) {
             stack2 = inputSlots.getStackInSlot(k);
             if (stack2 == null) {
                 continue;

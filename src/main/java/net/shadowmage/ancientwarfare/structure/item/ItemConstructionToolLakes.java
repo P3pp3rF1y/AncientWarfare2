@@ -36,7 +36,7 @@ public class ItemConstructionToolLakes extends Item implements IItemClickable {
             return;
         }
         Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
-        if (block != Blocks.air) {
+        if (!block.isAir(player.worldObj, pos.x, pos.y, pos.z)) {
             return;
         }
         FloodFillPathfinder pf = new FloodFillPathfinder(player.worldObj, pos.x, pos.y, pos.z, block, 0, false, true);

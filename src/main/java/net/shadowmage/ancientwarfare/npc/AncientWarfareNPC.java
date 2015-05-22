@@ -63,8 +63,6 @@ public class AncientWarfareNPC {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
-        AWLog.log("Ancient Warfare NPCs Pre-Init started");
-
         ModuleStatus.npcsLoaded = true;
 
         /**
@@ -107,26 +105,19 @@ public class AncientWarfareNPC {
         NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_FACTION_BARD, ContainerNpcFactionBard.class);
         PacketBase.registerPacketType(NetworkHandler.PACKET_NPC_COMMAND, PacketNpcCommand.class);
         PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class);
-        /**
-         * register tick-handlers
-         */
-        AWLog.log("Ancient Warfare NPCs Pre-Init completed");
     }
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        AWLog.log("Ancient Warfare NPCs Init started");
 
         /**
          * construct recipes, load plugins
          */
         AWNpcCrafting.loadRecipes();
-        AWLog.log("Ancient Warfare NPCs Init completed");
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
-        AWLog.log("Ancient Warfare NPCs Post-Init started");
         /**
          * save config for any changes that were made during loading stages
          */
@@ -134,7 +125,6 @@ public class AncientWarfareNPC {
         proxy.loadSkins();
         AWNPCEntityLoader.loadNpcSubtypeEquipment();
         statics.save();
-        AWLog.log("Ancient Warfare NPCs Post-Init completed.  Successfully completed all loading stages.");
     }
 
     @SubscribeEvent

@@ -26,7 +26,6 @@ public final class NetworkHandler implements IGuiHandler {
     public static final int PACKET_GUI = 1;
     public static final int PACKET_STRUCTURE = 2;
     public static final int PACKET_ITEM_KEY_INTERFACE = 3;
-    public static final int PACKET_SOUND = 4;
     public static final int PACKET_ENTITY = 5;
     public static final int PACKET_RESEARCH_INIT = 6;
     public static final int PACKET_RESEARCH_ADD = 7;
@@ -101,7 +100,6 @@ public final class NetworkHandler implements IGuiHandler {
         channel.register(new PacketHandlerServer());
         PacketBase.registerPacketType(PACKET_GUI, PacketGui.class);
         PacketBase.registerPacketType(PACKET_ITEM_KEY_INTERFACE, PacketItemInteraction.class);
-        PacketBase.registerPacketType(PACKET_SOUND, PacketSound.class);
         PacketBase.registerPacketType(PACKET_ENTITY, PacketEntity.class);
         PacketBase.registerPacketType(PACKET_RESEARCH_INIT, PacketResearchInit.class);
         PacketBase.registerPacketType(PACKET_RESEARCH_ADD, PacketResearchUpdate.class);

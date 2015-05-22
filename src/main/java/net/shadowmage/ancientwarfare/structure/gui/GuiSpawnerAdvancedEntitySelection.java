@@ -2,13 +2,12 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ModContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.Label;
-import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnSettings;
 
@@ -93,6 +92,21 @@ public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
                     refreshGui();
                 }
             };
+            String mod = "Minecraft";
+            String[] temp = name.split("\\.", 2);
+            if(temp.length>1) {
+                ModContainer modContainer = FMLCommonHandler.instance().findContainerFor(temp[0]);
+                if(modContainer!=null)
+                    mod = modContainer.getName();
+            }
+            Tooltip tip = new Tooltip(50, 20);
+            tip.addTooltipElement(new Label(0, 0, mod));
+            if(temp.length>1){
+                tip.addTooltipElement(new Label(0, 10, temp[1]));
+            }else{
+                tip.addTooltipElement(new Label(0, 10, name));
+            }
+            button.setTooltip(tip);
             area.addGuiElement(button);
             totalHeight += 12;
         }

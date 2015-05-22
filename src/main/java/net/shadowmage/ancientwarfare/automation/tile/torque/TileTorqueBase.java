@@ -103,15 +103,15 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
     }
 
     private void buildTorqueCache() {
-        ITorqueTile[] torqueCache = new ITorqueTile[6];
         if (worldObj == null) {
             throw new RuntimeException("Attempt to build neighbor cache on null world!!");
         }
+        ITorqueTile[] torqueCache = new ITorqueTile[6];
         ForgeDirection dir;
         TileEntity te;
         ITorqueTile itt;
         int x, y, z;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < torqueCache.length; i++) {
             dir = ForgeDirection.values()[i];
             if (!canOutputTorque(dir) && !canInputTorque(dir)) {
                 continue;
@@ -136,7 +136,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         ForgeDirection dir;
         TileEntity te;
         int x, y, z;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < rfCache.length; i++) {
             dir = ForgeDirection.values()[i];
             if (!canOutputTorque(dir) && !canInputTorque(dir)) {
                 continue;

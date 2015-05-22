@@ -17,23 +17,8 @@ public class NpcAIFollowPlayer extends NpcAI {
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute() {
-        target = this.npc.getFollowingEntity();
-        if (target == null) {
-            return false;
-        }
-        if (npc.getAttackTarget() != null) {
-            if (npc.getDistanceSqToEntity(target) < attackIgnoreDistance && npc.getDistanceSqToEntity(npc.getAttackTarget()) < attackIgnoreDistance) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-    public boolean continueExecuting() {
         target = this.npc.getFollowingEntity();
         if (target == null) {
             return false;
@@ -49,6 +34,7 @@ public class NpcAIFollowPlayer extends NpcAI {
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting() {
         moveRetryDelay = 0;
         this.npc.addAITask(TASK_FOLLOW);
@@ -57,6 +43,7 @@ public class NpcAIFollowPlayer extends NpcAI {
     /**
      * Resets the task
      */
+    @Override
     public void resetTask() {
         this.target = null;
         moveRetryDelay = 0;
@@ -66,6 +53,7 @@ public class NpcAIFollowPlayer extends NpcAI {
     /**
      * Updates the task
      */
+    @Override
     public void updateTask() {
         this.npc.getLookHelper().setLookPositionWithEntity(this.target, 10.0F, (float) this.npc.getVerticalFaceSpeed());
         double distance = npc.getDistanceSqToEntity(target);

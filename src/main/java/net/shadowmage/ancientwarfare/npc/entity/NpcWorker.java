@@ -3,8 +3,11 @@ package net.shadowmage.ancientwarfare.npc.entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
@@ -20,6 +23,8 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
+
+import java.util.Collection;
 
 public class NpcWorker extends NpcPlayerOwned implements IWorker {
 
@@ -81,15 +86,12 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
 
     @Override
     public float getWorkEffectiveness(WorkType type) {
-        float effectiveness = 1.f;
-        if (type == this.getWorkTypeFromEquipment()) {
+        if (canWorkAt(type)) {
+            float effectiveness = 1.f;
             float level = this.getLevelingStats().getLevel();
 
             effectiveness += level * 0.05f;
-            if (getEquipmentInSlot(0) == null) {
-                return effectiveness;
-            }
-            Item item = getEquipmentInSlot(0).getItem();
+            Item item = getHeldItem().getItem();
             if (item instanceof ItemTool) {
                 effectiveness += ((ItemTool) item).func_150913_i().getEfficiencyOnProperMaterial() * 0.05f;
             } else if (item instanceof ItemHoe) {
@@ -99,13 +101,10 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
                 effectiveness += ((ItemHammer) item).getMaterial().getEfficiencyOnProperMaterial() * 0.05f;
             } else if (item instanceof ItemQuill) {
                 effectiveness += ((ItemQuill) item).getMaterial().getEfficiencyOnProperMaterial() * 0.05f;
-            } else if (getEquipmentInSlot(0) != null) {
-                effectiveness += level * 0.05f;
             }
-        } else {
-            effectiveness = 0.f;
+            return effectiveness;
         }
-        return effectiveness;
+        return 0.F;
     }
 
     @Override
@@ -124,18 +123,21 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
     }
 
     protected WorkType getWorkTypeFromEquipment() {
-        ItemStack stack = getEquipmentInSlot(0);
+        ItemStack stack = getHeldItem();
         if (stack != null && stack.getItem() != null) {
             if (stack.getItem() instanceof ItemHoe) {
                 return WorkType.FARMING;
-            } else if (stack.getItem() instanceof ItemAxe) {
-                return WorkType.FORESTRY;
-            } else if (stack.getItem() instanceof ItemPickaxe) {
-                return WorkType.MINING;
-            } else if (stack.getItem() instanceof ItemHammer) {
-                return WorkType.CRAFTING;
-            } else if (stack.getItem() instanceof ItemQuill) {
-                return WorkType.RESEARCH;
+            } else {
+                Collection<String> tools = stack.getItem().getToolClasses(stack);
+                if (tools.contains("axe")) {
+                    return WorkType.FORESTRY;
+                } else if (tools.contains("pickaxe")) {
+                    return WorkType.MINING;
+                } else if (tools.contains("hammer")) {
+                    return WorkType.CRAFTING;
+                } else if (tools.contains("quill")) {
+                    return WorkType.RESEARCH;
+                }
             }
         }
         return WorkType.NONE;

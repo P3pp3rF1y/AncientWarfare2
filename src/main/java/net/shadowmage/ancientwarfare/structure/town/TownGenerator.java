@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
@@ -115,7 +114,7 @@ public class TownGenerator {
 
     private void spawnVillager(int minX, int y, int minZ) {
         EntityVillager villager = new EntityVillager(world);
-        VillagerRegistry.applyRandomTrade(villager, rng);
+        villager.onSpawnWithEgg(null);
         for (int i = 0; i < 10; i++) {
             int x = minX + rng.nextInt(16);
             int z = minZ + rng.nextInt(16);
@@ -134,18 +133,14 @@ public class TownGenerator {
         int gen;
         for (TownStructureEntry e : template.getUniqueStructureEntries()) {
             StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
-            if (t == null) {
-                continue;
-            }
-            uniqueTemplatesToGenerate.add(t);
+            if (t != null)
+                uniqueTemplatesToGenerate.add(t);
         }
 
         for (TownStructureEntry e : template.getMainStructureEntries()) {
             StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
-            if (t == null) {
-                continue;
-            }
-            mainTemplatesToGenerate.add(t);
+            if (t != null)
+                mainTemplatesToGenerate.add(t);
         }
 
         for (TownStructureEntry e : template.getHouseStructureEntries()) {

@@ -51,7 +51,7 @@ public class StringTools {
 
     public static Set<String> parseStringsToSet(Set<String> toFill, String[] data, boolean lowerCase) {
         for (String name : data) {
-            toFill.add(lowerCase ? name.toLowerCase() : name);
+            toFill.add(lowerCase ? name.toLowerCase(Locale.ENGLISH) : name);
         }
         return toFill;
     }

@@ -43,7 +43,6 @@ public class AncientWarfareModeler {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Modeler Pre-Init started");
         ModuleStatus.modelerLoaded = true;
         log = AncientWarfareCore.log;
         config = AWCoreStatics.getConfigFor("AncientWarfareModeler");
@@ -51,21 +50,14 @@ public class AncientWarfareModeler {
         /**
          * internal registry
          */
-        editorOpener = new ItemModelEditor("editor_opener");
-        editorOpener.setTextureName("ancientwarfare:modeler/editor_opener");
+        editorOpener = (ItemModelEditor) new ItemModelEditor("editor_opener").setTextureName("ancientwarfare:modeler/editor_opener");
         GameRegistry.registerItem(editorOpener, "editor_opener");
-
-        /**
-         * load pre-init
-         */
-        AWLog.log("Ancient Warfare Modeler Pre-Init completed.");
+        if (config.hasChanged())
+            config.save();
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Modeler Post-Init started");
-        if (config.hasChanged())
-            config.save();
         AWLog.log("Ancient Warfare Modeler Post-Init completed.  Successfully completed all loading stages.");
     }
 

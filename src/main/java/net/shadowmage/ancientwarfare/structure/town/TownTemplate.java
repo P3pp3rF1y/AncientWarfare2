@@ -245,19 +245,19 @@ public final class TownTemplate {
 
     public final void addWall(TownWallEntry e) {
         wallsByID.put(e.id, e);
-        if (e.typeName.toLowerCase().equals("wall")) {
+        if (e.typeName.equalsIgnoreCase("wall")) {
             walls.add(e);
             wallTotalWeights += e.weight;
-        } else if (e.typeName.toLowerCase().equals("corner")) {
+        } else if (e.typeName.equalsIgnoreCase("corner")) {
             cornerWalls.add(e);
             cornersTotalWeight += e.weight;
-        } else if (e.typeName.toLowerCase().equals("gate")) {
+        } else if (e.typeName.equalsIgnoreCase("gate")) {
             gateCenterWalls.add(e);
             gatesCenterTotalWeight += e.weight;
-        } else if (e.typeName.toLowerCase().equals("lgate")) {
+        } else if (e.typeName.equalsIgnoreCase("lgate")) {
             gateLeftWalls.add(e);
             gatesLeftTotalWeight += e.weight;
-        } else if (e.typeName.toLowerCase().equals("rgate")) {
+        } else if (e.typeName.equalsIgnoreCase("rgate")) {
             gateRightWalls.add(e);
             gatesRightTotalWeight += e.weight;
         }

@@ -44,14 +44,11 @@ public class NpcAIPlayerOwnedWork extends NpcAI {
             orderStack = npc.ordersStack;
             order = WorkOrder.getWorkOrder(orderStack);
             init = true;
-            if (order == null || workIndex >= order.getEntries().size()) {
+            if (order == null || workIndex >= order.size()) {
                 workIndex = 0;
             }
         }
-        if (orderStack != null && order != null && order.getEntries().size() > 0) {
-            return true;
-        }
-        return false;
+        return orderStack != null && order != null && !order.isEmpty();
     }
 
     @Override
@@ -62,15 +59,12 @@ public class NpcAIPlayerOwnedWork extends NpcAI {
         if (npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) {
             return false;
         }
-        if (orderStack != null && order != null && order.getEntries().size() > 0) {
-            return true;
-        }
-        return false;
+        return orderStack != null && order != null && !order.isEmpty();
     }
 
     @Override
     public void updateTask() {
-        BlockPosition pos = order.getEntries().get(workIndex).getPosition();
+        BlockPosition pos = order.get(workIndex).getPosition();
         double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
 //  AWLog.logDebug("distance to site: "+dist);
         if (dist > 5.d * 5.d) {
@@ -98,7 +92,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI {
         }
         if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
             ticksAtSite = 0;
-            WorkEntry entry = order.getEntries().get(workIndex);
+            WorkEntry entry = order.get(workIndex);
             BlockPosition pos = entry.getPosition();
             TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
@@ -115,12 +109,10 @@ public class NpcAIPlayerOwnedWork extends NpcAI {
                     if (shouldMoveFromTimeAtSite(entry)) {
                         setMoveToNextSite();
                     }
-                } else {
-                    setMoveToNextSite();
+                    return;
                 }
-            } else {
-                setMoveToNextSite();
             }
+            setMoveToNextSite();
         }
     }
 
@@ -132,47 +124,17 @@ public class NpcAIPlayerOwnedWork extends NpcAI {
         } else if (order.getPriorityType() == WorkPriorityType.PRIORITY_LIST) {
             return true;
         }
-        return order.getEntries().size() > 1;
+        return order.size() > 1;
     }
 
     protected boolean shouldMoveFromTimeAtSite(WorkEntry entry) {
-        if (order.getPriorityType() == WorkPriorityType.TIMED) {
-            return ticksAtSite > entry.getWorkLength();
-        } else if (order.getPriorityType() == WorkPriorityType.ROUTE) {
-            return false;
-        } else if (order.getPriorityType() == WorkPriorityType.PRIORITY_LIST) {
-            return false;
-        }
-        return false;
+        return order.getPriorityType() == WorkPriorityType.TIMED && ticksAtSite > entry.getWorkLength();
     }
 
     protected void setMoveToNextSite() {
         ticksAtSite = 0;
         moveRetryDelay = 0;
-        if (order.getPriorityType() == WorkPriorityType.PRIORITY_LIST) {
-            workIndex = 0;
-            WorkEntry entry;
-            BlockPosition pos;
-            IWorkSite site;
-            IWorker worker = (IWorker) npc;
-            for (int i = 0; i < order.getEntries().size(); i++) {
-                entry = order.getEntries().get(i);
-                pos = entry.getPosition();
-                TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
-                if (te instanceof IWorkSite) {
-                    site = (IWorkSite) te;
-                    if (worker.canWorkAt(site.getWorkType()) && site.hasWork()) {
-                        workIndex = i;
-                        break;
-                    }
-                }
-            }
-        } else {
-            workIndex++;
-            if (workIndex >= order.getEntries().size()) {
-                workIndex = 0;
-            }
-        }
+        workIndex = order.getPriorityType().getNextWorkIndex(workIndex, order.getEntries(), npc);
     }
 
     public void onOrdersChanged() {

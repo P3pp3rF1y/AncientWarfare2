@@ -1,15 +1,11 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
-import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFindCommander;
+import net.shadowmage.ancientwarfare.npc.ai.*;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionCommander;
 
 public abstract class NpcFactionSoldier extends NpcFaction {
 
@@ -19,7 +15,7 @@ public abstract class NpcFactionSoldier extends NpcFaction {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(1, new NpcAIFactionFindCommander(this));
+        this.tasks.addTask(1, new NpcAIFactionCommander(this));
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
         this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
         this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
@@ -28,8 +24,8 @@ public abstract class NpcFactionSoldier extends NpcFaction {
         this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, true, false, selector));
+        this.targetTasks.addTask(1, new NpcAIHurt(this));
+        this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
     }
 
 

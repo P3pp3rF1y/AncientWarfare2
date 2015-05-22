@@ -1,63 +1,17 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.Constants;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-public final class FactionTradeList {
+public final class FactionTradeList extends TradeList {
 
-    private List<FactionTrade> tradeList = new ArrayList<FactionTrade>();
     int ticks = 0;
 
-    public FactionTradeList() {
-    }
-
-    /**
-     * decreases the index of a trade and moves it up in the trade list
-     *
-     * @param num the index position to move
-     */
-    public void decrementTradePosition(int num) {
-        if (num <= 0 || num >= tradeList.size()) {
-            return;
-        }
-        FactionTrade trade = tradeList.remove(num);
-        tradeList.add(num - 1, trade);
-    }
-
-    /**
-     * increases the index of a trade and moves it down in the trade list
-     *
-     * @param num the index position to move
-     */
-    public void incrementTradePosition(int num) {
-        if (num >= tradeList.size() - 1) {
-            return;
-        }
-        FactionTrade trade = tradeList.remove(num);
-        tradeList.add(num + 1, trade);
-    }
-
-    /**
-     * deletes a trade from the trade list
-     *
-     * @param num the index of the trade to remove
-     */
-    public void deleteTrade(int num) {
-        if (num < 0 || num >= tradeList.size()) {
-            return;
-        }
-        tradeList.remove(num);
-    }
-
-    public void addNewTrade() {
-        tradeList.add(new FactionTrade());
+    @Override
+    protected Trade getNewTrade() {
+        return new FactionTrade();
     }
 
     /**
@@ -72,8 +26,8 @@ public final class FactionTradeList {
      * Will use the internal stored tick number value for updating the trades list.<br>
      */
     public void updateTradesForView() {
-        for (FactionTrade aTrade : tradeList) {
-            aTrade.updateTrade(ticks);
+        for (Trade aTrade : points) {
+            ((FactionTrade) aTrade).updateTrade(ticks);
         }
         ticks = 0;
     }
@@ -83,55 +37,28 @@ public final class FactionTradeList {
      * should be called before the changed list is sent from client->server from setup GUI.
      */
     public void removeEmptyTrades() {
-        Iterator<FactionTrade> it = tradeList.iterator();
-        FactionTrade t;
-        boolean hasItems = false;
+        Iterator<Trade> it = points.iterator();
+        Trade t;
         while (it.hasNext() && (t = it.next()) != null) {
-            hasItems = false;
-            for (int i = 0; i < 9; i++) {
-                if (t.getInput()[i] != null || t.getOutput()[i] != null) {
-                    hasItems = true;
-                    break;
-                }
-            }
-            if (!hasItems) {
+            if (!((FactionTrade) t).hasItems()) {
                 it.remove();
             }
         }
     }
 
-    /**
-     * Add all available trades to the passed in list.<br>
-     * Should be used on the client-side GUI to retrieve all trades.
-     */
-    public void getTrades(List<FactionTrade> trades) {
-        trades.addAll(tradeList);
+    public void performTrade(EntityPlayer player, int tradeNum) {
+        get(tradeNum).performTrade(player, null);
     }
 
-    public void performTrade(EntityPlayer player, IInventory tradeInput, int tradeNum) {
-        tradeList.get(tradeNum).performTrade(player, tradeInput);
-    }
-
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         tag.setInteger("ticks", ticks);
-        NBTTagList list = new NBTTagList();
-        for (FactionTrade aTrade : tradeList) {
-            list.appendTag(aTrade.writeToNBT(new NBTTagCompound()));
-        }
-        tag.setTag("tradeList", list);
-        return tag;
+        return super.writeToNBT(tag);
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         ticks = tag.getInteger("ticks");
-        tradeList.clear();
-        NBTTagList list = tag.getTagList("tradeList", Constants.NBT.TAG_COMPOUND);
-
-        FactionTrade t;
-        for (int i = 0; i < list.tagCount(); i++) {
-            t = new FactionTrade();
-            t.readFromNBT(list.getCompoundTagAt(i));
-            tradeList.add(t);
-        }
+        super.readFromNBT(tag);
     }
 }

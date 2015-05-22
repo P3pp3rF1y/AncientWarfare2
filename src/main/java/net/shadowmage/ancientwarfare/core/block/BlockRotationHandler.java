@@ -3,13 +3,12 @@ package net.shadowmage.ancientwarfare.core.block;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.inventory.IInventorySaveable;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -247,7 +246,7 @@ public class BlockRotationHandler {
         }
     }
 
-    public static class InventorySided implements ISidedInventory, IInventorySaveable {
+    public static class InventorySided implements ISidedInventory, INBTSerialable {
 
         private EnumSet<RelativeSide> validSides = EnumSet.of(RelativeSide.NONE);
 

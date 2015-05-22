@@ -5,10 +5,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -73,7 +70,6 @@ public class AncientWarfareStructures {
     public void preInit(FMLPreInitializationEvent evt) {
         ModuleStatus.structuresLoaded = true;
         log = AncientWarfareCore.log;
-        AWLog.log("Ancient Warfare Structures Pre-Init started");
         config = AWCoreStatics.getConfigFor("AncientWarfareStructures");
         statics = new AWStructureStatics(config);
 
@@ -112,27 +108,22 @@ public class AncientWarfareStructures {
         AWStructuresBlockLoader.load();
         String path = evt.getModConfigurationDirectory().getAbsolutePath();
         TemplateLoader.INSTANCE.initializeAndExportDefaults(path);
-        AWLog.log("Ancient Warfare Structures Pre-Init completed");
     }
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Structures Init started");
         BlockDataManager.INSTANCE.load();
         AWStructureCrafting.loadRecipes();
-        AWLog.log("Ancient Warfare Structures Init completed");
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Structures Post-Init started");
         statics.loadPostInitValues();//needs to be called prior to worldgen biome loading, as biome aliases are loaded in this stage
         StructurePluginManager.INSTANCE.loadPlugins();
         WorldGenStructureManager.INSTANCE.loadBiomeList();
         TemplateLoader.INSTANCE.loadTemplates();
         if (config.hasChanged())
             config.save();
-        AWLog.log("Ancient Warfare Structures Post-Init completed.  Successfully completed all loading stages.");
     }
 
     @SubscribeEvent
@@ -145,6 +136,11 @@ public class AncientWarfareStructures {
     @EventHandler
     public void serverStart(FMLServerStartingEvent evt) {
         evt.registerServerCommand(new CommandStructure());
+    }
+
+    @EventHandler
+    public void serverStop(FMLServerStoppingEvent evt){
+        WorldGenTickHandler.INSTANCE.finalTick();
     }
 
 }

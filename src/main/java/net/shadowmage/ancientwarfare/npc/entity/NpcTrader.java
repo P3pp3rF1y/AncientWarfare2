@@ -17,12 +17,12 @@ import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
-import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
+import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 public class NpcTrader extends NpcPlayerOwned {
 
     private EntityPlayer trader;//used by guis/containers to prevent further interaction
-    private POTradeList tradeList = new POTradeList();
+    private TradeList tradeList = new TradeList();
     private NpcAIPlayerOwnedTrader tradeAI;
 
     public NpcTrader(World par1World) {
@@ -123,7 +123,7 @@ public class NpcTrader extends NpcPlayerOwned {
         return false;
     }
 
-    public POTradeList getTradeList() {
+    public TradeList getTradeList() {
         return tradeList;
     }
 

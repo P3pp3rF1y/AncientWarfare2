@@ -35,7 +35,7 @@ public class ContainerWorkOrder extends ContainerBase {
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
         if (hasChanged && !player.worldObj.isRemote) {
-            WorkOrder.writeWorkOrder(player.getCurrentEquippedItem(), wo);
+            wo.write(player.getCurrentEquippedItem());
         }
     }
 

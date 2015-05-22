@@ -54,6 +54,12 @@ public class Tooltip {
     }
 
     public final void addTooltipElement(GuiElement element) {
+        if(this.width < element.width){
+            this.width = element.width + 2;
+        }
+        if(this.height < element.height){
+            this.height = element.height + 2;
+        }
         this.children.add(element);
     }
 

@@ -32,11 +32,6 @@ public class NpcAIFactionBard extends NpcAI {
     }
 
     @Override
-    public boolean continueExecuting() {
-        return npc.getIsAIEnabled() && bard.getTuneData().size() > 0;
-    }
-
-    @Override
     public void startExecuting() {
     }
 

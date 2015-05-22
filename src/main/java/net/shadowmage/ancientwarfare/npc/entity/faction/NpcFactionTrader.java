@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 public abstract class NpcFactionTrader extends NpcFaction {
 
     private FactionTradeList tradeList = new FactionTradeList();
-    public EntityPlayer trader = null;
+    private EntityPlayer trader;
 
     public NpcFactionTrader(World par1World) {
         super(par1World);
@@ -34,6 +34,14 @@ public abstract class NpcFactionTrader extends NpcFaction {
 
     public FactionTradeList getTradeList() {
         return tradeList;
+    }
+
+    public void startTrade(EntityPlayer player) {
+        trader = player;
+    }
+
+    public void closeTrade() {
+        trader = null;
     }
 
     @Override

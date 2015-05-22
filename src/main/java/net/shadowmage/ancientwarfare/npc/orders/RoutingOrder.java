@@ -7,87 +7,66 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.OrderingList;
 import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class RoutingOrder extends NpcOrders {
+public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implements INBTSerialable {
 
-    private List<RoutePoint> routingPoints = new ArrayList<RoutePoint>();
     int routeDimension;
 
     public RoutingOrder() {
     }
 
-    public void removePosition(int index) {
-        if (index >= 0 && index < routingPoints.size()) {
-            routingPoints.remove(index);
-        }
-    }
-
-    public void incrementPosition(int index) {
-        if (index >= 1 && index < routingPoints.size()) {
-            RoutePoint entry = routingPoints.remove(index);
-            routingPoints.add(index - 1, entry);
-        }
-    }
-
-    public void decrementPosition(int index) {
-        if (index >= 0 && index < routingPoints.size() - 1) {
-            RoutePoint entry = routingPoints.remove(index);
-            routingPoints.add(index + 1, entry);
-        }
-    }
-
     public void addRoutePoint(World world, int x, int y, int z) {
-        RoutePoint p = new RoutePoint(x, y, z);
-        routingPoints.add(p);
+        add(new RoutePoint(x, y, z));
     }
 
     public void changeRouteType(int index) {
-        if (index >= 0 && index < routingPoints.size()) {
-            RoutePoint entry = routingPoints.get(index);
+        if (index >= 0 && index < size()) {
+            RoutePoint entry = get(index);
             entry.changeRouteType();
         }
     }
 
     public void changeBlockSide(int index) {
-        if (index >= 0 && index < routingPoints.size()) {
-            RoutePoint entry = routingPoints.get(index);
+        if (index >= 0 && index < size()) {
+            RoutePoint entry = get(index);
             entry.changeBlockSide();
         }
     }
 
     public void toggleIgnoreDamage(int index) {
-        if (index >= 0 && index < routingPoints.size()) {
-            RoutePoint entry = routingPoints.get(index);
+        if (index >= 0 && index < size()) {
+            RoutePoint entry = get(index);
             entry.setIgnoreDamage(!entry.getIgnoreDamage());
         }
     }
 
     public void toggleIgnoreTag(int index) {
-        if (index >= 0 && index < routingPoints.size()) {
-            RoutePoint entry = routingPoints.get(index);
+        if (index >= 0 && index < size()) {
+            RoutePoint entry = get(index);
             entry.setIgnoreTag(!entry.getIgnoreTag());
         }
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        routingPoints.clear();
+        clear();
         NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < entryList.tagCount(); i++) {
-            routingPoints.add(new RoutePoint(entryList.getCompoundTagAt(i)));
+            add(new RoutePoint(entryList.getCompoundTagAt(i)));
         }
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagList list = new NBTTagList();
-        for (RoutePoint p : routingPoints) {
+        for (RoutePoint p : points) {
             list.appendTag(p.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("entryList", list);
@@ -105,9 +84,9 @@ public class RoutingOrder extends NpcOrders {
         return null;
     }
 
-    public static void writeRoutingOrder(ItemStack stack, RoutingOrder order) {
+    public void write(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemRoutingOrder) {
-            stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+            stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
     }
 
@@ -174,7 +153,13 @@ public class RoutingOrder extends NpcOrders {
             ignoreTag = val;
         }
 
-        private int depositAllItems(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide) {
+        private int depositAllItems(IInventory from, IInventory to, boolean reversed) {
+            int fromSide = -1;
+            int toSide = getBlockSide();
+            if (reversed) {
+                fromSide = getBlockSide();
+                toSide = -1;
+            }
             int moved = 0;
             ItemStack stack;
             int stackSize = 0;
@@ -215,7 +200,13 @@ public class RoutingOrder extends NpcOrders {
             return moved;
         }
 
-        private int depositAllItemsExcept(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide) {
+        private int depositAllItemsExcept(IInventory from, IInventory to, boolean reversed) {
+            int fromSide = -1;
+            int toSide = getBlockSide();
+            if (reversed) {
+                fromSide = getBlockSide();
+                toSide = -1;
+            }
             int moved = 0;
             ItemStack stack;
             int stackSize = 0;
@@ -256,7 +247,13 @@ public class RoutingOrder extends NpcOrders {
             return moved;
         }
 
-        private int fillTo(ItemStack[] filters, IInventory from, IInventory to, int fromSide, int toSide) {
+        private int fillTo(IInventory from, IInventory to, boolean reversed) {
+            int fromSide = -1;
+            int toSide = getBlockSide();
+            if (reversed) {
+                fromSide = getBlockSide();
+                toSide = -1;
+            }
             int moved = 0;
             int toMove = 0;
             int foundCount = 0;
@@ -317,7 +314,7 @@ public class RoutingOrder extends NpcOrders {
 
     }
 
-    public static enum RouteType {
+    public enum RouteType {
         /**
          * fill target up to the specified quantity from couriers inventory
          */
@@ -381,25 +378,24 @@ public class RoutingOrder extends NpcOrders {
      * returns the number of stacks processed for determining the length the courier should 'work' at the point
      */
     public int handleRouteAction(RoutePoint p, IInventory npc, IInventory target) {
-        int side = p.getBlockSide();
         switch (p.routeType) {
             case FILL_COURIER_TO:
-                return p.fillTo(p.filters, target, npc, side, -1);
+                return p.fillTo(target, npc, true);
 
             case FILL_TARGET_TO:
-                return p.fillTo(p.filters, npc, target, -1, side);
+                return p.fillTo(npc, target, false);
 
             case DEPOSIT_ALL_EXCEPT:
-                return p.depositAllItemsExcept(p.filters, npc, target, -1, side);
+                return p.depositAllItemsExcept(npc, target, false);
 
             case DEPOSIT_ALL_OF:
-                return p.depositAllItems(p.filters, npc, target, -1, side);
+                return p.depositAllItems(npc, target, false);
 
             case WITHDRAW_ALL_EXCEPT:
-                return p.depositAllItemsExcept(p.filters, target, npc, side, -1);
+                return p.depositAllItemsExcept(target, npc, true);
 
             case WITHDRAW_ALL_OF:
-                return p.depositAllItems(p.filters, target, npc, side, -1);
+                return p.depositAllItems(target, npc, true);
 
             default:
                 return 0;
@@ -408,7 +404,7 @@ public class RoutingOrder extends NpcOrders {
 
 
     public List<RoutePoint> getEntries() {
-        return routingPoints;
+        return points;
     }
 
 }

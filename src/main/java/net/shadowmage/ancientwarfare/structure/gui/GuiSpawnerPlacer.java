@@ -152,7 +152,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         attributesArea.addGuiElement(input);
         totalHeight += 12;
 
-        label = new Label(8, totalHeight, "guistrings.spawner.required_player_range");
+        label = new Label(8, totalHeight, "guistrings.required_player_range");
         attributesArea.addGuiElement(label);
         input = new NumberInput(120, totalHeight, 112, getContainer().requiredPlayerRange, this) {
             @Override

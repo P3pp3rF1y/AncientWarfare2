@@ -29,7 +29,7 @@ public abstract class TileDistributor extends TileTorqueSidedCell {
         double totalRequested = 0;
 
         TorqueCell out;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < storage.length; i++) {
             if (i == in) {
                 continue;
             }
@@ -44,7 +44,7 @@ public abstract class TileDistributor extends TileTorqueSidedCell {
             double percent = transfer / totalRequested;
             double request, trans;
             double transferred = 0;
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < storage.length; i++) {
                 if (i == in) {
                     continue;
                 }

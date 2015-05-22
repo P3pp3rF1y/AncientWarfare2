@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.ai.faction;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.util.ChunkCoordinates;
+import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -58,7 +59,7 @@ public class NpcAIFactionRangedAttack extends NpcAI {
     public void updateTask() {
         double dist = this.npc.getDistanceSq(this.target.posX, this.target.posY, this.target.posZ);
         boolean canSee = this.npc.getEntitySenses().canSee(this.target);
-
+        updateHeldItem();
         this.attackDelay--;
         this.npc.getLookHelper().setLookPositionWithEntity(this.target, 30.0F, 30.0F);
         if (dist > attackDistanceSq || !canSee) {
@@ -75,6 +76,11 @@ public class NpcAIFactionRangedAttack extends NpcAI {
                 npc.getNavigator().clearPathEntity();
             }
             if (this.attackDelay <= 0) {
+                int val = AIHelper.doQuiverBowThing(npc, target);
+                if(val>0){
+                    this.attackDelay = val;
+                    return;
+                }
                 float pwr = (float) (attackDistanceSq / dist);
                 pwr = pwr < 0.1f ? 0.1f : pwr > 1.f ? 1.f : pwr;
                 this.rangedAttacker.attackEntityWithRangedAttack(target, pwr);

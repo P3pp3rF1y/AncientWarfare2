@@ -67,7 +67,7 @@ public class TileMailbox extends TileEntity implements IOwnable, IInventory, ISi
         ItemStack item;
         String owner = privateBox ? owningPlayerName : null;
         int dim = worldObj.provider.dimensionId;
-        for (int k = 18; k < 36; k++) {
+        for (int k = 18; k < inventory.getSizeInventory(); k++) {
             item = inventory.getStackInSlot(k);
             if (item != null) {
                 data.addDeliverableItem(owner, destinationName, item, dim, xCoord, yCoord, zCoord);

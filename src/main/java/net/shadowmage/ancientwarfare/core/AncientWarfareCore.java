@@ -63,8 +63,6 @@ public class AncientWarfareCore {
          */
         config = AWCoreStatics.getConfigFor("AncientWarfare");
         log = evt.getModLog();
-
-        AWLog.log("Ancient Warfare Core Pre-Init Started");
         AWCoreStatics.loadConfig(config);
 
         /**
@@ -95,20 +93,16 @@ public class AncientWarfareCore {
          * initialize any other core module information
          */
         ResearchGoal.initializeResearch();
-
-        AWLog.log("Ancient Warfare Core Pre-Init Completed");
     }
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        AWLog.log("Ancient Warfare Core Init Started");
         /**
          * register recipes
          */
         AWCoreCrafting.loadRecipes();
         if (config.hasChanged())
             config.save();
-        AWLog.log("Ancient Warfare Core Init Completed");
     }
 
     @EventHandler

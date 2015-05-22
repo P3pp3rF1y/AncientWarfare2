@@ -51,6 +51,18 @@ public final class WorldGenTickHandler {
         }
     }
 
+    public void finalTick(){
+        while(!chunksToGen.isEmpty()){
+            genChunks();
+        }
+        while (!structuresToGen.isEmpty()){
+            genStructures();
+        }
+        while (!townChunksToGen.isEmpty()){
+            genTowns();
+        }
+    }
+
     private void genChunks() {
         if (!chunksToGen.isEmpty()) {
             ChunkGenerationTicket tk = chunksToGen.remove(0);

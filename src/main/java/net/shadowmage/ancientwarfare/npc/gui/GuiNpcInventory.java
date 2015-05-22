@@ -102,81 +102,38 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
         }
 
         ItemSlot slot;
-        Tooltip t;
-        String text;
-        int tw;
 
         slot = new ItemSlot(26, 8, new ItemStack(Items.iron_sword), this);
-        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-        text = "guistrings.npc.weapon_slot";
-        tw = fontRendererObj.getStringWidth(text);
-        t = new Tooltip(tw, 10);
-        t.addTooltipElement(new Label(0, 0, text));
-        slot.setTooltip(t);
+        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.weapon_slot");
         addGuiElement(slot);
 
         slot = new ItemSlot(26, 8 + 18 * 1, new ItemStack(AWNpcItemLoader.woodenShield), this);
-        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-        text = "guistrings.npc.shield_slot";
-        tw = fontRendererObj.getStringWidth(text);
-        t = new Tooltip(tw, 10);
-        t.addTooltipElement(new Label(0, 0, text));
-        slot.setTooltip(t);
+        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.shield_slot");
         addGuiElement(slot);
 
         slot = new ItemSlot(26, 8 + 18 * 2, new ItemStack(Items.iron_helmet), this);
-        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-        text = "guistrings.npc.helmet_slot";
-        tw = fontRendererObj.getStringWidth(text);
-        t = new Tooltip(tw, 10);
-        t.addTooltipElement(new Label(0, 0, text));
-        slot.setTooltip(t);
+        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.helmet_slot");
         addGuiElement(slot);
 
         slot = new ItemSlot(26, 8 + 18 * 3, new ItemStack(Items.iron_chestplate), this);
-        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-        text = "guistrings.npc.chest_slot";
-        tw = fontRendererObj.getStringWidth(text);
-        t = new Tooltip(tw, 10);
-        t.addTooltipElement(new Label(0, 0, text));
-        slot.setTooltip(t);
+        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.chest_slot");
         addGuiElement(slot);
 
         slot = new ItemSlot(26, 8 + 18 * 4, new ItemStack(Items.iron_leggings), this);
-        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-        text = "guistrings.npc.legs_slot";
-        tw = fontRendererObj.getStringWidth(text);
-        t = new Tooltip(tw, 10);
-        t.addTooltipElement(new Label(0, 0, text));
-        slot.setTooltip(t);
+        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.legs_slot");
         addGuiElement(slot);
 
         slot = new ItemSlot(26, 8 + 18 * 5, new ItemStack(Items.iron_boots), this);
-        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-        text = "guistrings.npc.boots_slot";
-        tw = fontRendererObj.getStringWidth(text);
-        t = new Tooltip(tw, 10);
-        t.addTooltipElement(new Label(0, 0, text));
-        slot.setTooltip(t);
+        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.boots_slot");
         addGuiElement(slot);
 
 
         slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 2, new ItemStack(AWItems.upkeepOrder), this);
-        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-        text = "guistrings.npc.upkeep_order_slot";
-        tw = fontRendererObj.getStringWidth(text);
-        t = new Tooltip(tw, 10);
-        t.addTooltipElement(new Label(0, 0, text));
-        slot.setTooltip(t);
+        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.upkeep_order_slot");
         addGuiElement(slot);
 
         slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 3, new ItemStack(AWItems.routingOrder), this);
-        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false);
-        text = "guistrings.npc.manual_order_slot";
-        tw = fontRendererObj.getStringWidth(text);
-        t = new Tooltip(tw, 10);
-        t.addTooltipElement(new Label(0, 0, text));
-        slot.setTooltip(t);
+        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.manual_order_slot");
         addGuiElement(slot);
     }
 

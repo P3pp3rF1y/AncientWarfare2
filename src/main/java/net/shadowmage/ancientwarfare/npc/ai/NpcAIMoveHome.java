@@ -30,19 +30,6 @@ public class NpcAIMoveHome extends NpcAI {
         return npc.shouldBeAtHome() || exceedsRange(distSq);
     }
 
-    @Override
-    public boolean continueExecuting() {
-        if (!npc.getIsAIEnabled()) {
-            return false;
-        }
-        if (!npc.hasHome()) {
-            return false;
-        }
-        ChunkCoordinates cc = npc.getHomePosition();
-        float distSq = (float) npc.getDistanceSq(cc.posX + 0.5d, cc.posY, cc.posZ + 0.5d);
-        return npc.shouldBeAtHome() || exceedsLeash(distSq);
-    }
-
     protected boolean exceedsRange(float distSq) {
         float range = getRange() * getRange();
         return distSq > range;
