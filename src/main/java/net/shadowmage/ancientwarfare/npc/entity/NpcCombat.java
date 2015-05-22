@@ -60,8 +60,8 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(0, new NpcAIPlayerOwnedFindCommander(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, true, false, selector));
+        this.targetTasks.addTask(1, new NpcAIHurt(this));
+        this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
     }
 
     @Override
@@ -88,6 +88,11 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
                 this.tasks.addTask(7, collideAI);
             }
         }
+    }
+
+    @Override
+    public boolean canAttackClass(Class claz) {
+        return (getHeldItem() != null && isBow(getHeldItem().getItem())) || super.canAttackClass(claz);
     }
 
     private boolean isBow(Item item){

@@ -9,7 +9,9 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFindCommander;
@@ -50,8 +52,8 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
         this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, true, false, selector));
+        this.targetTasks.addTask(1, new NpcAIHurt(this));
+        this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
     }
 
     @Override
@@ -59,4 +61,8 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
         RangeAttackHelper.doRangedAttack(this, par1EntityLivingBase, par2);
     }
 
+    @Override
+    public boolean canAttackClass(Class claz) {
+        return true;
+    }
 }

@@ -3,7 +3,10 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import cpw.mods.fml.common.Loader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public final class AIHelper {
     private AIHelper(){}
@@ -23,5 +26,16 @@ public final class AIHelper {
             }
         }
         return 0;
+    }
+
+    public static boolean isTarget(NpcBase npc, EntityLivingBase target, boolean checkSight) {
+        if (target == null || target == npc || !target.isEntityAlive() || !npc.canTarget(target)) {
+            return false;
+        } else if (target instanceof EntityPlayer && ((EntityPlayer) target).capabilities.disableDamage) {
+            return false;
+        } else if (checkSight && !npc.getEntitySenses().canSee(target)) {
+            return false;
+        }
+        return true;
     }
 }

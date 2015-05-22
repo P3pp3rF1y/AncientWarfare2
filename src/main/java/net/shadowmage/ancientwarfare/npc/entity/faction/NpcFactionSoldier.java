@@ -1,14 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFindCommander;
 
 public abstract class NpcFactionSoldier extends NpcFaction {
@@ -28,8 +24,8 @@ public abstract class NpcFactionSoldier extends NpcFaction {
         this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, true, false, selector));
+        this.targetTasks.addTask(1, new NpcAIHurt(this));
+        this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
     }
 
 
