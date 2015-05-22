@@ -66,8 +66,17 @@ public class InputHandler {
         Keybind k = getKeybind(name);
         if (k != null)//could be null if the keybind was added by a child-mod that is not currently present
         {
-            reassignKeyCode(k, getKeybindProp(name, k.key).getInt(k.key));
+            reassignKeyCode(k, getKeybindProp(name, k.key).getInt());
         }
+    }
+
+    public Property getKeybindProp(String name){
+        Keybind k = getKeybind(name);
+        if (k != null)
+        {
+            return getKeybindProp(name, k.key);
+        }
+        return null;
     }
 
     private Property getKeybindProp(String keyName, int defaultVal) {
@@ -135,7 +144,9 @@ public class InputHandler {
 
     public void registerKeybind(String name, int keyCode, InputCallback cb) {
         if (!keybindMap.containsKey(name)) {
-            int key = config.get(AWCoreStatics.keybinds, name, keyCode).getInt(keyCode);
+            Property property = getKeybindProp(name, keyCode);
+            property.comment += "Default key: " + Keyboard.getKeyName(keyCode);
+            int key = property.getInt();
             Keybind k = new Keybind(name, key);
             keybindMap.put(name, k);
             if (!bindsByKey.containsKey(key)) {
@@ -148,7 +159,8 @@ public class InputHandler {
         if (cb != null) {
             keybindMap.get(name).inputHandlers.add(cb);
         }
-        config.save();
+        if(config.hasChanged())
+            config.save();
     }
 
     public void reassignKeybind(String name, int newKey) {
@@ -157,7 +169,7 @@ public class InputHandler {
             return;
         }
 
-        config.get(AWCoreStatics.keybinds, name, 0).set(newKey);
+        getKeybindProp(name, k.key).set(newKey);
         reassignKeyCode(k, newKey);
         config.save();
     }
@@ -230,7 +242,7 @@ public class InputHandler {
     }
 
     private static final class ItemInputCallback implements InputCallback {
-        ItemKey key;
+        private final ItemKey key;
 
         public ItemInputCallback(ItemKey key) {
             this.key = key;
@@ -239,7 +251,7 @@ public class InputHandler {
         @Override
         public void onKeyPressed() {
             Minecraft minecraft = Minecraft.getMinecraft();
-            if (minecraft == null || minecraft.thePlayer == null || minecraft.currentScreen != null) {
+            if (minecraft.currentScreen != null) {
                 return;
             }
             ItemStack stack = minecraft.thePlayer.inventory.getCurrentItem();

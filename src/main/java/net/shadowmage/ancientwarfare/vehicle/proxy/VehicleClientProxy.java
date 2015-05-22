@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputKey;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderCatapult;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderMissile;
 import net.shadowmage.ancientwarfare.vehicle.render.VehicleBBRender;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +34,13 @@ public class VehicleClientProxy extends VehicleCommonProxy {
     }
 
     public void registerClientOptions() {
-        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_FORWARD, AWVehicleStatics.keybindForward.getInt(), new VehicleInputCallback(VehicleInputKey.FORWARD));
-        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_REVERSE, AWVehicleStatics.keybindReverse.getInt(), new VehicleInputCallback(VehicleInputKey.REVERSE));
-        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_LEFT, AWVehicleStatics.keybindLeft.getInt(), new VehicleInputCallback(VehicleInputKey.LEFT));
-        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_RIGHT, AWVehicleStatics.keybindRight.getInt(), new VehicleInputCallback(VehicleInputKey.RIGHT));
-        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_FIRE, AWVehicleStatics.keybindFire.getInt(), new VehicleInputCallback(VehicleInputKey.FIRE));
-        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_ASCEND, AWVehicleStatics.keybindAscend.getInt(), new VehicleInputCallback(VehicleInputKey.ASCEND));
-        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_DESCEND, AWVehicleStatics.keybindDescend.getInt(), new VehicleInputCallback(VehicleInputKey.DESCEND));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_FORWARD, Keyboard.KEY_W, new VehicleInputCallback(VehicleInputKey.FORWARD));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_REVERSE, Keyboard.KEY_S, new VehicleInputCallback(VehicleInputKey.REVERSE));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_LEFT, Keyboard.KEY_A, new VehicleInputCallback(VehicleInputKey.LEFT));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_RIGHT, Keyboard.KEY_D, new VehicleInputCallback(VehicleInputKey.RIGHT));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_FIRE, Keyboard.KEY_SPACE, new VehicleInputCallback(VehicleInputKey.FIRE));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_ASCEND, Keyboard.KEY_R, new VehicleInputCallback(VehicleInputKey.ASCEND));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_DESCEND, Keyboard.KEY_F, new VehicleInputCallback(VehicleInputKey.DESCEND));
         ConfigManager.registerConfigCategory(new VehicleCategory("awconfig.vehicle_keybinds"));
     }
 
@@ -78,13 +79,13 @@ public class VehicleClientProxy extends VehicleCommonProxy {
 
         private static List<IConfigElement> getElementList() {
             ArrayList<IConfigElement> list = new ArrayList<IConfigElement>();
-            list.add(new ConfigElement(AWVehicleStatics.keybindForward));
-            list.add(new ConfigElement(AWVehicleStatics.keybindReverse));
-            list.add(new ConfigElement(AWVehicleStatics.keybindLeft));
-            list.add(new ConfigElement(AWVehicleStatics.keybindRight));
-            list.add(new ConfigElement(AWVehicleStatics.keybindFire));
-            list.add(new ConfigElement(AWVehicleStatics.keybindAscend));
-            list.add(new ConfigElement(AWVehicleStatics.keybindDescend));
+            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.FORWARD.getName())));
+            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.REVERSE.getName())));
+            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.LEFT.getName())));
+            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.RIGHT.getName())));
+            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.FIRE.getName())));
+            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.ASCEND.getName())));
+            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.DESCEND.getName())));
             return list;
         }
     }
