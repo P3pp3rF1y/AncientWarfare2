@@ -205,11 +205,8 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
         super.writeToNBT(tag);
         if (!blocksToChop.isEmpty()) {
             NBTTagList chopList = new NBTTagList();
-            NBTTagCompound posTag;
             for (BlockPosition position : blocksToChop) {
-                posTag = new NBTTagCompound();
-                position.writeToNBT(posTag);
-                chopList.appendTag(posTag);
+                chopList.appendTag(position.writeToNBT(new NBTTagCompound()));
             }
             tag.setTag("targetList", chopList);
         }

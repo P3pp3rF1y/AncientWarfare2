@@ -108,12 +108,10 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         if (tag.hasKey("bbMin")) {
-            bbMin = new BlockPosition();
-            bbMin.read(tag.getCompoundTag("bbMin"));
+            bbMin = new BlockPosition(tag.getCompoundTag("bbMin"));
         }
         if (tag.hasKey("bbMax")) {
-            bbMax = new BlockPosition();
-            bbMax.read(tag.getCompoundTag("bbMax"));
+            bbMax = new BlockPosition(tag.getCompoundTag("bbMax"));
         }
         if (bbMax == null) {
             bbMax = new BlockPosition(xCoord, yCoord, zCoord + 1);
@@ -127,14 +125,10 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (bbMin != null) {
-            NBTTagCompound innerTag = new NBTTagCompound();
-            bbMin.writeToNBT(innerTag);
-            tag.setTag("bbMin", innerTag);
+            tag.setTag("bbMin", bbMin.writeToNBT(new NBTTagCompound()));
         }
         if (bbMax != null) {
-            NBTTagCompound innerTag = new NBTTagCompound();
-            bbMax.writeToNBT(innerTag);
-            tag.setTag("bbMax", innerTag);
+            tag.setTag("bbMax", bbMax.writeToNBT(new NBTTagCompound()));
         }
     }
 
@@ -142,14 +136,10 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase {
     public NBTTagCompound getDescriptionPacketTag(NBTTagCompound tag) {
         super.getDescriptionPacketTag(tag);
         if (bbMin != null) {
-            NBTTagCompound innerTag = new NBTTagCompound();
-            bbMin.writeToNBT(innerTag);
-            tag.setTag("bbMin", innerTag);
+            tag.setTag("bbMin", bbMin.writeToNBT(new NBTTagCompound()));
         }
         if (bbMax != null) {
-            NBTTagCompound innerTag = new NBTTagCompound();
-            bbMax.writeToNBT(innerTag);
-            tag.setTag("bbMax", innerTag);
+            tag.setTag("bbMax", bbMax.writeToNBT(new NBTTagCompound()));
         }
         return tag;
     }
@@ -159,12 +149,10 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase {
         super.onDataPacket(net, pkt);
         NBTTagCompound tag = pkt.func_148857_g();
         if (tag.hasKey("bbMin")) {
-            bbMin = new BlockPosition();
-            bbMin.read(tag.getCompoundTag("bbMin"));
+            bbMin = new BlockPosition(tag.getCompoundTag("bbMin"));
         }
         if (tag.hasKey("bbMax")) {
-            bbMax = new BlockPosition();
-            bbMax.read(tag.getCompoundTag("bbMax"));
+            bbMax = new BlockPosition(tag.getCompoundTag("bbMax"));
         }
     }
 

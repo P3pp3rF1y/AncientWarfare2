@@ -146,17 +146,9 @@ public class StructureBuilderTicked extends StructureBuilder {
         tag.setInteger("cz", clearZ);
         tag.setBoolean("cleared", hasClearedArea);
 
-        NBTTagCompound originTag = new NBTTagCompound();
-        buildOrigin.writeToNBT(originTag);
-        tag.setTag("buildOrigin", originTag);
-
-
-        NBTTagCompound bbMin = new NBTTagCompound();
-        NBTTagCompound bbMax = new NBTTagCompound();
-        bb.min.writeToNBT(bbMin);
-        bb.max.writeToNBT(bbMax);
-        tag.setTag("bbMin", bbMin);
-        tag.setTag("bbMax", bbMax);
+        tag.setTag("buildOrigin", buildOrigin.writeToNBT(new NBTTagCompound()));
+        tag.setTag("bbMin", bb.min.writeToNBT(new NBTTagCompound()));
+        tag.setTag("bbMax", bb.max.writeToNBT(new NBTTagCompound()));
     }
 
     /**
