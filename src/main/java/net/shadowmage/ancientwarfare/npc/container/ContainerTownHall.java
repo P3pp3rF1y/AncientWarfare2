@@ -25,7 +25,7 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
             yPos = (i / 9) * 18 + 8 + 16;
             addSlotToContainer(new Slot(tileEntity, i, xPos, yPos));
         }
-        addPlayerSlots(8, 8 + 3 * 18 + 8 + 16, 4);
+        addPlayerSlots(8 + 3 * 18 + 8 + 16);
         if (!player.worldObj.isRemote) {
             deathList.addAll(tileEntity.getDeathList());
             tileEntity.addViewer(this);

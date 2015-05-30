@@ -15,7 +15,7 @@ public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTr
         this.tradeList = entity.getTradeList();
         this.entity.startTrade(player);
 
-        addPlayerSlots(8, 240 - 4 - 8 - 4 * 18, 4);
+        addPlayerSlots();
     }
 
     @Override

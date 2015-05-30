@@ -57,7 +57,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
         }
 
         int y1 = 8 + 3 * 18 + 8;
-        y1 = this.addPlayerSlots(8, y1, 4);
+        y1 = this.addPlayerSlots(y1);
         TileWarehouseBase warehouse = tileEntity.getWarehouse();
         if (warehouse != null) {
             warehouse.addCraftingViewer(this);

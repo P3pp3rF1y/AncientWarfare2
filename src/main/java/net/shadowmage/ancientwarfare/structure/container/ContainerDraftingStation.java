@@ -59,7 +59,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
         addSlotToContainer(new SlotFiltered(tile.outputSlot, 0, 8 + 4 * 18, 94 - 16 - 18, filter));
 
-        this.addPlayerSlots(8, 156, 4);
+        this.addPlayerSlots(156);
     }
 
     @Override

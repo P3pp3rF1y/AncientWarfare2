@@ -45,7 +45,7 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
             }
         });//work/combat/route orders slot   TODO add slot validation
 
-        guiHeight = addPlayerSlots(8, 8 + 5 * 18 + 8 + 18, 4) + 8;
+        guiHeight = addPlayerSlots(8 + 5 * 18 + 8 + 18) + 8;
         name = entity.getCustomNameTag();
     }
 

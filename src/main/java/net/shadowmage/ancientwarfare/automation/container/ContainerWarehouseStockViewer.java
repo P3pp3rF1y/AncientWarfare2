@@ -18,7 +18,7 @@ public class ContainerWarehouseStockViewer extends ContainerTileBase<TileWarehou
         super(player, x, y, z);
         filters.addAll(tileEntity.getFilters());
         tileEntity.addViewer(this);
-        addPlayerSlots(8, 88, 4);//240-8-4-4*18
+        addPlayerSlots(88);//240-8-4-4*18
     }
 
     /**

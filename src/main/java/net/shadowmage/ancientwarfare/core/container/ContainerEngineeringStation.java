@@ -60,7 +60,7 @@ public class ContainerEngineeringStation extends ContainerBase {
         }
 
         int y1 = 8 + 3 * 18 + 8 + 2 * 18 + 4;
-        y1 = this.addPlayerSlots(8, y1, 4);
+        y1 = this.addPlayerSlots(y1);
     }
 
     @Override

@@ -54,8 +54,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             }
         }
 
-        int y1 = 240 - 8 - 4 - 4 * 18;
-        y1 = this.addPlayerSlots(8, y1, 4);
+        this.addPlayerSlots();
     }
 
     @Override

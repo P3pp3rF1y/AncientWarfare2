@@ -22,7 +22,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBa
 
     public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        addPlayerSlots(8, 142, 4);
+        addPlayerSlots(142);
         tileEntity.addViewer(this);
     }
 
