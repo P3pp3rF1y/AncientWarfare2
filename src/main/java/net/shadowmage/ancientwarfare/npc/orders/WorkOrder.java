@@ -18,18 +18,15 @@ import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 import java.util.List;
 
 public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBTSerialable {
-
+    public static final int MAX_SIZE = 8;
     private WorkPriorityType priorityType = WorkPriorityType.ROUTE;
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         clear();
         NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
-        WorkEntry entry;
         for (int i = 0; i < entryList.tagCount(); i++) {
-            entry = new WorkEntry();
-            entry.readFromNBT(entryList.getCompoundTagAt(i));
-            add(entry);
+            add(new WorkEntry(entryList.getCompoundTagAt(i)));
         }
         priorityType = WorkPriorityType.values()[tag.getInteger("priorityType")];
     }
@@ -53,12 +50,13 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
         return points;
     }
 
+    //return true if successfully added
     public boolean addWorkPosition(World world, BlockPosition position) {
-        if (position != null && size() < 8 && world.getTileEntity(position.x, position.y, position.z) instanceof IWorkSite) {
+        if (position != null && size() < MAX_SIZE) {
             add(new WorkEntry(position, world.provider.dimensionId, 0));
             return true;
         }
-        return false;//return true if successfully added
+        return false;
     }
 
     @Override
@@ -83,13 +81,19 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
         }
     }
 
+    public void togglePriority() {
+        WorkPriorityType[] type = WorkPriorityType.values();
+        priorityType = type[(priorityType.ordinal() + 1) % type.length];
+    }
+
     public static final class WorkEntry {
 
         private BlockPosition position = new BlockPosition();
         int dimension;
         private int workLength;
 
-        private WorkEntry() {
+        private WorkEntry(NBTTagCompound tag) {
+            readFromNBT(tag);
         }//nbt constructor
 
         public WorkEntry(BlockPosition position, int dimension, int workLength) {
@@ -148,7 +152,7 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
     }
 
     public enum WorkPriorityType {
-        PRIORITY_LIST{
+        SITE_NEED{
             @Override
             public int getNextWorkIndex(int current, List<WorkEntry> orders, NpcBase npc){
                 for (int i = 0; i < orders.size(); i++) {
@@ -172,6 +176,10 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
                 return 0;
             }
             return current+1;
+        }
+
+        public boolean isTimed(){
+            return this == TIMED;
         }
     }
 

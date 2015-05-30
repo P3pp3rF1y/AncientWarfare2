@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -9,46 +8,34 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
-import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkPriorityType;
 
 public class NpcAIPlayerOwnedWork extends NpcAI {
 
     public int ticksAtSite = 0;
     public int workIndex;
     public WorkOrder order;
-    ItemStack orderStack;
     boolean init = false;
-    NpcWorker worker;
 
     public NpcAIPlayerOwnedWork(NpcBase npc) {
         super(npc);
-        if (!(npc instanceof NpcWorker)) {
+        if (!(npc instanceof IWorker)) {
             throw new IllegalArgumentException("cannot instantiate work ai task on non-worker npc");
         }
-        worker = (NpcWorker) npc;
         this.setMutexBits(MOVE + ATTACK);
     }
 
     @Override
     public boolean shouldExecute() {
-        if (!npc.getIsAIEnabled()) {
-            return false;
-        }
-        if (npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) {
-            return false;
-        }
         if (!init) {
-            orderStack = npc.ordersStack;
-            order = WorkOrder.getWorkOrder(orderStack);
+            order = WorkOrder.getWorkOrder(npc.ordersStack);
             init = true;
             if (order == null || workIndex >= order.size()) {
                 workIndex = 0;
             }
         }
-        return orderStack != null && order != null && !order.isEmpty();
+        return continueExecuting();
     }
 
     @Override
@@ -59,7 +46,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI {
         if (npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) {
             return false;
         }
-        return orderStack != null && order != null && !order.isEmpty();
+        return order != null && !order.isEmpty();
     }
 
     @Override
@@ -117,18 +104,11 @@ public class NpcAIPlayerOwnedWork extends NpcAI {
     }
 
     protected boolean shouldMoveFromNoWork(WorkEntry entry) {
-        if (order.getPriorityType() == WorkPriorityType.TIMED) {
-            return false;
-        } else if (order.getPriorityType() == WorkPriorityType.ROUTE) {
-            return true;
-        } else if (order.getPriorityType() == WorkPriorityType.PRIORITY_LIST) {
-            return true;
-        }
-        return order.size() > 1;
+        return !order.getPriorityType().isTimed() && order.size() > 1;
     }
 
     protected boolean shouldMoveFromTimeAtSite(WorkEntry entry) {
-        return order.getPriorityType() == WorkPriorityType.TIMED && ticksAtSite > entry.getWorkLength();
+        return order.getPriorityType().isTimed() && ticksAtSite > entry.getWorkLength();
     }
 
     protected void setMoveToNextSite() {
@@ -138,8 +118,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI {
     }
 
     public void onOrdersChanged() {
-        orderStack = npc.ordersStack;
-        order = WorkOrder.getWorkOrder(orderStack);
+        order = WorkOrder.getWorkOrder(npc.ordersStack);
         workIndex = 0;
         ticksAtSite = 0;
     }
