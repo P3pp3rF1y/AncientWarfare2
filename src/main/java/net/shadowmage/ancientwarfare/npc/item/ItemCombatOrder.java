@@ -43,6 +43,7 @@ public class ItemCombatOrder extends ItemOrders {
             if (pos != null) {
                 order.addPatrolPoint(player.worldObj, pos);
                 order.write(stack);
+                addMessage(player);
             }
         }
     }

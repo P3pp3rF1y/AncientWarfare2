@@ -37,9 +37,9 @@ public class ItemRoutingOrder extends ItemOrders {
         if (order != null) {
             MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
             if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
-                order.addRoutePoint(player.worldObj, hit.blockX, hit.blockY, hit.blockZ);
-                order.get(order.size() - 1).setBlockSide(hit.sideHit);
+                order.addRoutePoint(hit.sideHit, hit.blockX, hit.blockY, hit.blockZ);
                 order.write(stack);
+                addMessage(player);
             }
         }
     }

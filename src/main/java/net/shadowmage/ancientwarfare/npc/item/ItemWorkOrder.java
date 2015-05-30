@@ -36,9 +36,9 @@ public class ItemWorkOrder extends ItemOrders {
             BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
             if (wo.addWorkPosition(player.worldObj, hit)) {
                 wo.write(stack);
-                player.openContainer.detectAndSendChanges();
-                //TODO add chat output message regarding adding a worksite to the work-orders
-                //TODO possibly open the gui after setting the work-point?
+                addMessage(player);
+            }else{
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_WORK_ORDER, 0, 0, 0);
             }
         }
     }

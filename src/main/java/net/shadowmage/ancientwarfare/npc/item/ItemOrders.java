@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
@@ -57,4 +58,8 @@ public abstract class ItemOrders extends Item implements IItemClickable, IItemKe
     }
 
     public abstract Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack);
+
+    public void addMessage(EntityPlayer player){
+        player.addChatComponentMessage(new ChatComponentTranslation("guistrings.npc.orders.position_added"));
+    }
 }
