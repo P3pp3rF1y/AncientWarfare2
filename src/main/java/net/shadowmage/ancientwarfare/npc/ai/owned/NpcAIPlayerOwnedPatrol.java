@@ -41,21 +41,12 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI {
                 patrolIndex = 0;
             }
         }
-        if (!npc.getIsAIEnabled()) {
-            return false;
-        }
-        if (npc.getAttackTarget() != null) {
-            return false;
-        }
-        return orders != null && ordersStack != null && orders.getPatrolDimension() == npc.worldObj.provider.dimensionId && !orders.isEmpty();
+        return continueExecuting();
     }
 
     @Override
     public boolean continueExecuting() {
-        if (!npc.getIsAIEnabled()) {
-            return false;
-        }
-        if (npc.getAttackTarget() != null) {
+        if (!npc.getIsAIEnabled() || npc.getAttackTarget() != null) {
             return false;
         }
         return orders != null && ordersStack != null && orders.getPatrolDimension() == npc.worldObj.provider.dimensionId && !orders.isEmpty();

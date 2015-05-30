@@ -40,10 +40,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
                 routeIndex = 0;
             }
         }
-        if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
-            return false;
-        }
-        return courier.backpackInventory != null && order != null && !order.isEmpty();
+        return continueExecuting();
     }
 
     @Override
@@ -101,10 +98,9 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
 
     private void startWork() {
         IInventory target = getTargetInventory();
-        IInventory npcInv = courier.backpackInventory;
         if (target != null) {
             ticksAtSite = 0;
-            int moved = order.handleRouteAction(order.get(routeIndex), npcInv, target);
+            int moved = order.handleRouteAction(order.get(routeIndex), courier.backpackInventory, target);
             courier.updateBackpackItemContents();
             if (moved > 0) {
                 ticksToWork = AWNPCStatics.npcCourierWorkTicks * moved;
@@ -114,12 +110,10 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
                     ticksToWork = 0;
                 }
                 npc.addExperience(moved * AWNPCStatics.npcXpFromMoveItem);
-            } else {
-                setMoveToNextSite();
+                return;
             }
-        } else {
-            setMoveToNextSite();
         }
+        setMoveToNextSite();
     }
 
     private IInventory getTargetInventory() {
