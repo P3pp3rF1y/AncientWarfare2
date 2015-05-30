@@ -21,8 +21,8 @@ public class CombatOrder extends OrderingList<BlockPosition> implements INBTSeri
     public void addPatrolPoint(World world, BlockPosition point) {
         if (world.provider.dimensionId != patrolDimensionId) {
             clear();
+            patrolDimensionId = world.provider.dimensionId;
         }
-        patrolDimensionId = world.provider.dimensionId;
         add(point);
     }
 

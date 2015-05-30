@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -32,14 +31,10 @@ public class ItemUpkeepOrder extends ItemOrders {
         UpkeepOrder upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
         if (upkeepOrder != null) {
             BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
-            if (hit != null && player.worldObj.getTileEntity(hit.x, hit.y, hit.z) instanceof IInventory) {
-                if (upkeepOrder.addUpkeepPosition(player.worldObj, hit)) {
-                    upkeepOrder.write(stack);
-                    player.openContainer.detectAndSendChanges();
-                    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
-                    //TODO add chat output message regarding adding a worksite to the work-orders
-                }
+            if (upkeepOrder.addUpkeepPosition(player.worldObj, hit)) {
+                upkeepOrder.write(stack);
             }
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
         }
     }
 

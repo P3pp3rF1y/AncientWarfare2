@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.orders;
 
 import net.minecraft.block.Block;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -67,11 +68,14 @@ public class UpkeepOrder implements INBTSerialable {
     }
 
     public boolean addUpkeepPosition(World world, BlockPosition pos) {
-        upkeepPosition = pos;
-        upkeepDimension = world.provider.dimensionId;
-        blockSide = 0;
-        upkeepAmount = 6000;
-        return true;
+        if(pos != null && world.getTileEntity(pos.x, pos.y, pos.z) instanceof IInventory) {
+            upkeepPosition = pos;
+            upkeepDimension = world.provider.dimensionId;
+            blockSide = 0;
+            upkeepAmount = 6000;
+            return true;
+        }
+        return false;
     }
 
     @Override
