@@ -25,7 +25,8 @@ package net.shadowmage.ancientwarfare.core.util;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.DimensionManager;
+import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public final class BlockPosition {
 
@@ -216,7 +217,10 @@ public final class BlockPosition {
     }
 
     public Block get(int dimension){
-        return DimensionManager.getWorld(dimension).getBlock(x, y, z);
+        World world = AncientWarfareCore.proxy.getWorld(dimension);
+        if(world==null)
+            return null;
+        return world.getBlock(x, y, z);
     }
 
     @Override

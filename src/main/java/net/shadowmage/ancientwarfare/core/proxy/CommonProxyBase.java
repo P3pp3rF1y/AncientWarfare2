@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.proxy;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -33,4 +34,7 @@ public class CommonProxyBase {
 
     }
 
+    public World getWorld(int dimension) {
+        return MinecraftServer.getServer().worldServerForDimension(dimension);
+    }
 }

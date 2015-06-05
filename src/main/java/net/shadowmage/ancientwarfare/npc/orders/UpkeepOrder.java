@@ -59,10 +59,6 @@ public class UpkeepOrder implements INBTSerialable {
         return upkeepPosition == null ?  null : upkeepPosition.get(upkeepDimension);
     }
 
-    public int getBlockMeta() {
-        return upkeepPosition == null ?  0 : DimensionManager.getWorld(upkeepDimension).getBlockMetadata(upkeepPosition.x, upkeepPosition.y, upkeepPosition.z);
-    }
-
     public final int getUpkeepAmount() {
         return upkeepAmount;
     }
