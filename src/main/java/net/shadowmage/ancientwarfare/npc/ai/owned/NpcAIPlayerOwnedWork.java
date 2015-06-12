@@ -51,19 +51,22 @@ public class NpcAIPlayerOwnedWork extends NpcAI {
 
     @Override
     public void updateTask() {
-        BlockPosition pos = order.get(workIndex).getPosition();
+        WorkEntry entry = order.get(workIndex);
+        BlockPosition pos = entry.getPosition();
         double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
 //  AWLog.logDebug("distance to site: "+dist);
-        if (dist > 5.d * 5.d) {
+        if (dist > ((IWorker)npc).getWorkRangeSq()) {
 //    AWLog.logDebug("moving to worksite..."+pos);
             npc.addAITask(TASK_MOVE);
             ticksAtSite = 0;
             moveToPosition(pos, dist);
         } else {
 //    AWLog.logDebug("working at site....."+pos);
-            npc.getNavigator().clearPathEntity();
-            npc.removeAITask(TASK_MOVE);
-            workAtSite();
+            if(dist < 10 || shouldMoveFromTimeAtSite(entry) || shouldMoveFromNoWork(entry)) {
+                npc.getNavigator().clearPathEntity();
+                npc.removeAITask(TASK_MOVE);
+            }
+            workAtSite(entry);
         }
     }
 
@@ -72,14 +75,21 @@ public class NpcAIPlayerOwnedWork extends NpcAI {
         npc.addAITask(TASK_WORK);
     }
 
-    protected void workAtSite() {
+    protected void workAtSite(WorkEntry entry) {
         ticksAtSite++;
+        if(ticksAtSite == 1){
+            BlockPosition pos = entry.getPosition();
+            TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            if (!(te instanceof IWorkSite) || !((IWorker) npc).canWorkAt(((IWorkSite)te).getWorkType()) || !((IWorkSite) te).hasWork()) {
+                setMoveToNextSite();
+                return;
+            }
+        }
         if (npc.ticksExisted % 10 == 0) {
             npc.swingItem();
         }
         if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
             ticksAtSite = 0;
-            WorkEntry entry = order.get(workIndex);
             BlockPosition pos = entry.getPosition();
             TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
