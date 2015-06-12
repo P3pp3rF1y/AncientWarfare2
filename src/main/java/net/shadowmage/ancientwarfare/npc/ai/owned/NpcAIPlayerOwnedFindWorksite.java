@@ -10,7 +10,6 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 
 import java.util.List;
 
-
 public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
 
     int lastExecuted = -1;//set to -1 default to trigger should execute lookup on first run
@@ -44,8 +43,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
             TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
-                //TODO validate if can work at owner/team
-                if (!worker.canWorkAt(site.getWorkType()) || !site.hasWork()) {
+                if (!worker.canWorkAt(site.getWorkType()) || (site.getTeam()!=null && !site.getTeam().isSameTeam(worker.getTeam())) || !site.hasWork()) {
                     worker.autoWorkTarget = null;
                 }
             } else {

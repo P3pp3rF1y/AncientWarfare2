@@ -6,7 +6,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 
 public class NpcAIPlayerOwnedWorkRandom extends NpcAI {
@@ -41,7 +40,7 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI {
     public void updateTask() {
         BlockPosition pos = worker.autoWorkTarget;
         double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
-        if (dist > 5.d * 5.d) {
+        if (dist > worker.getWorkRangeSq()) {
             npc.addAITask(TASK_MOVE);
             ticksAtSite = 0;
             moveToPosition(pos, dist);

@@ -9,7 +9,6 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
@@ -108,13 +107,13 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
     }
 
     @Override
-    public boolean canWorkAt(WorkType type) {
-        return type == getWorkTypeFromEquipment();
+    public double getWorkRangeSq(){
+        return 25;
     }
 
     @Override
-    public Team getWorkerTeam() {
-        return getTeam();
+    public boolean canWorkAt(WorkType type) {
+        return type == getWorkTypeFromEquipment();
     }
 
     @Override
