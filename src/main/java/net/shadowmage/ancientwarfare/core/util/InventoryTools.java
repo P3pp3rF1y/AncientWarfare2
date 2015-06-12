@@ -83,58 +83,17 @@ public class InventoryTools {
      * @return any remaining un-merged item, or null if completely merged
      */
     public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, int side) {
-        if (side >= 0 && inventory instanceof ISidedInventory) {
-            int[] slotIndices = ((ISidedInventory) inventory).getAccessibleSlotsFromSide(side);
-            return mergeItemStack(inventory, stack, slotIndices);
-        } else {
-            int index;
-            int toMove;
-            ItemStack slotStack;
-            for (int i = 0; i < inventory.getSizeInventory(); i++) {
-                toMove = stack.stackSize;
-                index = i;
-                slotStack = inventory.getStackInSlot(index);
-                if (doItemStacksMatch(stack, slotStack)) {
-                    if (toMove > slotStack.getMaxStackSize() - slotStack.stackSize) {
-                        toMove = slotStack.getMaxStackSize() - slotStack.stackSize;
-                    }
-                    stack.stackSize -= toMove;
-                    slotStack.stackSize += toMove;
-                    inventory.setInventorySlotContents(index, slotStack);
-                    inventory.markDirty();
-                }
-                if (stack.stackSize <= 0)//merged stack fully;
-                {
-                    return null;
-                }
-            }
-            if (stack.stackSize > 0) {
-                for (int i = 0; i < inventory.getSizeInventory(); i++) {
-                    index = i;
-                    slotStack = inventory.getStackInSlot(index);
-                    if (slotStack == null && inventory.isItemValidForSlot(index, stack)) {
-                        inventory.setInventorySlotContents(index, stack);
-                        inventory.markDirty();
-                        return null;//successful merge
-                    }
-                }
-            } else {
-                return null;//successful merge
-            }
-        }
-        return stack;//partial or unsuccessful merge
+        return mergeItemStack(inventory, stack, getSlotsForSide(inventory, side));
     }
 
     public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, int[] slotIndices) {
-        if (slotIndices == null) {
-            return null;
+        if (slotIndices == null || slotIndices.length == 0) {
+            return stack;
         }
-        int index;
         int toMove;
         ItemStack slotStack;
-        for (int slotIndice1 : slotIndices) {
+        for (int index : slotIndices) {
             toMove = stack.stackSize;
-            index = slotIndice1;
             slotStack = inventory.getStackInSlot(index);
             if (doItemStacksMatch(stack, slotStack)) {
                 if (toMove > slotStack.getMaxStackSize() - slotStack.stackSize) {
@@ -151,8 +110,7 @@ public class InventoryTools {
             }
         }
         if (stack.stackSize > 0) {
-            for (int slotIndice : slotIndices) {
-                index = slotIndice;
+            for (int index : slotIndices) {
                 slotStack = inventory.getStackInSlot(index);
                 if (slotStack == null && inventory.isItemValidForSlot(index, stack)) {
                     inventory.setInventorySlotContents(index, stack);
@@ -174,75 +132,41 @@ public class InventoryTools {
      * @return the removed item.
      */
     public static ItemStack removeItems(IInventory inventory, int side, ItemStack filter, int quantity) {
+        int[] slotIndices = getSlotsForSide(inventory, side);
+        if (slotIndices == null) {
+            return null;
+        }
         if (quantity > filter.getMaxStackSize()) {
             quantity = filter.getMaxStackSize();
         }
         ItemStack returnStack = null;
-        if (side >= 0 && inventory instanceof ISidedInventory) {
-            int[] slotIndices = ((ISidedInventory) inventory).getAccessibleSlotsFromSide(side);
-            if (slotIndices == null) {
-                return null;
+        int toMove;
+        ItemStack slotStack;
+        for (int index : slotIndices) {
+            slotStack = inventory.getStackInSlot(index);
+            if (slotStack == null || !doItemStacksMatch(slotStack, filter)) {
+                continue;
             }
-            int index;
-            int toMove;
-            ItemStack slotStack;
-            for (int slotIndice : slotIndices) {
-                index = slotIndice;
-                slotStack = inventory.getStackInSlot(index);
-                if (slotStack == null || !doItemStacksMatch(slotStack, filter)) {
-                    continue;
-                }
-                if (returnStack == null) {
-                    returnStack = filter.copy();
-                    returnStack.stackSize = 0;
-                }
-                toMove = slotStack.stackSize;
-                if (toMove > quantity) {
-                    toMove = quantity;
-                }
-                if (toMove + returnStack.stackSize > returnStack.getMaxStackSize()) {
-                    toMove = returnStack.getMaxStackSize() - returnStack.stackSize;
-                }
-                returnStack.stackSize += toMove;
-                slotStack.stackSize -= toMove;
-                quantity -= toMove;
-                if (slotStack.stackSize <= 0) {
-                    inventory.setInventorySlotContents(index, null);
-                }
-                inventory.markDirty();
-                if (quantity <= 0) {
-                    break;
-                }
+            if (returnStack == null) {
+                returnStack = filter.copy();
+                returnStack.stackSize = 0;
             }
-        } else {
-            int toMove;
-            ItemStack slotStack;
-            for (int i = 0; i < inventory.getSizeInventory(); i++) {
-                slotStack = inventory.getStackInSlot(i);
-                if (slotStack == null || !doItemStacksMatch(slotStack, filter)) {
-                    continue;
-                }
-                if (returnStack == null) {
-                    returnStack = filter.copy();
-                    returnStack.stackSize = 0;
-                }
-                toMove = slotStack.stackSize;
-                if (toMove > quantity) {
-                    toMove = quantity;
-                }
-                if (toMove + returnStack.stackSize > returnStack.getMaxStackSize()) {
-                    toMove = returnStack.getMaxStackSize() - returnStack.stackSize;
-                }
-                returnStack.stackSize += toMove;
-                slotStack.stackSize -= toMove;
-                quantity -= toMove;
-                if (slotStack.stackSize <= 0) {
-                    inventory.setInventorySlotContents(i, null);
-                }
-                inventory.markDirty();
-                if (quantity <= 0) {
-                    break;
-                }
+            toMove = slotStack.stackSize;
+            if (toMove > quantity) {
+                toMove = quantity;
+            }
+            if (toMove + returnStack.stackSize > returnStack.getMaxStackSize()) {
+                toMove = returnStack.getMaxStackSize() - returnStack.stackSize;
+            }
+            returnStack.stackSize += toMove;
+            slotStack.stackSize -= toMove;
+            quantity -= toMove;
+            if (slotStack.stackSize <= 0) {
+                inventory.setInventorySlotContents(index, null);
+            }
+            inventory.markDirty();
+            if (quantity <= 0) {
+                break;
             }
         }
         return returnStack;
@@ -276,7 +200,7 @@ public class InventoryTools {
      */
     public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, int fromSide, int toSide, boolean ignoreDamage, boolean ignoreNBT) {
         int moved = 0;
-        int fromIndices[] = getSlotsForSide(from, fromSide);
+        int[] fromIndices = getSlotsForSide(from, fromSide);
         ItemStack s1, s2;
         int toMove = quantity;
         int stackSize;
@@ -334,26 +258,16 @@ public class InventoryTools {
         if (inv.getSizeInventory() <= 0) {
             return 0;
         }
+        int[] slotIndices = getSlotsForSide(inv, side);
+        if (slotIndices == null || slotIndices.length == 0) {
+            return 0;
+        }
         int count = 0;
-        if (side >= 0 && inv instanceof ISidedInventory) {
-            int[] slotIndices = ((ISidedInventory) inv).getAccessibleSlotsFromSide(side);
-            if (slotIndices == null || slotIndices.length == 0) {
-                return 0;
-            }
-            ItemStack stack;
-            for (int slotIndice : slotIndices) {
-                stack = inv.getStackInSlot(slotIndice);
-                if (stack != null && doItemStacksMatch(filter, stack)) {
-                    count++;
-                }
-            }
-        } else {
-            ItemStack stack;
-            for (int i = 0; i < inv.getSizeInventory(); i++) {
-                stack = inv.getStackInSlot(i);
-                if (stack != null && doItemStacksMatch(filter, stack)) {
-                    count++;
-                }
+        ItemStack stack;
+        for (int slotIndice : slotIndices) {
+            stack = inv.getStackInSlot(slotIndice);
+            if (stack != null && doItemStacksMatch(filter, stack)) {
+                count++;
             }
         }
         return count;
@@ -368,26 +282,16 @@ public class InventoryTools {
         if (inv.getSizeInventory() <= 0) {
             return 0;
         }
+        int[] slotIndices = getSlotsForSide(inv, side);
+        if (slotIndices == null || slotIndices.length == 0) {
+            return 0;
+        }
         int count = 0;
-        if (side >= 0 && inv instanceof ISidedInventory) {
-            int[] slotIndices = ((ISidedInventory) inv).getAccessibleSlotsFromSide(side);
-            if (slotIndices == null || slotIndices.length == 0) {
-                return 0;
-            }
-            ItemStack stack;
-            for (int slotIndice : slotIndices) {
-                stack = inv.getStackInSlot(slotIndice);
-                if (stack != null && doItemStacksMatch(filter, stack)) {
-                    count += stack.stackSize;
-                }
-            }
-        } else {
-            ItemStack stack;
-            for (int i = 0; i < inv.getSizeInventory(); i++) {
-                stack = inv.getStackInSlot(i);
-                if (stack != null && doItemStacksMatch(filter, stack)) {
-                    count += stack.stackSize;
-                }
+        ItemStack stack;
+        for (int slotIndice : slotIndices) {
+            stack = inv.getStackInSlot(slotIndice);
+            if (stack != null && doItemStacksMatch(filter, stack)) {
+                count += stack.stackSize;
             }
         }
         return count;
@@ -608,7 +512,6 @@ public class InventoryTools {
         ItemStack copy;
         for (ItemStack inStack : in) {
             tmax = inStack.stackSize;
-            transfer = 0;
             for (ItemStack outStack : out) {
                 if (!InventoryTools.doItemStacksMatch(inStack, outStack) || outStack.stackSize >= outStack.getMaxStackSize()) {
                     continue;

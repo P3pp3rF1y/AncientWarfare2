@@ -165,11 +165,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
             for (int index : fromIndices) {
-                shouldMove = false;
                 stack = from.getStackInSlot(index);
                 if (stack == null) {
                     continue;
                 }
+                shouldMove = false;
                 stackSize = stack.stackSize;
                 for (ItemStack filter : filters) {
                     if (filter == null) {
@@ -207,11 +207,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
             for (int index : fromIndices) {
-                shouldMove = true;
                 stack = from.getStackInSlot(index);
                 if (stack == null) {
                     continue;
                 }
+                shouldMove = true;
                 stackSize = stack.stackSize;
                 for (ItemStack filter : filters) {
                     if (filter == null) {

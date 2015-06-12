@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Shadowmage
  */
-public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded implements IInventory, ISidedInventory {
+public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded implements ISidedInventory {
 
     public InventorySided inventory;
 
@@ -82,11 +82,6 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
         BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
         AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
         return worldObj.getEntitiesWithinAABB(clazz, bb);
-    }
-
-    @Deprecated
-    public final boolean canWork() {
-        return true;//TODO this basically does nothing now, remove it...
     }
 
     @Override
