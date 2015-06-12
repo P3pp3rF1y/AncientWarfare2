@@ -817,7 +817,6 @@ public class AWStructureStatics extends ModConfiguration {
                         "witchery.illusionSpider",
                         "witchery.illusionZombie",
                         "witchery.mandrake",
-                        "witchery.mandrake",
                         "witchery.owl",
                         "witchery.soulfire",
                         "witchery.spellEffect",
