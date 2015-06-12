@@ -70,7 +70,7 @@ public abstract class NpcAI extends EntityAIBase {
     }
 
     protected final void moveToPosition(BlockPosition pos, double sqDist) {
-        moveToPosition(pos.x + 0.5d, pos.y, pos.z + 0.5d, sqDist);
+        moveToPosition(pos.x, pos.y, pos.z, sqDist);
     }
 
     protected final void moveToPosition(double x, double y, double z, double sqDist) {
