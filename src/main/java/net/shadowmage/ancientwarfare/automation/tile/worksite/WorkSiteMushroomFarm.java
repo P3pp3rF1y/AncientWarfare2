@@ -2,14 +2,10 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHugeMushroom;
-import net.minecraft.block.BlockMushroom;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -22,13 +18,13 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
 
+    private static final int TOP_LENGTH = 27, FRONT_LENGTH = 3;
     Set<BlockPosition> blocksToHarvest;
     Set<BlockPosition> blocksToPlantMushroom;
     Set<BlockPosition> blocksToPlantNetherWart;
@@ -42,15 +38,16 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
         blocksToPlantMushroom = new HashSet<BlockPosition>();
         blocksToPlantNetherWart = new HashSet<BlockPosition>();
 
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 30) {
+        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH) {
             @Override
             public void markDirty() {
                 super.markDirty();
                 shouldCountResources = true;
             }
         };
-        int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
-        int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
+        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
+        int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
+        int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
         this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
         this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//plantables
 
@@ -97,8 +94,8 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
         this.mushroomCount = 0;
         this.netherWartCount = 0;
         ItemStack item;
-        for (int i = 27; i < inventory.getSizeInventory(); i++) {
-            item = inventory.getStackInSlot(i);
+        for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
+            item = getStackInSlot(i);
             if (item == null) {
                 continue;
             }
@@ -136,8 +133,8 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
             it = blocksToPlantMushroom.iterator();
             BlockPosition pos;
             ItemStack item;
-            for (int i = 27; i < inventory.getSizeInventory(); i++) {
-                item = inventory.getStackInSlot(i);
+            for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
+                item = getStackInSlot(i);
                 if (item == null) {
                     continue;
                 }
@@ -148,7 +145,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                         if(tryPlace(item, pos.x, pos.y, pos.z, ForgeDirection.UP)) {//plant the mushroom, decrease stack size
                             mushroomCount--;
                             if (item.stackSize <= 0) {
-                                inventory.setInventorySlotContents(i, null);
+                                setInventorySlotContents(i, null);
                             }
                             return true;
                         }
@@ -160,8 +157,8 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
             it = blocksToPlantNetherWart.iterator();
             BlockPosition pos;
             ItemStack item;
-            for (int i = 27; i < inventory.getSizeInventory(); i++) {
-                item = inventory.getStackInSlot(i);
+            for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
+                item = getStackInSlot(i);
                 if (item == null) {
                     continue;
                 }
@@ -171,7 +168,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                         if(tryPlace(item, pos.x, pos.y, pos.z, ForgeDirection.UP)) {
                             netherWartCount--;
                             if (item.stackSize <= 0) {
-                                inventory.setInventorySlotContents(i, null);
+                                setInventorySlotContents(i, null);
                             }
                             return true;
                         }

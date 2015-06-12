@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -16,6 +15,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 
+    private static final int TOP_LENGTH = 27;
     public boolean harvestFish = true;
     public boolean harvestInk = true;
 
@@ -24,8 +24,8 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
     private int waterRescanDelay = 0;
 
     public WorkSiteFishFarm() {
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 27);
-        this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, InventoryTools.getIndiceArrayForSpread(0, 27));
+        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH);
+        this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, InventoryTools.getIndiceArrayForSpread(TOP_LENGTH));
     }
 
     @Override

@@ -276,7 +276,7 @@ public class InventoryTools {
      */
     public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, int fromSide, int toSide, boolean ignoreDamage, boolean ignoreNBT) {
         int moved = 0;
-        int fromIndices[] = from instanceof ISidedInventory && fromSide >= 0 ? ((ISidedInventory) from).getAccessibleSlotsFromSide(fromSide) : getIndiceArrayForSpread(0, from.getSizeInventory());
+        int fromIndices[] = getSlotsForSide(from, fromSide);
         ItemStack s1, s2;
         int toMove = quantity;
         int stackSize;
@@ -797,20 +797,28 @@ public class InventoryTools {
         }
     }
 
-    public static int[] getIndiceArrayForSpread(int start, int len) {
-        int[] array = new int[len];
-        for (int i = 0, k = start; i < len; i++, k++) {
-            array[i] = k;
-        }
-        return array;
+    public static int[] getIndiceArrayForSpread(int len) {
+        return new IndexHelper().getIndiceArrayForSpread(len);
     }
 
     public static int[] getSlotsForSide(IInventory inventory, int side) {
         if (side >= 0 && inventory instanceof ISidedInventory) {
             return ((ISidedInventory) inventory).getAccessibleSlotsFromSide(side);
         }
-        return getIndiceArrayForSpread(0, inventory.getSizeInventory());
+        return new IndexHelper().getIndiceArrayForSpread(inventory.getSizeInventory());
     }
 
+    public static class IndexHelper{
+        private int previousLength;
+
+        public int[] getIndiceArrayForSpread(int length) {
+            int[] array = new int[length];
+            for (int i = 0; i < length; i++) {
+                array[i] = previousLength + i;
+            }
+            previousLength += length;
+            return array;
+        }
+    }
 
 }

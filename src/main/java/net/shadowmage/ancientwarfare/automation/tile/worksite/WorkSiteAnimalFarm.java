@@ -8,7 +8,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
@@ -16,7 +15,6 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ import java.util.List;
 
 public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
+    private static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
     private int workerRescanDelay;
     private boolean shouldCountResources;
 
@@ -49,27 +48,24 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     public WorkSiteAnimalFarm() {
         this.shouldCountResources = true;
 
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33) {
+        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH) {
             @Override
             public void markDirty() {
                 super.markDirty();
                 shouldCountResources = true;
             }
         };
-        int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
-        int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
-        int[] bottomIndices = InventoryTools.getIndiceArrayForSpread(30, 3);
+        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
+        int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
+        int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
+        int[] bottomIndices = helper.getIndiceArrayForSpread(BOTTOM_LENGTH);
         this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
         this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//feed
         this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//buckets/shears
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
             public boolean isItemValid(ItemStack stack) {
-                if (stack == null) {
-                    return true;
-                }
-                Item item = stack.getItem();
-                return item == Items.wheat_seeds || item == Items.wheat || item == Items.carrot;
+                return stack == null || isFood(stack.getItem());
             }
         };
         inventory.setFilterForSlots(filter, frontIndices);
@@ -77,14 +73,18 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         filter = new ItemSlotFilter() {
             @Override
             public boolean isItemValid(ItemStack stack) {
-                if (stack == null) {
-                    return true;
-                }
-                Item item = stack.getItem();
-                return item == Items.bucket || item == Items.shears;
+                return stack == null || isTool(stack.getItem());
             }
         };
         inventory.setFilterForSlots(filter, bottomIndices);
+    }
+
+    private boolean isFood(Item item){
+        return item == Items.wheat_seeds || item == Items.wheat || item == Items.carrot;
+    }
+
+    private boolean isTool(Item item){
+        return item == Items.bucket || item == Items.shears;
     }
 
     @Override
@@ -128,8 +128,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         bucketCount = 0;
         shears = null;
         ItemStack stack;
-        for (int i = 27; i < 30; i++) {
-            stack = inventory.getStackInSlot(i);
+        for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
+            stack = getStackInSlot(i);
             if (stack == null) {
                 continue;
             }
@@ -141,8 +141,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 wheatCount += stack.stackSize;
             }
         }
-        for (int i = 30; i < inventory.getSizeInventory(); i++) {
-            stack = inventory.getStackInSlot(i);
+        for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
+            stack = getStackInSlot(i);
             if (stack == null) {
                 continue;
             }

@@ -3,17 +3,12 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockSapling;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
@@ -29,6 +24,7 @@ import java.util.*;
 
 public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
 
+    private static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
     int saplingCount;
     int bonemealCount;
     Set<BlockPosition> blocksToChop;
@@ -41,16 +37,17 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
         blocksToPlant = new ArrayList<BlockPosition>();
         blocksToFertilize = new ArrayList<BlockPosition>();
 
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33) {
+        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH) {
             @Override
             public void markDirty() {
                 super.markDirty();
                 shouldCountResources = true;
             }
         };
-        int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
-        int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
-        int[] bottomIndices = InventoryTools.getIndiceArrayForSpread(30, 3);
+        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
+        int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
+        int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
+        int[] bottomIndices = helper.getIndiceArrayForSpread(BOTTOM_LENGTH);
         this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
         this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//saplings
         this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//bonemeal
@@ -94,14 +91,15 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
         saplingCount = 0;
         bonemealCount = 0;
         ItemStack stack;
-        for (int i = 27; i < inventory.getSizeInventory(); i++) {
-            stack = inventory.getStackInSlot(i);
+        for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
+            stack = getStackInSlot(i);
             if (stack == null) {
                 continue;
             }
-            if (i < 30 && isSapling(stack)) {
-                saplingCount += stack.stackSize;
-            } else if (i > 29 && isBonemeal(stack)) {
+            if (i < TOP_LENGTH + FRONT_LENGTH){
+                if(isSapling(stack))
+                    saplingCount += stack.stackSize;
+            } else if (isBonemeal(stack)) {
                 bonemealCount += stack.stackSize;
             }
         }
@@ -120,8 +118,8 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             }
         } else if (saplingCount > 0 && !blocksToPlant.isEmpty()) {
             ItemStack stack = null;
-            for (int i = 27; i < 30; i++) {
-                stack = inventory.getStackInSlot(i);
+            for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
+                stack = getStackInSlot(i);
                 if (stack != null && isSapling(stack)) {
                     break;
                 } else {
@@ -148,13 +146,13 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 Block block = worldObj.getBlock(position.x, position.y, position.z);
                 if (block instanceof BlockSapling) {
                     ItemStack stack;
-                    for (int i = 30; i < inventory.getSizeInventory(); i++) {
-                        stack = inventory.getStackInSlot(i);
+                    for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
+                        stack = getStackInSlot(i);
                         if (stack != null && isBonemeal(stack)) {
                             if(ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, getOwnerAsPlayer())){
                                 bonemealCount--;
                                 if (stack.stackSize <= 0) {
-                                    inventory.setInventorySlotContents(i, null);
+                                    setInventorySlotContents(i, null);
                                 }
                             }
                             block = worldObj.getBlock(position.x, position.y, position.z);

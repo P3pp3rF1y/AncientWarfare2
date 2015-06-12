@@ -1,11 +1,9 @@
 package net.shadowmage.ancientwarfare.npc.orders;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -164,13 +162,8 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             int moved = 0;
             ItemStack stack;
             int stackSize = 0;
-            int fromIndices[];
+            int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
-            if (from instanceof ISidedInventory && fromSide >= 0) {
-                fromIndices = ((ISidedInventory) from).getAccessibleSlotsFromSide(fromSide);
-            } else {
-                fromIndices = InventoryTools.getIndiceArrayForSpread(0, from.getSizeInventory());
-            }
             for (int index : fromIndices) {
                 shouldMove = false;
                 stack = from.getStackInSlot(index);
@@ -211,13 +204,8 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             int moved = 0;
             ItemStack stack;
             int stackSize = 0;
-            int fromIndices[];
+            int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
-            if (from instanceof ISidedInventory && fromSide >= 0) {
-                fromIndices = ((ISidedInventory) from).getAccessibleSlotsFromSide(fromSide);
-            } else {
-                fromIndices = InventoryTools.getIndiceArrayForSpread(0, from.getSizeInventory());
-            }
             for (int index : fromIndices) {
                 shouldMove = true;
                 stack = from.getStackInSlot(index);
