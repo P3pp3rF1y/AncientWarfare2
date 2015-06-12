@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
-import net.minecraft.util.ChunkCoordinates;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -29,8 +28,7 @@ public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI {
         npc.addAITask(TASK_IDLE_HUNGRY);
         moveTimer = 0;
         if (npc.hasHome()) {
-            ChunkCoordinates cc = npc.getHomePosition();
-            npc.getNavigator().tryMoveToXYZ(cc.posX, cc.posY, cc.posZ, 1.0d);
+            returnHome();
         }
     }
 
@@ -50,12 +48,10 @@ public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI {
         if (npc.hasHome()) {
             moveTimer--;
             if (moveTimer <= 0) {
-                ChunkCoordinates cc = npc.getHomePosition();
-                npc.getNavigator().tryMoveToXYZ(cc.posX, cc.posY, cc.posZ, 1.0d);
+                returnHome();
                 moveTimer = 10;
             }
         }
     }
-
 
 }

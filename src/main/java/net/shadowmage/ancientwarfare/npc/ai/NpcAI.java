@@ -3,6 +3,10 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.PathPoint;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -80,7 +84,7 @@ public abstract class NpcAI extends EntityAIBase {
                 moveLongDistance(x, y, z);
                 moveRetryDelay = 60;//3 second delay between PF attempts, give the entity time to get a bit closer to target
             } else {
-                npc.getNavigator().tryMoveToXYZ(x, y, z, moveSpeed);
+                setPath(x, y, z);
                 moveRetryDelay = 10;//base .5 second retry delay
                 if (sqDist > 256) {
                     moveRetryDelay += 10;
@@ -114,7 +118,32 @@ public abstract class NpcAI extends EntityAIBase {
         vec.zCoord += npc.posZ;
 
         //move npc towards the calculated partial target
-        npc.getNavigator().tryMoveToXYZ(vec.xCoord, vec.yCoord, vec.zCoord, moveSpeed);
+        setPath(vec.xCoord, vec.yCoord, vec.zCoord);
     }
 
+    protected final void returnHome(){
+        ChunkCoordinates cc = npc.getHomePosition();
+        setPath(cc.posX, cc.posY, cc.posZ);
+    }
+
+    protected final void setPath(double x, double y, double z){
+        PathEntity pathEntity = npc.getNavigator().getPathToXYZ(x, y, z);
+        trimPath(pathEntity);
+        npc.getNavigator().setPath(pathEntity, moveSpeed);
+    }
+
+    protected void trimPath(PathEntity pathEntity){
+        if(pathEntity!=null){
+            if(npc.getBlockPathWeight(MathHelper.floor_double(npc.posX), MathHelper.floor_double(npc.boundingBox.minY), MathHelper.floor_double(npc.posZ)) >= 0) {
+
+                for (int i = 0; i < pathEntity.getCurrentPathLength() ; i++){
+                    PathPoint pathpoint = pathEntity.getPathPointFromIndex(i);
+                    if (npc.getBlockPathWeight(pathpoint.xCoord, pathpoint.yCoord, pathpoint.zCoord)<0){
+                        pathEntity.setCurrentPathLength(i-1);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
