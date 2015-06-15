@@ -66,7 +66,7 @@ public class ContainerBase extends Container {
     }
 
     /**
-     * server side method to send a data-packet to the client-side GUI attached to the client-side verison of this container
+     * server side method to send a data-packet to the client-side GUI attached to the client-side version of this container
      */
     protected final void sendDataToGui(NBTTagCompound data) {
         if (!player.worldObj.isRemote) {
