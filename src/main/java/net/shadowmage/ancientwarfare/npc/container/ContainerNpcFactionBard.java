@@ -11,7 +11,7 @@ public class ContainerNpcFactionBard extends ContainerNpcBase<NpcFactionBard> {
 
     public ContainerNpcFactionBard(EntityPlayer player, int x, int y, int z) {
         super(player, x);
-        data = entity.getTuneData();
+        data = entity.getSongs();
     }
 
     @Override
