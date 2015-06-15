@@ -100,7 +100,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
      */
     protected void sendDataToContainer(NBTTagCompound tag) {
         PacketGui pkt = new PacketGui();
-        pkt.packetData = tag;
+        pkt.setData(tag);
         NetworkHandler.sendToServer(pkt);
     }
 

@@ -61,7 +61,7 @@ public class NpcAIMedicBase extends NpcAI {
         if (potentialTargets.isEmpty()) {
             return false;
         }
-        Collections.sort(potentialTargets, sorter);
+        potentialTargets.sort(sorter);
         this.targetToHeal = potentialTargets.get(0);
         if (targetToHeal == null || targetToHeal.getHealth() <= 0 || targetToHeal.isDead || targetToHeal.getHealth() >= targetToHeal.getMaxHealth()) {
             targetToHeal = null;
