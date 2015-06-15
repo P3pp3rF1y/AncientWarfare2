@@ -20,6 +20,7 @@ import java.util.List;
 public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBTSerialable {
     public static final int MAX_SIZE = 8;
     private WorkPriorityType priorityType = WorkPriorityType.ROUTE;
+    private boolean nightShift;
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
@@ -29,6 +30,7 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
             add(new WorkEntry(entryList.getCompoundTagAt(i)));
         }
         priorityType = WorkPriorityType.values()[tag.getInteger("priorityType")];
+        nightShift = tag.getBoolean("nightShift");
     }
 
     @Override
@@ -39,7 +41,16 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
         }
         tag.setTag("entryList", entryList);
         tag.setInteger("priorityType", priorityType.ordinal());
+        tag.setBoolean("nightShift", nightShift);
         return tag;
+    }
+
+    public boolean isNightShift(){
+        return nightShift;
+    }
+
+    public void toggleShift(){
+        nightShift = !nightShift;
     }
 
     public WorkPriorityType getPriorityType() {

@@ -16,7 +16,7 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
 
     boolean hasChanged = false;
     CompositeScrolled area;
-    Button routeButton;
+    Button routeButton, shiftButton;
 
     public GuiWorkOrder(ContainerBase container) {
         super(container);
@@ -30,18 +30,29 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
             @Override
             protected void onPressed() {
                 getContainer().wo.togglePriority();
+                hasChanged = true;
                 refreshGui();
             }
         };
         addGuiElement(routeButton);
-        //TODO add 'shift selection' to the top of the GUI -- early day / late day / night??
+        shiftButton = new Button(8, 24, 100, 12, "") {
+            @Override
+            protected void onPressed() {
+                getContainer().wo.toggleShift();
+                hasChanged = true;
+                refreshGui();
+            }
+        };
+        addGuiElement(shiftButton);
     }
 
     @Override
     public void setupElements() {
         area.clearElements();
         String type = getContainer().wo.getPriorityType().name().toLowerCase(Locale.ENGLISH);
-        routeButton.setText("guistrings.npc.work_priority."+type);
+        routeButton.setText("guistrings.npc.work_priority." + type);
+        type = getContainer().wo.isNightShift() ? "night" : "day";
+        shiftButton.setText("guistrings.npc.work_shift." + type);
         List<WorkEntry> entries = getContainer().wo.getEntries();
         int totalHeight = 8;
         int index = 0;
