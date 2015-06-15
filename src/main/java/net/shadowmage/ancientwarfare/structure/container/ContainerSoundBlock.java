@@ -14,7 +14,7 @@ public class ContainerSoundBlock extends ContainerTileBase<TileSoundBlock> {
 
     public ContainerSoundBlock(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        data = tileEntity.getTuneData();
+        data = tileEntity.getSongs();
         redstoneInteraction = tileEntity.isRedstoneInteraction();
         range = tileEntity.getPlayerRange();
     }

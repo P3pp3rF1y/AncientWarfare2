@@ -5,15 +5,13 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.interfaces.ISinger;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 
-public class NpcBard extends NpcPlayerOwned {
+public class NpcBard extends NpcPlayerOwned implements ISinger {
 
     SongPlayData tuneData = new SongPlayData();
 
@@ -30,7 +28,7 @@ public class NpcBard extends NpcPlayerOwned {
         this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
 
         this.tasks.addTask(7, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
-        this.tasks.addTask(8, new NpcAIPlayerOwnedBard(this));
+        this.tasks.addTask(8, new NpcAISing(this));
 
         //post-100 -- used by delayed shared tasks (look at random stuff, wander)
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
@@ -38,7 +36,8 @@ public class NpcBard extends NpcPlayerOwned {
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
     }
 
-    public SongPlayData getTuneData() {
+    @Override
+    public SongPlayData getSongs() {
         return tuneData;
     }
 
