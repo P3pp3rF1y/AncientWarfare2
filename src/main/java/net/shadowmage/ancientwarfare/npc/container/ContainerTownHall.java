@@ -16,7 +16,6 @@ import java.util.List;
 public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
 
     List<NpcDeathEntry> deathList = new ArrayList<NpcDeathEntry>();
-
     public ContainerTownHall(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
         int xPos, yPos;
@@ -45,11 +44,14 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
         if (tag.hasKey("clear")) {
             tileEntity.clearDeathNotices();
         }
+        if(tag.hasKey("range")){
+            tileEntity.setRange(tag.getInteger("range"));
+        }
     }
 
     @Override
     public void sendInitData() {
-        sendDeathListToClient();
+        sendDeathListToClient(true);
     }
 
     @Override
@@ -61,16 +63,18 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
     public void onTownHallDeathListUpdated() {
         this.deathList.clear();
         this.deathList.addAll(tileEntity.getDeathList());
-        sendDeathListToClient();
+        sendDeathListToClient(false);
     }
 
-    private void sendDeathListToClient() {
+    private void sendDeathListToClient(boolean withRange) {
         NBTTagList list = new NBTTagList();
         for (NpcDeathEntry entry : deathList) {
             list.appendTag(entry.writeToNBT(new NBTTagCompound()));
         }
         NBTTagCompound tag = new NBTTagCompound();
         tag.setTag("deathList", list);
+        if(withRange)
+            tag.setInteger("range", tileEntity.getRange());
         sendDataToClient(tag);
     }
 

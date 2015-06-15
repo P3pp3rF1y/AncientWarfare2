@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
@@ -25,9 +26,8 @@ import java.util.List;
 public class TileTownHall extends TileEntity implements IOwnable, IInventory, IInteractableTile {
 
     private String ownerName = "";
-    private int broadcastRange = 80;//TODO set from config and/or gui?
+    private int broadcastRange = 80;
     private int updateDelayTicks = 0;
-    private int updateDelayMaxTicks = 20 * 5;//5 second broadcast frequency  TODO set from config
 
     private List<NpcDeathEntry> deathNotices = new ArrayList<TileTownHall.NpcDeathEntry>();
 
@@ -48,7 +48,7 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
         updateDelayTicks--;
         if (updateDelayTicks <= 0) {
             broadcast();
-            updateDelayTicks = updateDelayMaxTicks;
+            updateDelayTicks = AWNPCStatics.townUpdateFreq;
         }
     }
 
@@ -123,6 +123,9 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
             entry = new NpcDeathEntry(entryList.getCompoundTagAt(i));
             deathNotices.add(entry);
         }
+        if(tag.hasKey("range")){
+            setRange(tag.getInteger("range"));
+        }
     }
 
     @Override
@@ -135,6 +138,7 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
             entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("deathNotices", entryList);
+        tag.setInteger("range", broadcastRange);
     }
 
     @Override
@@ -248,4 +252,15 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
         return deathNotices;
     }
 
+    public int getRange(){
+        return broadcastRange;
+    }
+
+    public void setRange(int val){
+        if(val < AWNPCStatics.townMaxRange){
+            broadcastRange = val;
+        }else{
+            broadcastRange = AWNPCStatics.townMaxRange;
+        }
+    }
 }

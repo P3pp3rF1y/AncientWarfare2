@@ -103,7 +103,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
             int moved = order.handleRouteAction(order.get(routeIndex), courier.backpackInventory, target);
             courier.updateBackpackItemContents();
             if (moved > 0) {
-                ticksToWork = AWNPCStatics.npcCourierWorkTicks * moved;
+                ticksToWork = AWNPCStatics.npcWorkTicks * moved;
                 int lvl = npc.getLevelingStats().getLevel();
                 ticksToWork -= lvl * moved;
                 if (ticksToWork <= 0) {
