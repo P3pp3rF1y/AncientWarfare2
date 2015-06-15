@@ -99,7 +99,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
             moveTargetPos = new BlockPosition(cmd.x, cmd.y, cmd.z);
         }
         double sqDist = npc.getDistanceSq(moveTargetPos);
-        if (sqDist > 3 * 3) {
+        if (sqDist > MIN_RANGE) {
             moveToPosition(moveTargetPos, sqDist);//not finished moving...move along path (or at least try)
         } else {
             ((NpcPlayerOwned) npc).setPlayerCommand(null);//finished moving..clear the command...
@@ -116,7 +116,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
             return;
         }
         double sqDist = npc.getDistanceSqToEntity(e);
-        if (sqDist > 3 * 3) {
+        if (sqDist > MIN_RANGE) {
             moveToEntity(e, sqDist);//move to entity...
         } else {
             npc.getNavigator().clearPathEntity();//clear path to stop moving
@@ -134,7 +134,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
             moveTargetPos = new BlockPosition(cmd.x, cmd.y, cmd.z);
         }
         double sqDist = npc.getDistanceSq(moveTargetPos);
-        if (sqDist > 3 * 3) {
+        if (sqDist > MIN_RANGE) {
             moveToPosition(moveTargetPos, sqDist);//not finished moving...move along path (or at least try)
         } else {
             ((NpcPlayerOwned) npc).setPlayerCommand(null);//finished moving..clear the command...

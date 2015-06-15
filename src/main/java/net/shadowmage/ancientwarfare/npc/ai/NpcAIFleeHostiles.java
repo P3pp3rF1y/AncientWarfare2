@@ -17,7 +17,7 @@ import java.util.List;
 
 public class NpcAIFleeHostiles extends NpcAI {
 
-    private static int MAX_STAY_HOME = 400, MAX_FLEE_RANGE = 16, HEIGHT_CHECK = 7;
+    private static int MAX_STAY_HOME = 400, MAX_FLEE_RANGE = 16, HEIGHT_CHECK = 7, PURSUE_RANGE = 16 * 16;
     private final IEntitySelector selector;
     private final Comparator sorter;
     double distanceFromEntity = 16;
@@ -102,10 +102,10 @@ public class NpcAIFleeHostiles extends NpcAI {
         } else//check distance to flee vector
         {
             distSq = npc.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord);
-            if (distSq > 3 * 3) {
+            if (distSq > MIN_RANGE) {
                 moveToPosition(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord, distSq);
             } else {
-                if (npc.getDistanceSqToEntity(npc.getAttackTarget()) < 16 * 16)//entity still chasing, find a new flee vector
+                if (npc.getDistanceSqToEntity(npc.getAttackTarget()) < PURSUE_RANGE)//entity still chasing, find a new flee vector
                 {
                     fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3.createVectorHelper(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
                     if (fleeVector == null) {
@@ -117,7 +117,7 @@ public class NpcAIFleeHostiles extends NpcAI {
                 }
             }
         }
-        if (pos!=null && distSq > 3 * 3) {
+        if (pos!=null && distSq > MIN_RANGE) {
             moveToPosition(pos, distSq);
             stayAtHomeTimer = MAX_STAY_HOME;
         }else {

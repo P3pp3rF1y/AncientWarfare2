@@ -11,6 +11,7 @@ import java.util.List;
 
 public class NpcAIPlayerOwnedPriest extends NpcAI {
 
+    private static final int UPDATE_FREQ = 200, RESURRECTION_TIME = 100;
     int lastCheckTicks = -1;
     NpcDeathEntry entryToRes;
     int resurrectionDelay = 0;
@@ -25,7 +26,7 @@ public class NpcAIPlayerOwnedPriest extends NpcAI {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
-        return (lastCheckTicks == -1 || npc.ticksExisted - lastCheckTicks > 200) && npc.getTownHall() != null && !npc.getTownHall().getDeathList().isEmpty();
+        return (lastCheckTicks == -1 || npc.ticksExisted - lastCheckTicks > UPDATE_FREQ) && npc.getTownHall() != null && !npc.getTownHall().getDeathList().isEmpty();
     }
 
     @Override
@@ -55,13 +56,13 @@ public class NpcAIPlayerOwnedPriest extends NpcAI {
         }
         BlockPosition pos = npc.getTownHallPosition();
         double dist = npc.getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
-        if (dist > 5.d * 5.d) {
+        if (dist > ACTION_RANGE) {
             moveToPosition(pos, dist);
             resurrectionDelay = 0;
         } else {
             resurrectionDelay++;
             npc.swingItem();
-            if (resurrectionDelay > 100) {
+            if (resurrectionDelay > RESURRECTION_TIME) {
                 resurrectionDelay = 0;
                 resurrectTarget();
             }

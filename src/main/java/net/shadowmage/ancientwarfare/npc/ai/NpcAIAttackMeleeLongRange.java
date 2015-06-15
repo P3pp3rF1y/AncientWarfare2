@@ -6,6 +6,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIAttackMeleeLongRange extends NpcAI {
 
+    private static int MAX_DELAY = 20;
     Entity target;
     int attackDelay = 0;
 
@@ -51,7 +52,7 @@ public class NpcAIAttackMeleeLongRange extends NpcAI {
         if (attackDelay <= 0) {
             npc.swingItem();
             npc.attackEntityAsMob(target);
-            this.attackDelay = 20;//TODO set attack delay from npc-attributes?
+            this.attackDelay = MAX_DELAY;//TODO set attack delay from npc-attributes?
             int xp = AWNPCStatics.npcXpFromAttack;
             npc.addExperience(xp);
         }
