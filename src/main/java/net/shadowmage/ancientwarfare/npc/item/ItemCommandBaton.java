@@ -17,7 +17,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
@@ -28,7 +27,7 @@ import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
 import java.util.*;
 
-public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemClickable {
+public class ItemCommandBaton extends Item implements IItemKeyInterface {
 
     double attackDamage = 5.d;
 
@@ -72,16 +71,6 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
         list.add(text);
     }
 
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
     /**
      * Return the enchantability factor of the item, most of the time is based on material.
      */
@@ -110,7 +99,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
 
     @Override
     public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_) {
-        if ((double) p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_, p_150894_5_, p_150894_6_) != 0.0D) {
+        if (p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_, p_150894_5_, p_150894_6_) != 0) {
             p_150894_1_.damageItem(2, p_150894_7_);
         }
         return true;
@@ -130,21 +119,10 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
     }
 
     @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-    }
-
-    @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if(world.isRemote){
+            return stack;
+        }
         if (player.isSneaking()) {
             //TODO openGUI
         } else {
@@ -156,6 +134,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface, IItemCl
                 }
             }
         }
+        return stack;
     }
 
     @Override

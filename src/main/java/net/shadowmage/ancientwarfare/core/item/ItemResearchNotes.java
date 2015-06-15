@@ -8,30 +8,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemResearchNotes extends Item implements IItemClickable {
+public class ItemResearchNotes extends Item {
 
     private List<ItemStack> displayCache = null;
 
     public ItemResearchNotes() {
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
-    }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -84,9 +74,9 @@ public class ItemResearchNotes extends Item implements IItemClickable {
     }
 
     @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag != null && tag.hasKey("researchName")) {
+        if (!world.isRemote && tag != null && tag.hasKey("researchName")) {
             String name = tag.getString("researchName");
             ResearchGoal goal = ResearchGoal.getGoal(name);
             if (goal != null) {
@@ -96,7 +86,7 @@ public class ItemResearchNotes extends Item implements IItemClickable {
                         player.addChatMessage(new ChatComponentTranslation("guistrings.research.learned_from_item"));
                         stack.stackSize--;
                         if (stack.stackSize <= 0) {
-                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                            return null;
                         }
                     }
                 } else {
@@ -104,27 +94,13 @@ public class ItemResearchNotes extends Item implements IItemClickable {
                         player.addChatMessage(new ChatComponentTranslation("guistrings.research.added_progress"));
                         stack.stackSize--;
                         if (stack.stackSize <= 0) {
-                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                            return null;
                         }
                     }
                 }
             }
         }
-    }
-
-    @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-
+        return stack;
     }
 
 }

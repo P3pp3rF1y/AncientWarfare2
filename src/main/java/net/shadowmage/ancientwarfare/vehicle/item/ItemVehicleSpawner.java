@@ -10,15 +10,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class ItemVehicleSpawner extends Item implements IItemClickable {
+public class ItemVehicleSpawner extends Item {
 
     /**
      * TODO this can probably be removed in favor of modeled items
@@ -71,12 +71,15 @@ public class ItemVehicleSpawner extends Item implements IItemClickable {
     }
 
     @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         // TODO lookup entity spawn type, spawn entity in world
+        if(world.isRemote){
+            return stack;
+        }
         AWLog.logDebug("right click on spawner!!");
         if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("type")) {
             AWLog.logDebug("Invalid spawner item!!");
-            return;
+            return stack;
         }
         String type = stack.getTagCompound().getString("type");
         Entity e = AWEntityRegistry.createEntity(type, player.worldObj);
@@ -84,30 +87,6 @@ public class ItemVehicleSpawner extends Item implements IItemClickable {
             e.setPosition(player.posX, player.posY, player.posZ);//TODO set position from player clicked-on target
             player.worldObj.spawnEntityInWorld(e);
         }
+        return stack;
     }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }//NOOP
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
-    }//NOOP
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-    }//NOOP
-
-    @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
 }

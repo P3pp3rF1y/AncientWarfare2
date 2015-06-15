@@ -7,7 +7,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -19,23 +18,13 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator
 
 import java.util.List;
 
-public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterface, IItemClickable {
+public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterface {
 
     public ItemStructureBuilderWorldGen(String itemName) {
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         this.setMaxStackSize(1);
         this.setTextureName("ancientwarfare:structure/structure_builder");
-    }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -84,26 +73,11 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
     }
 
     @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!player.worldObj.isRemote && !player.isSneaking()) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_BUILDER, 0, 0, 0);
         }
+        return stack;
     }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-
-    }
-
 
 }

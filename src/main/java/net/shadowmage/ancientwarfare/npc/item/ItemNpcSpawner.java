@@ -13,7 +13,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
@@ -22,7 +21,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import java.util.HashMap;
 import java.util.List;
 
-public class ItemNpcSpawner extends Item implements IItemClickable {
+public class ItemNpcSpawner extends Item {
     /**
      * npc names are type.subtype :: resource-location
      */
@@ -42,16 +41,6 @@ public class ItemNpcSpawner extends Item implements IItemClickable {
     }
 
     @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {
         String npcName = getNpcType(par1ItemStack);
         if (npcName != null) {
@@ -65,15 +54,13 @@ public class ItemNpcSpawner extends Item implements IItemClickable {
     }
 
     @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if(world.isRemote){
+            return stack;
+        }
         BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
         if (hit == null) {
-            return;
+            return stack;
         }
         NpcBase npc = createNpcFromItem(player.worldObj, stack);
         if (npc != null) {
@@ -84,10 +71,11 @@ public class ItemNpcSpawner extends Item implements IItemClickable {
             if (!player.capabilities.isCreativeMode) {
                 stack.stackSize--;
                 if (stack.stackSize <= 0) {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                    return null;
                 }
             }
         }
+        return stack;
     }
 
     /**
@@ -125,16 +113,6 @@ public class ItemNpcSpawner extends Item implements IItemClickable {
         npc.writeAdditionalItemData(tag);
         stack.setTagInfo("npcStoredData", tag);
         return stack;
-    }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-
     }
 
     @SuppressWarnings("rawtypes")

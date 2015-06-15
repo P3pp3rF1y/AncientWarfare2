@@ -6,27 +6,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 
-public class ItemTownBuilder extends Item implements IItemKeyInterface, IItemClickable {
+public class ItemTownBuilder extends Item implements IItemKeyInterface {
 
     public ItemTownBuilder(String itemName) {
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         this.setMaxStackSize(1);
         this.setTextureName("ancientwarfare:structure/structure_builder");//TODO make texture...
-    }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
     }
 
 //@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -64,21 +53,8 @@ public class ItemTownBuilder extends Item implements IItemKeyInterface, IItemCli
     }
 
     @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }//TODO return true when switching to using GUI
-
-    @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        return stack;
     }//TODO open town-type selection GUI
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-    }
 
 }

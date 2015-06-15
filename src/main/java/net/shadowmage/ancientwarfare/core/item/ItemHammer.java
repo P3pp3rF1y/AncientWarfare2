@@ -19,13 +19,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 
 import java.util.List;
 
-public class ItemHammer extends Item implements IItemKeyInterface, IItemClickable {
+public class ItemHammer extends Item implements IItemKeyInterface {
 
     double attackDamage = 5.d;
 
@@ -40,16 +39,6 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
         this.setHarvestLevel("hammer", material.getHarvestLevel());
-    }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
     }
 
     public ToolMaterial getMaterial() {
@@ -84,7 +73,7 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
 
     @Override
     public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_) {
-        if ((double) p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_, p_150894_5_, p_150894_6_) != 0.0D) {
+        if (p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_, p_150894_5_, p_150894_6_) != 0) {
             p_150894_1_.damageItem(2, p_150894_7_);
         }
         return true;
@@ -138,10 +127,13 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
     }
 
     @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if(world.isRemote){
+            return stack;
+        }
         MovingObjectPosition hit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
         if (hit == null) {
-            return;
+            return stack;
         }
         boolean mode = false;
         if (stack.hasTagCompound()) {
@@ -162,11 +154,12 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
         } else {
             Block block = player.worldObj.getBlock(hit.blockX, hit.blockY, hit.blockZ);
             if (block == null) {
-                return;
+                return stack;
             }
             player.addChatMessage(new ChatComponentTranslation("guistrings.automation.rotating_block"));
             block.rotateBlock(player.worldObj, hit.blockX, hit.blockY, hit.blockZ, ForgeDirection.getOrientation(hit.sideHit));
         }
+        return stack;
     }
 
     /**
@@ -177,21 +170,4 @@ public class ItemHammer extends Item implements IItemKeyInterface, IItemClickabl
     public boolean isFull3D() {
         return true;
     }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        MovingObjectPosition hit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
-        return hit != null;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-
-    }
-
 }

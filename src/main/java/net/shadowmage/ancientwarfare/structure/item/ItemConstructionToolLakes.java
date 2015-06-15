@@ -5,13 +5,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import java.util.Set;
 
-public class ItemConstructionToolLakes extends Item implements IItemClickable {
+public class ItemConstructionToolLakes extends Item {
 
     public ItemConstructionToolLakes(String itemName) {
         this.setUnlocalizedName(itemName);
@@ -20,24 +20,17 @@ public class ItemConstructionToolLakes extends Item implements IItemClickable {
     }
 
     @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
-        BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if(world.isRemote){
+            return stack;
+        }
+        BlockPosition pos = BlockTools.getBlockClickedOn(player, world, true);
         if (pos == null) {
-            return;
+            return stack;
         }
         Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
         if (!block.isAir(player.worldObj, pos.x, pos.y, pos.z)) {
-            return;
+            return stack;
         }
         FloodFillPathfinder pf = new FloodFillPathfinder(player.worldObj, pos.x, pos.y, pos.z, block, 0, false, true);
         Set<BlockPosition> blocks = pf.doFloodFill();
@@ -46,25 +39,12 @@ public class ItemConstructionToolLakes extends Item implements IItemClickable {
         }
         if (!player.capabilities.isCreativeMode) {
             if (stack.stackSize == 1) {
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                return null;
             } else {
                 stack.stackSize--;
             }
         }
-    }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
+        return stack;
     }
 
 }
