@@ -64,16 +64,12 @@ public class StructureBuilderWorldGen extends StructureBuilder {
 
     protected Block getBiomeSpecificBlock(Block par1, int par2, BiomeGenBase biome) {
         if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.sand) {
-            if (par1 == Blocks.log || par1 == Blocks.cobblestone || par1 == Blocks.planks) {
+            if (par1 == Blocks.log || par1 == Blocks.cobblestone || par1 == Blocks.planks || par1 == Blocks.gravel) {
                 return Blocks.sandstone;
             }
 
             if (par1 == Blocks.oak_stairs || par1 == Blocks.stone_stairs) {
                 return Blocks.sandstone_stairs;
-            }
-
-            if (par1 == Blocks.gravel) {
-                return Blocks.sandstone;
             }
         }
 
@@ -85,10 +81,7 @@ public class StructureBuilderWorldGen extends StructureBuilder {
      */
     protected int getBiomeSpecificBlockMetadata(Block par1, int par2, BiomeGenBase biome) {
         if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.sand) {
-            if (par1 == Blocks.log) {
-                return 0;
-            }
-            if (par1 == Blocks.cobblestone) {
+            if (par1 == Blocks.log || par1 == Blocks.cobblestone) {
                 return 0;
             }
             if (par1 == Blocks.planks) {

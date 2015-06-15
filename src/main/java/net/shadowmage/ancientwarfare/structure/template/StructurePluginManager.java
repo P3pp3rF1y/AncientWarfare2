@@ -188,10 +188,12 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
                 Class<? extends TemplateRule> clz = ruleByID.get(pluginName);
                 throw new IllegalArgumentException("Attempt to overwrite " + clz + " with " + ruleClass + " by " + pluginName + " for entityClass: " + entityClass);
             }
+        }else{
+            ruleByID.put(pluginName, ruleClass);
         }
         entityRules.put(entityClass, ruleClass);
-        ruleByID.put(pluginName, ruleClass);
-        idByRuleClass.put(ruleClass, pluginName);
+        if(!idByRuleClass.containsKey(ruleClass))
+            idByRuleClass.put(ruleClass, pluginName);
     }
 
     public void registerBlockHandler(String pluginName, Block block, Class<? extends TemplateRuleBlock> ruleClass) {
@@ -200,11 +202,16 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
                 Class<? extends TemplateRule> clz = ruleByID.get(pluginName);
                 throw new IllegalArgumentException("Attempt to overwrite " + clz + " with " + ruleClass + " by " + pluginName + " for block: " + block);
             }
+        }else {
+            ruleByID.put(pluginName, ruleClass);
+        }
+        if(idByRuleClass.containsKey(ruleClass)){
+            pluginByBlock.put(block, idByRuleClass.get(ruleClass));
+        }else{
+            idByRuleClass.put(ruleClass, pluginName);
+            pluginByBlock.put(block, pluginName);
         }
         blockRules.put(block, ruleClass);
-        ruleByID.put(pluginName, ruleClass);
-        idByRuleClass.put(ruleClass, pluginName);
-        pluginByBlock.put(block, pluginName);
     }
 
     @Override
@@ -243,7 +250,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
                 }
             }
         }
-        Class<? extends TemplateRule> clz = StructurePluginManager.INSTANCE.getRuleByName(name);
+        Class<? extends TemplateRule> clz = INSTANCE.getRuleByName(name);
         if (clz == null) {
             throw new TemplateRuleParsingException("Not enough data to create template rule.\n" +
                     "Missing plugin for name: " + name + "\n" +
@@ -271,7 +278,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
         if (rule == null) {
             return;
         }
-        String id = StructurePluginManager.INSTANCE.getPluginNameFor(rule.getClass());
+        String id = INSTANCE.getPluginNameFor(rule.getClass());
         if (id == null) {
             return;
         }
