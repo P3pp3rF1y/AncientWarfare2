@@ -118,7 +118,7 @@ public class ItemNpcSpawner extends Item {
     @SuppressWarnings("rawtypes")
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List list) {
         AWNPCEntityLoader.getSpawnerSubItems(list);
     }
 

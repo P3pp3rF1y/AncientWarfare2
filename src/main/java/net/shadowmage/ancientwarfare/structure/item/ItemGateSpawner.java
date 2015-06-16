@@ -84,14 +84,14 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
+    public void getSubItems(Item item, CreativeTabs tab, List list) {
         Gate g;
         for (int i = 0; i < 16; i++) {
             g = Gate.getGateByID(i);
             if (g == null) {
                 continue;
             }
-            p_150895_3_.add(g.getDisplayStack());
+            list.add(g.getDisplayStack());
         }
     }
 

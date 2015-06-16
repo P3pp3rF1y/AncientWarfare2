@@ -72,9 +72,9 @@ public class ItemHammer extends Item implements IItemKeyInterface {
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_) {
-        if (p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_, p_150894_5_, p_150894_6_) != 0) {
-            p_150894_1_.damageItem(2, p_150894_7_);
+    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase living) {
+        if (block.getBlockHardness(world, x, y, z) != 0) {
+            stack.damageItem(2, living);
         }
         return true;
     }
