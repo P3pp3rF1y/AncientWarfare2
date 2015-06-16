@@ -19,6 +19,7 @@ public class ItemBackpack extends Item {
     public ItemBackpack() {
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
         this.setMaxStackSize(1);
+        this.setHasSubtypes(true);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -37,20 +38,15 @@ public class ItemBackpack extends Item {
     }
 
     @Override
-    public boolean getShareTag() {
-        return false;
-    }
-
-    @Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {
         return super.getUnlocalizedName(par1ItemStack) + "." + par1ItemStack.getItemDamage();
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List displayList) {
+    public void getSubItems(Item item, CreativeTabs tab, List displayList) {
         for (int i = 0; i < 4; i++) {
-            displayList.add(new ItemStack(this, 1, i));
+            displayList.add(new ItemStack(item, 1, i));
         }
     }
 
