@@ -24,6 +24,11 @@ public class ItemBase extends Item {
     }
 
     @Override
+    public boolean getShareTag() {
+        return false;
+    }
+
+    @Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {
         return super.getUnlocalizedName(par1ItemStack) + "." + par1ItemStack.getItemDamage();
     }
