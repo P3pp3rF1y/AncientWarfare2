@@ -58,15 +58,14 @@ public class StructureBuilderTicked extends StructureBuilder {
                 hasClearedArea = true;
             }
         } else if (!this.isFinished()) {
-            boolean placed = false;
-            while (!placed && !this.isFinished()) {
+            while (!this.isFinished()) {
                 TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
                 if (rule == null || !rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority)) {
                     increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next
                 } else//place it...
                 {
-                    placed = true;
-                    this.placeCurrentPosition(rule);
+                    this.placeRule(rule);
+                    break;
                 }
             }
             increment();//finally, increment to next position (will trigger isFinished if actually done, has no problems if already finished)

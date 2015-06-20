@@ -70,8 +70,8 @@ public class TownGenerator {
     public void generate() {
         AWLog.logDebug("Generating town at: " + townBounds.getCenterX() + " : " + townBounds.getCenterZ());
         determineStructuresToGenerate();
-        TownGeneratorBorders.generateBorders(world, this);
-        TownGeneratorBorders.levelTownArea(world, this);
+        TownGeneratorBorders.generateBorders(world, exteriorBounds, wallsBounds, maximalBounds);
+        TownGeneratorBorders.levelTownArea(world, wallsBounds);
 
         generateGrid();
         TownGeneratorWalls.generateWalls(world, this, template, rng);
@@ -314,7 +314,7 @@ public class TownGenerator {
 
     private void generateRoads() {
         for (TownPartQuadrant tq : quadrants) {
-            generateRoads(world, tq);
+            generateRoads(tq);
         }
         generateAdditionalRoads();
     }
@@ -322,7 +322,7 @@ public class TownGenerator {
     /**
      * generates roads on the extent of a townquadrant
      */
-    private void generateRoads(World world, TownPartQuadrant tq) {
+    private void generateRoads(TownPartQuadrant tq) {
         int minX = tq.bb.min.x;
         int maxX = tq.bb.max.x;
         if (tq.hasRoadBorder(Direction.WEST)) {
@@ -333,10 +333,10 @@ public class TownGenerator {
         }
         for (int x = minX; x <= maxX; x++) {
             if (tq.hasRoadBorder(Direction.NORTH)) {
-                genRoadBlock(world, x, tq.bb.min.y - 1, tq.bb.min.z - 1);
+                genRoadBlock(x, tq.bb.min.y - 1, tq.bb.min.z - 1);
             }//north
             if (tq.hasRoadBorder(Direction.SOUTH)) {
-                genRoadBlock(world, x, tq.bb.min.y - 1, tq.bb.max.z + 1);
+                genRoadBlock(x, tq.bb.min.y - 1, tq.bb.max.z + 1);
             }//south
         }
         int minZ = tq.bb.min.z;
@@ -349,21 +349,21 @@ public class TownGenerator {
         }
         for (int z = minZ; z <= maxZ; z++) {
             if (tq.hasRoadBorder(Direction.WEST)) {
-                genRoadBlock(world, tq.bb.min.x - 1, tq.bb.min.y - 1, z);
+                genRoadBlock(tq.bb.min.x - 1, tq.bb.min.y - 1, z);
             }//west
             if (tq.hasRoadBorder(Direction.EAST)) {
-                genRoadBlock(world, tq.bb.max.x + 1, tq.bb.min.y - 1, z);
+                genRoadBlock(tq.bb.max.x + 1, tq.bb.min.y - 1, z);
             }//east
         }
         for (TownPartBlock tb : tq.blocks) {
-            generateRoads(world, tb);
+            generateRoads(tb);
         }
     }
 
     /**
      * Generates roads on the extends of a townblock
      */
-    private void generateRoads(World world, TownPartBlock tb) {
+    private void generateRoads(TownPartBlock tb) {
         int minX = tb.bb.min.x;
         int maxX = tb.bb.max.x;
         if (tb.hasRoadBorder(Direction.WEST)) {
@@ -374,10 +374,10 @@ public class TownGenerator {
         }
         for (int x = minX; x <= maxX; x++) {
             if (tb.hasRoadBorder(Direction.NORTH)) {
-                genRoadBlock(world, x, tb.bb.min.y - 1, tb.bb.min.z - 1);
+                genRoadBlock(x, tb.bb.min.y - 1, tb.bb.min.z - 1);
             }//north
             if (tb.hasRoadBorder(Direction.SOUTH)) {
-                genRoadBlock(world, x, tb.bb.min.y - 1, tb.bb.max.z + 1);
+                genRoadBlock(x, tb.bb.min.y - 1, tb.bb.max.z + 1);
             }//south
         }
         int minZ = tb.bb.min.z;
@@ -390,10 +390,10 @@ public class TownGenerator {
         }
         for (int z = minZ; z <= maxZ; z++) {
             if (tb.hasRoadBorder(Direction.WEST)) {
-                genRoadBlock(world, tb.bb.min.x - 1, tb.bb.min.y - 1, z);
+                genRoadBlock(tb.bb.min.x - 1, tb.bb.min.y - 1, z);
             }//west
             if (tb.hasRoadBorder(Direction.EAST)) {
-                genRoadBlock(world, tb.bb.max.x + 1, tb.bb.min.y - 1, z);
+                genRoadBlock(tb.bb.max.x + 1, tb.bb.min.y - 1, z);
             }//east
         }
     }
@@ -412,7 +412,7 @@ public class TownGenerator {
         maxZ = townBounds.min.z - 1;
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
-                genRoadBlock(world, x, y, z);
+                genRoadBlock(x, y, z);
             }
         }
 
@@ -423,7 +423,7 @@ public class TownGenerator {
         maxZ = minZ + 3;
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
-                genRoadBlock(world, x, y, z);
+                genRoadBlock(x, y, z);
             }
         }
 
@@ -434,7 +434,7 @@ public class TownGenerator {
         maxZ = exteriorBounds.max.z;
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
-                genRoadBlock(world, x, y, z);
+                genRoadBlock(x, y, z);
             }
         }
 
@@ -445,12 +445,12 @@ public class TownGenerator {
         maxZ = minZ + 3;
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
-                genRoadBlock(world, x, y, z);
+                genRoadBlock(x, y, z);
             }
         }
     }
 
-    private void genRoadBlock(World world, int x, int y, int z) {
+    private void genRoadBlock(int x, int y, int z) {
         Block block = template.getRoadFillBlock();
         int meta = template.getRoadFillMeta();
         world.setBlock(x, y, z, block, meta, 3);

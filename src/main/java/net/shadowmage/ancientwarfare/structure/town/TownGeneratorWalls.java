@@ -19,33 +19,26 @@ public class TownGeneratorWalls {
         int minZ = gen.wallsBounds.min.z;
         int maxX = gen.wallsBounds.max.x;
         int maxZ = gen.wallsBounds.max.z;
-        int chunkWidth = (maxX - minX + 1) / 16;
-        int chunkLength = (maxZ - minZ + 1) / 16;
         int minY = gen.wallsBounds.min.y;
-        int x, z;
-        int facingDirection;
 
-        if (template.getWallStyle() > 0)//has at least corner sections
-        {
-            //construct NW corner
-            facingDirection = Direction.SOUTH.ordinal();
-            constructTemplate(world, getCornerSection(rng, template), facingDirection, minX, minY, minZ);
+        //construct NW corner
+        constructTemplate(world, getCornerSection(rng, template), Direction.SOUTH.ordinal(), minX, minY, minZ);
 
-            //construct NE corner
-            facingDirection = Direction.WEST.ordinal();
-            constructTemplate(world, getCornerSection(rng, template), facingDirection, maxX, minY, minZ);
+        //construct NE corner
+        constructTemplate(world, getCornerSection(rng, template), Direction.WEST.ordinal(), maxX, minY, minZ);
 
-            //construct SE corner
-            facingDirection = Direction.NORTH.ordinal();
-            constructTemplate(world, getCornerSection(rng, template), facingDirection, maxX, minY, maxZ);
+        //construct SE corner
+        constructTemplate(world, getCornerSection(rng, template), Direction.NORTH.ordinal(), maxX, minY, maxZ);
 
-            //construct SW corner
-            facingDirection = Direction.EAST.ordinal();
-            constructTemplate(world, getCornerSection(rng, template), facingDirection, minX, minY, maxZ);
-        }
+        //construct SW corner
+        constructTemplate(world, getCornerSection(rng, template), Direction.EAST.ordinal(), minX, minY, maxZ);
 
         if (template.getWallStyle() > 1)//has wall sections
         {
+            int chunkWidth = (maxX - minX + 1) / 16;
+            int chunkLength = (maxZ - minZ + 1) / 16;
+            int x, z;
+            int facingDirection;
             //construct N wall
             facingDirection = Direction.SOUTH.ordinal();
             for (int i = 1; i < chunkWidth - 1; i++) {

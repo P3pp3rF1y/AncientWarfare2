@@ -4,6 +4,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TownPartQuadrant {
@@ -136,9 +137,7 @@ public class TownPartQuadrant {
     }
 
     public void addBlocks(List<TownPartBlock> blocks) {
-        for (int i = 0; i < this.blocks.length; i++) {
-            blocks.add(this.blocks[i]);
-        }
+        Collections.addAll(blocks, this.blocks);
     }
 
     public Direction getXDir() {
