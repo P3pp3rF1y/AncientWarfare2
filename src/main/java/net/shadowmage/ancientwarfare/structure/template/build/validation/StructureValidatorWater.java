@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
@@ -45,7 +46,7 @@ public class StructureValidatorWater extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPosition pos, int face, StructureTemplate template, StructureBB bb) {
 
     }
 
@@ -54,7 +55,7 @@ public class StructureValidatorWater extends StructureValidator {
         if (y < bb.min.y + template.yOffset) {
             world.setBlock(x, y, z, Blocks.water);
         } else {
-            world.setBlock(x, y, z, Blocks.air);
+            super.handleClearAction(world, x, y, z, template, bb);
         }
     }
 }

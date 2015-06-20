@@ -137,14 +137,14 @@ public class StructureValidatorHarbor extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPosition pos, int face, StructureTemplate template, StructureBB bb) {
         prePlacementBorder(world, template, bb);
     }
 
     @Override
     public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb) {
         if (y >= bb.min.y + template.yOffset) {
-            world.setBlock(x, y, z, Blocks.air);
+            super.handleClearAction(world, x, y, z, template, bb);
         } else {
             world.setBlock(x, y, z, Blocks.water);
         }

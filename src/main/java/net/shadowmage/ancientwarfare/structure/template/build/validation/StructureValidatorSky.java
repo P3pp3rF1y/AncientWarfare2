@@ -20,8 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -87,13 +87,7 @@ public class StructureValidatorSky extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPosition pos, int face, StructureTemplate template, StructureBB bb) {
 
     }
-
-    @Override
-    public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb) {
-        world.setBlock(x, y, z, Blocks.air);
-    }
-
 }

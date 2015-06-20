@@ -22,6 +22,7 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -65,10 +66,7 @@ public class StructureValidatorUnderwater extends StructureValidator {
         int startY = y;
         y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
         water = startY - y;
-        if (water < minWaterDepth || water > maxWaterDepth) {
-            return false;
-        }
-        return true;
+        return !(water < minWaterDepth || water > maxWaterDepth);
     }
 
     @Override
@@ -84,7 +82,7 @@ public class StructureValidatorUnderwater extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPosition pos, int face, StructureTemplate template, StructureBB bb) {
         prePlacementBorder(world, template, bb);
         prePlacementUnderfill(world, template, bb);
     }

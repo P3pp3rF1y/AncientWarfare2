@@ -26,8 +26,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
@@ -123,6 +125,22 @@ public class WorldStructureGenerator implements IWorldGenerator {
         return -1;
     }
 
+    public static void sprinkleSnow(World world, StructureBB bb, int border) {
+        BlockPosition p1 = bb.min.copy().offset(-border, 0, -border);
+        BlockPosition p2 = bb.max.copy().offset(border, 0, border);
+        for (int x = p1.x; x <= p2.x; x++) {
+            for (int z = p1.z; z <= p2.z; z++) {
+                int y = world.getPrecipitationHeight(x, z) - 1;
+                if(p2.y >= y && y > 0 && world.canSnowAtBody(x, y + 1, z, true)) {
+                    Block block = world.getBlock(x, y, z);
+                    if (block != Blocks.air && block.isSideSolid(world, x, y, z, ForgeDirection.UP)) {
+                        world.setBlock(x, y + 1, z, Blocks.snow_layer);
+                    }
+                }
+            }
+        }
+    }
+
     public static int getStepNumber(int x, int z, int minX, int maxX, int minZ, int maxZ) {
         int steps = 0;
         if (x < minX - 1) {
@@ -164,13 +182,13 @@ public class WorldStructureGenerator implements IWorldGenerator {
         }
         if (template.getValidationSettings().validatePlacement(world, x, y, z, face, template, bb)) {
             AWLog.logDebug("Validation took: " + (System.currentTimeMillis() - t1 + " ms"));
-            generateStructureAt(world, x, y, z, face, template, map, bb);
+            generateStructureAt(world, x, y, z, face, template, map);
             return true;
         }
         return false;
     }
 
-    private void generateStructureAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map, StructureBB bb) {
+    private void generateStructureAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map) {
         if(map!=null) {
             map.setGeneratedAt(world, x, y, z, face, new StructureEntry(x, y, z, face, template), template.getValidationSettings().isUnique());
         }
