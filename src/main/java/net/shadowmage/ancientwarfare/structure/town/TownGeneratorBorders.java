@@ -7,64 +7,65 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
 public class TownGeneratorBorders {
 
-    public static void generateBorders(World world, TownGenerator gen) {
+    public static void generateBorders(World world, StructureBB exterior, StructureBB walls, StructureBB max) {
         int minX, maxX, minZ, maxZ;
         int step;
-        int fillBase = gen.maximalBounds.min.y - 1;
+        int fillBase = max.min.y - 1;
         int levelBase = fillBase;
 
-        int eminx = gen.exteriorBounds.min.x;
-        int eminz = gen.exteriorBounds.min.z;
-        int emaxx = gen.exteriorBounds.max.x;
-        int emaxz = gen.exteriorBounds.max.z;
+        int eminx = exterior.min.x;
+        int eminz = exterior.min.z;
+        int emaxx = exterior.max.x;
+        int emaxz = exterior.max.z;
 
-        minX = gen.maximalBounds.min.x;
-        maxX = gen.wallsBounds.min.x - 1;
+        minX = max.min.x;
+        maxX = walls.min.x - 1;
         for (int px = minX; px <= maxX; px++) {
-            for (int pz = gen.maximalBounds.min.z; pz <= gen.maximalBounds.max.z; pz++) {
+            for (int pz = max.min.z; pz <= max.max.z; pz++) {
                 step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
                 handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass), true);
             }
         }
 
-        minX = gen.wallsBounds.max.x + 1;
-        maxX = gen.maximalBounds.max.x;
+        minX = walls.max.x + 1;
+        maxX = max.max.x;
         for (int px = minX; px <= maxX; px++) {
-            for (int pz = gen.maximalBounds.min.z; pz <= gen.maximalBounds.max.z; pz++) {
+            for (int pz = max.min.z; pz <= max.max.z; pz++) {
                 step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
                 handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass), true);
             }
         }
 
-        minZ = gen.maximalBounds.min.z;
-        maxZ = gen.wallsBounds.min.z - 1;
+        minZ = max.min.z;
+        maxZ = walls.min.z - 1;
         for (int pz = minZ; pz <= maxZ; pz++) {
-            for (int px = gen.maximalBounds.min.x; px <= gen.maximalBounds.max.x; px++) {
+            for (int px = max.min.x; px <= max.max.x; px++) {
                 step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
                 handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass), true);
             }
         }
 
-        minZ = gen.wallsBounds.max.z + 1;
-        maxZ = gen.maximalBounds.max.z;
+        minZ = walls.max.z + 1;
+        maxZ = max.max.z;
         for (int pz = minZ; pz <= maxZ; pz++) {
-            for (int px = gen.maximalBounds.min.x; px <= gen.maximalBounds.max.x; px++) {
+            for (int px = max.min.x; px <= max.max.x; px++) {
                 step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
                 handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass), true);
             }
         }
     }
 
-    public static void levelTownArea(World world, TownGenerator gen) {
-        int minX = gen.wallsBounds.min.x;
-        int minZ = gen.wallsBounds.min.z;
-        int maxX = gen.wallsBounds.max.x;
-        int maxZ = gen.wallsBounds.max.z;
-        int desiredTopBlockHeight = gen.wallsBounds.min.y - 1;
+    public static void levelTownArea(World world, StructureBB walls) {
+        int minX = walls.min.x;
+        int minZ = walls.min.z;
+        int maxX = walls.max.x;
+        int maxZ = walls.max.z;
+        int desiredTopBlockHeight = walls.min.y - 1;
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
                 handleBorderBlock(world, x, z, desiredTopBlockHeight, desiredTopBlockHeight, getFillBlock(world, x, z, false, Blocks.grass), getFillBlock(world, x, z, true, Blocks.grass), false);
@@ -103,16 +104,15 @@ public class TownGeneratorBorders {
     }
 
     private static Block getFillBlock(World world, int x, int z, boolean surface, Block defaultBlock) {
-        Block block = defaultBlock;
         BiomeGenBase biome = world.getBiomeGenForCoordsBody(x, z);
-        if (biome != null && biome.topBlock != null) {
+        if (biome != null) {
             if (surface && biome.topBlock != null) {
-                block = biome.topBlock;
+                return biome.topBlock;
             } else if (!surface && biome.fillerBlock != null) {
-                block = biome.fillerBlock;
+                return biome.fillerBlock;
             }
         }
-        return block;
+        return defaultBlock;
     }
 
 }

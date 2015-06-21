@@ -38,7 +38,7 @@ public class NpcAIFactionArcherStayAtHome extends NpcAI {
             return;
         }
         double d = npc.getDistanceSq(target);
-        if (d > 9) {
+        if (d > MIN_RANGE) {
             npc.addAITask(TASK_MOVE);
             moveToPosition(target, d);
         } else {

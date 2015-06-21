@@ -13,16 +13,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import java.util.List;
 
-public class ItemQuill extends Item implements IItemClickable {
+public class ItemQuill extends Item {
 
     double attackDamage = 5.d;
     ToolMaterial material;
@@ -43,16 +41,6 @@ public class ItemQuill extends Item implements IItemClickable {
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         list.add(StatCollector.translateToLocal("guistrings.core.quill.work_mode_1"));
         list.add(StatCollector.translateToLocal("guistrings.core.quill.work_mode_2"));
-    }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
     }
 
     public ToolMaterial getMaterial() {
@@ -86,9 +74,9 @@ public class ItemQuill extends Item implements IItemClickable {
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_) {
-        if ((double) p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_, p_150894_5_, p_150894_6_) != 0.0D) {
-            p_150894_1_.damageItem(2, p_150894_7_);
+    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase living) {
+        if (block.getBlockHardness(world, x, y, z) != 0) {
+            stack.damageItem(2, living);
         }
         return true;
     }
@@ -105,13 +93,11 @@ public class ItemQuill extends Item implements IItemClickable {
     }
 
     @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
-        BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if(world.isRemote){
+            return stack;
+        }
+        BlockPosition pos = BlockTools.getBlockClickedOn(player, world, false);
         if (pos != null) {
             TileEntity te = player.worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite && ((IWorkSite) te).getWorkType() == IWorkSite.WorkType.RESEARCH) {
@@ -126,15 +112,7 @@ public class ItemQuill extends Item implements IItemClickable {
                 }
             }
         }
-    }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
+        return stack;
     }
 
 }

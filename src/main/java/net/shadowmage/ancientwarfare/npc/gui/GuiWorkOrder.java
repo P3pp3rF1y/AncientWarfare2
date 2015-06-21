@@ -10,13 +10,13 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
 
 import java.util.List;
+import java.util.Locale;
 
 public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
 
-//TODO display work priority type via button
-
     boolean hasChanged = false;
     CompositeScrolled area;
+    Button routeButton, shiftButton;
 
     public GuiWorkOrder(ContainerBase container) {
         super(container);
@@ -26,13 +26,33 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
     public void initElements() {
         area = new CompositeScrolled(this, 0, 40, xSize, ySize - 40);
         addGuiElement(area);
-
-        //TODO add 'shift selection' to the top of the GUI -- early day / late day / night??
+        routeButton = new Button(8, 8, 100, 12, "") {
+            @Override
+            protected void onPressed() {
+                getContainer().wo.togglePriority();
+                hasChanged = true;
+                refreshGui();
+            }
+        };
+        addGuiElement(routeButton);
+        shiftButton = new Button(8, 24, 100, 12, "") {
+            @Override
+            protected void onPressed() {
+                getContainer().wo.toggleShift();
+                hasChanged = true;
+                refreshGui();
+            }
+        };
+        addGuiElement(shiftButton);
     }
 
     @Override
     public void setupElements() {
         area.clearElements();
+        String type = getContainer().wo.getPriorityType().name().toLowerCase(Locale.ENGLISH);
+        routeButton.setText("guistrings.npc.work_priority." + type);
+        type = getContainer().wo.isNightShift() ? "night" : "day";
+        shiftButton.setText("guistrings.npc.work_shift." + type);
         List<WorkEntry> entries = getContainer().wo.getEntries();
         int totalHeight = 8;
         int index = 0;

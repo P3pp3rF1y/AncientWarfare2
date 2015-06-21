@@ -13,8 +13,7 @@ public class ContainerTradeOrder extends ContainerBase {
         super(player);
         orders = TradeOrder.getTradeOrder(player.getCurrentEquippedItem());
 
-        int startY = 240 - 4 - 8 - 4 * 18;
-        addPlayerSlots(8, startY, 4);
+        addPlayerSlots((256 - (9 * 18)) / 2, 240 - 4 - 8 - 4 * 18, 4);
     }
 
     @Override

@@ -5,7 +5,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,13 +16,13 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
 
+    private static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
     Set<BlockPosition> cocoaToPlant;
     Set<BlockPosition> cactusToPlant;
     Set<BlockPosition> reedToPlant;
@@ -44,16 +43,17 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         blocksToHarvest = new HashSet<BlockPosition>();
         cocoaToGrow = new HashSet<BlockPosition>();
 
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33) {
+        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH) {
             @Override
             public void markDirty() {
                 super.markDirty();
                 shouldCountResources = true;
             }
         };
-        int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
-        int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
-        int[] bottomIndices = InventoryTools.getIndiceArrayForSpread(30, 3);
+        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
+        int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
+        int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
+        int[] bottomIndices = helper.getIndiceArrayForSpread(BOTTOM_LENGTH);
         this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
         this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//plantables
         this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//bonemeal
@@ -157,8 +157,8 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         Block block = worldObj.getBlock(p.x, p.y, p.z);
         if (block instanceof BlockCocoa && ((BlockCocoa) block).func_149851_a(worldObj, p.x, p.y, p.z, worldObj.isRemote)) {
             ItemStack stack;
-            for (int i = 30; i < inventory.getSizeInventory(); i++) {
-                stack = inventory.getStackInSlot(i);
+            for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
+                stack = getStackInSlot(i);
                 if (stack == null) {
                     continue;
                 }
@@ -166,7 +166,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
                     if (ItemDye.applyBonemeal(stack, worldObj, p.x, p.y, p.z, getOwnerAsPlayer())) {
                         bonemealCount--;
                         if (stack.stackSize <= 0) {
-                            inventory.setInventorySlotContents(i, null);
+                            setInventorySlotContents(i, null);
                         }
                     }
                     if (((BlockCocoa) block).func_149851_a(worldObj, p.x, p.y, p.z, worldObj.isRemote)) {
@@ -194,8 +194,8 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
             return false;
         }
         ItemStack stack;
-        for (int i = 27; i < 30; i++) {
-            stack = inventory.getStackInSlot(i);
+        for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
+            stack = getStackInSlot(i);
             if (stack == null) {
                 continue;
             }
@@ -212,8 +212,8 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
             return false;
         }
         ItemStack stack;
-        for (int i = 27; i < 30; i++) {
-            stack = inventory.getStackInSlot(i);
+        for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
+            stack = getStackInSlot(i);
             if (stack == null) {
                 continue;
             }
@@ -242,8 +242,8 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         if(meta == null)
             return false;
         ItemStack stack;
-        for (int i = 27; i < 30; i++) {
-            stack = inventory.getStackInSlot(i);
+        for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
+            stack = getStackInSlot(i);
             if (stack == null) {
                 continue;
             }
@@ -267,8 +267,8 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         cocoaCount = 0;
         bonemealCount = 0;
         ItemStack stack;
-        for (int i = 27; i < 30; i++) {
-            stack = inventory.getStackInSlot(i);
+        for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
+            stack = getStackInSlot(i);
             if (stack == null) {
                 continue;
             }
@@ -279,8 +279,8 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
             else if (Block.getBlockFromItem(stack.getItem()) instanceof BlockCactus)
                 cactusCount += stack.stackSize;
         }
-        for (int i = 27; i < 30; i++) {
-            stack = inventory.getStackInSlot(i);
+        for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
+            stack = getStackInSlot(i);
             if (stack == null) {
                 continue;
             }

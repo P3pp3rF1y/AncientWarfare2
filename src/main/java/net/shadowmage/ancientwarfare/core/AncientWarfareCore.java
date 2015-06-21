@@ -10,23 +10,18 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCoreCrafting;
-import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
-import net.shadowmage.ancientwarfare.core.item.ItemEventHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
-import net.shadowmage.ancientwarfare.core.research.ResearchData;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
@@ -75,7 +70,6 @@ public class AncientWarfareCore {
          * register server-side network handler and anything that needs loaded on the event busses
          */
         NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
-        MinecraftForge.EVENT_BUS.register(new ItemEventHandler());
         FMLCommonHandler.instance().bus().register(ResearchTracker.INSTANCE);
         FMLCommonHandler.instance().bus().register(this);
 

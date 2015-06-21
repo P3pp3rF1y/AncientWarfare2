@@ -33,7 +33,7 @@ public class ContainerBackpack extends ContainerBase {
             });
         }
         int height = (stack.getItemDamage() + 1) * 18 + 8;
-        guiHeight = addPlayerSlots(8, height + 8, 4) + 8;
+        guiHeight = addPlayerSlots(height + 8) + 8;
     }
 
     @Override

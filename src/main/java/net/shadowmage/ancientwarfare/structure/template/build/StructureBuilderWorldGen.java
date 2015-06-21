@@ -26,13 +26,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID;
 import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockMeta;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
-import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 
 public class StructureBuilderWorldGen extends StructureBuilder {
 
@@ -64,16 +61,12 @@ public class StructureBuilderWorldGen extends StructureBuilder {
 
     protected Block getBiomeSpecificBlock(Block par1, int par2, BiomeGenBase biome) {
         if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.sand) {
-            if (par1 == Blocks.log || par1 == Blocks.cobblestone || par1 == Blocks.planks) {
+            if (par1 == Blocks.log || par1 == Blocks.cobblestone || par1 == Blocks.planks || par1 == Blocks.gravel) {
                 return Blocks.sandstone;
             }
 
             if (par1 == Blocks.oak_stairs || par1 == Blocks.stone_stairs) {
                 return Blocks.sandstone_stairs;
-            }
-
-            if (par1 == Blocks.gravel) {
-                return Blocks.sandstone;
             }
         }
 
@@ -85,10 +78,7 @@ public class StructureBuilderWorldGen extends StructureBuilder {
      */
     protected int getBiomeSpecificBlockMetadata(Block par1, int par2, BiomeGenBase biome) {
         if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.sand) {
-            if (par1 == Blocks.log) {
-                return 0;
-            }
-            if (par1 == Blocks.cobblestone) {
+            if (par1 == Blocks.log || par1 == Blocks.cobblestone) {
                 return 0;
             }
             if (par1 == Blocks.planks) {
@@ -100,40 +90,9 @@ public class StructureBuilderWorldGen extends StructureBuilder {
 
     @Override
     public void instantConstruction() {
-        template.getValidationSettings().preGeneration(world, buildOrigin.x, buildOrigin.y, buildOrigin.z, buildFace, template, bb);
+        template.getValidationSettings().preGeneration(world, buildOrigin, buildFace, template, bb);
         super.instantConstruction();
-        if (template.getValidationSettings().validationType == StructureValidationType.GROUND) {
-            BiomeGenBase biome = world.getBiomeGenForCoords(buildOrigin.x, buildOrigin.z);
-            if (biome != null && biome.getEnableSnow()) {
-                sprinkleSnow();
-            }
-        }
-    }
-
-    private void sprinkleSnow() {
-        Block block;
-        int y = 0;
-        int border = template.getValidationSettings().getBorderSize();
-        BlockPosition p1 = bb.min.copy();
-        BlockPosition p2 = bb.max.copy();
-        p1.offset(-border, 0, -border);
-        p2.offset(border, 0, border);
-        for (int x = p1.x; x <= p2.x; x++) {
-            for (int z = p1.z; z <= p2.z; z++) {
-                y = p2.y;
-                while (y >= p1.y) {
-                    block = world.getBlock(x, y, z);
-                    if (block != Blocks.air && block.isSideSolid(world, x, y, z, ForgeDirection.UP)) {
-                        y++;
-                        if (world.isAirBlock(x, y, z) && world.canBlockSeeTheSky(x, y, z)) {
-                            world.setBlock(x, y, z, Blocks.snow_layer);
-                        }
-                        break;
-                    }
-                    y--;
-                }
-            }
-        }
+        template.getValidationSettings().postGeneration(world, buildOrigin, bb);
     }
 
 }

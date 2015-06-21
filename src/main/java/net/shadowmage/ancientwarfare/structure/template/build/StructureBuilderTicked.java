@@ -58,15 +58,14 @@ public class StructureBuilderTicked extends StructureBuilder {
                 hasClearedArea = true;
             }
         } else if (!this.isFinished()) {
-            boolean placed = false;
-            while (!placed && !this.isFinished()) {
+            while (!this.isFinished()) {
                 TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
                 if (rule == null || !rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority)) {
                     increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next
                 } else//place it...
                 {
-                    placed = true;
-                    this.placeCurrentPosition(rule);
+                    this.placeRule(rule);
+                    break;
                 }
             }
             increment();//finally, increment to next position (will trigger isFinished if actually done, has no problems if already finished)
@@ -146,17 +145,9 @@ public class StructureBuilderTicked extends StructureBuilder {
         tag.setInteger("cz", clearZ);
         tag.setBoolean("cleared", hasClearedArea);
 
-        NBTTagCompound originTag = new NBTTagCompound();
-        buildOrigin.writeToNBT(originTag);
-        tag.setTag("buildOrigin", originTag);
-
-
-        NBTTagCompound bbMin = new NBTTagCompound();
-        NBTTagCompound bbMax = new NBTTagCompound();
-        bb.min.writeToNBT(bbMin);
-        bb.max.writeToNBT(bbMax);
-        tag.setTag("bbMin", bbMin);
-        tag.setTag("bbMax", bbMax);
+        tag.setTag("buildOrigin", buildOrigin.writeToNBT(new NBTTagCompound()));
+        tag.setTag("bbMin", bb.min.writeToNBT(new NBTTagCompound()));
+        tag.setTag("bbMax", bb.max.writeToNBT(new NBTTagCompound()));
     }
 
     /**

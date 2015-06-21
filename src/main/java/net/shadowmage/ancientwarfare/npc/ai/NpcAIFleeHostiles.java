@@ -4,6 +4,7 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
@@ -11,42 +12,49 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class NpcAIFleeHostiles extends NpcAI {
 
-    private static int MAX_FLEE_RANGE = 16, HEIGHT_CHECK = 7;
-    IEntitySelector selector;
+    private static int MAX_STAY_HOME = 400, MAX_FLEE_RANGE = 16, HEIGHT_CHECK = 7, PURSUE_RANGE = 16 * 16;
+    private final IEntitySelector selector;
+    private final Comparator sorter;
     double distanceFromEntity = 16;
-    Vec3 fleeVector;
-    int stayAtHomeTimer = 0;
+    private Vec3 fleeVector;
+    private int stayAtHomeTimer = 0;
 
     public NpcAIFleeHostiles(NpcBase npc) {
         super(npc);
         selector = new IEntitySelector() {
             @Override
             public boolean isEntityApplicable(Entity var1) {
-                if (var1 instanceof NpcBase) {
-                    return ((NpcBase) var1).isHostileTowards(NpcAIFleeHostiles.this.npc);
+                if(var1.isEntityAlive()) {
+                    if (var1 instanceof NpcBase) {
+                        return ((NpcBase) var1).isHostileTowards(NpcAIFleeHostiles.this.npc);
+                    }
+                    return AncientWarfareNPC.statics.shouldEntityTargetNpcs(EntityList.getEntityString(var1));
                 }
-                return AncientWarfareNPC.statics.shouldEntityTargetNpcs(EntityList.getEntityString(var1));
+                return false;
             }
         };
+        sorter = new EntityAINearestAttackableTarget.Sorter(npc);
         this.setMutexBits(ATTACK + MOVE);
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean shouldExecute() {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
-        List list = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand((double) this.distanceFromEntity, 3.0D, (double) this.distanceFromEntity), this.selector);
+        List list = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.selector);
         if (list.isEmpty()) {
             return false;
         }
+        list.sort(sorter);
         EntityLiving fleeTarget = (EntityLiving) list.get(0);
-        //TODO find closest target to flee from, or at least check if can-see the target?
+        //TODO check if can-see the target?
         boolean flee = false;
         if (npc.getTownHallPosition() != null || npc.hasHome()) {
             flee = true;
@@ -69,10 +77,7 @@ public class NpcAIFleeHostiles extends NpcAI {
      */
     @Override
     public boolean continueExecuting() {
-        if (!npc.getIsAIEnabled()) {
-            return false;
-        }
-        if (npc.getAttackTarget() == null || npc.getAttackTarget().isDead) {
+        if (!npc.getIsAIEnabled() || npc.getAttackTarget() == null || npc.getAttackTarget().isDead) {
             return false;
         }
         return stayAtHomeTimer != 0 || npc.getAttackTarget().getDistanceSqToEntity(this.npc) < distanceFromEntity * distanceFromEntity;
@@ -85,35 +90,22 @@ public class NpcAIFleeHostiles extends NpcAI {
             stayAtHomeTimer = 0;
             return;
         }
+        BlockPosition pos = null;
+        double distSq;
         if (npc.getTownHallPosition() != null) {
-            BlockPosition pos = npc.getTownHallPosition();
-            double distSq = npc.getDistanceSq(pos);
-            if (distSq > 3 * 3) {
-                moveToPosition(pos, distSq);
-                stayAtHomeTimer = 20 * 20;//30 seconds...
-            } else {
-                if (stayAtHomeTimer > 0) {
-                    stayAtHomeTimer--;
-                }
-            }
+            pos = npc.getTownHallPosition();
+            distSq = npc.getDistanceSq(pos);
         } else if (npc.hasHome()) {
-            double distSq = npc.getDistanceSqFromHome();
-            if (distSq > 3 * 3) {
-                ChunkCoordinates cc = npc.getHomePosition();
-                moveToPosition(cc.posX, cc.posY, cc.posZ, distSq);
-                stayAtHomeTimer = 20 * 20;//30 seconds...
-            } else {
-                if (stayAtHomeTimer > 0) {
-                    stayAtHomeTimer--;
-                }
-            }
+            distSq = npc.getDistanceSqFromHome();
+            ChunkCoordinates cc = npc.getHomePosition();
+            pos = new BlockPosition(cc.posX, cc.posY, cc.posZ);
         } else//check distance to flee vector
         {
-            double distSq = npc.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord);
-            if (distSq > 3 * 3) {
+            distSq = npc.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord);
+            if (distSq > MIN_RANGE) {
                 moveToPosition(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord, distSq);
             } else {
-                if (npc.getDistanceSqToEntity(npc.getAttackTarget()) < 16 * 16)//entity still chasing, find a new flee vector
+                if (npc.getDistanceSqToEntity(npc.getAttackTarget()) < PURSUE_RANGE)//entity still chasing, find a new flee vector
                 {
                     fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3.createVectorHelper(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
                     if (fleeVector == null) {
@@ -123,6 +115,14 @@ public class NpcAIFleeHostiles extends NpcAI {
                 {
                     npc.setAttackTarget(null);
                 }
+            }
+        }
+        if (pos!=null && distSq > MIN_RANGE) {
+            moveToPosition(pos, distSq);
+            stayAtHomeTimer = MAX_STAY_HOME;
+        }else {
+            if (stayAtHomeTimer > 0) {
+                stayAtHomeTimer--;
             }
         }
     }

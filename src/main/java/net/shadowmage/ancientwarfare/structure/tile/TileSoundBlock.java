@@ -9,12 +9,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.shadowmage.ancientwarfare.core.interfaces.ISinger;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
-import net.shadowmage.ancientwarfare.core.util.SongPlayData.SongEntry;
 
 import java.util.List;
 
-public class TileSoundBlock extends TileEntity {
+public class TileSoundBlock extends TileEntity implements ISinger{
 
     private boolean playing = false;//if currently playing a tune.
     private boolean redstoneInteraction = false;
@@ -137,7 +137,7 @@ public class TileSoundBlock extends TileEntity {
         cacheToNBT(tag);
     }
 
-    public SongPlayData getTuneData() {
+    public SongPlayData getSongs() {
         return tuneData;
     }
 

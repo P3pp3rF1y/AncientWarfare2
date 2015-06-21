@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
@@ -27,8 +28,11 @@ public class ItemRoutingOrder extends ItemOrders {
     }
 
     @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_ROUTING_ORDER, 0, 0, 0);
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    {
+        if(!world.isRemote)
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_ROUTING_ORDER, 0, 0, 0);
+        return stack;
     }
 
     @Override
@@ -37,9 +41,9 @@ public class ItemRoutingOrder extends ItemOrders {
         if (order != null) {
             MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
             if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
-                order.addRoutePoint(player.worldObj, hit.blockX, hit.blockY, hit.blockZ);
-                order.get(order.size() - 1).setBlockSide(hit.sideHit);
+                order.addRoutePoint(hit.sideHit, hit.blockX, hit.blockY, hit.blockZ);
                 order.write(stack);
+                addMessage(player);
             }
         }
     }

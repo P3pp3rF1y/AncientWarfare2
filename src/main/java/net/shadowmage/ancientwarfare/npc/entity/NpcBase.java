@@ -64,7 +64,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         levelingStats = new NpcLevelingStats(this);
         this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
         this.width = 0.6f;
-        this.func_110163_bv();//set persistence required==true
+        this.func_110163_bv();//set persistence required=true
         AncientWarfareNPC.statics.applyPathConfig(this);
     }
 

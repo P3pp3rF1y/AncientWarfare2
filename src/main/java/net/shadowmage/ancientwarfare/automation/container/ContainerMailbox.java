@@ -59,7 +59,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         }
 
         y1 = 8 + 12 + 12 + 4 * 18;
-        guiHeight = addPlayerSlots(8, y1 + 12, 4) + 8 + 24;
+        guiHeight = addPlayerSlots(y1 + 12) + 8 + 24;
 
         if (!player.worldObj.isRemote) {
             MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);

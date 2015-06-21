@@ -32,7 +32,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -42,22 +41,12 @@ import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 
 import java.util.List;
 
-public class ItemGateSpawner extends Item implements IItemKeyInterface, IItemClickable, IBoxRenderer {
+public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRenderer {
 
     public ItemGateSpawner(String name) {
         this.setUnlocalizedName(name);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         this.setMaxStackSize(1);
-    }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
     }
 
     @Override
@@ -95,14 +84,14 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IItemCli
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
+    public void getSubItems(Item item, CreativeTabs tab, List list) {
         Gate g;
         for (int i = 0; i < 16; i++) {
             g = Gate.getGateByID(i);
             if (g == null) {
                 continue;
             }
-            p_150895_3_.add(g.getDisplayStack());
+            list.add(g.getDisplayStack());
         }
     }
 
@@ -112,10 +101,9 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IItemCli
     }
 
     @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
-        World world = player.worldObj;
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (world.isRemote) {
-            return;
+            return stack;
         }
         NBTTagCompound tag;
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("AWGateInfo")) {
@@ -133,23 +121,20 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IItemCli
             BlockPosition avg = BlockTools.getAverageOf(pos1, pos2);
             if (player.getDistance(avg.x + 0.5d, pos1.y, avg.z + 0.5d) > 10) {
                 player.addChatMessage(new ChatComponentTranslation("guistrings.gate.too_far"));
-                return;
+                return stack;
             }
             if (!canSpawnGate(world, pos1, pos2)) {
                 player.addChatMessage(new ChatComponentTranslation("guistrings.gate.exists"));
-                return;
+                return stack;
             }
             EntityGate entity = Gate.constructGate(world, pos1, pos2, Gate.getGateByID(stack.getItemDamage()), facing);
             if (entity != null) {
                 entity.setOwnerName(player.getCommandSenderName());
                 world.spawnEntityInWorld(entity);
                 if (!player.capabilities.isCreativeMode) {
-                    ItemStack item = player.getHeldItem();
-                    if (item != null) {
-                        item.stackSize--;
-                        if (item.stackSize <= 0) {
-                            player.setCurrentItemOrArmor(0, null);
-                        }
+                    stack.stackSize--;
+                    if (stack.stackSize <= 0) {
+                        return null;
                     }
                 }
                 tag.removeTag("pos1");
@@ -159,6 +144,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IItemCli
                 player.addChatMessage(new ChatComponentTranslation("guistrings.gate.need_to_clear"));
             }
         }
+        return stack;
     }
 
     @SuppressWarnings("unchecked")
@@ -213,21 +199,6 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IItemCli
             player.addChatMessage(new ChatComponentTranslation("guistrings.gate.set_pos_one"));
         }
         stack.setTagInfo("AWGateInfo", tag);
-    }
-
-    @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-
     }
 
     @Override

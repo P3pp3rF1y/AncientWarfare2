@@ -23,7 +23,7 @@ public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSter
                 return TileEntityFurnace.isItemFuel(par1ItemStack);
             }
         });
-        addPlayerSlots(8, 8 + 18 + 8 + 12 + 12, 4);
+        addPlayerSlots(8 + 18 + 8 + 12 + 12);
         guiHeight = 8 + 18 + 8 + 4 * 18 + 4 + 8 + 12 + 12;
     }
 

@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
 
-public class TileOreProcessor extends TileWorksiteBase implements IInventory, ISidedInventory {
+public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory {
 
     private InventoryBasic inventory;
 

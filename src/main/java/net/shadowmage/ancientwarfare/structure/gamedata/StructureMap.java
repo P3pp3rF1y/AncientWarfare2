@@ -65,8 +65,8 @@ public class StructureMap extends WorldSavedData {
         this.markDirty();
     }
 
-    public Collection<String> getGeneratedUniques() {
-        return this.map.generatedUniques;
+    public boolean isGeneratedUnique(String name) {
+        return this.map.generatedUniques.contains(name);
     }
 
     private class StructureDimensionMap {
@@ -105,10 +105,8 @@ public class StructureMap extends WorldSavedData {
                 this.mapsByDimension.get(dim).readFromNBT(dimensionTag.getCompoundTag("data"));
             }
 
-            String uniqueTag;
             for (int i = 0; i < uniquesList.tagCount(); i++) {
-                uniqueTag = uniquesList.getStringTagAt(i);
-                generatedUniques.add(uniqueTag);
+                generatedUniques.add(uniquesList.getStringTagAt(i));
             }
         }
 

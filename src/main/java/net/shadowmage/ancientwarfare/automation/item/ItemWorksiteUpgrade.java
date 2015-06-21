@@ -3,8 +3,8 @@ package net.shadowmage.ancientwarfare.automation.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.item.ItemBase;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.HashSet;
 
-public class ItemWorksiteUpgrade extends ItemBase implements IItemClickable {
+public class ItemWorksiteUpgrade extends ItemBase {
 
     public ItemWorksiteUpgrade() {
         this.setUnlocalizedName("worksite_upgrade");
@@ -33,33 +33,26 @@ public class ItemWorksiteUpgrade extends ItemBase implements IItemClickable {
     }
 
     @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
-        BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if(world.isRemote){
+            return stack;
+        }
+        BlockPosition pos = BlockTools.getBlockClickedOn(player, world, false);
         if (pos != null) {
-            TileEntity te = player.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = world.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
                 IWorkSite ws = (IWorkSite) te;
                 WorksiteUpgrade upgrade = getUpgrade(stack);
                 if (!ws.getValidUpgrades().contains(upgrade)) {
-                    return;
+                    return stack;
                 }
                 HashSet<WorksiteUpgrade> wsug = new HashSet<WorksiteUpgrade>(ws.getUpgrades());
                 if (wsug.contains(upgrade)) {
-                    return;
+                    return stack;
                 }
                 for (WorksiteUpgrade ug : wsug) {
                     if (ug.exclusive(upgrade)) {
-                        return;//exclusive upgrade present, exit early
+                        return stack;//exclusive upgrade present, exit early
                     }
                 }
                 for (WorksiteUpgrade ug : wsug) {
@@ -70,26 +63,8 @@ public class ItemWorksiteUpgrade extends ItemBase implements IItemClickable {
                 }
                 ws.addUpgrade(upgrade);
                 stack.stackSize--;
-                if (stack.stackSize <= 0) {
-                    player.destroyCurrentEquippedItem();
-                }
-                player.openContainer.detectAndSendChanges();
             }
         }
+        return stack;
     }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-    }
-
 }

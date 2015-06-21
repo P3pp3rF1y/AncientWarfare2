@@ -122,7 +122,6 @@ public class WorldGenStructureManager {
         }
 
         int remainingValueCache = AWStructureStatics.maxClusterValue - foundValue;
-        Collection<String> generatedUniques = map.getGeneratedUniques();
         StructureValidator settings;
         int dim = world.provider.dimensionId;
         for (StructureTemplate template : potentialStructures)//loop through initial structures, only adding to 2nd list those which meet biome, unique, value, and minDuplicate distance settings
@@ -141,7 +140,7 @@ public class WorldGenStructureManager {
             {
                 continue;
             }
-            if (generatedUniques.contains(template.name)) {
+            if (settings.isUnique() && map.isGeneratedUnique(template.name)) {
                 continue;
             }//skip already generated uniques
             if (settings.getClusterValue() > remainingValueCache) {

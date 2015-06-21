@@ -22,8 +22,7 @@ public class ContainerRoutingOrder extends ContainerBase {
             throw new IllegalArgumentException("Routing orders was null for some reason");
         }
 
-        int x1 = ((256 - (9 * 18) - 16) / 2) + 8;
-        addPlayerSlots(x1, 240 - 4 * 18 - 8 - 4, 4);
+        addPlayerSlots((256 - (9 * 18)) / 2, 240 - 4 * 18 - 8 - 4, 4);
     }
 
     @Override

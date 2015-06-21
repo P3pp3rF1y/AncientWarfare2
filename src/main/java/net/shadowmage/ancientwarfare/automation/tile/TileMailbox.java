@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,7 +18,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileMailbox extends TileEntity implements IOwnable, IInventory, ISidedInventory, IRotatableTile {
+public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory, IRotatableTile {
 
     private boolean autoExport;//should automatically try and export from output side
     private boolean privateBox;

@@ -33,10 +33,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
     }
 
     private boolean isChecked(int x, int y) {
-        if (noTargetMode) {
-            return false;
-        }
-        return checkedMap[y * 16 + x] == 1;
+        return !noTargetMode && checkedMap[y * 16 + x] == 1;
     }
 
     @Override

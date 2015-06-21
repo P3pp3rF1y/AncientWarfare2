@@ -1,30 +1,16 @@
 package net.shadowmage.ancientwarfare.npc.ai.faction;
 
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-import java.util.ArrayList;
-import java.util.List;
+public class NpcAIFactionRideHorse extends NpcAIRideHorse {
 
-public class NpcAIFactionRideHorse extends NpcAI {
-
-    AttributeModifier followRangeModifier;
-    AttributeModifier moveSpeedModifier;
-    boolean wasHorseKilled = false;
-    EntityHorse horse;
-    List<EntityAITaskEntry> horseAI = new ArrayList<EntityAITaskEntry>();
+    private boolean wasHorseKilled = false;
 
     public NpcAIFactionRideHorse(NpcBase npc) {
-        super(npc);
-        this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", 1.5d, 2);
-        this.moveSpeedModifier.setSaved(false);
-        this.followRangeModifier = new AttributeModifier("modifier.npc_horse_path_extension", 24.d, 0);
-        this.followRangeModifier.setSaved(false);
+        super(npc, 1.5);
     }
 
     @Override
@@ -46,11 +32,6 @@ public class NpcAIFactionRideHorse extends NpcAI {
         }
     }
 
-    @Override
-    public void updateTask() {
-        super.updateTask();
-    }
-
     private void spawnHorse() {
         EntityHorse horse = new EntityHorse(npc.worldObj);
         horse.setLocationAndAngles(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
@@ -67,53 +48,11 @@ public class NpcAIFactionRideHorse extends NpcAI {
         onMountHorse();
     }
 
-    public void onKilled() {
-        if (horse != null) {
-            onDismountHorse();
-        }
-        horse = null;
-    }
-
-    private void onMountHorse() {
-        removeHorseAI();
-        horse.setHorseSaddled(false);
+    @Override
+    protected void onMountHorse() {
+        super.onMountHorse();
         horse.setEatingHaystack(false);
         horse.setRearing(false);
-        applyModifiers();
-    }
-
-    private void onDismountHorse() {
-        addHorseAI();
-        horse.setHorseSaddled(true);
-        removeModifiers();
-    }
-
-    private void applyModifiers() {
-        removeModifiers();
-        horse.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(moveSpeedModifier);
-        horse.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(followRangeModifier);
-    }
-
-    private void removeModifiers() {
-        horse.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(moveSpeedModifier);
-        horse.getEntityAttribute(SharedMonsterAttributes.followRange).removeModifier(followRangeModifier);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void removeHorseAI() {
-        horseAI.clear();
-        horseAI.addAll(horse.tasks.taskEntries);
-        for (EntityAITaskEntry task : horseAI) {
-            horse.tasks.removeTask(task.action);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void addHorseAI() {
-        if (horse.tasks.taskEntries.isEmpty()) {
-            horse.tasks.taskEntries.addAll(horseAI);
-        }
-        horseAI.clear();
     }
 
     public void readFromNBT(NBTTagCompound tag) {

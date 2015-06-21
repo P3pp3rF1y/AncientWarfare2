@@ -1,13 +1,17 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 
 public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
 
+    private NumberInput input;
     public GuiTownHallInventory(ContainerBase container) {
         super(container);
         this.ySize = 3 * 18 + 4 * 18 + 8 + 8 + 4 + 8 + 16;
@@ -25,12 +29,24 @@ public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
             }
         };
         addGuiElement(button);
+        addGuiElement(new Label(90, 10, "guistrings.npc.town_range"));
+        input = new NumberInput(125, 8, 45, getContainer().tileEntity.getRange(), this);
+        input.setIntegerValue();
+        addGuiElement(input);
     }
 
     @Override
     public void setupElements() {
-
     }
 
-
+    @Override
+    protected boolean onGuiCloseRequested() {
+        if(getContainer().tileEntity.getRange()!=input.getIntegerValue()) {
+            getContainer().tileEntity.setRange(input.getIntegerValue());
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setInteger("range", input.getIntegerValue());
+            sendDataToContainer(tag);
+        }
+        return super.onGuiCloseRequested();
+    }
 }

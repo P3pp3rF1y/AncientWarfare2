@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -18,7 +18,7 @@ import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import java.util.List;
 import java.util.Set;
 
-public class ItemConstructionTool extends Item implements IItemClickable, IItemKeyInterface, IBoxRenderer {
+public class ItemConstructionTool extends Item implements IItemKeyInterface, IBoxRenderer {
 
     public ItemConstructionTool(String regName) {
         this.setUnlocalizedName(regName);
@@ -65,34 +65,14 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
     }
 
     @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-    }
-
-    @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }//return true for send packet to act on server-side
-
-    @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    {
+        if(world.isRemote){
+            return stack;
+        }
         ConstructionSettings settings = getSettings(stack);
         if(settings==null){
-            return;
+            return stack;
         }
         switch (settings.type) {
             case SOLID_FILL: {
@@ -112,6 +92,7 @@ public class ItemConstructionTool extends Item implements IItemClickable, IItemK
             }
             break;
         }
+        return stack;
     }
 
     private void handleSolidFill(EntityPlayer player, ConstructionSettings settings) {

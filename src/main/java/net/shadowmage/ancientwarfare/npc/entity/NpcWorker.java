@@ -9,7 +9,7 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.scoreboard.Team;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
@@ -17,12 +17,10 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.core.item.ItemQuill;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
+import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 
 import java.util.Collection;
 
@@ -108,13 +106,26 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
     }
 
     @Override
-    public boolean canWorkAt(WorkType type) {
-        return type == getWorkTypeFromEquipment();
+    public boolean shouldBeAtHome() {
+        WorkOrder order = WorkOrder.getWorkOrder(ordersStack);
+        if(order == null || !order.isNightShift()){
+            return super.shouldBeAtHome();
+        }else{
+            if (getAttackTarget() != null || !hasHome() || worldObj.provider.hasNoSky) {
+                return false;
+            }
+            return worldObj.isDaytime() || worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+        }
     }
 
     @Override
-    public Team getWorkerTeam() {
-        return getTeam();
+    public double getWorkRangeSq(){
+        return NpcAI.ACTION_RANGE;
+    }
+
+    @Override
+    public boolean canWorkAt(WorkType type) {
+        return type == getWorkTypeFromEquipment();
     }
 
     @Override

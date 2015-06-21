@@ -57,8 +57,16 @@ public class ContainerBase extends Container {
         return ty + (4 * 18) + gap;
     }
 
+    protected int addPlayerSlots(int ty) {
+        return addPlayerSlots(8, ty, 4);
+    }
+
+    protected int addPlayerSlots() {
+        return addPlayerSlots(8, 240 - 4 - 8 - 4 * 18, 4);
+    }
+
     /**
-     * server side method to send a data-packet to the client-side GUI attached to the client-side verison of this container
+     * server side method to send a data-packet to the client-side GUI attached to the client-side version of this container
      */
     protected final void sendDataToGui(NBTTagCompound data) {
         if (!player.worldObj.isRemote) {

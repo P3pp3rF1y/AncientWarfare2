@@ -21,7 +21,7 @@ public class ContainerWorksiteReedFarm extends ContainerWorksiteBase {
         layerY = addSlots(8, layerY, 30, 3) + 4;
         playerLabel = layerY;
         layerY += labelGap;
-        guiHeight = addPlayerSlots(8, layerY, 4) + 8;
+        guiHeight = addPlayerSlots(layerY) + 8;
     }
 
 }

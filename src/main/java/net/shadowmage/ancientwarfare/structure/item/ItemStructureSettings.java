@@ -50,7 +50,7 @@ public class ItemStructureSettings {
         } else {
             tag = new NBTTagCompound();
         }
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < settings.setKeys.length; i++) {
             settings.setKeys[i] = false;
         }
         if (tag.hasKey("pos1")) {
@@ -76,20 +76,15 @@ public class ItemStructureSettings {
     public static void setSettingsFor(ItemStack item, ItemStructureSettings settings) {
         NBTTagCompound tag = new NBTTagCompound();
         if (settings.setKeys[0]) {
-            NBTTagCompound tag1 = new NBTTagCompound();
-            settings.pos1.writeToNBT(tag1);
-            tag.setTag("pos1", tag1);
+            tag.setTag("pos1", settings.pos1.writeToNBT(new NBTTagCompound()));
         }
         if (settings.setKeys[1]) {
-            NBTTagCompound tag1 = new NBTTagCompound();
-            settings.pos2.writeToNBT(tag1);
-            tag.setTag("pos2", tag1);
+            tag.setTag("pos2", settings.pos2.writeToNBT(new NBTTagCompound()));
         }
         if (settings.setKeys[2]) {
             NBTTagCompound tag1 = new NBTTagCompound();
-            settings.key.writeToNBT(tag1);
             tag1.setInteger("face", settings.buildFace);
-            tag.setTag("buildKey", tag1);
+            tag.setTag("buildKey", settings.key.writeToNBT(tag1));
         }
         if (settings.setKeys[3]) {
             tag.setString("name", settings.name);

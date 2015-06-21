@@ -6,17 +6,16 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 
 public class NpcAIPlayerOwnedWorkRandom extends NpcAI {
 
     private int ticksAtSite = 0;
-    NpcWorker worker;
+    private final NpcWorker worker;
 
-    public NpcAIPlayerOwnedWorkRandom(NpcBase npc) {
+    public NpcAIPlayerOwnedWorkRandom(NpcWorker npc) {
         super(npc);
-        worker = (NpcWorker) npc;
+        worker = npc;
         this.setMutexBits(ATTACK + MOVE);
     }
 
@@ -41,7 +40,7 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI {
     public void updateTask() {
         BlockPosition pos = worker.autoWorkTarget;
         double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
-        if (dist > 5.d * 5.d) {
+        if (dist > worker.getWorkRangeSq()) {
             npc.addAITask(TASK_MOVE);
             ticksAtSite = 0;
             moveToPosition(pos, dist);
@@ -68,19 +67,13 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI {
             TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
-                if (worker.canWorkAt(site.getWorkType())) {
-                    if (site.hasWork()) {
-                        npc.addExperience(AWNPCStatics.npcXpFromWork);
-                        site.addEnergyFromWorker(worker);
-                    } else {
-                        worker.autoWorkTarget = null;
-                    }
-                } else {
-                    worker.autoWorkTarget = null;
+                if (worker.canWorkAt(site.getWorkType()) && site.hasWork()) {
+                    npc.addExperience(AWNPCStatics.npcXpFromWork);
+                    site.addEnergyFromWorker(worker);
+                    return;
                 }
-            } else {
-                worker.autoWorkTarget = null;
             }
+            worker.autoWorkTarget = null;
         }
     }
 

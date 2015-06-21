@@ -38,7 +38,7 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
         guiHeight = playerSlotsY + playerSlotsSize;
 
         filters.addAll(tileEntity.getFilters());
-        addPlayerSlots(8, playerSlotsY, 4);
+        addPlayerSlots(playerSlotsY);
     }
 
     @Override

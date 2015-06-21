@@ -23,7 +23,7 @@ public class ContainerWarehouseInterface extends ContainerTileBase<TileWarehouse
         }
         tileEntity.addViewer(this);
         filters.addAll(tileEntity.getFilters());
-        addPlayerSlots(8, 8 + 8 + 3 * 18 + 80 + 8, 4);
+        addPlayerSlots(8 + 8 + 3 * 18 + 80 + 8);
     }
 
     @Override

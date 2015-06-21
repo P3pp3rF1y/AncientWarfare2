@@ -25,6 +25,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -59,14 +60,17 @@ public class StructureValidatorGround extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPosition pos, int face, StructureTemplate template, StructureBB bb) {
         prePlacementBorder(world, template, bb);
         prePlacementUnderfill(world, template, bb);
     }
 
     @Override
-    public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb) {
-        world.setBlock(x, y, z, Blocks.air);
+    public void postGeneration(World world, BlockPosition origin, StructureBB bb) {
+        BiomeGenBase biome = world.getBiomeGenForCoords(origin.x, origin.z);
+        if (biome != null && biome.getEnableSnow()) {
+            WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
+        }
     }
 
     @Override

@@ -2,20 +2,17 @@ package net.shadowmage.ancientwarfare.core.input;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
-import cpw.mods.fml.common.gameevent.InputEvent.MouseInputEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketItemInteraction;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 import java.util.*;
 
@@ -81,31 +78,6 @@ public class InputHandler {
 
     private Property getKeybindProp(String keyName, int defaultVal) {
         return config.get(AWCoreStatics.keybinds, keyName, defaultVal);
-    }
-
-    @SubscribeEvent
-    public void onMouseInput(MouseInputEvent evt) {
-        Minecraft minecraft = Minecraft.getMinecraft();
-        if (minecraft == null || minecraft.currentScreen != null || minecraft.thePlayer == null || minecraft.theWorld == null) {
-            return;
-        }
-        int button = Mouse.getEventButton();
-        if (button < 0 || !Mouse.getEventButtonState()) {
-            return;
-        }
-        long time = System.currentTimeMillis();
-        if (lastMouseInput == -1 || time - lastMouseInput > 250) {
-            lastMouseInput = time;
-            ItemStack stack = minecraft.thePlayer.getCurrentEquippedItem();
-            if (stack != null && stack.getItem() instanceof IItemClickable) {
-                IItemClickable click = (IItemClickable) stack.getItem();
-                if (button == 1 && click.onRightClickClient(minecraft.thePlayer, stack)) {
-                    NetworkHandler.sendToServer(new PacketItemInteraction(2));
-                } else if (button == 0 && click.onLeftClickClient(minecraft.thePlayer, stack)) {
-                    NetworkHandler.sendToServer(new PacketItemInteraction(1));
-                }
-            }
-        }
     }
 
     @SubscribeEvent

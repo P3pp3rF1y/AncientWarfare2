@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -96,11 +97,7 @@ public class StructureBuilder implements IStructureBuilder {
         try {
             while (!this.isFinished()) {
                 TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
-                if (rule != null && rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority)) {
-                    this.placeCurrentPosition(rule);
-                } else if (rule == null && currentPriority == 0) {
-                    placeAir();
-                }
+                placeCurrentPosition(rule);
                 increment();
             }
         } catch (Exception e) {
@@ -139,19 +136,17 @@ public class StructureBuilder implements IStructureBuilder {
         if (y <= 0 || y >= 256) {
             return;
         }
-        if (false /** priority==0 **/)//commented out for testing of using direct chunk-access.  has a few issues with block updates, but overall much faster and acceptable
+        Chunk chunk = world.getChunkFromBlockCoords(x, z);
+        if (y > chunk.getTopFilledSegment() + 15)//A block above all generated subchunks
         {
-            //unsurprisingly, direct chunk access is 2X faster than going through the world =\
-            world.setBlock(x, y, z, block, meta, 2);//using flag=2 -- no block update, but send still send to clients (should help with issues of things popping off)
-        } else {
-            Chunk chunk = world.getChunkFromBlockCoords(x, z);
+            if(block == Blocks.air){//Not changing anything
+                return;
+            }
+            world.setBlock(x, y, z, block, meta, 2);//using flag=2 -- no block update, but still send to clients (should help with issues of things popping off)
+        } else {//unsurprisingly, direct chunk access is 2X faster than going through the world =\
             int cx = x & 15; //bitwise-and to scrub all bits above 15
             int cz = z & 15; //bitwise-and to scrub all bits above 15
-            ExtendedBlockStorage[] st = chunk.getBlockStorageArray();
-            ExtendedBlockStorage stc = st[y >> 4];
-            if (stc == null) {
-                stc = st[y >> 4] = new ExtendedBlockStorage(y >> 4 << 4, !world.provider.hasNoSky);
-            }
+            ExtendedBlockStorage stc = chunk.getBlockStorageArray()[y >> 4];
             chunk.removeTileEntity(cx, y, cz);
             stc.func_150818_a(cx, y & 15, cz, block);
             stc.setExtBlockMetadata(cx, y & 15, cz, meta);
@@ -166,10 +161,13 @@ public class StructureBuilder implements IStructureBuilder {
     }
 
     protected void placeCurrentPosition(TemplateRule rule) {
-        if (rule != null) {
-            placeRule(rule);
-        } else {
-            placeAir();
+        if (rule == null) {
+            if(currentPriority == 0) {
+                placeAir();
+            }
+        }
+        else if (rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority)) {
+            this.placeRule(rule);
         }
     }
 

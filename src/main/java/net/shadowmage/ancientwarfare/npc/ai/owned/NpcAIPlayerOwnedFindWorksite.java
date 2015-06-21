@@ -6,18 +6,17 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 
 import java.util.List;
-
 
 public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
 
     int lastExecuted = -1;//set to -1 default to trigger should execute lookup on first run
     int checkFrequency = 200;//how often to recheck if orders and work target are both null
+    int range = 40;
 
-    public NpcAIPlayerOwnedFindWorksite(NpcBase npc) {
+    public NpcAIPlayerOwnedFindWorksite(NpcWorker npc) {
         super(npc);
     }
 
@@ -26,7 +25,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
-        return npc.ordersStack == null && ((NpcWorker) npc).autoWorkTarget == null && (lastExecuted == -1 || npc.ticksExisted - lastExecuted > 200);
+        return npc.ordersStack == null && ((NpcWorker) npc).autoWorkTarget == null && (lastExecuted == -1 || npc.ticksExisted - lastExecuted > checkFrequency);
     }
 
     @Override
@@ -44,8 +43,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
             TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
-                //TODO validate if can work at owner/team
-                if (!worker.canWorkAt(site.getWorkType()) || !site.hasWork()) {
+                if (!worker.canWorkAt(site.getWorkType()) || (site.getTeam()!=null && !site.getTeam().isSameTeam(worker.getTeam())) || !site.hasWork()) {
                     worker.autoWorkTarget = null;
                 }
             } else {
@@ -61,7 +59,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
         int x = MathHelper.floor_double(npc.posX);
         int y = MathHelper.floor_double(npc.posY);
         int z = MathHelper.floor_double(npc.posZ);
-        List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(npc.worldObj, x - 40, y - 20, z - 40, x + 40, y + 20, z + 40);
+        List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(npc.worldObj, x - range, y - range / 2, z - range, x + range, y + range / 2, z + range);
         IWorkSite site;
         NpcWorker worker = (NpcWorker) npc;
         TileEntity closestSite = null;

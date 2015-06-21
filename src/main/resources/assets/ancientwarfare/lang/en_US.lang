@@ -388,6 +388,11 @@ guistrings.npc.upkeep_time=Upkeep Time
 guistrings.npc.assign_upkeep_point=Please Assign An Upkeep Point
 guistrings.npc.remove_work_point=Remove
 guistrings.npc.work_length=Work Time
+guistrings.npc.work_priority.site_need=Find Next Work
+guistrings.npc.work_priority.route=Cycle Each Point
+guistrings.npc.work_priority.timed=Wait Full Timer
+guistrings.npc.work_shift.day=Day Shift
+guistrings.npc.work_shift.night=Night Shift
 guistrings.npc.commanded=Commanded:
 guistrings.npc.target=Target
 guistrings.npc.remove_point=Remove
@@ -398,6 +403,7 @@ guistrings.npc.death_cause=Cause Of Death
 guistrings.npc.can_res=Can Res
 guistrings.npc.resurrected=Resurrected
 guistrings.npc.clear_death_list=Clear List
+guistrings.npc.town_range=Range
 guistrings.npc.repack=Repack
 guistrings.npc.set_home=Set Home
 guistrings.npc.clear_home=Clear Home
@@ -431,6 +437,7 @@ guistrings.npc.baton.home=Set Home/(sneak)Clear Home
 guistrings.npc.baton.upkeep=Set Upkeep/(sneak)Clear Upkeep
 guistrings.npc.orders.open_gui=Right Click to Open GUI
 guistrings.npc.orders.add_position=Press '%s' to add target position.
+guistrings.npc.orders.position_added=Position added
 guistrings.npc.inventory=Inventory
 
 #routing order route-types

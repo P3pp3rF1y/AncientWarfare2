@@ -9,7 +9,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -26,7 +25,7 @@ import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 import java.io.File;
 import java.util.List;
 
-public class ItemStructureScanner extends Item implements IItemKeyInterface, IItemClickable, IBoxRenderer {
+public class ItemStructureScanner extends Item implements IItemKeyInterface, IBoxRenderer {
 
     public ItemStructureScanner(String localizationKey) {
         this.setUnlocalizedName(localizationKey);
@@ -34,17 +33,6 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
         this.setMaxStackSize(1);
         this.setTextureName("ancientwarfare:structure/" + localizationKey);
     }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
@@ -69,7 +57,10 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
     }
 
     @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if(world.isRemote){
+            return stack;
+        }
         ItemStructureSettings scanSettings = ItemStructureSettings.getSettingsFor(stack);
         if (player.isSneaking()) {
             scanSettings.clearSettings();
@@ -78,11 +69,12 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
             BlockPosition key = scanSettings.key;
             if (player.getDistance(key.x + 0.5d, key.y, key.z + 0.5d) > 10) {
                 player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.too_far"));
-                return;
+                return stack;
             }
             player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.exporting"));
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SCANNER, 0, 0, 0);
         }
+        return stack;
     }
 
     public static boolean scanStructure(World world, BlockPosition pos1, BlockPosition pos2, BlockPosition key, int face, String name, boolean include, NBTTagCompound tag) {
@@ -133,21 +125,6 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IIt
             player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.click_to_process"));
         }
         ItemStructureSettings.setSettingsFor(stack, scanSettings);
-    }
-
-    @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-
     }
 
     @Override

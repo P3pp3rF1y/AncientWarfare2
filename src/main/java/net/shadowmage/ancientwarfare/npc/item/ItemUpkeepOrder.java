@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -23,8 +23,10 @@ public class ItemUpkeepOrder extends ItemOrders {
     }
 
     @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player){
+        if(!world.isRemote)
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
+        return stack;
     }
 
     @Override
@@ -32,14 +34,10 @@ public class ItemUpkeepOrder extends ItemOrders {
         UpkeepOrder upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
         if (upkeepOrder != null) {
             BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
-            if (hit != null && player.worldObj.getTileEntity(hit.x, hit.y, hit.z) instanceof IInventory) {
-                if (upkeepOrder.addUpkeepPosition(player.worldObj, hit)) {
-                    upkeepOrder.write(stack);
-                    player.openContainer.detectAndSendChanges();
-                    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
-                    //TODO add chat output message regarding adding a worksite to the work-orders
-                }
+            if (upkeepOrder.addUpkeepPosition(player.worldObj, hit)) {
+                upkeepOrder.write(stack);
             }
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
         }
     }
 

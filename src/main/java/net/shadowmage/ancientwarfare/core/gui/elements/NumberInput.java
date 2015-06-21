@@ -122,6 +122,9 @@ public class NumberInput extends Text {
     }
 
     public NumberInput setValue(float val) {
+        if(value == val){
+            return this;
+        }
         if (!allowNeg && val < 0) {
             val = 0.f;
         }

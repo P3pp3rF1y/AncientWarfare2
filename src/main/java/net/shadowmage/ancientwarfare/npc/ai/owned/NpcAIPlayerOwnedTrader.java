@@ -137,7 +137,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
             shelterPoint = d1 < d2 ? waypoint : wp2;
         } else {
             double d = npc.getDistanceSq(shelterPoint);
-            if (d > 9.d) {
+            if (d > MIN_RANGE) {
                 npc.addAITask(TASK_MOVE);
                 moveToPosition(shelterPoint, d);
             } else {
@@ -160,7 +160,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
             }
         } else if (npc.getUpkeepPoint() != null) {
             double d = npc.getDistanceSq(npc.getUpkeepPoint());
-            if (d > 9.d) {
+            if (d > MIN_RANGE) {
                 npc.addAITask(TASK_MOVE);
                 moveToPosition(npc.getUpkeepPoint(), d);
             } else {
@@ -199,7 +199,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
         } else if (orders.getRestockData().getDepositPoint() != null) {
             BlockPosition p = orders.getRestockData().getDepositPoint();
             double d = npc.getDistanceSq(p);
-            if (d > 9.d) {
+            if (d > MIN_RANGE) {
                 npc.addAITask(TASK_MOVE);
                 moveToPosition(p, d);
             } else {
@@ -221,7 +221,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
         } else if (orders.getRestockData().getWithdrawPoint() != null) {
             BlockPosition p = orders.getRestockData().getWithdrawPoint();
             double d = npc.getDistanceSq(p);
-            if (d > 9.d) {
+            if (d > MIN_RANGE) {
                 npc.addAITask(TASK_MOVE);
                 moveToPosition(p, d);
             } else {
@@ -256,7 +256,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
         } else {
             npc.addAITask(TASK_MOVE);
             double d = npc.getDistanceSq(waypoint);
-            if (d < 9.d) {
+            if (d < MIN_RANGE) {
                 at_waypoint = true;
                 waiting = false;
                 npc.removeAITask(TASK_MOVE);

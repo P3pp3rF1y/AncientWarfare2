@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder.RoutePoint;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import java.util.List;
@@ -109,7 +108,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             };
             area.addGuiElement(button);
 
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < point.getFilterSize(); i++) {
                 slot = new IndexedRoutePointItemSlot(8 + i * 18, totalHeight + 10 + 12 + 2, point.getFilterInSlot(i), this, point, i) {
                     @Override
                     public void onSlotClicked(ItemStack stack) {
@@ -154,7 +153,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
 
     private void onFilterSlotClicked(ItemSlot slot, RoutePoint point, int index, ItemStack stack) {
         //TODO move this functionality in as default for item-slots, or toggleable to enable?
-        if (slot.getStack() != null && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+        if (slot.getStack() != null && isShiftKeyDown()) {
             if (Mouse.getEventButton() == 0)//left
             {
                 slot.getStack().stackSize += 32;
@@ -167,7 +166,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
                 }
                 point.setFilter(index, slot.getStack());
             }
-        } else if (slot.getStack() != null && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
+        } else if (slot.getStack() != null && isCtrlKeyDown()) {
             if (Mouse.getEventButton() == 0)//left
             {
                 slot.getStack().stackSize += 1;

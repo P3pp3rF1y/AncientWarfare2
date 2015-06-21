@@ -114,22 +114,19 @@ public class ResearchGoal {
         int time;
         String name;
         ResearchGoal goal;
-        int lineNumber = 1;
-        try {
-            for (String line : lines) {
-                split = StringTools.parseStringArray(line);
-                id = StringTools.safeParseInt(split[0]);
-                name = split[1].startsWith("research.") ? split[1] : "research." + split[1];
-                time = AWCoreStatics.getResearchTimeFor(name, StringTools.safeParseInt(split[2]));
-                goal = new ResearchGoal(id, name);
-                goalsByID.put(id, goal);
-                goalsByName.put(name, goal);
-                goal.setResearchTime(time);
-                lineNumber++;
+        for (String line : lines) {
+            split = StringTools.parseStringArray(line);
+            if(split.length<3){
+                AWLog.logError("Could not parse research data for line: " + line);
+                continue;
             }
-        } catch (Exception e) {
-            AWLog.logError("Caught error parsing research goal data, line number (ignoring comment lines): " + lineNumber + " line: " + lines.get(lineNumber - 1));
-            e.printStackTrace();
+            id = StringTools.safeParseInt(split[0]);
+            name = split[1].startsWith("research.") ? split[1] : "research." + split[1];
+            time = AWCoreStatics.getResearchTimeFor(name, StringTools.safeParseInt(split[2]));
+            goal = new ResearchGoal(id, name);
+            goalsByID.put(id, goal);
+            goalsByName.put(name, goal);
+            goal.setResearchTime(time);
         }
     }
 

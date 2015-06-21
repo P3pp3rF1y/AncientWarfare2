@@ -31,28 +31,18 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 import java.util.List;
 
-public class ItemSpawnerPlacer extends Item implements IItemClickable {
+public class ItemSpawnerPlacer extends Item {
 
     public ItemSpawnerPlacer(String itemName) {
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         this.setTextureName("ancientwarfare:structure/" + itemName);
-    }
-
-    @Override
-    public boolean cancelRightClick(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean cancelLeftClick(EntityPlayer player, ItemStack stack) {
-        return false;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -75,9 +65,9 @@ public class ItemSpawnerPlacer extends Item implements IItemClickable {
     }
 
     @Override
-    public void onRightClick(EntityPlayer player, ItemStack stack) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (player == null || player.worldObj == null || player.worldObj.isRemote || stack == null) {
-            return;
+            return stack;
         }
         MovingObjectPosition mophit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
         if (player.capabilities.isCreativeMode && player.isSneaking()) {
@@ -107,21 +97,7 @@ public class ItemSpawnerPlacer extends Item implements IItemClickable {
         } else {
             player.addChatComponentMessage(new ChatComponentTranslation("guistrings.spawner.noblock"));
         }
+        return stack;
     }
-
-    @Override
-    public boolean onRightClickClient(EntityPlayer player, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean onLeftClickClient(EntityPlayer player, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onLeftClick(EntityPlayer player, ItemStack stack) {
-    }
-
 
 }

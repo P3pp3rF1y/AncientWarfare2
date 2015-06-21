@@ -64,8 +64,9 @@ public class AWNPCStatics extends ModConfiguration {
     public static int npcXpFromKill = 5;
     public static int npcXpFromMoveItem = 1;//TODO add to config
     public static int npcWorkTicks = 50;
-    public static int npcCourierWorkTicks = 50;//TODO add to config
     public static int npcDefaultUpkeepWithdraw = 6000;//5 minutes
+    public static int townMaxRange = 100;
+    public static int townUpdateFreq = 100; //5 second broadcast frequency
     public static boolean exportEntityNames = false;
     public static boolean npcAIDebugMode = false;
 
@@ -218,18 +219,32 @@ public class AWNPCStatics extends ModConfiguration {
                 "Applies to both player-owned and faction-based NPCs.").getInt();
 
         npcXpFromTrade = config.get(serverSettings, "npc_xp_per_trade", npcXpFromTrade, "XP Per Trade\nDefault=" + npcXpFromTrade + "\n" +
-                "How much xp should an NPC gain each time are sucessfully traded with?\n" +
+                "How much xp should an NPC gain each time successfully traded with?\n" +
                 "Higher values will result in faster npc leveling and unlock more trade recipes.\n" +
                 "Applies to both player-owned and faction-based NPCs.").getInt();
 
         npcXpFromWork = config.get(serverSettings, "npc_xp_per_work", npcXpFromWork, "XP Per Work\nDefault=" + npcXpFromWork + "\n" +
-                "How much xp should an NPC gain each time do work at a worksite?\n" +
+                "How much xp should an NPC gain each time it works at a worksite?\n" +
+                "Higher values will result in faster npc leveling.\n" +
+                "Applies to player-owned NPCs only.").getInt();
+
+        npcXpFromMoveItem = config.get(serverSettings, "npc_xp_per_item_moved", npcXpFromMoveItem, "XP Per Courier\nDefault=" + npcXpFromMoveItem + "\n" +
+                "How much xp should an NPC gain each time it moves an item?\n" +
                 "Higher values will result in faster npc leveling.\n" +
                 "Applies to player-owned NPCs only.").getInt();
 
         npcWorkTicks = config.get(serverSettings, "npc_work_ticks", npcWorkTicks, "Time Between Work Ticks\nDefault=" + npcWorkTicks + "\n" +
                 "How many game ticks should pass between workers' processing work at a work-site.\n" +
                 "Lower values result in more work output, higher values result in less work output.").getInt();
+
+        townMaxRange = config.get(serverSettings, "town_hall_max_range", townMaxRange, "Town Hall Max Activation Range\nDefault=" + townMaxRange + "\n" +
+                "How many blocks can a Town Hall be away from an NPC, while still detecting their death for possible resurrection.\n" +
+                "This is a maximum, for server efficiency sake. Lower individual values can be setup from each block interaction GUI.").getInt();
+
+        townUpdateFreq = config.get(serverSettings, "town_hall_ticks", townUpdateFreq, "Default=" + townUpdateFreq + "\n" +
+                "How many game ticks should pass between Town Hall updates." +
+                "This affect how an NPC can change its selected Town Hall by moving to different places.\n" +
+                "Lower values will make an NPC change its Town Hall faster, but is more costly for a server.").getInt();
 
         factionLossOnDeath = factionConfig.get(factionSettings, "faction_loss_on_kill", factionLossOnDeath, "Faction Loss On Kill\nDefault=10\n" +
                 "How much faction standing should be lost if you or one of your minions kills a faction based NPC.").getInt();

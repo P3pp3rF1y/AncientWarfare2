@@ -1,11 +1,9 @@
 package net.shadowmage.ancientwarfare.npc.orders;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -22,35 +20,35 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
     public RoutingOrder() {
     }
 
-    public void addRoutePoint(World world, int x, int y, int z) {
-        add(new RoutePoint(x, y, z));
+    public void addRoutePoint(int side, int x, int y, int z) {
+        add(new RoutePoint(side, x, y, z));
+    }
+
+    private boolean check(int index){
+        return index >= 0 && index < size();
     }
 
     public void changeRouteType(int index) {
-        if (index >= 0 && index < size()) {
-            RoutePoint entry = get(index);
-            entry.changeRouteType();
+        if (check(index)) {
+            get(index).changeRouteType();
         }
     }
 
     public void changeBlockSide(int index) {
-        if (index >= 0 && index < size()) {
-            RoutePoint entry = get(index);
-            entry.changeBlockSide();
+        if (check(index)) {
+            get(index).changeBlockSide();
         }
     }
 
     public void toggleIgnoreDamage(int index) {
-        if (index >= 0 && index < size()) {
-            RoutePoint entry = get(index);
-            entry.setIgnoreDamage(!entry.getIgnoreDamage());
+        if (check(index)) {
+            get(index).toggleIgnoreDamage();
         }
     }
 
     public void toggleIgnoreTag(int index) {
-        if (index >= 0 && index < size()) {
-            RoutePoint entry = get(index);
-            entry.setIgnoreTag(!entry.getIgnoreTag());
+        if (check(index)) {
+            get(index).toggleIgnoreTag();
         }
     }
 
@@ -101,8 +99,9 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             readFromNBT(tag);
         }
 
-        public RoutePoint(int x, int y, int z) {
+        public RoutePoint(int side, int x, int y, int z) {
             this.target = new BlockPosition(x, y, z);
+            this.blockSide = side;
         }
 
         private void changeBlockSide() {
@@ -121,10 +120,6 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             return blockSide;
         }
 
-        public void setBlockSide(int side) {
-            blockSide = side;
-        }
-
         public RouteType getRouteType() {
             return routeType;
         }
@@ -137,6 +132,10 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             return filters[slot];
         }
 
+        public int getFilterSize(){
+            return filters.length;
+        }
+
         public boolean getIgnoreDamage() {
             return ignoreDamage;
         }
@@ -145,12 +144,12 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             return ignoreTag;
         }
 
-        public void setIgnoreDamage(boolean val) {
-            ignoreDamage = val;
+        public void toggleIgnoreDamage() {
+            ignoreDamage = !ignoreDamage;
         }
 
-        public void setIgnoreTag(boolean val) {
-            ignoreTag = val;
+        public void toggleIgnoreTag() {
+            ignoreTag = !ignoreTag;
         }
 
         private int depositAllItems(IInventory from, IInventory to, boolean reversed) {
@@ -163,19 +162,14 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             int moved = 0;
             ItemStack stack;
             int stackSize = 0;
-            int fromIndices[];
+            int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
-            if (from instanceof ISidedInventory && fromSide >= 0) {
-                fromIndices = ((ISidedInventory) from).getAccessibleSlotsFromSide(fromSide);
-            } else {
-                fromIndices = InventoryTools.getIndiceArrayForSpread(0, from.getSizeInventory());
-            }
             for (int index : fromIndices) {
-                shouldMove = false;
                 stack = from.getStackInSlot(index);
                 if (stack == null) {
                     continue;
                 }
+                shouldMove = false;
                 stackSize = stack.stackSize;
                 for (ItemStack filter : filters) {
                     if (filter == null) {
@@ -210,19 +204,14 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             int moved = 0;
             ItemStack stack;
             int stackSize = 0;
-            int fromIndices[];
+            int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
-            if (from instanceof ISidedInventory && fromSide >= 0) {
-                fromIndices = ((ISidedInventory) from).getAccessibleSlotsFromSide(fromSide);
-            } else {
-                fromIndices = InventoryTools.getIndiceArrayForSpread(0, from.getSizeInventory());
-            }
             for (int index : fromIndices) {
-                shouldMove = true;
                 stack = from.getStackInSlot(index);
                 if (stack == null) {
                     continue;
                 }
+                shouldMove = true;
                 stackSize = stack.stackSize;
                 for (ItemStack filter : filters) {
                     if (filter == null) {
@@ -275,19 +264,22 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
 
         private final void readFromNBT(NBTTagCompound tag) {
-            filters = new ItemStack[8];
             routeType = RouteType.values()[tag.getInteger("type")];
             target = new BlockPosition(tag.getCompoundTag("position"));
             blockSide = tag.getInteger("blockSide");
             ignoreDamage = tag.getBoolean("ignoreDamage");
             ignoreTag = tag.getBoolean("ignoreTag");
             NBTTagList filterList = tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND);
-
             NBTTagCompound itemTag;
             int slot;
             for (int i = 0; i < filterList.tagCount(); i++) {
                 itemTag = filterList.getCompoundTagAt(i);
                 slot = itemTag.getInteger("slot");
+                if(slot >= filters.length){
+                    ItemStack[] temp = new ItemStack[slot+1];
+                    System.arraycopy(filters, 0, temp, 0, filters.length);
+                    filters = temp;
+                }
                 filters[slot] = InventoryTools.readItemStack(itemTag);
             }
         }
@@ -362,14 +354,12 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
 
         public RouteType next() {
-            int ordinal = ordinal();
-            ordinal++;
+            int ordinal = ordinal() + 1;
             if (ordinal >= RouteType.values().length) {
                 ordinal = 0;
             }
             return RouteType.values()[ordinal];
         }
-
 
     }
 

@@ -116,7 +116,7 @@ public class TemplateParser {
                     }
                 }
                 for (int i = 0; i < 4; i++) {
-                    if (initData[i] == false) {
+                    if (!initData[i]) {
                         throw new TemplateParsingException("Could not parse template for " + fileName + " -- template was missing header or header data.");
                     }
                 }

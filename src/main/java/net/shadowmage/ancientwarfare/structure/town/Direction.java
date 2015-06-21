@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-
 public enum Direction {
     SOUTH(0, 1),
     WEST(-1, 0),
@@ -15,8 +14,7 @@ public enum Direction {
     }
 
     public Direction getLeft() {
-        int o = ordinal();
-        o--;
+        int o = ordinal() - 1;
         if (o < 0) {
             o = values().length - 1;
         }
@@ -24,8 +22,7 @@ public enum Direction {
     }
 
     public Direction getRight() {
-        int o = ordinal();
-        o++;
+        int o = ordinal() + 1;
         if (o >= values().length) {
             o = 0;
         }

@@ -9,7 +9,6 @@ import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area2.isMouseOverSubElement(evt.mx, evt.my)) {
-                    getContainer().handleClientRequestSpecific(null, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
+                    getContainer().handleClientRequestSpecific(null, isShiftKeyDown());
                 }
                 return true;
             }
@@ -107,7 +106,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
             slot = new ItemSlot(4 + x * 18, 8 + y * 18, displayStack, this) {
                 @Override
                 public void onSlotClicked(ItemStack stack) {
-                    getContainer().handleClientRequestSpecific(getStack(), Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
+                    getContainer().handleClientRequestSpecific(getStack(), isShiftKeyDown());
                 }
             };
             area2.addGuiElement(slot);

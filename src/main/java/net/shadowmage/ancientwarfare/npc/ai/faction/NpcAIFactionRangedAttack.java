@@ -67,7 +67,7 @@ public class NpcAIFactionRangedAttack extends NpcAI {
             this.moveToEntity(target, dist);
         } else {
             double homeDist = npc.getDistanceSqFromHome();
-            if (homeDist > 9 && dist < 8 * 8) {
+            if (homeDist > MIN_RANGE && dist < 8 * 8) {
                 npc.addAITask(TASK_MOVE);
                 ChunkCoordinates home = npc.getHomePosition();
                 this.moveToPosition(home.posX, home.posY, home.posZ, homeDist);

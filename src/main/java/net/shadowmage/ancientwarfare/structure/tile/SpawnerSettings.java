@@ -616,7 +616,7 @@ public class SpawnerSettings {
         //TODO
         private void spawnEntityAt(Entity e, World world) {
             if(e instanceof EntityLiving){
-                ((EntityLiving)e).onSpawnWithEgg(null);
+                ((EntityLiving) e).onSpawnWithEgg(null);
                 ((EntityLiving) e).spawnExplosionParticle();
             }
             world.spawnEntityInWorld(e);

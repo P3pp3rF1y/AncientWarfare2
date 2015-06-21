@@ -20,13 +20,12 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
-
+    private static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
     Set<BlockPosition> blocksToTill;
     Set<BlockPosition> blocksToHarvest;
     Set<BlockPosition> blocksToPlant;
@@ -43,16 +42,17 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         blocksToPlant = new HashSet<BlockPosition>();
         blocksToFertilize = new HashSet<BlockPosition>();
 
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 33) {
+        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH) {
             @Override
             public void markDirty() {
                 super.markDirty();
                 shouldCountResources = true;
             }
         };
-        int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
-        int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
-        int[] bottomIndices = InventoryTools.getIndiceArrayForSpread(30, 3);
+        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
+        int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
+        int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
+        int[] bottomIndices = helper.getIndiceArrayForSpread(BOTTOM_LENGTH);
         this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
         this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//plantables
         this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//bonemeal
@@ -112,14 +112,15 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         plantableCount = 0;
         bonemealCount = 0;
         ItemStack stack;
-        for (int i = 27; i < inventory.getSizeInventory(); i++) {
-            stack = inventory.getStackInSlot(i);
+        for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
+            stack = getStackInSlot(i);
             if (stack == null) {
                 continue;
             }
-            if (i < 30 && isPlantable(stack.getItem())) {
-                plantableCount += stack.stackSize;
-            }else if(i > 29 && isBonemeal(stack)){
+            if (i < TOP_LENGTH + FRONT_LENGTH){
+                if(isPlantable(stack.getItem()))
+                    plantableCount += stack.stackSize;
+            }else if(isBonemeal(stack)){
                 bonemealCount += stack.stackSize;
             }
         }
@@ -143,19 +144,19 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         } else if (block instanceof BlockStem) {
             if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                 block = worldObj.getBlock(position.x - 1, position.y, position.z);
-                if (block == Blocks.melon_block || block == Blocks.pumpkin) {
+                if (melonOrPumpkin(block)) {
                     blocksToHarvest.add(new BlockPosition(position.x - 1, position.y, position.z));
                 }
                 block = worldObj.getBlock(position.x + 1, position.y, position.z);
-                if (block == Blocks.melon_block || block == Blocks.pumpkin) {
+                if (melonOrPumpkin(block)) {
                     blocksToHarvest.add(new BlockPosition(position.x + 1, position.y, position.z));
                 }
                 block = worldObj.getBlock(position.x, position.y, position.z - 1);
-                if (block == Blocks.melon_block || block == Blocks.pumpkin) {
+                if (melonOrPumpkin(block)) {
                     blocksToHarvest.add(new BlockPosition(position.x, position.y, position.z - 1));
                 }
                 block = worldObj.getBlock(position.x, position.y, position.z + 1);
-                if (block == Blocks.melon_block || block == Blocks.pumpkin) {
+                if (melonOrPumpkin(block)) {
                     blocksToHarvest.add(new BlockPosition(position.x, position.y, position.z + 1));
                 }
             } else {
@@ -166,6 +167,10 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         } else if (isFarmable(block, position.x, position.y, position.z)) {
             blocksToHarvest.add(position);
         }
+    }
+
+    private boolean melonOrPumpkin(Block block){
+        return block == Blocks.melon_block || block == Blocks.pumpkin;
     }
 
     @Override
@@ -188,7 +193,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if (block == Blocks.pumpkin || block == Blocks.melon_block) {
+                if (melonOrPumpkin(block)) {
                     return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
                 }
                 else if (block instanceof IGrowable) {
@@ -199,14 +204,14 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                     return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
                 }
             }
-        } else if (!blocksToPlant.isEmpty() && plantableCount > 0) {
+        } else if (hasToPlant()) {
             it = blocksToPlant.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 if (worldObj.isAirBlock(position.x, position.y, position.z)) {
                     ItemStack stack;
-                    for (int i = 27; i < 30; i++) {
-                        stack = inventory.getStackInSlot(i);
+                    for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
+                        stack = getStackInSlot(i);
                         if (stack == null) {
                             continue;
                         }
@@ -214,7 +219,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                             if(tryPlace(stack, position.x, position.y, position.z, ForgeDirection.UP)) {
                                 plantableCount--;
                                 if (stack.stackSize <= 0) {
-                                    inventory.setInventorySlotContents(i, null);
+                                    setInventorySlotContents(i, null);
                                 }
                                 return true;
                             }
@@ -223,15 +228,15 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                     return false;
                 }
             }
-        } else if (!blocksToFertilize.isEmpty() && bonemealCount > 0) {
+        } else if (hasToFertilize()) {
             it = blocksToFertilize.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if (isFarmable(block, position.x, position.y, position.z)) {
+                if (block instanceof IGrowable) {
                     ItemStack stack;
-                    for (int i = 30; i < inventory.getSizeInventory(); i++) {
-                        stack = inventory.getStackInSlot(i);
+                    for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
+                        stack = getStackInSlot(i);
                         if (stack == null) {
                             continue;
                         }
@@ -239,16 +244,14 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                             if(ItemDye.applyBonemeal(stack, worldObj, position.x, position.y, position.z, getOwnerAsPlayer())){
                                 bonemealCount--;
                                 if (stack.stackSize <= 0) {
-                                    inventory.setInventorySlotContents(i, null);
+                                    setInventorySlotContents(i, null);
                                 }
                             }
                             block = worldObj.getBlock(position.x, position.y, position.z);
-                            if (isFarmable(block, position.x, position.y, position.z)) {
-                                if (((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
-                                    blocksToFertilize.add(position);
-                                } else {
-                                    blocksToHarvest.add(position);
-                                }
+                            if (block instanceof IGrowable && ((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
+                                blocksToFertilize.add(position);
+                            } else if(isFarmable(block, position.x, position.y, position.z)){
+                                blocksToHarvest.add(position);
                             }
                             return true;
                         }
@@ -275,7 +278,14 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected boolean hasWorksiteWork() {
-        return (plantableCount > 0 && !blocksToPlant.isEmpty()) || (bonemealCount > 0 && !blocksToFertilize.isEmpty()) || !blocksToTill.isEmpty() || !blocksToHarvest.isEmpty();
+        return hasToPlant() || hasToFertilize() || !blocksToTill.isEmpty() || !blocksToHarvest.isEmpty();
     }
 
+    private boolean hasToPlant(){
+        return (plantableCount > 0 && !blocksToPlant.isEmpty());
+    }
+
+    private boolean hasToFertilize(){
+        return (bonemealCount > 0 && !blocksToFertilize.isEmpty());
+    }
 }

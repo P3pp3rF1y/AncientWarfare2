@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
@@ -14,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import java.util.EnumSet;
 
 public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
-
+    private static final int TOP_LENGTH = 27;
     boolean finished;
     private boolean hasDoneInit = false;
 
@@ -26,8 +25,8 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     int validateX, validateY, validateZ;
 
     public WorkSiteQuarry() {
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 27);
-        int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
+        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH);
+        int[] topIndices = InventoryTools.getIndiceArrayForSpread(TOP_LENGTH);
         this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
     }
 
