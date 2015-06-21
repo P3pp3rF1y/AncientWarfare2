@@ -99,8 +99,11 @@ public class NpcAIFleeHostiles extends NpcAI {
             distSq = npc.getDistanceSqFromHome();
             ChunkCoordinates cc = npc.getHomePosition();
             pos = new BlockPosition(cc.posX, cc.posY, cc.posZ);
-        } else//check distance to flee vector
+        } else
         {
+            if(fleeVector == null){
+                return;
+            }//check distance to flee vector
             distSq = npc.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord);
             if (distSq > MIN_RANGE) {
                 moveToPosition(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord, distSq);
