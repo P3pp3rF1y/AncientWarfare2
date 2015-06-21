@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.ArrayList;
 
-public class TileAutoCrafting extends TileWorksiteBase implements IInventory, IWorkSite, ISidedInventory, IInteractableTile {
+public class TileAutoCrafting extends TileWorksiteBase implements IWorkSite, ISidedInventory, IInteractableTile {
 
     public InventoryBasic bookSlot;
     public InventoryBasic outputInventory;
