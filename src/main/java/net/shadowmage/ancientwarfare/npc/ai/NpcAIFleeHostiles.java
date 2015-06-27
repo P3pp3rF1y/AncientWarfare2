@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class NpcAIFleeHostiles extends NpcAI {
         if (list.isEmpty()) {
             return false;
         }
-        list.sort(sorter);
+        Collections.sort(list, sorter);
         EntityLiving fleeTarget = (EntityLiving) list.get(0);
         //TODO check if can-see the target?
         boolean flee = false;
