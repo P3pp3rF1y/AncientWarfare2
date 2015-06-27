@@ -4,8 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.structure.item.ItemSpawnerPlacer;
 
 public class ContainerSpawnerPlacer extends ContainerBase {
@@ -94,9 +92,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
         tag.setShort("SpawnRange", (short) this.spawnRange);
 
         tag2.setTag("spawnerData", tag);
-        PacketGui pkt = new PacketGui();
-        pkt.packetData = tag2;
-        NetworkHandler.sendToServer(pkt);
+        sendDataToServer(tag2);
     }
 
     private boolean isInValid(ItemStack stack) {

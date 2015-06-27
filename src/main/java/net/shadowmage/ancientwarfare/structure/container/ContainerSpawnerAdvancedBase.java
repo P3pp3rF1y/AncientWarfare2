@@ -20,7 +20,7 @@ public abstract class ContainerSpawnerAdvancedBase extends ContainerBase {
         settings.writeToNBT(tag);
 
         PacketGui pkt = new PacketGui();
-        pkt.packetData.setTag("spawnerSettings", tag);
+        pkt.setTag("spawnerSettings", tag);
         NetworkHandler.sendToServer(pkt);
     }
 

@@ -30,22 +30,12 @@ public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase 
         }
     }
 
-    @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        super.onContainerClosed(par1EntityPlayer);
-    }
-
-    @Override
-    public void sendSettingsToServer() {
-        super.sendSettingsToServer();
-    }
-
     private void sendSettingsToClient() {
         NBTTagCompound tag = new NBTTagCompound();
         settings.writeToNBT(tag);
 
         PacketGui pkt = new PacketGui();
-        pkt.packetData.setTag("spawnerSettings", tag);
+        pkt.setTag("spawnerSettings", tag);
         NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
     }
 

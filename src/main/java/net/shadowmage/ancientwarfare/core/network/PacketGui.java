@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class PacketGui extends PacketBase {
 
-    public NBTTagCompound packetData;
+    private NBTTagCompound packetData;
 
     public PacketGui() {
         packetData = new NBTTagCompound();
@@ -27,8 +27,8 @@ public class PacketGui extends PacketBase {
         packetData.setInteger("z", z);
     }
 
-    public void setGuiData(NBTTagCompound tag) {
-        packetData.setTag("gui", tag);
+    public void setTag(String key, NBTTagCompound tag) {
+        packetData.setTag(key, tag);
     }
 
     public void setData(NBTTagCompound tag) {

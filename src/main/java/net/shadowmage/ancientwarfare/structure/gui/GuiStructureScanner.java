@@ -122,9 +122,7 @@ public class GuiStructureScanner extends GuiContainerBase {
             validator.writeToNBT(val);
             tag.setTag("validation", val);
 
-            PacketGui pkt = new PacketGui();
-            pkt.packetData = tag;
-            NetworkHandler.sendToServer(pkt);
+            sendDataToContainer(tag);
             this.closeGui();
         }
     }
