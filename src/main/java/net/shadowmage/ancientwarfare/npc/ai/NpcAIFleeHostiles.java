@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class NpcAIFleeHostiles extends NpcAI {
         if (list.isEmpty()) {
             return false;
         }
-        list.sort(sorter);
+        Collections.sort(list, sorter);
         EntityLiving fleeTarget = (EntityLiving) list.get(0);
         //TODO check if can-see the target?
         boolean flee = false;
@@ -99,8 +100,11 @@ public class NpcAIFleeHostiles extends NpcAI {
             distSq = npc.getDistanceSqFromHome();
             ChunkCoordinates cc = npc.getHomePosition();
             pos = new BlockPosition(cc.posX, cc.posY, cc.posZ);
-        } else//check distance to flee vector
+        } else
         {
+            if(fleeVector == null){
+                return;
+            }//check distance to flee vector
             distSq = npc.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord);
             if (distSq > MIN_RANGE) {
                 moveToPosition(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord, distSq);

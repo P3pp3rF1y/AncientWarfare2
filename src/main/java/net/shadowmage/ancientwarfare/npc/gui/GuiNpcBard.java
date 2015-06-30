@@ -163,7 +163,7 @@ public class GuiNpcBard extends GuiContainerBase<ContainerNpcBard> {
 
     @Override
     protected boolean onGuiCloseRequested() {
-        getContainer().sendTuneDataToServer(player);
+        getContainer().sendTuneDataToServer();
         NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getContainer().entity.getEntityId(), 0, 0);
         return false;
     }

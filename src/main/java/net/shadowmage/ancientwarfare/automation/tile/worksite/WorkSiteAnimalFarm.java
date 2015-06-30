@@ -432,18 +432,10 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        if (tag.hasKey("maxChickens")) {
-            tag.setInteger("maxChickens", maxChickenCount);
-        }
-        if (tag.hasKey("maxCows")) {
-            tag.setInteger("maxCows", maxCowCount);
-        }
-        if (tag.hasKey("maxPigs")) {
-            tag.setInteger("maxPigs", maxPigCount);
-        }
-        if (tag.hasKey("maxSheep")) {
-            tag.setInteger("maxSheep", maxSheepCount);
-        }
+        tag.setInteger("maxChickens", maxChickenCount);
+        tag.setInteger("maxCows", maxCowCount);
+        tag.setInteger("maxPigs", maxPigCount);
+        tag.setInteger("maxSheep", maxSheepCount);
     }
 
     private static class EntityPair {

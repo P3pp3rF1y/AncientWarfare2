@@ -208,10 +208,10 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                 if(worldObj.getBlockMetadata(pos.x, pos.y, pos.z) >= 3)
                     blocksToHarvest.add(pos);
             } else if (block instanceof BlockHugeMushroom && !blocksToHarvest.contains(pos)) {
-                TreeFinder.findAttachedTreeBlocks(block, worldObj, pos.x, pos.y, pos.z, blocksToHarvest);
+                TreeFinder.DEFAULT.findAttachedTreeBlocks(block, worldObj, pos, blocksToHarvest);
             } else if (isFarmable(block, pos.x, pos.y, pos.z)){
                 Set<BlockPosition> harvestSet = new HashSet<BlockPosition>();
-                TreeFinder.findAttachedTreeBlocks(block, worldObj, pos.x, pos.y, pos.z, harvestSet);
+                TreeFinder.DEFAULT.findAttachedTreeBlocks(block, worldObj, pos, harvestSet);
                 for (BlockPosition tp : harvestSet) {
                     if (!isTarget(tp) && !blocksToHarvest.contains(tp))//don't harvest user-set planting blocks...
                     {

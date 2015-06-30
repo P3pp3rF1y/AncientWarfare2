@@ -36,12 +36,24 @@ public class TreeFinder {
         offsets[19] = new int[]{0, 0, -2};
         offsets[20] = new int[]{0, 0, +2};
     }
+    public static final TreeFinder DEFAULT = new TreeFinder();
+    private final int max;
+    public TreeFinder(int size){
+        if(size<=offsets.length)
+            max = size;
+        else
+            max = offsets.length;
+    }
 
-    public static void findAttachedTreeBlocks(Block blockType, World world, int x, int y, int z, Set<BlockPosition> addTo) {
+    private TreeFinder(){
+        max = offsets.length;
+    }
+
+    public void findAttachedTreeBlocks(Block blockType, World world, BlockPosition pos, Set<BlockPosition> addTo) {
         LinkedList<BlockPosition> openList = new LinkedList<BlockPosition>();
         List<BlockPosition> badNodes = new ArrayList<BlockPosition>();
         List<BlockPosition> foundNodes = new ArrayList<BlockPosition>();
-        BlockPosition node = new BlockPosition(x, y, z);
+        BlockPosition node = new BlockPosition(pos);
         openList.add(node);
 
         while (!openList.isEmpty()) {
@@ -53,8 +65,10 @@ public class TreeFinder {
         addTo.addAll(foundNodes);
     }
 
-    private static void addNeighborNodes(World world, int x, int y, int z, Block blockType, List<BlockPosition> openList, List<BlockPosition> badNodes, List<BlockPosition> foundNodes) {
-        for (int[] offset : offsets) {
+    private void addNeighborNodes(World world, int x, int y, int z, Block blockType, List<BlockPosition> openList, List<BlockPosition> badNodes, List<BlockPosition> foundNodes) {
+
+        for (int i = 0; i < max; i++) {
+            int[] offset = offsets[i];
             BlockPosition n = new BlockPosition(x + offset[0], y + offset[1], z + offset[2]);
             if (!badNodes.contains(n) && !openList.contains(n) && !foundNodes.contains(n)) {
                 if (isTree(world, n, blockType)) {

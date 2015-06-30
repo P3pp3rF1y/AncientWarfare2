@@ -61,32 +61,7 @@ public class NumberInput extends Text {
 
     @Override
     protected void addDefaultListeners() {
-        this.addNewListener(new Listener(Listener.MOUSE_UP) {
-            @Override
-            public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-                if (enabled && visible && isMouseOverElement(evt.mx, evt.my)) {
-                    setSelected(true);
-                    selector.onWidgetSelected(NumberInput.this);
-                    cursorIndex = text.length();
-                } else {
-                    if (selected) {
-                        selector.onWidgetDeselected(NumberInput.this);
-                    }
-                    setSelected(false);
-                }
-                return true;
-            }
-        });
-
-        this.addNewListener(new Listener(Listener.KEY_DOWN) {
-            @Override
-            public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-                if (enabled && visible && selected) {
-                    handleKeyInput(evt.key, evt.ch);
-                }
-                return true;
-            }
-        });
+        super.addDefaultListeners();
 
         this.addNewListener(new Listener(Listener.MOUSE_WHEEL) {
             @Override

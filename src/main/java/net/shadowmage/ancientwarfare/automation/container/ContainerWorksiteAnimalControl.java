@@ -57,6 +57,7 @@ public class ContainerWorksiteAnimalControl extends ContainerTileBase<WorkSiteAn
 
     @Override
     public void detectAndSendChanges() {
+        super.detectAndSendChanges();
         boolean send = false;
         if (maxPigs != tileEntity.maxPigCount) {
             maxPigs = tileEntity.maxPigCount;

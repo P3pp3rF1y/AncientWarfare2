@@ -46,6 +46,10 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
         }
         if(tag.hasKey("range")){
             tileEntity.setRange(tag.getInteger("range"));
+            refreshGui();
+        }
+        if(!tileEntity.getWorldObj().isRemote){
+            tileEntity.markDirty();
         }
     }
 

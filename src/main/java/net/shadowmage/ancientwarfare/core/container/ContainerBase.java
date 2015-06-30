@@ -71,7 +71,7 @@ public class ContainerBase extends Container {
     protected final void sendDataToGui(NBTTagCompound data) {
         if (!player.worldObj.isRemote) {
             PacketGui pkt = new PacketGui();
-            pkt.packetData.setTag("gui", data);
+            pkt.setTag("gui", data);
             NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
         }
     }
@@ -82,7 +82,7 @@ public class ContainerBase extends Container {
     protected void sendDataToServer(NBTTagCompound data) {
         if (player.worldObj.isRemote) {
             PacketGui pkt = new PacketGui();
-            pkt.packetData = data;
+            pkt.setData(data);
             NetworkHandler.sendToServer(pkt);
         }
     }
@@ -93,7 +93,7 @@ public class ContainerBase extends Container {
     protected void sendDataToClient(NBTTagCompound data) {
         if (!player.worldObj.isRemote) {
             PacketGui pkt = new PacketGui();
-            pkt.packetData = data;
+            pkt.setData(data);
             NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
         }
     }
