@@ -37,6 +37,7 @@ public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
 
     @Override
     public void setupElements() {
+        input.setValue(getContainer().tileEntity.getRange());
     }
 
     @Override
