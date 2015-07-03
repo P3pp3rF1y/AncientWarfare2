@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.util.*;
 
@@ -203,8 +204,10 @@ public class ItemQuantityMap {
         for (int i = 0; i < entryList.tagCount(); i++) {
             entryTag = entryList.getCompoundTagAt(i);
             entry = ItemHashEntry.readFromNBT(entryTag);
-            qty = entryTag.getInteger("quantity");
-            map.put(entry, new ItemCount(qty));
+            if(entry!=null) {
+                qty = entryTag.getInteger("quantity");
+                map.put(entry, new ItemCount(qty));
+            }
         }
     }
 
@@ -385,9 +388,13 @@ public class ItemQuantityMap {
 
         public static ItemHashEntry readFromNBT(NBTTagCompound tag) {
             Item item = (Item) Item.itemRegistry.getObject(tag.getString("itemName"));
-            int dmg = tag.getInteger("damage");
-            NBTTagCompound itemTag = tag.hasKey("itemTag") ? tag.getCompoundTag("itemTag") : null;
-            return new ItemHashEntry(item, dmg, itemTag);
+            if (item != null){
+                int dmg = tag.getInteger("damage");
+                NBTTagCompound itemTag = tag.hasKey("itemTag") ? tag.getCompoundTag("itemTag") : null;
+                return new ItemHashEntry(item, dmg, itemTag);
+            }
+            AncientWarfareCore.log.error("Missing item: " + tag.getString("itemName"));
+            return null;
         }
     }
 

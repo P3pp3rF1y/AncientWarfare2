@@ -130,14 +130,14 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
     private void handleChangeList(NBTTagList changeList) {
         NBTTagCompound tag;
         int qty;
-        ItemHashEntry wrap = null;
+        ItemHashEntry wrap;
         for (int i = 0; i < changeList.tagCount(); i++) {
             tag = changeList.getCompoundTagAt(i);
             wrap = ItemHashEntry.readFromNBT(tag);
             qty = tag.getInteger("qty");
             if (qty == 0) {
                 itemMap.remove(wrap);
-            } else {
+            } else if(wrap != null){
                 itemMap.put(wrap, qty);
             }
         }
