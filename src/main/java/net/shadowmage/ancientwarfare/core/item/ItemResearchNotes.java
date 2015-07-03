@@ -85,17 +85,11 @@ public class ItemResearchNotes extends Item {
                     if (ResearchTracker.INSTANCE.addResearchFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
                         player.addChatMessage(new ChatComponentTranslation("guistrings.research.learned_from_item"));
                         stack.stackSize--;
-                        if (stack.stackSize <= 0) {
-                            return null;
-                        }
                     }
                 } else {
                     if (ResearchTracker.INSTANCE.addProgressFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
                         player.addChatMessage(new ChatComponentTranslation("guistrings.research.added_progress"));
                         stack.stackSize--;
-                        if (stack.stackSize <= 0) {
-                            return null;
-                        }
                     }
                 }
             }

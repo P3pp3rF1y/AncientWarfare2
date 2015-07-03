@@ -70,9 +70,6 @@ public class ItemNpcSpawner extends Item {
             player.worldObj.spawnEntityInWorld(npc);
             if (!player.capabilities.isCreativeMode) {
                 stack.stackSize--;
-                if (stack.stackSize <= 0) {
-                    return null;
-                }
             }
         }
         return stack;

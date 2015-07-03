@@ -133,9 +133,6 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
                 world.spawnEntityInWorld(entity);
                 if (!player.capabilities.isCreativeMode) {
                     stack.stackSize--;
-                    if (stack.stackSize <= 0) {
-                        return null;
-                    }
                 }
                 tag.removeTag("pos1");
                 tag.removeTag("pos2");

@@ -86,9 +86,6 @@ public class ItemSpawnerPlacer extends Item {
 
                     if (!player.capabilities.isCreativeMode) {
                         stack.stackSize--;
-                        if (stack.stackSize <= 0) {
-                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                        }
                     }
                 }
             } else {

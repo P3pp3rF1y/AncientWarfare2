@@ -38,11 +38,7 @@ public class ItemConstructionToolLakes extends Item {
             player.worldObj.setBlock(p.x, p.y, p.z, Blocks.flowing_water);
         }
         if (!player.capabilities.isCreativeMode) {
-            if (stack.stackSize == 1) {
-                return null;
-            } else {
-                stack.stackSize--;
-            }
+            stack.stackSize--;
         }
         return stack;
     }
