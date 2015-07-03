@@ -32,7 +32,7 @@ public class NpcAIMedicBase extends NpcAI {
             public boolean isEntityApplicable(Entity var1) {
                 if (var1 instanceof EntityLivingBase) {
                     EntityLivingBase e = (EntityLivingBase) var1;
-                    if (e.getHealth() < e.getMaxHealth() && !NpcAIMedicBase.this.npc.isHostileTowards(e)) {
+                    if (e.isEntityAlive() && e.getHealth() < e.getMaxHealth() && !NpcAIMedicBase.this.npc.isHostileTowards(e)) {
                         return true;
                     }
                 }
@@ -50,8 +50,7 @@ public class NpcAIMedicBase extends NpcAI {
         if (!isProperSubtype()) {
             return false;
         }
-        injuredRecheckDelay--;
-        if (injuredRecheckDelay > 0) {
+        if (injuredRecheckDelay-- > 0) {
             return false;
         }
         injuredRecheckDelay = injuredRecheckDelayMax;
@@ -63,11 +62,15 @@ public class NpcAIMedicBase extends NpcAI {
         }
         Collections.sort(potentialTargets, sorter);
         this.targetToHeal = potentialTargets.get(0);
-        if (targetToHeal == null || targetToHeal.getHealth() <= 0 || targetToHeal.isDead || targetToHeal.getHealth() >= targetToHeal.getMaxHealth()) {
+        if (!validateTarget()) {
             targetToHeal = null;
             return false;
         }
         return true;
+    }
+
+    private boolean validateTarget(){
+        return targetToHeal!=null && targetToHeal.isEntityAlive() && targetToHeal.getHealth() < targetToHeal.getMaxHealth();
     }
 
     @Override
@@ -78,10 +81,7 @@ public class NpcAIMedicBase extends NpcAI {
         if (!isProperSubtype()) {
             return false;
         }
-        if (targetToHeal == null || targetToHeal.getHealth() <= 0 || targetToHeal.isDead || targetToHeal.getHealth() >= targetToHeal.getMaxHealth()) {
-            return false;
-        }
-        return true;
+        return validateTarget();
     }
 
     protected boolean isProperSubtype() {
@@ -108,7 +108,7 @@ public class NpcAIMedicBase extends NpcAI {
                 healDelay = healDelayMax;
                 float amountToHeal = ((float) npc.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue()) / 2.f;
                 npc.swingItem();
-                targetToHeal.setHealth(targetToHeal.getHealth() + amountToHeal);
+                targetToHeal.heal(amountToHeal);
             }
         }
     }
