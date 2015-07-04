@@ -137,16 +137,14 @@ public class StructureBuilder implements IStructureBuilder {
             return;
         }
         Chunk chunk = world.getChunkFromBlockCoords(x, z);
-        if (y > chunk.getTopFilledSegment() + 15)//A block above all generated subchunks
+        ExtendedBlockStorage stc = chunk.getBlockStorageArray()[y >> 4];
+        if (stc == null)//A block in a void subchunk
         {
-            if(block == Blocks.air){//Not changing anything
-                return;
-            }
-            world.setBlock(x, y, z, block, meta, 2);//using flag=2 -- no block update, but still send to clients (should help with issues of things popping off)
+            if(block != Blocks.air)//Not changing anything
+                world.setBlock(x, y, z, block, meta, 2);//using flag=2 -- no block update, but still send to clients (should help with issues of things popping off)
         } else {//unsurprisingly, direct chunk access is 2X faster than going through the world =\
             int cx = x & 15; //bitwise-and to scrub all bits above 15
             int cz = z & 15; //bitwise-and to scrub all bits above 15
-            ExtendedBlockStorage stc = chunk.getBlockStorageArray()[y >> 4];
             chunk.removeTileEntity(cx, y, cz);
             stc.func_150818_a(cx, y & 15, cz, block);
             stc.setExtBlockMetadata(cx, y & 15, cz, meta);
