@@ -28,10 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -39,6 +36,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
+import net.shadowmage.ancientwarfare.structure.gates.types.GateRotatingBridge;
 
 /**
  * an class to represent ALL gate types
@@ -72,6 +70,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         super(par1World);
         this.yOffset = 0;
         this.ignoreFrustumCheck = true;
+        this.preventEntitySpawning = true;
     }
 
     public void setOwnerName(String name) {
@@ -93,6 +92,11 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     @Override
     protected void entityInit() {
 
+    }
+
+    @Override
+    public ItemStack getPickedResult(MovingObjectPosition target){
+        return Gate.getItemToConstruct(this.gateType.getGlobalID());
     }
 
     public void repackEntity() {
@@ -133,12 +137,12 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     public int getBrightnessForRender(float par1) {
         int i = MathHelper.floor_double(this.posX);
         int j = MathHelper.floor_double(this.posZ);
-        if (this.worldObj.blockExists(i, 0, j)) {
-            int k = MathHelper.floor_double(this.posY);
-            return this.worldObj.getLightBrightnessForSkyBlocks(i, k, j, 0);
-        } else {
-            return 0;
-        }
+        int k = MathHelper.floor_double(this.posY);
+        if(pos1.y > k)
+            k = pos1.y;
+        if(pos2.y > k)
+            k = pos2.y;
+        return this.worldObj.getLightBrightnessForSkyBlocks(i, k, j, 0);
     }
 
     @Override
@@ -291,6 +295,9 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+        if(par1DamageSource == null || par2 < 0){
+            return false;
+        }
         if (this.worldObj.isRemote) {
             return true;
         }
@@ -306,10 +313,12 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 //      return !this.isDead;
 //      }
 //    }
-        if (this.hurtInvulTicks > 0) {
-            return !this.isDead;
+        if(!par1DamageSource.isExplosion()){
+            if(this.hurtInvulTicks > 0) {
+                return false;
+            }
+            this.hurtInvulTicks = 10;
         }
-        this.hurtInvulTicks = 10;
         int health = this.getHealth();
         health -= par2;
         this.setHealth(health);
@@ -318,6 +327,26 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
             this.setDead();
         }
         return !this.isDead;
+    }
+
+    @Override
+    public void travelToDimension(int dimension){
+
+    }
+
+    @Override
+    public boolean handleWaterMovement(){
+        return false;
+    }
+
+    @Override
+    public void moveFlying(float moveX, float moveZ, float factor){
+
+    }
+
+    @Override
+    public void addVelocity(double moveX, double moveY, double moveZ){
+
     }
 
     @Override
@@ -332,7 +361,29 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
     @Override
     public boolean canBePushed() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public void applyEntityCollision(Entity entity){
+        super.applyEntityCollision(entity);
+        if(isInside(entity))
+            entity.addVelocity(0, -gateStatus*0.5, 0);
+    }
+
+    @Override
+    public void onCollideWithPlayer(EntityPlayer entity) {
+        if(isInside(entity))
+            entity.addVelocity(0, -gateStatus*0.5, 0);
+    }
+
+    private boolean isInside(Entity entity){
+        return gateType instanceof GateRotatingBridge && boundingBox.intersectsWith(entity.boundingBox);
+    }
+
+    @Override
+    public void mountEntity(Entity mont){
+
     }
 
     public String getTexture() {
@@ -364,7 +415,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         tag.setTag("pos1", pos1.writeToNBT(new NBTTagCompound()));
         tag.setTag("pos2", pos2.writeToNBT(new NBTTagCompound()));
         tag.setInteger("type", this.gateType.getGlobalID());
-        if (ownerName != null && !("".equals(ownerName))) {
+        if (ownerName != null && !ownerName.isEmpty()) {
             tag.setString("owner", ownerName);
         }
         tag.setFloat("edge", this.edgePosition);

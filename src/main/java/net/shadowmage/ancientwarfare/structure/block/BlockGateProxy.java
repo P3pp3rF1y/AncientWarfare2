@@ -22,9 +22,9 @@ package net.shadowmage.ancientwarfare.structure.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -74,11 +74,6 @@ public class BlockGateProxy extends Block {
     }
 
     @Override
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox(x + 0.5d, y + 0.5d, z + 0.5d, x + 0.5d, y + 0.5d, z + 0.5d);
-    }
-
-    @Override
     public boolean isOpaqueCube() {
         return false;
     }
@@ -93,4 +88,9 @@ public class BlockGateProxy extends Block {
         return 0;
     }
 
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int face, float vecX, float vecY, float vecZ) {
+        TileEntity proxy = world.getTileEntity(x, y, z);
+        return proxy instanceof TEGateProxy && ((TEGateProxy) proxy).onBlockClicked(player);
+    }
 }

@@ -59,10 +59,11 @@ public class TEGateProxy extends TileEntity {
         super.writeToNBT(tag);
     }
 
-    public void onBlockClicked(EntityPlayer player) {
-        if (this.owner != null && this.worldObj != null && !this.worldObj.isRemote) {
-            this.owner.interactFirst(player);
+    public boolean onBlockClicked(EntityPlayer player) {
+        if (this.owner != null) {
+            return this.owner.interactFirst(player);
         }
+        return false;
     }
 
     @SuppressWarnings("unchecked")
@@ -76,7 +77,7 @@ public class TEGateProxy extends TileEntity {
             this.noParentTicks++;
             List<Entity> entities = this.worldObj.loadedEntityList;
             for (Entity ent : entities) {
-                if (ent.getPersistentID() != null && ent.getPersistentID().equals(entityID) && ent instanceof EntityGate) {
+                if (ent instanceof EntityGate && ent.getPersistentID() != null && ent.getPersistentID().equals(entityID)) {
                     this.owner = (EntityGate) ent;
                     this.noParentTicks = 0;
                 }

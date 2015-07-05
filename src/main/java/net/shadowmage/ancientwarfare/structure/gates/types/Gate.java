@@ -39,7 +39,6 @@ import net.shadowmage.ancientwarfare.structure.gates.IGateType;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public abstract class Gate implements IGateType {
@@ -193,7 +192,6 @@ public abstract class Gate implements IGateType {
         return basicWood;
     }
 
-
     @Override
     public void onUpdate(EntityGate ent) {
 
@@ -244,19 +242,9 @@ public abstract class Gate implements IGateType {
         if (gate.worldObj.isRemote) {
             return;
         }
-        Block id;
         BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
-        for (int x = min.x; x <= max.x; x++) {
-            for (int y = min.y; y <= max.y; y++) {
-                for (int z = min.z; z <= max.z; z++) {
-                    id = gate.worldObj.getBlock(x, y, z);
-                    if (id == AWBlocks.gateProxy) {
-                        gate.worldObj.setBlockToAir(x, y, z);
-                    }
-                }
-            }
-        }
+        removeBetween(gate.worldObj, min, max);
     }
 
     @Override
@@ -276,15 +264,35 @@ public abstract class Gate implements IGateType {
         }
         BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
+        placeBetween(gate, min, max);
+    }
+
+    public final void removeBetween(World world, BlockPosition min, BlockPosition max){
+        Block id;
         for (int x = min.x; x <= max.x; x++) {
             for (int y = min.y; y <= max.y; y++) {
                 for (int z = min.z; z <= max.z; z++) {
-                    if (gate.worldObj.isAirBlock(x, y, z)) {
-                        if (gate.worldObj.setBlock(x, y, z, AWBlocks.gateProxy)) {
-                            TileEntity te = gate.worldObj.getTileEntity(x, y, z);
-                            if (te instanceof TEGateProxy) {
-                                ((TEGateProxy) te).setOwner(gate);
-                            }
+                    id = world.getBlock(x, y, z);
+                    if (id == AWBlocks.gateProxy) {
+                        world.setBlockToAir(x, y, z);
+                    }
+                }
+            }
+        }
+    }
+
+    public final void placeBetween(EntityGate gate, BlockPosition min, BlockPosition max){
+        for (int x = min.x; x <= max.x; x++) {
+            for (int y = min.y; y <= max.y; y++) {
+                for (int z = min.z; z <= max.z; z++) {
+                    Block block = gate.worldObj.getBlock(x, y, z);
+                    if (!block.isAir(gate.worldObj, x, y, z)) {
+                        block.dropBlockAsItem(gate.worldObj, x, y, z, gate.worldObj.getBlockMetadata(x, y, z), 0);
+                    }
+                    if (gate.worldObj.setBlock(x, y, z, AWBlocks.gateProxy)) {
+                        TileEntity te = gate.worldObj.getTileEntity(x, y, z);
+                        if (te instanceof TEGateProxy) {
+                            ((TEGateProxy) te).setOwner(gate);
                         }
                     }
                 }
