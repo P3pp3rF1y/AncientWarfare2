@@ -41,19 +41,18 @@ import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import java.util.HashMap;
 
-public abstract class Gate implements IGateType {
+public class Gate implements IGateType {
 
     public static final Gate[] gateTypes = new Gate[16];
 
+    public static final Gate basicWood = new Gate(0, "ancientwarfare:textures/model/structure/gate/gateWood1.png").setName("gateBasicWood").setIcon("gateWoodBasic");
+    public static final Gate basicIron = new Gate(1, "ancientwarfare:textures/model/structure/gate/gateIron1.png").setName("gateBasicIron").setIcon("gateIronBasic").setModel(1);
 
-    public static final Gate basicWood = new GateBasicWood(0, "ancientwarfare:textures/model/structure/gate/gateWood1.png");
-    public static final Gate basicIron = new GateBasicIron(1, "ancientwarfare:textures/model/structure/gate/gateIron1.png");
+    public static final Gate singleWood = new GateSingle(4, "ancientwarfare:textures/model/structure/gate/gateWood1.png").setName("gateSingleWood").setIcon("gateWoodSingle");
+    public static final Gate singleIron = new GateSingle(5, "ancientwarfare:textures/model/structure/gate/gateIron1.png").setName("gateSingleIron").setIcon("gateIronSingle").setModel(1);
 
-    public static final Gate singleWood = new GateSingleSlideWood(4, "ancientwarfare:textures/model/structure/gate/gateWood1.png");
-    public static final Gate singleIron = new GateSingleIron(5, "ancientwarfare:textures/model/structure/gate/gateIron1.png");
-
-    public static final Gate doubleWood = new GateDoubleSlideWood(8, "ancientwarfare:textures/model/structure/gate/gateWood1.png");
-    public static final Gate doubleIron = new GateDoubleIron(9, "ancientwarfare:textures/model/structure/gate/gateIron1.png");
+    public static final Gate doubleWood = new GateDouble(8, "ancientwarfare:textures/model/structure/gate/gateWood1.png").setName("gateDoubleWood").setIcon("gateWoodDouble");
+    public static final Gate doubleIron = new GateDouble(9, "ancientwarfare:textures/model/structure/gate/gateIron1.png").setName("gateDoubleIron").setIcon("gateIronDouble").setModel(1);
 
     public static final Gate rotatingBridge = new GateRotatingBridge(12, "ancientwarfare:textures/model/structure/gate/gateBridgeWood1.png");
 
@@ -90,11 +89,27 @@ public abstract class Gate implements IGateType {
      */
     public Gate(int id, String textureLocation) {
         this.globalID = id;
+        this.tooltip = "item.gate."+id+".tooltip";
         if (id >= 0 && id < gateTypes.length && gateTypes[id] == null) {
             gateTypes[id] = this;
         }
         this.displayStack = new ItemStack(AWStructuresItemLoader.gateSpawner, 1, id);
         this.textureLocation = new ResourceLocation(textureLocation);
+    }
+
+    protected final Gate setName(String name){
+        displayName = name;
+        return this;
+    }
+
+    protected final Gate setIcon(String icon){
+        iconTexture = icon;
+        return this;
+    }
+
+    protected final Gate setModel(int type){
+        modelType = type;
+        return this;
     }
 
     @Override
@@ -331,7 +346,6 @@ public abstract class Gate implements IGateType {
 
         EntityGate ent = new EntityGate(world);
         ent.setGateType(type);
-        ent.setHealth(type.getMaxHealth());
         ent.gateOrientation = facing;
         type.setInitialBounds(ent, pos1, pos2);
         type.onGateFinishClose(ent);

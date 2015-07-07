@@ -30,18 +30,17 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.entity.RotateBoundingBox;
 
 public class GateRotatingBridge extends Gate {
-    
+
     /**
      * @param id
      */
     public GateRotatingBridge(int id, String tex) {
         super(id, tex);
-        this.displayName = "gateDrawbridge";
-        this.tooltip = "item.gate.12.tooltip";
+        setName("gateDrawbridge");
         this.moveSpeed = 1.f;
 //  this.texture = "gateBridgeWood1.png";
         this.canSoldierInteract = false;
-        this.iconTexture = "gateWoodRotating";
+        setIcon("gateWoodRotating");
     }
 
     @Override
@@ -125,11 +124,6 @@ public class GateRotatingBridge extends Gate {
             }
             return true;
         }
-    }
-
-    @Override
-    public boolean arePointsValidPair(BlockPosition pos1, BlockPosition pos2) {
-        return pos1.x == pos2.x || pos1.z == pos2.z;
     }
 
     @Override

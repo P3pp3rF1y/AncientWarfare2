@@ -87,6 +87,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
     public void setGateType(Gate type) {
         this.gateType = type;
+        setHealth(type.getMaxHealth());
     }
 
     @Override
