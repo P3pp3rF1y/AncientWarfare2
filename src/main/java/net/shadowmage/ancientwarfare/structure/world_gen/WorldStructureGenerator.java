@@ -80,6 +80,9 @@ public class WorldStructureGenerator implements IWorldGenerator {
     }
 
     public void generateAt(int chunkX, int chunkZ, World world) {
+        if(world==null){
+            return;
+        }
         long t1 = System.currentTimeMillis();
         long seed = (((long) chunkX) << 32) | (((long) chunkZ) & 0xffffffffl);
         rng.setSeed(seed);
