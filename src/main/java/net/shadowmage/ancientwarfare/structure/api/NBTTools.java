@@ -294,8 +294,7 @@ public class NBTTools {
 
     private static NBTTagCompound parseNBTFromLines(List<String> lines) {
         TagCompound tag = parseTagFromLines(lines);
-        NBTTagCompound returnTag = (NBTTagCompound) tag.getNBT();
-        return returnTag;
+        return (NBTTagCompound) tag.getNBT();
     }
 
     private static List<String> getLinesForNBT(NBTTagCompound nbttag) {

@@ -97,9 +97,6 @@ public class TileAdvancedSpawner extends TileEntity {
         ItemStack item;
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             item = inv.getStackInSlot(i);
-            if (item == null) {
-                continue;
-            }
             InventoryTools.dropItemInWorld(worldObj, item, xCoord, yCoord, zCoord);
         }
     }

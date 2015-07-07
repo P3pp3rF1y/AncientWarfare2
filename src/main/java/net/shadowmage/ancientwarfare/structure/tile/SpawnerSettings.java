@@ -1,9 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -12,13 +9,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.entity.WatchedData;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class SpawnerSettings {
 
@@ -469,6 +464,7 @@ public class SpawnerSettings {
     public static final class EntitySpawnSettings {
         String entityId = "Pig";
         NBTTagCompound customTag;
+        List<WatchedData> customData = new ArrayList<WatchedData>();
         int minToSpawn = 1;
         int maxToSpawn = 4;
         int remainingSpawnCount = -1;
@@ -489,6 +485,11 @@ public class SpawnerSettings {
             tag.setInteger("minToSpawn", minToSpawn);
             tag.setInteger("maxToSpawn", maxToSpawn);
             tag.setInteger("remainingSpawnCount", remainingSpawnCount);
+            NBTTagList list = new NBTTagList();
+            for(WatchedData custom : customData){
+                list.appendTag(custom.toTag());
+            }
+            tag.setTag("customData", list);
         }
 
         public final void readFromNBT(NBTTagCompound tag) {
@@ -499,6 +500,13 @@ public class SpawnerSettings {
             minToSpawn = tag.getInteger("minToSpawn");
             maxToSpawn = tag.getInteger("maxToSpawn");
             remainingSpawnCount = tag.getInteger("remainingSpawnCount");
+            customData.clear();
+            if(tag.hasKey("customData")) {
+                NBTTagList list = tag.getTagList("customData", Constants.NBT.TAG_COMPOUND);
+                for(int i = 0; i < list.tagCount(); i++){
+                    addCustomData(WatchedData.fromTag(list.getCompoundTagAt(i)));
+                }
+            }
         }
 
         public final void setEntityToSpawn(String entityId) {
@@ -515,6 +523,23 @@ public class SpawnerSettings {
 
         public final void setCustomSpawnTag(NBTTagCompound tag) {
             this.customTag = tag;
+        }
+
+        public final void addCustomData(WatchedData data){
+            if(data!=null && data.isValid()){
+                Iterator<WatchedData> itr = customData.iterator();
+                while(itr.hasNext()){
+                    if(data.collideWith(itr.next())){
+                        itr.remove();
+                    }
+                }
+                customData.add(data);
+            }
+            Collections.sort(customData, WatchedData.IndexSorter.INSTANCE);
+        }
+
+        public final List<WatchedData> getCustomData(){
+            return customData;
         }
 
         public final void setSpawnCountMin(int min) {
@@ -579,11 +604,7 @@ public class SpawnerSettings {
 
             for (int i = 0; i < toSpawn; i++) {
                 Entity e = EntityList.createEntityByName(entityId, world);
-                if (e != null) {
-                    if (customTag != null) {
-                        e.readFromNBT(customTag);
-                    }
-                }else
+                if (e == null)
                     return;
                 boolean doSpawn = false;
                 int spawnTry = 0;
@@ -612,14 +633,43 @@ public class SpawnerSettings {
             }
         }
 
-        //  sendSoundPacket(world, xCoord, yCoord, zCoord);
-        //TODO
+        //TODO  sendSoundPacket(world, xCoord, yCoord, zCoord);
         private void spawnEntityAt(Entity e, World world) {
             if(e instanceof EntityLiving){
                 ((EntityLiving) e).onSpawnWithEgg(null);
                 ((EntityLiving) e).spawnExplosionParticle();
             }
+            if (customTag != null) {
+                NBTTagCompound temp = new NBTTagCompound();
+                e.writeToNBT(temp);
+                Set<String> keys = customTag.func_150296_c();
+                for(String key : keys){
+                    temp.setTag(key, customTag.getTag(key));
+                }
+                e.readFromNBT(temp);
+            }
+            if(!customData.isEmpty()){
+                applyCustomData(e.getDataWatcher());
+            }
             world.spawnEntityInWorld(e);
+        }
+
+        private void applyCustomData(DataWatcher watcher){
+            List<DataWatcher.WatchableObject> data = watcher.getAllWatched();
+            if(data!=null){
+                for (WatchedData custom : customData) {
+                    for (DataWatcher.WatchableObject vanilla : data) {
+                        if (custom.canReplace(vanilla)) {
+                            watcher.updateObject(vanilla.getDataValueId(), custom.getObject());
+                            break;
+                        }
+                    }
+                }
+            }else{
+                for(WatchedData d : customData){
+                    d.add(watcher);
+                }
+            }
         }
 
     }

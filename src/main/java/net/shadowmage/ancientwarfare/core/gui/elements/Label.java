@@ -12,7 +12,7 @@ public class Label extends GuiElement {
         super(topLeftX, topLeftY);
         setText(text);
         this.height = 8;
-        this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(this.text);
+        this.width = 200;
     }
 
     public Label setRenderCentered() {
@@ -24,11 +24,18 @@ public class Label extends GuiElement {
     public void render(int mouseX, int mouseY, float partialTick) {
         if (visible) {
             if (renderCentered) {
-                int len = Minecraft.getMinecraft().fontRenderer.getStringWidth(text) / 2;
-                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, renderX - len, renderY, 0xffffffff);
+                drawText(width / 2);
             } else {
-                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, renderX, renderY, 0xffffffff);
+                drawText(0);
             }
+        }
+    }
+
+    private void drawText(int offset){
+        if(width<Minecraft.getMinecraft().fontRenderer.getStringWidth(text)){
+            Minecraft.getMinecraft().fontRenderer.drawSplitString(text, renderX - offset, renderY, width, 0xDDDDDD);
+        }else{
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, renderX - offset, renderY, 0xffffffff);
         }
     }
 

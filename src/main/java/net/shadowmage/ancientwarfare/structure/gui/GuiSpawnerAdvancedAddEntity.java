@@ -1,12 +1,17 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.entity.WatchedData;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnSettings;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +26,13 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
     List<String> tagInput = new ArrayList<String>();
     boolean showAddTagButton = true;
 
+    HashMap<Button, Integer> buttonToLineMap = new HashMap<Button, Integer>();
+    HashMap<Text, Integer> textToLineMap = new HashMap<Text, Integer>();
+
+    WatchedData.Type[] dataType;
+    int[] dataKey;
+    String[] dataValue;
+
     public GuiSpawnerAdvancedAddEntity(GuiContainerBase parent, EntitySpawnGroup group, EntitySpawnSettings settings) {
         super(parent.getContainer());
         this.parent = parent;
@@ -34,7 +46,28 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
             this.settings.setSpawnCountMax(4);
             this.settings.setSpawnLimitTotal(-1);
         }
-        if (this.settings.getCustomTag() != null) {
+        loadData();
+    }
+
+    private void loadData(){
+        List<WatchedData> data = this.settings.getCustomData();
+        int size = data.size();
+        dataType = new WatchedData.Type[size];
+        dataKey = new int[size];
+        dataValue = new String[size];
+        int i = 0;
+        for(WatchedData d : data){
+            dataType[i] = d.getType();
+            dataKey[i] = d.getDataValueId();
+            dataValue[i] = dataType[i].toString(d.getObject());
+            i++;
+        }
+        NBTTagCompound tag = this.settings.getCustomTag();
+        if(tag!=null){
+            String[] splits = tag.toString().split("}");
+            for(String t : splits){
+                tagInput.add(t+"}");
+            }
             showAddTagButton = false;
         }
     }
@@ -64,6 +97,8 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done") {
             @Override
             protected void onPressed() {
+                saveData();
+                saveTag();
                 Minecraft.getMinecraft().displayGuiScreen(parent);
                 parent.refreshGui();
             }
@@ -75,6 +110,41 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
 
         area = new CompositeScrolled(this, 0, 40, 256, 200);
         addGuiElement(area);
+    }
+
+    private void saveData(){
+        List<WatchedData> dataList = new ArrayList<WatchedData>();
+        for(int i = 0; i < dataType.length; i++){
+            try{
+                WatchedData data = new WatchedData(dataType[i], dataKey[i], dataValue[i]);
+                if(data.isValid() && !dataList.contains(data)){
+                    dataList.add(data);
+                }
+            }catch (Throwable ignored){
+
+            }
+        }
+        Collections.sort(dataList, WatchedData.IndexSorter.INSTANCE);
+        settings.getCustomData().clear();
+        for(WatchedData data: dataList){
+            settings.addCustomData(data);
+        }
+    }
+
+    private void saveTag(){
+        if(!tagInput.isEmpty()){
+            String tag = String.join("", tagInput);
+            try {
+                NBTBase base = JsonToNBT.func_150315_a(tag);
+                if(base instanceof NBTTagCompound && !((NBTTagCompound) base).hasNoTags()){
+                    settings.setCustomSpawnTag((NBTTagCompound) base);
+                }
+            }catch (Throwable t){
+                t.printStackTrace();
+            }
+        }else{
+            settings.setCustomSpawnTag(null);
+        }
     }
 
     @Override
@@ -138,25 +208,27 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         input.setAllowNegative();
         input.setValue(settings.getSpawnTotal());
         area.addGuiElement(input);
-        totalHeight += 12;
+        totalHeight += 20;
 
-
-        totalHeight += 8;
         label = new Label(8, totalHeight, "guistrings.spawner.custom_tag");
         area.addGuiElement(label);
         totalHeight += 12;
 
+        Tooltip tip;
         if (showAddTagButton) {
             button = new Button(8, totalHeight, 120, 12, "guistrings.spawner.add_custom_tag") {
                 @Override
                 protected void onPressed() {
-                    tagInput.add("TAG=10={");
+                    tagInput.add("{");
                     tagInput.add("");
                     tagInput.add("}");
                     refreshGui();
                     showAddTagButton = false;
                 }
             };
+            tip = new Tooltip(50, 20);
+            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_tag_tip"));
+            button.setTooltip(tip);
             area.addGuiElement(button);
             totalHeight += 12;
         }
@@ -167,9 +239,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
                 protected void handleKeyInput(int keyCode, char ch) {
                     super.handleKeyInput(keyCode, ch);
                     int lineNumber = textToLineMap.get(this);
-                    String text = getText();
-                    tagInput.remove(lineNumber);
-                    tagInput.add(lineNumber, text);
+                    tagInput.set(lineNumber, getText());
                 }
             };
             textToLineMap.put(text, lineNumber);
@@ -204,22 +274,77 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
             lineNumber++;
         }
 
-        if (!showAddTagButton) {
-            button = new Button(8, totalHeight, 120, 12, "guistrings.spawner.add_custom_tag_line") {
+        label = new Label(8, totalHeight, "guistrings.spawner.custom_data");
+        area.addGuiElement(label);
+        totalHeight += 12;
+        if(dataType.length<32) {
+            button = new Button(8, totalHeight, 120, 12, "guistrings.spawner.add_custom_data") {
                 @Override
                 protected void onPressed() {
-                    tagInput.add("");
+                    WatchedData.Type[] t = new WatchedData.Type[dataType.length+1];
+                    int[] k = new int[t.length];
+                    String[] v = new String[t.length];
+                    System.arraycopy(dataType, 0, t, 0, dataType.length);
+                    System.arraycopy(dataKey, 0, k, 0, dataType.length);
+                    System.arraycopy(dataValue, 0, v, 0, dataType.length);
+                    t[t.length-1] = WatchedData.Type.BYTE;
+                    k[k.length-1] = 19;
+                    v[v.length-1] = "0";
+                    dataType = t;
+                    dataKey = k;
+                    dataValue = v;
                     refreshGui();
                 }
             };
+            tip = new Tooltip(50, 20);
+            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip0"));
+            button.setTooltip(tip);
             area.addGuiElement(button);
             totalHeight += 12;
         }
+        for(int i = 0; i < dataType.length; i++) {
+            final int j = i;
+            text = new Text(8, totalHeight, 140, dataValue[j], this) {
+                @Override
+                public void onTextUpdated(String oldText, String newText) {
+                    dataValue[j] = newText;
+                }
+            };
+            tip = new Tooltip(50, 20);
+            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip1"));
+            text.setTooltip(tip);
+            area.addGuiElement(text);
 
+            input = new NumberInput(150, totalHeight, 15, dataKey[j], this) {
+                @Override
+                public void onValueUpdated(float value) {
+                    if(value > 31){
+                        value = 31;
+                    }
+                    dataKey[j] = (int) value;
+                }
+            };
+            input.setIntegerValue();
+            tip = new Tooltip(50, 20);
+            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip2"));
+            input.setTooltip(tip);
+            area.addGuiElement(input);
+
+            button = new Button(170, totalHeight, 50, 12, dataType[j].name()) {
+                @Override
+                protected void onPressed() {
+                    dataType[j] = dataType[j].next();
+                    setText(dataType[j].name());
+                }
+            };
+            tip = new Tooltip(50, 20);
+            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip3"));
+            button.setTooltip(tip);
+            area.addGuiElement(button);
+
+            totalHeight += 12;
+        }
         area.setAreaSize(totalHeight);
     }
-
-    HashMap<Button, Integer> buttonToLineMap = new HashMap<Button, Integer>();
-    HashMap<Text, Integer> textToLineMap = new HashMap<Text, Integer>();
 
 }
