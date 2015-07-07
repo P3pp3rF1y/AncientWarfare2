@@ -1,8 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemDye;
@@ -10,6 +11,8 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -77,7 +80,20 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean isSapling(ItemStack stack) {
-        return Block.getBlockFromItem(stack.getItem()) instanceof BlockSapling;
+        return isFarmable(Block.getBlockFromItem(stack.getItem()));
+    }
+
+    @Override
+    protected boolean isFarmable(Block block, int x, int y, int z){
+        if(super.isFarmable(block, x, y, z)){
+            if(block instanceof BlockSapling){
+                return true;
+            }
+            if(!(block instanceof IShearable) && !(block instanceof BlockFlower)){
+                return ((IPlantable) block).getPlantType(worldObj, x, y, z) == EnumPlantType.Plains;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -184,7 +200,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 Block block = worldObj.getBlock(position.x, position.y, position.z);
-                if (block instanceof BlockSapling) {
+                if (isFarmable(block, position.x, position.y, position.z)) {
                     ItemStack stack;
                     for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
                         stack = getStackInSlot(i);
@@ -196,12 +212,12 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                                 }
                             }
                             block = worldObj.getBlock(position.x, position.y, position.z);
-                            if (block instanceof BlockSapling) {
+                            if (isFarmable(block, position.x, position.y, position.z)) {
                                 blocksToFertilize.add(position);//possible concurrent access exception?
                                 //technically, it would be, except by the time it hits this inner block, it is already
                                 //done iterating, as it will immediately hit the following break statement, and break
                                 //out of the iterating loop before the next element would have been iterated over
-                            } else if (block instanceof BlockLog) {
+                            } else if (block.getMaterial() == Material.wood) {
                                 TREE.findAttachedTreeBlocks(block, worldObj, position, blocksToChop);
                             }
                             return true;
@@ -272,9 +288,9 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             }
         } else {
             block = worldObj.getBlock(pos.x, pos.y, pos.z);
-            if (block instanceof BlockSapling) {
+            if (isFarmable(block, pos.x, pos.y, pos.z)) {
                 blocksToFertilize.add(pos.copy());
-            } else if (block instanceof BlockLog) {
+            } else if (block.getMaterial() == Material.wood) {
                 addTreeBlocks(block, pos);
             }
         }
