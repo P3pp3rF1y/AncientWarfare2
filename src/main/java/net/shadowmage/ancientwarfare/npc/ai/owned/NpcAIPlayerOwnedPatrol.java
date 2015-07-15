@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 
-public class NpcAIPlayerOwnedPatrol extends NpcAI {
+public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
 
     double moveSpeed = 1.d;
     boolean init = false;

@@ -6,7 +6,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
-public class NpcAIPlayerOwnedGetFood extends NpcAI {
+public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
 
     public NpcAIPlayerOwnedGetFood(NpcPlayerOwned npc) {
         super(npc);
@@ -67,9 +67,8 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI {
 
     protected void tryUpkeep(BlockPosition pos) {
         TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
-        int side = npc.getUpkeepBlockSide();
         if (te instanceof IInventory) {
-            ((NpcPlayerOwned) npc).withdrawFood((IInventory) te, side);
+            npc.withdrawFood((IInventory) te, npc.getUpkeepBlockSide());
         }
     }
 

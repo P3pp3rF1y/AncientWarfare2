@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Olivier on 15/06/2015.
  */
-public class NpcAIRideHorse extends NpcAI{
+public class NpcAIRideHorse extends NpcAI<NpcBase> {
     private final AttributeModifier followRangeModifier;
     private final AttributeModifier moveSpeedModifier;
 

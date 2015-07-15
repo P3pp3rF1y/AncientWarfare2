@@ -8,14 +8,12 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 
-public class NpcAIPlayerOwnedWorkRandom extends NpcAI {
+public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
 
     private int ticksAtSite = 0;
-    private final NpcWorker worker;
 
     public NpcAIPlayerOwnedWorkRandom(NpcWorker npc) {
         super(npc);
-        worker = npc;
         this.setMutexBits(ATTACK + MOVE);
     }
 
@@ -27,7 +25,7 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI {
         if (npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) {
             return false;
         }
-        return npc.ordersStack == null && worker.autoWorkTarget != null;
+        return npc.ordersStack == null && npc.autoWorkTarget != null;
     }
 
     @Override
@@ -38,9 +36,9 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI {
 
     @Override
     public void updateTask() {
-        BlockPosition pos = worker.autoWorkTarget;
+        BlockPosition pos = npc.autoWorkTarget;
         double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
-        if (dist > worker.getWorkRangeSq()) {
+        if (dist > npc.getWorkRangeSq()) {
             npc.addAITask(TASK_MOVE);
             ticksAtSite = 0;
             moveToPosition(pos, dist);
@@ -63,17 +61,17 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI {
         }
         if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
             ticksAtSite = 0;
-            BlockPosition pos = worker.autoWorkTarget;
+            BlockPosition pos = npc.autoWorkTarget;
             TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
-                if (worker.canWorkAt(site.getWorkType()) && site.hasWork()) {
+                if (npc.canWorkAt(site.getWorkType()) && site.hasWork()) {
                     npc.addExperience(AWNPCStatics.npcXpFromWork);
-                    site.addEnergyFromWorker(worker);
+                    site.addEnergyFromWorker(npc);
                     return;
                 }
             }
-            worker.autoWorkTarget = null;
+            npc.autoWorkTarget = null;
         }
     }
 

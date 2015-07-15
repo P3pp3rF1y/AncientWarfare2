@@ -25,7 +25,7 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 import java.util.List;
 
-public abstract class NpcPlayerOwned extends NpcBase {
+public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     private Command playerIssuedCommand;//TODO load/save
     private int foodValueRemaining = 0;
@@ -72,7 +72,6 @@ public abstract class NpcPlayerOwned extends NpcBase {
         return -1;
     }
 
-    @Override
     public void setTownHallPosition(BlockPosition pos) {
         if (pos != null) {
             this.townHallPosition = pos.copy();
@@ -86,7 +85,6 @@ public abstract class NpcPlayerOwned extends NpcBase {
         return townHallPosition;
     }
 
-    @Override
     public TileTownHall getTownHall() {
         if (getTownHallPosition() != null) {
             BlockPosition pos = getTownHallPosition();
@@ -98,7 +96,6 @@ public abstract class NpcPlayerOwned extends NpcBase {
         return null;
     }
 
-    @Override
     public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position) {
         validateTownHallPosition();
         BlockPosition pos = getTownHallPosition();
@@ -268,11 +265,6 @@ public abstract class NpcPlayerOwned extends NpcBase {
             return order.getUpkeepAmount();
         }
         return AWNPCStatics.npcDefaultUpkeepWithdraw;
-    }
-
-    @Override
-    public boolean requiresUpkeep() {
-        return true;
     }
 
     @Override

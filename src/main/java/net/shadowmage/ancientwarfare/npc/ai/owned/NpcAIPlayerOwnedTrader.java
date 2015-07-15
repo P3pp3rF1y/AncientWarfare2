@@ -8,8 +8,7 @@ import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
+import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
 /**
@@ -20,7 +19,7 @@ import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
  *
  * @author Shadowmage
  */
-public class NpcAIPlayerOwnedTrader extends NpcAI {
+public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 
     /**
      * state flags, to track what state the AI is currently in
@@ -52,11 +51,9 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
      * trade orders is set/updated when orders item is changed or when entity is loaded from NBT
      */
     private TradeOrder orders;
-    private NpcTrader trader;
 
-    public NpcAIPlayerOwnedTrader(NpcBase npc) {
+    public NpcAIPlayerOwnedTrader(NpcPlayerOwned npc) {
         super(npc);
-        this.trader = (NpcTrader) npc;
         setMutexBits(MOVE + ATTACK);
     }
 
@@ -97,7 +94,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
 
     @Override
     public void updateTask() {
-        if (trader.shouldBeAtHome() || shelter) {
+        if (npc.shouldBeAtHome() || shelter) {
             updateShelter();
         } else if (upkeep) {
             updateUpkeep();
@@ -112,7 +109,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
         npc.addAITask(TASK_GO_HOME);
         shelter = true;
         if (at_shelter) {
-            if (!trader.shouldBeAtHome()) {
+            if (!npc.shouldBeAtHome()) {
                 shelter = false;
                 at_shelter = false;
                 shelterPoint = null;
@@ -178,7 +175,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI {
         BlockPosition p = npc.getUpkeepPoint();
         TileEntity te = npc.worldObj.getTileEntity(p.x, p.y, p.z);
         if (te instanceof IInventory) {
-            return trader.withdrawFood((IInventory) te, npc.getUpkeepBlockSide());
+            return npc.withdrawFood((IInventory) te, npc.getUpkeepBlockSide());
         }
         return false;
     }

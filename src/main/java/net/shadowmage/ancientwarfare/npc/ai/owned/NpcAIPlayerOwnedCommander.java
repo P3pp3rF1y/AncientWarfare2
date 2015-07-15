@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import java.util.List;
 
-public class NpcAIPlayerOwnedCommander extends NpcAI {
+public class NpcAIPlayerOwnedCommander extends NpcAI<NpcBase> {
 
     protected int lastExecuted = -1;
 

@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIAttackMeleeLongRange extends NpcAI {
+public class NpcAIAttackMeleeLongRange extends NpcAI<NpcBase> {
 
     private static int MAX_DELAY = 20;
     Entity target;

@@ -11,12 +11,13 @@ import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class NpcAIFleeHostiles extends NpcAI {
+public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 
     private static int MAX_STAY_HOME = 400, MAX_FLEE_RANGE = 16, HEIGHT_CHECK = 7, PURSUE_RANGE = 16 * 16;
     private final IEntitySelector selector;
@@ -25,7 +26,7 @@ public class NpcAIFleeHostiles extends NpcAI {
     private Vec3 fleeVector;
     private int stayAtHomeTimer = 0;
 
-    public NpcAIFleeHostiles(NpcBase npc) {
+    public NpcAIFleeHostiles(NpcPlayerOwned npc) {
         super(npc);
         selector = new IEntitySelector() {
             @Override

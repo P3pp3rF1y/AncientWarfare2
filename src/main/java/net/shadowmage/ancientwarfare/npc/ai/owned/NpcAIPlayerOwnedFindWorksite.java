@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 
 import java.util.List;
 
-public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
+public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
 
     int lastExecuted = -1;//set to -1 default to trigger should execute lookup on first run
     int checkFrequency = 200;//how often to recheck if orders and work target are both null
@@ -25,7 +25,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
-        return npc.ordersStack == null && ((NpcWorker) npc).autoWorkTarget == null && (lastExecuted == -1 || npc.ticksExisted - lastExecuted > checkFrequency);
+        return npc.ordersStack == null && npc.autoWorkTarget == null && (lastExecuted == -1 || npc.ticksExisted - lastExecuted > checkFrequency);
     }
 
     @Override
@@ -36,21 +36,20 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
     @Override
     public void startExecuting() {
         lastExecuted = npc.ticksExisted;
-        NpcWorker worker = (NpcWorker) npc;
-        if (worker.autoWorkTarget != null)//validate existing position
+        if (npc.autoWorkTarget != null)//validate existing position
         {
-            BlockPosition pos = worker.autoWorkTarget;
+            BlockPosition pos = npc.autoWorkTarget;
             TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
-                if (!worker.canWorkAt(site.getWorkType()) || (site.getTeam()!=null && !site.getTeam().isSameTeam(worker.getTeam())) || !site.hasWork()) {
-                    worker.autoWorkTarget = null;
+                if (!npc.canWorkAt(site.getWorkType()) || (site.getTeam()!=null && !site.getTeam().isSameTeam(npc.getTeam())) || !site.hasWork()) {
+                    npc.autoWorkTarget = null;
                 }
             } else {
-                worker.autoWorkTarget = null;
+                npc.autoWorkTarget = null;
             }
         }
-        if (worker.autoWorkTarget == null) {
+        if (npc.autoWorkTarget == null) {
             findWorkTarget();
         }
     }
@@ -61,7 +60,6 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
         int z = MathHelper.floor_double(npc.posZ);
         List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(npc.worldObj, x - range, y - range / 2, z - range, x + range, y + range / 2, z + range);
         IWorkSite site;
-        NpcWorker worker = (NpcWorker) npc;
         TileEntity closestSite = null;
         double closestDist = -1;
         double dist;
@@ -72,7 +70,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
                 if (site.getTeam() != npc.getTeam()) {
                     continue;
                 }
-                if (worker.canWorkAt(site.getWorkType()) && site.hasWork()) {
+                if (npc.canWorkAt(site.getWorkType()) && site.hasWork()) {
                     dist = npc.getDistanceSq(te.xCoord + 0.5d, te.yCoord, te.zCoord + 0.5d);
                     if (closestDist == -1 || dist < closestDist) {
                         closestDist = dist;
@@ -82,7 +80,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI {
             }
         }
         if (closestSite != null) {
-            worker.autoWorkTarget = new BlockPosition(closestSite.xCoord, closestSite.yCoord, closestSite.zCoord);
+            npc.autoWorkTarget = new BlockPosition(closestSite.xCoord, closestSite.yCoord, closestSite.zCoord);
         }
     }
 

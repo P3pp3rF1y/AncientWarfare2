@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.minecraft.entity.Entity;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIFollowPlayer extends NpcAI {
+public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 
     private Entity target;
     private double attackIgnoreDistance = 4.d * 4.d;

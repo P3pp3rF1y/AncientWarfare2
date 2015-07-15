@@ -242,20 +242,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return getDistanceSq(home.posX + 0.5d, home.posY, home.posZ + 0.5d);
     }
 
-    public void setTownHallPosition(BlockPosition pos) {
-        //NOOP on non-player owned npc
-    }
-
     public BlockPosition getTownHallPosition() {
         return null;//NOOP on non-player owned npc
-    }
-
-    public TileTownHall getTownHall() {
-        return null;//NOOP on non-player owned npc
-    }
-
-    public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position) {
-        //NOOP on non-player owned npc
     }
 
     public void setHomeAreaAtCurrentPosition(){
@@ -702,7 +690,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public void onUpdate() {
         worldObj.theProfiler.startSection("AWNpcTick");
         updateArmSwingProgress();
-        if (ticksExisted % 200 == 0 && getHealth() < getMaxHealth() && getHealth() > 0 && !isDead && (!requiresUpkeep() || getFoodRemaining() > 0)) {
+        if (ticksExisted % 200 == 0 && getHealth() < getMaxHealth() && isEntityAlive() && (!requiresUpkeep() || getFoodRemaining() > 0)) {
             setHealth(getHealth() + 1);
         }
         super.onUpdate();
@@ -739,28 +727,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         //NOOP in non-player owned
     }
 
-    public int getUpkeepBlockSide() {
-        return 0;//NOOP in non-player owned
-    }
-
-    public BlockPosition getUpkeepPoint() {
-        return null;//NOOP in non-player owned
-    }
-
-    public void setUpkeepAutoPosition(BlockPosition pos) {
-
-    }
-
-    public int getUpkeepAmount() {
-        return 0;//NOOP in non-player owned
-    }
-
-    public int getUpkeepDimensionId() {
-        return 0;//NOOP in non-player owned
-    }
-
     public boolean requiresUpkeep() {
-        return false;//NOOP in non-player owned
+        return this instanceof IKeepFood;//NOOP in non-player owned
     }
 
     @Override
@@ -825,7 +793,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public final void repackEntity(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.worldObj.isRemote && isEntityAlive()) {
             onRepack();
             ItemStack item = InventoryTools.mergeItemStack(player.inventory, this.getItemToSpawn(), -1);
             if (item != null) {
@@ -939,20 +907,20 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         ItemStack item = this.getItemToSpawn();
         for (int i = 0; i < 9; i++) {
             if (ItemStack.areItemStacksEqual(player.inventory.getStackInSlot(i), item)) {
+                player.inventory.currentItem = i;
                 return;
             }
         }
-        int slotNum = player.inventory.currentItem;
         if (player.inventory.getCurrentItem() != null)//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
         {
             for (int i = 0; i < 9; i++) {
                 if (player.inventory.getStackInSlot(i) == null) {
-                    slotNum = i;
-                    break;
+                    player.inventory.setInventorySlotContents(i, item);
+                    return;
                 }
             }
-        }
-        player.inventory.setInventorySlotContents(slotNum, item);
+        }else
+            player.inventory.setInventorySlotContents(player.inventory.currentItem, item);
     }
 
     public double getDistanceSq(BlockPosition pos) {

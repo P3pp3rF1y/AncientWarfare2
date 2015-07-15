@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import java.util.Collections;
 import java.util.List;
 
-public class NpcAIMedicBase extends NpcAI {
+public class NpcAIMedicBase extends NpcAI<NpcBase> {
 
     private int injuredRecheckDelay = 0;
     private int injuredRecheckDelayMax = 20;

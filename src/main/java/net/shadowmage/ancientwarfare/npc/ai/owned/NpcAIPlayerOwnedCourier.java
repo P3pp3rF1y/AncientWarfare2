@@ -7,11 +7,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
-public class NpcAIPlayerOwnedCourier extends NpcAI {
+public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 
     boolean init;
 
@@ -22,11 +21,8 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
     RoutingOrder order;
     ItemStack routeStack;
 
-    NpcCourier courier;
-
-    public NpcAIPlayerOwnedCourier(NpcBase npc) {
+    public NpcAIPlayerOwnedCourier(NpcCourier npc) {
         super(npc);
-        courier = (NpcCourier) npc;
         this.setMutexBits(ATTACK + MOVE);
     }
 
@@ -48,7 +44,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
         if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
             return false;
         }
-        return courier.backpackInventory != null && order != null && !order.isEmpty();
+        return npc.backpackInventory != null && order != null && !order.isEmpty();
     }
 
     @Override
@@ -100,8 +96,8 @@ public class NpcAIPlayerOwnedCourier extends NpcAI {
         IInventory target = getTargetInventory();
         if (target != null) {
             ticksAtSite = 0;
-            int moved = order.handleRouteAction(order.get(routeIndex), courier.backpackInventory, target);
-            courier.updateBackpackItemContents();
+            int moved = order.handleRouteAction(order.get(routeIndex), npc.backpackInventory, target);
+            npc.updateBackpackItemContents();
             if (moved > 0) {
                 ticksToWork = AWNPCStatics.npcWorkTicks * moved;
                 int lvl = npc.getLevelingStats().getLevel();

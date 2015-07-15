@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI {
+public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI<NpcBase> {
 
     int moveTimer = 0;
 

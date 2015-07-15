@@ -17,7 +17,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
  *
  * @author Shadowmage
  */
-public abstract class NpcAI extends EntityAIBase {
+public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     /**
      * used during npc-ai task-rendering to determine how many bits to loop through
      * of the task bitfield -- needs to be increased if more task types / bits are added
@@ -50,9 +50,9 @@ public abstract class NpcAI extends EntityAIBase {
     private double maxPFDistSq;
 
 
-    protected NpcBase npc;
+    protected T npc;
 
-    public NpcAI(NpcBase npc) {
+    public NpcAI(T npc) {
         this.npc = npc;
         maxPFDist = AWNPCStatics.npcPathfindRange * 0.90d;
 

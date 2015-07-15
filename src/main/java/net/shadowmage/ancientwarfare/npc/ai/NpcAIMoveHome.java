@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.minecraft.util.ChunkCoordinates;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIMoveHome extends NpcAI {
+public class NpcAIMoveHome extends NpcAI<NpcBase> {
 
     private final float dayRange, nightRange;
     private final float dayLeash, nightLeash;

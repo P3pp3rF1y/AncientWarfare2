@@ -5,7 +5,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIFactionArcherStayAtHome extends NpcAI {
+public class NpcAIFactionArcherStayAtHome extends NpcAI<NpcBase> {
 
     BlockPosition target;
 

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Olivier on 15/06/2015.
  */
-public class NpcAISing extends NpcAI{
+public class NpcAISing extends NpcAI<NpcBase> {
     private static int PLAYER_DELAY = 10, PLAYER_RANGE = 20;
     private boolean playing = false;//if currently playing a tune.
     private int currentDelay;//the current cooldown delay.  if not playing, this delay will be incremented before attempting to start next song

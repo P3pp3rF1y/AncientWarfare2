@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-public class NpcAIFactionRangedAttack extends NpcAI {
+public class NpcAIFactionRangedAttack extends NpcAI<NpcBase> {
 
     private final IRangedAttackMob rangedAttacker;
     private int attackDelay = 35;

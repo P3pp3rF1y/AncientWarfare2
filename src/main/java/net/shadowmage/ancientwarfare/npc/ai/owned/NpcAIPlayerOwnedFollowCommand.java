@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
-public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
+public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 
     BlockPosition moveTargetPos = null;
 
@@ -22,7 +22,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
-        Command cmd = ((NpcPlayerOwned) npc).getCurrentCommand();
+        Command cmd = npc.getCurrentCommand();
         if (cmd == null) {
             return false;
         }
@@ -35,11 +35,11 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
 
     @Override
     public void resetTask() {
-        Command cmd = ((NpcPlayerOwned) npc).getCurrentCommand();
+        Command cmd = npc.getCurrentCommand();
         if (cmd != null) {
             //allow command to persist until next run of the task
             if (npc.getAttackTarget() == null || !cmd.type.isPersistent()) {
-                ((NpcPlayerOwned) npc).handlePlayerCommand(null);
+                npc.handlePlayerCommand(null);
             }
         }
     }
@@ -51,7 +51,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
 
     @Override
     public void updateTask() {
-        Command cmd = ((NpcPlayerOwned) npc).getCurrentCommand();
+        Command cmd = npc.getCurrentCommand();
         switch (cmd.type)//handle instant type commands
         {
             case CLEAR_HOME: {
@@ -73,7 +73,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
             case CLEAR_COMMAND:
             case ATTACK: {
                 //should already be handled by npc 'handle command' functionality when command first received
-                ((NpcPlayerOwned) npc).setPlayerCommand(null);
+                npc.setPlayerCommand(null);
                 break;
             }
             case ATTACK_AREA: {
@@ -90,7 +90,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
             }
         }
         if (!cmd.type.isPersistent()) {
-            ((NpcPlayerOwned) npc).setPlayerCommand(null);
+            npc.setPlayerCommand(null);
         }
     }
 
@@ -102,7 +102,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
         if (sqDist > MIN_RANGE) {
             moveToPosition(moveTargetPos, sqDist);//not finished moving...move along path (or at least try)
         } else {
-            ((NpcPlayerOwned) npc).setPlayerCommand(null);//finished moving..clear the command...
+            npc.setPlayerCommand(null);//finished moving..clear the command...
         }
     }
 
@@ -112,7 +112,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
     private void handleGuardCommand(Command cmd) {
         Entity e = cmd.getEntityTarget(npc.worldObj);
         if (e == null) {
-            ((NpcPlayerOwned) npc).setPlayerCommand(null);//clear the command if the target entity cannot be found
+            npc.setPlayerCommand(null);//clear the command if the target entity cannot be found
             return;
         }
         double sqDist = npc.getDistanceSqToEntity(e);
@@ -122,7 +122,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
             npc.getNavigator().clearPathEntity();//clear path to stop moving
             if (e instanceof EntityHorse && e.riddenByEntity == null) {
                 npc.mountEntity(e);
-                ((NpcPlayerOwned) npc).setPlayerCommand(null);//clear command if horse was mounted successfully..
+                npc.setPlayerCommand(null);//clear command if horse was mounted successfully..
             }
             //do not clear command, guard command is persistent
         }
@@ -137,7 +137,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI {
         if (sqDist > MIN_RANGE) {
             moveToPosition(moveTargetPos, sqDist);//not finished moving...move along path (or at least try)
         } else {
-            ((NpcPlayerOwned) npc).setPlayerCommand(null);//finished moving..clear the command...
+            npc.setPlayerCommand(null);//finished moving..clear the command...
         }
     }
 

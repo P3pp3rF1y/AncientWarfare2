@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
 
-public class NpcAIPlayerOwnedWork extends NpcAI {
+public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 
     public int ticksAtSite = 0;
     public int workIndex;

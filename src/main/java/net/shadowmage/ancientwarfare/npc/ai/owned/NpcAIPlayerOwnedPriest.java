@@ -1,22 +1,22 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
-import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall.NpcDeathEntry;
 
 import java.util.List;
 
-public class NpcAIPlayerOwnedPriest extends NpcAI {
+public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 
     private static final int UPDATE_FREQ = 200, RESURRECTION_TIME = 100;
     int lastCheckTicks = -1;
     NpcDeathEntry entryToRes;
     int resurrectionDelay = 0;
 
-    public NpcAIPlayerOwnedPriest(NpcBase npc) {
+    public NpcAIPlayerOwnedPriest(NpcPlayerOwned npc) {
         super(npc);
         this.setMutexBits(ATTACK + MOVE);
     }
