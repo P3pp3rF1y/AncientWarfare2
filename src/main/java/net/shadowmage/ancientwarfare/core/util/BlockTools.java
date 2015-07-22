@@ -23,7 +23,6 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -366,12 +365,8 @@ public class BlockTools {
         return pos;
     }
 
-    public static boolean breakBlockAndDrop(World world, int x, int y, int z, int fortune) {
-        return breakBlock(world, x, y, z, fortune, true);
-    }
-
-    public static boolean breakBlock(World world, int x, int y, int z, int fortune, boolean doDrop) {
-        return breakBlock(world, "AncientWarfare", x, y, z, fortune, doDrop);
+    public static boolean breakBlockAndDrop(World world, String name, int x, int y, int z) {
+        return breakBlock(world, name, x, y, z, 0, true);
     }
 
     public static boolean breakBlock(World world, String playerName, int x, int y, int z, int fortune, boolean doDrop) {
@@ -379,15 +374,13 @@ public class BlockTools {
             return false;
         }
         Block block = world.getBlock(x, y, z);
-        if (block.getMaterial() == Material.air || block.getBlockHardness(world, x, y, z) < 0) {
+        if (block.isAir(world, x, y, z) || block.getBlockHardness(world, x, y, z) < 0) {
             return false;
         }
         if (doDrop) {
             int meta = world.getBlockMetadata(x, y, z);
-            if (AWCoreStatics.fireBlockBreakEvents) {
-                if (!canBreakBlock(world, AncientWarfareCore.proxy.getFakePlayer(world, playerName), x, y, z, block, meta)) {
-                    return false;
-                }
+            if (!canBreakBlock(world, playerName, x, y, z, block, meta)) {
+                return false;
             }
             block.dropBlockAsItem(world, x, y, z, meta, fortune);
         }
@@ -395,8 +388,11 @@ public class BlockTools {
     }
 
 
-    public static boolean canBreakBlock(World world, EntityPlayer player, int x, int y, int z, Block block, int meta) {
-        return !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(x, y, z, world, block, meta, player));
+    public static boolean canBreakBlock(World world, String playerName, int x, int y, int z, Block block, int meta) {
+        if (AWCoreStatics.fireBlockBreakEvents) {
+            return !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(x, y, z, world, block, meta, AncientWarfareCore.proxy.getFakePlayer(world, playerName)));
+        }
+        return true;
     }
 
 }

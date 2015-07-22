@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.tile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
@@ -18,7 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
@@ -28,7 +27,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTi
 
 import java.util.EnumSet;
 
-public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorqueTile {
+public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwnable {
 
     protected String owningPlayer;
 
@@ -167,11 +166,9 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorq
         if (worldObj.isRemote) {
             return;
         }
-        if (builder == null || builder.invalid || builder.isFinished()) {
+        if (shouldRemove || builder == null || builder.invalid || builder.isFinished()) {
             shouldRemove = true;
-        }
-        if (shouldRemove) {
-            worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
+            worldObj.setBlockToAir(xCoord, yCoord, zCoord);
             return;
         }
         if (builder.getWorld() == null) {
@@ -192,15 +189,21 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, ITorq
 
     public void processWork() {
         isStarted = true;
-        builder.tick();
+        builder.tick(owningPlayer);
     }
 
     /**
      * should be called immediately after the tile-entity is set into the world
      * from the ItemBlockStructureBuilder item onBlockPlaced code
      */
+    @Override
     public void setOwnerName(String name) {
         this.owningPlayer = name;
+    }
+
+    @Override
+    public String getOwnerName(){
+        return this.owningPlayer;
     }
 
     /**

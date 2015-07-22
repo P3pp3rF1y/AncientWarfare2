@@ -46,9 +46,9 @@ public class StructureBuilderTicked extends StructureBuilder {
 
     }
 
-    public void tick() {
+    public void tick(String player) {
         if (!hasClearedArea) {
-            while (!breakClearTargetBlock()) {
+            while (!breakClearTargetBlock(player)) {
                 if (!incrementClear()) {
                     hasClearedArea = true;
                     break;
@@ -72,8 +72,8 @@ public class StructureBuilderTicked extends StructureBuilder {
         }
     }
 
-    protected boolean breakClearTargetBlock() {
-        return BlockTools.breakBlockAndDrop(world, clearX, clearY, clearZ, 0);
+    protected boolean breakClearTargetBlock(String owner) {
+        return BlockTools.breakBlockAndDrop(world, owner, clearX, clearY, clearZ);
     }
 
     protected boolean incrementClear() {
@@ -89,11 +89,6 @@ public class StructureBuilderTicked extends StructureBuilder {
             }
         }
         return true;
-    }
-
-    //break/drop any existing blocks from ticked builder
-    protected void tryBreakTargetBlock() {
-        BlockTools.breakBlockAndDrop(world, destination.x, destination.y, destination.z, 0);
     }
 
     public void setWorld(World world)//should be called on first-update of the TE (after its world is set)
