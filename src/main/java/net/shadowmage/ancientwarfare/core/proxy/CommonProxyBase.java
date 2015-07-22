@@ -18,12 +18,15 @@ public class CommonProxyBase {
         return null;
     }
 
-    public EntityPlayer getFakePlayer(World world) {
-        return getFakePlayer(world, "AncientWarfare");
-    }
-
     public EntityPlayer getFakePlayer(World world, String name) {
-        return FakePlayerFactory.get((WorldServer) world, new GameProfile(null, name));
+        if(name!=null) {
+            EntityPlayer player = world.getPlayerEntityByName(name);
+            if(player!=null){
+                return player;
+            }
+            return FakePlayerFactory.get((WorldServer) world, new GameProfile(null, name));
+        }
+        return FakePlayerFactory.get((WorldServer) world, new GameProfile(null, "AncientWarfare"));
     }
 
     public boolean isKeyPressed(String keyName) {

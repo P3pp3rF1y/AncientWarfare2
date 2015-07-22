@@ -117,7 +117,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 
     @Override
     public int getBoundsMaxWidth() {
-        return getUpgrades().contains(WorksiteUpgrade.SIZE_MEDIUM) ? 9 : getUpgrades().contains(WorksiteUpgrade.SIZE_LARGE) ? 16 : 5;
+        return getUpgrades().contains(WorksiteUpgrade.SIZE_LARGE) ? 16 : getUpgrades().contains(WorksiteUpgrade.SIZE_MEDIUM) ? 9 : 5;
     }
 
     @Override

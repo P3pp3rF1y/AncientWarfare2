@@ -39,6 +39,8 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
     private String owningPlayer = "";
 
+    private EntityPlayer owner;
+
     private double efficiencyBonusFactor = 0.f;
 
     private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
@@ -145,7 +147,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     }
 
     public int getFortune() {
-        return getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : 0;
+        return getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : 0;
     }
 
 //*************************************** TILE UPDATE METHODS ***************************************//
@@ -209,11 +211,10 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     }
 
     public final EntityPlayer getOwnerAsPlayer() {
-        EntityPlayer player = owningPlayer != null ? this.getWorldObj().getPlayerEntityByName(owningPlayer) : null;
-        if (player == null) {
-            return AncientWarfareCore.proxy.getFakePlayer(this.getWorldObj(), owningPlayer);
+        if(owner==null || !owner.isEntityAlive() || owner.isEntityInvulnerable()) {
+            owner = AncientWarfareCore.proxy.getFakePlayer(this.getWorldObj(), owningPlayer);
         }
-        return player;
+        return owner;
     }
 
     @Override
@@ -386,7 +387,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         super.readFromNBT(tag);
         torqueCell.setEnergy(tag.getDouble("storedEnergy"));
         if (tag.hasKey("owner")) {
-            owningPlayer = tag.getString("owner");
+            setOwnerName(tag.getString("owner"));
         }
         if (tag.hasKey("upgrades")) {
             NBTBase upgradeTag = tag.getTag("upgrades");

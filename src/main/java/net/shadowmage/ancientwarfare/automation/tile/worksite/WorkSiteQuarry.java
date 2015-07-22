@@ -73,7 +73,7 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 
     @Override
     public int getBoundsMaxWidth() {
-        return getUpgrades().contains(WorksiteUpgrade.QUARRY_MEDIUM) ? 32 : getUpgrades().contains(WorksiteUpgrade.QUARRY_LARGE) ? 64 : 16;
+        return getUpgrades().contains(WorksiteUpgrade.QUARRY_LARGE) ? 64 : getUpgrades().contains(WorksiteUpgrade.QUARRY_MEDIUM) ? 32 : 16;
     }
 
     @Override
