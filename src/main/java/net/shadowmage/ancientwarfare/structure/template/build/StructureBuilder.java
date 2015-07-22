@@ -133,7 +133,7 @@ public class StructureBuilder implements IStructureBuilder {
      */
     @Override
     public void placeBlock(int x, int y, int z, Block block, int meta, int priority) {
-        if (y <= 0 || y >= 256) {
+        if (y <= 0 || y >= world.getHeight()) {
             return;
         }
         Chunk chunk = world.getChunkFromBlockCoords(x, z);

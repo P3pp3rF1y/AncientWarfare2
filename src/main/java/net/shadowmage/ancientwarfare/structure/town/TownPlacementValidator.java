@@ -195,7 +195,7 @@ public class TownPlacementValidator {
                 total += val;
             }
         }
-        total /= 256;//make it the average top-height
+        total /= world.getHeight();//make it the average top-height
         return total >= min && total <= max;
     }
 

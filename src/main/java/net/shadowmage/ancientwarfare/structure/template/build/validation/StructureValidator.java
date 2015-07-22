@@ -447,7 +447,7 @@ public abstract class StructureValidator {
      * validates the target block at x,y,z is one of the input valid blocks
      */
     protected boolean validateBlockType(World world, int x, int y, int z, Set<String> validBlocks) {
-        if (y < 0 || y >= 256) {
+        if (y < 0 || y >= world.getHeight()) {
             return false;
         }
         Block block = world.getBlock(x, y, z);
