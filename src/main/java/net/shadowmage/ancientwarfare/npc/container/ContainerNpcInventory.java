@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
 import net.shadowmage.ancientwarfare.core.inventory.SlotArmor;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.inventory.InventoryNpcEquipment;
@@ -54,17 +53,17 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
         if (tag.hasKey("customName")) {
             this.name = tag.getString("customName");
         }
-        if (tag.hasKey("repack")) {
-            entity.repackEntity(player);
-        }
-        if (tag.hasKey("setHome")) {
-            entity.setHomeAreaAtCurrentPosition();
-        }
-        if (tag.hasKey("clearHome")) {
-            entity.detachHome();
-        }
-        if (tag.hasKey("customTexture")) {
-            entity.setCustomTexRef(tag.getString("customTexture"));
+        if(entity!=null && !entity.isDead) {
+            if (tag.hasKey("repack")) {
+                entity.repackEntity(player);
+            } else if (tag.hasKey("setHome")) {
+                entity.setHomeAreaAtCurrentPosition();
+            } else if (tag.hasKey("clearHome")) {
+                entity.detachHome();
+            }
+            if (tag.hasKey("customTexture")) {
+                entity.setCustomTexRef(tag.getString("customTexture"));
+            }
         }
     }
 

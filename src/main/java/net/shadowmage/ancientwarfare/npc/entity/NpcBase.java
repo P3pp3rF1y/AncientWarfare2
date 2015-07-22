@@ -29,7 +29,6 @@ import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
-import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 import java.util.UUID;
 
@@ -799,8 +798,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             if (item != null) {
                 InventoryTools.dropItemInWorld(player.worldObj, item, player.posX, player.posY, player.posZ);
             }
-            setDead();
         }
+        setDead();
     }
 
     /**
