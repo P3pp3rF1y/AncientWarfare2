@@ -68,19 +68,13 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             int storageSlotsStart = 1;
             int playerSlotStart = storageSlotsStart + tileEntity.resourceInventory.getSizeInventory();
             int playerSlotEnd = playerSlotStart + 36;
-            if (slotClickedIndex < storageSlotsStart)//book slot
+            if (slotClickedIndex < playerSlotStart)//book , storage slot
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= storageSlotsStart && slotClickedIndex < playerSlotStart)//storage slots
-            {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
-                {
-                    return null;
-                }
-            } else if (slotClickedIndex >= playerSlotStart && slotClickedIndex < playerSlotEnd)//player slots, merge into storage
+            } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into storage
             {
                 if (!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
                 {

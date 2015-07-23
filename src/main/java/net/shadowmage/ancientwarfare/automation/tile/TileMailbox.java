@@ -38,11 +38,6 @@ public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory
     }
 
     @Override
-    public boolean canUpdate() {
-        return true;
-    }
-
-    @Override
     public void updateEntity() {
         if (worldObj.isRemote) {
             return;

@@ -30,11 +30,6 @@ public class TileDraftingStation extends TileEntity {
     }
 
     @Override
-    public boolean canUpdate() {
-        return true;
-    }
-
-    @Override
     public void updateEntity() {
         super.updateEntity();
         if (worldObj.isRemote) {

@@ -83,12 +83,12 @@ public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSter
             return null;
         }
         ItemStack stackFromSlot = slot.getStack();
-        if (slotClickedIndex == 0)//click on input slot, merge into player inventory
+        if (slotClickedIndex < slots)//click on input slot, merge into player inventory
         {
             this.mergeItemStack(stackFromSlot, slots, slots + 36, false);
         } else//click on player slot, attempt merge into te inventory
         {
-            this.mergeItemStack(stackFromSlot, 0, 1, false);
+            this.mergeItemStack(stackFromSlot, 0, slots, false);
         }
         if (stackFromSlot.stackSize == 0) {
             slot.putStack(null);

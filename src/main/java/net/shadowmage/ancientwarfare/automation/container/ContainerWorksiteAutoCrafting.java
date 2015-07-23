@@ -95,37 +95,25 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
             int outputSlotsStart = storageSlotsStart + tileEntity.resourceInventory.getSizeInventory();
             int playerSlotStart = outputSlotsStart + tileEntity.outputSlot.getSizeInventory();
             int playerSlotEnd = playerSlotStart + 36;
-            if (slotClickedIndex == 0)//result slot
+            if (slotClickedIndex < 2)//result or book slot
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
                     return null;
                 }
-            } else if (slotClickedIndex == 1)//book slot
-            {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
-                {
-                    return null;
-                }
-            } else if (slotClickedIndex >= 2 && slotClickedIndex < storageSlotsStart)//craft matrix
+            } else if (slotClickedIndex < storageSlotsStart)//craft matrix
             {
                 if (!this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false))//merge into storage
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= storageSlotsStart && slotClickedIndex < outputSlotsStart)//storage slots
+            } else if (slotClickedIndex < playerSlotStart)//storage slots
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= outputSlotsStart && slotClickedIndex < playerSlotStart)//storage slots
-            {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
-                {
-                    return null;
-                }
-            } else if (slotClickedIndex >= playerSlotStart && slotClickedIndex < playerSlotEnd)//player slots, merge into storage
+            } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into storage
             {
                 if (!this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false))//merge into storage
                 {

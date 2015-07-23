@@ -104,7 +104,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
 
     @Override
     public boolean canUpdate() {
-        return true;
+        return false;
     }
 
     private void onLayoutMatrixChanged() {

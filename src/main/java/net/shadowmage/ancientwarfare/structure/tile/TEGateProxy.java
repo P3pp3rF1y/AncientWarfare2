@@ -69,7 +69,6 @@ public class TEGateProxy extends TileEntity {
     @SuppressWarnings("unchecked")
     @Override
     public void updateEntity() {
-        super.updateEntity();
         if (this.worldObj == null || this.worldObj.isRemote) {
             return;
         }
@@ -89,10 +88,4 @@ public class TEGateProxy extends TileEntity {
             this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);
         }
     }
-
-    @Override
-    public boolean canUpdate() {
-        return true;
-    }
-
 }

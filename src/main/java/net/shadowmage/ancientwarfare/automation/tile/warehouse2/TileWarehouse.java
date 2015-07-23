@@ -8,7 +8,6 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class TileWarehouse extends TileWarehouseBase {
 
     public TileWarehouse() {
@@ -17,14 +16,17 @@ public class TileWarehouse extends TileWarehouseBase {
 
     @Override
     public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick) {
-        if (filter != null && player.inventory.getItemStack() == null) {
-            tryGetItem(player, filter, shiftClick);
-        } else if (filter == null && player.inventory.getItemStack() != null) {
+        if (filter == null) {
             tryAddItem(player, player.inventory.getItemStack());
+        }else if (player.inventory.getItemStack() == null) {
+            tryGetItem(player, filter, shiftClick);
         }
     }
 
     private void tryAddItem(EntityPlayer player, ItemStack cursorStack) {
+        if(cursorStack==null){
+            return;
+        }
         List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
         storageMap.getDestinations(cursorStack, destinations);
         int stackSize = cursorStack.stackSize;

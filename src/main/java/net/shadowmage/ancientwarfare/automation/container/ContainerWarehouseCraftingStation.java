@@ -19,8 +19,8 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
 public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> {
 
-    public ItemQuantityMap itemMap = new ItemQuantityMap();
-    public ItemQuantityMap cache = new ItemQuantityMap();
+    private ItemQuantityMap itemMap = new ItemQuantityMap();
+    private ItemQuantityMap cache = new ItemQuantityMap();
     boolean shouldUpdate = true;
 
     public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
@@ -89,7 +89,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= 2 && slotClickedIndex < playerSlotStart)//craft matrix
+            } else if (slotClickedIndex < playerSlotStart)//craft matrix
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into storage
                 {

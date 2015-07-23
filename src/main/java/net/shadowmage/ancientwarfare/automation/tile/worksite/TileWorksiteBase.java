@@ -165,7 +165,6 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
     @Override
     public void updateEntity() {
-        super.updateEntity();
         if (worldObj.isRemote) {
             return;
         }

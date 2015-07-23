@@ -20,11 +20,6 @@ public class TileAdvancedSpawner extends TileEntity {
     }
 
     @Override
-    public boolean canUpdate() {
-        return true;
-    }
-
-    @Override
     public void setWorldObj(World world) {
         super.setWorldObj(world);
         settings.setWorld(world, xCoord, yCoord, zCoord);

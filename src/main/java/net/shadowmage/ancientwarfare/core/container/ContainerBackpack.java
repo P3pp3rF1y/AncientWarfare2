@@ -88,7 +88,7 @@ public class ContainerBackpack extends ContainerBase {
                     return null;
                 }
             } else {
-                if (!this.mergeItemStack(slotStack, 0, size, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, 0, size, false))//merge into backpack
                 {
                     return null;
                 }

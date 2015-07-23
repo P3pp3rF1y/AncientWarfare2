@@ -158,11 +158,6 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
         return true;
     }
 
-    @Override
-    public boolean canUpdate() {
-        return true;
-    }
-
     public String getCrafterName() {
         return ItemResearchBook.getResearcherName(bookInventory.getStackInSlot(0));
     }

@@ -95,8 +95,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
     @Override
     public void setOwnerName(String name) {
-        name = name == null ? "" : name;
-        ownerName = name;
+        ownerName = name == null ? "" : name;
     }
 
     @Override
