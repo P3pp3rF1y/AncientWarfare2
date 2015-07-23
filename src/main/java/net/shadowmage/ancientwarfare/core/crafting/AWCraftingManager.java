@@ -28,24 +28,19 @@ public class AWCraftingManager {
     }
 
     /**
-     * shameless copy of CraftingManager.findMatchingRecipe, with added param for player
+     * First search within research recipes, then delegates to CraftingManager.findMatchingRecipe
      */
     public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, String playerName) {
-        if(world == null)
+        if (world == null)
             return null;
-        ItemStack item1 = CraftingManager.getInstance().findMatchingRecipe(inventory, world);
-        if (item1 != null) {
-            return item1;
-        }
-        if (playerName == null || playerName.isEmpty()) {
-            return null;
-        }
-        for (RecipeResearched recipe : this.recipes) {
-            if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
-                return recipe.getCraftingResult(inventory);
+        if (playerName != null && !playerName.isEmpty()) {
+            for (RecipeResearched recipe : this.recipes) {
+                if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
+                    return recipe.getCraftingResult(inventory);
+                }
             }
         }
-        return null;
+        return CraftingManager.getInstance().findMatchingRecipe(inventory, world);
     }
 
     private boolean canPlayerCraft(RecipeResearched recipe, World world, String playerName) {
