@@ -36,11 +36,6 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
     private List<ContainerTownHall> viewers = new ArrayList<ContainerTownHall>();
 
     @Override
-    public boolean canUpdate() {
-        return true;
-    }
-
-    @Override
     public void updateEntity() {
         if (worldObj.isRemote) {
             return;

@@ -336,19 +336,20 @@ public class ItemQuantityMap {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
+            if (obj == this) {
+                return true;
             }
-            if (obj.getClass() != this.getClass()) {
+            if (!(obj instanceof ItemHashEntry)) {
                 return false;
             }
             ItemHashEntry wrap = (ItemHashEntry) obj;
-            boolean tagsMatch;
-            if (itemTag == null) {
-                tagsMatch = wrap.itemTag == null;
-            } else
-                tagsMatch = wrap.itemTag != null && itemTag.equals(wrap.itemTag);
-            return item == wrap.item && damage == wrap.damage && tagsMatch;
+            if(item == wrap.item && damage == wrap.damage){
+                if (itemTag == null)
+                    return wrap.itemTag == null;
+                else
+                    return wrap.itemTag != null && itemTag.equals(wrap.itemTag);
+            }
+            return false;
         }
 
         @Override
@@ -366,7 +367,7 @@ public class ItemQuantityMap {
             } else {
                 ItemStack stack = new ItemStack(item, 1, damage);
                 if (itemTag != null) {
-                    stack.stackTagCompound = (NBTTagCompound) itemTag.copy();
+                    stack.setTagCompound((NBTTagCompound) itemTag.copy());
                 }
                 cacheStack = stack;
                 return cacheStack;

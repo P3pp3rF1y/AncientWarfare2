@@ -174,7 +174,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
         @Override
         public void onToggled() {
-            prop.setValue(Boolean.valueOf(checked()));
+            prop.setValue(checked());
         }
     }
 
@@ -190,8 +190,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
         @Override
         public void onValueUpdated(float value) {
-            int val = (int) value;
-            prop.setValue(Integer.valueOf(val));
+            prop.setValue((int) value);
         }
     }
 

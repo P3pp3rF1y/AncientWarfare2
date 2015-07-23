@@ -763,11 +763,11 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight = addOriginControls(totalHeight);
 
 
-        if (prim.getClass() == PrimitiveBox.class) {
+        if (prim instanceof PrimitiveBox) {
             totalHeight = addBoxControls(totalHeight);
-        } else if (prim.getClass() == PrimitiveTriangle.class) {
+        } else if (prim instanceof PrimitiveTriangle) {
             totalHeight = addTriangleControls(totalHeight);
-        } else if (prim.getClass() == PrimitiveQuad.class) {
+        } else if (prim instanceof PrimitiveQuad) {
             totalHeight = addQuadControls(totalHeight);
         }
 
@@ -2007,7 +2007,7 @@ public class GuiModelEditor extends GuiContainerBase {
             pieceMap.put(label, piece);
             totalHeight += 12;
             for (Primitive primitive : piece.getPrimitives()) {
-                prefix = primitive.getClass() == PrimitiveBox.class ? "BOX" : primitive.getClass() == PrimitiveQuad.class ? "QUAD" : "TRI";
+                prefix = primitive instanceof PrimitiveBox ? "BOX" : primitive instanceof PrimitiveQuad ? "QUAD" : "TRI";
                 label = new Label(3, totalHeight, "  " + prefix + ":" + partNum);
                 label.addNewListener(listener);
                 partListArea.addGuiElement(label);

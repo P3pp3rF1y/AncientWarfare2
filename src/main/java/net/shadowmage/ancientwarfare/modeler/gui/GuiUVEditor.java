@@ -275,11 +275,11 @@ public class GuiUVEditor extends GuiContainerBase {
         if (p == null) {
             return;
         }
-        if (p.getClass() == PrimitiveBox.class) {
+        if (p instanceof PrimitiveBox) {
             addBoxControls();
-        } else if (p.getClass() == PrimitiveTriangle.class) {
+        } else if (p instanceof PrimitiveTriangle) {
             addTriangleControls();
-        } else if (p.getClass() == PrimitiveQuad.class) {
+        } else if (p instanceof PrimitiveQuad) {
             addQuadControls();
         }
     }
@@ -974,7 +974,7 @@ public class GuiUVEditor extends GuiContainerBase {
             pieceMap.put(label, piece);
             totalHeight += 12;
             for (Primitive primitive : piece.getPrimitives()) {
-                prefix = primitive.getClass() == PrimitiveBox.class ? "BOX" : primitive.getClass() == PrimitiveQuad.class ? "QUAD" : "TRI";
+                prefix = primitive instanceof PrimitiveBox ? "BOX" : primitive instanceof PrimitiveQuad ? "QUAD" : "TRI";
                 label = new Label(3, totalHeight, "  " + prefix + ":" + partNum);
                 label.addNewListener(listener);
                 pieceListArea.addGuiElement(label);
