@@ -12,6 +12,8 @@ import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
+import java.io.File;
+
 public class GuiStructureScanner extends GuiContainerBase {
 
     private Text nameInput;
@@ -140,7 +142,7 @@ public class GuiStructureScanner extends GuiContainerBase {
     }
 
     private boolean validateChar(char ch) {
-        return true;//TODO validate chars
+        return ch != File.separatorChar;//TODO validate chars
     }
 
 }
