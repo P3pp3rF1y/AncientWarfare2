@@ -80,7 +80,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
     public static boolean scanStructure(World world, BlockPosition pos1, BlockPosition pos2, BlockPosition key, int face, String name, boolean include, NBTTagCompound tag) {
         BlockPosition min = BlockTools.getMin(pos1, pos2);
         BlockPosition max = BlockTools.getMax(pos1, pos2);
-        int turns = (6-face)%4 ;
+        int turns = (6-face)%4;
         StructureTemplate template = TemplateScanner.scan(world, min, max, key, turns, name);
 
         StructureValidationType type = StructureValidationType.getTypeFromName(tag.getString("validationType"));

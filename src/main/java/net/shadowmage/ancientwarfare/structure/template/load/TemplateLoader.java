@@ -79,8 +79,7 @@ public class TemplateLoader {
     }
 
     public void loadTemplates() {
-        int loadedCount = 0;
-        loadedCount += this.loadDefaultPack();//load default structure pack
+        int loadedCount = this.loadDefaultPack();//load default structure pack
 
         this.locateStructureFiles();
         StructureTemplate template;

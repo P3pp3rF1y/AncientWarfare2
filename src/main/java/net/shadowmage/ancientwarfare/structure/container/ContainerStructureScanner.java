@@ -16,7 +16,7 @@ public class ContainerStructureScanner extends ContainerBase {
         if (player.worldObj.isRemote) {
             return;
         }
-        ItemStack builderItem = player.inventory.getCurrentItem();
+        ItemStack builderItem = player.getHeldItem();
         if (isInvalid(builderItem)) {
             throw new IllegalArgumentException("No scanner in hand");
         }
@@ -43,7 +43,7 @@ public class ContainerStructureScanner extends ContainerBase {
         if (par1EntityPlayer.worldObj.isRemote) {
             return;
         }
-        ItemStack builderItem = par1EntityPlayer.inventory.getCurrentItem();
+        ItemStack builderItem = par1EntityPlayer.getHeldItem();
         if (isInvalid(builderItem)) {
             return;
         }
