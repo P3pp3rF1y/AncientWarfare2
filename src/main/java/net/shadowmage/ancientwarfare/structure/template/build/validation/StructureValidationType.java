@@ -24,12 +24,12 @@ import java.util.*;
 
 public enum StructureValidationType {
     GROUND(StructureValidatorGround.class),
-    UNDERGROUND(StructureValidatorUnderground.class, new StructureValidationProperty("minGenDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxGenDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("minOverfill", StructureValidationProperty.DATA_TYPE_INT, 0)),
-    SKY(StructureValidatorSky.class, new StructureValidationProperty("minGenHeight", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxGenHeight", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("minFlyingHeight", StructureValidationProperty.DATA_TYPE_INT, 0)),
+    UNDERGROUND(StructureValidatorUnderground.class, new StructureValidationProperty("minGenDepth", 0), new StructureValidationProperty("maxGenDepth", 0), new StructureValidationProperty("minOverfill", 0)),
+    SKY(StructureValidatorSky.class, new StructureValidationProperty("minGenHeight", 0), new StructureValidationProperty("maxGenHeight", 0), new StructureValidationProperty("minFlyingHeight", 0)),
     WATER(StructureValidatorWater.class),
-    UNDERWATER(StructureValidatorUnderwater.class, new StructureValidationProperty("minWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0)),
+    UNDERWATER(StructureValidatorUnderwater.class, new StructureValidationProperty("minWaterDepth", 0), new StructureValidationProperty("maxWaterDepth", 0)),
     HARBOR(StructureValidatorHarbor.class),
-    ISLAND(StructureValidatorIsland.class, new StructureValidationProperty("minWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0), new StructureValidationProperty("maxWaterDepth", StructureValidationProperty.DATA_TYPE_INT, 0));
+    ISLAND(StructureValidatorIsland.class, new StructureValidationProperty("minWaterDepth", 0), new StructureValidationProperty("maxWaterDepth", 0));
 
     private Class<? extends StructureValidator> validatorClass;
 
@@ -38,26 +38,26 @@ public enum StructureValidationType {
     StructureValidationType(Class<? extends StructureValidator> validatorClass, StructureValidationProperty... props) {
         this.validatorClass = validatorClass;
 
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_SURVIVAL, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_WORLD_GEN, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_UNIQUE, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_PRESERVE_BLOCKS, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_SURVIVAL, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_WORLD_GEN, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_UNIQUE, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_PRESERVE_BLOCKS, false));
 
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_SELECTION_WEIGHT, StructureValidationProperty.DATA_TYPE_INT, 0));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_CLUSTER_VALUE, StructureValidationProperty.DATA_TYPE_INT, 0));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_MIN_DUPLICATE_DISTANCE, StructureValidationProperty.DATA_TYPE_INT, 0));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_BORDER_SIZE, StructureValidationProperty.DATA_TYPE_INT, 0));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_MAX_LEVELING, StructureValidationProperty.DATA_TYPE_INT, 0));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_MAX_FILL, StructureValidationProperty.DATA_TYPE_INT, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_SELECTION_WEIGHT, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_CLUSTER_VALUE, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_MIN_DUPLICATE_DISTANCE, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BORDER_SIZE, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_MAX_LEVELING, 0));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_MAX_FILL, 0));
 
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_WHITE_LIST, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_DIMENSION_WHITE_LIST, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_WHITE_LIST, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_DIMENSION_WHITE_LIST, false));
 
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_LIST, StructureValidationProperty.DATA_TYPE_STRING_SET, new HashSet<String>()));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_LIST, StructureValidationProperty.DATA_TYPE_STRING_SET, new HashSet<String>()));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_DIMENSION_LIST, StructureValidationProperty.DATA_TYPE_INT_ARRAY, new int[]{}));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_LIST, new HashSet<String>()));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_LIST, new HashSet<String>()));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_DIMENSION_LIST, new int[]{}));
 
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_SWAP, StructureValidationProperty.DATA_TYPE_BOOLEAN, false));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_SWAP, false));
 
         Collections.addAll(properties, props);
     }

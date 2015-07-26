@@ -20,13 +20,37 @@ public class StructureValidationProperty {
     public static final int DATA_TYPE_STRING_SET = 7;
 
     String regName;
-    int dataType;
+    final int dataType;
     Object data;
 
-    public StructureValidationProperty(String regName, int dataType, Object defaultValue) {
+    private StructureValidationProperty(String regName, int dataType, Object defaultValue) {
         this.regName = regName;
         this.data = defaultValue;
         this.dataType = dataType;
+    }
+
+    public StructureValidationProperty(String regName, Object defaultValue) {
+        this.regName = regName;
+        this.data = defaultValue;
+        if(data == null){
+            dataType = DATA_TYPE_UNKNOWN;
+        }else if (Integer.class.isInstance(data)) {
+            dataType = DATA_TYPE_INT;
+        }else if (Byte.class.isInstance(data)) {
+            dataType = DATA_TYPE_BYTE;
+        }else if (Float.class.isInstance(data)) {
+            dataType = DATA_TYPE_FLOAT;
+        }else if (Boolean.class.isInstance(data)) {
+            dataType = DATA_TYPE_BOOLEAN;
+        }else if (String.class.isInstance(data)) {
+            dataType = DATA_TYPE_STRING;
+        }else if (Set.class.isInstance(data)) {
+            dataType = DATA_TYPE_STRING_SET;
+        }else if (int[].class.isAssignableFrom(data.getClass())) {
+            dataType = DATA_TYPE_INT_ARRAY;
+        }else {
+            dataType = DATA_TYPE_UNKNOWN;
+        }
     }
 
     public int getDataType() {
@@ -39,38 +63,42 @@ public class StructureValidationProperty {
 
     public void setValue(Object value) {
         switch (dataType) {
+            case DATA_TYPE_UNKNOWN: {
+                data = value;
+            }
+            break;
             case DATA_TYPE_INT: {
-                if (Integer.class.isAssignableFrom(value.getClass()) || int.class.isAssignableFrom(value.getClass())) {
+                if (Integer.class.isInstance(value)) {
                     data = value;
                 }
             }
             break;
             case DATA_TYPE_BYTE: {
-                if (Byte.class.isAssignableFrom(value.getClass()) || byte.class.isAssignableFrom(value.getClass())) {
+                if (Byte.class.isInstance(value)) {
                     data = value;
                 }
             }
             break;
             case DATA_TYPE_FLOAT: {
-                if (Float.class.isAssignableFrom(value.getClass()) || float.class.isAssignableFrom(value.getClass())) {
+                if (Float.class.isInstance(value)) {
                     data = value;
                 }
             }
             break;
             case DATA_TYPE_BOOLEAN: {
-                if (Boolean.class.isAssignableFrom(value.getClass()) || boolean.class.isAssignableFrom(value.getClass())) {
+                if (Boolean.class.isInstance(value)) {
                     data = value;
                 }
             }
             break;
             case DATA_TYPE_STRING: {
-                if (String.class.isAssignableFrom(value.getClass())) {
+                if (String.class.isInstance(value)) {
                     data = value;
                 }
             }
             break;
             case DATA_TYPE_STRING_SET: {
-                if (Set.class.isAssignableFrom(value.getClass())) {
+                if (Set.class.isInstance(value)) {
                     data = value;
                 }
             }
@@ -82,7 +110,6 @@ public class StructureValidationProperty {
             }
             break;
         }
-        this.data = value;
     }
 
     public int getDataInt() {
@@ -122,7 +149,10 @@ public class StructureValidationProperty {
 
     @SuppressWarnings("unchecked")
     public Set<String> getDataStringSet() {
-        return (Set<String>) data;
+        if(dataType == DATA_TYPE_STRING_SET) {
+            return (Set<String>) data;
+        }
+        return new HashSet<String>();
     }
 
     public void readFromNBT(NBTTagCompound tag) {
@@ -167,11 +197,11 @@ public class StructureValidationProperty {
     public void writeToNBT(NBTTagCompound tag) {
         switch (dataType) {
             case DATA_TYPE_INT: {
-                tag.setInteger(regName, (Integer) data);
+                tag.setInteger(regName, getDataInt());
             }
             break;
             case DATA_TYPE_INT_ARRAY: {
-                tag.setIntArray(regName, (int[]) data);
+                tag.setIntArray(regName, getDataIntArray());
             }
             break;
             case DATA_TYPE_BYTE: {
@@ -179,20 +209,20 @@ public class StructureValidationProperty {
             }
             break;
             case DATA_TYPE_FLOAT: {
-                tag.setFloat(regName, (Float) data);
+                tag.setFloat(regName, getDataFloat());
             }
             break;
             case DATA_TYPE_BOOLEAN: {
-                tag.setBoolean(regName, (Boolean) data);
+                tag.setBoolean(regName, getDataBoolean());
             }
             break;
             case DATA_TYPE_STRING: {
-                tag.setString(regName, (String) data);
+                tag.setString(regName, getDataString());
             }
             break;
             case DATA_TYPE_STRING_SET: {
                 NBTTagList names = new NBTTagList();
-                Set<String> data = (Set<String>) this.data;
+                Set<String> data = getDataStringSet();
                 for (String name : data) {
                     names.appendTag(new NBTTagString(name));
                 }
@@ -203,10 +233,16 @@ public class StructureValidationProperty {
     }
 
     public StructureValidationProperty copy() {
-        /**
-         * TODO need to do a switch on data type, return a new object representing data from current object, so there
-         * are no reference collisions when altering the returned property
-         */
-        return new StructureValidationProperty(regName, dataType, data);
+        Object copy = data;
+        if(copy != null){
+            if(dataType == DATA_TYPE_STRING_SET) {
+                copy = new HashSet<String>(getDataStringSet());
+            }else if(dataType == DATA_TYPE_INT_ARRAY){
+                int[] temp = getDataIntArray();
+                copy = new int[temp.length];
+                System.arraycopy(temp, 0, copy, 0, temp.length);
+            }
+        }
+        return new StructureValidationProperty(regName, dataType, copy);
     }
 }
