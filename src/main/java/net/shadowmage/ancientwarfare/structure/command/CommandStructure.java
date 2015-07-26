@@ -1,11 +1,16 @@
 package net.shadowmage.ancientwarfare.structure.command;
 
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
+import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
@@ -15,21 +20,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
-public class CommandStructure implements ICommand {
-
-    private int permissionLevel = 2;
-
-    public CommandStructure() {
-    }
-
-    public int compareTo(ICommand par1ICommand) {
-        return this.getCommandName().compareTo(par1ICommand.getCommandName());
-    }
-
-    @Override
-    public int compareTo(Object par1Obj) {
-        return this.compareTo((ICommand) par1Obj);
-    }
+public class CommandStructure extends CommandBase {
 
     @Override
     public String getCommandName() {
@@ -39,12 +30,6 @@ public class CommandStructure implements ICommand {
     @Override
     public String getCommandUsage(ICommandSender var1) {
         return "command.aw.structure.usage";
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public List getCommandAliases() {
-        return null;
     }
 
     @Override
@@ -79,44 +64,56 @@ public class CommandStructure implements ICommand {
                 var1.addChatMessage(new ChatComponentTranslation("command.aw.structure.not_found", name));
             }
         } else if (cmd.toLowerCase(Locale.ENGLISH).equals("build")) {
-            if (var2.length < 6) {
+            if (var2.length < 5) {
                 throw new WrongUsageException(getCommandUsage(var1));
             }
-            String name = var2[1];
-            String xs = var2[2];
-            String ys = var2[3];
-            String zs = var2[4];
-            String direction = var2[5];
 
-            int x = CommandBase.parseInt(var1, xs);
-            int y = CommandBase.parseInt(var1, ys);
-            int z = CommandBase.parseInt(var1, zs);
+            int x = CommandBase.parseInt(var1, var2[2]);
+            int y = CommandBase.parseInt(var1, var2[3]);
+            int z = CommandBase.parseInt(var1, var2[4]);
             int face = 0;
-            String dl = direction.toLowerCase(Locale.ENGLISH);
-            if (dl.equals("north")) {
-                face = 2;
-            } else if (dl.equals("east")) {
-                face = 3;
-            } else if (dl.equals("south")) {
-                face = 0;
-            } else if (dl.equals("west")) {
-                face = 1;
-            } else {
-                face = CommandBase.parseInt(var1, direction);
+            if(var2.length>5) {
+                String dl = var2[5].toLowerCase(Locale.ENGLISH);
+                if (dl.equals("north")) {
+                    face = 2;
+                } else if (dl.equals("east")) {
+                    face = 3;
+                } else if (dl.equals("south")) {
+                    face = 0;
+                } else if (dl.equals("west")) {
+                    face = 1;
+                } else {
+                    face = CommandBase.parseInt(var1, var2[5]);
+                }
             }
-            StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(name);
+            StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(var2[1]);
+            ChatComponentTranslation txt;
             if (template == null) {
-                ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.not_found", name);
-                var1.addChatMessage(txt);
+                txt = new ChatComponentTranslation("command.aw.structure.not_found", var2[1]);
             } else {
                 StructureBuilder builder = new StructureBuilder(var1.getEntityWorld(), template, face, x, y, z);
                 builder.instantConstruction();
-                ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.built", name, x, y, z);
-                var1.addChatMessage(txt);
+                txt = new ChatComponentTranslation("command.aw.structure.built", var2[1], x, y, z);
+            }
+            var1.addChatMessage(txt);
+        }else if(cmd.toLowerCase(Locale.ENGLISH).equals("save")){
+            if(var1 instanceof EntityLivingBase){
+                ItemStack stack = ((EntityLivingBase) var1).getHeldItem();
+                if(stack!=null){
+                    ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
+                    if(settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || var2.length>1)){
+                        String name = settings.hasName() ? settings.name() : var2[1];
+                        NBTTagCompound tagCompound = new NBTTagCompound();
+                        if(ItemStructureScanner.scanStructure(var1.getEntityWorld(), settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, true, tagCompound)) {
+                            var1.addChatMessage(new ChatComponentTranslation("command.aw.structure.exported", var2[1]));
+                        }
+                    }else{
+                        var1.addChatMessage(new ChatComponentTranslation("command.aw.structure.incomplete_data"));
+                    }
+                }
             }
         }
     }
-
 
     private boolean deleteTemplateFile(String name) {
         String path = TemplateLoader.includeDirectory + name + "." + AWStructureStatics.templateExtension;
@@ -129,22 +126,18 @@ public class CommandStructure implements ICommand {
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
-        return par1ICommandSender.canCommandSenderUseCommand(this.permissionLevel, this.getCommandName());
+    public int getRequiredPermissionLevel(){
+        return 2;
     }
 
     @SuppressWarnings("rawtypes")
     @Override
     public List addTabCompletionOptions(ICommandSender var1, String[] var2) {
         if (var2.length == 1) {
-            return CommandBase.getListOfStringsMatchingLastWord(var2, "build", "delete");
+            return CommandBase.getListOfStringsMatchingLastWord(var2, "build", "delete", "save");
+        }else if(var2.length > 5 && var2[0].toLowerCase(Locale.ENGLISH).equals("build")){
+            return CommandBase.getListOfStringsMatchingLastWord(var2, "north", "east", "south", "west");
         }
         return null;
     }
-
-    @Override
-    public boolean isUsernameIndex(String[] var1, int var2) {
-        return false;
-    }
-
 }

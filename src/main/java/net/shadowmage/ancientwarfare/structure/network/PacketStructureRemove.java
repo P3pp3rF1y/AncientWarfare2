@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.network;
 import io.netty.buffer.ByteBuf;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
 public class PacketStructureRemove extends PacketBase {
 
@@ -28,7 +29,7 @@ public class PacketStructureRemove extends PacketBase {
 
     @Override
     protected void execute() {
-
+        StructureTemplateManagerClient.instance().removeTemplate(structureName);
     }
 
 }

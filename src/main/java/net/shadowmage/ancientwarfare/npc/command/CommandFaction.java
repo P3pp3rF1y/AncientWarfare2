@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.command;
 
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
@@ -13,17 +12,11 @@ import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import java.util.List;
 import java.util.Locale;
 
-public class CommandFaction implements ICommand {
-
-    private int permissionLevel = 2;
-
-    public int compareTo(ICommand par1ICommand) {
-        return this.getCommandName().compareTo(par1ICommand.getCommandName());
-    }
+public class CommandFaction extends CommandBase {
 
     @Override
-    public int compareTo(Object par1Obj) {
-        return this.compareTo((ICommand) par1Obj);
+    public int getRequiredPermissionLevel() {
+        return 2;
     }
 
     @Override
@@ -34,12 +27,6 @@ public class CommandFaction implements ICommand {
     @Override
     public String getCommandUsage(ICommandSender var1) {
         return "command.aw.faction.usage";
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public List getCommandAliases() {
-        return null;
     }
 
     @Override
@@ -100,11 +87,6 @@ public class CommandFaction implements ICommand {
         return false;
     }
 
-    @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
-        return par1ICommandSender.canCommandSenderUseCommand(this.permissionLevel, this.getCommandName());
-    }
-
     @SuppressWarnings("rawtypes")
     @Override
     public List addTabCompletionOptions(ICommandSender var1, String[] var2) {
@@ -117,7 +99,7 @@ public class CommandFaction implements ICommand {
         } else if (var2.length == 3)//would be a faction name for the set command
         {
             if (var2[0].toLowerCase(Locale.ENGLISH).equals("set")) {
-                return CommandBase.getListOfStringsMatchingLastWord(var2, "bandit", "viking", "desert", "jungle", "pirate", "custom_1", "custom_2", "custom_3");
+                return CommandBase.getListOfStringsMatchingLastWord(var2, AWNPCStatics.factionNames);
             }
         } else if (var2.length == 4)//would be a number for the set command value
         {

@@ -1,9 +1,9 @@
 package net.shadowmage.ancientwarfare.core.command;
 
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.server.MinecraftServer;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
@@ -11,11 +11,10 @@ import java.util.List;
 
 public class CommandResearch extends CommandBase {
 
-    private int permissionLevel = 2;
-
     @Override
-    public int compareTo(Object par1Obj) {
-        return super.compareTo((ICommand) par1Obj);
+    public int getRequiredPermissionLevel()
+    {
+        return 2;
     }
 
     @Override
@@ -26,12 +25,6 @@ public class CommandResearch extends CommandBase {
     @Override
     public String getCommandUsage(ICommandSender p_71518_1_) {
         return "command.aw.research.usage";
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public List getCommandAliases() {
-        return null;
     }
 
     @Override
@@ -74,15 +67,10 @@ public class CommandResearch extends CommandBase {
         }
     }
 
-    @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
-        return par1ICommandSender.canCommandSenderUseCommand(this.permissionLevel, this.getCommandName());
-    }
-
     @SuppressWarnings("rawtypes")
     @Override
     public List addTabCompletionOptions(ICommandSender sender, String[] text) {
-        return text.length == 1 ? getListOfStringsMatchingLastWord(text, "add", "remove", "fill", "clear") : null;
+        return text.length == 1 ? getListOfStringsMatchingLastWord(text, "add", "remove", "fill", "clear") : text.length == 2 ? getListOfStringsMatchingLastWord(text, MinecraftServer.getServer().getAllUsernames()) : null;
     }
 
     @Override
