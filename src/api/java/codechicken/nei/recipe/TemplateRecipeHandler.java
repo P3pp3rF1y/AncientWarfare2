@@ -37,20 +37,10 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
         }
 
         /**
-         * @return The ingredient required to produce the result
-         */
-        public PositionedStack getIngredient() {
-            return null;
-        }
-
-        /**
          * This will perform default cycling of ingredients, mulitItem capable
          */
         public List<PositionedStack> getCycledIngredients(int cycle, List<PositionedStack> ingredients) {
             return ingredients;
-        }
-
-        public void randomRenderPermutation(PositionedStack stack, long cycle) {
         }
     }
 

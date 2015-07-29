@@ -43,7 +43,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         };
         addSlotToContainer(slot);
 
-        int x2, y2, slotNum = 0;
+        int x2, y2, slotNum;
         for (int y1 = 0; y1 < 3; y1++) {
             y2 = y1 * 18 + 8;
             for (int x1 = 0; x1 < 3; x1++) {
@@ -93,7 +93,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
 
             int storageSlotsStart = 1 + 1 + tileEntity.craftMatrix.getSizeInventory();
             int outputSlotsStart = storageSlotsStart + tileEntity.resourceInventory.getSizeInventory();
-            int playerSlotStart = outputSlotsStart + tileEntity.outputSlot.getSizeInventory();
+            int playerSlotStart = outputSlotsStart + tileEntity.outputInventory.getSizeInventory();
             int playerSlotEnd = playerSlotStart + 36;
             if (slotClickedIndex < 2)//result or book slot
             {

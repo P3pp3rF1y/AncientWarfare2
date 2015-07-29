@@ -10,8 +10,4 @@ public class RecipeInfo {
     public static boolean hasDefaultOverlay(GuiContainer gui, String ident) {
         return false;
     }
-
-    public static boolean hasOverlayHandler(GuiContainer gui, String ident) {
-        return false;
-    }
 }

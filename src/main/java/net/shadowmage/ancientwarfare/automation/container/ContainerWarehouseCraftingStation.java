@@ -80,18 +80,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
         if (theSlot != null && theSlot.getHasStack()) {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
-            int craftSlotStart = 2;
-            int playerSlotStart = craftSlotStart + tileEntity.layoutMatrix.getSizeInventory();
-            int playerSlotEnd = playerSlotStart + 36;
-            if (slotClickedIndex < craftSlotStart)//result slot, book slot
+            int playerSlotStart = 2 + tileEntity.layoutMatrix.getSizeInventory();
+            if (slotClickedIndex < playerSlotStart)//result slot, book slot
             {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
-                {
-                    return null;
-                }
-            } else if (slotClickedIndex < playerSlotStart)//craft matrix
-            {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into storage
+                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
                 {
                     return null;
                 }

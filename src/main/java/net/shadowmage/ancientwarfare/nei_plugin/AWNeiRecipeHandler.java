@@ -22,12 +22,16 @@ package net.shadowmage.ancientwarfare.nei_plugin;
 
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
+import codechicken.nei.recipe.DefaultOverlayHandler;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseCraftingStation;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAutoCrafting;
+import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
@@ -36,6 +40,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AWNeiRecipeHandler extends TemplateRecipeHandler {
@@ -43,6 +48,17 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
     public AWNeiRecipeHandler() {
         API.registerRecipeHandler(this);
         API.registerUsageHandler(this);
+        register(GuiEngineeringStation.class, new DefaultOverlayHandler(37, 2));
+        if(ModuleStatus.automationLoaded){
+            register(GuiWarehouseCraftingStation.class, new DefaultOverlayHandler(37, 2));
+            register(GuiWorksiteAutoCrafting.class, new DefaultOverlayHandler(37, 2));
+        }
+    }
+
+    private void register(Class<? extends GuiContainer> cl, DefaultOverlayHandler handler){
+        API.registerGuiOverlay(cl, "awcrafting", handler.offsetx, handler.offsety);
+        API.registerGuiOverlayHandler(cl, handler, "awcrafting");
+        API.registerGuiOverlayHandler(cl, handler, "crafting");
     }
 
     @Override
@@ -62,19 +78,24 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public TemplateRecipeHandler newInstance() {
-        transferRects.clear();
         arecipes.clear();
         return this;
     }
 
     @Override
     public void loadTransferRects() {
-        transferRects.add(new RecipeTransferRect(new Rectangle(84, 23, 24, 18), "awcrafting"));
+        transferRects.add(new RecipeTransferRect(new Rectangle(-31, 7, 18, 18), "awcrafting"));
     }
 
     @Override
-    public Class<? extends GuiContainer> getGuiClass() {
-        return GuiEngineeringStation.class;
+    public List<Class<? extends GuiContainer>> getRecipeTransferRectGuis() {
+        LinkedList<Class<? extends GuiContainer>> list = new LinkedList<Class<? extends GuiContainer>>();
+        list.add(GuiEngineeringStation.class);
+        if(ModuleStatus.automationLoaded){
+            list.add(GuiWarehouseCraftingStation.class);
+            list.add(GuiWorksiteAutoCrafting.class);
+        }
+        return list;
     }
 
     @Override
@@ -116,7 +137,7 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public boolean hasOverlay(GuiContainer gui, Container container, int recipe) {
-        return super.hasOverlay(gui, container, recipe) || RecipeInfo.hasDefaultOverlay(gui, "awcrafting");
+        return super.hasOverlay(gui, container, recipe) || RecipeInfo.hasDefaultOverlay(gui, "crafting");
     }
 
     public class AWCachedRecipe extends CachedRecipe {
@@ -136,7 +157,7 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
                     if (items[y * width + x] == null) {
                         continue;
                     }
-                    PositionedStack stack = new PositionedStack(items[y * width + x], 25 + x * 18, 6 + y * 18, false);
+                    PositionedStack stack = new PositionedStack(items[y * width + x], 25 + x * 18, 6 + y * 18);
                     stack.setMaxSize(1);
                     ingredients.add(stack);
                 }

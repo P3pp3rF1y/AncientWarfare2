@@ -195,7 +195,7 @@ public class ContainerBase extends Container {
                     continue;
                 }
                 stackFromSlot = slotFromContainer.getStack();
-                if (stackFromSlot == null || !InventoryTools.doItemStacksMatch(incomingStack, stackFromSlot)) {
+                if (stackFromSlot == null || !InventoryTools.doItemStacksMatch(incomingStack, stackFromSlot, !incomingStack.getHasSubtypes(), false)) {
                     continue;
                 }
                 transferAmount = stackFromSlot.getMaxStackSize() - stackFromSlot.stackSize;
@@ -215,8 +215,7 @@ public class ContainerBase extends Container {
                 if (!slotFromContainer.isItemValid(incomingStack)) {
                     continue;
                 }
-                stackFromSlot = slotFromContainer.getStack();
-                if (stackFromSlot == null) {
+                if (!slotFromContainer.getHasStack()) {
                     slotFromContainer.putStack(incomingStack.copy());
                     slotFromContainer.onSlotChanged();
                     incomingStack.stackSize = 0;
