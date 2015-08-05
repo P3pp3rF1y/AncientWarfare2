@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
@@ -9,7 +10,6 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 /**
@@ -54,7 +54,7 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 
     public NpcAI(T npc) {
         this.npc = npc;
-        maxPFDist = AWNPCStatics.npcPathfindRange * 0.90d;
+        maxPFDist = npc.getEntityAttribute(SharedMonsterAttributes.followRange).getBaseValue() * 0.90d;
 
         maxPFDistSq = maxPFDist * maxPFDist;
     }

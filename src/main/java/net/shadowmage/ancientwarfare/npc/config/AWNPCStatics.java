@@ -75,7 +75,6 @@ public class AWNPCStatics extends ModConfiguration {
      */
     public static double npcLevelDamageMultiplier = 0.05;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
     public static int npcArcherAttackDamage = 3;//damage for npc archers...can be increased via enchanted weapons
-    public static double npcPathfindRange = 60.d;//max pathfind range
     /** ********************************************CLIENT SETTINGS************************************************ */
     public static final String clientSettings = "03_client_settings";
     public static boolean loadDefaultSkinPack = true;
@@ -456,7 +455,7 @@ public class AWNPCStatics extends ModConfiguration {
 
     //TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
     private Attribute getDefault(String type) {
-        return new Attribute(valuesConfig.get("01_npc_base_health", type, 20).getDouble(), valuesConfig.get("02_npc_base_attack", type, 1).getDouble(), valuesConfig.get("03_npc_base_speed", type, 0.325D).getDouble(), valuesConfig.get("04_npc_exp_drop", type, 0).getInt());
+        return new Attribute(valuesConfig.get("01_npc_base_health", type, 20).getDouble(), valuesConfig.get("02_npc_base_attack", type, 1).getDouble(), valuesConfig.get("03_npc_base_speed", type, 0.325D).getDouble(), valuesConfig.get("05_npc_base_range", type, 60).getDouble(), valuesConfig.get("04_npc_exp_drop", type, 0).getInt());
     }
 
     public double getMaxHealthFor(String type) {
@@ -484,7 +483,7 @@ public class AWNPCStatics extends ModConfiguration {
             npc.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(type.baseHealth());
             npc.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(type.baseSpeed());
             npc.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(type.baseAttack());
-            npc.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(npcPathfindRange);
+            npc.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(type.baseRange());
             npc.setExperienceDrop(type.expDrop());
         }
     }
@@ -611,23 +610,27 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     private static class Attribute {
-        private final double health, attack, speed;
+        private final double health, attack, speed, range;
         private final int exp;
 
-        private Attribute(double hp, double ap, double sp, int xp) {
+        private Attribute(double hp, double ap, double sp, double rg, int xp) {
             health = hp;
             attack = ap;
             speed = sp;
+            range = rg;
             exp = xp;
         }
 
         public double baseHealth() {
             return health;
         }
-
         //base attack damage for npcs--further multiplied by their equipped weapon
         public double baseAttack() {
             return attack;
+        }
+
+        public double baseRange(){
+            return range;
         }
 
         public double baseSpeed() {
