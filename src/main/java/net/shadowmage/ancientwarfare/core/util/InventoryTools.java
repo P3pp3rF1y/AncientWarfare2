@@ -8,7 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
@@ -170,6 +173,35 @@ public class InventoryTools {
             }
         }
         return returnStack;
+    }
+
+    /**
+     * Apply the "container" system, for crafting purposes
+     *
+     * @param craft the inventory where craft occurred
+     * @param storage the inventory where the result, a "container item" may be dropped into
+     * @param index the craft slot where the item got consumed
+     * @param itemStack the item consumed
+     * @return null, or the item to drop/manage differently
+     */
+    public static ItemStack getConsumedItem(IInventory craft, IInventory storage, int index, ItemStack itemStack){
+        if (itemStack.getItem().hasContainerItem(itemStack))
+        {
+            ItemStack container = itemStack.getItem().getContainerItem(itemStack);
+            if (container == null || (container.isItemStackDamageable() && container.getItemDamage() > container.getMaxDamage()))//Container is invalid
+            {
+                return null;
+            }
+            if (itemStack.getItem().doesContainerItemLeaveCraftingGrid(itemStack) || craft.getStackInSlot(index) != null)//Need to use storage space
+            {
+                return InventoryTools.mergeItemStack(storage, container, -1);//Merge into storage inventory, return any unmerged
+            }
+            else
+            {
+                craft.setInventorySlotContents(index, container);
+            }
+        }
+        return null;
     }
 
     /**

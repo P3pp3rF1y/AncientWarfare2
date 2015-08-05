@@ -124,7 +124,12 @@ public class TileAutoCrafting extends TileWorksiteBase implements IWorkSite, ISi
             if (stack1 == null) {
                 continue;
             }
-            InventoryTools.removeItems(resourceInventory, -1, stack1, 1);
+            if(InventoryTools.removeItems(resourceInventory, -1, stack1, 1) != null) {
+                stack1 = InventoryTools.getConsumedItem(craftMatrix, resourceInventory, i, stack1);
+                if (stack1 != null) {
+                    InventoryTools.dropItemInWorld(worldObj, stack1, xCoord, yCoord, zCoord);
+                }
+            }
         }
     }
 
