@@ -43,8 +43,7 @@ public class ItemResearchNotes extends Item {
         par3List.add(researchName);
         if (known) {
             par3List.add(StatCollector.translateToLocal("guistrings.research.known_research"));
-            par3List.add(StatCollector.translateToLocal("guistrings.research.click_to_add_progress1"));
-            par3List.add(StatCollector.translateToLocal("guistrings.research.click_to_add_progress2"));
+            par3List.add(StatCollector.translateToLocal("guistrings.research.click_to_add_progress"));
         } else {
             par3List.add(StatCollector.translateToLocal("guistrings.research.unknown_research"));
             par3List.add(StatCollector.translateToLocal("guistrings.research.click_to_learn"));
