@@ -12,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -97,11 +96,9 @@ public class ItemHammer extends Item implements IItemKeyInterface {
         String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
         list.add(StatCollector.translateToLocalFormatted("guistrings.core.hammer.use_primary_item_key", key));
         if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("workMode")) {
-            list.add(StatCollector.translateToLocal("guistrings.core.hammer.work_mode_1"));
-            list.add(StatCollector.translateToLocal("guistrings.core.hammer.work_mode_2"));
+            list.add(StatCollector.translateToLocal("guistrings.core.hammer.work_mode"));
         } else {
-            list.add(StatCollector.translateToLocal("guistrings.core.hammer.rotate_mode_1"));
-            list.add(StatCollector.translateToLocal("guistrings.core.hammer.rotate_mode_2"));
+            list.add(StatCollector.translateToLocal("guistrings.core.hammer.rotate_mode"));
         }
     }
 
@@ -123,7 +120,7 @@ public class ItemHammer extends Item implements IItemKeyInterface {
         }
         mode = !mode;
         stack.getTagCompound().setBoolean("workMode", mode);
-        player.addChatMessage(new ChatComponentTranslation("guistrings.automation.work_mode_change"));
+        player.worldObj.playSoundEffect(player.posX, player.posY, player.posZ, "random.click", 0.3F, 0.6F);
     }
 
     @Override
@@ -131,7 +128,7 @@ public class ItemHammer extends Item implements IItemKeyInterface {
         if(world.isRemote){
             return stack;
         }
-        MovingObjectPosition hit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
+        MovingObjectPosition hit = getMovingObjectPositionFromPlayer(world, player, false);
         if (hit == null) {
             return stack;
         }
@@ -142,24 +139,35 @@ public class ItemHammer extends Item implements IItemKeyInterface {
             stack.setTagCompound(new NBTTagCompound());
         }
         if (mode) {
-            TileEntity te = player.worldObj.getTileEntity(hit.blockX, hit.blockY, hit.blockZ);
-            if (te instanceof IWorkSite) {
-                if (((IWorkSite) te).hasWork()) {
-                    ((IWorkSite) te).addEnergyFromPlayer(player);
-                }
-                player.addChatMessage(new ChatComponentTranslation("guistrings.automation.doing_player_work"));
+            TileEntity te = world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ);
+            if (te instanceof IWorkSite && ((IWorkSite) te).hasWork()) {
+                ((IWorkSite) te).addEnergyFromPlayer(player);
+                playSound(world, hit, "tile.piston.in");
             } else {
-                player.addChatMessage(new ChatComponentTranslation("guistrings.automation.wrong_hammer_mode"));
+                Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
+                if(!block.isAir(world, hit.blockX, hit.blockY, hit.blockZ))
+                    playBlockSound(world, hit, block);
             }
         } else {
-            Block block = player.worldObj.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-            if (block == null) {
-                return stack;
+            Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
+            if(!block.isAir(world, hit.blockX, hit.blockY, hit.blockZ)) {
+                if (block.rotateBlock(world, hit.blockX, hit.blockY, hit.blockZ, ForgeDirection.getOrientation(hit.sideHit)))
+                    playSound(world, hit, "tile.piston.out");
+                else
+                    playBlockSound(world, hit, block);
             }
-            player.addChatMessage(new ChatComponentTranslation("guistrings.automation.rotating_block"));
-            block.rotateBlock(player.worldObj, hit.blockX, hit.blockY, hit.blockZ, ForgeDirection.getOrientation(hit.sideHit));
         }
         return stack;
+    }
+
+    private void playSound(World world, MovingObjectPosition hit, String sound){
+        world.playSoundEffect(hit.blockX, hit.blockY, hit.blockZ, sound, 0.2F, world.rand.nextFloat() * 0.15F + 0.6F);
+    }
+
+    private void playBlockSound(World world, MovingObjectPosition hit, Block block){
+        if(block.stepSound != null){
+            world.playSoundEffect(hit.blockX, hit.blockY, hit.blockZ, block.stepSound.func_150496_b(), block.stepSound.getVolume() * 0.5F, block.stepSound.getPitch() * 0.8F);
+        }
     }
 
     /**

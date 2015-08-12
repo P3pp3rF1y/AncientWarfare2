@@ -39,8 +39,7 @@ public class ItemQuill extends Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        list.add(StatCollector.translateToLocal("guistrings.core.quill.work_mode_1"));
-        list.add(StatCollector.translateToLocal("guistrings.core.quill.work_mode_2"));
+        list.add(StatCollector.translateToLocal("guistrings.core.quill.work_mode"));
     }
 
     public ToolMaterial getMaterial() {

@@ -9,10 +9,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
-public class TileWaterwheel extends TileTorqueSingleCell implements IInteractableTile {
+public class TileWaterwheel extends TileTorqueSingleCell {
 
     public float wheelRotation;
     public float prevWheelRotation;

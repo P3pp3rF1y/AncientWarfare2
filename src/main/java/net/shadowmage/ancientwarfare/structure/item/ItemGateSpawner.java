@@ -62,7 +62,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        NBTTagCompound tag = null;
+        NBTTagCompound tag;
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("AWGateInfo")) {
             tag = stack.getTagCompound().getCompoundTag("AWGateInfo");
         } else {
@@ -70,16 +70,11 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
         }
         if (tag.hasKey("pos1") && tag.hasKey("pos2")) {
             list.add(StatCollector.translateToLocal("guistrings.gate.construct"));
-            list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));
-        } else if (tag.hasKey("pos1")) {
-            String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
-            list.add(StatCollector.translateToLocalFormatted("guistrings.gate.use_primary_item_key", key));
-            list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));
         } else {
             String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
             list.add(StatCollector.translateToLocalFormatted("guistrings.gate.use_primary_item_key", key));
-            list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));
         }
+        list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -149,7 +144,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
         BlockPosition min = BlockTools.getMin(pos1, pos2);
         BlockPosition max = BlockTools.getMax(pos1, pos2);
         AxisAlignedBB newGateBB = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
-        AxisAlignedBB oldGateBB = null;
+        AxisAlignedBB oldGateBB;
         List<EntityGate> gates = world.getEntitiesWithinAABB(EntityGate.class, newGateBB);
         for (EntityGate gate : gates) {
             min = BlockTools.getMin(gate.pos1, gate.pos2);
@@ -179,21 +174,19 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
         } else {
             tag = new NBTTagCompound();
         }
-        if (tag.hasKey("pos1") && tag.hasKey("pos2")) {
-            /**
-             * do nothing, wait for right click for build order
-             */
-        } else if (tag.hasKey("pos1")) {
-            Gate g = Gate.getGateByID(stack.getItemDamage());
-            if (g.arePointsValidPair(new BlockPosition(tag.getCompoundTag("pos1")), hit)) {
-                tag.setTag("pos2", hit.writeToNBT(new NBTTagCompound()));
-                player.addChatMessage(new ChatComponentTranslation("guistrings.gate.set_pos_two"));
+        if (!tag.hasKey("pos2")) {
+            if (tag.hasKey("pos1")) {
+                Gate g = Gate.getGateByID(stack.getItemDamage());
+                if (g.arePointsValidPair(new BlockPosition(tag.getCompoundTag("pos1")), hit)) {
+                    tag.setTag("pos2", hit.writeToNBT(new NBTTagCompound()));
+                    player.addChatMessage(new ChatComponentTranslation("guistrings.gate.set_pos_two"));
+                } else {
+                    player.addChatMessage(new ChatComponentTranslation("guistrings.gate.invalid_position"));
+                }
             } else {
-                player.addChatMessage(new ChatComponentTranslation("guistrings.gate.invalid_position"));
+                tag.setTag("pos1", hit.writeToNBT(new NBTTagCompound()));
+                player.addChatMessage(new ChatComponentTranslation("guistrings.gate.set_pos_one"));
             }
-        } else {
-            tag.setTag("pos1", hit.writeToNBT(new NBTTagCompound()));
-            player.addChatMessage(new ChatComponentTranslation("guistrings.gate.set_pos_one"));
         }
         stack.setTagInfo("AWGateInfo", tag);
     }

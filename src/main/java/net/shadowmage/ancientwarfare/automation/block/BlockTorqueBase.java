@@ -122,7 +122,7 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
         if (worldObj.isRemote) {
             return false;
         }
-        TileTorqueBase tt = (TileTorqueBase) worldObj.getTileEntity(x, y, z);
+        IRotatableTile tt = (IRotatableTile) worldObj.getTileEntity(x, y, z);
         int meta = tt.getPrimaryFacing().ordinal();
         int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
         if (rMeta != meta) {

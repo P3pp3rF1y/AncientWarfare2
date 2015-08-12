@@ -78,6 +78,8 @@ public class BlockMailbox extends Block implements IRotatableBlock {
 
     @Override
     public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
+        if(worldObj.isRemote)
+            return false;
         int meta = worldObj.getBlockMetadata(x, y, z);
         int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
         if (rMeta != meta) {

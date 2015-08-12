@@ -13,6 +13,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.common.util.RotationHelper;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -125,7 +126,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     }
 
     @Override
-    public RotationType getRotationType() {
+    public final RotationType getRotationType() {
         return RotationType.FOUR_WAY;
     }
 
@@ -135,15 +136,23 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     }
 
     @Override
-    public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
-        TileEntity te = worldObj.getTileEntity(x, y, z);
-        if (te instanceof IRotatableTile) {
-            if (axis == ForgeDirection.DOWN || axis == ForgeDirection.UP) {
-                ForgeDirection o = ((IRotatableTile) te).getPrimaryFacing().getRotation(axis);
-                ((IRotatableTile) te).setPrimaryFacing(o);//twb will send update packets / etc
+    public final boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
+        if (axis == ForgeDirection.DOWN || axis == ForgeDirection.UP) {
+            TileEntity te = worldObj.getTileEntity(x, y, z);
+            if (te instanceof IRotatableTile) {
+                if(!worldObj.isRemote) {
+                    ForgeDirection o = ((IRotatableTile) te).getPrimaryFacing().getRotation(axis);
+                    ((IRotatableTile) te).setPrimaryFacing(o);//twb will send update packets / etc
+                }
+                return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public final ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z) {
+        return new ForgeDirection[]{ForgeDirection.DOWN, ForgeDirection.UP};
     }
 
     @Override

@@ -9,8 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -19,7 +17,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.ArrayList;
 
-public class TileAutoCrafting extends TileWorksiteBase implements IWorkSite, ISidedInventory, IInteractableTile {
+public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventory {
 
     public InventoryBasic bookSlot;
     public InventoryBasic outputInventory;
