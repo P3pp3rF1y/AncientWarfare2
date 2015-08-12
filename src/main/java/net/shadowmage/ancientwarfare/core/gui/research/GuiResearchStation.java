@@ -7,8 +7,10 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.GuiResearchBook;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -22,7 +24,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
     Label researchGoalLabel;
     ProgressBar bar;
     Checkbox useAdjacentInventory;
-    Button invDir, invSide;
+    Button info, invDir, invSide;
 
     ItemSlot[] layoutSlots = new ItemSlot[9];
 
@@ -51,7 +53,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
         bar = new ProgressBar(70, 8 + 18 * 2 + 12, 178 - 70 - 8, 12);
         addGuiElement(bar);
 
-        Button button = new Button(178 - 8 - 140, 8 + 12 + 4, 140, 12, "guistrings.research.research_queue") {
+        Button button = new Button(178 - 8 - 110, 8 + 12 + 4, 110, 12, "guistrings.research.research_queue") {
             @Override
             protected void onPressed() {
                 getContainer().removeSlots();
@@ -59,9 +61,19 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
             }
         };
         addGuiElement(button);
+        info = new Button(30, 8 + 12 + 4, 24, 12, "guistrings.research.info") {
+            @Override
+            protected void onPressed() {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiResearchBook(new ContainerResearchBook(getContainer().player, 0, 0, 0)));
+            }
+        };
+        addGuiElement(info);
+        if(getContainer().researcherName == null) {
+            info.setEnabled(false);
+        }
 
         int x, y;
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < layoutSlots.length; i++) {
             x = (i % 3) * 18 + 98;
             y = (i / 3) * 18 + 98;
             layoutSlots[i] = new ItemSlot(x, y, null, this);
@@ -71,20 +83,22 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
         addGuiElement(new Label(8 + 18, 8 + 3 * 18 + 10 + 4 + 10, "guistrings.research.input"));
         addGuiElement(new Label(8 + 5 * 18, 8 + 3 * 18 + 10 + 4 + 10, "guistrings.research.needed"));
 
-        useAdjacentInventory = new Checkbox(8, 8 + 3 * 18 + 6, 16, 16, "guistrings.research.use_adjacent_inventory") {
+        useAdjacentInventory = new Checkbox(8, 8 + 3 * 18 + 6, 16, 16, "guistrings.research.adj_inv") {
             @Override
             public void onToggled() {
                 getContainer().toggleUseAdjacentInventory();
                 setChecked(getContainer().useAdjacentInventory);
             }
         };
+        Tooltip tip = new Tooltip(50, 20);
+        tip.addTooltipElement(new Label(0, 0, "guistrings.research.use_adjacent_inventory"));
+        useAdjacentInventory.setTooltip(tip);
         addGuiElement(useAdjacentInventory);
 
-        invDir = button = new Button(80, 8 + 3 * 18 + 6, 40, 16, StatCollector.translateToLocal(Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection.ordinal()).getTranslationKey())) {
+        invDir = new Button(80, 8 + 3 * 18 + 6, 40, 16, Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection.ordinal()).getTranslationKey()) {
             @Override
             protected void onPressed() {
-                int o = getContainer().tileEntity.inventoryDirection.ordinal();
-                o++;
+                int o = getContainer().tileEntity.inventoryDirection.ordinal() + 1;
                 if (o > 6) {
                     o = 0;
                 }
@@ -95,23 +109,28 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
                 refreshGui();
             }
         };
-        addGuiElement(button);
-        invSide = button = new Button(120, 8 + 3 * 18 + 6, 40, 16, StatCollector.translateToLocal(Direction.getDirectionFor(getContainer().tileEntity.inventorySide.ordinal()).getTranslationKey())) {
+        tip = new Tooltip(50, 20);
+        tip.addTooltipElement(new Label(0, 0, "guistrings.research.invDir"));
+        invDir.setTooltip(tip);
+        addGuiElement(invDir);
+        invSide = new Button(120, 8 + 3 * 18 + 6, 40, 16, Direction.getDirectionFor(getContainer().tileEntity.inventorySide.ordinal()).getTranslationKey()) {
             @Override
             protected void onPressed() {
-                int o = getContainer().tileEntity.inventorySide.ordinal();
-                o++;
+                int o = getContainer().tileEntity.inventorySide.ordinal() + 1;
                 if (o > 6) {
                     o = 0;
                 }
                 NBTTagCompound tag = new NBTTagCompound();
-                tag.setInteger("inventoryDirection", o);
+                tag.setInteger("inventorySide", o);
                 sendDataToContainer(tag);
                 getContainer().tileEntity.inventorySide = ForgeDirection.getOrientation(o);
                 refreshGui();
             }
         };
-        addGuiElement(button);
+        tip = new Tooltip(50, 20);
+        tip.addTooltipElement(new Label(0, 0, "guistrings.research.invSide"));
+        invSide.setTooltip(tip);
+        addGuiElement(invSide);
     }
 
     @Override
@@ -120,9 +139,10 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
         researcherLabel.setText(name);
 
         if (getContainer().researcherName == null) {
-            for (int i = 0; i < 9; i++) {
-                layoutSlots[i].setItem(null);
-            }
+            cleanLayout();
+            info.setEnabled(false);
+        }else{
+            info.setEnabled(true);
         }
 
         name = "guistrings.research.no_research";
@@ -140,9 +160,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
                 }
                 progress = time / total;
             }
-            for (int i = 0; i < 9; i++) {
-                layoutSlots[i].setItem(null);
-            }
+            cleanLayout();
         } else {
             List<Integer> queue = getContainer().queuedResearch;
             if (!queue.isEmpty()) {
@@ -151,7 +169,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
                 if (g != null) {
                     name = g.getName();
                     ItemStack resource;
-                    for (int i = 0; i < 9; i++) {
+                    for (int i = 0; i < layoutSlots.length; i++) {
                         if (i >= g.getResources().size()) {
                             layoutSlots[i].setItem(null);
                         } else {
@@ -163,18 +181,21 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
                     }
                 }
             } else {
-                for (int i = 0; i < 9; i++) {
-                    layoutSlots[i].setItem(null);
-                }
+                cleanLayout();
             }
         }
         bar.setProgress(progress);
         researchGoalLabel.setText(name);
 
         useAdjacentInventory.setChecked(getContainer().useAdjacentInventory);
-        invDir.setText(StatCollector.translateToLocal(Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection.ordinal()).getTranslationKey()));
-        invSide.setText(StatCollector.translateToLocal(Direction.getDirectionFor(getContainer().tileEntity.inventorySide.ordinal()).getTranslationKey()));
+        invDir.setText(Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection.ordinal()).getTranslationKey());
+        invSide.setText(Direction.getDirectionFor(getContainer().tileEntity.inventorySide.ordinal()).getTranslationKey());
     }
 
+    private void cleanLayout(){
+        for (ItemSlot layoutSlot : layoutSlots) {
+            layoutSlot.setItem(null);
+        }
+    }
 
 }
