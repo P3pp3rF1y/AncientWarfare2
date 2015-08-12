@@ -4,6 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -116,6 +117,12 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
         BlockPosition pos = order.get(routeIndex).getTarget();
         TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
         if (te instanceof IInventory) {
+            if(te instanceof IOwnable){
+                String name = ((IOwnable) te).getOwnerName();
+                if(name != null && !npc.canBeCommandedBy(name)){
+                    return null;
+                }
+            }
             return (IInventory) te;
         }
         return null;
