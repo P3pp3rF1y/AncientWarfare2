@@ -39,7 +39,7 @@ public class PacketItemInteraction extends PacketBase {
     @Override
     protected void execute(EntityPlayer player) {
         if (player != null) {
-            ItemStack stack = player.inventory.getCurrentItem();
+            ItemStack stack = player.getHeldItem();
             if (stack == null)
                 return;
             if (type == 0) {

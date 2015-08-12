@@ -226,7 +226,7 @@ public class InputHandler {
             if (minecraft.currentScreen != null) {
                 return;
             }
-            ItemStack stack = minecraft.thePlayer.inventory.getCurrentItem();
+            ItemStack stack = minecraft.thePlayer.getHeldItem();
             if (stack != null && stack.getItem() instanceof IItemKeyInterface) {
                 if (((IItemKeyInterface) stack.getItem()).onKeyActionClient(minecraft.thePlayer, stack, key)) {
                     PacketItemInteraction pkt = new PacketItemInteraction(0, key);

@@ -40,7 +40,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
         slot = new Slot(tileEntity.bookInventory, 0, 8, 18 + 8) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
-                return par1ItemStack != null && par1ItemStack.getItem() == AWItems.researchBook && ItemResearchBook.getResearcherName(par1ItemStack) != null;
+                return ItemResearchBook.getResearcherName(par1ItemStack) != null;
             }
         };
         addSlotToContainer(slot);

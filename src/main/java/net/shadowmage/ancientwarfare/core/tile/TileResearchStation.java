@@ -245,9 +245,9 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
                 int x = xCoord + inventoryDirection.offsetX;
                 int y = yCoord + inventoryDirection.offsetY;
                 int z = zCoord + inventoryDirection.offsetZ;
-                int side = inventorySide.ordinal();
 
                 if ((t = worldObj.getTileEntity(x, y, z)) instanceof IInventory) {
+                    int side = inventorySide.ordinal();
                     started = goalInstance.tryStart((IInventory) t, side);
                 }
                 if (started) {

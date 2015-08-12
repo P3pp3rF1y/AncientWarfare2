@@ -30,6 +30,7 @@ public abstract class ItemOrders extends Item implements IItemKeyInterface {
     public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
         return key == ItemKey.KEY_0;
     }
+
     public abstract Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack);
 
     public void addMessage(EntityPlayer player){

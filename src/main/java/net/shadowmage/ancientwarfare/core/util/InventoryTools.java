@@ -484,13 +484,13 @@ public class InventoryTools {
     public static ItemStack readItemStack(NBTTagCompound tag) {
         if (tag.hasKey("item") && tag.hasKey("damage") && tag.hasKey("quantity")) {
             Item item = (Item) Item.itemRegistry.getObject(tag.getString("item"));
-            int damage = tag.getInteger("damage");
-            int quantity = tag.getInteger("quantity");
-            NBTTagCompound stackTag = null;
-            if (tag.hasKey("stackTag")) {
-                stackTag = tag.getCompoundTag("stackTag");
-            }
             if (item != null) {
+                int damage = tag.getInteger("damage");
+                int quantity = tag.getInteger("quantity");
+                NBTTagCompound stackTag = null;
+                if (tag.hasKey("stackTag")) {
+                    stackTag = tag.getCompoundTag("stackTag");
+                }
                 ItemStack stack = new ItemStack(item, quantity, damage);
                 stack.stackTagCompound = stackTag;
                 return stack;

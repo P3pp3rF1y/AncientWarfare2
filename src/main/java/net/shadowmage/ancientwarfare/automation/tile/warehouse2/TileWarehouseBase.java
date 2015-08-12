@@ -77,7 +77,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         }
         this.stockViewers.clear();
         for (IWarehouseStorageTile i : storageTiles) {
-            ((TileControlled) i).setController(null);
+            if (i instanceof IControlledTile)
+                ((IControlledTile) i).setController(null);
         }
         this.storageTiles.clear();
 

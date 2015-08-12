@@ -10,7 +10,7 @@ public class ContainerSpawnerAdvanced extends ContainerSpawnerAdvancedBase {
     public ContainerSpawnerAdvanced(EntityPlayer player, int x, int y, int z) {
         super(player);
         settings = new SpawnerSettings();
-        ItemStack item = player.inventory.getCurrentItem();
+        ItemStack item = player.getHeldItem();
         if (item == null || !item.hasTagCompound() || !item.getTagCompound().hasKey("spawnerSettings")) {
             throw new IllegalArgumentException("stack cannot be null, and must have tag compounds!!");
         }
@@ -20,7 +20,7 @@ public class ContainerSpawnerAdvanced extends ContainerSpawnerAdvancedBase {
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("spawnerSettings")) {
-            ItemStack item = player.inventory.getCurrentItem();
+            ItemStack item = player.getHeldItem();
             item.setTagInfo("spawnerSettings", tag.getCompoundTag("spawnerSettings"));
         }
     }

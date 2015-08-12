@@ -24,9 +24,9 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 
     public ContainerResearchStation(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
+        researcherName = tileEntity.getCrafterName();
+        useAdjacentInventory = tileEntity.useAdjacentInventory;
         if (!player.worldObj.isRemote) {
-            researcherName = tileEntity.getCrafterName();
-            useAdjacentInventory = tileEntity.useAdjacentInventory;
             if (researcherName != null) {
                 currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.worldObj, researcherName);
                 progress = ResearchTracker.INSTANCE.getProgress(player.worldObj, researcherName);
@@ -34,11 +34,10 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             }
         }
 
-        Slot slot;
-        slot = new Slot(tileEntity.bookInventory, 0, 8, 18 + 4) {
+        Slot slot = new Slot(tileEntity.bookInventory, 0, 8, 18 + 4) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
-                return par1ItemStack != null && par1ItemStack.getItem() == AWItems.researchBook && ItemResearchBook.getResearcherName(par1ItemStack) != null;
+                return ItemResearchBook.getResearcherName(par1ItemStack) != null;
             }
         };
         addSlotToContainer(slot);

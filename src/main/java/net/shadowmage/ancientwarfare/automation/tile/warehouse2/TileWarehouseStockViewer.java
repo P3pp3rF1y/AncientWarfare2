@@ -71,8 +71,8 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         if (twb == null) {
             count = 0;
             for (WarehouseStockFilter filter : this.filters) {
-                if (count != filter.quantity) {
-                    filter.quantity = 0;
+                if (count != filter.getQuantity()) {
+                    filter.setQuantity(0);
                     if (sendToClients) {
                         worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), index, count);
                     }
@@ -81,9 +81,9 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
             }
         } else {
             for (WarehouseStockFilter filter : this.filters) {
-                count = filter.item == null ? 0 : twb.getCountOf(filter.getFilterItem());
-                if (count != filter.quantity) {
-                    filter.quantity = count;
+                count = filter.getFilterItem() == null ? 0 : twb.getCountOf(filter.getFilterItem());
+                if (count != filter.getQuantity()) {
+                    filter.setQuantity(count);
                     if (sendToClients) {
                         worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), index, count);
                     }
@@ -167,7 +167,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     public boolean receiveClientEvent(int a, int b) {
         if (worldObj.isRemote) {
             if (a >= 0 && a < filters.size()) {
-                filters.get(a).quantity = b;
+                filters.get(a).setQuantity(b);
                 updateViewers();
             }
         }
@@ -189,17 +189,16 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     }
 
     public static class WarehouseStockFilter {
-        ItemStack item;
+        private ItemStack item;
         ItemHashEntry hashKey;
-        int quantity;
+        private int quantity;
 
-        public WarehouseStockFilter() {
+        private WarehouseStockFilter() {
         }
 
         public WarehouseStockFilter(ItemStack item, int qty) {
-            this.item = item;
-            this.quantity = qty;
-            this.hashKey = item == null ? null : new ItemHashEntry(item);
+            setQuantity(qty);
+            setItem(item);
         }
 
         public void setItem(ItemStack item) {
@@ -220,9 +219,8 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         }
 
         public void readFromNBT(NBTTagCompound tag) {
-            item = tag.hasKey("item") ? InventoryTools.readItemStack(tag.getCompoundTag("item")) : null;
-            hashKey = item == null ? null : new ItemHashEntry(item);
-            quantity = tag.getInteger("quantity");
+            setItem(tag.hasKey("item") ? InventoryTools.readItemStack(tag.getCompoundTag("item")) : null);
+            setQuantity(tag.getInteger("quantity"));
         }
 
         public NBTTagCompound writeToNBT(NBTTagCompound tag) {

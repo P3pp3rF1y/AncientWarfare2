@@ -181,8 +181,8 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             }
         } else {
             if (stack == null) {
-                point.setFilter(index, stack);
-                slot.setItem(stack);
+                point.setFilter(index, null);
+                slot.setItem(null);
             } else {
                 if (InventoryTools.doItemStacksMatch(stack, slot.getStack())) {
                     if (Mouse.getEventButton() == 0)//left

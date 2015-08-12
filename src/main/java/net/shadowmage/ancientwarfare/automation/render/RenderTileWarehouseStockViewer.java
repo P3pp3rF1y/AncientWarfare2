@@ -74,7 +74,11 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
         WarehouseStockFilter filter;
         String name = "";
         List<WarehouseStockFilter> filters = tile.getFilters();
-        for (int i = 0; i < 10 && i < filters.size(); i++) {
+        int max = filters.size();
+        if(10 < max){
+            max = 10;
+        }
+        for (int i = 0; i < max; i++) {
             filter = filters.get(i);
             filterItem = filter.getFilterItem();
             if (filterItem != null) {
