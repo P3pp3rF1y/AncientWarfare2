@@ -59,7 +59,6 @@ public class NpcAIFactionRangedAttack extends NpcAI<NpcBase> {
     public void updateTask() {
         double dist = this.npc.getDistanceSq(this.target.posX, this.target.posY, this.target.posZ);
         boolean canSee = this.npc.getEntitySenses().canSee(this.target);
-        updateHeldItem();
         this.attackDelay--;
         this.npc.getLookHelper().setLookPositionWithEntity(this.target, 30.0F, 30.0F);
         if (dist > attackDistanceSq || !canSee) {

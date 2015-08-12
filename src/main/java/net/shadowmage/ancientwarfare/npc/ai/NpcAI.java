@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.ChunkCoordinates;
@@ -57,14 +56,6 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
         maxPFDist = npc.getEntityAttribute(SharedMonsterAttributes.followRange).getBaseValue() * 0.90d;
 
         maxPFDistSq = maxPFDist * maxPFDist;
-    }
-
-    //Inserting Item#onUpdate, to let it do whatever it needs to do. Used by QuiverBow for burst fire
-    protected final void updateHeldItem(){
-        ItemStack stack = npc.getHeldItem();
-        if (stack != null) {
-            stack.getItem().onUpdate(stack, npc.worldObj, npc, 0, true);
-        }
     }
 
     protected final void moveToEntity(Entity target, double sqDist) {

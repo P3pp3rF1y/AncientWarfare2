@@ -58,7 +58,7 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2) {
-        RangeAttackHelper.doRangedAttack(this, par1EntityLivingBase, par2);
+        RangeAttackHelper.DEFAULT.doRangedAttack(this, par1EntityLivingBase, par2);
     }
 
     @Override

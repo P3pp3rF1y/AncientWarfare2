@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.*;
@@ -81,8 +80,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
             this.tasks.removeTask(arrowAI);
             this.tasks.removeTask(collideAI);
             ItemStack stack = getHeldItem();
-            Item item = stack == null ? null : stack.getItem();
-            if (isBow(item)) {
+            if (stack!=null && isBow(stack.getItem())) {
                 this.tasks.addTask(7, arrowAI);
             } else {
                 this.tasks.addTask(7, collideAI);
@@ -119,12 +117,12 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
                 return "medic";
             }else if(tools.contains("hammer"))
                 return "engineer";
-            if (item instanceof ItemSword) {
-                return "soldier";
-            } else if (isBow(item)) {
+            if (isBow(item)) {
                 return "archer";
             } else if (item instanceof ItemCommandBaton) {
                 return "commander";
+            } else if (item.isItemTool(stack)) {
+                return "soldier";
             }
         }
         return "";
@@ -152,7 +150,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2) {
-        RangeAttackHelper.doRangedAttack(this, par1EntityLivingBase, par2);
+        RangeAttackHelper.DEFAULT.doRangedAttack(this, par1EntityLivingBase, par2);
     }
 
 }

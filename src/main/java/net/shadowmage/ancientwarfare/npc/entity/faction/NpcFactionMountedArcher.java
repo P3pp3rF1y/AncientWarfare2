@@ -1,15 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import net.minecraft.command.IEntitySelector;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
@@ -20,6 +17,7 @@ import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionCommander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
+import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
 public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
 
@@ -65,31 +63,7 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2) {
-        // TODO clean this up, increase max attack distance
-
-        //TODO get attack damage to use from monster attributes
-
-        EntityArrow entityarrow = new EntityArrow(this.worldObj, this, par1EntityLivingBase, 1.6F, (float) (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
-
-        int i = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, this.getHeldItem());
-        int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, this.getHeldItem());
-
-        entityarrow.setDamage((double) (par2 * 2.0F) + this.rand.nextGaussian() * 0.25D + (double) ((float) this.worldObj.difficultySetting.getDifficultyId() * 0.11F));
-
-        if (i > 0) {
-            entityarrow.setDamage(entityarrow.getDamage() + (double) i * 0.5D + 0.5D);
-        }
-
-        if (j > 0) {
-            entityarrow.setKnockbackStrength(j);
-        }
-
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItem()) > 0) {
-            entityarrow.setFire(100);
-        }
-
-        this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(entityarrow);
+        RangeAttackHelper.DEFAULT.doRangedAttack(this, par1EntityLivingBase, par2);
     }
 
 }

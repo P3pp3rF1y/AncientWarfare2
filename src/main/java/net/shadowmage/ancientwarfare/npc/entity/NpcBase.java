@@ -491,43 +491,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 setCurrentItemOrArmor(equipmentTag.getInteger("slotNum"), stack);
             }
         }
-        if (tag.hasKey("ordersStack")) {
-            ordersStack = InventoryTools.readItemStack(tag.getCompoundTag("ordersStack"));
-        }
-        if (tag.hasKey("upkeepStack")) {
-            upkeepStack = InventoryTools.readItemStack(tag.getCompoundTag("upkeepStack"));
-        }
-        if (tag.hasKey("shieldStack")) {
-            setShieldStack(InventoryTools.readItemStack(tag.getCompoundTag("shieldStack")));
-        }
-        if (tag.hasKey("levelingStats")) {
-            getLevelingStats().readFromNBT(tag.getCompoundTag("levelingStats"));
-        }
-        if (tag.hasKey("maxHealth")) {
-            getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(tag.getFloat("maxHealth"));
-        }
-        if (tag.hasKey("health")) {
-            setHealth(tag.getFloat("health"));
-        }
-        if (tag.hasKey("name")) {
-            setCustomNameTag(tag.getString("name"));
-        }
-        if (tag.hasKey("food")) {
-            setFoodRemaining(tag.getInteger("food"));
-        }
-        if (tag.hasKey("attackDamageOverride")) {
-            setAttackDamageOverride(tag.getInteger("attackDamageOverride"));
-        }
-        if (tag.hasKey("armorValueOverride")) {
-            setArmorValueOverride(tag.getInteger("armorValueOverride"));
-        }
-        if (tag.hasKey("customTex")) {
-            setCustomTexRef(tag.getString("customTex"));
-        }
-        if (tag.hasKey("aiEnabled")) {
-            aiEnabled = tag.getBoolean("aiEnabled");
-        }
-        ownerName = tag.getString("owner");
+        readBaseTags(tag);
         onOrdersInventoryChanged();
         onWeaponInventoryChanged();
     }
@@ -550,27 +514,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             equipmentList.appendTag(equipmentTag);
         }
         tag.setTag("equipment", equipmentList);
-        if (ordersStack != null) {
-            tag.setTag("ordersStack", InventoryTools.writeItemStack(ordersStack));
-        }
-        if (upkeepStack != null) {
-            tag.setTag("upkeepStack", InventoryTools.writeItemStack(upkeepStack));
-        }
-        if (getShieldStack() != null) {
-            tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack()));
-        }
-        tag.setTag("levelingStats", getLevelingStats().writeToNBT(new NBTTagCompound()));
-        tag.setFloat("maxHealth", getMaxHealth());
-        tag.setFloat("health", getHealth());
-        tag.setInteger("food", getFoodRemaining());
-        if (hasCustomNameTag()) {
-            tag.setString("name", getCustomNameTag());
-        }
-        tag.setString("owner", ownerName);
-        tag.setInteger("attackDamageOverride", attackDamage);
-        tag.setInteger("armorValueOverride", armorValue);
-        tag.setString("customTex", customTexRef);
-        tag.setBoolean("aiEnabled", aiEnabled);
+        writeBaseTags(tag);
         return tag;
     }
 
@@ -693,6 +637,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             setHealth(getHealth() + 1);
         }
         super.onUpdate();
+        if(getHeldItem()!=null){
+            try{//Inserting Item#onUpdate, to let it do whatever it needs to do. Used by QuiverBow for burst fire
+                getHeldItem().updateAnimation(worldObj, this, 0, true);
+            }catch (Exception ignored){}
+        }
         worldObj.theProfiler.endSection();
     }
 
@@ -816,7 +765,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             setCurrentItemOrArmor(i, null);
         }
         super.readEntityFromNBT(tag);
-        ownerName = tag.getString("owner");
+        if (tag.hasKey("home")) {
+            int[] ccia = tag.getIntArray("home");
+            setHomeArea(ccia[0], ccia[1], ccia[2], ccia[3]);
+        }
+        readBaseTags(tag);
+    }
+
+    private void readBaseTags(NBTTagCompound tag){
         if (tag.hasKey("ordersStack")) {
             ordersStack = InventoryTools.readItemStack(tag.getCompoundTag("ordersStack"));
         }
@@ -826,39 +782,39 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (tag.hasKey("shieldStack")) {
             setShieldStack(InventoryTools.readItemStack(tag.getCompoundTag("shieldStack")));
         }
-        if (tag.hasKey("home")) {
-            int[] ccia = tag.getIntArray("home");
-            setHomeArea(ccia[0], ccia[1], ccia[2], ccia[3]);
-        }
         if (tag.hasKey("levelingStats")) {
-            levelingStats.readFromNBT(tag.getCompoundTag("levelingStats"));
+            getLevelingStats().readFromNBT(tag.getCompoundTag("levelingStats"));
         }
-        attackDamage = tag.getInteger("attackDamageOverride");
-        armorValue = tag.getInteger("armorValueOverride");
-        customTexRef = tag.getString("customTex");
-
-        //TODO remove these when I figure out why JSON reads an empty string as ""
-        if ("\"\"".equals(customTexRef)) {
-            customTexRef = "";
+        if (tag.hasKey("maxHealth")) {
+            getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(tag.getFloat("maxHealth"));
         }
-        if ("\"\"".equals(getCustomNameTag())) {
-            setCustomNameTag("");
+        if (tag.hasKey("health")) {
+            setHealth(tag.getFloat("health"));
         }
+        if (tag.hasKey("name")) {
+            setCustomNameTag(tag.getString("name"));
+        }
+        if (tag.hasKey("food")) {
+            setFoodRemaining(tag.getInteger("food"));
+        }
+        if (tag.hasKey("attackDamageOverride")) {
+            setAttackDamageOverride(tag.getInteger("attackDamageOverride"));
+        }
+        if (tag.hasKey("armorValueOverride")) {
+            setArmorValueOverride(tag.getInteger("armorValueOverride"));
+        }
+        if (tag.hasKey("customTex")) {
+            setCustomTexRef(tag.getString("customTex"));
+        }
+        if (tag.hasKey("aiEnabled")) {
+            setIsAIEnabled(tag.getBoolean("aiEnabled"));
+        }
+        setOwnerName(tag.getString("owner"));
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound tag) {
         super.writeEntityToNBT(tag);
-        tag.setString("owner", ownerName);
-        if (ordersStack != null) {
-            tag.setTag("ordersStack", InventoryTools.writeItemStack(ordersStack));
-        }
-        if (upkeepStack != null) {
-            tag.setTag("upkeepStack", InventoryTools.writeItemStack(upkeepStack));
-        }
-        if (getShieldStack() != null) {
-            tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack()));
-        }
         if (!hasHome()) {
             BlockPosition position = getTownHallPosition();
             if(position != null)
@@ -869,11 +825,31 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         ChunkCoordinates cc = getHomePosition();
         int[] ccia = new int[]{cc.posX, cc.posY, cc.posZ, getHomeRange()};
         tag.setIntArray("home", ccia);
-        tag.setTag("levelingStats", levelingStats.writeToNBT(new NBTTagCompound()));
+        writeBaseTags(tag);
+    }
+
+    private void writeBaseTags(NBTTagCompound tag){
+        if (ordersStack != null) {
+            tag.setTag("ordersStack", InventoryTools.writeItemStack(ordersStack));
+        }
+        if (upkeepStack != null) {
+            tag.setTag("upkeepStack", InventoryTools.writeItemStack(upkeepStack));
+        }
+        if (getShieldStack() != null) {
+            tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack()));
+        }
+        tag.setTag("levelingStats", getLevelingStats().writeToNBT(new NBTTagCompound()));
+        tag.setFloat("maxHealth", getMaxHealth());
+        tag.setFloat("health", getHealth());
+        tag.setInteger("food", getFoodRemaining());
+        if (hasCustomNameTag()) {
+            tag.setString("name", getCustomNameTag());
+        }
+        tag.setString("owner", ownerName);
         tag.setInteger("attackDamageOverride", attackDamage);
         tag.setInteger("armorValueOverride", armorValue);
         tag.setString("customTex", customTexRef);
-        //TODO
+        tag.setBoolean("aiEnabled", aiEnabled);
     }
 
     public final ResourceLocation getTexture() {
@@ -910,7 +886,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 return;
             }
         }
-        if (player.inventory.getCurrentItem() != null)//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
+        if (player.getHeldItem() != null)//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
         {
             for (int i = 0; i < 9; i++) {
                 if (player.inventory.getStackInSlot(i) == null) {
