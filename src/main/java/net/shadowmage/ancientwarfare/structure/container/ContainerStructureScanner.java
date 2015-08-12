@@ -13,14 +13,13 @@ public class ContainerStructureScanner extends ContainerBase {
 
     public ContainerStructureScanner(EntityPlayer player, int x, int y, int z) {
         super(player);
-        if (player.worldObj.isRemote) {
-            return;
-        }
         ItemStack builderItem = player.getHeldItem();
         if (isInvalid(builderItem)) {
             throw new IllegalArgumentException("No scanner in hand");
         }
         settings = ItemStructureSettings.getSettingsFor(builderItem);
+        addPlayerSlots();
+        removeSlots();
     }
 
     @Override

@@ -21,6 +21,8 @@ public class ContainerUpkeepOrder extends ContainerBase {
         if (upkeepOrder == null) {
             throw new IllegalArgumentException("Upkeep orders was null for some reason");
         }
+        addPlayerSlots();
+        removeSlots();
     }
 
     @Override

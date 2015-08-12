@@ -21,6 +21,8 @@ public class ContainerCombatOrder extends ContainerBase {
         if (combatOrder == null) {
             throw new IllegalArgumentException("Combat orders was null for some reason");
         }
+        addPlayerSlots();
+        removeSlots();
     }
 
     @Override

@@ -6,7 +6,8 @@ public class ContainerResearchBook extends ContainerBase {
 
     public ContainerResearchBook(EntityPlayer player, int x, int y, int z) {
         super(player);
-        // TODO Auto-generated constructor stub
+        addPlayerSlots();
+        removeSlots();
     }
 
 }

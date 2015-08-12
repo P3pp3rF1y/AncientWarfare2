@@ -34,7 +34,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
 
     public ContainerSpawnerPlacer(EntityPlayer player, int x, int y, int z) {
         super(player);
-        ItemStack stack = player.inventory.getCurrentItem();
+        ItemStack stack = player.getHeldItem();
         if (isInValid(stack)) {
             throw new IllegalArgumentException("Incorrect held item");
         }
@@ -61,12 +61,14 @@ public class ContainerSpawnerPlacer extends ContainerBase {
              * TODO add input fields for 'custom mob data'
              */
         }
+        addPlayerSlots();
+        removeSlots();
     }
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("spawnerData")) {
-            ItemStack stack = player.inventory.getCurrentItem();
+            ItemStack stack = player.getHeldItem();
             if (isInValid(stack)) {
                 return;
             }

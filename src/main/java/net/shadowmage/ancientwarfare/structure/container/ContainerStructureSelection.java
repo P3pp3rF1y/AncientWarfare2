@@ -11,17 +11,19 @@ public class ContainerStructureSelection extends ContainerStructureSelectionBase
 
     public ContainerStructureSelection(EntityPlayer player, int x, int y, int z) {
         super(player);
-        ItemStack stack = player.inventory.getCurrentItem();
+        ItemStack stack = player.getHeldItem();
         buildSettings = ItemStructureSettings.getSettingsFor(stack);
         structureName = buildSettings.hasName() ? buildSettings.name() : null;
+        addPlayerSlots();
+        removeSlots();
     }
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (!player.worldObj.isRemote && tag.hasKey("structName")) {
-            buildSettings = ItemStructureSettings.getSettingsFor(player.inventory.getCurrentItem());
+            buildSettings = ItemStructureSettings.getSettingsFor(player.getHeldItem());
             buildSettings.setName(tag.getString("structName"));
-            ItemStructureSettings.setSettingsFor(player.inventory.getCurrentItem(), buildSettings);
+            ItemStructureSettings.setSettingsFor(player.getHeldItem(), buildSettings);
         }
     }
 
