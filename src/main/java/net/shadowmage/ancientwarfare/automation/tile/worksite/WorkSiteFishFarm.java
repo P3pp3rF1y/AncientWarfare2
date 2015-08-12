@@ -3,9 +3,9 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.FishingHooks;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -56,34 +56,21 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
             float percentOfMax = (float) waterBlockCount / (float) maxBlocks;
             float check = worldObj.rand.nextFloat();
             if (check <= percentOfMax) {
-                boolean fish = false, ink = false;
-                if (harvestFish && harvestInk) {
+                boolean fish = harvestFish, ink = harvestInk;
+                if (fish && ink) {
                     fish = worldObj.rand.nextBoolean();
                     ink = !fish;
-                } else {
-                    fish = harvestFish;
-                    ink = harvestInk;
                 }
                 if (fish) {
-                    int fishType = worldObj.rand.nextInt(100);
-                    int fishMeta = 0;
-                    if (fishType < 60) {
-                        fishMeta = ItemFishFood.FishType.COD.func_150976_a();
-                    } else if (fishType < 85) {
-                        fishMeta = ItemFishFood.FishType.SALMON.func_150976_a();
-                    } else if (fishType < 98) {
-                        fishMeta = ItemFishFood.FishType.PUFFERFISH.func_150976_a();
-                    } else if (fishType < 100) {
-                        fishMeta = ItemFishFood.FishType.CLOWNFISH.func_150976_a();
+                    ItemStack fishStack = FishingHooks.getRandomFishable(worldObj.rand, 1F);
+                    if (fishStack != null) {
+                        int fortune = getFortune();
+                        if (fortune > 0) {
+                            fishStack.stackSize += worldObj.rand.nextInt(fortune);
+                        }
+                        addStackToInventory(fishStack, RelativeSide.TOP);
+                        return true;
                     }
-
-                    ItemStack fishStack = new ItemStack(Items.fish, 1, fishMeta);
-                    int fortune = getFortune();
-                    if (fortune > 0) {
-                        fishStack.stackSize += worldObj.rand.nextInt(fortune);
-                    }
-                    addStackToInventory(fishStack, RelativeSide.TOP);
-                    return true;
                 }
                 if (ink) {
                     ItemStack inkItem = new ItemStack(Items.dye, 1, 0);
