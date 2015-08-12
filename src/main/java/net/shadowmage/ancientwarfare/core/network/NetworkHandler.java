@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +92,7 @@ public final class NetworkHandler implements IGuiHandler {
     private FMLEventChannel channel;
 
     private HashMap<Integer, Class<? extends ContainerBase>> containerClasses = new HashMap<Integer, Class<? extends ContainerBase>>();
-    private HashMap<Integer, Class<? extends GuiContainerBase>> guiClasses = new HashMap<Integer, Class<? extends GuiContainerBase>>();
+    private HashMap<Integer, Class<?>> guiClasses = new HashMap<Integer, Class<?>>();
 
     public final void registerNetwork() {
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
@@ -147,11 +146,10 @@ public final class NetworkHandler implements IGuiHandler {
 
     @Override
     public final Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        ContainerBase container = null;
         Class<? extends ContainerBase> clz = containerClasses.get(ID);
         if (clz != null) {
             try {
-                container = clz.getConstructor(EntityPlayer.class, int.class, int.class, int.class).newInstance(player, x, y, z);
+                return clz.getConstructor(EntityPlayer.class, int.class, int.class, int.class).newInstance(player, x, y, z);
             } catch (IllegalArgumentException e) {
                 return null;
             } catch (Exception e) {
@@ -159,30 +157,29 @@ public final class NetworkHandler implements IGuiHandler {
                 return null;
             }
         }
-        return container;
+        return null;
     }
 
     @Override
     public final Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        GuiContainerBase gui = null;
-        Class<? extends GuiContainerBase> clz = this.guiClasses.get(ID);
+        Class<?> clz = this.guiClasses.get(ID);
         if (clz != null) {
-            ContainerBase container = (ContainerBase) getServerGuiElement(ID, player, world, x, y, z);
+            Object container = getServerGuiElement(ID, player, world, x, y, z);
             try {
                 if (container != null)
-                    gui = clz.getConstructor(ContainerBase.class).newInstance(container);
+                    return clz.getConstructor(ContainerBase.class).newInstance(container);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return gui;
+        return null;
     }
 
     public static void registerContainer(int id, Class<? extends ContainerBase> containerClazz) {
         INSTANCE.containerClasses.put(id, containerClazz);
     }
 
-    public static void registerGui(int id, Class<? extends GuiContainerBase> guiClazz) {
+    public static void registerGui(int id, Class<?> guiClazz) {
         INSTANCE.guiClasses.put(id, guiClazz);
     }
 
