@@ -1,10 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.proxy;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
 import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.SkinManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class NpcClientProxy extends NpcCommonProxy {
 
@@ -88,6 +92,19 @@ public class NpcClientProxy extends NpcCommonProxy {
             return loc;
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public ResourceLocation getPlayerSkin(String name){
+        GameProfile profile = getProfile(name);
+        if (profile != null) {
+            SkinManager manager = Minecraft.getMinecraft().func_152342_ad();
+            Map map = manager.func_152788_a(profile);
+            if (map.containsKey(MinecraftProfileTexture.Type.SKIN)) {
+                return manager.func_152792_a((MinecraftProfileTexture) map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN);
+            }
         }
         return null;
     }

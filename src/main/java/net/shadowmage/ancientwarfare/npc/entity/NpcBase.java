@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.*;
@@ -111,9 +112,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (!worldObj.isRemote) {
             if (!customTexRef.equals(this.customTexRef)) {
                 PacketEntity pkt = new PacketEntity(this);
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setString("customTex", customTexRef);
-                pkt.packetData = tag;
+                if(customTexRef.startsWith("Player:")){
+                    String name = customTexRef.split(":", 2)[1];
+                    NBTTagCompound tagCompound = AncientWarfareNPC.proxy.cacheProfile(name);
+                    if(tagCompound != null)
+                        pkt.packetData.setTag("profileTex", tagCompound);
+                }
+                pkt.packetData.setString("customTex", customTexRef);
                 NetworkHandler.sendToAllTracking(this, pkt);
             }
             this.customTexRef = customTexRef;
@@ -888,13 +893,28 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public final void updateTexture() {
-        currentTexture = NpcSkinManager.INSTANCE.getTextureFor(this);
+        if(customTexRef.startsWith("Player:")){
+            try {
+                currentTexture = AncientWarfareNPC.proxy.getPlayerSkin(customTexRef.split(":", 2)[1]);
+            }catch (Throwable ignored){}
+        }else {
+            currentTexture = NpcSkinManager.INSTANCE.getTextureFor(this);
+        }
     }
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("ownerName")) {
             setOwnerName(tag.getString("ownerName"));
+        } else if (tag.hasKey("profileTex") && tag.hasKey("customTex")) {
+            customTexRef = tag.getString("customTex");
+            NBTTagCompound tah = tag.getCompoundTag("profileTex");
+            if(worldObj.isRemote) {
+                try {
+                    AncientWarfareNPC.proxy.cacheProfile(NBTUtil.func_152459_a(tah));
+                }catch (Throwable ignored){}
+            }
+            updateTexture();
         } else if (tag.hasKey("customTex")) {
             setCustomTexRef(tag.getString("customTex"));
         } else if (tag.hasKey("pickEntity") && !worldObj.isRemote) {

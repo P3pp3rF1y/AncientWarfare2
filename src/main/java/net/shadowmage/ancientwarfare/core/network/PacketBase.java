@@ -38,7 +38,6 @@ public abstract class PacketBase {
 
     protected abstract void readFromStream(ByteBuf data);
 
-
     protected void execute() {
     }
 
