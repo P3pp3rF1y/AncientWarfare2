@@ -89,7 +89,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
         };
         addGuiElement(b);
 
-        storedLabel = new Label(8 + 40 + 4, 240 - 8 - 11, StatCollector.translateToLocal("guistrings.warehouse.storage") + ": " + getContainer().currentStored + "/" + getContainer().maxStorage);
+        storedLabel = new Label(8 + 40 + 4, 240 - 8 - 11, StatCollector.translateToLocalFormatted("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
         addGuiElement(storedLabel);
     }
 
@@ -97,7 +97,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
     public void setupElements() {
         area.clearElements();
         addInventoryViewElements();
-        storedLabel.setText(StatCollector.translateToLocal("guistrings.warehouse.storage") + ": " + getContainer().currentStored + "/" + getContainer().maxStorage);
+        storedLabel.setText(StatCollector.translateToLocalFormatted("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
     }
 
     private void addInventoryViewElements() {

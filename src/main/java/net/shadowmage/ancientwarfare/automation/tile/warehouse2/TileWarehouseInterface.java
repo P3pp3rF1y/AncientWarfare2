@@ -251,8 +251,8 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     }
 
     public static class InterfaceFillRequest {
-        ItemStack requestedItem;
-        int requestAmount;
+        final ItemStack requestedItem;
+        final int requestAmount;
 
         public InterfaceFillRequest(ItemStack item, int amount) {
             requestedItem = item;
@@ -261,8 +261,8 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     }
 
     public static class InterfaceEmptyRequest {
-        int slotNum;
-        int count;
+        final int slotNum;
+        final int count;
 
         public InterfaceEmptyRequest(int slot, int count) {
             slotNum = slot;

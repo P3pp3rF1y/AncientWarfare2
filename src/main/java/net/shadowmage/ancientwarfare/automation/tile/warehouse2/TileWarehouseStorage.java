@@ -23,13 +23,13 @@ import java.util.Set;
 
 public class TileWarehouseStorage extends TileControlled implements IWarehouseStorageTile, IInteractableTile {
 
-    InventorySlotlessBasic inventory;
-    List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
+    private InventorySlotlessBasic inventory;
+    private final List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
 
-    Set<ContainerWarehouseStorage> viewers = new HashSet<ContainerWarehouseStorage>();
+    private final Set<ContainerWarehouseStorage> viewers = new HashSet<ContainerWarehouseStorage>();
 
     public TileWarehouseStorage() {
-        inventory = new InventorySlotlessBasic(9 * 64);
+        inventory = new InventorySlotlessBasic(getStorageAdditionSize());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
     @Override
     protected void searchForController() {
-        BlockPosition pos = new BlockPosition(xCoord, yCoord, zCoord);
+        BlockPosition pos = getPosition();
         BlockPosition min = pos.copy();
         BlockPosition max = min.copy();
         min.offset(-16, -4, -16);

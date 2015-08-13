@@ -405,20 +405,6 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         }
     }
 
-    public final void onInterfaceFilterChanged(TileWarehouseInterface tile) {
-        if (worldObj.isRemote) {
-            return;
-        }
-        interfacesToFill.remove(tile);
-        interfacesToEmpty.remove(tile);
-        if (!tile.getEmptyRequests().isEmpty()) {
-            interfacesToEmpty.add(tile);
-        }
-        if (!tile.getFillRequests().isEmpty()) {
-            interfacesToFill.add(tile);
-        }
-    }
-
     public final void onStorageFilterChanged(IWarehouseStorageTile tile, List<WarehouseStorageFilter> oldFilters, List<WarehouseStorageFilter> newFilters) {
         if (worldObj.isRemote) {
             return;

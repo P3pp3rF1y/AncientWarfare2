@@ -5,9 +5,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class InventorySlotlessBasic {
 
-    int totalSize;
-    int currentSize;
-    ItemQuantityMap itemMap = new ItemQuantityMap();
+    private final int totalSize;
+    private int currentSize;
+    private final ItemQuantityMap itemMap = new ItemQuantityMap();
 
     public InventorySlotlessBasic(int totalSize) {
         this.totalSize = totalSize;
@@ -43,7 +43,8 @@ public class InventorySlotlessBasic {
         if (amount <= 0 || filter == null) {
             return 0;
         }
-        amount = amount > (totalSize - currentSize) ? (totalSize - currentSize) : amount;
+        if(amount > (totalSize - currentSize))
+            amount = totalSize - currentSize;
         itemMap.addCount(filter, amount);
         currentSize += amount;
         return amount;

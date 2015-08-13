@@ -26,11 +26,11 @@ import java.util.Set;
 
 public class TileWarehouseStockViewer extends TileControlled implements IOwnable, IInteractableTile {
 
-    List<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
-    String ownerName = "";
+    private final List<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
+    private String ownerName = "";
     private boolean shouldUpdate = false;
 
-    private Set<ContainerWarehouseStockViewer> viewers = new HashSet<ContainerWarehouseStockViewer>();
+    private final Set<ContainerWarehouseStockViewer> viewers = new HashSet<ContainerWarehouseStockViewer>();
 
     public TileWarehouseStockViewer() {
     }
@@ -46,7 +46,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     }
 
     public void removeViewer(ContainerWarehouseStockViewer viewer) {
-        viewers.add(viewer);
+        viewers.remove(viewer);
     }
 
     public List<WarehouseStockFilter> getFilters() {
@@ -121,7 +121,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
     @Override
     protected void searchForController() {
-        BlockPosition pos = new BlockPosition(xCoord, yCoord, zCoord);
+        BlockPosition pos = getPosition();
         BlockPosition min = pos.copy();
         BlockPosition max = min.copy();
         min.offset(-16, -4, -16);
