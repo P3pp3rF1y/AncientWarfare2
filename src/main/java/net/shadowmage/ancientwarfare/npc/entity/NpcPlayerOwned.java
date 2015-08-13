@@ -48,6 +48,11 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     @Override
+    public final boolean canPickUpLoot(){
+        return true;
+    }
+
+    @Override
     public void onDeath(DamageSource source) {
         if (!worldObj.isRemote) {
             if (horseAI != null) {
@@ -63,12 +68,12 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     @Override
-    public int getArmorValueOverride() {
+    public final int getArmorValueOverride() {
         return -1;
     }
 
     @Override
-    public int getAttackDamageOverride() {
+    public final int getAttackDamageOverride() {
         return -1;
     }
 
@@ -86,8 +91,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     public TileTownHall getTownHall() {
-        if (getTownHallPosition() != null) {
-            BlockPosition pos = getTownHallPosition();
+        BlockPosition pos = getTownHallPosition();
+        if (pos != null) {
             TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof TileTownHall) {
                 return (TileTownHall) te;
@@ -117,10 +122,10 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     private boolean validateTownHallPosition() {
-        if (getTownHallPosition() == null) {
+        BlockPosition pos = getTownHallPosition();
+        if (pos == null) {
             return false;
         }
-        BlockPosition pos = getTownHallPosition();
         if (!worldObj.blockExists(pos.x, pos.y, pos.z)) {
             return true;
         }//cannot validate, unloaded...assume good
