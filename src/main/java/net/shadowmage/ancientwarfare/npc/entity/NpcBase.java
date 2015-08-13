@@ -15,6 +15,7 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
@@ -181,6 +182,33 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return targetHit;
     }
 
+    /**
+     * Proper calculations for all types of armors, including shields
+     */
+    @Override
+    protected float applyArmorCalculations(DamageSource source, float amount){
+        if (!source.isUnblockable())
+        {
+            if (getArmorValueOverride() >= 0) {
+                return super.applyArmorCalculations(source, amount);
+            }else{
+                float value = ISpecialArmor.ArmorProperties.ApplyArmor(this, getLastActiveItems(), source, amount);
+                if (value > 0.0F && getShieldStack() != null && getShieldStack().getItem() instanceof ItemShield) {
+                    ItemShield shield = (ItemShield) getShieldStack().getItem();
+                    float f = value * (25 - shield.getArmorBonusValue());
+                    value = f / 25F;
+                }
+                if(value < 0.0F)
+                    return 0;
+                return value;
+            }
+        }
+        return amount;
+    }
+
+    /**
+     * Deprecated vanilla armor calculations
+     */
     @Override
     public int getTotalArmorValue() {
         if (getArmorValueOverride() >= 0) {
@@ -208,8 +236,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
-    public float getBlockPathWeight(int varX, int varY, int varZ) {
-        Block below = worldObj.getBlock(varX, varY - 1, varZ);
+    public float getBlockPathWeight(int varX, int varY, int varZ){
+            Block below = worldObj.getBlock(varX, varY - 1, varZ);
         if(below.getMaterial() == Material.lava || below.getMaterial() == Material.cactus)//Avoid cacti and lava when wandering
             return -10;
         else if(below.getMaterial().isLiquid())//Don't try swimming too much
@@ -370,7 +398,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     protected final void dropEquipment(boolean par1, int par2) {
         if (!worldObj.isRemote) {
             ItemStack stack;
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < equipmentDropChances.length; i++) {
                 stack = getEquipmentInSlot(i);
                 if (stack != null) {
                     entityDropItem(stack, 0.f);
@@ -504,7 +532,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         NBTTagList equipmentList = new NBTTagList();
         ItemStack stack;
         NBTTagCompound equipmentTag;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < equipmentDropChances.length; i++) {
             stack = getEquipmentInSlot(i);
             if (stack == null) {
                 continue;
@@ -761,7 +789,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public void readEntityFromNBT(NBTTagCompound tag) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < equipmentDropChances.length; i++) {
             setCurrentItemOrArmor(i, null);
         }
         super.readEntityFromNBT(tag);
