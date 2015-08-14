@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import cpw.mods.fml.common.Loader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockStem;
@@ -10,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -189,6 +191,17 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 }
                 else if (block instanceof IGrowable) {
                     if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote) && !(block instanceof BlockStem)) {
+                        if(Loader.isModLoaded("AgriCraft")){
+                            Class<? extends Block> c = block.getClass();
+                            if("com.InfinityRaider.AgriCraft.blocks.BlockCrop".equals(c.getName())){//A crop from AgriCraft
+                                try {//Use the harvest method, hopefully dropping stuff
+                                    c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class).invoke(block, worldObj, position.x, position.y, position.z, null);
+                                    return true;
+                                }catch (Throwable ignored){
+                                    return false;
+                                }
+                            }
+                        }
                         return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
                     }
                 }else if(isFarmable(block, position.x, position.y, position.z)){
