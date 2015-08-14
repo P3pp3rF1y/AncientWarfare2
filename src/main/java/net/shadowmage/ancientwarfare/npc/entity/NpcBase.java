@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -928,7 +929,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     private void handlePickEntity(EntityPlayer player) {
         ItemStack item = this.getItemToSpawn();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
             if (ItemStack.areItemStacksEqual(player.inventory.getStackInSlot(i), item)) {
                 player.inventory.currentItem = i;
                 return;
@@ -936,7 +937,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
         if (player.getHeldItem() != null)//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
         {
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
                 if (player.inventory.getStackInSlot(i) == null) {
                     player.inventory.setInventorySlotContents(i, item);
                     return;
