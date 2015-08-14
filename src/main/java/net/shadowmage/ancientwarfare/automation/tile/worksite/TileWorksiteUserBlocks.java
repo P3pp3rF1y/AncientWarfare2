@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
@@ -74,18 +75,25 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     }
 
     protected boolean tryPlace(ItemStack stack, int x, int y, int z, ForgeDirection face){
+        EntityPlayer owner = getOwnerAsPlayer();
+        if(owner.isEntityInvulnerable()){
+            owner.inventory.setInventorySlotContents(owner.inventory.currentItem, stack);
+        }
         ForgeDirection direction = face.getOpposite();
-        return stack.tryPlaceItemIntoWorld(getOwnerAsPlayer(), worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, face.ordinal(), 0.25F, 0.25F, 0.25F);
+        return stack.tryPlaceItemIntoWorld(owner, worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, face.ordinal(), 0.25F, 0.25F, 0.25F);
     }
 
     protected final void pickupItems() {
         List<EntityItem> items = getEntitiesWithinBounds(EntityItem.class);
+        if(items.isEmpty())
+            return;
+        int[] indices = getIndicesForPickup();
         ItemStack stack;
         for (EntityItem item : items) {
             if(item.isEntityAlive()) {
                 stack = item.getEntityItem();
                 if (stack != null) {
-                    stack = InventoryTools.mergeItemStack(inventory, stack, getIndicesForPickup());
+                    stack = InventoryTools.mergeItemStack(inventory, stack, indices);
                     if (stack != null) {
                         item.setEntityItemStack(stack);
                     }else{
