@@ -17,9 +17,7 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -32,30 +30,22 @@ import java.util.Set;
 
 public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
 
-    private static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
     private static final TreeFinder TREE = new TreeFinder(17), LEAF = new TreeFinder(4);
-    boolean hasShears;
-    int saplingCount;
-    int bonemealCount;
-    Set<BlockPosition> blocksToShear;
-    Set<BlockPosition> blocksToChop;
-    Set<BlockPosition> blocksToPlant;
-    Set<BlockPosition> blocksToFertilize;
+    private boolean hasShears;
+    private int saplingCount;
+    private int bonemealCount;
+    private final Set<BlockPosition> blocksToShear;
+    private final Set<BlockPosition> blocksToChop;
+    private final Set<BlockPosition> blocksToPlant;
+    private final Set<BlockPosition> blocksToFertilize;
 
     public WorkSiteTreeFarm() {
-        shouldCountResources = true;
+
         blocksToChop = new HashSet<BlockPosition>();
         blocksToPlant = new HashSet<BlockPosition>();
         blocksToFertilize = new HashSet<BlockPosition>();
         blocksToShear = new HashSet<BlockPosition>();
 
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH) {
-            @Override
-            public void markDirty() {
-                super.markDirty();
-                shouldCountResources = true;
-            }
-        };
         InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
         int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
         int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
@@ -187,7 +177,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 Iterator<BlockPosition> it = blocksToPlant.iterator();
                 while (it.hasNext() && (position = it.next()) != null) {
                     it.remove();
-                    if (worldObj.isAirBlock(position.x, position.y, position.z)) {
+                    if (canReplace(position.x, position.y, position.z)) {
                         if(tryPlace(stack, position.x, position.y, position.z, ForgeDirection.UP)) {
                             saplingCount--;
                             return true;
@@ -281,7 +271,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
     @Override
     protected void scanBlockPosition(BlockPosition pos) {
         Block block;
-        if (worldObj.isAirBlock(pos.x, pos.y, pos.z)) {
+        if (canReplace(pos.x, pos.y, pos.z)) {
             block = worldObj.getBlock(pos.x, pos.y - 1, pos.z);
             if (block == Blocks.dirt || block == Blocks.grass) {
                 blocksToPlant.add(pos.copy());

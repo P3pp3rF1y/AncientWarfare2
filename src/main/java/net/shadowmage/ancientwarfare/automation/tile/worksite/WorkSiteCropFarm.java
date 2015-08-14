@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -12,9 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -25,30 +24,22 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
-    private static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
-    Set<BlockPosition> blocksToTill;
-    Set<BlockPosition> blocksToHarvest;
-    Set<BlockPosition> blocksToPlant;
-    Set<BlockPosition> blocksToFertilize;
 
-    int plantableCount;
-    int bonemealCount;
+    private final Set<BlockPosition> blocksToTill;
+    private final Set<BlockPosition> blocksToHarvest;
+    private final Set<BlockPosition> blocksToPlant;
+    private final Set<BlockPosition> blocksToFertilize;
+
+    private int plantableCount;
+    private int bonemealCount;
 
     public WorkSiteCropFarm() {
-        this.shouldCountResources = true;
 
         blocksToTill = new HashSet<BlockPosition>();
         blocksToHarvest = new HashSet<BlockPosition>();
         blocksToPlant = new HashSet<BlockPosition>();
         blocksToFertilize = new HashSet<BlockPosition>();
 
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH) {
-            @Override
-            public void markDirty() {
-                super.markDirty();
-                shouldCountResources = true;
-            }
-        };
         InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
         int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
         int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
@@ -134,7 +125,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
     @Override
     protected void scanBlockPosition(BlockPosition position) {
         Block block = worldObj.getBlock(position.x, position.y, position.z);
-        if (block.isAir(worldObj, position.x, position.y, position.z)) {
+        if (block.isReplaceable(worldObj, position.x, position.y, position.z)) {
             block = worldObj.getBlock(position.x, position.y - 1, position.z);
             if (isTillable(block)) {
                 blocksToTill.add(new BlockPosition(position.x, position.y - 1, position.z));
@@ -170,7 +161,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean melonOrPumpkin(Block block){
-        return block == Blocks.melon_block || block == Blocks.pumpkin;
+        return block.getMaterial() == Material.gourd;
     }
 
     @Override
@@ -183,7 +174,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if (isTillable(block) && worldObj.isAirBlock(position.x, position.y + 1, position.z)) {
+                if (isTillable(block) && canReplace(position.x, position.y + 1, position.z)) {
                     worldObj.setBlock(position.x, position.y, position.z, Blocks.farmland);
                     return true;
                 }
@@ -208,7 +199,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             it = blocksToPlant.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
-                if (worldObj.isAirBlock(position.x, position.y, position.z)) {
+                if (canReplace(position.x, position.y, position.z)) {
                     ItemStack stack;
                     for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
                         stack = getStackInSlot(i);

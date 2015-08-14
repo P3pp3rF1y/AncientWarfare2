@@ -6,6 +6,7 @@ import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -84,7 +85,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     private boolean isTool(Item item){
-        return item == Items.bucket || item == Items.shears;
+        return item == Items.bucket || item instanceof ItemShears;
     }
 
     @Override
@@ -148,7 +149,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             }
             if (stack.getItem() == Items.bucket) {
                 bucketCount += stack.stackSize;
-            } else if (stack.getItem() == Items.shears) {
+            } else if (stack.getItem() instanceof ItemShears) {
                 shears = stack;
             }
         }
@@ -158,7 +159,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     @SuppressWarnings("unchecked")
     private void rescan() {
 //  AWLog.logDebug("rescanning animal farm");
-        worldObj.theProfiler.startSection("Animal Rescan");
         pigsToBreed.clear();
         cowsToBreed.clear();
         cowsToMilk = 0;
@@ -190,7 +190,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         scanForAnimals(chickens, chickensToBreed, maxChickenCount);
         scanForAnimals(pigs, pigsToBreed, maxPigCount);
         workerRescanDelay = 200;
-        worldObj.theProfiler.endSection();
     }
 
     private void scanForAnimals(List<EntityAnimal> animals, List<EntityPair> targets, int maxCount) {

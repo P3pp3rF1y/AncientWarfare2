@@ -24,15 +24,13 @@ import java.util.Set;
 
 public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
 
-    private static final int TOP_LENGTH = 27, FRONT_LENGTH = 3;
-    Set<BlockPosition> blocksToHarvest;
-    Set<BlockPosition> blocksToPlantMushroom;
-    Set<BlockPosition> blocksToPlantNetherWart;
-    int mushroomCount;
-    int netherWartCount;
+    private final Set<BlockPosition> blocksToHarvest;
+    private final Set<BlockPosition> blocksToPlantMushroom;
+    private final Set<BlockPosition> blocksToPlantNetherWart;
+    private int mushroomCount;
+    private int netherWartCount;
 
     public WorkSiteMushroomFarm() {
-        this.shouldCountResources = true;
 
         blocksToHarvest = new HashSet<BlockPosition>();
         blocksToPlantMushroom = new HashSet<BlockPosition>();
@@ -196,7 +194,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
     @Override
     protected void scanBlockPosition(BlockPosition pos) {
         Block block = worldObj.getBlock(pos.x, pos.y, pos.z);
-        if (block.isAir(worldObj, pos.x, pos.y, pos.z)) {
+        if (block.isReplaceable(worldObj, pos.x, pos.y, pos.z)) {
             if (Blocks.nether_wart.canPlaceBlockAt(worldObj, pos.x, pos.y, pos.z)) {
                 blocksToPlantNetherWart.add(pos);
             } else if (Blocks.brown_mushroom.canPlaceBlockAt(worldObj, pos.x, pos.y, pos.z)) {

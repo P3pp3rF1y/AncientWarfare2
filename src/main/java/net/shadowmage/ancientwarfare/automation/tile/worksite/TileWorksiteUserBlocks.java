@@ -1,14 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
@@ -19,19 +16,26 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-
 public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
+    protected static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
     private byte[] targetMap = new byte[16 * 16];
 
     /**
      * flag should be set to true whenever updating inventory internally (e.g. harvesting blocks) to prevent
      * unnecessary inventory rescanning.  should be set back to false after blocks are added to inventory
      */
-    boolean shouldCountResources;
+    protected boolean shouldCountResources;
 
     public TileWorksiteUserBlocks() {
-
+        this.shouldCountResources = true;
+        this.inventory = new BlockRotationHandler.InventorySided(this, BlockRotationHandler.RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH) {
+            @Override
+            public void markDirty() {
+                super.markDirty();
+                shouldCountResources = true;
+            }
+        };
     }
 
     @Override
@@ -63,6 +67,10 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
     protected boolean isFarmable(Block block, int x, int y, int z){
         return block instanceof IPlantable;
+    }
+
+    protected boolean canReplace(int x, int y, int z){
+        return worldObj.getBlock(x, y, z).isReplaceable(worldObj, x, y, z);
     }
 
     protected boolean tryPlace(ItemStack stack, int x, int y, int z, ForgeDirection face){

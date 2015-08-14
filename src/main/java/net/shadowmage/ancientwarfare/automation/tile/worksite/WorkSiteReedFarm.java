@@ -8,9 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -22,20 +20,18 @@ import java.util.Set;
 
 public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
 
-    private static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
-    Set<BlockPosition> cocoaToPlant;
-    Set<BlockPosition> cactusToPlant;
-    Set<BlockPosition> reedToPlant;
-    Set<BlockPosition> blocksToHarvest;
-    Set<BlockPosition> cocoaToGrow;
+    private final Set<BlockPosition> cocoaToPlant;
+    private final Set<BlockPosition> cactusToPlant;
+    private final Set<BlockPosition> reedToPlant;
+    private final Set<BlockPosition> blocksToHarvest;
+    private final Set<BlockPosition> cocoaToGrow;
 
-    int reedCount;
-    int cactusCount;
-    int cocoaCount;
-    int bonemealCount;
+    private int reedCount;
+    private int cactusCount;
+    private int cocoaCount;
+    private int bonemealCount;
 
     public WorkSiteReedFarm() {
-        this.shouldCountResources = true;
 
         cocoaToPlant = new HashSet<BlockPosition>();
         cactusToPlant = new HashSet<BlockPosition>();
@@ -43,13 +39,6 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         blocksToHarvest = new HashSet<BlockPosition>();
         cocoaToGrow = new HashSet<BlockPosition>();
 
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH) {
-            @Override
-            public void markDirty() {
-                super.markDirty();
-                shouldCountResources = true;
-            }
-        };
         InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
         int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
         int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
@@ -190,7 +179,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean plantCactus(BlockPosition p) {
-        if (!worldObj.isAirBlock(p.x, p.y, p.z) || !Blocks.cactus.canBlockStay(worldObj, p.x, p.y, p.z)) {
+        if (!canReplace(p.x, p.y, p.z) || !Blocks.cactus.canBlockStay(worldObj, p.x, p.y, p.z)) {
             return false;
         }
         ItemStack stack;
@@ -208,7 +197,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean plantReeds(BlockPosition p) {
-        if (!worldObj.isAirBlock(p.x, p.y, p.z) || !Blocks.reeds.canBlockStay(worldObj, p.x, p.y, p.z)) {
+        if (!canReplace(p.x, p.y, p.z) || !Blocks.reeds.canBlockStay(worldObj, p.x, p.y, p.z)) {
             return false;
         }
         ItemStack stack;
@@ -226,7 +215,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean plantCocoa(BlockPosition p) {
-        if (!worldObj.isAirBlock(p.x, p.y, p.z)) {
+        if (!canReplace(p.x, p.y, p.z)) {
             return false;
         }
         ForgeDirection meta = null;
