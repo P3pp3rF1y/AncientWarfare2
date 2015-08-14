@@ -1,11 +1,14 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget.Sorter;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -61,6 +64,17 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
             return false;
         }
         Collections.sort(potentialTargets, sorter);
+        Iterable<EntityLivingBase> sub = Iterables.filter(potentialTargets, new Predicate<EntityLivingBase>() {
+            @Override
+            public boolean apply(EntityLivingBase input) {
+                return input instanceof NpcBase || input instanceof EntityPlayer;
+            }
+        });
+        for(EntityLivingBase base : sub) {
+            this.targetToHeal = base;
+            if (validateTarget())
+                return true;
+        }
         this.targetToHeal = potentialTargets.get(0);
         if (!validateTarget()) {
             targetToHeal = null;
