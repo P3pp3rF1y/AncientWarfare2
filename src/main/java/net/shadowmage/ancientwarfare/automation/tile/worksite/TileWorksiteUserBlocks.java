@@ -11,6 +11,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.api.v1.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -67,6 +68,9 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
     protected boolean tryPlace(ItemStack stack, int x, int y, int z, ForgeDirection face){
         ForgeDirection direction = face.getOpposite();
+        if(stack.getItem() instanceof IAncientWarfarePlantable) {
+            return ((IAncientWarfarePlantable) stack.getItem()).tryPlant(worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, stack.copy());
+        }
         return stack.tryPlaceItemIntoWorld(getOwnerAsPlayer(), worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, face.ordinal(), 0.25F, 0.25F, 0.25F);
     }
 
