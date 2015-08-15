@@ -11,6 +11,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.common.config.Configuration;
+import net.shadowmage.ancientwarfare.apiimpl.APISelector;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
@@ -87,6 +88,7 @@ public class AncientWarfareCore {
          * initialize any other core module information
          */
         ResearchGoal.initializeResearch();
+        APISelector.init();
     }
 
     @EventHandler
