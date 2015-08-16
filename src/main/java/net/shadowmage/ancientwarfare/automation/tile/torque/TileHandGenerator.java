@@ -224,7 +224,7 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     @Override
     public NBTTagCompound getDescriptionTag() {
         NBTTagCompound tag = super.getDescriptionTag();
-        tag.setInteger("clientInputDestEnergy", (int) clientInputDestEnergy);
+        tag.setInteger("clientInputDestEnergy", clientInputDestEnergy);
         return tag;
     }
 

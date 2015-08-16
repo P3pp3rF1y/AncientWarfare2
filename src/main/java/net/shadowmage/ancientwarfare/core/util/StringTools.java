@@ -423,25 +423,23 @@ public class StringTools {
         return lines;
     }
 
-    public static final void writeString(ByteBuf out, String string) {
+    public static void writeString(ByteBuf out, String string) {
         byte[] nameBytes = string.getBytes();
         out.writeShort(nameBytes.length);
         out.writeBytes(nameBytes);
     }
 
-    public static final String readString(ByteBuf in) {
+    public static String readString(ByteBuf in) {
         short len = in.readShort();
         byte[] nameBytes = new byte[len];
         in.readBytes(nameBytes);
         return new String(nameBytes);
     }
 
-    public static final boolean doStringsMatch(String a, String b) {
-        if (a == null && b == null) {
-            return true;
-        } else if (a != null && b == null) {
-            return false;
+    public static boolean doStringsMatch(String a, String b) {
+        if (a == null) {
+            return b == null;
         } else
-            return a != null && a.equals(b);
+            return b != null && a.equals(b);
     }
 }

@@ -31,7 +31,7 @@ public class ContainerWarehouseStockViewer extends ContainerTileBase<TileWarehou
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("filterList")) {
-            tileEntity.setFilters(INBTSerialable.Helper.read(tag, "filterList", WarehouseStockFilter.supply()));
+            tileEntity.setFilters(INBTSerialable.Helper.read(tag, "filterList", WarehouseStockFilter.class));
         }
         super.handlePacketData(tag);
     }
