@@ -15,6 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
+import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -53,7 +55,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return stack == null || isPlantable(stack.getItem());
+                return stack == null || isPlantable(stack);
             }
         };
         this.inventory.setFilterForSlots(filter, frontIndices);
@@ -67,12 +69,19 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         this.inventory.setFilterForSlots(filter, bottomIndices);
     }
 
-    private boolean isPlantable(Item item) {
-        return item instanceof IPlantable;
+    private boolean isPlantable(ItemStack stack) {
+        Item item = stack.getItem();
+        if(item instanceof IAncientWarfarePlantable) {
+            return ((IAncientWarfarePlantable) item).isPlantable(stack);
+        }
+        return (item instanceof IPlantable);
     }
 
     @Override
     protected boolean isFarmable(Block block, int x, int y, int z) {
+        if(block instanceof IAncientWarfareFarmable) {
+            return true;
+        }
         if(super.isFarmable(block, x, y, z)){
             return ((IPlantable) block).getPlantType(worldObj, x, y, z) == EnumPlantType.Crop;
         }
@@ -111,7 +120,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 continue;
             }
             if (i < TOP_LENGTH + FRONT_LENGTH){
-                if(isPlantable(stack.getItem()))
+                if(isPlantable(stack))
                     plantableCount += stack.stackSize;
             }else if(isBonemeal(stack)){
                 bonemealCount += stack.stackSize;
@@ -133,6 +142,13 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 blocksToTill.add(new BlockPosition(position.x, position.y - 1, position.z));
             } else if (block == Blocks.farmland) {
                 blocksToPlant.add(position);
+            }
+        } else if(block instanceof IAncientWarfareFarmable) {
+            IAncientWarfareFarmable farmable = (IAncientWarfareFarmable) block;
+            if(farmable.isMature(worldObj, position.x, position.y, position.z)) {
+                blocksToHarvest.add(position);
+            } else if(farmable.func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
+                blocksToFertilize.add(position);
             }
         } else if (block instanceof BlockStem) {
             if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
@@ -186,7 +202,9 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if (melonOrPumpkin(block)) {
+                if(block instanceof IAncientWarfareFarmable) {
+                    return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
+                } else if (melonOrPumpkin(block)) {
                     return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
                 }
                 else if (block instanceof IGrowable) {
@@ -219,7 +237,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                         if (stack == null) {
                             continue;
                         }
-                        if (isPlantable(stack.getItem())) {
+                        if (isPlantable(stack)) {
                             if(tryPlace(stack, position.x, position.y, position.z, ForgeDirection.UP)) {
                                 plantableCount--;
                                 if (stack.stackSize <= 0) {
@@ -237,7 +255,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if (block instanceof IGrowable) {
+                if (block instanceof IGrowable || block instanceof IAncientWarfareFarmable) {
                     ItemStack stack;
                     for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
                         stack = getStackInSlot(i);
@@ -252,10 +270,20 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                                 }
                             }
                             block = worldObj.getBlock(position.x, position.y, position.z);
-                            if (block instanceof IGrowable && ((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
-                                blocksToFertilize.add(position);
-                            } else if(isFarmable(block, position.x, position.y, position.z)){
-                                blocksToHarvest.add(position);
+                            if(block instanceof IAncientWarfareFarmable) {
+                                IAncientWarfareFarmable farmable = (IAncientWarfareFarmable) block;
+                                if(farmable.isMature(worldObj, position.x, position.y, position.z)) {
+                                    blocksToHarvest.add(position);
+                                } else if(farmable.func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
+                                    blocksToFertilize.add(position);
+                                }
+                            }
+                            else if (block instanceof IGrowable) {
+                                if (((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
+                                    blocksToFertilize.add(position);
+                                } else if (isFarmable(block, position.x, position.y, position.z)) {
+                                    blocksToHarvest.add(position);
+                                }
                             }
                             return true;
                         }

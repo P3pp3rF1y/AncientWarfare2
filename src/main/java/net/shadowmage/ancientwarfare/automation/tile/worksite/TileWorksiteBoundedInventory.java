@@ -6,6 +6,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -53,17 +54,22 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     protected boolean harvestBlock(int x, int y, int z, RelativeSide... relativeSides) {
         int[] combinedIndices = inventory.getRawIndicesCombined(relativeSides);
         Block block = worldObj.getBlock(x, y, z);
-        int meta = worldObj.getBlockMetadata(x, y, z);
-        List<ItemStack> stacks = block.getDrops(worldObj, x, y, z, meta, getFortune());
-        if (!InventoryTools.canInventoryHold(inventory, combinedIndices, stacks)) {
-            return false;
-        }
-        if (!BlockTools.canBreakBlock(worldObj, getOwnerName(), x, y, z, block, meta)) {
-            return false;
-        }
-        worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
-        if (!worldObj.setBlockToAir(x, y, z)) {
-            return false;
+        List<ItemStack> stacks;
+        if(block instanceof IAncientWarfareFarmable) {
+            stacks = ((IAncientWarfareFarmable) block).doHarvest(worldObj, x, y, z, getFortune());
+        } else {
+            int meta = worldObj.getBlockMetadata(x, y, z);
+            stacks = block.getDrops(worldObj, x, y, z, meta, getFortune());
+            if (!InventoryTools.canInventoryHold(inventory, combinedIndices, stacks)) {
+                return false;
+            }
+            if (!BlockTools.canBreakBlock(worldObj, getOwnerName(), x, y, z, block, meta)) {
+                return false;
+            }
+            worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
+            if (!worldObj.setBlockToAir(x, y, z)) {
+                return false;
+            }
         }
         for (ItemStack stack : stacks) {
             stack = InventoryTools.mergeItemStack(inventory, stack, combinedIndices);//was already validated that items would fit via canInventoryHold call
