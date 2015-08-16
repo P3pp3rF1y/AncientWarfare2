@@ -17,7 +17,7 @@ public abstract class TileWorksiteBlockBased extends TileWorksiteBoundedInventor
     protected abstract void updateBlockWorksite();
 
     @Override
-    protected void updateWorksite() {
+    protected final void updateWorksite() {
         worldObj.theProfiler.startSection("Incremental Scan");
         incrementalScan();
         worldObj.theProfiler.endSection();

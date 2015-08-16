@@ -483,7 +483,7 @@ public class BlockRotationHandler {
         @Override
         public boolean isItemValidForSlot(int var1, ItemStack var2) {
             ItemSlotFilter filter = filtersByInventorySlot[var1];
-            return filter == null || filter.isItemValid(var2);
+            return filter == null || filter.apply(var2);
         }
 
         @Override

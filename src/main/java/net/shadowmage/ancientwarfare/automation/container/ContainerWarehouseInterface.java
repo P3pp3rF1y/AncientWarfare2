@@ -3,11 +3,10 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,27 +33,26 @@ public class ContainerWarehouseInterface extends ContainerTileBase<TileWarehouse
 
     @Override
     public void sendInitData() {
-        NBTTagList filterTagList = WarehouseInterfaceFilter.writeFilterList(filters);
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setTag("filterList", filterTagList);
-        sendDataToClient(tag);
+        sendDataToClient(getTagToSend());
     }
 
     public void sendFiltersToServer()//should be called whenever filters change, so that the base container/etc can be updated
     {
-        NBTTagList filterTagList = WarehouseInterfaceFilter.writeFilterList(filters);
+        sendDataToServer(getTagToSend());
+    }
+
+    public NBTTagCompound getTagToSend(){
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setTag("filterList", filterTagList);
-        sendDataToServer(tag);
+        INBTSerialable.Helper.write(tag, "filterList", filters);
+        return tag;
     }
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("filterList")) {
-            List<WarehouseInterfaceFilter> filters = WarehouseInterfaceFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), new ArrayList<WarehouseInterfaceFilter>());
+            List<WarehouseInterfaceFilter> filters = INBTSerialable.Helper.read(tag, "filterList", WarehouseInterfaceFilter.supply());
             if (player.worldObj.isRemote) {
-                this.filters.clear();
-                this.filters.addAll(filters);
+                this.filters = filters;
                 refreshGui();
             } else {
                 tileEntity.setFilters(filters);

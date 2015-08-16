@@ -4,30 +4,25 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class TileWarehouseInterface extends TileControlled implements IInventory, IInteractableTile {
 
-    InventoryBasic inventory = new InventoryBasic(27);
+    final InventoryBasic inventory = new InventoryBasic(27);
 
-    boolean init = false;
-    List<InterfaceFillRequest> fillRequests = new ArrayList<InterfaceFillRequest>();
-    List<InterfaceEmptyRequest> emptyRequests = new ArrayList<InterfaceEmptyRequest>();
+    private boolean init = false;
+    private final List<InterfaceFillRequest> fillRequests = new ArrayList<InterfaceFillRequest>();
+    private final List<InterfaceEmptyRequest> emptyRequests = new ArrayList<InterfaceEmptyRequest>();
     List<WarehouseInterfaceFilter> filters = new ArrayList<WarehouseInterfaceFilter>();
-    HashSet<ContainerWarehouseInterface> viewers = new HashSet<ContainerWarehouseInterface>();
+    List<ContainerWarehouseInterface> viewers = new ArrayList<ContainerWarehouseInterface>();
 
     public TileWarehouseInterface() {
 
@@ -70,29 +65,6 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
             init = true;
             recalcRequests();
         }
-    }
-
-    @Override
-    protected void searchForController() {
-        BlockPosition pos = new BlockPosition(xCoord, yCoord, zCoord);
-        BlockPosition min = pos.copy();
-        BlockPosition max = min.copy();
-        min.offset(-16, -4, -16);
-        max.offset(16, 4, 16);
-        for (TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z)) {
-            if (te instanceof TileWarehouseBase) {
-                TileWarehouseBase twb = (TileWarehouseBase) te;
-                if (BlockTools.isPositionWithinBounds(pos, twb.getWorkBoundsMin(), twb.getWorkBoundsMax())) {
-                    twb.addInterfaceTile(this);
-                    break;
-                }
-            }
-        }
-    }
-
-    @Override
-    protected boolean isValidController(IControllerTile tile) {
-        return tile instanceof TileWarehouseBase;//TODO validate bounding area
     }
 
     @Override
@@ -170,14 +142,14 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         inventory.readFromNBT(tag.getCompoundTag("inventory"));
-        filters = WarehouseInterfaceFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), new ArrayList<WarehouseInterfaceFilter>());
+        filters = INBTSerialable.Helper.read(tag, "filterList", WarehouseInterfaceFilter.class);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
-        tag.setTag("filterList", WarehouseInterfaceFilter.writeFilterList(getFilters()));
+        INBTSerialable.Helper.write(tag, "filterList", getFilters());
     }
 
     public void recalcRequests() {
@@ -225,7 +197,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
             return false;
         }
         for (WarehouseInterfaceFilter filter : filters) {
-            if (filter.isItemValid(stack)) {
+            if (filter.apply(stack)) {
                 return true;
             }
         }
@@ -235,7 +207,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     protected int getFilterQuantity(ItemStack stack) {
         int qty = 0;
         for (WarehouseInterfaceFilter filter : filters) {
-            if (filter.isItemValid(stack)) {
+            if (filter.apply(stack)) {
                 qty += filter.getFilterQuantity();
             }
         }

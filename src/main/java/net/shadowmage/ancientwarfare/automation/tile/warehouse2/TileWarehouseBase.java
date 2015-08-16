@@ -11,38 +11,41 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInt
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBounded;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public abstract class TileWarehouseBase extends TileWorksiteBounded implements IControllerTile {
 
     private boolean init;
     private boolean shouldRecount;
 
-    private Set<TileWarehouseStockViewer> stockViewers = new HashSet<TileWarehouseStockViewer>();
-    private Set<TileWarehouseInterface> interfaceTiles = new HashSet<TileWarehouseInterface>();
-    private Set<IWarehouseStorageTile> storageTiles = new HashSet<IWarehouseStorageTile>();
+    private final Set<TileWarehouseStockViewer> stockViewers = new HashSet<TileWarehouseStockViewer>();
+    private final Set<TileWarehouseInterface> interfaceTiles = new HashSet<TileWarehouseInterface>();
+    private final Set<IWarehouseStorageTile> storageTiles = new HashSet<IWarehouseStorageTile>();
 
     /**
-     * interfaces that need filling, AND there are items available to fill.  anytime storage block inventories are updated, this list needs to be
-     * rechecked to make sure items are still available
+     * Interfaces that need filling, AND there are items available to fill.
+     * Anytime storage block inventories are updated, this list needs to be rechecked
+     * to make sure items are still available
      */
-    private Set<TileWarehouseInterface> interfacesToFill = new HashSet<TileWarehouseInterface>();
+    private final Set<TileWarehouseInterface> interfacesToFill = new HashSet<TileWarehouseInterface>();
 
     /**
-     * interfaces that have an excess of items or non-matching items will be in this set
+     * Interfaces that have an excess of items or non-matching items will be in this set
      */
-    private Set<TileWarehouseInterface> interfacesToEmpty = new HashSet<TileWarehouseInterface>();
+    private final Set<TileWarehouseInterface> interfacesToEmpty = new HashSet<TileWarehouseInterface>();
 
     protected WarehouseStorageMap storageMap = new WarehouseStorageMap();
     private ItemQuantityMap cachedItemMap = new ItemQuantityMap();
 
-    private Set<ContainerWarehouseControl> viewers = new HashSet<ContainerWarehouseControl>();
-    private Set<ContainerWarehouseCraftingStation> craftingViewers = new HashSet<ContainerWarehouseCraftingStation>();
+    private final Set<ContainerWarehouseControl> viewers = new HashSet<ContainerWarehouseControl>();
+    private final Set<ContainerWarehouseCraftingStation> craftingViewers = new HashSet<ContainerWarehouseCraftingStation>();
 
     public TileWarehouseBase() {
 
@@ -65,7 +68,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     public void onBoundsAdjusted() {
         BlockPosition max = getWorkBoundsMax();
         BlockPosition min = getWorkBoundsMin();
-        max.y = min.y + 3;
+        max.y = min.y + getBoundsMaxHeight();
         this.interfacesToEmpty.clear();
         this.interfacesToFill.clear();
         for (TileWarehouseInterface i : interfaceTiles) {
@@ -85,16 +88,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         storageMap = new WarehouseStorageMap();
         cachedItemMap.clear();
 
-        List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z);
-        for (TileEntity te : tiles) {
-            if (te instanceof IWarehouseStorageTile) {
-                addStorageTile((IWarehouseStorageTile) te);
-            } else if (te instanceof TileWarehouseInterface) {
-                addInterfaceTile((TileWarehouseInterface) te);
-            } else if (te instanceof TileWarehouseStockViewer) {
-                addStockViewer((TileWarehouseStockViewer) te);
-            }
-        }
+        scanForInitialTiles();
     }
 
     @Override
@@ -103,27 +97,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     @Override
-    public EnumSet<WorksiteUpgrade> getValidUpgrades() {
-        return EnumSet.of(
-                WorksiteUpgrade.SIZE_MEDIUM,
-                WorksiteUpgrade.SIZE_LARGE,
-                WorksiteUpgrade.ENCHANTED_TOOLS_1,
-                WorksiteUpgrade.ENCHANTED_TOOLS_2,
-                WorksiteUpgrade.TOOL_QUALITY_1,
-                WorksiteUpgrade.TOOL_QUALITY_2,
-                WorksiteUpgrade.TOOL_QUALITY_3,
-                WorksiteUpgrade.BASIC_CHUNK_LOADER
-        );
-    }
-
-    @Override
-    public int getBoundsMaxWidth() {
-        return getUpgrades().contains(WorksiteUpgrade.SIZE_LARGE) ? 16 : getUpgrades().contains(WorksiteUpgrade.SIZE_MEDIUM) ? 9 : 5;
-    }
-
-    @Override
     public int getBoundsMaxHeight() {
-        return 4;
+        return 3;
     }
 
     public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick);
@@ -173,8 +148,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
             stackMove = toMove > stack.stackSize ? stack.stackSize : toMove;
             moved = dest.insertItem(stack, stackMove);
             if (moved > 0) {
-                cachedItemMap.addCount(stack, moved);
-                updateViewers();
+                changeCachedQuantity(stack, moved);
             }
             stack.stackSize -= moved;
             toMove -= moved;
@@ -250,22 +224,6 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     @Override
-    public final void updateEntity() {
-        super.updateEntity();
-        if (worldObj == null || worldObj.isRemote) {
-            return;
-        }
-        if (!init) {
-            init = true;
-            scanForInitialTiles();
-        }
-        if (shouldRecount) {
-            shouldRecount = false;
-            recountInventory();
-        }
-    }
-
-    @Override
     protected boolean processWork() {
         if (!interfacesToEmpty.isEmpty()) {
             if (tryEmptyInterfaces()) {
@@ -286,13 +244,23 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     @Override
-    protected void updateWorksite() {
-
+    protected final void updateWorksite() {
+        if (!init) {
+            scanForInitialTiles();
+        }
+        if (shouldRecount) {
+            shouldRecount = false;
+            recountInventory();
+        }
     }
 
     private void scanForInitialTiles() {
         BlockPosition max = getWorkBoundsMax();
+        if(max == null)
+            return;
         BlockPosition min = getWorkBoundsMin();
+        if(min == null)
+            return;
         List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z);
         for (TileEntity te : tiles) {
             if (te instanceof IWarehouseStorageTile) {
@@ -303,6 +271,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
                 addStockViewer((TileWarehouseStockViewer) te);
             }
         }
+        init = true;
     }
 
     private void recountInventory() {
@@ -507,7 +476,6 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
             moved = tile.insertItem(stack, stack.stackSize);
             stack.stackSize -= moved;
             changeCachedQuantity(stack, moved);
-            updateViewers();
             if (stack.stackSize <= 0) {
                 break;
             }

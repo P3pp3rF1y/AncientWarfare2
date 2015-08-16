@@ -4,17 +4,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySlotlessBasic;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -61,29 +57,6 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
         for (ItemStack stack : list) {
             InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
         }
-    }
-
-    @Override
-    protected void searchForController() {
-        BlockPosition pos = getPosition();
-        BlockPosition min = pos.copy();
-        BlockPosition max = min.copy();
-        min.offset(-16, -4, -16);
-        max.offset(16, 4, 16);
-        for (TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z)) {
-            if (te instanceof TileWarehouseBase) {
-                TileWarehouseBase twb = (TileWarehouseBase) te;
-                if (BlockTools.isPositionWithinBounds(pos, twb.getWorkBoundsMin(), twb.getWorkBoundsMax())) {
-                    twb.addStorageTile(this);
-                    break;
-                }
-            }
-        }
-    }
-
-    @Override
-    protected boolean isValidController(IControllerTile tile) {
-        return tile instanceof TileWarehouseBase;//TODO validate inside of bounding area
     }
 
     @Override
@@ -146,14 +119,14 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         inventory.readFromNBT(tag.getCompoundTag("inventory"));
-        WarehouseStorageFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), filters);
+        filters.addAll(INBTSerialable.Helper.read(tag, "filterList", WarehouseStorageFilter.class));
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
-        tag.setTag("filterList", WarehouseStorageFilter.writeFilterList(filters));
+        INBTSerialable.Helper.write(tag, "filterList", filters);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
 
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean isItemValid(ItemStack stack) {
+            public boolean apply(ItemStack stack) {
                 return stack == null || isCocoDye(stack) || stack.getItem() == Items.reeds || Block.getBlockFromItem(stack.getItem()) instanceof BlockCactus;
             }
         };
@@ -57,7 +57,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
 
         filter = new ItemSlotFilter() {
             @Override
-            public boolean isItemValid(ItemStack stack) {
+            public boolean apply(ItemStack stack) {
                 return stack == null || isBonemeal(stack);
             }
         };

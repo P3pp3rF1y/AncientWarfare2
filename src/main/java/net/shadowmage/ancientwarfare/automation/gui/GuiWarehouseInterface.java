@@ -11,8 +11,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
-import java.util.List;
-
 public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseInterface> {
 
     CompositeScrolled area;
@@ -31,7 +29,6 @@ public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseIn
     @Override
     public void setupElements() {
         area.clearElements();
-        List<WarehouseInterfaceFilter> filters = getContainer().filters;
 
         int totalHeight = 8;
 
@@ -39,7 +36,7 @@ public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseIn
         NumberInput input;
         Button button;
 
-        for (WarehouseInterfaceFilter filter : filters) {
+        for (WarehouseInterfaceFilter filter : getContainer().filters) {
             slot = new FilterItemSlot(8, totalHeight, filter, this);
             area.addGuiElement(slot);
 
@@ -53,7 +50,7 @@ public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseIn
             totalHeight += 18;
         }
 
-        if (filters.size() < 9) {
+        if (getContainer().filters.size() < 9) {
             button = new Button(8, totalHeight, 95, 12, "guistrings.automation.new_filter") {
                 @Override
                 protected void onPressed() {
@@ -98,8 +95,7 @@ public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseIn
 
         @Override
         public void onValueUpdated(float value) {
-            int val = (int) value;
-            this.filter.setFilterQuantity(val);
+            this.filter.setFilterQuantity((int) value);
             refreshGui();
             getContainer().sendFiltersToServer();
         }

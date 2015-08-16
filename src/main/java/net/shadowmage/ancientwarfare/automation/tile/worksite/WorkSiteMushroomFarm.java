@@ -51,7 +51,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
 
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean isItemValid(ItemStack stack) {
+            public boolean apply(ItemStack stack) {
                 if (stack == null || stack.getItem() == Items.nether_wart) {
                     return true;
                 } else {
