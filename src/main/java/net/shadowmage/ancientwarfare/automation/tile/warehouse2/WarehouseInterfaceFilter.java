@@ -1,14 +1,12 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import com.google.common.base.Predicate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.List;
-
-public final class WarehouseInterfaceFilter extends ItemSlotFilter {
+public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INBTSerialable {
 
     private ItemStack filterItem;
     private int quantity;
@@ -17,7 +15,7 @@ public final class WarehouseInterfaceFilter extends ItemSlotFilter {
     }
 
     @Override
-    public boolean isItemValid(ItemStack item) {
+    public boolean apply(ItemStack item) {
         if (item == null) {
             return false;
         }
@@ -30,6 +28,12 @@ public final class WarehouseInterfaceFilter extends ItemSlotFilter {
         return InventoryTools.doItemStacksMatch(item, filterItem);//finally, items were equal, no ignores' -- check both dmg and tag
     }
 
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof WarehouseInterfaceFilter && ((WarehouseInterfaceFilter) object).quantity == this.quantity && this.apply(((WarehouseInterfaceFilter) object).filterItem);
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         quantity = tag.getInteger("quantity");
         if (tag.hasKey("filter")) {
@@ -37,6 +41,7 @@ public final class WarehouseInterfaceFilter extends ItemSlotFilter {
         }
     }
 
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         tag.setInteger("quantity", quantity);
         if (filterItem != null) {
@@ -66,28 +71,11 @@ public final class WarehouseInterfaceFilter extends ItemSlotFilter {
         return "Filter item: " + filterItem + " quantity: " + quantity;
     }
 
-    public static NBTTagList writeFilterList(List<WarehouseInterfaceFilter> filters) {
-        NBTTagList list = new NBTTagList();
-        for (WarehouseInterfaceFilter filter : filters) {
-            list.appendTag(filter.writeToNBT(new NBTTagCompound()));
-        }
-        return list;
-    }
-
-    public static List<WarehouseInterfaceFilter> readFilterList(NBTTagList list, List<WarehouseInterfaceFilter> filters) {
-        WarehouseInterfaceFilter filter;
-        for (int i = 0; i < list.tagCount(); i++) {
-            filter = new WarehouseInterfaceFilter();
-            filter.readFromNBT(list.getCompoundTagAt(i));
-            filters.add(filter);
-        }
-        return filters;
-    }
-
     public WarehouseInterfaceFilter copy() {
         WarehouseInterfaceFilter filter = new WarehouseInterfaceFilter();
-        filter.filterItem = this.filterItem == null ? null : this.filterItem.copy();
-        filter.quantity = this.quantity;
+        if(this.filterItem!=null)
+            filter.setFilterItem(this.filterItem.copy());
+        filter.setFilterQuantity(this.quantity);
         return filter;
     }
 

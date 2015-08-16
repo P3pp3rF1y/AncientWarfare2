@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public abstract class TileControlled extends TileEntity implements IControlledTile {
 
@@ -40,9 +42,23 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
 
     protected abstract void updateTile();
 
-    protected abstract void searchForController();
+    protected void searchForController() {
+        BlockPosition pos = getPosition();
+        BlockPosition min = pos.copy().offset(-16, -4, -16);
+        BlockPosition max = pos.copy().offset(16, 4, 16);
+        for (TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z)) {
+            if (te instanceof IControllerTile) {
+                if (isValidController((IControllerTile)te)) {
+                    ((IControllerTile)te).addControlledTile(this);
+                    break;
+                }
+            }
+        }
+    }
 
-    protected abstract boolean isValidController(IControllerTile tile);
+    protected boolean isValidController(IControllerTile tile) {
+        return tile instanceof TileWarehouseBase && BlockTools.isPositionWithinBounds(getPosition(), ((TileWarehouseBase) tile).getWorkBoundsMin(), ((TileWarehouseBase) tile).getWorkBoundsMax());
+    }
 
     @Override
     public final void invalidate() {

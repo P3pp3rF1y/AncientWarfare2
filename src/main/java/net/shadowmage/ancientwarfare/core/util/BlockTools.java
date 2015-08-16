@@ -232,37 +232,32 @@ public class BlockTools {
      * @return true if it does
      */
     public static boolean isPositionWithinBounds(BlockPosition test, BlockPosition pos1, BlockPosition pos2) {
-        int minX;
-        int maxX;
-        int minY;
-        int maxY;
-        int minZ;
-        int maxZ;
+        int min;
+        int max;
         if (pos1.x < pos2.x) {
-            minX = pos1.x;
-            maxX = pos2.x;
+            min = pos1.x;
+            max = pos2.x;
         } else {
-            minX = pos2.x;
-            maxX = pos1.x;
+            min = pos2.x;
+            max = pos1.x;
         }
-        if (pos1.y < pos2.y) {
-            minY = pos1.y;
-            maxY = pos2.y;
-        } else {
-            minY = pos2.y;
-            maxY = pos1.y;
-        }
-        if (pos1.z < pos2.z) {
-            minZ = pos1.z;
-            maxZ = pos2.z;
-        } else {
-            minZ = pos2.z;
-            maxZ = pos1.z;
-        }
-
-        if (test.x >= minX && test.x <= maxX) {
-            if (test.y >= minY && test.y <= maxY) {
-                if (test.z >= minZ && test.z <= maxZ) {
+        if (test.x >= min && test.x <= max) {
+            if (pos1.y < pos2.y) {
+                min = pos1.y;
+                max = pos2.y;
+            } else {
+                min = pos2.y;
+                max = pos1.y;
+            }
+            if (test.y >= min && test.y <= max) {
+                if (pos1.z < pos2.z) {
+                    min = pos1.z;
+                    max = pos2.z;
+                } else {
+                    min = pos2.z;
+                    max = pos1.z;
+                }
+                if (test.z >= min && test.z <= max) {
                     return true;
                 }
             }

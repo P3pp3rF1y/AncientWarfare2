@@ -47,7 +47,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
     private ForgeDirection orientation = ForgeDirection.NORTH;
 
-    private TorqueCell torqueCell;
+    private final TorqueCell torqueCell;
 
     private int workRetryDelay = 20;
 
@@ -164,29 +164,28 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     }
 
     @Override
-    public void updateEntity() {
-        if (worldObj.isRemote) {
+    public final void updateEntity() {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
-        worldObj.theProfiler.startSection("AWWorksite");
         if (workRetryDelay > 0) {
             workRetryDelay--;
         } else {
-            worldObj.theProfiler.endStartSection("Check For Work");
+            worldObj.theProfiler.startSection("Check For Work");
             double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
             boolean hasWork = getTorqueStored(ForgeDirection.UNKNOWN) >= ePerUse && hasWorksiteWork();
-            worldObj.theProfiler.endStartSection("Process Work");
             if (hasWork) {
+                worldObj.theProfiler.endStartSection("Process Work");
                 if (processWork()) {
                     torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
                 } else {
                     workRetryDelay = 20;
                 }
             }
+            worldObj.theProfiler.endSection();
         }
-        worldObj.theProfiler.endStartSection("WorksiteBaseUpdate");
+        worldObj.theProfiler.startSection("WorksiteBaseUpdate");
         updateWorksite();
-        worldObj.theProfiler.endSection();
         worldObj.theProfiler.endSection();
     }
 

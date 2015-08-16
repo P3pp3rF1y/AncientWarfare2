@@ -50,14 +50,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
             }
         }
 
-        ItemSlotFilter filter = new ItemSlotFilter() {
-            @Override
-            public boolean isItemValid(ItemStack stack) {
-                return false;
-            }
-        };
-
-        addSlotToContainer(new SlotFiltered(tile.outputSlot, 0, 8 + 4 * 18, 94 - 16 - 18, filter));
+        addSlotToContainer(new SlotFiltered(tile.outputSlot, 0, 8 + 4 * 18, 94 - 16 - 18, ItemSlotFilter.FALSE));
 
         this.addPlayerSlots(156);
     }

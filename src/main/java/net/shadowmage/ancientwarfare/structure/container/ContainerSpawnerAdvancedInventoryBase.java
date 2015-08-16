@@ -30,7 +30,7 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
 
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean isItemValid(ItemStack stack) {
+            public boolean apply(ItemStack stack) {
                 if (stack != null && stack.getItem() instanceof ItemBlock) {
                     ItemBlock block = (ItemBlock) stack.getItem();
                     if (block.field_150939_a == AWBlocks.advancedSpawner) {

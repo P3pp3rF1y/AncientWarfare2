@@ -54,7 +54,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean isItemValid(ItemStack stack) {
+            public boolean apply(ItemStack stack) {
                 return stack == null || isPlantable(stack);
             }
         };
@@ -62,7 +62,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
         filter = new ItemSlotFilter() {
             @Override
-            public boolean isItemValid(ItemStack stack) {
+            public boolean apply(ItemStack stack) {
                 return stack == null || isBonemeal(stack);
             }
         };

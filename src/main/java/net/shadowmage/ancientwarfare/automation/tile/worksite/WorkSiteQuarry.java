@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
 
-public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
+public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     private static final int TOP_LENGTH = 27;
     boolean finished;
     private boolean hasDoneInit = false;
@@ -21,8 +21,8 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
      * Current position within work bounds.
      * Incremented when work is processed.
      */
-    int currentX, currentY, currentZ;//position within bounds that is the 'active' position
-    int validateX, validateY, validateZ;
+    private int currentX, currentY, currentZ;//position within bounds that is the 'active' position
+    private int validateX, validateY, validateZ;
 
     public WorkSiteQuarry() {
         this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH);
@@ -38,20 +38,21 @@ public class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     @Override
     protected void onBoundsSet() {
         super.onBoundsSet();
-        bbMax.y = yCoord - 1;
-        bbMin.y = 1;
+        offsetBounds();
+    }
+
+    private void offsetBounds(){
+        getWorkBoundsMax().y = yCoord - 1;
+        getWorkBoundsMin().y = 1;
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
     public void onBoundsAdjusted() {
-        bbMax.y = yCoord - 1;
-        bbMin.y = 1;
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        currentX = bbMin.x;
-        currentY = bbMax.y;
-        currentZ = bbMin.z;
-
+        offsetBounds();
+        currentX = getWorkBoundsMin().x;
+        currentY = getWorkBoundsMax().y;
+        currentZ = getWorkBoundsMin().z;
         validateX = currentX;
         validateY = currentY;
         validateZ = currentZ;

@@ -65,7 +65,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//buckets/shears
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean isItemValid(ItemStack stack) {
+            public boolean apply(ItemStack stack) {
                 return stack == null || isFood(stack.getItem());
             }
         };
@@ -73,7 +73,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
         filter = new ItemSlotFilter() {
             @Override
-            public boolean isItemValid(ItemStack stack) {
+            public boolean apply(ItemStack stack) {
                 return stack == null || isTool(stack.getItem());
             }
         };

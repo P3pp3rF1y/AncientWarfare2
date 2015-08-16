@@ -157,8 +157,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
 
     @Override
     public void updateEntity() {
-        super.updateEntity();
-        if (worldObj.isRemote) {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
         if (shouldRemove || builder == null || builder.invalid || builder.isFinished()) {

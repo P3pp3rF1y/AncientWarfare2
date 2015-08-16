@@ -7,7 +7,6 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 
 import java.util.List;
 
-
 public interface IWarehouseStorageTile {
 
     public int getStorageAdditionSize();

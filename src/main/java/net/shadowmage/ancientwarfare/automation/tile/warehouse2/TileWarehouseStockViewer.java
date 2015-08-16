@@ -3,21 +3,16 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -119,24 +114,6 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         }
     }
 
-    @Override
-    protected void searchForController() {
-        BlockPosition pos = getPosition();
-        BlockPosition min = pos.copy();
-        BlockPosition max = min.copy();
-        min.offset(-16, -4, -16);
-        max.offset(16, 4, 16);
-        for (TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z)) {
-            if (te instanceof TileWarehouseBase) {
-                TileWarehouseBase twb = (TileWarehouseBase) te;
-                if (BlockTools.isPositionWithinBounds(pos, twb.getWorkBoundsMin(), twb.getWorkBoundsMax())) {
-                    twb.addStockViewer(this);
-                    break;
-                }
-            }
-        }
-    }
-
     /**
      * should be called on SERVER whenever warehouse inventory changes
      */
@@ -147,20 +124,15 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setTag("filterList", WarehouseStockFilter.getTagList(filters));
+        INBTSerialable.Helper.write(tag, "filterList", filters);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         this.filters.clear();
-        this.filters.addAll(WarehouseStockFilter.readFilterList(pkt.func_148857_g().getTagList("filterList", Constants.NBT.TAG_COMPOUND)));
+        this.filters.addAll(INBTSerialable.Helper.read(pkt.func_148857_g(), "filterList", WarehouseStockFilter.class));
         updateViewers();
-    }
-
-    @Override
-    protected boolean isValidController(IControllerTile tile) {
-        return tile instanceof TileWarehouseBase;
     }
 
     @Override
@@ -177,23 +149,23 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        filters.addAll(WarehouseStockFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND)));
+        filters.addAll(INBTSerialable.Helper.read(tag, "filterList", WarehouseStockFilter.class));
         ownerName = tag.getString("ownerName");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setTag("filterList", WarehouseStockFilter.getTagList(filters));
+        INBTSerialable.Helper.write(tag, "filterList", filters);
         tag.setString("ownerName", ownerName);
     }
 
-    public static class WarehouseStockFilter {
+    public static class WarehouseStockFilter implements INBTSerialable{
         private ItemStack item;
         ItemHashEntry hashKey;
         private int quantity;
 
-        private WarehouseStockFilter() {
+        public WarehouseStockFilter() {
         }
 
         public WarehouseStockFilter(ItemStack item, int qty) {
@@ -218,36 +190,19 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
             return quantity;
         }
 
+        @Override
         public void readFromNBT(NBTTagCompound tag) {
             setItem(tag.hasKey("item") ? InventoryTools.readItemStack(tag.getCompoundTag("item")) : null);
             setQuantity(tag.getInteger("quantity"));
         }
 
+        @Override
         public NBTTagCompound writeToNBT(NBTTagCompound tag) {
             if (item != null) {
                 tag.setTag("item", InventoryTools.writeItemStack(item));
             }
             tag.setInteger("quantity", quantity);
             return tag;
-        }
-
-        public static NBTTagList getTagList(List<WarehouseStockFilter> filters) {
-            NBTTagList list = new NBTTagList();
-            for (WarehouseStockFilter filter : filters) {
-                list.appendTag(filter.writeToNBT(new NBTTagCompound()));
-            }
-            return list;
-        }
-
-        public static List<WarehouseStockFilter> readFilterList(NBTTagList list) {
-            ArrayList<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
-            WarehouseStockFilter filter;
-            for (int i = 0; i < list.tagCount(); i++) {
-                filter = new WarehouseStockFilter();
-                filter.readFromNBT(list.getCompoundTagAt(i));
-                filters.add(filter);
-            }
-            return filters;
         }
     }
 }
