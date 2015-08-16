@@ -133,7 +133,11 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
 
     private void saveTag(){
         if(!tagInput.isEmpty()){
-            String tag = String.join("", tagInput);
+            StringBuffer tagBuffer = new StringBuffer("");
+            for(String string:tagInput) {
+                tagBuffer.append(string);
+            }
+            String tag = tagBuffer.toString();
             try {
                 NBTBase base = JsonToNBT.func_150315_a(tag);
                 if(base instanceof NBTTagCompound && !((NBTTagCompound) base).hasNoTags()){
