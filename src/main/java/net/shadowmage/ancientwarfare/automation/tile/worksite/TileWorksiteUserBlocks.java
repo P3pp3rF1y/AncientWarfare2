@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -75,15 +76,15 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     }
 
     protected boolean tryPlace(ItemStack stack, int x, int y, int z, ForgeDirection face){
-        EntityPlayer owner = getOwnerAsPlayer();
-        if(owner.isEntityInvulnerable()){
-            owner.inventory.setInventorySlotContents(owner.inventory.currentItem, stack);
-        }
         ForgeDirection direction = face.getOpposite();
         if(stack.getItem() instanceof IAncientWarfarePlantable) {
             return ((IAncientWarfarePlantable) stack.getItem()).tryPlant(worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, stack.copy());
         }
-        return stack.tryPlaceItemIntoWorld(getOwnerAsPlayer(), worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, face.ordinal(), 0.25F, 0.25F, 0.25F);
+        EntityPlayer owner = getOwnerAsPlayer();
+        if(owner.isEntityInvulnerable()){
+            owner.inventory.setInventorySlotContents(owner.inventory.currentItem, stack);
+        }
+        return stack.tryPlaceItemIntoWorld(owner, worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, face.ordinal(), 0.25F, 0.25F, 0.25F);
     }
 
     protected final void pickupItems() {

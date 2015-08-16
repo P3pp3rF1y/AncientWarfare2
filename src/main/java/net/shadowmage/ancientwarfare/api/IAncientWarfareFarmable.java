@@ -22,8 +22,8 @@ public interface IAncientWarfareFarmable extends IGrowable {
     boolean isMature(World world, int x, int y, int z);
 
     /**
-     * THis is called when the crop farm harvests this crop. The crop farm will do nothing with the crop.
-     * All necessary operations to be performed on the crop should be done in th is method.
+     * This is called when the crop farm harvests this crop. The crop farm will do nothing with the crop.
+     * All necessary operations to be performed on the crop should be done in this method.
      * @param world
      * @param x
      * @param y

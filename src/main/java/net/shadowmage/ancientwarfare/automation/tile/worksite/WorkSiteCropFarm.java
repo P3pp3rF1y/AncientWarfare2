@@ -74,12 +74,12 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         if(item instanceof IAncientWarfarePlantable) {
             return ((IAncientWarfarePlantable) item).isPlantable(stack);
         }
-        return (item instanceof IPlantable);
+        return item instanceof IPlantable;
     }
 
     @Override
     protected boolean isFarmable(Block block, int x, int y, int z) {
-        if(block instanceof IAncientWarfareFarmable) {
+        if(block instanceof IAncientWarfareFarmable && ((IAncientWarfareFarmable)block).isMature(worldObj, x, y, z)) {
             return true;
         }
         if(super.isFarmable(block, x, y, z)){
@@ -143,13 +143,6 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             } else if (block == Blocks.farmland) {
                 blocksToPlant.add(position);
             }
-        } else if(block instanceof IAncientWarfareFarmable) {
-            IAncientWarfareFarmable farmable = (IAncientWarfareFarmable) block;
-            if(farmable.isMature(worldObj, position.x, position.y, position.z)) {
-                blocksToHarvest.add(position);
-            } else if(farmable.func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
-                blocksToFertilize.add(position);
-            }
         } else if (block instanceof BlockStem) {
             if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                 block = worldObj.getBlock(position.x - 1, position.y, position.z);
@@ -202,21 +195,21 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if(block instanceof IAncientWarfareFarmable) {
-                    return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
-                } else if (melonOrPumpkin(block)) {
+                if (melonOrPumpkin(block)) {
                     return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
                 }
                 else if (block instanceof IGrowable) {
                     if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote) && !(block instanceof BlockStem)) {
                         if(Loader.isModLoaded("AgriCraft")){
-                            Class<? extends Block> c = block.getClass();
-                            if("com.InfinityRaider.AgriCraft.blocks.BlockCrop".equals(c.getName())){//A crop from AgriCraft
-                                try {//Use the harvest method, hopefully dropping stuff
-                                    c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class).invoke(block, worldObj, position.x, position.y, position.z, null);
-                                    return true;
-                                }catch (Throwable ignored){
-                                    return false;
+                            if(!(block instanceof IAncientWarfareFarmable)) {//Not using the API
+                                Class<? extends Block> c = block.getClass();
+                                if ("com.InfinityRaider.AgriCraft.blocks.BlockCrop".equals(c.getName())) {//A crop from AgriCraft
+                                    try {//Use the harvest method, hopefully dropping stuff
+                                        c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class).invoke(block, worldObj, position.x, position.y, position.z, null);
+                                        return true;
+                                    } catch (Throwable ignored) {
+                                        return false;
+                                    }
                                 }
                             }
                         }
@@ -255,7 +248,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
-                if (block instanceof IGrowable || block instanceof IAncientWarfareFarmable) {
+                if (block instanceof IGrowable) {
                     ItemStack stack;
                     for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
                         stack = getStackInSlot(i);
