@@ -154,7 +154,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             IAncientWarfareFarmable farmable = (IAncientWarfareFarmable) block;
             if(farmable.isMature(worldObj, position.x, position.y, position.z)) {
                 blocksToHarvest.add(position);
-            } else if(farmable.canFertilize(worldObj, position.x, position.y, position.z)) {
+            } else if(farmable.func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                 blocksToFertilize.add(position);
             }
         } else if (block instanceof BlockStem) {
@@ -270,7 +270,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                                 IAncientWarfareFarmable farmable = (IAncientWarfareFarmable) block;
                                 if(farmable.isMature(worldObj, position.x, position.y, position.z)) {
                                     blocksToHarvest.add(position);
-                                } else if(farmable.canFertilize(worldObj, position.x, position.y, position.z)) {
+                                } else if(farmable.func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
                                     blocksToFertilize.add(position);
                                 }
                             }
