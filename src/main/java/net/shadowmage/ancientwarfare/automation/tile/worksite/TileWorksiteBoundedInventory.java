@@ -6,7 +6,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.shadowmage.ancientwarfare.api.v1.IAncientWarfareFarmable;
+import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
