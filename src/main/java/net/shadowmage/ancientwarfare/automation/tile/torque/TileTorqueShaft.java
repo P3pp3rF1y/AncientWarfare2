@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
 public abstract class TileTorqueShaft extends TileTorqueSingleCell {
 
@@ -12,7 +13,13 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
     private boolean nextNeighborInvalid = true;
 
     public TileTorqueShaft() {
+        double max = getMaxTransfer();
+        torqueCell = new TorqueCell(max, max, max, getEfficiency());
     }
+
+    protected abstract double getEfficiency();
+
+    protected abstract double getMaxTransfer();
 
     @Override
     protected void serverNetworkSynch() {
@@ -35,7 +42,7 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
             int percent2 = (int) ((torqueOut / last.torqueCell.getMaxOutput()) * 100.d);
 //    AWLog.logDebug("shaft net synch, p1, p2: "+percent+" :: "+percent2 + " avg: "+avg+" avgper: "+perc+" lo: "+last.torqueOut);
             percent = Math.max(percent, percent2);
-            if (percent != (int) clientDestEnergyState) {
+            if (percent != clientDestEnergyState) {
                 clientDestEnergyState = percent;
                 sendSideRotation(getPrimaryFacing(), percent);
             }

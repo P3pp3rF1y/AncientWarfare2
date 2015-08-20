@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 public abstract class TileTorqueSidedCell extends TileTorqueBase {
 
     boolean connections[] = null;
-    SidedTorqueCell[] storage = new SidedTorqueCell[6];
+    final SidedTorqueCell[] storage = new SidedTorqueCell[DIRECTION_LENGTH];
 
     /**
      * client side this == 0.0 -> 100.0
@@ -35,8 +35,16 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     double rotation, prevRotation;
 
     public TileTorqueSidedCell() {
-
+        double max = getMaxTransfer();
+        double eff = getEfficiency();
+        for (int i = 0; i < storage.length; i++) {
+            storage[i] = new SidedTorqueCell(max, max, max, eff, ForgeDirection.values()[i], this);
+        }
     }
+
+    protected abstract double getEfficiency();
+
+    protected abstract double getMaxTransfer();
 
     @Override
     public void updateEntity() {
@@ -157,7 +165,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     }
 
     protected void buildConnections() {
-        boolean[] connections = new boolean[6];
+        boolean[] connections = new boolean[DIRECTION_LENGTH];
         ITorqueTile[] cache = getTorqueCache();
         ForgeDirection dir;
         for (int i = 0; i < cache.length; i++) {

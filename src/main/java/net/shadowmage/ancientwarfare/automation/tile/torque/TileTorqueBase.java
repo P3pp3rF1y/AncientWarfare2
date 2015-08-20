@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
 @Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore", striprefs = true)
 public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler {
 
+    public static final int DIRECTION_LENGTH = ForgeDirection.VALID_DIRECTIONS.length;
     /**
      * The primary facing direction for this tile.  Default to north for uninitialized tiles (null is not a valid value)
      */
@@ -106,10 +107,9 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         if (worldObj == null) {
             throw new RuntimeException("Attempt to build neighbor cache on null world!!");
         }
-        ITorqueTile[] torqueCache = new ITorqueTile[6];
+        ITorqueTile[] torqueCache = new ITorqueTile[DIRECTION_LENGTH];
         ForgeDirection dir;
         TileEntity te;
-        ITorqueTile itt;
         int x, y, z;
         for (int i = 0; i < torqueCache.length; i++) {
             dir = ForgeDirection.values()[i];
@@ -124,15 +124,14 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
             }
             te = worldObj.getTileEntity(x, y, z);
             if (te instanceof ITorqueTile) {
-                itt = (ITorqueTile) te;
-                torqueCache[i] = itt;
+                torqueCache[i] = (ITorqueTile) te;
             }
         }
         this.torqueCache = torqueCache;
     }
 
     private void buildRFCache() {
-        TileEntity[] rfCache = new TileEntity[6];
+        TileEntity[] rfCache = new TileEntity[DIRECTION_LENGTH];
         ForgeDirection dir;
         TileEntity te;
         int x, y, z;
@@ -283,11 +282,8 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
 
     protected final double applyPowerDrain(TorqueCell cell) {
         double e = cell.getEnergy();
-        double eff = 1.d - cell.getEfficiency();
-        double drain = eff * e;
-        e -= drain;
-        cell.setEnergy(e);
-        return drain;
+        cell.setEnergy(e * cell.getEfficiency());
+        return cell.getEnergy() - e;
     }
 
     protected final void sendDataToClient(int type, int data) {
@@ -304,7 +300,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
     @Override
     public boolean receiveClientEvent(int a, int b) {
         if (worldObj.isRemote) {
-            if (a < 6) {
+            if (a < DIRECTION_LENGTH) {
                 networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
                 handleClientRotationData(ForgeDirection.values()[a], b);
             }

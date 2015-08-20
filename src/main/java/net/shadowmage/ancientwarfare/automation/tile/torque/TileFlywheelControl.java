@@ -8,15 +8,22 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
-
 public abstract class TileFlywheelControl extends TileTorqueSingleCell {
 
     private boolean powered;
 
-    TorqueCell inputCell;
+    private final TorqueCell inputCell;
 
     public TileFlywheelControl() {
+        double max = getMaxTransfer();
+        double eff = getEfficiency();
+        inputCell = new TorqueCell(max, max, max, eff);
+        torqueCell = new TorqueCell(max, max, max, eff);
     }
+
+    protected abstract double getEfficiency();
+
+    protected abstract double getMaxTransfer();
 
     @Override
     public void updateEntity() {

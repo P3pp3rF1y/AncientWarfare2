@@ -20,7 +20,7 @@ import java.util.EnumSet;
 public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite, IOwnable {
 
     String ownerName = "";
-    TorqueCell inputCell;
+    private final TorqueCell inputCell;
 
     /**
      * client side this == 0.0 -> 100.0 (integer percent)
