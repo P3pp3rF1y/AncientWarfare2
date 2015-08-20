@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInvBasic;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,24 +12,17 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
 
-public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory {
+public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory,IInvBasic {
 
-    private InventoryBasic inventory;
+    private final InventoryBasic inventory;
 
     public TileOreProcessor() {
-        inventory = new InventoryBasic(2) {
-            @Override
-            public void setInventorySlotContents(int var1, ItemStack var2) {
-                if (worldObj != null && !worldObj.isRemote) {
-                    onInventoryUpdated();
-                }
-                super.setInventorySlotContents(var1, var2);
-            }
-        };//TODO override methods for callback for when items changed
+        inventory = new InventoryBasic(2, this);
     }
 
-    public void onInventoryUpdated() {
-
+    @Override
+    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal) {
+        markDirty();
     }
 
     @Override

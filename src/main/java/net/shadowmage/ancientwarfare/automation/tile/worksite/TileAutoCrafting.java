@@ -1,12 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -17,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.ArrayList;
 
-public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventory {
+public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventory, IInvBasic {
 
     public InventoryBasic bookSlot;
     public InventoryBasic outputInventory;
@@ -41,13 +39,14 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
             @Override
             public void onCraftMatrixChanged(IInventory par1iInventory) {
                 onLayoutMatrixChanged();
+                onInventoryChanged(null);
             }
         };
         craftMatrix = new InventoryCrafting(dummy, 3, 3);
-        resourceInventory = new InventoryBasic(18);
-        outputInventory = new InventoryBasic(9);
+        resourceInventory = new InventoryBasic(18, this);
+        outputInventory = new InventoryBasic(9, this);
         outputSlot = new InventoryBasic(1);
-        bookSlot = new InventoryBasic(1);
+        bookSlot = new InventoryBasic(1, this);
         resourceSlotIndices = new int[resourceInventory.getSizeInventory()];
         for (int i = 0; i < resourceSlotIndices.length; i++) {
             resourceSlotIndices[i] = i;
@@ -159,7 +158,6 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
         this.outputInventory.readFromNBT(tag.getCompoundTag("outputInventory"));
         this.outputSlot.readFromNBT(tag.getCompoundTag("outputSlot"));
         InventoryTools.readInventoryFromNBT(craftMatrix, tag.getCompoundTag("craftMatrix"));
-        onLayoutMatrixChanged();
     }
 
     @Override
@@ -170,6 +168,12 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
         tag.setTag("outputInventory", outputInventory.writeToNBT(new NBTTagCompound()));
         tag.setTag("outputSlot", outputSlot.writeToNBT(new NBTTagCompound()));
         tag.setTag("craftMatrix", InventoryTools.writeInventoryToNBT(craftMatrix, new NBTTagCompound()));
+    }
+
+    @Override
+    public void setWorldObj(World world){
+        super.setWorldObj(world);
+        onLayoutMatrixChanged();
     }
 
     /** ***********************************INVENTORY METHODS*********************************************** */
@@ -193,7 +197,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
         if (slot >= resourceInventory.getSizeInventory()) {
-            return outputInventory.decrStackSize(slot-resourceInventory.getSizeInventory(), amount);
+            return outputInventory.decrStackSize(slot - resourceInventory.getSizeInventory(), amount);
         }
         return resourceInventory.decrStackSize(slot, amount);
     }
@@ -201,7 +205,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     @Override
     public ItemStack getStackInSlotOnClosing(int var1) {
         if (var1 >= resourceInventory.getSizeInventory()) {
-            return outputInventory.getStackInSlotOnClosing(var1-resourceInventory.getSizeInventory());
+            return outputInventory.getStackInSlotOnClosing(var1 - resourceInventory.getSizeInventory());
         }
         return resourceInventory.getStackInSlotOnClosing(var1);
     }
@@ -216,8 +220,15 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
+    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal){
+        if(internal == bookSlot)
+            onLayoutMatrixChanged();
+        markDirty();
+    }
+
+    @Override
     public String getInventoryName() {
-        return "aw.autocrafting";
+        return "autocrafting";
     }
 
     @Override
@@ -228,11 +239,6 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     @Override
     public int getInventoryStackLimit() {
         return 64;
-    }
-
-    @Override
-    public void markDirty() {
-        super.markDirty();
     }
 
     @Override

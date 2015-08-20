@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import net.minecraft.inventory.IInvBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
@@ -13,7 +14,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileDraftingStation extends TileEntity {
+public class TileDraftingStation extends TileEntity implements IInvBasic {
 
     private String structureName;//structure pulled from live structure list anytime a ref is needed
     private boolean isStarted;//has started compiling resources -- will need input to cancel
@@ -22,8 +23,8 @@ public class TileDraftingStation extends TileEntity {
     private int remainingTime;//not really time, but raw item count
     private int totalTime;//total raw-item count
 
-    public InventoryBasic inputSlots = new InventoryBasic(27);
-    public InventoryBasic outputSlot = new InventoryBasic(1);
+    public InventoryBasic inputSlots = new InventoryBasic(27, this);
+    public InventoryBasic outputSlot = new InventoryBasic(1, this);
 
     public TileDraftingStation() {
 
@@ -31,8 +32,7 @@ public class TileDraftingStation extends TileEntity {
 
     @Override
     public void updateEntity() {
-        super.updateEntity();
-        if (worldObj.isRemote) {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
         if (structureName != null) {
@@ -146,13 +146,14 @@ public class TileDraftingStation extends TileEntity {
         this.neededResources.clear();
         this.remainingTime = 0;
         StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(templateName);
-        if (t != null && t.getValidationSettings().isSurvival()) {
-            this.structureName = templateName;
+        if (t != null) {
+            if(t.getValidationSettings().isSurvival())
+                this.structureName = templateName;
+            for (ItemStack item : t.getResourceList()) {
+                this.neededResources.add(item.copy());
+            }
+            calcTime();
         }
-        for (ItemStack item : t.getResourceList()) {
-            this.neededResources.add(item.copy());
-        }
-        calcTime();
     }
 
     private void calcTime() {
@@ -182,13 +183,9 @@ public class TileDraftingStation extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        NBTTagCompound tag1 = new NBTTagCompound();
-        inputSlots.writeToNBT(tag1);
-        tag.setTag("inputInventory", tag1);
+        tag.setTag("inputInventory", inputSlots.writeToNBT(new NBTTagCompound()));
 
-        tag1 = new NBTTagCompound();
-        outputSlot.writeToNBT(tag1);
-        tag.setTag("outputInventory", tag1);
+        tag.setTag("outputInventory", outputSlot.writeToNBT(new NBTTagCompound()));
 
         if (structureName != null) {
             tag.setString("structureName", structureName);
@@ -201,6 +198,11 @@ public class TileDraftingStation extends TileEntity {
         /**
          * TODO write out resource-list
          */
+    }
+
+    @Override
+    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal){
+        markDirty();
     }
 
 }

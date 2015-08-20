@@ -63,18 +63,17 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
 
-            int storageSlotsStart = 0;
             int playerSlotStart = tile.inputSlots.getSizeInventory();
             int playerSlotEnd = playerSlotStart + 36;
-            if (slotClickedIndex >= storageSlotsStart && slotClickedIndex < playerSlotStart)//storage slots
+            if (slotClickedIndex < playerSlotStart)//storage slots
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
                     return null;
                 }
-            } else if (slotClickedIndex >= playerSlotStart && slotClickedIndex < playerSlotEnd)//player slots, merge into storage
+            } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into storage
             {
-                if (!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
+                if (!this.mergeItemStack(slotStack, 0, playerSlotStart, false))//merge into storage
                 {
                     return null;
                 }

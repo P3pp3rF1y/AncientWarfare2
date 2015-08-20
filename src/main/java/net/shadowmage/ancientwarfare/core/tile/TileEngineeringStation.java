@@ -1,16 +1,14 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
@@ -18,7 +16,7 @@ import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileEngineeringStation extends TileEntity implements IRotatableTile {
+public class TileEngineeringStation extends TileEntity implements IRotatableTile,IInvBasic {
 
     ForgeDirection facing = ForgeDirection.NORTH;
     ItemStack[] matrixShadow;
@@ -37,19 +35,14 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
 
             @Override
             public void onCraftMatrixChanged(IInventory par1iInventory) {
-                onLayoutMatrixChanged();
+                onInventoryChanged(null);
             }
         };
         layoutMatrix = new InventoryCrafting(c, 3, 3);
         matrixShadow = new ItemStack[layoutMatrix.getSizeInventory()];
-        bookInventory = new InventoryBasic(1) {
-            @Override
-            public void markDirty() {
-                onLayoutMatrixChanged();
-            }
-        };
+        bookInventory = new InventoryBasic(1, this);
         result = new InventoryCraftResult();
-        extraSlots = new InventoryBasic(18);
+        extraSlots = new InventoryBasic(18, this);
     }
 
     @Override
@@ -88,6 +81,18 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
 
     private void onLayoutMatrixChanged() {
         this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, worldObj, getCrafterName()));
+    }
+
+    @Override
+    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal){
+        onLayoutMatrixChanged();
+        markDirty();
+    }
+
+    @Override
+    public void setWorldObj(World world){
+        super.setWorldObj(world);
+        onLayoutMatrixChanged();
     }
 
     @Override

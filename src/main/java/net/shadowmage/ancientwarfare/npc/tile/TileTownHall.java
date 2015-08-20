@@ -31,7 +31,7 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
 
     private List<NpcDeathEntry> deathNotices = new ArrayList<TileTownHall.NpcDeathEntry>();
 
-    private InventoryBasic inventory = new InventoryBasic(27);
+    private final InventoryBasic inventory = new InventoryBasic(27);
 
     private List<ContainerTownHall> viewers = new ArrayList<ContainerTownHall>();
 
@@ -111,7 +111,7 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         ownerName = tag.getString("owner");
-        InventoryTools.readInventoryFromNBT(inventory, tag.getCompoundTag("inventory"));
+        inventory.readFromNBT(tag.getCompoundTag("inventory"));
         NBTTagList entryList = tag.getTagList("deathNotices", Constants.NBT.TAG_COMPOUND);
         NpcDeathEntry entry;
         for (int i = 0; i < entryList.tagCount(); i++) {
@@ -127,7 +127,7 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setString("owner", ownerName);
-        tag.setTag("inventory", InventoryTools.writeInventoryToNBT(inventory, new NBTTagCompound()));
+        tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
         NBTTagList entryList = new NBTTagList();
         for (NpcDeathEntry entry : deathNotices) {
             entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
@@ -148,7 +148,10 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
 
     @Override
     public ItemStack decrStackSize(int var1, int var2) {
-        return inventory.decrStackSize(var1, var2);
+        ItemStack stack = inventory.decrStackSize(var1, var2);
+        if(stack!=null)
+            markDirty();
+        return stack;
     }
 
     @Override
@@ -159,6 +162,7 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
     @Override
     public void setInventorySlotContents(int var1, ItemStack var2) {
         inventory.setInventorySlotContents(var1, var2);
+        markDirty();
     }
 
     @Override

@@ -5,7 +5,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
@@ -34,7 +33,8 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             }
         }
 
-        Slot slot = new Slot(tileEntity.bookInventory, 0, 8, 18 + 4) {
+        int slotNum = 0;
+        Slot slot = new Slot(tileEntity, slotNum, 8, 18 + 4) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return ItemResearchBook.getResearcherName(par1ItemStack) != null;
@@ -42,13 +42,13 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         };
         addSlotToContainer(slot);
 
-        int x2, y2, slotNum = 0, yBase = 8 + 3 * 18 + 10 + 12 + 4 + 10;
+        int x2, y2, yBase = 8 + 3 * 18 + 10 + 12 + 4 + 10;
         for (int y1 = 0; y1 < 3; y1++) {
             y2 = y1 * 18 + yBase;
             for (int x1 = 0; x1 < 3; x1++) {
                 x2 = x1 * 18 + 8 + 18;//x1*18 + 8 + 3*18;
-                slotNum = y1 * 3 + x1;
-                slot = new Slot(tileEntity.resourceInventory, slotNum, x2, y2);
+                slotNum++;
+                slot = new Slot(tileEntity, slotNum, x2, y2);
                 addSlotToContainer(slot);
             }
         }
@@ -64,8 +64,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
 
-            int storageSlotsStart = 1;
-            int playerSlotStart = storageSlotsStart + tileEntity.resourceInventory.getSizeInventory();
+            int playerSlotStart = tileEntity.getSizeInventory();
             int playerSlotEnd = playerSlotStart + 36;
             if (slotClickedIndex < playerSlotStart)//book , storage slot
             {
@@ -75,7 +74,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
                 }
             } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into storage
             {
-                if (!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
+                if (!this.mergeItemStack(slotStack, 1, playerSlotStart, false))//merge into storage
                 {
                     return null;
                 }

@@ -80,7 +80,8 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     @Override
     public ItemStack decrStackSize(int var1, int var2) {
         ItemStack stack = inventory.decrStackSize(var1, var2);
-        markDirty();
+        if(stack!=null)
+            markDirty();
         return stack;
     }
 
@@ -95,6 +96,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     public void setInventorySlotContents(int var1, ItemStack var2) {
         inventory.setInventorySlotContents(var1, var2);
         recalcRequests();
+        markDirty();
     }
 
     @Override

@@ -1,13 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -16,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileWarehouseCraftingStation extends TileEntity implements IInteractableTile {
+public class TileWarehouseCraftingStation extends TileEntity implements IInteractableTile,IInvBasic {
 
     public InventoryCrafting layoutMatrix;
     public InventoryCraftResult result;
@@ -33,20 +31,14 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
 
             @Override
             public void onCraftMatrixChanged(IInventory par1iInventory) {
-                onLayoutMatrixChanged();
+                onInventoryChanged(null);
             }
         };
 
         layoutMatrix = new InventoryCrafting(c, 3, 3);
         matrixShadow = new ItemStack[layoutMatrix.getSizeInventory()];
         result = new InventoryCraftResult();
-
-        bookInventory = new InventoryBasic(1) {
-            @Override
-            public void markDirty() {
-                onLayoutMatrixChanged();
-            }
-        };
+        bookInventory = new InventoryBasic(1, this);
     }
 
     /**
@@ -113,6 +105,18 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
 
     public String getCrafterName() {
         return ItemResearchBook.getResearcherName(bookInventory.getStackInSlot(0));
+    }
+
+    @Override
+    public void setWorldObj(World world){
+        super.setWorldObj(world);
+        onLayoutMatrixChanged();
+    }
+
+    @Override
+    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal){
+        onLayoutMatrixChanged();
+        markDirty();
     }
 
     @Override

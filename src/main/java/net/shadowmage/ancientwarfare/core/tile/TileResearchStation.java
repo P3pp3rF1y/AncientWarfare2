@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInvBasic;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,23 +22,17 @@ import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
 import java.util.List;
 
-public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, ITorqueTile, IOwnable, IInteractableTile, IRotatableTile {
+public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, IInvBasic, ITorqueTile, IOwnable, IInteractableTile, IRotatableTile {
 
     protected String owningPlayer = "";
     ForgeDirection orientation = ForgeDirection.NORTH;//default for old blocks
 
-    @Override
-    public void onBlockBroken() {
-        // TODO
-    }
-
-    public InventoryBasic bookInventory = new InventoryBasic(1);
-    public InventoryBasic resourceInventory = new InventoryBasic(9);
+    private final InventoryBasic bookInventory = new InventoryBasic(1, this);
+    private final InventoryBasic resourceInventory = new InventoryBasic(9, this);
 
     int startCheckDelay = 0;
     int startCheckDelayMax = 40;
@@ -49,6 +44,11 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
     double maxEnergyStored = 1600;
     double maxInput = 100;
     private double storedEnergy;
+
+    @Override
+    public void onBlockBroken() {
+        // TODO
+    }
 
     @Override
     public int getBoundsMaxWidth() {
@@ -126,11 +126,11 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
     @Override
     public double addTorque(ForgeDirection from, double energy) {
         if (canInputTorque(from)) {
-            if (energy + getTorqueStored(null) > getMaxTorque(null)) {
-                energy = getMaxTorque(null) - getTorqueStored(null);
+            if (energy + getTorqueStored(from) > getMaxTorque(from)) {
+                energy = getMaxTorque(from) - getTorqueStored(from);
             }
-            if (energy > getMaxTorqueInput(null)) {
-                energy = getMaxTorqueInput(null);
+            if (energy > getMaxTorqueInput(from)) {
+                energy = getMaxTorqueInput(from);
             }
             storedEnergy += energy;
             return energy;
@@ -164,7 +164,7 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote) {
+        if (worldObj == null || worldObj.isRemote) {
             return;
         }
         String name = getCrafterName();
@@ -186,13 +186,13 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        owningPlayer = tag.getString("owningPlayer");
-        InventoryTools.readInventoryFromNBT(bookInventory, tag.getCompoundTag("bookInventory"));
-        InventoryTools.readInventoryFromNBT(resourceInventory, tag.getCompoundTag("resourceInventory"));
+        setOwnerName(tag.getString("owningPlayer"));
+        bookInventory.readFromNBT(tag.getCompoundTag("bookInventory"));
+        resourceInventory.readFromNBT(tag.getCompoundTag("resourceInventory"));
         this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
         this.storedEnergy = tag.getDouble("storedEnergy");
         if (tag.hasKey("orientation")) {
-            this.orientation = ForgeDirection.values()[tag.getInteger("orientation")];
+            setPrimaryFacing(ForgeDirection.values()[tag.getInteger("orientation")]);
         }
         this.inventoryDirection = ForgeDirection.getOrientation(tag.getInteger("inventoryDirection"));
         this.inventorySide = ForgeDirection.getOrientation(tag.getInteger("inventorySide"));
@@ -202,8 +202,8 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setString("owningPlayer", owningPlayer);
-        tag.setTag("bookInventory", InventoryTools.writeInventoryToNBT(bookInventory, new NBTTagCompound()));
-        tag.setTag("resourceInventory", InventoryTools.writeInventoryToNBT(resourceInventory, new NBTTagCompound()));
+        tag.setTag("bookInventory", bookInventory.writeToNBT(new NBTTagCompound()));
+        tag.setTag("resourceInventory", resourceInventory.writeToNBT(new NBTTagCompound()));
         tag.setBoolean("useAdjacentInventory", useAdjacentInventory);
         tag.setDouble("storedEnergy", storedEnergy);
         tag.setInteger("orientation", orientation.ordinal());
@@ -285,62 +285,76 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
 
     @Override
     public int getSizeInventory() {
-        return resourceInventory.getSizeInventory();
+        return bookInventory.getSizeInventory() + resourceInventory.getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(int var1) {
-        return resourceInventory.getStackInSlot(var1);
+        if(var1 < bookInventory.getSizeInventory())
+            return bookInventory.getStackInSlot(var1);
+        return resourceInventory.getStackInSlot(var1 - bookInventory.getSizeInventory());
     }
 
     @Override
     public ItemStack decrStackSize(int var1, int var2) {
-        return resourceInventory.decrStackSize(var1, var2);
+        if(var1 < bookInventory.getSizeInventory()) {
+            return bookInventory.decrStackSize(var1, var2);
+        }
+        return resourceInventory.decrStackSize(var1 - bookInventory.getSizeInventory(), var2);
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(int var1) {
-        return resourceInventory.getStackInSlotOnClosing(var1);
+        if(var1 < bookInventory.getSizeInventory())
+            return bookInventory.getStackInSlotOnClosing(var1);
+        return resourceInventory.getStackInSlotOnClosing(var1 - bookInventory.getSizeInventory());
     }
 
     @Override
     public void setInventorySlotContents(int var1, ItemStack var2) {
-        resourceInventory.setInventorySlotContents(var1, var2);
+        if(var1 < bookInventory.getSizeInventory()) {
+            bookInventory.setInventorySlotContents(var1, var2);
+            return;
+        }
+        resourceInventory.setInventorySlotContents(var1 - bookInventory.getSizeInventory(), var2);
+    }
+
+    @Override
+    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal){
+        markDirty();
     }
 
     @Override
     public String getInventoryName() {
-        return resourceInventory.getInventoryName();
+        return "research.station";
     }
 
     @Override
     public boolean hasCustomInventoryName() {
-        return resourceInventory.hasCustomInventoryName();
+        return false;
     }
 
     @Override
     public int getInventoryStackLimit() {
-        return resourceInventory.getInventoryStackLimit();
+        return 64;
     }
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer var1) {
-        return resourceInventory.isUseableByPlayer(var1);
+        return true;
     }
 
     @Override
     public void openInventory() {
-        resourceInventory.openInventory();
     }
 
     @Override
     public void closeInventory() {
-        resourceInventory.closeInventory();
     }
 
     @Override
     public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        return resourceInventory.isItemValidForSlot(var1, var2);
+        return var1 >= bookInventory.getSizeInventory() || ItemResearchBook.getResearcherName(var2) != null;
     }
 
     @Override

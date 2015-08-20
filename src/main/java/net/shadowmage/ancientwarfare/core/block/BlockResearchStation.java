@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -62,10 +63,9 @@ public class BlockResearchStation extends Block implements IRotatableBlock {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileResearchStation tile = (TileResearchStation) world.getTileEntity(x, y, z);
-        if (tile != null) {
-            InventoryTools.dropInventoryInWorld(world, tile.bookInventory, x, y, z);
-            InventoryTools.dropInventoryInWorld(world, tile.resourceInventory, x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof IInventory) {
+            InventoryTools.dropInventoryInWorld(world, (IInventory)tile, x, y, z);
         }
         super.breakBlock(world, x, y, z, block, meta);
     }

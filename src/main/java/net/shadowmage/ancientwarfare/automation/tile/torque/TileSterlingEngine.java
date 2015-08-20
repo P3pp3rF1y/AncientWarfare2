@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 public class TileSterlingEngine extends TileTorqueSingleCell implements IInventory {
 
-    InventoryBasic fuelInventory = new InventoryBasic(1) {
+    private final InventoryBasic fuelInventory = new InventoryBasic(1) {
         @Override
         public boolean isItemValidForSlot(int var1, net.minecraft.item.ItemStack var2) {
             return TileEntityFurnace.getItemBurnTime(var2) > 0;
@@ -32,14 +32,12 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
         super.updateEntity();
         if (!worldObj.isRemote) {
             if (burnTime <= 0 && torqueCell.getEnergy() < torqueCell.getMaxEnergy()) {
-                if (fuelInventory.getStackInSlot(0) != null) {
-                    //if fueled, consume one, set burn-ticks to fuel value
-                    int ticks = TileEntityFurnace.getItemBurnTime(fuelInventory.getStackInSlot(0));
-                    if (ticks > 0) {
-                        fuelInventory.decrStackSize(0, 1);
-                        burnTime = ticks;
-                        burnTimeBase = ticks;
-                    }
+                //if fueled, consume one, set burn-ticks to fuel value
+                int ticks = TileEntityFurnace.getItemBurnTime(getStackInSlot(0));
+                if (ticks > 0) {
+                    decrStackSize(0, 1);
+                    burnTime = ticks;
+                    burnTimeBase = ticks;
                 }
             } else if (burnTime > 0) {
                 torqueCell.setEnergy(torqueCell.getEnergy() + AWAutomationStatics.sterling_generator_output);
@@ -76,7 +74,10 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
 
     @Override
     public ItemStack decrStackSize(int var1, int var2) {
-        return fuelInventory.decrStackSize(var1, var2);
+        ItemStack stack = fuelInventory.decrStackSize(var1, var2);
+        if(stack!=null)
+            markDirty();
+        return stack;
     }
 
     @Override
@@ -87,6 +88,7 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
     @Override
     public void setInventorySlotContents(int var1, ItemStack var2) {
         fuelInventory.setInventorySlotContents(var1, var2);
+        markDirty();
     }
 
     @Override

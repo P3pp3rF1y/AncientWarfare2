@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
-
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 
