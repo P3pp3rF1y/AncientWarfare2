@@ -16,16 +16,15 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStac
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseControl> {
 
-    CompositeScrolled area;
-    Button sortChange;
-    Text input;
-    Checkbox sortOrderBox;
-    SortType sortType = SortType.NAME;
-    SortOrder sortOrder = SortOrder.DESCENDING;
-    ComparatorItemStack sorter;
+    private CompositeScrolled area;
+    private Text input;
+    private SortType sortType = SortType.NAME;
+    private SortOrder sortOrder = SortOrder.DESCENDING;
+    private final ComparatorItemStack sorter;
     private Label storedLabel;
 
     public GuiWarehouseControl(ContainerBase par1Container) {
@@ -35,22 +34,22 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 
     @Override
     public void initElements() {
-        sortChange = new Button(8, 8, 110, 12, StatCollector.translateToLocal("guistrings.automation.sort_type") + ":" + StatCollector.translateToLocal(sortType.toString())) {
+        Button sortChange = new Button(8, 8, 110, 12, "guistrings.automation." + sortType.toString()) {
             @Override
             protected void onPressed() {
                 sortType = sortType.next();
-                setText(StatCollector.translateToLocal("guistrings.automation.sort_type") + ": " + StatCollector.translateToLocal(sortType.toString()));
+                setText("guistrings.automation." + sortType.toString());
                 refreshGui();
             }
         };
         addGuiElement(sortChange);
 
-        sortOrderBox = new Checkbox(8 + 55 + 55 + 4, 6, 16, 16, "guistrings.automation.descending") {
+        Checkbox sortOrderBox = new Checkbox(8 + 55 + 55 + 4, 6, 16, 16, "guistrings.automation.descending") {
             @Override
             public void onToggled() {
                 super.onToggled();
                 sortOrder = checked() ? SortOrder.ASCENDING : SortOrder.DESCENDING;
-                String name = sortOrder == SortOrder.ASCENDING ? "ascending" : "descending";
+                String name = sortOrder.name().toLowerCase(Locale.ENGLISH);
                 label = StatCollector.translateToLocal("guistrings.automation." + name);
                 refreshGui();
             }
@@ -60,7 +59,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
         input = new Text(8, 8 + 12 + 4, 178 - 16, "", this) {
             @Override
             public void onTextUpdated(String oldText, String newText) {
-                if (sortType == SortType.NAME_INPUT) {
+                if (!oldText.equals(newText)) {
                     refreshGui();
                 }
             }
@@ -101,21 +100,19 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
     }
 
     private void addInventoryViewElements() {
-        ItemSlot slot;
-        int qty;
         ItemStack stack;
-        int x = 0, y = 0;
-        int totalSize = 8;
         List<ItemStack> displayStacks = new ArrayList<ItemStack>();
         for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
-            qty = getContainer().itemMap.getCount(entry);
             stack = entry.getItemStack();
-            stack.stackSize = qty;
+            stack.stackSize = getContainer().itemMap.getCount(entry);
             displayStacks.add(stack);
         }
 
         sortItems(displayStacks);
 
+        int x = 0, y = 0;
+        int totalSize = 8;
+        ItemSlot slot;
         for (ItemStack displayStack : displayStacks) {
             slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
                 @Override

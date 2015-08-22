@@ -297,7 +297,7 @@ public class Text extends GuiElement {
 
         public TextValidator(char[] chars) {
             for (char ch : chars) {
-                validChars.add(Character.valueOf(ch));
+                validChars.add(ch);
             }
         }
 
@@ -308,12 +308,12 @@ public class Text extends GuiElement {
         }
 
         public void addValidChar(char ch) {
-            validChars.add(Character.valueOf(ch));
+            validChars.add(ch);
         }
 
         public void addValidChars(char[] chars) {
             for (char ch : chars) {
-                validChars.add(Character.valueOf(ch));
+                validChars.add(ch);
             }
         }
 
