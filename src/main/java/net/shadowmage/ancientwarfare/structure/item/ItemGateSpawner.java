@@ -110,11 +110,19 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
             tag = new NBTTagCompound();
             stack.setTagCompound(tag);
         } else if (tag.hasKey("pos1") && tag.hasKey("pos2")) {
-            byte facing = (byte) BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
             BlockPosition pos1 = new BlockPosition(tag.getCompoundTag("pos1"));
             BlockPosition pos2 = new BlockPosition(tag.getCompoundTag("pos2"));
             BlockPosition avg = BlockTools.getAverageOf(pos1, pos2);
-            if (player.getDistance(avg.x + 0.5d, pos1.y, avg.z + 0.5d) > 10) {
+            int max = 10;
+            if(pos1.x - pos2.x > max)
+                max = pos1.x - pos2.x;
+            else if(pos2.x - pos1.x > max)
+                max = pos2.x - pos1.x;
+            if(pos1.z - pos2.z > max)
+                max = pos1.z - pos2.z;
+            else if(pos2.z - pos1.z > max)
+                max = pos2.z - pos1.z;
+            if (player.getDistance(avg.x + 0.5, pos1.y + 0.5, avg.z + 0.5) > max && player.getDistance(avg.x + 0.5, pos2.y + 0.5, avg.z + 0.5) > max) {
                 player.addChatMessage(new ChatComponentTranslation("guistrings.gate.too_far"));
                 return stack;
             }
@@ -122,6 +130,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
                 player.addChatMessage(new ChatComponentTranslation("guistrings.gate.exists"));
                 return stack;
             }
+            byte facing = (byte) BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
             EntityGate entity = Gate.constructGate(world, pos1, pos2, Gate.getGateByID(stack.getItemDamage()), facing);
             if (entity != null) {
                 entity.setOwnerName(player.getCommandSenderName());
