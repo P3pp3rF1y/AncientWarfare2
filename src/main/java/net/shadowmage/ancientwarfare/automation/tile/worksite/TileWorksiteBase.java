@@ -356,7 +356,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     public final void setPrimaryFacing(ForgeDirection face) {
         orientation = face;
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());//notify neighbors of tile change
+        markDirty();//notify neighbors of tile change
     }
 
 //*************************************** NBT AND PACKET DATA METHODS ***************************************//
@@ -459,8 +459,9 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
                 upgrades.add(WorksiteUpgrade.values()[ug]);
             }
         }
+        updateEfficiency();
         orientation = ForgeDirection.values()[pkt.func_148857_g().getInteger("orientation")];
-        this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
+        markDirty();
     }
 
 }

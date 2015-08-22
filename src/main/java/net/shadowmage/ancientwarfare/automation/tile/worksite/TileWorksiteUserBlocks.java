@@ -158,7 +158,7 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        if (tag.hasKey("targetMap") && tag.getTag("targetMap") instanceof NBTTagByteArray) {
+        if (tag.hasKey("targetMap")) {
             targetMap = tag.getByteArray("targetMap");
         }
     }
