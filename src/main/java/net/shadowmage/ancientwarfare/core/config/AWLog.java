@@ -15,7 +15,7 @@ public class AWLog {
 
     public static void logDebug(String message) {
         if (AWCoreStatics.DEBUG) {
-            AncientWarfareCore.log.log(Level.ERROR, "[DEBUG] " + message);
+            log(message);
         }
     }
 
