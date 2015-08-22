@@ -294,9 +294,13 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         }
     }
 
+    private boolean isInsensitiveTo(DamageSource source){
+        return source == null || source == DamageSource.anvil || source == DamageSource.cactus || source == DamageSource.drown || source == DamageSource.fall || source == DamageSource.fallingBlock || source == DamageSource.inWall || source == DamageSource.starve;
+    }
+
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        if(par1DamageSource == null || par2 < 0){
+        if(isInsensitiveTo(par1DamageSource) || par2 < 0){
             return false;
         }
         if (this.worldObj.isRemote) {
@@ -330,6 +334,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         return !this.isDead;
     }
 
+//Prevent moving from external means
     @Override
     public void travelToDimension(int dimension){
 
@@ -350,6 +355,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
     }
 
+//Interaction, collision handling
     @Override
     public AxisAlignedBB getBoundingBox(){
         return this.boundingBox;
@@ -358,6 +364,11 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     @Override
     public boolean canBeCollidedWith() {
         return true;
+    }
+
+    @Override
+    public float getCollisionBorderSize() {
+        return -0.1F;
     }
 
     @Override
@@ -387,6 +398,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
     }
 
+//Rendering
     public String getTexture() {
         return "textures/models/gate/" + gateType.getTexture();
     }
@@ -396,6 +408,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         return 0.f;
     }
 
+//Data
     @Override
     protected void readEntityFromNBT(NBTTagCompound tag) {
         this.pos1 = new BlockPosition(tag.getCompoundTag("pos1"));

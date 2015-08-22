@@ -22,9 +22,11 @@ package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MovingObjectPosition;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
 import java.util.List;
@@ -70,6 +72,13 @@ public class TEGateProxy extends TileEntity {
             DamageSource source = player!=null ? DamageSource.causePlayerDamage(player) : DamageSource.generic;
             this.owner.attackEntityFrom(source, 1);
         }
+    }
+
+    public ItemStack onBlockPicked(MovingObjectPosition target) {
+        if(this.owner != null){
+            return owner.getPickedResult(target);
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")

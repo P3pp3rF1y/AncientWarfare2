@@ -79,12 +79,21 @@ public final class BlockGateProxy extends BlockContainer {
     }
 
     @Override
+    public boolean isNormalCube(IBlockAccess world, int x, int y, int z){
+        return true;
+    }
+
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+        TileEntity proxy = world.getTileEntity(x, y, z);
+        if(proxy instanceof TEGateProxy){
+            return ((TEGateProxy) proxy).onBlockPicked(target);
+        }
         return null;
     }
 
