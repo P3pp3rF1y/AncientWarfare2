@@ -2,9 +2,12 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -44,4 +47,25 @@ public class ItemBardInstrument extends Item {
         return icons[par1];
     }
 
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (!world.isRemote) {
+            int meta = stack.getItemDamage();
+            String s = "note.bd";
+            if(meta == 0){
+                s = "note.bassattack";
+            }else if(meta == 1){
+                s = "mob.zombie.unfect";
+            }else if(meta == 2){
+                s = "note.harp";
+            }
+            world.playSoundEffect(player.posX + 0.5, player.posY + 0.5, player.posZ + 0.5, s, 2.0F, 1.0F);
+        }
+        return stack;
+    }
+
+    @Override
+    public boolean onEntitySwing(EntityLivingBase living, ItemStack stack) {
+        return true;
+    }
 }
