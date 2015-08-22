@@ -24,6 +24,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class TEGateProxy extends TileEntity {
     public void setOwner(EntityGate gate) {
         this.owner = gate;
         this.entityID = owner.getPersistentID();
+        markDirty();
     }
 
     @Override
@@ -52,18 +54,22 @@ public class TEGateProxy extends TileEntity {
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
         if (this.entityID != null) {
             tag.setLong("msb", entityID.getMostSignificantBits());
             tag.setLong("lsb", entityID.getLeastSignificantBits());
         }
-        super.writeToNBT(tag);
     }
 
     public boolean onBlockClicked(EntityPlayer player) {
-        if (this.owner != null) {
-            return this.owner.interactFirst(player);
+        return this.owner == null || this.owner.interactFirst(player);
+    }
+
+    public void onBlockAttacked(EntityPlayer player) {
+        if(this.owner != null){
+            DamageSource source = player!=null ? DamageSource.causePlayerDamage(player) : DamageSource.generic;
+            this.owner.attackEntityFrom(source, 1);
         }
-        return false;
     }
 
     @SuppressWarnings("unchecked")
@@ -72,19 +78,22 @@ public class TEGateProxy extends TileEntity {
         if (this.worldObj == null || this.worldObj.isRemote) {
             return;
         }
-        if (this.owner == null && this.entityID != null) {
+        if (this.entityID == null) {
+            this.noParentTicks++;
+        }
+        else if (this.owner == null) {
             this.noParentTicks++;
             List<Entity> entities = this.worldObj.loadedEntityList;
             for (Entity ent : entities) {
                 if (ent instanceof EntityGate && ent.getPersistentID() != null && ent.getPersistentID().equals(entityID)) {
                     this.owner = (EntityGate) ent;
                     this.noParentTicks = 0;
+                    break;
                 }
             }
-        } else if (this.entityID == null) {
-            this.noParentTicks++;
         }
         if (this.noParentTicks >= 100 || (owner != null && owner.isDead)) {
+            owner = null;
             this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);
         }
     }

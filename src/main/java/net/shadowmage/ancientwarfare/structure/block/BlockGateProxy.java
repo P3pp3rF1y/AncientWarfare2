@@ -20,7 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.block;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,7 +33,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class BlockGateProxy extends Block {
+public final class BlockGateProxy extends BlockContainer {
 
     public BlockGateProxy() {
         super(Material.rock);
@@ -49,8 +49,13 @@ public class BlockGateProxy extends Block {
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createNewTileEntity(World world, int metadata) {
         return new TEGateProxy();
+    }
+
+    @Override
+    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int meta, float chance, int fortune){
+
     }
 
     @Override
@@ -92,5 +97,31 @@ public class BlockGateProxy extends Block {
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int face, float vecX, float vecY, float vecZ) {
         TileEntity proxy = world.getTileEntity(x, y, z);
         return proxy instanceof TEGateProxy && ((TEGateProxy) proxy).onBlockClicked(player);
+    }
+
+    @Override
+    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+        TileEntity proxy = world.getTileEntity(x, y, z);
+        if(proxy instanceof TEGateProxy){
+            ((TEGateProxy) proxy).onBlockAttacked(player);
+        }else if(player != null && player.capabilities.isCreativeMode){
+            return super.removedByPlayer(world, player, x, y, z);
+        }
+        return false;
+    }
+
+    @Override
+    public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
+        player.addExhaustion(0.025F);
+    }
+
+    @Override
+    public void dropXpOnBlockBreak(World world, int x, int y, int z, int amount) {
+
+    }
+
+    @Override
+    public boolean canHarvestBlock(EntityPlayer player, int meta) {
+        return false;
     }
 }
