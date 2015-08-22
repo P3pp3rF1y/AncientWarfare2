@@ -21,8 +21,11 @@
 package net.shadowmage.ancientwarfare.structure.render;
 
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.util.RenderTools;
+import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.render.gate.RenderGateBasic;
 import net.shadowmage.ancientwarfare.structure.render.gate.RenderGateDouble;
@@ -54,6 +57,18 @@ public final class RenderGateHelper extends Render {
     public void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) {
         GL11.glPushMatrix();
         EntityGate gate = (EntityGate) entity;
+        if(RenderManager.debugBoundingBox && !entity.isInvisible()){
+            double x = d0 - entity.lastTickPosX, y = d1 - entity.lastTickPosY, z = d2 - entity.lastTickPosZ;
+            if(gate.edgePosition > 0 && entity.getBoundingBox() instanceof DualBoundingBox){
+                renderOffsetAABB(((DualBoundingBox) entity.getBoundingBox()).getTop(), x, y, z);
+                renderOffsetAABB(((DualBoundingBox) entity.getBoundingBox()).getMin(), x, y, z);
+                renderOffsetAABB(((DualBoundingBox) entity.getBoundingBox()).getMax(), x, y, z);
+            }else
+                renderOffsetAABB(entity.getBoundingBox(), x, y, z);
+
+            GL11.glPopMatrix();
+            return;
+        }
 
         if (gate.hurtAnimationTicks > 0) {
             float percent = ((float) gate.hurtAnimationTicks / 20.f);

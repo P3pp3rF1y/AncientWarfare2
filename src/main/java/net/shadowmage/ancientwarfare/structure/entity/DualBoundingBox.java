@@ -1,3 +1,23 @@
+/**
+ Copyright 2015 Olivier Sylvain (aka GotoLink)
+ This software is distributed under the terms of the GNU General Public License.
+ Please see COPYING for precise license information.
+
+ This file is part of Ancient Warfare.
+
+ Ancient Warfare is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Ancient Warfare is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.shadowmage.ancientwarfare.structure.entity;
 
 import net.minecraft.util.AxisAlignedBB;
@@ -5,9 +25,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-/**
- * Created by Olivier on 17/04/2015.
- */
 public class DualBoundingBox extends AxisAlignedBB{
 
     private double yOffset;
@@ -15,15 +32,15 @@ public class DualBoundingBox extends AxisAlignedBB{
         super(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
     }
 
-    private AxisAlignedBB getMin(){
+    public AxisAlignedBB getMin(){
         return getBoundingBox(minX, minY - yOffset, minZ, minX + 1, maxY, minZ + 1);
     }
 
-    private AxisAlignedBB getMax(){
+    public AxisAlignedBB getMax(){
         return getBoundingBox(maxX - 1, minY - yOffset, maxZ - 1, maxX, maxY, maxZ);
     }
 
-    private AxisAlignedBB getTop(){
+    public AxisAlignedBB getTop(){
         return getBoundingBox(minX, maxY - 1, minZ, maxX, maxY, maxZ);
     }
 
