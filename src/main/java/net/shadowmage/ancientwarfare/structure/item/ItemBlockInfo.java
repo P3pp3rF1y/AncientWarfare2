@@ -23,9 +23,10 @@ public class ItemBlockInfo extends Item {
         if(!world.isRemote) {
             BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
             if (pos != null) {
-                Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
-                int meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);
-                AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " meta: " + meta);
+                Block block = world.getBlock(pos.x, pos.y, pos.z);
+                int meta = world.getBlockMetadata(pos.x, pos.y, pos.z);
+                boolean entity = block.hasTileEntity(meta);
+                AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + meta + ", entity: " + entity);
             }
         }
         return stack;
