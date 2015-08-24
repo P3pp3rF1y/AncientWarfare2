@@ -127,12 +127,14 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 
     protected void trimPath(PathEntity pathEntity){
         if(pathEntity!=null){
-            if(npc.getBlockPathWeight(MathHelper.floor_double(npc.posX), MathHelper.floor_double(npc.boundingBox.minY), MathHelper.floor_double(npc.posZ)) >= 0) {
+            int index = pathEntity.getCurrentPathIndex();
+            PathPoint pathpoint = pathEntity.getPathPointFromIndex(index);
+            if(npc.getBlockPathWeight(pathpoint.xCoord, pathpoint.yCoord, pathpoint.zCoord) >= 0) {
 
-                for (int i = 0; i < pathEntity.getCurrentPathLength() ; i++){
-                    PathPoint pathpoint = pathEntity.getPathPointFromIndex(i);
+                for (int i = index + 1; i < pathEntity.getCurrentPathLength() ; i++){
+                    pathpoint = pathEntity.getPathPointFromIndex(i);
                     if (npc.getBlockPathWeight(pathpoint.xCoord, pathpoint.yCoord, pathpoint.zCoord)<0){
-                        pathEntity.setCurrentPathLength(i-1);
+                        pathEntity.setCurrentPathLength(i - 1);
                         break;
                     }
                 }

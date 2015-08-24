@@ -152,7 +152,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     public void handlePlayerCommand(Command cmd) {
         if (cmd != null && cmd.type == CommandType.ATTACK) {
             Entity e = cmd.getEntityTarget(worldObj);
-            AWLog.logDebug("handling attack command : " + e);
+            AWLog.logDebug("Handling attack command : " + e);
             if (e instanceof EntityLivingBase) {
                 EntityLivingBase elb = (EntityLivingBase) e;
                 if (canTarget(elb))//only attacked allowed targets
@@ -273,10 +273,11 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     @Override
-    protected void tryCommand(EntityPlayer player) {
+    protected boolean tryCommand(EntityPlayer player) {
         if (this.canBeCommandedBy(player.getCommandSenderName()) && (getTeam() == null || getTeam().isSameTeam(player.getTeam()))) {
-            super.tryCommand(player);
+            return super.tryCommand(player);
         }
+        return false;
     }
 
     public boolean withdrawFood(IInventory inventory, int side) {

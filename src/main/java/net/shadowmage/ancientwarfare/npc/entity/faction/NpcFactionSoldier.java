@@ -21,7 +21,7 @@ public abstract class NpcFactionSoldier extends NpcFaction {
         this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
 
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
+        this.tasks.addTask(102, new NpcAIWander(this));
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new NpcAIHurt(this));

@@ -42,7 +42,7 @@ public class NpcTrader extends NpcPlayerOwned {
 
         //post-100 -- used by delayed shared tasks (look at random stuff, wander)
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
+        this.tasks.addTask(102, new NpcAIWander(this));
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
     }
 
@@ -72,16 +72,16 @@ public class NpcTrader extends NpcPlayerOwned {
 
     @Override
     protected boolean interact(EntityPlayer player) {
-        if (player.worldObj.isRemote) {
-            return true;
-        }
         boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
         if (baton) {
+            return false;
+        }
+        if (player.worldObj.isRemote) {
             return true;
         }
         if (player.getCommandSenderName().equals(getOwnerName()))//owner
         {
-            tryCommand(player);
+            return tryCommand(player);
         } else//non-owner
         {
             if(trader!=null && !trader.isEntityAlive()){

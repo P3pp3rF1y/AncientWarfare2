@@ -46,10 +46,8 @@ public abstract class NpcFaction extends NpcBase {
     }
 
     @Override
-    protected void tryCommand(EntityPlayer player) {
-        if (player.capabilities.isCreativeMode) {
-            super.tryCommand(player);
-        }
+    protected boolean tryCommand(EntityPlayer player) {
+        return player.capabilities.isCreativeMode && super.tryCommand(player);
     }
 
     @Override

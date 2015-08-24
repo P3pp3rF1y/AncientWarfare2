@@ -21,7 +21,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
@@ -29,21 +28,21 @@ import java.util.*;
 
 public class ItemCommandBaton extends Item implements IItemKeyInterface {
 
-    double attackDamage = 5.d;
-
-    private ToolMaterial material;
+    private final double attackDamage;
+    int range = 120;//TODO set range from config;
+    private final ToolMaterial material;
 
     public ItemCommandBaton(String name, ToolMaterial material) {
         this.setUnlocalizedName(name);
         this.setCreativeTab(AWNpcItemLoader.npcTab);
         this.setTextureName("ancientwarfare:npc/" + name);
-        this.attackDamage = 4.f + material.getDamageVsEntity();
+        this.attackDamage = 4 + material.getDamageVsEntity();
         this.material = material;
-        this.maxStackSize = 1;
+        this.setMaxStackSize(1);
         this.setMaxDamage(material.getMaxUses());
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         String keyText, text;
@@ -72,7 +71,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
     }
 
     /**
-     * Return the enchantability factor of the item, most of the time is based on material.
+     * Return the enchantability factor of the item.
      */
     @Override
     public int getItemEnchantability() {
@@ -84,28 +83,27 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
      */
     @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return this.material.func_150995_f() == par2ItemStack.getItem() || super.getIsRepairable(par1ItemStack, par2ItemStack);
+        return this.material.func_150995_f() == par2ItemStack.getItem();
     }
 
     /**
-     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
-     * the damage on the stack.
+     * Raise the damage on the stack.
      */
     @Override
-    public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase) {
-        par1ItemStack.damageItem(1, par3EntityLivingBase);
+    public boolean hitEntity(ItemStack stack, EntityLivingBase attacked, EntityLivingBase wielder) {
+        stack.damageItem(1, wielder);
         return true;
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_) {
-        if (p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_, p_150894_5_, p_150894_6_) != 0) {
-            p_150894_1_.damageItem(2, p_150894_7_);
+    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase wielder) {
+        if (block.getBlockHardness(world, x, y, z) != 0) {
+            stack.damageItem(2, wielder);
         }
         return true;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({"unchecked"})
     @Override
     public Multimap getAttributeModifiers(ItemStack stack) {
         Multimap multimap = super.getAttributeModifiers(stack);
@@ -126,11 +124,11 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
         if (player.isSneaking()) {
             //TODO openGUI
         } else {
-            MovingObjectPosition pos = RayTraceUtils.getPlayerTarget(player, 120, 0);//TODO set range from config;
-            if (pos != null && pos.typeOfHit == MovingObjectType.ENTITY && pos.entityHit instanceof NpcPlayerOwned) {
-                NpcPlayerOwned npc = (NpcPlayerOwned) pos.entityHit;
+            MovingObjectPosition pos = RayTraceUtils.getPlayerTarget(player, range, 0);
+            if (pos != null && pos.typeOfHit == MovingObjectType.ENTITY && pos.entityHit instanceof NpcBase) {
+                NpcBase npc = (NpcBase) pos.entityHit;
                 if (npc.canBeCommandedBy(player.getCommandSenderName())) {
-                    onNpcClicked(player, (NpcPlayerOwned) pos.entityHit, player.getHeldItem());
+                    onNpcClicked(player, npc, stack);
                 }
             }
         }
@@ -152,7 +150,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             break;
             case KEY_1://attack
             {
-                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 120, 0);//new MovingObjectPosition(player);
+                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, range, 0);
                 if (hit != null) {
                     CommandType c = hit.typeOfHit == MovingObjectType.ENTITY ? CommandType.ATTACK : CommandType.ATTACK_AREA;
                     NpcCommand.handleCommandClient(c, hit);
@@ -161,7 +159,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             break;
             case KEY_2://move/guard
             {
-                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 120, 0);//new MovingObjectPosition(player);
+                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, range, 0);
                 if (hit != null) {
                     CommandType c = hit.typeOfHit == MovingObjectType.ENTITY ? CommandType.GUARD : CommandType.MOVE;
                     NpcCommand.handleCommandClient(c, hit);
@@ -169,7 +167,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             }
             break;
             case KEY_3: {
-                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 120, 0);//new MovingObjectPosition(player);
+                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, range, 0);
                 if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
                     CommandType c = player.isSneaking() ? CommandType.CLEAR_HOME : CommandType.SET_HOME;
                     NpcCommand.handleCommandClient(c, hit);
@@ -177,7 +175,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             }
             break;
             case KEY_4: {
-                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 120, 0);//new MovingObjectPosition(player);
+                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, range, 0);
                 if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
                     CommandType c = player.isSneaking() ? CommandType.CLEAR_UPKEEP : CommandType.SET_UPKEEP;
                     NpcCommand.handleCommandClient(c, hit);

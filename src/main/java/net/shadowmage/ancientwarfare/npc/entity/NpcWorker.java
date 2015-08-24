@@ -47,7 +47,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
 
         //post-100 -- used by delayed shared tasks (look at random stuff, wander)
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(102, new NpcAIWander(this, 0.625D));
+        this.tasks.addTask(102, new NpcAIWander(this));
         this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(0, new NpcAIPlayerOwnedFindWorksite(this));

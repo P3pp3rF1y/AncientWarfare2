@@ -14,11 +14,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -243,7 +245,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public float getBlockPathWeight(int varX, int varY, int varZ){
-            Block below = worldObj.getBlock(varX, varY - 1, varZ);
+        Block below = worldObj.getBlock(varX, varY - 1, varZ);
         if(below.getMaterial() == Material.lava || below.getMaterial() == Material.cactus)//Avoid cacti and lava when wandering
             return -10;
         else if(below.getMaterial().isLiquid())//Don't try swimming too much
@@ -252,7 +254,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if(level < 0)
             return 0;
         else
-            return level;
+            return level + (below.isSideSolid(worldObj, varX, varY - 1, varZ, ForgeDirection.UP) ? 1 : 0);
     }
 
     @Override
@@ -311,11 +313,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     protected boolean interact(EntityPlayer player) {
-        if (player.worldObj.isRemote) {
-            return false;
-        }
-        tryCommand(player);
-        return true;
+        return tryCommand(player);
     }
 
     /**
@@ -361,27 +359,69 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
     }
 
-    protected void tryCommand(EntityPlayer player) {
+    protected boolean tryCommand(EntityPlayer player) {
         boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
         if (!baton) {
-            if (player.isSneaking()) {
-                if (this.followingPlayerName != null && this.followingPlayerName.equals(player.getCommandSenderName())) {
-                    this.followingPlayerName = null;
+            if(!worldObj.isRemote) {
+                if (player.isSneaking()) {
+                    if (this.followingPlayerName != null && this.followingPlayerName.equals(player.getCommandSenderName())) {
+                        this.followingPlayerName = null;
+                    } else {
+                        this.followingPlayerName = player.getCommandSenderName();
+                    }
                 } else {
-                    this.followingPlayerName = player.getCommandSenderName();
+                    openGUI(player);
                 }
-            } else {
-                openGUI(player);
             }
+            return true;
         }
+        return false;
     }
 
     @Override
     public final boolean attackEntityFrom(DamageSource source, float par2) {
-        if (source.getEntity() != null && !canBeAttackedBy(source.getEntity())) {
+        if (source.getEntity() != null && !canBeAttackedBy(source.getEntity()))
             return false;
-        }
+        if(source == DamageSource.cactus)
+            knockFromDamage(par2, Material.cactus);
+        else if(source == DamageSource.lava)
+            knockFromDamage(par2, Material.lava);
+        else if(source == DamageSource.drown)
+            jump();
         return super.attackEntityFrom(source, par2);
+    }
+
+    private void knockFromDamage(float val, Material material){
+        int x = MathHelper.floor_double(this.posX);
+        int y = MathHelper.floor_double(this.boundingBox.minY + 0.5);
+        int z = MathHelper.floor_double(this.posZ);
+        if(worldObj.getBlock(x - 1, y, z).getMaterial() == material){
+            knockBack(null, val, x - 1 - this.posX, 0);
+        }else if(worldObj.getBlock(x, y, z - 1).getMaterial() == material){
+            knockBack(null, val, 0, z - 1 - this.posZ);
+        }else if(worldObj.getBlock(x + 1, y, z).getMaterial() == material){
+            knockBack(null, val, x + 1 - this.posX, 0);
+        }else if(worldObj.getBlock(x, y, z + 1).getMaterial() == material){
+            knockBack(null, val, 0, z + 1 - this.posZ);
+        }else if(worldObj.getBlock(x - 1, y, z - 1).getMaterial() == material){
+            knockBack(null, val, x - 1 - this.posX, z - 1 - this.posZ);
+        }else if(worldObj.getBlock(x + 1, y, z - 1).getMaterial() == material){
+            knockBack(null, val, x + 1 - this.posX, z - 1 - this.posZ);
+        }else if(worldObj.getBlock(x - 1, y, z + 1).getMaterial() == material){
+            knockBack(null, val, x - 1 - this.posX, z + 1 - this.posZ);
+        }else if(worldObj.getBlock(x + 1, y, z + 1).getMaterial() == material){
+            knockBack(null, val, x + 1 - this.posX, z + 1 - this.posZ);
+        }else if(worldObj.getBlock(x, y - 1, z).getMaterial() == material){
+            knockBack(null, val, getRNG().nextFloat(), getRNG().nextFloat());
+        }
+        if(worldObj.isRemote || getNavigator().noPath())
+            return;
+        PathPoint point = getNavigator().getPath().getPathPointFromIndex(getNavigator().getPath().getCurrentPathIndex());
+        if(worldObj.getBlock(point.xCoord, point.yCoord, point.zCoord).getMaterial() == material){
+            getNavigator().clearPathEntity();
+        }else if(worldObj.getBlock(point.xCoord, point.yCoord - 1, point.zCoord).getMaterial() == material){
+            getNavigator().clearPathEntity();
+        }
     }
 
     @Override
