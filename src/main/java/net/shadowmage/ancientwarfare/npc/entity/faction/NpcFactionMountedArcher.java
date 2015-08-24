@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
-import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionCommander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
@@ -46,7 +45,6 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(0, (horseAI = new NpcAIFactionRideHorse(this)));
-        this.tasks.addTask(1, new NpcAIFactionCommander(this));
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
         this.tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
         this.tasks.addTask(3, new NpcAIFactionRangedAttack(this));

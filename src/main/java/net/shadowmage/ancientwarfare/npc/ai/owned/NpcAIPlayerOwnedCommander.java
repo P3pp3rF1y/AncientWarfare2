@@ -13,9 +13,9 @@ import java.util.List;
 
 public class NpcAIPlayerOwnedCommander extends NpcAI<NpcBase> {
 
-    protected int lastExecuted = -1;
-
+    private int lastExecuted = -1;
     private final IEntitySelector selector;
+    protected PotionEffect effect = new PotionEffect(Potion.damageBoost.getId(), 20);//apply 1 second strength potion, times 1.3 damage
 
     public NpcAIPlayerOwnedCommander(NpcBase npc) {
         super(npc);
@@ -24,7 +24,7 @@ public class NpcAIPlayerOwnedCommander extends NpcAI<NpcBase> {
             public boolean isEntityApplicable(Entity var1) {
                 if (var1 instanceof NpcBase) {
                     NpcBase e = (NpcBase) var1;
-                    if (canBeCommanded(e) && !isCommander(e) && !e.isPotionActive(Potion.damageBoost)) {
+                    if (canBeCommanded(e) && !isCommander(e) && !e.isPotionActive(effect.getPotionID())) {
                         return true;
                     }
                 }
@@ -54,7 +54,6 @@ public class NpcAIPlayerOwnedCommander extends NpcAI<NpcBase> {
         return npc.getNpcSubType().equals("commander");
     }
 
-
     @SuppressWarnings("unchecked")
     @Override
     public void startExecuting() {
@@ -63,7 +62,7 @@ public class NpcAIPlayerOwnedCommander extends NpcAI<NpcBase> {
         AxisAlignedBB bb = npc.boundingBox.expand(dist, dist / 2, dist);
         List<NpcBase> potentialTargets = npc.worldObj.selectEntitiesWithinAABB(NpcBase.class, bb, selector);
         for(NpcBase npcBase : potentialTargets){
-            npcBase.addPotionEffect(new PotionEffect(Potion.damageBoost.getId(), 20));//apply 1 second strength potion, times 1.3 damage
+            npcBase.addPotionEffect(new PotionEffect(effect));
         }
     }
 

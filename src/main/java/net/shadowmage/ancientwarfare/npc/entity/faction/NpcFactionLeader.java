@@ -5,6 +5,7 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.*;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionCommander;
 
 public abstract class NpcFactionLeader extends NpcFaction {
 
@@ -15,6 +16,7 @@ public abstract class NpcFactionLeader extends NpcFaction {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
+        this.tasks.addTask(1, new NpcAIFactionCommander(this));
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
         this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
         this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));

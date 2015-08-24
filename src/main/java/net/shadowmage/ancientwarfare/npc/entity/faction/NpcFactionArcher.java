@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
-import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionCommander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
@@ -42,7 +41,6 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(1, new NpcAIFactionCommander(this));
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
 //  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); 
         this.tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
