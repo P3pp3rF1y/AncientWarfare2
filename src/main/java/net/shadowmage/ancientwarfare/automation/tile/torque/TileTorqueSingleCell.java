@@ -34,7 +34,7 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
     double rotation, prevRotation;
 
     public TileTorqueSingleCell() {
-        // TODO Auto-generated constructor stub
+
     }
 
     @Override

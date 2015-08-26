@@ -5,9 +5,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple {
+public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInteractableTile {
 
     private final Set<ChunkCoordIntPair> ccipSet = new HashSet<ChunkCoordIntPair>();
 
@@ -49,6 +49,7 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple {
             ccipSet.add(ccip);
             ForgeChunkManager.forceChunk(chunkTicket, ccip);
         }
+        markDirty();
         informViewers();
     }
 
@@ -58,29 +59,8 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple {
         }
     }
 
-    public void setChunkSet(Set<ChunkCoordIntPair> ccips) {
-        if (worldObj == null || worldObj.isRemote) {
-            return;
-        }
-        Set<ChunkCoordIntPair> set = new HashSet<ChunkCoordIntPair>();
-        set.addAll(ccipSet);
-        set.removeAll(ccips);//at this point, set is the list of chunks that should be unforced
-        ccipSet.removeAll(set);//remove them from the set, and unforce
-        for (ChunkCoordIntPair ccip : set) {
-            ForgeChunkManager.unforceChunk(chunkTicket, ccip);
-        }
-        set.clear();
-        set.addAll(ccips);
-        set.removeAll(ccipSet);//at this point, -set- contains all _new_ chunks...force them
-        ccipSet.addAll(ccips);//also, go ahead and merge the sets
-        for (ChunkCoordIntPair ccip : set) {
-            ForgeChunkManager.forceChunk(chunkTicket, ccip);
-        }
-        informViewers();
-    }
-
     public Set<ChunkCoordIntPair> getForcedChunks() {
-        return ccipSet;
+        return new HashSet<ChunkCoordIntPair>(ccipSet);
     }
 
     @Override
@@ -102,6 +82,7 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple {
         NBTTagList list = tag.getTagList("chunkList", Constants.NBT.TAG_COMPOUND);
         NBTTagCompound ccipTag;
         ChunkCoordIntPair ccip;
+        ccipSet.clear();
         for (int i = 0; i < list.tagCount(); i++) {
             ccipTag = list.getCompoundTagAt(i);
             ccip = new ChunkCoordIntPair(ccipTag.getInteger("x"), ccipTag.getInteger("z"));

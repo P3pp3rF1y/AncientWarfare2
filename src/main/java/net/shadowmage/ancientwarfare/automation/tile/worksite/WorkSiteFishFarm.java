@@ -16,12 +16,12 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 
     private static final int TOP_LENGTH = 27;
-    public boolean harvestFish = true;
-    public boolean harvestInk = true;
+    private boolean harvestFish = true;
+    private boolean harvestInk = true;
 
     private int waterBlockCount = 0;
-
     private int waterRescanDelay = 0;
+    private int maxBlocks = 1280;
 
     public WorkSiteFishFarm() {
         this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH);
@@ -36,23 +36,43 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
     @Override
     protected void onBoundsSet() {
         super.onBoundsSet();
-        bbMax.y = yCoord - 1;
-        bbMin.y = yCoord - 1;
+        getWorkBoundsMax().y = yCoord - 1;
+        getWorkBoundsMin().y = yCoord - 5;
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
     public void onBoundsAdjusted() {
         super.onBoundsAdjusted();
-        bbMax.y = yCoord - 1;
-        bbMin.y = yCoord - 1;
+        getWorkBoundsMax().y = yCoord - 1;
+        getWorkBoundsMin().y = yCoord - 5;
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public int getBoundsMaxHeight() {
+        return 4;
+    }
+
+    public boolean harvestFish(){
+        return harvestFish;
+    }
+
+    public boolean harvestInk(){
+        return harvestInk;
+    }
+
+    public void setHarvest(boolean fish, boolean ink){
+        if(harvestFish != fish || harvestInk != ink){
+            harvestFish = fish;
+            harvestInk = ink;
+            markDirty();
+        }
     }
 
     @Override
     protected boolean processWork() {
         if (waterBlockCount > 0) {
-            int maxBlocks = 1280;
             float percentOfMax = (float) waterBlockCount / (float) maxBlocks;
             float check = worldObj.rand.nextFloat();
             if (check <= percentOfMax) {
@@ -66,7 +86,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
                     if (fishStack != null) {
                         int fortune = getFortune();
                         if (fortune > 0) {
-                            fishStack.stackSize += worldObj.rand.nextInt(fortune);
+                            fishStack.stackSize += worldObj.rand.nextInt(fortune + 1);
                         }
                         addStackToInventory(fishStack, RelativeSide.TOP);
                         return true;
@@ -76,7 +96,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
                     ItemStack inkItem = new ItemStack(Items.dye, 1, 0);
                     int fortune = getFortune();
                     if (fortune > 0) {
-                        inkItem.stackSize += worldObj.rand.nextInt(fortune);
+                        inkItem.stackSize += worldObj.rand.nextInt(fortune + 1);
                     }
                     addStackToInventory(inkItem, RelativeSide.TOP);
                     return true;
@@ -92,7 +112,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
         BlockPosition max = getWorkBoundsMax();
         for (int x = min.x; x <= max.x; x++) {
             for (int z = min.z; z <= max.z; z++) {
-                for (int y = min.y; y > min.y - 5; y--) {
+                for (int y = max.y; y >= min.y; y--) {
                     if (worldObj.getBlock(x, y, z).getMaterial() == Material.water) {
                         waterBlockCount++;
                     } else {

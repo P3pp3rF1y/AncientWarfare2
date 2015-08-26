@@ -27,7 +27,7 @@ public class TileAdvancedSpawner extends TileEntity {
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote) {
+        if (!hasWorldObj() || worldObj.isRemote) {
             return;
         }
         if (settings.worldObj == null) {
@@ -60,7 +60,6 @@ public class TileAdvancedSpawner extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         settings.readFromNBT(pkt.func_148857_g());
-        super.onDataPacket(net, pkt);
         worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }

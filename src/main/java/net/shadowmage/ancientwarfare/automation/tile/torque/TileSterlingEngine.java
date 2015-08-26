@@ -15,7 +15,7 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
 
     private final InventoryBasic fuelInventory = new InventoryBasic(1) {
         @Override
-        public boolean isItemValidForSlot(int var1, net.minecraft.item.ItemStack var2) {
+        public boolean isItemValidForSlot(int var1, ItemStack var2) {
             return TileEntityFurnace.getItemBurnTime(var2) > 0;
         }
     };

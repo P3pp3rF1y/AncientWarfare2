@@ -2,9 +2,7 @@ package net.shadowmage.ancientwarfare.core.gui.research;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
@@ -20,13 +18,13 @@ import java.util.List;
 
 public class GuiResearchStation extends GuiContainerBase<ContainerResearchStation> {
 
-    Label researcherLabel;
-    Label researchGoalLabel;
-    ProgressBar bar;
-    Checkbox useAdjacentInventory;
-    Button info, invDir, invSide;
+    private Label researcherLabel;
+    private Label researchGoalLabel;
+    private ProgressBar bar;
+    private Checkbox useAdjacentInventory;
+    private Button info, invDir, invSide;
 
-    ItemSlot[] layoutSlots = new ItemSlot[9];
+    private ItemSlot[] layoutSlots = new ItemSlot[9];
 
     public GuiResearchStation(ContainerBase par1Container) {
         super(par1Container, 178, 240);
@@ -98,14 +96,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
         invDir = new Button(80, 8 + 3 * 18 + 6, 40, 16, Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection.ordinal()).getTranslationKey()) {
             @Override
             protected void onPressed() {
-                int o = getContainer().tileEntity.inventoryDirection.ordinal() + 1;
-                if (o > 6) {
-                    o = 0;
-                }
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setInteger("inventoryDirection", o);
-                sendDataToContainer(tag);
-                getContainer().tileEntity.inventoryDirection = ForgeDirection.getOrientation(o);
+                getContainer().onDirPressed();
                 refreshGui();
             }
         };
@@ -116,14 +107,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
         invSide = new Button(120, 8 + 3 * 18 + 6, 40, 16, Direction.getDirectionFor(getContainer().tileEntity.inventorySide.ordinal()).getTranslationKey()) {
             @Override
             protected void onPressed() {
-                int o = getContainer().tileEntity.inventorySide.ordinal() + 1;
-                if (o > 6) {
-                    o = 0;
-                }
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setInteger("inventorySide", o);
-                sendDataToContainer(tag);
-                getContainer().tileEntity.inventorySide = ForgeDirection.getOrientation(o);
+                getContainer().onSidePressed();
                 refreshGui();
             }
         };

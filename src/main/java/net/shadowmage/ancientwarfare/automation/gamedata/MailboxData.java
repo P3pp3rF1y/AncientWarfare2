@@ -309,8 +309,7 @@ public class MailboxData extends WorldSavedData {
                     }
                     if (item.deliveryTime >= time)//find if item is deliverable to this box
                     {
-                        stack = item.item;
-                        stack = InventoryTools.mergeItemStack(box.inventory, stack, box.inventory.getAccessDirectionFor(RelativeSide.TOP));
+                        stack = InventoryTools.mergeItemStack(box.inventory, item.item, box.inventory.getAccessDirectionFor(RelativeSide.TOP));
                         if (stack == null) {
                             it.remove();
                         }

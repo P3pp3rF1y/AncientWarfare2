@@ -7,7 +7,6 @@ import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
@@ -17,7 +16,6 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         super(player, x, y, z);
         IInventory inventory = tileEntity.craftMatrix;
 
-
         //slot 0 = outputSlot
         //slot 1 = bookSlot
         //slot 2-10 = craftMatrix
@@ -25,9 +23,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         //slot 29-37 = outputSlots
         //slot 38-73 = playerInventory
 
-        Slot slot;
-
-        slot = new SlotCrafting(player, inventory, tileEntity.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+        Slot slot = new SlotCrafting(player, inventory, tileEntity.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
             public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
                 return false;

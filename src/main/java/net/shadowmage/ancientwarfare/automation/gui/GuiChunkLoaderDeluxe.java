@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -33,14 +32,10 @@ public class GuiChunkLoaderDeluxe extends GuiContainerBase<ContainerChunkLoaderD
                     continue;
                 }//center button added manually...
                 ccip = new ChunkCoordIntPair(x, z);
-                button = new ButtonChunk(8 + xPos * 12, 8 + yPos * 12, 12, 12, getContainer().ccipSet.contains(ccip), ccip) {
+                button = new ButtonChunk(xPos, yPos, getContainer().ccipSet.contains(ccip), ccip) {
                     @Override
                     protected void onPressed() {
-                        NBTTagCompound tag = new NBTTagCompound();
-                        tag.setBoolean("forced", true);
-                        tag.setInteger("x", ccip.chunkXPos);
-                        tag.setInteger("z", ccip.chunkZPos);
-                        sendDataToContainer(tag);
+                        getContainer().force(ccip);
                     }
                 };
                 addGuiElement(button);
@@ -51,17 +46,16 @@ public class GuiChunkLoaderDeluxe extends GuiContainerBase<ContainerChunkLoaderD
          * 'center' button -- always forced
          */
         ccip = new ChunkCoordIntPair(cx, cz);
-        button = new ButtonChunk(8 + 2 * 12, 8 + 2 * 12, 12, 12, true, ccip);
+        button = new ButtonChunk(2, 2, true, ccip);
         addGuiElement(button);
     }
 
 
     private class ButtonChunk extends Button {
-        boolean forced;
-        ChunkCoordIntPair ccip;
+        final ChunkCoordIntPair ccip;
 
-        public ButtonChunk(int topLeftX, int topLeftY, int width, int height, boolean forced, ChunkCoordIntPair ccip) {
-            super(topLeftX, topLeftY, width, height, forced ? "X" : "");
+        public ButtonChunk(int xPos, int yPos, boolean forced, ChunkCoordIntPair ccip) {
+            super(8 + xPos * 12, 8 + yPos * 12, 12, 12, forced ? "X" : "");
             this.ccip = ccip;
         }
     }

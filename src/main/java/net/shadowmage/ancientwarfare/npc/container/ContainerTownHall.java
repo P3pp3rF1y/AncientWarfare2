@@ -70,6 +70,19 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
         sendDeathListToClient(false);
     }
 
+    public void setRange(int value){
+        tileEntity.setRange(value);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("range", value);
+        sendDataToServer(tag);
+    }
+
+    public void clearList(){
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("clear", true);
+        sendDataToServer(tag);
+    }
+
     private void sendDeathListToClient(boolean withRange) {
         NBTTagList list = new NBTTagList();
         for (NpcDeathEntry entry : deathList) {

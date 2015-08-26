@@ -69,15 +69,6 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     }
 
     @Override
-    public void onTargetsAdjusted() {
-        validateCollection(cocoaToPlant);
-        validateCollection(blocksToHarvest);
-        validateCollection(cactusToPlant);
-        validateCollection(reedToPlant);
-        validateCollection(cocoaToGrow);
-    }
-
-    @Override
     public void onBoundsAdjusted() {
         validateCollection(cocoaToPlant);
         validateCollection(blocksToHarvest);

@@ -18,7 +18,7 @@ public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoade
     public ContainerChunkLoaderDeluxe(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
         if (!player.worldObj.isRemote) {
-            ccipSet.addAll(tileEntity.getForcedChunks());
+            ccipSet = tileEntity.getForcedChunks();
             tileEntity.addViewer(this);
         }
     }
@@ -68,6 +68,14 @@ public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoade
         }
         tag.setTag("chunkList", list);
         sendDataToClient(tag);
+    }
+
+    public void force(ChunkCoordIntPair ccip){
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("forced", true);
+        tag.setInteger("x", ccip.chunkXPos);
+        tag.setInteger("z", ccip.chunkZPos);
+        sendDataToServer(tag);
     }
 
     public void onChunkLoaderSetUpdated(Set<ChunkCoordIntPair> ccipSet) {

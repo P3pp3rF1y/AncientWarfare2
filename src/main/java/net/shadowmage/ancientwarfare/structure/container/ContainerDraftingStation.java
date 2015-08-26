@@ -21,7 +21,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
     public int totalTime;
     public List<ItemStack> neededResources = new ArrayList<ItemStack>();
 
-    private TileDraftingStation tile;
+    private final TileDraftingStation tile;
 
     public ContainerDraftingStation(EntityPlayer player, int x, int y, int z) {
         super(player);
@@ -154,7 +154,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
                 tile.setTemplate(tag.getString("structName"));
             }
         }
-        if (tag.hasKey("clearName")) {
+        else if (tag.hasKey("clearName")) {
             structureName = null;
         }
         if (tag.hasKey("isStarted")) {
@@ -176,7 +176,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
         if (tag.hasKey("stop")) {
             tile.stopCurrentWork();
         }
-        if (tag.hasKey("start")) {
+        else if (tag.hasKey("start")) {
             tile.tryStart();
         }
         refreshGui();

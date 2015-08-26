@@ -32,7 +32,7 @@ public class TileDraftingStation extends TileEntity implements IInvBasic {
 
     @Override
     public void updateEntity() {
-        if (worldObj == null || worldObj.isRemote) {
+        if (!hasWorldObj() || worldObj.isRemote) {
             return;
         }
         if (structureName != null) {
@@ -130,6 +130,7 @@ public class TileDraftingStation extends TileEntity implements IInvBasic {
         this.remainingTime = 0;
         this.isFinished = false;
         this.isStarted = false;
+        markDirty();
     }
 
     /**
@@ -154,6 +155,7 @@ public class TileDraftingStation extends TileEntity implements IInvBasic {
             }
             calcTime();
         }
+        markDirty();
     }
 
     private void calcTime() {

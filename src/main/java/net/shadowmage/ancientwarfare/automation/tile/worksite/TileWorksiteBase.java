@@ -165,7 +165,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
     @Override
     public final void updateEntity() {
-        if (worldObj == null || worldObj.isRemote) {
+        if (!hasWorldObj() || worldObj.isRemote) {
             return;
         }
         if (workRetryDelay > 0) {
@@ -178,6 +178,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
                 worldObj.theProfiler.endStartSection("Process Work");
                 if (processWork()) {
                     torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
+                    markDirty();
                 } else {
                     workRetryDelay = 20;
                 }
@@ -288,7 +289,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 //*************************************** MISC METHODS ***************************************//
 
     @Override
-    public void setTicket(Ticket tk) {
+    public final void setTicket(Ticket tk) {
         if (chunkTicket != null) {
             ForgeChunkManager.releaseTicket(chunkTicket);
             chunkTicket = null;

@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -11,8 +10,8 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 
 public class GuiCombatOrder extends GuiContainerBase<ContainerCombatOrder> {
 
-    boolean hasChanged = false;
-    CompositeScrolled area;
+    private boolean hasChanged = false;
+    private CompositeScrolled area;
 
     public GuiCombatOrder(ContainerBase container) {
         super(container, 256, 220);
@@ -74,15 +73,13 @@ public class GuiCombatOrder extends GuiContainerBase<ContainerCombatOrder> {
     @Override
     protected boolean onGuiCloseRequested() {
         if (hasChanged) {
-            NBTTagCompound outer = new NBTTagCompound();
-            outer.setTag("combatOrder", getContainer().combatOrder.writeToNBT(new NBTTagCompound()));
-            sendDataToContainer(outer);
+            getContainer().close();
         }
         return super.onGuiCloseRequested();
     }
 
     private class IndexedButton extends Button {
-        int index;
+        final int index;
 
         public IndexedButton(int topLeftX, int topLeftY, int width, int height, String text, int index) {
             super(topLeftX, topLeftY, width, height, text);

@@ -84,6 +84,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
             ((TileWarehouseBase) this.getController()).onStorageFilterChanged(this, old, this.filters);
         }
         updateViewers();
+        markDirty();
     }
 
     @Override
@@ -131,7 +132,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
     @Override
     public void addViewer(ContainerWarehouseStorage containerWarehouseStorage) {
-        if (worldObj == null || worldObj.isRemote) {
+        if (!hasWorldObj() || worldObj.isRemote) {
             return;
         }
         viewers.add(containerWarehouseStorage);
@@ -152,6 +153,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
         for (ContainerWarehouseStorage viewer : viewers) {
             viewer.onStorageInventoryUpdated();
         }
+        markDirty();
     }
 
     @Override

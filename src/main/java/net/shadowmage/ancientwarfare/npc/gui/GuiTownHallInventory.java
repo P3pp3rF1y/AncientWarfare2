@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -43,10 +42,7 @@ public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
     @Override
     protected boolean onGuiCloseRequested() {
         if(getContainer().tileEntity.getRange()!=input.getIntegerValue()) {
-            getContainer().tileEntity.setRange(input.getIntegerValue());
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("range", input.getIntegerValue());
-            sendDataToContainer(tag);
+            getContainer().setRange(input.getIntegerValue());
         }
         return super.onGuiCloseRequested();
     }

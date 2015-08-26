@@ -108,77 +108,77 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     }
 
     @Override
-    public int getSizeInventory() {
+    public final int getSizeInventory() {
         return inventory.getSizeInventory();
     }
 
     @Override
-    public ItemStack getStackInSlot(int var1) {
+    public final ItemStack getStackInSlot(int var1) {
         return inventory.getStackInSlot(var1);
     }
 
     @Override
-    public ItemStack decrStackSize(int var1, int var2) {
+    public final ItemStack decrStackSize(int var1, int var2) {
         return inventory.decrStackSize(var1, var2);
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
+    public final ItemStack getStackInSlotOnClosing(int var1) {
         return inventory.getStackInSlotOnClosing(var1);
     }
 
     @Override
-    public void setInventorySlotContents(int var1, ItemStack var2) {
+    public final void setInventorySlotContents(int var1, ItemStack var2) {
         inventory.setInventorySlotContents(var1, var2);
     }
 
     @Override
-    public String getInventoryName() {
+    public final String getInventoryName() {
         return inventory.getInventoryName();
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public final boolean hasCustomInventoryName() {
         return inventory.hasCustomInventoryName();
     }
 
     @Override
-    public int getInventoryStackLimit() {
+    public final int getInventoryStackLimit() {
         return inventory.getInventoryStackLimit();
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public final boolean isUseableByPlayer(EntityPlayer var1) {
         return inventory.isUseableByPlayer(var1);
     }
 
     @Override
-    public void openInventory() {
+    public final void openInventory() {
         inventory.openInventory();
     }
 
     @Override
-    public void closeInventory() {
+    public final void closeInventory() {
         inventory.closeInventory();
     }
 
     @Override
-    public boolean isItemValidForSlot(int var1, ItemStack var2) {
+    public final boolean isItemValidForSlot(int var1, ItemStack var2) {
         return inventory.isItemValidForSlot(var1, var2);
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int var1) {
+    public final int[] getAccessibleSlotsFromSide(int var1) {
         return inventory.getAccessibleSlotsFromSide(var1);
     }
 
     @Override
-    public boolean canInsertItem(int var1, ItemStack var2, int var3) {
+    public final boolean canInsertItem(int var1, ItemStack var2, int var3) {
         return inventory.canInsertItem(var1, var2, var3);
     }
 
     @Override
-    public boolean canExtractItem(int var1, ItemStack var2, int var3) {
+    public final boolean canExtractItem(int var1, ItemStack var2, int var3) {
         return inventory.canExtractItem(var1, var2, var3);
     }
 

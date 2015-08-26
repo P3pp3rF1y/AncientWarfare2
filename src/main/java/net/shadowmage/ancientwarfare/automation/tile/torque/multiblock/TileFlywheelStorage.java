@@ -109,10 +109,9 @@ public class TileFlywheelStorage extends TileEntity {
     }
 
     protected void updateRotation() {
-        double maxRpm = this.maxRpm;
-        double rpm = (double) clientEnergy * 0.01d * maxRpm;
+        double rpm = (double) clientEnergy * 0.01d * this.maxRpm;
         prevRotation = rotation;
-        rotation += rpm * 360.d / 20.d / 60.d;
+        rotation += rpm * AWAutomationStatics.rpmToRpt;
     }
 
     public void blockBroken() {
@@ -187,8 +186,8 @@ public class TileFlywheelStorage extends TileEntity {
             te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof TileFlywheelStorage) {
                 ((TileFlywheelStorage) te).setController(cp);
+                ((TileFlywheelStorage) te).isControl = (pos.x == cx && pos.y == cy && pos.z == cz);
             }
-            ((TileFlywheelStorage) te).isControl = (pos.x == cx && pos.y == cy && pos.z == cz);
         }
         setTileAsController(cp.x, cp.y, cp.z, size, height, type);
     }
@@ -240,10 +239,8 @@ public class TileFlywheelStorage extends TileEntity {
 
     private void informNeighborsToValidate() {
         TileEntity te;
-        ForgeDirection d;
         int x, y, z;
-        for (int i = 0; i < 6; i++) {
-            d = ForgeDirection.getOrientation(i);
+        for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
             x = xCoord + d.offsetX;
             y = yCoord + d.offsetY;
             z = zCoord + d.offsetZ;

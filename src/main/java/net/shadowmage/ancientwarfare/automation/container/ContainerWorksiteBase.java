@@ -41,11 +41,11 @@ public class ContainerWorksiteBase extends ContainerTileBase<TileWorksiteBounded
      */
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        int slots = tileEntity.getSizeInventory();
         Slot slot = this.getSlot(slotClickedIndex);
         if (slot == null || !slot.getHasStack()) {
             return null;
         }
+        int slots = tileEntity.getSizeInventory();
         ItemStack stackFromSlot = slot.getStack();
         if (slotClickedIndex < slots) {
             this.mergeItemStack(stackFromSlot, slots, slots + 36, false);

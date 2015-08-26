@@ -73,13 +73,6 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
     }
 
     @Override
-    public void onTargetsAdjusted() {
-        validateCollection(blocksToPlantMushroom);
-        validateCollection(blocksToHarvest);
-        validateCollection(blocksToPlantNetherWart);
-    }
-
-    @Override
     public void onBoundsAdjusted() {
         validateCollection(blocksToPlantMushroom);
         validateCollection(blocksToHarvest);

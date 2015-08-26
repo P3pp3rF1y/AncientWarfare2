@@ -104,7 +104,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
     }
 
     private void buildTorqueCache() {
-        if (worldObj == null) {
+        if (!hasWorldObj()) {
             throw new RuntimeException("Attempt to build neighbor cache on null world!!");
         }
         ITorqueTile[] torqueCache = new ITorqueTile[DIRECTION_LENGTH];

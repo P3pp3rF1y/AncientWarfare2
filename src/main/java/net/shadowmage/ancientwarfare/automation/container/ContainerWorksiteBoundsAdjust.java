@@ -50,7 +50,6 @@ public class ContainerWorksiteBoundsAdjust extends ContainerBase {
                 TileWorksiteUserBlocks twub = (TileWorksiteUserBlocks) worksite;
                 byte[] map = tag.getByteArray("checkedMap");
                 twub.setTargetBlocks(map);
-                twub.onTargetsAdjusted();
             }
             player.worldObj.markBlockForUpdate(x, y, z);
         }

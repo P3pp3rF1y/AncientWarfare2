@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.interfaces.IChunkLoaderTile;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public final class AWChunkLoader implements LoadingCallback {
     @Override
     public void ticketsLoaded(List<Ticket> tickets, World world) {
         for (Ticket tk : tickets) {
-            if (tk.getModData().hasKey("tilePosition")) {
+            if (!tk.isPlayerTicket() && tk.getModId().startsWith(AncientWarfareCore.modID) && tk.getModData().hasKey("tilePosition")) {
                 NBTTagCompound posTag = tk.getModData().getCompoundTag("tilePosition");
                 int x = posTag.getInteger("x");
                 int y = posTag.getInteger("y");

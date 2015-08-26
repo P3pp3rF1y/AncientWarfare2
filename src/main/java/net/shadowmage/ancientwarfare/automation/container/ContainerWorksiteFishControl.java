@@ -12,8 +12,8 @@ public class ContainerWorksiteFishControl extends ContainerTileBase<WorkSiteFish
 
     public ContainerWorksiteFishControl(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        this.harvestFish = tileEntity.harvestFish;
-        this.harvestInk = tileEntity.harvestInk;
+        this.harvestFish = tileEntity.harvestFish();
+        this.harvestInk = tileEntity.harvestInk();
     }
 
     @Override
@@ -26,13 +26,10 @@ public class ContainerWorksiteFishControl extends ContainerTileBase<WorkSiteFish
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
-        if (tag.hasKey("fish")) {
+        if (tag.hasKey("fish") && tag.hasKey("ink")) {
             harvestFish = tag.getBoolean("fish");
-            tileEntity.harvestFish = harvestFish;
-        }
-        if (tag.hasKey("ink")) {
             harvestInk = tag.getBoolean("ink");
-            tileEntity.harvestInk = harvestInk;
+            tileEntity.setHarvest(harvestFish, harvestInk);
         }
         refreshGui();
     }
@@ -40,7 +37,7 @@ public class ContainerWorksiteFishControl extends ContainerTileBase<WorkSiteFish
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (harvestFish != tileEntity.harvestFish || harvestInk != tileEntity.harvestInk) {
+        if (harvestFish != tileEntity.harvestFish() || harvestInk != tileEntity.harvestInk()) {
             sendInitData();
         }
     }

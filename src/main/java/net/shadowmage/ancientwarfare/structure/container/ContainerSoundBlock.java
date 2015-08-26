@@ -31,12 +31,16 @@ public class ContainerSoundBlock extends ContainerTileBase<TileSoundBlock> {
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("tuneData")) {
-            data.readFromNBT(tag.getCompoundTag("tuneData"));
+            tileEntity.getSongs().readFromNBT(tag.getCompoundTag("tuneData"));
+            data = tileEntity.getSongs();
         }
         redstoneInteraction = tag.getBoolean("redstone");
         tileEntity.setRedstoneInteraction(redstoneInteraction);
         range = tag.getInteger("range");
         tileEntity.setPlayerRange(range);
+        if(!tileEntity.getWorldObj().isRemote){
+            tileEntity.markDirty();
+        }
         refreshGui();
     }
 

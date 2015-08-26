@@ -81,10 +81,9 @@ public class TEGateProxy extends TileEntity {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void updateEntity() {
-        if (this.worldObj == null || this.worldObj.isRemote) {
+        if (!hasWorldObj() || this.worldObj.isRemote) {
             return;
         }
         if (this.entityID == null) {
@@ -92,6 +91,7 @@ public class TEGateProxy extends TileEntity {
         }
         else if (this.owner == null) {
             this.noParentTicks++;
+            @SuppressWarnings("unchecked")
             List<Entity> entities = this.worldObj.loadedEntityList;
             for (Entity ent : entities) {
                 if (ent instanceof EntityGate && ent.getPersistentID() != null && ent.getPersistentID().equals(entityID)) {

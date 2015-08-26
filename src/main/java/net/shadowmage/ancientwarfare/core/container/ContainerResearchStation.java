@@ -153,6 +153,9 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         if (tag.hasKey("inventorySide")) {
             tileEntity.inventorySide = ForgeDirection.getOrientation(tag.getInteger("inventorySide"));
         }
+        if(!player.worldObj.isRemote){
+            tileEntity.markDirty();
+        }
         this.refreshGui();
     }
 
@@ -260,7 +263,6 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 
     }
 
-
     /**
      * should be called from client-side to send update packet to server
      */
@@ -268,7 +270,22 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         NBTTagCompound tag = new NBTTagCompound();
         tag.setBoolean("useAdjacentInventory", !useAdjacentInventory);
         useAdjacentInventory = !useAdjacentInventory;
-        this.sendDataToServer(tag);
+        sendDataToServer(tag);
     }
 
+    public void onSidePressed() {
+        int o = (tileEntity.inventorySide.ordinal() + 1)% ForgeDirection.VALID_DIRECTIONS.length;
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("inventorySide", o);
+        sendDataToServer(tag);
+        tileEntity.inventorySide = ForgeDirection.getOrientation(o);
+    }
+
+    public void onDirPressed() {
+        int o = (tileEntity.inventoryDirection.ordinal() + 1)% ForgeDirection.VALID_DIRECTIONS.length;
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("inventoryDirection", o);
+        sendDataToServer(tag);
+        tileEntity.inventoryDirection = ForgeDirection.getOrientation(o);
+    }
 }

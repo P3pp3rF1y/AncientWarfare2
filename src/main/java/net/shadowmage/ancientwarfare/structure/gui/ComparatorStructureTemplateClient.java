@@ -27,7 +27,7 @@ import java.util.Locale;
 
 public class ComparatorStructureTemplateClient implements Comparator<StructureTemplateClient> {
 
-    String filterText = "";
+    private String filterText = "";
 
     public void setFilterText(String tex) {
         this.filterText = tex;
@@ -35,12 +35,13 @@ public class ComparatorStructureTemplateClient implements Comparator<StructureTe
 
     @Override
     public int compare(StructureTemplateClient arg0, StructureTemplateClient arg1) {
+        if(arg0 == arg1){
+            return 0;
+        }
         if (arg0 == null && arg1 != null) {
             return 1;
         } else if (arg0 != null && arg1 == null) {
             return -1;
-        } else if (arg0 == null && arg1 == null) {
-            return 0;
         }
         String a = arg0.name.toLowerCase(Locale.ENGLISH);
         String b = arg1.name.toLowerCase(Locale.ENGLISH);

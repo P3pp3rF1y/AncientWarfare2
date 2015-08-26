@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -15,8 +14,8 @@ import java.util.List;
 
 public class GuiTownHallDeathList extends GuiContainerBase<ContainerTownHall> {
 
-    GuiTownHallInventory parent;
-    CompositeScrolled area;
+    private final GuiTownHallInventory parent;
+    private CompositeScrolled area;
 
     public GuiTownHallDeathList(GuiTownHallInventory parent) {
         super(parent.getContainer());
@@ -30,9 +29,7 @@ public class GuiTownHallDeathList extends GuiContainerBase<ContainerTownHall> {
         Button button = new Button(8, 8, 55, 12, "guistrings.npc.clear_death_list") {
             @Override
             protected void onPressed() {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setBoolean("clear", true);
-                sendDataToContainer(tag);
+                getContainer().clearList();
             }
         };
         addGuiElement(button);
@@ -57,19 +54,19 @@ public class GuiTownHallDeathList extends GuiContainerBase<ContainerTownHall> {
             area.addGuiElement(label);
             totalHeight += 12;
 
-            labelText = StatCollector.translateToLocal("guistrings.npc.death_cause");
-            label = new Label(8, totalHeight, labelText + ": " + StatCollector.translateToLocal(entry.deathCause));
+            labelText = StatCollector.translateToLocalFormatted("guistrings.npc.death_cause", entry.deathCause);
+            label = new Label(8, totalHeight, labelText);
             area.addGuiElement(label);
             totalHeight += 12;
 
-            labelText = StatCollector.translateToLocal("guistrings.npc.can_res");
-            label = new Label(8, totalHeight, labelText + ": " + String.valueOf(entry.canRes));
+            labelText = StatCollector.translateToLocalFormatted("guistrings.npc.can_res", entry.canRes);
+            label = new Label(8, totalHeight, labelText);
             area.addGuiElement(label);
             totalHeight += 12;
 
             if (entry.canRes) {
-                labelText = StatCollector.translateToLocal("guistrings.npc.resurrected");
-                label = new Label(8, totalHeight, labelText + ": " + String.valueOf(entry.resurrected));
+                labelText = StatCollector.translateToLocalFormatted("guistrings.npc.resurrected", entry.resurrected);
+                label = new Label(8, totalHeight, labelText);
                 area.addGuiElement(label);
                 totalHeight += 12;
             }

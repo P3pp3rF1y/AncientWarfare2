@@ -20,7 +20,7 @@ import java.util.List;
 
 public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory, IRotatableTile {
 
-    private boolean autoExport;//should automatically try and export from output side
+    private boolean autoExport;//TODO : should automatically try and export from output side
     private boolean privateBox;
 
     public InventorySided inventory;
@@ -39,7 +39,7 @@ public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote) {
+        if (!hasWorldObj() || worldObj.isRemote) {
             return;
         }
         if (mailboxName != null)//try to receive mail
@@ -85,17 +85,19 @@ public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory
     }
 
     public void setMailboxName(String name) {
-        if (worldObj == null || worldObj.isRemote) {
+        if (worldObj.isRemote) {
             return;
         }
         mailboxName = name;
+        markDirty();
     }
 
     public void setTargetName(String name) {
-        if (worldObj == null || worldObj.isRemote) {
+        if (worldObj.isRemote) {
             return;
         }
         destinationName = name;
+        markDirty();
     }
 
     public boolean isAutoExport() {
@@ -117,6 +119,7 @@ public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory
         if (val != privateBox) {
             mailboxName = null;
             destinationName = null;
+            markDirty();
         }
         privateBox = val;
     }
@@ -151,10 +154,7 @@ public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory
         if (mailboxName != null) {
             tag.setString("mailboxName", mailboxName);
         }
-
-        NBTTagCompound tag1 = new NBTTagCompound();
-        inventory.writeToNBT(tag1);
-        tag.setTag("inventory", tag1);
+        tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
     }
 
     @Override

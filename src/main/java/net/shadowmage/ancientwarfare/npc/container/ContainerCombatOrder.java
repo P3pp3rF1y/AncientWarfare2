@@ -40,4 +40,10 @@ public class ContainerCombatOrder extends ContainerBase {
             combatOrder.write(player.getCurrentEquippedItem());
         }
     }
+
+    public void close() {
+        NBTTagCompound outer = new NBTTagCompound();
+        outer.setTag("combatOrder", combatOrder.writeToNBT(new NBTTagCompound()));
+        sendDataToServer(outer);
+    }
 }

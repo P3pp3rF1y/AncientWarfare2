@@ -44,7 +44,6 @@ public class SpawnerSettings {
 
     float blockHardness = 2.f;
 
-
     /**
      * fields for a 'fake' tile-entity...set from the real tile-entity when it has its
      * world set (which is before first updateEntity() is called)

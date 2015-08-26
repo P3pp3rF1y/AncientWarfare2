@@ -23,11 +23,11 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     public InventoryBasic outputSlot;//the templated output slot, non-pullable
     public InventoryCrafting craftMatrix;//the 3x3 recipe template/matrix
 
-    boolean canCraftLastCheck = false;
-    boolean canHoldLastCheck = false;
+    private boolean canCraftLastCheck = false;
+    private boolean canHoldLastCheck = false;
 
-    int[] outputSlotIndices;
-    int[] resourceSlotIndices;
+    private int[] outputSlotIndices;
+    private int[] resourceSlotIndices;
 
     public TileAutoCrafting() {
         Container dummy = new Container() {

@@ -1,17 +1,15 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
+import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IChunkLoaderTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
-public class TileChunkLoaderSimple extends TileEntity implements IInteractableTile, IChunkLoaderTile {
+public class TileChunkLoaderSimple extends TileEntity implements IChunkLoaderTile {
 
     Ticket chunkTicket = null;
 
@@ -25,19 +23,8 @@ public class TileChunkLoaderSimple extends TileEntity implements IInteractableTi
     }
 
     public void releaseTicket() {
-        if (chunkTicket != null) {
-            for (ChunkCoordIntPair ccip : chunkTicket.getChunkList()) {
-                ForgeChunkManager.unforceChunk(chunkTicket, ccip);
-            }
-            ForgeChunkManager.releaseTicket(chunkTicket);
-        }
+        ForgeChunkManager.releaseTicket(chunkTicket);
         chunkTicket = null;
-    }
-
-    @Override
-    public void validate() {
-        super.validate();
-        releaseTicket();
     }
 
     @Override
@@ -48,12 +35,12 @@ public class TileChunkLoaderSimple extends TileEntity implements IInteractableTi
 
     @Override
     public void setTicket(Ticket tk) {
-        if (this.chunkTicket != null) {
-            ForgeChunkManager.releaseTicket(chunkTicket);
-        }
-        this.chunkTicket = tk;
-        if (tk != null) {
-            forceTicketChunks();
+        if (this.chunkTicket != tk) {
+            releaseTicket();
+            if (tk != null) {
+                this.chunkTicket = tk;
+                forceTicketChunks();
+            }
         }
     }
 
@@ -66,11 +53,7 @@ public class TileChunkLoaderSimple extends TileEntity implements IInteractableTi
     }
 
     protected void writeDataToTicket() {
-        NBTTagCompound posTag = new NBTTagCompound();
-        posTag.setInteger("x", xCoord);
-        posTag.setInteger("y", yCoord);
-        posTag.setInteger("z", zCoord);
-        this.chunkTicket.getModData().setTag("tilePosition", posTag);
+        AWChunkLoader.INSTANCE.writeDataToTicket(chunkTicket, xCoord, yCoord, zCoord);
     }
 
     protected void forceTicketChunks() {
@@ -85,20 +68,4 @@ public class TileChunkLoaderSimple extends TileEntity implements IInteractableTi
 //  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
 //  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(worldObj));
     }
-
-    @Override
-    public boolean onBlockClicked(EntityPlayer player) {
-        return false;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-    }
-
 }

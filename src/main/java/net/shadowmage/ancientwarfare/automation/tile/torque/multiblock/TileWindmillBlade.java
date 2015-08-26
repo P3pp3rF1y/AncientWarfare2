@@ -128,16 +128,14 @@ public class TileWindmillBlade extends TileEntity {
             controlY = minY + halfSize;//should be the center
             if (xSize > 1)//widest on X axis
             {
-                face = 2;//faces north/south
                 controlX = minX + halfSize;//should be the center
                 controlZ = minZ;//only 1 z-coordinate
             } else//widest on Z axis
             {
-                face = 4;//faces east/west
-                controlX = minX;//only 1 x-coordinatehould be the center
+                controlX = minX;//only 1 x-coordinate
                 controlZ = minZ + halfSize;//should be the center
             }
-            setValidSetup(connectedPosSet, controlX, controlY, controlZ, xSize, ySize, zSize, face);
+            setValidSetup(connectedPosSet, controlX, controlY, controlZ, xSize, ySize, zSize);
         } else {
             setInvalidSetup(connectedPosSet);
         }
@@ -180,7 +178,7 @@ public class TileWindmillBlade extends TileEntity {
         }
     }
 
-    private void setValidSetup(Set<BlockPosition> set, int cx, int cy, int cz, int xs, int ys, int zs, int face) {
+    private void setValidSetup(Set<BlockPosition> set, int cx, int cy, int cz, int xs, int ys, int zs) {
         TileEntity te;
         BlockPosition cp = new BlockPosition(cx, cy, cz);
         controlPos = cp;
@@ -191,17 +189,17 @@ public class TileWindmillBlade extends TileEntity {
                 ((TileWindmillBlade) te).isControl = (pos.x == cx && pos.y == cy && pos.z == cz);
             }
         }
-        setTileAsController(cp.x, cp.y, cp.z, xs, ys, zs, face);
+        setTileAsController(cp.x, cp.y, cp.z, xs, ys, zs);
     }
 
-    private void setTileAsController(int x, int y, int z, int xsize, int ysize, int zsize, int face) {
+    private void setTileAsController(int x, int y, int z, int xsize, int ysize, int zsize) {
         TileEntity te = worldObj.getTileEntity(x, y, z);
         if (te instanceof TileWindmillBlade) {
-            ((TileWindmillBlade) te).setAsController(xsize, ysize, zsize, face);
+            ((TileWindmillBlade) te).setAsController(xsize, ysize, zsize);
         }
     }
 
-    private void setAsController(int xSize, int ySize, int zSize, int face) {
+    private void setAsController(int xSize, int ySize, int zSize) {
         windmillDirection = xSize == 1 ? 4 : zSize == 1 ? 2 : 0;
         windmillSize = ySize;
         this.isControl = true;

@@ -87,11 +87,10 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
         informViewers();
     }
 
+    @SuppressWarnings("unchecked")
     private List<NpcPlayerOwned> getNpcsInArea() {
         AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord - broadcastRange, yCoord - broadcastRange / 2, zCoord - broadcastRange, xCoord + broadcastRange + 1, yCoord + broadcastRange / 2 + 1, zCoord + broadcastRange + 1);
-        @SuppressWarnings("unchecked")
-        List<NpcPlayerOwned> npcs = worldObj.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
-        return npcs;
+        return worldObj.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
     }
 
     @Override

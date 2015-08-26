@@ -82,7 +82,7 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
         if (prevNeighborInvalid) {
             prevNeighborInvalid = false;
             ITorqueTile input = getTorqueCache()[orientation.getOpposite().ordinal()];
-            if (input != null && input.getClass() == this.getClass() && input.canOutputTorque(orientation)) {
+            if (input instanceof TileTorqueShaft && input.getClass() == this.getClass() && input.canOutputTorque(orientation)) {
                 prev = (TileTorqueShaft) input;
                 prev.next = this;
             }
@@ -94,7 +94,7 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
         if (nextNeighborInvalid) {
             nextNeighborInvalid = false;
             ITorqueTile output = getTorqueCache()[orientation.ordinal()];
-            if (output != null && output.getClass() == this.getClass() && output.canInputTorque(orientation.getOpposite())) {
+            if (output instanceof TileTorqueShaft && output.getClass() == this.getClass() && output.canInputTorque(orientation.getOpposite())) {
                 next = (TileTorqueShaft) output;
                 next.prev = this;
             }

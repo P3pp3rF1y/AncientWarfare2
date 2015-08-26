@@ -12,11 +12,10 @@ import java.util.HashMap;
 public class ContainerWorksiteInventorySideSelection extends ContainerTileBase<TileWorksiteBoundedInventory> {
 
     public HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<RelativeSide, RelativeSide>();
-    public InventorySided inventory;
 
     public ContainerWorksiteInventorySideSelection(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        inventory = tileEntity.inventory;
+        InventorySided inventory = tileEntity.inventory;
 
         for (RelativeSide rSide : inventory.rType.getValidSides()) {
             sideMap.put(rSide, inventory.getRemappedSide(rSide));
@@ -86,12 +85,11 @@ public class ContainerWorksiteInventorySideSelection extends ContainerTileBase<T
     }
 
     private void synchAccessMap() {
-        InventorySided inventory = tileEntity.inventory;
         NBTTagCompound tag;
         NBTTagCompound slotTag;
         RelativeSide rSide2, rSide3;
-        for (RelativeSide rSide : inventory.rType.getValidSides()) {
-            rSide2 = inventory.getRemappedSide(rSide);
+        for (RelativeSide rSide : tileEntity.inventory.rType.getValidSides()) {
+            rSide2 = tileEntity.inventory.getRemappedSide(rSide);
             rSide3 = sideMap.get(rSide);
             if (rSide2 != rSide3) {
                 sideMap.put(rSide, rSide2);
@@ -117,4 +115,9 @@ public class ContainerWorksiteInventorySideSelection extends ContainerTileBase<T
         sendDataToServer(tag);
     }
 
+    public void close() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("closeGUI", true);
+        sendDataToServer(tag);
+    }
 }

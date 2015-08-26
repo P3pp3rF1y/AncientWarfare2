@@ -5,7 +5,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
@@ -136,8 +136,9 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         }
     }
 
+    //TODO implement to check target blocks, clear invalid ones
     public void onTargetsAdjusted() {
-        //TODO implement to check target blocks, clear invalid ones
+        onBoundsAdjusted();
     }
 
     @Override
@@ -168,7 +169,12 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     }
 
     public void setTargetBlocks(byte[] targets) {
+        boolean change = !Objects.deepEquals(targetMap, targets);
         targetMap = targets;
+        if(change) {
+            onTargetsAdjusted();
+            markDirty();
+        }
     }
 
     @Override

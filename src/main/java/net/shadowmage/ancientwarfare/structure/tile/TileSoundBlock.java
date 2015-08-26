@@ -165,5 +165,6 @@ public class TileSoundBlock extends TileEntity implements ISinger{
         blockCache = Block.getBlockFromItem(itemStack.getItem());
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         worldObj.notifyBlockChange(xCoord, yCoord, zCoord, this.blockType);
+        markDirty();
     }
 }

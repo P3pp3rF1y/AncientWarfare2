@@ -16,12 +16,16 @@ public abstract class ContainerSpawnerAdvancedBase extends ContainerBase {
     }
 
     public void sendSettingsToServer() {
+        NetworkHandler.sendToServer(getSettingPacket());
+    }
+
+    public PacketGui getSettingPacket(){
         NBTTagCompound tag = new NBTTagCompound();
         settings.writeToNBT(tag);
 
         PacketGui pkt = new PacketGui();
         pkt.setTag("spawnerSettings", tag);
-        NetworkHandler.sendToServer(pkt);
+        return pkt;
     }
 
 }

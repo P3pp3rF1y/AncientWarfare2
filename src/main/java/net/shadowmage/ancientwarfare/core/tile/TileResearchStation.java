@@ -164,7 +164,7 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
 
     @Override
     public void updateEntity() {
-        if (worldObj == null || worldObj.isRemote) {
+        if (!hasWorldObj() || worldObj.isRemote) {
             return;
         }
         String name = getCrafterName();

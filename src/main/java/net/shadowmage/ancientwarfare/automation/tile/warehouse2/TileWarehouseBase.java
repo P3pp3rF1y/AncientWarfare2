@@ -282,14 +282,14 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     public final void addViewer(ContainerWarehouseControl viewer) {
-        if (worldObj == null || worldObj.isRemote) {
+        if (!hasWorldObj() || worldObj.isRemote) {
             return;
         }
         viewers.add(viewer);
     }
 
     public final void addCraftingViewer(ContainerWarehouseCraftingStation viewer) {
-        if (worldObj == null || worldObj.isRemote) {
+        if (!hasWorldObj() || worldObj.isRemote) {
             return;
         }
         craftingViewers.add(viewer);
@@ -500,8 +500,9 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     /**
      * Used by user-set-blocks tile to set all default harvest-checks to true when bounds are FIRST set
      */
+    @Override
     protected void onBoundsSet() {
-        getWorkBoundsMax().y = getWorkBoundsMin().y + 3;
+        getWorkBoundsMax().y = getWorkBoundsMin().y + getBoundsMaxHeight();
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

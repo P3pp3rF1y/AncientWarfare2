@@ -113,17 +113,15 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         }
         if (tag.hasKey("clearMailbox")) {
             mailboxName = null;
+            tileEntity.setMailboxName(null);
+        }else if (tag.hasKey("mailboxName")) {
+            mailboxName = tag.getString("mailboxName");
             tileEntity.setMailboxName(mailboxName);
         }
         if (tag.hasKey("clearTarget")) {
             targetName = null;
-            tileEntity.setTargetName(targetName);
-        }
-        if (tag.hasKey("mailboxName")) {
-            mailboxName = tag.getString("mailboxName");
-            tileEntity.setMailboxName(mailboxName);
-        }
-        if (tag.hasKey("targetName")) {
+            tileEntity.setTargetName(null);
+        }else if (tag.hasKey("targetName")) {
             targetName = tag.getString("targetName");
             tileEntity.setTargetName(targetName);
         }
@@ -141,15 +139,14 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
                 privateBoxNames.add(nameList.getStringTagAt(i));
             }
         }
-        if (tag.hasKey("addMailbox")) {
+        if (tag.hasKey("addMailbox") || tag.hasKey("deleteMailbox")) {
+            MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);
             String name = tag.getString("addMailbox");
-            MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);
-            data.addMailbox(tileEntity.isPrivateBox() ? tileEntity.getOwnerName() : null, name);
-        }
-        if (tag.hasKey("deleteMailbox")) {
-            String name = tag.getString("deleteMailbox");
-            MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);
-            data.deleteMailbox(tileEntity.isPrivateBox() ? tileEntity.getOwnerName() : null, name);
+            if(!name.isEmpty())
+                data.addMailbox(tileEntity.isPrivateBox() ? tileEntity.getOwnerName() : null, name);
+            name = tag.getString("deleteMailbox");
+            if(!name.isEmpty())
+                data.deleteMailbox(tileEntity.isPrivateBox() ? tileEntity.getOwnerName() : null, name);
         }
         refreshGui();
     }
@@ -197,12 +194,11 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
     }
 
     private void synchAccessMap() {
-        InventorySided inventory = tileEntity.inventory;
         NBTTagCompound tag;
         NBTTagCompound slotTag;
         RelativeSide rSide2, rSide3;
-        for (RelativeSide rSide : inventory.rType.getValidSides()) {
-            rSide2 = inventory.getRemappedSide(rSide);
+        for (RelativeSide rSide : tileEntity.inventory.rType.getValidSides()) {
+            rSide2 = tileEntity.inventory.getRemappedSide(rSide);
             rSide3 = sideMap.get(rSide);
             if (rSide2 != rSide3) {
                 sideMap.put(rSide, rSide2);
@@ -257,7 +253,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
             if (targetName == null) {
                 tag.setBoolean("clearTarget", true);
             } else {
-                tag.setString("targetName", mailboxName);
+                tag.setString("targetName", targetName);
             }
         }
         /**
@@ -355,7 +351,6 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         } else {
             tag.setString("targetName", name);
         }
-        tag.setString("targetName", name);
         targetName = name;
         sendDataToServer(tag);
     }

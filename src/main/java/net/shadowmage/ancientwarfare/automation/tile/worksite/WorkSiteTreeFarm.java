@@ -87,14 +87,6 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
     }
 
     @Override
-    public void onTargetsAdjusted() {
-        validateCollection(blocksToFertilize);
-        validateCollection(blocksToChop);
-        validateCollection(blocksToPlant);
-        validateCollection(blocksToShear);
-    }
-
-    @Override
     public void onBoundsAdjusted() {
         validateCollection(blocksToFertilize);
         validateCollection(blocksToChop);

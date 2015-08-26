@@ -126,12 +126,10 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
     public void onNeighborTileChanged() {
         super.onNeighborTileChanged();
         if (!worldObj.isRemote) {
-            boolean p = powered;
-            powered = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
+            boolean p = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
             if (p != powered) {
-                int a = 7;
-                int b = powered ? 1 : 0;
-                sendDataToClient(a, b);
+                powered = p;
+                sendDataToClient(7, powered ? 1 : 0);
             }
         }
     }

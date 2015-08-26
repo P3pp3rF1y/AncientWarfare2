@@ -13,7 +13,7 @@ public abstract class TileDistributor extends TileTorqueSidedCell {
     protected double transferPower() {
         int in = getPrimaryFacing().getOpposite().ordinal();
         double out = 0;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < DIRECTION_LENGTH; i++) {
             if (i == in) {
                 continue;
             }

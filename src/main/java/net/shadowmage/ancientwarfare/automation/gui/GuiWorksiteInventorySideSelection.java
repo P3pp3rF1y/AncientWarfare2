@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -25,9 +24,7 @@ public class GuiWorksiteInventorySideSelection extends GuiContainerBase<Containe
 
     @Override
     protected boolean onGuiCloseRequested() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setBoolean("closeGUI", true);
-        sendDataToContainer(tag);
+        getContainer().close();
         return false;
     }
 
@@ -35,12 +32,7 @@ public class GuiWorksiteInventorySideSelection extends GuiContainerBase<Containe
     public void setupElements() {
         this.clearElements();
 
-        Label label;
-        SideButton sideButton;
-        RelativeSide accessed;
-        int dir;
-
-        label = new Label(8, 6, "guistrings.automation.block_side");
+        Label label = new Label(8, 6, "guistrings.automation.block_side");
         addGuiElement(label);
         label = new Label(74, 6, "guistrings.automation.direction");
         addGuiElement(label);
@@ -48,6 +40,10 @@ public class GuiWorksiteInventorySideSelection extends GuiContainerBase<Containe
         addGuiElement(label);
 
         int height = 18;
+
+        SideButton sideButton;
+        RelativeSide accessed;
+        int dir;
         for (RelativeSide side : RotationType.FOUR_WAY.getValidSides()) {
             label = new Label(8, height, side.getTranslationKey());
             addGuiElement(label);
@@ -65,7 +61,7 @@ public class GuiWorksiteInventorySideSelection extends GuiContainerBase<Containe
     }
 
     private class SideButton extends Button {
-        RelativeSide side;//base side
+        final RelativeSide side;//base side
         RelativeSide selection;//accessed side
 
         public SideButton(int topLeftX, int topLeftY, RelativeSide side, RelativeSide selection) {
