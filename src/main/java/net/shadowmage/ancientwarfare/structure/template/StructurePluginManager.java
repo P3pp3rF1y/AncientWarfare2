@@ -39,7 +39,6 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.S
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -72,27 +71,13 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
         }
 
         if (ModuleStatus.npcsLoaded) {
-            try {
-                loadNpcPlugin();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            loadNpcPlugin();
         }
-
         if (ModuleStatus.vehiclesLoaded) {
-            try {
-                loadVehiclePlugin();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            loadVehiclePlugin();
         }
-
         if (ModuleStatus.automationLoaded) {
-            try {
-                loadAutomationPlugin();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            loadAutomationPlugin();
         }
 
         for (StructureContentPlugin plugin : this.loadedContentPlugins) {
@@ -105,36 +90,48 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
         return modid.equals("mcp") || modid.equals("FML") || modid.equals("Forge") || modid.startsWith(AncientWarfareCore.modID);
     }
 
-    private void loadNpcPlugin() throws ReflectiveOperationException, IllegalArgumentException, SecurityException {
-        Class<?> clz = Class.forName("net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginNpcs");
-        if (clz != null) {
-            Object e = clz.getDeclaredConstructor().newInstance();
-            if (e instanceof StructureContentPlugin) {
-                addPlugin((StructureContentPlugin) e);
-                AWLog.log("Loaded NPC Module Structure Plugin");
+    private void loadNpcPlugin() {
+        try {
+            Class<?> clz = Class.forName("net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginNpcs");
+            if (clz != null) {
+                Object e = clz.getDeclaredConstructor().newInstance();
+                if (e instanceof StructureContentPlugin) {
+                    addPlugin((StructureContentPlugin) e);
+                    AWLog.log("Loaded NPC Module Structure Plugin");
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
-    private void loadVehiclePlugin() throws ReflectiveOperationException, IllegalArgumentException, SecurityException {
-        Class<?> clz = Class.forName("net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVehicles");
-        if (clz != null) {
-            Object e = clz.getDeclaredConstructor().newInstance();
-            if (e instanceof StructureContentPlugin) {
-                addPlugin((StructureContentPlugin) e);
-                AWLog.log("Loaded Vehicle Module Structure Plugin");
+    private void loadVehiclePlugin() {
+        try {
+            Class<?> clz = Class.forName("net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVehicles");
+            if (clz != null) {
+                Object e = clz.getDeclaredConstructor().newInstance();
+                if (e instanceof StructureContentPlugin) {
+                    addPlugin((StructureContentPlugin) e);
+                    AWLog.log("Loaded Vehicle Module Structure Plugin");
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
-    private void loadAutomationPlugin() throws ReflectiveOperationException, IllegalArgumentException, SecurityException {
-        Class<?> clz = Class.forName("net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginAutomation");
-        if (clz != null) {
-            Object e = clz.getDeclaredConstructor().newInstance();
-            if (e instanceof StructureContentPlugin) {
-                addPlugin((StructureContentPlugin) e);
-                AWLog.log("Loaded Automation Module Structure Plugin");
+    private void loadAutomationPlugin() {
+        try {
+            Class<?> clz = Class.forName("net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginAutomation");
+            if (clz != null) {
+                Object e = clz.getDeclaredConstructor().newInstance();
+                if (e instanceof StructureContentPlugin) {
+                    addPlugin((StructureContentPlugin) e);
+                    AWLog.log("Loaded Automation Module Structure Plugin");
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

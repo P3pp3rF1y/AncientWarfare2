@@ -150,11 +150,8 @@ public final class NetworkHandler implements IGuiHandler {
         if (clz != null) {
             try {
                 return clz.getConstructor(EntityPlayer.class, int.class, int.class, int.class).newInstance(player, x, y, z);
-            } catch (IllegalArgumentException e) {
-                return null;
             } catch (Exception e) {
                 e.printStackTrace();
-                return null;
             }
         }
         return null;
