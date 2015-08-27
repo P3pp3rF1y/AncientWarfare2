@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -14,7 +12,7 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 
 public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
 
-    boolean hasChanged = false;
+    private boolean hasChanged = false;
 
     public GuiUpkeepOrder(ContainerBase container) {
         super(container, 246, 38);
@@ -102,9 +100,7 @@ public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
     @Override
     protected boolean onGuiCloseRequested() {
         if (hasChanged) {
-            NBTTagCompound outer = new NBTTagCompound();
-            outer.setTag("upkeepOrder", getContainer().upkeepOrder.writeToNBT(new NBTTagCompound()));
-            sendDataToContainer(outer);
+            getContainer().onClose();
         }
         return super.onGuiCloseRequested();
     }

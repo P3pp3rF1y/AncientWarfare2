@@ -13,7 +13,7 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> {
     public int armorValue;//faction based only
     public String customTexRef;//might as well allow for player-owned as well...
 
-    boolean hasChanged;//if set to true, will set all flags to entity on container close
+    private boolean hasChanged;//if set to true, will set all flags to entity on container close
 
     public ContainerNpcCreativeControls(EntityPlayer player, int x, int y, int z) {
         super(player, x);

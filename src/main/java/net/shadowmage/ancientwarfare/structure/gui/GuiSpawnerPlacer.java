@@ -14,12 +14,11 @@ import java.util.Set;
 
 public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
 
-    Label currentSelectionName;
-    CompositeScrolled typeSelectionArea;
-    CompositeScrolled attributesArea;
+    private Label currentSelectionName;
+    private CompositeScrolled typeSelectionArea;
+    private CompositeScrolled attributesArea;
 
-    @SuppressWarnings("rawtypes")
-    private HashMap<Label, String> labelToClass = new HashMap<Label, String>();
+    private final HashMap<Label, String> labelToClass = new HashMap<Label, String>();
 
     public GuiSpawnerPlacer(ContainerBase par1Container) {
         super(par1Container);

@@ -65,7 +65,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             slotStackCopy = slotStack.copy();
 
             int playerSlotStart = tileEntity.getSizeInventory();
-            int playerSlotEnd = playerSlotStart + 36;
+            int playerSlotEnd = playerSlotStart + playerSlots;
             if (slotClickedIndex < playerSlotStart)//book , storage slot
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
@@ -120,7 +120,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         if (tag.hasKey("researcherName")) {
             researcherName = tag.getString("researcherName");
         }
-        if (tag.hasKey("clearResearcher")) {
+        else if (tag.hasKey("clearResearcher")) {
             researcherName = null;
         }
         if (tag.hasKey("currentGoal")) {
@@ -168,22 +168,18 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         tileEntity.addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
         NBTTagCompound tag = null;
         String name = tileEntity.getCrafterName();
-
-        boolean checkGoal = true;
         /**
          * synch researcher name
          */
         if (name == null && researcherName == null) {
-            checkGoal = false;
+
         } else if (name == null) {
-            checkGoal = false;
             tag = new NBTTagCompound();
             researcherName = null;
             tag.setBoolean("clearResearcher", true);
             tag.setInteger("currentGoal", -1);
             tag.setInteger("progress", 0);
-        } else if (researcherName == null) {
-            checkGoal = false;
+        } else if (researcherName == null || !name.equals(researcherName)) {
             tag = new NBTTagCompound();
             researcherName = name;
             tag.setString("researcherName", name);
@@ -191,27 +187,10 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             tag.setInteger("currentGoal", currentGoal);
             progress = ResearchTracker.INSTANCE.getProgress(player.worldObj, researcherName);
             tag.setInteger("progress", progress);
-        } else if (!name.equals(researcherName))//updated book/name
-        {
-            checkGoal = false;
-            tag = new NBTTagCompound();
-            researcherName = name;
-            tag.setString("researcherName", name);
-            currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.worldObj, researcherName);
-            tag.setInteger("currentGoal", currentGoal);
-            progress = ResearchTracker.INSTANCE.getProgress(player.worldObj, researcherName);
-            tag.setInteger("progress", progress);
-        }
-
-        /**
-         * synch progress and current goal --
-         */
-        if (checkGoal && researcherName != null) {
+        }else {
             int g = ResearchTracker.INSTANCE.getCurrentGoal(player.worldObj, researcherName);
             if (g != currentGoal) {
-                if (tag == null) {
-                    tag = new NBTTagCompound();
-                }
+                tag = new NBTTagCompound();
                 currentGoal = g;
                 tag.setInteger("currentGoal", currentGoal);
             }

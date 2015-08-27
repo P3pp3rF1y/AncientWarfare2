@@ -2,23 +2,22 @@ package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 
-    Button repackButton;
-    Text nameInput;
+    private Text nameInput;
 
-    Text textureInput;
-
-    int buttonX = 8 + 18 + 18 + 18 + 18 + 4;
+    private static int buttonX = 8 + 18 + 18 + 18 + 18 + 4;
 
     public GuiNpcInventory(ContainerBase container) {
         super(container);
@@ -41,7 +40,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 
         label = new Label(8 + 18 + 18 + 4, 21, "guistrings.npc.npc_texture");
         addGuiElement(label);
-        textureInput = new Text(75, 20, 95, getContainer().entity.getCustomTex(), this) {
+        Text textureInput = new Text(75, 20, 95, getContainer().entity.getCustomTex(), this) {
             @Override
             public void onTextUpdated(String oldText, String newText) {
                 getContainer().handleNpcTextureUpdate(newText);
@@ -50,23 +49,19 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
         };
         addGuiElement(textureInput);
 
-        repackButton = new Button(buttonX, 36, 75, 12, "guistrings.npc.repack") {
+        Button button = new Button(buttonX, 36, 75, 12, "guistrings.npc.repack") {
             @Override
             protected void onPressed() {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setBoolean("repack", true);
-                sendDataToContainer(tag);
+                getContainer().repack();
                 closeGui();
             }
         };
-        addGuiElement(repackButton);
+        addGuiElement(button);
 
-        Button button = new Button(buttonX, 48, 75, 12, "guistrings.npc.set_home") {
+        button = new Button(buttonX, 48, 75, 12, "guistrings.npc.set_home") {
             @Override
             protected void onPressed() {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setBoolean("setHome", true);
-                sendDataToContainer(tag);
+                getContainer().setHome();
             }
         };
         addGuiElement(button);
@@ -74,9 +69,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
         button = new Button(buttonX, 60, 75, 12, "guistrings.npc.clear_home") {
             @Override
             protected void onPressed() {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setBoolean("clearHome", true);
-                sendDataToContainer(tag);
+                getContainer().clearHome();
             }
         };
         addGuiElement(button);
@@ -139,11 +132,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 
     @Override
     protected boolean onGuiCloseRequested() {
-        if (player.worldObj.isRemote) {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setString("customName", getContainer().name);
-            sendDataToContainer(tag);
-        }
+        getContainer().setName();
         return super.onGuiCloseRequested();
     }
 

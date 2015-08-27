@@ -7,25 +7,20 @@ import java.io.File;
 
 public class GuiFileSelect extends GuiContainerBase {
 
-    GuiContainerBase parent;
-
+    private final GuiContainerBase parent;
     /**
      * the display name of the current parent directory (used to click to go back)
      */
-    String parentPathName = "";
-
+    private String parentPathName = "";
     /**
      * current path, used to update all others relative to this
      */
-    String currentPath = "";
+    private String currentPath = "";
 
-    boolean allowNewFiles = false;
+    private final boolean allowNewFiles;
 
-    CompositeScrolled area;
-    /**
-     * TODO allow input to handle '.' char
-     */
-    Text input;
+    private CompositeScrolled area;
+    private Text input;
 
     public GuiFileSelect(GuiContainerBase parent, String basePath, boolean allowNewFiles) {
         super(parent.getContainer());

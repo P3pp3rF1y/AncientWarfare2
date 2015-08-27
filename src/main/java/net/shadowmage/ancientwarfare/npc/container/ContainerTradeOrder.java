@@ -30,4 +30,10 @@ public class ContainerTradeOrder extends ContainerBase {
         }
         super.onContainerClosed(par1EntityPlayer);
     }
+
+    public void onClose() {
+        NBTTagCompound outer = new NBTTagCompound();
+        outer.setTag("tradeOrder", orders.writeToNBT(new NBTTagCompound()));
+        sendDataToServer(outer);
+    }
 }

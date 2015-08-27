@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
 public class GuiWarehouseStockViewer extends GuiContainerBase<ContainerWarehouseStockViewer> {
 
-    CompositeScrolled area;
+    private CompositeScrolled area;
 
     public GuiWarehouseStockViewer(ContainerBase par1Container) {
         super(par1Container, 178, 172);

@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalControl;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
@@ -10,13 +9,10 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 public class GuiWorksiteAnimalControl extends GuiContainerBase<ContainerWorksiteAnimalControl> {
 
-    WorkSiteAnimalFarm worksite;
-
-    NumberInput pigCount, sheepCount, cowCount, chickenCount;
+    private NumberInput pigCount, sheepCount, cowCount, chickenCount;
 
     public GuiWorksiteAnimalControl(ContainerBase par1Container) {
         super(par1Container, 168, 64);
-        worksite = getContainer().tileEntity;
     }
 
     @Override
@@ -79,7 +75,7 @@ public class GuiWorksiteAnimalControl extends GuiContainerBase<ContainerWorksite
     @Override
     protected boolean onGuiCloseRequested() {
         getContainer().sendSettingsToServer();
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, worksite.xCoord, worksite.yCoord, worksite.zCoord);
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, getContainer().tileEntity.xCoord, getContainer().tileEntity.yCoord, getContainer().tileEntity.zCoord);
         return false;
     }
 

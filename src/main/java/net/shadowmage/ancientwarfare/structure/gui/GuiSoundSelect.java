@@ -1,3 +1,23 @@
+/**
+ Copyright 2015 Olivier Sylvain (aka GotoLink)
+ This software is distributed under the terms of the GNU General Public License.
+ Please see COPYING for precise license information.
+
+ This file is part of Ancient Warfare.
+
+ Ancient Warfare is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Ancient Warfare is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import com.google.common.base.Predicate;
@@ -17,15 +37,12 @@ import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 
-/**
- * Created by Olivier on 05/05/2015.
- */
 public class GuiSoundSelect extends GuiContainerBase{
     private final GuiContainerBase parent;
     private final SongPlayData.SongEntry songEntry;
     private Field sndRegistry;
-    CompositeScrolled area;
-    Text selectionLabel;
+    private CompositeScrolled area;
+    private Text selectionLabel;
     protected GuiSoundSelect(GuiContainerBase parent, SongPlayData.SongEntry entry) {
         super(parent.getContainer());
         this.parent = parent;

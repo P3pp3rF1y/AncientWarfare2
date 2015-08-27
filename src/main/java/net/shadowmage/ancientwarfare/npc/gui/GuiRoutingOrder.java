@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.block.Direction;
@@ -20,8 +19,8 @@ import java.util.List;
 
 public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
 
-    boolean hasChanged = false;
-    CompositeScrolled area;
+    private boolean hasChanged = false;
+    private CompositeScrolled area;
 
     public GuiRoutingOrder(ContainerBase container) {
         super(container);
@@ -210,16 +209,14 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
     @Override
     protected boolean onGuiCloseRequested() {
         if (hasChanged) {
-            NBTTagCompound outer = new NBTTagCompound();
-            outer.setTag("routingOrder", getContainer().routingOrder.writeToNBT(new NBTTagCompound()));
-            sendDataToContainer(outer);
+            getContainer().onClose();
         }
         return super.onGuiCloseRequested();
     }
 
     private class IndexedRoutePointItemSlot extends ItemSlot {
-        RoutePoint point;
-        int index;
+        final RoutePoint point;
+        final int index;
 
         public IndexedRoutePointItemSlot(int topLeftX, int topLeftY, ItemStack item,
                                          ITooltipRenderer render, RoutePoint point, int index) {
@@ -230,7 +227,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
     }
 
     private class IndexedButton extends Button {
-        int index;
+        final int index;
 
         public IndexedButton(int topLeftX, int topLeftY, int width, int height, String text, int index) {
             super(topLeftX, topLeftY, width, height, text);

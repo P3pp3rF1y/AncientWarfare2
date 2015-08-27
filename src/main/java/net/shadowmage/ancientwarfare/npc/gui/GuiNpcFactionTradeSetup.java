@@ -11,8 +11,8 @@ import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactionTradeSetup> {
 
-    CompositeScrolled area;
-    TradeList tradeList;
+    private CompositeScrolled area;
+    private TradeList tradeList;
 
     public GuiNpcFactionTradeSetup(ContainerBase container) {
         super(container, 320, 240);

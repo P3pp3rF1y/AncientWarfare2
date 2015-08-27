@@ -14,11 +14,10 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntr
 public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBase> {
 
     public ItemQuantityMap itemMap = new ItemQuantityMap();
-    public ItemQuantityMap cache = new ItemQuantityMap();
-    boolean shouldUpdate = true;
+    private final ItemQuantityMap cache = new ItemQuantityMap();
+    private boolean shouldUpdate = true;
     public int maxStorage = 0;
     public int currentStored = 0;
-
 
     public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
@@ -60,10 +59,10 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBa
             }
             tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
         }
-        if (tag.hasKey("changeList")) {
+        else if (tag.hasKey("changeList")) {
             handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
         }
-        if (tag.hasKey("maxStorage")) {
+        else if (tag.hasKey("maxStorage")) {
             maxStorage = tag.getInteger("maxStorage");
         }
         currentStored = itemMap.getTotalItemCount();

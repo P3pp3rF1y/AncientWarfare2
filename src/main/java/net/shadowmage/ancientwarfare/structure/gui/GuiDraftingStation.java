@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
@@ -13,13 +12,12 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStation> {
 
     //right-side column @ X=176
-//max X size == 352?
-    CompositeScrolled resourceListArea;
-    TexturedRectangle rect;
-    Button selectButton;
-    Button stopButton;
-    Button startButton;
-    Label selectionLabel;
+    //max X size == 352?
+    private CompositeScrolled resourceListArea;
+    private TexturedRectangle rect;
+    private Button stopButton;
+    private Button startButton;
+    private Label selectionLabel;
 
     public GuiDraftingStation(ContainerBase par1Container) {
         super(par1Container, 400, 240);
@@ -33,7 +31,7 @@ public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStatio
         resourceListArea = new CompositeScrolled(this, 176, 96 + 8, 400 - 176, 240 - 96 - 8);
         addGuiElement(resourceListArea);
 
-        selectButton = new Button(8, 8, 95, 12, StatCollector.translateToLocal("guistrings.structure.select_structure")) {
+        Button selectButton = new Button(8, 8, 95, 12, "guistrings.structure.select_structure") {
             @Override
             protected void onPressed() {
                 getContainer().removeSlots();
@@ -42,27 +40,27 @@ public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStatio
         };
         addGuiElement(selectButton);
 
-        selectionLabel = new Label(8, 20, getContainer().structureName == null ? StatCollector.translateToLocal("guistrings.structure.no_selection") : getContainer().structureName);
+        selectionLabel = new Label(8, 20, getContainer().structureName == null ? "guistrings.structure.no_selection" : getContainer().structureName);
         addGuiElement(selectionLabel);
 
-        stopButton = new Button(8, 32, 55, 12, StatCollector.translateToLocal("guistrings.stop")) {
+        stopButton = new Button(8, 32, 55, 12, "guistrings.stop") {
             @Override
             protected void onPressed() {
                 getContainer().handleStopInput();
             }
         };
 
-        startButton = new Button(8, 32, 55, 12, StatCollector.translateToLocal("guistrings.start")) {
+        startButton = new Button(8, 32, 55, 12, "guistrings.start") {
             @Override
             protected void onPressed() {
                 getContainer().handleStartInput();
             }
         };
 
-        Label label = new Label(8, 94 - 16 - 18 - 12, StatCollector.translateToLocal("guistrings.output"));
+        Label label = new Label(8, 94 - 16 - 18 - 12, "guistrings.output");
         addGuiElement(label);
 
-        label = new Label(8, 94 - 16, StatCollector.translateToLocal("guistrings.input"));
+        label = new Label(8, 94 - 16, "guistrings.input");
         addGuiElement(label);
     }
 
@@ -85,7 +83,7 @@ public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStatio
         String name = getContainer().structureName;
         if (name == null) {
             rect.setTexture(null);
-            selectionLabel.setText(StatCollector.translateToLocal("guistrings.structure.no_selection"));
+            selectionLabel.setText("guistrings.structure.no_selection");
         } else {
             rect.setTexture(StructureTemplateManagerClient.instance().getImageFor(name));
             selectionLabel.setText(name);

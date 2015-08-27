@@ -19,7 +19,8 @@ public class ContainerGateControl extends ContainerEntityBase<EntityGate> {
     }
 
     public void repackGate() {
-
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("repack", true);
+        sendDataToServer(tag);
     }
-
 }

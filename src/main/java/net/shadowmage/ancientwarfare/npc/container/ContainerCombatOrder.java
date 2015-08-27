@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 public class ContainerCombatOrder extends ContainerBase {
 
     private boolean hasChanged;
-    public CombatOrder combatOrder;
+    public final CombatOrder combatOrder;
 
     public ContainerCombatOrder(EntityPlayer player, int x, int y, int z) {
         super(player);

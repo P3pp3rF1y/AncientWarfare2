@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
@@ -191,8 +190,7 @@ public class RenderNpcBase extends RenderBiped {
     }
 
     private String getNameForRender(NpcBase npc, boolean hostile) {
-        String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : "entity.AncientWarfareNpc." + npc.getNpcFullType() + ".name";
-        customName = StatCollector.translateToLocal(customName);
+        String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : npc.getCommandSenderName();
         boolean addHealth = (hostile && AWNPCStatics.renderHostileHealth.getBoolean()) || (!hostile && AWNPCStatics.renderFriendlyHealth.getBoolean());
         if (addHealth) {
             customName += " " + getHealthForRender(npc);

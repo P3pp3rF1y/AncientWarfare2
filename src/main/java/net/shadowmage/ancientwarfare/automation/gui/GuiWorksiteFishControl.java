@@ -8,8 +8,8 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 public class GuiWorksiteFishControl extends GuiContainerBase<ContainerWorksiteFishControl> {
 
-    Checkbox fishBox;
-    Checkbox inkBox;
+    private Checkbox fishBox;
+    private Checkbox inkBox;
 
     public GuiWorksiteFishControl(ContainerBase par1Container) {
         super(par1Container, 168, 48);

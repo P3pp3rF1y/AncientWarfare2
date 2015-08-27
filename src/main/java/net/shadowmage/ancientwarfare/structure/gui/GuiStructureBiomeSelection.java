@@ -13,10 +13,9 @@ import java.util.Set;
 
 public class GuiStructureBiomeSelection extends GuiContainerBase {
 
-    GuiStructureScanner parent;
+    private final GuiStructureScanner parent;
 
-    CompositeScrolled area;
-    Checkbox whiteList;
+    private Checkbox whiteList;
 
     private HashMap<GuiElement, String> elementToBiomeName = new HashMap<GuiElement, String>();
 
@@ -32,7 +31,7 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
         Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.select_biomes") + ":");
         addGuiElement(label);
 
-        whiteList = new Checkbox(8, 20, 16, 16, StatCollector.translateToLocal("guistrings.biome_whitelist") + "?") {
+        whiteList = new Checkbox(8, 20, 16, 16, "guistrings.biome_whitelist") {
             @Override
             public void onToggled() {
                 parent.validator.setBiomeWhiteList(checked());
@@ -41,10 +40,10 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
         addGuiElement(whiteList);
         whiteList.setChecked(parent.validator.isBiomeWhiteList());
 
-        area = new CompositeScrolled(this, 0, 40, 256, 200);
+        CompositeScrolled area = new CompositeScrolled(this, 0, 40, 256, 200);
         this.addGuiElement(area);
 
-        Button button = new Button(256 - 8 - 55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done")) {
+        Button button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done") {
             @Override
             protected void onPressed() {
                 Minecraft.getMinecraft().displayGuiScreen(parent);

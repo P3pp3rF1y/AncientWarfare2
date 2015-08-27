@@ -12,15 +12,12 @@ import java.util.List;
 
 public class GuiMailboxNameSelect extends GuiContainerBase<ContainerMailbox> {
 
-    GuiMailboxInventory parent;
-    boolean name;//true if setting mailbox name, false for setting target name
-    boolean privateBox;
+    private final GuiMailboxInventory parent;
+    private final boolean name;//true if setting mailbox name, false for setting target name
+    private final boolean privateBox;
 
-    Text nameInputArea;
-    CompositeScrolled nameSelectArea;
-    Button addNameButton;
-    Button deleteNameButton;
-    Button selectButton;
+    private Text nameInputArea;
+    private CompositeScrolled nameSelectArea;
 
     public GuiMailboxNameSelect(GuiMailboxInventory parent, boolean name) {
         super(parent.getContainer());
@@ -34,7 +31,7 @@ public class GuiMailboxNameSelect extends GuiContainerBase<ContainerMailbox> {
         nameInputArea = new Text(8, 8, 120, name ? getContainer().mailboxName : getContainer().targetName, this);
         addGuiElement(nameInputArea);
 
-        addNameButton = new Button(8, 22, 55, 12, "guistrings.automation.add_mailbox") {
+        Button addNameButton = new Button(8, 22, 55, 12, "guistrings.automation.add_mailbox") {
             @Override
             protected void onPressed() {
                 String name = nameInputArea.getText();
@@ -45,7 +42,7 @@ public class GuiMailboxNameSelect extends GuiContainerBase<ContainerMailbox> {
         };
         addGuiElement(addNameButton);
 
-        selectButton = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.automation.select_mailbox") {
+        Button selectButton = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.automation.select_mailbox") {
             @Override
             protected void onPressed() {
                 if (name) {
@@ -58,7 +55,7 @@ public class GuiMailboxNameSelect extends GuiContainerBase<ContainerMailbox> {
         };
         addGuiElement(selectButton);
 
-        deleteNameButton = new Button(8 + 55, 22, 55, 12, "guistrings.automation.delete_mailbox") {
+        Button deleteNameButton = new Button(8 + 55, 22, 55, 12, "guistrings.automation.delete_mailbox") {
             @Override
             protected void onPressed() {
                 String name = nameInputArea.getText();

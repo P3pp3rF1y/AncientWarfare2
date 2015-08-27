@@ -90,7 +90,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
             int storageSlotsStart = 1 + 1 + tileEntity.craftMatrix.getSizeInventory();
             int outputSlotsStart = storageSlotsStart + tileEntity.resourceInventory.getSizeInventory();
             int playerSlotStart = outputSlotsStart + tileEntity.outputInventory.getSizeInventory();
-            int playerSlotEnd = playerSlotStart + 36;
+            int playerSlotEnd = playerSlotStart + playerSlots;
             if (slotClickedIndex < 2)//result or book slot
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
@@ -129,4 +129,9 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         return slotStackCopy;
     }
 
+    public void craft() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("craft", true);
+        sendDataToServer(tag);
+    }
 }

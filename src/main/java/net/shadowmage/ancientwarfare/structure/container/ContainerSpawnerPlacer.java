@@ -8,7 +8,6 @@ import net.shadowmage.ancientwarfare.structure.item.ItemSpawnerPlacer;
 
 public class ContainerSpawnerPlacer extends ContainerBase {
 
-
     public String entityId;
     /**
      * all stored in tag as short

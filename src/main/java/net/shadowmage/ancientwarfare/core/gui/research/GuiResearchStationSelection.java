@@ -14,10 +14,10 @@ import org.lwjgl.input.Mouse;
 
 public class GuiResearchStationSelection extends GuiContainerBase<ContainerResearchStation> {
 
-    GuiResearchStation parent;
+    private final GuiResearchStation parent;
 
-    CompositeScrolled queueArea;
-    CompositeScrolled selectionArea;
+    private CompositeScrolled queueArea;
+    private CompositeScrolled selectionArea;
 
     public GuiResearchStationSelection(GuiResearchStation parent, int x, int y) {
         super(parent.getContainer(), 400, 240);
@@ -85,7 +85,7 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
         queueArea.addGuiElement(label);
 
         Tooltip selectableGoalTooltip = new Tooltip(110, 75);
-        selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocal("guistrings.research.research_time") + ": " + g.getTotalResearchTime()));
+        selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocalFormatted("guistrings.research.research_time", g.getTotalResearchTime())));
         selectableGoalTooltip.addTooltipElement(new Label(0, 10, "guistrings.research.resources_needed"));
         int x = 0, y = 0;
         for (ItemStack stack : g.getResources()) {
@@ -119,7 +119,7 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
         selectionArea.addGuiElement(button);
 
         Tooltip selectableGoalTooltip = new Tooltip(110, 75);
-        selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocal("guistrings.research.research_time") + ": " + g.getTotalResearchTime()));
+        selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocalFormatted("guistrings.research.research_time", g.getTotalResearchTime())));
         selectableGoalTooltip.addTooltipElement(new Label(0, 10, "guistrings.research.resources_needed"));
         int x = 0, y = 0;
         for (ItemStack stack : g.getResources()) {
@@ -145,8 +145,8 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
     }
 
     private class GoalButton extends Button {
-        ResearchGoal goal;
-        boolean add;
+        final ResearchGoal goal;
+        final boolean add;
 
         public GoalButton(int topLeftX, int topLeftY, int width, int height, ResearchGoal goal, boolean add) {
             super(topLeftX, topLeftY, width, height, add ? "+" : "-");

@@ -14,16 +14,15 @@ import java.util.*;
 
 public class GuiResearchBook extends GuiContainerBase {
 
-    RecipeResearched selectedRecipe = null;
-    ResearchGoal selectedGoal = null;
+    private RecipeResearched selectedRecipe = null;
+    private ResearchGoal selectedGoal = null;
 
-    CompositeScrolled area;
+    private CompositeScrolled area;
+    private CompositeScrolled detailsArea;
 
-    CompositeScrolled detailsArea;
+    private boolean researchMode = true;
 
-    boolean researchMode = true;
-
-    Checkbox modeBox;
+    private Checkbox modeBox;
 
     public GuiResearchBook(ContainerBase container) {
         super(container, 400, 240);
@@ -168,7 +167,7 @@ public class GuiResearchBook extends GuiContainerBase {
 
     private class RecipeSlot extends ItemSlot{
 
-        private RecipeResearched researched;
+        private final RecipeResearched researched;
         public RecipeSlot(int i, int totalHeight, RecipeResearched recipe, ITooltipRenderer render) {
             super(8 + (18 * (i % 9)), totalHeight + 18 * (i / 9), recipe.getRecipeOutput(), render);
             setRenderItemQuantity(false);
@@ -188,7 +187,7 @@ public class GuiResearchBook extends GuiContainerBase {
     }
 
     private class RecipeButton extends Button {
-        RecipeResearched recipe;
+        final RecipeResearched recipe;
 
         public RecipeButton(int topLeftX, int topLeftY, RecipeResearched recipe) {
             super(topLeftX, topLeftY, 160, 12, recipe == null ? "guistrings.no_selection" : recipe.getRecipeOutput().getDisplayName());
@@ -207,7 +206,7 @@ public class GuiResearchBook extends GuiContainerBase {
     }
 
     private class GoalButton extends Button {
-        ResearchGoal goal;
+        final ResearchGoal goal;
 
         public GoalButton(int topLeftX, int topLeftY, ResearchGoal goal) {
             super(topLeftX, topLeftY, 160, 10, goal == null ? "guistrings.no_selection" : goal.getName());

@@ -20,8 +20,8 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> {
 
     private ItemQuantityMap itemMap = new ItemQuantityMap();
-    private ItemQuantityMap cache = new ItemQuantityMap();
-    boolean shouldUpdate = true;
+    private final ItemQuantityMap cache = new ItemQuantityMap();
+    private boolean shouldUpdate = true;
 
     public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
@@ -83,7 +83,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
             int playerSlotStart = 2 + tileEntity.layoutMatrix.getSizeInventory();
             if (slotClickedIndex < playerSlotStart)//result slot, book slot
             {
-                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + 36, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + playerSlots, false))//merge into player inventory
                 {
                     return null;
                 }

@@ -17,21 +17,21 @@ import java.util.List;
 
 public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
 
-    CompositeScrolled area;
-    GuiContainerBase parent;
-    EntitySpawnGroup group;
-    EntitySpawnSettings settings = new EntitySpawnSettings();
-    boolean showAddButton;
+    private CompositeScrolled area;
+    private final GuiContainerBase parent;
+    private final EntitySpawnGroup group;
+    private EntitySpawnSettings settings;
+    private final boolean showAddButton;
 
-    List<String> tagInput = new ArrayList<String>();
-    boolean showAddTagButton = true;
+    private final List<String> tagInput = new ArrayList<String>();
+    private boolean showAddTagButton = true;
 
-    HashMap<Button, Integer> buttonToLineMap = new HashMap<Button, Integer>();
-    HashMap<Text, Integer> textToLineMap = new HashMap<Text, Integer>();
+    private final HashMap<Button, Integer> buttonToLineMap = new HashMap<Button, Integer>();
+    private final HashMap<Text, Integer> textToLineMap = new HashMap<Text, Integer>();
 
-    WatchedData.Type[] dataType;
-    int[] dataKey;
-    String[] dataValue;
+    private WatchedData.Type[] dataType;
+    private int[] dataKey;
+    private String[] dataValue;
 
     public GuiSpawnerAdvancedAddEntity(GuiContainerBase parent, EntitySpawnGroup group, EntitySpawnSettings settings) {
         super(parent.getContainer());
@@ -45,7 +45,8 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
             this.settings.setSpawnCountMin(2);
             this.settings.setSpawnCountMax(4);
             this.settings.setSpawnLimitTotal(-1);
-        }
+        }else
+            showAddButton = false;
         loadData();
     }
 
@@ -133,7 +134,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
 
     private void saveTag(){
         if(!tagInput.isEmpty()){
-            StringBuffer tagBuffer = new StringBuffer("");
+            StringBuilder tagBuffer = new StringBuilder();
             for(String string:tagInput) {
                 tagBuffer.append(string);
             }

@@ -44,7 +44,7 @@ public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoade
 //    AWLog.logDebug("received forced chunk set of: "+ccipSet);
             refreshGui();
         }
-        if (tag.hasKey("forced")) {
+        else if (tag.hasKey("forced")) {
             ChunkCoordIntPair ccip = new ChunkCoordIntPair(tag.getInteger("x"), tag.getInteger("z"));
             tileEntity.addOrRemoveChunk(ccip);
             //should trigger an updateViewers and then a re-send of forced chunk list from tile

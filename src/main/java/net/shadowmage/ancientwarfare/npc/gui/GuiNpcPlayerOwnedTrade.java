@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
@@ -12,7 +11,7 @@ import net.shadowmage.ancientwarfare.npc.trade.Trade;
 
 public class GuiNpcPlayerOwnedTrade extends GuiContainerBase<ContainerNpcPlayerOwnedTrade> {
 
-    CompositeScrolled area;
+    private CompositeScrolled area;
     private boolean owner;
 
     public GuiNpcPlayerOwnedTrade(ContainerBase container) {
@@ -100,9 +99,7 @@ public class GuiNpcPlayerOwnedTrade extends GuiContainerBase<ContainerNpcPlayerO
             @Override
             protected void onPressed() {
                 trade.performTrade(player, getContainer().storage);
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setInteger("doTrade", tradeIndex);
-                sendDataToContainer(tag);
+                getContainer().doTrade(tradeIndex);
                 refreshGui();
             }
         };

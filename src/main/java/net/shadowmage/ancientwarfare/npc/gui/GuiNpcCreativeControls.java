@@ -10,14 +10,14 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerNpcCreativeControls;
 
 public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativeControls> {
 
-    Text ownerNameInput;
-    Text customTexInput;
-    NumberInput attackDamageOverrideInput;
-    NumberInput armorValueOverrideInput;
-    NumberInput maxHealthOverrideInput;
-    Checkbox wanderCheckbox;
+    private Text ownerNameInput;
+    private Text customTexInput;
+    private NumberInput attackDamageOverrideInput;
+    private NumberInput armorValueOverrideInput;
+    private NumberInput maxHealthOverrideInput;
+    private Checkbox wanderCheckbox;
 
-    boolean hasChanged = false;
+    private boolean hasChanged = false;
 
     public GuiNpcCreativeControls(ContainerBase container) {
         super(container);

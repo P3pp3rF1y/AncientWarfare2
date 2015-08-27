@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
@@ -14,9 +13,9 @@ import java.util.Locale;
 
 public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
 
-    boolean hasChanged = false;
-    CompositeScrolled area;
-    Button routeButton, shiftButton;
+    private boolean hasChanged = false;
+    private CompositeScrolled area;
+    private Button routeButton, shiftButton;
 
     public GuiWorkOrder(ContainerBase container) {
         super(container);
@@ -116,16 +115,14 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
     @Override
     protected boolean onGuiCloseRequested() {
         if (hasChanged) {
-            NBTTagCompound outer = new NBTTagCompound();
-            outer.setTag("wo", getContainer().wo.writeToNBT(new NBTTagCompound()));
-            sendDataToContainer(outer);
+            getContainer().onClose();
         }
         return super.onGuiCloseRequested();
     }
 
     private class WorkEntryNumberInput extends NumberInput {
 
-        WorkEntry entry;
+        final WorkEntry entry;
 
         public WorkEntryNumberInput(int topLeftX, int topLeftY, int width,
                                     float defaultText, IWidgetSelection selector, WorkEntry e) {
@@ -136,7 +133,7 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
     }
 
     private class IndexedButton extends Button {
-        int index;
+        final int index;
 
         public IndexedButton(int topLeftX, int topLeftY, int width, int height, String text, int index) {
             super(topLeftX, topLeftY, width, height, text);

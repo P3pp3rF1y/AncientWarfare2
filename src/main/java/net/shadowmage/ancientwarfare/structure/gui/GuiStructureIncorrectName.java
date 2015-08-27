@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -10,7 +9,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 
 public class GuiStructureIncorrectName extends GuiContainerBase {
 
-    GuiStructureScanner parent;
+    private final GuiStructureScanner parent;
 
     public GuiStructureIncorrectName(GuiStructureScanner parent) {
         super(parent.getContainer(), 256, 60);
@@ -20,12 +19,12 @@ public class GuiStructureIncorrectName extends GuiContainerBase {
 
     @Override
     public void initElements() {
-        Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.invalid_name"));
+        Label label = new Label(8, 8, "guistrings.invalid_name");
         addGuiElement(label);
-        label = new Label(8, 18, StatCollector.translateToLocal("guistrings.please_select_valid_name"));
+        label = new Label(8, 18, "guistrings.please_select_valid_name");
         addGuiElement(label);
 
-        Button button = new Button((256 - 55) / 2, 28, 55, 12, StatCollector.translateToLocal("guistrings.done"));
+        Button button = new Button((256 - 55) / 2, 28, 55, 12, "guistrings.done");
         button.addNewListener(new Listener(Listener.MOUSE_UP) {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {

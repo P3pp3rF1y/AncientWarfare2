@@ -95,15 +95,6 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         this.elements.clear();
     }
 
-    /**
-     * send the input nbt-tag to the server-side container
-     */
-    protected void sendDataToContainer(NBTTagCompound tag) {
-        PacketGui pkt = new PacketGui();
-        pkt.setData(tag);
-        NetworkHandler.sendToServer(pkt);
-    }
-
     protected void addGuiElement(GuiElement element) {
         this.elements.add(element);
     }

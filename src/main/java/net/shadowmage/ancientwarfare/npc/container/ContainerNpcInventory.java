@@ -10,15 +10,14 @@ import net.shadowmage.ancientwarfare.npc.inventory.InventoryNpcEquipment;
 
 public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 
-    InventoryNpcEquipment inventory;
-    public int guiHeight;
-    public String name;
+    public final int guiHeight;
+    private String name;
 
     ItemStack orderStack;
 
     public ContainerNpcInventory(final EntityPlayer player, int x, int y, int z) {
         super(player, x);
-        inventory = new InventoryNpcEquipment(entity);
+        InventoryNpcEquipment inventory = new InventoryNpcEquipment(entity);
         addSlotToContainer(new Slot(inventory, 0, 8, 8) {
             @Override
             public void onSlotChanged() {
@@ -87,4 +86,9 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
         entity.updateTexture();
     }
 
+    public void setName() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("customName", name);
+        sendDataToServer(tag);
+    }
 }

@@ -18,28 +18,17 @@ import java.util.List;
 
 public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseStorage> {
 
-    public int guiHeight;
-    public int areaSize;
-    int playerSlotsSize;
-    int playerSlotsY;
-
-    boolean shouldSynch = true;
+    private boolean shouldSynch = true;
+    private ItemQuantityMap cache = new ItemQuantityMap();
     public ItemQuantityMap itemMap = new ItemQuantityMap();
-    public ItemQuantityMap cache = new ItemQuantityMap();
-
     public List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
 
     public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
         tileEntity.addViewer(this);
 
-        areaSize = 5 * 18 + 16;
-        playerSlotsY = 148 + 8;
-        playerSlotsSize = 8 + 4 + 4 * 18;
-        guiHeight = playerSlotsY + playerSlotsSize;
-
         filters.addAll(tileEntity.getFilters());
-        addPlayerSlots(playerSlotsY);
+        addPlayerSlots(148 + 8);
     }
 
     @Override
@@ -95,7 +84,7 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
                 tileEntity.setFilters(filters);
             }
         }
-        if (tag.hasKey("slotClick")) {
+        else if (tag.hasKey("slotClick")) {
             NBTTagCompound reqTag = tag.getCompoundTag("slotClick");
             ItemStack item = null;
             if (reqTag.hasKey("reqItem")) {
@@ -103,7 +92,7 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
             }
             tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
         }
-        if (tag.hasKey("changeList")) {
+        else if (tag.hasKey("changeList")) {
             handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
             refreshGui();
         }

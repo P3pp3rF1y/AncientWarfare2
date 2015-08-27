@@ -67,7 +67,7 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
         if (theSlot != null && theSlot.getHasStack()) {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
-            int playerSlotEnd = 36;
+            int playerSlotEnd = playerSlots;
             int storageSlots = playerSlotEnd + 9;
             if (slotClickedIndex < playerSlotEnd)//player slots...
             {

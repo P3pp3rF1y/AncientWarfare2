@@ -23,22 +23,20 @@ public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSter
                 return TileEntityFurnace.isItemFuel(par1ItemStack);
             }
         });
-        addPlayerSlots(8 + 18 + 8 + 12 + 12);
-        guiHeight = 8 + 18 + 8 + 4 * 18 + 4 + 8 + 12 + 12;
+        guiHeight = addPlayerSlots(8 + 18 + 8 + 12 + 12) + 8;
     }
 
     @Override
     public void updateProgressBar(int par1, int par2) {
         if (par1 == 0) {
-            double e = (double) par2;
-            energy = e * 0.001d * tileEntity.getMaxTorque(tileEntity.getPrimaryFacing());
+            energy = par2 * 0.001d * tileEntity.getMaxTorque(tileEntity.getPrimaryFacing());
             refreshGui();
         }
-        if (par1 == 1) {
+        else if (par1 == 1) {
             burnTime = par2;
             refreshGui();
         }
-        if (par1 == 2) {
+        else if (par1 == 2) {
             burnTimeBase = par2;
             refreshGui();
         }
@@ -50,8 +48,7 @@ public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSter
         double g = tileEntity.getTorqueStored(tileEntity.getPrimaryFacing());
         if (g != energy) {
             energy = g;
-            g = g / tileEntity.getMaxTorque(tileEntity.getPrimaryFacing());
-            int e = (int) (g * 1000.d);
+            int e = (int) (g * 1000.d / tileEntity.getMaxTorque(tileEntity.getPrimaryFacing()));
             for (Object crafter : this.crafters) {
                 ((ICrafting) crafter).sendProgressBarUpdate(this, 0, e);
             }
@@ -77,15 +74,15 @@ public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSter
      */
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        int slots = 1;
         Slot slot = this.getSlot(slotClickedIndex);
         if (slot == null || !slot.getHasStack()) {
             return null;
         }
+        int slots = tileEntity.getSizeInventory();
         ItemStack stackFromSlot = slot.getStack();
         if (slotClickedIndex < slots)//click on input slot, merge into player inventory
         {
-            this.mergeItemStack(stackFromSlot, slots, slots + 36, false);
+            this.mergeItemStack(stackFromSlot, slots, slots + playerSlots, false);
         } else//click on player slot, attempt merge into te inventory
         {
             this.mergeItemStack(stackFromSlot, 0, slots, false);

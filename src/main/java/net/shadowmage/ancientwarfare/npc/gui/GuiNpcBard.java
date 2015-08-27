@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
 
 public class GuiNpcBard extends GuiContainerBase<ContainerNpcBard> {
 
-    CompositeScrolled area;
+    private CompositeScrolled area;
 
     public GuiNpcBard(ContainerBase container) {
         super(container);

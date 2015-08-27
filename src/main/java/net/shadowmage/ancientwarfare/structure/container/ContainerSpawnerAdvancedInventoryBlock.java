@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdvancedInventoryBase {
 
-    TileAdvancedSpawner spawner;
+    private TileAdvancedSpawner spawner;
 
     public ContainerSpawnerAdvancedInventoryBlock(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);

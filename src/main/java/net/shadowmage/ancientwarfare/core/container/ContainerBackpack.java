@@ -8,11 +8,10 @@ import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 
 public class ContainerBackpack extends ContainerBase {
 
-    public int backpackSlotIndex;
+    public final int backpackSlotIndex;
+    public final int guiHeight;
 
-    InventoryBackpack inventory;
-
-    public int guiHeight;
+    private final InventoryBackpack inventory;
 
     public ContainerBackpack(EntityPlayer player, int x, int y, int z) {
         super(player);
@@ -69,6 +68,7 @@ public class ContainerBackpack extends ContainerBase {
                 this.addSlotToContainer(new Slot(player.inventory, slotNum, xPos, yPos));
             }
         }
+        playerSlots = 35;
         return ty + (4 * 18) + gap;
     }
 
@@ -77,13 +77,12 @@ public class ContainerBackpack extends ContainerBase {
         ItemStack slotStackCopy = null;
         Slot theSlot = this.getSlot(slotClickedIndex);
         int size = inventory.getSizeInventory();
-        int playerSize = 35;// skipped one due to backpack slot
         if (theSlot != null && theSlot.getHasStack()) {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
             if (slotClickedIndex < size)//clicked in backpack
             {
-                if (!this.mergeItemStack(slotStack, size, size + playerSize, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, size, size + playerSlots, false))//merge into player inventory
                 {
                     return null;
                 }

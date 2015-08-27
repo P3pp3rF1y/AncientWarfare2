@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
 public class ContainerUpkeepOrder extends ContainerBase {
 
-    public UpkeepOrder upkeepOrder;
+    public final UpkeepOrder upkeepOrder;
     private boolean hasChanged;
 
     public ContainerUpkeepOrder(EntityPlayer player, int x, int y, int z) {
@@ -41,4 +41,9 @@ public class ContainerUpkeepOrder extends ContainerBase {
         }
     }
 
+    public void onClose() {
+        NBTTagCompound outer = new NBTTagCompound();
+        outer.setTag("upkeepOrder", upkeepOrder.writeToNBT(new NBTTagCompound()));
+        sendDataToServer(outer);
+    }
 }

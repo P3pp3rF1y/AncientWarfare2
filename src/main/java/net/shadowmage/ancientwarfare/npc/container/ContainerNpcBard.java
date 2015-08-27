@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBard;
 
 public class ContainerNpcBard extends ContainerNpcBase<NpcBard> {
 
-    public SongPlayData data;
+    public final SongPlayData data;
 
     public ContainerNpcBard(EntityPlayer player, int x, int y, int z) {
         super(player, x);

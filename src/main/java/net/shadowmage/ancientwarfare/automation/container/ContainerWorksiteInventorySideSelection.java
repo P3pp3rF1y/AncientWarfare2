@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class ContainerWorksiteInventorySideSelection extends ContainerTileBase<TileWorksiteBoundedInventory> {
 
-    public HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<RelativeSide, RelativeSide>();
+    public final HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<RelativeSide, RelativeSide>();
 
     public ContainerWorksiteInventorySideSelection(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
@@ -55,7 +55,7 @@ public class ContainerWorksiteInventorySideSelection extends ContainerTileBase<T
                 sideMap.put(rSide, iSide);
             }
         }
-        if (tag.hasKey("accessChange")) {
+        else if (tag.hasKey("accessChange")) {
             NBTTagCompound slotTag = tag.getCompoundTag("accessChange");
             RelativeSide base = RelativeSide.values()[slotTag.getInteger("baseSide")];
             RelativeSide access = RelativeSide.values()[slotTag.getInteger("accessSide")];

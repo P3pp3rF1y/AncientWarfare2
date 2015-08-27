@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
 
 public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 
-    CompositeScrolled area;
+    private CompositeScrolled area;
 
     public GuiSoundBlock(ContainerBase container) {
         super(container);

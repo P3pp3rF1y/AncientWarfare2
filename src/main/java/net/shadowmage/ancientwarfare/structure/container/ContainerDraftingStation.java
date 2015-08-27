@@ -17,9 +17,9 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
     public boolean isStarted = false;
     public boolean isFinished = false;
-    public int remainingTime;
-    public int totalTime;
-    public List<ItemStack> neededResources = new ArrayList<ItemStack>();
+    private int remainingTime;
+    private int totalTime;
+    public final List<ItemStack> neededResources = new ArrayList<ItemStack>();
 
     private final TileDraftingStation tile;
 
@@ -64,7 +64,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
             slotStackCopy = slotStack.copy();
 
             int playerSlotStart = tile.inputSlots.getSizeInventory();
-            int playerSlotEnd = playerSlotStart + 36;
+            int playerSlotEnd = playerSlotStart + playerSlots;
             if (slotClickedIndex < playerSlotStart)//storage slots
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory

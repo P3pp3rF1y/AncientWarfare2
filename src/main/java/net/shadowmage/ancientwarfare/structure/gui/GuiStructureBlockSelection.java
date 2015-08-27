@@ -17,9 +17,10 @@ import java.util.Set;
 
 public class GuiStructureBlockSelection extends GuiContainerBase {
 
-    GuiStructureScanner parent;
+    private final GuiStructureScanner parent;
 
-    CompositeScrolled area;
+    private final HashMap<Checkbox, Block> boxToBlock = new HashMap<Checkbox, Block>();
+    private final HashMap<Block, Checkbox> blockToBox = new HashMap<Block, Checkbox>();
 
     public GuiStructureBlockSelection(GuiStructureScanner parent) {
         super(parent.getContainer());
@@ -27,16 +28,12 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         this.shouldCloseOnVanillaKeys = false;
     }
 
-    private HashMap<Checkbox, Block> boxToBlock = new HashMap<Checkbox, Block>();
-    private HashMap<Block, Checkbox> blockToBox = new HashMap<Block, Checkbox>();
-
-
     @Override
     public void initElements() {
         Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.select_blocks") + ":");
         addGuiElement(label);
 
-        Button button = new Button(256 - 8 - 55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done")) {
+        Button button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done") {
             @Override
             protected void onPressed() {
                 setBlocksToValidator();
@@ -45,12 +42,12 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         };
         addGuiElement(button);
 
-        area = new CompositeScrolled(this, 0, 8 + 12 + 4, 256, 240 - 24);
+        CompositeScrolled area = new CompositeScrolled(this, 0, 8 + 12 + 4, 256, 240 - 24);
         this.addGuiElement(area);
 
         int totalHeight = 3;
 
-        button = new Button(20, totalHeight, 120, 16, "Auto Fill From Biomes") {
+        button = new Button(20, totalHeight, 120, 16, "guistrings.auto_fill_biome") {
             @Override
             protected void onPressed() {
                 fillFromBiomes();
@@ -59,7 +56,7 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         area.addGuiElement(button);
         totalHeight += 16;
 
-        button = new Button(20, totalHeight, 120, 16, "Auto Fill Vanilla Blocks") {
+        button = new Button(20, totalHeight, 120, 16, "guistrings.auto_fill_vanilla") {
             @Override
             protected void onPressed() {
                 addDefaults();
@@ -67,7 +64,6 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         };
         area.addGuiElement(button);
         totalHeight += 16;
-
 
         Set<String> blockNames = parent.validator.getTargetBlocks();
 

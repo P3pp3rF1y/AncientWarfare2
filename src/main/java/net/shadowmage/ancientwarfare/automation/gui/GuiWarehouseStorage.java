@@ -15,8 +15,8 @@ import java.util.List;
 
 public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStorage> {
 
-    CompositeScrolled area;
-    CompositeItemSlots area2;
+    private CompositeScrolled area;
+    private CompositeItemSlots area2;
 
     public GuiWarehouseStorage(ContainerBase par1Container) {
         super(par1Container, 178, 240);
@@ -121,7 +121,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
     }
 
     private class FilterRemoveButton extends Button {
-        WarehouseStorageFilter filter;
+        final WarehouseStorageFilter filter;
 
         public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseStorageFilter filter) {
             super(topLeftX, topLeftY, 12, 12, "-");
@@ -137,7 +137,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
     }
 
     private class FilterItemSlot extends ItemSlot {
-        WarehouseStorageFilter filter;
+        final WarehouseStorageFilter filter;
 
         public FilterItemSlot(int topLeftX, int topLeftY, WarehouseStorageFilter filter, ITooltipRenderer render) {
             super(topLeftX, topLeftY, filter.getFilterItem(), render);

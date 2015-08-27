@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
@@ -10,22 +9,23 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelec
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructureSelectionBase> {
 
-    Text filterInput;
-    StructureTemplateClient currentSelection;
-    CompositeScrolled selectionArea;
-    Label selection;
+    private Text filterInput;
+    private StructureTemplateClient currentSelection;
+    private CompositeScrolled selectionArea;
+    private Label selection;
 
-    HashMap<Label, StructureTemplateClient> templateMap = new HashMap<Label, StructureTemplateClient>();
+    private final ComparatorStructureTemplateClient sorter;
 
-    ComparatorStructureTemplateClient sorter;
+    private TexturedRectangle rect;
 
-    TexturedRectangle rect;
-
-    CompositeScrolled resourceArea;
+    private CompositeScrolled resourceArea;
 
     public GuiStructureSelectionBase(ContainerBase par1Container) {
         super(par1Container, 400, 240);
@@ -35,7 +35,7 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
 
     @Override
     public void initElements() {
-        addGuiElement(new Button(xSize - 55 - 8, 8, 55, 12, StatCollector.translateToLocal("guistrings.done")) {
+        addGuiElement(new Button(xSize - 55 - 8, 8, 55, 12, "guistrings.done") {
             @Override
             protected void onPressed() {
                 if (currentSelection != null) {
@@ -46,7 +46,7 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
             }
         });
 
-        Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.current_selection"));
+        Label label = new Label(8, 8, "guistrings.current_selection");
         addGuiElement(label);
 
         selection = new Label(8, 20, "");
@@ -78,8 +78,7 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
     @Override
     public void setupElements() {
         selectionArea.clearElements();
-        templateMap.clear();
-        setSelectionName((currentSelection == null ? StatCollector.translateToLocal("guistrings.none") : currentSelection.name));
+        setSelectionName((currentSelection == null ? "guistrings.none" : currentSelection.name));
 
         Collection<StructureTemplateClient> templatesC = getTemplatesForDisplay();
         List<StructureTemplateClient> templates = new ArrayList<StructureTemplateClient>();
@@ -121,7 +120,7 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
         resourceArea.clearElements();
         int totalHeight = 8;
         this.currentSelection = template;
-        this.setSelectionName(template == null ? StatCollector.translateToLocal("guistrings.none") : template.name);
+        this.setSelectionName(template == null ? "guistrings.none" : template.name);
 
         if (template != null) {
             ResourceLocation l = StructureTemplateManagerClient.instance().getImageFor(template.name);

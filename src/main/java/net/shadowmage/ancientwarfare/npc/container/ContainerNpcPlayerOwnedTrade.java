@@ -50,7 +50,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
             tradeList = new TradeList();
             tradeList.readFromNBT(tag.getCompoundTag("tradeData"));
         }
-        if (tag.hasKey("doTrade")) {
+        else if (tag.hasKey("doTrade")) {
             tradeList.performTrade(player, storage, tag.getInteger("doTrade"));
         }
         refreshGui();
@@ -63,5 +63,11 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
             ItemBackpack.writeBackpackToItem(storage, this.entity.getHeldItem());
         }
         super.onContainerClosed(player);
+    }
+
+    public void doTrade(int tradeIndex) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("doTrade", tradeIndex);
+        sendDataToServer(tag);
     }
 }

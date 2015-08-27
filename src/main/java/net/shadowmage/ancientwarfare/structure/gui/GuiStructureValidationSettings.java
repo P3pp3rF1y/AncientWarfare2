@@ -16,14 +16,13 @@ import java.util.Set;
 
 public class GuiStructureValidationSettings extends GuiContainerBase {
 
-    GuiStructureScanner parent;
+    private final GuiStructureScanner parent;
 
-    CompositeScrolled area;
-    Label typeLabel;
+    private CompositeScrolled area;
+    private Label typeLabel;
 
-    Set<Button> typeButtons = new HashSet<Button>();
-    HashMap<Button, StructureValidationType> buttonToValidationType = new HashMap<Button, StructureValidationType>();
-
+    private final Set<Button> typeButtons = new HashSet<Button>();
+    private final HashMap<Button, StructureValidationType> buttonToValidationType = new HashMap<Button, StructureValidationType>();
 
     public GuiStructureValidationSettings(GuiStructureScanner parent) {
         super(parent.getContainer());
@@ -84,7 +83,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
         typeLabel = new Label(8, 8, "");
         addGuiElement(typeLabel);
 
-        button = new Button(256 - 8 - 55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done"));
+        button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done");
         button.addNewListener(new Listener(Listener.MOUSE_UP) {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
@@ -135,7 +134,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
                     || propName.equals(StructureValidator.PROP_BLOCK_LIST)) {
                 continue;//skip the properties handled by blocks, biome, or dimensions setup guis
             }
-            label = new Label(8, totalHeight, StatCollector.translateToLocal("structure.validation." + property.getRegName()));
+            label = new Label(8, totalHeight, "structure.validation." + property.getRegName());
             area.addGuiElement(label);
 
             switch (property.getDataType()) {
@@ -164,7 +163,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
     private class PropertyCheckbox extends Checkbox {
 
-        StructureValidationProperty prop;
+        final StructureValidationProperty prop;
 
         public PropertyCheckbox(int topLeftX, int topLeftY, int width, int height, StructureValidationProperty property) {
             super(topLeftX, topLeftY, width, height, "");
@@ -180,7 +179,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
     private class PropertyNumberInputInteger extends NumberInput {
 
-        StructureValidationProperty prop;
+        final StructureValidationProperty prop;
 
         public PropertyNumberInputInteger(int topLeftX, int topLeftY, int width, StructureValidationProperty property, IWidgetSelection selector) {
             super(topLeftX, topLeftY, width, property.getDataInt(), selector);

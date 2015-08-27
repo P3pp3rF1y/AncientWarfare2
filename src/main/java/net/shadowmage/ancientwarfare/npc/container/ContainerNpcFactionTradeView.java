@@ -33,7 +33,7 @@ public class ContainerNpcFactionTradeView extends ContainerNpcBase<NpcFactionTra
         if (tag.hasKey("tradeData")) {
             tradeList.readFromNBT(tag.getCompoundTag("tradeData"));
         }
-        if (tag.hasKey("doTrade")) {
+        else if (tag.hasKey("doTrade")) {
             tradeList.performTrade(player, tag.getInteger("doTrade"));
         }
         refreshGui();
@@ -45,4 +45,9 @@ public class ContainerNpcFactionTradeView extends ContainerNpcBase<NpcFactionTra
         super.onContainerClosed(player);
     }
 
+    public void doTrade(int tradeNum) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("doTrade", tradeNum);
+        sendDataToServer(tag);
+    }
 }

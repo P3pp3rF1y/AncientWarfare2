@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBoundsAdjust;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteUserBlocks;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -13,10 +12,10 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteBoundsAdjust> {
 
-    boolean noTargetMode = false;
+    private boolean noTargetMode = false;
 
-    boolean boundsAdjusted = false, targetsAdjusted = false;
-    byte[] checkedMap = new byte[16 * 16];
+    private boolean boundsAdjusted = false, targetsAdjusted = false;
+    private byte[] checkedMap = new byte[16 * 16];
 
     public GuiWorksiteBoundsAdjust(ContainerBase container) {
         super(container);
@@ -44,9 +43,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
     @Override
     public void setupElements() {
         this.clearElements();
-        Button b;
-
-        b = new Button(48, 12, 40, 12, "NORTH") {
+        Button b = new Button(48, 12, 40, 12, "guistrings.inventory.direction.north") {
             @Override
             protected void onPressed() {
                 if (getContainer().max.z >= getContainer().z && (getContainer().min.x > getContainer().x || getContainer().max.x < getContainer().x)) {
@@ -59,7 +56,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         };
         addGuiElement(b);
 
-        b = new Button(48 + 40, 12, 40, 12, "SOUTH") {
+        b = new Button(48 + 40, 12, 40, 12, "guistrings.inventory.direction.south") {
             @Override
             protected void onPressed() {
                 if (getContainer().min.z <= getContainer().z && (getContainer().min.x > getContainer().x || getContainer().max.x < getContainer().x)) {
@@ -72,7 +69,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         };
         addGuiElement(b);
 
-        b = new Button(48 + 40 + 40, 12, 40, 12, "WEST") {
+        b = new Button(48 + 40 + 40, 12, 40, 12, "guistrings.inventory.direction.west") {
             @Override
             protected void onPressed() {
                 if (getContainer().max.x >= getContainer().x && (getContainer().min.z > getContainer().z || getContainer().max.z < getContainer().z)) {
@@ -85,7 +82,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         };
         addGuiElement(b);
 
-        b = new Button(48 + 40 + 40 + 40, 12, 40, 12, "EAST") {
+        b = new Button(48 + 40 + 40 + 40, 12, 40, 12, "guistrings.inventory.direction.east") {
             @Override
             protected void onPressed() {
                 if (getContainer().min.x <= getContainer().x && (getContainer().min.z > getContainer().z || getContainer().max.z < getContainer().z)) {
@@ -184,7 +181,6 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         int tlx = (256 - (size * bits)) / 2 + size;
         int tly = 36 + 8 + size;
 
-
         BlockPosition p = new BlockPosition(getContainer().x, getContainer().y, getContainer().z);
         BlockPosition p1 = getContainer().min;
         BlockPosition p2 = getContainer().max;
@@ -194,9 +190,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         int w = p2.x - p1.x;
         int l = p2.z - p1.z;
 
-        Rectangle r;
-
-        r = new Rectangle(tlx + o.x * size, tly + o.z * size, size, size, 0x0000ffff, 0x0000ffff);
+        Rectangle r = new Rectangle(tlx + o.x * size, tly + o.z * size, size, size, 0x0000ffff, 0x0000ffff);
         addGuiElement(r);
 
         for (int x = 0; x <= w; x++) {
@@ -228,25 +222,14 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
 
     @Override
     protected boolean onGuiCloseRequested() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setBoolean("guiClosed", true);
-        if (boundsAdjusted) {
-            tag.setTag("min", getContainer().min.writeToNBT(new NBTTagCompound()));
-            tag.setTag("max", getContainer().max.writeToNBT(new NBTTagCompound()));
-        }
-        if (targetsAdjusted && getContainer().worksite instanceof TileWorksiteUserBlocks) {
-            if (!noTargetMode) {
-                tag.setByteArray("checkedMap", checkedMap);
-            }
-        }
-        sendDataToContainer(tag);
+        getContainer().onClose(boundsAdjusted, targetsAdjusted && !noTargetMode, checkedMap);
         return super.onGuiCloseRequested();
     }
 
     private class ToggledRectangle extends Rectangle {
         boolean checked;
-        int checkedColor;
-        int hoverCheckedColor;
+        private final int checkedColor;
+        private final int hoverCheckedColor;
 
         public ToggledRectangle(int topLeftX, int topLeftY, int width, int height, int color, int hoverColor, int checkColor, int hoverCheckColor, boolean checked) {
             super(topLeftX, topLeftY, width, height, color, hoverColor);

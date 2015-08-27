@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -14,8 +13,8 @@ import java.util.List;
 
 public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
 
-    CompositeScrolled tradesArea, routeArea, restockArea;
-    Button tradeButton, routeButton, restockButton;
+    private CompositeScrolled tradesArea, routeArea, restockArea;
+    private Button tradeButton, routeButton, restockButton;
 
     private Button currentMode;
 
@@ -25,9 +24,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
 
     @Override
     protected boolean onGuiCloseRequested() {
-        NBTTagCompound outer = new NBTTagCompound();
-        outer.setTag("tradeOrder", getContainer().orders.writeToNBT(new NBTTagCompound()));
-        sendDataToContainer(outer);
+        getContainer().onClose();
         return super.onGuiCloseRequested();
     }
 

@@ -15,8 +15,9 @@ import java.util.List;
 
 public class ContainerBase extends Container {
 
-    public EntityPlayer player;
+    public final EntityPlayer player;
     private IContainerGuiCallback gui;
+    public int playerSlots = 0;
 
     public ContainerBase(EntityPlayer player) {
         this.player = player;
@@ -54,6 +55,7 @@ public class ContainerBase extends Container {
                 this.addSlotToContainer(new Slot(player.inventory, slotNum, xPos, yPos));
             }
         }
+        playerSlots = 36;
         return ty + (4 * 18) + gap;
     }
 

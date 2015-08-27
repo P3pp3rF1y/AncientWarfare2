@@ -10,8 +10,8 @@ import java.util.List;
 
 public class GuiStructureSelectionDraftingStation extends GuiStructureSelectionBase {
 
-    GuiDraftingStation parent;
-    List<StructureTemplateClient> templateList = new ArrayList<StructureTemplateClient>();
+    private final GuiDraftingStation parent;
+    private final List<StructureTemplateClient> templateList = new ArrayList<StructureTemplateClient>();
 
     public GuiStructureSelectionDraftingStation(GuiDraftingStation parent) {
         super(parent.getContainer());

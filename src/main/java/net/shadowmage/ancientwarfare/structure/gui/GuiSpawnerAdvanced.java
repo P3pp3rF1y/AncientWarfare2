@@ -13,7 +13,13 @@ import java.util.List;
 
 public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvancedBase> {
 
-    CompositeScrolled area;
+    private CompositeScrolled area;
+
+    private HashMap<NumberInput, EntitySpawnGroup> groupMapByInput = new HashMap<NumberInput, EntitySpawnGroup>();
+    private HashMap<Button, EntitySpawnGroup> groupMapByButton = new HashMap<Button, EntitySpawnGroup>();
+
+    private HashMap<NumberInput, EntitySpawnSettings> settingsMapByInput = new HashMap<NumberInput, EntitySpawnSettings>();
+    private HashMap<Button, EntitySpawnSettings> settingsMapByButton = new HashMap<Button, EntitySpawnSettings>();
 
     public GuiSpawnerAdvanced(ContainerBase par1Container) {
         super(par1Container);
@@ -361,11 +367,5 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
 
         area.setAreaSize(totalHeight);
     }
-
-    private HashMap<NumberInput, EntitySpawnGroup> groupMapByInput = new HashMap<NumberInput, EntitySpawnGroup>();
-    private HashMap<Button, EntitySpawnGroup> groupMapByButton = new HashMap<Button, EntitySpawnGroup>();
-
-    private HashMap<NumberInput, EntitySpawnSettings> settingsMapByInput = new HashMap<NumberInput, EntitySpawnSettings>();
-    private HashMap<Button, EntitySpawnSettings> settingsMapByButton = new HashMap<Button, EntitySpawnSettings>();
 
 }

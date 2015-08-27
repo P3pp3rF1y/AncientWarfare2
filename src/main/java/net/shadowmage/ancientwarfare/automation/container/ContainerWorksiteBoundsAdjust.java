@@ -10,9 +10,9 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class ContainerWorksiteBoundsAdjust extends ContainerBase {
 
-    public int x, y, z;
-    public BlockPosition min, max;
-    public IWorkSite worksite;
+    public final int x, y, z;
+    public final BlockPosition min, max;
+    public final IWorkSite worksite;
 
     public ContainerWorksiteBoundsAdjust(EntityPlayer player, int x, int y, int z) {
         super(player);
@@ -20,9 +20,12 @@ public class ContainerWorksiteBoundsAdjust extends ContainerBase {
         this.y = y;
         this.z = z;
         TileEntity te = player.worldObj.getTileEntity(x, y, z);
-        worksite = (IWorkSite) te;
-        min = worksite.getWorkBoundsMin().copy();
-        max = worksite.getWorkBoundsMax().copy();
+        if(te instanceof IWorkSite) {
+            worksite = (IWorkSite) te;
+            min = worksite.getWorkBoundsMin().copy();
+            max = worksite.getWorkBoundsMax().copy();
+        }else
+            throw new IllegalArgumentException("Couldn't find work site");
     }
 
     @Override
@@ -55,4 +58,16 @@ public class ContainerWorksiteBoundsAdjust extends ContainerBase {
         }
     }
 
+    public void onClose(boolean boundsAdjusted, boolean targetsAdjusted, byte[] checkedMap) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("guiClosed", true);
+        if (boundsAdjusted) {
+            tag.setTag("min", min.writeToNBT(new NBTTagCompound()));
+            tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
+        }
+        if (targetsAdjusted && worksite instanceof TileWorksiteUserBlocks) {
+            tag.setByteArray("checkedMap", checkedMap);
+        }
+        sendDataToServer(tag);
+    }
 }

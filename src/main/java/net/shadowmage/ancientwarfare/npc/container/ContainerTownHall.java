@@ -41,7 +41,7 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
             }
             refreshGui();
         }
-        if (tag.hasKey("clear")) {
+        else if (tag.hasKey("clear")) {
             tileEntity.clearDeathNotices();
         }
         if(tag.hasKey("range")){
@@ -108,7 +108,7 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
             slotStackCopy = slotStack.copy();
             if (slotClickedIndex < tileEntity.getSizeInventory())//book slot
             {
-                if (!this.mergeItemStack(slotStack, tileEntity.getSizeInventory(), tileEntity.getSizeInventory() + 36, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, tileEntity.getSizeInventory(), tileEntity.getSizeInventory() + playerSlots, false))//merge into player inventory
                 {
                     return null;
                 }

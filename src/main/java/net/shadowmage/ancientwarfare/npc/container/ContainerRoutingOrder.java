@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 public class ContainerRoutingOrder extends ContainerBase {
 
     private boolean hasChanged;
-    public RoutingOrder routingOrder;
+    public final RoutingOrder routingOrder;
 
     public ContainerRoutingOrder(EntityPlayer player, int x, int y, int z) {
         super(player);
@@ -39,5 +39,11 @@ public class ContainerRoutingOrder extends ContainerBase {
         if (hasChanged && !player.worldObj.isRemote) {
             routingOrder.write(player.getCurrentEquippedItem());
         }
+    }
+
+    public void onClose() {
+        NBTTagCompound outer = new NBTTagCompound();
+        outer.setTag("routingOrder", routingOrder.writeToNBT(new NBTTagCompound()));
+        sendDataToServer(outer);
     }
 }

@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -12,9 +11,9 @@ import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
 
 public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFactionTradeView> {
 
-    Button inventoryButton;
-    Button setupButton;
-    CompositeScrolled area;
+    private Button inventoryButton;
+    private Button setupButton;
+    private CompositeScrolled area;
 
     public GuiNpcFactionTradeView(ContainerBase container) {
         super(container);
@@ -92,15 +91,13 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
             @Override
             protected void onPressed() {
                 trade.performTrade(player, null);
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setInteger("doTrade", tradeNum);
-                sendDataToContainer(tag);
+                getContainer().doTrade(tradeNum);
                 refreshGui();
             }
         };
         area.addGuiElement(tradeButton);
 
-        Label available = new Label(startWidth, startHeight, StatCollector.translateToLocal("guistrings.trades_available") + ": " + trade.getCurrentAvailable());
+        Label available = new Label(startWidth, startHeight, StatCollector.translateToLocalFormatted("guistrings.trades_available", trade.getCurrentAvailable()));
         area.addGuiElement(available);
 
         startHeight += 18 * gridY;//input/output grid size

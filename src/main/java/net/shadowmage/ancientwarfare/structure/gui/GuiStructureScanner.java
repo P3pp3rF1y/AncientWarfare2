@@ -7,14 +7,13 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.network.PacketGui;
+import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
 import java.io.File;
 
-public class GuiStructureScanner extends GuiContainerBase {
+public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScanner> {
 
     private Text nameInput;
     private Label validationTypeLabel;
@@ -38,7 +37,7 @@ public class GuiStructureScanner extends GuiContainerBase {
         nameInput.removeAllowedChars('/', '\\', '$', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', ':', ';', '"', '\'', '+', '=', '<', '>', '?', '.', ',', '[', ']', '{', '}', '|');
         this.addGuiElement(nameInput);
 
-        Button button = new Button(256 - 55 - 8, 8, 55, 16, StatCollector.translateToLocal("guistrings.export"));
+        Button button = new Button(256 - 55 - 8, 8, 55, 16, "guistrings.export");
         button.addNewListener(new Listener(Listener.MOUSE_UP) {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
@@ -50,7 +49,7 @@ public class GuiStructureScanner extends GuiContainerBase {
         });
         this.addGuiElement(button);
 
-        button = new Button(256 - 55 - 8, 8 + 16, 55, 16, StatCollector.translateToLocal("guistrings.cancel")) {
+        button = new Button(256 - 55 - 8, 8 + 16, 55, 16, "guistrings.cancel") {
             @Override
             protected void onPressed() {
                 closeGui();
@@ -60,7 +59,7 @@ public class GuiStructureScanner extends GuiContainerBase {
 
         int totalHeight = 36;
 
-        Checkbox box = new Checkbox(8, totalHeight, 16, 16, StatCollector.translateToLocal("guistrings.include_immediately") + "?");
+        Checkbox box = new Checkbox(8, totalHeight, 16, 16, "guistrings.include_immediately");
         box.setChecked(true);
         this.addGuiElement(box);
         includeOnExport = box;
@@ -70,7 +69,7 @@ public class GuiStructureScanner extends GuiContainerBase {
         this.addGuiElement(validationTypeLabel);
         totalHeight += 10;
 
-        button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.setup_validation")) {
+        button = new Button(8, totalHeight, 120, 16, "guistrings.setup_validation") {
             @Override
             protected void onPressed() {
                 Minecraft.getMinecraft().displayGuiScreen(new GuiStructureValidationSettings(GuiStructureScanner.this));
@@ -79,7 +78,7 @@ public class GuiStructureScanner extends GuiContainerBase {
         this.addGuiElement(button);
         totalHeight += 16;
 
-        button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_biomes")) {
+        button = new Button(8, totalHeight, 120, 16, "guistrings.select_biomes") {
             @Override
             protected void onPressed() {
                 Minecraft.getMinecraft().displayGuiScreen(new GuiStructureBiomeSelection(GuiStructureScanner.this));
@@ -88,7 +87,7 @@ public class GuiStructureScanner extends GuiContainerBase {
         this.addGuiElement(button);
         totalHeight += 16;
 
-        button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_blocks")) {
+        button = new Button(8, totalHeight, 120, 16, "guistrings.select_blocks") {
             @Override
             protected void onPressed() {
                 Minecraft.getMinecraft().displayGuiScreen(new GuiStructureBlockSelection(GuiStructureScanner.this));
@@ -97,7 +96,7 @@ public class GuiStructureScanner extends GuiContainerBase {
         this.addGuiElement(button);
         totalHeight += 16;
 
-        button = new Button(8, totalHeight, 120, 16, StatCollector.translateToLocal("guistrings.select_dimensions")) {
+        button = new Button(8, totalHeight, 120, 16, "guistrings.select_dimensions") {
             @Override
             protected void onPressed() {
                 Minecraft.getMinecraft().displayGuiScreen(new GuiDimensionSelection(GuiStructureScanner.this));
@@ -117,14 +116,9 @@ public class GuiStructureScanner extends GuiContainerBase {
         if (!validateName(name)) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiStructureIncorrectName(this));
         } else {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setString("name", name);
-            tag.setBoolean("export", includeOnExport.checked());
             NBTTagCompound val = new NBTTagCompound();
             validator.writeToNBT(val);
-            tag.setTag("validation", val);
-
-            sendDataToContainer(tag);
+            getContainer().export(name, includeOnExport.checked(), val);
             this.closeGui();
         }
     }

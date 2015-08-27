@@ -15,12 +15,12 @@ import java.util.Iterator;
 
 public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
 
-    private GuiContainerBase parent;
-    private EntitySpawnSettings settings;
-    CompositeScrolled area;
+    private final GuiContainerBase parent;
+    private final EntitySpawnSettings settings;
 
-    Label selectionLabel;
-    Text search;
+    private CompositeScrolled area;
+    private Label selectionLabel;
+    private Text search;
 
     public GuiSpawnerAdvancedEntitySelection(GuiContainerBase parent, EntitySpawnSettings settings) {
         super(parent.getContainer());

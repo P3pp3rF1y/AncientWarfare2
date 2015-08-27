@@ -14,7 +14,7 @@ import java.util.EnumSet;
 
 public class GuiMailboxInventorySideSetup extends GuiContainerBase<ContainerMailbox> {
 
-    GuiMailboxInventory parent;
+    private final GuiMailboxInventory parent;
 
     public GuiMailboxInventorySideSetup(GuiMailboxInventory parent) {
         super(parent.getContainer(), 240, 108);
@@ -70,7 +70,7 @@ public class GuiMailboxInventorySideSetup extends GuiContainerBase<ContainerMail
     }
 
     private class SideButton extends Button {
-        RelativeSide side;//base side
+        final RelativeSide side;//base side
         RelativeSide selection;//accessed side
 
         public SideButton(int topLeftX, int topLeftY, RelativeSide side, RelativeSide selection) {

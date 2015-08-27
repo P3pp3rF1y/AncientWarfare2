@@ -11,16 +11,15 @@ import java.util.Set;
 
 public class GuiDimensionSelection extends GuiContainerBase {
 
-    GuiStructureScanner parent;
+    private final GuiStructureScanner parent;
 
-    CompositeScrolled area;
-    Checkbox whiteList;
-    StructureValidator validator;
+    private CompositeScrolled area;
+    private Checkbox whiteList;
+    private StructureValidator validator;
 
-    NumberInput dimensionSelection;
-    Button add;
+    private NumberInput dimensionSelection;
 
-    Set<Integer> dims = new HashSet<Integer>();
+    private Set<Integer> dims = new HashSet<Integer>();
 
     public GuiDimensionSelection(GuiStructureScanner parent) {
         super(parent.getContainer());
@@ -40,7 +39,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
         area = new CompositeScrolled(this, 0, 40, 256, 200);
         this.addGuiElement(area);
 
-        Button button = new Button(256 - 8 - 55, 8, 55, 12, StatCollector.translateToLocal("guistrings.done")) {
+        Button button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done") {
             @Override
             protected void onPressed() {
                 closeGui();
@@ -48,7 +47,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
         };
         addGuiElement(button);
 
-        whiteList = new Checkbox(8, 20, 16, 16, StatCollector.translateToLocal("guistrings.dimension_whitelist") + "?") {
+        whiteList = new Checkbox(8, 20, 16, 16, "guistrings.dimension_whitelist") {
             @Override
             public void onToggled() {
                 parent.validator.setDimensionWhiteList(checked());
@@ -60,7 +59,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
         dimensionSelection = new NumberInput(140, 22, 35, 0, this);
         dimensionSelection.setIntegerValue();
         dimensionSelection.setAllowNegative();
-        add = new Button(140 + 35 + 4, 22, 12, 12, "+") {
+        button = new Button(140 + 35 + 4, 22, 12, 12, "+") {
             @Override
             protected void onPressed() {
                 int num = dimensionSelection.getIntegerValue();
@@ -70,7 +69,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
             }
         };
 
-        addGuiElement(add);
+        addGuiElement(button);
         addGuiElement(dimensionSelection);
     }
 
@@ -94,10 +93,10 @@ public class GuiDimensionSelection extends GuiContainerBase {
     }
 
     private class DimensionButton extends Button {
-        int dim;
+        final int dim;
 
         public DimensionButton(int topLeftX, int topLeftY, int width, int height, int dim) {
-            super(topLeftX, topLeftY, width, height, StatCollector.translateToLocal("guistrings.dimension") + ": " + String.valueOf(dim));
+            super(topLeftX, topLeftY, width, height, StatCollector.translateToLocalFormatted("guistrings.dimension", dim));
             this.dim = dim;
         }
 

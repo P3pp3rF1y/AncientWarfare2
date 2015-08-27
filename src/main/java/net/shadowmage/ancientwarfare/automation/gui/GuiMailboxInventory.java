@@ -11,10 +11,7 @@ import org.lwjgl.input.Mouse;
 
 public class GuiMailboxInventory extends GuiContainerBase<ContainerMailbox> {
 
-    Label inputName, outputName;
-    Button inputNameSelect, outputNameSelect, sideSelectButton;
-    Checkbox autoExportFromRear;
-    Checkbox privateBox;
+    private Label inputName, outputName;
 
     public GuiMailboxInventory(ContainerBase par1Container) {
         super(par1Container, 178, 240);
@@ -23,7 +20,7 @@ public class GuiMailboxInventory extends GuiContainerBase<ContainerMailbox> {
 
     @Override
     public void initElements() {
-        inputNameSelect = new Button(178 - 8 - 75, 8, 75, 12, "guistrings.automation.mailbox_name_select") {
+        Button inputNameSelect = new Button(178 - 8 - 75, 8, 75, 12, "guistrings.automation.mailbox_name_select") {
             @Override
             protected void onPressed() {
                 getContainer().removeSlots();
@@ -35,7 +32,7 @@ public class GuiMailboxInventory extends GuiContainerBase<ContainerMailbox> {
         };
         addGuiElement(inputNameSelect);
 
-        outputNameSelect = new Button(178 - 8 - 75, 8 + 12 + 2 * 18, 75, 12, "guistrings.automation.mailbox_target_select") {
+        Button outputNameSelect = new Button(178 - 8 - 75, 8 + 12 + 2 * 18, 75, 12, "guistrings.automation.mailbox_target_select") {
             @Override
             protected void onPressed() {
                 getContainer().removeSlots();
@@ -47,7 +44,7 @@ public class GuiMailboxInventory extends GuiContainerBase<ContainerMailbox> {
         };
         addGuiElement(outputNameSelect);
 
-        sideSelectButton = new Button(178 - 8 - 75, ySize - 8 - 12 - 12, 75, 12, "guistrings.inventory.setsides") {
+        Button sideSelectButton = new Button(178 - 8 - 75, ySize - 8 - 12 - 12, 75, 12, "guistrings.inventory.setsides") {
             @Override
             protected void onPressed() {
                 getContainer().removeSlots();
@@ -59,16 +56,16 @@ public class GuiMailboxInventory extends GuiContainerBase<ContainerMailbox> {
         };
         addGuiElement(sideSelectButton);
 
-        autoExportFromRear = new Checkbox(8, ySize - 12 - 12 - 8, 12, 12, "guistrings.automation.auto_output") {
+        Checkbox export = new Checkbox(8, ySize - 12 - 12 - 8, 12, 12, "guistrings.automation.auto_output") {
             @Override
             public void onToggled() {
                 getContainer().handleAutoExportToggle(checked());
             }
         };
-        autoExportFromRear.setChecked(getContainer().autoExport);
-        addGuiElement(autoExportFromRear);
+        export.setChecked(getContainer().autoExport);
+        addGuiElement(export);
 
-        privateBox = new Checkbox(8, ySize - 12 - 8, 12, 12, "guistrings.automation.private_mailbox") {
+        Checkbox privateBox = new Checkbox(8, ySize - 12 - 8, 12, 12, "guistrings.automation.private_mailbox") {
             @Override
             public void onToggled() {
                 getContainer().handlePrivateBoxToggle(checked());

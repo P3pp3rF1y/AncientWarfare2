@@ -10,12 +10,10 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ProgressBar;
 
 public class GuiTorqueGeneratorSterling extends GuiContainerBase<ContainerTorqueGeneratorSterling> {
 
-    Label energyLabel;
+    private Label energyLabel;
 
-    ProgressBar pg;
-    ProgressBar pg1;
-
-    CompositeScrolled comp;
+    private ProgressBar pg;
+    private ProgressBar pg1;
 
     public GuiTorqueGeneratorSterling(ContainerBase par1Container) {
         super(par1Container, 178, ((ContainerTorqueGeneratorSterling) par1Container).guiHeight);

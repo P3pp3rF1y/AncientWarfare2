@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ContainerWarehouseStockViewer extends ContainerTileBase<TileWarehouseStockViewer> {
 
-    public List<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
+    public final List<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
 
     public ContainerWarehouseStockViewer(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);

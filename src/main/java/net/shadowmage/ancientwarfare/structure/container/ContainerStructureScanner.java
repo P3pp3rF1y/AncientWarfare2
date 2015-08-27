@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 
 public class ContainerStructureScanner extends ContainerBase {
 
-    private ItemStructureSettings settings;
+    private final ItemStructureSettings settings;
 
     public ContainerStructureScanner(EntityPlayer player, int x, int y, int z) {
         super(player);
@@ -53,4 +53,11 @@ public class ContainerStructureScanner extends ContainerBase {
         return stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemStructureScanner);
     }
 
+    public void export(String name, boolean include, NBTTagCompound validation) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("name", name);
+        tag.setBoolean("export", include);
+        tag.setTag("validation", validation);
+        sendDataToServer(tag);
+    }
 }

@@ -48,7 +48,7 @@ public class ContainerWorksiteBase extends ContainerTileBase<TileWorksiteBounded
         int slots = tileEntity.getSizeInventory();
         ItemStack stackFromSlot = slot.getStack();
         if (slotClickedIndex < slots) {
-            this.mergeItemStack(stackFromSlot, slots, slots + 36, false);
+            this.mergeItemStack(stackFromSlot, slots, slots + playerSlots, false);
         } else {
             this.mergeItemStack(stackFromSlot, 0, slots, true);
         }

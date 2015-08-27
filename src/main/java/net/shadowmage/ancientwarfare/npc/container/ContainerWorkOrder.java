@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 
 public class ContainerWorkOrder extends ContainerBase {
 
-    public WorkOrder wo;
+    public final WorkOrder wo;
     private boolean hasChanged;
 
     public ContainerWorkOrder(EntityPlayer player, int x, int y, int z) {
@@ -39,4 +39,9 @@ public class ContainerWorkOrder extends ContainerBase {
         }
     }
 
+    public void onClose() {
+        NBTTagCompound outer = new NBTTagCompound();
+        outer.setTag("wo", wo.writeToNBT(new NBTTagCompound()));
+        sendDataToServer(outer);
+    }
 }
