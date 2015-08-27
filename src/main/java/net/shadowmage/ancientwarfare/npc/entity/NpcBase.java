@@ -412,7 +412,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }else if(worldObj.getBlock(x + 1, y, z + 1).getMaterial() == material){
             knockBack(null, val, x + 1 - this.posX, z + 1 - this.posZ);
         }else if(worldObj.getBlock(x, y - 1, z).getMaterial() == material){
-            knockBack(null, val, getRNG().nextFloat(), getRNG().nextFloat());
+            knockBack(null, val, 2 * getRNG().nextFloat() - 1, 2 * getRNG().nextFloat() - 1);
         }
         if(worldObj.isRemote || getNavigator().noPath())
             return;

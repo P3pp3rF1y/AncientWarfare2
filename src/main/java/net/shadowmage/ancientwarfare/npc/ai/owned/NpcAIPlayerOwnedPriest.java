@@ -70,10 +70,9 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
     }
 
     protected void resurrectTarget() {
-        entryToRes.beingResurrected = false;
         NpcBase resdNpc = ItemNpcSpawner.createNpcFromItem(npc.worldObj, entryToRes.stackToSpawn);
+        entryToRes.beingResurrected = false;
         if (resdNpc != null) {
-            entryToRes.resurrected = true;
             resdNpc.ordersStack = null;
             resdNpc.upkeepStack = null;
             for (int i = 0; i < 5; i++) {
@@ -82,7 +81,9 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
             resdNpc.setShieldStack(null);
             resdNpc.setHealth(resdNpc.getMaxHealth() / 2);
             resdNpc.setPositionAndRotation(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
-            npc.worldObj.spawnEntityInWorld(resdNpc);
+            resdNpc.knockBack(npc, 0, 2 * npc.getRNG().nextDouble() - 1, 2 * npc.getRNG().nextDouble() - 1);
+            resdNpc.motionY = 0;
+            entryToRes.resurrected = npc.worldObj.spawnEntityInWorld(resdNpc);
         }
         npc.getTownHall().informViewers();
         entryToRes = null;
