@@ -15,12 +15,13 @@ public class BlockEngineeringStation extends BlockRotatableTile {
     protected BlockEngineeringStation() {
         super(Material.rock);
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
+        setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:core/engineering_station_bottom");
         setIcon(RelativeSide.BOTTOM, "ancientwarfare:core/engineering_station_bottom");
-        setIcon(RelativeSide.TOP, "ancientwarfare:core/engineering_station_bottom");
-        setIcon(RelativeSide.FRONT, "ancientwarfare:core/engineering_station_bottom");
-        setIcon(RelativeSide.REAR, "ancientwarfare:core/engineering_station_bottom");
-        setIcon(RelativeSide.LEFT, "ancientwarfare:core/engineering_station_bottom");
-        setIcon(RelativeSide.RIGHT, "ancientwarfare:core/engineering_station_bottom");
+        setIcon(RelativeSide.TOP, "ancientwarfare:core/engineering_station_top");
+        setIcon(RelativeSide.FRONT, "ancientwarfare:core/engineering_station_front");
+        setIcon(RelativeSide.REAR, "ancientwarfare:core/engineering_station_front");
+        setIcon(RelativeSide.LEFT, "ancientwarfare:core/engineering_station_side");
+        setIcon(RelativeSide.RIGHT, "ancientwarfare:core/engineering_station_side");
         setHardness(2.f);
     }
 

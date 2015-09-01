@@ -15,12 +15,11 @@ public class IconRotationMap {
 
     public void setIcon(IRotatableBlock block, RelativeSide side, String texName) {
         RotationType t = block.getRotationType();
-        if (t == RotationType.NONE) {
-            //TODO throw error message about improper block-rotation type, perhaps just register the string as ALL_SIDES
-        } else if (t == RotationType.SIX_WAY) {
-            if (side != RelativeSide.TOP && side != RelativeSide.BOTTOM && side != RelativeSide.ANY_SIDE) {
-                //TODO throw error message about improper block-rotation / cannot map specific sides on a six-way
-            }
+        if(t == RotationType.NONE || side == RelativeSide.ANY_SIDE) {
+            side = RelativeSide.ANY_SIDE;
+        }
+        else if (!t.getValidSides().contains(side)) {
+            throw new IllegalArgumentException(String.format("Invalid relative side for %s as %s", t, texName));
         }
         texNames.put(side, texName);
     }
