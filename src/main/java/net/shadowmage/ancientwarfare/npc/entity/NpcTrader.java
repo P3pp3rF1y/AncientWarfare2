@@ -136,7 +136,6 @@ public class NpcTrader extends NpcPlayerOwned {
     @Override
     public void readEntityFromNBT(NBTTagCompound tag) {
         super.readEntityFromNBT(tag);
-        onOrdersInventoryChanged();
         tradeAI.readFromNBT(tag.getCompoundTag("tradeAI"));
     }
 

@@ -1,10 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.inventory.SlotArmor;
+import net.shadowmage.ancientwarfare.core.inventory.SlotLimited;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.inventory.InventoryNpcEquipment;
 
@@ -13,35 +11,17 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
     public final int guiHeight;
     private String name;
 
-    ItemStack orderStack;
-
-    public ContainerNpcInventory(final EntityPlayer player, int x, int y, int z) {
+    public ContainerNpcInventory(EntityPlayer player, int x, int y, int z) {
         super(player, x);
         InventoryNpcEquipment inventory = new InventoryNpcEquipment(entity);
-        addSlotToContainer(new Slot(inventory, 0, 8, 8) {
-            @Override
-            public void onSlotChanged() {
-                if (!player.worldObj.isRemote) {
-                    entity.onWeaponInventoryChanged();
-                }
-                super.onSlotChanged();
-            }
-        }); //weapon slot
-        addSlotToContainer(new Slot(inventory, 7, 8, 8 + 18 * 1));//shield slot
-        addSlotToContainer(new SlotArmor(inventory, 1, 8, 8 + 18 * 5, 3, entity));//boots
-        addSlotToContainer(new SlotArmor(inventory, 2, 8, 8 + 18 * 4, 2, entity));//legs
-        addSlotToContainer(new SlotArmor(inventory, 3, 8, 8 + 18 * 3, 1, entity));//chest
-        addSlotToContainer(new SlotArmor(inventory, 4, 8, 8 + 18 * 2, 0, entity));//helm
-        addSlotToContainer(new Slot(inventory, 6, 8 + 18 * 2, 8 + 18 * 2));//upkeep orders slot  TODO add slot validation
-        addSlotToContainer(new Slot(inventory, 5, 8 + 18 * 2, 8 + 18 * 3) {
-            @Override
-            public void onSlotChanged() {
-                if (!player.worldObj.isRemote) {
-                    entity.onOrdersInventoryChanged();
-                }
-                super.onSlotChanged();
-            }
-        });//work/combat/route orders slot   TODO add slot validation
+        addSlotToContainer(new SlotLimited(inventory, 0, 8, 8)); //weapon slot
+        addSlotToContainer(new SlotLimited(inventory, 1, 8, 8 + 18 * 5));//boots
+        addSlotToContainer(new SlotLimited(inventory, 2, 8, 8 + 18 * 4));//legs
+        addSlotToContainer(new SlotLimited(inventory, 3, 8, 8 + 18 * 3));//chest
+        addSlotToContainer(new SlotLimited(inventory, 4, 8, 8 + 18 * 2));//helm
+        addSlotToContainer(new SlotLimited(inventory, 5, 8 + 18 * 2, 8 + 18 * 3));//work/combat/route orders slot
+        addSlotToContainer(new SlotLimited(inventory, 6, 8 + 18 * 2, 8 + 18 * 2));//upkeep orders slot
+        addSlotToContainer(new SlotLimited(inventory, 7, 8, 8 + 18 * 1));//shield slot
 
         guiHeight = addPlayerSlots(8 + 5 * 18 + 8 + 18) + 8;
         name = entity.getCustomNameTag();

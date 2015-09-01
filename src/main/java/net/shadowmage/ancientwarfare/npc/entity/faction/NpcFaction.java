@@ -32,15 +32,7 @@ public abstract class NpcFaction extends NpcBase {
         for (int i = 0; i < 8; i++) {
             eqs = AncientWarfareNPC.statics.getStartingEquipmentForSlot(type, i);
             if (eqs != null) {
-                if (i < 5) {
-                    setCurrentItemOrArmor(i, eqs);
-                } else if (i == 5) {
-                    ordersStack = eqs;
-                } else if (i == 6) {
-                    upkeepStack = eqs;
-                } else if (i == 7) {
-                    setShieldStack(eqs);
-                }
+                setCurrentItemOrArmor(i, eqs);
             }
         }
     }

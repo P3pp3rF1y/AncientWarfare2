@@ -2,14 +2,13 @@ package net.shadowmage.ancientwarfare.npc.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 
 public class InventoryNpcEquipment implements IInventory {
 
     private final NpcBase npc;
-
     private final ItemStack[] inventory;
 
     public InventoryNpcEquipment(NpcBase npc) {
@@ -22,7 +21,7 @@ public class InventoryNpcEquipment implements IInventory {
 
     @Override
     public int getSizeInventory() {
-        return 8;
+        return NpcBase.SHIELD_SLOT + 1;
     }
 
     @Override
@@ -80,52 +79,41 @@ public class InventoryNpcEquipment implements IInventory {
 
     @Override
     public int getInventoryStackLimit() {
-        return 64;
+        return 1;
     }
 
     @Override
     public void markDirty() {
-        // TODO Auto-generated method stub
-        //TODO inform NPC to update work-types
+
     }
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer var1) {
-        return true;
+        return npc.isEntityAlive();
     }
 
     @Override
     public void openInventory() {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void closeInventory() {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        if (var2 == null || var2.getItem() == null) {
+        if (var2 == null || var2.getItem() == null || var1 < 0) {
             return false;
         }
-        switch (var1) {
-            case 0://weapon/tool, open
-                // TODO validate input for weapon slot?
-                return true;
-            case 1://head
-                return (var2.getItem() instanceof ItemArmor) && ((ItemArmor) var2.getItem()).armorType == 3;
-            case 2://chest
-                return (var2.getItem() instanceof ItemArmor) && ((ItemArmor) var2.getItem()).armorType == 2;
-            case 3://legs
-                return (var2.getItem() instanceof ItemArmor) && ((ItemArmor) var2.getItem()).armorType == 1;
-            case 4://boots
-                return (var2.getItem() instanceof ItemArmor) && ((ItemArmor) var2.getItem()).armorType == 0;
-            case 5:
-                return npc.isValidOrdersStack(var2);
-            default:
-                return true;
-        }
+        if(var1 == NpcBase.UPKEEP_SLOT)
+            return var2.getItem() instanceof ItemUpkeepOrder;
+        else if(var1 == NpcBase.ORDER_SLOT)
+            return npc.isValidOrdersStack(var2);
+        else if(var1 != 0 && var1 < NpcBase.ORDER_SLOT)//armors
+            return var2.getItem().isValidArmor(var2, NpcBase.ORDER_SLOT - 1 - var1, npc);
+        return true;//weapon/tool, shield slot   TODO add slot validation ?
     }
 
 }

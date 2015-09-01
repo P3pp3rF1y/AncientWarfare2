@@ -51,7 +51,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private static final ResourceLocation baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
 
     private ResourceLocation currentTexture = null;
-
+    public static final int ORDER_SLOT = 5, UPKEEP_SLOT = 6, SHIELD_SLOT = 7;
     public ItemStack ordersStack;
 
     public ItemStack upkeepStack;
@@ -468,26 +468,30 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public final ItemStack getEquipmentInSlot(int slot) {
-        if (slot == 5)
+        if (slot == ORDER_SLOT)
             return ordersStack;
-        else if (slot == 6)
+        else if (slot == UPKEEP_SLOT)
             return upkeepStack;
-        else if (slot == 7)
+        else if (slot == SHIELD_SLOT)
             return getShieldStack();
         else
             return super.getEquipmentInSlot(slot);
     }
 
     @Override
-    public void setCurrentItemOrArmor(int slot, ItemStack stack) {
-        if (slot == 7) {
+    public final void setCurrentItemOrArmor(int slot, ItemStack stack) {
+        if (slot == SHIELD_SLOT) {
             setShieldStack(stack);
-        } else if (slot == 6) {
+        } else if (slot == UPKEEP_SLOT) {
             upkeepStack = stack;
-        } else if (slot == 5) {
+        } else if (slot == ORDER_SLOT) {
             ordersStack = stack;
+            onOrdersInventoryChanged();
         } else {
             super.setCurrentItemOrArmor(slot, stack);
+            if (slot == 0) {
+                onWeaponInventoryChanged();
+            }
         }
     }
 
@@ -566,8 +570,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             }
         }
         readBaseTags(tag);
-        onOrdersInventoryChanged();
-        onWeaponInventoryChanged();
     }
 
     /**
@@ -844,14 +846,15 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             setHomeArea(ccia[0], ccia[1], ccia[2], ccia[3]);
         }
         readBaseTags(tag);
+        onWeaponInventoryChanged();
     }
 
     private void readBaseTags(NBTTagCompound tag){
         if (tag.hasKey("ordersStack")) {
-            ordersStack = InventoryTools.readItemStack(tag.getCompoundTag("ordersStack"));
+            setCurrentItemOrArmor(ORDER_SLOT, InventoryTools.readItemStack(tag.getCompoundTag("ordersStack")));
         }
         if (tag.hasKey("upkeepStack")) {
-            upkeepStack = InventoryTools.readItemStack(tag.getCompoundTag("upkeepStack"));
+            setCurrentItemOrArmor(UPKEEP_SLOT, InventoryTools.readItemStack(tag.getCompoundTag("upkeepStack")));
         }
         if (tag.hasKey("shieldStack")) {
             setShieldStack(InventoryTools.readItemStack(tag.getCompoundTag("shieldStack")));

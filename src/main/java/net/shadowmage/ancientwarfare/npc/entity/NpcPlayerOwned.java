@@ -40,14 +40,6 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     @Override
-    public final void setCurrentItemOrArmor(int slot, ItemStack stack) {
-        super.setCurrentItemOrArmor(slot, stack);
-        if (slot == 0) {
-            onWeaponInventoryChanged();
-        }
-    }
-
-    @Override
     public final boolean canPickUpLoot(){
         return true;
     }
@@ -369,7 +361,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         if (tag.hasKey("upkeepPos")) {
             upkeepAutoBlock = new BlockPosition(tag.getCompoundTag("upkeepPos"));
         }
-        onWeaponInventoryChanged();
+        onOrdersInventoryChanged();
     }
 
     @Override

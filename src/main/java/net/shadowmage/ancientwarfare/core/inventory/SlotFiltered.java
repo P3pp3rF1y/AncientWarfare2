@@ -15,7 +15,7 @@ public class SlotFiltered extends Slot {
     }
 
     @Override
-    public boolean isItemValid(ItemStack par1ItemStack) {
+    public final boolean isItemValid(ItemStack par1ItemStack) {
         if (filter != null) {
             return filter.apply(par1ItemStack);
         }
@@ -26,5 +26,4 @@ public class SlotFiltered extends Slot {
     public String toString() {
         return "Filtered slot: " + filter;
     }
-
 }
