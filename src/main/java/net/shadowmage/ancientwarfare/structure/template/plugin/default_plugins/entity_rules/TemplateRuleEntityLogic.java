@@ -100,8 +100,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
                 eInv.setInventorySlotContents(i, inventory[i] == null ? null : inventory[i].copy());
             }
         }
-        float yaw = (rotation + 90.f * turns) % 360.f;
-        e.rotationYaw = yaw;
+        e.rotationYaw = (rotation + 90.f * turns) % 360.f;
         return e;
     }
 

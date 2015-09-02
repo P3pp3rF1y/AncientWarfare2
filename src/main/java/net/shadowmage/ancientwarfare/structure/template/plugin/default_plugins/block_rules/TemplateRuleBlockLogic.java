@@ -48,14 +48,15 @@ public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks {
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
         super.handlePlacement(world, turns, x, y, z, builder);
-        tag.setInteger("x", x);
-        tag.setInteger("y", y);
-        tag.setInteger("z", z);
-        TileEntity te = world.getTileEntity(x, y, z);
-        if(te!=null)
-            te.readFromNBT(tag);
         int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te != null) {
+            tag.setInteger("x", x);
+            tag.setInteger("y", y);
+            tag.setInteger("z", z);
+            te.readFromNBT(tag);
+        }
     }
 
     @Override

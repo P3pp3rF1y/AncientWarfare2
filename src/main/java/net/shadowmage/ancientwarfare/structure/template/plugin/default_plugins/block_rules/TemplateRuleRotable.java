@@ -19,7 +19,6 @@ import java.util.List;
 
 public class TemplateRuleRotable extends TemplateRuleBlock {
 
-
     public String blockName;
     public int meta;
     public int orientation;
@@ -37,10 +36,8 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
         }
         this.orientation = o.ordinal();
         if (worksite instanceof IWorkSite && ((IWorkSite) worksite).hasWorkBounds()) {
-            p1 = ((IWorkSite) worksite).getWorkBoundsMin().copy();
-            p2 = ((IWorkSite) worksite).getWorkBoundsMax().copy();
-            p1.offset(-x, -y, -z);
-            p2.offset(-x, -y, -z);
+            p1 = ((IWorkSite) worksite).getWorkBoundsMin().copy().offset(-x, -y, -z);
+            p2 = ((IWorkSite) worksite).getWorkBoundsMax().copy().offset(-x, -y, -z);
             BlockTools.rotateAroundOrigin(p1, turns);
             BlockTools.rotateAroundOrigin(p2, turns);
         }
@@ -59,28 +56,29 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
         Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
-        BlockPosition pos1, pos2;
-        world.setBlock(x, y, z, block, meta, 2);
-        TileEntity worksite = world.getTileEntity(x, y, z);
-        tag.setInteger("x", x);
-        tag.setInteger("y", y);
-        tag.setInteger("z", z);
-        worksite.readFromNBT(tag);
-        ForgeDirection o = ForgeDirection.getOrientation(orientation);
-        for (int i = 0; i < turns; i++) {
-            o = o.getRotation(ForgeDirection.UP);
+        if(world.setBlock(x, y, z, block, meta, 2)) {
+            TileEntity worksite = world.getTileEntity(x, y, z);
+            if(worksite != null) {
+                tag.setInteger("x", x);
+                tag.setInteger("y", y);
+                tag.setInteger("z", z);
+                worksite.readFromNBT(tag);
+                ForgeDirection o = ForgeDirection.getOrientation(orientation);
+                for (int i = 0; i < turns; i++) {
+                    o = o.getRotation(ForgeDirection.UP);
+                }
+                ((BlockRotationHandler.IRotatableTile) worksite).setPrimaryFacing(o);
+                if (worksite instanceof IWorkSite && p1 != null && p2 != null) {
+                    BlockPosition pos1 = p1.copy(), pos2 = p2.copy();
+                    BlockTools.rotateAroundOrigin(pos1, turns);
+                    BlockTools.rotateAroundOrigin(pos2, turns);
+                    pos1.offset(x, y, z);
+                    pos2.offset(x, y, z);
+                    ((IWorkSite) worksite).setBounds(pos1, pos2);
+                }
+                world.markBlockForUpdate(x, y, z);
+            }
         }
-        ((BlockRotationHandler.IRotatableTile) worksite).setPrimaryFacing(o);
-        if (p1 != null && p2 != null) {
-            pos1 = p1.copy();
-            pos2 = p2.copy();
-            BlockTools.rotateAroundOrigin(pos1, turns);
-            BlockTools.rotateAroundOrigin(pos2, turns);
-            pos1.offset(x, y, z);
-            pos2.offset(x, y, z);
-            ((IWorkSite) worksite).setBounds(pos1, pos2);
-        }
-        world.markBlockForUpdate(x, y, z);
     }
 
     @Override

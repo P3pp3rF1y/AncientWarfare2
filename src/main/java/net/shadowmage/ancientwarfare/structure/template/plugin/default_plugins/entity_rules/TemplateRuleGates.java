@@ -56,10 +56,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
     public TemplateRuleGates(World world, Entity entity, int turns, int x, int y, int z) {
         super(world, entity, turns, x, y, z);
         EntityGate gate = (EntityGate) entity;
-        BlockPosition pos1 = gate.pos1.copy();
-        pos1.offset(-x, -y, -z);
-        BlockPosition pos2 = gate.pos2.copy();
-        pos2.offset(-x, -y, -z);
+        BlockPosition pos1 = gate.pos1.copy().offset(-x, -y, -z);
+        BlockPosition pos2 = gate.pos2.copy().offset(-x, -y, -z);
 
         BlockTools.rotateAroundOrigin(pos1, turns);
         BlockTools.rotateAroundOrigin(pos2, turns);

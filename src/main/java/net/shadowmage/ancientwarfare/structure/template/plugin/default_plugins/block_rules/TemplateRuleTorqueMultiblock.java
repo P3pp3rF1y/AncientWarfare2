@@ -38,14 +38,17 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
         Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
-        world.setBlock(x, y, z, block, meta, 2);
-        TileEntity tile = world.getTileEntity(x, y, z);
-        tag.setInteger("x", x);
-        tag.setInteger("y", y);
-        tag.setInteger("z", z);
-        tile.readFromNBT(tag);
-        world.markBlockForUpdate(x, y, z);
-        block.onPostBlockPlaced(world, x, y, z, meta);
+        if(world.setBlock(x, y, z, block, meta, 3)) {
+            TileEntity tile = world.getTileEntity(x, y, z);
+            if(tile != null) {
+                tag.setInteger("x", x);
+                tag.setInteger("y", y);
+                tag.setInteger("z", z);
+                tile.readFromNBT(tag);
+            }
+            world.markBlockForUpdate(x, y, z);
+            block.onPostBlockPlaced(world, x, y, z, meta);
+        }
     }
 
     @Override

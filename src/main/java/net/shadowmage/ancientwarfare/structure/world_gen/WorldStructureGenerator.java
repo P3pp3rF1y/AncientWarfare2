@@ -92,8 +92,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
         if (y <= 0) {
             return;
         }
-
-
+        
         int face = rng.nextInt(4);
         world.theProfiler.startSection("AWTemplateSelection");
         StructureTemplate template = WorldGenStructureManager.INSTANCE.selectTemplateForGeneration(world, rng, x, y, z, face);

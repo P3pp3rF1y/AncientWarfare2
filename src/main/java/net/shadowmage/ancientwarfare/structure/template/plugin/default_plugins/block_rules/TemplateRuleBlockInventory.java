@@ -87,6 +87,8 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
         super.handlePlacement(world, turns, x, y, z, builder);
+        int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
+        world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
         TileEntity te = world.getTileEntity(x, y, z);
         if (!(te instanceof IInventory)) {
             return;
@@ -108,8 +110,6 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
                 inventory.setInventorySlotContents(i, stack == null ? null : stack.copy());
             }
         }
-        int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
-        world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
         world.markBlockForUpdate(x, y, z);
     }
 
