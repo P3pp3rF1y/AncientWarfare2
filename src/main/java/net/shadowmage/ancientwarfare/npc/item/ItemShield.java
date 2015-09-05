@@ -19,6 +19,7 @@ public class ItemShield extends Item {
         this.setFull3D();
         this.setTextureName("ancientwarfare:npc/" + name);
         this.armorValue = material.getHarvestLevel() * 2 + 1;
+        setMaxDamage(material.getMaxUses());
     }
 
     public int getArmorBonusValue() {

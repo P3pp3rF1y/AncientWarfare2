@@ -202,9 +202,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             }else{
                 float value = ISpecialArmor.ArmorProperties.ApplyArmor(this, getLastActiveItems(), source, amount);
                 if (value > 0.0F && getShieldStack() != null && getShieldStack().getItem() instanceof ItemShield) {
-                    ItemShield shield = (ItemShield) getShieldStack().getItem();
-                    float f = value * (25 - shield.getArmorBonusValue());
-                    value = f / 25F;
+                    float absorb = value * ((ItemShield) getShieldStack().getItem()).getArmorBonusValue() / 25F;
+                    int dmg = Math.max((int)absorb, 1);
+                    getShieldStack().damageItem(dmg, this);
+                    value -= absorb;
                 }
                 if(value < 0.0F)
                     return 0;
