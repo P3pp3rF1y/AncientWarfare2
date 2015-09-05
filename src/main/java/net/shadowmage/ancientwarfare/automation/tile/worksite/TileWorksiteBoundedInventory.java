@@ -84,8 +84,8 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     @SuppressWarnings("unchecked")
     protected <T> List<T> getEntitiesWithinBounds(Class<T> clazz){
         BlockPosition p1 = getWorkBoundsMin();
-        BlockPosition p2 = getWorkBoundsMax().copy().offset(1, 1, 1);
-        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+        BlockPosition p2 = getWorkBoundsMax();
+        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(p1.x, p1.y, p1.z, p2.x + 1, p2.y + 1, p2.z + 1);
         return worldObj.getEntitiesWithinAABB(clazz, bb);
     }
 

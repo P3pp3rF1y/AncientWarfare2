@@ -161,11 +161,11 @@ public class NpcSkinManager {
     }
 
     private void unpackSkinPack(SkinPack pack) {
-        SkinMeta meta = pack.meta;
-        for (String key : meta.imageMap.keySet()) {
-            for (String img : meta.imageMap.get(key)) {
+        final HashMap<String, Set<String>> map = pack.meta.imageMap;
+        for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
+            for (String img : entry.getValue()) {
                 if (pack.textures.containsKey(img)) {
-                    loadSkinImage(key, pack.textures.get(img));
+                    loadSkinImage(entry.getKey(), pack.textures.get(img));
                 }
             }
         }
@@ -194,7 +194,7 @@ public class NpcSkinManager {
     }
 
     private class SkinGroup {
-        List<ResourceLocation> textures = new ArrayList<ResourceLocation>();
+        final List<ResourceLocation> textures = new ArrayList<ResourceLocation>();
 
         public void addTexture(ResourceLocation loc) {
             this.textures.add(loc);
@@ -206,8 +206,8 @@ public class NpcSkinManager {
     }
 
     private class SkinPack {
-        SkinMeta meta;
-        HashMap<String, ResourceLocation> textures = new HashMap<String, ResourceLocation>();
+        final SkinMeta meta;
+        final HashMap<String, ResourceLocation> textures = new HashMap<String, ResourceLocation>();
 
         public SkinPack(SkinMeta meta, Map<String, ResourceLocation> textureMap) {
             this.meta = meta;
@@ -217,7 +217,7 @@ public class NpcSkinManager {
 
     private class SkinMeta {
         //map of NpcType = imageName
-        HashMap<String, Set<String>> imageMap = new HashMap<String, Set<String>>();
+        final HashMap<String, Set<String>> imageMap = new HashMap<String, Set<String>>();
 
         public SkinMeta(InputStream is) throws IOException {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));

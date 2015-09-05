@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -69,6 +70,18 @@ public class InventoryTools {
         }
 
         return emptySlots >= itemQuantities.keySet().size();
+    }
+
+    public static void updateCursorItem(EntityPlayerMP player, ItemStack stack, boolean shiftClick){
+        if (stack.stackSize > 0) {
+            if (shiftClick) {
+                stack = mergeItemStack(player.inventory, stack, -1);
+            }
+            if (stack != null) {
+                player.inventory.setItemStack(stack);
+                player.updateHeldItem();
+            }
+        }
     }
 
     /**

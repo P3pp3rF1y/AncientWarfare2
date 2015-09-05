@@ -186,8 +186,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
             player.inventory.setItemStack(null);
         }
         if (stackSize != cursorStack.stackSize) {
-            EntityPlayerMP playerMP = (EntityPlayerMP) player;
-            playerMP.updateHeldItem();
+            ((EntityPlayerMP)player).updateHeldItem();
         }
     }
 
@@ -207,16 +206,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
                 twb.changeCachedQuantity(filter, -toMove);
             }
         }
-        if (newCursorStack.stackSize > 0) {
-            if (shiftClick) {
-                newCursorStack = InventoryTools.mergeItemStack(player.inventory, newCursorStack, -1);
-            }
-            if (newCursorStack != null) {
-                player.inventory.setItemStack(newCursorStack);
-                EntityPlayerMP playerMP = (EntityPlayerMP) player;
-                playerMP.updateHeldItem();
-            }
-        }
+        InventoryTools.updateCursorItem((EntityPlayerMP)player, newCursorStack, shiftClick);
     }
 
 }

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.event;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
@@ -17,7 +18,7 @@ public class EventHandler {
 
     public static final EventHandler INSTANCE = new EventHandler();
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void entitySpawnEvent(EntityJoinWorldEvent evt) {
         if (evt.entity instanceof NpcBase) {
             return;

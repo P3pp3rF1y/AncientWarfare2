@@ -11,31 +11,14 @@ import java.util.Set;
 
 public class TreeFinder {
 
-    static int[][] offsets = new int[21][3];
+    private static final int[][] offsets = new int[][]{
+            {-1, 0, 0}, {+1, 0, 0}, {0, 0, -1}, {0, 0, +1},
+            {-1, 0, -1}, {-1, 0, +1}, {+1, 0, -1}, {+1, 0, +1},
+            {-1, 1, 0}, {+1, 1, 0}, {0, 1, -1}, {0, 1, +1},
+            {-1, 1, -1}, {-1, 1, +1}, {+1, 1, -1}, {+1, 1, +1}, {0, 1, 0},
+            {-2, 0, 0}, {+2, 0, 0}, {0, 0, -2}, {0, 0, +2}
+    };
 
-    static {
-        offsets[0] = new int[]{-1, 0, 0};
-        offsets[1] = new int[]{+1, 0, 0};
-        offsets[2] = new int[]{0, 0, -1};
-        offsets[3] = new int[]{0, 0, +1};
-        offsets[4] = new int[]{-1, 0, -1};
-        offsets[5] = new int[]{-1, 0, +1};
-        offsets[6] = new int[]{+1, 0, -1};
-        offsets[7] = new int[]{+1, 0, +1};
-        offsets[8] = new int[]{-1, 1, 0};
-        offsets[9] = new int[]{+1, 1, 0};
-        offsets[10] = new int[]{0, 1, -1};
-        offsets[11] = new int[]{0, 1, +1};
-        offsets[12] = new int[]{-1, 1, -1};
-        offsets[13] = new int[]{-1, 1, +1};
-        offsets[14] = new int[]{+1, 1, -1};
-        offsets[15] = new int[]{+1, 1, +1};
-        offsets[16] = new int[]{0, 1, 0};
-        offsets[17] = new int[]{-2, 0, 0};
-        offsets[18] = new int[]{+2, 0, 0};
-        offsets[19] = new int[]{0, 0, -2};
-        offsets[20] = new int[]{0, 0, +2};
-    }
     public static final TreeFinder DEFAULT = new TreeFinder();
     private final int max;
     public TreeFinder(int size){

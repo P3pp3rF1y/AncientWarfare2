@@ -72,11 +72,7 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
 
     @Override
     public final void validate() {
-        if (controller != null) {
-            controller.removeControlledTile(this);
-        }
-        controller = null;
-        init = false;
+        invalidate();
         super.validate();
     }
 
