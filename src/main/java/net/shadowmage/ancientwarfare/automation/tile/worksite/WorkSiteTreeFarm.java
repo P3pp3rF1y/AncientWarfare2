@@ -89,14 +89,16 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
     @Override
     public void onBoundsAdjusted() {
         validateCollection(blocksToFertilize);
+        int chops = blocksToChop.size();
         validateCollection(blocksToChop);
+        if(blocksToChop.size() != chops){
+            markDirty();
+        }
         validateCollection(blocksToPlant);
-        validateCollection(blocksToShear);
     }
 
     @Override
     protected void countResources() {
-        super.countResources();
         hasShears = false;
         saplingCount = 0;
         bonemealCount = 0;
@@ -151,6 +153,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
                 if(harvestBlock(position.x, position.y, position.z, RelativeSide.TOP)){
+                    addLeavesAround(position);
                     return true;
                 }
             }
@@ -200,7 +203,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                                 //done iterating, as it will immediately hit the following break statement, and break
                                 //out of the iterating loop before the next element would have been iterated over
                             } else if (block.getMaterial() == Material.wood) {
-                                TREE.findAttachedTreeBlocks(block, worldObj, position, blocksToChop);
+                                addTreeBlocks(block, position);
                             }
                             return true;
                         }
@@ -219,8 +222,21 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
 
     private void addTreeBlocks(Block block, BlockPosition base) {
         worldObj.theProfiler.startSection("TreeFinder");
+        int chops = blocksToChop.size();
         TREE.findAttachedTreeBlocks(block, worldObj, base, blocksToChop);
+        if(blocksToChop.size() != chops){
+            addLeavesAround(base);
+            markDirty();
+        }
         worldObj.theProfiler.endSection();
+    }
+
+    private void addLeavesAround(BlockPosition base){
+        if(hasShears) {
+            addLeaves(base, -1, (byte) 0);
+            addLeaves(base, +1, (byte) 1);
+            addLeaves(base, -1, (byte) 2);
+        }
     }
 
     @Override
@@ -257,7 +273,6 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 blocksToChop.add(new BlockPosition(chopList.getCompoundTagAt(i)));
             }
         }
-        this.shouldCountResources = true;
     }
 
     @Override
@@ -275,16 +290,6 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             } else if (block.getMaterial() == Material.wood) {
                 addTreeBlocks(block, pos);
             }
-        }
-    }
-
-    @Override
-    protected void incrementalScan() {
-        super.incrementalScan();
-        for(BlockPosition position : blocksToChop){
-            addLeaves(position, -1, (byte)0);
-            addLeaves(position, +1, (byte)1);
-            addLeaves(position, -1, (byte)2);
         }
     }
 

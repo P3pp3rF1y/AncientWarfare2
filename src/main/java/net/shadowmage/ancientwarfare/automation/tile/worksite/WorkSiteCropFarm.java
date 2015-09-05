@@ -102,7 +102,6 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected void countResources() {
-        super.countResources();
         plantableCount = 0;
         bonemealCount = 0;
         ItemStack stack;

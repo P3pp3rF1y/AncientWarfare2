@@ -21,7 +21,8 @@ import java.util.Objects;
 public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
     protected static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
-    private byte[] targetMap = new byte[16 * 16];
+    private static final int SIZE = 16;
+    private byte[] targetMap = new byte[SIZE * SIZE];
 
     /**
      * flag should be set to true whenever updating inventory internally (e.g. harvesting blocks) to prevent
@@ -41,17 +42,16 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     }
 
     @Override
-    public boolean userAdjustableBlocks() {
+    public final boolean userAdjustableBlocks() {
         return true;
     }
 
     protected boolean isTarget(BlockPosition p) {
-        int z = (p.z - bbMin.z) * 16 + p.x - bbMin.x;
-        return z >= 0 && z < targetMap.length && targetMap[z] == 1;
+        return isTarget(p.x, p.z);
     }
 
     protected boolean isTarget(int x1, int y1) {
-        int z = (y1 - bbMin.z) * 16 + x1 - bbMin.x;
+        int z = (y1 - getWorkBoundsMin().z) * SIZE + x1 - getWorkBoundsMin().x;
         return z >= 0 && z < targetMap.length && targetMap[z] == 1;
     }
 
@@ -114,6 +114,10 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
     @Override
     protected void validateCollection(Collection<BlockPosition> blocks) {
+        if(!hasWorkBounds()){
+            blocks.clear();
+            return;
+        }
         Iterator<BlockPosition> it = blocks.iterator();
         BlockPosition pos;
         while (it.hasNext() && (pos = it.next()) != null) {
@@ -125,12 +129,12 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
     @Override
     protected void fillBlocksToProcess(Collection<BlockPosition> targets) {
-        int w = bbMax.x - bbMin.x + 1;
-        int h = bbMax.z - bbMin.z + 1;
-        for (int x = 0; x < w; x++) {
-            for (int z = 0; z < h; z++) {
-                if (isTarget(bbMin.x + x, bbMin.z + z)) {
-                    targets.add(new BlockPosition(bbMin).offset(x, 0, z));
+        BlockPosition min = getWorkBoundsMin();
+        BlockPosition max = getWorkBoundsMax();
+        for (int x = min.x; x < max.x + 1; x++) {
+            for (int z = min.z; z < max.z + 1; z++) {
+                if (isTarget(x, z)) {
+                    targets.add(new BlockPosition(x, min.y, z));
                 }
             }
         }
@@ -143,9 +147,9 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
     @Override
     protected void onBoundsSet() {
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                targetMap[z * 16 + x] = (byte) 1;
+        for (int x = 0; x < SIZE; x++) {
+            for (int z = 0; z < SIZE; z++) {
+                targetMap[z * SIZE + x] = (byte) 1;
             }
         }
     }
@@ -186,11 +190,10 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         worldObj.theProfiler.endStartSection("Count Resources");
         if (shouldCountResources) {
             countResources();
+            shouldCountResources = false;
         }
         worldObj.theProfiler.endSection();
     }
 
-    protected void countResources(){
-        shouldCountResources = false;
-    }
+    protected abstract void countResources();
 }

@@ -81,7 +81,6 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected void countResources() {
-        super.countResources();
         this.mushroomCount = 0;
         this.netherWartCount = 0;
         ItemStack item;

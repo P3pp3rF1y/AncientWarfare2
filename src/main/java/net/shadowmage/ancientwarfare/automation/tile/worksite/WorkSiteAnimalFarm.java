@@ -108,10 +108,12 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         worldObj.theProfiler.startSection("Count Resources");
         if (shouldCountResources) {
             countResources();
+            this.shouldCountResources = false;
         }
         worldObj.theProfiler.endStartSection("Animal Rescan");
         if (workerRescanDelay-- <= 0) {
             rescan();
+            workerRescanDelay = 200;
         }
         worldObj.theProfiler.endStartSection("EggPickup");
         if (worldObj.getWorldTime() % 20 == 0) {
@@ -121,8 +123,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     private void countResources() {
-
-        this.shouldCountResources = false;
         carrotCount = 0;
         seedCount = 0;
         wheatCount = 0;
@@ -189,7 +189,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         scanForSheep(sheep);
         scanForAnimals(chickens, chickensToBreed, maxChickenCount);
         scanForAnimals(pigs, pigsToBreed, maxPigCount);
-        workerRescanDelay = 200;
     }
 
     private void scanForAnimals(List<EntityAnimal> animals, List<EntityPair> targets, int maxCount) {
@@ -439,17 +438,12 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
     private static class EntityPair {
 
-        int idA;
-        int idB;
+        final int idA;
+        final int idB;
 
         private EntityPair(Entity a, Entity b) {
             idA = a.getEntityId();
             idB = b.getEntityId();
-        }
-
-        private EntityPair(int a, int b) {
-            idA = a;
-            idB = b;
         }
 
         public Entity getEntityA(World world) {

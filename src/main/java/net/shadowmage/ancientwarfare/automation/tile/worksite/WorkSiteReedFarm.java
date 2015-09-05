@@ -241,7 +241,6 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected void countResources() {
-        super.countResources();
         cactusCount = 0;
         reedCount = 0;
         cocoaCount = 0;
