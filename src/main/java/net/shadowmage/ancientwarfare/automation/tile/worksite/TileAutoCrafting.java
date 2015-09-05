@@ -10,7 +10,6 @@ import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.ArrayList;
@@ -133,21 +132,6 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     @Override
     public WorkType getWorkType() {
         return WorkType.CRAFTING;
-    }
-
-    @Override
-    public BlockPosition getWorkBoundsMin() {
-        return null;
-    }
-
-    @Override
-    public BlockPosition getWorkBoundsMax() {
-        return null;
-    }
-
-    @Override
-    public boolean hasWorkBounds() {
-        return false;
     }
 
     @Override
@@ -291,11 +275,6 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public void setBounds(BlockPosition p1, BlockPosition p2) {
-
-    }
-
-    @Override
     protected boolean processWork() {
         return tryCraftItem();
     }
@@ -323,32 +302,4 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     public boolean shouldRenderInPass(int pass) {
         return pass == 0;
     }
-
-    @Override
-    public int getBoundsMaxWidth() {
-        return 0;
-    }
-
-    @Override
-    public int getBoundsMaxHeight() {
-        return 0;
-    }
-
-    @Override
-    public void setWorkBoundsMax(BlockPosition max) {
-    }//NOOP
-
-    @Override
-    public void setWorkBoundsMin(BlockPosition min) {
-    }//NOOP
-
-    @Override
-    public void onBoundsAdjusted() {
-    }//NOOP
-
-    @Override
-    public boolean userAdjustableBlocks() {
-        return false;
-    }
-
 }

@@ -5,14 +5,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteUserBlocks;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class ContainerWorksiteBoundsAdjust extends ContainerBase {
 
     public final int x, y, z;
     public final BlockPosition min, max;
-    public final IWorkSite worksite;
+    public final IBoundedSite worksite;
 
     public ContainerWorksiteBoundsAdjust(EntityPlayer player, int x, int y, int z) {
         super(player);
@@ -20,8 +20,8 @@ public class ContainerWorksiteBoundsAdjust extends ContainerBase {
         this.y = y;
         this.z = z;
         TileEntity te = player.worldObj.getTileEntity(x, y, z);
-        if(te instanceof IWorkSite) {
-            worksite = (IWorkSite) te;
+        if(te instanceof IBoundedSite) {
+            worksite = (IBoundedSite) te;
             min = worksite.getWorkBoundsMin().copy();
             max = worksite.getWorkBoundsMax().copy();
         }else

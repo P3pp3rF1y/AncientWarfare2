@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteBoundsAdjust> {
 
-    private boolean noTargetMode = false;
+    private final boolean targetMode;
 
     private boolean boundsAdjusted = false, targetsAdjusted = false;
     private byte[] checkedMap = new byte[16 * 16];
@@ -20,19 +20,17 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
     public GuiWorksiteBoundsAdjust(ContainerBase container) {
         super(container);
         this.shouldCloseOnVanillaKeys = true;
-        if (!this.getContainer().worksite.userAdjustableBlocks()) {
-            noTargetMode = true;
-        }
+        targetMode = this.getContainer().worksite.userAdjustableBlocks();
     }
 
     private void setChecked(int x, int y, boolean checked) {
-        if (!noTargetMode) {
+        if (targetMode) {
             checkedMap[y * 16 + x] = checked ? (byte) 1 : (byte) 0;
         }
     }
 
     private boolean isChecked(int x, int y) {
-        return !noTargetMode && checkedMap[y * 16 + x] == 1;
+        return targetMode && checkedMap[y * 16 + x] == 1;
     }
 
     @Override
@@ -200,7 +198,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
                 r = new ToggledRectangle(tlx + x * size, tly + y * size, size, size, 0x000000ff, 0x808080ff, 0xff0000ff, 0xff8080ff, isChecked(x, y)) {
                     @Override
                     public void clicked(ActivationEvent evt) {
-                        if (!noTargetMode) {
+                        if (targetMode) {
                             super.clicked(evt);
                             setChecked(x1, y1, checked);
                             targetsAdjusted = true;
@@ -222,7 +220,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
 
     @Override
     protected boolean onGuiCloseRequested() {
-        getContainer().onClose(boundsAdjusted, targetsAdjusted && !noTargetMode, checkedMap);
+        getContainer().onClose(boundsAdjusted, targetsAdjusted && targetMode, checkedMap);
         return super.onGuiCloseRequested();
     }
 

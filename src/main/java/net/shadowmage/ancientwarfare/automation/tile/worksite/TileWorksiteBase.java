@@ -12,30 +12,25 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.*;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
 
 @Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore", striprefs = true)
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInteractableTile, IOwnable, ITorqueTile, IRotatableTile, IEnergyHandler, IChunkLoaderTile {
+public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyHandler {
 
     private String owningPlayer = "";
 
@@ -50,8 +45,6 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     private final TorqueCell torqueCell;
 
     private int workRetryDelay = 20;
-
-    private Ticket chunkTicket = null;
 
     public TileWorksiteBase() {
         torqueCell = new TorqueCell(32, 0, AWCoreStatics.energyPerWorkUnit * 3, 1);
@@ -118,10 +111,6 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         }
         efficiencyBonusFactor = 0;
         upgrades.clear();
-        if (this.chunkTicket != null) {
-            ForgeChunkManager.releaseTicket(chunkTicket);
-            this.chunkTicket = null;
-        }
     }
 
     @Override
@@ -130,20 +119,14 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         updateEfficiency();
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         markDirty();
-        if (upgrade == WorksiteUpgrade.BASIC_CHUNK_LOADER || upgrade == WorksiteUpgrade.QUARRY_CHUNK_LOADER) {
-            setupInitialTicket();//setup chunkloading for the worksite
-        }
     }
 
     @Override
-    public final void removeUpgrade(WorksiteUpgrade upgrade) {
+    public void removeUpgrade(WorksiteUpgrade upgrade) {
         upgrades.remove(upgrade);
         updateEfficiency();
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         markDirty();
-        if (upgrade == WorksiteUpgrade.BASIC_CHUNK_LOADER || upgrade == WorksiteUpgrade.QUARRY_CHUNK_LOADER) {
-            setTicket(null);//release any existing ticket
-        }
     }
 
     public int getFortune() {
@@ -287,52 +270,6 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     }
 
 //*************************************** MISC METHODS ***************************************//
-
-    @Override
-    public final void setTicket(Ticket tk) {
-        if (chunkTicket != null) {
-            ForgeChunkManager.releaseTicket(chunkTicket);
-            chunkTicket = null;
-        }
-        this.chunkTicket = tk;
-        if (this.chunkTicket == null) {
-            return;
-        }
-        writeDataToTicket(chunkTicket);
-        ChunkCoordIntPair ccip = new ChunkCoordIntPair(xCoord >> 4, zCoord >> 4);
-        ForgeChunkManager.forceChunk(chunkTicket, ccip);
-        if (this.hasWorkBounds()) {
-            int minX = getWorkBoundsMin().x >> 4;
-            int minZ = getWorkBoundsMin().z >> 4;
-            int maxX = getWorkBoundsMax().x >> 4;
-            int maxZ = getWorkBoundsMax().z >> 4;
-            for (int x = minX; x <= maxX; x++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    ccip = new ChunkCoordIntPair(x, z);
-                    ForgeChunkManager.forceChunk(chunkTicket, ccip);
-                }
-            }
-        }
-    }
-
-    protected final void writeDataToTicket(Ticket tk) {
-        AWChunkLoader.INSTANCE.writeDataToTicket(tk, xCoord, yCoord, zCoord);
-    }
-
-    public final void setupInitialTicket() {
-        if (chunkTicket != null) {
-            ForgeChunkManager.releaseTicket(chunkTicket);
-        }
-        if (getUpgrades().contains(WorksiteUpgrade.BASIC_CHUNK_LOADER) || getUpgrades().contains(WorksiteUpgrade.QUARRY_CHUNK_LOADER)) {
-            setTicket(ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, worldObj, Type.NORMAL));
-        }
-    }
-
-    @Override
-    public void onPostBoundsAdjusted() {
-        setupInitialTicket();
-    }
-
     @Override
     public boolean shouldRenderInPass(int pass) {
         return pass == 1;
@@ -413,23 +350,6 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
             orientation = ForgeDirection.values()[tag.getInteger("orientation")];
         }
         updateEfficiency();
-    }
-
-    @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        if (hasWorkBounds() && getWorkBoundsMin() != null && getWorkBoundsMax() != null) {
-            AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
-            BlockPosition min = getWorkBoundsMin();
-            BlockPosition max = getWorkBoundsMax();
-            bb.minX = min.x < bb.minX ? min.x : bb.minX;
-            bb.minY = min.y < bb.minY ? min.y : bb.minY;
-            bb.minZ = min.z < bb.minZ ? min.z : bb.minZ;
-            bb.maxX = max.x + 1 > bb.maxX ? max.x + 1 : bb.maxX;
-            bb.maxY = max.y + 1 > bb.maxY ? max.y + 1 : bb.maxY;
-            bb.maxZ = max.z + 1 > bb.maxZ ? max.z + 1 : bb.maxZ;
-            return bb;
-        }
-        return super.getRenderBoundingBox();
     }
 
     protected NBTTagCompound getDescriptionPacketTag(NBTTagCompound tag) {

@@ -10,8 +10,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
+import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
@@ -33,26 +33,23 @@ public class ItemBlockWorksiteStatic extends ItemBlock {
         pos2.reassign(pos1.x, pos1.y, pos1.z);
         pos2.moveForward(face, 4);
         pos2.moveRight(face, 4);
-
-        BlockPosition min = BlockTools.getMin(pos1, pos2);
-        BlockPosition max = BlockTools.getMax(pos1, pos2);
         /**
          * TODO validate that block is not inside work bounds of any other nearby worksites ??
          * TODO validate that worksite does not intersect any others
          */
         int ormetadata = BlockRotationHandler.getMetaForPlacement(player, (IRotatableBlock) field_150939_a, side);
-        ForgeDirection o = ForgeDirection.values()[ormetadata];
 
         boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
         if (val) {
             TileEntity worksite = world.getTileEntity(x, y, z);
-            if (worksite instanceof IWorkSite) {
-                ((IWorkSite) worksite).setBounds(min, max);
+            if (worksite instanceof IBoundedSite) {
+                ((IBoundedSite) worksite).setBounds(pos1, pos2);
             }
             if (worksite instanceof IOwnable) {
                 ((IOwnable) worksite).setOwnerName(player.getCommandSenderName());
             }
             if (worksite instanceof IRotatableTile) {
+                ForgeDirection o = ForgeDirection.values()[ormetadata];
                 ((IRotatableTile) worksite).setPrimaryFacing(o);
             }
             world.markBlockForUpdate(x, y, z);

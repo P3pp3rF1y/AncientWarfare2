@@ -28,8 +28,8 @@ public abstract class TileWorksiteBlockBased extends TileWorksiteBoundedInventor
         blocksToUpdate.clear();
     }
 
-    protected void incrementalScan() {
-        if (blocksToUpdate.isEmpty()) {
+    protected final void incrementalScan() {
+        if (blocksToUpdate.isEmpty() && hasWorkBounds()) {
             fillBlocksToProcess(blocksToUpdate);
         }
         if (!blocksToUpdate.isEmpty()) {

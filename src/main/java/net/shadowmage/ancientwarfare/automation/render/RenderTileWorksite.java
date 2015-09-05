@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import org.lwjgl.opengl.GL11;
@@ -17,22 +17,24 @@ public class RenderTileWorksite extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
-        IWorkSite worksite = (IWorkSite) var1;
-        if (worksite.hasWorkBounds() && AWAutomationStatics.renderWorkBounds.getBoolean()) {
-            RenderTools.setFullColorLightmap();
-            GL11.glPushMatrix();
-            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-            GL11.glTranslated(var2, var4, var6);
-            BlockPosition min = worksite.getWorkBoundsMin();
-            BlockPosition max = worksite.getWorkBoundsMax();
-            if (max == null) {
-                max = min;
+        if(var1 instanceof IBoundedSite) {
+            IBoundedSite worksite = (IBoundedSite) var1;
+            if (AWAutomationStatics.renderWorkBounds.getBoolean()) {
+                RenderTools.setFullColorLightmap();
+                GL11.glPushMatrix();
+                GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+                GL11.glTranslated(var2, var4, var6);
+                BlockPosition min = worksite.getWorkBoundsMin();
+                BlockPosition max = worksite.getWorkBoundsMax();
+                if (max == null) {
+                    max = min;
+                }
+                if (min != null) {
+                    renderBoundingBox(var1.xCoord, var1.yCoord, var1.zCoord, min, max, 1.f, 1.f, 1.f, 0.f);
+                }
+                GL11.glPopAttrib();
+                GL11.glPopMatrix();
             }
-            if (min != null && max != null) {
-                renderBoundingBox(var1.xCoord, var1.yCoord, var1.zCoord, min, max, 1.f, 1.f, 1.f, 0.f);
-            }
-            GL11.glPopAttrib();
-            GL11.glPopMatrix();
         }
     }
 

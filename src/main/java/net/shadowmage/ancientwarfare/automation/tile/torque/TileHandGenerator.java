@@ -13,7 +13,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 import java.util.EnumSet;
 
@@ -109,21 +108,7 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     }
 
     @Override
-    public void onPostBoundsAdjusted() {
-    }//NOOP
-
-    @Override
     public void onBlockBroken() {
-    }//NOOP
-
-    @Override
-    public int getBoundsMaxWidth() {
-        return 0;
-    }//NOOP
-
-    @Override
-    public int getBoundsMaxHeight() {
-        return 0;
     }//NOOP
 
     @Override
@@ -142,27 +127,6 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
 
     @Override
     public void removeUpgrade(WorksiteUpgrade upgrade) {
-    }// NOOP
-
-    @Override
-    public void setBounds(BlockPosition p1, BlockPosition p2) {
-    }//NOOP
-
-    @Override
-    public void setWorkBoundsMax(BlockPosition max) {
-    }//NOOP
-
-    @Override
-    public void setWorkBoundsMin(BlockPosition min) {
-    }//NOOP
-
-    @Override
-    public void onBoundsAdjusted() {
-    }//NOOP
-
-    @Override
-    public boolean userAdjustableBlocks() {
-        return false;
     }// NOOP
 
     @Override
@@ -188,24 +152,6 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     @Override
     public Team getTeam() {
         return worldObj.getScoreboard().getPlayersTeam(ownerName);
-    }
-
-    @Override
-    public BlockPosition getWorkBoundsMin()//NOOP
-    {
-        return null;
-    }
-
-    @Override
-    public BlockPosition getWorkBoundsMax()//NOOP
-    {
-        return null;
-    }
-
-    @Override
-    public boolean hasWorkBounds()//NOOP
-    {
-        return false;
     }
 
     @Override

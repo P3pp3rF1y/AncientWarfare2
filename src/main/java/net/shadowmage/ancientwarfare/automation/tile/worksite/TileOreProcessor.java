@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
@@ -136,52 +135,6 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
 
     @Override
     public void closeInventory() {
-    }//NOOP
-
-    @Override
-    public BlockPosition getWorkBoundsMin() {
-        return null;
-    }//NOOP
-
-    @Override
-    public BlockPosition getWorkBoundsMax() {
-        return null;
-    }//NOOP
-
-    @Override
-    public boolean userAdjustableBlocks() {
-        return false;
-    }//NOOP
-
-    @Override
-    public boolean hasWorkBounds() {
-        return false;
-    }//NOOP
-
-    @Override
-    public int getBoundsMaxWidth() {
-        return 0;
-    }//NOOP
-
-    @Override
-    public int getBoundsMaxHeight() {
-        return 0;
-    }//NOOP
-
-    @Override
-    public void setBounds(BlockPosition p1, BlockPosition p2) {
-    }//NOOP
-
-    @Override
-    public void setWorkBoundsMax(BlockPosition max) {
-    }//NOOP
-
-    @Override
-    public void setWorkBoundsMin(BlockPosition min) {
-    }//NOOP
-
-    @Override
-    public void onBoundsAdjusted() {
     }//NOOP
 
     @Override

@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -35,9 +35,9 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
             o = o.getRotation(ForgeDirection.UP);
         }
         this.orientation = o.ordinal();
-        if (worksite instanceof IWorkSite && ((IWorkSite) worksite).hasWorkBounds()) {
-            p1 = ((IWorkSite) worksite).getWorkBoundsMin().copy().offset(-x, -y, -z);
-            p2 = ((IWorkSite) worksite).getWorkBoundsMax().copy().offset(-x, -y, -z);
+        if (worksite instanceof IBoundedSite && ((IBoundedSite) worksite).hasWorkBounds()) {
+            p1 = ((IBoundedSite) worksite).getWorkBoundsMin().copy().offset(-x, -y, -z);
+            p2 = ((IBoundedSite) worksite).getWorkBoundsMax().copy().offset(-x, -y, -z);
             BlockTools.rotateAroundOrigin(p1, turns);
             BlockTools.rotateAroundOrigin(p2, turns);
         }
@@ -68,13 +68,13 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
                     o = o.getRotation(ForgeDirection.UP);
                 }
                 ((BlockRotationHandler.IRotatableTile) worksite).setPrimaryFacing(o);
-                if (worksite instanceof IWorkSite && p1 != null && p2 != null) {
+                if (worksite instanceof IBoundedSite && p1 != null && p2 != null) {
                     BlockPosition pos1 = p1.copy(), pos2 = p2.copy();
                     BlockTools.rotateAroundOrigin(pos1, turns);
                     BlockTools.rotateAroundOrigin(pos2, turns);
                     pos1.offset(x, y, z);
                     pos2.offset(x, y, z);
-                    ((IWorkSite) worksite).setBounds(pos1, pos2);
+                    ((IBoundedSite) worksite).setBounds(pos1, pos2);
                 }
                 world.markBlockForUpdate(x, y, z);
             }

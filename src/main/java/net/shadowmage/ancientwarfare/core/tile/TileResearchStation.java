@@ -21,7 +21,6 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -51,16 +50,6 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
     }
 
     @Override
-    public int getBoundsMaxWidth() {
-        return 0;
-    }
-
-    @Override
-    public int getBoundsMaxHeight() {
-        return 0;
-    }
-
-    @Override
     public EnumSet<WorksiteUpgrade> getUpgrades() {
         return EnumSet.noneOf(WorksiteUpgrade.class);
     }//NOOP
@@ -71,36 +60,11 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
     }//NOOP
 
     @Override
-    public void onPostBoundsAdjusted() {
-    }//NOOP
-
-    @Override
     public void addUpgrade(WorksiteUpgrade upgrade) {
     }//NOOP
 
     @Override
     public void removeUpgrade(WorksiteUpgrade upgrade) {
-    }//NOOP
-
-    @Override
-    public void setBounds(BlockPosition p1, BlockPosition p2) {
-    }//NOOP
-
-    @Override
-    public void setWorkBoundsMax(BlockPosition max) {
-    }//NOOP
-
-    @Override
-    public void setWorkBoundsMin(BlockPosition min) {
-    }//NOOP
-
-    @Override
-    public void onBoundsAdjusted() {
-    }//NOOP
-
-    @Override
-    public boolean userAdjustableBlocks() {
-        return false;
     }//NOOP
 
     @Override
@@ -266,21 +230,6 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
     @Override
     public final Team getTeam() {
         return worldObj.getScoreboard().getPlayersTeam(owningPlayer);
-    }
-
-    @Override
-    public BlockPosition getWorkBoundsMin() {
-        return null;
-    }
-
-    @Override
-    public BlockPosition getWorkBoundsMax() {
-        return null;
-    }
-
-    @Override
-    public boolean hasWorkBounds() {
-        return false;
     }
 
     @Override
