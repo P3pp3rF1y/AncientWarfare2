@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,17 +26,20 @@ public abstract class BlockRotatableTile extends Block implements IRotatableBloc
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg) {
         iconMap.registerIcons(reg);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
         IRotatableTile tile = (IRotatableTile) world.getTileEntity(x, y, z);
         return iconMap.getIcon(this, tile.getPrimaryFacing().ordinal(), side);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
         return iconMap.getIcon(this, meta, side);
     }

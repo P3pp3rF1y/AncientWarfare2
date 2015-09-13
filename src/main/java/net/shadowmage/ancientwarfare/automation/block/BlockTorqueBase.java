@@ -49,6 +49,7 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
         for (IconRotationMap map : this.iconMaps.values()) {
             map.registerIcons(register);
@@ -74,6 +75,7 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
         IconRotationMap icr = iconMaps.get(meta);
         if (icr != null) {

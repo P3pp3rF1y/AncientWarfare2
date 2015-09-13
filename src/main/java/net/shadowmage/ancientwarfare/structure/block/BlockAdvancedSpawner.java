@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -31,6 +33,7 @@ public class BlockAdvancedSpawner extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileAdvancedSpawner) {
@@ -48,6 +51,7 @@ public class BlockAdvancedSpawner extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
         return true;
     }
@@ -65,6 +69,7 @@ public class BlockAdvancedSpawner extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_) {
         super.registerBlockIcons(p_149651_1_);
         transparentIcon = p_149651_1_.registerIcon("ancientwarfare:structure/advanced_spawner2");

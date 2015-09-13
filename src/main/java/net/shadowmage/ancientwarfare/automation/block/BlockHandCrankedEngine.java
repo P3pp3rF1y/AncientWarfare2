@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
@@ -24,11 +26,13 @@ public class BlockHandCrankedEngine extends BlockTorqueBase {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
         return Blocks.iron_block.getIcon(p_149691_1_, p_149691_2_);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
     }
 
@@ -43,6 +47,7 @@ public class BlockHandCrankedEngine extends BlockTorqueBase {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
         return false;
     }
