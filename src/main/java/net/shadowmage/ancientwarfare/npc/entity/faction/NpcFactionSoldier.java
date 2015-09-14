@@ -1,7 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.*;
@@ -13,7 +16,7 @@ public abstract class NpcFactionSoldier extends NpcFaction {
 
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(0, new EntityAIOpenDoor(this, true));
+        this.tasks.addTask(0, new NpcAIDoor(this, true));
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
         this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
         this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));

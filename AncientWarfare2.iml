@@ -24,7 +24,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" exported="" name="Gradle: :forgeSrc:1.7.10-10.13.2.1286" level="project" />
     <orderEntry type="library" exported="" name="Gradle: net.minecraft:launchwrapper:1.11" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.ow2.asm:asm-debug-all:5.0.3" level="project" />
@@ -82,5 +81,16 @@
     <orderEntry type="library" exported="" name="Gradle: tv.twitch:twitch-platform:5.16:natives-windows-64" level="project" />
     <orderEntry type="library" exported="" name="Gradle: tv.twitch:twitch-external-platform:4.5:natives-windows-32" level="project" />
     <orderEntry type="library" exported="" name="Gradle: tv.twitch:twitch-external-platform:4.5:natives-windows-64" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/dirtyArtifacts/forgeSrc-1.7.10-10.13.2.1286.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/build/dirtyArtifacts/forgeSrc-1.7.10-10.13.2.1286-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

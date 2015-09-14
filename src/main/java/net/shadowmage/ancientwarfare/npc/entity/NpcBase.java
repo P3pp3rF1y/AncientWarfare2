@@ -29,6 +29,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.ai.NpcNavigator;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
@@ -69,6 +70,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
         this.width = 0.6f;
         this.func_110163_bv();//set persistence required=true
+        this.navigator = new NpcNavigator(this);
         AncientWarfareNPC.statics.applyPathConfig(this);
     }
 
@@ -380,6 +382,24 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
+    public void applyEntityCollision(Entity entity){
+        if(!isInWater() && !isHostileTowards(entity)){
+            int d0 = (int)Math.signum(this.posX - entity.posX);
+            int d1 = (int)Math.signum(this.posZ - entity.posZ);
+            if(d0!=0 || d1!=0) {
+                int x = MathHelper.floor_double(this.posX) + d0;
+                int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
+                int z = MathHelper.floor_double(this.posZ) + d1;
+                Material material = worldObj.getBlock(x, y, z).getMaterial();
+                if(material.isLiquid() || material == Material.cactus) {
+                    return;
+                }
+            }
+        }
+        super.applyEntityCollision(entity);
+    }
+
+    @Override
     public final boolean attackEntityFrom(DamageSource source, float par2) {
         if (source.getEntity() != null && !canBeAttackedBy(source.getEntity()))
             return false;
@@ -423,6 +443,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }else if(worldObj.getBlock(point.xCoord, point.yCoord - 1, point.zCoord).getMaterial() == material){
             getNavigator().clearPathEntity();
         }
+    }
+
+    @Override
+    public void setWorld(World world){
+        super.setWorld(world);
+        ((NpcNavigator)navigator).onWorldChange();
     }
 
     @Override
