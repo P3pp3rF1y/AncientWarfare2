@@ -13,26 +13,30 @@ public class ModelCraftingBase extends ModelBase {
         textureHeight = 128;
         tableTop = new ModelRenderer(this, "tableTop");
         tableTop.addBox(-8, -14, -8, 16, 1, 16);
-        addLegs();
+        addLegs(13);
     }
 
-    protected void addLegs() {
+    protected void addLegs(int height) {
         ModelRenderer leg1 = new ModelRenderer(this, "leg1");
         leg1.setTextureOffset(0, 18);
-        leg1.addBox(-7, -13, 5, 2, 13, 2);
+        leg1.addBox(-7, -height, 5, 2, height, 2);
         tableTop.addChild(leg1);
         ModelRenderer leg2 = new ModelRenderer(this, "leg2");
         leg2.setTextureOffset(9, 18);
-        leg2.addBox(-7, -13, -7, 2, 13, 2);
+        leg2.addBox(-7, -height, -7, 2, height, 2);
         tableTop.addChild(leg2);
         ModelRenderer leg3 = new ModelRenderer(this, "leg3");
         leg3.setTextureOffset(18, 18);
-        leg3.addBox(5, -13, -7, 2, 13, 2);
+        leg3.addBox(5, -height, -7, 2, height, 2);
         tableTop.addChild(leg3);
         ModelRenderer leg4 = new ModelRenderer(this, "leg4");
         leg4.setTextureOffset(27, 18);
-        leg4.addBox(5, -13, 5, 2, 13, 2);
+        leg4.addBox(5, -height, 5, 2, height, 2);
         tableTop.addChild(leg4);
+    }
+
+    public final ModelRenderer table(){
+        return tableTop;
     }
 
     @Override

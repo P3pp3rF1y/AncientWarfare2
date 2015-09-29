@@ -31,6 +31,22 @@ public class BlockDraftingStation extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess world, int x, int y, int z, int side) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube() {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg) {
         iconMap.registerIcons(reg);
     }

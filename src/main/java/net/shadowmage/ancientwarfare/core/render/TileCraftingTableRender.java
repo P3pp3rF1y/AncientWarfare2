@@ -13,8 +13,8 @@ import org.lwjgl.opengl.GL12;
 
 public class TileCraftingTableRender extends TileEntitySpecialRenderer implements IItemRenderer {
 
-    ModelCraftingBase model;
-    ResourceLocation texture;
+    private final ModelCraftingBase model;
+    private final ResourceLocation texture;
 
     public TileCraftingTableRender(ModelCraftingBase model, String tex) {
         this.model = model;
@@ -44,16 +44,14 @@ public class TileCraftingTableRender extends TileEntitySpecialRenderer implement
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
-        ForgeDirection rot = ((IRotatableTile) te).getPrimaryFacing();
-
+        float rotation = te instanceof IRotatableTile ? getRotation(((IRotatableTile) te).getPrimaryFacing()) : 0;
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslated(x + 0.5d, y, z + 0.5d);
-        float rotation = getRotation(rot);
         GL11.glRotatef(rotation, 0, 1, 0);
         GL11.glScalef(-1, -1, 1);
         bindTexture(texture);
-        model.renderModel();
+        model.renderModel(te);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
     }

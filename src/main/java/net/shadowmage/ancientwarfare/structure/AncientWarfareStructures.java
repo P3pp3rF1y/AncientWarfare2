@@ -15,8 +15,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -27,7 +25,6 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.*;
 import net.shadowmage.ancientwarfare.structure.crafting.AWStructureCrafting;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
-import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
@@ -98,14 +95,13 @@ public class AncientWarfareStructures {
         NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL, ContainerGateControl.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_DRAFTING_STATION, ContainerDraftingStation.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_SOUND_BLOCK, ContainerSoundBlock.class);
-        proxy.registerClient();
-
         /**
          * load pre-init
          */
         statics.load();
         AWStructuresItemLoader.load();
         AWStructuresBlockLoader.load();
+        proxy.registerClient();
         String path = evt.getModConfigurationDirectory().getAbsolutePath();
         TemplateLoader.INSTANCE.initializeAndExportDefaults(path);
     }
