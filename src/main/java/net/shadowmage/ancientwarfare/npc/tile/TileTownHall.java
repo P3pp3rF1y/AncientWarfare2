@@ -5,14 +5,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.tile.TileOwned;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -23,9 +22,8 @@ import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileTownHall extends TileEntity implements IOwnable, IInventory, IInteractableTile {
+public class TileTownHall extends TileOwned implements IInventory, IInteractableTile {
 
-    private String ownerName = "";
     private int broadcastRange = 80;
     private int updateDelayTicks = 0;
 
@@ -34,6 +32,10 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
     private final InventoryBasic inventory = new InventoryBasic(27);
 
     private List<ContainerTownHall> viewers = new ArrayList<ContainerTownHall>();
+
+    public TileTownHall(){
+        super("owner");
+    }
 
     @Override
     public void updateEntity() {
@@ -94,22 +96,8 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
     }
 
     @Override
-    public void setOwnerName(String name) {
-        if (name == null) {
-            name = "";
-        }
-        this.ownerName = name;
-    }
-
-    @Override
-    public String getOwnerName() {
-        return ownerName;
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        ownerName = tag.getString("owner");
         inventory.readFromNBT(tag.getCompoundTag("inventory"));
         NBTTagList entryList = tag.getTagList("deathNotices", Constants.NBT.TAG_COMPOUND);
         NpcDeathEntry entry;
@@ -125,7 +113,6 @@ public class TileTownHall extends TileEntity implements IOwnable, IInventory, II
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setString("owner", ownerName);
         tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
         NBTTagList entryList = new NBTTagList();
         for (NpcDeathEntry entry : deathNotices) {

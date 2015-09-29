@@ -64,7 +64,7 @@ public class ItemNpcSpawner extends Item {
         }
         NpcBase npc = createNpcFromItem(player.worldObj, stack);
         if (npc != null) {
-            npc.setOwnerName(player.getCommandSenderName());
+            npc.setOwner(player);
             npc.setPosition(hit.x + 0.5d, hit.y, hit.z + 0.5d);
             npc.setHomeAreaAtCurrentPosition();
             player.worldObj.spawnEntityInWorld(npc);

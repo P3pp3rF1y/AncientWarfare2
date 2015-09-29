@@ -11,7 +11,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
@@ -25,9 +24,8 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import java.util.EnumSet;
 import java.util.List;
 
-public class TileResearchStation extends TileEntity implements IWorkSite, IInventory, IInvBasic, ITorqueTile, IOwnable, IInteractableTile, IRotatableTile {
+public class TileResearchStation extends TileOwned implements IWorkSite, IInventory, IInvBasic, ITorqueTile, IInteractableTile, IRotatableTile {
 
-    protected String owningPlayer = "";
     ForgeDirection orientation = ForgeDirection.NORTH;//default for old blocks
 
     private final InventoryBasic bookInventory = new InventoryBasic(1, this);
@@ -43,6 +41,10 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
     double maxEnergyStored = 1600;
     double maxInput = 100;
     private double storedEnergy;
+
+    public TileResearchStation(){
+        super("owningPlayer");
+    }
 
     @Override
     public void onBlockBroken() {
@@ -150,7 +152,6 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        setOwnerName(tag.getString("owningPlayer"));
         bookInventory.readFromNBT(tag.getCompoundTag("bookInventory"));
         resourceInventory.readFromNBT(tag.getCompoundTag("resourceInventory"));
         this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
@@ -165,7 +166,6 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setString("owningPlayer", owningPlayer);
         tag.setTag("bookInventory", bookInventory.writeToNBT(new NBTTagCompound()));
         tag.setTag("resourceInventory", resourceInventory.writeToNBT(new NBTTagCompound()));
         tag.setBoolean("useAdjacentInventory", useAdjacentInventory);
@@ -229,7 +229,7 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
 
     @Override
     public final Team getTeam() {
-        return worldObj.getScoreboard().getPlayersTeam(owningPlayer);
+        return worldObj.getScoreboard().getPlayersTeam(getOwnerName());
     }
 
     @Override
@@ -320,16 +320,6 @@ public class TileResearchStation extends TileEntity implements IWorkSite, IInven
         if (storedEnergy > getMaxTorque(null)) {
             storedEnergy = getMaxTorque(null);
         }
-    }
-
-    @Override
-    public void setOwnerName(String name) {
-        this.owningPlayer = name == null ? "" : name;
-    }
-
-    @Override
-    public String getOwnerName() {
-        return owningPlayer;
     }
 
     @Override

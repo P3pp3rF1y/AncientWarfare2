@@ -43,7 +43,7 @@ public class TileWaterwheel extends TileTorqueSingleCell {
             }
             if (validSetup)//server, update power gen
             {
-                torqueCell.setEnergy(torqueCell.getEnergy() + (AWAutomationStatics.waterwheel_generator_output));
+                torqueCell.setEnergy(torqueCell.getEnergy() + AWAutomationStatics.waterwheel_generator_output);
             }
         }
     }

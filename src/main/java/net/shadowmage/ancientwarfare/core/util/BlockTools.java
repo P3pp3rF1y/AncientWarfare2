@@ -33,7 +33,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.BlockEvent;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 import java.util.List;
@@ -360,11 +359,11 @@ public class BlockTools {
         return pos;
     }
 
-    public static boolean breakBlockAndDrop(World world, String name, int x, int y, int z) {
-        return breakBlock(world, name, x, y, z, 0, true);
+    public static boolean breakBlockAndDrop(World world, EntityPlayer player, int x, int y, int z) {
+        return breakBlock(world, player, x, y, z, 0, true);
     }
 
-    public static boolean breakBlock(World world, String playerName, int x, int y, int z, int fortune, boolean doDrop) {
+    public static boolean breakBlock(World world, EntityPlayer player, int x, int y, int z, int fortune, boolean doDrop) {
         if (world.isRemote) {
             return false;
         }
@@ -374,7 +373,7 @@ public class BlockTools {
         }
         if (doDrop) {
             int meta = world.getBlockMetadata(x, y, z);
-            if (!canBreakBlock(world, playerName, x, y, z, block, meta)) {
+            if (!canBreakBlock(world, player, x, y, z, block, meta)) {
                 return false;
             }
             block.dropBlockAsItem(world, x, y, z, meta, fortune);
@@ -383,11 +382,8 @@ public class BlockTools {
     }
 
 
-    public static boolean canBreakBlock(World world, String playerName, int x, int y, int z, Block block, int meta) {
-        if (AWCoreStatics.fireBlockBreakEvents) {
-            return !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(x, y, z, world, block, meta, AncientWarfareCore.proxy.getFakePlayer(world, playerName)));
-        }
-        return true;
+    public static boolean canBreakBlock(World world, EntityPlayer player, int x, int y, int z, Block block, int meta) {
+        return !AWCoreStatics.fireBlockBreakEvents || !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(x, y, z, world, block, meta, player));
     }
 
 }

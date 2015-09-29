@@ -29,7 +29,7 @@ public class ItemBlockRotatableMetaTile extends ItemBlock {
         if (val) {
             TileEntity te = player.worldObj.getTileEntity(x, y, z);
             if (te instanceof IOwnable) {
-                ((IOwnable) te).setOwnerName(player.getCommandSenderName());
+                ((IOwnable) te).setOwner(player);
             }
             if (te instanceof IRotatableTile) {
                 ((IRotatableTile) te).setPrimaryFacing(BlockRotationHandler.getFaceForPlacement(player, rotatable, side));

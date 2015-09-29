@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData.DeliverableItem;
@@ -13,26 +12,27 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySi
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.tile.TileOwned;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory, IRotatableTile {
+public class TileMailbox extends TileOwned implements ISidedInventory, IRotatableTile {
 
     private boolean autoExport;//TODO : should automatically try and export from output side
     private boolean privateBox;
 
     public InventorySided inventory;
 
-    private String owningPlayerName;
     private String mailboxName;
     private String destinationName;
 
     public TileMailbox() {
         inventory = new InventorySided(this, RotationType.FOUR_WAY, 36);
-        int[] topIndices = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
-        int[] bottomIndices = new int[]{18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
+        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
+        int[] topIndices = helper.getIndiceArrayForSpread(inventory.getSizeInventory()/2);
+        int[] bottomIndices = helper.getIndiceArrayForSpread(inventory.getSizeInventory()/2);
         inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
         inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);
     }
@@ -47,8 +47,8 @@ public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory
             MailboxData data = AWGameData.INSTANCE.getData(worldObj, MailboxData.class);
 
             List<DeliverableItem> items = new ArrayList<DeliverableItem>();
-            data.getDeliverableItems(privateBox ? owningPlayerName : null, mailboxName, items, worldObj, xCoord, yCoord, zCoord);
-            data.addMailboxReceiver(privateBox ? owningPlayerName : null, mailboxName, this);
+            data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, worldObj, xCoord, yCoord, zCoord);
+            data.addMailboxReceiver(privateBox ? getOwnerName() : null, mailboxName, this);
 
             if (destinationName != null)//try to send mail
             {
@@ -59,9 +59,9 @@ public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory
 
     private void trySendItems(MailboxData data) {
         ItemStack item;
-        String owner = privateBox ? owningPlayerName : null;
+        String owner = privateBox ? getOwnerName() : null;
         int dim = worldObj.provider.dimensionId;
-        for (int k = 18; k < inventory.getSizeInventory(); k++) {
+        for (int k = inventory.getSizeInventory()/2; k < inventory.getSizeInventory(); k++) {
             item = inventory.getStackInSlot(k);
             if (item != null) {
                 data.addDeliverableItem(owner, destinationName, item, dim, xCoord, yCoord, zCoord);
@@ -69,11 +69,6 @@ public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory
                 break;
             }
         }
-    }
-
-    @Override
-    public void setOwnerName(String commandSenderName) {
-        this.owningPlayerName = commandSenderName;
     }
 
     public String getMailboxName() {
@@ -123,16 +118,9 @@ public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory
         }
         privateBox = val;
     }
-
-    @Override
-    public String getOwnerName() {
-        return owningPlayerName;
-    }
-
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        owningPlayerName = tag.getString("ownerName");
         if (tag.hasKey("targetName")) {
             destinationName = tag.getString("targetName");
         }
@@ -147,7 +135,6 @@ public class TileMailbox extends TileEntity implements IOwnable, ISidedInventory
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setString("ownerName", owningPlayerName);
         if (destinationName != null) {
             tag.setString("targetName", destinationName);
         }

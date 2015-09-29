@@ -14,14 +14,12 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntr
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TileWarehouseStockViewer extends TileControlled implements IOwnable, IInteractableTile {
 
     private final List<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
+    private UUID owner;
     private String ownerName = "";
     private boolean shouldUpdate = false;
 
@@ -89,8 +87,18 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     }
 
     @Override
-    public void setOwnerName(String name) {
-        ownerName = name == null ? "" : name;
+    public boolean isOwner(EntityPlayer player){
+        if(player == null)
+            return false;
+        if(owner!=null)
+            return player.getUniqueID().equals(owner);
+        return player.getCommandSenderName().equals(ownerName);
+    }
+
+    @Override
+    public void setOwner(EntityPlayer player) {
+        this.owner = player.getUniqueID();
+        this.ownerName = player.getCommandSenderName();
     }
 
     @Override
@@ -146,18 +154,39 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         return true;
     }
 
+    private void checkOwnerName(){
+        if(hasWorldObj()){
+            if(owner!=null) {
+                EntityPlayer player = worldObj.func_152378_a(owner);
+                if (player != null) {
+                    setOwner(player);
+                }
+            }else if(ownerName!=null){
+                EntityPlayer player = worldObj.getPlayerEntityByName(ownerName);
+                if(player!=null){
+                    setOwner(player);
+                }
+            }
+        }
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         filters.addAll(INBTSerialable.Helper.read(tag, "filterList", WarehouseStockFilter.class));
         ownerName = tag.getString("ownerName");
+        if(tag.hasKey("ownerId"))
+            owner = UUID.fromString(tag.getString("ownerId"));
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         INBTSerialable.Helper.write(tag, "filterList", filters);
+        checkOwnerName();
         tag.setString("ownerName", ownerName);
+        if(owner!=null)
+            tag.setString("ownerId", owner.toString());
     }
 
     public static class WarehouseStockFilter implements INBTSerialable{

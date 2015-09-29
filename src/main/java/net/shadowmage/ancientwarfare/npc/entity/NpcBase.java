@@ -41,7 +41,7 @@ import java.util.UUID;
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler {
 
     private String ownerName = "";//the owner of this NPC, used for checking teams
-
+    private UUID ownerId;
     protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
 
     protected NpcLevelingStats levelingStats;
@@ -394,9 +394,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 if(material.isLiquid() || material == Material.cactus) {
                     return;
                 }
+                this.entityCollisionReduction = 0.9F;
             }
         }
         super.applyEntityCollision(entity);
+        this.entityCollisionReduction = 0;
     }
 
     @Override
@@ -783,6 +785,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
+    public void setOwner(EntityPlayer player){
+        ownerId = player.getUniqueID();
+        setOwnerName(player.getCommandSenderName());
+    }
+
     public void setOwnerName(String name) {
         if (name == null) {
             name = "";
@@ -791,10 +798,34 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             PacketEntity pkt = new PacketEntity(this);
             NBTTagCompound tag = new NBTTagCompound();
             tag.setString("ownerName", name);
+            EntityPlayer player = worldObj.getPlayerEntityByName(name);
+            if(player!=null){
+                ownerId = player.getUniqueID();
+            }
+            if(ownerId!=null)
+                tag.setString("ownerId", ownerId.toString());
             pkt.packetData = tag;
             NetworkHandler.sendToAllTracking(this, pkt);
         }
         ownerName = name;
+    }
+
+    private void checkOwnerName(){
+        if(ownerId!=null){
+            EntityPlayer player = worldObj.func_152378_a(ownerId);
+            if(player!=null && !player.getCommandSenderName().equals(ownerName)){
+                setOwnerName(player.getCommandSenderName());
+            }
+        }
+    }
+
+    @Override
+    public boolean isOwner(EntityPlayer player){
+        if(player == null || player.getGameProfile() == null)
+            return false;
+        if(ownerId!=null)
+            return player.getUniqueID().equals(ownerId);
+        return player.getCommandSenderName().equals(ownerName);
     }
 
     @Override
@@ -949,6 +980,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (hasCustomNameTag()) {
             tag.setString("name", getCustomNameTag());
         }
+        checkOwnerName();
         tag.setString("owner", ownerName);
         tag.setInteger("attackDamageOverride", attackDamage);
         tag.setInteger("armorValueOverride", armorValue);
@@ -977,6 +1009,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("ownerName")) {
             setOwnerName(tag.getString("ownerName"));
+            if(tag.hasKey("ownerId")){
+                ownerId = UUID.fromString(tag.getString("ownerId"));
+                checkOwnerName();
+            }
         } else if (tag.hasKey("profileTex") && tag.hasKey("customTex")) {
             customTexRef = tag.getString("customTex");
             NBTTagCompound tah = tag.getCompoundTag("profileTex");

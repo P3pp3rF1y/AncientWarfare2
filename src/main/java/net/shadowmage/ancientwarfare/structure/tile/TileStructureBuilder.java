@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
@@ -26,10 +27,12 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
 import java.util.EnumSet;
+import java.util.UUID;
 
 public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwnable {
 
-    protected String owningPlayer;
+    protected UUID owningPlayer;
+    private EntityPlayer owner;
 
     StructureBuilderTicked builder;
     private boolean shouldRemove = false;
@@ -148,7 +151,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
 
     public void processWork() {
         isStarted = true;
-        builder.tick(owningPlayer);
+        builder.tick(getOwnerAsPlayer());
     }
 
     /**
@@ -156,13 +159,25 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
      * from the ItemBlockStructureBuilder item onBlockPlaced code
      */
     @Override
-    public void setOwnerName(String name) {
-        this.owningPlayer = name;
+    public void setOwner(EntityPlayer player) {
+        this.owningPlayer = player.getUniqueID();
+    }
+
+    @Override
+    public boolean isOwner(EntityPlayer player){
+        return this.owningPlayer == null || this.owningPlayer.equals(player.getUniqueID());
     }
 
     @Override
     public String getOwnerName(){
-        return this.owningPlayer;
+        return getOwnerAsPlayer().getCommandSenderName();
+    }
+
+    public final EntityPlayer getOwnerAsPlayer() {
+        if(owner==null || !owner.isEntityAlive() || owner.isEntityInvulnerable()) {
+            owner = AncientWarfareCore.proxy.getFakePlayer(this.getWorldObj(), null, owningPlayer);
+        }
+        return owner;
     }
 
     /**
@@ -222,6 +237,9 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
         }
         this.isStarted = tag.getBoolean("started");
         this.storedEnergy = tag.getDouble("storedEnergy");
+        if(tag.hasKey("ownerId")){
+            this.owningPlayer = UUID.fromString(tag.getString("ownerId"));
+        }
     }
 
     @Override
@@ -234,6 +252,9 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
         }
         tag.setBoolean("started", isStarted);
         tag.setDouble("storedEnergy", storedEnergy);
+        if(owningPlayer!=null){
+            tag.setString("ownerId", owningPlayer.toString());
+        }
     }
 
     //*******************************************WORKSITE************************************************//
@@ -250,7 +271,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     @Override
     public final Team getTeam() {
         if (owningPlayer != null) {
-            worldObj.getScoreboard().getPlayersTeam(owningPlayer);
+            worldObj.getScoreboard().getPlayersTeam(getOwnerName());
         }
         return null;
     }

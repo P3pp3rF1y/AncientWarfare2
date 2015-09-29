@@ -20,7 +20,6 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableT
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
@@ -28,12 +27,13 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
+import java.util.UUID;
 
 @Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore", striprefs = true)
 public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyHandler {
 
     private String owningPlayer = "";
-
+    private UUID ownerId;
     private EntityPlayer owner;
 
     private double efficiencyBonusFactor = 0.f;
@@ -193,18 +193,38 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     }
 
     public final EntityPlayer getOwnerAsPlayer() {
-        if(owner==null || !owner.isEntityAlive() || owner.isEntityInvulnerable()) {
-            owner = AncientWarfareCore.proxy.getFakePlayer(this.getWorldObj(), owningPlayer);
+        if(!isOwnerReal()) {
+            owner = AncientWarfareCore.proxy.getFakePlayer(getWorldObj(), owningPlayer, ownerId);
         }
         return owner;
     }
 
+    private boolean isOwnerReal(){
+        return owner!=null && owner.isEntityAlive() && !owner.isEntityInvulnerable();
+    }
+
     @Override
-    public final void setOwnerName(String name) {
-        if (name == null) {
-            name = "";
+    public final boolean isOwner(EntityPlayer player){
+        if(player == null || player.getGameProfile() == null)
+            return false;
+        if(isOwnerReal())
+            return player.getGameProfile().equals(owner.getGameProfile());
+        if(ownerId!=null)
+            return player.getUniqueID().equals(ownerId);
+        return player.getCommandSenderName().equals(owningPlayer);
+    }
+
+    @Override
+    public final void setOwner(EntityPlayer player) {
+        if (player == null) {
+            this.owningPlayer = "";
+            this.owner = null;
+            this.ownerId = null;
+        }else{
+            this.owner = player;
+            this.owningPlayer = player.getCommandSenderName();
+            this.ownerId = player.getUniqueID();
         }
-        this.owningPlayer = name;
     }
 
 //*************************************** TORQUE INTERACTION METHODS ***************************************//
@@ -305,6 +325,15 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         tag.setDouble("storedEnergy", torqueCell.getEnergy());
         if (owningPlayer != null) {
             tag.setString("owner", owningPlayer);
+            if(ownerId == null && hasWorldObj()){
+                getOwnerAsPlayer();
+                if(isOwnerReal()){
+                    ownerId = owner.getUniqueID();
+                }
+            }
+        }
+        if(ownerId!=null){
+            tag.setString("ownerId", ownerId.toString());
         }
         if (!getUpgrades().isEmpty()) {
             int[] ug = new int[getUpgrades().size()];
@@ -323,7 +352,10 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         super.readFromNBT(tag);
         torqueCell.setEnergy(tag.getDouble("storedEnergy"));
         if (tag.hasKey("owner")) {
-            setOwnerName(tag.getString("owner"));
+            owningPlayer = tag.getString("owner");
+        }
+        if(tag.hasKey("ownerId")){
+            ownerId = UUID.fromString(tag.getString("ownerId"));
         }
         if (tag.hasKey("upgrades")) {
             NBTBase upgradeTag = tag.getTag("upgrades");

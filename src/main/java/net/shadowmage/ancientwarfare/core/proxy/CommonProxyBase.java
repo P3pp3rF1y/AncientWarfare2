@@ -7,6 +7,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
+import java.util.UUID;
+
 public class CommonProxyBase {
 
     public void registerClient() {
@@ -18,15 +20,21 @@ public class CommonProxyBase {
         return null;
     }
 
-    public EntityPlayer getFakePlayer(World world, String name) {
+    public EntityPlayer getFakePlayer(World world, String name, UUID id) {
+        EntityPlayer player;
+        if(id!=null) {
+            player = world.func_152378_a(id);
+            if(player!=null)
+                return player;
+        }
         if(name!=null) {
-            EntityPlayer player = world.getPlayerEntityByName(name);
+            player = world.getPlayerEntityByName(name);
             if(player!=null){
                 return player;
             }
-            return FakePlayerFactory.get((WorldServer) world, new GameProfile(null, name));
+            return FakePlayerFactory.get((WorldServer) world, new GameProfile(id, name));
         }
-        return FakePlayerFactory.get((WorldServer) world, new GameProfile(null, "AncientWarfare"));
+        return FakePlayerFactory.get((WorldServer) world, new GameProfile(id, "AncientWarfare"));
     }
 
     public boolean isKeyPressed(String keyName) {

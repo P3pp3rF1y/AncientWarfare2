@@ -31,7 +31,7 @@ public class ItemBlockTorqueTile extends ItemBlock {
         if (val) {
             TileTorqueBase te = (TileTorqueBase) player.worldObj.getTileEntity(x, y, z);
             if (te instanceof IOwnable) {
-                ((IOwnable) te).setOwnerName(player.getCommandSenderName());
+                ((IOwnable) te).setOwner(player);
             }
             te.setPrimaryFacing(ForgeDirection.getOrientation(metadata));
         }

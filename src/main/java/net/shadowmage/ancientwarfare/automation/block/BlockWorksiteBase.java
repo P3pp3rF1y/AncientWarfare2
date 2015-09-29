@@ -13,7 +13,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.common.util.RotationHelper;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -111,7 +110,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof IInteractableTile) {
             boolean canClick = false;
-            if(te instanceof IOwnable && player.getCommandSenderName().equals(((IOwnable) te).getOwnerName())){
+            if(te instanceof IOwnable && ((IOwnable) te).isOwner(player)){
                 canClick = true;
             }else if(te instanceof IWorkSite) {
                 Team t1 = ((IWorkSite) te).getTeam();

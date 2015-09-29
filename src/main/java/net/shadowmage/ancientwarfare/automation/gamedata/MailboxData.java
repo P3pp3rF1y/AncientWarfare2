@@ -27,8 +27,8 @@ public class MailboxData extends WorldSavedData {
         publicMailboxes = new MailboxSet("public");
         publicMailboxes.readFromNBT(tag.getCompoundTag("publicBoxes"));
 
-        privateMailboxes.clear();
         NBTTagList privateBoxList = tag.getTagList("privateBoxes", Constants.NBT.TAG_COMPOUND);
+        privateMailboxes.clear();
         MailboxSet boxSet;
         for (int i = 0; i < privateBoxList.tagCount(); i++) {
             boxSet = new MailboxSet();
@@ -42,10 +42,8 @@ public class MailboxData extends WorldSavedData {
         tag.setTag("publicBoxes", publicMailboxes.writeToNBT(new NBTTagCompound()));
 
         NBTTagList privateBoxList = new NBTTagList();
-        NBTTagCompound setTag;
         for (MailboxSet set : this.privateMailboxes.values()) {
-            setTag = set.writeToNBT(new NBTTagCompound());
-            privateBoxList.appendTag(setTag);
+            privateBoxList.appendTag(set.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("privateBoxes", privateBoxList);
     }
@@ -151,9 +149,9 @@ public class MailboxData extends WorldSavedData {
         }
 
         private void readFromNBT(NBTTagCompound tag) {
-            mailboxes.clear();
             NBTTagList mailboxList = tag.getTagList("mailboxList", Constants.NBT.TAG_COMPOUND);
             NBTTagCompound mailboxTag;
+            mailboxes.clear();
             MailboxEntry entry;
             for (int i = 0; i < mailboxList.tagCount(); i++) {
                 mailboxTag = mailboxList.getCompoundTagAt(i);

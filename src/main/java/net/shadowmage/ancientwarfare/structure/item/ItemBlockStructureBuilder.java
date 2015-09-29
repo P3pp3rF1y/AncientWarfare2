@@ -74,7 +74,7 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
             TileEntity te = world.getTileEntity(x, y, z);
             if (te instanceof TileStructureBuilder) {
                 TileStructureBuilder tb = (TileStructureBuilder) te;
-                tb.setOwnerName(player.getCommandSenderName());
+                tb.setOwner(player);
                 String name = stack.getTagCompound().getString("structureName");
                 StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
                 if (t != null) {

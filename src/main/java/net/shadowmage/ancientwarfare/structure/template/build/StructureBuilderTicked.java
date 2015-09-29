@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -46,7 +47,7 @@ public class StructureBuilderTicked extends StructureBuilder {
 
     }
 
-    public void tick(String player) {
+    public void tick(EntityPlayer player) {
         if (!hasClearedArea) {
             while (!breakClearTargetBlock(player)) {
                 if (!incrementClear()) {
@@ -72,8 +73,8 @@ public class StructureBuilderTicked extends StructureBuilder {
         }
     }
 
-    protected boolean breakClearTargetBlock(String owner) {
-        return BlockTools.breakBlockAndDrop(world, owner, clearX, clearY, clearZ);
+    protected boolean breakClearTargetBlock(EntityPlayer player) {
+        return BlockTools.breakBlockAndDrop(world, player, clearX, clearY, clearZ);
     }
 
     protected boolean incrementClear() {

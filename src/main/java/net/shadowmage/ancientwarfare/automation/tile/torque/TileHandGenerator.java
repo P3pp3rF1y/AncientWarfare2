@@ -155,11 +155,13 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     }
 
     @Override
-    public void setOwnerName(String name) {
-        if (name == null) {
-            name = "";
-        }
-        ownerName = name;
+    public boolean isOwner(EntityPlayer player){
+        return player!=null && player.getCommandSenderName().equals(ownerName);
+    }
+
+    @Override
+    public void setOwner(EntityPlayer player) {
+        this.ownerName = player.getCommandSenderName();
     }
 
     @Override

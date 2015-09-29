@@ -20,7 +20,7 @@ public class ItemBlockOwned extends ItemBlock {
         if (val) {
             TileEntity te = player.worldObj.getTileEntity(x, y, z);
             if (te instanceof IOwnable) {
-                ((IOwnable) te).setOwnerName(player.getCommandSenderName());
+                ((IOwnable) te).setOwner(player);
             }
         }
         return val;

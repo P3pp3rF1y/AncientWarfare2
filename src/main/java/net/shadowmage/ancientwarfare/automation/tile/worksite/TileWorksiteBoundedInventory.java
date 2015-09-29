@@ -63,7 +63,7 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
             if (!InventoryTools.canInventoryHold(inventory, combinedIndices, stacks)) {
                 return false;
             }
-            if (!BlockTools.canBreakBlock(worldObj, getOwnerName(), x, y, z, block, meta)) {
+            if (!BlockTools.canBreakBlock(worldObj, getOwnerAsPlayer(), x, y, z, block, meta)) {
                 return false;
             }
             worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));

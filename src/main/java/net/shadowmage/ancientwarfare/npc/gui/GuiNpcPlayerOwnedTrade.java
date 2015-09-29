@@ -22,7 +22,7 @@ public class GuiNpcPlayerOwnedTrade extends GuiContainerBase<ContainerNpcPlayerO
     public void initElements() {
         int areaSize = ySize - 8 - 4 - 8 - 4 * 18;
         int areaY = 0;
-        if (player.getCommandSenderName().equals(getContainer().entity.getOwnerName())) {
+        if (getContainer().entity.isOwner(player)) {
             areaSize -= 12 + 8 + 4;
             areaY = 12 + 8 + 4;
             owner = true;

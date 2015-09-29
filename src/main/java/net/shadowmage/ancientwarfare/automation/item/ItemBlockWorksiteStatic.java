@@ -46,7 +46,7 @@ public class ItemBlockWorksiteStatic extends ItemBlock {
                 ((IBoundedSite) worksite).setBounds(pos1, pos2);
             }
             if (worksite instanceof IOwnable) {
-                ((IOwnable) worksite).setOwnerName(player.getCommandSenderName());
+                ((IOwnable) worksite).setOwner(player);
             }
             if (worksite instanceof IRotatableTile) {
                 ForgeDirection o = ForgeDirection.values()[ormetadata];

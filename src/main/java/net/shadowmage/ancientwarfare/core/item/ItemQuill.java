@@ -103,7 +103,7 @@ public class ItemQuill extends Item {
                 IWorkSite ters = (IWorkSite) te;
                 if (ters.hasWork()) {
                     Team team = ters.getTeam();
-                    if ((team!=null && team.isSameTeam(player.getTeam())) || (te instanceof IOwnable && player.getCommandSenderName().equals(((IOwnable)te).getOwnerName()))) {
+                    if ((team!=null && team.isSameTeam(player.getTeam())) || (te instanceof IOwnable && ((IOwnable)te).isOwner(player))) {
                         ters.addEnergyFromPlayer(player);
                         stack.damageItem(1, player);
                         //TODO add chat message

@@ -79,7 +79,7 @@ public class NpcTrader extends NpcPlayerOwned {
         if (player.worldObj.isRemote) {
             return true;
         }
-        if (player.getCommandSenderName().equals(getOwnerName()))//owner
+        if (isOwner(player))//owner
         {
             return tryCommand(player);
         } else//non-owner
