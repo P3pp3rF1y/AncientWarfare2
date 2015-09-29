@@ -171,7 +171,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
         if(map!=null) {
             Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, x, z, size, true, new ArrayList<StructureEntry>());
             for (StructureEntry entry : bbCheckList) {
-                if (bb.collidesWith(entry.getBB())) {
+                if (bb.crossWith(entry.getBB())) {
                     return false;
                 }
             }

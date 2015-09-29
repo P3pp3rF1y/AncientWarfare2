@@ -105,7 +105,7 @@ public class TownPlacementValidator {
         List<StructureEntry> entries = new ArrayList<StructureEntry>();
         map.getEntriesNear(world, area.getCenterX(), area.getCenterZ(), size, true, entries);
         for (StructureEntry e : entries) {
-            if (e.getBB().collidesWith(bb)) {
+            if (e.getBB().crossWith(bb)) {
                 AWLog.logDebug("Skipping town generation at: " + area + " for intersection with existing structure at: " + e.getBB());
                 return false;
             }

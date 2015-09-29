@@ -240,7 +240,7 @@ public final class BlockPosition {
         if (!(obj instanceof BlockPosition))
             return false;
         BlockPosition other = (BlockPosition) obj;
-        return x == other.x && y == other.y && z == other.z;
+        return this.equals(other);
     }
 
 }

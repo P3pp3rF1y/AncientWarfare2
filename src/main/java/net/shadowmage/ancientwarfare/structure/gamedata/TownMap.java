@@ -46,7 +46,7 @@ public class TownMap extends WorldSavedData {
             cx *= 16;
             cz *= 16;
             for (StructureBB bb : boundingBoxes) {
-                if (bb.isPositionInBoundingBox(cx, bb.min.y, cz)) {
+                if (bb.isPositionIn(cx, bb.min.y, cz)) {
                     return true;
                 }
             }
@@ -56,7 +56,7 @@ public class TownMap extends WorldSavedData {
 
     public boolean intersectsWithTown(StructureBB bb) {
         for (StructureBB tbb : boundingBoxes) {
-            if (tbb.collidesWith(bb)) {
+            if (tbb.crossWith(bb)) {
                 return true;
             }
         }
@@ -65,9 +65,9 @@ public class TownMap extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        boundingBoxes.clear();
         StructureBB bb;
         NBTTagList list = tag.getTagList("boundingBoxes", Constants.NBT.TAG_COMPOUND);
+        boundingBoxes.clear();
         for (int i = 0; i < list.tagCount(); i++) {
             bb = new StructureBB(new BlockPosition(), new BlockPosition());
             bb.readFromNBT(list.getCompoundTagAt(i));

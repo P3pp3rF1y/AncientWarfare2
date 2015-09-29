@@ -20,18 +20,15 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.Zone;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
-public class StructureBB {
-
-    public BlockPosition min;
-    public BlockPosition max;
+public class StructureBB extends Zone{
 
     public StructureBB(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-        this(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        super(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
     }
 
     public StructureBB(int x, int y, int z, int face, StructureTemplate template) {
@@ -39,15 +36,6 @@ public class StructureBB {
     }
 
     public StructureBB(int x, int y, int z, int face, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
-        this.setFromStructure(x, y, z, face, xSize, ySize, zSize, xOffset, yOffset, zOffset);
-    }
-
-    public StructureBB(BlockPosition pos1, BlockPosition pos2) {
-        this.min = BlockTools.getMin(pos1, pos2);
-        this.max = BlockTools.getMax(pos1, pos2);
-    }
-
-    public final StructureBB setFromStructure(int x, int y, int z, int face, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
         /**
          * we simply take the clicked on position
          */
@@ -72,24 +60,19 @@ public class StructureBB {
         /**
          * finally, set the min/max of this BB to the min/max of the two corners
          */
-        this.min = BlockTools.getMin(c1, c2);
-        this.max = BlockTools.getMax(c1, c2);
-        return this;
+        BlockPosition min = BlockTools.getMin(c1, c2);
+        this.min.reassign(min.x, min.y, min.z);
+        BlockPosition max = BlockTools.getMax(c1, c2);
+        this.max.reassign(max.x, max.y, max.z);
+    }
+
+    public StructureBB(BlockPosition pos1, BlockPosition pos2) {
+        super(pos1, pos2);
     }
 
     @Override
     public String toString() {
         return min.toString() + " : " + max.toString();
-    }
-
-    /**
-     * does the input bb share any blocks with this bounding box?
-     */
-    public boolean collidesWith(StructureBB bb) {
-        if (max.x < bb.min.x || max.y < bb.min.y || max.z < bb.min.z || min.x > bb.max.x || min.y > bb.max.y || min.z > bb.max.z) {
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -257,27 +240,7 @@ public class StructureBB {
         return out;
     }
 
-    public boolean isPositionInBoundingBox(int x, int y, int z) {
-        return x >= min.x && x <= max.x && y >= min.y && y <= max.y && z >= min.z && z <= max.z;
-    }
-
-    public boolean isPositionInBoundingBox(BlockPosition pos) {
-        return isPositionInBoundingBox(pos.x, pos.y, pos.z);
-    }
-
     public StructureBB copy() {
         return new StructureBB(min.copy(), max.copy());
     }
-
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setTag("min", min.writeToNBT(new NBTTagCompound()));
-        tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
-        return tag;
-    }
-
-    public void readFromNBT(NBTTagCompound tag) {
-        min.read(tag.getCompoundTag("min"));
-        max.read(tag.getCompoundTag("max"));
-    }
-
 }
