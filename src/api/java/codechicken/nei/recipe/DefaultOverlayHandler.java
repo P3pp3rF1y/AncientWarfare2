@@ -2,7 +2,6 @@ package codechicken.nei.recipe;
 
 import codechicken.nei.api.IOverlayHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
 
 /**
  * From NotEnoughItems.

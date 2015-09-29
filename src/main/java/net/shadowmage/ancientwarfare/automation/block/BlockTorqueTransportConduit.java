@@ -53,7 +53,7 @@ public class BlockTorqueTransportConduit extends BlockTorqueBase {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
         return false;
     }
 

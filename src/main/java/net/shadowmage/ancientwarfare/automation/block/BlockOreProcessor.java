@@ -1,6 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileOreProcessor;
 
@@ -16,7 +19,8 @@ public class BlockOreProcessor extends BlockWorksiteBase {
     }
 
     @Override
-    public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
         return false;
     }
 
