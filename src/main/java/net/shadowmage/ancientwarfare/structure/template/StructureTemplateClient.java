@@ -37,9 +37,6 @@ public class StructureTemplateClient {
 
     public StructureTemplateClient(StructureTemplate template) {
         this.name = template.name;
-        if (name == null) {
-            throw new IllegalArgumentException("cannot have null name for structure");
-        }
         this.xSize = template.xSize;
         this.ySize = template.ySize;
         this.zSize = template.zSize;

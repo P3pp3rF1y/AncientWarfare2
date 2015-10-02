@@ -31,7 +31,7 @@ import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
-import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.*;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityHanging;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;

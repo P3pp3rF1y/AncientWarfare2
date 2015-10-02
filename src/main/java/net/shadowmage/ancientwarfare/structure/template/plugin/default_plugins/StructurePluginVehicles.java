@@ -21,7 +21,7 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 
 public class StructurePluginVehicles implements StructureContentPlugin {
 

@@ -29,7 +29,6 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.Structu
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class StructureTemplate {
 
     /**

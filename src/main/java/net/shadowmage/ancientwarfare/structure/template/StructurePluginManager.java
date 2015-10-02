@@ -33,7 +33,6 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.api.*;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
-import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginModDefault;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVanillaHandler;
 
@@ -44,7 +43,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-public class StructurePluginManager implements IStructurePluginManager, IStructurePluginLookup, IStructurePluginRegister {
+public class StructurePluginManager implements IStructurePluginManager, IStructurePluginLookup {
 
     private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<StructureContentPlugin>();
 
