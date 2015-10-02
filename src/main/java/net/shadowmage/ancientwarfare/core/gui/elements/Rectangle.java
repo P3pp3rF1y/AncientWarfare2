@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 public class Rectangle extends GuiElement {
 
-    int color, hoverColor;
+    private final int color, hoverColor;
 
     public Rectangle(int topLeftX, int topLeftY, int width, int height, int color, int hoverColor) {
         super(topLeftX, topLeftY, width, height);
