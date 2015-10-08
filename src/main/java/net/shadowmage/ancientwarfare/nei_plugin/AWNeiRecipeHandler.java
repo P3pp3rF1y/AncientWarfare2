@@ -31,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAutoCrafting;
+import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
@@ -52,6 +53,9 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
         if(ModuleStatus.automationLoaded){
             register(GuiWarehouseCraftingStation.class, new DefaultOverlayHandler(37, 2));
             register(GuiWorksiteAutoCrafting.class, new DefaultOverlayHandler(37, 2));
+        }
+        if(ModuleStatus.structuresLoaded){
+            API.hideItem(new ItemStack(AWBlocks.gateProxy));
         }
     }
 
