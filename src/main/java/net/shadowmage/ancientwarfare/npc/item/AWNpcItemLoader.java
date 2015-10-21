@@ -31,7 +31,7 @@ public class AWNpcItemLoader {
             Collections.sort(par1List, sorter);
         }
     };
-    public static final String PREFIX = "ancientwarfare:npc/";
+    private static final String PREFIX = "ancientwarfare:npc/";
     public static final ItemCommandBaton commandBatonIron = new ItemCommandBaton("iron_command_baton", ToolMaterial.IRON);
     public static final ItemBardInstrument bardInstrument = new ItemBardInstrument("bard_instrument");
     public static final ItemShield woodenShield = new ItemShield("wooden_shield", ToolMaterial.WOOD);
