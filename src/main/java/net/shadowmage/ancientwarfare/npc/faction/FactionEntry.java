@@ -59,7 +59,7 @@ public final class FactionEntry {
             if (!factionStandings.containsKey(name)) {
                 factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
             }
-            factionStandings.get(name).standing = tag.getInteger("standing");
+            factionStandings.get(name).standing = entryTag.getInteger("standing");
         }
     }
 
