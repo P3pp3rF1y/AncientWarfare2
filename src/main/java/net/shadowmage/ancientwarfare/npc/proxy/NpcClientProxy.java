@@ -15,7 +15,6 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.gui.*;
@@ -70,12 +69,6 @@ public class NpcClientProxy extends NpcCommonProxy {
 
     private void registerClientOptions() {
         ConfigManager.registerConfigCategory(new NpcCategory("awconfig.npc_config"));
-    }
-
-    @Override
-    public void onConfigChanged() {
-        AncientWarfareNPC.config.save();
-        super.onConfigChanged();
     }
 
     @Override

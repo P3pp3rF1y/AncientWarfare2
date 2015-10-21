@@ -39,7 +39,7 @@ public class AWItems {
      */
     public static ItemBase worksiteUpgrade;
 
-/**
- * STRUCTURE module
- */
+    /**
+     * STRUCTURE module
+     */
 }

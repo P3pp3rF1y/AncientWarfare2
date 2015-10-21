@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.config.ConfigElement;
-import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.*;
@@ -113,11 +112,6 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
     private void registerClientOptions() {
         ConfigManager.registerConfigCategory(new AutomationCategory("awconfig.automation_config"));
-    }
-
-    @Override
-    public void onConfigChanged() {
-        AncientWarfareAutomation.config.save();
     }
 
     @SuppressWarnings("rawtypes")

@@ -29,7 +29,6 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -44,19 +43,7 @@ import java.util.Map.Entry;
 
 public class AWNPCStatics extends ModConfiguration {
 
-/**
- * shared settings:
- * NONE?
- */
-    /** ********************************************shared SETTINGS************************************************ */
-    public static final String sharedSettings = "01_shared_settings";
-
-/**
- * server settings:
- * npc worker tick rate / ticks per work unit
- */
     /** ********************************************SERVER SETTINGS************************************************ */
-    public static final String serverSettings = "02_server_settings";
     public static int maxNpcLevel = 10;
     public static int npcXpFromWork = 1;
     public static int npcXpFromTrade = 1;
@@ -77,46 +64,46 @@ public class AWNPCStatics extends ModConfiguration {
     public static double npcLevelDamageMultiplier = 0.05;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
     public static int npcArcherAttackDamage = 3;//damage for npc archers...can be increased via enchanted weapons
     /** ********************************************CLIENT SETTINGS************************************************ */
-    public static final String clientSettings = "03_client_settings";
     public static boolean loadDefaultSkinPack = true;
 
-    /** ********************************************RECIPE SETTINGS************************************************ */
-    public static final String recipeSettings = "04_recipe_settings";
+    public static Property renderAI, renderWorkPoints, renderFriendlyNames, renderHostileNames, renderFriendlyHealth, renderHostileHealth, renderTeamColors;
 
-/************************************************FOOD CONFIG*************************************************/
+    /** ********************************************RECIPE SETTINGS************************************************ */
+    private static final String recipeSettings = "04_recipe_settings";
+
     /** ********************************************FOOD SETTINGS************************************************ */
-    public static final String foodSettings = "01_food_settings";
-    private HashMap<String, Integer> foodValues = new HashMap<String, Integer>();
+    private Configuration foodConfig;
+    private static final String foodSettings = "01_food_settings";
+    private HashMap<String, Integer> foodValues;
     private int foodMultiplier = 750;
 
-/************************************************TARGET CONFIG*************************************************/
     /** ********************************************TARGET SETTINGS************************************************ */
-    public static final String targetSettings = "01_target_settings";
-    private HashMap<String, List<String>> entityTargetSettings = new HashMap<String, List<String>>();
-    private List<String> entitiesToTargetNpcs = new ArrayList<String>();
+    private Configuration targetConfig;
+    private static final String targetSettings = "01_target_settings";
+    private HashMap<String, List<String>> entityTargetSettings;
+    private List<String> entitiesToTargetNpcs;
 
-
-/************************************************FACTIONS CONFIG*************************************************/
     /** ********************************************FACTION STARTING VALUE SETTINGS************************************************ */
-    public static final String factionSettings = "01_faction_settings";
+    private Configuration factionConfig;
+    private static final String factionSettings = "01_faction_settings";
     public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
     public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
-    private HashMap<String, Integer> defaultFactionStandings = new HashMap<String, Integer>();
-    private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings = new HashMap<String, HashMap<String, Boolean>>();
-
+    private HashMap<String, Integer> defaultFactionStandings;
+    private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings;
 
 /************************************************FACTION NAMES*************************************************/
 
     public static final String[] factionNames = new String[]{"bandit", "viking", "pirate", "desert", "native", "custom_1", "custom_2", "custom_3"};
     public static final String[] factionNpcSubtypes = new String[]{"soldier", "soldier.elite", "cavalry", "archer", "archer.elite", "mounted_archer", "leader", "leader.elite", "priest", "trader", "civilian.male", "civilian.female", "bard"};
 
-
 /************************************************NPC CONFIG*************************************************/
     /** ********************************************NPC VALUES SETTINGS************************************************ */
-    private HashMap<String, Attribute> attributes = new HashMap<String, Attribute>();
+    private Configuration valuesConfig;
+    private HashMap<String, Attribute> attributes;
 
     /** ********************************************NPC PATH SETTINGS************************************************ */
-    private HashMap<String, Path> pathValues = new HashMap<String, Path>();
+    private Configuration pathConfig;
+    private HashMap<String, Path> pathValues;
 
 /************************************************EQUIPMENT CONFIG*************************************************/
     /** ********************************************NPC WEAPON SETTINGS************************************************ */
@@ -130,36 +117,24 @@ public class AWNPCStatics extends ModConfiguration {
     private static final String npcWorkItem = "07_npc_work_slot";
     private static final String npcUpkeepItem = "08_npc_upkeep_slot";
 
-    private final Configuration equipmentConfig;
-    private final Configuration targetConfig;
-    private final Configuration valuesConfig;
-    private final Configuration foodConfig;
-    private final Configuration factionConfig;
-    private final Configuration pathConfig;
+    private Configuration equipmentConfig;
+    private HashMap<String, String[]> eqmp;
 
-    public static Property renderAI, renderWorkPoints, renderFriendlyNames, renderHostileNames, renderFriendlyHealth, renderHostileHealth, renderTeamColors;
-
-    public AWNPCStatics(Configuration config) {
-        super(config);
-        equipmentConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcEquipment");
-        targetConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcTargeting");
-        valuesConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcValues");
-        pathConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcPath");
-        foodConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcFood");
-        factionConfig = AWCoreStatics.getConfigFor("AncientWarfareNpcFactionStandings");
+    public AWNPCStatics(String mod) {
+        super(mod);
     }
 
     @Override
     public void initializeCategories() {
-        config.addCustomCategoryComment(sharedSettings, "General Options\n" +
+        config.addCustomCategoryComment(generalOptions, "General Options\n" +
                 "Affect both client and server.  These configs must match for client and server, or\n" +
                 "strange and probably BAD things WILL happen.");
 
-        config.addCustomCategoryComment(serverSettings, "Server Options\n" +
+        config.addCustomCategoryComment(serverOptions, "Server Options\n" +
                 "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
-        config.addCustomCategoryComment(clientSettings, "Client Options\n" +
+        config.addCustomCategoryComment(clientOptions, "Client Options\n" +
                 "Affect only client-side operations.  Many of these options can be set from the in-game Options GUI.\n" +
                 "Server admins can ignore these settings.");
 
@@ -168,6 +143,7 @@ public class AWNPCStatics extends ModConfiguration {
                 "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
+        foodConfig = getConfigFor("AncientWarfareNpcFood");
         foodConfig.addCustomCategoryComment(foodSettings, "Food Value Options\n" +
                 "The value specified is the number of ticks that the item will feed the NPC for.\n" +
                 "Add a new line for each item. The item type is not checked, and the default multiplier is not applied.\n" +
@@ -175,16 +151,19 @@ public class AWNPCStatics extends ModConfiguration {
                 "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
+        targetConfig = getConfigFor("AncientWarfareNpcTargeting");
         targetConfig.addCustomCategoryComment(targetSettings, "Custom NPC Targeting Options\n" +
                 "Add / remove vanilla / mod-added entities from the NPC targeting lists.\n" +
                 "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
+        factionConfig = getConfigFor("AncientWarfareNpcFactionStandings");
         factionConfig.addCustomCategoryComment(factionSettings, "Faction Options\n" +
                 "Set starting faction values, and alter the amount of standing gained/lost from player actions.\n" +
                 "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
+        equipmentConfig = getConfigFor("AncientWarfareNpcEquipment");
         equipmentConfig.addCustomCategoryComment(npcDefaultWeapons, "Default Equipped Weapons\n");//TODO comment
         equipmentConfig.addCustomCategoryComment(npcOffhandItems, "Default Equipped Offhand Items\n");//TODO comment
         equipmentConfig.addCustomCategoryComment(npcArmorHead, "Default Equipped Helmets\n");//TODO comment
@@ -203,49 +182,49 @@ public class AWNPCStatics extends ModConfiguration {
         initializeCustomValues();
         initializeNpcEquipmentConfigs();
 
-        maxNpcLevel = config.get(serverSettings, "npc_max_level", maxNpcLevel, "Max NPC Level\nDefault=" + maxNpcLevel + "\n" +
+        maxNpcLevel = config.get(serverOptions, "npc_max_level", maxNpcLevel, "Max NPC Level\nDefault=" + maxNpcLevel + "\n" +
                 "How high can NPCs level up?  Npcs gain more health, attack damage, and overall\n" +
                 "improved stats with each level.  Levels can go very high, but higher values may\n" +
                 "result in overpowered NPCs once leveled up.").getInt();
 
-        npcXpFromAttack = config.get(serverSettings, "npc_xp_per_attack", npcXpFromAttack, "XP Per Attack\nDefault=" + npcXpFromAttack + "\n" +
+        npcXpFromAttack = config.get(serverOptions, "npc_xp_per_attack", npcXpFromAttack, "XP Per Attack\nDefault=" + npcXpFromAttack + "\n" +
                 "How much xp should an NPC gain each time they damage but do not kill an enemy?\n" +
                 "Higher values will result in faster npc leveling.\n" +
                 "Applies to both player-owned and faction-based NPCs.").getInt();
 
-        npcXpFromKill = config.get(serverSettings, "npc_xp_per_kill", npcXpFromKill, "XP Per Killnefault=" + npcXpFromKill + "\n" +
+        npcXpFromKill = config.get(serverOptions, "npc_xp_per_kill", npcXpFromKill, "XP Per Killnefault=" + npcXpFromKill + "\n" +
                 "How much xp should an NPC gain each time they kill an enemy?\n" +
                 "Higher values will result in faster npc leveling.\n" +
                 "Applies to both player-owned and faction-based NPCs.").getInt();
 
-        npcXpFromTrade = config.get(serverSettings, "npc_xp_per_trade", npcXpFromTrade, "XP Per Trade\nDefault=" + npcXpFromTrade + "\n" +
+        npcXpFromTrade = config.get(serverOptions, "npc_xp_per_trade", npcXpFromTrade, "XP Per Trade\nDefault=" + npcXpFromTrade + "\n" +
                 "How much xp should an NPC gain each time successfully traded with?\n" +
                 "Higher values will result in faster npc leveling and unlock more trade recipes.\n" +
                 "Applies to both player-owned and faction-based NPCs.").getInt();
 
-        npcXpFromWork = config.get(serverSettings, "npc_xp_per_work", npcXpFromWork, "XP Per Work\nDefault=" + npcXpFromWork + "\n" +
+        npcXpFromWork = config.get(serverOptions, "npc_xp_per_work", npcXpFromWork, "XP Per Work\nDefault=" + npcXpFromWork + "\n" +
                 "How much xp should an NPC gain each time it works at a worksite?\n" +
                 "Higher values will result in faster npc leveling.\n" +
                 "Applies to player-owned NPCs only.").getInt();
 
-        npcXpFromMoveItem = config.get(serverSettings, "npc_xp_per_item_moved", npcXpFromMoveItem, "XP Per Courier\nDefault=" + npcXpFromMoveItem + "\n" +
+        npcXpFromMoveItem = config.get(serverOptions, "npc_xp_per_item_moved", npcXpFromMoveItem, "XP Per Courier\nDefault=" + npcXpFromMoveItem + "\n" +
                 "How much xp should an NPC gain each time it moves an item?\n" +
                 "Higher values will result in faster npc leveling.\n" +
                 "Applies to player-owned NPCs only.").getInt();
 
-        npcWorkTicks = config.get(serverSettings, "npc_work_ticks", npcWorkTicks, "Time Between Work Ticks\nDefault=" + npcWorkTicks + "\n" +
+        npcWorkTicks = config.get(serverOptions, "npc_work_ticks", npcWorkTicks, "Time Between Work Ticks\nDefault=" + npcWorkTicks + "\n" +
                 "How many game ticks should pass between workers' processing work at a work-site.\n" +
                 "Lower values result in more work output, higher values result in less work output.").getInt();
 
-        npcAllowUpkeepAnyInventory = config.get(serverSettings, "allow_upkeep_any_inventory", npcAllowUpkeepAnyInventory, "Allow NPC upkeep location at any inventory\nDefault=" + npcAllowUpkeepAnyInventory + "\n" +
+        npcAllowUpkeepAnyInventory = config.get(serverOptions, "allow_upkeep_any_inventory", npcAllowUpkeepAnyInventory, "Allow NPC upkeep location at any inventory\nDefault=" + npcAllowUpkeepAnyInventory + "\n" +
                 "By default, the Upkeep Order slip can be used to assign upkeep locations to any valid inventory block.\n" +
                 "If set to false, only Town Hall blocks will be allowed as valid upkeep locations.").getBoolean();
         
-        townMaxRange = config.get(serverSettings, "town_hall_max_range", townMaxRange, "Town Hall Max Activation Range\nDefault=" + townMaxRange + "\n" +
+        townMaxRange = config.get(serverOptions, "town_hall_max_range", townMaxRange, "Town Hall Max Activation Range\nDefault=" + townMaxRange + "\n" +
                 "How many blocks can a Town Hall be away from an NPC, while still detecting their death for possible resurrection.\n" +
                 "This is a maximum, for server efficiency sake. Lower individual values can be setup from each block interaction GUI.").getInt();
 
-        townUpdateFreq = config.get(serverSettings, "town_hall_ticks", townUpdateFreq, "Default=" + townUpdateFreq + "\n" +
+        townUpdateFreq = config.get(serverOptions, "town_hall_ticks", townUpdateFreq, "Default=" + townUpdateFreq + "\n" +
                 "How many game ticks should pass between Town Hall updates." +
                 "This affect how an NPC can change its selected Town Hall by moving to different places.\n" +
                 "Lower values will make an NPC change its Town Hall faster, but is more costly for a server.").getInt();
@@ -256,24 +235,22 @@ public class AWNPCStatics extends ModConfiguration {
         factionGainOnTrade = factionConfig.get(factionSettings, "faction_gain_on_trade", factionGainOnTrade, "Faction Gain On Trade\nDefault=2\n" +
                 "How much faction standing should be gained when you trade with a faction based trader.").getInt();
 
-        loadDefaultSkinPack = config.get(clientSettings, "load_default_skin_pack", loadDefaultSkinPack, "Load Default Skin Pack\nDefault=true\n" +
+        loadDefaultSkinPack = config.get(clientOptions, "load_default_skin_pack", loadDefaultSkinPack, "Load Default Skin Pack\nDefault=true\n" +
                 "If true, default skin pack will be loaded.\n" +
                 "If false, default skin pack will NOT be loaded -- you will need to supply your own\n" +
                 "skin packs or all npcs will use the default skin.").getBoolean();
 
-        exportEntityNames = config.get(serverSettings, "export_entity_names", exportEntityNames, "Export entity name list\nDefault=" + exportEntityNames + "\n" +
+        exportEntityNames = config.get(serverOptions, "export_entity_names", exportEntityNames, "Export entity name list\nDefault=" + exportEntityNames + "\n" +
                 "If true, a text file will be created in the main ancientwarfare config directory containing a list of all registered in-game entity names.\n" +
                 "These names may be used to populate the NPC target lists.").getBoolean();
 
-        renderAI = config.get(clientSettings, "render_npc_ai", true);
-        renderWorkPoints = config.get(clientSettings, "render_work_points", true);
-        renderFriendlyNames = config.get(clientSettings, "render_friendly_nameplates", true);
-        renderHostileNames = config.get(clientSettings, "render_hostile_nameplates", true);
-        renderFriendlyHealth = config.get(clientSettings, "render_friendly_health", true);
-        renderHostileHealth = config.get(clientSettings, "render_hostile_health", true);
-        renderTeamColors = config.get(clientSettings, "render_team_colors", true);
-        if(this.config.hasChanged())
-            this.config.save();
+        renderAI = config.get(clientOptions, "render_npc_ai", true);
+        renderWorkPoints = config.get(clientOptions, "render_work_points", true);
+        renderFriendlyNames = config.get(clientOptions, "render_friendly_nameplates", true);
+        renderHostileNames = config.get(clientOptions, "render_hostile_nameplates", true);
+        renderFriendlyHealth = config.get(clientOptions, "render_friendly_health", true);
+        renderHostileHealth = config.get(clientOptions, "render_hostile_health", true);
+        renderTeamColors = config.get(clientOptions, "render_team_colors", true);
     }
 
     public void postInitCallback() {
@@ -302,6 +279,7 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     private void loadTargetValues() {
+        entityTargetSettings = new HashMap<String, List<String>>();
         String[] defaultTargets = new String[]{"Zombie", "Skeleton", "Slime"};
         String[] targets;
 
@@ -332,7 +310,7 @@ public class AWNPCStatics extends ModConfiguration {
 
         targets = targetConfig.get(targetSettings, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
                 "Should work with any new-ai enabled mob type; vanilla or mod-added (but might not work with mod-added entities with custom AI).").getStringList();
-
+        entitiesToTargetNpcs = new ArrayList<String>();
         Collections.addAll(entitiesToTargetNpcs, targets);
     }
 
@@ -378,7 +356,7 @@ public class AWNPCStatics extends ModConfiguration {
         foodConfig.get(foodSettings, "minecraft:spider_eye", 0, "Spider eye is a rejected food by default.");
 
         ConfigCategory category = foodConfig.getCategory(foodSettings);
-
+        foodValues = new HashMap<String, Integer>();
         String name;
         int value;
         for (Entry<String, Property> entry : category.entrySet()) {
@@ -389,6 +367,8 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     private void loadDefaultFactionStandings() {
+        defaultFactionStandings = new HashMap<String, Integer>();
+        factionVsFactionStandings = new HashMap<String, HashMap<String, Boolean>>();
         String key;
         boolean val;
         for (String name : factionNames) {
@@ -436,6 +416,10 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     private void initializeCustomValues() {
+        valuesConfig = getConfigFor("AncientWarfareNpcValues");
+        pathConfig = getConfigFor("AncientWarfareNpcPath");
+        attributes = new HashMap<String, Attribute>();
+        pathValues = new HashMap<String, Path>();
         String key;
         for (String name : factionNames) {
             for (String type : factionNpcSubtypes) {
@@ -507,9 +491,8 @@ public class AWNPCStatics extends ModConfiguration {
         return false;
     }
 
-    private HashMap<String, String[]> eqmp = new HashMap<String, String[]>();
-
     public void initializeNpcEquipmentConfigs() {
+        eqmp = new HashMap<String, String[]>();
         String fullType;
         for (String faction : factionNames) {
             for (String type : factionNpcSubtypes) {
@@ -589,9 +572,9 @@ public class AWNPCStatics extends ModConfiguration {
         return null;
     }
 
+    @Override
     public void save() {
-        if(config.hasChanged())
-            config.save();
+        super.save();
         equipmentConfig.save();
         targetConfig.save();
         valuesConfig.save();

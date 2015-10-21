@@ -5,8 +5,8 @@ import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemKey;
@@ -33,7 +33,6 @@ public class InputHandler {
      * map of a -set- of keys by their key-id
      */
     private final HashMap<Integer, Set<Keybind>> bindsByKey;
-    private Configuration config;
     private long lastMouseInput = -1;
 
     private InputHandler() {
@@ -41,9 +40,7 @@ public class InputHandler {
         bindsByKey = new HashMap<Integer, Set<Keybind>>();
     }
 
-    public void loadConfig(Configuration config) {
-        this.config = config;
-
+    public void loadConfig() {
         registerKeybind(KEY_ALT_ITEM_USE_0, Keyboard.KEY_Z, new ItemInputCallback(ItemKey.KEY_0));
         registerKeybind(KEY_ALT_ITEM_USE_1, Keyboard.KEY_X, new ItemInputCallback(ItemKey.KEY_1));
         registerKeybind(KEY_ALT_ITEM_USE_2, Keyboard.KEY_C, new ItemInputCallback(ItemKey.KEY_2));
@@ -67,6 +64,15 @@ public class InputHandler {
         }
     }
 
+    public List<Property> getKeyConfig(String select){
+        List<Property> list = new ArrayList<Property>();
+        for(Keybind entry : keybindMap.values()){
+            if(entry.getName().contains(select))
+                list.add(getKeybindProp(entry.getName(), entry.getKeyCode()));
+        }
+        return list;
+    }
+
     public Property getKeybindProp(String name){
         Keybind k = getKeybind(name);
         if (k != null)
@@ -77,7 +83,7 @@ public class InputHandler {
     }
 
     private Property getKeybindProp(String keyName, int defaultVal) {
-        return config.get(AWCoreStatics.keybinds, keyName, defaultVal);
+        return AncientWarfareCore.statics.getKeyBindID(keyName, defaultVal);
     }
 
     @SubscribeEvent
@@ -117,7 +123,7 @@ public class InputHandler {
     public void registerKeybind(String name, int keyCode, InputCallback cb) {
         if (!keybindMap.containsKey(name)) {
             Property property = getKeybindProp(name, keyCode);
-            property.comment += "Default key: " + Keyboard.getKeyName(keyCode);
+            property.comment = "Default key: " + Keyboard.getKeyName(keyCode);
             int key = property.getInt();
             Keybind k = new Keybind(name, key);
             keybindMap.put(name, k);
@@ -131,8 +137,6 @@ public class InputHandler {
         if (cb != null) {
             keybindMap.get(name).inputHandlers.add(cb);
         }
-        if(config.hasChanged())
-            config.save();
     }
 
     public void reassignKeybind(String name, int newKey) {
@@ -143,7 +147,7 @@ public class InputHandler {
 
         getKeybindProp(name, k.key).set(newKey);
         reassignKeyCode(k, newKey);
-        config.save();
+        AWCoreStatics.update();
     }
 
     private void reassignKeyCode(Keybind k, int newKey) {

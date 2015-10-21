@@ -6,10 +6,7 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.ballistics.TrajectoryPlotter;
@@ -41,8 +38,6 @@ public class AncientWarfareVehicles {
             )
     public static VehicleCommonProxy proxy;
 
-    public static Configuration config;
-
     public static AWVehicleStatics statics;
 
     @EventHandler
@@ -53,15 +48,12 @@ public class AncientWarfareVehicles {
         /**
          * setup module-owned config file and config-access class
          */
-        config = AWCoreStatics.getConfigFor("AncientWarfareVehicle");
-        statics = new AWVehicleStatics(config);
-        statics.load();//load config settings
+        statics = new AWVehicleStatics("AncientWarfareVehicle");
 
         /**
          * load pre-init (items, blocks, entities)
          */
         proxy.registerClient();
-        statics.load();//load config settings
         AWVehicleEntityLoader.load();
         AWVehicleItemLoader.load();
 
@@ -85,7 +77,6 @@ public class AncientWarfareVehicles {
         /**
          * save config for any changes that were made during loading stages
          */
-        if (config.hasChanged())
-            config.save();
+        statics.save();
     }
 }

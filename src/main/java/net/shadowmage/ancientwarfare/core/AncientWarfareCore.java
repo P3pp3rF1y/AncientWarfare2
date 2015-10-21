@@ -7,10 +7,10 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
@@ -32,7 +32,6 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
                 version = "@VERSION@",
                 guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory"
         )
-
 public class AncientWarfareCore {
 
     public static final String modID = "AncientWarfare";
@@ -47,18 +46,17 @@ public class AncientWarfareCore {
             )
     public static CommonProxyBase proxy;
 
-    public static Configuration config;
-
     public static org.apache.logging.log4j.Logger log;
+
+    public static AWCoreStatics statics;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         /**
          * setup config file and logger
          */
-        config = AWCoreStatics.getConfigFor("AncientWarfare");
         log = evt.getModLog();
-        AWCoreStatics.loadConfig(config);
+        statics = new AWCoreStatics("AncientWarfare");
 
         /**
          * register blocks, items, tile entities, and entities
@@ -82,21 +80,23 @@ public class AncientWarfareCore {
         NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_STATION, ContainerResearchStation.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_BACKPACK, ContainerBackpack.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_BOOK, ContainerResearchBook.class);
-
-        /**
-         * initialize any other core module information
-         */
-        ResearchGoal.initializeResearch();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
         /**
+         * initialize any other core module information
+         */
+        ResearchGoal.initializeResearch();
+        /**
          * register recipes
          */
         AWCoreCrafting.loadRecipes();
-        if (config.hasChanged())
-            config.save();
+    }
+
+    @EventHandler
+    public void postinit(FMLPostInitializationEvent evt) {
+        statics.save();
     }
 
     @EventHandler
@@ -107,7 +107,7 @@ public class AncientWarfareCore {
     @SubscribeEvent
     public void configChangedEvent(OnConfigChangedEvent evt) {
         if (modID.equals(evt.modID)) {
-            config.save();
+            statics.save();
             proxy.onConfigChanged();
         }
     }

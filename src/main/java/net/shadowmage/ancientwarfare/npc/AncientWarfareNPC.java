@@ -11,14 +11,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.world.WorldEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -31,7 +27,6 @@ import net.shadowmage.ancientwarfare.npc.container.*;
 import net.shadowmage.ancientwarfare.npc.crafting.AWNpcCrafting;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
-import net.shadowmage.ancientwarfare.npc.gamedata.FactionData;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
@@ -57,8 +52,6 @@ public class AncientWarfareNPC {
             )
     public static NpcCommonProxy proxy;
 
-    public static Configuration config;
-
     public static AWNPCStatics statics;
 
     @EventHandler
@@ -68,13 +61,7 @@ public class AncientWarfareNPC {
         /**
          * setup module-owned config file and config-access class
          */
-        config = AWCoreStatics.getConfigFor("AncientWarfareNpc");
-        statics = new AWNPCStatics(config);
-
-        /**
-         * load pre-init
-         */
-        statics.load();//load config settings
+        statics = new AWNPCStatics("AncientWarfareNpc");
         proxy.registerClient();//must be loaded after configs
         FMLCommonHandler.instance().bus().register(FactionTracker.INSTANCE);
         FMLCommonHandler.instance().bus().register(this);
@@ -130,7 +117,7 @@ public class AncientWarfareNPC {
     @SubscribeEvent
     public void onConfigChanged(OnConfigChangedEvent evt) {
         if (AncientWarfareCore.modID.equals(evt.modID)) {
-            proxy.onConfigChanged();
+            statics.save();
         }
     }
 

@@ -23,8 +23,6 @@ package net.shadowmage.ancientwarfare.structure.config;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.config.Configuration;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
@@ -38,8 +36,8 @@ import java.util.Set;
 
 public class AWStructureStatics extends ModConfiguration {
 
-    public AWStructureStatics(Configuration config) {
-        super(config);
+    public AWStructureStatics(String mod) {
+        super(mod);
     }
 
     public static String templateExtension = "aws";
@@ -121,11 +119,11 @@ public class AWStructureStatics extends ModConfiguration {
         spawnProtectionRange = config.get(worldGenCategory, "spawn_protection_chunk_radius", spawnProtectionRange, "Default=" + spawnProtectionRange + "\n" +
                 "Determines the area around the central spawn coordinate that will be excluded from random structure generation.\n" +
                 "Larger values will see a larger area around spawn that is devoid of structures.").getInt(spawnProtectionRange);
-        exportBlockNames = config.get(AWCoreStatics.serverOptions, "export_block_name_list", exportBlockNames, "Default=false\n" +
+        exportBlockNames = config.getBoolean("export_block_name_list", serverOptions, exportBlockNames,
                 "If true, will export a list of all registered block names on startup.\n" +
                 "Will toggle itself back to false after exporting the list a single time.\n" +
                 "Block names be used to populate skippable and target blocks lists.\n" +
-                "If false, no action will be taken.").getBoolean(exportBlockNames);
+                "If false, no action will be taken.");
 
         townClosestDistance = config.get(worldGenCategory, "town_min_distance", townClosestDistance, "Default=" + townClosestDistance + "\n" +
                 "Minimum distance between towns.  This should be set to a value quite a bit larger than the largest town" +
@@ -140,7 +138,6 @@ public class AWStructureStatics extends ModConfiguration {
         initializeDefaultAdditionalTargetBlocks();
         initializeDefaultTownTargetBlocks();
         initializeScannerSkippedBlocks();
-        this.config.save();
     }
 
     private void initializeScannerSkippedBlocks() {
@@ -935,14 +932,14 @@ public class AWStructureStatics extends ModConfiguration {
 
     public void loadPostInitValues() {
         if (exportBlockNames) {
-            config.get(AWCoreStatics.serverOptions, "export_block_name_list", false).set(false);
+            config.get(serverOptions, "export_block_name_list", false).set(false);
             exportBlockNames = false;
             doBlockNameDump();
         }
     }
 
     private void doBlockNameDump() {
-        File file = new File(AWCoreStatics.configPathForFiles);
+        File file = new File(configPathForFiles);
         file.mkdirs();
         file = new File(file, "block_names.txt");
         FileWriter fw = null;

@@ -5,6 +5,7 @@ import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
@@ -21,7 +22,6 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class VehicleClientProxy extends VehicleCommonProxy {
 
@@ -69,23 +69,18 @@ public class VehicleClientProxy extends VehicleCommonProxy {
         }
     }
 
-    @SuppressWarnings("rawtypes")
     public static final class VehicleCategory extends DummyCategoryElement {
 
-        @SuppressWarnings("unchecked")
         public VehicleCategory(String name) {
             super(name, name, getElementList());
         }
 
         private static List<IConfigElement> getElementList() {
-            ArrayList<IConfigElement> list = new ArrayList<IConfigElement>();
-            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.FORWARD.getName())));
-            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.REVERSE.getName())));
-            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.LEFT.getName())));
-            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.RIGHT.getName())));
-            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.FIRE.getName())));
-            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.ASCEND.getName())));
-            list.add(new ConfigElement(InputHandler.instance.getKeybindProp(VehicleInputKey.DESCEND.getName())));
+            List<Property> props = InputHandler.instance.getKeyConfig("vehicle");
+            List<IConfigElement> list = new ArrayList<IConfigElement>();
+            for(Property property : props) {
+                list.add(new ConfigElement(property));
+            }
             return list;
         }
     }
