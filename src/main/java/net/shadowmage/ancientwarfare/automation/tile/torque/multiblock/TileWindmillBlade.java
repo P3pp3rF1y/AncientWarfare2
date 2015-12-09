@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.lang.Math;
 
 public class TileWindmillBlade extends TileEntity {
 
@@ -49,7 +50,7 @@ public class TileWindmillBlade extends TileEntity {
         if (worldObj.isRemote) {
             updateRotation();
         } else if (isControl) {
-            energy = (windmillSize * windmillSize / 4.5) * AWAutomationStatics.windmill_per_size_output;
+            energy = Math.floor(windmillSize * windmillSize / 4.5) * AWAutomationStatics.windmill_per_size_output;
         }
     }
 
