@@ -49,7 +49,7 @@ public class TileWindmillBlade extends TileEntity {
         if (worldObj.isRemote) {
             updateRotation();
         } else if (isControl) {
-            energy = windmillSize * AWAutomationStatics.windmill_per_size_output;
+            energy = (windmillSize * windmillSize / 4.5) * AWAutomationStatics.windmill_per_size_output;
         }
     }
 
