@@ -24,6 +24,8 @@ import java.util.List;
 
 public class TileTownHall extends TileOwned implements IInventory, IInteractableTile {
 
+    public boolean alarmActive = false;
+    
     private int broadcastRange = 80;
     private int updateDelayTicks = 0;
 

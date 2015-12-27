@@ -27,6 +27,8 @@ import java.util.List;
 
 public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
+    public boolean isAlarmed = false;
+    
     private Command playerIssuedCommand;//TODO load/save
     private int foodValueRemaining = 0;
 
@@ -111,6 +113,11 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
                 upkeepAutoBlock = position;
             }
         }
+        // check for active alarm
+        if (getTownHall().alarmActive)
+            isAlarmed = true;
+        else
+            isAlarmed = false;
     }
 
     private boolean validateTownHallPosition() {

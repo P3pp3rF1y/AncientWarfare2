@@ -22,6 +22,7 @@ public class NpcPriest extends NpcPlayerOwned {
         this.tasks.addTask(2, new NpcAIFollowPlayer(this));
         this.tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
         this.tasks.addTask(3, new NpcAIFleeHostiles(this));
+        this.tasks.addTask(3, new NpcAIPlayerOwnedAlarmResponse(this));
         this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
         this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
         this.tasks.addTask(6, new NpcAIMoveHome(this, 50F, 8F, 30F, 3F));
