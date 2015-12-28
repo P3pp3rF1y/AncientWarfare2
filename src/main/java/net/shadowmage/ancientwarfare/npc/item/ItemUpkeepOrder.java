@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -36,8 +37,9 @@ public class ItemUpkeepOrder extends ItemOrders {
             BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
             if (upkeepOrder.addUpkeepPosition(player.worldObj, hit)) {
                 upkeepOrder.write(stack);
-            }
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
+                player.addChatComponentMessage(new ChatComponentTranslation("guistrings.npc.upkeep_point_set"));
+            } else 
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
         }
     }
 

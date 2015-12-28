@@ -65,6 +65,7 @@ public class AWNPCStatics extends ModConfiguration {
     public static int npcXpFromMoveItem = 1;//TODO add to config
     public static int npcWorkTicks = 50;
     public static int npcDefaultUpkeepWithdraw = 6000;//5 minutes
+    public static boolean npcAllowUpkeepAnyInventory = true;
     public static int townMaxRange = 100;
     public static int townUpdateFreq = 100; //5 second broadcast frequency
     public static boolean exportEntityNames = false;
@@ -236,6 +237,10 @@ public class AWNPCStatics extends ModConfiguration {
                 "How many game ticks should pass between workers' processing work at a work-site.\n" +
                 "Lower values result in more work output, higher values result in less work output.").getInt();
 
+        npcAllowUpkeepAnyInventory = config.get(serverSettings, "allow_upkeep_any_inventory", npcAllowUpkeepAnyInventory, "Allow NPC upkeep location at any inventory\nDefault=" + npcAllowUpkeepAnyInventory + "\n" +
+                "By default, the Upkeep Order slip can be used to assign upkeep locations to any valid inventory block.\n" +
+                "If set to false, only Town Hall blocks will be allowed as valid upkeep locations.").getBoolean();
+        
         townMaxRange = config.get(serverSettings, "town_hall_max_range", townMaxRange, "Town Hall Max Activation Range\nDefault=" + townMaxRange + "\n" +
                 "How many blocks can a Town Hall be away from an NPC, while still detecting their death for possible resurrection.\n" +
                 "This is a maximum, for server efficiency sake. Lower individual values can be setup from each block interaction GUI.").getInt();
