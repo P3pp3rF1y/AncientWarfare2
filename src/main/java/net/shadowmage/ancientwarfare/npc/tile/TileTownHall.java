@@ -110,6 +110,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         if(tag.hasKey("range")){
             setRange(tag.getInteger("range"));
         }
+        if (tag.hasKey("alarmActive"))
+            alarmActive = (tag.getBoolean("alarmActive"));
     }
 
     @Override
@@ -122,6 +124,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         }
         tag.setTag("deathNotices", entryList);
         tag.setInteger("range", broadcastRange);
+        tag.setBoolean("alarmActive", alarmActive);
     }
 
     @Override
