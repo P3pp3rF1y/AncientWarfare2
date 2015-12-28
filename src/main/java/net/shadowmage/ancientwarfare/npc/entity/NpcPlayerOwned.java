@@ -113,11 +113,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
                 upkeepAutoBlock = position;
             }
         }
-        // check for active alarm
-        if (getTownHall().alarmActive)
-            isAlarmed = true;
-        else
-            isAlarmed = false;
+        // (un)set alarmed status
+        isAlarmed = getTownHall().alarmActive;
     }
 
     private boolean validateTownHallPosition() {
