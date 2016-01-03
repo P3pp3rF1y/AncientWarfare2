@@ -122,6 +122,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
             npc.getNavigator().clearPathEntity();//clear path to stop moving
             if (e instanceof EntityHorse && e.riddenByEntity == null) {
                 npc.mountEntity(e);
+                e.prevRotationYaw = e.rotationYaw = npc.rotationYaw % 360F;
                 npc.setPlayerCommand(null);//clear command if horse was mounted successfully..
             }
             //do not clear command, guard command is persistent
