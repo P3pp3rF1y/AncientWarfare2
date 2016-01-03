@@ -24,6 +24,8 @@ import java.util.List;
 
 public class TileTownHall extends TileOwned implements IInventory, IInteractableTile {
 
+    public boolean alarmActive = false;
+    
     private int broadcastRange = 80;
     private int updateDelayTicks = 0;
 
@@ -108,6 +110,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         if(tag.hasKey("range")){
             setRange(tag.getInteger("range"));
         }
+        if (tag.hasKey("alarmActive"))
+            alarmActive = (tag.getBoolean("alarmActive"));
     }
 
     @Override
@@ -120,6 +124,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         }
         tag.setTag("deathNotices", entryList);
         tag.setInteger("range", broadcastRange);
+        tag.setBoolean("alarmActive", alarmActive);
     }
 
     @Override

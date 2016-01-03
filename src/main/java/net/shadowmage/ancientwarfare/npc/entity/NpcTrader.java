@@ -35,6 +35,7 @@ public class NpcTrader extends NpcPlayerOwned {
         this.tasks.addTask(2, new NpcAIFollowPlayer(this));
         this.tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
         this.tasks.addTask(3, new NpcAIFleeHostiles(this));
+        this.tasks.addTask(3, new NpcAIPlayerOwnedAlarmResponse(this));
         this.tasks.addTask(4, tradeAI = new NpcAIPlayerOwnedTrader(this));
         this.tasks.addTask(5, new NpcAIPlayerOwnedGetFood(this));
         this.tasks.addTask(6, new NpcAIPlayerOwnedIdleWhenHungry(this));

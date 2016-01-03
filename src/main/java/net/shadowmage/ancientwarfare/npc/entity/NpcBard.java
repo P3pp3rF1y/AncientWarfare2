@@ -12,10 +12,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ISinger;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.npc.ai.*;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
+import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 
 public class NpcBard extends NpcPlayerOwned implements ISinger {
 
@@ -30,6 +27,7 @@ public class NpcBard extends NpcPlayerOwned implements ISinger {
         this.tasks.addTask(2, new NpcAIFollowPlayer(this));
         this.tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
         this.tasks.addTask(3, new NpcAIFleeHostiles(this));
+        this.tasks.addTask(3, new NpcAIPlayerOwnedAlarmResponse(this));
         this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
         this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
 

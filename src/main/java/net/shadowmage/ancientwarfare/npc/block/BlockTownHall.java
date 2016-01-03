@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -87,5 +88,19 @@ public class BlockTownHall extends Block implements IRotatableBlock {
         TileEntity te = world.getTileEntity(x, y, z);
         return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
     }
-
+    
+    /**
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, neighbor Block
+     */
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        if (!world.isRemote) {
+            TileTownHall tileTownHall = (TileTownHall) world.getTileEntity(x, y, z);
+            if (world.isBlockIndirectlyGettingPowered(x, y, z))
+                tileTownHall.alarmActive = true;
+            else
+                tileTownHall.alarmActive = false;
+        }
+    }
 }

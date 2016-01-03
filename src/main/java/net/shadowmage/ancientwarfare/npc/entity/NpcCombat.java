@@ -44,6 +44,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         this.tasks.addTask(0, (horseAI = new NpcAIPlayerOwnedRideHorse(this)));
         this.tasks.addTask(2, new NpcAIFollowPlayer(this));
         this.tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
+        this.tasks.addTask(3, new NpcAIPlayerOwnedAlarmResponse(this));
         this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
         this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
         //6--empty....
