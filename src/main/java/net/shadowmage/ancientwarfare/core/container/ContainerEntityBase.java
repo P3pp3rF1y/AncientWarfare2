@@ -16,4 +16,9 @@ public class ContainerEntityBase<T extends Entity> extends ContainerBase {
             throw new IllegalArgumentException("Id wasn't a valid entity");
         }
     }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer var1) {
+        return entity != null && entity.isEntityAlive();
+    }
 }
