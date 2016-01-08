@@ -11,6 +11,11 @@ public class ContainerNpcBase<T extends NpcBase> extends ContainerEntityBase<T> 
         super(player, x);
     }
 
+    @Override
+    public boolean canInteractWith(EntityPlayer var1) {
+        return super.canInteractWith(var1) && var1.getDistanceSqToEntity(entity) < 64;
+    }
+
     public void repack() {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setBoolean("repack", true);

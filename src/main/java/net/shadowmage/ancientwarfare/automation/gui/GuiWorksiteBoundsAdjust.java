@@ -8,7 +8,6 @@ import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Rectangle;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteBoundsAdjust> {
 
@@ -20,7 +19,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
     public GuiWorksiteBoundsAdjust(ContainerBase container) {
         super(container);
         this.shouldCloseOnVanillaKeys = true;
-        targetMode = this.getContainer().worksite.userAdjustableBlocks();
+        targetMode = this.getContainer().getWorksite().userAdjustableBlocks();
     }
 
     private void setChecked(int x, int y, boolean checked) {
@@ -44,7 +43,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         Button b = new Button(48, 12, 40, 12, "guistrings.inventory.direction.north") {
             @Override
             protected void onPressed() {
-                if (getContainer().max.z >= getContainer().z && (getContainer().min.x > getContainer().x || getContainer().max.x < getContainer().x)) {
+                if (getContainer().max.z >= getContainer().getZ() && (getContainer().min.x > getContainer().getX() || getContainer().max.x < getContainer().getX())) {
                     getContainer().min.z--;
                     getContainer().max.z--;
                     boundsAdjusted = true;
@@ -57,7 +56,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         b = new Button(48 + 40, 12, 40, 12, "guistrings.inventory.direction.south") {
             @Override
             protected void onPressed() {
-                if (getContainer().min.z <= getContainer().z && (getContainer().min.x > getContainer().x || getContainer().max.x < getContainer().x)) {
+                if (getContainer().min.z <= getContainer().getZ() && (getContainer().min.x > getContainer().getX() || getContainer().max.x < getContainer().getX())) {
                     getContainer().min.z++;
                     getContainer().max.z++;
                     boundsAdjusted = true;
@@ -70,7 +69,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         b = new Button(48 + 80, 12, 40, 12, "guistrings.inventory.direction.west") {
             @Override
             protected void onPressed() {
-                if (getContainer().max.x >= getContainer().x && (getContainer().min.z > getContainer().z || getContainer().max.z < getContainer().z)) {
+                if (getContainer().max.x >= getContainer().getX() && (getContainer().min.z > getContainer().getZ() || getContainer().max.z < getContainer().getZ())) {
                     getContainer().min.x--;
                     getContainer().max.x--;
                     boundsAdjusted = true;
@@ -83,7 +82,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         b = new Button(48 + 120, 12, 40, 12, "guistrings.inventory.direction.east") {
             @Override
             protected void onPressed() {
-                if (getContainer().min.x <= getContainer().x && (getContainer().min.z > getContainer().z || getContainer().max.z < getContainer().z)) {
+                if (getContainer().min.x <= getContainer().getX() && (getContainer().min.z > getContainer().getZ() || getContainer().max.z < getContainer().getZ())) {
                     getContainer().min.x++;
                     getContainer().max.x++;
                     boundsAdjusted = true;
@@ -99,7 +98,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
                 if (getContainer().max.x <= getContainer().min.x) {
                     return;
                 }
-                if (getContainer().min.x < getContainer().x) {
+                if (getContainer().min.x < getContainer().getX()) {
                     getContainer().min.x++;
                     boundsAdjusted = true;
                     refreshGui();
@@ -115,14 +114,14 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         b = new Button(48 + 40, 24, 40, 12, "XSIZE+") {
             @Override
             protected void onPressed() {
-                int offset = getContainer().worksite.getBoundsMaxWidth() - getContainer().max.x + getContainer().min.x - 1;
+                int offset = getContainer().getWorksite().getBoundsMaxWidth() - getContainer().max.x + getContainer().min.x - 1;
                 if (0 >= offset) {
                     return;
                 }
                 if(!isShiftKeyDown()){
                     offset = 1;
                 }
-                if (getContainer().min.x < getContainer().x) {
+                if (getContainer().min.x < getContainer().getX()) {
                     getContainer().min.x-=offset;
                     boundsAdjusted = true;
                     refreshGui();
@@ -141,7 +140,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
                 if (getContainer().max.z - getContainer().min.z <= 0) {
                     return;
                 }
-                if (getContainer().min.z < getContainer().z) {
+                if (getContainer().min.z < getContainer().getZ()) {
                     getContainer().min.z++;
                     boundsAdjusted = true;
                     refreshGui();
@@ -157,14 +156,14 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         b = new Button(48 + 120, 24, 40, 12, "ZSIZE+") {
             @Override
             protected void onPressed() {
-                int offset = getContainer().worksite.getBoundsMaxWidth() - getContainer().max.z + getContainer().min.z - 1;
+                int offset = getContainer().getWorksite().getBoundsMaxWidth() - getContainer().max.z + getContainer().min.z - 1;
                 if (0 >= offset) {
                     return;
                 }
                 if(!isShiftKeyDown()){
                     offset = 1;
                 }
-                if (getContainer().min.z < getContainer().z) {
+                if (getContainer().min.z < getContainer().getZ()) {
                     getContainer().min.z-=offset;
                     boundsAdjusted = true;
                     refreshGui();
@@ -181,14 +180,14 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
     }
 
     private void addLayout() {
-        int bits = (getContainer().worksite.getBoundsMaxWidth() + 2);
+        int bits = (getContainer().getWorksite().getBoundsMaxWidth() + 2);
         int size = 184 / bits;
 
         int tlx = (256 - (size * bits)) / 2 + size;
         int tly = 44 + size;
 
-        int a = getContainer().x - getContainer().min.x;
-        int b = getContainer().z - getContainer().min.z;
+        int a = getContainer().getX() - getContainer().min.x;
+        int b = getContainer().getZ() - getContainer().min.z;
 
         Rectangle r = new Rectangle(tlx + a * size, tly + b * size, size, size, 0x0000ffff, 0x0000ffff);
         addGuiElement(r);

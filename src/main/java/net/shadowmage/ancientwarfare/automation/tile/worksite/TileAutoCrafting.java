@@ -227,7 +227,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer var1) {
-        return false;
+        return true;
     }
 
     @Override

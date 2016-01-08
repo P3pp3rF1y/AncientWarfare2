@@ -29,6 +29,11 @@ public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdva
     }
 
     @Override
+    public boolean canInteractWith(EntityPlayer var1){
+        return spawner.getDistanceFrom(var1.posX, var1.posY, var1.posZ) <= 64D;
+    }
+
+    @Override
     public void sendInitData() {
         if (!player.worldObj.isRemote) {
             sendSettingsToClient();
