@@ -68,7 +68,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         super(par1World);
         levelingStats = new NpcLevelingStats(this);
         this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
-        this.width = 0.6f;
         this.func_110163_bv();//set persistence required=true
         this.navigator = new NpcNavigator(this);
         AncientWarfareNPC.statics.applyPathConfig(this);
@@ -247,12 +246,19 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
+    public int getMaxSafePointTries() {
+        return this.getAttackTarget() == null ? 4 : 4 + (int)(this.getHealth()/3);
+    }
+
+    @Override
     public float getBlockPathWeight(int varX, int varY, int varZ){
         Block below = worldObj.getBlock(varX, varY - 1, varZ);
         if(below.getMaterial() == Material.lava || below.getMaterial() == Material.cactus)//Avoid cacti and lava when wandering
             return -10;
         else if(below.getMaterial().isLiquid())//Don't try swimming too much
             return 0;
+        /*if(this.ridingEntity instanceof EntityCreature)
+            return ((EntityCreature)this.ridingEntity).getBlockPathWeight(varX, varY - 1, varZ);*/
         float level = worldObj.getLightBrightness(varX, varY, varZ);//Prefer lit areas
         if(level < 0)
             return 0;
@@ -268,6 +274,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
          */
         if (!worldObj.isRemote) {
             this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
+            /*System.out.println(this.posX +","+ this.posY+","+ this.posZ);
+            System.out.println(this.navigator.toString());*/
         }
         super.onEntityUpdate();
     }
@@ -405,6 +413,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public final boolean attackEntityFrom(DamageSource source, float par2) {
         if (source.getEntity() != null && !canBeAttackedBy(source.getEntity()))
             return false;
+        if(source == DamageSource.inWall && this.ridingEntity instanceof EntityLiving) {
+            knockFromDamage(par2, worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY + this.getEyeHeight()), MathHelper.floor_double(this.posZ)).getMaterial());
+            return false;
+        }
         if(source == DamageSource.cactus)
             knockFromDamage(par2, Material.cactus);
         else if(source == DamageSource.lava)

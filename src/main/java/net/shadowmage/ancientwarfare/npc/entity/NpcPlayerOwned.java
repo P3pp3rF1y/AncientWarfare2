@@ -47,6 +47,11 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     @Override
+    public final int getMaxSafePointTries() {
+        return super.getMaxSafePointTries() - 1;
+    }
+
+    @Override
     public void onDeath(DamageSource source) {
         if (!worldObj.isRemote) {
             if (horseAI != null) {
@@ -109,7 +114,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
             }
         } else {
             setTownHallPosition(position);
-            if (upkeepAutoBlock == null || upkeepAutoBlock.equals(pos)) {
+            if (upkeepAutoBlock == null) {
                 upkeepAutoBlock = position;
             }
         }
