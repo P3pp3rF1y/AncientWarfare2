@@ -21,7 +21,7 @@ public class NpcAIRideHorse extends NpcAI<NpcBase> {
 
     public NpcAIRideHorse(NpcBase npc, double speedFactor) {
         super(npc);
-        this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", speedFactor, 2);
+        this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", speedFactor, 1);
         this.moveSpeedModifier.setSaved(false);
         this.followRangeModifier = new AttributeModifier("modifier.npc_horse_path_extension", 24.d, 0);
         this.followRangeModifier.setSaved(false);
@@ -41,15 +41,17 @@ public class NpcAIRideHorse extends NpcAI<NpcBase> {
 
     protected void onMountHorse() {
         removeHorseAI();
-        horse.setHorseSaddled(false);
+        horse.setHorseSaddled(true);
+        horse.setEatingHaystack(false);
+        horse.setRearing(false);
         applyModifiers();
     }
 
     public void onKilled() {
         if (horse != null) {
             onDismountHorse();
+            horse = null;
         }
-        horse = null;
     }
 
     protected void onDismountHorse() {

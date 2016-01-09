@@ -238,14 +238,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
-    public PathNavigate getNavigator() {
-        if (this.ridingEntity instanceof EntityLiving) {
-            return ((EntityLiving) this.ridingEntity).getNavigator();
-        }
-        return super.getNavigator();
-    }
-
-    @Override
     public int getMaxSafePointTries() {
         return this.getAttackTarget() == null ? 4 : 4 + (int)(this.getHealth()/3);
     }
@@ -274,8 +266,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
          */
         if (!worldObj.isRemote) {
             this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
-            /*System.out.println(this.posX +","+ this.posY+","+ this.posZ);
-            System.out.println(this.navigator.toString());*/
         }
         super.onEntityUpdate();
     }
@@ -737,9 +727,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public void readSpawnData(ByteBuf buffer) {
-        long l1, l2;
-        l1 = buffer.readLong();
-        l2 = buffer.readLong();
+        long l1 = buffer.readLong();
+        long l2 = buffer.readLong();
         this.entityUniqueID = new UUID(l1, l2);
         ownerName = ByteBufUtils.readUTF8String(buffer);
         customTexRef = ByteBufUtils.readUTF8String(buffer);
