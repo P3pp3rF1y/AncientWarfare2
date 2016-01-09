@@ -1,6 +1,6 @@
 #Define crafts that use the research system
 #research_name, item_name, item_damage, item_count, crafting_row ...(any number, width limited at 3 chars max), (crafting_char, crafting_item_name)... as often as needed to define all characters
-#Crafting items can be alternatively defined with: (craft_item_name, craft_item_damage, craft_item_count) or by "forge dictionary" name
+#Crafting items can be alternatively defined with: (craft_item_name, craft_item_damage, craft_item_count) or by forge dictionary name
 ##CORE
 ,AncientWarfare:research_book,0,1,ill,ppp,ill,i,ingotIron,l,leather,p,paper
 ,AncientWarfare:engineering_station,0,1,iwi,iti,ici,i,ingotIron,w,plankWood,t,crafting_table,c,chest
