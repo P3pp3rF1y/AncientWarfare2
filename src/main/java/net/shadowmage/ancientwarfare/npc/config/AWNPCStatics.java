@@ -457,7 +457,7 @@ public class AWNPCStatics extends ModConfiguration {
         if (attribute != null) {
             double dmg = attribute.baseAttack();
             int level = npcBase.getLevelingStats().getLevel();
-            return dmg + dmg * level * npcLevelDamageMultiplier;
+            return dmg * (1 + level * npcLevelDamageMultiplier);
         }
         return 0;
     }

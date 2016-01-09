@@ -89,10 +89,8 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
     @Override
     public float getWorkEffectiveness(WorkType type) {
         if (canWorkAt(type)) {
-            float effectiveness = 1.f;
-            float level = this.getLevelingStats().getLevel();
+            float effectiveness = 1.f + this.getLevelingStats().getLevel() * 0.05F;
 
-            effectiveness += level * 0.05f;
             Item item = getHeldItem().getItem();
             if (item instanceof ItemTool) {
                 effectiveness += ((ItemTool) item).func_150913_i().getEfficiencyOnProperMaterial() * 0.05f;
