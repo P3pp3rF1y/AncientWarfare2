@@ -292,10 +292,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     private boolean canHold() {
         ItemStack test = outputSlot.getStackInSlot(0);
-        if (test == null) {
-            return false;
-        }//nothing to hold!!
-        return InventoryTools.canInventoryHold(outputInventory, -1, test);
+        return test != null && InventoryTools.canInventoryHold(outputInventory, -1, test);
     }
 
     @Override
