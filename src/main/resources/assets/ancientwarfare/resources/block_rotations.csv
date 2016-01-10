@@ -1,10 +1,5 @@
-#block-rotations file,,,,,,,,,,,,,,,,
-# lines beginning with # denote comments,,,,,,,,,,,,,,,,
-# format is:,,,,,,,,,,,,,,,,
-#block_name,r0,r1,r2....r15,,,,,,,,,,,,,
-#block_name = name,,,,,,,,,,,,,,,,
-#r0...r15 = the destination meta to rotate to when rotated 90' clockwise -- rX being the input meta -- the value of rX being the rotated meta,,,,,,,,,,,,,,,,
 #block_name,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15
+#lines beginning with # denote comments,r0...r15,the destination meta to rotate to when rotated 90' clockwise,rX being the input meta,the value of rX being the rotated meta,,,,,,,,,,,,
 dropper,0,1,5,4,2,3,,,,,13,12,10,11,,
 dispenser,0,1,5,4,2,3,,,,,13,12,10,11,,
 hopper,0,1,5,4,2,3,,,8,,13,12,10,11,,
@@ -58,7 +53,7 @@ powered_repeater,1,2,3,0,5,6,7,4,9,10,11,8,13,14,15,12
 log,0,1,2,3,8,9,10,11,4,5,6,7,,,,
 log2,0,1,2,3,8,9,10,11,4,5,6,7,,,,
 trapdoor,3,2,0,1,7,6,4,5,11,10,8,9,15,14,12,13
-#remapped meta-aware subtyped blocks (need mapping because a base mapping was added for inventory items),,,,,,,,,,,,,,,,
+#remapped meta-aware subtyped blocks,(need mapping because a base mapping was added for inventory items),,,,,,,,,,,,,,,
 wool,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 stone_slab,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 leaves,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
@@ -73,7 +68,7 @@ carrots,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 leaves2,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 carpet,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 hardened_clay,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
-#below here are custom mapped AW blocks (most of these no longer use meta..need to re-examine/remove),,,,,,,,,,,,,,,,
+#below here are custom mapped AW blocks,(most of these no longer use meta..need to re-examine/remove),,,,,,,,,,,,,,,
 civic_quarry,0,1,5,4,2,3,,,,,,,,,,
 civic_forestry,0,1,5,4,2,3,,,,,,,,,,
 civic_crop_farm,0,1,5,4,2,3,,,,,,,,,,

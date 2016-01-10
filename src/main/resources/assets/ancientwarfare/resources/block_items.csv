@@ -1,15 +1,6 @@
-#block-items file,,,,
-# lines beginning with # denote comments,,,,
-# format is:,,,,
-#block_name,block_meta,item_name,item_damage,
-#block_name = name,,,,
-#block_meta = the meta having an item assigned to it -1 for all,,,,
-#item_name = the name of the item being assigned to block/meta combo -- null for forced-no-item,,,,
-#item_damage = the item damage for the item-stack for the block/meta combo,,,,
-#item_quantity = the number of item needed to create that block (1 for most 2 for double-slabs),,,,
-#any block without an item assigned will use the default itemblock for item-stacks,,,,
 #block_name,block_meta,item_name,item_damage,item_quantity
-#item-mapped blocks#########################################,,,,
+#lines beginning with # denote comments,,any block without an item assigned will use the default itemblock in item stacks,,
+#item-mapped block name,-1 for all,associated item: null for forced-no-item,item damage,number of item needed to create that block: ex 2 for double-slabs
 water,-1,water_bucket,0,1
 flowing_water,-1,water_bucket,0,1
 lava,-1,lava_bucket,0,1
@@ -34,12 +25,12 @@ deadbush,-1,wheat_seeds,0,1
 web,-1,string,0,4
 tripwire,-1,string,0,1
 ladder,-1,ladder,0,1
-#remapped for unobtainable blocks#########################################,,,,
+#remapped for unobtainable blocks,,,,
 grass,-1,dirt,0,1
 melon_block,-1,melon_seeds,0,4
 melon_stem,-1,melon_seeds,0,1
 pumpkin_stem,-1,pumpkin_seeds,0,1
-#stairs#########################################,,,,
+#stairs,,,,
 acacia_stairs,-1,acacia_stairs,0,1
 birch_stairs,-1,birch_stairs,0,1
 dark_oak_stairs,-1,dark_oak_stairs,0,1
@@ -51,12 +42,12 @@ sandstone_stairs,-1,sandstone_stairs,0,1
 spruce_stairs,-1,spruce_stairs,0,1
 stone_brick_stairs,-1,stone_brick_stairs,0,1
 stone_stairs,-1,stone_stairs,0,1
-#rails#########################################,,,,
+#rails,,,,
 golden_rail,-1,golden_rail,0,1
 detector_rail,-1,detector_rail,0,1
 rail,-1,rail,0,1
 activator_rail,-1,activator_rail,0,1
-#redstone meta blocks#########################################,,,,
+#redstone meta blocks,,,,
 unlit_redstone_torch,-1,redstone_torch,0,1
 redstone_torch,-1,redstone_torch,0,1
 unpowered_repeater,-1,repeater,0,1
@@ -79,7 +70,7 @@ sticky_piston,-1,sticky_piston,0,1
 piston,-1,piston,0,1
 piston_head,-1,null,0,0
 piston_extension,-1,null,0,0
-#misc meta blocks#########################################,,,,
+#misc meta blocks,,,,
 torch,-1,torch,0,1
 furnace,-1,furnace,0,1
 lit_furnace,-1,furnace,0,1
@@ -89,7 +80,7 @@ vine,-1,vine,0,1
 chest,-1,chest,0,1
 ender_chest,-1,ender_chest,0,1
 anvil,-1,anvil,0,1
-#slabs#########################################,,,,
+#slabs,,,,
 stone_slab,8,stone_slab,0,1
 stone_slab,9,stone_slab,1,1
 stone_slab,10,stone_slab,2,1
@@ -106,7 +97,7 @@ wooden_slab,12,wooden_slab,4,1
 wooden_slab,13,wooden_slab,5,1
 wooden_slab,14,wooden_slab,6,1
 wooden_slab,15,wooden_slab,7,1
-#double slabs#########################################,,,,
+#double slabs,,,,
 double_stone_slab,0,stone_slab,0,2
 double_stone_slab,1,stone_slab,1,2
 double_stone_slab,2,stone_slab,2,2
@@ -123,7 +114,7 @@ double_wooden_slab,4,wooden_slab,4,2
 double_wooden_slab,5,wooden_slab,5,2
 double_wooden_slab,6,wooden_slab,6,2
 double_wooden_slab,7,wooden_slab,7,2
-#logs#########################################,,,,
+#logs,,,,
 log,4,log,0,1
 log,5,log,1,1
 log,6,log,2,1
@@ -148,5 +139,4 @@ log2,12,log2,0,1
 log2,13,log2,1,1
 log2,14,log2,2,1
 log2,15,log2,3,1
-#misc######################################### -- dead bush, grass, flowers??,,
-#pumpkin block,,,,
+#misc -- dead bush, grass, flowers, pumpkin,
