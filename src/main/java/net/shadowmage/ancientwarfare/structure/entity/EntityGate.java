@@ -156,6 +156,10 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         super.handleHealthUpdate(par1);
     }
 
+    public boolean isClosed(){
+        return gateStatus == 0 && edgePosition == 0;
+    }
+
     public byte getOpeningStatus() {
         return this.gateStatus;
     }

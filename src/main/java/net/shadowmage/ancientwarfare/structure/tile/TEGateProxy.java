@@ -106,4 +106,8 @@ public class TEGateProxy extends TileEntity {
             this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);
         }
     }
+
+    public boolean isGateClosed() {
+        return owner != null && owner.isClosed();
+    }
 }
