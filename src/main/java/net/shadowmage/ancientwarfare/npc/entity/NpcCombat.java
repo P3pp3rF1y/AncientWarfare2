@@ -65,6 +65,11 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     }
 
     @Override
+    public final boolean canPickUpLoot(){
+        return !"archer".equals(getSubtypeFromEquipment());
+    }
+
+    @Override
     public boolean isValidOrdersStack(ItemStack stack) {
         return stack != null && stack.getItem() instanceof ItemCombatOrder;
     }

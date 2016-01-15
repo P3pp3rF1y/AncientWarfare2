@@ -42,11 +42,6 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     @Override
-    public final boolean canPickUpLoot(){
-        return true;
-    }
-
-    @Override
     public final int getMaxSafePointTries() {
         return super.getMaxSafePointTries() - 1;
     }
