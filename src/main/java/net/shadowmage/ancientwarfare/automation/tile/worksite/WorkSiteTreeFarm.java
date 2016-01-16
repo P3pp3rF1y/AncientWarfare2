@@ -95,6 +95,9 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             markDirty();
         }
         validateCollection(blocksToPlant);
+        if(!hasShears){
+            blocksToShear.clear();
+        }
     }
 
     @Override
@@ -172,11 +175,9 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 Iterator<BlockPosition> it = blocksToPlant.iterator();
                 while (it.hasNext() && (position = it.next()) != null) {
                     it.remove();
-                    if (canReplace(position.x, position.y, position.z)) {
-                        if(tryPlace(stack, position.x, position.y, position.z, ForgeDirection.UP)) {
-                            saplingCount--;
-                            return true;
-                        }
+                    if (canReplace(position.x, position.y, position.z) && tryPlace(stack, position.x, position.y, position.z, ForgeDirection.UP)) {
+                        saplingCount--;
+                        return true;
                     }
                 }
             }
@@ -267,6 +268,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
+        blocksToChop.clear();
         if (tag.hasKey("targetList")) {
             NBTTagList chopList = tag.getTagList("targetList", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < chopList.tagCount(); i++) {
@@ -294,13 +296,13 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
     }
 
     private void addLeaves(BlockPosition position, int offset, byte xOrYOrZ){
-        BlockPosition pos = position.copy();
+        BlockPosition pos = position;
         if(xOrYOrZ == 0){
-            pos.offset(offset, 0, 0);
+            pos = pos.offset(offset, 0, 0);
         }else if(xOrYOrZ == 1){
-            pos.offset(0, offset, 0);
+            pos = pos.offset(0, offset, 0);
         }else if(xOrYOrZ == 2){
-            pos.offset(0, 0, offset);
+            pos = pos.offset(0, 0, offset);
         }
         Block block = worldObj.getBlock(pos.x, pos.y, pos.z);
         if(block instanceof IShearable){

@@ -16,12 +16,12 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 
     private static final int TOP_LENGTH = 27;
+    private static final int MAX_WATER = 1280;
     private boolean harvestFish = true;
     private boolean harvestInk = true;
 
     private int waterBlockCount = 0;
     private int waterRescanDelay = 0;
-    private int maxBlocks = 1280;
 
     public WorkSiteFishFarm() {
         this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH);
@@ -73,7 +73,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
     @Override
     protected boolean processWork() {
         if (waterBlockCount > 0) {
-            float percentOfMax = (float) waterBlockCount / (float) maxBlocks;
+            float percentOfMax = ((float) waterBlockCount) / MAX_WATER;
             float check = worldObj.rand.nextFloat();
             if (check <= percentOfMax) {
                 boolean fish = harvestFish, ink = harvestInk;

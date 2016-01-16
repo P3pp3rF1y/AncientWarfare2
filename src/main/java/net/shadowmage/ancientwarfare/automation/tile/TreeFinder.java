@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class TreeFinder {
+public final class TreeFinder {
 
     private static final int[][] offsets = new int[][]{
             {-1, 0, 0}, {+1, 0, 0}, {0, 0, -1}, {0, 0, +1},

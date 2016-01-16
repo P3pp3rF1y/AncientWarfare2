@@ -19,16 +19,6 @@ public abstract class TileWorksiteBlockBased extends TileWorksiteBoundedInventor
     @Override
     protected final void updateWorksite() {
         worldObj.theProfiler.startSection("Incremental Scan");
-        incrementalScan();
-        worldObj.theProfiler.endSection();
-        updateBlockWorksite();
-    }
-
-    protected void clearBlocksToUpdate() {
-        blocksToUpdate.clear();
-    }
-
-    protected final void incrementalScan() {
         if (blocksToUpdate.isEmpty() && hasWorkBounds()) {
             fillBlocksToProcess(blocksToUpdate);
         }
@@ -37,6 +27,7 @@ public abstract class TileWorksiteBlockBased extends TileWorksiteBoundedInventor
             BlockPosition pos = blocksToUpdate.remove(rand);
             scanBlockPosition(pos);
         }
+        worldObj.theProfiler.endSection();
+        updateBlockWorksite();
     }
-
 }

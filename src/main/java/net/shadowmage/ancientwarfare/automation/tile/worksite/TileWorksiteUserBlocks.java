@@ -28,17 +28,11 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
      * flag should be set to true whenever updating inventory internally (e.g. harvesting blocks) to prevent
      * unnecessary inventory rescanning.  should be set back to false after blocks are added to inventory
      */
-    protected boolean shouldCountResources;
+    private boolean shouldCountResources;
 
     public TileWorksiteUserBlocks() {
         this.shouldCountResources = true;
-        this.inventory = new BlockRotationHandler.InventorySided(this, BlockRotationHandler.RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH) {
-            @Override
-            public void markDirty() {
-                super.markDirty();
-                shouldCountResources = true;
-            }
-        };
+        this.inventory = new SlotListener(TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH);
     }
 
     @Override
@@ -196,4 +190,34 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     }
 
     protected abstract void countResources();
+
+    protected final class SlotListener extends BlockRotationHandler.InventorySided{
+
+        public SlotListener(int inventorySize) {
+            super(TileWorksiteUserBlocks.this, BlockRotationHandler.RotationType.FOUR_WAY, inventorySize);
+        }
+
+        @Override
+        public ItemStack decrStackSize(int var1, int var2) {
+            ItemStack result = super.decrStackSize(var1, var2);
+            if(result != null && getFilterForSlot(var1) != null)
+                shouldCountResources = true;
+            return result;
+        }
+
+        @Override
+        public ItemStack getStackInSlotOnClosing(int var1) {
+            ItemStack result = super.getStackInSlotOnClosing(var1);
+            if(result != null && getFilterForSlot(var1) != null)
+                shouldCountResources = true;
+            return result;
+        }
+
+        @Override
+        public void setInventorySlotContents(int var1, ItemStack var2) {
+            super.setInventorySlotContents(var1, var2);
+            if(getFilterForSlot(var1) != null)
+                shouldCountResources = true;
+        }
+    }
 }
