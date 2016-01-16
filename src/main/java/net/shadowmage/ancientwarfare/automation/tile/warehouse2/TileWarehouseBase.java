@@ -67,8 +67,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     @Override
     public void onBoundsAdjusted() {
         BlockPosition max = getWorkBoundsMax();
-        BlockPosition min = getWorkBoundsMin();
-        max.y = min.y + getBoundsMaxHeight();
+        setWorkBoundsMax(max.moveUp(getWorkBoundsMin().y + getBoundsMaxHeight() - max.y));
         this.interfacesToEmpty.clear();
         this.interfacesToFill.clear();
         for (TileWarehouseInterface i : interfaceTiles) {
@@ -502,7 +501,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
      */
     @Override
     protected void onBoundsSet() {
-        getWorkBoundsMax().y = getWorkBoundsMin().y + getBoundsMaxHeight();
+        setWorkBoundsMax(getWorkBoundsMax().moveUp(getWorkBoundsMin().y + getBoundsMaxHeight() - getWorkBoundsMax().y));
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

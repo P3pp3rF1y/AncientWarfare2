@@ -187,7 +187,7 @@ public class BlockTools {
 
     public static BlockPosition rotateAroundOrigin(BlockPosition pos, int turns) {
         for (int i = 0; i < turns; i++) {
-            rotateAroundOrigin(pos);
+            pos = rotateAroundOrigin(pos);
         }
         return pos;
     }
@@ -196,33 +196,7 @@ public class BlockTools {
      * rotate a position around its origin (0,0,0), in 90' clockwise steps
      */
     public static BlockPosition rotateAroundOrigin(BlockPosition pos) {
-        int x = pos.x;
-        int z = pos.z;
-        pos.x = -z;
-        pos.z = x;
-//  boolean xNeg = x<0;
-//  boolean zNeg = z<0;
-//  if(!xNeg && !zNeg)//first quadrant
-//    {
-//    pos.x = -z;
-//    pos.z = x;
-//    }
-//  else if(xNeg && !zNeg)//second quadrant
-//    {
-//    pos.x = -z;
-//    pos.z = x;
-//    }
-//  else if(xNeg && zNeg)
-//    {
-//    pos.x = -z;
-//    pos.z = x;
-//    }
-//  else//!xNeg && zNeg
-//    {
-//    pos.x = -z;
-//    pos.z = x;
-//    }  
-        return pos;
+        return new BlockPosition(-pos.z, pos.y, pos.x);
     }
 
     /**
@@ -270,22 +244,11 @@ public class BlockTools {
     public static BlockPosition getMin(BlockPosition pos1, BlockPosition pos2) {
         return new BlockPosition(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z));
     }
-
-    public static BlockPosition getMin(BlockPosition pos1, BlockPosition pos2, BlockPosition out) {
-        out.reassign(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z));
-        return out;
-    }
-
     /**
      * return a new BlockPosition containing the maximum coordinates from the two passed in BlockPositions
      */
     public static BlockPosition getMax(BlockPosition pos1, BlockPosition pos2) {
         return new BlockPosition(Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z));
-    }
-
-    public static BlockPosition getMax(BlockPosition pos1, BlockPosition pos2, BlockPosition out) {
-        out.reassign(Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z));
-        return out;
     }
 
     /**
@@ -354,9 +317,7 @@ public class BlockTools {
             xSize1 = xSize;
             zSize1 = zSize;
         }
-        pos.x = x;
-        pos.z = z;
-        return pos;
+        return new BlockPosition(x, pos.y, z);
     }
 
     public static boolean breakBlockAndDrop(World world, EntityPlayer player, int x, int y, int z) {

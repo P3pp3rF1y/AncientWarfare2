@@ -68,8 +68,7 @@ public class StructureValidatorHarbor extends StructureValidator {
          */
         Block block = world.getBlock(x, y - 1, z);
         if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
-            testMin.reassign(x, y, z);
-            testMin.moveForward(face, template.zOffset);
+            testMin = new BlockPosition(x, y, z).moveForward(face, template.zOffset);
             int by = WorldStructureGenerator.getTargetY(world, testMin.x, testMin.z, false);
             if (y - by > getMaxFill()) {
                 return false;
@@ -84,8 +83,7 @@ public class StructureValidatorHarbor extends StructureValidator {
 
     @Override
     public int getAdjustedSpawnY(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
-        testMin.reassign(x, y, z);
-        testMin.moveForward(face, template.zOffset);
+        testMin = new BlockPosition(x, y, z).moveForward(face, template.zOffset);
         return WorldStructureGenerator.getTargetY(world, testMin.x, testMin.z, false) + 1;
     }
 
@@ -95,8 +93,9 @@ public class StructureValidatorHarbor extends StructureValidator {
 
         int minY = getMinY(template, bb);
         int maxY = getMaxY(template, bb);
-
-        bb.getFrontCorners(face, testMin, testMax);
+        StructureBB temp = bb.getFrontCorners(face, testMin, testMax);
+        testMin = temp.min;
+        testMax = temp.max;
         for (bx = testMin.x; bx <= testMax.x; bx++) {
             for (bz = testMin.z; bz <= testMax.z; bz++) {
                 if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocks)) {
@@ -105,7 +104,9 @@ public class StructureValidatorHarbor extends StructureValidator {
             }
         }
 
-        bb.getRearCorners(face, testMin, testMax);
+        temp = bb.getRearCorners(face, testMin, testMax);
+        testMin = temp.min;
+        testMax = temp.max;
         for (bx = testMin.x; bx <= testMax.x; bx++) {
             for (bz = testMin.z; bz <= testMax.z; bz++) {
                 if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksRear)) {
@@ -114,7 +115,9 @@ public class StructureValidatorHarbor extends StructureValidator {
             }
         }
 
-        bb.getRightCorners(face, testMin, testMax);
+        temp = bb.getRightCorners(face, testMin, testMax);
+        testMin = temp.min;
+        testMax = temp.max;
         for (bx = testMin.x; bx <= testMax.x; bx++) {
             for (bz = testMin.z; bz <= testMax.z; bz++) {
                 if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksSide)) {
@@ -123,7 +126,9 @@ public class StructureValidatorHarbor extends StructureValidator {
             }
         }
 
-        bb.getLeftCorners(face, testMin, testMax);
+        temp = bb.getLeftCorners(face, testMin, testMax);
+        testMin = temp.min;
+        testMax = temp.max;
         for (bx = testMin.x; bx <= testMax.x; bx++) {
             for (bz = testMin.z; bz <= testMax.z; bz++) {
                 if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksSide)) {
@@ -131,7 +136,6 @@ public class StructureValidatorHarbor extends StructureValidator {
                 }
             }
         }
-
 
         return true;
     }

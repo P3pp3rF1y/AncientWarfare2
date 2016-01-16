@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class ContainerWorksiteBoundsAdjust extends ContainerTileBase {
 
-    public final BlockPosition min, max;
+    public BlockPosition min, max;
 
     public ContainerWorksiteBoundsAdjust(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);

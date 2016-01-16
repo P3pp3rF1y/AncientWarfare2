@@ -44,8 +44,8 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
             @Override
             protected void onPressed() {
                 if (getContainer().max.z >= getContainer().getZ() && (getContainer().min.x > getContainer().getX() || getContainer().max.x < getContainer().getX())) {
-                    getContainer().min.z--;
-                    getContainer().max.z--;
+                    getContainer().min = getContainer().min.moveForward(2, 1);
+                    getContainer().max = getContainer().max.moveForward(2, 1);
                     boundsAdjusted = true;
                     refreshGui();
                 }
@@ -57,8 +57,8 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
             @Override
             protected void onPressed() {
                 if (getContainer().min.z <= getContainer().getZ() && (getContainer().min.x > getContainer().getX() || getContainer().max.x < getContainer().getX())) {
-                    getContainer().min.z++;
-                    getContainer().max.z++;
+                    getContainer().min = getContainer().min.moveForward(0, 1);
+                    getContainer().max = getContainer().max.moveForward(2, 1);
                     boundsAdjusted = true;
                     refreshGui();
                 }
@@ -70,8 +70,8 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
             @Override
             protected void onPressed() {
                 if (getContainer().max.x >= getContainer().getX() && (getContainer().min.z > getContainer().getZ() || getContainer().max.z < getContainer().getZ())) {
-                    getContainer().min.x--;
-                    getContainer().max.x--;
+                    getContainer().min = getContainer().min.moveForward(1, 1);
+                    getContainer().max = getContainer().max.moveForward(1, 1);
                     boundsAdjusted = true;
                     refreshGui();
                 }
@@ -83,8 +83,8 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
             @Override
             protected void onPressed() {
                 if (getContainer().min.x <= getContainer().getX() && (getContainer().min.z > getContainer().getZ() || getContainer().max.z < getContainer().getZ())) {
-                    getContainer().min.x++;
-                    getContainer().max.x++;
+                    getContainer().min = getContainer().min.moveForward(3, 1);
+                    getContainer().max = getContainer().max.moveForward(3, 1);
                     boundsAdjusted = true;
                     refreshGui();
                 }
@@ -99,11 +99,11 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
                     return;
                 }
                 if (getContainer().min.x < getContainer().getX()) {
-                    getContainer().min.x++;
+                    getContainer().min = getContainer().min.moveForward(3, 1);
                     boundsAdjusted = true;
                     refreshGui();
                 } else {
-                    getContainer().max.x--;
+                    getContainer().max = getContainer().max.moveForward(1, 1);
                     boundsAdjusted = true;
                     refreshGui();
                 }
@@ -122,11 +122,11 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
                     offset = 1;
                 }
                 if (getContainer().min.x < getContainer().getX()) {
-                    getContainer().min.x-=offset;
+                    getContainer().min = getContainer().min.moveForward(1, offset);
                     boundsAdjusted = true;
                     refreshGui();
                 } else {
-                    getContainer().max.x+=offset;
+                    getContainer().max = getContainer().max.moveForward(3, offset);
                     boundsAdjusted = true;
                     refreshGui();
                 }
@@ -141,11 +141,11 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
                     return;
                 }
                 if (getContainer().min.z < getContainer().getZ()) {
-                    getContainer().min.z++;
+                    getContainer().min = getContainer().min.moveForward(0, 1);
                     boundsAdjusted = true;
                     refreshGui();
                 } else {
-                    getContainer().max.z--;
+                    getContainer().max = getContainer().max.moveForward(2, 1);
                     boundsAdjusted = true;
                     refreshGui();
                 }
@@ -164,11 +164,11 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
                     offset = 1;
                 }
                 if (getContainer().min.z < getContainer().getZ()) {
-                    getContainer().min.z-=offset;
+                    getContainer().min = getContainer().min.moveForward(2, offset);
                     boundsAdjusted = true;
                     refreshGui();
                 } else {
-                    getContainer().max.z+=offset;
+                    getContainer().max = getContainer().max.moveForward(0, offset);
                     boundsAdjusted = true;
                     refreshGui();
                 }

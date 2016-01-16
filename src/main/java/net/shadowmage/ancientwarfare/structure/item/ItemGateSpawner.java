@@ -203,36 +203,32 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
     @Override
     public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
         NBTTagCompound tag = stack.getTagCompound();
-        BlockPosition p1 = new BlockPosition();
-        BlockPosition p2 = new BlockPosition();
+        BlockPosition p1, p2;
         if (tag != null && tag.hasKey("AWGateInfo")) {
             tag = tag.getCompoundTag("AWGateInfo");
             if (tag.hasKey("pos1")) {
-                p1.read(tag.getCompoundTag("pos1"));
+                p1 = new BlockPosition(tag.getCompoundTag("pos1"));
                 if (tag.hasKey("pos2")) {
-                    p2.read(tag.getCompoundTag("pos2"));
+                    p2 = new BlockPosition(tag.getCompoundTag("pos2"));
                 } else {
-                    BlockPosition p = BlockTools.getBlockClickedOn(player, player.worldObj, true);
-                    if (p == null) {
+                    p2 = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+                    if (p2 == null) {
                         return;
                     }
-                    p2.reassign(p.x, p.y, p.z);
                 }
             } else {
-                BlockPosition p = BlockTools.getBlockClickedOn(player, player.worldObj, true);
-                if (p == null) {
+                p1 = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+                if (p1 == null) {
                     return;
                 }
-                p1.reassign(p.x, p.y, p.z);
-                p2.reassign(p1.x, p1.y, p1.z);
+                p2 = p1;
             }
         } else {
-            BlockPosition p = BlockTools.getBlockClickedOn(player, player.worldObj, true);
-            if (p == null) {
+            p1 = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+            if (p1 == null) {
                 return;
             }
-            p1.reassign(p.x, p.y, p.z);
-            p2.reassign(p1.x, p1.y, p1.z);
+            p2 = p1;
         }
         Util.renderBoundingBox(player, BlockTools.getMin(p1, p2), BlockTools.getMax(p1, p2), delta);
     }

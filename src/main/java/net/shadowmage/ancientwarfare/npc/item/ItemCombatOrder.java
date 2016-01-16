@@ -19,7 +19,7 @@ public class ItemCombatOrder extends ItemOrders {
         CombatOrder order = CombatOrder.getCombatOrder(stack);
         if (order != null && !order.isEmpty()) {
             for (int i = 0; i < order.size(); i++) {
-                positionList.add(order.get(i).copy().offset(0, 1, 0));
+                positionList.add(order.get(i).offset(0, 1, 0));
             }
         }
         return positionList;

@@ -44,8 +44,8 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
 
     protected void searchForController() {
         BlockPosition pos = getPosition();
-        BlockPosition min = pos.copy().offset(-16, -4, -16);
-        BlockPosition max = pos.copy().offset(16, 4, 16);
+        BlockPosition min = pos.offset(-16, -4, -16);
+        BlockPosition max = pos.offset(16, 4, 16);
         for (TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z)) {
             if (te instanceof IControllerTile) {
                 if (isValidController((IControllerTile)te)) {

@@ -56,11 +56,7 @@ public final class TemplateScanner {
             xOutSize = zOutSize;
             zOutSize = swap;
         }
-
-        key.x = key.x - min.x;
-        key.y = key.y - min.y;
-        key.z = key.z - min.z;
-        BlockTools.rotateInArea(key, xSize, zSize, turns);
+        key = BlockTools.rotateInArea(key.sub(min), xSize, zSize, turns);
 
         short[] templateRuleData = new short[xSize * ySize * zSize];
 
@@ -79,10 +75,7 @@ public final class TemplateScanner {
         for (scanY = min.y; scanY <= max.y; scanY++) {
             for (scanZ = min.z; scanZ <= max.z; scanZ++) {
                 for (scanX = min.x; scanX <= max.x; scanX++) {
-                    destination.x = scanX - min.x;
-                    destination.y = scanY - min.y;
-                    destination.z = scanZ - min.z;
-                    BlockTools.rotateInArea(destination, xSize, zSize, turns);
+                    destination = BlockTools.rotateInArea(new BlockPosition(scanX, scanY, scanZ).sub(min), xSize, zSize, turns);
 
                     scannedBlock = world.getBlock(scanX, scanY, scanZ);
 
@@ -129,14 +122,9 @@ public final class TemplateScanner {
             int ez = MathHelper.floor_double(e.posZ);
             TemplateRuleEntity scannedEntityRule = StructurePluginManager.INSTANCE.getRuleForEntity(world, e, turns, ex, ey, ez);
             if (scannedEntityRule != null) {
-                destination.x = ex - min.x;
-                destination.y = ey - min.y;
-                destination.z = ez - min.z;
-                BlockTools.rotateInArea(destination, xSize, zSize, turns);
+                destination = BlockTools.rotateInArea(new BlockPosition(ex, ey, ez).sub(min), xSize, zSize, turns);
                 scannedEntityRule.ruleNumber = nextRuleID;
-                scannedEntityRule.x = destination.x;
-                scannedEntityRule.y = destination.y;
-                scannedEntityRule.z = destination.z;
+                scannedEntityRule.setPosition(destination);
                 scannedEntityRules.add(scannedEntityRule);
                 nextRuleID++;
             }

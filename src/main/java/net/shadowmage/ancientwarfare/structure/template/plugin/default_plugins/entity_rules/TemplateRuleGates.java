@@ -56,13 +56,9 @@ public class TemplateRuleGates extends TemplateRuleEntity {
     public TemplateRuleGates(World world, Entity entity, int turns, int x, int y, int z) {
         super(world, entity, turns, x, y, z);
         EntityGate gate = (EntityGate) entity;
-        BlockPosition pos1 = gate.pos1.copy().offset(-x, -y, -z);
-        BlockPosition pos2 = gate.pos2.copy().offset(-x, -y, -z);
 
-        BlockTools.rotateAroundOrigin(pos1, turns);
-        BlockTools.rotateAroundOrigin(pos2, turns);
-        this.pos1 = pos1;
-        this.pos2 = pos2;
+        this.pos1 = BlockTools.rotateAroundOrigin(gate.pos1.offset(-x, -y, -z), turns);
+        this.pos2 = BlockTools.rotateAroundOrigin(gate.pos2.offset(-x, -y, -z), turns);
         this.orientation = (gate.gateOrientation + turns) % 4;
         this.gateType = Gate.getGateNameFor(gate);
     }
@@ -73,14 +69,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException {
-        BlockPosition p1 = pos1.copy();
-        BlockPosition p2 = pos2.copy();
-
-        BlockTools.rotateAroundOrigin(p1, turns);
-        BlockTools.rotateAroundOrigin(p2, turns);
-
-        p1.offset(x, y, z);
-        p2.offset(x, y, z);
+        BlockPosition p1 = BlockTools.rotateAroundOrigin(pos1, turns).offset(x, y, z);
+        BlockPosition p2 = BlockTools.rotateAroundOrigin(pos2, turns).offset(x, y, z);
 
         BlockPosition min = BlockTools.getMin(p1, p2);
         BlockPosition max = BlockTools.getMax(p1, p2);
@@ -103,8 +93,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
     public void parseRuleData(NBTTagCompound tag) {
         gateType = tag.getString("gateType");
         orientation = tag.getByte("orientation");
-        pos1.read(tag.getCompoundTag("pos1"));
-        pos2.read(tag.getCompoundTag("pos2"));
+        pos1 = new BlockPosition(tag.getCompoundTag("pos1"));
+        pos2 = new BlockPosition(tag.getCompoundTag("pos2"));
     }
 
     @Override

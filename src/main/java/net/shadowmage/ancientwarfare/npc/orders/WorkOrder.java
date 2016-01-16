@@ -99,7 +99,7 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
 
     public static final class WorkEntry {
 
-        private BlockPosition position = new BlockPosition();
+        private BlockPosition position;
         int dimension;
         private int workLength;
 

@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.api;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 
 import java.io.BufferedWriter;
@@ -32,7 +33,7 @@ import java.util.Locale;
 
 public abstract class TemplateRuleEntity extends TemplateRule {
 
-    public int x, y, z;
+    private int x, y, z;
 
     /**
      * Called by reflection
@@ -72,6 +73,16 @@ public abstract class TemplateRuleEntity extends TemplateRule {
         }
         NBTTagCompound tag = readTag(lines);
         parseRuleData(tag);
+    }
+
+    public final void setPosition(BlockPosition pos){
+        this.x = pos.x;
+        this.y = pos.y;
+        this.z = pos.z;
+    }
+
+    public final BlockPosition getPosition(){
+        return new BlockPosition(x, y, z);
     }
 
 }

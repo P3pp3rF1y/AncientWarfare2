@@ -58,12 +58,8 @@ public class StructureEntry {
         value = tag.getInteger("value");
         int[] datas = tag.getIntArray("bb");
         if (datas.length >= 6) {
-            bb.min.x = datas[0];
-            bb.min.y = datas[1];
-            bb.min.z = datas[2];
-            bb.max.x = datas[3];
-            bb.max.y = datas[4];
-            bb.max.z = datas[5];
+            bb.min = new BlockPosition(datas[0], datas[1], datas[2]);
+            bb.max = new BlockPosition(datas[3], datas[4], datas[5]);
         }
     }
 
@@ -78,6 +74,5 @@ public class StructureEntry {
     public StructureBB getBB() {
         return bb;
     }
-
 
 }

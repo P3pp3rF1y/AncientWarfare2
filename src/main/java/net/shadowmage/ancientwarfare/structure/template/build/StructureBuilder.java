@@ -113,11 +113,7 @@ public class StructureBuilder implements IStructureBuilder {
             if (rule == null) {
                 continue;
             }
-            destination.x = rule.x;
-            destination.y = rule.y;
-            destination.z = rule.z;
-            BlockTools.rotateInArea(destination, template.xSize, template.zSize, turns);
-            destination.offsetBy(bb.min);
+            destination = BlockTools.rotateInArea(rule.getPosition(), template.xSize, template.zSize, turns).offsetBy(bb.min);
             try {
                 rule.handlePlacement(world, turns, destination.x, destination.y, destination.z, this);
             } catch (StructureBuildingException e) {
@@ -201,9 +197,7 @@ public class StructureBuilder implements IStructureBuilder {
     }
 
     protected void incrementDestination() {
-        destination.reassign(currentX, currentY, currentZ);
-        BlockTools.rotateInArea(destination, template.xSize, template.zSize, turns);
-        destination.offsetBy(bb.min);
+        destination = BlockTools.rotateInArea(new BlockPosition(currentX, currentY, currentZ), template.xSize, template.zSize, turns).offsetBy(bb.min);
     }
 
     /**

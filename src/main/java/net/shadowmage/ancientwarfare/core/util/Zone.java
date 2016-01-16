@@ -5,8 +5,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 
 public class Zone implements INBTSerialable{
 
-    public final BlockPosition min;
-    public final BlockPosition max;
+    public BlockPosition min, max;
 
     public Zone() {
         min = new BlockPosition();
@@ -45,8 +44,8 @@ public class Zone implements INBTSerialable{
     @Override
     public void readFromNBT(NBTTagCompound tag)
     {
-        min.read(tag.getCompoundTag("min"));
-        max.read(tag.getCompoundTag("max"));
+        min = new BlockPosition(tag.getCompoundTag("min"));
+        max = new BlockPosition(tag.getCompoundTag("max"));
     }
 
     @Override

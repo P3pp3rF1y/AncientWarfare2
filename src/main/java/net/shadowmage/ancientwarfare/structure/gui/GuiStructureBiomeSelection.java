@@ -74,16 +74,17 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
         };
 
         Set<String> biomeNames = parent.validator.getBiomeList();
-
+        String name;
         for (BiomeGenBase biome : BiomeGenBase.getBiomeGenArray()) {
             if (biome == null) {
                 continue;
             }
-            box = new Checkbox(8, totalHeight, 16, 16, AWStructureStatics.getBiomeName(biome));
+            name = AWStructureStatics.getBiomeName(biome);
+            box = new Checkbox(8, totalHeight, 16, 16, name);
             area.addGuiElement(box);
-            elementToBiomeName.put(box, AWStructureStatics.getBiomeName(biome));
+            elementToBiomeName.put(box, name);
             totalHeight += 16;
-            if (biomeNames.contains(AWStructureStatics.getBiomeName(biome))) {
+            if (biomeNames.contains(name)) {
                 box.setChecked(true);
             }
             box.addNewListener(listener);

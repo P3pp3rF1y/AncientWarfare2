@@ -128,8 +128,8 @@ public class WorldStructureGenerator implements IWorldGenerator {
     }
 
     public static void sprinkleSnow(World world, StructureBB bb, int border) {
-        BlockPosition p1 = bb.min.copy().offset(-border, 0, -border);
-        BlockPosition p2 = bb.max.copy().offset(border, 0, border);
+        BlockPosition p1 = bb.min.offset(- border, 0, -border);
+        BlockPosition p2 = bb.max.offset(border, 0, border);
         for (int x = p1.x; x <= p2.x; x++) {
             for (int z = p1.z; z <= p2.z; z++) {
                 int y = world.getPrecipitationHeight(x, z) - 1;
@@ -163,8 +163,8 @@ public class WorldStructureGenerator implements IWorldGenerator {
         int prevY = y;
         StructureBB bb = new StructureBB(x, y, z, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
         y = template.getValidationSettings().getAdjustedSpawnY(world, x, y, z, face, template, bb);
-        bb.min.y -= prevY - y;
-        bb.max.y -= prevY - y;
+        bb.min = bb.min.moveUp(y - prevY);
+        bb.max = bb.max.moveUp(y - prevY);
         int xs = bb.getXSize();
         int zs = bb.getZSize();
         int size = ((xs > zs ? xs : zs) / 16) + 3;

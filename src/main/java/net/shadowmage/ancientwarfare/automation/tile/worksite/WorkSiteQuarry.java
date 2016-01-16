@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
@@ -42,8 +43,10 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     }
 
     private void offsetBounds(){
-        getWorkBoundsMax().y = yCoord - 1;
-        getWorkBoundsMin().y = 1;
+        BlockPosition pos = getWorkBoundsMax();
+        setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
+        pos = getWorkBoundsMin();
+        setWorkBoundsMin(pos.moveUp(1 - pos.y));
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
@@ -199,7 +202,8 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     }
 
     public void initWorkSite() {
-        this.getWorkBoundsMin().y = 1;
+        BlockPosition pos = getWorkBoundsMin();
+        setWorkBoundsMin(pos.moveUp(1 - pos.y));
         this.currentY = this.getWorkBoundsMax().y;
         this.currentX = this.getWorkBoundsMin().x;
         this.currentZ = this.getWorkBoundsMin().z;

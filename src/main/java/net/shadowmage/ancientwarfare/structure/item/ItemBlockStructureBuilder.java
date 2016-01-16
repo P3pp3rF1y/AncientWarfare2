@@ -79,10 +79,8 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
                 StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
                 if (t != null) {
                     int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
-                    BlockPosition p = new BlockPosition(x, y, z);
-                    p.moveForward(face, t.zSize - 1 - t.zOffset + 1);
-                    StructureBuilderTicked ticked = new StructureBuilderTicked(world, t, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), p.x, p.y, p.z);
-                    tb.setBuilder(ticked);
+                    BlockPosition p = new BlockPosition(x, y, z).moveForward(face, t.zSize - 1 - t.zOffset + 1);
+                    tb.setBuilder(new StructureBuilderTicked(world, t, face, p.x, p.y, p.z));
                 }
             }
         }
@@ -103,13 +101,10 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
         if (hit == null) {
             return;
         }
+        Util.renderBoundingBox(player, hit, hit, delta);
         int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
-        BlockPosition p1 = new BlockPosition(hit.x, hit.y, hit.z);
-        BlockPosition p2 = p1.copy();
-        Util.renderBoundingBox(player, p1, p2, delta);
-        p2.moveForward(face, t.zSize - 1 - t.zOffset + 1);
+        BlockPosition p2 = hit.moveForward(face, t.zSize - 1 - t.zOffset + 1);
         StructureBB bb = new StructureBB(p2.x, p2.y, p2.z, face, t.xSize, t.ySize, t.zSize, t.xOffset, t.yOffset, t.zOffset);
-        p2.reassign(bb.max.x, bb.max.y, bb.max.z);
-        Util.renderBoundingBox(player, bb.min, p2, delta);
+        Util.renderBoundingBox(player, bb.min, bb.max, delta);
     }
 }

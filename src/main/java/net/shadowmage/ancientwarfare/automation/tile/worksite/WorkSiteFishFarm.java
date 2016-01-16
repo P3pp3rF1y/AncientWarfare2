@@ -36,16 +36,20 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
     @Override
     protected void onBoundsSet() {
         super.onBoundsSet();
-        getWorkBoundsMax().y = yCoord - 1;
-        getWorkBoundsMin().y = yCoord - 5;
+        BlockPosition pos = getWorkBoundsMax();
+        setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
+        pos = getWorkBoundsMin();
+        setWorkBoundsMin(pos.moveUp(yCoord - 5 - pos.y));
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
     public void onBoundsAdjusted() {
         super.onBoundsAdjusted();
-        getWorkBoundsMax().y = yCoord - 1;
-        getWorkBoundsMin().y = yCoord - 5;
+        BlockPosition pos = getWorkBoundsMax();
+        setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
+        pos = getWorkBoundsMin();
+        setWorkBoundsMin(pos.moveUp(yCoord - 5 - pos.y));
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
