@@ -89,13 +89,7 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
 
     @Override
     public boolean continueExecuting() {
-        if (!npc.getIsAIEnabled()) {
-            return false;
-        }
-        if (!isProperSubtype()) {
-            return false;
-        }
-        return validateTarget();
+        return npc.getIsAIEnabled() && isProperSubtype() && validateTarget();
     }
 
     protected boolean isProperSubtype() {
