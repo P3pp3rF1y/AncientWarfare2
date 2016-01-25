@@ -51,7 +51,7 @@ public class ModelPiece {
 
     public ModelPiece(ModelBaseAW model, String line) {
         String[] bits = line.split(",");
-        String pieceName = bits[0];
+        this.pieceName = bits[0];
         String parentName = bits[1];
         float x = StringTools.safeParseFloat(bits[2]);
         float y = StringTools.safeParseFloat(bits[3]);
@@ -60,7 +60,6 @@ public class ModelPiece {
         float ry = StringTools.safeParseFloat(bits[6]);
         float rz = StringTools.safeParseFloat(bits[7]);
         ModelPiece parent = parentName.equals("null") ? null : model.getPiece(parentName);
-        this.pieceName = pieceName;
         this.setPosition(x, y, z);
         this.setRotation(rx, ry, rz);
         if (parent != null) {
