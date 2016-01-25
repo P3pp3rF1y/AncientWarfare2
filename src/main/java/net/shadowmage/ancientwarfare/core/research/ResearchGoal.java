@@ -45,8 +45,13 @@ public class ResearchGoal {
         this.researchResources.add(resource);
     }
 
-    public void addOre(String ore){
-        this.researchOres.add(new OreSized(ore));
+    public void addOre(String[] ore){
+        int size = 1;
+        if (ore.length > 3)
+            size = StringTools.safeParseInt(ore[3]);
+        else if (ore.length == 3)
+            size = StringTools.safeParseInt(ore[2]);
+        this.researchOres.add(new OreSized(ore[1].trim(), size));
     }
 
     public void setResearchTime(int time) {
@@ -65,6 +70,16 @@ public class ResearchGoal {
         return researchId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return this == o || o instanceof ResearchGoal && researchName.equals(((ResearchGoal) o).researchName);
+    }
+
+    @Override
+    public int hashCode() {
+        return researchName.hashCode();
+    }
+
     public ResearchGoal addDependencies(ResearchGoal... deps) {
         for (ResearchGoal dep : deps) {
             dependencies.add(dep.researchId);
@@ -75,14 +90,8 @@ public class ResearchGoal {
     public List<ItemStack> getResources() {
         List<ItemStack> result = new ArrayList<ItemStack>();
         result.addAll(researchResources);
-        List<ItemStack> temps;
-        ItemStack temp;
         for(OreSized ore : researchOres){
-            temps = ore.getEquivalents();
-            temp = temps.get(random.nextInt(temps.size()));
-            temp = temp.copy();
-            temp.stackSize = ore.size;
-            result.add(temp);
+            result.add(ore.getEquivalent(random));
         }
         return result;
     }
@@ -211,8 +220,8 @@ public class ResearchGoal {
             if(stack != null)
                 getGoal(name).addResource(stack);
             else {
-                if(!split[1].contains(":") && !OreDictionary.getOres(split[1]).isEmpty()){
-                    getGoal(name).addOre(line.substring(split[0].length()+1));
+                if(!OreDictionary.getOres(split[1].trim()).isEmpty()){
+                    getGoal(name).addOre(split);
                     continue;
                 }
                 AWLog.logError("Could not define item from line: " + line);
@@ -303,19 +312,23 @@ public class ResearchGoal {
     private class OreSized{
         private final String name;
         private final int size;
-        private OreSized(String line){
-            String[] split = StringTools.parseStringArray(line);
-            name = split[0];
-            if (split.length > 2)
-                size = StringTools.safeParseInt(split[2]);
-            else if (split.length == 2)
-                size = StringTools.safeParseInt(split[1]);
+        private OreSized(String ore, int size){
+            this.name = ore;
+            if (size <= 0)
+                this.size = 1;
             else
-                size = 1;
+                this.size = size;
         }
 
         public List<ItemStack> getEquivalents(){
             return OreDictionary.getOres(name);
+        }
+
+        public ItemStack getEquivalent(Random random){
+            List<ItemStack> temps = getEquivalents();
+            ItemStack temp = temps.get(random.nextInt(temps.size())).copy();
+            temp.stackSize = size;
+            return temp;
         }
     }
 }

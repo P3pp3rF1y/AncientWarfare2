@@ -346,7 +346,7 @@ public class InventoryTools {
         if (stack1 == stack2) {
             return true;
         }
-        return OreDictionary.itemMatches(stack1, stack2, true) && ItemStack.areItemStackTagsEqual(stack1, stack2);
+        return OreDictionary.itemMatches(stack1, stack2, stack1 != null && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack.areItemStackTagsEqual(stack1, stack2);
     }
 
     public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean ignoreDamage, boolean ignoreNBT) {
