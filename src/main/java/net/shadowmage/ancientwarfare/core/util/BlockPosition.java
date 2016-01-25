@@ -234,13 +234,7 @@ public final class BlockPosition {
 
     @Override
     public final boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof BlockPosition))
-            return false;
-        BlockPosition other = (BlockPosition) obj;
-        return this.equals(other);
+        return this == obj || obj instanceof BlockPosition && this.equals((BlockPosition) obj);
     }
-
 }
 

@@ -209,6 +209,16 @@ public class InputHandler {
         public boolean isPressed() {
             return isPressed;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            return this == o || o instanceof Keybind && getName().equals(((Keybind) o).getName());
+        }
+
+        @Override
+        public int hashCode() {
+            return getName().hashCode();
+        }
     }
 
     public static interface InputCallback {

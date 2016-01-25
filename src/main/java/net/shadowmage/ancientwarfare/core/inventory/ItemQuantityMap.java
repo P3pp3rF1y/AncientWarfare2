@@ -11,18 +11,14 @@ import java.util.*;
 
 public class ItemQuantityMap {
 
-    private final Map<ItemHashEntry, ItemCount> map = new HashMap<ItemHashEntry, ItemCount>();
+    private final Map<ItemHashEntry, Integer> map = new HashMap<ItemHashEntry, Integer>();
 
     /**
      * puts all key/value pairs from the incoming map.  Overwrites existing counts.
      */
     public void putAll(ItemQuantityMap incoming) {
         for (ItemHashEntry entry : incoming.map.keySet()) {
-            if (map.containsKey(entry)) {
-                map.get(entry).count = incoming.map.get(entry).count;
-            } else {
-                map.put(entry, incoming.map.get(entry));
-            }
+            map.put(entry, incoming.map.get(entry));
         }
     }
 
@@ -32,11 +28,9 @@ public class ItemQuantityMap {
     public void addAll(ItemQuantityMap incoming) {
         for (ItemHashEntry entry : incoming.map.keySet()) {
             if (map.containsKey(entry)) {
-                map.get(entry).count += incoming.getCount(entry);
+                map.put(entry, map.get(entry) + incoming.getCount(entry));
             } else {
-                ItemCount count = new ItemCount();
-                count.count = incoming.map.get(entry).count;
-                map.put(entry, count);
+                map.put(entry, incoming.map.get(entry));
             }
         }
     }
@@ -47,7 +41,6 @@ public class ItemQuantityMap {
     public void removeAll(ItemQuantityMap toRemove) {
         for (ItemHashEntry entry : toRemove.map.keySet()) {
             remove(entry);
-
         }
     }
 
@@ -75,17 +68,13 @@ public class ItemQuantityMap {
 
     public int getCount(ItemHashEntry entry) {
         if (map.containsKey(entry)) {
-            return map.get(entry).count;
+            return map.get(entry);
         }
         return 0;
     }
 
     public int getCount(ItemStack item) {
-        ItemHashEntry wrap = new ItemHashEntry(item);
-        if (!map.containsKey(wrap)) {
-            return 0;
-        }
-        return map.get(wrap).count;
+        return getCount(new ItemHashEntry(item));
     }
 
     public void addCount(ItemStack item, int count) {
@@ -94,9 +83,9 @@ public class ItemQuantityMap {
 
     public void addCount(ItemHashEntry entry, int count) {
         if (!map.containsKey(entry)) {
-            map.put(entry, new ItemCount());
-        }
-        map.get(entry).count += count;
+            map.put(entry, count);
+        }else
+            map.put(entry, map.get(entry) + count);
     }
 
     public void decreaseCount(ItemStack item, int count) {
@@ -105,10 +94,11 @@ public class ItemQuantityMap {
 
     public void decreaseCount(ItemHashEntry entry, int count) {
         if (map.containsKey(entry)) {
-            ItemCount itemCount = map.get(entry);
-            itemCount.count -= count;
-            if (itemCount.count <= 0) {
+            int itemCount = map.get(entry) - count;
+            if (itemCount <= 0) {
                 map.remove(entry);
+            }else{
+                map.put(entry, itemCount);
             }
         }
     }
@@ -126,13 +116,7 @@ public class ItemQuantityMap {
     }
 
     public void put(ItemHashEntry wrap, int count) {
-        if (map.containsKey(wrap)) {
-            map.get(wrap).count = count;
-        } else {
-            ItemCount c = new ItemCount();
-            c.count = count;
-            map.put(wrap, c);
-        }
+        map.put(wrap, count);
     }
 
     public void clear() {
@@ -156,7 +140,7 @@ public class ItemQuantityMap {
         String out = "Item Quantity Map:";
         for (ItemHashEntry wrap : map.keySet()) {
             out = out + "\n   " + wrap.item.getUnlocalizedName();
-            out = out + " : " + map.get(wrap).count;
+            out = out + " : " + map.get(wrap);
         }
         return out;
     }
@@ -170,7 +154,7 @@ public class ItemQuantityMap {
         ItemStack outStack;
         int qty;
         for (ItemHashEntry wrap1 : map.keySet()) {
-            qty = map.get(wrap1).count;
+            qty = map.get(wrap1);
             while (qty > 0) {
                 outStack = wrap1.getItemStack().copy();
                 outStack.stackSize = qty > outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty;
@@ -191,7 +175,7 @@ public class ItemQuantityMap {
         ItemStack outStack;
         for (ItemHashEntry wrap1 : map.keySet()) {
             outStack = wrap1.getItemStack().copy();
-            outStack.stackSize = map.get(wrap1).count;
+            outStack.stackSize = map.get(wrap1);
             items.add(outStack);
         }
     }
@@ -206,7 +190,7 @@ public class ItemQuantityMap {
             entry = ItemHashEntry.readFromNBT(entryTag);
             if(entry!=null) {
                 qty = entryTag.getInteger("quantity");
-                map.put(entry, new ItemCount(qty));
+                map.put(entry, qty);
             }
         }
     }
@@ -230,7 +214,7 @@ public class ItemQuantityMap {
         int count = 0;
         int c1, c2, c3, c4;
         for (ItemHashEntry entry : this.map.keySet()) {
-            c1 = entry.item.getItemStackLimit(entry.getItemStack());
+            c1 = entry.getItemStack().getMaxStackSize();
             c2 = this.getCount(entry);
             c3 = c2 / c1;
             c4 = c2 % c1;
@@ -242,25 +226,9 @@ public class ItemQuantityMap {
     public int getTotalItemCount() {
         int count = 0;
         for (ItemHashEntry entry : this.map.keySet()) {
-            count += map.get(entry).count;
+            count += map.get(entry);
         }
         return count;
-    }
-
-    /**
-     * used by ItemQuantityMap for tracking item quantities for a given ItemStackHashWrap
-     *
-     * @author Shadowmage
-     */
-    private static final class ItemCount {
-        private int count;
-
-        private ItemCount() {
-        }
-
-        private ItemCount(int qty) {
-            count = qty;
-        }
     }
 
     /**
@@ -322,16 +290,12 @@ public class ItemQuantityMap {
 
         @Override
         public int hashCode() {
-            int hash = 1;
-            if (item != null) {
-                hash = 31 * hash + item.hashCode();
-            }
+            long hash = 31 + item.hashCode();
             hash = 31 * hash + damage;
-//  hash = 31*hash + stack.stackSize;//noop for implementation, only care about identity, not quantity
             if (itemTag != null) {
                 hash = 31 * hash + itemTag.hashCode();
             }
-            return hash;
+            return Long.hashCode(hash);
         }
 
         @Override

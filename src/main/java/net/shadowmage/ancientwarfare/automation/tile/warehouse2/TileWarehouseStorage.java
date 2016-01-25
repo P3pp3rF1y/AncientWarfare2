@@ -208,5 +208,4 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
         }
         InventoryTools.updateCursorItem((EntityPlayerMP)player, newCursorStack, shiftClick);
     }
-
 }

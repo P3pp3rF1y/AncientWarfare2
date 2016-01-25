@@ -108,4 +108,15 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
         }
     }
 
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        return obj instanceof TileControlled && this.worldObj == ((TileControlled) obj).getWorldObj() && this.getPosition().equals(((TileControlled) obj).getPosition());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this.getPosition().hashCode();
+    }
 }

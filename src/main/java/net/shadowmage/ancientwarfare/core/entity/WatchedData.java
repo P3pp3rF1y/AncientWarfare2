@@ -157,14 +157,16 @@ public class WatchedData extends DataWatcher.WatchableObject{
     }
 
     @Override
-    public boolean equals(Object object){
-        if(this == object){
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if(object instanceof WatchedData){
-            return this.canReplace((DataWatcher.WatchableObject) object) && this.getObject().equals(((DataWatcher.WatchableObject) object).getObject());
-        }
-        return false;
+        return object instanceof WatchedData && this.canReplace((DataWatcher.WatchableObject) object) && this.getObject().equals(((DataWatcher.WatchableObject) object).getObject());
+    }
+
+    @Override
+    public int hashCode(){
+        return ((31 + getDataValueId()) * 31 + getObjectType()) * 31 + getObject().hashCode();
     }
 
     public enum IndexSorter implements Comparator<DataWatcher.WatchableObject>{

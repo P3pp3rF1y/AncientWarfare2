@@ -134,4 +134,23 @@ public class StructureTemplate {
         return resourceList;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StructureTemplate)) return false;
+        StructureTemplate that = (StructureTemplate) o;
+        return xSize == that.xSize && ySize == that.ySize && zSize == that.zSize && xOffset == that.xOffset && yOffset == that.yOffset && zOffset == that.zOffset && name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = xSize;
+        result = 31 * result + ySize;
+        result = 31 * result + zSize;
+        result = 31 * result + xOffset;
+        result = 31 * result + yOffset;
+        result = 31 * result + zOffset;
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 }

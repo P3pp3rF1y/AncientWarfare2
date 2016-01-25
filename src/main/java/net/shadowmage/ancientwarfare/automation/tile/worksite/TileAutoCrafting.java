@@ -70,7 +70,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
             }
             found = false;
             for (ItemStack stack3 : compactedCraft) {
-                if (InventoryTools.doItemStacksMatch(stack1, stack3)) {
+                if (InventoryTools.doItemStacksMatch(stack3, stack1)) {
                     stack3.stackSize++;
                     found = true;
                     break;

@@ -66,6 +66,11 @@ public class Zone implements INBTSerialable{
     }
 
     @Override
+    public int hashCode() {
+        return 31 * min.hashCode() + max.hashCode();
+    }
+
+    @Override
     public String toString()
     {
         return String.format("From %s to %s", min, max);
