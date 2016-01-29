@@ -210,17 +210,17 @@ public class Text extends GuiElement {
         }
     }
 
-    protected char[] allowedChars = new char[]
+    protected static char[] allowedChars = new char[]
             {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
                     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
             };
 
-    protected char[] allowedCharSymbols = new char[]
+    protected static char[] allowedCharSymbols = new char[]
             {' ', '!', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=',
                     '{', '}', '[', ']', ':', ';', '"', '\'', ',', '<', '.', '>', '/', '?'};
 
-    protected char[] allowedNums = new char[]{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
-    protected char[] allowedNumSymbols = new char[]{'.', '-'};
+    protected static char[] allowedNums = new char[]{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+    protected static char[] allowedNumSymbols = new char[]{'.', '-'};
 
     @Override
     public void render(int mouseX, int mouseY, float partialTick) {
