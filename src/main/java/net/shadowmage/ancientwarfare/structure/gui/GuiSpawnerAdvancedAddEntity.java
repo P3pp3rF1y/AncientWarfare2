@@ -41,10 +41,6 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         if (this.settings == null) {
             showAddButton = true;
             this.settings = new EntitySpawnSettings();
-            this.settings.setEntityToSpawn("Pig");
-            this.settings.setSpawnCountMin(2);
-            this.settings.setSpawnCountMax(4);
-            this.settings.setSpawnLimitTotal(-1);
         }else
             showAddButton = false;
         loadData();
@@ -213,7 +209,17 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         input.setAllowNegative();
         input.setValue(settings.getSpawnTotal());
         area.addGuiElement(input);
-        totalHeight += 20;
+        totalHeight += 12;
+
+        Checkbox box = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner.force_spawn") {
+            @Override
+            public void onToggled() {
+                settings.toggleForce();
+            }
+        };
+        box.setChecked(settings.isForced());
+        area.addGuiElement(box);
+        totalHeight += 16;
 
         label = new Label(8, totalHeight, "guistrings.spawner.custom_tag");
         area.addGuiElement(label);
