@@ -215,6 +215,10 @@ public class AWAutomationStatics extends ModConfiguration {
                 "Factor applied to energy output from hand-cranked generator.\n" +
                 "Default = " + hand_cranked_generator_output + "Lower values reduce output, higher values increase output.\n" +
                         "Zero or negative values will result in no energy output").getDouble();
+        windmill_per_size_output = config.get(serverOptions, "windmill_per_size_output_factor", windmill_per_size_output,
+                "Factor applied to energy output from windmill based on size.\n" +
+                        "Default = " + windmill_per_size_output + "Lower values reduce output, higher values increase output.\n" +
+                        "Zero or negative values will result in no energy output").getDouble();
 
         enable_energy_client_updates = config.getBoolean("enable_client_energy_animations", clientOptions, enable_energy_client_updates,
                 "Enable client-side animation of power tiles. Disabling may improve rendering performance on low-end machines");

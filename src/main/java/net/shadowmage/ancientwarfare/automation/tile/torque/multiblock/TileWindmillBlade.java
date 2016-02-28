@@ -10,9 +10,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileWindmillBlade extends TileEntity {
 
@@ -21,10 +22,8 @@ public class TileWindmillBlade extends TileEntity {
 
     public BlockPosition controlPos;
 
-    //TODO remove this spinner
-    public boolean hasController = false;
     public boolean isControl = false;//set to true if this is the control block for a setup
-    public double rotation, prevRotation;//used in rendering
+    protected float rotation, prevRotation;//used in rendering
 
     /**
      * the raw size of the windmill in blocks tall
@@ -38,7 +37,7 @@ public class TileWindmillBlade extends TileEntity {
      * 2/3 == north/south face (expands on x-axis)
      * 4/5 == east/west face (expands on z-axis)
      */
-    public int windmillDirection = 2;// z-facing, expands on the x-axis, alternatively, can be
+    public int windmillDirection = 2;
 
     public TileWindmillBlade() {
 
@@ -46,25 +45,30 @@ public class TileWindmillBlade extends TileEntity {
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote) {
-            updateRotation();
-        } else if (isControl) {
-            energy = windmillSize * AWAutomationStatics.windmill_per_size_output;
+        if (isControl) {
+            if (!worldObj.isRemote)
+                energy = windmillSize * AWAutomationStatics.windmill_per_size_output;
+            else
+                updateRotation();
         }
+    }
+
+    public float getRotation(float delta){
+        return prevRotation + (rotation - prevRotation) * delta;
     }
 
     protected void updateRotation() {
         prevRotation = rotation;
-        if (isControl) {
-            rotation += bladeRpt;
-        }
+        rotation += bladeRpt;
     }
 
     public void blockPlaced() {
+        if(!worldObj.isRemote)
         validateSetup();
     }
 
     public void blockBroken() {
+        if(!worldObj.isRemote)
         informNeighborsToValidate();
     }
 
@@ -72,56 +76,32 @@ public class TileWindmillBlade extends TileEntity {
         if (controlPos != null) {
             TileEntity te = worldObj.getTileEntity(controlPos.x, controlPos.y, controlPos.z);
             return te instanceof TileWindmillBlade ? (TileWindmillBlade) te : null;
-        }
+        }else if(isControl)
+            return this;
         return null;
     }
 
     protected boolean validateSetup() {
-        Set<BlockPosition> connectedPosSet = new HashSet<BlockPosition>();
-        BlockFinder.findConnectedSixWay(worldObj, xCoord, yCoord, zCoord, getBlockType(), getBlockMetadata(), connectedPosSet);
-        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
-        for (BlockPosition pos : connectedPosSet) {
-            if (pos.x < minX) {
-                minX = pos.x;
-            }
-            if (pos.x > maxX) {
-                maxX = pos.x;
-            }
-            if (pos.y < minY) {
-                minY = pos.y;
-            }
-            if (pos.y > maxY) {
-                maxY = pos.y;
-            }
-            if (pos.z < minZ) {
-                minZ = pos.z;
-            }
-            if (pos.z > maxZ) {
-                maxZ = pos.z;
-            }
-        }
-
-        int min = 5;
-        int max = 17;
-        int xSize = maxX - minX + 1;
-        int zSize = maxZ - minZ + 1;
-        int ySize = maxY - minY + 1;
-        int cube = xSize * zSize * ySize;
+        List<BlockPosition> connectedPosSet = new ArrayList<BlockPosition>(9*9);
+        BlockFinder finder = new BlockFinder(worldObj, getBlockType(), getBlockMetadata());
+        Pair<BlockPosition, BlockPosition> corners = finder.cross(new BlockPosition(xCoord, yCoord, zCoord), new BlockPosition(17, 17, 17), connectedPosSet);
+        int minX = corners.getLeft().x, minY = corners.getLeft().y, minZ = corners.getLeft().z;
+        int xSize = corners.getRight().x - minX + 1, ySize = corners.getRight().y - minY + 1, zSize = corners.getRight().z - minZ + 1;
 
         /**
-         * if y size >= min
-         * and y size <= max
+         * if y size >= 5
+         * and y size <= 17
+         * and h%2==1 (is an odd size, 5, 7, 9, etc)
          * and either x or z size == 1 (one needs to be a single block thick)
          * and either x or z == y size (the other needs to be the same size as height)
-         * and h%2==1 (is an odd size, 5, 7, 9, etc)
          * and is full cube (all block spots filled) (will need to modify this check for those sizes with missing corner blocks, create bit mask 2d array to test for proper setup)
          */
-        boolean valid = ySize >= min && ySize <= max && (zSize == 1 || xSize == 1) && (zSize == ySize || xSize == ySize) && ySize % 2 == 1 && cube == connectedPosSet.size();
+        boolean valid = ySize >= 5 && ySize % 2 == 1 && (zSize == 1 || xSize == 1) && (zSize == ySize || xSize == ySize) && finder.box(corners, connectedPosSet);
         if (valid) {
             /**
              * calculate the control block coordinates from the min coordinate and sizes
              */
-            int controlX = minX, controlY = minY, controlZ = minZ, face = 2;
+            int controlX, controlY, controlZ;
 
             int halfSize = (ySize - 1) / 2;
 
@@ -137,6 +117,7 @@ public class TileWindmillBlade extends TileEntity {
             }
             setValidSetup(connectedPosSet, controlX, controlY, controlZ, xSize, ySize, zSize);
         } else {
+            finder.connect(corners.getLeft(), connectedPosSet, ForgeDirection.UP, ForgeDirection.SOUTH, ForgeDirection.EAST);
             setInvalidSetup(connectedPosSet);
         }
         return valid;
@@ -144,10 +125,8 @@ public class TileWindmillBlade extends TileEntity {
 
     private void informNeighborsToValidate() {
         TileEntity te;
-        ForgeDirection d;
         int x, y, z;
-        for (int i = 0; i < 6; i++) {
-            d = ForgeDirection.getOrientation(i);
+        for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
             x = xCoord + d.offsetX;
             y = yCoord + d.offsetY;
             z = zCoord + d.offsetZ;
@@ -159,44 +138,39 @@ public class TileWindmillBlade extends TileEntity {
     }
 
     private void setController(BlockPosition pos) {
-        this.controlPos = pos == null ? null : pos.copy();
+        if(pos == null)
+            isControl = false;
+        this.controlPos = pos;
         if (!worldObj.isRemote) {
+            markDirty();
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
     }
 
-    private void setInvalidSetup(Set<BlockPosition> set) {
+    private void setInvalidSetup(List<BlockPosition> set) {
         TileEntity te;
-        isControl = false;
         setController(null);
         for (BlockPosition pos : set) {
             te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof TileWindmillBlade) {
-                ((TileWindmillBlade) te).isControl = false;
                 ((TileWindmillBlade) te).setController(null);
             }
         }
     }
 
-    private void setValidSetup(Set<BlockPosition> set, int cx, int cy, int cz, int xs, int ys, int zs) {
-        TileEntity te;
-        BlockPosition cp = new BlockPosition(cx, cy, cz);
-        controlPos = cp;
-        for (BlockPosition pos : set) {
-            te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-            if (te instanceof TileWindmillBlade) {
-                ((TileWindmillBlade) te).setController(cp);
-                ((TileWindmillBlade) te).isControl = (pos.x == cx && pos.y == cy && pos.z == cz);
-            }
-        }
-        setTileAsController(cp.x, cp.y, cp.z, xs, ys, zs);
-    }
-
-    private void setTileAsController(int x, int y, int z, int xsize, int ysize, int zsize) {
-        TileEntity te = worldObj.getTileEntity(x, y, z);
+    private void setValidSetup(List<BlockPosition> set, int cx, int cy, int cz, int xs, int ys, int zs) {
+        controlPos = new BlockPosition(cx, cy, cz);
+        TileEntity te = worldObj.getTileEntity(controlPos.x, controlPos.y, controlPos.z);
         if (te instanceof TileWindmillBlade) {
-            ((TileWindmillBlade) te).setAsController(xsize, ysize, zsize);
-        }
+            ((TileWindmillBlade) te).setAsController(xs, ys, zs);
+            for (BlockPosition pos : set) {
+                te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+                if (te instanceof TileWindmillBlade) {
+                    ((TileWindmillBlade) te).setController(controlPos);
+                }
+            }
+        }else
+            controlPos = null;
     }
 
     private void setAsController(int xSize, int ySize, int zSize) {
@@ -262,6 +236,6 @@ public class TileWindmillBlade extends TileEntity {
             int expand = (windmillSize - 1) / 2;
             return AxisAlignedBB.getBoundingBox(xCoord - expand, yCoord - expand, zCoord - expand, xCoord + 1 + expand, yCoord + 1 + expand, zCoord + 1 + expand);
         }
-        return super.getRenderBoundingBox();
+        return getBlockType().getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord, zCoord);
     }
 }

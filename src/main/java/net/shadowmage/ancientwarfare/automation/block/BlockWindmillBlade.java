@@ -68,9 +68,9 @@ public class BlockWindmillBlade extends Block {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int p_149749_6_) {
+    public void breakBlock(World world, int x, int y, int z, Block block, int face) {
         TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(x, y, z);
-        super.breakBlock(world, x, y, z, p_149749_5_, p_149749_6_);
+        super.breakBlock(world, x, y, z, block, face);
         te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone
     }
 

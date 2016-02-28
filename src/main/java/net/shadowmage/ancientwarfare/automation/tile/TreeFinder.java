@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,26 +33,20 @@ public final class TreeFinder {
     }
 
     public void findAttachedTreeBlocks(Block blockType, World world, BlockPosition pos, Set<BlockPosition> addTo) {
-        LinkedList<BlockPosition> openList = new LinkedList<BlockPosition>();
-        List<BlockPosition> badNodes = new ArrayList<BlockPosition>();
-        List<BlockPosition> foundNodes = new ArrayList<BlockPosition>();
-        BlockPosition node = new BlockPosition(pos);
-        openList.add(node);
-
-        while (!openList.isEmpty()) {
-            node = openList.poll();
-            foundNodes.add(node);
-            addNeighborNodes(world, node.x, node.y, node.z, blockType, openList, badNodes, foundNodes);
+        ArrayList<BlockPosition> openList = new ArrayList<BlockPosition>(max*2);
+        HashSet<BlockPosition> badNodes = new HashSet<BlockPosition>();
+        openList.add(pos);
+        while (!openList.isEmpty()){
+            pos = openList.remove(openList.size() - 1);
+            addTo.add(pos);
+            addNeighborNodes(world, pos, blockType, openList, badNodes, addTo);
         }
-
-        addTo.addAll(foundNodes);
     }
 
-    private void addNeighborNodes(World world, int x, int y, int z, Block blockType, List<BlockPosition> openList, List<BlockPosition> badNodes, List<BlockPosition> foundNodes) {
+    private void addNeighborNodes(World world, BlockPosition pos, Block blockType, List<BlockPosition> openList, Set<BlockPosition> badNodes, Set<BlockPosition> foundNodes) {
 
         for (int i = 0; i < max; i++) {
-            int[] offset = offsets[i];
-            BlockPosition n = new BlockPosition(x + offset[0], y + offset[1], z + offset[2]);
+            BlockPosition n = pos.offset(offsets[i][0], offsets[i][1], offsets[i][2]);
             if (!badNodes.contains(n) && !openList.contains(n) && !foundNodes.contains(n)) {
                 if (isTree(world, n, blockType)) {
                     openList.add(n);

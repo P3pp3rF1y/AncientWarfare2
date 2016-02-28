@@ -223,12 +223,26 @@ public final class BlockPosition {
         return world.getBlock(x, y, z);
     }
 
+    public BlockPosition getMin(BlockPosition position){
+        int minX = position.x < this.x ? position.x : this.x;
+        int minY = position.y < this.y ? position.y : this.y;
+        int minZ = position.z < this.z ? position.z : this.z;
+        return new BlockPosition(minX, minY, minZ);
+    }
+
+    public BlockPosition getMax(BlockPosition position){
+        int maxX = position.x > this.x ? position.x : this.x;
+        int maxY = position.y > this.y ? position.y : this.y;
+        int maxZ = position.z > this.z ? position.z : this.z;
+        return new BlockPosition(maxX, maxY, maxZ);
+    }
+
     @Override
     public final int hashCode() {
-        final int prime = 31;
-        long result = prime * x;
-        result = prime * (result + z);
-        result = prime * (result + y);
+        final int prime = 16777619;
+        long result = prime ^ x;
+        result = (prime * result) ^ z;
+        result = (prime * result) ^ y;
         return Long.hashCode(result + 17);
     }
 

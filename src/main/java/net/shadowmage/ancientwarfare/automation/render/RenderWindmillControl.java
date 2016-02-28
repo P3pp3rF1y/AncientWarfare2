@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -31,7 +31,7 @@ public class RenderWindmillControl extends TileEntitySpecialRenderer implements 
         bindTexture(texture);
         GL11.glTranslated(x + 0.5d, y, z + 0.5d);
 
-        TileWindmillController windmillControl = (TileWindmillController) te;
+        TileTorqueBase windmillControl = (TileTorqueBase) te;
         float outRotation = -windmillControl.getClientOutputRotation(windmillControl.getPrimaryFacing(), delta);
         renderModel(outRotation, windmillControl.getPrimaryFacing().ordinal());
         GL11.glPopMatrix();
@@ -51,11 +51,8 @@ public class RenderWindmillControl extends TileEntitySpecialRenderer implements 
         if (rot[0] != 0) {
             GL11.glRotatef(rot[0], 1, 0, 0);
         }
-        if (rot[1] != 0) {
+        else if (rot[1] != 0) {
             GL11.glRotatef(rot[1], 0, 1, 0);
-        }
-        if (rot[2] != 0) {
-            GL11.glRotatef(rot[2], 0, 0, 1);
         }
         outputGear.setRotation(0, 0, outR);
         model.renderModel();
