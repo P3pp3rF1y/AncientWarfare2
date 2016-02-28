@@ -292,8 +292,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
             BlockPosition pos = orders.getRestockData().getWithdrawPoint();
             TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IInventory) {
-                IInventory dep = (IInventory) te;
-                orders.getRestockData().doWithdraw(inv, dep, orders.getRestockData().getWithdrawSide());
+                orders.getRestockData().doWithdraw(inv, (IInventory) te, orders.getRestockData().getWithdrawSide());
                 ItemBackpack.writeBackpackToItem(inv, backpack);
             }
         }
