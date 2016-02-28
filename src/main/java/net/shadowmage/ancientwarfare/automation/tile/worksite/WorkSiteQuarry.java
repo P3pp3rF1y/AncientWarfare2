@@ -181,7 +181,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     private boolean canHarvest(int x, int y, int z) {
         //TODO add block-breaking exclusion list to config
         Block block = worldObj.getBlock(x, y, z);
-        if(block.isAir(worldObj, x, y, z)){
+        if(block.isAir(worldObj, x, y, z) || block.getMaterial().isLiquid()){
             return false;
         }
         int harvestLevel = block.getHarvestLevel(worldObj.getBlockMetadata(x, y, z));
@@ -198,7 +198,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
                 return false;
             }//else is harvestable, check the rest of the checks
         }
-        return !block.getMaterial().isLiquid() && block.getBlockHardness(worldObj, x, y, z) >= 0;
+        return block.getBlockHardness(worldObj, x, y, z) >= 0;
     }
 
     public void initWorkSite() {
