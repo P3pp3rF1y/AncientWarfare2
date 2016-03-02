@@ -25,7 +25,7 @@ trade,AncientWarfare:backpack,3,1,lcl,wcw,lcl,l,leather,w,wool,c,chest
 ##AUTOMATION
 ,gearWood,0,1,s_s,_p_,s_s,s,stickWood,p,plankWood
 ,gearIron,0,1,i_i,_i_,i_i,i,ingotIron
-,geerSteel,0,1,i_i,_i_,i_i,i,ingotSteel
+,gearSteel,0,1,i_i,_i_,i_i,i,ingotSteel
 ,bearingWood,0,1,s_s,___,s_s,s,stickWood
 ,bearingIron,0,1,_i_,i_i,_i_,i,ingotIron
 ,bearingSteel,0,1,_i_,i_i,_i_,i,ingotSteel
