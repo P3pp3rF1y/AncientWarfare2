@@ -34,7 +34,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     private Constructor<? extends TileEntity> tile;
 
     public BlockWorksiteBase(String regName) {
-        super(Material.rock);
+        super(Material.wood);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
         this.setBlockName(regName);
         setHardness(2.f);
@@ -166,4 +166,13 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
         super.breakBlock(world, x, y, z, block, meta);
     }
 
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 5;
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 20;
+    }
 }

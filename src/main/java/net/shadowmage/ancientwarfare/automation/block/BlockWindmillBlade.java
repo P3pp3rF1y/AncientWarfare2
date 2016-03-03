@@ -17,7 +17,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindm
 public class BlockWindmillBlade extends Block {
 
     public BlockWindmillBlade(String regName) {
-        super(Material.rock);
+        super(Material.wood);
         this.setBlockName(regName);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
     }
@@ -84,4 +84,13 @@ public class BlockWindmillBlade extends Block {
         return true;
     }
 
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 60;
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 20;
+    }
 }
