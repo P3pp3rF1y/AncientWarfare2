@@ -31,7 +31,7 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
     private boolean loadController() {
         BlockPosition pos = controllerPosition;
         controllerPosition = null;
-        if (pos != null && controller != null) {
+        if (pos != null && controller == null) {
             TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IControllerTile && isValidController((IControllerTile) te)) {
                 ((IControllerTile) te).addControlledTile(this);
@@ -72,8 +72,10 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
 
     @Override
     public final void validate() {
-        invalidate();
         super.validate();
+        if (controller != null) {
+            controller.addControlledTile(this);
+        }
     }
 
     @Override
