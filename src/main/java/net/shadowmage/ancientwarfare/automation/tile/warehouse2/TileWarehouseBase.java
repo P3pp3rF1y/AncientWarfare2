@@ -262,12 +262,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
             return;
         List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z);
         for (TileEntity te : tiles) {
-            if (te instanceof IWarehouseStorageTile) {
-                addStorageTile((IWarehouseStorageTile) te);
-            } else if (te instanceof TileWarehouseInterface) {
-                addInterfaceTile((TileWarehouseInterface) te);
-            } else if (te instanceof TileWarehouseStockViewer) {
-                addStockViewer((TileWarehouseStockViewer) te);
+            if (te instanceof IControlledTile && ((IControlledTile) te).getController() == null) {
+                addControlledTile((IControlledTile) te);
             }
         }
         init = true;
@@ -319,10 +315,10 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
             return;
         }
         if (!storageTiles.contains(tile)) {
-            storageTiles.add(tile);
             if (tile instanceof IControlledTile) {
                 ((IControlledTile) tile).setController(this);
             }
+            storageTiles.add(tile);
             storageMap.addStorageTile(tile);
             tile.addItems(cachedItemMap);
         }

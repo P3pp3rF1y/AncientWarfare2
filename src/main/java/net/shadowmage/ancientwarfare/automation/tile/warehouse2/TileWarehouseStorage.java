@@ -50,9 +50,6 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     public void onTileBroken() {
         ItemQuantityMap qtm = new ItemQuantityMap();
         addItems(qtm);
-        if (getController() != null) {
-            getController().removeControlledTile(this);
-        }
         List<ItemStack> list = qtm.getItems();
         for (ItemStack stack : list) {
             InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
