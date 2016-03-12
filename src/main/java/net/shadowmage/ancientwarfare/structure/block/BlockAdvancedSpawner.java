@@ -88,9 +88,8 @@ public class BlockAdvancedSpawner extends Block {
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         TileEntity te = world.getTileEntity(x, y, z);
-        if (!world.isRemote && te instanceof TileAdvancedSpawner) {
-            TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
-            spawner.onBlockBroken();
+        if (te instanceof TileAdvancedSpawner) {
+            ((TileAdvancedSpawner) te).onBlockBroken();
         }
         super.breakBlock(world, x, y, z, block, meta);
     }
