@@ -62,11 +62,9 @@ public class BlockChunkLoaderSimple extends Block {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int wtf) {
-        if (!world.isRemote) {
-            TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof TileChunkLoaderSimple) {
-                ((TileChunkLoaderSimple) te).releaseTicket();
-            }
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof TileChunkLoaderSimple) {
+            ((TileChunkLoaderSimple) te).releaseTicket();
         }
         super.breakBlock(world, x, y, z, block, wtf);
     }

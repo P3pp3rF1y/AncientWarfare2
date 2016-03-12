@@ -82,11 +82,9 @@ public class BlockWarehouseStorage extends Block {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int fortune) {
-        if (!world.isRemote) {
-            TileWarehouseStorage tile = (TileWarehouseStorage) world.getTileEntity(x, y, z);
-            if (tile != null) {
-                tile.onTileBroken();
-            }
+        TileWarehouseStorage tile = (TileWarehouseStorage) world.getTileEntity(x, y, z);
+        if (tile != null) {
+            tile.onTileBroken();
         }
         super.breakBlock(world, x, y, z, block, fortune);
     }

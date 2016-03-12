@@ -61,13 +61,11 @@ public class BlockWarehouseCraftingStation extends Block {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int fortune) {
-        if (!world.isRemote) {
-            TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof TileWarehouseCraftingStation) {
-                TileWarehouseCraftingStation twcs = (TileWarehouseCraftingStation) te;
-                InventoryTools.dropInventoryInWorld(world, twcs.layoutMatrix, x, y, z);
-                InventoryTools.dropInventoryInWorld(world, twcs.bookInventory, x, y, z);
-            }
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof TileWarehouseCraftingStation) {
+            TileWarehouseCraftingStation twcs = (TileWarehouseCraftingStation) te;
+            InventoryTools.dropInventoryInWorld(world, twcs.layoutMatrix, x, y, z);
+            InventoryTools.dropInventoryInWorld(world, twcs.bookInventory, x, y, z);
         }
         super.breakBlock(world, x, y, z, block, fortune);
     }
