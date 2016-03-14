@@ -122,7 +122,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
                 waiting = false;
                 delayCounter = 0;
                 npc.removeAITask(TASK_GO_HOME);
-            }//end shelter code, return to previously current route point - if was interruped in the middle of upkeep, will restart upkeep
+            }//end shelter code, return to previously current route point - if was interrupted in the middle of upkeep, will restart upkeep
         } else if (shelterPoint == null) {
             int index = waypointIndex - 1;
             if (index < 0) {
