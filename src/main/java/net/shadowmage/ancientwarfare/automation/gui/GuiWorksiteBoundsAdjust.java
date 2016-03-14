@@ -58,7 +58,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
             protected void onPressed() {
                 if (getContainer().min.z <= getContainer().getZ() && (getContainer().min.x > getContainer().getX() || getContainer().max.x < getContainer().getX())) {
                     getContainer().min = getContainer().min.moveForward(0, 1);
-                    getContainer().max = getContainer().max.moveForward(2, 1);
+                    getContainer().max = getContainer().max.moveForward(0, 1);
                     boundsAdjusted = true;
                     refreshGui();
                 }
@@ -137,7 +137,7 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
         b = new Button(48 + 80, 24, 40, 12, "ZSIZE-") {
             @Override
             protected void onPressed() {
-                if (getContainer().max.z - getContainer().min.z <= 0) {
+                if (getContainer().max.z <= getContainer().min.z) {
                     return;
                 }
                 if (getContainer().min.z < getContainer().getZ()) {
