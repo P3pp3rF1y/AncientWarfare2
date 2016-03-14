@@ -39,7 +39,7 @@ public class AWNPCEntityLoader {
     }
 
     private static void addPlayerOwnedNpcs() {
-        NpcDeclaration reg = new NpcDeclaration(NpcCombat.class, AWEntityRegistry.NPC_COMBAT, nextID++, AncientWarfareNPC.instance, 120, 3, true, "combat");
+        NpcDeclaration reg = new NpcDeclaration(NpcCombat.class, AWEntityRegistry.NPC_COMBAT, "combat");
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_combat");
         addNpcSubtypeEntry("combat", "commander", "ancientwarfare:npc/spawner_commander");
         addNpcSubtypeEntry("combat", "soldier", "ancientwarfare:npc/spawner_combat");
@@ -47,7 +47,7 @@ public class AWNPCEntityLoader {
         addNpcSubtypeEntry("combat", "medic", "ancientwarfare:npc/spawner_medic");
         addNpcSubtypeEntry("combat", "engineer", "ancientwarfare:npc/spawner_engineer");
 
-        reg = new NpcDeclaration(NpcWorker.class, AWEntityRegistry.NPC_WORKER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "worker");
+        reg = new NpcDeclaration(NpcWorker.class, AWEntityRegistry.NPC_WORKER, "worker");
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_miner");
         addNpcSubtypeEntry("worker", "miner", "ancientwarfare:npc/spawner_miner");
         addNpcSubtypeEntry("worker", "farmer", "ancientwarfare:npc/spawner_farmer");
@@ -55,16 +55,16 @@ public class AWNPCEntityLoader {
         addNpcSubtypeEntry("worker", "researcher", "ancientwarfare:npc/spawner_researcher");
         addNpcSubtypeEntry("worker", "craftsman", "ancientwarfare:npc/spawner_craftsman");
 
-        reg = new NpcDeclaration(NpcCourier.class, AWEntityRegistry.NPC_COURIER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "courier");
+        reg = new NpcDeclaration(NpcCourier.class, AWEntityRegistry.NPC_COURIER, "courier");
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_courier");
 
-        reg = new NpcDeclaration(NpcTrader.class, AWEntityRegistry.NPC_TRADER, nextID++, AncientWarfareNPC.instance, 120, 3, true, "trader");
+        reg = new NpcDeclaration(NpcTrader.class, AWEntityRegistry.NPC_TRADER, "trader");
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_trader");
 
-        reg = new NpcDeclaration(NpcPriest.class, AWEntityRegistry.NPC_PRIEST, nextID++, AncientWarfareNPC.instance, 120, 3, true, "priest");
+        reg = new NpcDeclaration(NpcPriest.class, AWEntityRegistry.NPC_PRIEST, "priest");
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_priest");
 
-        reg = new NpcDeclaration(NpcBard.class, AWEntityRegistry.NPC_BARD, nextID++, AncientWarfareNPC.instance, 120, 3, true, "bard");
+        reg = new NpcDeclaration(NpcBard.class, AWEntityRegistry.NPC_BARD, "bard");
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bard");
     }
 
@@ -73,43 +73,43 @@ public class AWNPCEntityLoader {
         /**
          * BANDITS
          */
-        reg = new NpcFactionDeclaration(NpcBanditArcher.class, AWEntityRegistry.NPC_FACTION_BANDIT_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditArcher.class, AWEntityRegistry.NPC_FACTION_BANDIT_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_archer");
 
-        reg = new NpcFactionDeclaration(NpcBanditSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_SOLDIER, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_SOLDIER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_soldier");
 
-        reg = new NpcFactionDeclaration(NpcBanditLeader.class, AWEntityRegistry.NPC_FACTION_BANDIT_COMMANDER, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditLeader.class, AWEntityRegistry.NPC_FACTION_BANDIT_COMMANDER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_leader");
 
-        reg = new NpcFactionDeclaration(NpcBanditPriest.class, AWEntityRegistry.NPC_FACTION_BANDIT_PRIEST, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditPriest.class, AWEntityRegistry.NPC_FACTION_BANDIT_PRIEST);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_priest");
 
-        reg = new NpcFactionDeclaration(NpcBanditTrader.class, AWEntityRegistry.NPC_FACTION_BANDIT_TRADER, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditTrader.class, AWEntityRegistry.NPC_FACTION_BANDIT_TRADER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_trader");
 
-        reg = new NpcFactionDeclaration(NpcBanditMountedSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_CAVALRY, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditMountedSoldier.class, AWEntityRegistry.NPC_FACTION_BANDIT_CAVALRY);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_soldier");
 
-        reg = new NpcFactionDeclaration(NpcBanditMountedArcher.class, AWEntityRegistry.NPC_FACTION_BANDIT_MOUNTED_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditMountedArcher.class, AWEntityRegistry.NPC_FACTION_BANDIT_MOUNTED_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_archer");
 
-        reg = new NpcFactionDeclaration(NpcBanditCivilianMale.class, AWEntityRegistry.NPC_FACTION_BANDIT_CIVILIAN_MALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditCivilianMale.class, AWEntityRegistry.NPC_FACTION_BANDIT_CIVILIAN_MALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_civilian_male");
 
-        reg = new NpcFactionDeclaration(NpcBanditCivilianFemale.class, AWEntityRegistry.NPC_FACTION_BANDIT_CIVILIAN_FEMALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditCivilianFemale.class, AWEntityRegistry.NPC_FACTION_BANDIT_CIVILIAN_FEMALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_civilian_female");
 
-        reg = new NpcFactionDeclaration(NpcBanditArcherElite.class, AWEntityRegistry.NPC_FACTION_BANDIT_ARCHER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditArcherElite.class, AWEntityRegistry.NPC_FACTION_BANDIT_ARCHER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_archer");
 
-        reg = new NpcFactionDeclaration(NpcBanditSoldierElite.class, AWEntityRegistry.NPC_FACTION_BANDIT_SOLDIER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditSoldierElite.class, AWEntityRegistry.NPC_FACTION_BANDIT_SOLDIER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_soldier");
 
-        reg = new NpcFactionDeclaration(NpcBanditLeaderElite.class, AWEntityRegistry.NPC_FACTION_BANDIT_LEADER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditLeaderElite.class, AWEntityRegistry.NPC_FACTION_BANDIT_LEADER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_leader");
 
-        reg = new NpcFactionDeclaration(NpcBanditBard.class, AWEntityRegistry.NPC_FACTION_BANDIT_BARD, nextID++);
+        reg = new NpcFactionDeclaration(NpcBanditBard.class, AWEntityRegistry.NPC_FACTION_BANDIT_BARD);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_bandit_bard");
     }
 
@@ -118,43 +118,43 @@ public class AWNPCEntityLoader {
         /**
          * DESERT NATIVES
          */
-        reg = new NpcFactionDeclaration(NpcDesertArcher.class, AWEntityRegistry.NPC_FACTION_DESERT_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertArcher.class, AWEntityRegistry.NPC_FACTION_DESERT_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_archer");
 
-        reg = new NpcFactionDeclaration(NpcDesertSoldier.class, AWEntityRegistry.NPC_FACTION_DESERT_SOLDIER, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertSoldier.class, AWEntityRegistry.NPC_FACTION_DESERT_SOLDIER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_soldier");
 
-        reg = new NpcFactionDeclaration(NpcDesertLeader.class, AWEntityRegistry.NPC_FACTION_DESERT_COMMANDER, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertLeader.class, AWEntityRegistry.NPC_FACTION_DESERT_COMMANDER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_leader");
 
-        reg = new NpcFactionDeclaration(NpcDesertPriest.class, AWEntityRegistry.NPC_FACTION_DESERT_PRIEST, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertPriest.class, AWEntityRegistry.NPC_FACTION_DESERT_PRIEST);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_priest");
 
-        reg = new NpcFactionDeclaration(NpcDesertTrader.class, AWEntityRegistry.NPC_FACTION_DESERT_TRADER, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertTrader.class, AWEntityRegistry.NPC_FACTION_DESERT_TRADER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_trader");
 
-        reg = new NpcFactionDeclaration(NpcDesertMountedSoldier.class, AWEntityRegistry.NPC_FACTION_DESERT_CAVALRY, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertMountedSoldier.class, AWEntityRegistry.NPC_FACTION_DESERT_CAVALRY);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_soldier");
 
-        reg = new NpcFactionDeclaration(NpcDesertMountedArcher.class, AWEntityRegistry.NPC_FACTION_DESERT_MOUNTED_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertMountedArcher.class, AWEntityRegistry.NPC_FACTION_DESERT_MOUNTED_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_archer");
 
-        reg = new NpcFactionDeclaration(NpcDesertCivilianMale.class, AWEntityRegistry.NPC_FACTION_DESERT_CIVILIAN_MALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertCivilianMale.class, AWEntityRegistry.NPC_FACTION_DESERT_CIVILIAN_MALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_civilian_male");
 
-        reg = new NpcFactionDeclaration(NpcDesertCivilianFemale.class, AWEntityRegistry.NPC_FACTION_DESERT_CIVILIAN_FEMALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertCivilianFemale.class, AWEntityRegistry.NPC_FACTION_DESERT_CIVILIAN_FEMALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_civilian_female");
 
-        reg = new NpcFactionDeclaration(NpcDesertArcherElite.class, AWEntityRegistry.NPC_FACTION_DESERT_ARCHER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertArcherElite.class, AWEntityRegistry.NPC_FACTION_DESERT_ARCHER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_archer");
 
-        reg = new NpcFactionDeclaration(NpcDesertSoldierElite.class, AWEntityRegistry.NPC_FACTION_DESERT_SOLDIER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertSoldierElite.class, AWEntityRegistry.NPC_FACTION_DESERT_SOLDIER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_soldier");
 
-        reg = new NpcFactionDeclaration(NpcDesertLeaderElite.class, AWEntityRegistry.NPC_FACTION_DESERT_LEADER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertLeaderElite.class, AWEntityRegistry.NPC_FACTION_DESERT_LEADER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_leader");
 
-        reg = new NpcFactionDeclaration(NpcDesertBard.class, AWEntityRegistry.NPC_FACTION_DESERT_BARD, nextID++);
+        reg = new NpcFactionDeclaration(NpcDesertBard.class, AWEntityRegistry.NPC_FACTION_DESERT_BARD);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_desert_bard");
     }
 
@@ -163,43 +163,43 @@ public class AWNPCEntityLoader {
         /**
          * JUNGLE NATIVES
          */
-        reg = new NpcFactionDeclaration(NpcNativeArcher.class, AWEntityRegistry.NPC_FACTION_NATIVE_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeArcher.class, AWEntityRegistry.NPC_FACTION_NATIVE_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_archer");
 
-        reg = new NpcFactionDeclaration(NpcNativeSoldier.class, AWEntityRegistry.NPC_FACTION_NATIVE_SOLDIER, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeSoldier.class, AWEntityRegistry.NPC_FACTION_NATIVE_SOLDIER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_soldier");
 
-        reg = new NpcFactionDeclaration(NpcNativeLeader.class, AWEntityRegistry.NPC_FACTION_NATIVE_COMMANDER, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeLeader.class, AWEntityRegistry.NPC_FACTION_NATIVE_COMMANDER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_leader");
 
-        reg = new NpcFactionDeclaration(NpcNativePriest.class, AWEntityRegistry.NPC_FACTION_NATIVE_PRIEST, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativePriest.class, AWEntityRegistry.NPC_FACTION_NATIVE_PRIEST);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_priest");
 
-        reg = new NpcFactionDeclaration(NpcNativeTrader.class, AWEntityRegistry.NPC_FACTION_NATIVE_TRADER, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeTrader.class, AWEntityRegistry.NPC_FACTION_NATIVE_TRADER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_trader");
 
-        reg = new NpcFactionDeclaration(NpcNativeMountedSoldier.class, AWEntityRegistry.NPC_FACTION_NATIVE_CAVALRY, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeMountedSoldier.class, AWEntityRegistry.NPC_FACTION_NATIVE_CAVALRY);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_soldier");
 
-        reg = new NpcFactionDeclaration(NpcNativeMountedArcher.class, AWEntityRegistry.NPC_FACTION_NATIVE_MOUNTED_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeMountedArcher.class, AWEntityRegistry.NPC_FACTION_NATIVE_MOUNTED_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_archer");
 
-        reg = new NpcFactionDeclaration(NpcNativeCivilianMale.class, AWEntityRegistry.NPC_FACTION_NATIVE_CIVILIAN_MALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeCivilianMale.class, AWEntityRegistry.NPC_FACTION_NATIVE_CIVILIAN_MALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_civilian_male");
 
-        reg = new NpcFactionDeclaration(NpcNativeCivilianFemale.class, AWEntityRegistry.NPC_FACTION_NATIVE_CIVILIAN_FEMALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeCivilianFemale.class, AWEntityRegistry.NPC_FACTION_NATIVE_CIVILIAN_FEMALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_civilian_female");
 
-        reg = new NpcFactionDeclaration(NpcNativeArcherElite.class, AWEntityRegistry.NPC_FACTION_NATIVE_ARCHER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeArcherElite.class, AWEntityRegistry.NPC_FACTION_NATIVE_ARCHER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_archer");
 
-        reg = new NpcFactionDeclaration(NpcNativeSoldierElite.class, AWEntityRegistry.NPC_FACTION_NATIVE_SOLDIER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeSoldierElite.class, AWEntityRegistry.NPC_FACTION_NATIVE_SOLDIER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_soldier");
 
-        reg = new NpcFactionDeclaration(NpcNativeLeaderElite.class, AWEntityRegistry.NPC_FACTION_NATIVE_LEADER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeLeaderElite.class, AWEntityRegistry.NPC_FACTION_NATIVE_LEADER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_leader");
 
-        reg = new NpcFactionDeclaration(NpcNativeBard.class, AWEntityRegistry.NPC_FACTION_NATIVE_BARD, nextID++);
+        reg = new NpcFactionDeclaration(NpcNativeBard.class, AWEntityRegistry.NPC_FACTION_NATIVE_BARD);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_native_bard");
     }
 
@@ -208,43 +208,43 @@ public class AWNPCEntityLoader {
         /**
          * PIRATES
          */
-        reg = new NpcFactionDeclaration(NpcPirateArcher.class, AWEntityRegistry.NPC_FACTION_PIRATE_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateArcher.class, AWEntityRegistry.NPC_FACTION_PIRATE_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_archer");
 
-        reg = new NpcFactionDeclaration(NpcPirateSoldier.class, AWEntityRegistry.NPC_FACTION_PIRATE_SOLDIER, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateSoldier.class, AWEntityRegistry.NPC_FACTION_PIRATE_SOLDIER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_soldier");
 
-        reg = new NpcFactionDeclaration(NpcPirateLeader.class, AWEntityRegistry.NPC_FACTION_PIRATE_COMMANDER, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateLeader.class, AWEntityRegistry.NPC_FACTION_PIRATE_COMMANDER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_leader");
 
-        reg = new NpcFactionDeclaration(NpcPiratePriest.class, AWEntityRegistry.NPC_FACTION_PIRATE_PRIEST, nextID++);
+        reg = new NpcFactionDeclaration(NpcPiratePriest.class, AWEntityRegistry.NPC_FACTION_PIRATE_PRIEST);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_priest");
 
-        reg = new NpcFactionDeclaration(NpcPirateTrader.class, AWEntityRegistry.NPC_FACTION_PIRATE_TRADER, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateTrader.class, AWEntityRegistry.NPC_FACTION_PIRATE_TRADER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_trader");
 
-        reg = new NpcFactionDeclaration(NpcPirateMountedSoldier.class, AWEntityRegistry.NPC_FACTION_PIRATE_CAVALRY, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateMountedSoldier.class, AWEntityRegistry.NPC_FACTION_PIRATE_CAVALRY);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_soldier");
 
-        reg = new NpcFactionDeclaration(NpcPirateMountedArcher.class, AWEntityRegistry.NPC_FACTION_PIRATE_MOUNTED_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateMountedArcher.class, AWEntityRegistry.NPC_FACTION_PIRATE_MOUNTED_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_archer");
 
-        reg = new NpcFactionDeclaration(NpcPirateCivilianMale.class, AWEntityRegistry.NPC_FACTION_PIRATE_CIVILIAN_MALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateCivilianMale.class, AWEntityRegistry.NPC_FACTION_PIRATE_CIVILIAN_MALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_civilian_male");
 
-        reg = new NpcFactionDeclaration(NpcPirateCivilianFemale.class, AWEntityRegistry.NPC_FACTION_PIRATE_CIVILIAN_FEMALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateCivilianFemale.class, AWEntityRegistry.NPC_FACTION_PIRATE_CIVILIAN_FEMALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_civilian_female");
 
-        reg = new NpcFactionDeclaration(NpcPirateArcherElite.class, AWEntityRegistry.NPC_FACTION_PIRATE_ARCHER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateArcherElite.class, AWEntityRegistry.NPC_FACTION_PIRATE_ARCHER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_archer");
 
-        reg = new NpcFactionDeclaration(NpcPirateSoldierElite.class, AWEntityRegistry.NPC_FACTION_PIRATE_SOLDIER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateSoldierElite.class, AWEntityRegistry.NPC_FACTION_PIRATE_SOLDIER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_soldier");
 
-        reg = new NpcFactionDeclaration(NpcPirateLeaderElite.class, AWEntityRegistry.NPC_FACTION_PIRATE_LEADER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateLeaderElite.class, AWEntityRegistry.NPC_FACTION_PIRATE_LEADER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_leader");
 
-        reg = new NpcFactionDeclaration(NpcPirateBard.class, AWEntityRegistry.NPC_FACTION_PIRATE_BARD, nextID++);
+        reg = new NpcFactionDeclaration(NpcPirateBard.class, AWEntityRegistry.NPC_FACTION_PIRATE_BARD);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_pirate_bard");
     }
 
@@ -253,43 +253,43 @@ public class AWNPCEntityLoader {
         /**
          * VIKINGS
          */
-        reg = new NpcFactionDeclaration(NpcVikingArcher.class, AWEntityRegistry.NPC_FACTION_VIKING_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingArcher.class, AWEntityRegistry.NPC_FACTION_VIKING_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_archer");
 
-        reg = new NpcFactionDeclaration(NpcVikingSoldier.class, AWEntityRegistry.NPC_FACTION_VIKING_SOLDIER, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingSoldier.class, AWEntityRegistry.NPC_FACTION_VIKING_SOLDIER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_soldier");
 
-        reg = new NpcFactionDeclaration(NpcVikingLeader.class, AWEntityRegistry.NPC_FACTION_VIKING_COMMANDER, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingLeader.class, AWEntityRegistry.NPC_FACTION_VIKING_COMMANDER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_leader");
 
-        reg = new NpcFactionDeclaration(NpcVikingPriest.class, AWEntityRegistry.NPC_FACTION_VIKING_PRIEST, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingPriest.class, AWEntityRegistry.NPC_FACTION_VIKING_PRIEST);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_priest");
 
-        reg = new NpcFactionDeclaration(NpcVikingTrader.class, AWEntityRegistry.NPC_FACTION_VIKING_TRADER, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingTrader.class, AWEntityRegistry.NPC_FACTION_VIKING_TRADER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_trader");
 
-        reg = new NpcFactionDeclaration(NpcVikingMountedSoldier.class, AWEntityRegistry.NPC_FACTION_VIKING_CAVALRY, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingMountedSoldier.class, AWEntityRegistry.NPC_FACTION_VIKING_CAVALRY);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_soldier");
 
-        reg = new NpcFactionDeclaration(NpcVikingMountedArcher.class, AWEntityRegistry.NPC_FACTION_VIKING_MOUNTED_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingMountedArcher.class, AWEntityRegistry.NPC_FACTION_VIKING_MOUNTED_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_archer");
 
-        reg = new NpcFactionDeclaration(NpcVikingCivilianMale.class, AWEntityRegistry.NPC_FACTION_VIKING_CIVILIAN_MALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingCivilianMale.class, AWEntityRegistry.NPC_FACTION_VIKING_CIVILIAN_MALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_civilian_male");
 
-        reg = new NpcFactionDeclaration(NpcVikingCivilianFemale.class, AWEntityRegistry.NPC_FACTION_VIKING_CIVILIAN_FEMALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingCivilianFemale.class, AWEntityRegistry.NPC_FACTION_VIKING_CIVILIAN_FEMALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_civilian_female");
 
-        reg = new NpcFactionDeclaration(NpcVikingArcherElite.class, AWEntityRegistry.NPC_FACTION_VIKING_ARCHER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingArcherElite.class, AWEntityRegistry.NPC_FACTION_VIKING_ARCHER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_archer");
 
-        reg = new NpcFactionDeclaration(NpcVikingSoldierElite.class, AWEntityRegistry.NPC_FACTION_VIKING_SOLDIER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingSoldierElite.class, AWEntityRegistry.NPC_FACTION_VIKING_SOLDIER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_soldier");
 
-        reg = new NpcFactionDeclaration(NpcVikingLeaderElite.class, AWEntityRegistry.NPC_FACTION_VIKING_LEADER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingLeaderElite.class, AWEntityRegistry.NPC_FACTION_VIKING_LEADER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_leader");
 
-        reg = new NpcFactionDeclaration(NpcVikingBard.class, AWEntityRegistry.NPC_FACTION_VIKING_BARD, nextID++);
+        reg = new NpcFactionDeclaration(NpcVikingBard.class, AWEntityRegistry.NPC_FACTION_VIKING_BARD);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_viking_bard");
     }
 
@@ -298,43 +298,43 @@ public class AWNPCEntityLoader {
         /**
          * CUSTOM_1S
          */
-        reg = new NpcFactionDeclaration(NpcCustom_1Archer.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1Archer.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_archer");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1Soldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_SOLDIER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1Soldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_SOLDIER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_soldier");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1Leader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_COMMANDER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1Leader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_COMMANDER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_leader");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1Priest.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_PRIEST, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1Priest.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_PRIEST);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_priest");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_TRADER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_TRADER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_trader");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1MountedSoldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_CAVALRY, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1MountedSoldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_CAVALRY);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_soldier");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1MountedArcher.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_MOUNTED_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1MountedArcher.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_MOUNTED_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_archer");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1CivilianMale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_CIVILIAN_MALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1CivilianMale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_CIVILIAN_MALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_civilian_male");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1CivilianFemale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_CIVILIAN_FEMALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1CivilianFemale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_CIVILIAN_FEMALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_civilian_female");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1ArcherElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_ARCHER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1ArcherElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_ARCHER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_archer");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1SoldierElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_SOLDIER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1SoldierElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_SOLDIER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_soldier");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1LeaderElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_LEADER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1LeaderElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_LEADER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_leader");
 
-        reg = new NpcFactionDeclaration(NpcCustom_1Bard.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_BARD, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_1Bard.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_BARD);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_1_bard");
     }
 
@@ -343,43 +343,43 @@ public class AWNPCEntityLoader {
         /**
          * CUSTOM_2S
          */
-        reg = new NpcFactionDeclaration(NpcCustom_2Archer.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2Archer.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_archer");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2Soldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_SOLDIER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2Soldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_SOLDIER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_soldier");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2Leader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_COMMANDER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2Leader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_COMMANDER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_leader");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2Priest.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_PRIEST, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2Priest.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_PRIEST);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_priest");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_TRADER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_TRADER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_trader");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2MountedSoldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_CAVALRY, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2MountedSoldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_CAVALRY);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_soldier");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2MountedArcher.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_MOUNTED_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2MountedArcher.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_MOUNTED_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_archer");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2CivilianMale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_CIVILIAN_MALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2CivilianMale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_CIVILIAN_MALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_civilian_male");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2CivilianFemale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_CIVILIAN_FEMALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2CivilianFemale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_CIVILIAN_FEMALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_civilian_female");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2ArcherElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_ARCHER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2ArcherElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_ARCHER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_archer");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2SoldierElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_SOLDIER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2SoldierElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_SOLDIER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_soldier");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2LeaderElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_LEADER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2LeaderElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_LEADER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_leader");
 
-        reg = new NpcFactionDeclaration(NpcCustom_2Bard.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_BARD, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_2Bard.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_BARD);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_2_bard");
     }
 
@@ -389,43 +389,43 @@ public class AWNPCEntityLoader {
         /**
          * CUSTOM_3S
          */
-        reg = new NpcFactionDeclaration(NpcCustom_3Archer.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3Archer.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_archer");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3Soldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_SOLDIER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3Soldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_SOLDIER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_soldier");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3Leader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_COMMANDER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3Leader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_COMMANDER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_leader");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3Priest.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_PRIEST, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3Priest.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_PRIEST);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_priest");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_TRADER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3Trader.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_TRADER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_trader");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3MountedSoldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_CAVALRY, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3MountedSoldier.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_CAVALRY);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_soldier");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3MountedArcher.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_MOUNTED_ARCHER, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3MountedArcher.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_MOUNTED_ARCHER);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_archer");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3CivilianMale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_CIVILIAN_MALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3CivilianMale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_CIVILIAN_MALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_civilian_male");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3CivilianFemale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_CIVILIAN_FEMALE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3CivilianFemale.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_CIVILIAN_FEMALE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_civilian_female");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3ArcherElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_ARCHER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3ArcherElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_ARCHER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_archer");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3SoldierElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_SOLDIER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3SoldierElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_SOLDIER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_soldier");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3LeaderElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_LEADER_ELITE, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3LeaderElite.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_LEADER_ELITE);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_leader");
 
-        reg = new NpcFactionDeclaration(NpcCustom_3Bard.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_BARD, nextID++);
+        reg = new NpcFactionDeclaration(NpcCustom_3Bard.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_BARD);
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_bard");
     }
 
@@ -500,11 +500,11 @@ public class AWNPCEntityLoader {
 
         private boolean canSpawnBaseEntity = true;
         private final String npcType;
-        private HashMap<String, String> subTypeIcons = new HashMap<String, String>();
-        private HashMap<String, ItemStack> spawnEquipment = new HashMap<String, ItemStack>();
+        private final HashMap<String, String> subTypeIcons = new HashMap<String, String>();
+        private final HashMap<String, ItemStack> spawnEquipment = new HashMap<String, ItemStack>();
 
-        public NpcDeclaration(Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, String npcType) {
-            super(entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
+        public NpcDeclaration(Class<? extends Entity> entityClass, String entityName, String npcType) {
+            super(entityClass, entityName, nextID++);
             this.npcType = npcType;
         }
 
@@ -531,12 +531,32 @@ public class AWNPCEntityLoader {
             }
             return npc;
         }
+
+        @Override
+        public final Object mod() {
+            return AncientWarfareNPC.instance;
+        }
+
+        @Override
+        public final int trackingRange() {
+            return 120;
+        }
+
+        @Override
+        public final int updateFrequency() {
+            return 3;
+        }
+
+        @Override
+        public final boolean sendsVelocityUpdates() {
+            return true;
+        }
     }
 
     public static class NpcFactionDeclaration extends NpcDeclaration {
 
-        public NpcFactionDeclaration(Class<? extends NpcFaction> entityClass, String entityName, int id) {
-            super(entityClass, entityName, id, AncientWarfareNPC.instance, 120, 3, true, entityName);
+        public NpcFactionDeclaration(Class<? extends NpcFaction> entityClass, String entityName) {
+            super(entityClass, entityName, entityName);
         }
 
         @Override

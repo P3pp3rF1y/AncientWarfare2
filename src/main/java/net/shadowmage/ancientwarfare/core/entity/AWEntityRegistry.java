@@ -139,18 +139,8 @@ public class AWEntityRegistry {
     //TODO add gates?? where are they registered at?
     public static final String AW_GATES = "aw_gate";
 
-    private static HashMap<String, EntityDeclaration> entityRegistrations = new HashMap<String, EntityDeclaration>();
-
     public static void registerEntity(EntityDeclaration reg) {
-        entityRegistrations.put(reg.getEntityName(), reg);
-        EntityRegistry.registerModEntity(reg.entityClass, reg.entityName, reg.id, reg.mod, reg.trackingRange, reg.updateFrequency, reg.sendsVelocityUpdates);
-    }
-
-    public static Entity createEntity(String type, World world) {
-        if (entityRegistrations.containsKey(type)) {
-            return entityRegistrations.get(type).createEntity(world);
-        }
-        return null;
+        EntityRegistry.registerModEntity(reg.entityClass, reg.entityName, reg.id, reg.mod(), reg.trackingRange(), reg.updateFrequency(), reg.sendsVelocityUpdates());
     }
 
     /**
@@ -159,24 +149,16 @@ public class AWEntityRegistry {
      *
      * @author Shadowmage
      */
-    public static class EntityDeclaration {
+    public static abstract class EntityDeclaration {
 
-        Class<? extends Entity> entityClass;
-        String entityName;
-        int id;
-        Object mod;
-        int trackingRange;
-        int updateFrequency;
-        boolean sendsVelocityUpdates;
+        final Class<? extends Entity> entityClass;
+        final String entityName;
+        final int id;
 
-        public EntityDeclaration(Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
+        public EntityDeclaration(Class<? extends Entity> entityClass, String entityName, int id) {
             this.entityClass = entityClass;
             this.entityName = entityName;
             this.id = id;
-            this.mod = mod;
-            this.trackingRange = trackingRange;
-            this.updateFrequency = updateFrequency;
-            this.sendsVelocityUpdates = sendsVelocityUpdates;
         }
 
         public Entity createEntity(World world) {
@@ -188,9 +170,17 @@ public class AWEntityRegistry {
             return null;
         }
 
-        public String getEntityName() {
+        public String name() {
             return entityName;
         }
+
+        public abstract Object mod();
+
+        public abstract int trackingRange();
+
+        public abstract int updateFrequency();
+
+        public abstract boolean sendsVelocityUpdates();
     }
 
 }
