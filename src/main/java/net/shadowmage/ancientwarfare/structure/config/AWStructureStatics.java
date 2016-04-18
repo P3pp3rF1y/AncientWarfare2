@@ -42,7 +42,7 @@ public class AWStructureStatics extends ModConfiguration {
 
     public static String templateExtension = "aws";
     public static String townTemplateExtension = "awt";
-    public static boolean enableVillageGen = true;
+    public static boolean enableWorldGen = true;
     public static boolean enableTownGeneration = true;
     public static boolean enableStructureGeneration = true;
     public static boolean loadDefaultPack = true;
@@ -86,12 +86,10 @@ public class AWStructureStatics extends ModConfiguration {
         templateExtension = config.get(worldGenCategory, "template_extension", "aws", "Default=" + templateExtension + "\n" +
                 "The template extension used when looking for and exporting templates.\n" +
                 "Only files matching this extension will be examined.").getString();
-        enableVillageGen = config.get(worldGenCategory, "enable_village_feature_generation", enableVillageGen, "Default=" + enableVillageGen + "\n" +
-                "Enable or disable generation of additional village features.").getBoolean(enableVillageGen);
         enableStructureGeneration = config.get(worldGenCategory, "enable_structure_generation", enableStructureGeneration, "Default=" + enableStructureGeneration + "\n" +
-                "Enable or disable structure generation entirely.").getBoolean(enableStructureGeneration);
+                "Enable or disable structure (not town) generation.").getBoolean(enableStructureGeneration);
         enableTownGeneration = config.get(worldGenCategory, "enable_town_generation", enableTownGeneration, "Default=" + enableTownGeneration + "\n" +
-                "Enable or disable custom town generation entirely.").getBoolean(enableTownGeneration);
+                "Enable or disable custom town generation e.g. walls and additional buildings.").getBoolean(enableTownGeneration);
         loadDefaultPack = config.get(worldGenCategory, "load_default_structure_pack", loadDefaultPack, "If true the default structure pack will be loaded and enabled for world-gen.").getBoolean(loadDefaultPack);
         duplicateStructureSearchRange = config.get(worldGenCategory, "validation_duplicate_search_radius", duplicateStructureSearchRange, "Default=" + duplicateStructureSearchRange + "\n" +
                 "The minimum radius in chunks to be searched for duplicate structures.\n" +
@@ -124,6 +122,8 @@ public class AWStructureStatics extends ModConfiguration {
                 "Will toggle itself back to false after exporting the list a single time.\n" +
                 "Block names be used to populate skippable and target blocks lists.\n" +
                 "If false, no action will be taken.");
+        enableWorldGen = config.get(serverOptions, "enable_world_generation", enableWorldGen, "Default=" + enableWorldGen + "\n" +
+                "Enable or disable world generation entirely. If disabled, all other options will have no effect.").getBoolean(enableWorldGen);
 
         townClosestDistance = config.get(worldGenCategory, "town_min_distance", townClosestDistance, "Default=" + townClosestDistance + "\n" +
                 "Minimum distance between towns.  This should be set to a value quite a bit larger than the largest town" +

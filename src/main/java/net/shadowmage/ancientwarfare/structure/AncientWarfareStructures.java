@@ -64,11 +64,13 @@ public class AncientWarfareStructures {
          * Forge/FML registry
          */
         FMLCommonHandler.instance().bus().register(this);
-        FMLCommonHandler.instance().bus().register(WorldGenTickHandler.INSTANCE);
-        if (AWStructureStatics.enableStructureGeneration)
-            GameRegistry.registerWorldGenerator(WorldStructureGenerator.INSTANCE, 1);
-        if (AWStructureStatics.enableTownGeneration)
-            GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
+        if (AWStructureStatics.enableWorldGen) {
+            FMLCommonHandler.instance().bus().register(WorldGenTickHandler.INSTANCE);
+            if (AWStructureStatics.enableStructureGeneration)
+                GameRegistry.registerWorldGenerator(WorldStructureGenerator.INSTANCE, 1);
+            if (AWStructureStatics.enableTownGeneration)
+                GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
+        }
         EntityRegistry.registerModEntity(EntityGate.class, "aw_gate", 0, this, 250, 200, false);
         /**
          * internal registry
@@ -121,7 +123,8 @@ public class AncientWarfareStructures {
 
     @EventHandler
     public void serverStop(FMLServerStoppingEvent evt){
-        WorldGenTickHandler.INSTANCE.finalTick();
+        if (AWStructureStatics.enableWorldGen)
+            WorldGenTickHandler.INSTANCE.finalTick();
     }
 
 }
