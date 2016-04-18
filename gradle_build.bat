@@ -1,3 +1,3 @@
 pushd %~dp0
-gradlew build
+call gradlew build
 pause
